@@ -1,7 +1,7 @@
-FROM microsoft/dotnet:2.2.2-aspnetcore-runtime AS base
+FROM microsoft/dotnet:2.2-aspnetcore-runtime AS base
 WORKDIR /app
 
-FROM microsoft/dotnet:2.2.2-sdk AS build
+FROM microsoft/dotnet:2.2-sdk AS build
 WORKDIR /src
 COPY src/eDoxa.Notifications.Api/eDoxa.Notifications.Api.csproj eDoxa.Notifications.Api/
 RUN dotnet restore src/eDoxa.Notifications.Api/eDoxa.Notifications.Api.csproj
