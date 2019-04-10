@@ -1,0 +1,21 @@
+﻿@model string
+<div class="row">
+    <div class="col-5 offset-2">
+        <div class="bg-dark card mt-5 text-white">
+            <h5 class="card-header">User Code</h5>
+            <div class="card-body">
+                <p>Please enter the code displayed on your device.</p>
+                <form asp-action="UserCodeCapture" method="post">
+                    <div class="form-row">
+                        <div class="col">
+                            <input class="form-control" for="userCode" name="userCode" placeholder="Code" />
+                        </div>
+                        <div class="col-auto">
+                            <button class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

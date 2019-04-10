@@ -1,0 +1,63 @@
+﻿// Filename: ChallengeQueriesTest.cs
+// Date Created: 2019-04-04
+// 
+// ============================================================
+// Copyright © 2019, Francis Quenneville
+// All rights reserved.
+// 
+// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// this source code package.
+
+using System.Threading.Tasks;
+
+using eDoxa.Challenges.Application.Queries;
+using eDoxa.Challenges.Application.Tests.Asserts;
+using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Challenges.Domain.Factories;
+using eDoxa.Challenges.DTO.Factories;
+using eDoxa.Challenges.Infrastructure;
+using eDoxa.Challenges.Infrastructure.Repositories;
+using eDoxa.Seedwork.Domain.Common.Enums;
+using eDoxa.Seedwork.Infrastructure;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace eDoxa.Challenges.Application.Tests.Queries
+{
+    [TestClass]
+    public sealed class ChallengeQueriesTest
+    {        
+        private static readonly ChallengeAggregateFactory _challengeAggregateFactory = ChallengeAggregateFactory.Instance;
+        private static readonly ChallengesMapperFactory _mapperFactory = ChallengesMapperFactory.Instance;
+
+        [TestMethod]
+        public async Task FindChallengesAsync_ShouldBeMapped()
+        {
+            var challenge = _challengeAggregateFactory.CreateRandomChallenge();
+
+            using (var factory = new CustomDbContextFactory<ChallengesDbContext>())
+            {
+                using (var context = factory.CreateContext())
+                {
+                    var repository = new ChallengeRepository(context);
+
+                    repository.Create(challenge);
+
+                    await repository.UnitOfWork.CommitAsync();
+                }
+
+                using (var context = factory.CreateContext())
+                {
+                    // Arrange
+                    var queries = new ChallengeQueries(context, _mapperFactory.CreateMapper());
+
+                    // Act
+                    var challengeDTO = await queries.FindChallengesAsync(Game.All, ChallengeType.All, ChallengeState.Opened);
+
+                    // Assert
+                    ChallengesAssert.IsMapped(challengeDTO);
+                }
+            }
+        }
+    }
+}

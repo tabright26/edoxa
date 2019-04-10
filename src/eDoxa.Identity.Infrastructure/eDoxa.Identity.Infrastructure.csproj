@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AssemblyName>eDoxa.Identity.Infrastructure</AssemblyName>
+    <RootNamespace>eDoxa.Identity.Infrastructure</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\eDoxa.Identity.Domain\eDoxa.Identity.Domain.csproj" />
+    <ProjectReference Include="..\eDoxa.Security\eDoxa.Security.csproj" />
+    <ProjectReference Include="..\eDoxa.Seedwork.Infrastructure\eDoxa.Seedwork.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

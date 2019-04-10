@@ -1,0 +1,16 @@
+﻿@page
+@model ConfirmEmailConfirmationModel
+@{
+    ViewData["Title"] = "Account confirmation";
+}
+<h2>@ViewData["Title"]</h2>
+<partial for="StatusMessage" name="_StatusMessage" />
+<div>
+    Please check your email to confirm your account.
+    <form method="post">
+        <input asp-for="UserId" type="hidden" />
+        <button class="btn btn-link" type="submit">
+            Resend verification email
+        </button>
+    </form>
+</div>

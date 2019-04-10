@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>eDoxa.Challenges.Domain.Services.LeagueOfLegends</AssemblyName>
+    <RootNamespace>eDoxa.Challenges.Domain.Services.LeagueOfLegends</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\eDoxa.Challenges.Domain.Services.LeagueOfLegends.DTO\eDoxa.Challenges.Domain.Services.LeagueOfLegends.DTO.csproj" />
+    <ProjectReference Include="..\eDoxa.Challenges.Domain\eDoxa.Challenges.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

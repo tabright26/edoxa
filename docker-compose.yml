@@ -1,0 +1,67 @@
+version: '3.4'
+
+services:
+  edoxa.mssql.data:
+    image: microsoft/mssql-server-linux:latest
+
+  edoxa.redis.data:
+    image: redis:latest
+
+  edoxa.rabbitmq.broker:
+    image: rabbitmq:latest
+
+  edoxa.identity:
+    image: ${REGISTRY:-edoxa}/identity:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/eDoxa.Identity/Dockerfile
+    depends_on:
+      - edoxa.mssql.data
+      - edoxa.redis.data
+      - edoxa.rabbitmq.broker 
+
+  edoxa.challenges.api:
+    image: ${REGISTRY:-edoxa}/challenges.api:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/eDoxa.Challenges.Api/Dockerfile
+    depends_on:
+      - edoxa.mssql.data
+      - edoxa.rabbitmq.broker 
+      - edoxa.identity
+
+  edoxa.cashier.api:
+    image: ${REGISTRY:-edoxa}/cashier.api:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/eDoxa.Cashier.Api/Dockerfile
+    depends_on:
+      - edoxa.mssql.data
+      - edoxa.rabbitmq.broker 
+      - edoxa.identity
+
+  edoxa.notifications.api:
+    image: ${REGISTRY:-edoxa}/notifications.api:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/eDoxa.Notifications.Api/Dockerfile
+    depends_on:
+      - edoxa.mssql.data
+      - edoxa.rabbitmq.broker 
+      - edoxa.identity
+
+  edoxa.challenges.backgroundtasks:
+    image: ${REGISTRY:-edoxa}/challenges.backgroundtasks:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/eDoxa.Challenges.BackgroundTasks/Dockerfile
+    depends_on:
+      - edoxa.mssql.data
+      - edoxa.rabbitmq.broker 
+      - edoxa.challenges.api
+
+  #edoxa.web.spa:
+  #  image: ${REGISTRY:-edoxa}/web.spa:${PLATFORM:-linux}-${TAG:-latest}
+  #  build:
+  #    context: .
+  #    dockerfile: src/eDoxa.Web.Spa/Dockerfile

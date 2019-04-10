@@ -1,0 +1,172 @@
+version: '3.4'
+
+services:
+  edoxa.mssql.data:
+    environment:
+      - SA_PASSWORD=fnU3Www9TnBDp3MA
+      - ACCEPT_EULA=Y
+      - MSSQL_PID=Express
+    ports:
+      - "1433:1433"
+
+  edoxa.redis.data:
+    ports:
+      - "6379:6379"
+
+  edoxa.rabbitmq.broker:
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=4t8SaVXVMy0rT2kM
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+
+  edoxa.identity:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - Authority__External=http://${DOCKER_EXTERNAL_IP}:5000
+      - ConnectionStrings__SqlServer=${CONNECTIONSTRINGS_SQLSERVER_IDENTITY:-Server=edoxa.mssql.data;Database=eDoxa.Services.Identity;User Id=sa;Password=fnU3Www9TnBDp3MA}
+      - ConnectionStrings__Redis=${CONNECTIONSTRINGS_REDIS:-edoxa.redis.data}      
+      - ServiceBus__HostName=${SERVICE_BUS_HOST_NAME:-edoxa.rabbitmq.broker}
+      - ServiceBus__UserName=${SERVICE_BUS_USER_NAME:-admin}
+      - ServiceBus__Password=${SERVICE_BUS_PASSWORD:-4t8SaVXVMy0rT2kM}
+      - ServiceBus__RetryCount=${SERVICE_BUS_RETRY_COUNT:-5}
+      - ServiceBus__Subscription=Identity
+      - UseAzureServiceBus=${USE_AZURE_SERVICE_BUS}
+      - UseClusterEnvironment=${USE_CLUSTER_ENVIRONMENT}
+      - IdentityServer__IssuerUrl=null
+      - IdentityServer__UserInteraction__ConsentUrl=/Identity/Consent/Index
+      - IdentityServer__UserInteraction__ErrorUrl=/Identity/Error
+      - IdentityServer__UserInteraction__LoginUrl=/Identity/Account/Login
+      - IdentityServer__UserInteraction__LogoutUrl=/Identity/Account/Logout
+      - IdentityServer__ApiResources__Identity__Name=${IDENTITY__API_RESOURCE__NAME}
+      - IdentityServer__ApiResources__Identity__DisplayName=${IDENTITY__API_RESOURCE__DISPLAY_NAME}
+      - IdentityServer__ApiResources__Identity__Description=${IDENTITY__API_RESOURCE__DESCRIPTION}
+      - IdentityServer__ApiResources__Challenges__Name=${CHALLENGES__API_RESOURCE__NAME}
+      - IdentityServer__ApiResources__Challenges__DisplayName=${CHALLENGES__API_RESOURCE__DISPLAY_NAME}
+      - IdentityServer__ApiResources__Challenges__Description=${CHALLENGES__API_RESOURCE__DESCRIPTION}
+      - IdentityServer__ApiResources__Cashier__Name=${CASHIER__API_RESOURCE__NAME}
+      - IdentityServer__ApiResources__Cashier__DisplayName=${CASHIER__API_RESOURCE__DISPLAY_NAME}
+      - IdentityServer__ApiResources__Cashier__Description=${CASHIER__API_RESOURCE__DESCRIPTION}
+      - IdentityServer__ApiResources__Notifications__Name=${NOTIFICATIONS__API_RESOURCE__NAME}
+      - IdentityServer__ApiResources__Notifications__DisplayName=${NOTIFICATIONS__API_RESOURCE__DISPLAY_NAME}
+      - IdentityServer__ApiResources__Notifications__Description=${NOTIFICATIONS__API_RESOURCE__DESCRIPTION}
+      - IdentityServer__Clients__Swagger__Identity__ClientId=${IDENTITY__SWAGGER__CLIENT_ID}
+      - IdentityServer__Clients__Swagger__Identity__ClientName=${IDENTITY__API_RESOURCE__DISPLAY_NAME} ${SWAGGER__CLIENT_NAME}
+      - IdentityServer__Clients__Swagger__Identity__RedirectUrl=http://${DOCKER_EXTERNAL_IP}:5000${SWAGGER__CLIENT__REDIRECT_URL}
+      - IdentityServer__Clients__Swagger__Identity__PostLogoutRedirectUrl=http://${DOCKER_EXTERNAL_IP}:5000${SWAGGER__CLIENT__POST_LOGOUT_REDIRECT_URL}
+      - IdentityServer__Clients__Swagger__Challenges__ClientId=${CHALLENGES__SWAGGER__CLIENT_ID}
+      - IdentityServer__Clients__Swagger__Challenges__ClientName=${CHALLENGES__API_RESOURCE__DISPLAY_NAME} ${SWAGGER__CLIENT_NAME}
+      - IdentityServer__Clients__Swagger__Challenges__RedirectUrl=http://${DOCKER_EXTERNAL_IP}:5002${SWAGGER__CLIENT__REDIRECT_URL}
+      - IdentityServer__Clients__Swagger__Challenges__PostLogoutRedirectUrl=http://${DOCKER_EXTERNAL_IP}:5002${SWAGGER__CLIENT__POST_LOGOUT_REDIRECT_URL}
+      - IdentityServer__Clients__Swagger__Cashier__ClientId=${CASHIER__SWAGGER__CLIENT_ID}
+      - IdentityServer__Clients__Swagger__Cashier__ClientName=${CASHIER__API_RESOURCE__DISPLAY_NAME} ${SWAGGER__CLIENT_NAME}
+      - IdentityServer__Clients__Swagger__Cashier__RedirectUrl=http://${DOCKER_EXTERNAL_IP}:5003${SWAGGER__CLIENT__REDIRECT_URL}
+      - IdentityServer__Clients__Swagger__Cashier__PostLogoutRedirectUrl=http://${DOCKER_EXTERNAL_IP}:5003${SWAGGER__CLIENT__POST_LOGOUT_REDIRECT_URL}
+      - IdentityServer__Clients__Swagger__Notifications__ClientId=${NOTIFICATIONS__SWAGGER__CLIENT_ID}
+      - IdentityServer__Clients__Swagger__Notifications__ClientName=${NOTIFICATIONS__API_RESOURCE__DISPLAY_NAME} ${SWAGGER__CLIENT_NAME}
+      - IdentityServer__Clients__Swagger__Notifications__RedirectUrl=http://${DOCKER_EXTERNAL_IP}:5005${SWAGGER__CLIENT__REDIRECT_URL}
+      - IdentityServer__Clients__Swagger__Notifications__PostLogoutRedirectUrl=http://${DOCKER_EXTERNAL_IP}:5005${SWAGGER__CLIENT__POST_LOGOUT_REDIRECT_URL}
+      - IdentityServer__Clients__Web__Spa__ClientId=${WEB__SPA__CLIENT_ID}
+      - IdentityServer__Clients__Web__Spa__ClientName=${WEB__SPA__CLIENT_NAME}
+      - IdentityServer__Clients__Web__Spa__AllowedCorsOrigins=http://${DOCKER_EXTERNAL_IP}:5300
+      - IdentityServer__Clients__Web__Spa__RedirectUrl=http://${DOCKER_EXTERNAL_IP}:5300/callback
+      - IdentityServer__Clients__Web__Spa__PostLogoutRedirectUrl=http://${DOCKER_EXTERNAL_IP}:5300/
+    ports:
+      - "5000:80"
+
+  edoxa.challenges.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - Authority__Internal=http://edoxa.identity
+      - Authority__External=http://${DOCKER_EXTERNAL_IP}:5000
+      - ConnectionStrings__SqlServer=${CONNECTIONSTRINGS_SQLSERVER_CHALLENGES:-Server=edoxa.mssql.data;Database=eDoxa.Services.Challenges;User Id=sa;Password=fnU3Www9TnBDp3MA}      
+      - ServiceBus__HostName=${SERVICE_BUS_HOST_NAME:-edoxa.rabbitmq.broker}
+      - ServiceBus__UserName=${SERVICE_BUS_USER_NAME:-admin}
+      - ServiceBus__Password=${SERVICE_BUS_PASSWORD:-4t8SaVXVMy0rT2kM}
+      - ServiceBus__RetryCount=${SERVICE_BUS_RETRY_COUNT:-5}
+      - ServiceBus__Subscription=Challenges
+      - UseAzureServiceBus=${USE_AZURE_SERVICE_BUS}
+      - IdentityServer__ApiResources__Challenges__Name=${CHALLENGES__API_RESOURCE__NAME}
+      - IdentityServer__ApiResources__Challenges__DisplayName=${CHALLENGES__API_RESOURCE__DISPLAY_NAME}
+      - IdentityServer__ApiResources__Challenges__Description=${CHALLENGES__API_RESOURCE__DESCRIPTION}
+      - IdentityServer__Clients__Swagger__Challenges__ClientId=${CHALLENGES__SWAGGER__CLIENT_ID}
+      - IdentityServer__Clients__Swagger__Challenges__ClientName=${CHALLENGES__API_RESOURCE__DISPLAY_NAME} ${SWAGGER__CLIENT_NAME}
+    ports:
+      - "5002:80"
+
+  edoxa.cashier.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - Authority__Internal=http://edoxa.identity    
+      - Authority__External=http://${DOCKER_EXTERNAL_IP}:5000
+      - ConnectionStrings__SqlServer=${CONNECTIONSTRINGS_SQLSERVER_CASHIER:-Server=edoxa.mssql.data;Database=eDoxa.Services.Cashier;User Id=sa;Password=fnU3Www9TnBDp3MA}
+      - ServiceBus__HostName=${SERVICE_BUS_HOST_NAME:-edoxa.rabbitmq.broker}
+      - ServiceBus__UserName=${SERVICE_BUS_USER_NAME:-admin}
+      - ServiceBus__Password=${SERVICE_BUS_PASSWORD:-4t8SaVXVMy0rT2kM}
+      - ServiceBus__RetryCount=${SERVICE_BUS_RETRY_COUNT:-5}
+      - ServiceBus__Subscription=Cashier
+      - UseAzureServiceBus=${USE_AZURE_SERVICE_BUS}
+      - IdentityServer__ApiResources__Cashier__Name=${CASHIER__API_RESOURCE__NAME}
+      - IdentityServer__ApiResources__Cashier__DisplayName=${CASHIER__API_RESOURCE__DISPLAY_NAME}
+      - IdentityServer__ApiResources__Cashier__Description=${CASHIER__API_RESOURCE__DESCRIPTION}
+      - IdentityServer__Clients__Swagger__Cashier__ClientId=${CASHIER__SWAGGER__CLIENT_ID}
+      - IdentityServer__Clients__Swagger__Cashier__ClientName=${CASHIER__API_RESOURCE__DISPLAY_NAME} ${SWAGGER__CLIENT_NAME}
+    ports:
+      - "5003:80"
+
+  edoxa.notifications.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - Authority__Internal=http://edoxa.identity
+      - Authority__External=http://${DOCKER_EXTERNAL_IP}:5000
+      - ConnectionStrings__SqlServer=${CONNECTIONSTRINGS_SQLSERVER_NOTIFICATIONS:-Server=edoxa.mssql.data;Database=eDoxa.Services.Notifications;User Id=sa;Password=fnU3Www9TnBDp3MA}
+      - ServiceBus__HostName=${SERVICE_BUS_HOST_NAME:-edoxa.rabbitmq.broker}
+      - ServiceBus__UserName=${SERVICE_BUS_USER_NAME:-admin}
+      - ServiceBus__Password=${SERVICE_BUS_PASSWORD:-4t8SaVXVMy0rT2kM}
+      - ServiceBus__RetryCount=${SERVICE_BUS_RETRY_COUNT:-5}
+      - ServiceBus__Subscription=Notifications
+      - UseAzureServiceBus=${USE_AZURE_SERVICE_BUS}
+      - IdentityServer__ApiResources__Notifications__Name=${NOTIFICATIONS__API_RESOURCE__NAME}
+      - IdentityServer__ApiResources__Notifications__DisplayName=${NOTIFICATIONS__API_RESOURCE__DISPLAY_NAME}
+      - IdentityServer__ApiResources__Notifications__Description=${NOTIFICATIONS__API_RESOURCE__DESCRIPTION}
+      - IdentityServer__Clients__Swagger__Notifications__ClientId=${NOTIFICATIONS__SWAGGER__CLIENT_ID}
+      - IdentityServer__Clients__Swagger__Notifications__ClientName=${NOTIFICATIONS__API_RESOURCE__DISPLAY_NAME} ${SWAGGER__CLIENT_NAME}
+    ports:
+      - "5005:80"
+
+  edoxa.challenges.backgroundtasks:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - ServiceBus__HostName=${SERVICE_BUS_HOST_NAME:-edoxa.rabbitmq.broker}
+      - ServiceBus__UserName=${SERVICE_BUS_USER_NAME:-admin}
+      - ServiceBus__Password=${SERVICE_BUS_PASSWORD:-4t8SaVXVMy0rT2kM}
+      - ServiceBus__RetryCount=${SERVICE_BUS_RETRY_COUNT:-5}
+      - ServiceBus__Subscription=BackgroundTasks
+      - UseAzureServiceBus=${USE_AZURE_SERVICE_BUS}
+    ports:
+      - "5052:80"
+
+  #edoxa.web.spa:
+  #  environment:
+  #    - ASPNETCORE_ENVIRONMENT=Development
+  #    - ASPNETCORE_URLS=http://+:80
+  #    - Authority__External=http://${DOCKER_EXTERNAL_IP}:5000
+  #    - ConnectionStrings__Redis=${CONNECTIONSTRINGS_REDIS:-edoxa.redis.data}
+  #    - UseClusterEnvironment=${USE_CLUSTER_ENVIRONMENT}
+  #    - IdentityUrl=http://${DOCKER_EXTERNAL_IP}:5000
+  #    - ChallengesUrl=http://${DOCKER_EXTERNAL_IP}:5002
+  #    - CashierUrl=http://${DOCKER_EXTERNAL_IP}:5003
+  #    - NotificationUrl=http://${DOCKER_EXTERNAL_IP}:5005
+  #    - IdentityServer__ApiResources__Identity__Name=${IDENTITY__API_RESOURCE__NAME}
+  #    - IdentityServer__ApiResources__Challenges__Name=${CHALLENGES__API_RESOURCE__NAME}
+  #    - IdentityServer__ApiResources__Cashier__Name=${CASHIER__API_RESOURCE__NAME}
+  #    - IdentityServer__ApiResources__Notifications__Name=${NOTIFICATIONS__API_RESOURCE__NAME}
+  #    - IdentityServer__Clients__Web__Spa__ClientId=${WEB__SPA__CLIENT_ID}
+  #  ports:
+  #    - "5300:80"

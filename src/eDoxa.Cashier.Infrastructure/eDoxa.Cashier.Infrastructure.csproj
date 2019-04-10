@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AssemblyName>eDoxa.Cashier.Infrastructure</AssemblyName>
+    <RootNamespace>eDoxa.Cashier.Infrastructure</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\eDoxa.Cashier.Domain\eDoxa.Cashier.Domain.csproj" />
+    <ProjectReference Include="..\eDoxa.Seedwork.Infrastructure\eDoxa.Seedwork.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

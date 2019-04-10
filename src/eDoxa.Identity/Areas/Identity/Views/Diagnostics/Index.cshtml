@@ -1,0 +1,90 @@
+﻿@using eDoxa.Identity.Areas.Identity.ViewModels.Diagnostics
+@model DiagnosticsViewModel
+<h1>Authentication cookie</h1>
+<hr />
+<div class="card">
+    <div class="card-header">
+        <ul class="card-header-pills nav nav-fill nav-pills rounded" role="tablist">
+            <li class="nav-item">
+                <a aria-controls="claims" aria-selected="true" class="active nav-link" data-toggle="tab" href="#claims" id="claims-tab" role="tab">
+                    Claims
+                    <span class="badge badge-pill badge-secondary">@Model.AuthenticateResult.Principal.Claims.Count()</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a aria-controls="properties" aria-selected="true" class="nav-link" data-toggle="tab" href="#properties" id="properties-tab" role="tab">
+                    Properties
+                    <span class="badge badge-pill badge-secondary">@Model.AuthenticateResult.Properties.Items.Count</span>
+                </a>
+            </li>
+            @if (Model.Clients.Any())
+            {
+                <li class="nav-item">
+                    <a aria-controls="clients" aria-selected="true" class="nav-link" data-toggle="tab" href="#clients" id="clients-tab" role="tab">
+                        Clients
+                        <span class="badge badge-pill badge-secondary">@Model.Clients.Count()</span>
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+    <div class="tab-content">
+        <div aria-labelledby="claims-tab" class="active show tab-pane" id="claims" role="tabpanel">
+            <table class="mb-0 rounded table table-light table-sm table-striped">
+                <thead>
+                    <tr>
+                        <th class="text-center" scope="col">
+                            #
+                        </th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (var index = 1; index <= Model.AuthenticateResult.Principal.Claims.Count(); index++)
+                    {
+                        <tr>
+                            <td class="text-center">@index.ToString("00")</td>
+                            <td>@Model.AuthenticateResult.Principal.Claims.ToArray()[index - 1].Type</td>
+                            <td>@Model.AuthenticateResult.Principal.Claims.ToArray()[index - 1].Value</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div aria-labelledby="properties-tab" class="tab-pane" id="properties" role="tabpanel">
+            <table class="mb-0 rounded table table-light table-sm table-striped">
+                <thead>
+                    <tr>
+                        <th class="text-center" scope="col">
+                            #
+                        </th>
+                        <th scope="col">Key</th>
+                        <th scope="col">Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (var index = 1; index <= Model.AuthenticateResult.Properties.Items.Count; index++)
+                    {
+                        <tr>
+                            <td class="text-center">@index.ToString("00")</td>
+                            <td>@Model.AuthenticateResult.Properties.Items.ToArray()[index - 1].Key</td>
+                            <td>@Model.AuthenticateResult.Properties.Items.ToArray()[index - 1].Value</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div aria-labelledby="clients-tab" class="tab-pane" id="clients" role="tabpanel">
+            @if (Model.Clients.Any())
+            {
+                <ul class="list-group list-group-flush">
+                    @foreach (var client in Model.Clients)
+                    {
+                        <li class="list-group-item list-group-item-light text-center">@client</li>
+                    }
+                </ul>
+            }
+        </div>
+    </div>
+</div>

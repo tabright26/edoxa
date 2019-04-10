@@ -1,0 +1,34 @@
+﻿@using eDoxa.Identity.Areas.Identity.ViewModels
+@model ErrorViewModel
+@{
+    var error = Model?.Error?.Error;
+    var errorDescription = Model?.Error?.ErrorDescription;
+    var request_id = Model?.Error?.RequestId;
+}
+<div class="row">
+    <div class="col-10 offset-1">
+        <div class="alert alert-danger mt-5" role="alert">
+            <h4 class="alert-heading">Error</h4>
+            <p class="@(request_id == null ? "mb-0" : string.Empty)">
+                Sorry, there was an error
+                @if (error != null)
+                {
+                    <strong>
+                        <em>
+                            : @error
+                        </em>
+                    </strong>
+                    if (errorDescription != null)
+                    {
+                        <span>@errorDescription</span>
+                    }
+                }
+            </p>
+            @if (request_id != null)
+            {
+                <hr>
+                <p class="mb-0">Request Id: @request_id</p>
+            }
+        </div>
+    </div>
+</div>

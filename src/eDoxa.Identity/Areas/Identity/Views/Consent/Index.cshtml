@@ -1,0 +1,77 @@
+﻿@using eDoxa.Identity.Areas.Identity.ViewModels.Consent
+@model ConsentViewModel
+@if (Model.ClientLogoUrl != null)
+{
+    <div class="client-logo">
+        <img src="@Model.ClientLogoUrl" alt="Client Logo">
+    </div>
+}
+<h1>
+    @Model.ClientName
+    <small>is requesting your permission</small>
+</h1>
+<hr />
+<form asp-action="Index">
+    <div asp-validation-summary="All" class="danger">
+    </div>
+    <input type="hidden" asp-for="ReturnUrl" />
+    <div class="alert alert-info mb-3" role="alert">
+        Uncheck the permissions you do not wish to grant.
+    </div>
+    @if (Model.IdentityScopes.Any())
+    {
+        <div class="bg-dark card mb-3">
+            <div class="card-header">
+                <i class="fa-fw fas fa-user"></i>
+                Personal Information
+            </div>
+            <ul class="list-group list-group-flush">
+                @foreach (var scope in Model.IdentityScopes)
+                {
+                    @await Html.PartialAsync("_ScopeListItem", scope)
+                }
+            </ul>
+        </div>
+    }
+    @if (Model.ResourceScopes.Any())
+    {
+        <div class="bg-dark card mb-3 text-white">
+            <div class="card-header">
+                <i class="fa-fw fas fa-tasks"></i>
+                Application Access
+            </div>
+            <ul class="list-group list-group-flush">
+                @foreach (var scope in Model.ResourceScopes)
+                {
+                    @await Html.PartialAsync("_ScopeListItem", scope)
+                }
+            </ul>
+        </div>
+    }
+    <div class="bg-dark card">
+        <div class="card-body">
+            @if (Model.AllowRememberConsent)
+            {
+                <div class="custom-checkbox custom-control mb-3">
+                    <input asp-for="RememberConsent" type="checkbox" class="custom-control-input" id="rememberConsent" required>
+                    <label class="custom-control-label text-white" for="rememberConsent">
+                        Remember My Decision
+                    </label>
+                </div>
+            }
+            <button autofocus class="btn btn-primary" name="button" value="yes">
+                Yes, Allow
+            </button>
+            <button class="btn btn-secondary" name="button" value="no">
+                No, Do Not Allow
+            </button>
+            @if (Model.ClientUrl != null)
+            {
+                <a class="btn btn-default pull-right" target="_blank" href="@Model.ClientUrl">
+                    <i class="fa-fw fa-info-circle fas"></i>
+                    <strong>@Model.ClientName</strong>
+                </a>
+            }
+        </div>
+    </div>
+</form>

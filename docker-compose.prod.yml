@@ -1,0 +1,64 @@
+version: '3.4'
+
+services:
+  edoxa.mssql.data:
+    environment:
+      - SA_PASSWORD=fnU3Www9TnBDp3MA
+      - ACCEPT_EULA=Y
+      - MSSQL_PID=Express
+    ports:
+      - "1433"
+
+  edoxa.redis.data:
+    ports:
+      - "6379"
+
+  edoxa.rabbitmq.broker:
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=4t8SaVXVMy0rT2kM
+    ports:
+      - "15672"
+      - "5672"
+
+  edoxa.identity:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80   
+    ports:
+      - "5000:80"
+
+  edoxa.challenges.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - "80"
+
+  edoxa.cashier.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - "80"
+
+  edoxa.notifications.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - "80"
+
+  edoxa.challenges.backgroundtasks:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - "5052:80"
+
+  #edoxa.web.spa:
+  #  environment:
+  #    - ASPNETCORE_ENVIRONMENT=Development
+  #    - ASPNETCORE_URLS=http://+:80
+  #  ports:
+  #    - "5300:80"

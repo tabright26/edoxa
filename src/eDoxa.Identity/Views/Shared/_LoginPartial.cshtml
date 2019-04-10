@@ -1,0 +1,42 @@
+@using eDoxa.Identity.Application.Services
+@inject SignInService SignInService
+@inject UserService UserService
+@if (SignInService.IsSignedIn(User))
+{
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item dropdown">
+            <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="navbarDropdown" role="button">
+                <i class="fa-fw fas fa-user"></i>
+                @User.FindFirst(JwtClaimTypes.NickName).Value
+            </a>
+            <div aria-labelledby="navbarDropdown" class="dropdown-menu">
+                <a asp-area="Identity" asp-page="/Account/Manage/Index" class="dropdown-item">
+                    <i class="fas fa-cog fa-fw"></i>
+                    Account configuration
+                </a>
+                <div class="dropdown-divider"></div>
+                <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new
+                                                                                          {
+                                                                                              area = ""
+                                                                                          })">
+                    <button class="dropdown-item" type="submit">
+                        <i class="fa-fw fas fa-sign-out-alt"></i>
+                        Logout
+                    </button>
+                </form>
+            </div>
+        </li>
+    </ul>
+}
+else
+{
+    <div class="form-inline">
+        <a asp-area="Identity" asp-page="/Account/Register" class="nav-link text-white" title="Register">
+            Register
+        </a>
+        <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-primary btn-sm" title="Login">
+            <i class="fa-fw fas fa-sign-in-alt"></i>
+            Login
+        </a>
+    </div>
+}

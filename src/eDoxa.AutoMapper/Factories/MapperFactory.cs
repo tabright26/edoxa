@@ -1,0 +1,46 @@
+﻿// Filename: MapperFactory.cs
+// Date Created: 2019-04-03
+// 
+// ============================================================
+// Copyright © 2019, Francis Quenneville
+// All rights reserved.
+// 
+// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// this source code package.
+
+using System.Collections.Generic;
+
+using AutoMapper;
+using AutoMapper.Configuration;
+
+namespace eDoxa.AutoMapper.Factories
+{
+    public abstract class MapperFactory : IMapperFactory
+    {
+        public abstract IEnumerable<Profile> CreateProfiles();
+
+        public IMapper CreateMapper()
+        {
+            var provider = new MapperConfiguration(this.CreateConfiguration());
+
+            provider.AssertConfigurationIsValid();
+
+            return new Mapper(provider);
+        }
+
+        public MapperConfigurationExpression CreateConfiguration()
+        {
+            var config = new MapperConfigurationExpression
+            {
+                AllowNullCollections = null
+            };
+
+            foreach (var profile in this.CreateProfiles())
+            {
+                config.AddProfile(profile);
+            }
+
+            return config;
+        }
+    }
+}

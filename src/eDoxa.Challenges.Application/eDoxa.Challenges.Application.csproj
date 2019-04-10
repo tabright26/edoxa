@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\eDoxa.Autofac\eDoxa.Autofac.csproj" />
+    <ProjectReference Include="..\eDoxa.Challenges.DTO\eDoxa.Challenges.DTO.csproj" />
+    <ProjectReference Include="..\eDoxa.Challenges.Infrastructure\eDoxa.Challenges.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

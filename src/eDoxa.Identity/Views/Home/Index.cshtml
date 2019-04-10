@@ -1,0 +1,24 @@
+﻿@{
+    var version = typeof(IdentityServerMiddleware).Assembly.GetName().Version.ToString();
+}
+<h1>
+    <img alt="IdentityServer4 Icon" class="icon" src="~/images/identityserver4_icon.jpg">
+    <span class="align-middle">Welcome to IdentityServer4</span>
+    <small class="align-middle">(version @version)</small>
+</h1>
+<hr />
+<p>
+    IdentityServer publishes a
+    <a href="~/.well-known/openid-configuration">discovery document</a> where you can find metadata and links to all the endpoints, key material, etc.
+</p>
+<p>
+    Click
+    <a asp-action="Index" asp-area="Identity" asp-controller="Grants">
+        here
+    </a> to manage your stored grants.
+</p>
+<p>
+    Here are links to the
+    <a href="https://github.com/identityserver/IdentityServer4">source code repository</a>, and
+    <a href="https://github.com/identityserver/IdentityServer4.Samples">ready to use samples</a>.
+</p>
