@@ -25,7 +25,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - Authority__External=http://${DOCKER_EXTERNAL_IP}:5000
+      - Authority__External=$DOCKER_URL:5000
       - ConnectionStrings__SqlServer=${CONNECTIONSTRINGS_SQLSERVER_IDENTITY:-Server=edoxa.mssql.data;Database=eDoxa.Services.Identity;User Id=sa;Password=fnU3Www9TnBDp3MA}
       - ConnectionStrings__Redis=${CONNECTIONSTRINGS_REDIS:-edoxa.redis.data}      
       - ServiceBus__HostName=${SERVICE_BUS_HOST_NAME:-edoxa.rabbitmq.broker}
@@ -54,25 +54,25 @@ services:
       - IdentityServer__ApiResources__Notifications__Description=${NOTIFICATIONS__API_RESOURCE__DESCRIPTION}
       - IdentityServer__Clients__Swagger__Identity__ClientId=${IDENTITY__SWAGGER__CLIENT_ID}
       - IdentityServer__Clients__Swagger__Identity__ClientName=${IDENTITY__API_RESOURCE__DISPLAY_NAME} ${SWAGGER__CLIENT_NAME}
-      - IdentityServer__Clients__Swagger__Identity__RedirectUrl=http://${DOCKER_EXTERNAL_IP}:5000${SWAGGER__CLIENT__REDIRECT_URL}
-      - IdentityServer__Clients__Swagger__Identity__PostLogoutRedirectUrl=http://${DOCKER_EXTERNAL_IP}:5000${SWAGGER__CLIENT__POST_LOGOUT_REDIRECT_URL}
+      - IdentityServer__Clients__Swagger__Identity__RedirectUrl=$DOCKER_URL:5000${SWAGGER__CLIENT__REDIRECT_URL}
+      - IdentityServer__Clients__Swagger__Identity__PostLogoutRedirectUrl=$DOCKER_URL:5000${SWAGGER__CLIENT__POST_LOGOUT_REDIRECT_URL}
       - IdentityServer__Clients__Swagger__Challenges__ClientId=${CHALLENGES__SWAGGER__CLIENT_ID}
       - IdentityServer__Clients__Swagger__Challenges__ClientName=${CHALLENGES__API_RESOURCE__DISPLAY_NAME} ${SWAGGER__CLIENT_NAME}
-      - IdentityServer__Clients__Swagger__Challenges__RedirectUrl=http://${DOCKER_EXTERNAL_IP}:5002${SWAGGER__CLIENT__REDIRECT_URL}
-      - IdentityServer__Clients__Swagger__Challenges__PostLogoutRedirectUrl=http://${DOCKER_EXTERNAL_IP}:5002${SWAGGER__CLIENT__POST_LOGOUT_REDIRECT_URL}
+      - IdentityServer__Clients__Swagger__Challenges__RedirectUrl=$DOCKER_URL:5002${SWAGGER__CLIENT__REDIRECT_URL}
+      - IdentityServer__Clients__Swagger__Challenges__PostLogoutRedirectUrl=$DOCKER_URL:5002${SWAGGER__CLIENT__POST_LOGOUT_REDIRECT_URL}
       - IdentityServer__Clients__Swagger__Cashier__ClientId=${CASHIER__SWAGGER__CLIENT_ID}
       - IdentityServer__Clients__Swagger__Cashier__ClientName=${CASHIER__API_RESOURCE__DISPLAY_NAME} ${SWAGGER__CLIENT_NAME}
-      - IdentityServer__Clients__Swagger__Cashier__RedirectUrl=http://${DOCKER_EXTERNAL_IP}:5003${SWAGGER__CLIENT__REDIRECT_URL}
-      - IdentityServer__Clients__Swagger__Cashier__PostLogoutRedirectUrl=http://${DOCKER_EXTERNAL_IP}:5003${SWAGGER__CLIENT__POST_LOGOUT_REDIRECT_URL}
+      - IdentityServer__Clients__Swagger__Cashier__RedirectUrl=$DOCKER_URL:5003${SWAGGER__CLIENT__REDIRECT_URL}
+      - IdentityServer__Clients__Swagger__Cashier__PostLogoutRedirectUrl=$DOCKER_URL:5003${SWAGGER__CLIENT__POST_LOGOUT_REDIRECT_URL}
       - IdentityServer__Clients__Swagger__Notifications__ClientId=${NOTIFICATIONS__SWAGGER__CLIENT_ID}
       - IdentityServer__Clients__Swagger__Notifications__ClientName=${NOTIFICATIONS__API_RESOURCE__DISPLAY_NAME} ${SWAGGER__CLIENT_NAME}
-      - IdentityServer__Clients__Swagger__Notifications__RedirectUrl=http://${DOCKER_EXTERNAL_IP}:5005${SWAGGER__CLIENT__REDIRECT_URL}
-      - IdentityServer__Clients__Swagger__Notifications__PostLogoutRedirectUrl=http://${DOCKER_EXTERNAL_IP}:5005${SWAGGER__CLIENT__POST_LOGOUT_REDIRECT_URL}
+      - IdentityServer__Clients__Swagger__Notifications__RedirectUrl=$DOCKER_URL:5005${SWAGGER__CLIENT__REDIRECT_URL}
+      - IdentityServer__Clients__Swagger__Notifications__PostLogoutRedirectUrl=$DOCKER_URL:5005${SWAGGER__CLIENT__POST_LOGOUT_REDIRECT_URL}
       - IdentityServer__Clients__Web__Spa__ClientId=${WEB__SPA__CLIENT_ID}
       - IdentityServer__Clients__Web__Spa__ClientName=${WEB__SPA__CLIENT_NAME}
-      - IdentityServer__Clients__Web__Spa__AllowedCorsOrigins=http://${DOCKER_EXTERNAL_IP}:5300
-      - IdentityServer__Clients__Web__Spa__RedirectUrl=http://${DOCKER_EXTERNAL_IP}:5300/callback
-      - IdentityServer__Clients__Web__Spa__PostLogoutRedirectUrl=http://${DOCKER_EXTERNAL_IP}:5300/
+      - IdentityServer__Clients__Web__Spa__AllowedCorsOrigins=$DOCKER_URL:5300
+      - IdentityServer__Clients__Web__Spa__RedirectUrl=$DOCKER_URL:5300/callback
+      - IdentityServer__Clients__Web__Spa__PostLogoutRedirectUrl=$DOCKER_URL:5300/
     ports:
       - "5000:80"
 
@@ -81,7 +81,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - Authority__Internal=http://edoxa.identity
-      - Authority__External=http://${DOCKER_EXTERNAL_IP}:5000
+      - Authority__External=$DOCKER_URL:5000
       - ConnectionStrings__SqlServer=${CONNECTIONSTRINGS_SQLSERVER_CHALLENGES:-Server=edoxa.mssql.data;Database=eDoxa.Services.Challenges;User Id=sa;Password=fnU3Www9TnBDp3MA}      
       - ServiceBus__HostName=${SERVICE_BUS_HOST_NAME:-edoxa.rabbitmq.broker}
       - ServiceBus__UserName=${SERVICE_BUS_USER_NAME:-admin}
@@ -102,7 +102,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - Authority__Internal=http://edoxa.identity    
-      - Authority__External=http://${DOCKER_EXTERNAL_IP}:5000
+      - Authority__External=$DOCKER_URL:5000
       - ConnectionStrings__SqlServer=${CONNECTIONSTRINGS_SQLSERVER_CASHIER:-Server=edoxa.mssql.data;Database=eDoxa.Services.Cashier;User Id=sa;Password=fnU3Www9TnBDp3MA}
       - ServiceBus__HostName=${SERVICE_BUS_HOST_NAME:-edoxa.rabbitmq.broker}
       - ServiceBus__UserName=${SERVICE_BUS_USER_NAME:-admin}
@@ -123,7 +123,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - Authority__Internal=http://edoxa.identity
-      - Authority__External=http://${DOCKER_EXTERNAL_IP}:5000
+      - Authority__External=$DOCKER_URL:5000
       - ConnectionStrings__SqlServer=${CONNECTIONSTRINGS_SQLSERVER_NOTIFICATIONS:-Server=edoxa.mssql.data;Database=eDoxa.Services.Notifications;User Id=sa;Password=fnU3Www9TnBDp3MA}
       - ServiceBus__HostName=${SERVICE_BUS_HOST_NAME:-edoxa.rabbitmq.broker}
       - ServiceBus__UserName=${SERVICE_BUS_USER_NAME:-admin}
@@ -156,13 +156,13 @@ services:
   #  environment:
   #    - ASPNETCORE_ENVIRONMENT=Development
   #    - ASPNETCORE_URLS=http://+:80
-  #    - Authority__External=http://${DOCKER_EXTERNAL_IP}:5000
+  #    - Authority__External=$DOCKER_URL:5000
   #    - ConnectionStrings__Redis=${CONNECTIONSTRINGS_REDIS:-edoxa.redis.data}
   #    - UseClusterEnvironment=${USE_CLUSTER_ENVIRONMENT}
-  #    - IdentityUrl=http://${DOCKER_EXTERNAL_IP}:5000
-  #    - ChallengesUrl=http://${DOCKER_EXTERNAL_IP}:5002
-  #    - CashierUrl=http://${DOCKER_EXTERNAL_IP}:5003
-  #    - NotificationUrl=http://${DOCKER_EXTERNAL_IP}:5005
+  #    - IdentityUrl=$DOCKER_URL:5000
+  #    - ChallengesUrl=$DOCKER_URL:5002
+  #    - CashierUrl=$DOCKER_URL:5003
+  #    - NotificationUrl=$DOCKER_URL:5005
   #    - IdentityServer__ApiResources__Identity__Name=${IDENTITY__API_RESOURCE__NAME}
   #    - IdentityServer__ApiResources__Challenges__Name=${CHALLENGES__API_RESOURCE__NAME}
   #    - IdentityServer__ApiResources__Cashier__Name=${CASHIER__API_RESOURCE__NAME}

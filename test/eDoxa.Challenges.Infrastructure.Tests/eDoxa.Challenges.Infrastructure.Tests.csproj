@@ -16,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\eDoxa.Challenges.Domain.Services\eDoxa.Challenges.Domain.Services.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Challenges.Infrastructure\eDoxa.Challenges.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\eDoxa.Seedwork.Infrastructure\eDoxa.Seedwork.Infrastructure.csproj" />
     <ProjectReference Include="..\eDoxa.Testing.MSTest\eDoxa.Testing.MSTest.csproj" />
   </ItemGroup>
 
