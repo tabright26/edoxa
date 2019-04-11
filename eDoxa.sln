@@ -167,7 +167,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Notifications.Applica
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Stripe", "src\eDoxa.Stripe\eDoxa.Stripe.csproj", "{8CA2228D-ACFA-47DC-9D4B-8F57ABF4C481}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Stripe.Tests", "test\eDoxa.Stripe.Tests\eDoxa.Stripe.Tests.csproj", "{E8E74F85-7F1B-4CB0-8F07-362526369F21}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Stripe.Tests", "test\eDoxa.Stripe.Tests\eDoxa.Stripe.Tests.csproj", "{E8E74F85-7F1B-4CB0-8F07-362526369F21}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Security.Tests", "test\eDoxa.Security.Tests\eDoxa.Security.Tests.csproj", "{8D821518-9E13-4C10-9891-62280B644F77}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -427,6 +429,10 @@ Global
 		{E8E74F85-7F1B-4CB0-8F07-362526369F21}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E8E74F85-7F1B-4CB0-8F07-362526369F21}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E8E74F85-7F1B-4CB0-8F07-362526369F21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D821518-9E13-4C10-9891-62280B644F77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D821518-9E13-4C10-9891-62280B644F77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D821518-9E13-4C10-9891-62280B644F77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D821518-9E13-4C10-9891-62280B644F77}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -509,6 +515,7 @@ Global
 		{99A3BCC9-9DD2-450E-B4CF-8F7202CC6681} = {174C3DFB-264E-49DE-89E7-750918F53CC3}
 		{8CA2228D-ACFA-47DC-9D4B-8F57ABF4C481} = {2DC678B2-4968-45FA-864C-1B0B5412A044}
 		{E8E74F85-7F1B-4CB0-8F07-362526369F21} = {6A898FA3-25B8-4279-81E2-BDAEB04ECECE}
+		{8D821518-9E13-4C10-9891-62280B644F77} = {6A898FA3-25B8-4279-81E2-BDAEB04ECECE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8BB3B9BB-6C76-478F-982F-E2E084DBDFAC}

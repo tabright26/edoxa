@@ -22,7 +22,7 @@ using StackExchange.Redis;
 
 #endregion
 
-namespace eDoxa.Seedwork.Security.Tests.Extensions
+namespace eDoxa.Security.Tests.Extensions
 {
     [TestClass]
     public sealed class ServiceCollectionExtensionsTest
