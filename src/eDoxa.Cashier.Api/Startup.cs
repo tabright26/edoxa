@@ -22,6 +22,7 @@ using eDoxa.Security.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.ServiceBus;
 using eDoxa.ServiceBus.Extensions;
+using eDoxa.Stripe.Extensions;
 using eDoxa.Swagger.Extensions;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -32,8 +33,6 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
-using Stripe;
 
 namespace eDoxa.Cashier.Api
 {
@@ -51,16 +50,7 @@ namespace eDoxa.Cashier.Api
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddApiVersioning(
-                options =>
-                {
-                    options.AssumeDefaultVersionWhenUnspecified = true;
-                    options.DefaultApiVersion = new ApiVersion(1, 0);
-                    options.ReportApiVersions = true;
-                }
-            );
-
-            services.AddVersionedApiExplorer(options => options.GroupNameFormat = "'v'VV");
+            services.AddVersioning(new ApiVersion(1, 0));
 
             services.AddHealthChecks(Configuration, nameof(CashierDbContext));
 
@@ -132,7 +122,7 @@ namespace eDoxa.Cashier.Api
 
         public void Configure(IApplicationBuilder application, IApiVersionDescriptionProvider provider)
         {
-            StripeConfiguration.SetApiKey(Configuration["StripeConfiguration:ApiKey"]);
+            application.UseStripe(Configuration);
 
             application.UseCorsPolicy();
 

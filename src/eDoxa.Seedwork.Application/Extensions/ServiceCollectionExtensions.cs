@@ -20,6 +20,20 @@ namespace eDoxa.Seedwork.Application.Extensions
 {
     public static class ServiceCollectionExtensions
     {
+        public static void AddVersioning(this IServiceCollection services, ApiVersion defaultApiVersion)
+        {
+            services.AddApiVersioning(
+                options =>
+                {
+                    options.AssumeDefaultVersionWhenUnspecified = true;
+                    options.DefaultApiVersion = defaultApiVersion;
+                    options.ReportApiVersions = true;
+                }
+            );
+
+            services.AddVersionedApiExplorer(options => options.GroupNameFormat = "'v'VV");
+        }
+
         public static void AddMvc(this IServiceCollection services)
         {
             var builder = services.AddMvc(

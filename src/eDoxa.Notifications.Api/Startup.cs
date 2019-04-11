@@ -49,16 +49,7 @@ namespace eDoxa.Notifications.Api
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddApiVersioning(
-                options =>
-                {
-                    options.AssumeDefaultVersionWhenUnspecified = true;
-                    options.DefaultApiVersion = new ApiVersion(1, 0);
-                    options.ReportApiVersions = true;
-                }
-            );
-
-            services.AddVersionedApiExplorer(options => options.GroupNameFormat = "'v'VV");
+            services.AddVersioning(new ApiVersion(1, 0));
 
             services.AddHealthChecks(Configuration, nameof(NotificationsDbContext));
 
