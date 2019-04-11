@@ -5,13 +5,12 @@ RUN apt-get install -y nodejs
 
 FROM microsoft/dotnet:2.2-sdk AS build
 WORKDIR /src
-COPY src/eDoxa.Web.Spa/eDoxa.Web.Spa.csproj eDoxa.Web.Spa/
-RUN dotnet restore src/eDoxa.Web.Spa/eDoxa.Web.Spa.csproj
 COPY . .
-WORKDIR /src/eDoxa.Web.Spa/ClientApp
+WORKDIR /src/src/eDoxa.Web.Spa/ClientApp
 RUN npm install --save-dev
 RUN npm update --dev
-WORKDIR /src/eDoxa.Web.Spa
+WORKDIR /src/src/eDoxa.Web.Spa
+RUN dotnet restore
 RUN dotnet build --no-restore -c Release -o /app
 
 FROM build AS publish

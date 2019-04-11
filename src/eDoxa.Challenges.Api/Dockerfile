@@ -3,10 +3,9 @@ WORKDIR /app
 
 FROM microsoft/dotnet:2.2-sdk AS build
 WORKDIR /src
-COPY src/eDoxa.Challenges.Api/eDoxa.Challenges.Api.csproj eDoxa.Challenges.Api/
-RUN dotnet restore src/eDoxa.Challenges.Api/eDoxa.Challenges.Api.csproj
 COPY . .
-WORKDIR /src/eDoxa.Challenges.Api
+WORKDIR /src/src/eDoxa.Challenges.Api
+RUN dotnet restore
 RUN dotnet build --no-restore -c Release -o /app
 
 FROM build AS publish

@@ -3,10 +3,9 @@ WORKDIR /app
 
 FROM microsoft/dotnet:2.2-sdk AS build
 WORKDIR /src
-COPY src/eDoxa.Challenges.BackgroundTasks/eDoxa.Challenges.BackgroundTasks.csproj eDoxa.Challenges.BackgroundTasks/
-RUN dotnet restore src/eDoxa.Challenges.BackgroundTasks/eDoxa.Challenges.BackgroundTasks.csproj
 COPY . .
-WORKDIR /src/eDoxa.Challenges.BackgroundTasks
+WORKDIR /src/src/eDoxa.Challenges.BackgroundTasks
+RUN dotnet restore
 RUN dotnet build --no-restore -c Release -o /app
 
 FROM build AS publish

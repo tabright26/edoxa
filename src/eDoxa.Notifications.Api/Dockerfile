@@ -3,10 +3,9 @@ WORKDIR /app
 
 FROM microsoft/dotnet:2.2-sdk AS build
 WORKDIR /src
-COPY src/eDoxa.Notifications.Api/eDoxa.Notifications.Api.csproj eDoxa.Notifications.Api/
-RUN dotnet restore src/eDoxa.Notifications.Api/eDoxa.Notifications.Api.csproj
 COPY . .
-WORKDIR /src/eDoxa.Notifications.Api
+WORKDIR /src/src/eDoxa.Notifications.Api
+RUN dotnet restore
 RUN dotnet build --no-restore -c Release -o /app
 
 FROM build AS publish
