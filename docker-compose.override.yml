@@ -25,6 +25,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
+      - ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONENABLED=$KEYVAULT_CONFIGURATION_ENABLED
+      - ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONVAULT=$KEYVAULT_CONFIGURATION_VAULT
       - Authority__External=$DOCKER_URL:5000
       - ConnectionStrings__SqlServer=${CONNECTIONSTRINGS_SQLSERVER_IDENTITY:-Server=edoxa.mssql.data;Database=eDoxa.Services.Identity;User Id=sa;Password=fnU3Www9TnBDp3MA}
       - ConnectionStrings__Redis=${CONNECTIONSTRINGS_REDIS:-edoxa.redis.data}      
@@ -80,6 +82,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
+      - ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONENABLED=$KEYVAULT_CONFIGURATION_ENABLED
+      - ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONVAULT=$KEYVAULT_CONFIGURATION_VAULT
       - Authority__Internal=http://edoxa.identity
       - Authority__External=$DOCKER_URL:5000
       - ConnectionStrings__SqlServer=${CONNECTIONSTRINGS_SQLSERVER_CHALLENGES:-Server=edoxa.mssql.data;Database=eDoxa.Services.Challenges;User Id=sa;Password=fnU3Www9TnBDp3MA}      
@@ -101,6 +105,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
+      - ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONENABLED=$KEYVAULT_CONFIGURATION_ENABLED
+      - ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONVAULT=$KEYVAULT_CONFIGURATION_VAULT
       - Authority__Internal=http://edoxa.identity    
       - Authority__External=$DOCKER_URL:5000
       - ConnectionStrings__SqlServer=${CONNECTIONSTRINGS_SQLSERVER_CASHIER:-Server=edoxa.mssql.data;Database=eDoxa.Services.Cashier;User Id=sa;Password=fnU3Www9TnBDp3MA}
@@ -122,6 +128,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
+      - ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONENABLED=$KEYVAULT_CONFIGURATION_ENABLED
+      - ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONVAULT=$KEYVAULT_CONFIGURATION_VAULT
       - Authority__Internal=http://edoxa.identity
       - Authority__External=$DOCKER_URL:5000
       - ConnectionStrings__SqlServer=${CONNECTIONSTRINGS_SQLSERVER_NOTIFICATIONS:-Server=edoxa.mssql.data;Database=eDoxa.Services.Notifications;User Id=sa;Password=fnU3Www9TnBDp3MA}
@@ -143,6 +151,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
+      - ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONENABLED=$KEYVAULT_CONFIGURATION_ENABLED
+      - ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONVAULT=$KEYVAULT_CONFIGURATION_VAULT
       - ServiceBus__HostName=${SERVICE_BUS_HOST_NAME:-edoxa.rabbitmq.broker}
       - ServiceBus__UserName=${SERVICE_BUS_USER_NAME:-admin}
       - ServiceBus__Password=${SERVICE_BUS_PASSWORD:-4t8SaVXVMy0rT2kM}
@@ -156,6 +166,8 @@ services:
   #  environment:
   #    - ASPNETCORE_ENVIRONMENT=Development
   #    - ASPNETCORE_URLS=http://+:80
+  #    - ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONENABLED=$KEYVAULT_CONFIGURATION_ENABLED
+  #    - ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONVAULT=$KEYVAULT_CONFIGURATION_VAULT
   #    - Authority__External=$DOCKER_URL:5000
   #    - ConnectionStrings__Redis=${CONNECTIONSTRINGS_REDIS:-edoxa.redis.data}
   #    - UseClusterEnvironment=${USE_CLUSTER_ENVIRONMENT}

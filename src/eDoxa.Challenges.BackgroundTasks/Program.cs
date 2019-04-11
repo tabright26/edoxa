@@ -15,7 +15,6 @@ using eDoxa.Security.Extensions;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Logging;
 
 using Serilog;
 
@@ -53,27 +52,12 @@ namespace eDoxa.Challenges.BackgroundTasks
         {
             return WebHost.CreateDefaultBuilder<Startup>(args)
                           .CaptureStartupErrors(false)
-                          .ConfigureLogging(
-                              (context, builder) =>
-                              {
-                                  builder.AddSerilog();
-                                  builder.AddAzureWebAppDiagnostics();
-                                  builder.AddApplicationInsights(context.Configuration["ApplicationInsights:InstrumentationKey"]);
-                              }
-                          )
+                          .ConfigureLogging()
                           .UseShutdownTimeout(TimeSpan.FromSeconds(15))
                           .UseHealthChecks()
                           .UseAzureKeyVault()
                           .UseApplicationInsights()
-                          .UseSerilog(
-                              (context, config) =>
-                              {
-                                  config.MinimumLevel.Verbose()
-                                        .Enrich.FromLogContext()
-                                        .WriteTo.Console()
-                                        .ReadFrom.Configuration(context.Configuration);
-                              }
-                          );
+                          .UseSerilog();
         }
     }
 }

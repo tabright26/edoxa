@@ -99,23 +99,11 @@ namespace eDoxa.Identity
         {
             return WebHost.CreateDefaultBuilder<Startup>(args)
                           .CaptureStartupErrors(false)
-                          .ConfigureLogging(
-                              (context, builder) =>
-                              {
-                                  builder.AddSerilog();
-                                  builder.AddAzureWebAppDiagnostics();
-                                  builder.AddApplicationInsights(context.Configuration["ApplicationInsights:InstrumentationKey"]);
-                              }
-                          )
+                          .ConfigureLogging()
                           .UseHealthChecks()
                           .UseAzureKeyVault()
                           .UseApplicationInsights()
-                          .UseSerilog(
-                              (context, config) =>
-                              {
-                                  config.MinimumLevel.Verbose().Enrich.FromLogContext().WriteTo.Console().ReadFrom.Configuration(context.Configuration);
-                              }
-                          );
+                          .UseSerilog();
         }
     }
 }

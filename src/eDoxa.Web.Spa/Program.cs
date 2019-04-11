@@ -8,13 +8,11 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Monitoring.Extensions;
 using eDoxa.Security.Extensions;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Logging;
-
-using Serilog;
 
 namespace eDoxa.Web.Spa
 {
@@ -30,22 +28,10 @@ namespace eDoxa.Web.Spa
         private static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             return WebHost.CreateDefaultBuilder<Startup>(args)
-                          .ConfigureLogging(
-                              (context, builder) =>
-                              {
-                                  builder.AddSerilog();
-                                  builder.AddAzureWebAppDiagnostics();
-                                  builder.AddApplicationInsights(context.Configuration["ApplicationInsights:InstrumentationKey"]);
-                              }
-                          )
+                          .ConfigureLogging()
                           .UseAzureKeyVault()
                           .UseApplicationInsights()
-                          .UseSerilog(
-                              (_, config) =>
-                              {
-                                  config.MinimumLevel.Information().Enrich.FromLogContext().WriteTo.Console();
-                              }
-                          );
+                          .UseSerilog();
         }
     }
 }

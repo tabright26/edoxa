@@ -14,10 +14,11 @@ using Microsoft.Extensions.Configuration;
 namespace eDoxa.Security.Extensions
 {
     public static class WebHostBuilderExtensions
-    {
-        private const string KeyVaultFromConfig = "AzureKeyVault:Name";
-        private const string KeyVaultClientIdFromConfig = "AzureKeyVault:ClientId";
-        private const string KeyVaultClientSecretFromConfig = "AzureKeyVault:ClientSecret";
+    {        
+        private const string KeyVaultConfigurationEnabled = "ASPNETCORE_HOSTINGSTARTUP:KEYVAULT:CONFIGURATIONENABLED";
+        private const string KeyVaultConfigurationVault = "ASPNETCORE_HOSTINGSTARTUP:KEYVAULT:CONFIGURATIONVAULT";
+        private const string KeyVaultClientId = "KeyVault:ClientId";
+        private const string KeyVaultClientSecret = "KeyVault:ClientSecret";
 
         public static IWebHostBuilder UseAzureKeyVault(this IWebHostBuilder webHostBuilder)
         {
@@ -28,11 +29,14 @@ namespace eDoxa.Security.Extensions
 
                     var builder = new ConfigurationBuilder();
 
-                    builder.AddAzureKeyVault(
-                        configuration[KeyVaultFromConfig],
-                        configuration[KeyVaultClientIdFromConfig],
-                        configuration[KeyVaultClientSecretFromConfig]
-                    );
+                    if (configuration.GetValue<bool>(KeyVaultConfigurationEnabled))
+                    {
+                        builder.AddAzureKeyVault(
+                            configuration[KeyVaultConfigurationVault],
+                            configuration[KeyVaultClientId],
+                            configuration[KeyVaultClientSecret]
+                        );
+                    }
 
                     config.AddConfiguration(builder.Build());
                 }
