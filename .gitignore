@@ -310,3 +310,6 @@ __pycache__/
 
 # IdentityServer temp files
 tempkey.rsa
+
+# HealhChecks database files
+healthchecksdb

@@ -82,7 +82,6 @@ namespace eDoxa.Notifications.Api
             return WebHost.CreateDefaultBuilder<Startup>(args)
                           .CaptureStartupErrors(false)
                           .ConfigureLogging()
-                          .UseHealthChecks()
                           .UseAzureKeyVault()
                           .UseApplicationInsights()
                           .UseSerilog();

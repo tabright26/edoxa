@@ -52,7 +52,7 @@ namespace eDoxa.Cashier.Api
         {
             services.AddVersioning(new ApiVersion(1, 0));
 
-            services.AddHealthChecks(Configuration, nameof(CashierDbContext));
+            services.AddHealthChecks();
 
             services.AddEntityFrameworkSqlServer()
                     .AddDbContext<CashierDbContext>(
@@ -125,6 +125,8 @@ namespace eDoxa.Cashier.Api
             application.UseStripe(Configuration);
 
             application.UseCorsPolicy();
+
+            application.UseHealthChecks();
 
             application.UseAuthentication();
 

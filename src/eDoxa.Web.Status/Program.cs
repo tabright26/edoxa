@@ -1,5 +1,5 @@
 ﻿// Filename: Program.cs
-// Date Created: 2019-04-09
+// Date Created: 2019-04-11
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -10,20 +10,15 @@
 
 using System;
 
-using eDoxa.Cashier.Infrastructure;
 using eDoxa.Monitoring.Extensions;
 using eDoxa.Security.Extensions;
-using eDoxa.Seedwork.Infrastructure.Extensions;
-using eDoxa.ServiceBus;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 using Serilog;
 
-namespace eDoxa.Cashier.Api
+namespace eDoxa.Web.Status
 {
     public static class Program
     {
@@ -34,30 +29,6 @@ namespace eDoxa.Cashier.Api
                 Log.Information("Building {Application} web host...");
 
                 var host = CreateWebHostBuilder(args).Build();
-
-                Log.Information("Applying {Application} context migrations...");
-
-                host.MigrateDbContext<CashierDbContext>(
-                    (context, provider) =>
-                    {
-                        var environment = provider.GetService<IHostingEnvironment>();
-
-                        if (environment.IsDevelopment())
-                        {
-                            var factory = provider.GetService<ILoggerFactory>();
-
-                            var task = context.SeedAsync(factory.CreateLogger<CashierDbContext>());
-
-                            task.Wait();
-                        }
-                    }
-                );
-
-                host.MigrateDbContext<IntegrationEventLogDbContext>(
-                    (context, provider) =>
-                    {
-                    }
-                );
 
                 Log.Information("Starting {Application} web host...");
 

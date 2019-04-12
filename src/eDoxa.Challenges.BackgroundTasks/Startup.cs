@@ -13,7 +13,6 @@ using System;
 using eDoxa.Autofac.Extensions;
 using eDoxa.Challenges.BackgroundTasks.Infrastructure;
 using eDoxa.Challenges.BackgroundTasks.Settings;
-using eDoxa.Challenges.Infrastructure;
 using eDoxa.Monitoring.Extensions;
 using eDoxa.ServiceBus.Extensions;
 
@@ -42,7 +41,7 @@ namespace eDoxa.Challenges.BackgroundTasks
 
             services.Configure<ChallengeClosingSettings>(Configuration.GetSection(nameof(ChallengeClosingSettings)));
 
-            services.AddHealthChecks(Configuration, nameof(ChallengesDbContext));
+            services.AddHealthChecks();
 
             services.AddServiceBus(Configuration);
 
@@ -53,6 +52,7 @@ namespace eDoxa.Challenges.BackgroundTasks
 
         public void Configure(IApplicationBuilder application)
         {
+            application.UseHealthChecks();
         }
     }
 }

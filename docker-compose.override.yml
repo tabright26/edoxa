@@ -182,3 +182,24 @@ services:
   #    - IdentityServer__Clients__Web__Spa__ClientId=${WEB__SPA__CLIENT_ID}
   #  ports:
   #    - "5300:80"
+
+  edoxa.web.status:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONENABLED=$KEYVAULT_CONFIGURATION_ENABLED
+      - ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONVAULT=$KEYVAULT_CONFIGURATION_VAULT
+      - HealthChecks__0__Name=eDoxa Web Spa
+      - HealthChecks__0__Uri=http://edoxa.web.spa/hc
+      - HealthChecks__1__Name=eDoxa Identity
+      - HealthChecks__1__Uri=http://edoxa.identity/hc
+      - HealthChecks__2__Name=eDoxa Cashier API
+      - HealthChecks__2__Uri=http://edoxa.cashier.api/hc
+      - HealthChecks__3__Name=eDoxa Notifications API
+      - HealthChecks__3__Uri=http://edoxa.notifications.api/hc
+      - HealthChecks__4__Name=eDoxa Challenges API
+      - HealthChecks__4__Uri=http://edoxa.challenges.api/hc
+      - HealthChecks__5__Name=eDoxa Challenges Background Tasks
+      - HealthChecks__5__Uri=http://edoxa.challenges.backgroundtasks/hc
+    ports:
+      - "5500:80"

@@ -54,7 +54,6 @@ namespace eDoxa.Challenges.BackgroundTasks
                           .CaptureStartupErrors(false)
                           .ConfigureLogging()
                           .UseShutdownTimeout(TimeSpan.FromSeconds(15))
-                          .UseHealthChecks()
                           .UseAzureKeyVault()
                           .UseApplicationInsights()
                           .UseSerilog();

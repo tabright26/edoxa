@@ -143,7 +143,7 @@ namespace eDoxa.Identity
                         .PersistKeysToRedis(ConnectionMultiplexer.Connect(Configuration.GetConnectionString("Redis")), "DataProtection-Keys");
             }
 
-            services.AddHealthChecks(Configuration, nameof(IdentityDbContext));
+            services.AddHealthChecks();
 
             services.AddServiceBus(Configuration);
 
@@ -247,6 +247,8 @@ namespace eDoxa.Identity
                 application.UseExceptionHandler("/Home/Error");
                 application.UseHsts();
             }
+
+            application.UseHealthChecks();
 
             application.UseIdentityServer();
 

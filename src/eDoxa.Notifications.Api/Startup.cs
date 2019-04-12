@@ -51,7 +51,7 @@ namespace eDoxa.Notifications.Api
         {
             services.AddVersioning(new ApiVersion(1, 0));
 
-            services.AddHealthChecks(Configuration, nameof(NotificationsDbContext));
+            services.AddHealthChecks();
 
             services.AddEntityFrameworkSqlServer()
                     .AddDbContext<NotificationsDbContext>(
@@ -122,6 +122,8 @@ namespace eDoxa.Notifications.Api
         public void Configure(IApplicationBuilder application, IApiVersionDescriptionProvider provider)
         {
             application.UseCorsPolicy();
+
+            application.UseHealthChecks();
 
             application.UseAuthentication();
 

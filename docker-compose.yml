@@ -65,3 +65,9 @@ services:
   #  build:
   #    context: .
   #    dockerfile: src/eDoxa.Web.Spa/Dockerfile
+
+  edoxa.web.status:
+    image: $DOCKER_REGISTRY/web.status:$DOCKER_TAG
+    build:
+      context: .
+      dockerfile: src/eDoxa.Web.Status/Dockerfile

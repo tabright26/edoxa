@@ -51,7 +51,7 @@ namespace eDoxa.Challenges.Api
         {
             services.AddVersioning(new ApiVersion(1, 0));
 
-            services.AddHealthChecks(Configuration, nameof(ChallengesDbContext));
+            services.AddHealthChecks();
 
             services.AddEntityFrameworkSqlServer()
                     .AddDbContext<ChallengesDbContext>(
@@ -122,6 +122,8 @@ namespace eDoxa.Challenges.Api
         public void Configure(IApplicationBuilder application, IApiVersionDescriptionProvider provider)
         {
             application.UseCorsPolicy();
+
+            application.UseHealthChecks();
 
             application.UseAuthentication();
 

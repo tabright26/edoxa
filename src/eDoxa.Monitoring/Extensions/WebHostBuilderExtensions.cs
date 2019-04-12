@@ -1,5 +1,5 @@
 ﻿// Filename: WebHostBuilderExtensions.cs
-// Date Created: 2019-04-11
+// Date Created: 2019-04-12
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -17,13 +17,6 @@ namespace eDoxa.Monitoring.Extensions
 {
     public static class WebHostBuilderExtensions
     {
-        private const string DefaultEndpoint = "/HealthCheck";
-
-        public static IWebHostBuilder UseHealthChecks(this IWebHostBuilder builder)
-        {
-            return builder.UseHealthChecks(DefaultEndpoint);
-        }
-
         public static IWebHostBuilder ConfigureLogging(this IWebHostBuilder builder)
         {
             return builder.ConfigureLogging(

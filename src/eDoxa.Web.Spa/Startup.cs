@@ -8,6 +8,8 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Monitoring.Extensions;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
@@ -33,6 +35,8 @@ namespace eDoxa.Web.Spa
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
+
+            services.AddHealthChecks();
 
             if (Configuration.GetValue<bool>("UseClusterEnvironment"))
             {
@@ -69,6 +73,8 @@ namespace eDoxa.Web.Spa
             {
                 application.UseExceptionHandler("/Error");
             }
+
+            application.UseHealthChecks();
 
             application.UseStaticFiles();
             application.UseSpaStaticFiles();
