@@ -19,6 +19,7 @@
     <PackageReference Include="Microsoft.AspNetCore.CookiePolicy" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="2.2.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
@@ -29,12 +30,6 @@
     <PackageReference Include="Serilog.Settings.Configuration" Version="3.0.1" />
     <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />      
     <PackageReference Include="System.Data.SqlClient" Version="4.6.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks">
-      <HintPath>..\..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.aspnetcore.diagnostics.healthchecks\2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Diagnostics.HealthChecks.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>

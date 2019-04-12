@@ -26,10 +26,4 @@
     <PackageReference Include="IdentityServer4.EntityFramework" Version="2.4.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="System.Configuration.ConfigurationManager">
-      <HintPath>..\..\..\..\..\.nuget\packages\system.configuration.configurationmanager\4.4.0\ref\netstandard2.0\System.Configuration.ConfigurationManager.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>
