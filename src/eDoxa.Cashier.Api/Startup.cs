@@ -50,6 +50,8 @@ namespace eDoxa.Cashier.Api
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.AddHealthChecks(Configuration);
+
             services.AddVersioning(new ApiVersion(1, 0));
 
             services.AddEntityFrameworkSqlServer()
@@ -115,18 +117,14 @@ namespace eDoxa.Cashier.Api
                         }
                     );
 
-            services.AddHealthChecks(Configuration);
-
             return services.Build<ApplicationModule>();
         }
 
         public void Configure(IApplicationBuilder application, IApiVersionDescriptionProvider provider)
         {
-            application.UseStripe(Configuration);
+            application.UseHealthChecks();
 
             application.UseCorsPolicy();
-
-            application.UseHealthChecks();
 
             application.UseAuthentication();
 
@@ -147,6 +145,8 @@ namespace eDoxa.Cashier.Api
             application.UseMvcWithDefaultRoute();
 
             application.UseIntegrationEventSubscriptions();
+
+            application.UseStripe(Configuration);
         }
     }
 }

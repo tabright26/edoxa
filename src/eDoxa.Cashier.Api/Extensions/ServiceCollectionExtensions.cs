@@ -24,6 +24,8 @@ namespace eDoxa.Cashier.Api.Extensions
             healthChecks.AddAzureKeyVault(configuration);
 
             healthChecks.AddSqlServer(configuration);
+
+            healthChecks.AddIdentityServer(configuration);
         }
     }
 }

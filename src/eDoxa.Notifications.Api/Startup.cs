@@ -49,6 +49,8 @@ namespace eDoxa.Notifications.Api
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.AddHealthChecks(Configuration);
+
             services.AddVersioning(new ApiVersion(1, 0));
 
             services.AddEntityFrameworkSqlServer()
@@ -114,16 +116,14 @@ namespace eDoxa.Notifications.Api
                         }
                     );
 
-            services.AddHealthChecks(Configuration);
-
             return services.Build<ApplicationModule>();
         }
 
         public void Configure(IApplicationBuilder application, IApiVersionDescriptionProvider provider)
         {
-            application.UseCorsPolicy();
-
             application.UseHealthChecks();
+
+            application.UseCorsPolicy();
 
             application.UseAuthentication();
 

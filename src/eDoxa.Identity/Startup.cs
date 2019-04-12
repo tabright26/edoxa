@@ -54,6 +54,8 @@ namespace eDoxa.Identity
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.AddHealthChecks(Configuration);
+
             services.AddVersioning(new ApiVersion(1, 0));
 
             services.AddDbContext<IntegrationEventLogDbContext>(
@@ -227,13 +229,13 @@ namespace eDoxa.Identity
             //)
             //.AddSteam();
 
-            services.AddHealthChecks(Configuration);
-
             return services.Build<ApplicationModule>();
         }
 
         public void Configure(IApplicationBuilder application, IApiVersionDescriptionProvider provider)
         {
+            application.UseHealthChecks();
+
             if (HostingEnvironment.IsDevelopment())
             {
                 application.UseDeveloperExceptionPage();
@@ -244,8 +246,6 @@ namespace eDoxa.Identity
                 application.UseExceptionHandler("/Home/Error");
                 application.UseHsts();
             }
-
-            application.UseHealthChecks();
 
             application.UseIdentityServer();
 

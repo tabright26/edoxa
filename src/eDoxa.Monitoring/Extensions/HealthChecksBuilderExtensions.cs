@@ -8,6 +8,8 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -30,14 +32,49 @@ namespace eDoxa.Monitoring.Extensions
                         options.UseKeyVaultUrl(configuration[KeyVaultConfigurationVault]);
                         options.UseClientSecrets(configuration[KeyVaultClientId], configuration[KeyVaultClientSecret]);
                     },
-                    "azure-key-vault"
+                    "azure-key-vault",
+                    tags: new[]
+                    {
+                        "akv", "key-vault"
+                    }
                 );
             }
         }
 
         public static void AddSqlServer(this IHealthChecksBuilder builder, IConfiguration configuration)
         {
-            builder.AddSqlServer(configuration.GetConnectionString("SqlServer"), name: "microsoft-sql-server");
+            builder.AddSqlServer(
+                configuration.GetConnectionString("SqlServer"),
+                name: "microsoft-sql-server",
+                tags: new[]
+                {
+                    "mssql", "sql", "sql-server"
+                }
+            );
+        }
+
+        public static void AddIdentityServer(this IHealthChecksBuilder builder, IConfiguration configuration)
+        {
+            builder.AddIdentityServer(
+                new Uri(configuration["Authority:Internal"]),
+                "identity-server",
+                tags: new[]
+                {
+                    "idsrv"
+                }
+            );
+        }
+
+        public static void AddRedis(this IHealthChecksBuilder builder, IConfiguration configuration)
+        {
+            builder.AddRedis(
+                configuration.GetConnectionString("Redis"),
+                "redis",
+                tags: new[]
+                {
+                    "cache"
+                }
+            );
         }
     }
 }

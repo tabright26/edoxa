@@ -22,6 +22,10 @@ namespace eDoxa.Web.Spa.Extensions
             var healthChecks = services.AddHealthChecks();
 
             healthChecks.AddAzureKeyVault(configuration);
+
+            healthChecks.AddIdentityServer(configuration);
+
+            healthChecks.AddRedis(configuration);
         }
     }
 }

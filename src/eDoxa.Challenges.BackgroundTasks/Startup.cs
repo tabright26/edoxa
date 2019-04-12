@@ -36,17 +36,17 @@ namespace eDoxa.Challenges.BackgroundTasks
         {
             services.AddOptions();
 
-            services.Configure<ChallengePublishingSettings>(Configuration.GetSection(nameof(ChallengePublishingSettings)));
-
-            services.Configure<ChallengeSynchronizingSettings>(Configuration.GetSection(nameof(ChallengeSynchronizingSettings)));
-
-            services.Configure<ChallengeClosingSettings>(Configuration.GetSection(nameof(ChallengeClosingSettings)));
+            services.AddHealthChecks(Configuration);
 
             services.AddServiceBus(Configuration);
 
             services.AddEventBus(Configuration);
 
-            services.AddHealthChecks(Configuration);
+            services.Configure<ChallengePublishingSettings>(Configuration.GetSection(nameof(ChallengePublishingSettings)));
+
+            services.Configure<ChallengeSynchronizingSettings>(Configuration.GetSection(nameof(ChallengeSynchronizingSettings)));
+
+            services.Configure<ChallengeClosingSettings>(Configuration.GetSection(nameof(ChallengeClosingSettings)));
 
             return services.Build<ChallengesModule>();
         }

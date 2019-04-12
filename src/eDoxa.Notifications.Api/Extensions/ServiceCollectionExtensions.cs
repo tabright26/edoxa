@@ -24,6 +24,8 @@ namespace eDoxa.Notifications.Api.Extensions
             healthChecks.AddAzureKeyVault(configuration);
 
             healthChecks.AddSqlServer(configuration);
+
+            healthChecks.AddIdentityServer(configuration);            
         }
     }
 }

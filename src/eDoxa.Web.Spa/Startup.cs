@@ -34,6 +34,8 @@ namespace eDoxa.Web.Spa
         {
             services.AddOptions();
 
+            services.AddHealthChecks(Configuration);
+
             //if (Configuration.GetValue<bool>("UseClusterEnvironment"))
             //{
             //    services.AddDataProtection(
@@ -56,13 +58,13 @@ namespace eDoxa.Web.Spa
                     configuration.RootPath = "ClientApp/build";
                 }
             );
-
-            services.AddHealthChecks(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder application, IHostingEnvironment env)
         {
+            application.UseHealthChecks();
+
             if (env.IsDevelopment())
             {
                 application.UseDeveloperExceptionPage();
@@ -71,8 +73,6 @@ namespace eDoxa.Web.Spa
             {
                 application.UseExceptionHandler("/Error");
             }
-
-            application.UseHealthChecks();
 
             application.UseStaticFiles();
             application.UseSpaStaticFiles();

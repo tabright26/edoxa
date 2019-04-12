@@ -24,6 +24,8 @@ namespace eDoxa.Identity.Extensions
             healthChecks.AddAzureKeyVault(configuration);
 
             healthChecks.AddSqlServer(configuration);
+
+            healthChecks.AddRedis(configuration);
         }
     }
 }
