@@ -12,7 +12,6 @@ using System.Collections.Generic;
 
 using HealthChecks.UI.Configuration;
 
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -35,8 +34,6 @@ namespace eDoxa.Monitoring.Extensions
                     }
                 }
             );
-
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
     }
 }

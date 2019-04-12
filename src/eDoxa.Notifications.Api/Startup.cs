@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-04-01
+// Date Created: 2019-04-12
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -50,8 +50,6 @@ namespace eDoxa.Notifications.Api
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddVersioning(new ApiVersion(1, 0));
-
-            services.AddHealthChecks();
 
             services.AddEntityFrameworkSqlServer()
                     .AddDbContext<NotificationsDbContext>(
@@ -115,6 +113,8 @@ namespace eDoxa.Notifications.Api
                             options.RequireHttpsMetadata = false;
                         }
                     );
+
+            services.AddHealthChecks(Configuration);
 
             return services.Build<ApplicationModule>();
         }

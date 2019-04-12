@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-03-21
+// Date Created: 2019-04-12
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -11,6 +11,7 @@
 using System;
 
 using eDoxa.Autofac.Extensions;
+using eDoxa.Challenges.BackgroundTasks.Extensions;
 using eDoxa.Challenges.BackgroundTasks.Infrastructure;
 using eDoxa.Challenges.BackgroundTasks.Settings;
 using eDoxa.Monitoring.Extensions;
@@ -41,11 +42,11 @@ namespace eDoxa.Challenges.BackgroundTasks
 
             services.Configure<ChallengeClosingSettings>(Configuration.GetSection(nameof(ChallengeClosingSettings)));
 
-            services.AddHealthChecks();
-
             services.AddServiceBus(Configuration);
 
             services.AddEventBus(Configuration);
+
+            services.AddHealthChecks(Configuration);
 
             return services.Build<ChallengesModule>();
         }

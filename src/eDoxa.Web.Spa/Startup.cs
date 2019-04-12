@@ -1,5 +1,5 @@
 // Filename: Startup.cs
-// Date Created: 2019-03-25
+// Date Created: 2019-04-12
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -9,16 +9,14 @@
 // this source code package.
 
 using eDoxa.Monitoring.Extensions;
+using eDoxa.Web.Spa.Extensions;
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
-using StackExchange.Redis;
 
 namespace eDoxa.Web.Spa
 {
@@ -36,18 +34,16 @@ namespace eDoxa.Web.Spa
         {
             services.AddOptions();
 
-            services.AddHealthChecks();
-
-            if (Configuration.GetValue<bool>("UseClusterEnvironment"))
-            {
-                services.AddDataProtection(
-                            options =>
-                            {
-                                options.ApplicationDiscriminator = Configuration["IdentityServer:Clients:Web:Spa:ClientId"];
-                            }
-                        )
-                        .PersistKeysToRedis(ConnectionMultiplexer.Connect(Configuration["Redis"]), "DataProtection-Keys");
-            }
+            //if (Configuration.GetValue<bool>("UseClusterEnvironment"))
+            //{
+            //    services.AddDataProtection(
+            //                options =>
+            //                {
+            //                    options.ApplicationDiscriminator = Configuration["IdentityServer:Clients:Web:Spa:ClientId"];
+            //                }
+            //            )
+            //            .PersistKeysToRedis(ConnectionMultiplexer.Connect(Configuration["Redis"]), "DataProtection-Keys");
+            //}
 
             services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
 
@@ -60,6 +56,8 @@ namespace eDoxa.Web.Spa
                     configuration.RootPath = "ClientApp/build";
                 }
             );
+
+            services.AddHealthChecks(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

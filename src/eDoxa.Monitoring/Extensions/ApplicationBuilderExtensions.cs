@@ -20,7 +20,7 @@ namespace eDoxa.Monitoring.Extensions
         public static void UseHealthChecks(this IApplicationBuilder application)
         {
             application.UseHealthChecks(
-                "/hc",
+                "/health",
                 new HealthCheckOptions
                 {
                     Predicate = _ => true, ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
@@ -33,8 +33,6 @@ namespace eDoxa.Monitoring.Extensions
             application.UseHealthChecksUI(config => config.UIPath = path);
 
             application.UseStatusCodePagesWithRedirects(path);
-
-            application.UseMvcWithDefaultRoute();
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-04-01
+// Date Created: 2019-04-12
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -29,7 +29,6 @@ using eDoxa.Swagger.Extensions;
 using IdentityServer4.Configuration;
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
@@ -38,8 +37,6 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
-using StackExchange.Redis;
 
 namespace eDoxa.Identity
 {
@@ -132,18 +129,16 @@ namespace eDoxa.Identity
                 );
             }
 
-            if (Configuration.GetValue<bool>("UseClusterEnvironment"))
-            {
-                services.AddDataProtection(
-                            options =>
-                            {
-                                options.ApplicationDiscriminator = Configuration["IdentityServer:ApiResources:Identity:Name"];
-                            }
-                        )
-                        .PersistKeysToRedis(ConnectionMultiplexer.Connect(Configuration.GetConnectionString("Redis")), "DataProtection-Keys");
-            }
-
-            services.AddHealthChecks();
+            //if (Configuration.GetValue<bool>("UseClusterEnvironment"))
+            //{
+            //    services.AddDataProtection(
+            //                options =>
+            //                {
+            //                    options.ApplicationDiscriminator = Configuration["IdentityServer:ApiResources:Identity:Name"];
+            //                }
+            //            )
+            //            .PersistKeysToRedis(ConnectionMultiplexer.Connect(Configuration.GetConnectionString("Redis")), "DataProtection-Keys");
+            //}
 
             services.AddServiceBus(Configuration);
 
@@ -231,6 +226,8 @@ namespace eDoxa.Identity
             //    }
             //)
             //.AddSteam();
+
+            services.AddHealthChecks(Configuration);
 
             return services.Build<ApplicationModule>();
         }

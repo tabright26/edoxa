@@ -190,16 +190,16 @@ services:
       - ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONENABLED=$KEYVAULT_CONFIGURATION_ENABLED
       - ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONVAULT=$KEYVAULT_CONFIGURATION_VAULT
       - HealthChecks__0__Name=eDoxa Web Spa
-      - HealthChecks__0__Uri=http://edoxa.web.spa/hc
+      - HealthChecks__0__Uri=http://edoxa.web.spa/health
       - HealthChecks__1__Name=eDoxa Identity
-      - HealthChecks__1__Uri=http://edoxa.identity/hc
+      - HealthChecks__1__Uri=http://edoxa.identity/health
       - HealthChecks__2__Name=eDoxa Cashier API
-      - HealthChecks__2__Uri=http://edoxa.cashier.api/hc
+      - HealthChecks__2__Uri=http://edoxa.cashier.api/health
       - HealthChecks__3__Name=eDoxa Notifications API
-      - HealthChecks__3__Uri=http://edoxa.notifications.api/hc
+      - HealthChecks__3__Uri=http://edoxa.notifications.api/health
       - HealthChecks__4__Name=eDoxa Challenges API
-      - HealthChecks__4__Uri=http://edoxa.challenges.api/hc
+      - HealthChecks__4__Uri=http://edoxa.challenges.api/health
       - HealthChecks__5__Name=eDoxa Challenges Background Tasks
-      - HealthChecks__5__Uri=http://edoxa.challenges.backgroundtasks/hc
+      - HealthChecks__5__Uri=http://edoxa.challenges.backgroundtasks/health
     ports:
       - "5500:80"
