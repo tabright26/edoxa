@@ -15,7 +15,6 @@ using System.Threading.Tasks;
 using eDoxa.Identity.Application.Services;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.DTO.Queries;
-using eDoxa.Identity.Properties;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -60,10 +59,10 @@ namespace eDoxa.Identity.Controllers
             }
             catch (Exception exception)
             {
-                _logger.LogError(exception, Resources.UsersController_Error_FetchUsersAsync);
+                _logger.LogError(exception, exception.Message);
             }
 
-            return this.BadRequest(Resources.UsersController_BadRequest_FetchUsersAsync);
+            return this.BadRequest(string.Empty);
         }
 
         /// <summary>
@@ -79,19 +78,19 @@ namespace eDoxa.Identity.Controllers
             {
                 if (!await _userService.UserExistsAsync(userId))
                 {
-                    return this.NotFound(Resources.UsersController_NotFound_ChangeUserTagAsync);
+                    return this.NotFound(string.Empty);
                 }
 
                 await _userService.ChangeTagAsync(userId, username);
 
-                return this.Ok(Resources.UsersController_Ok_ChangeUserTagAsync);
+                return this.Ok(string.Empty);
             }
             catch (Exception exception)
             {
-                _logger.LogError(exception, Resources.UsersController_Error_ChangeUserTagAsync);
+                _logger.LogError(exception, exception.Message);
             }
 
-            return this.BadRequest(Resources.UsersController_BadRequest_ChangeUserTagAsync);
+            return this.BadRequest(string.Empty);
         }
 
         /// <summary>
@@ -104,19 +103,19 @@ namespace eDoxa.Identity.Controllers
             {
                 if (!await _userService.UserExistsAsync(userId))
                 {
-                    return this.NotFound(Resources.UsersController_NotFound_ChangeUserStatusAsync);
+                    return this.NotFound(string.Empty);
                 }
 
                 await _userService.ChangeStatusAsync(userId, status);
 
-                return this.Ok(Resources.UsersController_Ok_ChangeUserStatusAsync);
+                return this.Ok(string.Empty);
             }
             catch (Exception exception)
             {
-                _logger.LogError(exception, Resources.UsersController_Error_ChangeUserStatusAsync);
+                _logger.LogError(exception, exception.Message);
             }
 
-            return this.BadRequest(Resources.UsersController_BadRequest_ChangeUserStatusAsync);
+            return this.BadRequest(string.Empty);
         }
     }
 }

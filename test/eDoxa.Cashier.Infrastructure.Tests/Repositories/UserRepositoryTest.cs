@@ -15,6 +15,7 @@ using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.Infrastructure.Repositories;
 using eDoxa.Cashier.Infrastructure.Tests.Asserts;
 using eDoxa.Seedwork.Infrastructure;
+using eDoxa.Seedwork.Infrastructure.Factories;
 
 using FluentAssertions;
 
@@ -30,7 +31,7 @@ namespace eDoxa.Cashier.Infrastructure.Tests.Repositories
         [TestMethod]
         public async Task Create_User_ShouldNotBeEmpty()
         {
-            using (var factory = new CustomDbContextFactory<CashierDbContext>())
+            using (var factory = new InMemoryDbContextFactory<CashierDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {
@@ -54,7 +55,7 @@ namespace eDoxa.Cashier.Infrastructure.Tests.Repositories
         [TestMethod]
         public void Create_UserNullReference_ShouldThrowArgumentNullException()
         {
-            using (var factory = new CustomDbContextFactory<CashierDbContext>())
+            using (var factory = new InMemoryDbContextFactory<CashierDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {
@@ -75,7 +76,7 @@ namespace eDoxa.Cashier.Infrastructure.Tests.Repositories
         {
             var user = _userAggregateFactory.CreateUser();
 
-            using (var factory = new CustomDbContextFactory<CashierDbContext>())
+            using (var factory = new InMemoryDbContextFactory<CashierDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {
@@ -103,7 +104,7 @@ namespace eDoxa.Cashier.Infrastructure.Tests.Repositories
         [TestMethod]
         public async Task FindAsync_NullReference_ShouldBeNull()
         {
-            using (var factory = new CustomDbContextFactory<CashierDbContext>())
+            using (var factory = new InMemoryDbContextFactory<CashierDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {

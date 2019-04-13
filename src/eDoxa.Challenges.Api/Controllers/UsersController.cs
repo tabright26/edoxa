@@ -12,7 +12,6 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Api.Properties;
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.DTO.Queries;
@@ -63,10 +62,10 @@ namespace eDoxa.Challenges.Api.Controllers
             }
             catch (Exception exception)
             {
-                _logger.LogError(exception, Resources.UsersController_Error_FindUserChallengeHistoryAsync);
+                _logger.LogError(exception, exception.Message);
             }
 
-            return this.BadRequest(Resources.UsersController_BadRequest_FindUserChallengeHistoryAsync);
+            return this.BadRequest(string.Empty);
         }
     }
 }

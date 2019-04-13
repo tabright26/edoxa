@@ -18,6 +18,7 @@ using eDoxa.Challenges.Domain.Factories;
 using eDoxa.Challenges.Infrastructure.Repositories;
 using eDoxa.Seedwork.Domain.Common.Enums;
 using eDoxa.Seedwork.Infrastructure;
+using eDoxa.Seedwork.Infrastructure.Factories;
 
 using FluentAssertions;
 
@@ -33,7 +34,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
         [TestMethod]
         public async Task Create_Challenge_ShouldNotBeEmpty()
         {
-            using (var factory = new CustomDbContextFactory<ChallengesDbContext>())
+            using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {
@@ -59,7 +60,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
         [TestMethod]
         public void Create_ChallengeNullReference_ShouldThrowArgumentNullException()
         {
-            using (var factory = new CustomDbContextFactory<ChallengesDbContext>())
+            using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {
@@ -78,7 +79,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
         [TestMethod]
         public async Task Create_Challenges_ShouldNotBeEmpty()
         {
-            using (var factory = new CustomDbContextFactory<ChallengesDbContext>())
+            using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {
@@ -104,7 +105,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
         [TestMethod]
         public void Create_ChallengesNullReference_ShouldThrowArgumentNullException()
         {
-            using (var factory = new CustomDbContextFactory<ChallengesDbContext>())
+            using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {
@@ -123,7 +124,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
         [TestMethod]
         public async Task FindChallengesAsync_Persistent_ShouldBeLoaded()
         {
-            using (var factory = new CustomDbContextFactory<ChallengesDbContext>())
+            using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {
@@ -154,7 +155,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
         [TestMethod]
         public async Task FindChallengesAsync_NotPersistent_ShouldBeEmpty()
         {
-            using (var factory = new CustomDbContextFactory<ChallengesDbContext>())
+            using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {
@@ -176,7 +177,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
         [DataTestMethod]
         public async Task FindChallengesAsync_ByNoneFlags_ShouldBeEmpty(Game game, ChallengeType type, ChallengeState state)
         {
-            using (var factory = new CustomDbContextFactory<ChallengesDbContext>())
+            using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {
@@ -212,7 +213,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
         [DataTestMethod]
         public async Task FindChallengesAsync_ByState_ShouldHaveCountOfFive(ChallengeState state)
         {
-            using (var factory = new CustomDbContextFactory<ChallengesDbContext>())
+            using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {
@@ -244,7 +245,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
         {
             var challenge = _factory.CreateRandomChallenge();
 
-            using (var factory = new CustomDbContextFactory<ChallengesDbContext>())
+            using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {
@@ -272,7 +273,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
         [TestMethod]
         public async Task FindChallengeAsync_NotPersistent_ShouldBeNull()
         {
-            using (var factory = new CustomDbContextFactory<ChallengesDbContext>())
+            using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {
@@ -291,7 +292,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
         [TestMethod]
         public async Task FindChallengeAsync_NullReference_ShouldBeNull()
         {
-            using (var factory = new CustomDbContextFactory<ChallengesDbContext>())
+            using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {

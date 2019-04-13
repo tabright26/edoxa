@@ -11,7 +11,6 @@
 using System;
 using System.Threading.Tasks;
 
-using eDoxa.Notifications.Api.Properties;
 using eDoxa.Notifications.Application.Commands;
 using eDoxa.Notifications.Domain.AggregateModels;
 using eDoxa.Seedwork.Application.Extensions;
@@ -52,14 +51,14 @@ namespace eDoxa.Notifications.Api.Controllers
 
                 await _mediator.SendCommandAsync(command);
 
-                return this.Ok(Resources.NotificationsController_Ok_ReadNotificationAsync);
+                return this.Ok(string.Empty);
             }
             catch (Exception exception)
             {
-                _logger.LogError(exception, Resources.NotificationsController_Error_ReadNotificationAsync);
+                _logger.LogError(exception, exception.Message);
             }
 
-            return this.BadRequest(Resources.NotificationsController_BadRequest_ReadNotificationAsync);
+            return this.BadRequest(string.Empty);
         }
 
         /// <summary>
@@ -74,14 +73,14 @@ namespace eDoxa.Notifications.Api.Controllers
 
                 await _mediator.SendCommandAsync(command);
 
-                return this.Ok(Resources.NotificationsController_Ok_DeleteNotificationAsync);
+                return this.Ok(string.Empty);
             }
             catch (Exception exception)
             {
-                _logger.LogError(exception, Resources.NotificationsController_Error_DeleteNotificationAsync);
+                _logger.LogError(exception, exception.Message);
             }
 
-            return this.BadRequest(Resources.NotificationsController_BadRequest_DeleteNotificationAsync);
+            return this.BadRequest(string.Empty);
         }
     }
 }

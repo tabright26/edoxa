@@ -12,7 +12,6 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Notifications.Api.Properties;
 using eDoxa.Notifications.Domain.AggregateModels;
 using eDoxa.Notifications.DTO.Queries;
 
@@ -57,10 +56,10 @@ namespace eDoxa.Notifications.Api.Controllers
             }
             catch (Exception exception)
             {
-                _logger.LogError(exception, Resources.UserNotificationsController_Error_FetchUserNotificationsAsync);
+                _logger.LogError(exception, exception.Message);
             }
 
-            return this.BadRequest(Resources.UserNotificationsController_BadRequest_FetchUserNotificationsAsync);
+            return this.BadRequest(string.Empty);
         }
 
         /// <summary>
@@ -75,17 +74,17 @@ namespace eDoxa.Notifications.Api.Controllers
 
                 if (notification == null)
                 {
-                    return this.NotFound(Resources.UserNotificationsController_NotFound_FindUserNotificationAsync);
+                    return this.NotFound(string.Empty);
                 }
 
                 return this.Ok(notification);
             }
             catch (Exception exception)
             {
-                _logger.LogError(exception, Resources.UserNotificationsController_Error_FindUserNotificationAsync);
+                _logger.LogError(exception, exception.Message);
             }
 
-            return this.BadRequest(Resources.UserNotificationsController_BadRequest_FindUserNotificationAsync);
+            return this.BadRequest(string.Empty);
         }
     }
 }

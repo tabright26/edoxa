@@ -8,6 +8,8 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Seedwork.Infrastructure.Factories;
+
 using FluentAssertions;
 
 using MediatR;
@@ -23,7 +25,7 @@ namespace eDoxa.Seedwork.Infrastructure.Tests
         [TestMethod]
         public void Database_CanConnect_ShouldBeTrue()
         {
-            using (var factory = new CustomDbContextFactory<MockCustomDbContext>())
+            using (var factory = new InMemoryDbContextFactory<MockCustomDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {

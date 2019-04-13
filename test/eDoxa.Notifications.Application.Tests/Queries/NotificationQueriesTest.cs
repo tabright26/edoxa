@@ -18,6 +18,7 @@ using eDoxa.Notifications.DTO.Factories;
 using eDoxa.Notifications.Infrastructure;
 using eDoxa.Notifications.Infrastructure.Repositories;
 using eDoxa.Seedwork.Infrastructure;
+using eDoxa.Seedwork.Infrastructure.Factories;
 
 using FluentAssertions;
 
@@ -36,7 +37,7 @@ namespace eDoxa.Notifications.Application.Tests.Queries
         {
             var user = _userAggregateFactory.CreateUser(true);
 
-            using (var factory = new CustomDbContextFactory<NotificationsDbContext>())
+            using (var factory = new InMemoryDbContextFactory<NotificationsDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {
@@ -64,7 +65,7 @@ namespace eDoxa.Notifications.Application.Tests.Queries
         [TestMethod]
         public async Task FindUserNotificationsAsync_NullReference_ShouldBeEmpty()
         {
-            using (var factory = new CustomDbContextFactory<NotificationsDbContext>())
+            using (var factory = new InMemoryDbContextFactory<NotificationsDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {
@@ -87,7 +88,7 @@ namespace eDoxa.Notifications.Application.Tests.Queries
 
             var notification = user.Notifications.First();
 
-            using (var factory = new CustomDbContextFactory<NotificationsDbContext>())
+            using (var factory = new InMemoryDbContextFactory<NotificationsDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {
@@ -115,7 +116,7 @@ namespace eDoxa.Notifications.Application.Tests.Queries
         [TestMethod]
         public async Task FindUserNotificationAsync_NullReference_ShouldBeNull()
         {
-            using (var factory = new CustomDbContextFactory<NotificationsDbContext>())
+            using (var factory = new InMemoryDbContextFactory<NotificationsDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {

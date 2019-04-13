@@ -18,9 +18,9 @@ using Microsoft.EntityFrameworkCore;
 
 using Moq;
 
-namespace eDoxa.Seedwork.Infrastructure
+namespace eDoxa.Seedwork.Infrastructure.Factories
 {
-    public sealed class CustomDbContextFactory<TDbContext> : IDisposable
+    public sealed class InMemoryDbContextFactory<TDbContext> : IDisposable
     where TDbContext : DbContext
     {
         private const string ConnectionString = "DataSource=:memory:";

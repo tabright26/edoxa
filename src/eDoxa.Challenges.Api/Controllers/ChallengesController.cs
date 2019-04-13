@@ -12,7 +12,6 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Api.Properties;
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.DTO.Queries;
@@ -62,10 +61,10 @@ namespace eDoxa.Challenges.Api.Controllers
             }
             catch (Exception exception)
             {
-                _logger.LogError(exception, Resources.ChallengesController_Error_FindChallengesAsync);
+                _logger.LogError(exception, exception.Message);
             }
 
-            return this.BadRequest(Resources.ChallengesController_BadRequest_FindChallengesAsync);
+            return this.BadRequest(string.Empty);
         }
 
         /// <summary>
@@ -80,17 +79,17 @@ namespace eDoxa.Challenges.Api.Controllers
 
                 if (challenge == null)
                 {
-                    return this.NotFound(Resources.ChallengesController_NotFound_FindChallengeAsync);
+                    return this.NotFound(string.Empty);
                 }
 
                 return this.Ok(challenge);
             }
             catch (Exception exception)
             {
-                _logger.LogError(exception, Resources.ChallengesController_Error_FindChallengeAsync);
+                _logger.LogError(exception, exception.Message);
             }
 
-            return this.BadRequest(Resources.ChallengesController_BadRequest_FindChallengeAsync);
+            return this.BadRequest(string.Empty);
         }
     }
 }

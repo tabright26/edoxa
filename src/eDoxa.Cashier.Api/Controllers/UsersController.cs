@@ -11,7 +11,6 @@
 using System;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Properties;
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.DTO.Queries;
@@ -57,10 +56,10 @@ namespace eDoxa.Cashier.Api.Controllers
             }
             catch (Exception exception)
             {
-                _logger.LogError(exception, Resources.CustomersController_Error_FindCustomerShippingAddressAsync);
+                _logger.LogError(exception, exception.Message);
             }
 
-            return this.BadRequest(Resources.CustomersController_BadRequest_FindCustomerShippingAddressAsync);
+            return this.BadRequest(string.Empty);
         }
 
         [HttpPut("{userId}/address", Name = nameof(UpdateAddressAsync))]
@@ -83,10 +82,10 @@ namespace eDoxa.Cashier.Api.Controllers
             }
             catch (Exception exception)
             {
-                _logger.LogError(exception, Resources.CustomersController_Error_UpdateCustomerShippingAddressAsync);
+                _logger.LogError(exception, exception.Message);
             }
 
-            return this.BadRequest(Resources.CustomersController_BadRequest_UpdateCustomerShippingAddressAsync);
+            return this.BadRequest(string.Empty);
         }
     }
 }

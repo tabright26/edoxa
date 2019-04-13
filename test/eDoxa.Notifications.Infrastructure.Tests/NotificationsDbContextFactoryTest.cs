@@ -9,6 +9,7 @@
 // this source code package.
 
 using eDoxa.Seedwork.Infrastructure;
+using eDoxa.Seedwork.Infrastructure.Factories;
 
 using FluentAssertions;
 
@@ -22,7 +23,7 @@ namespace eDoxa.Notifications.Infrastructure.Tests
         [TestMethod]
         public void Database_CanConnect_ShouldBeTrue()
         {
-            using (var factory = new CustomDbContextFactory<NotificationsDbContext>())
+            using (var factory = new InMemoryDbContextFactory<NotificationsDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {

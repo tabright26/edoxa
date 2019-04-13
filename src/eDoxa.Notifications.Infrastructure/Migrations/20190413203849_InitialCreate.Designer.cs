@@ -10,7 +10,7 @@ using eDoxa.Notifications.Infrastructure;
 namespace eDoxa.Notifications.Infrastructure.Migrations
 {
     [DbContext(typeof(NotificationsDbContext))]
-    [Migration("20190413194030_InitialCreate")]
+    [Migration("20190413203849_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -1,4 +1,4 @@
-﻿// Filename: NotificationsDbContextFactory.cs
+﻿// Filename: IdentityDbContextDesignFactory.cs
 // Date Created: 2019-04-13
 // 
 // ============================================================
@@ -13,15 +13,15 @@ using System.Reflection;
 
 using eDoxa.Seedwork.Infrastructure.Factories;
 
-namespace eDoxa.Notifications.Infrastructure.Factories
+namespace eDoxa.Identity.Infrastructure.Factories
 {
-    internal sealed class NotificationsDbContextFactory : DesignTimeDbContextFactory<NotificationsDbContext>
+    internal sealed class IdentityDbContextFactory : DesignTimeDbContextFactory<IdentityDbContext>
     {
         protected override string BasePath
         {
             get
             {
-                return Path.Combine(Directory.GetCurrentDirectory(), "../eDoxa.Notifications.Api");
+                return Path.Combine(Directory.GetCurrentDirectory(), "../eDoxa.Identity");
             }
         }
 
@@ -29,13 +29,13 @@ namespace eDoxa.Notifications.Infrastructure.Factories
         {
             get
             {
-                return Assembly.GetAssembly(typeof(NotificationsDbContextFactory));
+                return Assembly.GetAssembly(typeof(IdentityDbContextFactory));
             }
         }
 
-        public override NotificationsDbContext CreateDbContext(string[] args)
+        public override IdentityDbContext CreateDbContext(string[] args)
         {
-            return new NotificationsDbContext(Options);
+            return new IdentityDbContext(Options);
         }
     }
 }

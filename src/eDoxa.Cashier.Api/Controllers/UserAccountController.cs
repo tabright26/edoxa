@@ -11,7 +11,6 @@
 using System;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Properties;
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.DTO.Queries;
@@ -52,17 +51,17 @@ namespace eDoxa.Cashier.Api.Controllers
 
                 if (coins == null)
                 {
-                    return this.NotFound(Resources.UserAccountController_NotFound_FindUserWalletAsync);
+                    return this.NotFound(string.Empty);
                 }
 
                 return this.Ok(coins);
             }
             catch (Exception exception)
             {
-                _logger.LogError(exception, Resources.UserAccountController_Error_FindUserWalletAsync);
+                _logger.LogError(exception, exception.Message);
             }
 
-            return this.BadRequest(Resources.UserAccountController_BadRequest_FindUserWalletAsync);
+            return this.BadRequest(string.Empty);
         }
 
         [HttpPatch(Name = nameof(WithdrawalAsync))]
@@ -81,10 +80,10 @@ namespace eDoxa.Cashier.Api.Controllers
             }
             catch (Exception exception)
             {
-                _logger.LogError(exception, Resources.UserAccountController_Error_WithdrawalAsync);
+                _logger.LogError(exception, exception.Message);
             }
 
-            return this.BadRequest(Resources.UserAccountController_BadRequest_WithdrawalAsync);
+            return this.BadRequest(string.Empty);
         }
 
         [HttpPatch("funds", Name = nameof(AddFundsAsync))]
@@ -103,10 +102,10 @@ namespace eDoxa.Cashier.Api.Controllers
             }
             catch (Exception exception)
             {
-                _logger.LogError(exception, Resources.UserAccountController_Error_AddFundsAsync);
+                _logger.LogError(exception, exception.Message);
             }
 
-            return this.BadRequest(Resources.UserAccountController_BadRequest_AddFundsAsync);
+            return this.BadRequest(string.Empty);
         }
 
         [HttpPatch("tokens", Name = nameof(BuyTokensAsync))]
@@ -125,10 +124,10 @@ namespace eDoxa.Cashier.Api.Controllers
             }
             catch (Exception exception)
             {
-                _logger.LogError(exception, Resources.UserAccountController_Error_BuyTokensAsync);
+                _logger.LogError(exception, exception.Message);
             }
 
-            return this.BadRequest(Resources.UserAccountController_BadRequest_BuyTokensAsync);
+            return this.BadRequest(string.Empty);
         }
     }
 }

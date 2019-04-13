@@ -56,6 +56,10 @@ namespace eDoxa.Notifications.Infrastructure
         {
         }
 
+        internal NotificationsDbContext(DbContextOptions<NotificationsDbContext> options) : base(options)
+        {
+        }
+
         public DbSet<User> Users
         {
             get

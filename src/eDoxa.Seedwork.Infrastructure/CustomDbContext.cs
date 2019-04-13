@@ -34,12 +34,17 @@ namespace eDoxa.Seedwork.Infrastructure
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
-        public async Task CommitAsync(CancellationToken cancellationToken = default(CancellationToken))
+        protected CustomDbContext(DbContextOptions options) : base(options)
+        {
+            _mediator = null;
+        }
+
+        public async Task CommitAsync(CancellationToken cancellationToken = default)
         {
             await this.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task CommitAndDispatchDomainEventsAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task CommitAndDispatchDomainEventsAsync(CancellationToken cancellationToken = default)
         {
             var entities = ChangeTracker.Entries<IEntity>().Select(entry => entry.Entity).Where(entity => entity.DomainEvents.Any()).ToList();
 

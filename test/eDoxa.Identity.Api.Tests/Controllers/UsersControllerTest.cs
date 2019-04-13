@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 
 using eDoxa.Identity.Application.Services;
 using eDoxa.Identity.Controllers;
-using eDoxa.Identity.Properties;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.DTO;
 using eDoxa.Identity.DTO.Queries;
@@ -105,8 +104,6 @@ namespace eDoxa.Identity.Api.Tests.Controllers
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
-            result.As<BadRequestObjectResult>().Value.Should().Be(Resources.UsersController_BadRequest_FetchUsersAsync);
-
             _logger.Verify();
             _service.Verify();
         }
@@ -126,8 +123,6 @@ namespace eDoxa.Identity.Api.Tests.Controllers
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
-            result.As<OkObjectResult>().Value.Should().Be(Resources.UsersController_Ok_ChangeUserTagAsync);
-
             _logger.VerifyNoOtherCalls();
             _service.Verify();
         }
@@ -145,8 +140,6 @@ namespace eDoxa.Identity.Api.Tests.Controllers
 
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
-            result.As<NotFoundObjectResult>().Value.Should().Be(Resources.UsersController_NotFound_ChangeUserTagAsync);
-
             _logger.VerifyNoOtherCalls();
             _service.Verify();
         }
@@ -168,8 +161,6 @@ namespace eDoxa.Identity.Api.Tests.Controllers
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
-            result.As<BadRequestObjectResult>().Value.Should().Be(Resources.UsersController_BadRequest_ChangeUserTagAsync);
-
             _logger.Verify();
             _service.Verify();
         }
@@ -189,8 +180,6 @@ namespace eDoxa.Identity.Api.Tests.Controllers
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
-            result.As<OkObjectResult>().Value.Should().Be(Resources.UsersController_Ok_ChangeUserStatusAsync);
-
             _logger.VerifyNoOtherCalls();
             _service.Verify();
         }
@@ -208,8 +197,6 @@ namespace eDoxa.Identity.Api.Tests.Controllers
 
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
-            result.As<NotFoundObjectResult>().Value.Should().Be(Resources.UsersController_NotFound_ChangeUserStatusAsync);
-
             _logger.VerifyNoOtherCalls();
             _service.Verify();
         }
@@ -231,8 +218,6 @@ namespace eDoxa.Identity.Api.Tests.Controllers
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
-            result.As<BadRequestObjectResult>().Value.Should().Be(Resources.UsersController_BadRequest_ChangeUserStatusAsync);
-
             _logger.Verify();
             _service.Verify();
         }

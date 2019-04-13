@@ -16,6 +16,7 @@ using eDoxa.Notifications.Domain.Factories;
 using eDoxa.Notifications.Infrastructure.Repositories;
 using eDoxa.Notifications.Infrastructure.Tests.Asserts;
 using eDoxa.Seedwork.Infrastructure;
+using eDoxa.Seedwork.Infrastructure.Factories;
 
 using FluentAssertions;
 
@@ -35,7 +36,7 @@ namespace eDoxa.Notifications.Infrastructure.Tests.Repositories
 
             var notification = user.Notifications.First();
 
-            using (var factory = new CustomDbContextFactory<NotificationsDbContext>())
+            using (var factory = new InMemoryDbContextFactory<NotificationsDbContext>())
             {
                 // Arrange
                 using (var context = factory.CreateContext())
@@ -72,7 +73,7 @@ namespace eDoxa.Notifications.Infrastructure.Tests.Repositories
         [TestMethod]
         public void Delete_NullReference_ShouldThrowArgumentNullException()
         {
-            using (var factory = new CustomDbContextFactory<NotificationsDbContext>())
+            using (var factory = new InMemoryDbContextFactory<NotificationsDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {
@@ -95,7 +96,7 @@ namespace eDoxa.Notifications.Infrastructure.Tests.Repositories
 
             var notification = user.Notifications.First();
 
-            using (var factory = new CustomDbContextFactory<NotificationsDbContext>())
+            using (var factory = new InMemoryDbContextFactory<NotificationsDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {
@@ -123,7 +124,7 @@ namespace eDoxa.Notifications.Infrastructure.Tests.Repositories
         [TestMethod]
         public async Task FindAsync_NullReference_ShouldBeNull()
         {
-            using (var factory = new CustomDbContextFactory<NotificationsDbContext>())
+            using (var factory = new InMemoryDbContextFactory<NotificationsDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {

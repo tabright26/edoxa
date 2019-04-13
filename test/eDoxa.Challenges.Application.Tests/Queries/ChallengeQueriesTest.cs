@@ -19,6 +19,7 @@ using eDoxa.Challenges.Infrastructure;
 using eDoxa.Challenges.Infrastructure.Repositories;
 using eDoxa.Seedwork.Domain.Common.Enums;
 using eDoxa.Seedwork.Infrastructure;
+using eDoxa.Seedwork.Infrastructure.Factories;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -35,7 +36,7 @@ namespace eDoxa.Challenges.Application.Tests.Queries
         {
             var challenge = _challengeAggregateFactory.CreateRandomChallenge();
 
-            using (var factory = new CustomDbContextFactory<ChallengesDbContext>())
+            using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {

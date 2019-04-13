@@ -55,6 +55,10 @@ namespace eDoxa.Cashier.Infrastructure
         {
         }
 
+        internal CashierDbContext(DbContextOptions<CashierDbContext> options) : base(options)
+        {
+        }
+
         public DbSet<User> Users
         {
             get

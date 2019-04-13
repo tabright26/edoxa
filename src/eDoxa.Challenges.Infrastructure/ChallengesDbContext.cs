@@ -69,6 +69,10 @@ namespace eDoxa.Challenges.Infrastructure
         {
         }
 
+        internal ChallengesDbContext(DbContextOptions<ChallengesDbContext> options) : base(options)
+        {
+        }
+
         public DbSet<User> Users
         {
             get

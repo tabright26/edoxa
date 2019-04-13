@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using eDoxa.Challenges.Domain.Factories;
 using eDoxa.Challenges.Infrastructure.Repositories;
 using eDoxa.Seedwork.Infrastructure;
+using eDoxa.Seedwork.Infrastructure.Factories;
 
 using FluentAssertions;
 
@@ -29,7 +30,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
         [TestMethod]
         public async Task Create_User_ShouldNotBeEmpty()
         {
-            using (var factory = new CustomDbContextFactory<ChallengesDbContext>())
+            using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {
@@ -53,7 +54,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
         [TestMethod]
         public void Create_UserNullReference_ShouldThrowArgumentNullException()
         {
-            using (var factory = new CustomDbContextFactory<ChallengesDbContext>())
+            using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {

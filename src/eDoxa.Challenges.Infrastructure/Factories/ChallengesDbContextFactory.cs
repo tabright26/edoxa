@@ -1,4 +1,4 @@
-﻿// Filename: NotificationsDbContextFactory.cs
+﻿// Filename: ChallengesDbContextFactory.cs
 // Date Created: 2019-04-13
 // 
 // ============================================================
@@ -13,15 +13,15 @@ using System.Reflection;
 
 using eDoxa.Seedwork.Infrastructure.Factories;
 
-namespace eDoxa.Notifications.Infrastructure.Factories
+namespace eDoxa.Challenges.Infrastructure.Factories
 {
-    internal sealed class NotificationsDbContextFactory : DesignTimeDbContextFactory<NotificationsDbContext>
+    internal sealed class ChallengesDbContextFactory : DesignTimeDbContextFactory<ChallengesDbContext>
     {
         protected override string BasePath
         {
             get
             {
-                return Path.Combine(Directory.GetCurrentDirectory(), "../eDoxa.Notifications.Api");
+                return Path.Combine(Directory.GetCurrentDirectory(), "../eDoxa.Challenges.Api");
             }
         }
 
@@ -29,13 +29,13 @@ namespace eDoxa.Notifications.Infrastructure.Factories
         {
             get
             {
-                return Assembly.GetAssembly(typeof(NotificationsDbContextFactory));
+                return Assembly.GetAssembly(typeof(ChallengesDbContextFactory));
             }
         }
 
-        public override NotificationsDbContext CreateDbContext(string[] args)
+        public override ChallengesDbContext CreateDbContext(string[] args)
         {
-            return new NotificationsDbContext(Options);
+            return new ChallengesDbContext(Options);
         }
     }
 }

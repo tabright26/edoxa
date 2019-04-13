@@ -17,6 +17,7 @@ using eDoxa.Cashier.DTO.Factories;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.Infrastructure.Repositories;
 using eDoxa.Seedwork.Infrastructure;
+using eDoxa.Seedwork.Infrastructure.Factories;
 
 using FluentAssertions;
 
@@ -35,7 +36,7 @@ namespace eDoxa.Cashier.Application.Tests.Queries
         {
             var user = _userAggregateFactory.CreateUser();
 
-            using (var factory = new CustomDbContextFactory<CashierDbContext>())
+            using (var factory = new InMemoryDbContextFactory<CashierDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {
@@ -63,7 +64,7 @@ namespace eDoxa.Cashier.Application.Tests.Queries
         [TestMethod]
         public async Task FindUserAccountAsync_NullReference_ShouldBeEmpty()
         {
-            using (var factory = new CustomDbContextFactory<CashierDbContext>())
+            using (var factory = new InMemoryDbContextFactory<CashierDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {

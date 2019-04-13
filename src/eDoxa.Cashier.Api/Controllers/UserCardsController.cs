@@ -11,7 +11,6 @@
 using System;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Properties;
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.DTO.Queries;
@@ -54,10 +53,10 @@ namespace eDoxa.Cashier.Api.Controllers
             }
             catch (Exception exception)
             {
-                _logger.LogError(exception, Resources.CustomerCardsController_Error_FetchCustomerCardsAsync);
+                _logger.LogError(exception, exception.Message);
             }
 
-            return this.BadRequest(Resources.CustomerCardsController_BadRequest_FetchCustomerCardsAsync);
+            return this.BadRequest(string.Empty);
         }
 
         [HttpPost(Name = nameof(CreateCardAsync))]
@@ -85,10 +84,10 @@ namespace eDoxa.Cashier.Api.Controllers
             }
             catch (Exception exception)
             {
-                _logger.LogError(exception, Resources.CustomerCardsController_Error_CreateCustomerCardAsync);
+                _logger.LogError(exception, exception.Message);
             }
 
-            return this.BadRequest(Resources.CustomerCardsController_BadRequest_CreateCustomerCardAsync);
+            return this.BadRequest(string.Empty);
         }
 
         [HttpGet("{cardId}", Name = nameof(FindUserCardAsync))]
@@ -102,10 +101,10 @@ namespace eDoxa.Cashier.Api.Controllers
             }
             catch (Exception exception)
             {
-                _logger.LogError(exception, Resources.CustomerCardsController_Error_FindCustomerCardAsync);
+                _logger.LogError(exception, exception.Message);
             }
 
-            return this.BadRequest(Resources.CustomerCardsController_BadRequest_FindCustomerCardAsync);
+            return this.BadRequest(string.Empty);
         }
 
         [HttpDelete("{cardId}", Name = nameof(DeleteCardAsync))]
@@ -117,14 +116,14 @@ namespace eDoxa.Cashier.Api.Controllers
 
                 await _mediator.SendCommandAsync(command);
 
-                return this.Ok(Resources.CustomerCardsController_Ok_DeleteCustomerCardAsync);
+                return this.Ok(string.Empty);
             }
             catch (Exception exception)
             {
-                _logger.LogError(exception, Resources.CustomerCardsController_Error_DeleteCustomerCardAsync);
+                _logger.LogError(exception, exception.Message);
             }
 
-            return this.BadRequest(Resources.CustomerCardsController_BadRequest_DeleteCustomerCardAsync);
+            return this.BadRequest(string.Empty);
         }
 
         [HttpPatch("{cardId}/default", Name = nameof(UpdateDefaultCardAsync))]
@@ -140,10 +139,10 @@ namespace eDoxa.Cashier.Api.Controllers
             }
             catch (Exception exception)
             {
-                _logger.LogError(exception, Resources.CustomersController_Error_UpdateCustomerDefaultSourceAsync);
+                _logger.LogError(exception, exception.Message);
             }
 
-            return this.BadRequest(Resources.CustomersController_BadRequest_UpdateCustomerDefaultSourceAsync);
+            return this.BadRequest(string.Empty);
         }
     }
 }
