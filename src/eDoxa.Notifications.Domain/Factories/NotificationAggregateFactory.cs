@@ -1,5 +1,5 @@
 ﻿// Filename: NotificationAggregateFactory.cs
-// Date Created: 2019-04-06
+// Date Created: 2019-04-13
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -9,8 +9,6 @@
 // this source code package.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 using eDoxa.Notifications.Domain.AggregateModels.NotificationAggregate;
 using eDoxa.Notifications.Domain.AggregateModels.UserAggregate;
@@ -33,68 +31,17 @@ namespace eDoxa.Notifications.Domain.Factories
 
     internal sealed partial class NotificationAggregateFactory
     {
-        // NotificationNames.cs
-        public const string NotificationName = "user.email.updated";
-
-        // NotificationDescription.cs
-        public const string NotificationDescriptionName = NotificationName;
-        public const string NotificationDescriptionTitle = nameof(NotificationDescriptionTitle);
-        public const string NotificationDescriptionTemplate = nameof(NotificationDescriptionTemplate);
-    }
-
-    internal sealed partial class NotificationAggregateFactory
-    {
-        public void CreateUserNotifications(User admin)
+        public Notification CreateNotification(User user, string title, string message, string redirectUrl = null)
         {
-            foreach (var name in NotificationNames.GetValues())
-            {
-                var description = _notificationProvider.FindDescriptionByName(name);
-
-                var count = description.ArgumentCount;
-
-                var arguments = new HashSet<string>();
-
-                for (var index = 0; index < count; index++)
-                {
-                    arguments.Add("Argument" + index);
-                }
-
-                var metadata = this.CreateMetadata(arguments.ToArray());
-
-                admin.Notify(name, null, metadata);
-            }
-        }
-    }
-
-    internal sealed partial class NotificationAggregateFactory
-    {
-        private readonly NotificationProvider _notificationProvider = NotificationProvider.Instance;
-
-        public Notification CreateNotification(User user, string name, string redirectUrl, INotificationMetadata metadata)
-        {
-            return new Notification(user, name, redirectUrl, metadata);
+            return new Notification(user, title, message, redirectUrl);
         }
 
-        public NotificationDescription CreateDescription(string name, string title, string template)
+        public void CreateUserNotifications(User user, int count = 1)
         {
-            return new NotificationDescription(name, title, template);
-        }
-
-        public INotificationMetadata CreateMetadata(string[] arguments = null)
-        {
-            var metadata = new NotificationMetadata();
-
-            if (arguments == null || !arguments.Any())
+            for (var index = 0; index < count; index++)
             {
-                return metadata;
+                user.Notify("Title", "Message", "RedirectUrl");
             }
-
-            foreach (var argument in arguments)
-            {
-                metadata.Add(argument);
-            }
-
-            return metadata;
         }
     }
 }

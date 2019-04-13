@@ -8,7 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Notifications.Domain.AggregateModels.NotificationAggregate;
 using eDoxa.Notifications.Domain.Factories;
 
 using FluentAssertions;
@@ -21,7 +20,6 @@ namespace eDoxa.Notifications.Domain.Tests.AggregateModels.UserAggregate
     public sealed class UserTest
     {
         private static readonly UserAggregateFactory _userAggregateFactory = UserAggregateFactory.Instance;
-        private static readonly NotificationAggregateFactory _notificationAggregateFactory = NotificationAggregateFactory.Instance;
 
         [TestMethod]
         public void Constructor_User_ShouldNotBeNull()
@@ -41,14 +39,9 @@ namespace eDoxa.Notifications.Domain.Tests.AggregateModels.UserAggregate
 
             // Act
             var notification = user.Notify(
-                NotificationNames.ChallengeParticipantRegistered,
-                null,
-                _notificationAggregateFactory.CreateMetadata(
-                    new[]
-                    {
-                        "value1", "value2"
-                    }
-                )
+                "Title",
+                "Message",
+                "RedirectUrl"
             );
 
             // Assert

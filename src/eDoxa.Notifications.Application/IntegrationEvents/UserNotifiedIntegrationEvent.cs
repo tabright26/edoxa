@@ -1,5 +1,5 @@
 ﻿// Filename: UserNotifiedIntegrationEvent.cs
-// Date Created: 2019-03-04
+// Date Created: 2019-04-13
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -9,27 +9,26 @@
 // this source code package.
 
 using eDoxa.Notifications.Domain.AggregateModels;
-using eDoxa.Notifications.Domain.AggregateModels.NotificationAggregate;
 using eDoxa.ServiceBus;
 
 namespace eDoxa.Notifications.Application.IntegrationEvents
 {
     public class UserNotifiedIntegrationEvent : IntegrationEvent
     {
-        public UserNotifiedIntegrationEvent(UserId userId, string name, string redirectUrl = null, NotificationMetadata metadata = null)
+        public UserNotifiedIntegrationEvent(UserId userId, string title, string message, string redirectUrl = null)
         {
             UserId = userId;
-            Name = name;
+            Title = title;
+            Message = message;
             RedirectUrl = redirectUrl;
-            Metadata = metadata;
         }
 
         public UserId UserId { get; private set; }
 
-        public string Name { get; private set; }
+        public string Title { get; private set; }
+
+        public string Message { get; private set; }
 
         public string RedirectUrl { get; private set; }
-
-        public NotificationMetadata Metadata { get; private set; }
     }
 }

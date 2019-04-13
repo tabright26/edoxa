@@ -4,11 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using eDoxa.Notifications.Infrastructure;
 
 namespace eDoxa.Notifications.Infrastructure.Migrations
 {
     [DbContext(typeof(NotificationsDbContext))]
-    [Migration("20190401042349_InitialCreate")]
+    [Migration("20190413194030_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -16,7 +18,7 @@ namespace eDoxa.Notifications.Infrastructure.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("edoxa")
-                .HasAnnotation("ProductVersion", "2.2.3-servicing-35854")
+                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -24,16 +26,17 @@ namespace eDoxa.Notifications.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id");
 
-                    b.Property<string>("Description")
-                        .IsRequired();
-
                     b.Property<bool>("IsRead");
 
-                    b.Property<string>("Metadata");
+                    b.Property<string>("Message")
+                        .IsRequired();
 
                     b.Property<string>("RedirectUrl");
 
                     b.Property<DateTime>("Timestamp");
+
+                    b.Property<string>("Title")
+                        .IsRequired();
 
                     b.Property<Guid>("UserId");
 

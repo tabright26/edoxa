@@ -38,7 +38,7 @@ namespace eDoxa.Notifications.Application.Tests.Commands.Handlers
             var mockRepository = new Mock<INotificationRepository>();
 
             mockRepository.Setup(repository => repository.FindAsync(It.IsAny<NotificationId>()))
-                          .ReturnsAsync(new Notification(User.Create(new UserId()), NotificationNames.ChallengeParticipantRegistered, null, _factory.CreateMetadata(new[] { "value1", "value2" })))
+                          .ReturnsAsync(new Notification(User.Create(new UserId()), "Title", "Message", "RedirectUrl"))
                           .Verifiable();
 
             mockRepository.Setup(repository => repository.UnitOfWork.CommitAndDispatchDomainEventsAsync(It.IsAny<CancellationToken>()))
@@ -49,7 +49,7 @@ namespace eDoxa.Notifications.Application.Tests.Commands.Handlers
             var handler = new ReadNotificationCommandHandler(mockRepository.Object);
 
             // Assert
-            await handler.HandleAsync(command, default(CancellationToken));
+            await handler.HandleAsync(command);
 
             mockRepository.Verify(repository => repository.FindAsync(It.IsAny<NotificationId>()), Times.Once);
 

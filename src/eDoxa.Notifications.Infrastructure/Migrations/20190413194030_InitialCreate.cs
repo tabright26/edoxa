@@ -1,5 +1,5 @@
-﻿// Filename: 20190401042349_InitialCreate.cs
-// Date Created: 2019-04-01
+﻿// Filename: 20190413194030_InitialCreate.cs
+// Date Created: 2019-04-13
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -64,11 +64,11 @@ namespace eDoxa.Notifications.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(),
                     Timestamp = table.Column<DateTime>(),
+                    Title = table.Column<string>(),
+                    Message = table.Column<string>(),
                     IsRead = table.Column<bool>(),
                     RedirectUrl = table.Column<string>(nullable: true),
-                    Metadata = table.Column<string>(nullable: true),
-                    UserId = table.Column<Guid>(),
-                    Description = table.Column<string>()
+                    UserId = table.Column<Guid>()
                 },
                 constraints: table =>
                 {

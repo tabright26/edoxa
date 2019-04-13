@@ -18,7 +18,7 @@ namespace eDoxa.Seedwork.Application.Commands.Handlers
     public abstract class AsyncCommandHandler<TCommand> : AsyncRequestHandler<TCommand>, ICommandHandler<TCommand>
     where TCommand : ICommand
     {
-        public Task HandleAsync(TCommand command, CancellationToken cancellationToken)
+        public Task HandleAsync(TCommand command, CancellationToken cancellationToken = default)
         {
             return this.Handle(command, cancellationToken);
         }

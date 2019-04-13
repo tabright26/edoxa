@@ -50,9 +50,9 @@ namespace eDoxa.Notifications.Domain.AggregateModels.UserAggregate
             return new User(userId);
         }
 
-        public Notification Notify(string name, string redirectUrl, INotificationMetadata metadata)
+        public Notification Notify(string title, string message, string redirectUrl = null)
         {
-            var notification = new Notification(this, name, redirectUrl, metadata);
+            var notification = new Notification(this, title, message, redirectUrl);
 
             _notifications.Add(notification);
 

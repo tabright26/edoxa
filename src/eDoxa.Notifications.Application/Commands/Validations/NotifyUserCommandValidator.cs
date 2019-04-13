@@ -19,8 +19,8 @@ namespace eDoxa.Notifications.Application.Commands.Validations
         public NotifyUserCommandValidator()
         {
             this.RuleFor(command => command.UserId).NotNull();
-            this.RuleFor(command => command.Name).NotEmpty();
-            this.RuleFor(command => command.Name).NotNull();
+            this.RuleFor(command => command.Title).NotEmpty();
+            this.RuleFor(command => command.Title).NotNull();
         }
     }
 }

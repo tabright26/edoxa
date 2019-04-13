@@ -33,8 +33,8 @@ namespace eDoxa.Notifications.Application.IntegrationEvents.Handlers
             await _mediator.SendCommandAsync(
                 new NotifyUserCommand(
                     integrationEvent.UserId,
-                    integrationEvent.Name,
-                    integrationEvent.Metadata,
+                    integrationEvent.Title,
+                    integrationEvent.Message,
                     integrationEvent.RedirectUrl
                 )
             );

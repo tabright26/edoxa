@@ -30,7 +30,7 @@ namespace eDoxa.Notifications.Application.Commands.Handlers
         {
             var user = await _userRepository.FindAsync(command.UserId);
 
-            user.Notify(command.Name, command.RedirectUrl, command.Metadata);
+            user.Notify(command.Title, command.RedirectUrl, command.Message);
 
             await _userRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
         }

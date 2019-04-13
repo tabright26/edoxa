@@ -1,5 +1,5 @@
 ﻿// Filename: NotificationTest.cs
-// Date Created: 2019-04-06
+// Date Created: 2019-04-13
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -10,7 +10,6 @@
 
 using System;
 
-using eDoxa.Notifications.Domain.AggregateModels.NotificationAggregate;
 using eDoxa.Notifications.Domain.Factories;
 
 using FluentAssertions;
@@ -28,18 +27,11 @@ namespace eDoxa.Notifications.Domain.Tests.AggregateModels.NotificationAggregate
         [TestMethod]
         public void Constructor_ValidArguments_ShouldNotBeNull()
         {
+            // Arrange
+            var user = _userAggregateFactory.CreateUser();
+
             // Act
-            var notification = _notificationAggregateFactory.CreateNotification(
-                _userAggregateFactory.CreateUser(),
-                NotificationNames.ChallengeParticipantRegistered,
-                null,
-                _notificationAggregateFactory.CreateMetadata(
-                    new[]
-                    {
-                        "value1", "value2"
-                    }
-                )
-            );
+            var notification = _notificationAggregateFactory.CreateNotification(user, "Title", "Message", "RedirectUrl");
 
             // Assert
             notification.Should().NotBeNull();
@@ -47,66 +39,9 @@ namespace eDoxa.Notifications.Domain.Tests.AggregateModels.NotificationAggregate
             notification.Timestamp.Should().BeBefore(DateTime.UtcNow);
             notification.Title.Should().NotBeNull();
             notification.Message.Should().NotBeNull();
+            notification.RedirectUrl.Should().NotBeNull();
             notification.IsRead.Should().BeFalse();
-            notification.RedirectUrl.Should().BeNull();
-            notification.Metadata.Should().NotBeNullOrEmpty();
             notification.User.Should().NotBeNull();
-        }
-
-        [DataRow(
-            new[]
-            {
-                "value1", "value2"
-            },
-            NotificationNames.ChallengeParticipantRegistered
-        )]
-        [DataTestMethod]
-        public void Constructor_ShouldNotThrowException(string[] arguments, string name)
-        {
-            // Act
-            var action = new Action(
-                () => _notificationAggregateFactory.CreateNotification(
-                    _userAggregateFactory.CreateUser(),
-                    name,
-                    null,
-                    _notificationAggregateFactory.CreateMetadata(arguments)
-                )
-            );
-
-            // Assert
-            action.Should().NotThrow();
-        }
-
-        [TestMethod]
-        public void Constructor_User_ShouldThrowArgumentNullException()
-        {
-            // Act
-            var action = new Action(() => _notificationAggregateFactory.CreateNotification(null, NotificationNames.ChallengeParticipantRegistered, null, null));
-
-            // Assert
-            action.Should().Throw<ArgumentNullException>();
-        }
-
-        [DataRow(
-            new string[]
-            {
-            }
-        )]
-        [DataTestMethod]
-        public void Constructor_Metadata_ShouldThrowArgumentException(string[] arguments)
-        {
-            // Act
-            var action = new Action(
-                () => _notificationAggregateFactory.CreateNotification(
-                    _userAggregateFactory.CreateUser(),
-                    NotificationNames.ChallengeParticipantRegistered,
-                    null,
-                    _notificationAggregateFactory.CreateMetadata(arguments)
-                )
-            );
-
-            // Assert
-            action.Should().Throw<ArgumentException>();
         }
     }
 }

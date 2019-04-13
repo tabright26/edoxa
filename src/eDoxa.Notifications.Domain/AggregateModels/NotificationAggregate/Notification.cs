@@ -18,22 +18,18 @@ namespace eDoxa.Notifications.Domain.AggregateModels.NotificationAggregate
 {
     public class Notification : Entity<NotificationId>, IAggregateRoot
     {
-        private readonly NotificationProvider _provider = NotificationProvider.Instance;
-
         private DateTime _timestamp;
         private bool _isRead;
+        private string _title;
+        private string _message;
         private string _redirectUrl;
-        private NotificationDescription _description;
-        private INotificationMetadata _metadata;
         private User _user;
 
-        public Notification(User user, string name, string redirectUrl, INotificationMetadata metadata) : this()
+        public Notification(User user, string title, string message, string redirectUrl = null) : this()
         {
             _user = user ?? throw new ArgumentNullException(nameof(user));
-            var description = _provider.FindDescriptionByName(name);
-            description.Validate(metadata);            
-            _description = description;
-            _metadata = metadata;
+            _title = title;
+            _message = message;
             _redirectUrl = redirectUrl;
         }
 
@@ -55,7 +51,7 @@ namespace eDoxa.Notifications.Domain.AggregateModels.NotificationAggregate
         {
             get
             {
-                return _description.Title;
+                return _title;
             }
         }
 
@@ -63,7 +59,7 @@ namespace eDoxa.Notifications.Domain.AggregateModels.NotificationAggregate
         {
             get
             {
-                return _description.FormatMessage(Metadata);
+                return _message;
             }
         }
 
@@ -80,14 +76,6 @@ namespace eDoxa.Notifications.Domain.AggregateModels.NotificationAggregate
             get
             {
                 return _redirectUrl;
-            }
-        }
-
-        public INotificationMetadata Metadata
-        {
-            get
-            {
-                return _metadata;
             }
         }
 

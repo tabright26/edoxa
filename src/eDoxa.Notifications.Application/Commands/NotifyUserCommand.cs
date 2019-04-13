@@ -1,5 +1,5 @@
 ﻿// Filename: NotifyUserCommand.cs
-// Date Created: 2019-03-26
+// Date Created: 2019-04-13
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -10,7 +10,6 @@
 
 using System.Runtime.Serialization;
 
-using eDoxa.Notifications.Domain;
 using eDoxa.Notifications.Domain.AggregateModels;
 using eDoxa.Seedwork.Application.Commands;
 
@@ -19,24 +18,24 @@ namespace eDoxa.Notifications.Application.Commands
     [DataContract]
     public class NotifyUserCommand : Command
     {
-        public NotifyUserCommand(UserId recipientId, string name, INotificationMetadata metadata = null, string redirectUrl = null)
+        public NotifyUserCommand(UserId userId, string title, string message, string redirectUrl = null)
         {
-            UserId = recipientId;
-            Name = name;
+            UserId = userId;
+            Title = title;
+            Message = message;
             RedirectUrl = redirectUrl;
-            Metadata = metadata;
         }
 
         [DataMember]
-        public UserId UserId { get; }
+        public UserId UserId { get; private set; }
 
         [DataMember]
-        public string Name { get; }
+        public string Title { get; private set; }
 
         [DataMember(IsRequired = false)]
-        public INotificationMetadata Metadata { get; }
+        public string Message { get; private set; }
 
         [DataMember(IsRequired = false)]
-        public string RedirectUrl { get; }
+        public string RedirectUrl { get; private set; }
     }
 }
