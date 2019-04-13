@@ -1,5 +1,5 @@
 ﻿// Filename: UserAccountController.cs
-// Date Created: 2019-04-09
+// Date Created: 2019-04-13
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -42,6 +42,9 @@ namespace eDoxa.Cashier.Api.Controllers
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
+        /// <summary>
+        ///     Find a user's account.
+        /// </summary>
         [HttpGet(Name = nameof(FindUserAccountAsync))]
         public async Task<IActionResult> FindUserAccountAsync(UserId userId)
         {
@@ -64,6 +67,9 @@ namespace eDoxa.Cashier.Api.Controllers
             return this.BadRequest(string.Empty);
         }
 
+        /// <summary>
+        ///     Withdraw funds from a user's account.
+        /// </summary>
         [HttpPatch(Name = nameof(WithdrawalAsync))]
         public async Task<IActionResult> WithdrawalAsync(
             UserId userId,
@@ -86,6 +92,9 @@ namespace eDoxa.Cashier.Api.Controllers
             return this.BadRequest(string.Empty);
         }
 
+        /// <summary>
+        ///     Deposit funds on a user's account.
+        /// </summary>
         [HttpPatch("funds", Name = nameof(AddFundsAsync))]
         public async Task<IActionResult> AddFundsAsync(
             UserId userId,
@@ -108,6 +117,9 @@ namespace eDoxa.Cashier.Api.Controllers
             return this.BadRequest(string.Empty);
         }
 
+        /// <summary>
+        ///     Buy tokens on a user's account.
+        /// </summary>
         [HttpPatch("tokens", Name = nameof(BuyTokensAsync))]
         public async Task<IActionResult> BuyTokensAsync(
             UserId userId,

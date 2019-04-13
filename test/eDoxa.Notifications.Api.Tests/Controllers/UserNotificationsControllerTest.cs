@@ -42,7 +42,7 @@ namespace eDoxa.Notifications.Api.Tests.Controllers
         }
 
         [TestMethod]
-        public async Task FetchUserNotificationsAsync_ShouldBeOkObjectResult()
+        public async Task FindUserNotificationsAsync_ShouldBeOkObjectResult()
         {
             // Arrange
             _queries.Setup(queries => queries.FindUserNotificationsAsync(It.IsAny<UserId>()))
@@ -60,7 +60,7 @@ namespace eDoxa.Notifications.Api.Tests.Controllers
             var controller = new UserNotificationsController(_logger.Object, _queries.Object);
 
             // Act
-            var result = await controller.FetchUserNotificationsAsync(It.IsAny<UserId>());
+            var result = await controller.FindUserNotificationsAsync(It.IsAny<UserId>());
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -69,7 +69,7 @@ namespace eDoxa.Notifications.Api.Tests.Controllers
         }
 
         [TestMethod]
-        public async Task FetchUserNotificationsAsync_ShouldBeNoContentResult()
+        public async Task FindUserNotificationsAsync_ShouldBeNoContentResult()
         {
             // Arrange
             _queries.Setup(queries => queries.FindUserNotificationsAsync(It.IsAny<UserId>())).ReturnsAsync(new NotificationListDTO()).Verifiable();
@@ -77,7 +77,7 @@ namespace eDoxa.Notifications.Api.Tests.Controllers
             var controller = new UserNotificationsController(_logger.Object, _queries.Object);
 
             // Act
-            var result = await controller.FetchUserNotificationsAsync(It.IsAny<UserId>());
+            var result = await controller.FindUserNotificationsAsync(It.IsAny<UserId>());
 
             // Assert
             result.Should().BeOfType<NoContentResult>();
@@ -86,7 +86,7 @@ namespace eDoxa.Notifications.Api.Tests.Controllers
         }
 
         [TestMethod]
-        public async Task FetchUserNotificationsAsync_ShouldBeBadRequestObjectResult()
+        public async Task FindUserNotificationsAsync_ShouldBeBadRequestObjectResult()
         {
             // Arrange
             _queries.Setup(queries => queries.FindUserNotificationsAsync(It.IsAny<UserId>())).ThrowsAsync(new Exception()).Verifiable();
@@ -96,7 +96,7 @@ namespace eDoxa.Notifications.Api.Tests.Controllers
             var controller = new UserNotificationsController(_logger.Object, _queries.Object);
 
             // Act
-            var result = await controller.FetchUserNotificationsAsync(It.IsAny<UserId>());
+            var result = await controller.FindUserNotificationsAsync(It.IsAny<UserId>());
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();

@@ -1,5 +1,5 @@
 ﻿// Filename: UserCardsController.cs
-// Date Created: 2019-04-09
+// Date Created: 2019-04-13
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -42,6 +42,9 @@ namespace eDoxa.Cashier.Api.Controllers
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
+        /// <summary>
+        ///     Find the user's credit cards.
+        /// </summary>
         [HttpGet(Name = nameof(FindUserCardsAsync))]
         public async Task<IActionResult> FindUserCardsAsync(UserId userId)
         {
@@ -59,6 +62,9 @@ namespace eDoxa.Cashier.Api.Controllers
             return this.BadRequest(string.Empty);
         }
 
+        /// <summary>
+        ///     Attach a credit card to a user.
+        /// </summary>
         [HttpPost(Name = nameof(CreateCardAsync))]
         public async Task<IActionResult> CreateCardAsync(
             UserId userId,
@@ -90,6 +96,9 @@ namespace eDoxa.Cashier.Api.Controllers
             return this.BadRequest(string.Empty);
         }
 
+        /// <summary>
+        ///     Find the user's credit card.
+        /// </summary>
         [HttpGet("{cardId}", Name = nameof(FindUserCardAsync))]
         public async Task<IActionResult> FindUserCardAsync(UserId userId, CardId cardId)
         {
@@ -107,6 +116,9 @@ namespace eDoxa.Cashier.Api.Controllers
             return this.BadRequest(string.Empty);
         }
 
+        /// <summary>
+        ///     Detach a credit card from a user.
+        /// </summary>
         [HttpDelete("{cardId}", Name = nameof(DeleteCardAsync))]
         public async Task<IActionResult> DeleteCardAsync(UserId userId, CardId cardId)
         {
@@ -126,6 +138,9 @@ namespace eDoxa.Cashier.Api.Controllers
             return this.BadRequest(string.Empty);
         }
 
+        /// <summary>
+        ///     Update the default user credit card.
+        /// </summary>
         [HttpPatch("{cardId}/default", Name = nameof(UpdateDefaultCardAsync))]
         public async Task<IActionResult> UpdateDefaultCardAsync(UserId userId, CardId cardId)
         {

@@ -1,5 +1,5 @@
 ﻿// Filename: UsersController.cs
-// Date Created: 2019-04-09
+// Date Created: 2019-04-13
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -45,6 +45,9 @@ namespace eDoxa.Cashier.Api.Controllers
             _identityParserService = identityParserService ?? throw new ArgumentNullException(nameof(identityParserService));
         }
 
+        /// <summary>
+        ///     Find the user's address.
+        /// </summary>
         [HttpGet("{userId}/address", Name = nameof(FindUserAddressAsync))]
         public async Task<IActionResult> FindUserAddressAsync(UserId userId)
         {
@@ -62,6 +65,9 @@ namespace eDoxa.Cashier.Api.Controllers
             return this.BadRequest(string.Empty);
         }
 
+        /// <summary>
+        ///     Update the user's address.
+        /// </summary>
         [HttpPut("{userId}/address", Name = nameof(UpdateAddressAsync))]
         public async Task<IActionResult> UpdateAddressAsync(
             UserId userId,

@@ -1,5 +1,5 @@
 ﻿// Filename: UserNotificationsController.cs
-// Date Created: 2019-03-04
+// Date Created: 2019-04-13
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -38,10 +38,10 @@ namespace eDoxa.Notifications.Api.Controllers
         }
 
         /// <summary>
-        ///     Get user notifications for the given user ID.
+        ///     Find user notifications.
         /// </summary>
-        [HttpGet(Name = nameof(FetchUserNotificationsAsync))]
-        public async Task<IActionResult> FetchUserNotificationsAsync(UserId userId)
+        [HttpGet(Name = nameof(FindUserNotificationsAsync))]
+        public async Task<IActionResult> FindUserNotificationsAsync(UserId userId)
         {
             try
             {
@@ -63,7 +63,7 @@ namespace eDoxa.Notifications.Api.Controllers
         }
 
         /// <summary>
-        ///     Get a user notification by ID for the given user ID.
+        ///     Find a notification for a user.
         /// </summary>
         [HttpGet("{notificationId}", Name = nameof(FindUserNotificationAsync))]
         public async Task<IActionResult> FindUserNotificationAsync(UserId userId, NotificationId notificationId)

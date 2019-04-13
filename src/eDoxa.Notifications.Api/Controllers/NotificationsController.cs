@@ -40,7 +40,7 @@ namespace eDoxa.Notifications.Api.Controllers
         }
 
         /// <summary>
-        ///     Read notification by ID for the given recipient ID.
+        ///     Mark a notification as read.
         /// </summary>
         [HttpPatch("{notificationId}/read", Name = nameof(ReadNotificationAsync))]
         public async Task<IActionResult> ReadNotificationAsync(NotificationId notificationId)
@@ -62,7 +62,7 @@ namespace eDoxa.Notifications.Api.Controllers
         }
 
         /// <summary>
-        ///     Delete notification by ID for the given recipient ID.
+        ///     Delete a notification.
         /// </summary>
         [HttpDelete("{notificationId}/delete", Name = nameof(DeleteNotificationAsync))]
         public async Task<IActionResult> DeleteNotificationAsync(NotificationId notificationId)

@@ -1,5 +1,5 @@
 ﻿// Filename: NotificationDTO.cs
-// Date Created: 2019-04-03
+// Date Created: 2019-04-13
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -31,10 +31,10 @@ namespace eDoxa.Notifications.DTO
         [JsonProperty("message")]
         public string Message { get; set; }
 
-        [JsonProperty("read")]
-        public bool IsRead { get; set; }
-
         [JsonProperty("redirectUrl")]
         public string RedirectUrl { get; set; }
+
+        [JsonProperty("read")]
+        public bool IsRead { get; set; }
     }
 }

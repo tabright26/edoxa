@@ -1,5 +1,5 @@
 ﻿// Filename: ServiceCollectionExtensions.cs
-// Date Created: 2019-04-12
+// Date Created: 2019-04-13
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -21,17 +21,23 @@ namespace eDoxa.Monitoring.Extensions
     {
         public static void AddHealthChecksUI(this IServiceCollection services, IConfiguration configuration)
         {
+            var endpoints = new List<HealthCheckSetting>();
+
+            configuration.GetSection("HealthChecks:Endpoints").Bind(endpoints);
+
             services.AddHealthChecksUI(
                 setupSettings: settings =>
                 {
-                    var healthChecks = new List<HealthCheckSetting>();
-
-                    configuration.GetSection("HealthChecks").Bind(healthChecks);
-
-                    foreach (var healthCheck in healthChecks)
+                    foreach (var endpoint in endpoints)
                     {
-                        settings.AddHealthCheckEndpoint(healthCheck.Name, healthCheck.Uri);
+                        settings.AddHealthCheckEndpoint(endpoint.Name, endpoint.Uri);
                     }
+
+                    settings.SetEvaluationTimeInSeconds(configuration.GetValue<int>("HealthChecks:EvaluationTimeInSeconds"));
+
+                    settings.SetMinimumSecondsBetweenFailureNotifications(
+                        configuration.GetValue<int>("HealthChecks:MinimumSecondsBetweenFailureNotifications")
+                    );
                 }
             );
         }
