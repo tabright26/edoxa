@@ -56,7 +56,7 @@ namespace eDoxa.Challenges.Api
             services.AddEntityFrameworkSqlServer()
                     .AddDbContext<ChallengesDbContext>(
                         options => options.UseSqlServer(
-                            Configuration.GetConnectionString("SqlServer"),
+                            Configuration.GetConnectionString("Sql"),
                             sqlServerOptions =>
                             {
                                 sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(ChallengesDbContext)).GetName().Name);
@@ -67,7 +67,7 @@ namespace eDoxa.Challenges.Api
 
             services.AddDbContext<IntegrationEventLogDbContext>(
                 options => options.UseSqlServer(
-                    Configuration.GetConnectionString("SqlServer"),
+                    Configuration.GetConnectionString("Sql"),
                     sqlServerOptions =>
                     {
                         sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(ChallengesDbContext)).GetName().Name);
@@ -83,7 +83,7 @@ namespace eDoxa.Challenges.Api
             if (HostingEnvironment.IsDevelopment())
             {
                 services.AddSwagger(
-                    Configuration["Authority:External"],
+                    Configuration["Authority"],
                     Assembly.GetExecutingAssembly().GetName().Name,
                     config =>
                     {

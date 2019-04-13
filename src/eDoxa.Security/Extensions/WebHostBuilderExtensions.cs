@@ -1,5 +1,5 @@
 ﻿// Filename: WebHostBuilderExtensions.cs
-// Date Created: 2019-03-04
+// Date Created: 2019-04-13
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -14,11 +14,10 @@ using Microsoft.Extensions.Configuration;
 namespace eDoxa.Security.Extensions
 {
     public static class WebHostBuilderExtensions
-    {        
-        private const string KeyVaultConfigurationEnabled = "ASPNETCORE_HOSTINGSTARTUP:KEYVAULT:CONFIGURATIONENABLED";
-        private const string KeyVaultConfigurationVault = "ASPNETCORE_HOSTINGSTARTUP:KEYVAULT:CONFIGURATIONVAULT";
-        private const string KeyVaultClientId = "KeyVault:ClientId";
-        private const string KeyVaultClientSecret = "KeyVault:ClientSecret";
+    {
+        private const string AzureKeyVaultName = "AzureKeyVault:Name";
+        private const string AzureKeyVaultClientId = "AzureKeyVault:ClientId";
+        private const string AzureKeyVaultClientSecret = "AzureKeyVault:ClientSecret";
 
         public static IWebHostBuilder UseAzureKeyVault(this IWebHostBuilder webHostBuilder)
         {
@@ -29,14 +28,9 @@ namespace eDoxa.Security.Extensions
 
                     var builder = new ConfigurationBuilder();
 
-                    if (configuration.GetValue<bool>(KeyVaultConfigurationEnabled))
-                    {
-                        builder.AddAzureKeyVault(
-                            configuration[KeyVaultConfigurationVault],
-                            configuration[KeyVaultClientId],
-                            configuration[KeyVaultClientSecret]
-                        );
-                    }
+                    var vault = $"https://{configuration[AzureKeyVaultName]}.vault.azure.net";
+
+                    builder.AddAzureKeyVault(vault, configuration[AzureKeyVaultClientId], configuration[AzureKeyVaultClientSecret]);
 
                     config.AddConfiguration(builder.Build());
                 }

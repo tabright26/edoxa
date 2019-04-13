@@ -60,7 +60,7 @@ namespace eDoxa.Identity
 
             services.AddDbContext<IntegrationEventLogDbContext>(
                 options => options.UseSqlServer(
-                    Configuration.GetConnectionString("SqlServer"),
+                    Configuration.GetConnectionString("Sql"),
                     sqlServerOptions =>
                     {
                         sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(IdentityDbContext)).GetName().Name);
@@ -71,7 +71,7 @@ namespace eDoxa.Identity
 
             services.AddDbContext<IdentityDbContext>(
                 options => options.UseSqlServer(
-                    Configuration.GetConnectionString("SqlServer"),
+                    Configuration.GetConnectionString("Sql"),
                     sqlServerOptions =>
                     {
                         sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(IdentityDbContext)).GetName().Name);
@@ -120,7 +120,7 @@ namespace eDoxa.Identity
             if (HostingEnvironment.IsDevelopment())
             {
                 services.AddSwagger(
-                    Configuration["Authority:External"],
+                    Configuration["Authority"],
                     Assembly.GetExecutingAssembly().GetName().Name,
                     config =>
                     {
@@ -171,7 +171,7 @@ namespace eDoxa.Identity
                         configurationStoreOptions =>
                         {
                             configurationStoreOptions.ConfigureDbContext = dbContextOptionsBuilder => dbContextOptionsBuilder.UseSqlServer(
-                                Configuration.GetConnectionString("SqlServer"),
+                                Configuration.GetConnectionString("Sql"),
                                 sqlServerDbContextOptionsBuilder =>
                                 {
                                     sqlServerDbContextOptionsBuilder.MigrationsAssembly(Assembly.GetAssembly(typeof(IdentityDbContext)).GetName().Name);
@@ -185,7 +185,7 @@ namespace eDoxa.Identity
                         operationalStoreOptions =>
                         {
                             operationalStoreOptions.ConfigureDbContext = dbContextOptionsBuilder => dbContextOptionsBuilder.UseSqlServer(
-                                Configuration.GetConnectionString("SqlServer"),
+                                Configuration.GetConnectionString("Sql"),
                                 sqlServerDbContextOptionsBuilder =>
                                 {
                                     sqlServerDbContextOptionsBuilder.MigrationsAssembly(Assembly.GetAssembly(typeof(IdentityDbContext)).GetName().Name);

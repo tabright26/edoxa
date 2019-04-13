@@ -57,7 +57,7 @@ namespace eDoxa.Cashier.Api
             services.AddEntityFrameworkSqlServer()
                     .AddDbContext<CashierDbContext>(
                         options => options.UseSqlServer(
-                            Configuration.GetConnectionString("SqlServer"),
+                            Configuration.GetConnectionString("Sql"),
                             sqlServerOptions =>
                             {
                                 sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(CashierDbContext)).GetName().Name);
@@ -68,7 +68,7 @@ namespace eDoxa.Cashier.Api
 
             services.AddDbContext<IntegrationEventLogDbContext>(
                 options => options.UseSqlServer(
-                    Configuration.GetConnectionString("SqlServer"),
+                    Configuration.GetConnectionString("Sql"),
                     sqlServerOptions =>
                     {
                         sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(CashierDbContext)).GetName().Name);
@@ -84,7 +84,7 @@ namespace eDoxa.Cashier.Api
             if (HostingEnvironment.IsDevelopment())
             {
                 services.AddSwagger(
-                    Configuration["Authority:External"],
+                    Configuration["Authority"],
                     Assembly.GetExecutingAssembly().GetName().Name,
                     config =>
                     {

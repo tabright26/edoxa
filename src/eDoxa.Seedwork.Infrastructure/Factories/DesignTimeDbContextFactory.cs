@@ -32,7 +32,7 @@ namespace eDoxa.Seedwork.Infrastructure.Factories
             {
                 var builder = new DbContextOptionsBuilder<TContext>();
 
-                builder.UseSqlServer(Configuration.GetConnectionString("SqlServer"), options => options.MigrationsAssembly(MigrationsAssembly.GetName().Name));
+                builder.UseSqlServer(Configuration.GetConnectionString("Sql"), options => options.MigrationsAssembly(MigrationsAssembly.GetName().Name));
 
                 return builder.Options;
             }

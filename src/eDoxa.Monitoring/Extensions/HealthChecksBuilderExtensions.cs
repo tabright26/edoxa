@@ -1,5 +1,5 @@
 ﻿// Filename: HealthChecksBuilderExtensions.cs
-// Date Created: 2019-04-12
+// Date Created: 2019-04-13
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -17,34 +17,30 @@ namespace eDoxa.Monitoring.Extensions
 {
     public static class HealthChecksBuilderExtensions
     {
-        private const string KeyVaultConfigurationEnabled = "ASPNETCORE_HOSTINGSTARTUP:KEYVAULT:CONFIGURATIONENABLED";
-        private const string KeyVaultConfigurationVault = "ASPNETCORE_HOSTINGSTARTUP:KEYVAULT:CONFIGURATIONVAULT";
-        private const string KeyVaultClientId = "KeyVault:ClientId";
-        private const string KeyVaultClientSecret = "KeyVault:ClientSecret";
+        private const string AzureKeyVaultName = "AzureKeyVault:Name";
+        private const string AzureKeyVaultClientId = "AzureKeyVault:ClientId";
+        private const string AzureKeyVaultClientSecret = "AzureKeyVault:ClientSecret";
 
         public static void AddAzureKeyVault(this IHealthChecksBuilder builder, IConfiguration configuration)
         {
-            if (configuration.GetValue<bool>(KeyVaultConfigurationEnabled))
-            {
-                builder.AddAzureKeyVault(
-                    options =>
-                    {
-                        options.UseKeyVaultUrl(configuration[KeyVaultConfigurationVault]);
-                        options.UseClientSecrets(configuration[KeyVaultClientId], configuration[KeyVaultClientSecret]);
-                    },
-                    "azure-key-vault",
-                    tags: new[]
-                    {
-                        "akv", "key-vault"
-                    }
-                );
-            }
+            builder.AddAzureKeyVault(
+                options =>
+                {
+                    options.UseKeyVaultUrl($"https://{configuration[AzureKeyVaultName]}.vault.azure.net");
+                    options.UseClientSecrets(configuration[AzureKeyVaultClientId], configuration[AzureKeyVaultClientSecret]);
+                },
+                "azure-key-vault",
+                tags: new[]
+                {
+                    "akv", "key-vault"
+                }
+            );
         }
 
         public static void AddSqlServer(this IHealthChecksBuilder builder, IConfiguration configuration)
         {
             builder.AddSqlServer(
-                configuration.GetConnectionString("SqlServer"),
+                configuration.GetConnectionString("Sql"),
                 name: "microsoft-sql-server",
                 tags: new[]
                 {

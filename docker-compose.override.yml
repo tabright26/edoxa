@@ -25,11 +25,9 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONENABLED=$KEYVAULT_CONFIGURATION_ENABLED
-      - ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONVAULT=$KEYVAULT_CONFIGURATION_VAULT
-      - Authority__External=$DOCKER_URL:5000
-      - ConnectionStrings__SqlServer=${CONNECTIONSTRINGS_SQLSERVER_IDENTITY:-Server=edoxa.mssql.data;Database=eDoxa.Services.Identity;User Id=sa;Password=fnU3Www9TnBDp3MA}
-      - ConnectionStrings__Redis=${CONNECTIONSTRINGS_REDIS:-edoxa.redis.data}      
+      - ConnectionStrings__Sql=${CONNECTIONSTRINGS_SQLSERVER_IDENTITY:-Server=edoxa.mssql.data;Database=eDoxa.Services.Identity;User Id=sa;Password=fnU3Www9TnBDp3MA}
+      - ConnectionStrings__Redis=${CONNECTIONSTRINGS_REDIS:-edoxa.redis.data}
+      - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
       - ServiceBus__HostName=${SERVICE_BUS_HOST_NAME:-edoxa.rabbitmq.broker}
       - ServiceBus__UserName=${SERVICE_BUS_USER_NAME:-admin}
       - ServiceBus__Password=${SERVICE_BUS_PASSWORD:-4t8SaVXVMy0rT2kM}
@@ -37,6 +35,7 @@ services:
       - ServiceBus__Subscription=Identity
       - UseAzureServiceBus=${USE_AZURE_SERVICE_BUS}
       - UseClusterEnvironment=${USE_CLUSTER_ENVIRONMENT}
+      - Authority=${DOCKER_URL:-http://localhost}:5000
       - IdentityServer__IssuerUrl=null
       - IdentityServer__UserInteraction__ConsentUrl=/Identity/Consent/Index
       - IdentityServer__UserInteraction__ErrorUrl=/Identity/Error
@@ -82,17 +81,16 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONENABLED=$KEYVAULT_CONFIGURATION_ENABLED
-      - ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONVAULT=$KEYVAULT_CONFIGURATION_VAULT
-      - Authority__Internal=http://edoxa.identity
-      - Authority__External=$DOCKER_URL:5000
-      - ConnectionStrings__SqlServer=${CONNECTIONSTRINGS_SQLSERVER_CHALLENGES:-Server=edoxa.mssql.data;Database=eDoxa.Services.Challenges;User Id=sa;Password=fnU3Www9TnBDp3MA}      
+      - ConnectionStrings__Sql=${CONNECTIONSTRINGS_SQLSERVER_CHALLENGES:-Server=edoxa.mssql.data;Database=eDoxa.Services.Challenges;User Id=sa;Password=fnU3Www9TnBDp3MA}      
+      - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}      
+      - Authority__Internal=http://edoxa.identity            
       - ServiceBus__HostName=${SERVICE_BUS_HOST_NAME:-edoxa.rabbitmq.broker}
       - ServiceBus__UserName=${SERVICE_BUS_USER_NAME:-admin}
       - ServiceBus__Password=${SERVICE_BUS_PASSWORD:-4t8SaVXVMy0rT2kM}
       - ServiceBus__RetryCount=${SERVICE_BUS_RETRY_COUNT:-5}
       - ServiceBus__Subscription=Challenges
       - UseAzureServiceBus=${USE_AZURE_SERVICE_BUS}
+      - Authority=${DOCKER_URL:-http://localhost}:5000
       - IdentityServer__ApiResources__Challenges__Name=${CHALLENGES__API_RESOURCE__NAME}
       - IdentityServer__ApiResources__Challenges__DisplayName=${CHALLENGES__API_RESOURCE__DISPLAY_NAME}
       - IdentityServer__ApiResources__Challenges__Description=${CHALLENGES__API_RESOURCE__DESCRIPTION}
@@ -105,17 +103,16 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONENABLED=$KEYVAULT_CONFIGURATION_ENABLED
-      - ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONVAULT=$KEYVAULT_CONFIGURATION_VAULT
-      - Authority__Internal=http://edoxa.identity    
-      - Authority__External=$DOCKER_URL:5000
-      - ConnectionStrings__SqlServer=${CONNECTIONSTRINGS_SQLSERVER_CASHIER:-Server=edoxa.mssql.data;Database=eDoxa.Services.Cashier;User Id=sa;Password=fnU3Www9TnBDp3MA}
+      - ConnectionStrings__Sql=${CONNECTIONSTRINGS_SQLSERVER_CASHIER:-Server=edoxa.mssql.data;Database=eDoxa.Services.Cashier;User Id=sa;Password=fnU3Www9TnBDp3MA}
+      - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}      
+      - Authority__Internal=http://edoxa.identity      
       - ServiceBus__HostName=${SERVICE_BUS_HOST_NAME:-edoxa.rabbitmq.broker}
       - ServiceBus__UserName=${SERVICE_BUS_USER_NAME:-admin}
       - ServiceBus__Password=${SERVICE_BUS_PASSWORD:-4t8SaVXVMy0rT2kM}
       - ServiceBus__RetryCount=${SERVICE_BUS_RETRY_COUNT:-5}
       - ServiceBus__Subscription=Cashier
       - UseAzureServiceBus=${USE_AZURE_SERVICE_BUS}
+      - Authority=${DOCKER_URL:-http://localhost}:5000
       - IdentityServer__ApiResources__Cashier__Name=${CASHIER__API_RESOURCE__NAME}
       - IdentityServer__ApiResources__Cashier__DisplayName=${CASHIER__API_RESOURCE__DISPLAY_NAME}
       - IdentityServer__ApiResources__Cashier__Description=${CASHIER__API_RESOURCE__DESCRIPTION}
@@ -128,17 +125,16 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONENABLED=$KEYVAULT_CONFIGURATION_ENABLED
-      - ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONVAULT=$KEYVAULT_CONFIGURATION_VAULT
-      - Authority__Internal=http://edoxa.identity
-      - Authority__External=$DOCKER_URL:5000
-      - ConnectionStrings__SqlServer=${CONNECTIONSTRINGS_SQLSERVER_NOTIFICATIONS:-Server=edoxa.mssql.data;Database=eDoxa.Services.Notifications;User Id=sa;Password=fnU3Www9TnBDp3MA}
+      - ConnectionStrings__Sql=${CONNECTIONSTRINGS_SQLSERVER_NOTIFICATIONS:-Server=edoxa.mssql.data;Database=eDoxa.Services.Notifications;User Id=sa;Password=fnU3Www9TnBDp3MA}
+      - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}      
+      - Authority__Internal=http://edoxa.identity      
       - ServiceBus__HostName=${SERVICE_BUS_HOST_NAME:-edoxa.rabbitmq.broker}
       - ServiceBus__UserName=${SERVICE_BUS_USER_NAME:-admin}
       - ServiceBus__Password=${SERVICE_BUS_PASSWORD:-4t8SaVXVMy0rT2kM}
       - ServiceBus__RetryCount=${SERVICE_BUS_RETRY_COUNT:-5}
       - ServiceBus__Subscription=Notifications
       - UseAzureServiceBus=${USE_AZURE_SERVICE_BUS}
+      - Authority=${DOCKER_URL:-http://localhost}:5000
       - IdentityServer__ApiResources__Notifications__Name=${NOTIFICATIONS__API_RESOURCE__NAME}
       - IdentityServer__ApiResources__Notifications__DisplayName=${NOTIFICATIONS__API_RESOURCE__DISPLAY_NAME}
       - IdentityServer__ApiResources__Notifications__Description=${NOTIFICATIONS__API_RESOURCE__DESCRIPTION}
@@ -151,8 +147,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONENABLED=$KEYVAULT_CONFIGURATION_ENABLED
-      - ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONVAULT=$KEYVAULT_CONFIGURATION_VAULT
+      - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}      
       - ServiceBus__HostName=${SERVICE_BUS_HOST_NAME:-edoxa.rabbitmq.broker}
       - ServiceBus__UserName=${SERVICE_BUS_USER_NAME:-admin}
       - ServiceBus__Password=${SERVICE_BUS_PASSWORD:-4t8SaVXVMy0rT2kM}
@@ -166,11 +161,10 @@ services:
   #  environment:
   #    - ASPNETCORE_ENVIRONMENT=Development
   #    - ASPNETCORE_URLS=http://+:80
-  #    - ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONENABLED=$KEYVAULT_CONFIGURATION_ENABLED
-  #    - ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONVAULT=$KEYVAULT_CONFIGURATION_VAULT
-  #    - Authority__External=$DOCKER_URL:5000
+  #    - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}  
   #    - ConnectionStrings__Redis=${CONNECTIONSTRINGS_REDIS:-edoxa.redis.data}
   #    - UseClusterEnvironment=${USE_CLUSTER_ENVIRONMENT}
+  #    - Authority=${DOCKER_URL:-http://localhost}:5000
   #    - IdentityUrl=$DOCKER_URL:5000
   #    - ChallengesUrl=$DOCKER_URL:5002
   #    - CashierUrl=$DOCKER_URL:5003
@@ -187,8 +181,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONENABLED=$KEYVAULT_CONFIGURATION_ENABLED
-      - ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONVAULT=$KEYVAULT_CONFIGURATION_VAULT      
+      - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}            
       - HealthChecks__Endpoints__0__Name=eDoxa Web Spa
       - HealthChecks__Endpoints__0__Uri=http://edoxa.web.spa/health
       - HealthChecks__Endpoints__1__Name=eDoxa Identity
