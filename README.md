@@ -16,3 +16,33 @@
     - [SendGrid](https://sendgrid.com/docs/api-reference/)
     - [Stripe API](https://stripe.com/docs/api/)
     - [Riot Games API](https://developer.riotgames.com/)
+
+# Builds
+
+| eDoxa.Identity |
+| -------------- |
+| [![Build Status](https://edoxa.visualstudio.com/eDoxa/_apis/build/status/eDoxa.Identity?branchName=master)](https://edoxa.visualstudio.com/eDoxa/_build/latest?definitionId=12&branchName=master) |
+
+| eDoxa.Cashier.Api |
+| ----------------- |
+| [![Build Status](https://edoxa.visualstudio.com/eDoxa/_apis/build/status/eDoxa.Cashier.Api?branchName=master)](https://edoxa.visualstudio.com/eDoxa/_build/latest?definitionId=11&branchName=master) |
+
+| eDoxa.Challenges.Api |
+| -------------------- |
+| [![Build Status](https://edoxa.visualstudio.com/eDoxa/_apis/build/status/eDoxa.Challenges.Api?branchName=master)](https://edoxa.visualstudio.com/eDoxa/_build/latest?definitionId=13&branchName=master) |
+
+| eDoxa.Challenges.BackgroundTasks |
+| -------------------------------- |
+| [![Build Status](https://edoxa.visualstudio.com/eDoxa/_apis/build/status/eDoxa.Challenges.BackgroundTasks?branchName=master)](https://edoxa.visualstudio.com/eDoxa/_build/latest?definitionId=17&branchName=master) |
+
+| eDoxa.Notifications.Api |
+| ----------------------- |
+| [![Build Status](https://edoxa.visualstudio.com/eDoxa/_apis/build/status/eDoxa.Notifications.Api?branchName=master)](https://edoxa.visualstudio.com/eDoxa/_build/latest?definitionId=16&branchName=master) |
+
+| eDoxa.Web.Spa |
+| ------------- |
+| [![Build Status](https://edoxa.visualstudio.com/eDoxa/_apis/build/status/eDoxa.Web.Spa?branchName=master)](https://edoxa.visualstudio.com/eDoxa/_build/latest?definitionId=15&branchName=master) |
+
+| eDoxa.Web.Status |
+| ---------------- |
+| [![Build Status](https://edoxa.visualstudio.com/eDoxa/_apis/build/status/eDoxa.Web.Status?branchName=master)](https://edoxa.visualstudio.com/eDoxa/_build/latest?definitionId=14&branchName=master) |
