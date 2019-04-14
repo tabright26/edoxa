@@ -98,7 +98,7 @@ namespace eDoxa.Challenges.Api
                     .AddJwtBearer(
                         options =>
                         {
-                            options.Audience = Configuration["IdentityServer:ApiResource:Name"];
+                            options.Audience = Configuration["ApiResource:Name"];
                             options.Authority = Configuration["IdentityServer:Url"];
                             options.RequireHttpsMetadata = false;
                         }

@@ -24,23 +24,23 @@ namespace eDoxa.ServiceBus.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        private const string UseAzureServiceBusFromConfig = "UseAzureServiceBus";
-        private const string ServiceBusHostNameFromConfig = "ServiceBus:HostName";
-        private const string ServiceBusUserNameFromConfig = "ServiceBus:UserName";
-        private const string ServiceBusPasswordFromConfig = "ServiceBus:Password";
-        private const string ServiceBusRetryCountFromConfig = "ServiceBus:RetryCount";
-        private const string ServiceBusSubscriptionFromConfig = "ServiceBus:Subscription";
+        private const string AzureServiceBusEnable = "AzureServiceBus:Enable";
+        private const string ServiceBusHostName = "ServiceBus:HostName";
+        private const string ServiceBusUserName = "ServiceBus:UserName";
+        private const string ServiceBusPassword = "ServiceBus:Password";
+        private const string ServiceBusRetryCount = "ServiceBus:RetryCount";
+        private const string ServiceBusSubscription = "ServiceBus:Subscription";
 
         public static void AddServiceBus(this IServiceCollection services, IConfiguration configuration)
         {
-            if (configuration.GetValue<bool>(UseAzureServiceBusFromConfig))
+            if (configuration.GetValue<bool>(AzureServiceBusEnable))
             {
                 services.AddSingleton<IAzurePersistentConnection>(
                     provider =>
                     {
                         var logger = provider.GetRequiredService<ILogger<AzurePersistentConnection>>();
 
-                        var builder = new ServiceBusConnectionStringBuilder(configuration[ServiceBusHostNameFromConfig]);
+                        var builder = new ServiceBusConnectionStringBuilder(configuration[ServiceBusHostName]);
 
                         return new AzurePersistentConnection(builder, logger);
                     }
@@ -55,24 +55,24 @@ namespace eDoxa.ServiceBus.Extensions
 
                         var factory = new ConnectionFactory
                         {
-                            HostName = configuration[ServiceBusHostNameFromConfig]
+                            HostName = configuration[ServiceBusHostName]
                         };
 
-                        if (!string.IsNullOrEmpty(configuration[ServiceBusUserNameFromConfig]))
+                        if (!string.IsNullOrEmpty(configuration[ServiceBusUserName]))
                         {
-                            factory.UserName = configuration[ServiceBusUserNameFromConfig];
+                            factory.UserName = configuration[ServiceBusUserName];
                         }
 
-                        if (!string.IsNullOrEmpty(configuration[ServiceBusPasswordFromConfig]))
+                        if (!string.IsNullOrEmpty(configuration[ServiceBusPassword]))
                         {
-                            factory.Password = configuration[ServiceBusPasswordFromConfig];
+                            factory.Password = configuration[ServiceBusPassword];
                         }
 
                         var retryCount = 5;
 
-                        if (!string.IsNullOrEmpty(configuration[ServiceBusRetryCountFromConfig]))
+                        if (!string.IsNullOrEmpty(configuration[ServiceBusRetryCount]))
                         {
-                            retryCount = int.Parse(configuration[ServiceBusRetryCountFromConfig]);
+                            retryCount = int.Parse(configuration[ServiceBusRetryCount]);
                         }
 
                         return new RabbitMqPersistentConnection(factory, logger, retryCount);
@@ -83,9 +83,9 @@ namespace eDoxa.ServiceBus.Extensions
 
         public static void AddEventBus(this IServiceCollection services, IConfiguration configuration)
         {
-            var subscription = configuration[ServiceBusSubscriptionFromConfig];
+            var subscription = configuration[ServiceBusSubscription];
 
-            if (configuration.GetValue<bool>(UseAzureServiceBusFromConfig))
+            if (configuration.GetValue<bool>(AzureServiceBusEnable))
             {
                 services.AddSingleton<IEventBusService, AzureEventBusService>(
                     provider =>
@@ -117,9 +117,9 @@ namespace eDoxa.ServiceBus.Extensions
 
                         var retryCount = 5;
 
-                        if (!string.IsNullOrEmpty(configuration[ServiceBusRetryCountFromConfig]))
+                        if (!string.IsNullOrEmpty(configuration[ServiceBusRetryCount]))
                         {
-                            retryCount = int.Parse(configuration[ServiceBusRetryCountFromConfig]);
+                            retryCount = int.Parse(configuration[ServiceBusRetryCount]);
                         }
 
                         return new RabbitMqEventBusService(logger, scope, connection, handler, retryCount, subscription);

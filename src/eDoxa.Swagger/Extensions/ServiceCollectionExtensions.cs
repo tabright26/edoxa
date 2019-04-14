@@ -39,9 +39,9 @@ namespace eDoxa.Swagger.Extensions
 
             var authority = configuration["Authority"];
 
-            var apiResourceName = configuration["IdentityServer:ApiResource:Name"];
+            var apiResourceName = configuration["ApiResource:Name"];
 
-            var apiResourceDisplayName = configuration["IdentityServer:ApiResource:DisplayName"];
+            var apiResourceDisplayName = configuration["ApiResource:DisplayName"];
 
             services.AddSwaggerGen(
                 swaggerGenOptions =>

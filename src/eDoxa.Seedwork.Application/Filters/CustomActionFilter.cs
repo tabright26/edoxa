@@ -21,8 +21,8 @@ namespace eDoxa.Seedwork.Application.Filters
     {
         public void OnActionExecuting(ActionExecutingContext context)
         {
-            context.HttpContext.Response.Headers.Add(EdoxaHeaderNames.RequestId, Guid.NewGuid().ToString());
-            context.HttpContext.Response.Headers.Add(EdoxaHeaderNames.RequestDate, DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
+            context.HttpContext.Response.Headers.Add(CustomHeaderNames.RequestId, Guid.NewGuid().ToString());
+            context.HttpContext.Response.Headers.Add(CustomHeaderNames.RequestDate, DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
         }
 
         public void OnActionExecuted(ActionExecutedContext context)

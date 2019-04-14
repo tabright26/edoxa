@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-04-13
+// Date Created: 2019-04-14
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -21,6 +21,7 @@ using eDoxa.Identity.DTO.Factories;
 using eDoxa.Identity.Extensions;
 using eDoxa.Identity.Infrastructure;
 using eDoxa.Monitoring.Extensions;
+using eDoxa.Security.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.ServiceBus;
 using eDoxa.ServiceBus.Extensions;
@@ -119,16 +120,7 @@ namespace eDoxa.Identity
 
             services.AddSwagger(Configuration, Environment, Assembly.GetExecutingAssembly());
 
-            //if (Configuration.GetValue<bool>("UseClusterEnvironment"))
-            //{
-            //    services.AddDataProtection(
-            //                options =>
-            //                {
-            //                    options.ApplicationDiscriminator = Configuration["IdentityServer:ApiResources:Identity:Name"];
-            //                }
-            //            )
-            //            .PersistKeysToRedis(ConnectionMultiplexer.Connect(Configuration.GetConnectionString("Redis")), "DataProtection-Keys");
-            //}
+            services.AddDataProtection(Configuration);
 
             services.AddServiceBus(Configuration);
 

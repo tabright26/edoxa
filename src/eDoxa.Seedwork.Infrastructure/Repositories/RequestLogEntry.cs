@@ -24,15 +24,15 @@ namespace eDoxa.Seedwork.Infrastructure.Repositories
         {
             if (httpContext != null)
             {
-                Id = Guid.Parse(httpContext.Response.Headers[EdoxaHeaderNames.RequestId]);
-                Time = DateTime.Parse(httpContext.Response.Headers[EdoxaHeaderNames.RequestDate]);
+                Id = Guid.Parse(httpContext.Response.Headers[CustomHeaderNames.RequestId]);
+                Time = DateTime.Parse(httpContext.Response.Headers[CustomHeaderNames.RequestDate]);
                 Type = RequestLogEntryType.External;
-                Version = httpContext.Response.Headers[EdoxaHeaderNames.EdoxaVersion];
+                Version = httpContext.Response.Headers[CustomHeaderNames.EdoxaVersion];
                 Method = httpContext.Request?.Method;
                 Url = httpContext.Request?.Path.Value.ToLower();
                 LocalIpAddress = httpContext.Connection?.LocalIpAddress?.MapToIPv4().ToString();
                 RemoteIpAddress = httpContext.Connection?.RemoteIpAddress?.MapToIPv4().ToString();
-                Origin = httpContext.Request.Headers[EdoxaHeaderNames.Origin];
+                Origin = httpContext.Request.Headers[CustomHeaderNames.Origin];
 
                 if (idempotencyKey != null)
                 {

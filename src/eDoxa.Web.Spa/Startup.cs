@@ -1,5 +1,5 @@
 // Filename: Startup.cs
-// Date Created: 2019-04-12
+// Date Created: 2019-04-14
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -10,6 +10,7 @@
 
 using eDoxa.Monitoring.Extensions;
 using eDoxa.Web.Spa.Extensions;
+using eDoxa.Security.Extensions;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -22,36 +23,26 @@ namespace eDoxa.Web.Spa
 {
     public sealed class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {
             Configuration = configuration;
+            Environment = environment;
         }
 
         private IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        private IHostingEnvironment Environment { get; }
+
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddOptions();
-
             services.AddHealthChecks(Configuration);
 
-            //if (Configuration.GetValue<bool>("UseClusterEnvironment"))
-            //{
-            //    services.AddDataProtection(
-            //                options =>
-            //                {
-            //                    options.ApplicationDiscriminator = Configuration["IdentityServer:Clients:Web:Spa:ClientId"];
-            //                }
-            //            )
-            //            .PersistKeysToRedis(ConnectionMultiplexer.Connect(Configuration["Redis"]), "DataProtection-Keys");
-            //}
+            services.AddDataProtection(Configuration);
 
             services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(
                 configuration =>
                 {
@@ -60,12 +51,11 @@ namespace eDoxa.Web.Spa
             );
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder application, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder application)
         {
             application.UseHealthChecks();
 
-            if (env.IsDevelopment())
+            if (Environment.IsDevelopment())
             {
                 application.UseDeveloperExceptionPage();
             }
@@ -80,13 +70,13 @@ namespace eDoxa.Web.Spa
             application.UseMvcWithDefaultRoute();
 
             application.UseSpa(
-                spa =>
+                builder =>
                 {
-                    spa.Options.SourcePath = "ClientApp";
+                    builder.Options.SourcePath = "ClientApp";
 
-                    if (env.IsDevelopment())
+                    if (Environment.IsDevelopment())
                     {
-                        spa.UseReactDevelopmentServer("start");
+                        builder.UseReactDevelopmentServer("start");
                     }
                 }
             );

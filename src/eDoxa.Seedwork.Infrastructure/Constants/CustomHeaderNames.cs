@@ -10,8 +10,12 @@
 
 namespace eDoxa.Seedwork.Infrastructure.Constants
 {
-    public class CustomHeaderNames
+    public static class CustomHeaderNames
     {
         public const string IdempotencyKey = "X-Idempotency-Key";
+        public const string RequestId = "Request-Id";
+        public const string RequestDate = "Request-Date";
+        public const string EdoxaVersion = "Edoxa-Version";
+        public const string Origin = "Origin";
     }
 }
