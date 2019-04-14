@@ -18,7 +18,7 @@ namespace eDoxa.AutoMapper.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddProfiles(this IServiceCollection services, IMapperFactory factory)
+        public static void AddAutoMapper(this IServiceCollection services, IMapperFactory factory)
         {
             services.AddAutoMapper(config => factory.CreateConfiguration());
         }

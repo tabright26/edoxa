@@ -38,13 +38,13 @@ namespace eDoxa.Cashier.Api
 {
     public sealed class Startup
     {
-        public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
+        public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {
             Configuration = configuration;
-            HostingEnvironment = hostingEnvironment;
+            Environment = environment;
         }
 
-        private IHostingEnvironment HostingEnvironment { get; }
+        private IHostingEnvironment Environment { get; }
 
         private IConfiguration Configuration { get; }
 
@@ -77,22 +77,11 @@ namespace eDoxa.Cashier.Api
                 )
             );
 
-            services.AddProfiles(CashierMapperFactory.Instance);
+            services.AddAutoMapper(CashierMapperFactory.Instance);
 
             services.AddMvcWithApiBehavior();
 
-            if (HostingEnvironment.IsDevelopment())
-            {
-                services.AddSwagger(
-                    Configuration["Authority"],
-                    Assembly.GetExecutingAssembly().GetName().Name,
-                    config =>
-                    {
-                        config.ApiResourceName = Configuration["IdentityServer:ApiResource:Name"];
-                        config.ApiResourceDisplayName = Configuration["IdentityServer:ApiResource:DisplayName"];
-                    }
-                );
-            }
+            services.AddSwagger(Configuration, Environment, Assembly.GetExecutingAssembly());
 
             services.AddCorsPolicy();
 
@@ -129,17 +118,9 @@ namespace eDoxa.Cashier.Api
 
             application.UseStaticFiles();
 
-            if (HostingEnvironment.IsDevelopment())
-            {
-                application.UseSwaggerWithRedirects(
-                    provider,
-                    config =>
-                    {
-                        config.Id = Configuration["IdentityServer:Client:Swagger:ClientId"];
-                        config.Name = Configuration["IdentityServer:Client:Swagger:ClientName"];
-                    }
-                );
-            }
+            application.UseSwagger(Configuration, Environment, provider);
+
+            application.UseStatusCodePagesWithRedirects("~/swagger");
 
             application.UseMvcWithDefaultRoute();
 

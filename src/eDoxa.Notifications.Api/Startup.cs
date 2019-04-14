@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-04-12
+// Date Created: 2019-04-13
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -37,13 +37,13 @@ namespace eDoxa.Notifications.Api
 {
     public sealed class Startup
     {
-        public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
+        public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {
             Configuration = configuration;
-            HostingEnvironment = hostingEnvironment;
+            Environment = environment;
         }
 
-        private IHostingEnvironment HostingEnvironment { get; }
+        private IHostingEnvironment Environment { get; }
 
         private IConfiguration Configuration { get; }
 
@@ -76,22 +76,11 @@ namespace eDoxa.Notifications.Api
                 )
             );
 
-            services.AddProfiles(NotificationsMapperFactory.Instance);
+            services.AddAutoMapper(NotificationsMapperFactory.Instance);
 
             services.AddMvcWithApiBehavior();
 
-            if (HostingEnvironment.IsDevelopment())
-            {
-                services.AddSwagger(
-                    Configuration["Authority"],
-                    Assembly.GetExecutingAssembly().GetName().Name,
-                    config =>
-                    {
-                        config.ApiResourceName = Configuration["IdentityServer:ApiResource:Name"];
-                        config.ApiResourceDisplayName = Configuration["IdentityServer:ApiResource:DisplayName"];
-                    }
-                );
-            }
+            services.AddSwagger(Configuration, Environment, Assembly.GetExecutingAssembly());
 
             services.AddCorsPolicy();
 
@@ -128,17 +117,9 @@ namespace eDoxa.Notifications.Api
 
             application.UseStaticFiles();
 
-            if (HostingEnvironment.IsDevelopment())
-            {
-                application.UseSwaggerWithRedirects(
-                    provider,
-                    config =>
-                    {
-                        config.Id = Configuration["IdentityServer:Client:Swagger:ClientId"];
-                        config.Name = Configuration["IdentityServer:Client:Swagger:ClientName"];
-                    }
-                );
-            }
+            application.UseSwagger(Configuration, Environment, provider);
+
+            application.UseStatusCodePagesWithRedirects("~/swagger");
 
             application.UseMvcWithDefaultRoute();
 

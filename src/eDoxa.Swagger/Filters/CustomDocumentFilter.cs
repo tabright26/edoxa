@@ -1,5 +1,5 @@
 ﻿// Filename: CustomDocumentFilter.cs
-// Date Created: 2019-03-17
+// Date Created: 2019-04-14
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -13,7 +13,7 @@ using System.Linq;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace eDoxa.Swagger.DocumentFilters
+namespace eDoxa.Swagger.Filters
 {
     public sealed class CustomDocumentFilter : IDocumentFilter
     {

@@ -33,7 +33,7 @@ namespace eDoxa.Challenges.DTO.Factories
 
     public sealed partial class ChallengesMapperFactory : MapperFactory
     {
-        public override IEnumerable<Profile> CreateProfiles()
+        protected override IEnumerable<Profile> CreateProfiles()
         {
             yield return new ChallengeListProfile();
             yield return new MatchListProfile();

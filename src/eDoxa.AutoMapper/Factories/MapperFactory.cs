@@ -1,5 +1,5 @@
 ﻿// Filename: MapperFactory.cs
-// Date Created: 2019-04-03
+// Date Created: 2019-04-13
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -17,17 +17,6 @@ namespace eDoxa.AutoMapper.Factories
 {
     public abstract class MapperFactory : IMapperFactory
     {
-        public abstract IEnumerable<Profile> CreateProfiles();
-
-        public IMapper CreateMapper()
-        {
-            var provider = new MapperConfiguration(this.CreateConfiguration());
-
-            provider.AssertConfigurationIsValid();
-
-            return new Mapper(provider);
-        }
-
         public MapperConfigurationExpression CreateConfiguration()
         {
             var config = new MapperConfigurationExpression
@@ -42,5 +31,16 @@ namespace eDoxa.AutoMapper.Factories
 
             return config;
         }
+
+        public IMapper CreateMapper()
+        {
+            var provider = new MapperConfiguration(this.CreateConfiguration());
+
+            provider.AssertConfigurationIsValid();
+
+            return new Mapper(provider);
+        }
+
+        protected abstract IEnumerable<Profile> CreateProfiles();
     }
 }

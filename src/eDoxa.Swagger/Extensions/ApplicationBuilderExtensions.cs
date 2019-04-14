@@ -1,5 +1,5 @@
 ﻿// Filename: ApplicationBuilderExtensions.cs
-// Date Created: 2019-03-04
+// Date Created: 2019-04-14
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -8,20 +8,25 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.Extensions.Configuration;
 
 namespace eDoxa.Swagger.Extensions
 {
     public static class ApplicationBuilderExtensions
     {
-        public static void UseSwagger(this IApplicationBuilder application, IApiVersionDescriptionProvider provider, Action<SwaggerClientConfig> config)
+        public static IApplicationBuilder UseSwagger(
+            this IApplicationBuilder application,
+            IConfiguration configuration,
+            IHostingEnvironment environment,
+            IApiVersionDescriptionProvider provider)
         {
-            var swaggerClientConfig = new SwaggerClientConfig();
-
-            config.Invoke(swaggerClientConfig);
+            if (!environment.IsDevelopment())
+            {
+                return application;
+            }
 
             application.UseSwagger();
 
@@ -33,22 +38,14 @@ namespace eDoxa.Swagger.Extensions
                         options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName);
                     }
 
-                    options.OAuthClientId(swaggerClientConfig.Id);
-                    options.OAuthAppName(swaggerClientConfig.Name);
+                    options.OAuthClientId(configuration["Swagger:ClientId"]);
+                    options.OAuthAppName(configuration["Swagger:ClientName"]);
                     options.DefaultModelExpandDepth(0);
                     options.DefaultModelsExpandDepth(-1);
                 }
             );
-        }
 
-        public static void UseSwaggerWithRedirects(
-            this IApplicationBuilder application,
-            IApiVersionDescriptionProvider provider,
-            Action<SwaggerClientConfig> config)
-        {
-            application.UseSwagger(provider, config);
-
-            application.UseStatusCodePagesWithRedirects("~/swagger");
+            return application;
         }
     }
 }

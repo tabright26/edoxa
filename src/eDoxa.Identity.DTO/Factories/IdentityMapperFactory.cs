@@ -33,7 +33,7 @@ namespace eDoxa.Identity.DTO.Factories
 
     public sealed partial class IdentityMapperFactory : MapperFactory
     {
-        public override IEnumerable<Profile> CreateProfiles()
+        protected override IEnumerable<Profile> CreateProfiles()
         {
             yield return new UserListProfile();
             yield return new UserProfile();

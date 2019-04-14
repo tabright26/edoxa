@@ -1,5 +1,5 @@
 ﻿// Filename: ServiceCollectionExtensions.cs
-// Date Created: 2019-03-04
+// Date Created: 2019-04-14
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -11,11 +11,13 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 
-using eDoxa.Swagger.DocumentFilters;
-using eDoxa.Swagger.OperationFilters;
+using eDoxa.Swagger.Filters;
 
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using Swashbuckle.AspNetCore.Swagger;
@@ -24,11 +26,22 @@ namespace eDoxa.Swagger.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddSwagger(this IServiceCollection services, string authority, string path,  Action<SwaggerApiResourceConfig> config)
+        public static IServiceCollection AddSwagger(
+            this IServiceCollection services,
+            IConfiguration configuration,
+            IHostingEnvironment environment,
+            Assembly assembly)
         {
-            var swaggerApiResourceConfig = new SwaggerApiResourceConfig();
+            if (!environment.IsDevelopment())
+            {
+                return services;
+            }
 
-            config.Invoke(swaggerApiResourceConfig);
+            var authority = configuration["Authority"];
+
+            var apiResourceName = configuration["IdentityServer:ApiResource:Name"];
+
+            var apiResourceDisplayName = configuration["IdentityServer:ApiResource:DisplayName"];
 
             services.AddSwaggerGen(
                 swaggerGenOptions =>
@@ -43,7 +56,7 @@ namespace eDoxa.Swagger.Extensions
                             description.GroupName,
                             new Info
                             {
-                                Title = swaggerApiResourceConfig.ApiResourceDisplayName,
+                                Title = apiResourceDisplayName,
                                 Version = description.GroupName,
                                 Description = description.IsDeprecated ? "This API version has been deprecated." : null,
                                 Contact = new Contact
@@ -59,7 +72,7 @@ namespace eDoxa.Swagger.Extensions
                         );
                     }
 
-                    swaggerGenOptions.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{path}.xml"));
+                    swaggerGenOptions.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{assembly.GetName().Name}.xml"));
 
                     swaggerGenOptions.AddSecurityDefinition(
                         "oauth2",
@@ -71,17 +84,18 @@ namespace eDoxa.Swagger.Extensions
                             TokenUrl = authority + "/connect/token",
                             Scopes = new Dictionary<string, string>
                             {
-                                [swaggerApiResourceConfig.ApiResourceName] = swaggerApiResourceConfig.ApiResourceDisplayName
+                                [apiResourceName] = apiResourceDisplayName
                             }
                         }
                     );
 
                     swaggerGenOptions.DocumentFilter<CustomDocumentFilter>();
+
                     swaggerGenOptions.OperationFilter<CustomOperationFilter>();
-                    swaggerGenOptions.OperationFilter<SecurityOperationFilter>();
-                    swaggerGenOptions.OperationFilter<IdempotencyKeyOperationFilter>();
                 }
             );
+
+            return services;
         }
     }
 }

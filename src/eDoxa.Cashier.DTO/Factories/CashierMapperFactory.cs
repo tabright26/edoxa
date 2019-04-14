@@ -33,7 +33,7 @@ namespace eDoxa.Cashier.DTO.Factories
 
     public sealed partial class CashierMapperFactory : MapperFactory
     {
-        public override IEnumerable<Profile> CreateProfiles()
+        protected override IEnumerable<Profile> CreateProfiles()
         {
             yield return new AddressProfile();
             yield return new CardListProfile();

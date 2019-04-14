@@ -33,7 +33,7 @@ namespace eDoxa.Notifications.DTO.Factories
 
     public sealed partial class NotificationsMapperFactory : MapperFactory
     {
-        public override IEnumerable<Profile> CreateProfiles()
+        protected override IEnumerable<Profile> CreateProfiles()
         {
             yield return new NotificationListProfile();
             yield return new NotificationProfile();
