@@ -88,9 +88,9 @@ namespace eDoxa.Cashier.Api
                     Assembly.GetExecutingAssembly().GetName().Name,
                     config =>
                     {
-                        config.ApiResourceName = Configuration["IdentityServer:ApiResources:Cashier:Name"];
-                        config.ApiResourceDisplayName = Configuration["IdentityServer:ApiResources:Cashier:DisplayName"];
-                        config.ApiResourceDescription = Configuration["IdentityServer:ApiResources:Cashier:Description"];
+                        config.ApiResourceName = Configuration["IdentityServer:ApiResource:Name"];
+                        config.ApiResourceDisplayName = Configuration["IdentityServer:ApiResource:DisplayName"];
+                        config.ApiResourceDescription = Configuration["IdentityServer:ApiResource:Description"];
                     }
                 );
             }
@@ -111,8 +111,8 @@ namespace eDoxa.Cashier.Api
                     .AddJwtBearer(
                         options =>
                         {
-                            options.Audience = Configuration["IdentityServer:ApiResources:Cashier:Name"];
-                            options.Authority = Configuration["Authority:Internal"];
+                            options.Audience = Configuration["IdentityServer:ApiResource:Name"];
+                            options.Authority = Configuration["IdentityServer:Url"];
                             options.RequireHttpsMetadata = false;
                         }
                     );
@@ -136,8 +136,8 @@ namespace eDoxa.Cashier.Api
                     provider,
                     config =>
                     {
-                        config.Id = Configuration["IdentityServer:Clients:Swagger:Cashier:ClientId"];
-                        config.Name = Configuration["IdentityServer:Clients:Swagger:Cashier:ClientName"];
+                        config.Id = Configuration["IdentityServer:Client:Swagger:ClientId"];
+                        config.Name = Configuration["IdentityServer:Client:Swagger:ClientName"];
                     }
                 );
             }

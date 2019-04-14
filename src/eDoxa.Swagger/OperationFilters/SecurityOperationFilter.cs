@@ -1,5 +1,5 @@
 ﻿// Filename: SecurityOperationFilter.cs
-// Date Created: 2019-03-04
+// Date Created: 2019-04-13
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -61,57 +61,20 @@ namespace eDoxa.Swagger.OperationFilters
                         }
                     );
 
-                    if (operation.Security == null)
+                    operation.Security = new List<IDictionary<string, IEnumerable<string>>>
                     {
-                        operation.Security = new List<IDictionary<string, IEnumerable<string>>>();
-                    }
-
-                    if (TryVerifySecurityOperation(operation, _configuration["IdentityServer:ApiResources:Identity:Name"]))
-                    {
-                        return;
-                    }
-
-                    if (TryVerifySecurityOperation(operation, _configuration["IdentityServer:ApiResources:Challenges:Name"]))
-                    {
-                        return;
-                    }
-
-                    if (TryVerifySecurityOperation(operation, _configuration["IdentityServer:ApiResources:Cashier:Name"]))
-                    {
-                        return;
-                    }
-
-                    if (TryVerifySecurityOperation(operation, _configuration["IdentityServer:ApiResources:Notifications:Name"]))
-                    {
-                        return;
-                    }
-
-                    throw new InvalidOperationException();
+                        new Dictionary<string, IEnumerable<string>>
+                        {
+                            {
+                                "oauth2", new[]
+                                {
+                                    _configuration["IdentityServer:ApiResource:Name"]
+                                }
+                            }
+                        }
+                    };
                 }
             }
-        }
-
-        private static bool TryVerifySecurityOperation(Operation operation, string resourceName)
-        {
-            if (string.IsNullOrWhiteSpace(resourceName))
-            {
-                return false;
-            }
-
-            var security = new Dictionary<string, IEnumerable<string>>
-            {
-                {
-                    "oauth2", new[]
-                    {
-                        resourceName
-                    }
-                }
-            };
-
-            // List of Swagger client applications who used the OAuth2 authorization protocol.
-            operation.Security.Add(security);
-
-            return true;
         }
     }
 }

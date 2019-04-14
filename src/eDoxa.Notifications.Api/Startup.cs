@@ -87,9 +87,9 @@ namespace eDoxa.Notifications.Api
                     Assembly.GetExecutingAssembly().GetName().Name,
                     config =>
                     {
-                        config.ApiResourceName = Configuration["IdentityServer:ApiResources:Notifications:Name"];
-                        config.ApiResourceDisplayName = Configuration["IdentityServer:ApiResources:Notifications:DisplayName"];
-                        config.ApiResourceDescription = Configuration["IdentityServer:ApiResources:Notifications:Description"];
+                        config.ApiResourceName = Configuration["IdentityServer:ApiResource:Name"];
+                        config.ApiResourceDisplayName = Configuration["IdentityServer:ApiResource:DisplayName"];
+                        config.ApiResourceDescription = Configuration["IdentityServer:ApiResource:Description"];
                     }
                 );
             }
@@ -110,8 +110,8 @@ namespace eDoxa.Notifications.Api
                     .AddJwtBearer(
                         options =>
                         {
-                            options.Audience = Configuration["IdentityServer:ApiResources:Notifications:Name"];
-                            options.Authority = Configuration["Authority:Internal"];
+                            options.Audience = Configuration["IdentityServer:ApiResource:Name"];
+                            options.Authority = Configuration["IdentityServer:Url"];
                             options.RequireHttpsMetadata = false;
                         }
                     );
@@ -135,8 +135,8 @@ namespace eDoxa.Notifications.Api
                     provider,
                     config =>
                     {
-                        config.Id = Configuration["IdentityServer:Clients:Swagger:Notifications:ClientId"];
-                        config.Name = Configuration["IdentityServer:Clients:Swagger:Notifications:ClientName"];
+                        config.Id = Configuration["IdentityServer:Client:Swagger:ClientId"];
+                        config.Name = Configuration["IdentityServer:Client:Swagger:ClientName"];
                     }
                 );
             }

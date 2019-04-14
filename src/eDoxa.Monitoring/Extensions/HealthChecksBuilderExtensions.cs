@@ -52,7 +52,7 @@ namespace eDoxa.Monitoring.Extensions
         public static void AddIdentityServer(this IHealthChecksBuilder builder, IConfiguration configuration)
         {
             builder.AddIdentityServer(
-                new Uri(configuration["Authority:Internal"]),
+                new Uri(configuration["IdentityServer:Url"]),
                 "identity-server",
                 tags: new[]
                 {

@@ -36,11 +36,6 @@ services:
       - UseAzureServiceBus=${USE_AZURE_SERVICE_BUS}
       - UseClusterEnvironment=${USE_CLUSTER_ENVIRONMENT}
       - Authority=${DOCKER_URL:-http://localhost}:5000
-      - IdentityServer__IssuerUrl=null
-      - IdentityServer__UserInteraction__ConsentUrl=/Identity/Consent/Index
-      - IdentityServer__UserInteraction__ErrorUrl=/Identity/Error
-      - IdentityServer__UserInteraction__LoginUrl=/Identity/Account/Login
-      - IdentityServer__UserInteraction__LogoutUrl=/Identity/Account/Logout
       - IdentityServer__ApiResources__Identity__Name=${IDENTITY__API_RESOURCE__NAME}
       - IdentityServer__ApiResources__Identity__DisplayName=${IDENTITY__API_RESOURCE__DISPLAY_NAME}
       - IdentityServer__ApiResources__Identity__Description=${IDENTITY__API_RESOURCE__DESCRIPTION}
@@ -82,8 +77,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - ConnectionStrings__Sql=${CONNECTIONSTRINGS_SQLSERVER_CHALLENGES:-Server=edoxa.mssql.data;Database=eDoxa.Services.Challenges;User Id=sa;Password=fnU3Www9TnBDp3MA}      
-      - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}      
-      - Authority__Internal=http://edoxa.identity            
+      - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
       - ServiceBus__HostName=${SERVICE_BUS_HOST_NAME:-edoxa.rabbitmq.broker}
       - ServiceBus__UserName=${SERVICE_BUS_USER_NAME:-admin}
       - ServiceBus__Password=${SERVICE_BUS_PASSWORD:-4t8SaVXVMy0rT2kM}
@@ -91,11 +85,7 @@ services:
       - ServiceBus__Subscription=Challenges
       - UseAzureServiceBus=${USE_AZURE_SERVICE_BUS}
       - Authority=${DOCKER_URL:-http://localhost}:5000
-      - IdentityServer__ApiResources__Challenges__Name=${CHALLENGES__API_RESOURCE__NAME}
-      - IdentityServer__ApiResources__Challenges__DisplayName=${CHALLENGES__API_RESOURCE__DISPLAY_NAME}
-      - IdentityServer__ApiResources__Challenges__Description=${CHALLENGES__API_RESOURCE__DESCRIPTION}
-      - IdentityServer__Clients__Swagger__Challenges__ClientId=${CHALLENGES__SWAGGER__CLIENT_ID}
-      - IdentityServer__Clients__Swagger__Challenges__ClientName=${CHALLENGES__API_RESOURCE__DISPLAY_NAME} ${SWAGGER__CLIENT_NAME}
+      - IdentityServer__Url=http://edoxa.identity
     ports:
       - "5002:80"
 
@@ -105,7 +95,6 @@ services:
       - ASPNETCORE_URLS=http://+:80
       - ConnectionStrings__Sql=${CONNECTIONSTRINGS_SQLSERVER_CASHIER:-Server=edoxa.mssql.data;Database=eDoxa.Services.Cashier;User Id=sa;Password=fnU3Www9TnBDp3MA}
       - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}      
-      - Authority__Internal=http://edoxa.identity      
       - ServiceBus__HostName=${SERVICE_BUS_HOST_NAME:-edoxa.rabbitmq.broker}
       - ServiceBus__UserName=${SERVICE_BUS_USER_NAME:-admin}
       - ServiceBus__Password=${SERVICE_BUS_PASSWORD:-4t8SaVXVMy0rT2kM}
@@ -113,11 +102,7 @@ services:
       - ServiceBus__Subscription=Cashier
       - UseAzureServiceBus=${USE_AZURE_SERVICE_BUS}
       - Authority=${DOCKER_URL:-http://localhost}:5000
-      - IdentityServer__ApiResources__Cashier__Name=${CASHIER__API_RESOURCE__NAME}
-      - IdentityServer__ApiResources__Cashier__DisplayName=${CASHIER__API_RESOURCE__DISPLAY_NAME}
-      - IdentityServer__ApiResources__Cashier__Description=${CASHIER__API_RESOURCE__DESCRIPTION}
-      - IdentityServer__Clients__Swagger__Cashier__ClientId=${CASHIER__SWAGGER__CLIENT_ID}
-      - IdentityServer__Clients__Swagger__Cashier__ClientName=${CASHIER__API_RESOURCE__DISPLAY_NAME} ${SWAGGER__CLIENT_NAME}
+      - IdentityServer__Url=http://edoxa.identity
     ports:
       - "5003:80"
 
@@ -126,8 +111,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - ConnectionStrings__Sql=${CONNECTIONSTRINGS_SQLSERVER_NOTIFICATIONS:-Server=edoxa.mssql.data;Database=eDoxa.Services.Notifications;User Id=sa;Password=fnU3Www9TnBDp3MA}
-      - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}      
-      - Authority__Internal=http://edoxa.identity      
+      - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
       - ServiceBus__HostName=${SERVICE_BUS_HOST_NAME:-edoxa.rabbitmq.broker}
       - ServiceBus__UserName=${SERVICE_BUS_USER_NAME:-admin}
       - ServiceBus__Password=${SERVICE_BUS_PASSWORD:-4t8SaVXVMy0rT2kM}
@@ -135,11 +119,7 @@ services:
       - ServiceBus__Subscription=Notifications
       - UseAzureServiceBus=${USE_AZURE_SERVICE_BUS}
       - Authority=${DOCKER_URL:-http://localhost}:5000
-      - IdentityServer__ApiResources__Notifications__Name=${NOTIFICATIONS__API_RESOURCE__NAME}
-      - IdentityServer__ApiResources__Notifications__DisplayName=${NOTIFICATIONS__API_RESOURCE__DISPLAY_NAME}
-      - IdentityServer__ApiResources__Notifications__Description=${NOTIFICATIONS__API_RESOURCE__DESCRIPTION}
-      - IdentityServer__Clients__Swagger__Notifications__ClientId=${NOTIFICATIONS__SWAGGER__CLIENT_ID}
-      - IdentityServer__Clients__Swagger__Notifications__ClientName=${NOTIFICATIONS__API_RESOURCE__DISPLAY_NAME} ${SWAGGER__CLIENT_NAME}
+      - IdentityServer__Url=http://edoxa.identity
     ports:
       - "5005:80"
 

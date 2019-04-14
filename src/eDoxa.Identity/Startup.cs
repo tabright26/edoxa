@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-04-12
+// Date Created: 2019-04-13
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -124,9 +124,9 @@ namespace eDoxa.Identity
                     Assembly.GetExecutingAssembly().GetName().Name,
                     config =>
                     {
-                        config.ApiResourceName = Configuration["IdentityServer:ApiResources:Identity:Name"];
-                        config.ApiResourceDisplayName = Configuration["IdentityServer:ApiResources:Identity:DisplayName"];
-                        config.ApiResourceDescription = Configuration["IdentityServer:ApiResources:Identity:Description"];
+                        config.ApiResourceName = Configuration["IdentityServer:ApiResource:Name"];
+                        config.ApiResourceDisplayName = Configuration["IdentityServer:ApiResource:DisplayName"];
+                        config.ApiResourceDescription = Configuration["IdentityServer:ApiResource:Description"];
                     }
                 );
             }
@@ -259,8 +259,8 @@ namespace eDoxa.Identity
                     provider,
                     config =>
                     {
-                        config.Id = Configuration["IdentityServer:Clients:Swagger:Identity:ClientId"];
-                        config.Name = Configuration["IdentityServer:Clients:Swagger:Identity:ClientName"];
+                        config.Id = Configuration["IdentityServer:Client:Swagger:ClientId"];
+                        config.Name = Configuration["IdentityServer:Client:Swagger:ClientName"];
                     }
                 );
             }
