@@ -16,7 +16,6 @@ using eDoxa.Identity.Domain.Repositories;
 using eDoxa.Identity.DTO.Queries;
 using eDoxa.Identity.Infrastructure;
 using eDoxa.Identity.Infrastructure.Repositories;
-using eDoxa.Identity.Infrastructure.Seeders;
 
 namespace eDoxa.Identity.Application
 {
@@ -41,9 +40,6 @@ namespace eDoxa.Identity.Application
 
             // Queries
             builder.RegisterType<UserQueries>().As<IUserQueries>().InstancePerLifetimeScope();
-
-            // Factories
-            builder.RegisterType<ConfigurationDbContextSeeder>().InstancePerDependency();
         }
     }
 }

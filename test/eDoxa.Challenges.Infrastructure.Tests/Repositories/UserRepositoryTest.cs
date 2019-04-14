@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 
 using eDoxa.Challenges.Domain.Factories;
 using eDoxa.Challenges.Infrastructure.Repositories;
-using eDoxa.Seedwork.Infrastructure;
 using eDoxa.Seedwork.Infrastructure.Factories;
 
 using FluentAssertions;

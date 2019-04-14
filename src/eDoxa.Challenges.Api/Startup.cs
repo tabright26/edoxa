@@ -89,7 +89,6 @@ namespace eDoxa.Challenges.Api
                     {
                         config.ApiResourceName = Configuration["IdentityServer:ApiResource:Name"];
                         config.ApiResourceDisplayName = Configuration["IdentityServer:ApiResource:DisplayName"];
-                        config.ApiResourceDescription = Configuration["IdentityServer:ApiResource:Description"];
                     }
                 );
             }

@@ -15,7 +15,6 @@ using System.Threading.Tasks;
 using eDoxa.Notifications.Domain.Factories;
 using eDoxa.Notifications.Infrastructure.Repositories;
 using eDoxa.Notifications.Infrastructure.Tests.Asserts;
-using eDoxa.Seedwork.Infrastructure;
 using eDoxa.Seedwork.Infrastructure.Factories;
 
 using FluentAssertions;

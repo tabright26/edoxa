@@ -14,6 +14,5 @@ namespace eDoxa.Swagger
     {
         public string ApiResourceName { get; set; }
         public string ApiResourceDisplayName { get; set; }
-        public string ApiResourceDescription { get; set; }
     }
 }

@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.Infrastructure.Repositories;
 using eDoxa.Cashier.Infrastructure.Tests.Asserts;
-using eDoxa.Seedwork.Infrastructure;
 using eDoxa.Seedwork.Infrastructure.Factories;
 
 using FluentAssertions;

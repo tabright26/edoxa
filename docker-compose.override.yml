@@ -36,39 +36,11 @@ services:
       - UseAzureServiceBus=${USE_AZURE_SERVICE_BUS}
       - UseClusterEnvironment=${USE_CLUSTER_ENVIRONMENT}
       - Authority=${DOCKER_URL:-http://localhost}:5000
-      - IdentityServer__ApiResources__Identity__Name=${IDENTITY__API_RESOURCE__NAME}
-      - IdentityServer__ApiResources__Identity__DisplayName=${IDENTITY__API_RESOURCE__DISPLAY_NAME}
-      - IdentityServer__ApiResources__Identity__Description=${IDENTITY__API_RESOURCE__DESCRIPTION}
-      - IdentityServer__ApiResources__Challenges__Name=${CHALLENGES__API_RESOURCE__NAME}
-      - IdentityServer__ApiResources__Challenges__DisplayName=${CHALLENGES__API_RESOURCE__DISPLAY_NAME}
-      - IdentityServer__ApiResources__Challenges__Description=${CHALLENGES__API_RESOURCE__DESCRIPTION}
-      - IdentityServer__ApiResources__Cashier__Name=${CASHIER__API_RESOURCE__NAME}
-      - IdentityServer__ApiResources__Cashier__DisplayName=${CASHIER__API_RESOURCE__DISPLAY_NAME}
-      - IdentityServer__ApiResources__Cashier__Description=${CASHIER__API_RESOURCE__DESCRIPTION}
-      - IdentityServer__ApiResources__Notifications__Name=${NOTIFICATIONS__API_RESOURCE__NAME}
-      - IdentityServer__ApiResources__Notifications__DisplayName=${NOTIFICATIONS__API_RESOURCE__DISPLAY_NAME}
-      - IdentityServer__ApiResources__Notifications__Description=${NOTIFICATIONS__API_RESOURCE__DESCRIPTION}
-      - IdentityServer__Clients__Swagger__Identity__ClientId=${IDENTITY__SWAGGER__CLIENT_ID}
-      - IdentityServer__Clients__Swagger__Identity__ClientName=${IDENTITY__API_RESOURCE__DISPLAY_NAME} ${SWAGGER__CLIENT_NAME}
-      - IdentityServer__Clients__Swagger__Identity__RedirectUrl=$DOCKER_URL:5000${SWAGGER__CLIENT__REDIRECT_URL}
-      - IdentityServer__Clients__Swagger__Identity__PostLogoutRedirectUrl=$DOCKER_URL:5000${SWAGGER__CLIENT__POST_LOGOUT_REDIRECT_URL}
-      - IdentityServer__Clients__Swagger__Challenges__ClientId=${CHALLENGES__SWAGGER__CLIENT_ID}
-      - IdentityServer__Clients__Swagger__Challenges__ClientName=${CHALLENGES__API_RESOURCE__DISPLAY_NAME} ${SWAGGER__CLIENT_NAME}
-      - IdentityServer__Clients__Swagger__Challenges__RedirectUrl=$DOCKER_URL:5002${SWAGGER__CLIENT__REDIRECT_URL}
-      - IdentityServer__Clients__Swagger__Challenges__PostLogoutRedirectUrl=$DOCKER_URL:5002${SWAGGER__CLIENT__POST_LOGOUT_REDIRECT_URL}
-      - IdentityServer__Clients__Swagger__Cashier__ClientId=${CASHIER__SWAGGER__CLIENT_ID}
-      - IdentityServer__Clients__Swagger__Cashier__ClientName=${CASHIER__API_RESOURCE__DISPLAY_NAME} ${SWAGGER__CLIENT_NAME}
-      - IdentityServer__Clients__Swagger__Cashier__RedirectUrl=$DOCKER_URL:5003${SWAGGER__CLIENT__REDIRECT_URL}
-      - IdentityServer__Clients__Swagger__Cashier__PostLogoutRedirectUrl=$DOCKER_URL:5003${SWAGGER__CLIENT__POST_LOGOUT_REDIRECT_URL}
-      - IdentityServer__Clients__Swagger__Notifications__ClientId=${NOTIFICATIONS__SWAGGER__CLIENT_ID}
-      - IdentityServer__Clients__Swagger__Notifications__ClientName=${NOTIFICATIONS__API_RESOURCE__DISPLAY_NAME} ${SWAGGER__CLIENT_NAME}
-      - IdentityServer__Clients__Swagger__Notifications__RedirectUrl=$DOCKER_URL:5005${SWAGGER__CLIENT__REDIRECT_URL}
-      - IdentityServer__Clients__Swagger__Notifications__PostLogoutRedirectUrl=$DOCKER_URL:5005${SWAGGER__CLIENT__POST_LOGOUT_REDIRECT_URL}
-      - IdentityServer__Clients__Web__Spa__ClientId=${WEB__SPA__CLIENT_ID}
-      - IdentityServer__Clients__Web__Spa__ClientName=${WEB__SPA__CLIENT_NAME}
-      - IdentityServer__Clients__Web__Spa__AllowedCorsOrigins=$DOCKER_URL:5300
-      - IdentityServer__Clients__Web__Spa__RedirectUrl=$DOCKER_URL:5300/callback
-      - IdentityServer__Clients__Web__Spa__PostLogoutRedirectUrl=$DOCKER_URL:5300/
+      - Identity__Url=${DOCKER_URL:-http://localhost}:5000
+      - Cashier__Url=${DOCKER_URL:-http://localhost}:5003
+      - Challenges__Url=${DOCKER_URL:-http://localhost}:5002      
+      - Notifications__Url=${DOCKER_URL:-http://localhost}:5005
+      - WebSpa__Url=${DOCKER_URL:-http://localhost}:5300
     ports:
       - "5000:80"
 

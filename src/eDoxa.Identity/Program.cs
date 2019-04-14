@@ -1,5 +1,5 @@
 ﻿// Filename: Program.cs
-// Date Created: 2019-03-28
+// Date Created: 2019-04-13
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -9,18 +9,20 @@
 // this source code package.
 
 using System;
+using System.Linq;
 
 using eDoxa.Identity.Infrastructure;
-using eDoxa.Identity.Infrastructure.Seeders;
 using eDoxa.Monitoring.Extensions;
 using eDoxa.Security.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.ServiceBus;
 
 using IdentityServer4.EntityFramework.DbContexts;
+using IdentityServer4.EntityFramework.Mappers;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -71,9 +73,55 @@ namespace eDoxa.Identity
                 host.MigrateDbContext<ConfigurationDbContext>(
                     (context, provider) =>
                     {
-                        var seeder = provider.GetService<ConfigurationDbContextSeeder>();
+                        if (!context.IdentityResources.Any())
+                        {
+                            foreach (var identityResource in Config.IdentityResources())
+                            {
+                                context.IdentityResources.Add(identityResource.ToEntity());
+                            }
 
-                        seeder.SeedAsync(context).Wait();
+                            context.SaveChanges();
+
+                            Log.Information("IdentityResources being populated.");
+                        }
+                        else
+                        {
+                            Log.Information("IdentityResources already populated.");
+                        }
+
+                        if (!context.ApiResources.Any())
+                        {
+                            foreach (var apiResource in Config.ApiResources())
+                            {
+                                context.ApiResources.Add(apiResource.ToEntity());
+                            }
+
+                            context.SaveChanges();
+
+                            Log.Information("ApiResources being populated.");
+                        }
+                        else
+                        {
+                            Log.Information("ApiResources already populated.");
+                        }
+
+                        if (!context.Clients.Any())
+                        {
+                            var configuration = provider.GetService<IConfiguration>();
+
+                            foreach (var client in Config.Clients(configuration))
+                            {
+                                context.Clients.Add(client.ToEntity());
+                            }
+
+                            context.SaveChanges();
+
+                            Log.Information("Clients being populated.");
+                        }
+                        else
+                        {
+                            Log.Information("Clients already populated.");
+                        }
                     }
                 );
 

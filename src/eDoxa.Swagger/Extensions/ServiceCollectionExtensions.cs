@@ -45,8 +45,7 @@ namespace eDoxa.Swagger.Extensions
                             {
                                 Title = swaggerApiResourceConfig.ApiResourceDisplayName,
                                 Version = description.GroupName,
-                                Description = swaggerApiResourceConfig.ApiResourceDescription +
-                                              (description.IsDeprecated ? " (This API version has been deprecated)" : string.Empty),
+                                Description = description.IsDeprecated ? "This API version has been deprecated." : null,
                                 Contact = new Contact
                                 {
                                     Name = "Francis Quenneville", Email = "francis@edoxa.gg"

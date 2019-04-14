@@ -17,7 +17,6 @@ using eDoxa.Notifications.Domain.Factories;
 using eDoxa.Notifications.DTO.Factories;
 using eDoxa.Notifications.Infrastructure;
 using eDoxa.Notifications.Infrastructure.Repositories;
-using eDoxa.Seedwork.Infrastructure;
 using eDoxa.Seedwork.Infrastructure.Factories;
 
 using FluentAssertions;
