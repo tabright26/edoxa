@@ -64,7 +64,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             // Act
             var response = await handler.Handle(
                 new UpdateAddressCommand(user.Id, address.City, address.Country, address.Line1, address.Line2, address.PostalCode, address.State),
-                default(CancellationToken)
+                default
             );
 
             // Assert

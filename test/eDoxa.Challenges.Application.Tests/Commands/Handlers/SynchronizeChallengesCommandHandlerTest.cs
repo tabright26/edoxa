@@ -8,7 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Application.Commands;
@@ -36,7 +35,7 @@ namespace eDoxa.Challenges.Application.Tests.Commands.Handlers
             var handler = new SynchronizeChallengesCommandHandler(mockChallengeSynchronizerService.Object);
 
             // Assert
-            await handler.HandleAsync(new SynchronizeChallengesCommand(), default(CancellationToken));
+            await handler.HandleAsync(new SynchronizeChallengesCommand(), default);
 
             mockChallengeSynchronizerService.Verify(service => service.SynchronizeAsync(), Times.Once);
         }

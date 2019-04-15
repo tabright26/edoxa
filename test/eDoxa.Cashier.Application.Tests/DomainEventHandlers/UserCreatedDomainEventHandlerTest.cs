@@ -8,7 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Application.DomainEventHandlers;
@@ -45,7 +44,7 @@ namespace eDoxa.Cashier.Application.Tests.DomainEventHandlers
             var handler = new UserCreatedDomainEventHandler(mockIntegrationEventService.Object);
 
             // Act
-            await handler.Handle(integrationEvent, default(CancellationToken));
+            await handler.Handle(integrationEvent, default);
 
             // Assert
             mockIntegrationEventService.Verify(service => service.PublishAsync(It.IsAny<UserClaimAddedIntegrationEvent>()), Times.Once);

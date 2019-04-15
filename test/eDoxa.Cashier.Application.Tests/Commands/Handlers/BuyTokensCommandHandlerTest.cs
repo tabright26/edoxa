@@ -1,5 +1,5 @@
 ﻿// Filename: BuyTokensCommandHandlerTest.cs
-// Date Created: 2019-04-09
+// Date Created: 2019-04-14
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -13,7 +13,9 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
+using eDoxa.Cashier.Application.Services;
 using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.Domain.Repositories;
 
@@ -32,9 +34,13 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         public async Task Handle_FindAsync_ShouldBeInvokedExactlyOneTime()
         {
             // Arrange
-            var token = _userAggregateFactory.CreateToken();
+            var command = new BuyTokensCommand(TokenBundleType.FiftyThousand);
 
-            var command = new BuyTokensCommand(token.ToDecimal());
+            var mockAccountService = new Mock<IAccountService>();
+
+            mockAccountService.Setup(service => service.TransactionAsync(It.IsAny<CustomerId>(), It.IsAny<TokenBundle>(), It.IsAny<CancellationToken>()))
+                              .Returns(Task.CompletedTask)
+                              .Verifiable();
 
             var mockUserRepository = new Mock<IUserRepository>();
 
@@ -44,12 +50,17 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
                               .Returns(Task.CompletedTask)
                               .Verifiable();
 
-            var handler = new BuyTokensCommandHandler(mockUserRepository.Object);
+            var handler = new BuyTokensCommandHandler(mockUserRepository.Object, mockAccountService.Object);
 
             // Act
-            await handler.Handle(command, default(CancellationToken));
+            await handler.Handle(command, default);
 
             // Assert
+            mockAccountService.Verify(
+                service => service.TransactionAsync(It.IsAny<CustomerId>(), It.IsAny<TokenBundle>(), It.IsAny<CancellationToken>()),
+                Times.Once
+            );
+
             mockUserRepository.Verify(repository => repository.FindAsync(It.IsAny<UserId>()), Times.Once);
 
             mockUserRepository.Verify(repository => repository.UnitOfWork.CommitAndDispatchDomainEventsAsync(It.IsAny<CancellationToken>()), Times.Once);

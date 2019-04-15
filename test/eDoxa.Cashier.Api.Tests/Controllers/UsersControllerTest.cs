@@ -9,7 +9,6 @@
 // this source code package.
 
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Controllers;
@@ -118,7 +117,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
 
             var command = new UpdateAddressCommand(userId, address.City, address.Country, address.Line1, address.Line2, address.PostalCode, address.State);
 
-            _mediator.Setup(mediator => mediator.Send(command, default(CancellationToken))).ReturnsAsync(new Address()).Verifiable();
+            _mediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(new Address()).Verifiable();
 
             var controller = new UsersController(_logger.Object, _queries.Object, _mediator.Object, _service.Object);
 
@@ -147,7 +146,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
 
             var command = new UpdateAddressCommand(userId, address.City, address.Country, address.Line1, address.Line2, address.PostalCode, address.State);
 
-            _mediator.Setup(mediator => mediator.Send(command, default(CancellationToken))).ThrowsAsync(new Exception()).Verifiable();
+            _mediator.Setup(mediator => mediator.Send(command, default)).ThrowsAsync(new Exception()).Verifiable();
 
             _logger.SetupLoggerWithLogLevelErrorVerifiable();
 

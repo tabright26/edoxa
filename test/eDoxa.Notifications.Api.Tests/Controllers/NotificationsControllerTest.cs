@@ -9,7 +9,6 @@
 // this source code package.
 
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Notifications.Api.Controllers;
@@ -46,7 +45,7 @@ namespace eDoxa.Notifications.Api.Tests.Controllers
         public async Task ReadNotificationAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            _mediator.Setup(mediator => mediator.Send(It.IsAny<ReadNotificationCommand>(), default(CancellationToken)))
+            _mediator.Setup(mediator => mediator.Send(It.IsAny<ReadNotificationCommand>(), default))
                      .ReturnsAsync(It.IsAny<Unit>())
                      .Verifiable();
 
@@ -65,7 +64,7 @@ namespace eDoxa.Notifications.Api.Tests.Controllers
         public async Task ReadNotificationAsync_ShouldBeBadRequestObjectResult()
         {
             // Arrange
-            _mediator.Setup(mediator => mediator.Send(It.IsAny<ReadNotificationCommand>(), default(CancellationToken)))
+            _mediator.Setup(mediator => mediator.Send(It.IsAny<ReadNotificationCommand>(), default))
                      .ThrowsAsync(new Exception())
                      .Verifiable();
 
@@ -86,7 +85,7 @@ namespace eDoxa.Notifications.Api.Tests.Controllers
         public async Task DeleteNotificationAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            _mediator.Setup(mediator => mediator.Send(It.IsAny<DeleteNotificationCommand>(), default(CancellationToken)))
+            _mediator.Setup(mediator => mediator.Send(It.IsAny<DeleteNotificationCommand>(), default))
                      .ReturnsAsync(It.IsAny<Unit>)
                      .Verifiable();
 
@@ -105,7 +104,7 @@ namespace eDoxa.Notifications.Api.Tests.Controllers
         public async Task DeleteNotificationAsync_ShouldBeBadRequestObjectResult()
         {
             // Arrange
-            _mediator.Setup(mediator => mediator.Send(It.IsAny<DeleteNotificationCommand>(), default(CancellationToken)))
+            _mediator.Setup(mediator => mediator.Send(It.IsAny<DeleteNotificationCommand>(), default))
                      .ThrowsAsync(new Exception())
                      .Verifiable();
 

@@ -62,7 +62,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             var handler = new UpdateDefaultCardCommandHandler(mockUserRepository.Object, mockCustomerService.Object);
 
             // Act
-            var response = await handler.Handle(new UpdateDefaultCardCommand(user.Id, cardId), default(CancellationToken));
+            var response = await handler.Handle(new UpdateDefaultCardCommand(user.Id, cardId), default);
 
             // Assert
             response.Should().Be(customer);

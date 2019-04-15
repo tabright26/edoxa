@@ -1,5 +1,5 @@
 ﻿// Filename: ApplicationModule.cs
-// Date Created: 2019-04-09
+// Date Created: 2019-04-14
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -12,12 +12,15 @@ using Autofac;
 
 using eDoxa.Autofac;
 using eDoxa.Cashier.Application.Queries;
+using eDoxa.Cashier.Application.Services;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.Infrastructure.Repositories;
 
 using Stripe;
+
+using AccountService = eDoxa.Cashier.Application.Services.AccountService;
 
 namespace eDoxa.Cashier.Application
 {
@@ -30,9 +33,12 @@ namespace eDoxa.Cashier.Application
             // Repositories
             builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerLifetimeScope();
 
-            // Services            
+            // Services
+            builder.RegisterType<AccountService>().As<IAccountService>().InstancePerLifetimeScope();
             builder.RegisterType<CustomerService>().InstancePerLifetimeScope();
             builder.RegisterType<CardService>().InstancePerLifetimeScope();
+            builder.RegisterType<InvoiceService>().InstancePerLifetimeScope();
+            builder.RegisterType<InvoiceItemService>().InstancePerLifetimeScope();
 
             // Queries
             builder.RegisterType<AccountQueries>().As<IAccountQueries>().InstancePerLifetimeScope();

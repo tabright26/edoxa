@@ -1,5 +1,5 @@
 ﻿// Filename: CreateCardCommandHandlerTest.cs
-// Date Created: 2019-04-09
+// Date Created: 2019-04-14
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -75,7 +75,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             var handler = new CreateCardCommandHandler(mockUserRepository.Object, mockCustomerService.Object, mockCardService.Object);
 
             // Act
-            var response = await handler.Handle(new CreateCardCommand(CardId.Parse(card.Id), true), default(CancellationToken));
+            var response = await handler.Handle(new CreateCardCommand(card.Id, true), default);
 
             // Assert
             response.Should().Be(card);

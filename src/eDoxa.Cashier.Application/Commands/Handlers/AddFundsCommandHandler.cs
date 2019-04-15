@@ -1,5 +1,5 @@
 ﻿// Filename: AddFundsCommandHandler.cs
-// Date Created: 2019-04-09
+// Date Created: 2019-04-14
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -12,6 +12,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Application.Services;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Seedwork.Application.Commands.Handlers;
@@ -20,24 +21,30 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 {
     public sealed class AddFundsCommandHandler : ICommandHandler<AddFundsCommand, decimal>
     {
-        private readonly IUserRepository _userRepository;
+        private static readonly MoneyBundles _bundles = new MoneyBundles();
 
-        public AddFundsCommandHandler(IUserRepository userRepository)
+        private readonly IUserRepository _userRepository;
+        private readonly IAccountService _accountService;
+
+        public AddFundsCommandHandler(IUserRepository userRepository, IAccountService accountService)
         {
             _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
+            _accountService = accountService ?? throw new ArgumentNullException(nameof(accountService));
         }
 
         public async Task<decimal> Handle(AddFundsCommand command, CancellationToken cancellationToken)
         {
             var user = await _userRepository.FindAsync(command.UserId);
 
-            var money = Money.FromDecimal(command.Amount);
+            var bundle = _bundles[command.BundleType];
 
-            money = user.AddFunds(money);
+            await _accountService.TransactionAsync(user.CustomerId, bundle, cancellationToken);
+
+            var balance = user.AddFunds(bundle);
 
             await _userRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
-            return money.ToDecimal();
+            return balance.ToDecimal();
         }
     }
 }

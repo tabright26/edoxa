@@ -20,9 +20,9 @@ namespace eDoxa.Cashier.Application.Commands
     [DataContract]
     public class CreateCardCommand : Command<Card>
     {
-        public CreateCardCommand(CardId cardId, bool defaultCard = false)
+        public CreateCardCommand(string sourceToken, bool defaultCard = false)
         {
-            CardId = cardId;
+            SourceToken = sourceToken;
             DefaultCard = defaultCard;
         }
 
@@ -30,7 +30,7 @@ namespace eDoxa.Cashier.Application.Commands
         public UserId UserId { get; set; }
 
         [DataMember]
-        public CardId CardId { get; private set; }
+        public string SourceToken { get; private set; }
 
         [DataMember(IsRequired = false)]
         public bool DefaultCard { get; private set; }

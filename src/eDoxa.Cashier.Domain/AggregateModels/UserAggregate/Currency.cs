@@ -1,5 +1,5 @@
 ﻿// Filename: Currency.cs
-// Date Created: 2019-04-09
+// Date Created: 2019-04-14
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -39,6 +39,8 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
                 _amount = value;
             }
         }
+
+        public abstract string Type { get; }
 
         public static bool operator ==(Currency<TCurrency> left, Currency<TCurrency> right)
         {

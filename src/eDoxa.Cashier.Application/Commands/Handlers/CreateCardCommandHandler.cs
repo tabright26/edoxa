@@ -42,7 +42,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
                 customerId,
                 new CardCreateOptions
                 {
-                    SourceToken = command.CardId.ToString()
+                    SourceToken = command.SourceToken
                 },
                 cancellationToken: cancellationToken
             );

@@ -43,7 +43,7 @@ namespace eDoxa.Notifications.Application.Tests.Commands.Handlers
             var handler = new DeleteNotificationCommandHandler(mockRepository.Object);
 
             // Assert
-            await handler.HandleAsync(command, default(CancellationToken));
+            await handler.HandleAsync(command, default);
 
             mockRepository.Verify(repository => repository.Delete(It.IsAny<Notification>()), Times.Once);
 

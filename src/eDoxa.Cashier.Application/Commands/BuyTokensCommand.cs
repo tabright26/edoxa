@@ -1,5 +1,5 @@
 ﻿// Filename: BuyTokensCommand.cs
-// Date Created: 2019-04-09
+// Date Created: 2019-04-14
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -11,6 +11,7 @@
 using System.Runtime.Serialization;
 
 using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Application.Commands;
 
 namespace eDoxa.Cashier.Application.Commands
@@ -18,15 +19,15 @@ namespace eDoxa.Cashier.Application.Commands
     [DataContract]
     public class BuyTokensCommand : Command<decimal>
     {
-        public BuyTokensCommand(decimal amount)
+        public BuyTokensCommand(TokenBundleType bundleType)
         {
-            Amount = amount;
+            BundleType = bundleType;
         }
 
         [IgnoreDataMember]
         public UserId UserId { get; set; }
 
         [DataMember]
-        public decimal Amount { get; private set; }
+        public TokenBundleType BundleType { get; private set; }
     }
 }

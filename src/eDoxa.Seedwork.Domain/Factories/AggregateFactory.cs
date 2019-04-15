@@ -31,7 +31,7 @@ namespace eDoxa.Seedwork.Domain.Factories
                     BirthDate = new DateTime(1970, 1, 1),
                     PhoneNumber = "5555555555",
                     Username = "Administrator",
-                    StripeCustomerId = "cus_E91yfe6iTcf7jM"
+                    StripeCustomerId = "cus_Et3R5o75SIURKE"
                 };
             }
         }
@@ -50,7 +50,7 @@ namespace eDoxa.Seedwork.Domain.Factories
                     BirthDate = new DateTime(1995, 5, 6),
                     PhoneNumber = "5147580313",
                     Username = "Franki320",
-                    StripeCustomerId = "cus_DdifGs5Dgt12mu"
+                    StripeCustomerId = "cus_Et3TSffi8eXU7d"
                 };
             }
         }
@@ -69,7 +69,7 @@ namespace eDoxa.Seedwork.Domain.Factories
                     BirthDate = new DateTime(1993, 1, 1),
                     PhoneNumber = "4384924161",
                     Username = "03adro09",
-                    StripeCustomerId = "cus_DdiePgRRQXHkAt"
+                    StripeCustomerId = "cus_Et3TjhQNvVXrPU"
                 };
             }
         }
@@ -88,7 +88,7 @@ namespace eDoxa.Seedwork.Domain.Factories
                     BirthDate = new DateTime(1995, 1, 1),
                     PhoneNumber = "5146094161",
                     Username = "DeadlyStrength",
-                    StripeCustomerId = "cus_DdifZeRxP8SsGF"
+                    StripeCustomerId = "cus_Et3Sq2DeDSa7Xj"
                 };
             }
         }

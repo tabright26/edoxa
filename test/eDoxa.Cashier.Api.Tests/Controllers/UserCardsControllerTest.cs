@@ -109,7 +109,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
 
             var cardId = _userAggregateFactory.CreateCardId();
 
-            var command = new CreateCardCommand(cardId);
+            var command = new CreateCardCommand(cardId.ToString());
 
             _mediator.Setup(mediator => mediator.Send(It.IsAny<CreateCardCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Card()).Verifiable();
 
@@ -143,7 +143,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
 
             var cardId = _userAggregateFactory.CreateCardId();
 
-            var command = new CreateCardCommand(cardId);
+            var command = new CreateCardCommand(cardId.ToString());
 
             _mediator.Setup(mediator => mediator.Send(It.IsAny<CreateCardCommand>(), It.IsAny<CancellationToken>())).ThrowsAsync(new Exception()).Verifiable();
 

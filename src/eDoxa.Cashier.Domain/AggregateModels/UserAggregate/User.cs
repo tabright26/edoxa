@@ -1,5 +1,5 @@
 ﻿// Filename: User.cs
-// Date Created: 2019-04-09
+// Date Created: 2019-04-14
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -63,9 +63,9 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
             return new User(UserId.FromGuid(data.Id), CustomerId.Parse(data.StripeCustomerId));
         }
 
-        public Money AddFunds(Money amount)
+        public Money AddFunds(MoneyBundle bundle)
         {
-            return Account.AddFunds(amount);
+            return Account.AddFunds(bundle.Amount);
         }
 
         public Money Withdrawal(Money amount)
@@ -73,9 +73,9 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
             return Account.Withdrawal(amount);
         }
 
-        public Token BuyTokens(Token amount)
+        public Token BuyTokens(TokenBundle bundle)
         {
-            return Account.BuyTokens(amount);
+            return Account.BuyTokens(bundle.Amount);
         }
     }
 }

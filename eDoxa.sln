@@ -173,7 +173,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Security.Tests", "tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Web.Status", "src\eDoxa.Web.Status\eDoxa.Web.Status.csproj", "{B8A54065-A9FA-430B-BEBE-28BA9FD6C3F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.IdentityServer", "src\eDoxa.IdentityServer\eDoxa.IdentityServer.csproj", "{CC33C5EC-5CD7-45D8-BE69-364B59DF6D63}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.IdentityServer", "src\eDoxa.IdentityServer\eDoxa.IdentityServer.csproj", "{CC33C5EC-5CD7-45D8-BE69-364B59DF6D63}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

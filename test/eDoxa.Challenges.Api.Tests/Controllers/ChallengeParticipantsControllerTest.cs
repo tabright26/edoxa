@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Api.Controllers;
@@ -119,7 +118,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
             // Arrange
             var command = new RegisterChallengeParticipantCommand(new ChallengeId(), new UserId());
 
-            _mediator.Setup(mediator => mediator.Send(command, default(CancellationToken))).ReturnsAsync(It.IsAny<Unit>()).Verifiable();
+            _mediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(It.IsAny<Unit>()).Verifiable();
 
             var controller = new ChallengeParticipantsController(_logger.Object, _queries.Object, _mediator.Object);
 
@@ -139,7 +138,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
             // Arrange
             var command = new RegisterChallengeParticipantCommand(new ChallengeId(), new UserId());
 
-            _mediator.Setup(mediator => mediator.Send(command, default(CancellationToken))).ThrowsAsync(new Exception()).Verifiable();
+            _mediator.Setup(mediator => mediator.Send(command, default)).ThrowsAsync(new Exception()).Verifiable();
 
             _logger.SetupLoggerWithLogLevelErrorVerifiable();
 

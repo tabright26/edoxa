@@ -47,7 +47,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             var handler = new WithdrawalCommandHandler(mockUserRepository.Object);
 
             // Act
-            await handler.Handle(command, default(CancellationToken));
+            await handler.Handle(command, default);
 
             // Assert
             mockUserRepository.Verify(repository => repository.FindAsync(It.IsAny<UserId>()), Times.Once);

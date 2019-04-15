@@ -42,7 +42,7 @@ namespace eDoxa.Challenges.Application.Tests.Commands.Handlers
             var handler = new CreateUserCommandHandler(mockUserRepository.Object);
 
             // Assert
-            await handler.HandleAsync(new CreateUserCommand(new UserId()), default(CancellationToken));
+            await handler.HandleAsync(new CreateUserCommand(new UserId()), default);
 
             mockUserRepository.Verify(repository => repository.Create(It.IsAny<User>()), Times.Once);
 

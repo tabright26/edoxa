@@ -46,8 +46,8 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void Constructor_MatchId_ShouldThrowArgumentNullException()
         {
             // Arrange
-            const double value = default(double);
-            const float weighting = default(float);
+            const double value = default;
+            const float weighting = default;
 
             // Act
             var action = new Action(() => _factory.CreateStat(null, nameof(Stat), value, weighting));
@@ -62,8 +62,8 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void Constructor_Name_ShouldThrowArgumentException(string name)
         {
             // Arrange
-            const double value = default(double);
-            const float weighting = default(float);
+            const double value = default;
+            const float weighting = default;
 
             // Act
             var action = new Action(() => _factory.CreateStat(name, value, weighting));

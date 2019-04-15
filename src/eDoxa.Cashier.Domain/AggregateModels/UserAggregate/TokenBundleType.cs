@@ -1,4 +1,4 @@
-﻿// Filename: AccountId.cs
+﻿// Filename: TokenBundleType.cs
 // Date Created: 2019-04-14
 // 
 // ============================================================
@@ -8,14 +8,15 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.ComponentModel;
-
-using eDoxa.Seedwork.Domain.Aggregate;
-
-namespace eDoxa.Cashier.Domain.AggregateModels
+namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 {
-    [TypeConverter(typeof(EntityIdTypeConverter))]
-    public sealed class AccountId : EntityId<AccountId>
+    public enum TokenBundleType
     {
+        FiftyThousand,
+        OneHundredThousand,
+        TwoHundredFiftyThousand,
+        FiveHundredThousand,
+        OneMillion,
+        FiveMillions
     }
 }

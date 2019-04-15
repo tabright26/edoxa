@@ -88,7 +88,7 @@ namespace eDoxa.Seedwork.Domain.Aggregate
 
         public bool IsTransient()
         {
-            return Value == default(Guid);
+            return Value == default;
         }
 
         protected sealed override PropertyInfo[] TypeSignatureProperties()

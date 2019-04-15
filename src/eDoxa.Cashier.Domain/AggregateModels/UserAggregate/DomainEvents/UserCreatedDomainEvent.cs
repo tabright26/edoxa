@@ -1,5 +1,5 @@
 ﻿// Filename: UserCreatedDomainEvent.cs
-// Date Created: 2019-04-09
+// Date Created: 2019-04-14
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
