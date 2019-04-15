@@ -1,5 +1,5 @@
 ﻿// Filename: AccountService.cs
-// Date Created: 2019-04-14
+// Date Created: 2019-04-15
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -12,8 +12,11 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Application.Adapters;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
+using eDoxa.Cashier.Domain.Services;
+using eDoxa.Stripe.Validators;
 
 using Stripe;
 
@@ -27,41 +30,41 @@ namespace eDoxa.Cashier.Application.Services
 
         public AccountService(CustomerService customerService, InvoiceService invoiceService, InvoiceItemService invoiceItemService)
         {
-            _customerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
             _invoiceService = invoiceService ?? throw new ArgumentNullException(nameof(invoiceService));
             _invoiceItemService = invoiceItemService ?? throw new ArgumentNullException(nameof(invoiceItemService));
+            _customerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
+            _customerService.ExpandDefaultSource = true;
         }
 
         public async Task TransactionAsync<TCurrency>(CustomerId customerId, CurrencyBundle<TCurrency> bundle, CancellationToken cancellationToken = default)
         where TCurrency : Currency<TCurrency>, new()
         {
-            _customerService.ExpandDefaultSource = true;
-
             var customer = await _customerService.GetAsync(customerId.ToString(), cancellationToken: cancellationToken);
 
-            if (customer.DefaultSource == null)
+            var validator = new CustomerDefaultSourceValidator();
+
+            validator.Validate(customer);
+
+            var transaction = bundle.CreateTransaction(customerId);
+
+            await _invoiceItemService.CreateAsync(InvoiceItemCreateOptions(transaction), cancellationToken: cancellationToken);
+
+            await _invoiceService.CreateAsync(InvoiceCreateOptions(customer), cancellationToken: cancellationToken);
+        }
+
+        private static InvoiceItemCreateOptions InvoiceItemCreateOptions(Transaction transaction)
+        {
+            var adapter = new InvoiceItemCreateOptionsAdapter(transaction);
+
+            return adapter.InvoiceItemCreateOptions;
+        }
+
+        private static InvoiceCreateOptions InvoiceCreateOptions(Customer customer)
+        {
+            return new InvoiceCreateOptions
             {
-                throw new InvalidOperationException("The customer default source payment is invalid. This customer doesn't have any default payment source.");
-            }
-
-            if (customer.DefaultSource.Object != "card")
-            {
-                throw new InvalidOperationException("The customer default source payment is invalid. Only credit card are accepted.");
-            }
-
-            var invoiceItem = bundle.BuildInvoiceItem(customerId);
-
-            await _invoiceItemService.CreateAsync(invoiceItem, cancellationToken: cancellationToken);
-
-            var invoiceOptions = new InvoiceCreateOptions
-            {
-                CustomerId = customerId.ToString(),
-                TaxPercent = 15M,
-                AutoAdvance = true,
-                DefaultSource = customer.DefaultSource.Id
+                CustomerId = customer.Id, TaxPercent = Transaction.TaxPercent, AutoAdvance = true, DefaultSource = customer.DefaultSource.Id
             };
-
-            await _invoiceService.CreateAsync(invoiceOptions, cancellationToken: cancellationToken);
         }
     }
 }

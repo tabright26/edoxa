@@ -15,6 +15,7 @@ using System.Globalization;
 using System.Reflection;
 
 using eDoxa.Seedwork.Domain.Aggregate;
+using eDoxa.Stripe.Validators;
 
 namespace eDoxa.Stripe
 {
@@ -43,7 +44,7 @@ namespace eDoxa.Stripe
                     throw new ArgumentException(value, nameof(value));
                 }
 
-                var validator = new StripeValidator();
+                var validator = new StripeIdValidator();
 
                 validator.Validate(value, _prefix);
 

@@ -22,6 +22,7 @@ namespace eDoxa.Autofac
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<RequestLogRepository<TContext>>().As<IRequestLogRepository>().InstancePerLifetimeScope();
+
             builder.RegisterType<RequestLogService>().As<IRequestLogService>().InstancePerLifetimeScope();
         }
     }

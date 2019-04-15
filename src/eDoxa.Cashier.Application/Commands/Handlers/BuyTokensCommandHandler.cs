@@ -12,9 +12,9 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Application.Services;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Domain.Services;
 using eDoxa.Seedwork.Application.Commands.Handlers;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers

@@ -13,11 +13,11 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
-using eDoxa.Cashier.Application.Services;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Domain.Services;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

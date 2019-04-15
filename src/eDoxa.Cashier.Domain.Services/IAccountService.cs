@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 
-namespace eDoxa.Cashier.Application.Services
+namespace eDoxa.Cashier.Domain.Services
 {
     public interface IAccountService
     {

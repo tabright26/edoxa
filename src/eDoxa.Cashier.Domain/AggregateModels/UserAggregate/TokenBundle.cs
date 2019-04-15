@@ -1,5 +1,5 @@
 ﻿// Filename: TokenBundle.cs
-// Date Created: 2019-04-14
+// Date Created: 2019-04-15
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -7,10 +7,6 @@
 // 
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
-
-using System.Collections.Generic;
-
-using Stripe;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 {
@@ -20,19 +16,9 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
         {
         }
 
-        public override InvoiceItemCreateOptions BuildInvoiceItem(CustomerId customerId)
+        public override Transaction CreateTransaction(CustomerId customerId)
         {
-            return new InvoiceItemCreateOptions
-            {
-                CustomerId = customerId.ToString(),
-                Description = $"eDoxa Tokens ({Amount})",
-                Amount = Price.AsCents(),
-                Currency = "usd",
-                Metadata = new Dictionary<string, string>
-                {
-                    ["Type"] = Amount.Type, ["Amount"] = Amount.ToString()
-                }
-            };
+            return new Transaction(customerId, $"eDoxa Tokens ({Amount})", Price);
         }
     }
 }

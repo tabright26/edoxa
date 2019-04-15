@@ -105,6 +105,8 @@ namespace eDoxa.Cashier.Api
                         }
                     );
 
+            services.AddStripe();
+
             return services.Build<ApplicationModule>();
         }
 

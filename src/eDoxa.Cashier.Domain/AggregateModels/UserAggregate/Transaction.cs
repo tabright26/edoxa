@@ -1,4 +1,4 @@
-﻿// Filename: CurrencyBundle.cs
+﻿// Filename: Transaction.cs
 // Date Created: 2019-04-15
 // 
 // ============================================================
@@ -10,19 +10,21 @@
 
 namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 {
-    public abstract class CurrencyBundle<TCurrency>
-    where TCurrency : Currency<TCurrency>, new()
+    public sealed class Transaction
     {
-        protected private CurrencyBundle(Money price, TCurrency amount)
+        public static readonly decimal TaxPercent = 15M;
+
+        public Transaction(CustomerId customerId, string description, Money price)
         {
+            CustomerId = customerId;
+            Description = description;
             Price = price;
-            Amount = amount;
         }
 
-        public TCurrency Amount { get; }
+        public CustomerId CustomerId { get; }
 
-        protected Money Price { get; }
+        public string Description { get; }
 
-        public abstract Transaction CreateTransaction(CustomerId customerId);
+        public Money Price { get; }
     }
 }

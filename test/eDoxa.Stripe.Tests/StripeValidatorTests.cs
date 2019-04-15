@@ -10,6 +10,8 @@
 
 using System;
 
+using eDoxa.Stripe.Validators;
+
 using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -25,7 +27,7 @@ namespace eDoxa.Stripe.Tests
         public void Validate_InvalidFormat_ShouldNotThrowFormatException(string stripeId)
         {
             // Arrange
-            var validator = new StripeValidator();
+            var validator = new StripeIdValidator();
 
             // Act
             var action = new Action(() => validator.Validate(stripeId, "cus"));
@@ -40,7 +42,7 @@ namespace eDoxa.Stripe.Tests
         public void Validate_InvalidFormat_ShouldThrowFormatException(string stripeId)
         {
             // Arrange
-            var validator = new StripeValidator();
+            var validator = new StripeIdValidator();
 
             // Act
              var action = new Action(() => validator.Validate(stripeId, "cus"));
@@ -55,7 +57,7 @@ namespace eDoxa.Stripe.Tests
         public void Validate_InvalidPrefix_ShouldThrowFormatException(string stripeId)
         {
             // Arrange
-            var validator = new StripeValidator();
+            var validator = new StripeIdValidator();
 
             // Act
             var action = new Action(() => validator.Validate(stripeId, "cus"));
@@ -71,7 +73,7 @@ namespace eDoxa.Stripe.Tests
         public void Validate_InvalidSuffix_ShouldThrowFormatException(string stripeId)
         {
             // Arrange
-            var validator = new StripeValidator();
+            var validator = new StripeIdValidator();
 
             // Act
             var action = new Action(() => validator.Validate(stripeId, "cus"));

@@ -175,6 +175,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Web.Status", "src\eDo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.IdentityServer", "src\eDoxa.IdentityServer\eDoxa.IdentityServer.csproj", "{CC33C5EC-5CD7-45D8-BE69-364B59DF6D63}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Cashier.Domain.Services", "src\eDoxa.Cashier.Domain.Services\eDoxa.Cashier.Domain.Services.csproj", "{DA098B56-EF4E-4F98-8336-7A48BB74A903}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -445,6 +447,10 @@ Global
 		{CC33C5EC-5CD7-45D8-BE69-364B59DF6D63}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC33C5EC-5CD7-45D8-BE69-364B59DF6D63}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC33C5EC-5CD7-45D8-BE69-364B59DF6D63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA098B56-EF4E-4F98-8336-7A48BB74A903}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA098B56-EF4E-4F98-8336-7A48BB74A903}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA098B56-EF4E-4F98-8336-7A48BB74A903}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA098B56-EF4E-4F98-8336-7A48BB74A903}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -530,6 +536,7 @@ Global
 		{8D821518-9E13-4C10-9891-62280B644F77} = {6A898FA3-25B8-4279-81E2-BDAEB04ECECE}
 		{B8A54065-A9FA-430B-BEBE-28BA9FD6C3F5} = {E8C72A66-8993-427D-A2BA-73B170309B32}
 		{CC33C5EC-5CD7-45D8-BE69-364B59DF6D63} = {2DC678B2-4968-45FA-864C-1B0B5412A044}
+		{DA098B56-EF4E-4F98-8336-7A48BB74A903} = {9F1CD6C1-8419-4262-B7AE-F66C530B9EC7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8BB3B9BB-6C76-478F-982F-E2E084DBDFAC}
