@@ -1,11 +1,11 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-04-12
+// Date Created: 2019-04-14
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
@@ -55,16 +55,17 @@ namespace eDoxa.Cashier.Api
             services.AddVersioning(new ApiVersion(1, 0));
 
             services.AddEntityFrameworkSqlServer()
-                    .AddDbContext<CashierDbContext>(
-                        options => options.UseSqlServer(
-                            Configuration.GetConnectionString("Sql"),
-                            sqlServerOptions =>
-                            {
-                                sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(CashierDbContext)).GetName().Name);
-                                sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
-                            }
-                        )
-                    );
+                .AddDbContext<CashierDbContext>(
+                    options => options.UseSqlServer(
+                        Configuration.GetConnectionString("Sql"),
+                        sqlServerOptions =>
+                        {
+                            sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(CashierDbContext)).GetName().Name);
+
+                            sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
+                        }
+                    )
+                );
 
             services.AddDbContext<IntegrationEventLogDbContext>(
                 options => options.UseSqlServer(
@@ -72,6 +73,7 @@ namespace eDoxa.Cashier.Api
                     sqlServerOptions =>
                     {
                         sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(CashierDbContext)).GetName().Name);
+
                         sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
                     }
                 )
@@ -90,20 +92,20 @@ namespace eDoxa.Cashier.Api
             services.AddEventBus(Configuration);
 
             services.AddAuthentication(
-                        options =>
-                        {
-                            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                        }
-                    )
-                    .AddJwtBearer(
-                        options =>
-                        {
-                            options.Audience = Configuration["ApiResource:Name"];
-                            options.Authority = Configuration["IdentityServer:Url"];
-                            options.RequireHttpsMetadata = false;
-                        }
-                    );
+                    options =>
+                    {
+                        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    }
+                )
+                .AddJwtBearer(
+                    options =>
+                    {
+                        options.Audience = Configuration["ApiResource:Name"];
+                        options.Authority = Configuration["IdentityServer:Url"];
+                        options.RequireHttpsMetadata = false;
+                    }
+                );
 
             services.AddStripe();
 

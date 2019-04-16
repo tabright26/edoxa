@@ -8,7 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
@@ -21,7 +20,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 
         public Account(User user) : this()
         {
-            _user = user ?? throw new ArgumentNullException(nameof(user));
+            _user = user;
         }
 
         private Account()
@@ -53,7 +52,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
     }
 
     public class Account<TCurrency>
-        where TCurrency : Currency<TCurrency>, new()
+    where TCurrency : Currency<TCurrency>, new()
     {
         private TCurrency _balance;
         private TCurrency _pending;
