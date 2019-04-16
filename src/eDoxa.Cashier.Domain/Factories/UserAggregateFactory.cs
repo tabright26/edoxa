@@ -19,10 +19,10 @@ namespace eDoxa.Cashier.Domain.Factories
 {
     public sealed partial class UserAggregateFactory : AggregateFactory
     {
-        private static readonly Lazy<UserAggregateFactory> _lazy =
+        private static readonly Lazy<UserAggregateFactory> Lazy =
             new Lazy<UserAggregateFactory>(() => new UserAggregateFactory());
 
-        public static UserAggregateFactory Instance => _lazy.Value;
+        public static UserAggregateFactory Instance => Lazy.Value;
     }
 
     public sealed partial class UserAggregateFactory

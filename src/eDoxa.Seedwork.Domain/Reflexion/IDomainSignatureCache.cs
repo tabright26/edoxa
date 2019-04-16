@@ -9,15 +9,13 @@
 // this source code package.
 
 using System;
+using JetBrains.Annotations;
 
 namespace eDoxa.Seedwork.Domain.Reflexion
 {
     public interface IDomainSignatureCache
     {
-        int Count { get; }
-
-        void Clear();
-
+        [CanBeNull]
         DomainSignature Find(Type type);
 
         DomainSignature GetOrAdd(Type type, Func<Type, DomainSignature> factory);

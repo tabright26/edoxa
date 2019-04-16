@@ -13,13 +13,15 @@ using System.Threading.Tasks;
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Domain.Common.Enums;
+using JetBrains.Annotations;
 
 namespace eDoxa.Challenges.DTO.Queries
 {
     public interface IChallengeQueries
     {
         Task<ChallengeListDTO> FindChallengesAsync(Game game = Game.All, ChallengeType type = ChallengeType.All, ChallengeState state = ChallengeState.All);
-
+       
+        [ItemCanBeNull]
         Task<ChallengeDTO> FindChallengeAsync(ChallengeId challengeId);
 
         Task<ChallengeListDTO> FindUserChallengeHistoryAsync(

@@ -18,13 +18,13 @@ namespace eDoxa.Notifications.Domain.Factories
 {
     internal sealed partial class NotificationAggregateFactory : AggregateFactory
     {
-        private static readonly Lazy<NotificationAggregateFactory> _lazy = new Lazy<NotificationAggregateFactory>(() => new NotificationAggregateFactory());
+        private static readonly Lazy<NotificationAggregateFactory> Lazy = new Lazy<NotificationAggregateFactory>(() => new NotificationAggregateFactory());
 
         public static NotificationAggregateFactory Instance
         {
             get
             {
-                return _lazy.Value;
+                return Lazy.Value;
             }
         }
     }

@@ -1,21 +1,18 @@
 ﻿// Filename: ChallengeTimelineTest.cs
-// Date Created: 2019-03-04
+// Date Created: 2019-04-14
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
-
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Factories;
 using eDoxa.Testing.MSTest.Extensions;
-
 using FluentAssertions;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
@@ -23,7 +20,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
     [TestClass]
     public sealed class ChallengeTimelineTest
     {
-        private static readonly ChallengeAggregateFactory _factory = ChallengeAggregateFactory.Instance;
+        private readonly ChallengeAggregateFactory _challengeAggregateFactory = ChallengeAggregateFactory.Instance;
 
         [TestMethod]
         public void Constructor_Initialize_ShouldNotThrowException()
@@ -43,19 +40,6 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         }
 
         [TestMethod]
-        public void PublishedAt_NullReference_ShouldThrowArgumentNullException()
-        {
-            // Arrange
-            var timeline = _factory.CreateChallengeTimeline();
-
-            // Act
-            var action = new Action(() => timeline.SetProperty(nameof(ChallengeTimeline.PublishedAt), null));
-
-            // Assert
-            action.Should().Throw<ArgumentNullException>();
-        }
-
-        [TestMethod]
         public void PublishedAt_ArgumentOutOfRange_ShouldThrowArgumentOutOfRangeException()
         {
             var rowData = new[]
@@ -66,7 +50,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             foreach (var publishedAt in rowData)
             {
                 // Arrange
-                var timeline = _factory.CreateChallengeTimeline();
+                var timeline = _challengeAggregateFactory.CreateChallengeTimeline();
 
                 // Act
                 var action = new Action(() => timeline.SetProperty(nameof(ChallengeTimeline.PublishedAt), publishedAt));
@@ -77,50 +61,26 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         }
 
         [TestMethod]
-        public void RegistrationPeriod_NullReference_ShouldThrowArgumentNullException()
-        {
-            // Arrange
-            var timeline = _factory.CreateChallengeTimeline();
-
-            // Act
-            var action = new Action(() => timeline.SetProperty(nameof(ChallengeTimeline.RegistrationPeriod), null));
-
-            // Assert
-            action.Should().Throw<ArgumentNullException>();
-        }
-
-        [TestMethod]
         public void RegistrationPeriod_ArgumentOutOfRange_ShouldThrowArgumentOutOfRangeException()
         {
             var rowData = new[]
             {
-                ChallengeTimeline.MinRegistrationPeriod - TimeSpan.FromTicks(1), ChallengeTimeline.MaxRegistrationPeriod + TimeSpan.FromTicks(1)
+                ChallengeTimeline.MinRegistrationPeriod - TimeSpan.FromTicks(1),
+                ChallengeTimeline.MaxRegistrationPeriod + TimeSpan.FromTicks(1)
             };
 
             foreach (var registrationPeriod in rowData)
             {
                 // Arrange
-                var timeline = _factory.CreateChallengeTimeline();
+                var timeline = _challengeAggregateFactory.CreateChallengeTimeline();
 
                 // Act
-                var action = new Action(() => timeline.SetProperty(nameof(ChallengeTimeline.RegistrationPeriod), registrationPeriod));
+                var action = new Action(() =>
+                    timeline.SetProperty(nameof(ChallengeTimeline.RegistrationPeriod), registrationPeriod));
 
                 // Assert
                 action.Should().Throw<ArgumentOutOfRangeException>();
             }
-        }
-
-        [TestMethod]
-        public void ExtensionPeriod_NullReference_ShouldThrowArgumentNullException()
-        {
-            // Arrange
-            var timeline = _factory.CreateChallengeTimeline();
-
-            // Act
-            var action = new Action(() => timeline.SetProperty(nameof(ChallengeTimeline.ExtensionPeriod), null));
-
-            // Assert
-            action.Should().Throw<ArgumentNullException>();
         }
 
         [TestMethod]
@@ -128,16 +88,18 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         {
             var rowData = new[]
             {
-                ChallengeTimeline.MinExtensionPeriod - TimeSpan.FromTicks(1), ChallengeTimeline.MaxExtensionPeriod + TimeSpan.FromTicks(1)
+                ChallengeTimeline.MinExtensionPeriod - TimeSpan.FromTicks(1),
+                ChallengeTimeline.MaxExtensionPeriod + TimeSpan.FromTicks(1)
             };
 
             foreach (var extensionPeriod in rowData)
             {
                 // Arrange
-                var timeline = _factory.CreateChallengeTimeline();
+                var timeline = _challengeAggregateFactory.CreateChallengeTimeline();
 
                 // Act
-                var action = new Action(() => timeline.SetProperty(nameof(ChallengeTimeline.ExtensionPeriod), extensionPeriod));
+                var action = new Action(() =>
+                    timeline.SetProperty(nameof(ChallengeTimeline.ExtensionPeriod), extensionPeriod));
 
                 // Assert
                 action.Should().Throw<ArgumentOutOfRangeException>();
@@ -145,51 +107,25 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         }
 
         [TestMethod]
-        public void ExtensionPeriod_WithNullReferenceRegistrationPeriod_ShouldThrowInvalidOperationException()
-        {
-            // Arrange
-            var timeline = _factory.CreateChallengeTimeline(ChallengeState.Configured);
-            timeline.SetPrivateField("_registrationPeriod", null);
-
-            // Act
-            var action = new Action(() => timeline.SetProperty(nameof(ChallengeTimeline.ExtensionPeriod), ChallengeTimeline.MinExtensionPeriod));
-
-            // Assert
-            action.Should().Throw<InvalidOperationException>();
-        }
-
-        [TestMethod]
         public void ExtensionPeriod_LessThanThreeTimesRegistrationPeriod_ShouldThrowArgumentOutOfRangeException()
         {
             // Arrange
             var extensionPeriod = ChallengeTimeline.MinExtensionPeriod;
-            var timeline = _factory.CreateChallengeTimeline(ChallengeState.Configured);
+            var timeline = _challengeAggregateFactory.CreateChallengeTimeline(ChallengeState.Configured);
 
             // Act
-            var action = new Action(() => timeline.SetProperty(nameof(ChallengeTimeline.ExtensionPeriod), extensionPeriod));
+            var action = new Action(() =>
+                timeline.SetProperty(nameof(ChallengeTimeline.ExtensionPeriod), extensionPeriod));
 
             // Assert
             action.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]
-        public void ClosedAt_NullReference_ShouldThrowArgumentNullException()
-        {
-            // Arrange
-            var timeline = _factory.CreateChallengeTimeline();
-
-            // Act
-            var action = new Action(() => timeline.SetProperty(nameof(ChallengeTimeline.ClosedAt), null));
-
-            // Assert
-            action.Should().Throw<ArgumentNullException>();
-        }
-
-        [TestMethod]
         public void State_IsDraft_ShouldBeTrue()
         {
             // Arrange
-            var timeline = _factory.CreateChallengeTimeline();
+            var timeline = _challengeAggregateFactory.CreateChallengeTimeline();
 
             // Act
             var state = timeline.State;
@@ -202,7 +138,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void State_IsConfigured_ShouldBeTrue()
         {
             // Arrange
-            var timeline = _factory.CreateChallengeTimeline(ChallengeState.Configured);
+            var timeline = _challengeAggregateFactory.CreateChallengeTimeline(ChallengeState.Configured);
 
             // Act
             var state = timeline.State;
@@ -215,7 +151,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void State_IsOpened_ShouldBeTrue()
         {
             // Arrange
-            var timeline = _factory.CreateChallengeTimeline(ChallengeState.Opened);
+            var timeline = _challengeAggregateFactory.CreateChallengeTimeline(ChallengeState.Opened);
 
             // Act
             var state = timeline.State;
@@ -228,7 +164,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void State_IsStarted_ShouldBeTrue()
         {
             // Arrange
-            var timeline = _factory.CreateChallengeTimeline(ChallengeState.InProgress);
+            var timeline = _challengeAggregateFactory.CreateChallengeTimeline(ChallengeState.InProgress);
 
             // Act
             var state = timeline.State;
@@ -241,7 +177,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void State_IsEnded_ShouldBeTrue()
         {
             // Arrange
-            var timeline = _factory.CreateChallengeTimeline(ChallengeState.Ended);
+            var timeline = _challengeAggregateFactory.CreateChallengeTimeline(ChallengeState.Ended);
 
             // Act
             var state = timeline.State;
@@ -254,7 +190,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void State_IsClosed_ShouldBeTrue()
         {
             // Arrange
-            var timeline = _factory.CreateChallengeTimeline(ChallengeState.Closed);
+            var timeline = _challengeAggregateFactory.CreateChallengeTimeline(ChallengeState.Closed);
 
             // Act
             var state = timeline.State;
@@ -267,7 +203,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void Close_IsNotEnded_ShouldThrowInvalidOperationException()
         {
             // Arrange
-            var timeline = _factory.CreateChallengeTimeline(ChallengeState.InProgress);
+            var timeline = _challengeAggregateFactory.CreateChallengeTimeline(ChallengeState.InProgress);
 
             // Act
             var action = new Action(() => timeline.Close());

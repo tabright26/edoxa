@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Seedwork.Application.Commands.Handlers;
-
+using JetBrains.Annotations;
 using Stripe;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
@@ -30,7 +30,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
             _service = service ?? throw new ArgumentNullException(nameof(service));
         }
 
-        protected override async Task Handle(UpdatePhoneCommand command, CancellationToken cancellationToken)
+        protected override async Task Handle([NotNull] UpdatePhoneCommand command, CancellationToken cancellationToken)
         {
             var user = await _userRepository.FindAsNoTrackingAsync(command.UserId);
 

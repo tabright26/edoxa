@@ -33,9 +33,9 @@ namespace eDoxa.Challenges.BackgroundTasks.Services
             IEventBusService eventService,
             IOptionsMonitor<ChallengePublishingSettings> monitor)
         {
-            _monitor = monitor ?? throw new ArgumentNullException(nameof(monitor));
-            _logger = loggerFactory?.CreateLogger<ChallengePublishingBackgroundService>() ?? throw new ArgumentNullException(nameof(loggerFactory));
-            _eventService = eventService ?? throw new ArgumentNullException(nameof(eventService));
+            _monitor = monitor;
+            _logger = loggerFactory.CreateLogger<ChallengePublishingBackgroundService>();
+            _eventService = eventService;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)

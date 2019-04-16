@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Seedwork.Application.Commands.Handlers;
+using JetBrains.Annotations;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
@@ -27,7 +28,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
             _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
         }
 
-        public async Task<decimal> Handle(WithdrawalCommand command, CancellationToken cancellationToken)
+        public async Task<decimal> Handle([NotNull] WithdrawalCommand command, CancellationToken cancellationToken)
         {
             var user = await _userRepository.FindAsync(command.UserId);
 

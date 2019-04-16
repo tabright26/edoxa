@@ -9,7 +9,7 @@
 // this source code package.
 
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
-
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -17,7 +17,7 @@ namespace eDoxa.Identity.Infrastructure.Configurations
 {
     internal sealed class UserRoleConfiguration : IEntityTypeConfiguration<UserRole>
     {
-        public void Configure(EntityTypeBuilder<UserRole> builder)
+        public void Configure([NotNull] EntityTypeBuilder<UserRole> builder)
         {
             builder.ToTable(nameof(IdentityDbContext.UserRoles));
         }

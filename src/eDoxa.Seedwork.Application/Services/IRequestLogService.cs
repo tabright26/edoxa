@@ -9,7 +9,7 @@
 // this source code package.
 
 using System.Threading.Tasks;
-
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Http;
 
 namespace eDoxa.Seedwork.Application.Services
@@ -17,6 +17,6 @@ namespace eDoxa.Seedwork.Application.Services
     public interface IRequestLogService
     {
         //TODO: This must be implemented before eDoxa v.3 (Release 1)
-        Task CreateAsync(HttpContext httpContext /*, object request, object response*/);
+        Task CreateAsync([CanBeNull] HttpContext httpContext /*, object request, object response*/);
     }
 }

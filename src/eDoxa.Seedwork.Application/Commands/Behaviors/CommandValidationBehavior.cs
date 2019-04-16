@@ -14,27 +14,22 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using FluentValidation;
-
+using JetBrains.Annotations;
 using MediatR;
 
 namespace eDoxa.Seedwork.Application.Commands.Behaviors
 {
-    /// <summary>
-    ///     Enable tracking of validator behavior for the application monitoring feature.
-    /// </summary>
-    /// <typeparam name="TRequest">The type of the request.</typeparam>
-    /// <typeparam name="TResponse">The type of the response.</typeparam>
-    /// <seealso cref="IPipelineBehavior{TRequest,TResponse}" />
     public sealed class CommandValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     {
         private readonly IValidator<TRequest>[] _validators;
 
         public CommandValidationBehavior(IValidator<TRequest>[] validators)
         {
-            _validators = validators ?? throw new ArgumentNullException(nameof(validators));
+            _validators = validators;
         }
 
-        public async Task<TResponse> Handle(TRequest command, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+        [ItemCanBeNull]
+        public async Task<TResponse> Handle([NotNull] TRequest command, CancellationToken cancellationToken, [NotNull] RequestHandlerDelegate<TResponse> next)
         {
             var validationFailures = _validators.Select(validator => validator.Validate(command))
                                                 .SelectMany(result => result.Errors)

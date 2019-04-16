@@ -11,6 +11,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Notifications.Domain.AggregateModels;
+using JetBrains.Annotations;
 
 namespace eDoxa.Notifications.DTO.Queries
 {
@@ -18,6 +19,7 @@ namespace eDoxa.Notifications.DTO.Queries
     {
         Task<NotificationListDTO> FindUserNotificationsAsync(UserId userId);
 
+        [ItemCanBeNull]
         Task<NotificationDTO> FindUserNotificationAsync(UserId userId, NotificationId notificationId);
     }
 }

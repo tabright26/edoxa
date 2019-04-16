@@ -58,7 +58,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             var handler = new UpdateEmailCommandHandler(mockUserRepository.Object, mockCustomerService.Object);
 
             // Act
-            await handler.HandleAsync(new UpdateEmailCommand(user.Id, customer.Email), default);
+            await handler.HandleAsync(new UpdateEmailCommand(user.Id, customer.Email));
 
             // Assert
             mockUserRepository.Verify(repository => repository.FindAsNoTrackingAsync(It.IsAny<UserId>()), Times.Once);

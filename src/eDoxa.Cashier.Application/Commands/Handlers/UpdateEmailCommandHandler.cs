@@ -8,13 +8,12 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Seedwork.Application.Commands.Handlers;
-
+using JetBrains.Annotations;
 using Stripe;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
@@ -26,11 +25,11 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 
         public UpdateEmailCommandHandler(IUserRepository userRepository, CustomerService service)
         {
-            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
-            _service = service ?? throw new ArgumentNullException(nameof(service));
+            _userRepository = userRepository;
+            _service = service;
         }
 
-        protected override async Task Handle(UpdateEmailCommand command, CancellationToken cancellationToken)
+        protected override async Task Handle([NotNull] UpdateEmailCommand command, CancellationToken cancellationToken)
         {
             var user = await _userRepository.FindAsNoTrackingAsync(command.UserId);
 

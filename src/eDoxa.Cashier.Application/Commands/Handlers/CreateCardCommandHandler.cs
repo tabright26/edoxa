@@ -8,13 +8,12 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Seedwork.Application.Commands.Handlers;
-
+using JetBrains.Annotations;
 using Stripe;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
@@ -27,12 +26,13 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 
         public CreateCardCommandHandler(IUserRepository userRepository, CustomerService customerService, CardService cardService)
         {
-            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
-            _customerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
-            _service = cardService ?? throw new ArgumentNullException(nameof(cardService));
+            _userRepository = userRepository;
+            _customerService = customerService;
+            _service = cardService;
         }
 
-        public async Task<Card> Handle(CreateCardCommand command, CancellationToken cancellationToken)
+        [ItemNotNull]
+        public async Task<Card> Handle([NotNull] CreateCardCommand command, CancellationToken cancellationToken)
         {
             var user = await _userRepository.FindAsNoTrackingAsync(command.UserId);
 

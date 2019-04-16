@@ -26,14 +26,14 @@ namespace eDoxa.Challenges.Infrastructure
 {
     public sealed partial class ChallengesDbContext
     {
-        private static readonly UserAggregateFactory _userAggregateFactory = UserAggregateFactory.Instance;
-        private static readonly ChallengeAggregateFactory _challengeAggregateFactory = ChallengeAggregateFactory.Instance;        
+        private static readonly UserAggregateFactory UserAggregateFactory = UserAggregateFactory.Instance;
+        private static readonly ChallengeAggregateFactory ChallengeAggregateFactory = ChallengeAggregateFactory.Instance;        
 
         public async Task SeedAsync(ILogger logger)
         {
             if (!Users.Any())
             {
-                var admin = _userAggregateFactory.CreateAdmin();
+                var admin = UserAggregateFactory.CreateAdmin();
 
                 Users.Add(admin);
 
@@ -48,7 +48,7 @@ namespace eDoxa.Challenges.Infrastructure
 
             if (!Challenges.Any())
             {
-                var challenges = _challengeAggregateFactory.CreateRandomChallengesWithOtherStates(ChallengeState.Opened);
+                var challenges = ChallengeAggregateFactory.CreateRandomChallengesWithOtherStates(ChallengeState.Opened);
 
                 Challenges.AddRange(challenges);
 

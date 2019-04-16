@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Reflection;
+using JetBrains.Annotations;
 
 namespace eDoxa.Seedwork.Domain.Aggregate
 {
@@ -66,7 +67,7 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             };
         }
 
-        public sealed override bool Equals(object obj)
+        public sealed override bool Equals([CanBeNull] object obj)
         {
             return base.Equals(obj);
         }
@@ -99,7 +100,7 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             };
         }
 
-        private static bool TryParse(string input, out TEntityId entityId)
+        private static bool TryParse(string input, [CanBeNull] out TEntityId entityId)
         {
             entityId = null;
 
@@ -116,14 +117,14 @@ namespace eDoxa.Seedwork.Domain.Aggregate
 
     public abstract partial class EntityId<TEntityId> : IComparable, IComparable<TEntityId>
     {
-        public int CompareTo(object obj)
+        public int CompareTo([CanBeNull] object obj)
         {
             return this.CompareTo(obj as TEntityId);
         }
 
-        public int CompareTo(TEntityId other)
+        public int CompareTo([CanBeNull] TEntityId other)
         {
-            return Value.CompareTo(other.Value);
+            return Value.CompareTo(other?.Value);
         }
     }
 
@@ -131,7 +132,7 @@ namespace eDoxa.Seedwork.Domain.Aggregate
     {
         protected sealed class EntityIdTypeConverter : TypeConverter
         {
-            public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+            public override bool CanConvertFrom([NotNull] ITypeDescriptorContext context, Type sourceType)
             {
                 if (sourceType == typeof(string) || sourceType == typeof(Guid))
                 {
@@ -141,7 +142,7 @@ namespace eDoxa.Seedwork.Domain.Aggregate
                 return base.CanConvertFrom(context, sourceType);
             }
 
-            public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+            public override bool CanConvertTo([NotNull] ITypeDescriptorContext context, Type destinationType)
             {
                 if (destinationType == typeof(string) || destinationType == typeof(Guid))
                 {
@@ -151,7 +152,8 @@ namespace eDoxa.Seedwork.Domain.Aggregate
                 return base.CanConvertTo(context, destinationType);
             }
 
-            public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+            [CanBeNull]
+            public override object ConvertFrom([NotNull] ITypeDescriptorContext context, CultureInfo culture, [CanBeNull] object value)
             {
                 switch (value)
                 {
@@ -169,7 +171,8 @@ namespace eDoxa.Seedwork.Domain.Aggregate
                 return base.ConvertFrom(context, culture, value);
             }
 
-            public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+            [CanBeNull]
+            public override object ConvertTo([NotNull] ITypeDescriptorContext context, [NotNull] CultureInfo culture, [NotNull] object value, Type destinationType)
             {
                 var entityId = value as TEntityId;
 

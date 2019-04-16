@@ -11,6 +11,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Domain.AggregateModels;
+using JetBrains.Annotations;
 
 namespace eDoxa.Challenges.DTO.Queries
 {
@@ -18,6 +19,7 @@ namespace eDoxa.Challenges.DTO.Queries
     {
         Task<ParticipantListDTO> FindChallengeParticipantsAsync(ChallengeId challengeId);
 
+        [ItemCanBeNull]
         Task<ParticipantDTO> FindParticipantAsync(ParticipantId participantId);
     }
 }

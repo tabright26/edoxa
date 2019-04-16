@@ -10,7 +10,7 @@
 
 using System;
 using System.Reflection;
-
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
@@ -20,6 +20,7 @@ namespace eDoxa.Seedwork.Infrastructure.Factories
     public abstract class DesignTimeDbContextFactory<TContext> : IDesignTimeDbContextFactory<TContext>
     where TContext : DbContext
     {
+        [CanBeNull]
         public abstract TContext CreateDbContext(string[] args);
 
         protected abstract string BasePath { get; }

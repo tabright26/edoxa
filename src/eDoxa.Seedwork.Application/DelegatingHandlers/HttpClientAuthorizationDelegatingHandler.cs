@@ -16,7 +16,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using IdentityServer4;
-
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
@@ -33,7 +33,8 @@ namespace eDoxa.Seedwork.Application.DelegatingHandlers
             _httpContext = accesor.HttpContext ?? throw new ArgumentNullException(nameof(accesor));
         }
 
-        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage message, CancellationToken cancellationToken)
+        [ItemCanBeNull]
+        protected override async Task<HttpResponseMessage> SendAsync([NotNull] HttpRequestMessage message, CancellationToken cancellationToken)
         {
             var authorization = _httpContext.Request.Headers[HeaderNames.Authorization];
 

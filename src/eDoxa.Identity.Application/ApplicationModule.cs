@@ -16,12 +16,13 @@ using eDoxa.Identity.Domain.Repositories;
 using eDoxa.Identity.DTO.Queries;
 using eDoxa.Identity.Infrastructure;
 using eDoxa.Identity.Infrastructure.Repositories;
+using JetBrains.Annotations;
 
 namespace eDoxa.Identity.Application
 {
     public sealed class ApplicationModule : Module
     {
-        protected override void Load(ContainerBuilder builder)
+        protected override void Load([NotNull] ContainerBuilder builder)
         {
             base.Load(builder);
 

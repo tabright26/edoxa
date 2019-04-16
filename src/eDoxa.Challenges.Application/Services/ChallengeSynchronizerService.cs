@@ -8,7 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Domain.Repositories;
@@ -22,7 +21,7 @@ namespace eDoxa.Challenges.Application.Services
 
         public ChallengeSynchronizerService(IChallengeRepository challengeRepository)
         {
-            _challengeRepository = challengeRepository ?? throw new ArgumentNullException(nameof(challengeRepository));
+            _challengeRepository = challengeRepository;
         }
 
         public async Task SynchronizeAsync()

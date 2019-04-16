@@ -15,16 +15,16 @@ using Autofac;
 using eDoxa.Seedwork.Application.Commands.Behaviors;
 using eDoxa.Seedwork.Application.Commands.Handlers;
 using eDoxa.Seedwork.Application.DomainEventHandlers;
-
+using JetBrains.Annotations;
 using MediatR;
 
-using Autofac_Module = Autofac.Module;
+using Module = Autofac.Module;
 
 namespace eDoxa.Autofac
 {
-    internal sealed class MediatorModule<TStartup> : Autofac_Module
+    internal sealed class MediatorModule<TStartup> : Module
     {
-        protected override void Load(ContainerBuilder builder)
+        protected override void Load([NotNull] ContainerBuilder builder)
         {
             builder.RegisterAssemblyTypes(typeof(IMediator).GetTypeInfo().Assembly).AsImplementedInterfaces();
 

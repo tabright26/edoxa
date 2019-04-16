@@ -17,9 +17,6 @@ using eDoxa.Cashier.DTO.Factories;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.Infrastructure.Repositories;
 using eDoxa.Seedwork.Infrastructure.Factories;
-
-using FluentAssertions;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Cashier.Application.Tests.Queries
@@ -56,25 +53,6 @@ namespace eDoxa.Cashier.Application.Tests.Queries
 
                     // Assert
                     CashierAssert.IsMapped(accountDTO);
-                }
-            }
-        }
-
-        [TestMethod]
-        public async Task FindUserAccountAsync_NullReference_ShouldBeEmpty()
-        {
-            using (var factory = new InMemoryDbContextFactory<CashierDbContext>())
-            {
-                using (var context = factory.CreateContext())
-                {
-                    // Arrange
-                    var queries = new AccountQueries(context, _cashierMapperFactory.CreateMapper());
-
-                    // Act
-                    var accountDTO = await queries.FindUserAccountAsync(null);
-
-                    // Assert
-                    accountDTO.Should().BeNull();
                 }
             }
         }

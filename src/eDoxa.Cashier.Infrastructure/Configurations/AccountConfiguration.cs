@@ -10,7 +10,7 @@
 
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
-
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -18,7 +18,7 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
 {
     internal sealed class AccountConfiguration : IEntityTypeConfiguration<Account>
     {
-        public void Configure(EntityTypeBuilder<Account> builder)
+        public void Configure([NotNull] EntityTypeBuilder<Account> builder)
         {
             builder.ToTable(nameof(CashierDbContext.Accounts));
 

@@ -12,7 +12,7 @@ using System;
 
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
-
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -22,7 +22,7 @@ namespace eDoxa.Challenges.Infrastructure.Configurations
 {
     public sealed class ChallengeConfiguration : IEntityTypeConfiguration<Challenge>
     {
-        public void Configure(EntityTypeBuilder<Challenge> builder)
+        public void Configure([NotNull] EntityTypeBuilder<Challenge> builder)
         {
             builder.ToTable(nameof(ChallengesDbContext.Challenges));
 

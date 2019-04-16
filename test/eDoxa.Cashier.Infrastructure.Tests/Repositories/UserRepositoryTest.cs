@@ -8,7 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.Factories;
@@ -52,25 +51,6 @@ namespace eDoxa.Cashier.Infrastructure.Tests.Repositories
         }
 
         [TestMethod]
-        public void Create_UserNullReference_ShouldThrowArgumentNullException()
-        {
-            using (var factory = new InMemoryDbContextFactory<CashierDbContext>())
-            {
-                using (var context = factory.CreateContext())
-                {
-                    // Arrange
-                    var repository = new UserRepository(context);
-
-                    // Act
-                    var action = new Action(() => repository.Create(null));
-
-                    // Assert
-                    action.Should().Throw<ArgumentNullException>();
-                }
-            }
-        }
-
-        [TestMethod]
         public async Task FindAsync_ShouldBeMapped()
         {
             var user = _userAggregateFactory.CreateUser();
@@ -96,25 +76,6 @@ namespace eDoxa.Cashier.Infrastructure.Tests.Repositories
 
                     // Assert
                     CashierAssert.IsMapped(user);
-                }
-            }
-        }
-
-        [TestMethod]
-        public async Task FindAsync_NullReference_ShouldBeNull()
-        {
-            using (var factory = new InMemoryDbContextFactory<CashierDbContext>())
-            {
-                using (var context = factory.CreateContext())
-                {
-                    // Arrange
-                    var repository = new UserRepository(context);
-
-                    // Act
-                    var user = await repository.FindAsync(null);
-
-                    // Assert
-                    user.Should().BeNull();
                 }
             }
         }

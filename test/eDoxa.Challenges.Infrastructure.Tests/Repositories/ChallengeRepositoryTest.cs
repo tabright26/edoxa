@@ -1,26 +1,23 @@
 ﻿// Filename: ChallengeRepositoryTest.cs
-// Date Created: 2019-03-21
+// Date Created: 2019-04-14
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Factories;
 using eDoxa.Challenges.Infrastructure.Repositories;
 using eDoxa.Seedwork.Domain.Common.Enums;
 using eDoxa.Seedwork.Infrastructure.Factories;
-
 using FluentAssertions;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
@@ -28,7 +25,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
     [TestClass]
     public sealed class ChallengeRepositoryTest
     {
-        private static readonly ChallengeAggregateFactory _factory = ChallengeAggregateFactory.Instance;
+        private readonly ChallengeAggregateFactory _challengeAggregateFactory = ChallengeAggregateFactory.Instance;
 
         [TestMethod]
         public async Task Create_Challenge_ShouldNotBeEmpty()
@@ -40,7 +37,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
                     // Arrange
                     var repository = new ChallengeRepository(context);
 
-                    var challenge = _factory.CreateChallenge();
+                    var challenge = _challengeAggregateFactory.CreateChallenge();
 
                     // Act
                     repository.Create(challenge);
@@ -57,25 +54,6 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
         }
 
         [TestMethod]
-        public void Create_ChallengeNullReference_ShouldThrowArgumentNullException()
-        {
-            using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
-            {
-                using (var context = factory.CreateContext())
-                {
-                    // Arrange
-                    var repository = new ChallengeRepository(context);
-
-                    // Act
-                    var action = new Action(() => repository.Create((Challenge) null));
-
-                    // Assert
-                    action.Should().Throw<ArgumentNullException>();
-                }
-            }
-        }
-
-        [TestMethod]
         public async Task Create_Challenges_ShouldNotBeEmpty()
         {
             using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
@@ -85,7 +63,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
                     // Arrange
                     var repository = new ChallengeRepository(context);
 
-                    var challenges = _factory.CreateRandomChallenges();
+                    var challenges = _challengeAggregateFactory.CreateRandomChallenges();
 
                     // Act
                     repository.Create(challenges);
@@ -102,25 +80,6 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
         }
 
         [TestMethod]
-        public void Create_ChallengesNullReference_ShouldThrowArgumentNullException()
-        {
-            using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
-            {
-                using (var context = factory.CreateContext())
-                {
-                    // Arrange
-                    var repository = new ChallengeRepository(context);
-
-                    // Act
-                    var action = new Action(() => repository.Create((IEnumerable<Challenge>) null));
-
-                    // Assert
-                    action.Should().Throw<ArgumentNullException>();
-                }
-            }
-        }
-
-        [TestMethod]
         public async Task FindChallengesAsync_Persistent_ShouldBeLoaded()
         {
             using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
@@ -130,7 +89,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
                     // Arrange
                     var repository = new ChallengeRepository(context);
 
-                    var challenges = _factory.CreateRandomChallenges();
+                    var challenges = _challengeAggregateFactory.CreateRandomChallenges();
 
                     repository.Create(challenges);
 
@@ -143,7 +102,8 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
                     var repository = new ChallengeRepository(context);
 
                     // Act
-                    var challenges = await repository.FindChallengesAsync(Game.All, ChallengeType.All, ChallengeState.All);
+                    var challenges =
+                        await repository.FindChallengesAsync(Game.All, ChallengeType.All, ChallengeState.All);
 
                     // Assert
                     ChallengeRepositoryAssert.IsLoaded(challenges);
@@ -162,7 +122,8 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
                     var repository = new ChallengeRepository(context);
 
                     // Act
-                    var challenges = await repository.FindChallengesAsync(Game.All, ChallengeType.All, ChallengeState.All);
+                    var challenges =
+                        await repository.FindChallengesAsync(Game.All, ChallengeType.All, ChallengeState.All);
 
                     // Assert
                     challenges.Should().BeEmpty();
@@ -174,7 +135,8 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
         [DataRow(Game.All, ChallengeType.None, ChallengeState.All)]
         [DataRow(Game.None, ChallengeType.All, ChallengeState.All)]
         [DataTestMethod]
-        public async Task FindChallengesAsync_ByNoneFlags_ShouldBeEmpty(Game game, ChallengeType type, ChallengeState state)
+        public async Task FindChallengesAsync_ByNoneFlags_ShouldBeEmpty(Game game, ChallengeType type,
+            ChallengeState state)
         {
             using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
             {
@@ -182,7 +144,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
                 {
                     var repository = new ChallengeRepository(context);
 
-                    var challenges = _factory.CreateRandomChallenges();
+                    var challenges = _challengeAggregateFactory.CreateRandomChallenges();
 
                     repository.Create(challenges);
 
@@ -218,7 +180,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
                 {
                     var repository = new ChallengeRepository(context);
 
-                    var challenges = _factory.CreateRandomChallenges(state);
+                    var challenges = _challengeAggregateFactory.CreateRandomChallenges(state);
 
                     repository.Create(challenges);
 
@@ -242,7 +204,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
         [TestMethod]
         public async Task FindChallengeAsync_Persistent_ShouldBeLoaded()
         {
-            var challenge = _factory.CreateRandomChallenge();
+            var challenge = _challengeAggregateFactory.CreateRandomChallenge();
 
             using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
             {
@@ -288,25 +250,6 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
             }
         }
 
-        [TestMethod]
-        public async Task FindChallengeAsync_NullReference_ShouldBeNull()
-        {
-            using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
-            {
-                using (var context = factory.CreateContext())
-                {
-                    // Arrange
-                    var repository = new ChallengeRepository(context);
-
-                    // Act
-                    var challenge = await repository.FindChallengeAsync(null);
-
-                    // Assert
-                    challenge.Should().BeNull();
-                }
-            }
-        }
-
         private static class ChallengeRepositoryAssert
         {
             internal static void IsLoaded(IEnumerable<Challenge> challenges)
@@ -344,7 +287,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
                     foreach (var match in participant.Matches)
                     {
                         match.Id.ToGuid().Should().NotBeEmpty();
-                        match.Timestamp.Should().BeBefore(DateTime.UtcNow);                        
+                        match.Timestamp.Should().BeBefore(DateTime.UtcNow);
                         match.LinkedMatch.ToString().Should().NotBeNullOrWhiteSpace();
                         match.TotalScore.Should().NotBeNull();
                         match.Participant.Should().NotBeNull();

@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 
 namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.DTO
 {
+    [JsonObject]
     public class LeagueOfLegendsTeamStatsDTO
     {
         [JsonProperty("firstDragon")]

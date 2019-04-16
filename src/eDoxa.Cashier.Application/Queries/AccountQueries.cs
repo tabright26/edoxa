@@ -8,7 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,7 +18,7 @@ using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Cashier.Infrastructure;
-
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Cashier.Application.Queries
@@ -31,8 +30,8 @@ namespace eDoxa.Cashier.Application.Queries
 
         public AccountQueries(CashierDbContext context, IMapper mapper)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _context = context;
+            _mapper = mapper;
         }
 
         private async Task<Account> FindUserAccountAsNoTrackingAsync(UserId userId)
@@ -43,6 +42,7 @@ namespace eDoxa.Cashier.Application.Queries
 
     public sealed partial class AccountQueries : IAccountQueries
     {
+        [ItemCanBeNull]
         public async Task<AccountDTO> FindUserAccountAsync(UserId userId)
         {
             var account = await this.FindUserAccountAsNoTrackingAsync(userId);

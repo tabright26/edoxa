@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Notifications.Domain.Repositories;
 using eDoxa.Seedwork.Application.Commands.Handlers;
+using JetBrains.Annotations;
 
 namespace eDoxa.Notifications.Application.Commands.Handlers
 {
@@ -26,7 +27,7 @@ namespace eDoxa.Notifications.Application.Commands.Handlers
             _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
         }
 
-        protected override async Task Handle(NotifyUserCommand command, CancellationToken cancellationToken)
+        protected override async Task Handle([NotNull] NotifyUserCommand command, CancellationToken cancellationToken)
         {
             var user = await _userRepository.FindAsync(command.UserId);
 

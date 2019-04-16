@@ -18,9 +18,6 @@ using eDoxa.Notifications.DTO.Factories;
 using eDoxa.Notifications.Infrastructure;
 using eDoxa.Notifications.Infrastructure.Repositories;
 using eDoxa.Seedwork.Infrastructure.Factories;
-
-using FluentAssertions;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Notifications.Application.Tests.Queries
@@ -62,25 +59,6 @@ namespace eDoxa.Notifications.Application.Tests.Queries
         }
 
         [TestMethod]
-        public async Task FindUserNotificationsAsync_NullReference_ShouldBeEmpty()
-        {
-            using (var factory = new InMemoryDbContextFactory<NotificationsDbContext>())
-            {
-                using (var context = factory.CreateContext())
-                {
-                    // Arrange
-                    var queries = new NotificationQueries(context, _notificationsMapperFactory.CreateMapper());
-
-                    // Act
-                    var notificationListDTO = await queries.FindUserNotificationsAsync(null);
-
-                    // Assert
-                    notificationListDTO.Items.Should().BeEmpty();
-                }
-            }
-        }
-
-        [TestMethod]
         public async Task FindUserNotificationAsync_ShouldBeMapped()
         {
             var user = _userAggregateFactory.CreateUser(true);
@@ -108,25 +86,6 @@ namespace eDoxa.Notifications.Application.Tests.Queries
 
                     // Assert
                     NotificationsAssert.IsMapped(notificationDTO);
-                }
-            }
-        }
-
-        [TestMethod]
-        public async Task FindUserNotificationAsync_NullReference_ShouldBeNull()
-        {
-            using (var factory = new InMemoryDbContextFactory<NotificationsDbContext>())
-            {
-                using (var context = factory.CreateContext())
-                {
-                    // Arrange
-                    var queries = new NotificationQueries(context, _notificationsMapperFactory.CreateMapper());
-
-                    // Act
-                    var notificationDTO = await queries.FindUserNotificationAsync(null, null);
-
-                    // Assert
-                    notificationDTO.Should().BeNull();
                 }
             }
         }

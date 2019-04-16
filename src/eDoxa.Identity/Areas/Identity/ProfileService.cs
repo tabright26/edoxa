@@ -17,7 +17,7 @@ using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 
 using IdentityServer4.Models;
 using IdentityServer4.Services;
-
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -42,7 +42,7 @@ namespace eDoxa.Identity.Areas.Identity
             Logger = loggerFactory.CreateLogger<ProfileService>();
         }
 
-        public async Task GetProfileDataAsync(ProfileDataRequestContext context)
+        public async Task GetProfileDataAsync([NotNull] ProfileDataRequestContext context)
         {
             context.LogProfileRequest(Logger);
 
@@ -58,7 +58,7 @@ namespace eDoxa.Identity.Areas.Identity
             context.LogIssuedClaims(Logger);
         }
 
-        public async Task IsActiveAsync(IsActiveContext context)
+        public async Task IsActiveAsync([NotNull] IsActiveContext context)
         {
             context.IsActive = false;
 
@@ -85,6 +85,6 @@ namespace eDoxa.Identity.Areas.Identity
             }
         }
 
-        protected ILogger Logger { get; }
+        private ILogger Logger { get; }
     }
 }

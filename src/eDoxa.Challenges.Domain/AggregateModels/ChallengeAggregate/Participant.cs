@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 
 using eDoxa.Seedwork.Domain.Aggregate;
+using JetBrains.Annotations;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
@@ -52,6 +53,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             }
         }
 
+        [CanBeNull]
         public Score AverageScore
         {
             get

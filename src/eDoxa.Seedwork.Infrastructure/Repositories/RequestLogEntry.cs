@@ -12,7 +12,7 @@ using System;
 
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Infrastructure.Constants;
-
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Http;
 
 namespace eDoxa.Seedwork.Infrastructure.Repositories
@@ -20,7 +20,7 @@ namespace eDoxa.Seedwork.Infrastructure.Repositories
     public class RequestLogEntry : IAggregateRoot
     {
         //TODO: This must be implemented before eDoxa v.3 (Release 1)
-        public RequestLogEntry(HttpContext httpContext, /*object request, object response,*/ string idempotencyKey = null) : this()
+        public RequestLogEntry([CanBeNull] HttpContext httpContext, /*object request, object response,*/ string idempotencyKey = null) : this()
         {
             if (httpContext != null)
             {
@@ -32,7 +32,7 @@ namespace eDoxa.Seedwork.Infrastructure.Repositories
                 Url = httpContext.Request?.Path.Value.ToLower();
                 LocalIpAddress = httpContext.Connection?.LocalIpAddress?.MapToIPv4().ToString();
                 RemoteIpAddress = httpContext.Connection?.RemoteIpAddress?.MapToIPv4().ToString();
-                Origin = httpContext.Request.Headers[CustomHeaderNames.Origin];
+                Origin = httpContext.Request?.Headers[CustomHeaderNames.Origin];
 
                 if (idempotencyKey != null)
                 {

@@ -21,7 +21,7 @@ using eDoxa.Challenges.DTO;
 using eDoxa.Challenges.DTO.Queries;
 using eDoxa.Challenges.Infrastructure;
 using eDoxa.Seedwork.Domain.Common.Enums;
-
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Challenges.Application.Queries
@@ -94,6 +94,7 @@ namespace eDoxa.Challenges.Application.Queries
             return _mapper.Map<ChallengeListDTO>(challenges);
         }
 
+        [ItemCanBeNull]
         public async Task<ChallengeDTO> FindChallengeAsync(ChallengeId challengeId)
         {
             var challenge = await this.FindChallengeAsNoTrackingAsync(challengeId);

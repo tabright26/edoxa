@@ -8,12 +8,12 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Seedwork.Application.Commands.Handlers;
+using JetBrains.Annotations;
 
 namespace eDoxa.Challenges.Application.Commands.Handlers
 {
@@ -23,10 +23,10 @@ namespace eDoxa.Challenges.Application.Commands.Handlers
 
         public RegisterChallengeParticipantCommandHandler(IChallengeRepository challengeRepository)
         {
-            _challengeRepository = challengeRepository ?? throw new ArgumentNullException(nameof(challengeRepository));
+            _challengeRepository = challengeRepository;
         }
 
-        protected override async Task Handle(RegisterChallengeParticipantCommand command, CancellationToken cancellationToken)
+        protected override async Task Handle([NotNull] RegisterChallengeParticipantCommand command, CancellationToken cancellationToken)
         {
             var challenge = await _challengeRepository.FindChallengeAsync(command.ChallengeId);
 

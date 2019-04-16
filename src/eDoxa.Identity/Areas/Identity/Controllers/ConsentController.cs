@@ -21,7 +21,7 @@ using IdentityServer4.Extensions;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
-
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -98,7 +98,7 @@ namespace eDoxa.Identity.Areas.Identity.Controllers
         }
 
         private static ConsentViewModel CreateConsentViewModel(
-            ConsentInputModel model,
+            [CanBeNull] ConsentInputModel model,
             string returnUrl,
             AuthorizationRequest request,
             Client client,
@@ -258,6 +258,7 @@ namespace eDoxa.Identity.Areas.Identity.Controllers
             return result;
         }
 
+        [ItemCanBeNull]
         private async Task<ConsentViewModel> BuildViewModelAsync(string returnUrl, ConsentInputModel model = null)
         {
             var request = await _interaction.GetAuthorizationContextAsync(returnUrl);

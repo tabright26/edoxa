@@ -8,6 +8,7 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 
 namespace eDoxa.Challenges.BackgroundTasks.Settings
@@ -18,6 +19,7 @@ namespace eDoxa.Challenges.BackgroundTasks.Settings
 
         public int Delay { get; set; }
 
+        [NotNull]
         public override string ToString()
         {
             var json = JsonConvert.SerializeObject(this, Formatting.Indented);

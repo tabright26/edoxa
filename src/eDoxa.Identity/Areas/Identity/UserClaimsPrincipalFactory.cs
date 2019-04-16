@@ -16,7 +16,7 @@ using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 
 using IdentityModel;
-
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 
@@ -32,7 +32,8 @@ namespace eDoxa.Identity.Areas.Identity
         {
         }
 
-        protected override async Task<ClaimsIdentity> GenerateClaimsAsync(User user)
+        [ItemNotNull]
+        protected override async Task<ClaimsIdentity> GenerateClaimsAsync([NotNull] User user)
         {
             var identity = await base.GenerateClaimsAsync(user);
 

@@ -85,58 +85,6 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         }
 
         [TestMethod]
-        public void Name_NullReference_ShouldThrowArgumentException()
-        {
-            // Arrange
-            var challenge = _factory.CreateChallenge(ChallengeState.Draft);
-
-            // Act
-            var action = new Action(() => challenge.SetProperty(nameof(Challenge.Name), null));
-
-            // Assert
-            action.Should().Throw<ArgumentNullException>();
-        }
-
-        [TestMethod]
-        public void Settings_NullReference_ShouldThrowArgumentException()
-        {
-            // Arrange
-            var challenge = _factory.CreateChallenge(ChallengeState.Draft);
-
-            // Act
-            var action = new Action(() => challenge.SetProperty(nameof(Challenge.Settings), null));
-
-            // Assert
-            action.Should().Throw<ArgumentNullException>();
-        }
-
-        [TestMethod]
-        public void Timeline_NullReference_ShouldThrowArgumentException()
-        {
-            // Arrange
-            var challenge = _factory.CreateChallenge(ChallengeState.Draft);
-
-            // Act
-            var action = new Action(() => challenge.SetProperty(nameof(Challenge.Timeline), null));
-
-            // Assert
-            action.Should().Throw<ArgumentNullException>();
-        }
-
-        [TestMethod]
-        public void Scoring_NullReference_ShouldThrowArgumentException()
-        {
-            // Arrange
-            var challenge = _factory.CreateChallenge(ChallengeState.Draft);
-
-            // Act
-            var action = new Action(() => challenge.SetProperty(nameof(Challenge.Scoring), null));
-
-            // Assert
-            action.Should().Throw<ArgumentNullException>();
-        }
-
-        [TestMethod]
         public void Configure1_WhenTimelineStateIsDraft_ShouldBeConfigured()
         {
             // Arrange

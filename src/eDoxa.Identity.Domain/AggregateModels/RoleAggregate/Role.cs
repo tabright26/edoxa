@@ -14,9 +14,6 @@ using Microsoft.AspNetCore.Identity;
 
 namespace eDoxa.Identity.Domain.AggregateModels.RoleAggregate
 {
-    /// <summary>
-    ///     Represents a role in the system.
-    /// </summary>
     public class Role : IdentityRole<Guid>
     {
         public Role(string name) : base(name)

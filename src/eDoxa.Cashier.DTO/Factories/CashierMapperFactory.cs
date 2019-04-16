@@ -20,13 +20,13 @@ namespace eDoxa.Cashier.DTO.Factories
 {
     public sealed partial class CashierMapperFactory
     {
-        private static readonly Lazy<CashierMapperFactory> _lazy = new Lazy<CashierMapperFactory>(() => new CashierMapperFactory());
+        private static readonly Lazy<CashierMapperFactory> Lazy = new Lazy<CashierMapperFactory>(() => new CashierMapperFactory());
 
         public static CashierMapperFactory Instance
         {
             get
             {
-                return _lazy.Value;
+                return Lazy.Value;
             }
         }
     }

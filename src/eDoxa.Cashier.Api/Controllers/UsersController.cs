@@ -15,8 +15,6 @@ using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Application.Services;
-
 using MediatR;
 
 using Microsoft.AspNetCore.Authorization;
@@ -35,14 +33,12 @@ namespace eDoxa.Cashier.Api.Controllers
         private readonly ILogger<UsersController> _logger;
         private readonly IAddressQueries _queries;
         private readonly IMediator _mediator;
-        private readonly IIdentityParserService _identityParserService;
 
-        public UsersController(ILogger<UsersController> logger, IAddressQueries queries, IMediator mediator, IIdentityParserService identityParserService)
+        public UsersController(ILogger<UsersController> logger, IAddressQueries queries, IMediator mediator)
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _queries = queries ?? throw new ArgumentNullException(nameof(queries));
-            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-            _identityParserService = identityParserService ?? throw new ArgumentNullException(nameof(identityParserService));
+            _logger = logger;
+            _queries = queries;
+            _mediator = mediator;
         }
 
         /// <summary>

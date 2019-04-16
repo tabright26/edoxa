@@ -20,7 +20,7 @@ using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.DTO;
 using eDoxa.Challenges.DTO.Queries;
 using eDoxa.Challenges.Infrastructure;
-
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Challenges.Application.Queries
@@ -62,6 +62,7 @@ namespace eDoxa.Challenges.Application.Queries
             return _mapper.Map<MatchListDTO>(matches);
         }
 
+        [ItemCanBeNull]
         public async Task<MatchDTO> FindMatchAsync(MatchId matchId)
         {
             var match = await this.FindMatchAsNoTrackingAsync(matchId);

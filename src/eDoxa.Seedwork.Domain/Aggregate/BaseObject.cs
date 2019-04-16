@@ -12,6 +12,7 @@ using System.Linq;
 using System.Reflection;
 
 using eDoxa.Seedwork.Domain.Reflexion;
+using JetBrains.Annotations;
 
 namespace eDoxa.Seedwork.Domain.Aggregate
 {
@@ -19,9 +20,9 @@ namespace eDoxa.Seedwork.Domain.Aggregate
     {
         private const int HashMultiplier = 31;
 
-        private static readonly IDomainSignatureCache _domainSignatureCache = new DomainSignatureCache();
+        private static readonly IDomainSignatureCache DomainSignatureCache = new DomainSignatureCache();
 
-        public override bool Equals(object obj)
+        public override bool Equals([CanBeNull] object obj)
         {
             if (!(obj is BaseObject other))
             {
@@ -95,8 +96,8 @@ namespace eDoxa.Seedwork.Domain.Aggregate
         {
             var ownerType = this.GetType();
 
-            var signature = _domainSignatureCache.Find(ownerType) ??
-                            _domainSignatureCache.GetOrAdd(ownerType, type => new DomainSignature(type, this.TypeSignatureProperties()));
+            var signature = DomainSignatureCache.Find(ownerType) ??
+                            DomainSignatureCache.GetOrAdd(ownerType, type => new DomainSignature(type, this.TypeSignatureProperties()));
 
             return signature.Properties;
         }

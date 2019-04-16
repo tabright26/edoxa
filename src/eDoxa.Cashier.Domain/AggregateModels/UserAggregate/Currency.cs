@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using eDoxa.Seedwork.Domain.Aggregate;
+using JetBrains.Annotations;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 {
@@ -93,7 +94,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
             };
         }
 
-        public sealed override bool Equals(object obj)
+        public sealed override bool Equals([CanBeNull] object obj)
         {
             return base.Equals(obj);
         }
@@ -121,14 +122,14 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 
     public abstract partial class Currency<TCurrency> : IComparable, IComparable<TCurrency>
     {
-        public int CompareTo(object obj)
+        public int CompareTo([CanBeNull] object obj)
         {
             return this.CompareTo(obj as TCurrency);
         }
 
-        public int CompareTo(TCurrency other)
+        public int CompareTo([CanBeNull] TCurrency other)
         {
-            return Amount.CompareTo(other.Amount);
+            return Amount.CompareTo(other?.Amount);
         }
     }
 }

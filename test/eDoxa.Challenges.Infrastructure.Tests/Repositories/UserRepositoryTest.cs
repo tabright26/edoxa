@@ -8,7 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Domain.Factories;
@@ -24,7 +23,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
     [TestClass]
     public sealed class UserRepositoryTest
     {
-        private static readonly UserAggregateFactory _factory = UserAggregateFactory.Instance;
+        private readonly UserAggregateFactory _userAggregateFactory = UserAggregateFactory.Instance;
 
         [TestMethod]
         public async Task Create_User_ShouldNotBeEmpty()
@@ -37,7 +36,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
                     var repository = new UserRepository(context);
 
                     // Act
-                    repository.Create(_factory.CreateUser());
+                    repository.Create(_userAggregateFactory.CreateUser());
 
                     await repository.UnitOfWork.CommitAsync();
                 }
@@ -46,25 +45,6 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
                 {
                     // Assert
                     context.Users.Should().NotBeEmpty();
-                }
-            }
-        }
-
-        [TestMethod]
-        public void Create_UserNullReference_ShouldThrowArgumentNullException()
-        {
-            using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
-            {
-                using (var context = factory.CreateContext())
-                {
-                    // Arrange
-                    var repository = new UserRepository(context);
-
-                    // Act
-                    var action = new Action(() => repository.Create(null));
-
-                    // Assert
-                    action.Should().Throw<ArgumentNullException>();
                 }
             }
         }

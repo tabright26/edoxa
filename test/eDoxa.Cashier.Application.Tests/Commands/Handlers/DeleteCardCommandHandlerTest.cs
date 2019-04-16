@@ -58,7 +58,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             var handler = new DeleteCardCommandHandler(mockUserRepository.Object, mockCardService.Object);
 
             // Act
-            await handler.HandleAsync(new DeleteCardCommand(user.Id, CardId.Parse(card.Id)), default);
+            await handler.HandleAsync(new DeleteCardCommand(user.Id, CardId.Parse(card.Id)));
 
             // Assert
             mockUserRepository.Verify(repository => repository.FindAsNoTrackingAsync(It.IsAny<UserId>()), Times.Once);

@@ -19,31 +19,16 @@ namespace eDoxa.ServiceBus.Utilities
     {
         private readonly DbContext _context;
 
-        /// <summary>
-        /// </summary>
-        /// <param name="context"></param>
         private ResilientTransaction(DbContext context)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _context = context;
         }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
         public static ResilientTransaction NewInstance(DbContext context)
         {
             return new ResilientTransaction(context);
         }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="action"></param>
-        /// <returns></returns>
-        /// <remarks>
-        ///     Use of an EF Core resiliency strategy when using multiple DbContexts within an explicit BeginTransaction():
-        ///     See: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency
-        /// </remarks>
         public async Task ExecuteAsync(Func<Task> action)
         {
             var strategy = _context.Database.CreateExecutionStrategy();

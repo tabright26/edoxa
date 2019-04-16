@@ -17,14 +17,14 @@ namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.Factories
 {
     public sealed class LeagueOfLegendsChallengeScoringFactory
     {
-        private static readonly Lazy<LeagueOfLegendsChallengeScoringFactory> _lazy =
+        private static readonly Lazy<LeagueOfLegendsChallengeScoringFactory> Lazy =
             new Lazy<LeagueOfLegendsChallengeScoringFactory>(() => new LeagueOfLegendsChallengeScoringFactory());
 
         public static LeagueOfLegendsChallengeScoringFactory Instance
         {
             get
             {
-                return _lazy.Value;
+                return Lazy.Value;
             }
         }
 

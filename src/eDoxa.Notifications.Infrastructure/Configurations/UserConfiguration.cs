@@ -10,7 +10,7 @@
 
 using eDoxa.Notifications.Domain.AggregateModels;
 using eDoxa.Notifications.Domain.AggregateModels.UserAggregate;
-
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -18,7 +18,7 @@ namespace eDoxa.Notifications.Infrastructure.Configurations
 {
     public sealed class UserConfiguration : IEntityTypeConfiguration<User>
     {
-        public void Configure(EntityTypeBuilder<User> builder)
+        public void Configure([NotNull] EntityTypeBuilder<User> builder)
         {
             builder.ToTable(nameof(NotificationsDbContext.Users));
 

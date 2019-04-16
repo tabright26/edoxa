@@ -1,35 +1,28 @@
 ﻿// Filename: UsersControllerTest.cs
-// Date Created: 2019-04-09
+// Date Created: 2019-04-14
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
 using System.Threading.Tasks;
-
 using eDoxa.Cashier.Api.Controllers;
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
-using eDoxa.Seedwork.Application.Services;
 using eDoxa.Testing.MSTest.Extensions;
-
 using FluentAssertions;
-
 using MediatR;
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using Moq;
-
 using Stripe;
 
 namespace eDoxa.Cashier.Api.Tests.Controllers
@@ -40,9 +33,8 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         private readonly UserAggregateFactory _userAggregateFactory = UserAggregateFactory.Instance;
 
         private Mock<ILogger<UsersController>> _logger;
-        private Mock<IAddressQueries> _queries;
         private Mock<IMediator> _mediator;
-        private Mock<IIdentityParserService> _service;
+        private Mock<IAddressQueries> _queries;
 
         [TestInitialize]
         public void TestInitialize()
@@ -50,7 +42,6 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             _logger = new Mock<ILogger<UsersController>>();
             _queries = new Mock<IAddressQueries>();
             _mediator = new Mock<IMediator>();
-            _service = new Mock<IIdentityParserService>();
         }
 
         [TestMethod]
@@ -59,9 +50,10 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Arrange
             var userId = _userAggregateFactory.CreateUserId();
 
-            _queries.Setup(queries => queries.FindUserAddressAsync(It.IsAny<UserId>())).ReturnsAsync(new AddressDTO()).Verifiable();
+            _queries.Setup(queries => queries.FindUserAddressAsync(It.IsAny<UserId>())).ReturnsAsync(new AddressDTO())
+                .Verifiable();
 
-            var controller = new UsersController(_logger.Object, _queries.Object, _mediator.Object, _service.Object);
+            var controller = new UsersController(_logger.Object, _queries.Object, _mediator.Object);
 
             // Act
             var result = await controller.FindUserAddressAsync(userId);
@@ -74,8 +66,6 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             _queries.Verify();
 
             _mediator.VerifyNoOtherCalls();
-
-            _service.VerifyNoOtherCalls();
         }
 
         [TestMethod]
@@ -84,11 +74,12 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Arrange
             var userId = _userAggregateFactory.CreateUserId();
 
-            _queries.Setup(queries => queries.FindUserAddressAsync(It.IsAny<UserId>())).ThrowsAsync(new Exception()).Verifiable();
+            _queries.Setup(queries => queries.FindUserAddressAsync(It.IsAny<UserId>())).ThrowsAsync(new Exception())
+                .Verifiable();
 
             _logger.SetupLoggerWithLogLevelErrorVerifiable();
 
-            var controller = new UsersController(_logger.Object, _queries.Object, _mediator.Object, _service.Object);
+            var controller = new UsersController(_logger.Object, _queries.Object, _mediator.Object);
 
             // Act
             var result = await controller.FindUserAddressAsync(userId);
@@ -101,8 +92,6 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             _queries.Verify();
 
             _mediator.VerifyNoOtherCalls();
-
-            _service.VerifyNoOtherCalls();
         }
 
         [TestMethod]
@@ -115,11 +104,12 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
 
             var address = customer.Shipping.Address;
 
-            var command = new UpdateAddressCommand(userId, address.City, address.Country, address.Line1, address.Line2, address.PostalCode, address.State);
+            var command = new UpdateAddressCommand(userId, address.City, address.Country, address.Line1, address.Line2,
+                address.PostalCode, address.State);
 
             _mediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(new Address()).Verifiable();
 
-            var controller = new UsersController(_logger.Object, _queries.Object, _mediator.Object, _service.Object);
+            var controller = new UsersController(_logger.Object, _queries.Object, _mediator.Object);
 
             // Act
             var result = await controller.UpdateAddressAsync(userId, command);
@@ -144,13 +134,14 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
 
             var address = customer.Shipping.Address;
 
-            var command = new UpdateAddressCommand(userId, address.City, address.Country, address.Line1, address.Line2, address.PostalCode, address.State);
+            var command = new UpdateAddressCommand(userId, address.City, address.Country, address.Line1, address.Line2,
+                address.PostalCode, address.State);
 
             _mediator.Setup(mediator => mediator.Send(command, default)).ThrowsAsync(new Exception()).Verifiable();
 
             _logger.SetupLoggerWithLogLevelErrorVerifiable();
 
-            var controller = new UsersController(_logger.Object, _queries.Object, _mediator.Object, _service.Object);
+            var controller = new UsersController(_logger.Object, _queries.Object, _mediator.Object);
 
             // Act
             var result = await controller.UpdateAddressAsync(userId, command);

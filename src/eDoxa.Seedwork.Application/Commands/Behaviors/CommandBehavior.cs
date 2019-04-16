@@ -13,7 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Seedwork.Application.Services;
-
+using JetBrains.Annotations;
 using MediatR;
 
 using Microsoft.AspNetCore.Http;
@@ -29,16 +29,17 @@ namespace eDoxa.Seedwork.Application.Commands.Behaviors
     public sealed class CommandBehavior<TCommand, TResponse> : IPipelineBehavior<TCommand, TResponse>
     where TCommand : IBaseCommand
     {
-        private readonly IHttpContextAccessor _contextAccessor;
+        [CanBeNull] private readonly IHttpContextAccessor _contextAccessor;
         private readonly IRequestLogService _requestLogService;
 
-        public CommandBehavior(IHttpContextAccessor contextAccessor, IRequestLogService requestLogService)
+        public CommandBehavior([CanBeNull] IHttpContextAccessor contextAccessor, IRequestLogService requestLogService)
         {
             _contextAccessor = contextAccessor;
-            _requestLogService = requestLogService ?? throw new ArgumentNullException(nameof(requestLogService));
+            _requestLogService = requestLogService;
         }
 
-        public async Task<TResponse> Handle(TCommand command, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+        [ItemCanBeNull]
+        public async Task<TResponse> Handle([NotNull] TCommand command, CancellationToken cancellationToken, [NotNull] RequestHandlerDelegate<TResponse> next)
         {
             //TODO: This must be implemented before eDoxa v.3 (Release 1)
             //var response = await next();

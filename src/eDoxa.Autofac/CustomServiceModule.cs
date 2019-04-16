@@ -10,21 +10,20 @@
 
 using Autofac;
 
-using eDoxa.Seedwork.Application.Services;
 using eDoxa.Seedwork.Infrastructure;
+using JetBrains.Annotations;
 
 namespace eDoxa.Autofac
 {
     public abstract class CustomServiceModule<TStartup, TContext> : Module
     where TContext : CustomDbContext
     {
-        protected override void Load(ContainerBuilder builder)
+        protected override void Load([NotNull] ContainerBuilder builder)
         {
             builder.RegisterModule<MediatorModule<TStartup>>();
             builder.RegisterModule<RequestModule<TContext>>();
             builder.RegisterModule<IntegrationEventModule<TStartup, TContext>>();
             builder.RegisterModule<FluentValidationModule<TStartup>>();
-            builder.RegisterType<IdentityParserParserService>().As<IIdentityParserService>().InstancePerLifetimeScope();
         }
     }
 }

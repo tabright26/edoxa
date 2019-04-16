@@ -11,19 +11,13 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-
+using JetBrains.Annotations;
 using MediatR;
 
 using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Seedwork.Application.Commands.Behaviors
 {
-    /// <summary>
-    ///     Enable tracking of logging behavior for the application monitoring feature.
-    /// </summary>
-    /// <typeparam name="TCommand">The type of the request.</typeparam>
-    /// <typeparam name="TResponse">The type of the response.</typeparam>
-    /// <seealso cref="IPipelineBehavior{TRequest,TResponse}" />
     public sealed class CommandLoggingBehavior<TCommand, TResponse> : IPipelineBehavior<TCommand, TResponse>
     where TCommand : IBaseCommand
     {
@@ -34,7 +28,8 @@ namespace eDoxa.Seedwork.Application.Commands.Behaviors
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<TResponse> Handle(TCommand command, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+        [ItemCanBeNull]
+        public async Task<TResponse> Handle([NotNull] TCommand command, CancellationToken cancellationToken, [NotNull] RequestHandlerDelegate<TResponse> next)
         {
             _logger.LogInformation($"Handling {typeof(TCommand).Name}");
 

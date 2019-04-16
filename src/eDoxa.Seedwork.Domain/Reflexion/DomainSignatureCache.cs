@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Concurrent;
+using JetBrains.Annotations;
 
 namespace eDoxa.Seedwork.Domain.Reflexion
 {
@@ -29,7 +30,8 @@ namespace eDoxa.Seedwork.Domain.Reflexion
         {
             _cache.Clear();
         }
-
+        
+        [CanBeNull]
         public DomainSignature Find(Type type)
         {
             _cache.TryGetValue(type, out var result);

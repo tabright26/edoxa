@@ -115,32 +115,6 @@ namespace eDoxa.Seedwork.Domain.Tests.Reflection
             cache.Count.Should().Be(1);
         }
 
-        [TestMethod]
-        public void GetOrAdd_NullType_ShouldThrowArgumentNullException()
-        {
-            // Arrange
-            var cache = new DomainSignatureCache();
-
-            // Act
-            var action = new Action(() => cache.GetOrAdd(null, type => new DomainSignature(type, Array.Empty<PropertyInfo>())));
-
-            // Assert
-            action.Should().Throw<ArgumentNullException>();
-        }
-
-        [TestMethod]
-        public void GetOrAdd_NullFactory_ShouldThrowArgumentNullException()
-        {
-            // Arrange
-            var cache = new DomainSignatureCache();
-
-            // Act
-            var action = new Action(() => cache.GetOrAdd(typeof(MockBaseObject), null));
-
-            // Assert
-            action.Should().Throw<ArgumentNullException>();
-        }
-
         private sealed class MockBaseObject : BaseObject
         {
             protected override PropertyInfo[] TypeSignatureProperties()

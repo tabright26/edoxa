@@ -10,39 +10,24 @@
 
 using System;
 using System.Collections.Generic;
-
+using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
 namespace eDoxa.ServiceBus.Tests.Mocks
 {
     internal class MockIntegrationEvent : IntegrationEvent, IEquatable<IntegrationEvent>
     {
-        internal static readonly DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-
         public MockIntegrationEvent()
         {
         }
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="MockIntegrationEvent" /> class.
-        /// </summary>
-        /// <param name="id">The <see cref="MockIntegrationEvent" /> identifier.</param>
-        /// <param name="created">The <see cref="MockIntegrationEvent" /> time stamp.</param>
         private MockIntegrationEvent(Guid id, DateTime created)
         {
             Id = id;
             Created = created;
         }
 
-        /// <summary>
-        ///     Determines whether the specified <see cref="IntegrationEvent" /> is equal to the current object.
-        /// </summary>
-        /// <param name="other">The <see cref="IntegrationEvent" /> to compare with the current object.</param>
-        /// <returns>
-        ///     true if the specified <see cref="IntegrationEvent" /> is equal to the current <see cref="IntegrationEvent" />;
-        ///     otherwise, false.
-        /// </returns>
-        public bool Equals(IntegrationEvent other)
+        public bool Equals([CanBeNull] IntegrationEvent other)
         {
             if (other == null)
             {
@@ -112,7 +97,7 @@ namespace eDoxa.ServiceBus.Tests.Mocks
         /// </summary>
         /// <param name="obj">The object to compare with the current object.</param>
         /// <returns>true if the specified object is equal to the current object; otherwise, false.</returns>
-        public override bool Equals(object obj)
+        public override bool Equals([CanBeNull] object obj)
         {
             return this.Equals(obj as IntegrationEvent);
         }

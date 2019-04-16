@@ -56,7 +56,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             var handler = new CreateUserCommandHandler(mockUserRepository.Object, mockCustomerService.Object);
 
             // Act
-            await handler.HandleAsync(new CreateUserCommand(userId, customer.Email), default);
+            await handler.HandleAsync(new CreateUserCommand(userId, customer.Email));
 
             // Assert
             mockCustomerService.Verify(

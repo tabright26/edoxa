@@ -17,7 +17,7 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Seedwork.Application.Commands.Handlers;
-
+using JetBrains.Annotations;
 using Stripe;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
@@ -33,7 +33,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
             _service = service ?? throw new ArgumentNullException(nameof(service));
         }
 
-        protected override async Task Handle(CreateUserCommand command, CancellationToken cancellationToken)
+        protected override async Task Handle([NotNull] CreateUserCommand command, CancellationToken cancellationToken)
         {
             var options = new CustomerCreateOptions
             {

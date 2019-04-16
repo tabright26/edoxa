@@ -9,6 +9,7 @@
 // this source code package.
 
 using eDoxa.Seedwork.Domain;
+using JetBrains.Annotations;
 
 namespace eDoxa.Seedwork.Infrastructure.Repositories
 {
@@ -16,6 +17,6 @@ namespace eDoxa.Seedwork.Infrastructure.Repositories
     {
         void Create(RequestLogEntry requestLog);
 
-        bool IdempotencyKeyExists(string idempotencyKey);
+        bool IdempotencyKeyExists([CanBeNull] string idempotencyKey);
     }
 }

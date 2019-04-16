@@ -37,9 +37,9 @@ namespace eDoxa.Cashier.Api.Controllers
 
         public UserAccountController(ILogger<UserAccountController> logger, IAccountQueries queries, IMediator mediator)
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _queries = queries ?? throw new ArgumentNullException(nameof(queries));
-            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            _logger = logger;
+            _queries = queries;
+            _mediator = mediator;
         }
 
         /// <summary>

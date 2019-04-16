@@ -11,12 +11,13 @@
 using System;
 
 using eDoxa.Seedwork.Domain.Aggregate;
+using JetBrains.Annotations;
 
 namespace eDoxa.Testing.MSTest.Extensions
 {
     public static class EntityExtensions
     {
-        public static void SetEntityIdProperty<TEntityId>(this Entity<TEntityId> entity, TEntityId entityId)
+        public static void SetEntityIdProperty<TEntityId>(this Entity<TEntityId> entity, [CanBeNull] TEntityId entityId)
         where TEntityId : EntityId<TEntityId>, new()
         {
             try

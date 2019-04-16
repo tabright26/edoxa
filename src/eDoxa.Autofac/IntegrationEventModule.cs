@@ -14,7 +14,7 @@ using System.Data.Common;
 using Autofac;
 
 using eDoxa.ServiceBus;
-
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Autofac
@@ -22,7 +22,7 @@ namespace eDoxa.Autofac
     public sealed class IntegrationEventModule<TStartup, TContext> : Module
     where TContext : DbContext
     {
-        protected override void Load(ContainerBuilder builder)
+        protected override void Load([NotNull] ContainerBuilder builder)
         {
             // Register all the CommandHandler classes (they implement IIntegrationEventHandler) in assembly holding the CommandHandlers.
             builder.RegisterAssemblyTypes(typeof(TStartup).Assembly).AsClosedTypesOf(

@@ -25,14 +25,14 @@ namespace eDoxa.Challenges.BackgroundTasks.Services
     public class ChallengeSynchronizingBackgroundService : BackgroundService
     {
         private readonly IOptionsMonitor<ChallengeSynchronizingSettings> _monitor;
-        private readonly ILogger _logger;
+        private readonly ILogger<ChallengeSynchronizingBackgroundService> _logger;
         private readonly IEventBusService _eventService;
 
-        public ChallengeSynchronizingBackgroundService(ILoggerFactory loggerFactory, IEventBusService eventService, IOptionsMonitor<ChallengeSynchronizingSettings> monitor)
+        public ChallengeSynchronizingBackgroundService(ILogger<ChallengeSynchronizingBackgroundService> logger, IEventBusService eventService, IOptionsMonitor<ChallengeSynchronizingSettings> monitor)
         {
-            _monitor = monitor ?? throw new ArgumentNullException(nameof(monitor));
-            _logger = loggerFactory?.CreateLogger<ChallengeSynchronizingBackgroundService>() ?? throw new ArgumentNullException(nameof(loggerFactory));
-            _eventService = eventService ?? throw new ArgumentNullException(nameof(eventService));
+            _monitor = monitor;
+            _logger = logger;
+            _eventService = eventService;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)

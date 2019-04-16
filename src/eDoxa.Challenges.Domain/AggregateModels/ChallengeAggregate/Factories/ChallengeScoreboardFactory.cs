@@ -16,13 +16,13 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Factories
 {
     public sealed class ChallengeScoreboardFactory
     {
-        private static readonly Lazy<ChallengeScoreboardFactory> _lazy = new Lazy<ChallengeScoreboardFactory>(() => new ChallengeScoreboardFactory());
+        private static readonly Lazy<ChallengeScoreboardFactory> Lazy = new Lazy<ChallengeScoreboardFactory>(() => new ChallengeScoreboardFactory());
 
         public static ChallengeScoreboardFactory Instance
         {
             get
             {
-                return _lazy.Value;
+                return Lazy.Value;
             }
         }
 

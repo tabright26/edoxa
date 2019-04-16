@@ -12,7 +12,7 @@ using System;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
-
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -34,9 +34,10 @@ namespace eDoxa.Identity.Application.Services
             UserService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
 
-        public UserService UserService { get; }
+        private UserService UserService { get; }
 
-        public override async Task<SignInResult> PasswordSignInAsync(User user, string password, bool isPersistent, bool lockoutOnFailure)
+        [ItemNotNull]
+        public override async Task<SignInResult> PasswordSignInAsync([NotNull] User user, [NotNull] string password, bool isPersistent, bool lockoutOnFailure)
         {
             var result = await base.PasswordSignInAsync(user, password, isPersistent, lockoutOnFailure);
 

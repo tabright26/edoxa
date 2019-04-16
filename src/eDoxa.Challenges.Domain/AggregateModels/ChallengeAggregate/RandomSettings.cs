@@ -14,7 +14,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class RandomSettings
     {
-        private static readonly Random _random = new Random();
+        private static readonly Random Random = new Random();
 
         public int NextEntries(int minValue = ChallengeSettings.MinEntries, int maxValue = ChallengeSettings.MaxEntries)
         {
@@ -38,7 +38,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
                 multiplier = 500;
             }
 
-            var entries = _random.Next(minValue, maxValue + 1);
+            var entries = Random.Next(minValue, maxValue + 1);
 
             entries = this.RoundMultiplier(entries, multiplier);
 
@@ -58,7 +58,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
             var max = (int) Math.Round(maxValue * multiplierOfCents);
 
-            var entryFee = _random.Next(min, max + 1);
+            var entryFee = Random.Next(min, max + 1);
 
             // Entry fee is under 5$.
             if (entryFee < 5 * multiplierOfCents)
@@ -75,7 +75,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
                     return entryFee;
                 }
 
-                var cents = _random.Next(0, 4) * 0.25M;
+                var cents = Random.Next(0, 4) * 0.25M;
 
                 return entryFee + cents;
             }
@@ -112,7 +112,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
                 throw new ArgumentOutOfRangeException(nameof(minValue));
             }
 
-            return _random.Next(minValue, maxValue + 1);
+            return Random.Next(minValue, maxValue + 1);
         }
 
         private int RoundMultiplier(decimal value, int multiplier)

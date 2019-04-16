@@ -8,7 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,10 +15,11 @@ using System.Threading.Tasks;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Infrastructure.Repositories;
-
+using JetBrains.Annotations;
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
+using Moq;
 
 namespace eDoxa.Seedwork.Infrastructure
 {
@@ -31,12 +31,14 @@ namespace eDoxa.Seedwork.Infrastructure
 
         protected CustomDbContext(DbContextOptions options, IMediator mediator) : base(options)
         {
-            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            _mediator = mediator;
         }
 
         protected CustomDbContext(DbContextOptions options) : base(options)
         {
-            _mediator = null;
+            var mock = new Mock<IMediator>();
+
+            _mediator = mock.Object;
         }
 
         public async Task CommitAsync(CancellationToken cancellationToken = default)
@@ -69,7 +71,7 @@ namespace eDoxa.Seedwork.Infrastructure
             }
         }
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating([NotNull] ModelBuilder builder)
         {
             builder.Entity<RequestLogEntry>(
                 entity =>

@@ -17,13 +17,13 @@ namespace eDoxa.Identity.Domain.Factories
 {
     public sealed partial class UserAggregateFactory : AggregateFactory
     {
-        private static readonly Lazy<UserAggregateFactory> _lazy = new Lazy<UserAggregateFactory>(() => new UserAggregateFactory());
+        private static readonly Lazy<UserAggregateFactory> Lazy = new Lazy<UserAggregateFactory>(() => new UserAggregateFactory());
 
         public static UserAggregateFactory Instance
         {
             get
             {
-                return _lazy.Value;
+                return Lazy.Value;
             }
         }
     }

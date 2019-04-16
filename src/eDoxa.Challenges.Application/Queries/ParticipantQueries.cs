@@ -8,7 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,23 +19,23 @@ using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.DTO;
 using eDoxa.Challenges.DTO.Queries;
 using eDoxa.Challenges.Infrastructure;
-
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Challenges.Application.Queries
 {
     public sealed partial class ParticipantQueries
     {
-        internal static readonly string ExpandMatches = nameof(Participant.Matches);
-        internal static readonly string ExpandMatchStats = $"{ExpandMatches}.{nameof(Match.Stats)}";
+        private static readonly string ExpandMatches = nameof(Participant.Matches);
+        private static readonly string ExpandMatchStats = $"{ExpandMatches}.{nameof(Match.Stats)}";
 
         private readonly ChallengesDbContext _context;
         private readonly IMapper _mapper;
 
         public ParticipantQueries(ChallengesDbContext context, IMapper mapper)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _context = context;
+            _mapper = mapper;
         }
 
         private async Task<IEnumerable<Participant>> FindChallengeParticipantsAsNoTrackingAsync(ChallengeId challengeId)
@@ -66,6 +65,7 @@ namespace eDoxa.Challenges.Application.Queries
             return _mapper.Map<ParticipantListDTO>(participants);
         }
 
+        [ItemCanBeNull]
         public async Task<ParticipantDTO> FindParticipantAsync(ParticipantId participantId)
         {
             var participant = await this.FindParticipantAsNoTrackingAsync(participantId);

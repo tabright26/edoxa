@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Challenges.Domain.Services;
 using eDoxa.Seedwork.Application.Commands.Handlers;
+using JetBrains.Annotations;
 
 namespace eDoxa.Challenges.Application.Commands.Handlers
 {
@@ -26,7 +27,7 @@ namespace eDoxa.Challenges.Application.Commands.Handlers
             _challengeCloserService = challengeCloserService ?? throw new ArgumentNullException(nameof(challengeCloserService));
         }
 
-        protected override async Task Handle(CloseChallengesCommand command, CancellationToken cancellationToken)
+        protected override async Task Handle([NotNull] CloseChallengesCommand command, CancellationToken cancellationToken)
         {
             await _challengeCloserService.CloseAsync();
         }

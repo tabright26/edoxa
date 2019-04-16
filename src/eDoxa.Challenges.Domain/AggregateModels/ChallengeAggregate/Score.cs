@@ -12,6 +12,7 @@ using System;
 using System.Linq;
 
 using eDoxa.Seedwork.Domain.Aggregate;
+using JetBrains.Annotations;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
@@ -40,6 +41,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             return _value;
         }
 
+        [CanBeNull]
         internal static Score FromParticipant(Participant participant)
         {
             var bestOf = participant.Challenge.Settings.BestOf;
@@ -63,11 +65,6 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         internal static Score FromStat(Stat stat)
         {
-            if (stat == null)
-            {
-                return Empty;
-            }
-
             var value = Convert.ToDecimal(stat.Value);
 
             var weighting = Convert.ToDecimal(stat.Weighting);
@@ -87,14 +84,14 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
     public sealed partial class Score : IComparable, IComparable<Score>
     {
-        public int CompareTo(object obj)
+        public int CompareTo([CanBeNull] object obj)
         {
             return this.CompareTo(obj as Score);
         }
 
-        public int CompareTo(Score other)
+        public int CompareTo([CanBeNull] Score other)
         {
-            return _value.CompareTo(other._value);
+            return _value.CompareTo(other?._value);
         }
     }
 }

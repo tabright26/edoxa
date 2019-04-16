@@ -37,7 +37,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
     public sealed partial class ChallengeSettings : ValueObject
     {
-        private static readonly ChallengeHelper _helper = new ChallengeHelper();
+        private static readonly ChallengeHelper Helper = new ChallengeHelper();
 
         private ChallengeType _type;
         private int _bestOf;
@@ -261,7 +261,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         {
             get
             {
-                return _helper.PayoutEntries(_entries, _payoutRatio);
+                return Helper.PayoutEntries(_entries, _payoutRatio);
             }
         }
 
@@ -269,7 +269,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         {
             get
             {
-                return _helper.PrizePool(_entries, _entryFee, _serviceChargeRatio);
+                return Helper.PrizePool(_entries, _entryFee, _serviceChargeRatio);
             }
         }
     }

@@ -18,13 +18,13 @@ namespace eDoxa.Challenges.Domain.Services.Factories
 {
     public sealed class ChallengeScoringFactory
     {
-        private static readonly Lazy<ChallengeScoringFactory> _lazy = new Lazy<ChallengeScoringFactory>(() => new ChallengeScoringFactory());
+        private static readonly Lazy<ChallengeScoringFactory> Lazy = new Lazy<ChallengeScoringFactory>(() => new ChallengeScoringFactory());
 
         public static ChallengeScoringFactory Instance
         {
             get
             {
-                return _lazy.Value;
+                return Lazy.Value;
             }
         }
 

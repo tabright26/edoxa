@@ -23,16 +23,16 @@ using Microsoft.Extensions.Options;
 namespace eDoxa.Challenges.BackgroundTasks.Services
 {
     public class ChallengeClosingBackgroundService : BackgroundService
-    {
-        private readonly IOptionsMonitor<ChallengeClosingSettings> _monitor;
+    {        
         private readonly ILogger _logger;
         private readonly IEventBusService _eventService;
+        private readonly IOptionsMonitor<ChallengeClosingSettings> _monitor;
 
         public ChallengeClosingBackgroundService(ILoggerFactory loggerFactory, IEventBusService eventService, IOptionsMonitor<ChallengeClosingSettings> monitor)
         {
-            _monitor = monitor ?? throw new ArgumentNullException(nameof(monitor));
-            _logger = loggerFactory?.CreateLogger<ChallengeClosingBackgroundService>() ?? throw new ArgumentNullException(nameof(loggerFactory));
-            _eventService = eventService ?? throw new ArgumentNullException(nameof(eventService));
+            _monitor = monitor;
+            _logger = loggerFactory.CreateLogger<ChallengeClosingBackgroundService>();
+            _eventService = eventService;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)

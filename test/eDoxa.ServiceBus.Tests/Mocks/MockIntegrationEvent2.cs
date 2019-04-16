@@ -8,11 +8,13 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using JetBrains.Annotations;
+
 namespace eDoxa.ServiceBus.Tests.Mocks
 {
     internal sealed class MockIntegrationEvent2 : MockIntegrationEvent
     {
-        /// <inheritdoc cref="MockIntegrationEvent2" />
+        [CanBeNull]
         public MockIntegrationEvent2 Clone()
         {
             return this.MemberwiseClone() as MockIntegrationEvent2;

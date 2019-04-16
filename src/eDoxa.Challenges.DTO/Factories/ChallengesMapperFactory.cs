@@ -20,13 +20,13 @@ namespace eDoxa.Challenges.DTO.Factories
 {
     public sealed partial class ChallengesMapperFactory
     {
-        private static readonly Lazy<ChallengesMapperFactory> _lazy = new Lazy<ChallengesMapperFactory>(() => new ChallengesMapperFactory());
+        private static readonly Lazy<ChallengesMapperFactory> Lazy = new Lazy<ChallengesMapperFactory>(() => new ChallengesMapperFactory());
 
         public static ChallengesMapperFactory Instance
         {
             get
             {
-                return _lazy.Value;
+                return Lazy.Value;
             }
         }
     }

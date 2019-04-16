@@ -20,7 +20,7 @@ using eDoxa.Notifications.Domain.AggregateModels.NotificationAggregate;
 using eDoxa.Notifications.DTO;
 using eDoxa.Notifications.DTO.Queries;
 using eDoxa.Notifications.Infrastructure;
-
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Notifications.Application.Queries
@@ -61,6 +61,7 @@ namespace eDoxa.Notifications.Application.Queries
             return _mapper.Map<NotificationListDTO>(notifications);
         }
 
+        [ItemCanBeNull]
         public async Task<NotificationDTO> FindUserNotificationAsync(UserId userId, NotificationId notificationId)
         {
             var notification = await this.FindUserNotificationAsNoTrackingAsync(userId, notificationId);

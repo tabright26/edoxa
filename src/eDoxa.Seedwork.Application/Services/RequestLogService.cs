@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 using eDoxa.Seedwork.Application.Exceptions;
 using eDoxa.Seedwork.Infrastructure.Constants;
 using eDoxa.Seedwork.Infrastructure.Repositories;
-
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Http;
 
 namespace eDoxa.Seedwork.Application.Services
@@ -29,7 +29,7 @@ namespace eDoxa.Seedwork.Application.Services
             _requestLogRepository = requestLogRepository ?? throw new ArgumentNullException(nameof(requestLogRepository));
         }
 
-        public async Task CreateAsync(HttpContext httpContext /*, object request, object response*/)
+        public async Task CreateAsync([CanBeNull] HttpContext httpContext /*, object request, object response*/)
         {
             var idempotencyKey = httpContext?.Request?.Headers[CustomHeaderNames.IdempotencyKey].FirstOrDefault();
 

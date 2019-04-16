@@ -17,7 +17,7 @@ using eDoxa.Identity.Application.IntegrationEvents;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Domain.Repositories;
 using eDoxa.ServiceBus;
-
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -112,7 +112,8 @@ namespace eDoxa.Identity.Application.Services
             return await this.UpdateAsync(user);
         }
 
-        public override async Task<IdentityResult> CreateAsync(User user, string password)
+        [ItemNotNull]
+        public override async Task<IdentityResult> CreateAsync([NotNull] User user, [NotNull] string password)
         {
             this.ThrowIfDisposed();
 
@@ -160,7 +161,7 @@ namespace eDoxa.Identity.Application.Services
 
             var user = await this.FindByEmailAsync(email);
 
-            return user?.UserName;
+            return user.UserName;
         }
 
         public async Task<string> GetNameAsync(User user)

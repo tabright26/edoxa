@@ -8,7 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,6 +16,7 @@ using eDoxa.Cashier.Domain.AggregateModels.UserAggregate.DomainEvents;
 using eDoxa.Security;
 using eDoxa.Seedwork.Application.DomainEventHandlers;
 using eDoxa.ServiceBus;
+using JetBrains.Annotations;
 
 namespace eDoxa.Cashier.Application.DomainEventHandlers
 {
@@ -26,10 +26,10 @@ namespace eDoxa.Cashier.Application.DomainEventHandlers
 
         public UserCreatedDomainEventHandler(IIntegrationEventService integrationEventService)
         {
-            _integrationEventService = integrationEventService ?? throw new ArgumentNullException(nameof(integrationEventService));
+            _integrationEventService = integrationEventService;
         }
 
-        public async Task Handle(UserCreatedDomainEvent domainEvent, CancellationToken cancellationToken)
+        public async Task Handle([NotNull] UserCreatedDomainEvent domainEvent, CancellationToken cancellationToken)
         {
             await _integrationEventService.PublishAsync(
                 new UserClaimAddedIntegrationEvent(domainEvent.UserId, CustomClaimTypes.UserCustomerIdClaimType, domainEvent.CustomerId.ToString())

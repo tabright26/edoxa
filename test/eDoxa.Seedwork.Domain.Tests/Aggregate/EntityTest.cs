@@ -16,6 +16,7 @@ using eDoxa.Testing.MSTest.Extensions;
 using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable All
 
 namespace eDoxa.Seedwork.Domain.Tests.Aggregate
 {
@@ -144,19 +145,6 @@ namespace eDoxa.Seedwork.Domain.Tests.Aggregate
 
             // Act
             var condition = entity1.Equals(entity2);
-
-            // Assert
-            condition.Should().BeFalse();
-        }
-
-        [TestMethod]
-        public void Equals_NullReference_ShouldBeFalse()
-        {
-            // Arrange
-            var entity = new MockEntity();
-
-            // Act
-            var condition = entity.Equals(null);
 
             // Assert
             condition.Should().BeFalse();
@@ -313,19 +301,6 @@ namespace eDoxa.Seedwork.Domain.Tests.Aggregate
 
             // Assert
             entity.DomainEvents.Should().NotBeEmpty();
-        }
-
-        [TestMethod]
-        public void AddDomainEvent_NullReference_ShouldThrowArgumentNullException()
-        {
-            // Arrange
-            var entity = new MockEntity();
-
-            // Act
-            var action = new Action(() => entity.AddDomainEvent(null));
-
-            // Assert
-            Assert.ThrowsException<ArgumentNullException>(action);
         }
 
         [TestMethod]

@@ -10,6 +10,7 @@
 
 using System;
 using System.Reflection;
+using JetBrains.Annotations;
 
 namespace eDoxa.Testing.MSTest.Extensions
 {
@@ -22,7 +23,7 @@ namespace eDoxa.Testing.MSTest.Extensions
             return fieldInfo.GetValue(obj);
         }
 
-        public static void SetPrivateField(this object obj, string name, object value)
+        public static void SetPrivateField(this object obj, string name, [CanBeNull] object value)
         {
             var fieldInfo = obj.PrivateFieldInfo(name);
 
@@ -36,7 +37,7 @@ namespace eDoxa.Testing.MSTest.Extensions
             }
         }
 
-        public static void SetProperty(this object obj, string name, object value)
+        public static void SetProperty(this object obj, string name, [CanBeNull] object value)
         {
             var propertyInfo = obj.PropertyInfo(name);
 

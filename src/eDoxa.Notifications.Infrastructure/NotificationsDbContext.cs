@@ -26,7 +26,7 @@ namespace eDoxa.Notifications.Infrastructure
 {
     public sealed partial class NotificationsDbContext
     {
-        private static readonly UserAggregateFactory _userAggregateFactory = UserAggregateFactory.Instance;
+        private readonly UserAggregateFactory _userAggregateFactory = UserAggregateFactory.Instance;
 
         public async Task SeedAsync(ILogger logger)
         {

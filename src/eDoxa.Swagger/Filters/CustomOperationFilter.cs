@@ -14,7 +14,7 @@ using System.Net;
 
 using eDoxa.IdentityServer;
 using eDoxa.Seedwork.Infrastructure.Constants;
-
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 
@@ -25,7 +25,7 @@ namespace eDoxa.Swagger.Filters
 {
     public sealed class CustomOperationFilter : IOperationFilter
     {
-        public void Apply(Operation operation, OperationFilterContext context)
+        public void Apply([NotNull] Operation operation, [NotNull] OperationFilterContext context)
         {
             ApplyGroupNameOperation(operation, context);
 

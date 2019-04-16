@@ -20,13 +20,13 @@ namespace eDoxa.Notifications.DTO.Factories
 {
     public sealed partial class NotificationsMapperFactory
     {
-        private static readonly Lazy<NotificationsMapperFactory> _lazy = new Lazy<NotificationsMapperFactory>(() => new NotificationsMapperFactory());
+        private static readonly Lazy<NotificationsMapperFactory> Lazy = new Lazy<NotificationsMapperFactory>(() => new NotificationsMapperFactory());
 
         public static NotificationsMapperFactory Instance
         {
             get
             {
-                return _lazy.Value;
+                return Lazy.Value;
             }
         }
     }

@@ -13,15 +13,14 @@ using System.Reflection;
 using Autofac;
 
 using FluentValidation;
-
-using Autofac_Module = Autofac.Module;
-using Autofac_TypeExtensions = Autofac.TypeExtensions;
+using JetBrains.Annotations;
+using Module = Autofac.Module;
 
 namespace eDoxa.Autofac
 {
-    internal sealed class FluentValidationModule<TStartup> : Autofac_Module
+    internal sealed class FluentValidationModule<TStartup> : Module
     {
-        protected override void Load(ContainerBuilder builder)
+        protected override void Load([NotNull] ContainerBuilder builder)
         {
             builder.RegisterAssemblyTypes(typeof(TStartup).GetTypeInfo().Assembly).Where(
                 type => type.IsClosedTypeOf(typeof(IValidator<>))

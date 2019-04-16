@@ -146,19 +146,6 @@ namespace eDoxa.Seedwork.Domain.Tests.Aggregate
         }
 
         [TestMethod]
-        public void Equals_NullReference_ShouldBeFalse()
-        {
-            // Arrange
-            var valueObject = new MockValueObjectWithProperty();
-
-            // Act
-            var condition = valueObject.Equals(null);
-
-            // Assert
-            condition.Should().BeFalse();
-        }
-
-        [TestMethod]
         public void Equals_ReferenceEquals_ShouldBeTrue()
         {
             // Arrange

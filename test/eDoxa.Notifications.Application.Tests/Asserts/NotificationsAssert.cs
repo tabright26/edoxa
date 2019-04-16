@@ -13,12 +13,13 @@ using System;
 using eDoxa.Notifications.DTO;
 
 using FluentAssertions;
+using JetBrains.Annotations;
 
 namespace eDoxa.Notifications.Application.Tests.Asserts
 {
     internal static class NotificationsAssert
     {
-        public static void IsMapped(NotificationListDTO notifications)
+        public static void IsMapped([ItemCanBeNull] NotificationListDTO notifications)
         {
             notifications.Should().NotBeNull();
 
@@ -28,19 +29,19 @@ namespace eDoxa.Notifications.Application.Tests.Asserts
             }
         }
 
-        public static void IsMapped(NotificationDTO notification)
+        public static void IsMapped([CanBeNull] NotificationDTO notification)
         {
             notification.Should().NotBeNull();
 
-            notification.Id.Should().NotBeEmpty();
+            notification?.Id.Should().NotBeEmpty();
 
-            notification.Timestamp.Should().BeBefore(DateTime.UtcNow);
+            notification?.Timestamp.Should().BeBefore(DateTime.UtcNow);
 
-            notification.Title.Should().NotBeNull();
+            notification?.Title.Should().NotBeNull();
 
-            notification.Message.Should().NotBeNull();
+            notification?.Message.Should().NotBeNull();
 
-            notification.IsRead.Should().BeFalse();
+            notification?.IsRead.Should().BeFalse();
         }
     }
 }

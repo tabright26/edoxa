@@ -62,7 +62,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             var handler = new UpdatePhoneCommandHandler(mockUserRepository.Object, mockCustomerService.Object);
 
             // Act
-            await handler.HandleAsync(new UpdatePhoneCommand(user.Id, customer.Shipping.Phone), default);
+            await handler.HandleAsync(new UpdatePhoneCommand(user.Id, customer.Shipping.Phone));
 
             // Assert
             mockUserRepository.Verify(repository => repository.FindAsNoTrackingAsync(It.IsAny<UserId>()), Times.Once);

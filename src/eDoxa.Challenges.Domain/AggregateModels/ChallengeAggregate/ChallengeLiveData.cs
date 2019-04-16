@@ -17,7 +17,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class ChallengeLiveData
     {
-        private static readonly ChallengeHelper _helper = new ChallengeHelper();
+        private static readonly ChallengeHelper Helper = new ChallengeHelper();
 
         private readonly Challenge _challenge;
 
@@ -38,7 +38,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         {
             get
             {
-                return _helper.PayoutEntries(Entries, _challenge.Settings.PayoutRatio);
+                return Helper.PayoutEntries(Entries, _challenge.Settings.PayoutRatio);
             }
         }
 
@@ -46,7 +46,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         {
             get
             {
-                return _helper.PrizePool(Entries, _challenge.Settings.EntryFee, _challenge.Settings.ServiceChargeRatio);
+                return Helper.PrizePool(Entries, _challenge.Settings.EntryFee, _challenge.Settings.ServiceChargeRatio);
             }
         }
 

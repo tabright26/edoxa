@@ -14,12 +14,14 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Seedwork.Infrastructure.Constants;
+using JetBrains.Annotations;
 
 namespace eDoxa.Seedwork.Application.DelegatingHandlers
 {
     public sealed class HttpClientRequestIdDelegatingHandler : DelegatingHandler
     {
-        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        [ItemCanBeNull]
+        protected override async Task<HttpResponseMessage> SendAsync([NotNull] HttpRequestMessage request, CancellationToken cancellationToken)
         {
             if (request.Method == HttpMethod.Post || request.Method == HttpMethod.Put)
             {

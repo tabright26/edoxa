@@ -10,7 +10,7 @@
 
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
-
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -18,7 +18,7 @@ namespace eDoxa.Challenges.Infrastructure.Configurations
 {
     internal sealed class StatConfiguration : IEntityTypeConfiguration<Stat>
     {
-        public void Configure(EntityTypeBuilder<Stat> builder)
+        public void Configure([NotNull] EntityTypeBuilder<Stat> builder)
         {
             builder.ToTable(nameof(ChallengesDbContext.Stats));
 

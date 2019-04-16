@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Reflection;
+using JetBrains.Annotations;
 
 namespace eDoxa.Seedwork.Domain.Aggregate
 {
@@ -25,7 +26,7 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             return !(left == right);
         }
 
-        public sealed override bool Equals(object obj)
+        public sealed override bool Equals([CanBeNull] object obj)
         {
             return base.Equals(obj);
         }

@@ -20,13 +20,13 @@ namespace eDoxa.Identity.DTO.Factories
 {
     public sealed partial class IdentityMapperFactory
     {
-        private static readonly Lazy<IdentityMapperFactory> _lazy = new Lazy<IdentityMapperFactory>(() => new IdentityMapperFactory());
+        private static readonly Lazy<IdentityMapperFactory> Lazy = new Lazy<IdentityMapperFactory>(() => new IdentityMapperFactory());
 
         public static IdentityMapperFactory Instance
         {
             get
             {
-                return _lazy.Value;
+                return Lazy.Value;
             }
         }
     }

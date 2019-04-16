@@ -9,12 +9,13 @@
 // this source code package.
 
 using System;
+using JetBrains.Annotations;
 
 namespace eDoxa.Seedwork.Application.Exceptions
 {
     public class IdempotentRequestException : Exception
     {
-        public IdempotentRequestException(string idempotencyKey) : base($"The HTTP request with IdempotencyKey '{idempotencyKey}' was already executed.")
+        public IdempotentRequestException([CanBeNull] string idempotencyKey) : base($"The HTTP request with IdempotencyKey '{idempotencyKey}' was already executed.")
         {
         }
     }

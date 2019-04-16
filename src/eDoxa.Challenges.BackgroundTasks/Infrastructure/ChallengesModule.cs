@@ -11,14 +11,14 @@
 using Autofac;
 
 using eDoxa.Challenges.BackgroundTasks.Services;
-
+using JetBrains.Annotations;
 using Microsoft.Extensions.Hosting;
 
 namespace eDoxa.Challenges.BackgroundTasks.Infrastructure
 {
     public sealed class ChallengesModule : Module
     {
-        protected override void Load(ContainerBuilder builder)
+        protected override void Load([NotNull] ContainerBuilder builder)
         {
             builder.RegisterType<ChallengePublishingBackgroundService>().As<IHostedService>().SingleInstance();
 

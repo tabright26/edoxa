@@ -13,13 +13,14 @@ using Autofac;
 using eDoxa.Seedwork.Application.Services;
 using eDoxa.Seedwork.Infrastructure;
 using eDoxa.Seedwork.Infrastructure.Repositories;
+using JetBrains.Annotations;
 
 namespace eDoxa.Autofac
 {
     internal sealed class RequestModule<TContext> : Module
     where TContext : CustomDbContext
     {
-        protected override void Load(ContainerBuilder builder)
+        protected override void Load([NotNull] ContainerBuilder builder)
         {
             builder.RegisterType<RequestLogRepository<TContext>>().As<IRequestLogRepository>().InstancePerLifetimeScope();
 

@@ -9,8 +9,6 @@
 // this source code package.
 
 using System;
-
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Factories;
 
 using FluentAssertions;
@@ -40,20 +38,6 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             stat.Value.Should().Be(value);
             stat.Weighting.Should().Be(weighting);
             stat.Score.Should().NotBeNull();
-        }
-
-        [TestMethod]
-        public void Constructor_MatchId_ShouldThrowArgumentNullException()
-        {
-            // Arrange
-            const double value = default;
-            const float weighting = default;
-
-            // Act
-            var action = new Action(() => _factory.CreateStat(null, nameof(Stat), value, weighting));
-
-            // Assert
-            action.Should().Throw<ArgumentNullException>();
         }
 
         [DataRow(null)]

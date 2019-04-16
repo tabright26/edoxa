@@ -1,11 +1,11 @@
 ﻿// Filename: StripeId.cs
-// Date Created: 2019-04-09
+// Date Created: 2019-04-14
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
@@ -13,9 +13,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Reflection;
-
 using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Stripe.Validators;
+using JetBrains.Annotations;
 
 namespace eDoxa.Stripe
 {
@@ -33,10 +33,7 @@ namespace eDoxa.Stripe
 
         protected string Value
         {
-            get
-            {
-                return _value;
-            }
+            get => _value;
             private set
             {
                 if (string.IsNullOrWhiteSpace(value))
@@ -70,7 +67,7 @@ namespace eDoxa.Stripe
             return !(left == right);
         }
 
-        public sealed override bool Equals(object obj)
+        public sealed override bool Equals([CanBeNull] object obj)
         {
             return base.Equals(obj);
         }
@@ -96,14 +93,14 @@ namespace eDoxa.Stripe
 
     public abstract partial class StripeId<TStripeId> : IComparable, IComparable<TStripeId>
     {
-        public int CompareTo(object obj)
+        public int CompareTo([CanBeNull] object obj)
         {
             return this.CompareTo(obj as TStripeId);
         }
 
-        public int CompareTo(TStripeId other)
+        public int CompareTo([CanBeNull] TStripeId other)
         {
-            return string.Compare(Value, other.Value, StringComparison.Ordinal);
+            return string.Compare(Value, other?.Value, StringComparison.Ordinal);
         }
     }
 
@@ -111,7 +108,7 @@ namespace eDoxa.Stripe
     {
         protected sealed class StripeIdTypeConverter : TypeConverter
         {
-            public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+            public override bool CanConvertFrom([NotNull] ITypeDescriptorContext context, Type sourceType)
             {
                 if (sourceType == typeof(string))
                 {
@@ -121,7 +118,7 @@ namespace eDoxa.Stripe
                 return base.CanConvertFrom(context, sourceType);
             }
 
-            public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+            public override bool CanConvertTo([NotNull] ITypeDescriptorContext context, Type destinationType)
             {
                 if (destinationType == typeof(string))
                 {
@@ -131,7 +128,9 @@ namespace eDoxa.Stripe
                 return base.CanConvertTo(context, destinationType);
             }
 
-            public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+            [CanBeNull]
+            public override object ConvertFrom([NotNull] ITypeDescriptorContext context, CultureInfo culture,
+                [CanBeNull] object value)
             {
                 switch (value)
                 {
@@ -143,7 +142,9 @@ namespace eDoxa.Stripe
                 return base.ConvertFrom(context, culture, value);
             }
 
-            public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+            [CanBeNull]
+            public override object ConvertTo([NotNull] ITypeDescriptorContext context, [NotNull] CultureInfo culture,
+                [CanBeNull] object value, Type destinationType)
             {
                 var stripeId = value as TStripeId;
 

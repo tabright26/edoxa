@@ -37,16 +37,6 @@ namespace eDoxa.Seedwork.Domain.Tests.Reflection
         }
 
         [TestMethod]
-        public void Type_NullType_ShouldThrowArgumentNullException()
-        {
-            // Act
-            var action = new Action(() => new DomainSignature(null, Array.Empty<PropertyInfo>()));
-
-            // Assert
-            action.Should().Throw<ArgumentNullException>();
-        }
-
-        [TestMethod]
         public void Properties_EmptyArray_ShouldBeEmpty()
         {
             // Arrange
@@ -70,29 +60,6 @@ namespace eDoxa.Seedwork.Domain.Tests.Reflection
 
             // Assert
             signature.Properties.Should().NotBeEmpty();
-        }
-
-        [TestMethod]
-        public void Properties_NullReference_ShouldBeEmpty()
-        {
-            // Act
-            var signature = new DomainSignature(typeof(MockBaseObject1), null);
-
-            // Assert
-            signature.Properties.Should().BeEmpty();
-        }
-
-        [TestMethod]
-        public void Equals_NullReference_ShouldBeFalse()
-        {
-            // Arrange
-            var signature = new DomainSignature(typeof(MockBaseObject1), Array.Empty<PropertyInfo>());
-
-            // Act
-            var condition = signature.Equals(null);
-
-            // Assert
-            condition.Should().BeFalse();
         }
 
         [TestMethod]

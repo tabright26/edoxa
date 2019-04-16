@@ -26,13 +26,13 @@ namespace eDoxa.Challenges.Domain.Factories
 {
     internal sealed partial class ChallengeAggregateFactory : AggregateFactory
     {
-        private static readonly Lazy<ChallengeAggregateFactory> _lazy = new Lazy<ChallengeAggregateFactory>(() => new ChallengeAggregateFactory());
+        private static readonly Lazy<ChallengeAggregateFactory> Lazy = new Lazy<ChallengeAggregateFactory>(() => new ChallengeAggregateFactory());
 
         public static ChallengeAggregateFactory Instance
         {
             get
             {
-                return _lazy.Value;
+                return Lazy.Value;
             }
         }
     }
@@ -49,7 +49,7 @@ namespace eDoxa.Challenges.Domain.Factories
 
         public static readonly LinkedMatch AdminLinkedMatch = LinkedMatch.FromLong(2973265231);
 
-        private static readonly Random _random = new Random();
+        private static readonly Random Random = new Random();
 
         public ChallengeName CreateChallengeName(string name = nameof(Challenge))
         {
@@ -181,11 +181,11 @@ namespace eDoxa.Challenges.Domain.Factories
 
                 challenge.GetType().GetProperty(nameof(Challenge.Timeline))?.SetValue(challenge, this.CreateChallengeTimeline(ChallengeState.Opened));
 
-                for (var row = 0; row < _random.Next(1, challenge.Settings.Entries + 1); row++)
+                for (var row = 0; row < Random.Next(1, challenge.Settings.Entries + 1); row++)
                 {
                     var participant = challenge.RegisterParticipant(new UserId(), LinkedAccount.FromGuid(Guid.NewGuid()));
 
-                    for (var index = 0; index < _random.Next(1, challenge.Settings.BestOf + _random.Next(0, challenge.Settings.BestOf + 1) + 1); index++)
+                    for (var index = 0; index < Random.Next(1, challenge.Settings.BestOf + Random.Next(0, challenge.Settings.BestOf + 1) + 1); index++)
                     {
                         var stats = this.CreateChallengeStats();
 
@@ -443,11 +443,11 @@ namespace eDoxa.Challenges.Domain.Factories
                 linkedMatch,
                 new
                 {
-                    Kills = _random.Next(0, 40 + 1),
-                    Deaths = _random.Next(0, 15 + 1),
-                    Assists = _random.Next(0, 50 + 1),
-                    TotalDamageDealtToChampions = _random.Next(10000, 500000 + 1),
-                    TotalHeal = _random.Next(10000, 350000 + 1)
+                    Kills = Random.Next(0, 40 + 1),
+                    Deaths = Random.Next(0, 15 + 1),
+                    Assists = Random.Next(0, 50 + 1),
+                    TotalDamageDealtToChampions = Random.Next(10000, 500000 + 1),
+                    TotalHeal = Random.Next(10000, 350000 + 1)
                 }
             );
         }
