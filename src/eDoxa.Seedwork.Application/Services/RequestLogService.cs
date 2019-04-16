@@ -8,7 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -26,7 +25,7 @@ namespace eDoxa.Seedwork.Application.Services
 
         public RequestLogService(IRequestLogRepository requestLogRepository)
         {
-            _requestLogRepository = requestLogRepository ?? throw new ArgumentNullException(nameof(requestLogRepository));
+            _requestLogRepository = requestLogRepository;
         }
 
         public async Task CreateAsync([CanBeNull] HttpContext httpContext /*, object request, object response*/)

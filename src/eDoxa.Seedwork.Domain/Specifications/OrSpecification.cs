@@ -8,8 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-
 namespace eDoxa.Seedwork.Domain.Specifications
 {
     internal sealed class OrSpecification<TEntity> : Specification<TEntity>
@@ -20,8 +18,8 @@ namespace eDoxa.Seedwork.Domain.Specifications
 
         public OrSpecification(ISpecification<TEntity> left, ISpecification<TEntity> right)
         {
-            _left = left ?? throw new ArgumentNullException(nameof(left));
-            _right = right ?? throw new ArgumentNullException(nameof(right));
+            _left = left;
+            _right = right;
         }
 
         public override bool IsSatisfiedBy(TEntity entity)

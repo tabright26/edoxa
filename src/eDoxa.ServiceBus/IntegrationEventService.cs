@@ -26,20 +26,13 @@ namespace eDoxa.ServiceBus
         private readonly IEventBusService _eventBusService;
         private readonly IIntegrationEventLogRepository _integrationEventLogRepository;
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="IntegrationEventService{TDbContext}" /> class.
-        /// </summary>
-        /// <param name="context">The <see cref="DbContext" />.</param>
-        /// <param name="eventBusService">The <see cref="IEventBusService" />.</param>
-        /// <param name="repositoryFactory">The repository factory.</param>
         public IntegrationEventService(
             TDbContext context,
             IEventBusService eventBusService,
             Func<DbConnection, IIntegrationEventLogRepository> repositoryFactory)
         {
-            repositoryFactory = repositoryFactory ?? throw new ArgumentNullException(nameof(repositoryFactory));
-            _context = context ?? throw new ArgumentNullException(nameof(context));
-            _eventBusService = eventBusService ?? throw new ArgumentNullException(nameof(eventBusService));
+            _context = context;
+            _eventBusService = eventBusService;
             _integrationEventLogRepository = repositoryFactory(_context.Database.GetDbConnection());
         }
 

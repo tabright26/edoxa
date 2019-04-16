@@ -98,15 +98,6 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             {
                 return _closedAt;
             }
-            private set
-            {
-                if (value is null)
-                {
-                    throw new ArgumentNullException(nameof(ClosedAt));
-                }
-
-                _closedAt = value;
-            }
         }
 
         public TimeSpan? RegistrationPeriod
@@ -293,7 +284,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
                 _publishedAt = PublishedAt,
                 _registrationPeriod = RegistrationPeriod,
                 _extensionPeriod = ExtensionPeriod,
-                ClosedAt = DateTime.UtcNow
+                _closedAt = DateTime.UtcNow
             };
         }
 

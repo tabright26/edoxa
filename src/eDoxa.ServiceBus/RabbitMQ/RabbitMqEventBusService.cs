@@ -42,15 +42,6 @@ namespace eDoxa.ServiceBus.RabbitMQ
         private string _queue;
         private IModel _channel;
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="T:eDoxa.EventBus.RabbitMQ.RabbitMqServiceBus" /> class.
-        /// </summary>
-        /// <param name="logger">The <see cref="T:Microsoft.Extensions.Logging.ILogger" />.</param>
-        /// <param name="scope">The <see cref="T:Autofac.ILifetimeScope" />.</param>
-        /// <param name="connection">The <see cref="T:eDoxa.EventBus.RabbitMQ.IRabbitMqServiceBusPersistentConnection" />.</param>
-        /// <param name="handler">The <see cref="T:eDoxa.EventBus.IEventBusSubscriptionHandler" />.</param>
-        /// <param name="retryCount">The retry count of connection attempt.</param>
-        /// <param name="queue">The queue name based on the client subscription name.</param>
         public RabbitMqEventBusService(
             ILogger<RabbitMqEventBusService> logger,
             ILifetimeScope scope,
@@ -59,10 +50,10 @@ namespace eDoxa.ServiceBus.RabbitMQ
             int retryCount = 5,
             string queue = null)
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _scope = scope ?? throw new ArgumentNullException(nameof(scope));
-            _connection = connection ?? throw new ArgumentNullException(nameof(connection));
-            _handler = handler ?? new InMemorySubscriptionHandler();
+            _logger = logger;
+            _scope = scope;
+            _connection = connection;
+            _handler = handler;
             _handler.OnIntegrationEventRemoved += this.OnIntegrationEventRemoved;
             _retryCount = retryCount;
             _queue = queue;
@@ -147,11 +138,6 @@ namespace eDoxa.ServiceBus.RabbitMQ
             _handler.RemoveDynamicSubscription<TDynamicIntegrationEventHandler>(integrationEventName);
         }
 
-        /// <summary>
-        ///     Raised when the integration event is removed.
-        /// </summary>
-        /// <param name="sender">The object that invoked the event that fired the event handler.</param>
-        /// <param name="integrationEventName">The <see cref="T:eDoxa.EventBus.Events.IntegrationEvent" /> name.</param>
         private void OnIntegrationEventRemoved(object sender, string integrationEventName)
         {
             if (!_connection.IsConnected)
@@ -174,10 +160,6 @@ namespace eDoxa.ServiceBus.RabbitMQ
             }
         }
 
-        /// <summary>
-        ///     Binds a queue with a specific integration event name.
-        /// </summary>
-        /// <param name="integrationEventName">The <see cref="T:eDoxa.EventBus.Events.IntegrationEvent" /> name.</param>
         private void QueueBind(string integrationEventName)
         {
             if (_handler.ContainsIntegrationEvent(integrationEventName))
@@ -196,10 +178,6 @@ namespace eDoxa.ServiceBus.RabbitMQ
             }
         }
 
-        /// <summary>
-        ///     Create and return a fresh channel, session, and model.
-        /// </summary>
-        /// <returns>The event bus channel.</returns>
         private IModel CreateChannel()
         {
             if (!_connection.IsConnected)
@@ -238,15 +216,6 @@ namespace eDoxa.ServiceBus.RabbitMQ
             return channel;
         }
 
-        /// <summary>
-        ///     Process an integration event by his name with his event arguments as json string asynchronously.
-        /// </summary>
-        /// <param name="jsonString">The integration event arguments as json string.</param>
-        /// <param name="integrationEventName">The <see cref="T:eDoxa.EventBus.Events.IntegrationEvent" /> name.</param>
-        /// <returns>
-        ///     A <see cref="T:System.Threading.Tasks.Task" /> that completes when the integration event has completed
-        ///     processing.
-        /// </returns>
         private async Task ProcessIntegrationEventAsync(string jsonString, string integrationEventName)
         {
             if (_handler.ContainsIntegrationEvent(integrationEventName))

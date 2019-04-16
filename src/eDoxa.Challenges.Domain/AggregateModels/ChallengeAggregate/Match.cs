@@ -25,8 +25,8 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         internal Match(Participant participant, LinkedMatch linkedMatch) : this()
         {
-            _linkedMatch = linkedMatch ?? throw new ArgumentNullException(nameof(linkedMatch));
-            _participant = participant ?? throw new ArgumentNullException(nameof(participant));
+            _linkedMatch = linkedMatch;
+            _participant = participant;
         }
 
         private Match()
@@ -77,16 +77,6 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public void SnapshotStats(IChallengeStats stats, IChallengeScoring scoring)
         {
-            if (stats == null)
-            {
-                throw new ArgumentNullException(nameof(stats));
-            }
-
-            if (scoring == null)
-            {
-                throw new ArgumentNullException(nameof(scoring));
-            }
-
             for (var index = 0; index < scoring.Count; index++)
             {
                 var item = scoring.ElementAt(index);

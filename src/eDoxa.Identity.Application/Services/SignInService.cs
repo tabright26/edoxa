@@ -8,7 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
@@ -31,7 +30,7 @@ namespace eDoxa.Identity.Application.Services
             ILogger<SignInManager<User>> logger,
             IAuthenticationSchemeProvider schemes) : base(userService, contextAccessor, claimsFactory, optionsAccessor, logger, schemes)
         {
-            UserService = userService ?? throw new ArgumentNullException(nameof(userService));
+            UserService = userService;
         }
 
         private UserService UserService { get; }
@@ -52,11 +51,6 @@ namespace eDoxa.Identity.Application.Services
         public async Task SignOutAsync(User user)
         {
             await base.SignOutAsync();
-
-            if (user == null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
 
             await UserService.DisconnectAsync(user);
         }

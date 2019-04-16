@@ -8,7 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,15 +21,11 @@ namespace eDoxa.ServiceBus
     {
         private readonly IntegrationEventLogDbContext _context;
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="IntegrationEventLogRepository" /> class.
-        /// </summary>
-        /// <param name="connection">The <see cref="DbConnection" />.</param>
         public IntegrationEventLogRepository(DbConnection connection)
         {
             _context = new IntegrationEventLogDbContext(
                 new DbContextOptionsBuilder<IntegrationEventLogDbContext>()
-                    .UseSqlServer(connection ?? throw new ArgumentNullException(nameof(connection)))
+                    .UseSqlServer(connection)
                     .ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning))
                     .Options
             );
@@ -38,11 +33,6 @@ namespace eDoxa.ServiceBus
 
         public Task SaveIntegrationEventAsync(IntegrationEvent integrationEvent, DbTransaction transaction)
         {
-            if (transaction == null)
-            {
-                throw new ArgumentNullException(nameof(transaction), $"A {typeof(DbTransaction).FullName} is required as a pre-requisite to save the event.");
-            }
-
             var logEntry = new IntegrationEventLogEntry(integrationEvent);
 
             _context.Database.UseTransaction(transaction);

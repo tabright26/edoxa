@@ -9,6 +9,7 @@
 // this source code package.
 
 using System.ComponentModel;
+
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Cashier.Domain.AggregateModels

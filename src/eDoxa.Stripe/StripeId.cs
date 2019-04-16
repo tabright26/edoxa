@@ -28,7 +28,7 @@ namespace eDoxa.Stripe
 
         protected StripeId(string prefix)
         {
-            _prefix = prefix ?? throw new ArgumentNullException(nameof(prefix));
+            _prefix = prefix;
         }
 
         protected string Value

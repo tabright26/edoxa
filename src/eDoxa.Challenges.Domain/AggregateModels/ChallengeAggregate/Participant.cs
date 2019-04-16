@@ -26,9 +26,9 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         internal Participant(Challenge challenge, UserId userId, LinkedAccount linkedAccount) : this()
         {
-            _challenge = challenge ?? throw new ArgumentNullException(nameof(challenge));
-            _userId = userId ?? throw new ArgumentNullException(nameof(userId));
-            _linkedAccount = linkedAccount ?? throw new ArgumentNullException(nameof(linkedAccount));
+            _challenge = challenge;
+            _userId = userId;
+            _linkedAccount = linkedAccount;
         }
 
         private Participant()

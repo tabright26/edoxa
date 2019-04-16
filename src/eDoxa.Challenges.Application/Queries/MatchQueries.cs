@@ -8,7 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -27,15 +26,15 @@ namespace eDoxa.Challenges.Application.Queries
 {
     public sealed partial class MatchQueries
     {
-        internal static readonly string ExpandStats = nameof(Match.Stats);
+        private static readonly string ExpandStats = nameof(Match.Stats);
 
         private readonly ChallengesDbContext _context;
         private readonly IMapper _mapper;
 
         public MatchQueries(ChallengesDbContext context, IMapper mapper)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _context = context;
+            _mapper = mapper;
         }
 
         private async Task<IEnumerable<Match>> FindParticipantMatchesAsNoTrackingAsync(ParticipantId participantId)

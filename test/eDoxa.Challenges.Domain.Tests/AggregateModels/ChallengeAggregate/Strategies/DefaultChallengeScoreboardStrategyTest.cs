@@ -23,24 +23,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
 
-// ReSharper disable All
-
 namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Strategies
 {
     [TestClass]
     public sealed class DefaultChallengeScoreboardStrategyTest
     {
-        private static readonly ChallengeAggregateFactory _factory = ChallengeAggregateFactory.Instance;
-
-        [TestMethod]
-        public void Constructor_NullReference_ShouldThrowArgumentNullException()
-        {
-            // Act
-            var action = new Action(() => new DefaultChallengeScoreboardStrategy(null));
-
-            // Assert
-            action.Should().Throw<ArgumentNullException>();
-        }
+        private static readonly ChallengeAggregateFactory ChallengeAggregateFactory = ChallengeAggregateFactory.Instance;
 
         [TestMethod]
         public void Scoreboard_Default_ShouldBeEmpty()
@@ -77,7 +65,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Strat
         {
             var mock = new Mock<IChallengeScoringStrategy>();
 
-            mock.SetupGet(strategy => strategy.Scoring).Returns(_factory.CreateChallengeScoring());
+            mock.SetupGet(strategy => strategy.Scoring).Returns(ChallengeAggregateFactory.CreateChallengeScoring());
 
             return mock.Object;
         }
@@ -108,7 +96,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Strat
 
                     for (var j = 0; j < random.Next(0, Settings.BestOf + 10); j++)
                     {
-                        this.SnapshotParticipantMatch(participant.Id, _factory.CreateChallengeStats());
+                        this.SnapshotParticipantMatch(participant.Id, ChallengeAggregateFactory.CreateChallengeStats());
                     }
                 }
             }

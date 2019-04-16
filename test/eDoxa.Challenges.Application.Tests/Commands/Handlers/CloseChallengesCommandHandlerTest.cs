@@ -35,7 +35,7 @@ namespace eDoxa.Challenges.Application.Tests.Commands.Handlers
             var handler = new CloseChallengesCommandHandler(mockChallengeCloserService.Object);
 
             // Assert
-            await handler.HandleAsync(new CloseChallengesCommand(), default);
+            await handler.HandleAsync(new CloseChallengesCommand());
 
             mockChallengeCloserService.Verify(service => service.CloseAsync(), Times.Once);
         }

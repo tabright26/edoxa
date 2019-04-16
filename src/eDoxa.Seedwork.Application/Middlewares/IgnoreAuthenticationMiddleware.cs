@@ -29,7 +29,7 @@ namespace eDoxa.Seedwork.Application.Middlewares
 
         public IgnoreAuthenticationMiddleware(RequestDelegate next)
         {
-            _next = next ?? throw new ArgumentNullException(nameof(next));
+            _next = next;
         }
 
         public async Task Invoke(HttpContext context)

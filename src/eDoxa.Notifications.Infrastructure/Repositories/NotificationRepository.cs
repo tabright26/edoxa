@@ -8,7 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -27,7 +26,7 @@ namespace eDoxa.Notifications.Infrastructure.Repositories
 
         public NotificationRepository(NotificationsDbContext context)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _context = context;
         }
 
         public IUnitOfWork UnitOfWork
@@ -43,7 +42,7 @@ namespace eDoxa.Notifications.Infrastructure.Repositories
     {
         public void Delete(Notification notification)
         {
-            _context.Notifications.Remove(notification ?? throw new ArgumentNullException());
+            _context.Notifications.Remove(notification);
         }
 
         public async Task<Notification> FindAsync(NotificationId notificationId)

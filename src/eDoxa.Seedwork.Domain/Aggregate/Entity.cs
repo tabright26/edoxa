@@ -132,11 +132,6 @@ namespace eDoxa.Seedwork.Domain.Aggregate
 
         public void AddDomainEvent(IDomainEvent domainEvent)
         {
-            if (domainEvent == null)
-            {
-                throw new ArgumentNullException(nameof(domainEvent));
-            }
-
             _domainEvents.Add(domainEvent);
         }
     }

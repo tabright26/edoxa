@@ -13,6 +13,8 @@ using System.Linq;
 
 using eDoxa.Seedwork.Domain;
 
+using JetBrains.Annotations;
+
 namespace eDoxa.Seedwork.Infrastructure.Repositories
 {
     public class RequestLogRepository<TContext> : IRequestLogRepository
@@ -22,7 +24,7 @@ namespace eDoxa.Seedwork.Infrastructure.Repositories
 
         public RequestLogRepository(TContext context)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _context = context;
         }
 
         public IUnitOfWork UnitOfWork
@@ -38,7 +40,7 @@ namespace eDoxa.Seedwork.Infrastructure.Repositories
             _context.RequestLogs.Add(requestLog);
         }
 
-        public bool IdempotencyKeyExists(string idempotencyKey)
+        public bool IdempotencyKeyExists([CanBeNull] string idempotencyKey)
         {
             return idempotencyKey != null && _context.RequestLogs.Any(logEntry => logEntry.IdempotencyKey == Guid.Parse(idempotencyKey));
         }

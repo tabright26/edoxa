@@ -13,6 +13,8 @@ using System.Reflection;
 
 using eDoxa.Seedwork.Infrastructure.Factories;
 
+using JetBrains.Annotations;
+
 namespace eDoxa.Notifications.Infrastructure.Factories
 {
     internal sealed class NotificationsDbContextFactory : DesignTimeDbContextFactory<NotificationsDbContext>
@@ -33,6 +35,7 @@ namespace eDoxa.Notifications.Infrastructure.Factories
             }
         }
 
+        [NotNull]
         public override NotificationsDbContext CreateDbContext(string[] args)
         {
             return new NotificationsDbContext(Options);

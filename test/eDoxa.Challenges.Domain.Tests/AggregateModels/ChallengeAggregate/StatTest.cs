@@ -8,7 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using eDoxa.Challenges.Domain.Factories;
 
 using FluentAssertions;
@@ -38,22 +37,6 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             stat.Value.Should().Be(value);
             stat.Weighting.Should().Be(weighting);
             stat.Score.Should().NotBeNull();
-        }
-
-        [DataRow(null)]
-        [DataRow("  ")]
-        [DataTestMethod]
-        public void Constructor_Name_ShouldThrowArgumentException(string name)
-        {
-            // Arrange
-            const double value = default;
-            const float weighting = default;
-
-            // Act
-            var action = new Action(() => _factory.CreateStat(name, value, weighting));
-
-            // Assert
-            action.Should().Throw<ArgumentException>();
         }
     }
 }

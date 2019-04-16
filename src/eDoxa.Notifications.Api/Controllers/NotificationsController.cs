@@ -35,8 +35,8 @@ namespace eDoxa.Notifications.Api.Controllers
 
         public NotificationsController(ILogger<NotificationsController> logger, IMediator mediator)
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            _logger = logger;
+            _mediator = mediator;
         }
 
         /// <summary>

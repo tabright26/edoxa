@@ -8,7 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate.DomainEvents;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
@@ -23,8 +22,8 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 
         private User(UserId userId, CustomerId customerId) : this()
         {
-            Id = userId ?? throw new ArgumentNullException(nameof(userId));
-            _customerId = customerId ?? throw new ArgumentNullException(nameof(customerId));
+            Id = userId;
+            _customerId = customerId;
         }
 
         private User()

@@ -8,7 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -30,7 +29,7 @@ namespace eDoxa.Seedwork.Application.DelegatingHandlers
 
         public HttpClientAuthorizationDelegatingHandler(IHttpContextAccessor accesor)
         {
-            _httpContext = accesor.HttpContext ?? throw new ArgumentNullException(nameof(accesor));
+            _httpContext = accesor.HttpContext;
         }
 
         [ItemCanBeNull]

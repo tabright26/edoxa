@@ -35,14 +35,6 @@ namespace eDoxa.ServiceBus.Azure
         private readonly ISubscriptionHandler _handler;
         private readonly SubscriptionClient _subscriptionClient;
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="T:eDoxa.EventBus.AzureServiceBus.AzureEventBusService" /> class.
-        /// </summary>
-        /// <param name="logger">The <see cref="T:Microsoft.Extensions.Logging.ILogger" />.</param>
-        /// <param name="scope">The <see cref="T:Autofac.ILifetimeScope" />.</param>
-        /// <param name="connection">The <see cref="T:eDoxa.EventBus.AzureServiceBus.IAzureEventBusPersistentConnection" />.</param>
-        /// <param name="handler">The <see cref="T:eDoxa.EventBus.IEventBusSubscriptionHandler" />.</param>
-        /// <param name="subscriptionName">The name of the subscription.</param>
         public AzureEventBusService(
             ILogger<AzureEventBusService> logger,
             ILifetimeScope scope,
@@ -50,10 +42,10 @@ namespace eDoxa.ServiceBus.Azure
             ISubscriptionHandler handler,
             string subscriptionName)
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _scope = scope ?? throw new ArgumentNullException(nameof(scope));
-            _connection = connection ?? throw new ArgumentNullException(nameof(connection));
-            _handler = handler ?? new InMemorySubscriptionHandler();
+            _logger = logger;
+            _scope = scope;
+            _connection = connection;
+            _handler = handler;
 
             _subscriptionClient = new SubscriptionClient(connection.ConnectionStringBuilder.GetNamespaceConnectionString(), TopicName, subscriptionName);
 
@@ -144,9 +136,6 @@ namespace eDoxa.ServiceBus.Azure
             _handler.RemoveDynamicSubscription<TDynamicIntegrationEventHandler>(integrationEventName);
         }
 
-        /// <summary>
-        ///     Removes the default rule on the subscription identified by name.
-        /// </summary>
         private void RemoveDefaultRule()
         {
             try
@@ -159,13 +148,6 @@ namespace eDoxa.ServiceBus.Azure
             }
         }
 
-        /// <summary>
-        ///     Receive messages continuously from the entity. Registers a message handler and begins a new thread to receive
-        ///     messages.
-        /// </summary>
-        /// <remarks>
-        ///     This subscription client message handler is awaited on every time a new message is received by the receiver.
-        /// </remarks>
         private void RegisterMessageHandler()
         {
             _subscriptionClient.RegisterMessageHandler(
@@ -204,15 +186,6 @@ namespace eDoxa.ServiceBus.Azure
             }
         }
 
-        /// <summary>
-        ///     Process an integration event by his name with his event arguments as json string asynchronously.
-        /// </summary>
-        /// <param name="jsonString">The integration event arguments as json string.</param>
-        /// <param name="integrationEventName">The <see cref="T:eDoxa.EventBus.Events.IntegrationEvent" /> name.</param>
-        /// <returns>
-        ///     A <see cref="T:System.Threading.Tasks.Task" /> that completes when the integration event has completed
-        ///     processing.
-        /// </returns>
         private async Task ProcessIntegrationEventAsync(string jsonString, string integrationEventName)
         {
             if (_handler.ContainsIntegrationEvent(integrationEventName))

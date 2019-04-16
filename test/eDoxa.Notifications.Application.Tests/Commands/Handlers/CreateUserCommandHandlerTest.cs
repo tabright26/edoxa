@@ -43,7 +43,7 @@ namespace eDoxa.Notifications.Application.Tests.Commands.Handlers
             var handler = new CreateUserCommandHandler(mockRepository.Object);
 
             // Assert
-            await handler.HandleAsync(command, default);
+            await handler.HandleAsync(command);
 
             mockRepository.Verify(repository => repository.Create(It.IsAny<User>()), Times.Once);
 

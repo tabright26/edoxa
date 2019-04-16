@@ -8,7 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using Stripe;
 
@@ -22,7 +21,7 @@ namespace eDoxa.Cashier.Application.Adapters
 
         public InvoiceItemCreateOptionsAdapter(Transaction transaction)
         {
-            _transaction = transaction ?? throw new ArgumentNullException(nameof(transaction));
+            _transaction = transaction;
         }
 
         public InvoiceItemCreateOptions InvoiceItemCreateOptions =>

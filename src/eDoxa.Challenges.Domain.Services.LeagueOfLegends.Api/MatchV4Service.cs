@@ -25,11 +25,6 @@ namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.Api
 
         public MatchV4Service(HttpClient httpClient, string apiKey)
         {
-            if (httpClient is null)
-            {
-                throw new ArgumentNullException(nameof(httpClient));
-            }
-
             httpClient.DefaultRequestHeaders.Add("X-Riot-Token", apiKey);
 
             _httpClient = httpClient;

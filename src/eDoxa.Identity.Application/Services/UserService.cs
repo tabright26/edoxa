@@ -51,7 +51,7 @@ namespace eDoxa.Identity.Application.Services
             logger
         )
         {
-            _integrationEventService = integrationEventService ?? throw new ArgumentNullException(nameof(integrationEventService));
+            _integrationEventService = integrationEventService;
         }
 
         public async Task ChangeStatusAsync(Guid userId, UserStatus status)
@@ -60,11 +60,7 @@ namespace eDoxa.Identity.Application.Services
 
             var user = await this.FindUserAsync(userId);
 
-            if (user == null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
-
+            // TODO: Refactor.
             if (status == UserStatus.Unknown || status == UserStatus.Offline)
             {
                 throw new InvalidEnumArgumentException(nameof(status), (int) status, typeof(UserStatus));
@@ -81,11 +77,6 @@ namespace eDoxa.Identity.Application.Services
 
             var user = await this.FindUserAsync(userId);
 
-            if (user == null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
-
             user.ChangeTag(username);
 
             await this.UpdateAsync(user);
@@ -101,11 +92,6 @@ namespace eDoxa.Identity.Application.Services
         public async Task<IdentityResult> ConnectAsync(User user)
         {
             this.ThrowIfDisposed();
-
-            if (user == null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
 
             user.Connect();
 
@@ -133,11 +119,6 @@ namespace eDoxa.Identity.Application.Services
         {
             this.ThrowIfDisposed();
 
-            if (user == null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
-
             user.Disconnect();
 
             return await this.UpdateAsync(user);
@@ -154,11 +135,6 @@ namespace eDoxa.Identity.Application.Services
         {
             this.ThrowIfDisposed();
 
-            if (email == null)
-            {
-                throw new ArgumentNullException(nameof(email));
-            }
-
             var user = await this.FindByEmailAsync(email);
 
             return user.UserName;
@@ -168,11 +144,6 @@ namespace eDoxa.Identity.Application.Services
         {
             this.ThrowIfDisposed();
 
-            if (user == null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
-
             return await Task.Run(() => user.Name.ToString());
         }
 
@@ -180,22 +151,12 @@ namespace eDoxa.Identity.Application.Services
         {
             this.ThrowIfDisposed();
 
-            if (user == null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
-
             return await Task.Run(() => user.BirthDate.ToString());
         }
 
         public async Task<string> GetTagAsync(User user)
         {
             this.ThrowIfDisposed();
-
-            if (user == null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
 
             return await Task.Run(() => user.Tag.ToString());
         }

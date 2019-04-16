@@ -37,7 +37,7 @@ namespace eDoxa.Challenges.Application.Tests.Commands.Handlers
             var handler = new PublishChallengesCommandHandler(mockChallengePublisherService.Object);
 
             // Assert
-            await handler.HandleAsync(new PublishChallengesCommand(), default);
+            await handler.HandleAsync(new PublishChallengesCommand());
 
             mockChallengePublisherService.Verify(service => service.PublishAsync(), Times.Once);
         }

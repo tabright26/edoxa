@@ -24,7 +24,7 @@ namespace eDoxa.Cashier.Infrastructure.Tests.Repositories
     [TestClass]
     public sealed class UserRepositoryTest
     {
-        private static readonly UserAggregateFactory _userAggregateFactory = UserAggregateFactory.Instance;
+        private static readonly UserAggregateFactory UserAggregateFactory = UserAggregateFactory.Instance;
 
         [TestMethod]
         public async Task Create_User_ShouldNotBeEmpty()
@@ -37,7 +37,7 @@ namespace eDoxa.Cashier.Infrastructure.Tests.Repositories
                     var repository = new UserRepository(context);
 
                     // Act
-                    repository.Create(_userAggregateFactory.CreateUser());
+                    repository.Create(UserAggregateFactory.CreateUser());
 
                     await repository.UnitOfWork.CommitAsync();
                 }
@@ -53,7 +53,7 @@ namespace eDoxa.Cashier.Infrastructure.Tests.Repositories
         [TestMethod]
         public async Task FindAsync_ShouldBeMapped()
         {
-            var user = _userAggregateFactory.CreateUser();
+            var user = UserAggregateFactory.CreateUser();
 
             using (var factory = new InMemoryDbContextFactory<CashierDbContext>())
             {

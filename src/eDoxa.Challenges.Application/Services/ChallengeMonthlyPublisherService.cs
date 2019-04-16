@@ -8,7 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
@@ -23,9 +22,9 @@ namespace eDoxa.Challenges.Application.Services
     {
         private readonly IChallengeRepository _challengeRepository;
 
-        public ChallengeMonthlyPublisherService(ILogger<ChallengeMonthlyPublisherService> logger, IChallengeRepository challengeRepository) : base(logger)
+        public ChallengeMonthlyPublisherService(ILogger logger, IChallengeRepository challengeRepository) : base(logger)
         {
-            _challengeRepository = challengeRepository ?? throw new ArgumentNullException(nameof(challengeRepository));
+            _challengeRepository = challengeRepository;
         }
     }
 

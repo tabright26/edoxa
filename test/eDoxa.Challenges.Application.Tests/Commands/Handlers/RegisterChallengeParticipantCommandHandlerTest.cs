@@ -53,7 +53,7 @@ namespace eDoxa.Challenges.Application.Tests.Commands.Handlers
             var handler = new RegisterChallengeParticipantCommandHandler(mockChallengeRepository.Object);
 
             // Assert
-            await handler.HandleAsync(command, default);
+            await handler.HandleAsync(command);
 
             mockChallengeRepository.Verify(repository => repository.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Once);
 

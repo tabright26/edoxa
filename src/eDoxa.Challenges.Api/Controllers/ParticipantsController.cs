@@ -32,8 +32,8 @@ namespace eDoxa.Challenges.Api.Controllers
 
         public ParticipantsController(ILogger<ParticipantsController> logger, IParticipantQueries queries)
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _queries = queries ?? throw new ArgumentNullException(nameof(queries));
+            _logger = logger;
+            _queries = queries;
         }
 
         /// <summary>

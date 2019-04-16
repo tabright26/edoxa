@@ -16,7 +16,6 @@ using eDoxa.Testing.MSTest.Extensions;
 using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable All
 
 namespace eDoxa.Seedwork.Domain.Tests.Aggregate
 {

@@ -29,7 +29,7 @@ namespace eDoxa.Challenges.Application.Services
 
         protected ChallengePublisherService(ILogger logger)
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _logger = logger;
         }
 
         public abstract Task PublishAsync();

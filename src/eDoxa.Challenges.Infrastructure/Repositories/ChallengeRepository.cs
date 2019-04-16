@@ -8,7 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,15 +24,15 @@ namespace eDoxa.Challenges.Infrastructure.Repositories
 {
     public sealed partial class ChallengeRepository
     {
-        internal static readonly string ExpandParticipants = nameof(Challenge.Participants);
-        internal static readonly string ExpandParticipantMatches = $"{ExpandParticipants}.{nameof(Participant.Matches)}";
-        internal static readonly string ExpandParticipantMatchStats = $"{ExpandParticipantMatches}.{nameof(Match.Stats)}";
+        private static readonly string ExpandParticipants = nameof(Challenge.Participants);
+        private static readonly string ExpandParticipantMatches = $"{ExpandParticipants}.{nameof(Participant.Matches)}";
+        private static readonly string ExpandParticipantMatchStats = $"{ExpandParticipantMatches}.{nameof(Match.Stats)}";
 
         private readonly ChallengesDbContext _context;
 
         public ChallengeRepository(ChallengesDbContext context)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _context = context;
         }
 
         public IUnitOfWork UnitOfWork
@@ -46,7 +45,7 @@ namespace eDoxa.Challenges.Infrastructure.Repositories
 
         public void Create(Challenge challenge)
         {
-            _context.Challenges.Add(challenge ?? throw new ArgumentNullException(nameof(challenge)));
+            _context.Challenges.Add(challenge);
         }
     }
 
@@ -54,7 +53,7 @@ namespace eDoxa.Challenges.Infrastructure.Repositories
     {
         public void Create(IEnumerable<Challenge> challenges)
         {
-            _context.Challenges.AddRange(challenges ?? throw new ArgumentNullException(nameof(challenges)));
+            _context.Challenges.AddRange(challenges);
         }
 
         public async Task<IReadOnlyCollection<Challenge>> FindChallengesAsync(Game game, ChallengeType type, ChallengeState state)

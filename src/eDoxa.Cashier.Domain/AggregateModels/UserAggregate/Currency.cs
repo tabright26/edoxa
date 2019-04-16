@@ -11,13 +11,15 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+
 using eDoxa.Seedwork.Domain.Aggregate;
+
 using JetBrains.Annotations;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 {
     public abstract partial class Currency<TCurrency> : BaseObject
-        where TCurrency : Currency<TCurrency>, new()
+    where TCurrency : Currency<TCurrency>, new()
     {
         public static readonly TCurrency Empty = FromDecimal(decimal.Zero);
 

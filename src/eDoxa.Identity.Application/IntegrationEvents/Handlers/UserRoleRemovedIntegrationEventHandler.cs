@@ -8,7 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Application.Services;
@@ -22,7 +21,7 @@ namespace eDoxa.Identity.Application.IntegrationEvents.Handlers
 
         public UserRoleRemovedIntegrationEventHandler(UserService userService)
         {
-            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+            _userService = userService;
         }
 
         public async Task Handle(UserRoleRemovedIntegrationEvent integrationEvent)

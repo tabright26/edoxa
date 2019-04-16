@@ -9,6 +9,7 @@
 // this source code package.
 
 using System.ComponentModel;
+
 using eDoxa.Stripe;
 
 namespace eDoxa.Cashier.Domain.AggregateModels

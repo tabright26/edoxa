@@ -13,6 +13,8 @@ using System.Reflection;
 
 using eDoxa.Seedwork.Infrastructure.Factories;
 
+using JetBrains.Annotations;
+
 namespace eDoxa.Cashier.Infrastructure.Factories
 {
     internal sealed class CashierDbContextFactory : DesignTimeDbContextFactory<CashierDbContext>
@@ -33,6 +35,7 @@ namespace eDoxa.Cashier.Infrastructure.Factories
             }
         }
 
+        [NotNull]
         public override CashierDbContext CreateDbContext(string[] args)
         {
             return new CashierDbContext(Options);

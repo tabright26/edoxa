@@ -8,7 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Application.Commands;
@@ -24,7 +23,7 @@ namespace eDoxa.Cashier.Application.IntegrationEvents.Handlers
 
         public UserCreatedIntegrationEventHandler(IMediator mediator)
         {
-            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            _mediator = mediator;
         }
 
         public async Task Handle(UserCreatedIntegrationEvent integrationEvent)

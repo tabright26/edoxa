@@ -8,7 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -30,8 +29,8 @@ namespace eDoxa.Identity.Application.Queries
 
         public UserQueries(IdentityDbContext context, IMapper mapper)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _context = context;
+            _mapper = mapper;
         }
 
         private async Task<IEnumerable<User>> FindUsersAsNoTrackingAsync()

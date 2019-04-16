@@ -8,7 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -23,7 +22,7 @@ namespace eDoxa.Identity.Application.IntegrationEvents.Handlers
 
         public RoleClaimAddedIntegrationEventHandler(RoleService roleService)
         {
-            _roleService = roleService ?? throw new ArgumentNullException(nameof(roleService));
+            _roleService = roleService;
         }
 
         public async Task Handle(RoleClaimAddedIntegrationEvent integrationEvent)

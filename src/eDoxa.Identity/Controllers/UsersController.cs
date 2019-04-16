@@ -35,9 +35,9 @@ namespace eDoxa.Identity.Controllers
 
         public UsersController(ILogger<UsersController> logger, IUserQueries queries, IUserService userService)
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _queries = queries ?? throw new ArgumentNullException(nameof(queries));
-            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+            _logger = logger;
+            _queries = queries;
+            _userService = userService;
         }
 
         /// <summary>

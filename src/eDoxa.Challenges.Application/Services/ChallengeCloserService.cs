@@ -8,7 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
@@ -24,7 +23,7 @@ namespace eDoxa.Challenges.Application.Services
 
         public ChallengeCloserService(IChallengeRepository challengeRepository)
         {
-            _challengeRepository = challengeRepository ?? throw new ArgumentNullException(nameof(challengeRepository));
+            _challengeRepository = challengeRepository;
         }
 
         public async Task CloseAsync()

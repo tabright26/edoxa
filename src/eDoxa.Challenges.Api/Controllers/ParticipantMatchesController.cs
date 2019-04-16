@@ -33,8 +33,8 @@ namespace eDoxa.Challenges.Api.Controllers
 
         public ParticipantMatchesController(ILogger<ParticipantMatchesController> logger, IMatchQueries queries)
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _queries = queries ?? throw new ArgumentNullException(nameof(queries));
+            _logger = logger;
+            _queries = queries;
         }
 
         /// <summary>

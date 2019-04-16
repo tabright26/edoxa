@@ -1,11 +1,11 @@
 ﻿// Filename: ProfileService.cs
-// Date Created: 2019-03-04
+// Date Created: 2019-04-14
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
@@ -17,7 +17,9 @@ using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 
 using IdentityServer4.Models;
 using IdentityServer4.Services;
+
 using JetBrains.Annotations;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -27,24 +29,25 @@ namespace eDoxa.Identity.Areas.Identity
     public class ProfileService : IProfileService
     {
         private readonly IUserClaimsPrincipalFactory<User> _factory;
-        private readonly UserService _userService;
+        private readonly ILogger<ProfileService> _logger;
         private readonly IdentityOptions _options;
+        private readonly UserService _userService;
 
         public ProfileService(
             IUserClaimsPrincipalFactory<User> factory,
             UserService userService,
             IOptions<IdentityOptions> optionsAccessor,
-            ILoggerFactory loggerFactory)
+            ILogger<ProfileService> logger)
         {
-            _factory = factory ?? throw new ArgumentNullException(nameof(factory));
-            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
-            _options = optionsAccessor.Value ?? throw new ArgumentNullException(nameof(optionsAccessor));
-            Logger = loggerFactory.CreateLogger<ProfileService>();
+            _factory = factory;
+            _userService = userService;
+            _options = optionsAccessor.Value;
+            _logger = logger;
         }
 
         public async Task GetProfileDataAsync([NotNull] ProfileDataRequestContext context)
         {
-            context.LogProfileRequest(Logger);
+            context.LogProfileRequest(_logger);
 
             var user = await _userService.GetUserAsync(context.Subject) ?? throw new NullReferenceException(nameof(context.Subject));
 
@@ -55,7 +58,7 @@ namespace eDoxa.Identity.Areas.Identity
                 context.IssuedClaims.Add(claim);
             }
 
-            context.LogIssuedClaims(Logger);
+            context.LogIssuedClaims(_logger);
         }
 
         public async Task IsActiveAsync([NotNull] IsActiveContext context)
@@ -84,7 +87,5 @@ namespace eDoxa.Identity.Areas.Identity
                 context.IsActive = !await _userService.IsLockedOutAsync(user);
             }
         }
-
-        private ILogger Logger { get; }
     }
 }

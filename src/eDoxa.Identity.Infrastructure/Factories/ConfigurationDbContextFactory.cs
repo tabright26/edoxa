@@ -16,6 +16,8 @@ using eDoxa.Seedwork.Infrastructure.Factories;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Options;
 
+using JetBrains.Annotations;
+
 namespace eDoxa.Identity.Infrastructure.Factories
 {
     internal sealed class ConfigurationDbContextFactory : DesignTimeDbContextFactory<ConfigurationDbContext>
@@ -36,6 +38,7 @@ namespace eDoxa.Identity.Infrastructure.Factories
             }
         }
 
+        [NotNull]
         public override ConfigurationDbContext CreateDbContext(string[] args)
         {
             return new ConfigurationDbContext(Options, new ConfigurationStoreOptions());

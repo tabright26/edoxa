@@ -8,7 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -30,9 +29,9 @@ namespace eDoxa.Cashier.Application.Services
 
         public AccountService(CustomerService customerService, InvoiceService invoiceService, InvoiceItemService invoiceItemService)
         {
-            _invoiceService = invoiceService ?? throw new ArgumentNullException(nameof(invoiceService));
-            _invoiceItemService = invoiceItemService ?? throw new ArgumentNullException(nameof(invoiceItemService));
-            _customerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
+            _invoiceService = invoiceService;
+            _invoiceItemService = invoiceItemService;
+            _customerService = customerService;
             _customerService.ExpandDefaultSource = true;
         }
 

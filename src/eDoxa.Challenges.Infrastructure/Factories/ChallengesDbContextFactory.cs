@@ -13,6 +13,8 @@ using System.Reflection;
 
 using eDoxa.Seedwork.Infrastructure.Factories;
 
+using JetBrains.Annotations;
+
 namespace eDoxa.Challenges.Infrastructure.Factories
 {
     internal sealed class ChallengesDbContextFactory : DesignTimeDbContextFactory<ChallengesDbContext>
@@ -33,6 +35,7 @@ namespace eDoxa.Challenges.Infrastructure.Factories
             }
         }
 
+        [NotNull]
         public override ChallengesDbContext CreateDbContext(string[] args)
         {
             return new ChallengesDbContext(Options);

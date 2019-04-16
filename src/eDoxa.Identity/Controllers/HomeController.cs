@@ -8,7 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Diagnostics;
 
 using eDoxa.Identity.ViewModels;
@@ -22,17 +21,17 @@ namespace eDoxa.Identity.Controllers
     [AllowAnonymous]
     public class HomeController : Controller
     {
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IHostingEnvironment _environment;
 
-        public HomeController(IHostingEnvironment hostingEnvironment)
+        public HomeController(IHostingEnvironment environment)
         {
-            _hostingEnvironment = hostingEnvironment ?? throw new ArgumentNullException(nameof(hostingEnvironment));
+            _environment = environment;
         }
 
         [HttpGet]
         public IActionResult Index()
         {
-            if (!_hostingEnvironment.IsDevelopment())
+            if (!_environment.IsDevelopment())
             {
                 return this.Redirect(User.Identity.IsAuthenticated ? "~/Identity/Account/Manage/Index" : "~/Identity/Account/Login");
             }

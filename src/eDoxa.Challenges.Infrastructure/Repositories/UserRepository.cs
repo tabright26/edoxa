@@ -8,8 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-
 using eDoxa.Challenges.Domain.AggregateModels.UserAggregate;
 using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Seedwork.Domain;
@@ -22,7 +20,7 @@ namespace eDoxa.Challenges.Infrastructure.Repositories
 
         public UserRepository(ChallengesDbContext context)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _context = context;
         }
 
         public IUnitOfWork UnitOfWork
@@ -38,7 +36,7 @@ namespace eDoxa.Challenges.Infrastructure.Repositories
     {
         public void Create(User user)
         {
-            _context.Users.Add(user ?? throw new ArgumentNullException(nameof(user)));
+            _context.Users.Add(user);
         }
     }
 }

@@ -35,7 +35,7 @@ namespace eDoxa.Challenges.Application.Tests.Commands.Handlers
             var handler = new SynchronizeChallengesCommandHandler(mockChallengeSynchronizerService.Object);
 
             // Assert
-            await handler.HandleAsync(new SynchronizeChallengesCommand(), default);
+            await handler.HandleAsync(new SynchronizeChallengesCommand());
 
             mockChallengeSynchronizerService.Verify(service => service.SynchronizeAsync(), Times.Once);
         }

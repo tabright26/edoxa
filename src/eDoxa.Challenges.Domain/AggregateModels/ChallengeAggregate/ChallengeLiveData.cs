@@ -8,8 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Factories;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Helpers;
 
@@ -23,7 +21,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public ChallengeLiveData(Challenge challenge)
         {
-            _challenge = challenge ?? throw new ArgumentNullException(nameof(challenge));
+            _challenge = challenge;
         }
 
         public int Entries

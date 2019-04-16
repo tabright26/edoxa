@@ -1,62 +1,37 @@
 ﻿// Filename: DomainSignature.cs
-// Date Created: 2019-03-04
+// Date Created: 2019-04-14
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
 using System.Linq;
 using System.Reflection;
 
+using JetBrains.Annotations;
+
 namespace eDoxa.Seedwork.Domain.Reflexion
 {
     public sealed class DomainSignature
     {
-        private Type _type;
         private PropertyInfo[] _properties;
+        private Type _type;
 
         public DomainSignature(Type type, PropertyInfo[] properties)
         {
-            Type = type;
-            Properties = properties;
+            _type = type;
+            _properties = properties.Any() ? properties : new PropertyInfo[0];
         }
 
-        public Type Type
-        {
-            get
-            {
-                return _type;
-            }
-            private set
-            {
-                _type = value ?? throw new ArgumentNullException(nameof(Type));
-            }
-        }
+        public Type Type => _type;
 
-        public PropertyInfo[] Properties
-        {
-            get
-            {
-                return _properties;
-            }
-            private set
-            {
-                if (value != null && value.Any())
-                {
-                    _properties = value;
-                }
-                else
-                {
-                    _properties = new PropertyInfo[0];
-                }
-            }
-        }
+        public PropertyInfo[] Properties => _properties;
 
-        public override bool Equals(object obj)
+        public override bool Equals([CanBeNull] object obj)
         {
             if (!(obj is DomainSignature other))
             {

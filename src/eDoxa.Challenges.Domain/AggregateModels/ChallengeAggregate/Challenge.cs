@@ -1,11 +1,11 @@
 ﻿// Filename: Challenge.cs
-// Date Created: 2019-03-22
+// Date Created: 2019-04-14
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
@@ -25,26 +25,26 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
     {
         private Game _game;
         private ChallengeName _name;
+        private HashSet<Participant> _participants;
+        private IChallengeScoring _scoring;
         private ChallengeSettings _settings;
         private ChallengeTimeline _timeline;
-        private IChallengeScoring _scoring;
-        private HashSet<Participant> _participants;
 
         internal Challenge(Game game, ChallengeName name, ChallengePublisherPeriodicity periodicity) : this(game, name)
         {
-            Settings = new ChallengeSettings(periodicity);
-            Timeline = new ChallengeTimeline(periodicity);
+            _settings = new ChallengeSettings(periodicity);
+            _timeline = new ChallengeTimeline(periodicity);
         }
 
         internal Challenge(Game game, ChallengeName name, ChallengeSettings settings) : this(game, name)
         {
-            Settings = settings;
+            _settings = settings;
         }
 
         internal Challenge(Game game, ChallengeName name) : this()
         {
             Game = game;
-            Name = name;
+            _name = name;
         }
 
         private Challenge()
@@ -59,10 +59,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public Game Game
         {
-            get
-            {
-                return _game;
-            }
+            get => _game;
             private set
             {
                 if (!Enum.IsDefined(typeof(Game), value))
@@ -79,81 +76,19 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             }
         }
 
-        public ChallengeName Name
-        {
-            get
-            {
-                return _name;
-            }
-            private set
-            {
-                if (value is null)
-                {
-                    throw new ArgumentNullException(nameof(Name));
-                }
+        public ChallengeName Name => _name;
 
-                _name = value;
-            }
-        }
+        public ChallengeSettings Settings => _settings;
 
-        public ChallengeSettings Settings
-        {
-            get
-            {
-                return _settings;
-            }
-            private set
-            {
-                if (value is null)
-                {
-                    throw new ArgumentNullException(nameof(Settings));
-                }
-
-                _settings = value;
-            }
-        }
-
-        public ChallengeTimeline Timeline
-        {
-            get
-            {
-                return _timeline;
-            }
-            private set
-            {
-                if (value is null)
-                {
-                    throw new ArgumentNullException(nameof(Timeline));
-                }
-
-                _timeline = value;
-            }
-        }
+        public ChallengeTimeline Timeline => _timeline;
 
         public IChallengeScoring Scoring
         {
-            get
-            {
-                return _scoring;
-            }
-            protected set
-            {
-                if (value is null)
-                {
-                    throw new ArgumentNullException(nameof(Scoring));
-                }
-
-                _scoring = value;
-            }
+            get => _scoring;
+            protected set => _scoring = value;
         }
 
-        public ChallengeLiveData LiveData
-        {
-            get
-            {
-                return new ChallengeLiveData(this);
-            }
-        }
+        public ChallengeLiveData LiveData => new ChallengeLiveData(this);
 
         public IChallengePrizeBreakdown PrizeBreakdown
         {
@@ -179,45 +114,39 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             }
         }
 
-        public IReadOnlyCollection<Participant> Participants
-        {
-            get
-            {
-                return _participants;
-            }
-        }
+        public IReadOnlyCollection<Participant> Participants => _participants;
 
         public void Configure(IChallengeScoringStrategy strategy, DateTime publishedAt, TimeSpan registrationPeriod, TimeSpan extensionPeriod)
         {
-            Scoring = strategy.Scoring;
+            _scoring = strategy.Scoring;
 
-            Timeline = Timeline.Configure(publishedAt, registrationPeriod, extensionPeriod);
+            _timeline = Timeline.Configure(publishedAt, registrationPeriod, extensionPeriod);
         }
 
         public void Configure(IChallengeScoringStrategy strategy, DateTime publishedAt)
         {
-            Scoring = strategy.Scoring;
+            _scoring = strategy.Scoring;
 
-            Timeline = Timeline.Configure(publishedAt);
+            _timeline = Timeline.Configure(publishedAt);
         }
 
         public void Publish(IChallengeScoringStrategy strategy, TimeSpan registrationPeriod, TimeSpan extensionPeriod)
         {
-            Scoring = strategy.Scoring;
+            _scoring = strategy.Scoring;
 
-            Timeline = Timeline.Publish(registrationPeriod, extensionPeriod);
+            _timeline = Timeline.Publish(registrationPeriod, extensionPeriod);
         }
 
         public void Publish(IChallengeScoringStrategy strategy)
         {
-            Scoring = strategy.Scoring;
+            _scoring = strategy.Scoring;
 
-            Timeline = Timeline.Publish();
+            _timeline = Timeline.Publish();
         }
 
         public void Close()
         {
-            Timeline = Timeline.Close();
+            _timeline = Timeline.Close();
 
             var userPrizes = PrizeBreakdown.SnapshotUserPrizes(Scoreboard);
 

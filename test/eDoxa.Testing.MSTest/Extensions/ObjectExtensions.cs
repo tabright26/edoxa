@@ -8,7 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Reflection;
 using JetBrains.Annotations;
 
@@ -16,11 +15,12 @@ namespace eDoxa.Testing.MSTest.Extensions
 {
     public static class ObjectExtensions
     {
+        [CanBeNull]
         public static object GetPrivateField(this object obj, string name)
         {
             var fieldInfo = obj.PrivateFieldInfo(name);
 
-            return fieldInfo.GetValue(obj);
+            return fieldInfo?.GetValue(obj);
         }
 
         public static void SetPrivateField(this object obj, string name, [CanBeNull] object value)
@@ -29,7 +29,7 @@ namespace eDoxa.Testing.MSTest.Extensions
 
             try
             {
-                fieldInfo.SetValue(obj, value);
+                fieldInfo?.SetValue(obj, value);
             }
             catch (TargetInvocationException exception)
             {
@@ -43,7 +43,7 @@ namespace eDoxa.Testing.MSTest.Extensions
 
             try
             {
-                propertyInfo.SetValue(obj, value);
+                propertyInfo?.SetValue(obj, value);
             }
             catch (TargetInvocationException exception)
             {
@@ -51,19 +51,11 @@ namespace eDoxa.Testing.MSTest.Extensions
             }
         }
 
+        [CanBeNull]
         private static PropertyInfo PropertyInfo(this object obj, string name)
         {
-            if (obj == null)
-            {
-                throw new ArgumentNullException(nameof(obj), "The assignment target cannot be null.");
-            }
-
-            if (string.IsNullOrEmpty(name))
-            {
-                throw new ArgumentException("The property name cannot be null or empty.", nameof(name));
-            }
-
             PropertyInfo propertyInfo = null;
+
             var type = obj.GetType();
 
             while (type != null)
@@ -86,19 +78,11 @@ namespace eDoxa.Testing.MSTest.Extensions
             return propertyInfo;
         }
 
+        [CanBeNull]
         private static FieldInfo PrivateFieldInfo(this object obj, string name)
         {
-            if (obj == null)
-            {
-                throw new ArgumentNullException(nameof(obj), "The assignment target cannot be null.");
-            }
-
-            if (string.IsNullOrEmpty(name))
-            {
-                throw new ArgumentException("The field name cannot be null or empty.", nameof(name));
-            }
-
             FieldInfo fieldInfo = null;
+
             var type = obj.GetType();
 
             while (type != null)

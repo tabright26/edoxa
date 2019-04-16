@@ -27,13 +27,14 @@ namespace eDoxa.Challenges.Application.Tests.DomainEventHandlers
     [TestClass]
     public sealed class ChallengeUserPrizesSnapshottedDomainEventHandlerTest
     {
-        private static readonly ChallengeAggregateFactory _factory = ChallengeAggregateFactory.Instance;
+        private static readonly ChallengeAggregateFactory ChallengeAggregateFactory = ChallengeAggregateFactory.Instance;
 
         [TestMethod]
         public async Task Handle_PublishAsync_ShouldBeInvokedExactlyOneTime()
         {
             // Arrange
-            var challenge = _factory.CreateChallenge(ChallengeState.Closed);
+            var challenge = ChallengeAggregateFactory.CreateChallenge(ChallengeState.Closed);
+
             var userPrizes = challenge.PrizeBreakdown.SnapshotUserPrizes(challenge.Scoreboard);
 
             var mockIntegrationEventService = new Mock<IIntegrationEventService>();

@@ -8,7 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -24,7 +23,7 @@ namespace eDoxa.Notifications.Application.Commands.Handlers
 
         public ReadNotificationCommandHandler(INotificationRepository notificationRepository)
         {
-            _notificationRepository = notificationRepository ?? throw new ArgumentNullException(nameof(notificationRepository));
+            _notificationRepository = notificationRepository;
         }
 
         protected override async Task Handle([NotNull] ReadNotificationCommand command, CancellationToken cancellationToken)

@@ -8,8 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-
 namespace eDoxa.Seedwork.Domain.Specifications
 {
     internal sealed class NotSpecification<TEntity> : Specification<TEntity>
@@ -19,7 +17,7 @@ namespace eDoxa.Seedwork.Domain.Specifications
 
         public NotSpecification(ISpecification<TEntity> other)
         {
-            _other = other ?? throw new ArgumentNullException(nameof(other));
+            _other = other;
         }
 
         public override bool IsSatisfiedBy(TEntity entity)

@@ -8,7 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Collections.Generic;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
@@ -17,12 +16,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
     {
         internal ChallengeStats(LinkedMatch linkedMatch, object stats)
         {
-            LinkedMatch = linkedMatch ?? throw new ArgumentNullException(nameof(linkedMatch));
-
-            if (stats == null)
-            {
-                throw new ArgumentNullException(nameof(stats));
-            }
+            LinkedMatch = linkedMatch;
 
             foreach (var property in stats.GetType().GetProperties())
             {

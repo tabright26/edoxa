@@ -9,10 +9,13 @@
 // this source code package.
 
 using System;
+
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Domain.Factories;
+
 using Stripe;
+
 using Token = eDoxa.Cashier.Domain.AggregateModels.UserAggregate.Token;
 
 namespace eDoxa.Cashier.Domain.Factories

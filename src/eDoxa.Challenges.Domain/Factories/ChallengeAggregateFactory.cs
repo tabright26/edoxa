@@ -95,13 +95,13 @@ namespace eDoxa.Challenges.Domain.Factories
 
             var timeline = this.CreateChallengeTimeline(state);
 
-            challenge.GetType().GetProperty(nameof(Challenge.Timeline))?.SetValue(challenge, timeline);
+            challenge.GetType().GetField("_timeline", BindingFlags.Instance | BindingFlags.NonPublic)?.SetValue(challenge, timeline);
 
             if (state >= ChallengeState.Opened)
             {
                 var scoring = this.CreateChallengeScoring();
 
-                challenge.GetType().GetProperty(nameof(Challenge.Scoring))?.SetValue(challenge, scoring);
+                challenge.GetType().GetField("_scoring", BindingFlags.Instance | BindingFlags.NonPublic)?.SetValue(challenge, scoring);
             }
 
             return challenge;
@@ -179,7 +179,7 @@ namespace eDoxa.Challenges.Domain.Factories
             {
                 var timeline = challenge.Timeline;
 
-                challenge.GetType().GetProperty(nameof(Challenge.Timeline))?.SetValue(challenge, this.CreateChallengeTimeline(ChallengeState.Opened));
+                challenge.GetType().GetField("_timeline", BindingFlags.Instance | BindingFlags.NonPublic)?.SetValue(challenge, this.CreateChallengeTimeline(ChallengeState.Opened));
 
                 for (var row = 0; row < Random.Next(1, challenge.Settings.Entries + 1); row++)
                 {
@@ -193,7 +193,7 @@ namespace eDoxa.Challenges.Domain.Factories
                     }
                 }
 
-                challenge.GetType().GetProperty(nameof(Challenge.Timeline))?.SetValue(challenge, timeline);
+                challenge.GetType().GetField("_timeline", BindingFlags.Instance | BindingFlags.NonPublic)?.SetValue(challenge, timeline);
             }
 
             return challenge;

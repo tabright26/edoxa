@@ -8,8 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-
 using Microsoft.Extensions.Configuration;
 
 namespace eDoxa.Identity.Application.Services
@@ -20,7 +18,7 @@ namespace eDoxa.Identity.Application.Services
 
         public RedirectionService(IConfiguration configuration)
         {
-            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            _configuration = configuration;
         }
 
         public string RedirectToPrincipal()

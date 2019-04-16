@@ -27,7 +27,7 @@ namespace eDoxa.Notifications.Domain.AggregateModels.NotificationAggregate
 
         public Notification(User user, string title, string message, string redirectUrl = null) : this()
         {
-            _user = user ?? throw new ArgumentNullException(nameof(user));
+            _user = user;
             _title = title;
             _message = message;
             _redirectUrl = redirectUrl;

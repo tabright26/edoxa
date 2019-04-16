@@ -1,14 +1,13 @@
 ﻿// Filename: ChallengeQueries.cs
-// Date Created: 2019-03-21
+// Date Created: 2019-04-14
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,24 +20,26 @@ using eDoxa.Challenges.DTO;
 using eDoxa.Challenges.DTO.Queries;
 using eDoxa.Challenges.Infrastructure;
 using eDoxa.Seedwork.Domain.Common.Enums;
+
 using JetBrains.Annotations;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Challenges.Application.Queries
 {
     public sealed partial class ChallengeQueries
     {
-        internal static readonly string ExpandParticipants = nameof(Challenge.Participants);
-        internal static readonly string ExpandParticipantMatches = $"{ExpandParticipants}.{nameof(Participant.Matches)}";
-        internal static readonly string ExpandParticipantMatchStats = $"{ExpandParticipantMatches}.{nameof(Match.Stats)}";
+        private static readonly string ExpandParticipants = nameof(Challenge.Participants);
+        private static readonly string ExpandParticipantMatches = $"{ExpandParticipants}.{nameof(Participant.Matches)}";
+        private static readonly string ExpandParticipantMatchStats = $"{ExpandParticipantMatches}.{nameof(Match.Stats)}";
 
         private readonly ChallengesDbContext _context;
         private readonly IMapper _mapper;
 
         public ChallengeQueries(ChallengesDbContext context, IMapper mapper)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _context = context;
+            _mapper = mapper;
         }
 
         private async Task<IEnumerable<Challenge>> FindUserChallengeHistoryAsNoTrackingAsync(
@@ -48,40 +49,40 @@ namespace eDoxa.Challenges.Application.Queries
             ChallengeState state)
         {
             return await _context.Challenges.AsNoTracking()
-                                 .Include(ExpandParticipantMatchStats)
-                                 .Where(
-                                     challenge => challenge.Participants.Any(participant => participant.UserId == userId) &&
-                                                  (challenge.Game & game) != Game.None &&
-                                                  (challenge.Settings.Type & type) != ChallengeType.None &&
-                                                  (challenge.Timeline.State & state) != ChallengeState.None
-                                 )
-                                 .OrderBy(challenge => challenge.Timeline.StartedAt)
-                                 .ToListAsync();
+                .Include(ExpandParticipantMatchStats)
+                .Where(
+                    challenge => challenge.Participants.Any(participant => participant.UserId == userId) &&
+                                 (challenge.Game & game) != Game.None &&
+                                 (challenge.Settings.Type & type) != ChallengeType.None &&
+                                 (challenge.Timeline.State & state) != ChallengeState.None
+                )
+                .OrderBy(challenge => challenge.Timeline.StartedAt)
+                .ToListAsync();
         }
 
         private async Task<IEnumerable<Challenge>> FindChallengesAsNoTrackingAsync(Game game, ChallengeType type, ChallengeState state)
         {
             return await _context.Challenges.AsNoTracking()
-                                 .Include(ExpandParticipantMatchStats)
-                                 .Where(
-                                     challenge => (challenge.Game & game) != Game.None &&
-                                                  (challenge.Settings.Type & type) != ChallengeType.None &&
-                                                  (challenge.Timeline.State & state) != ChallengeState.None
-                                 )
-                                 .OrderBy(challenge => challenge.Game)
-                                 .ThenBy(challenge => challenge.Settings.Type)
-                                 .ThenBy(challenge => challenge.Timeline.State)
-                                 .ThenBy(challenge => challenge.LiveData.Entries)
-                                 .ThenBy(challenge => challenge.Timeline.StartedAt)
-                                 .ToListAsync();
+                .Include(ExpandParticipantMatchStats)
+                .Where(
+                    challenge => (challenge.Game & game) != Game.None &&
+                                 (challenge.Settings.Type & type) != ChallengeType.None &&
+                                 (challenge.Timeline.State & state) != ChallengeState.None
+                )
+                .OrderBy(challenge => challenge.Game)
+                .ThenBy(challenge => challenge.Settings.Type)
+                .ThenBy(challenge => challenge.Timeline.State)
+                .ThenBy(challenge => challenge.LiveData.Entries)
+                .ThenBy(challenge => challenge.Timeline.StartedAt)
+                .ToListAsync();
         }
 
         private async Task<Challenge> FindChallengeAsNoTrackingAsync(ChallengeId challengeId)
         {
             return await _context.Challenges.AsNoTracking()
-                                 .Include(ExpandParticipantMatchStats)
-                                 .Where(challenge => challenge.Id == challengeId)
-                                 .SingleOrDefaultAsync();
+                .Include(ExpandParticipantMatchStats)
+                .Where(challenge => challenge.Id == challengeId)
+                .SingleOrDefaultAsync();
         }
     }
 

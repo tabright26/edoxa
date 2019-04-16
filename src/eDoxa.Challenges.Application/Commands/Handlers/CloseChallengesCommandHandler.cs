@@ -8,7 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -24,7 +23,7 @@ namespace eDoxa.Challenges.Application.Commands.Handlers
 
         public CloseChallengesCommandHandler(IChallengeCloserService challengeCloserService)
         {
-            _challengeCloserService = challengeCloserService ?? throw new ArgumentNullException(nameof(challengeCloserService));
+            _challengeCloserService = challengeCloserService;
         }
 
         protected override async Task Handle([NotNull] CloseChallengesCommand command, CancellationToken cancellationToken)

@@ -24,11 +24,11 @@ using RabbitMQ.Client.Exceptions;
 
 namespace eDoxa.ServiceBus.RabbitMQ
 {
-    public class RabbitMqPersistentConnection : IRabbitMqPersistentConnection
+    public sealed class RabbitMqPersistentConnection : IRabbitMqPersistentConnection
     {
         private static readonly object SyncRoot = new object();
 
-        protected IConnection _connection;
+        private IConnection _connection;
 
         private readonly int _retryCount;
         private readonly IConnectionFactory _connectionFactory;

@@ -13,6 +13,8 @@ using System.Reflection;
 
 using eDoxa.Seedwork.Infrastructure.Factories;
 
+using JetBrains.Annotations;
+
 namespace eDoxa.Identity.Infrastructure.Factories
 {
     internal sealed class IdentityDbContextFactory : DesignTimeDbContextFactory<IdentityDbContext>
@@ -33,6 +35,7 @@ namespace eDoxa.Identity.Infrastructure.Factories
             }
         }
 
+        [NotNull]
         public override IdentityDbContext CreateDbContext(string[] args)
         {
             return new IdentityDbContext(Options);

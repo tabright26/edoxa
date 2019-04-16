@@ -8,7 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -23,13 +22,13 @@ namespace eDoxa.Notifications.Infrastructure.Repositories
 {
     public sealed partial class UserRepository
     {
-        internal static readonly string ExpandNotifications = nameof(User.Notifications);
+        private static readonly string ExpandNotifications = nameof(User.Notifications);
 
         private readonly NotificationsDbContext _context;
 
         public UserRepository(NotificationsDbContext context)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _context = context;
         }
 
         public IUnitOfWork UnitOfWork
