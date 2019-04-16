@@ -9,9 +9,7 @@
 // this source code package.
 
 using System;
-
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
-
 using Stripe;
 
 namespace eDoxa.Cashier.Application.Adapters
@@ -27,18 +25,13 @@ namespace eDoxa.Cashier.Application.Adapters
             _transaction = transaction ?? throw new ArgumentNullException(nameof(transaction));
         }
 
-        public InvoiceItemCreateOptions InvoiceItemCreateOptions
-        {
-            get
+        public InvoiceItemCreateOptions InvoiceItemCreateOptions =>
+            new InvoiceItemCreateOptions
             {
-                return new InvoiceItemCreateOptions
-                {
-                    CustomerId = _transaction.CustomerId.ToString(),
-                    Description = _transaction.Description,
-                    Amount = _transaction.Price.AsCents(),
-                    Currency = Currency
-                };
-            }
-        }
+                CustomerId = _transaction.CustomerId.ToString(),
+                Description = _transaction.Description,
+                Amount = _transaction.Price.AsCents(),
+                Currency = Currency
+            };
     }
 }

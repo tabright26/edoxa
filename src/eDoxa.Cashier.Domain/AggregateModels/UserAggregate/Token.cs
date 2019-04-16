@@ -1,11 +1,11 @@
 ﻿// Filename: Token.cs
 // Date Created: 2019-04-14
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
@@ -20,14 +20,6 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
         internal static readonly Token FiveHundredThousand = FromDecimal(500000);
         internal static readonly Token OneMillion = FromDecimal(1000000);
         internal static readonly Token FiveMillions = FromDecimal(5000000);
-
-        public override string Type
-        {
-            get
-            {
-                return nameof(Token).ToLower();
-            }
-        }
 
         public override string ToString()
         {

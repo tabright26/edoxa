@@ -1,23 +1,22 @@
 ﻿// Filename: Currency.cs
 // Date Created: 2019-04-14
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 {
     public abstract partial class Currency<TCurrency> : BaseObject
-    where TCurrency : Currency<TCurrency>, new()
+        where TCurrency : Currency<TCurrency>, new()
     {
         public static readonly TCurrency Empty = FromDecimal(decimal.Zero);
 
@@ -25,10 +24,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 
         protected decimal Amount
         {
-            get
-            {
-                return _amount;
-            }
+            get => _amount;
             private set
             {
                 if (value < 0)
@@ -39,8 +35,6 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
                 _amount = value;
             }
         }
-
-        public abstract string Type { get; }
 
         public static bool operator ==(Currency<TCurrency> left, Currency<TCurrency> right)
         {
@@ -79,16 +73,16 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 
         public static TCurrency operator -(Currency<TCurrency> left, Currency<TCurrency> right)
         {
-            return left < right ?
-                throw new InvalidOperationException("The currency difference can not be less than zero.") :
-                FromDecimal(left.Amount - right.Amount);
+            return left < right
+                ? throw new InvalidOperationException("The currency difference can not be less than zero.")
+                : FromDecimal(left.Amount - right.Amount);
         }
 
         public static TCurrency operator *(Currency<TCurrency> currency, int multiplier)
         {
-            return multiplier < 1 ?
-                throw new InvalidOperationException("The currency multiplier can not be less than one.") :
-                FromDecimal(currency.Amount * multiplier);
+            return multiplier < 1
+                ? throw new InvalidOperationException("The currency multiplier can not be less than one.")
+                : FromDecimal(currency.Amount * multiplier);
         }
 
         public static TCurrency FromDecimal(decimal amount)

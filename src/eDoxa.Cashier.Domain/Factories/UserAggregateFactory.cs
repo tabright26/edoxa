@@ -1,36 +1,28 @@
 ﻿// Filename: UserAggregateFactory.cs
-// Date Created: 2019-04-09
+// Date Created: 2019-04-14
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
-
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Domain.Factories;
-
 using Stripe;
-
 using Token = eDoxa.Cashier.Domain.AggregateModels.UserAggregate.Token;
 
 namespace eDoxa.Cashier.Domain.Factories
 {
     public sealed partial class UserAggregateFactory : AggregateFactory
     {
-        private static readonly Lazy<UserAggregateFactory> _lazy = new Lazy<UserAggregateFactory>(() => new UserAggregateFactory());
+        private static readonly Lazy<UserAggregateFactory> _lazy =
+            new Lazy<UserAggregateFactory>(() => new UserAggregateFactory());
 
-        public static UserAggregateFactory Instance
-        {
-            get
-            {
-                return _lazy.Value;
-            }
-        }
+        public static UserAggregateFactory Instance => _lazy.Value;
     }
 
     public sealed partial class UserAggregateFactory

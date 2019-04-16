@@ -1,15 +1,14 @@
 ﻿// Filename: User.cs
 // Date Created: 2019-04-14
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
-
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate.DomainEvents;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
@@ -19,10 +18,10 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 {
     public class User : Entity<UserId>, IAggregateRoot
     {
-        private CustomerId _customerId;
         private Account _account;
+        private CustomerId _customerId;
 
-        public User(UserId userId, CustomerId customerId) : this()
+        private User(UserId userId, CustomerId customerId) : this()
         {
             Id = userId ?? throw new ArgumentNullException(nameof(userId));
             _customerId = customerId ?? throw new ArgumentNullException(nameof(customerId));
@@ -33,21 +32,9 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
             _account = new Account(this);
         }
 
-        public CustomerId CustomerId
-        {
-            get
-            {
-                return _customerId;
-            }
-        }
+        public CustomerId CustomerId => _customerId;
 
-        public Account Account
-        {
-            get
-            {
-                return _account;
-            }
-        }
+        public Account Account => _account;
 
         public static User Create(UserId userId, CustomerId customerId)
         {
@@ -65,17 +52,23 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 
         public Money AddFunds(MoneyBundle bundle)
         {
-            return Account.AddFunds(bundle.Amount);
+            Account.AddFunds(bundle.Amount);
+
+            return Account.Funds.Balance;
         }
 
         public Money Withdrawal(Money amount)
         {
-            return Account.Withdrawal(amount);
+            Account.Withdrawal(amount);
+
+            return Account.Funds.Balance;
         }
 
         public Token BuyTokens(TokenBundle bundle)
         {
-            return Account.BuyTokens(bundle.Amount);
+            Account.BuyTokens(bundle.Amount);
+
+            return Account.Tokens.Balance;
         }
     }
 }
