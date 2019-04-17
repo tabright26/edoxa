@@ -11,7 +11,7 @@ services:
     image: rabbitmq:latest
 
   edoxa.identity:
-    image: $DOCKER_REGISTRY/identity:$DOCKER_TAG
+    image: $ACR_REGISTRY/identity:$ACR_TAG
     build:
       context: .
       dockerfile: src/eDoxa.Identity/Dockerfile
@@ -21,7 +21,7 @@ services:
       - edoxa.rabbitmq.broker 
 
   edoxa.challenges.api:
-    image: $DOCKER_REGISTRY/challenges.api:$DOCKER_TAG
+    image: $ACR_REGISTRY/challenges.api:$ACR_TAG
     build:
       context: .
       dockerfile: src/eDoxa.Challenges.Api/Dockerfile
@@ -31,7 +31,7 @@ services:
       - edoxa.identity
 
   edoxa.cashier.api:
-    image: $DOCKER_REGISTRY/cashier.api:$DOCKER_TAG
+    image: $ACR_REGISTRY/cashier.api:$ACR_TAG
     build:
       context: .
       dockerfile: src/eDoxa.Cashier.Api/Dockerfile
@@ -41,7 +41,7 @@ services:
       - edoxa.identity
 
   edoxa.notifications.api:
-    image: $DOCKER_REGISTRY/notifications.api:$DOCKER_TAG
+    image: $ACR_REGISTRY/notifications.api:$ACR_TAG
     build:
       context: .
       dockerfile: src/eDoxa.Notifications.Api/Dockerfile
@@ -51,7 +51,7 @@ services:
       - edoxa.identity
 
   edoxa.challenges.backgroundtasks:
-    image: $DOCKER_REGISTRY/challenges.backgroundtasks:$DOCKER_TAG
+    image: $ACR_REGISTRY/challenges.backgroundtasks:$ACR_TAG
     build:
       context: .
       dockerfile: src/eDoxa.Challenges.BackgroundTasks/Dockerfile
@@ -61,13 +61,13 @@ services:
       - edoxa.challenges.api
 
   #edoxa.web.spa:
-  #  image: $DOCKER_REGISTRY/web.spa:$DOCKER_TAG
+  #  image: $ACR_REGISTRY/web.spa:$ACR_TAG
   #  build:
   #    context: .
   #    dockerfile: src/eDoxa.Web.Spa/Dockerfile
 
   edoxa.web.status:
-    image: $DOCKER_REGISTRY/web.status:$DOCKER_TAG
+    image: $ACR_REGISTRY/web.status:$ACR_TAG
     build:
       context: .
       dockerfile: src/eDoxa.Web.Status/Dockerfile
