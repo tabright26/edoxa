@@ -23,6 +23,6 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 
         protected Money Price { get; }
 
-        public abstract Transaction CreateTransaction(CustomerId customerId);
+        public abstract Transaction CreateTransaction(User user);
     }
 }

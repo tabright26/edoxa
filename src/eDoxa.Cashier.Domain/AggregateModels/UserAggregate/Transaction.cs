@@ -8,23 +8,38 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Seedwork.Domain.Aggregate;
+
 namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 {
-    public sealed class Transaction
+    public class Transaction : Entity<TransactionId>
     {
         public const decimal TaxPercent = 15M;
 
-        public Transaction(CustomerId customerId, string description, Money price)
+        private TransactionDescription _description;
+        private Money _price;
+        private TransactionType _type;
+        private User _user;
+
+        protected Transaction(User user, Money price, TransactionDescription description, TransactionType type) : this()
         {
-            CustomerId = customerId;
-            Description = description;
-            Price = price;
+            _user = user;
+            _description = description;
+            _price = price;
+            _type = type;
         }
 
-        public CustomerId CustomerId { get; }
+        private Transaction()
+        {
+            // Required by EF Core.
+        }
 
-        public string Description { get; }
+        public User User => _user;
 
-        public Money Price { get; }
+        public Money Price => _price;
+
+        public TransactionDescription Description => _description;
+
+        public TransactionType Type => _type;
     }
 }

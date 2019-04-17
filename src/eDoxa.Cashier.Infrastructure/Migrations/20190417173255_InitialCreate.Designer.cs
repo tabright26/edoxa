@@ -10,7 +10,7 @@ using eDoxa.Cashier.Infrastructure;
 namespace eDoxa.Cashier.Infrastructure.Migrations
 {
     [DbContext(typeof(CashierDbContext))]
-    [Migration("20190409053826_InitialCreate")]
+    [Migration("20190417173255_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -18,7 +18,7 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("edoxa")
-                .HasAnnotation("ProductVersion", "2.2.3-servicing-35854")
+                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -34,6 +34,26 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Accounts");
+                });
+
+            modelBuilder.Entity("eDoxa.Cashier.Domain.AggregateModels.UserAggregate.Transaction", b =>
+                {
+                    b.Property<Guid>("Id");
+
+                    b.Property<string>("Description")
+                        .IsRequired();
+
+                    b.Property<decimal>("Price");
+
+                    b.Property<int>("Type");
+
+                    b.Property<Guid>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Transactions");
                 });
 
             modelBuilder.Entity("eDoxa.Cashier.Domain.AggregateModels.UserAggregate.User", b =>
@@ -122,6 +142,14 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                                 .HasForeignKey("eDoxa.Cashier.Domain.AggregateModels.UserAggregate.Account<eDoxa.Cashier.Domain.AggregateModels.UserAggregate.Token>", "AccountId")
                                 .OnDelete(DeleteBehavior.Cascade);
                         });
+                });
+
+            modelBuilder.Entity("eDoxa.Cashier.Domain.AggregateModels.UserAggregate.Transaction", b =>
+                {
+                    b.HasOne("eDoxa.Cashier.Domain.AggregateModels.UserAggregate.User", "User")
+                        .WithMany("Transactions")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

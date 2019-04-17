@@ -1,18 +1,17 @@
 ﻿// Filename: AccountService.cs
-// Date Created: 2019-04-15
+// Date Created: 2019-04-14
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Application.Adapters;
-using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Stripe.Validators;
@@ -24,27 +23,27 @@ namespace eDoxa.Cashier.Application.Services
     public sealed class AccountService : IAccountService
     {
         private readonly CustomerService _customerService;
-        private readonly InvoiceService _invoiceService;
         private readonly InvoiceItemService _invoiceItemService;
+        private readonly InvoiceService _invoiceService;
 
         public AccountService(CustomerService customerService, InvoiceService invoiceService, InvoiceItemService invoiceItemService)
         {
-            _invoiceService = invoiceService;
-            _invoiceItemService = invoiceItemService;
             _customerService = customerService;
             _customerService.ExpandDefaultSource = true;
+            _invoiceService = invoiceService;
+            _invoiceItemService = invoiceItemService;
         }
 
-        public async Task TransactionAsync<TCurrency>(CustomerId customerId, CurrencyBundle<TCurrency> bundle, CancellationToken cancellationToken = default)
+        public async Task TransactionAsync<TCurrency>(User user, CurrencyBundle<TCurrency> bundle, CancellationToken cancellationToken = default)
         where TCurrency : Currency<TCurrency>, new()
         {
-            var customer = await _customerService.GetAsync(customerId.ToString(), cancellationToken: cancellationToken);
+            var customer = await _customerService.GetAsync(user.CustomerId.ToString(), cancellationToken: cancellationToken);
 
             var validator = new CustomerDefaultSourceValidator();
 
             validator.Validate(customer);
 
-            var transaction = bundle.CreateTransaction(customerId);
+            var transaction = bundle.CreateTransaction(user);
 
             await _invoiceItemService.CreateAsync(InvoiceItemCreateOptions(transaction), cancellationToken: cancellationToken);
 

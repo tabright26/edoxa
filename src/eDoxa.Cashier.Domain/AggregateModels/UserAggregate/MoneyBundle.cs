@@ -16,9 +16,9 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
         {
         }
 
-        public override Transaction CreateTransaction(CustomerId customerId)
+        public override Transaction CreateTransaction(User user)
         {
-            return new Transaction(customerId, $"eDoxa Funds ({Amount})", Price);
+            return new ExternalTransaction(user, Price, TransactionDescription.FundsAdded);
         }
     }
 }

@@ -8,6 +8,10 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate.DomainEvents;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
@@ -19,6 +23,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
     {
         private Account _account;
         private CustomerId _customerId;
+        private Collection<Transaction> _transactions;
 
         private User(UserId userId, CustomerId customerId) : this()
         {
@@ -29,11 +34,14 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
         private User()
         {
             _account = new Account(this);
+            _transactions = new Collection<Transaction>();
         }
 
         public CustomerId CustomerId => _customerId;
 
         public Account Account => _account;
+
+        public IReadOnlyCollection<Transaction> Transactions => _transactions;
 
         public static User Create(UserId userId, CustomerId customerId)
         {
@@ -68,6 +76,11 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
             Account.BuyTokens(bundle.Amount);
 
             return Account.Tokens.Balance;
+        }
+
+        public void AddExternalTransaction()
+        {
+            throw new NotImplementedException();
         }
     }
 }

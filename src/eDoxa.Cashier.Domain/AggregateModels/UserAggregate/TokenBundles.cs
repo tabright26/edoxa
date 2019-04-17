@@ -20,8 +20,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
             {
                 [TokenBundleType.FiftyThousand] = new TokenBundle(Money.Five, Token.FiftyThousand),
                 [TokenBundleType.OneHundredThousand] = new TokenBundle(Money.Ten, Token.OneHundredThousand),
-                [TokenBundleType.TwoHundredFiftyThousand] =
-                    new TokenBundle(Money.TwentyFive, Token.TwoHundredFiftyThousand),
+                [TokenBundleType.TwoHundredFiftyThousand] = new TokenBundle(Money.TwentyFive, Token.TwoHundredFiftyThousand),
                 [TokenBundleType.FiveHundredThousand] = new TokenBundle(Money.Fifty, Token.FiveHundredThousand),
                 [TokenBundleType.OneMillion] = new TokenBundle(Money.OneHundred, Token.OneMillion),
                 [TokenBundleType.FiveMillions] = new TokenBundle(Money.FiveHundred, Token.FiveMillions)

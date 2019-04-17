@@ -40,7 +40,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
 
             var mockAccountService = new Mock<IAccountService>();
 
-            mockAccountService.Setup(service => service.TransactionAsync(It.IsAny<CustomerId>(), It.IsAny<MoneyBundle>(), It.IsAny<CancellationToken>()))
+            mockAccountService.Setup(service => service.TransactionAsync(It.IsAny<User>(), It.IsAny<MoneyBundle>(), It.IsAny<CancellationToken>()))
                               .Returns(Task.CompletedTask)
                               .Verifiable();
 
@@ -59,7 +59,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
 
             // Assert
             mockAccountService.Verify(
-                service => service.TransactionAsync(It.IsAny<CustomerId>(), It.IsAny<MoneyBundle>(), It.IsAny<CancellationToken>()),
+                service => service.TransactionAsync(It.IsAny<User>(), It.IsAny<MoneyBundle>(), It.IsAny<CancellationToken>()),
                 Times.Once
             );
 

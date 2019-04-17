@@ -38,7 +38,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 
             var bundle = Bundles[command.BundleType];
 
-            await _accountService.TransactionAsync(user.CustomerId, bundle, cancellationToken);
+            await _accountService.TransactionAsync(user, bundle, cancellationToken);
 
             var tokenBalance = user.BuyTokens(bundle);
 

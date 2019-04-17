@@ -23,21 +23,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
     {
         public static readonly TCurrency Empty = FromDecimal(decimal.Zero);
 
-        private decimal _amount;
-
-        protected decimal Amount
-        {
-            get => _amount;
-            private set
-            {
-                if (value < 0)
-                {
-                    throw new InvalidOperationException("The currency can not be below zero.");
-                }
-
-                _amount = value;
-            }
-        }
+        protected virtual decimal Amount { get; set; }
 
         public static bool operator ==(Currency<TCurrency> left, Currency<TCurrency> right)
         {
