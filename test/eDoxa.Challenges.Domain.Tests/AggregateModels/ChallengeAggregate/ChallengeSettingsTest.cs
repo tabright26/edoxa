@@ -24,7 +24,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
     [TestClass]
     public sealed class ChallengeSettingsTest
     {
-        private static readonly ChallengeAggregateFactory _factory = ChallengeAggregateFactory.Instance;
+        private static readonly ChallengeAggregateFactory ChallengeAggregateFactory = ChallengeAggregateFactory.Instance;
 
         [TestMethod]
         public void Constructor_Initialize_ShouldNotThrowException()
@@ -37,7 +37,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             const float serviceChargeRatio = ChallengeSettings.DefaultServiceChargeRatio;
 
             // Act
-            var settings = _factory.CreateChallengeSettings();
+            var settings = ChallengeAggregateFactory.CreateChallengeSettings();
 
             // Assert
             settings.BestOf.Should().Be(bestOf);
@@ -51,7 +51,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void Type_InvalidEnumArgument_ShouldThrowInvalidEnumArgumentException()
         {
             // Arrange
-            var settings = _factory.CreateChallengeSettings();
+            var settings = ChallengeAggregateFactory.CreateChallengeSettings();
 
             // Act
             var action = new Action(() => settings.SetProperty(nameof(ChallengeSettings.Type), (ChallengeType) 1000));
@@ -66,7 +66,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void Type_InvalidArgument_ShouldThrowArgumentException(ChallengeType type)
         {
             // Arrange
-            var settings = _factory.CreateChallengeSettings();
+            var settings = ChallengeAggregateFactory.CreateChallengeSettings();
 
             // Act
             var action = new Action(() => settings.SetProperty(nameof(ChallengeSettings.Type), type));
@@ -82,7 +82,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void Entries_ArgumentOutOfRange_ShouldThrowArgumentOutOfRangeException(int entries)
         {
             // Arrange
-            var settings = _factory.CreateChallengeSettings();
+            var settings = ChallengeAggregateFactory.CreateChallengeSettings();
 
             // Act
             var action = new Action(() => settings.SetProperty(nameof(ChallengeSettings.Entries), entries));
@@ -98,7 +98,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void EntryFee_ArgumentOutOfRange_ShouldThrowArgumentOutOfRangeException(double entryFee)
         {
             // Arrange
-            var settings = _factory.CreateChallengeSettings();
+            var settings = ChallengeAggregateFactory.CreateChallengeSettings();
 
             // Act
             var action = new Action(() => settings.SetProperty(nameof(ChallengeSettings.EntryFee), (decimal) entryFee));
@@ -114,7 +114,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void PayoutRatio_ArgumentOutOfRange_ShouldThrowArgumentOutOfRangeException(float payoutRatio)
         {
             // Arrange
-            var settings = _factory.CreateChallengeSettings();
+            var settings = ChallengeAggregateFactory.CreateChallengeSettings();
 
             // Act
             var action = new Action(() => settings.SetProperty(nameof(ChallengeSettings.PayoutRatio), payoutRatio));
@@ -130,7 +130,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void ServiceCharge_ArgumentOutOfRange_ShouldThrowArgumentOutOfRangeException(float serviceChargeRatio)
         {
             // Arrange
-            var settings = _factory.CreateChallengeSettings();
+            var settings = ChallengeAggregateFactory.CreateChallengeSettings();
 
             // Act
             var action = new Action(() => settings.SetProperty(nameof(ChallengeSettings.ServiceChargeRatio), serviceChargeRatio));
@@ -145,7 +145,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void BestOf_ArgumentOutOfRange_ShouldThrowArgumentOutOfRangeException(int bestOf)
         {
             // Arrange
-            var settings = _factory.CreateChallengeSettings();
+            var settings = ChallengeAggregateFactory.CreateChallengeSettings();
 
             // Act
             var action = new Action(() => settings.SetProperty(nameof(ChallengeSettings.BestOf), bestOf));
@@ -161,7 +161,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         {
             // Arrange
             var helper = new ChallengeHelper();
-            var settings = _factory.CreateChallengeSettings(entries: entries, payoutRatio: payoutRatio);
+            var settings = ChallengeAggregateFactory.CreateChallengeSettings(entries: entries, payoutRatio: payoutRatio);
             
             // Act
             var payoutEntries = helper.PayoutEntries(entries, payoutRatio);
@@ -177,7 +177,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         {
             // Arrange
             var helper = new ChallengeHelper();
-            var settings = _factory.CreateChallengeSettings(entries: entries, entryFee: (decimal) entryFee, serviceChargeRatio: serviceChargeRatio);
+            var settings = ChallengeAggregateFactory.CreateChallengeSettings(entries: entries, entryFee: (decimal) entryFee, serviceChargeRatio: serviceChargeRatio);
 
             // Act
             var prizePool = helper.PrizePool(entries, (decimal) entryFee, serviceChargeRatio);

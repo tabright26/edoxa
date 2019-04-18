@@ -29,9 +29,9 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    Time = table.Column<DateTime>(nullable: false),
-                    Type = table.Column<int>(nullable: false),
+                    Id = table.Column<Guid>(),
+                    Time = table.Column<DateTime>(),
+                    Type = table.Column<int>(),
                     Method = table.Column<string>(nullable: true),
                     Url = table.Column<string>(nullable: true),
                     LocalIpAddress = table.Column<string>(nullable: true),
@@ -47,8 +47,8 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                 schema: "edoxa",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    CustomerId = table.Column<string>(nullable: false)
+                    Id = table.Column<Guid>(),
+                    CustomerId = table.Column<string>()
                 },
                 constraints: table => { table.PrimaryKey("PK_Users", x => x.Id); });
 
@@ -57,8 +57,8 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                 schema: "edoxa",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    UserId = table.Column<Guid>(nullable: false)
+                    Id = table.Column<Guid>(),
+                    UserId = table.Column<Guid>()
                 },
                 constraints: table =>
                 {
@@ -78,11 +78,11 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                 schema: "edoxa",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    UserId = table.Column<Guid>(nullable: false),
-                    Price = table.Column<decimal>(nullable: false),
-                    Description = table.Column<string>(nullable: false),
-                    Type = table.Column<int>(nullable: false)
+                    Id = table.Column<Guid>(),
+                    UserId = table.Column<Guid>(),
+                    Price = table.Column<decimal>(),
+                    Description = table.Column<string>(),
+                    Type = table.Column<int>()
                 },
                 constraints: table =>
                 {
@@ -102,9 +102,9 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                 schema: "edoxa",
                 columns: table => new
                 {
-                    AccountId = table.Column<Guid>(nullable: false),
-                    Balance = table.Column<decimal>(nullable: false),
-                    Pending = table.Column<decimal>(nullable: false)
+                    AccountId = table.Column<Guid>(),
+                    Balance = table.Column<decimal>(),
+                    Pending = table.Column<decimal>()
                 },
                 constraints: table =>
                 {
@@ -124,9 +124,9 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                 schema: "edoxa",
                 columns: table => new
                 {
-                    AccountId = table.Column<Guid>(nullable: false),
-                    Balance = table.Column<decimal>(nullable: false),
-                    Pending = table.Column<decimal>(nullable: false)
+                    AccountId = table.Column<Guid>(),
+                    Balance = table.Column<decimal>(),
+                    Pending = table.Column<decimal>()
                 },
                 constraints: table =>
                 {

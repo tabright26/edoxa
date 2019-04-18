@@ -71,17 +71,6 @@ namespace eDoxa.Identity.Application.Services
             await this.UpdateAsync(user);
         }
 
-        public async Task ChangeTagAsync(Guid userId, string username)
-        {
-            this.ThrowIfDisposed();
-
-            var user = await this.FindUserAsync(userId);
-
-            user.ChangeTag(username);
-
-            await this.UpdateAsync(user);
-        }
-
         public async Task<bool> UserExistsAsync(Guid userId)
         {
             this.ThrowIfDisposed();
@@ -140,11 +129,11 @@ namespace eDoxa.Identity.Application.Services
             return user.UserName;
         }
 
-        public async Task<string> GetNameAsync(User user)
+        public async Task<string> GetPersonalNameAsync(User user)
         {
             this.ThrowIfDisposed();
 
-            return await Task.Run(() => user.Name.ToString());
+            return await Task.Run(() => user.PersonalName.ToString());
         }
 
         public async Task<string> GetBirthDateAsync(User user)
@@ -152,13 +141,6 @@ namespace eDoxa.Identity.Application.Services
             this.ThrowIfDisposed();
 
             return await Task.Run(() => user.BirthDate.ToString());
-        }
-
-        public async Task<string> GetTagAsync(User user)
-        {
-            this.ThrowIfDisposed();
-
-            return await Task.Run(() => user.Tag.ToString());
         }
     }
 }

@@ -19,13 +19,13 @@ namespace eDoxa.Notifications.Domain.Tests.AggregateModels.UserAggregate
     [TestClass]
     public sealed class UserTest
     {
-        private static readonly UserAggregateFactory _userAggregateFactory = UserAggregateFactory.Instance;
+        private static readonly UserAggregateFactory UserAggregateFactory = UserAggregateFactory.Instance;
 
         [TestMethod]
         public void Constructor_User_ShouldNotBeNull()
         {
             // Act
-            var user = _userAggregateFactory.CreateUser();
+            var user = UserAggregateFactory.CreateUser();
 
             // Assert
             user.Should().NotBeNull();
@@ -35,7 +35,7 @@ namespace eDoxa.Notifications.Domain.Tests.AggregateModels.UserAggregate
         public void Notify_Notifications_ShouldOnlyContainNotification()
         {
             // Arrange
-            var user = _userAggregateFactory.CreateUser();
+            var user = UserAggregateFactory.CreateUser();
 
             // Act
             var notification = user.Notify(

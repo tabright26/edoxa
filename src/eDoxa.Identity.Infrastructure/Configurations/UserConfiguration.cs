@@ -1,16 +1,19 @@
 ﻿// Filename: UserConfiguration.cs
-// Date Created: 2019-03-04
+// Date Created: 2019-04-14
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
+
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
-using eDoxa.Seedwork.Domain.Common.ValueObjects;
+
 using JetBrains.Annotations;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -29,43 +32,26 @@ namespace eDoxa.Identity.Infrastructure.Configurations
             builder.Property(user => user.StatusChanged).IsRequired();
 
             builder.OwnsOne(
-                user => user.Name,
-                user =>
+                user => user.PersonalName,
+                userPersonalName =>
                 {
-                    user.Property(name => name.FirstName).HasColumnName(nameof(Name.FirstName)).HasMaxLength(35).IsRequired();
-                    user.Property(name => name.LastName).HasColumnName(nameof(Name.LastName)).HasMaxLength(35).IsRequired();
+                    userPersonalName.Property(personalName => personalName.FirstName).HasColumnName(nameof(PersonalName.FirstName)).IsRequired();
+
+                    userPersonalName.Property(personalName => personalName.LastName).HasColumnName(nameof(PersonalName.LastName)).IsRequired();
                 }
             );
 
             builder.OwnsOne(
                 user => user.BirthDate,
-                user =>
+                userBirthDate =>
                 {
-                    user.Property("_date").HasColumnName(nameof(BirthDate)).IsRequired(false);
-                    user.Ignore(birthDate => birthDate.Year);
-                    user.Ignore(birthDate => birthDate.Month);
-                    user.Ignore(birthDate => birthDate.Day);
-                }
-            );
+                    userBirthDate.Property<DateTime>("Date").HasField("_date").HasColumnName(nameof(BirthDate)).IsRequired();
 
-            builder.OwnsOne(
-                user => user.Tag,
-                user =>
-                {
-                    user.Property(userTag => userTag.Name).HasColumnName($"{nameof(UserTag)}_{nameof(UserTag.Name)}").HasMaxLength(256).IsRequired();
+                    userBirthDate.Ignore(birthDate => birthDate.Year);
 
-                    user.Property(userTag => userTag.ReferenceNumber)
-                        .HasColumnName($"{nameof(UserTag)}_{nameof(UserTag.ReferenceNumber)}")
-                        .HasMaxLength(4)
-                        .IsRequired();
+                    userBirthDate.Ignore(birthDate => birthDate.Month);
 
-                    user.HasIndex(
-                            userTag => new
-                            {
-                                UserTag_Name = userTag.Name, UserTag_ReferenceNumber = userTag.ReferenceNumber
-                            }
-                        )
-                        .IsUnique();
+                    userBirthDate.Ignore(birthDate => birthDate.Day);
                 }
             );
         }

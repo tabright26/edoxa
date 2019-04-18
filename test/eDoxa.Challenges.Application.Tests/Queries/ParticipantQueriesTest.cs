@@ -18,7 +18,7 @@ namespace eDoxa.Challenges.Application.Tests.Queries
     [TestClass]
     public sealed class ParticipantQueriesTest
     {        
-        private static readonly ChallengeAggregateFactory _challengeAggregateFactory = ChallengeAggregateFactory.Instance;
-        private static readonly ChallengesMapperFactory _mapperFactory = ChallengesMapperFactory.Instance;
+        private static readonly ChallengeAggregateFactory ChallengeAggregateFactory = ChallengeAggregateFactory.Instance;
+        private static readonly ChallengesMapperFactory ChallengesMapperFactory = ChallengesMapperFactory.Instance;
     }
 }

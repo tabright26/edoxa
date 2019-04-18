@@ -19,8 +19,6 @@ namespace eDoxa.Identity.Application.Services
     {
         Task ChangeStatusAsync(Guid userId, UserStatus status);
 
-        Task ChangeTagAsync(Guid userId, string username);
-
         Task<bool> UserExistsAsync(Guid userId);
     }
 }

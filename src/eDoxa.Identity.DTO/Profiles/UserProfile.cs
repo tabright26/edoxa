@@ -1,11 +1,11 @@
 ﻿// Filename: UserProfile.cs
-// Date Created: 2019-04-03
+// Date Created: 2019-04-14
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using AutoMapper;
@@ -19,8 +19,10 @@ namespace eDoxa.Identity.DTO.Profiles
         public UserProfile()
         {
             this.CreateMap<User, UserDTO>()
-                .ForMember(user => user.Username, configuration => configuration.MapFrom(user => user.Tag.Name))
-                .ForMember(user => user.Tag, configuration => configuration.MapFrom(user => user.Tag.ReferenceNumber));
+                .ForMember(user => user.Id, config => config.MapFrom(user => user.Id))
+                .ForMember(user => user.CurrentStatus, config => config.MapFrom(user => user.CurrentStatus))
+                .ForMember(user => user.PreviousStatus, config => config.MapFrom(user => user.PreviousStatus))
+                .ForMember(user => user.StatusChanged, config => config.MapFrom(user => user.StatusChanged));
         }
     }
 }

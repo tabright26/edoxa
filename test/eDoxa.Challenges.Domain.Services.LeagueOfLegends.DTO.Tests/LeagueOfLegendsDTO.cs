@@ -18,13 +18,13 @@ namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.DTO.Tests
 {
     public static class LeagueOfLegendsDTO
     {
-        private static readonly string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+        private static readonly string BaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
 
         public static string Matches
         {
             get
             {
-                return File.ReadAllText(baseDirectory + @"\Matches.json");
+                return File.ReadAllText(BaseDirectory + @"\Matches.json");
             }
         }
 
@@ -32,7 +32,7 @@ namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.DTO.Tests
         {
             get
             {
-                return File.ReadAllText(baseDirectory + @"\MatchReferences.json");
+                return File.ReadAllText(BaseDirectory + @"\MatchReferences.json");
             }
         }
 

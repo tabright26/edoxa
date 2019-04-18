@@ -61,13 +61,11 @@ namespace eDoxa.Identity.Areas.Identity.Pages.Account.Manage
                 return this.NotFound($"Unable to load user with ID '{_userService.GetUserId(User)}'.");
             }
 
-            var name = await _userService.GetNameAsync(user);
+            var name = await _userService.GetPersonalNameAsync(user);
             var birthDate = await _userService.GetBirthDateAsync(user);
-            var gamertag = await _userService.GetTagAsync(user);
 
             Name = name;
             BirthDate = birthDate;
-            Gamertag = gamertag;
 
             var email = await _userService.GetEmailAsync(user);
             var phoneNumber = await _userService.GetPhoneNumberAsync(user);

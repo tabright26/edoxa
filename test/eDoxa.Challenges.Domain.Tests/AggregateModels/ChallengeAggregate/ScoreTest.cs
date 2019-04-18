@@ -20,7 +20,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
     [TestClass]
     public sealed class ScoreTest
     {
-        private static readonly ChallengeAggregateFactory _factory = ChallengeAggregateFactory.Instance;
+        private static readonly ChallengeAggregateFactory ChallengeAggregateFactory = ChallengeAggregateFactory.Instance;
 
         [DataRow(68.55D)]
         [DataRow(0.1D)]
@@ -46,7 +46,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void FromStat_WithValidArguments_ShouldBeResult(string name, double value, float weighting, double result)
         {
             // Arrange
-            var stat = _factory.CreateStat(name, value, weighting);
+            var stat = ChallengeAggregateFactory.CreateStat(name, value, weighting);
 
             // Act
             var score = Score.FromStat(stat);

@@ -10,15 +10,15 @@ using eDoxa.Identity.Infrastructure;
 namespace eDoxa.Identity.Infrastructure.Migrations
 {
     [DbContext(typeof(IdentityDbContext))]
-    [Migration("20190401043734_CreateIdentitySchema")]
-    partial class CreateIdentitySchema
+    [Migration("20190417233918_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("edoxa")
-                .HasAnnotation("ProductVersion", "2.2.3-servicing-35854")
+                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -196,37 +196,11 @@ namespace eDoxa.Identity.Infrastructure.Migrations
 
             modelBuilder.Entity("eDoxa.Identity.Domain.AggregateModels.UserAggregate.User", b =>
                 {
-                    b.OwnsOne("eDoxa.Identity.Domain.AggregateModels.UserAggregate.UserTag", "Tag", b1 =>
+                    b.OwnsOne("eDoxa.Identity.Domain.AggregateModels.UserAggregate.BirthDate", "BirthDate", b1 =>
                         {
                             b1.Property<Guid>("UserId");
 
-                            b1.Property<string>("Name")
-                                .IsRequired()
-                                .HasColumnName("UserTag_Name")
-                                .HasMaxLength(256);
-
-                            b1.Property<short>("ReferenceNumber")
-                                .HasColumnName("UserTag_ReferenceNumber")
-                                .HasMaxLength(4);
-
-                            b1.HasKey("UserId");
-
-                            b1.HasIndex("Name", "ReferenceNumber")
-                                .IsUnique();
-
-                            b1.ToTable("Users","edoxa");
-
-                            b1.HasOne("eDoxa.Identity.Domain.AggregateModels.UserAggregate.User")
-                                .WithOne("Tag")
-                                .HasForeignKey("eDoxa.Identity.Domain.AggregateModels.UserAggregate.UserTag", "UserId")
-                                .OnDelete(DeleteBehavior.Cascade);
-                        });
-
-                    b.OwnsOne("eDoxa.Seedwork.Domain.Common.ValueObjects.BirthDate", "BirthDate", b1 =>
-                        {
-                            b1.Property<Guid>("UserId");
-
-                            b1.Property<DateTime?>("_date")
+                            b1.Property<DateTime>("Date")
                                 .HasColumnName("BirthDate");
 
                             b1.HasKey("UserId");
@@ -235,31 +209,29 @@ namespace eDoxa.Identity.Infrastructure.Migrations
 
                             b1.HasOne("eDoxa.Identity.Domain.AggregateModels.UserAggregate.User")
                                 .WithOne("BirthDate")
-                                .HasForeignKey("eDoxa.Seedwork.Domain.Common.ValueObjects.BirthDate", "UserId")
+                                .HasForeignKey("eDoxa.Identity.Domain.AggregateModels.UserAggregate.BirthDate", "UserId")
                                 .OnDelete(DeleteBehavior.Cascade);
                         });
 
-                    b.OwnsOne("eDoxa.Seedwork.Domain.Common.ValueObjects.Name", "Name", b1 =>
+                    b.OwnsOne("eDoxa.Identity.Domain.AggregateModels.UserAggregate.PersonalName", "PersonalName", b1 =>
                         {
                             b1.Property<Guid>("UserId");
 
                             b1.Property<string>("FirstName")
                                 .IsRequired()
-                                .HasColumnName("FirstName")
-                                .HasMaxLength(35);
+                                .HasColumnName("FirstName");
 
                             b1.Property<string>("LastName")
                                 .IsRequired()
-                                .HasColumnName("LastName")
-                                .HasMaxLength(35);
+                                .HasColumnName("LastName");
 
                             b1.HasKey("UserId");
 
                             b1.ToTable("Users","edoxa");
 
                             b1.HasOne("eDoxa.Identity.Domain.AggregateModels.UserAggregate.User")
-                                .WithOne("Name")
-                                .HasForeignKey("eDoxa.Seedwork.Domain.Common.ValueObjects.Name", "UserId")
+                                .WithOne("PersonalName")
+                                .HasForeignKey("eDoxa.Identity.Domain.AggregateModels.UserAggregate.PersonalName", "UserId")
                                 .OnDelete(DeleteBehavior.Cascade);
                         });
                 });

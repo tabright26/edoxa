@@ -21,13 +21,13 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
     [TestClass]
     public sealed class ChallengePrizeBreakdownTest
     {
-        private static readonly ChallengeAggregateFactory _factory = ChallengeAggregateFactory.Instance;
+        private static readonly ChallengeAggregateFactory ChallengeAggregateFactory = ChallengeAggregateFactory.Instance;
 
         [TestMethod]
         public void PrizeBreakdown_ShouldBeAssignableToType()
         {
             // Arrange
-            var prizeBreakdown = _factory.CreateChallengePrizeBreakdown();
+            var prizeBreakdown = ChallengeAggregateFactory.CreateChallengePrizeBreakdown();
 
             // Act
             var type = typeof(Dictionary<string, decimal>);

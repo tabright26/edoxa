@@ -37,13 +37,11 @@ namespace eDoxa.Identity.Areas.Identity
         {
             var identity = await base.GenerateClaimsAsync(user);
 
-            identity.AddClaim(new Claim(JwtClaimTypes.NickName, user.Tag.ToString()));
+            identity.AddClaim(new Claim(JwtClaimTypes.Name, user.PersonalName.ToString()));
 
-            identity.AddClaim(new Claim(JwtClaimTypes.Name, user.Name.ToString()));
+            identity.AddClaim(new Claim(JwtClaimTypes.GivenName, user.PersonalName.FirstName));
 
-            identity.AddClaim(new Claim(JwtClaimTypes.GivenName, user.Name.FirstName));
-
-            identity.AddClaim(new Claim(JwtClaimTypes.FamilyName, user.Name.LastName));
+            identity.AddClaim(new Claim(JwtClaimTypes.FamilyName, user.PersonalName.LastName));
 
             identity.AddClaim(new Claim(JwtClaimTypes.BirthDate, user.BirthDate.ToString()));
 

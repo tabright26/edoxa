@@ -28,7 +28,7 @@ namespace eDoxa.Challenges.Application.Tests.Commands.Handlers
     [TestClass]
     public sealed class RegisterChallengeParticipantCommandHandlerTest
     {
-        private static readonly ChallengeAggregateFactory _factory = ChallengeAggregateFactory.Instance;
+        private static readonly ChallengeAggregateFactory ChallengeAggregateFactory = ChallengeAggregateFactory.Instance;
 
         [TestMethod]
         public async Task HandleAsync_FindChallengeAsync_ShouldBeInvokedExactlyOneTime()
@@ -42,7 +42,7 @@ namespace eDoxa.Challenges.Application.Tests.Commands.Handlers
             var mockChallengeRepository = new Mock<IChallengeRepository>();
 
             mockChallengeRepository.Setup(repository => repository.FindChallengeAsync(It.IsAny<ChallengeId>()))
-                                   .ReturnsAsync(_factory.CreateChallenge())
+                                   .ReturnsAsync(ChallengeAggregateFactory.CreateChallenge())
                                    .Verifiable();
 
             mockChallengeRepository.Setup(repository => repository.UnitOfWork.CommitAndDispatchDomainEventsAsync(It.IsAny<CancellationToken>()))

@@ -26,7 +26,7 @@ namespace eDoxa.Identity.Domain.Tests.AggregateModels.UserAggregate
         [TestInitialize]
         public void TestInitialize()
         {
-            _user = new User("francis@edoxa.gg", "Francis", "Quenneville", 1995, 5, 6, "Admin");
+            _user = new User("francis@edoxa.gg", new PersonalName("Francis", "Quenneville"), new BirthDate(1995, 5, 6), "Admin");
             _user.CurrentStatus.Should().Be(UserStatus.Unknown);
             _user.PreviousStatus.Should().Be(UserStatus.Unknown);
             _user.StatusChanged.Should().BeCloseTo(DateTime.UtcNow, 2000);

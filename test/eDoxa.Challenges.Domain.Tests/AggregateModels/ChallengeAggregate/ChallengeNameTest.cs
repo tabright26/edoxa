@@ -22,7 +22,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
     [TestClass]
     public sealed class ChallengeNameTest
     {
-        private static readonly ChallengeAggregateFactory _factory = ChallengeAggregateFactory.Instance;
+        private static readonly ChallengeAggregateFactory ChallengeAggregateFactory = ChallengeAggregateFactory.Instance;
 
         [DataRow("Challenge")]
         [DataRow("Challenge 1")]
@@ -33,7 +33,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void Value_ValidFormat_ShouldBeValue(string input)
         {
             // Act
-            var name = _factory.CreateChallengeName(input);
+            var name = ChallengeAggregateFactory.CreateChallengeName(input);
 
             // Assert
             name.ToString().Should().Be(input);
@@ -45,7 +45,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void Value_InvalidFormat_ShouldThrowFormatException(string input)
         {
             // Act
-            var action = new Action(() => _factory.CreateChallengeName(input));
+            var action = new Action(() => ChallengeAggregateFactory.CreateChallengeName(input));
 
             // Assert
             action.Should().Throw<FormatException>();
@@ -57,7 +57,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void Value_InvalidArgument_ShouldThrowArgumentException(string input)
         {
             // Act
-            var action = new Action(() => _factory.CreateChallengeName(input));
+            var action = new Action(() => ChallengeAggregateFactory.CreateChallengeName(input));
 
             // Assert
             action.Should().Throw<ArgumentException>();
@@ -67,7 +67,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void Operator_String_ShouldBeInput()
         {
             // Arrange
-            var name = _factory.CreateChallengeName();
+            var name = ChallengeAggregateFactory.CreateChallengeName();
 
             // Act
             string input = name;

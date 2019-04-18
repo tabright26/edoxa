@@ -109,63 +109,6 @@ namespace eDoxa.Identity.Api.Tests.Controllers
         }
 
         [TestMethod]
-        public async Task ChangeUserTagAsync_ShouldBeOkObjectResult()
-        {
-            // Arrange
-            _service.Setup(service => service.UserExistsAsync(It.IsAny<Guid>())).ReturnsAsync(true).Verifiable();
-
-            _service.Setup(service => service.ChangeTagAsync(It.IsAny<Guid>(), It.IsAny<string>())).Returns(Task.CompletedTask).Verifiable();
-
-            var controller = new UsersController(_logger.Object, _queries.Object, _service.Object);
-
-            // Act
-            var result = await controller.ChangeUserTagAsync(It.IsAny<Guid>(), It.IsAny<string>());
-
-            // Assert
-            result.Should().BeOfType<OkObjectResult>();
-            _logger.VerifyNoOtherCalls();
-            _service.Verify();
-        }
-
-        [TestMethod]
-        public async Task ChangeUserTagAsync_ShouldBeNotFoundObjectResult()
-        {
-            // Arrange
-            _service.Setup(service => service.UserExistsAsync(It.IsAny<Guid>())).ReturnsAsync(false).Verifiable();
-
-            var controller = new UsersController(_logger.Object, _queries.Object, _service.Object);
-
-            // Act
-            var result = await controller.ChangeUserTagAsync(It.IsAny<Guid>(), It.IsAny<string>());
-
-            // Assert
-            result.Should().BeOfType<NotFoundObjectResult>();
-            _logger.VerifyNoOtherCalls();
-            _service.Verify();
-        }
-
-        [TestMethod]
-        public async Task ChangeUserTagAsync_ShouldBeBadRequestObjectResult()
-        {
-            // Arrange
-            _service.Setup(service => service.UserExistsAsync(It.IsAny<Guid>())).ReturnsAsync(true).Verifiable();
-
-            _service.Setup(service => service.ChangeTagAsync(It.IsAny<Guid>(), It.IsAny<string>())).ThrowsAsync(new Exception()).Verifiable();
-
-            _logger.SetupLoggerWithLogLevelErrorVerifiable();
-
-            var controller = new UsersController(_logger.Object, _queries.Object, _service.Object);
-
-            // Act
-            var result = await controller.ChangeUserTagAsync(It.IsAny<Guid>(), It.IsAny<string>());
-
-            // Assert
-            result.Should().BeOfType<BadRequestObjectResult>();
-            _logger.Verify();
-            _service.Verify();
-        }
-
-        [TestMethod]
         public async Task ChangeUserStatusAsync_ShouldBeOkObjectResult()
         {
             // Arrange
@@ -180,7 +123,9 @@ namespace eDoxa.Identity.Api.Tests.Controllers
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
+
             _logger.VerifyNoOtherCalls();
+
             _service.Verify();
         }
 

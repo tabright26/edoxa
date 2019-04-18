@@ -27,13 +27,13 @@ namespace eDoxa.Challenges.Application.Tests.Queries
     [TestClass]
     public sealed class ChallengeQueriesTest
     {        
-        private static readonly ChallengeAggregateFactory _challengeAggregateFactory = ChallengeAggregateFactory.Instance;
-        private static readonly ChallengesMapperFactory _mapperFactory = ChallengesMapperFactory.Instance;
+        private static readonly ChallengeAggregateFactory ChallengeAggregateFactory = ChallengeAggregateFactory.Instance;
+        private static readonly ChallengesMapperFactory ChallengesMapperFactory = ChallengesMapperFactory.Instance;
 
         [TestMethod]
         public async Task FindChallengesAsync_ShouldBeMapped()
         {
-            var challenge = _challengeAggregateFactory.CreateRandomChallenge();
+            var challenge = ChallengeAggregateFactory.CreateRandomChallenge();
 
             using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
             {
@@ -49,7 +49,7 @@ namespace eDoxa.Challenges.Application.Tests.Queries
                 using (var context = factory.CreateContext())
                 {
                     // Arrange
-                    var queries = new ChallengeQueries(context, _mapperFactory.CreateMapper());
+                    var queries = new ChallengeQueries(context, ChallengesMapperFactory.CreateMapper());
 
                     // Act
                     var challengeDTO = await queries.FindChallengesAsync(Game.All, ChallengeType.All, ChallengeState.Opened);

@@ -1,11 +1,11 @@
 ﻿// Filename: Register.cshtml.cs
-// Date Created: 2019-03-04
+// Date Created: 2019-04-14
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
@@ -32,10 +32,10 @@ namespace eDoxa.Identity.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        private readonly SignInService _signInService;
         private readonly IIntegrationEventService _integrationEventService;
-        private readonly UserService _userSerivce;
         private readonly ILogger<RegisterModel> _logger;
+        private readonly SignInService _signInService;
+        private readonly UserService _userSerivce;
 
         public RegisterModel(
             IIntegrationEventService integrationEventService,
@@ -49,8 +49,7 @@ namespace eDoxa.Identity.Areas.Identity.Pages.Account
             _logger = logger;
         }
 
-        [BindProperty]
-        public InputModel Input { get; set; }
+        [BindProperty] public InputModel Input { get; set; }
 
         public string ReturnUrl { get; set; }
 
@@ -84,7 +83,8 @@ namespace eDoxa.Identity.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var user = new User(Input.Email, Input.FirstName, Input.LastName, Input.Year, (int) Input.Month, Input.Day, Input.Gamertag);
+                var user = new User(Input.Email, new PersonalName(Input.FirstName, Input.LastName), new BirthDate(Input.Year, (int) Input.Month, Input.Day),
+                    Input.Gamertag);
 
                 var result = await _userSerivce.CreateAsync(user, Input.Password);
 
@@ -146,10 +146,10 @@ namespace eDoxa.Identity.Areas.Identity.Pages.Account
         private void PopulateMonthsDropDownList(object selectedMonth = null)
         {
             var months = from Month month in Enum.GetValues(typeof(Month))
-                         select new
-                         {
-                             Value = month, Text = $"{month.ToString()} ({(int) month})"
-                         };
+                select new
+                {
+                    Value = month, Text = $"{month.ToString()} ({(int) month})"
+                };
 
             Months = new SelectList(months, "Value", "Text", selectedMonth);
         }
@@ -196,14 +196,11 @@ namespace eDoxa.Identity.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
-            [Required]
-            public int Year { get; set; }
+            [Required] public int Year { get; set; }
 
-            [Required]
-            public Month Month { get; set; }
+            [Required] public Month Month { get; set; }
 
-            [Required]
-            public int Day { get; set; }
+            [Required] public int Day { get; set; }
         }
     }
 }

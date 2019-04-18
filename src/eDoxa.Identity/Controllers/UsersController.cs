@@ -66,34 +66,6 @@ namespace eDoxa.Identity.Controllers
         }
 
         /// <summary>
-        ///     Change user tag by ID.
-        /// </summary>
-        [HttpPut("{userId}", Name = nameof(ChangeUserTagAsync))]
-        public async Task<IActionResult> ChangeUserTagAsync(
-            Guid userId,
-            [FromBody]
-            string username)
-        {
-            try
-            {
-                if (!await _userService.UserExistsAsync(userId))
-                {
-                    return this.NotFound(string.Empty);
-                }
-
-                await _userService.ChangeTagAsync(userId, username);
-
-                return this.Ok(string.Empty);
-            }
-            catch (Exception exception)
-            {
-                _logger.LogError(exception, exception.Message);
-            }
-
-            return this.BadRequest(string.Empty);
-        }
-
-        /// <summary>
         ///     Change user status by ID.
         /// </summary>
         [HttpPut("{userId}/{status}", Name = nameof(ChangeUserStatusAsync))]

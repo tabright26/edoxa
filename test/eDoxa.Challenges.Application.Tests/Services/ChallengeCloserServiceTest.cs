@@ -26,7 +26,7 @@ namespace eDoxa.Challenges.Application.Tests.Services
     [TestClass]
     public sealed class ChallengeCloserServiceTest
     {
-        private static readonly ChallengeAggregateFactory _factory = ChallengeAggregateFactory.Instance;
+        private static readonly ChallengeAggregateFactory ChallengeAggregateFactory = ChallengeAggregateFactory.Instance;
 
         [TestMethod]
         public async Task HandleAsync_FindChallengeAsync_ShouldBeInvokedExactlyOneTime()
@@ -35,7 +35,7 @@ namespace eDoxa.Challenges.Application.Tests.Services
             var mockChallengeRepository = new Mock<IChallengeRepository>();
 
             mockChallengeRepository.Setup(repository => repository.FindChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeType>(), ChallengeState.Ended))
-                                   .ReturnsAsync(_factory.CreateRandomChallenges(ChallengeState.Ended))
+                                   .ReturnsAsync(ChallengeAggregateFactory.CreateRandomChallenges(ChallengeState.Ended))
                                    .Verifiable();
 
             mockChallengeRepository.Setup(repository => repository.UnitOfWork.CommitAndDispatchDomainEventsAsync(It.IsAny<CancellationToken>()))

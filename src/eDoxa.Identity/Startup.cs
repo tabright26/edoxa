@@ -98,7 +98,7 @@ namespace eDoxa.Identity
                             options.Lockout.MaxFailedAccessAttempts = 5;
 
                             // User settings
-                            options.User.AllowedUserNameCharacters = "abcdef0123456789-";
+                            options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_";
                             options.User.RequireUniqueEmail = true;
 
                             // SignIn settings

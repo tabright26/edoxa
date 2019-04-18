@@ -1,11 +1,11 @@
 ﻿// Filename: ExternalLogin.cshtml.cs
-// Date Created: 2019-03-04
+// Date Created: 2019-04-14
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
@@ -30,9 +30,9 @@ namespace eDoxa.Identity.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class ExternalLoginModel : PageModel
     {
+        private readonly ILogger<ExternalLoginModel> _logger;
         private readonly SignInService _signInService;
         private readonly UserService _userService;
-        private readonly ILogger<ExternalLoginModel> _logger;
 
         public ExternalLoginModel(SignInService signInService, UserService userService, ILogger<ExternalLoginModel> logger)
         {
@@ -41,8 +41,7 @@ namespace eDoxa.Identity.Areas.Identity.Pages.Account
             _logger = logger;
         }
 
-        [BindProperty]
-        public InputModel Input { get; set; }
+        [BindProperty] public InputModel Input { get; set; }
 
         public string LoginProvider { get; set; }
 
@@ -54,8 +53,7 @@ namespace eDoxa.Identity.Areas.Identity.Pages.Account
 
         public SelectList Days { get; set; }
 
-        [TempData]
-        public string ErrorMessage { get; set; }
+        [TempData] public string ErrorMessage { get; set; }
 
         public IActionResult OnGetAsync()
         {
@@ -86,6 +84,7 @@ namespace eDoxa.Identity.Areas.Identity.Pages.Account
             );
 
             var properties = _signInService.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+
             return new ChallengeResult(provider, properties);
         }
 
@@ -127,6 +126,7 @@ namespace eDoxa.Identity.Areas.Identity.Pages.Account
             if (result.Succeeded)
             {
                 _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
+
                 return this.LocalRedirect(returnUrl);
             }
 
@@ -172,7 +172,8 @@ namespace eDoxa.Identity.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var user = new User(Input.Email, Input.FirstName, Input.LastName, Input.Year, (int) Input.Month, Input.Day, Input.Gamertag);
+                var user = new User(Input.Email, new PersonalName(Input.FirstName, Input.LastName), new BirthDate(Input.Year, (int) Input.Month, Input.Day),
+                    Input.Gamertag);
 
                 var result = await _userService.CreateAsync(user);
 
@@ -184,6 +185,7 @@ namespace eDoxa.Identity.Areas.Identity.Pages.Account
                     {
                         await _signInService.SignInAsync(user, false);
                         _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
+
                         return this.LocalRedirect(returnUrl);
                     }
                 }
@@ -196,6 +198,7 @@ namespace eDoxa.Identity.Areas.Identity.Pages.Account
 
             LoginProvider = info.LoginProvider;
             ReturnUrl = returnUrl;
+
             return this.Page();
         }
 
@@ -214,10 +217,10 @@ namespace eDoxa.Identity.Areas.Identity.Pages.Account
         private void PopulateMonthsDropDownList(object selectedMonth = null)
         {
             var months = from Month month in Enum.GetValues(typeof(Month))
-                         select new
-                         {
-                             Value = month, Text = $"{month.ToString()} ({(int) month})"
-                         };
+                select new
+                {
+                    Value = month, Text = $"{month.ToString()} ({(int) month})"
+                };
 
             Months = new SelectList(months, "Value", "Text", selectedMonth);
         }
@@ -253,14 +256,11 @@ namespace eDoxa.Identity.Areas.Identity.Pages.Account
             [Display(Name = "Email")]
             public string Email { get; set; }
 
-            [Required]
-            public int Year { get; set; }
+            [Required] public int Year { get; set; }
 
-            [Required]
-            public Month Month { get; set; }
+            [Required] public Month Month { get; set; }
 
-            [Required]
-            public int Day { get; set; }
+            [Required] public int Day { get; set; }
         }
     }
 }

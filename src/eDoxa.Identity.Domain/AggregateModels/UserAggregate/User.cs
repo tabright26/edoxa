@@ -1,17 +1,16 @@
 ﻿// Filename: User.cs
-// Date Created: 2019-04-06
+// Date Created: 2019-04-14
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
 
 using eDoxa.Seedwork.Domain.Common;
-using eDoxa.Seedwork.Domain.Common.ValueObjects;
 
 using Microsoft.AspNetCore.Identity;
 
@@ -19,20 +18,22 @@ namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
 {
     public sealed class User : IdentityUser<Guid>
     {
-        public User(string email, string firstName, string lastName, int year, int month, int day, string username) : this()
+        private PersonalName _personalName;
+        private BirthDate _birthDate;
+
+        public User(string email, PersonalName personalName, BirthDate birthDate, string username) : this()
         {
+            UserName = username;
+            NormalizedUserName = username.ToUpperInvariant();
             Email = email;
-            NormalizedEmail = Email.ToUpperInvariant();
-            Name = new Name(firstName, lastName);
-            BirthDate = new BirthDate(year, month, day);
-            Tag = new UserTag(username);
+            NormalizedEmail = email.ToUpperInvariant();
+            _personalName = personalName;
+            _birthDate = birthDate;
         }
 
         private User()
         {
             Id = Guid.NewGuid();
-            UserName = Id.ToString();
-            NormalizedUserName = UserName.ToUpperInvariant();
             CurrentStatus = UserStatus.Unknown;
             PreviousStatus = UserStatus.Unknown;
             StatusChanged = DateTime.UtcNow;
@@ -44,30 +45,22 @@ namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
 
         public DateTime StatusChanged { get; private set; }
 
-        public Name Name { get; private set; }
+        public PersonalName PersonalName => _personalName;
 
-        public BirthDate BirthDate { get; private set; }
+        public BirthDate BirthDate => _birthDate;
 
-        public UserTag Tag { get; private set; }
-
-        public static User Create(
+        private static User Create(
             Guid userId,
             string email,
-            string firstName,
-            string lastName,
-            int year,
-            int month,
-            int day,
+            PersonalName personalName,
+            BirthDate birthDate,
             string username,
             string phoneNumber,
             string password)
         {
-            var admin = new User(email, firstName, lastName, year, month, day, username)
+            var admin = new User(email, personalName, birthDate, username)
             {
                 Id = userId,
-                UserName = userId.ToString(),
-                NormalizedUserName = userId.ToString().ToUpperInvariant(),
-                NormalizedEmail = email.ToUpperInvariant(),
                 EmailConfirmed = true,
                 PhoneNumber = phoneNumber,
                 PhoneNumberConfirmed = true,
@@ -86,11 +79,8 @@ namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
             return Create(
                 data.Id,
                 data.Email,
-                data.FirstName,
-                data.LastName,
-                data.BirthDate.Year,
-                data.BirthDate.Month,
-                data.BirthDate.Day,
+                new PersonalName(data.FirstName, data.LastName),
+                BirthDate.FromDate(data.BirthDate),
                 data.Username,
                 data.PhoneNumber,
                 data.Password
@@ -134,11 +124,6 @@ namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
 
                 StatusChanged = DateTime.UtcNow;
             }
-        }
-
-        public void ChangeTag(string username)
-        {
-            Tag.ChangeTag(username);
         }
     }
 }
