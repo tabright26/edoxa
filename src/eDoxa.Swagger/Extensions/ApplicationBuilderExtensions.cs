@@ -17,15 +17,16 @@ namespace eDoxa.Swagger.Extensions
 {
     public static class ApplicationBuilderExtensions
     {
-        public static IApplicationBuilder UseSwagger(
+        public static void UseSwagger(
             this IApplicationBuilder application,
             IConfiguration configuration,
             IHostingEnvironment environment,
-            IApiVersionDescriptionProvider provider)
+            IApiVersionDescriptionProvider provider,
+            bool withRedirects = false)
         {
             if (!environment.IsDevelopment())
             {
-                return application;
+                return;
             }
 
             application.UseSwagger();
@@ -45,7 +46,10 @@ namespace eDoxa.Swagger.Extensions
                 }
             );
 
-            return application;
+            if (withRedirects)
+            {
+                application.UseStatusCodePagesWithRedirects("~/swagger");
+            }
         }
     }
 }

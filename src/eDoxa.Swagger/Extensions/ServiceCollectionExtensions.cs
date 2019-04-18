@@ -1,11 +1,11 @@
 ﻿// Filename: ServiceCollectionExtensions.cs
 // Date Created: 2019-04-14
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
@@ -29,8 +29,7 @@ namespace eDoxa.Swagger.Extensions
         public static IServiceCollection AddSwagger(
             this IServiceCollection services,
             IConfiguration configuration,
-            IHostingEnvironment environment,
-            Assembly assembly)
+            IHostingEnvironment environment)
         {
             if (!environment.IsDevelopment())
             {
@@ -42,6 +41,8 @@ namespace eDoxa.Swagger.Extensions
             var apiResourceName = configuration["ApiResource:Name"];
 
             var apiResourceDisplayName = configuration["ApiResource:DisplayName"];
+
+            var assembly = Assembly.GetCallingAssembly();
 
             services.AddSwaggerGen(
                 swaggerGenOptions =>

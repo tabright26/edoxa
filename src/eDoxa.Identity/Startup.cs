@@ -102,7 +102,7 @@ namespace eDoxa.Identity
 
             services.AddMvcWithApiBehavior();
 
-            services.AddSwagger(Configuration, Environment, Assembly.GetExecutingAssembly());
+            services.AddSwagger(Configuration, Environment);
 
             services.AddDataProtection(Configuration);
 

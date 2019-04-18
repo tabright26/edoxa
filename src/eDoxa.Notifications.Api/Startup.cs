@@ -62,7 +62,7 @@ namespace eDoxa.Notifications.Api
 
             services.AddMvcWithApiBehavior();
 
-            services.AddSwagger(Configuration, Environment, Assembly.GetExecutingAssembly());
+            services.AddSwagger(Configuration, Environment);
 
             services.AddCorsPolicy();
 
@@ -99,9 +99,7 @@ namespace eDoxa.Notifications.Api
 
             application.UseStaticFiles();
 
-            application.UseSwagger(Configuration, Environment, provider);
-
-            application.UseStatusCodePagesWithRedirects("~/swagger");
+            application.UseSwagger(Configuration, Environment, provider, true);
 
             application.UseMvcWithDefaultRoute();
 
