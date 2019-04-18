@@ -1,12 +1,15 @@
 ﻿// Filename: ServiceCollectionExtensions.cs
-// Date Created: 2019-03-04
+// Date Created: 2019-04-14
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
+
+using System;
+using System.Reflection;
 
 using Autofac;
 
@@ -14,6 +17,7 @@ using eDoxa.ServiceBus.Azure;
 using eDoxa.ServiceBus.RabbitMQ;
 
 using Microsoft.Azure.ServiceBus;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -30,6 +34,20 @@ namespace eDoxa.ServiceBus.Extensions
         private const string ServiceBusPassword = "ServiceBus:Password";
         private const string ServiceBusRetryCount = "ServiceBus:RetryCount";
         private const string ServiceBusSubscription = "ServiceBus:Subscription";
+
+        public static void AddIntegrationEventDbContext(this IServiceCollection services, IConfiguration configuration, Assembly migrationsAssembly)
+        {
+            services.AddDbContext<IntegrationEventLogDbContext>(
+                options => options.UseSqlServer(
+                    configuration.GetConnectionString("Sql"),
+                    sqlServerOptions =>
+                    {
+                        sqlServerOptions.MigrationsAssembly(migrationsAssembly.GetName().Name);
+                        sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
+                    }
+                )
+            );
+        }
 
         public static void AddServiceBus(this IServiceCollection services, IConfiguration configuration)
         {

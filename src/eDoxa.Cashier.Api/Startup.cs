@@ -20,7 +20,7 @@ using eDoxa.Cashier.Infrastructure;
 using eDoxa.Monitoring.Extensions;
 using eDoxa.Security.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.ServiceBus;
+using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.ServiceBus.Extensions;
 using eDoxa.Stripe.Extensions;
 using eDoxa.Swagger.Extensions;
@@ -30,7 +30,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -52,32 +51,13 @@ namespace eDoxa.Cashier.Api
         {
             services.AddHealthChecks(Configuration);
 
+            services.AddEntityFrameworkSqlServer();
+
+            services.AddIntegrationEventDbContext(Configuration, Assembly.GetAssembly(typeof(CashierDbContext)));
+
+            services.AddDbContext<CashierDbContext>(Configuration);            
+
             services.AddVersioning(new ApiVersion(1, 0));
-
-            services.AddEntityFrameworkSqlServer()
-                .AddDbContext<CashierDbContext>(
-                    options => options.UseSqlServer(
-                        Configuration.GetConnectionString("Sql"),
-                        sqlServerOptions =>
-                        {
-                            sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(CashierDbContext)).GetName().Name);
-
-                            sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
-                        }
-                    )
-                );
-
-            services.AddDbContext<IntegrationEventLogDbContext>(
-                options => options.UseSqlServer(
-                    Configuration.GetConnectionString("Sql"),
-                    sqlServerOptions =>
-                    {
-                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(CashierDbContext)).GetName().Name);
-
-                        sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
-                    }
-                )
-            );
 
             services.AddAutoMapper(CashierMapperFactory.Instance);
 

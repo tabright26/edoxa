@@ -20,7 +20,7 @@ using eDoxa.Notifications.DTO.Factories;
 using eDoxa.Notifications.Infrastructure;
 using eDoxa.Security.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.ServiceBus;
+using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.ServiceBus.Extensions;
 using eDoxa.Swagger.Extensions;
 
@@ -29,7 +29,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -51,30 +50,13 @@ namespace eDoxa.Notifications.Api
         {
             services.AddHealthChecks(Configuration);
 
+            services.AddEntityFrameworkSqlServer();
+
+            services.AddIntegrationEventDbContext(Configuration, Assembly.GetAssembly(typeof(NotificationsDbContext)));
+
+            services.AddDbContext<NotificationsDbContext>(Configuration);
+
             services.AddVersioning(new ApiVersion(1, 0));
-
-            services.AddEntityFrameworkSqlServer()
-                    .AddDbContext<NotificationsDbContext>(
-                        options => options.UseSqlServer(
-                            Configuration.GetConnectionString("Sql"),
-                            sqlServerOptions =>
-                            {
-                                sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(NotificationsDbContext)).GetName().Name);
-                                sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
-                            }
-                        )
-                    );
-
-            services.AddDbContext<IntegrationEventLogDbContext>(
-                options => options.UseSqlServer(
-                    Configuration.GetConnectionString("Sql"),
-                    sqlServerOptions =>
-                    {
-                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(NotificationsDbContext)).GetName().Name);
-                        sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
-                    }
-                )
-            );
 
             services.AddAutoMapper(NotificationsMapperFactory.Instance);
 

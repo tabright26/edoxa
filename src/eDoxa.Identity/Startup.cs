@@ -1,11 +1,11 @@
 ﻿// Filename: Startup.cs
 // Date Created: 2019-04-14
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
@@ -23,7 +23,7 @@ using eDoxa.Identity.Infrastructure;
 using eDoxa.Monitoring.Extensions;
 using eDoxa.Security.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.ServiceBus;
+using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.ServiceBus.Extensions;
 using eDoxa.Swagger.Extensions;
 
@@ -56,63 +56,47 @@ namespace eDoxa.Identity
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddHealthChecks(Configuration);
+           
+            services.AddEntityFrameworkSqlServer();
 
-            services.AddVersioning(new ApiVersion(1, 0));
+            services.AddIntegrationEventDbContext(Configuration, Assembly.GetAssembly(typeof(IdentityDbContext)));
 
-            services.AddDbContext<IntegrationEventLogDbContext>(
-                options => options.UseSqlServer(
-                    Configuration.GetConnectionString("Sql"),
-                    sqlServerOptions =>
-                    {
-                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(IdentityDbContext)).GetName().Name);
-                        sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
-                    }
-                )
-            );
-
-            services.AddDbContext<IdentityDbContext>(
-                options => options.UseSqlServer(
-                    Configuration.GetConnectionString("Sql"),
-                    sqlServerOptions =>
-                    {
-                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(IdentityDbContext)).GetName().Name);
-                        sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
-                    }
-                )
-            );
+            services.AddDbContext<IdentityDbContext>(Configuration);            
 
             services.AddIdentity<User, Role>(
-                        options =>
+                    options =>
+                    {
+                        // Password settings
+                        options.Password.RequireDigit = true;
+                        options.Password.RequiredLength = 8;
+                        options.Password.RequiredUniqueChars = 1;
+                        options.Password.RequireLowercase = true;
+                        options.Password.RequireNonAlphanumeric = true;
+                        options.Password.RequireUppercase = true;
+
+                        // Lockout settings
+                        options.Lockout.AllowedForNewUsers = true;
+                        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                        options.Lockout.MaxFailedAccessAttempts = 5;
+
+                        // User settings
+                        options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_";
+                        options.User.RequireUniqueEmail = true;
+
+                        // SignIn settings
+                        if (Environment.IsProduction())
                         {
-                            // Password settings
-                            options.Password.RequireDigit = true;
-                            options.Password.RequiredLength = 8;
-                            options.Password.RequiredUniqueChars = 1;
-                            options.Password.RequireLowercase = true;
-                            options.Password.RequireNonAlphanumeric = true;
-                            options.Password.RequireUppercase = true;
-
-                            // Lockout settings
-                            options.Lockout.AllowedForNewUsers = true;
-                            options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-                            options.Lockout.MaxFailedAccessAttempts = 5;
-
-                            // User settings
-                            options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_";
-                            options.User.RequireUniqueEmail = true;
-
-                            // SignIn settings
-                            if (Environment.IsProduction())
-                            {
-                                options.SignIn.RequireConfirmedEmail = true;
-                                options.SignIn.RequireConfirmedPhoneNumber = true;
-                            }
+                            options.SignIn.RequireConfirmedEmail = true;
+                            options.SignIn.RequireConfirmedPhoneNumber = true;
                         }
-                    )
-                    .AddDefaultTokenProviders()
-                    .AddDefaultUI(UIFramework.Bootstrap4)
-                    .AddEntityFrameworkStores<IdentityDbContext>()
-                    .AddClaimsPrincipalFactory<UserClaimsPrincipalFactory>();
+                    }
+                )
+                .AddDefaultTokenProviders()
+                .AddDefaultUI(UIFramework.Bootstrap4)
+                .AddEntityFrameworkStores<IdentityDbContext>()
+                .AddClaimsPrincipalFactory<UserClaimsPrincipalFactory>();
+
+            services.AddVersioning(new ApiVersion(1, 0));
 
             services.AddAutoMapper(IdentityMapperFactory.Instance);
 
@@ -127,71 +111,71 @@ namespace eDoxa.Identity
             services.AddEventBus(Configuration);
 
             services.AddIdentityServer(
-                        options =>
-                        {
-                            options.Authentication.CookieLifetime = TimeSpan.FromHours(2);
-                            options.Events.RaiseErrorEvents = true;
-                            options.Events.RaiseInformationEvents = true;
-                            options.Events.RaiseFailureEvents = true;
-                            options.Events.RaiseSuccessEvents = true;
-                            options.IssuerUri = Configuration["IdentityServer:IssuerUrl"];
+                    options =>
+                    {
+                        options.Authentication.CookieLifetime = TimeSpan.FromHours(2);
+                        options.Events.RaiseErrorEvents = true;
+                        options.Events.RaiseInformationEvents = true;
+                        options.Events.RaiseFailureEvents = true;
+                        options.Events.RaiseSuccessEvents = true;
+                        options.IssuerUri = Configuration["IdentityServer:IssuerUrl"];
 
-                            options.UserInteraction = new UserInteractionOptions
+                        options.UserInteraction = new UserInteractionOptions
+                        {
+                            LoginUrl = Configuration["IdentityServer:UserInteraction:LoginUrl"],
+                            LogoutUrl = Configuration["IdentityServer:UserInteraction:LogoutUrl"],
+                            ErrorUrl = Configuration["IdentityServer:UserInteraction:ErrorUrl"],
+                            ConsentUrl = Configuration["IdentityServer:UserInteraction:ConsentUrl"]
+                        };
+                    }
+                )
+                .AddDeveloperSigningCredential()
+                .AddAspNetIdentity<User>()
+                .AddConfigurationStore(
+                    configurationStoreOptions =>
+                    {
+                        configurationStoreOptions.ConfigureDbContext = dbContextOptionsBuilder => dbContextOptionsBuilder.UseSqlServer(
+                            Configuration.GetConnectionString("Sql"),
+                            sqlServerDbContextOptionsBuilder =>
                             {
-                                LoginUrl = Configuration["IdentityServer:UserInteraction:LoginUrl"],
-                                LogoutUrl = Configuration["IdentityServer:UserInteraction:LogoutUrl"],
-                                ErrorUrl = Configuration["IdentityServer:UserInteraction:ErrorUrl"],
-                                ConsentUrl = Configuration["IdentityServer:UserInteraction:ConsentUrl"]
-                            };
-                        }
-                    )
-                    .AddDeveloperSigningCredential()
-                    .AddAspNetIdentity<User>()
-                    .AddConfigurationStore(
-                        configurationStoreOptions =>
-                        {
-                            configurationStoreOptions.ConfigureDbContext = dbContextOptionsBuilder => dbContextOptionsBuilder.UseSqlServer(
-                                Configuration.GetConnectionString("Sql"),
-                                sqlServerDbContextOptionsBuilder =>
-                                {
-                                    sqlServerDbContextOptionsBuilder.MigrationsAssembly(Assembly.GetAssembly(typeof(IdentityDbContext)).GetName().Name);
-                                }
-                            );
+                                sqlServerDbContextOptionsBuilder.MigrationsAssembly(Assembly.GetAssembly(typeof(IdentityDbContext)).GetName().Name);
+                            }
+                        );
 
-                            configurationStoreOptions.DefaultSchema = "idsrv";
-                        }
-                    )
-                    .AddOperationalStore(
-                        operationalStoreOptions =>
-                        {
-                            operationalStoreOptions.ConfigureDbContext = dbContextOptionsBuilder => dbContextOptionsBuilder.UseSqlServer(
-                                Configuration.GetConnectionString("Sql"),
-                                sqlServerDbContextOptionsBuilder =>
-                                {
-                                    sqlServerDbContextOptionsBuilder.MigrationsAssembly(Assembly.GetAssembly(typeof(IdentityDbContext)).GetName().Name);
-                                }
-                            );
+                        configurationStoreOptions.DefaultSchema = "idsrv";
+                    }
+                )
+                .AddOperationalStore(
+                    operationalStoreOptions =>
+                    {
+                        operationalStoreOptions.ConfigureDbContext = dbContextOptionsBuilder => dbContextOptionsBuilder.UseSqlServer(
+                            Configuration.GetConnectionString("Sql"),
+                            sqlServerDbContextOptionsBuilder =>
+                            {
+                                sqlServerDbContextOptionsBuilder.MigrationsAssembly(Assembly.GetAssembly(typeof(IdentityDbContext)).GetName().Name);
+                            }
+                        );
 
-                            operationalStoreOptions.DefaultSchema = "idsrv";
-                        }
-                    )
-                    .AddProfileService<ProfileService>();
+                        operationalStoreOptions.DefaultSchema = "idsrv";
+                    }
+                )
+                .AddProfileService<ProfileService>();
 
             services.AddAuthentication()
-                    .AddFacebook(
-                        facebookOptions =>
-                        {
-                            facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
-                            facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
-                        }
-                    )
-                    .AddTwitter(
-                        twitterOptions =>
-                        {
-                            twitterOptions.ConsumerKey = Configuration["Authentication:Twitter:ConsumerKey"];
-                            twitterOptions.ConsumerSecret = Configuration["Authentication:Twitter:ConsumerSecret"];
-                        }
-                    );
+                .AddFacebook(
+                    facebookOptions =>
+                    {
+                        facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
+                        facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+                    }
+                )
+                .AddTwitter(
+                    twitterOptions =>
+                    {
+                        twitterOptions.ConsumerKey = Configuration["Authentication:Twitter:ConsumerKey"];
+                        twitterOptions.ConsumerSecret = Configuration["Authentication:Twitter:ConsumerSecret"];
+                    }
+                );
 
             //.AddTwitch(
             //    twitchOptions =>
