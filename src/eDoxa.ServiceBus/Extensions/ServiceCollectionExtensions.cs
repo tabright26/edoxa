@@ -51,6 +51,13 @@ namespace eDoxa.ServiceBus.Extensions
 
         public static void AddServiceBus(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddServiceBusConnection(configuration);
+
+            services.AddEventBus(configuration);
+        }
+
+        private static void AddServiceBusConnection(this IServiceCollection services, IConfiguration configuration)
+        {
             if (configuration.GetValue<bool>(AzureServiceBusEnable))
             {
                 services.AddSingleton<IAzurePersistentConnection>(
@@ -99,7 +106,7 @@ namespace eDoxa.ServiceBus.Extensions
             }
         }
 
-        public static void AddEventBus(this IServiceCollection services, IConfiguration configuration)
+        private static void AddEventBus(this IServiceCollection services, IConfiguration configuration)
         {
             var subscription = configuration[ServiceBusSubscription];
 

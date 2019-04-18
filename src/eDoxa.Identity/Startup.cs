@@ -108,8 +108,6 @@ namespace eDoxa.Identity
 
             services.AddServiceBus(Configuration);
 
-            services.AddEventBus(Configuration);
-
             services.AddIdentityServer(
                     options =>
                     {

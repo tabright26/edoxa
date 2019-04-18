@@ -17,6 +17,8 @@ using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Application;
 using eDoxa.Cashier.DTO.Factories;
 using eDoxa.Cashier.Infrastructure;
+using eDoxa.IdentityServer;
+using eDoxa.IdentityServer.Extensions;
 using eDoxa.Monitoring.Extensions;
 using eDoxa.Security.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
@@ -25,7 +27,6 @@ using eDoxa.ServiceBus.Extensions;
 using eDoxa.Stripe.Extensions;
 using eDoxa.Swagger.Extensions;
 
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -69,23 +70,7 @@ namespace eDoxa.Cashier.Api
 
             services.AddServiceBus(Configuration);
 
-            services.AddEventBus(Configuration);
-
-            services.AddAuthentication(
-                    options =>
-                    {
-                        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                    }
-                )
-                .AddJwtBearer(
-                    options =>
-                    {
-                        options.Audience = Configuration["ApiResource:Name"];
-                        options.Authority = Configuration["IdentityServer:Url"];
-                        options.RequireHttpsMetadata = false;
-                    }
-                );
+            services.AddAuthentication(Configuration, CustomScopes.CashierApi);
 
             services.AddStripe();
 

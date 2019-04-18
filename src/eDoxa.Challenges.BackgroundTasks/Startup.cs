@@ -34,13 +34,11 @@ namespace eDoxa.Challenges.BackgroundTasks
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddOptions();
-
             services.AddHealthChecks(Configuration);
 
             services.AddServiceBus(Configuration);
 
-            services.AddEventBus(Configuration);
+            services.AddOptions();
 
             services.Configure<ChallengePublishingSettings>(Configuration.GetSection(nameof(ChallengePublishingSettings)));
 

@@ -13,6 +13,8 @@ using System.Reflection;
 
 using eDoxa.Autofac.Extensions;
 using eDoxa.AutoMapper.Extensions;
+using eDoxa.IdentityServer;
+using eDoxa.IdentityServer.Extensions;
 using eDoxa.Monitoring.Extensions;
 using eDoxa.Notifications.Api.Extensions;
 using eDoxa.Notifications.Application;
@@ -24,7 +26,6 @@ using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.ServiceBus.Extensions;
 using eDoxa.Swagger.Extensions;
 
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -68,23 +69,7 @@ namespace eDoxa.Notifications.Api
 
             services.AddServiceBus(Configuration);
 
-            services.AddEventBus(Configuration);
-
-            services.AddAuthentication(
-                        options =>
-                        {
-                            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                        }
-                    )
-                    .AddJwtBearer(
-                        options =>
-                        {
-                            options.Audience = Configuration["ApiResource:Name"];
-                            options.Authority = Configuration["IdentityServer:Url"];
-                            options.RequireHttpsMetadata = false;
-                        }
-                    );
+            services.AddAuthentication(Configuration, CustomScopes.NotificationsApi);
 
             return services.Build<ApplicationModule>();
         }
