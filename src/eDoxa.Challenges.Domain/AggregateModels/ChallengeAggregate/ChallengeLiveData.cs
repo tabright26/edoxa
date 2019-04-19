@@ -28,15 +28,15 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public PrizePool PrizePool => new PrizePool(Entries, _challenge.Settings.EntryFee, _challenge.Settings.ServiceChargeRatio);
 
-        public IChallengePrizeBreakdown PrizeBreakdown
+        public IChallengePayout Payout
         {
             get
             {
-                var factory = ChallengePrizeBreakdownFactory.Instance;
+                var factory = ChallengePayoutFactory.Instance;
 
                 var strategy = factory.Create(_challenge.Settings.Type, PayoutEntries.ToInt32(), PrizePool.ToDecimal());
 
-                return strategy.PrizeBreakdown;
+                return strategy.Payout;
             }
         }
     }

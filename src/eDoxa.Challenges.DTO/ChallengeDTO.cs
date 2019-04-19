@@ -45,20 +45,20 @@ namespace eDoxa.Challenges.DTO
         [JsonProperty("generated")]
         public bool Generated { get; set; }
 
-        [JsonProperty("settings")]
-        public ChallengeSettingsDTO Settings { get; set; }
-
         [JsonProperty("timeline")]
         public ChallengeTimelineDTO Timeline { get; set; }
 
-        [JsonProperty("scoring")]
-        public ChallengeScoringDTO Scoring { get; set; }
+        [JsonProperty("settings")]
+        public ChallengeSettingsDTO Settings { get; set; }
 
         [JsonProperty("liveData")]
         public ChallengeLiveDataDTO LiveData { get; set; }
 
-        [JsonProperty("prizeBreakdown")]
-        public ChallengePrizeBreakdownDTO PrizeBreakdown { get; set; }
+        [JsonProperty("scoring")]
+        public ChallengeScoringDTO Scoring { get; set; }
+
+        [JsonProperty("payout")]
+        public ChallengePayoutDTO Payout { get; set; }
 
         [JsonProperty("participants")]
         public ParticipantListDTO Participants { get; set; }

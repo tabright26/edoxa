@@ -1,11 +1,11 @@
-﻿// Filename: ChallengePrizeBreakdownFactoryTest.cs
-// Date Created: 2019-03-04
+﻿// Filename: ChallengePayoutFactoryTest.cs
+// Date Created: 2019-04-14
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
@@ -22,7 +22,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Factories
 {
     [TestClass]
-    public sealed class ChallengePrizeBreakdownFactoryTest
+    public sealed class ChallengePayoutFactoryTest
     {
         [DataRow(ChallengeType.Default)]
         [DataTestMethod]
@@ -30,13 +30,13 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Facto
         {
             // Arrange
             var challenge = new MockChallenge(type);
-            var factory = ChallengePrizeBreakdownFactory.Instance;
+            var factory = ChallengePayoutFactory.Instance;
 
             // Act
             var strategy = factory.Create(challenge.Settings.Type, challenge.Settings.PayoutEntries.ToInt32(), challenge.Settings.PrizePool.ToDecimal());
 
             // Assert
-            strategy.PrizeBreakdown.Should().NotBeNull();
+            strategy.Payout.Should().NotBeNull();
         }
 
         [DataRow(ChallengeType.None)]
@@ -46,10 +46,11 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Facto
         {
             // Arrange
             var challenge = new MockChallenge(type);
-            var factory = ChallengePrizeBreakdownFactory.Instance;
+            var factory = ChallengePayoutFactory.Instance;
 
             // Act
-            var action = new Action(() => factory.Create(challenge.Settings.Type, challenge.Settings.PayoutEntries.ToInt32(), challenge.Settings.PrizePool.ToDecimal()));
+            var action = new Action(() =>
+                factory.Create(challenge.Settings.Type, challenge.Settings.PayoutEntries.ToInt32(), challenge.Settings.PrizePool.ToDecimal()));
 
             // Assert
             action.Should().Throw<NotImplementedException>();

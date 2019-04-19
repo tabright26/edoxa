@@ -90,15 +90,15 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public ChallengeLiveData LiveData => new ChallengeLiveData(this);
 
-        public IChallengePrizeBreakdown PrizeBreakdown
+        public IChallengePayout Payout
         {
             get
             {
-                var factory = ChallengePrizeBreakdownFactory.Instance;
+                var factory = ChallengePayoutFactory.Instance;
 
                 var strategy = factory.Create(Settings.Type, Settings.PayoutEntries.ToInt32(), Settings.PrizePool.ToDecimal());
 
-                return strategy.PrizeBreakdown;
+                return strategy.Payout;
             }
         }
 
@@ -148,7 +148,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         {
             _timeline = Timeline.Close();
 
-            var userPrizes = PrizeBreakdown.SnapshotUserPrizes(Scoreboard);
+            var userPrizes = Payout.Snapshot(Scoreboard);
 
             var domainEvent = new ChallengeUserPrizesSnapshottedDomainEvent(Id.ToGuid(), userPrizes);
 

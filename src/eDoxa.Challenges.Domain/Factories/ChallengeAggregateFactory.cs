@@ -415,18 +415,18 @@ namespace eDoxa.Challenges.Domain.Factories
 
     internal sealed partial class ChallengeAggregateFactory
     {
-        public IChallengePrizeBreakdownStrategy CreateChallengePrizeBreakdownStrategy()
+        public IChallengePayoutStrategy CreateChallengePayoutStrategy()
         {
-            var mock = new Mock<IChallengePrizeBreakdownStrategy>();
+            var mock = new Mock<IChallengePayoutStrategy>();
 
-            mock.SetupGet(strategy => strategy.PrizeBreakdown).Returns(this.CreateChallengePrizeBreakdown());
+            mock.SetupGet(strategy => strategy.Payout).Returns(this.CreateChallengePayout());
 
             return mock.Object;
         }
 
-        public IChallengePrizeBreakdown CreateChallengePrizeBreakdown()
+        public IChallengePayout CreateChallengePayout()
         {
-            return new ChallengePrizeBreakdown();
+            return new ChallengePayout();
         }
     }
 

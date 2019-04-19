@@ -35,7 +35,7 @@ namespace eDoxa.Challenges.Application.Tests.DomainEventHandlers
             // Arrange
             var challenge = ChallengeAggregateFactory.CreateChallenge(ChallengeState.Closed);
 
-            var userPrizes = challenge.PrizeBreakdown.SnapshotUserPrizes(challenge.Scoreboard);
+            var userPrizes = challenge.Payout.Snapshot(challenge.Scoreboard);
 
             var mockIntegrationEventService = new Mock<IIntegrationEventService>();
 

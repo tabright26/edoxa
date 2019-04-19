@@ -1,11 +1,11 @@
-﻿// Filename: ChallengePrizeBreakdownTest.cs
-// Date Created: 2019-03-20
+﻿// Filename: ChallengePayoutTest.cs
+// Date Created: 2019-04-14
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System.Collections.Generic;
@@ -19,21 +19,21 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
 {
     [TestClass]
-    public sealed class ChallengePrizeBreakdownTest
+    public sealed class ChallengePayoutTest
     {
         private static readonly ChallengeAggregateFactory ChallengeAggregateFactory = ChallengeAggregateFactory.Instance;
 
         [TestMethod]
-        public void PrizeBreakdown_ShouldBeAssignableToType()
+        public void Payout_ShouldBeAssignableToType()
         {
             // Arrange
-            var prizeBreakdown = ChallengeAggregateFactory.CreateChallengePrizeBreakdown();
+            var payout = ChallengeAggregateFactory.CreateChallengePayout();
 
             // Act
             var type = typeof(Dictionary<string, decimal>);
 
             // Assert
-            prizeBreakdown.Should().BeAssignableTo(type);
+            payout.Should().BeAssignableTo(type);
         }
     }
 }

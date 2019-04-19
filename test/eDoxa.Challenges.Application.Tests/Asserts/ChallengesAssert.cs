@@ -49,7 +49,7 @@ namespace eDoxa.Challenges.Application.Tests.Asserts
 
             challenge.Scoring.Should().NotBeNull();
 
-            challenge.PrizeBreakdown.Should().NotBeNull();
+            challenge.Payout.Should().NotBeNull();
 
             IsMapped(challenge.Participants);
         }

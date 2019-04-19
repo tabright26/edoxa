@@ -1,11 +1,11 @@
-﻿// Filename: ChallengePrizeBreakdown.cs
-// Date Created: 2019-03-21
+﻿// Filename: ChallengePayout.cs
+// Date Created: 2019-04-14
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
@@ -14,9 +14,9 @@ using System.Linq;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed class ChallengePrizeBreakdown : Dictionary<string, decimal>, IChallengePrizeBreakdown
+    public sealed class ChallengePayout : Dictionary<string, decimal>, IChallengePayout
     {
-        public IReadOnlyDictionary<Guid, decimal?> SnapshotUserPrizes(IChallengeScoreboard scoreboard)
+        public IReadOnlyDictionary<Guid, decimal?> Snapshot(IChallengeScoreboard scoreboard)
         {
             var prizes = new Dictionary<Guid, decimal?>();
 
@@ -38,9 +38,9 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
                 try
                 {
                     // TODO: Refactor this part of the algorithm when prize breakdown default strategy will be debug.
-                    var prizeBreakdown = this.ElementAt(index);
+                    var payout = this.ElementAt(index);
 
-                    var prize = prizeBreakdown.Value;
+                    var prize = payout.Value;
 
                     prizes.Add(userId.ToGuid(), prize);
                 }

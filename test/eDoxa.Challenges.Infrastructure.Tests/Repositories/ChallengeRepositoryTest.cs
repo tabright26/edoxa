@@ -271,7 +271,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
                 challenge.Timeline.Should().NotBeNull();
                 challenge.LiveData.Should().NotBeNull();
                 challenge.Scoring.Should().NotBeNull();
-                challenge.PrizeBreakdown.Should().NotBeNull();
+                challenge.Payout.Should().NotBeNull();
                 challenge.Scoreboard.Should().NotBeNull();
                 challenge.Participants.Should().NotBeNullOrEmpty();
 

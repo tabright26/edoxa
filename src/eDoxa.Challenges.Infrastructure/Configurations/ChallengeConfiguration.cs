@@ -129,7 +129,7 @@ namespace eDoxa.Challenges.Infrastructure.Configurations
 
             builder.Ignore(challenge => challenge.Scoreboard);
 
-            builder.Ignore(challenge => challenge.PrizeBreakdown);
+            builder.Ignore(challenge => challenge.Payout);
 
             builder.HasMany(challenge => challenge.Participants)
                 .WithOne(participant => participant.Challenge)

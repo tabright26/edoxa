@@ -44,7 +44,7 @@ namespace eDoxa.Challenges.DTO.Profiles
                         configuration.Condition(challenge => challenge.Timeline.State >= ChallengeState.Opened);
                     }
                 )
-                .ForMember(challenge => challenge.PrizeBreakdown, configuration => configuration.MapFrom(challenge => challenge.PrizeBreakdown))
+                .ForMember(challenge => challenge.Payout, configuration => configuration.MapFrom(challenge => challenge.Payout))
                 .ForMember(
                     challenge => challenge.Participants,
                     configuration =>

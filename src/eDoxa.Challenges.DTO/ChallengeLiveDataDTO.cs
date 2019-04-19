@@ -24,7 +24,7 @@ namespace eDoxa.Challenges.DTO
         [JsonProperty("prizePool")]
         public decimal PrizePool { get; set; }
 
-        [JsonProperty("prizeBreakdown")]
-        public ChallengePrizeBreakdownDTO PrizeBreakdown { get; set; }
+        [JsonProperty("payout")]
+        public ChallengePayoutDTO Payout { get; set; }
     }
 }
