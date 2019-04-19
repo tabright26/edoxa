@@ -15,6 +15,8 @@ using System.Linq;
 
 using eDoxa.ServiceBus.Exceptions;
 
+using JetBrains.Annotations;
+
 namespace eDoxa.ServiceBus
 {
     public sealed class InMemorySubscriptionHandler : ISubscriptionHandler
@@ -76,6 +78,7 @@ namespace eDoxa.ServiceBus
             return this.ContainsIntegrationEvent(integrationEventKey);
         }
 
+        [CanBeNull]
         public Subscription FindSubscription(string integrationEventKey, Type integrationEventHandlerType)
         {
             return !this.ContainsIntegrationEvent(integrationEventKey) ?
@@ -84,6 +87,7 @@ namespace eDoxa.ServiceBus
                     .SingleOrDefault(subscription => subscription.IntegrationEventHandlerType == integrationEventHandlerType);
         }
 
+        [CanBeNull]
         public Subscription FindSubscription<TIntegrationEvent, TDynamicIntegrationEventHandler>()
         where TIntegrationEvent : IntegrationEvent
         where TDynamicIntegrationEventHandler : IIntegrationEventHandler<TIntegrationEvent>
@@ -93,6 +97,7 @@ namespace eDoxa.ServiceBus
             return this.FindSubscription(integrationEventKey, typeof(TDynamicIntegrationEventHandler));
         }
 
+        [CanBeNull]
         public Subscription FindDynamicSubscription<TDynamicIntegrationEventHandler>(string integrationEventKey)
         where TDynamicIntegrationEventHandler : IDynamicIntegrationEventHandler
         {
@@ -117,6 +122,7 @@ namespace eDoxa.ServiceBus
             return typeof(TIntegrationEvent).Name;
         }
 
+        [CanBeNull]
         public Type GetIntegrationEventType(string integrationEventKey)
         {
             return _integrationEventTypes.SingleOrDefault(type => type.Name == integrationEventKey);
@@ -178,7 +184,7 @@ namespace eDoxa.ServiceBus
         /// </summary>
         /// <param name="integrationEventKey">The <see cref="IntegrationEvent" /> key.</param>
         /// <param name="subscription">The <see cref="Subscription" />.</param>
-        private void RemoveSubscription(string integrationEventKey, Subscription subscription)
+        private void RemoveSubscription(string integrationEventKey, [CanBeNull] Subscription subscription)
         {
             if (subscription == null)
             {

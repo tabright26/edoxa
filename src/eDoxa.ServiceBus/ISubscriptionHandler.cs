@@ -11,6 +11,8 @@
 using System;
 using System.Collections.Generic;
 
+using JetBrains.Annotations;
+
 namespace eDoxa.ServiceBus
 {
     /// <summary>
@@ -82,6 +84,7 @@ namespace eDoxa.ServiceBus
         /// <param name="integrationEventKey">The <see cref="IntegrationEvent" /> key.</param>
         /// <param name="integrationEventHandlerType">Type of the <see cref="IIntegrationEventHandler{TIntegrationEvent}" />.</param>
         /// <returns>The <see cref="Subscription" /> that matches an instance of the <see cref="IntegrationEvent" /> subscriptions.</returns>
+        [CanBeNull]
         Subscription FindSubscription(string integrationEventKey, Type integrationEventHandlerType);
 
         /// <summary>
@@ -92,6 +95,7 @@ namespace eDoxa.ServiceBus
         /// <typeparam name="TIntegrationEvent">The type of the <see cref="IntegrationEvent" />.</typeparam>
         /// <typeparam name="TDynamicIntegrationEventHandler">The type of the <see cref="IDynamicIntegrationEventHandler" />.</typeparam>
         /// <returns>The <see cref="Subscription" /> that matches an instance of the <see cref="IntegrationEvent" /> subscriptions.</returns>
+        [CanBeNull]
         Subscription FindSubscription<TIntegrationEvent, TDynamicIntegrationEventHandler>()
         where TIntegrationEvent : IntegrationEvent
         where TDynamicIntegrationEventHandler : IIntegrationEventHandler<TIntegrationEvent>;
@@ -107,6 +111,7 @@ namespace eDoxa.ServiceBus
         ///     The dynamic <see cref="Subscription" /> that matches an instance of the <see cref="IntegrationEvent" />
         ///     dynamic subscriptions.
         /// </returns>
+        [CanBeNull]
         Subscription FindDynamicSubscription<TDynamicIntegrationEventHandler>(string integrationEventKey)
         where TDynamicIntegrationEventHandler : IDynamicIntegrationEventHandler;
 
@@ -137,6 +142,7 @@ namespace eDoxa.ServiceBus
         /// </summary>
         /// <param name="integrationEventKey">The <see cref="IntegrationEvent" /> key.</param>
         /// <returns>The <see cref="IntegrationEvent" /> type.</returns>
+        [CanBeNull]
         Type GetIntegrationEventType(string integrationEventKey);
 
         /// <summary>

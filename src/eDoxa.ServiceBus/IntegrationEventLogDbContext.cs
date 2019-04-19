@@ -8,6 +8,8 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using JetBrains.Annotations;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.ServiceBus
@@ -28,7 +30,7 @@ namespace eDoxa.ServiceBus
             }
         }
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating([NotNull] ModelBuilder builder)
         {
             builder.Entity<IntegrationEventLogEntry>(
                 entity =>

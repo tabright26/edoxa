@@ -1,8 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿// Filename: NiceNumberTest.cs
+// Date Created: 2019-04-18
+// 
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
+// this source code package.
 
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using System;
+using System.Collections.Generic;
+
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Helpers;
 
 using FluentAssertions;
@@ -35,7 +43,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void TestZero_ShouldBeTrue(int value)
         {
             // Act
-            var condition = NiceNumber.IsNiceNum(value);
+            var condition = NiceNumber.IsNice(value);
 
             // Assert
             condition.Should().BeTrue();
@@ -54,7 +62,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void TestZero_ShouldBeFalse(double value)
         {
             // Act
-            var condition = NiceNumber.IsNiceNum(value);
+            var condition = NiceNumber.IsNice(value);
 
             // Assert
             condition.Should().BeFalse();
@@ -81,28 +89,38 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void TestZero_ShouldBeArrayLength(double value, int length)
         {
             // Act
-            var niceNumbers = NiceNumber.NiceNum(value);
+            var niceNumbers = NiceNumber.PossibleNiceNumbers(Convert.ToInt32(value));
 
             // Assert
             niceNumbers.Count.Should().Be(length);
         }
 
-        [DataRow(28, -1, new int[0])]
-        [DataRow(28, 1, new[] { 1 })]
-        [DataRow(1, -1, new[] { 20 })]
-        [DataRow(0, -1, new[] { 1, 2, 3, 4, 5 })]
-        [DataRow(-10, -1, new[] { 1, 2, 3, 4, 5 })]
-        [DataRow(1001.28, 1000, new[] { 1, 2, 100, 1000, 10000 })]
-        [DataRow(1001.28, 750, new[] { 1, 2, 100, 750, 10000 })]
-        [DataRow(1001.28, 500, new[] { 1, 2, 100, 500, 10000 })]
+        [DataRow(28, 1, new[] {1})]
+        [DataRow(1001.28, 1000, new[] {1, 2, 100, 1000, 10000})]
+        [DataRow(1001.28, 750, new[] {1, 2, 100, 750, 10000})]
+        [DataRow(1001.28, 500, new[] {1, 2, 100, 500, 10000})]
         [DataTestMethod]
         public void TestEmptyList_ShouldBe(double numToRound, int niceNumber, int[] niceNumbers)
         {
             // Act
-            var roundNiceNumber = NiceNumber.RoundToNice(numToRound, new List<int>(niceNumbers));
+            var roundNiceNumber = NiceNumber.Round(numToRound, new List<int>(niceNumbers));
 
             // Assert
             roundNiceNumber.Should().Be(niceNumber);
+        }
+
+        [DataRow(28, new int[0])]
+        [DataRow(1, new[] {20})]
+        [DataRow(0, new[] {1, 2, 3, 4, 5})]
+        [DataRow(-10, new[] {1, 2, 3, 4, 5})]
+        [DataTestMethod]
+        public void TestEmptyList_ShouldThrowArgumentException(double numToRound, int[] niceNumbers)
+        {
+            // Act
+            var action = new Action(() => NiceNumber.Round(numToRound, new List<int>(niceNumbers)));
+
+            // Assert
+            action.Should().Throw<ArgumentException>();
         }
     }
 }

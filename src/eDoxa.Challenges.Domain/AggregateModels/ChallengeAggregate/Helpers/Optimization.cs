@@ -14,18 +14,23 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Helpers
 {
     public static class Optimization
     {
-        public static double Bisection(Func<double, double> optimize, double a, double b)
+        public static int FloorDiv(double dividend, double divisor)
         {
-            while (optimize(a) * optimize(b) > 0)
+            return Convert.ToInt32(Math.Floor(dividend / divisor));
+        }
+
+        public static double Bisection(Func<double, double> func, double a, double b)
+        {
+            while (func(a) * func(b) > 0)
             {
                 b += 1;
             }
 
             var c = (a + b) / 2.0;
 
-            while (Math.Abs(optimize(c)) > 0.01)
+            while (Math.Abs(func(c)) > 0.01)
             {
-                if (optimize(a) * optimize(c) < 0)
+                if (func(a) * func(c) < 0)
                 {
                     b = c;
                 }

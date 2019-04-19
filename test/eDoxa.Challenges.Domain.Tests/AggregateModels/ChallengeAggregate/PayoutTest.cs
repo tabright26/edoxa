@@ -8,11 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Helpers;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -32,7 +27,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             var numBuck = 10;
 
             var unperfectPrizes = Prizes.GetUnperfectPrize(winners, prizePool, firstPrize, entryFee);
-            var bucketSizes = Buckets.InitBuckSize(winners, numBuck);
+            var bucketSizes = Buckets.BucketList(winners, numBuck);
             var (initialPrizes, leftover) = Prizes.InitPrizes(unperfectPrizes, bucketSizes);
             var (finalPrizes, finalBucketSizes, finalLeftover) = Prizes.SpendLeftover(initialPrizes, bucketSizes, leftover);
         }
