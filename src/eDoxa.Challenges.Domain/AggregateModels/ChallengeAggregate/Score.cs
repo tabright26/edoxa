@@ -20,8 +20,6 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
     {
         private const int RoundDecimals = 2;
 
-        public static readonly Score Empty = new Score(decimal.Zero);
-
         private readonly decimal _value;
 
         private Score(decimal value)
@@ -46,12 +44,12 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         {
             var bestOf = participant.Challenge.Settings.BestOf;
 
-            if (participant.Matches.Count < bestOf)
+            if (participant.Matches.Count < bestOf.ToInt32())
             {
                 return null;
             }
 
-            var averageScore = participant.Matches.OrderBy(match => match.TotalScore).Take(bestOf).Average(match => match.TotalScore.ToDecimal());
+            var averageScore = participant.Matches.OrderBy(match => match.TotalScore).Take(bestOf.ToInt32()).Average(match => match.TotalScore.ToDecimal());
 
             return RoundScore(averageScore);
         }

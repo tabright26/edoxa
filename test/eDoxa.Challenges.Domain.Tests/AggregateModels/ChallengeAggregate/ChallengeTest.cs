@@ -1,11 +1,11 @@
 ﻿// Filename: ChallengeTest.cs
-// Date Created: 2019-03-21
+// Date Created: 2019-04-14
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
@@ -14,8 +14,8 @@ using System.Linq;
 
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Helpers;
 using eDoxa.Challenges.Domain.Factories;
+using eDoxa.Challenges.Domain.ValueObjects;
 using eDoxa.Seedwork.Domain.Common.Enums;
 using eDoxa.Testing.MSTest.Extensions;
 
@@ -34,7 +34,6 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void Constructor_Initialize_ShouldNotThrowException()
         {
             // Arrange
-            var helper = new ChallengeHelper();
             const Game game = Game.LeagueOfLegends;
             var name = new ChallengeName(nameof(Challenge));
             var settings = new ChallengeSettings();
@@ -51,9 +50,11 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             challenge.PrizeBreakdown.Should().NotBeEmpty();
             challenge.Scoreboard.Should().BeEmpty();
             challenge.Participants.Should().BeEmpty();
-            challenge.LiveData.Entries.Should().Be(challenge.Participants.Count);
-            challenge.LiveData.PayoutEntries.Should().Be(helper.PayoutEntries(challenge.LiveData.Entries, challenge.Settings.PayoutRatio));
-            challenge.LiveData.PrizePool.Should().Be(helper.PrizePool(challenge.LiveData.Entries, challenge.Settings.EntryFee, challenge.Settings.ServiceChargeRatio));
+            challenge.LiveData.Entries.Should().Be(new Entries(challenge.Participants.Count, false));
+            challenge.LiveData.PayoutEntries.Should().Be(new PayoutEntries(challenge.LiveData.Entries, challenge.Settings.PayoutRatio));
+
+            challenge.LiveData.PrizePool.Should()
+                .Be(new PrizePool(challenge.LiveData.Entries, challenge.Settings.EntryFee, challenge.Settings.ServiceChargeRatio));
         }
 
         [TestMethod]
@@ -122,7 +123,8 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             var challenge = ChallengeAggregateFactory.CreateChallenge(ChallengeState.Draft);
 
             // Act
-            challenge.Publish(ChallengeAggregateFactory.CreateChallengeScoringStrategy(), ChallengeTimeline.DefaultRegistrationPeriod, ChallengeTimeline.DefaultExtensionPeriod);
+            challenge.Publish(ChallengeAggregateFactory.CreateChallengeScoringStrategy(), ChallengeTimeline.DefaultRegistrationPeriod,
+                ChallengeTimeline.DefaultExtensionPeriod);
 
             // Assert
             challenge.Timeline.State.Should().HaveFlag(ChallengeState.Opened);
@@ -227,7 +229,8 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             var challenge = ChallengeAggregateFactory.CreateChallengeWithParticipant(new UserId());
 
             // Act
-            var action = new Action(() => challenge.SnapshotParticipantMatch(challenge.Participants.First().Id, ChallengeAggregateFactory.CreateChallengeStats()));
+            var action = new Action(() =>
+                challenge.SnapshotParticipantMatch(challenge.Participants.First().Id, ChallengeAggregateFactory.CreateChallengeStats()));
 
             // Assert
             action.Should().NotThrow<ArgumentException>();

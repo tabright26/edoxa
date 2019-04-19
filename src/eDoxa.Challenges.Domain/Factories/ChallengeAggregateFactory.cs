@@ -1,11 +1,11 @@
 ﻿// Filename: ChallengeAggregateFactory.cs
-// Date Created: 2019-04-06
+// Date Created: 2019-04-14
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
@@ -16,10 +16,12 @@ using System.Reflection;
 
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Challenges.Domain.ValueObjects;
 using eDoxa.Seedwork.Domain.Common.Enums;
 using eDoxa.Seedwork.Domain.Factories;
 
 using Moq;
+
 using Match = eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Match;
 
 namespace eDoxa.Challenges.Domain.Factories
@@ -28,13 +30,7 @@ namespace eDoxa.Challenges.Domain.Factories
     {
         private static readonly Lazy<ChallengeAggregateFactory> Lazy = new Lazy<ChallengeAggregateFactory>(() => new ChallengeAggregateFactory());
 
-        public static ChallengeAggregateFactory Instance
-        {
-            get
-            {
-                return Lazy.Value;
-            }
-        }
+        public static ChallengeAggregateFactory Instance => Lazy.Value;
     }
 
     internal sealed partial class ChallengeAggregateFactory
@@ -122,7 +118,7 @@ namespace eDoxa.Challenges.Domain.Factories
         {
             var challenge = this.CreateChallenge();
 
-            participantCount = participantCount ?? challenge.Settings.Entries;
+            participantCount = participantCount ?? challenge.Settings.Entries.ToInt32();
 
             for (var index = 0; index < participantCount; index++)
             {
@@ -179,13 +175,16 @@ namespace eDoxa.Challenges.Domain.Factories
             {
                 var timeline = challenge.Timeline;
 
-                challenge.GetType().GetField("_timeline", BindingFlags.Instance | BindingFlags.NonPublic)?.SetValue(challenge, this.CreateChallengeTimeline(ChallengeState.Opened));
+                challenge.GetType().GetField("_timeline", BindingFlags.Instance | BindingFlags.NonPublic)
+                    ?.SetValue(challenge, this.CreateChallengeTimeline(ChallengeState.Opened));
 
-                for (var row = 0; row < Random.Next(1, challenge.Settings.Entries + 1); row++)
+                for (var row = 0; row < Random.Next(1, challenge.Settings.Entries.ToInt32() + 1); row++)
                 {
                     var participant = challenge.RegisterParticipant(new UserId(), LinkedAccount.FromGuid(Guid.NewGuid()));
 
-                    for (var index = 0; index < Random.Next(1, challenge.Settings.BestOf + Random.Next(0, challenge.Settings.BestOf + 1) + 1); index++)
+                    for (var index = 0;
+                        index < Random.Next(1, challenge.Settings.BestOf.ToInt32() + Random.Next(0, challenge.Settings.BestOf.ToInt32() + 1) + 1);
+                        index++)
                     {
                         var stats = this.CreateChallengeStats();
 
@@ -203,11 +202,11 @@ namespace eDoxa.Challenges.Domain.Factories
     internal sealed partial class ChallengeAggregateFactory
     {
         public ChallengeSettings CreateChallengeSettings(
-            int bestOf = ChallengeSettings.DefaultBestOf,
-            int entries = ChallengeSettings.DefaultEntries,
-            decimal entryFee = ChallengeSettings.DefaultEntryFee,
-            float payoutRatio = ChallengeSettings.DefaultPayoutRatio,
-            float serviceChargeRatio = ChallengeSettings.DefaultServiceChargeRatio)
+            int bestOf = BestOf.DefaultPrimitive,
+            int entries = Entries.DefaultPrimitive,
+            decimal entryFee = EntryFee.DefaultPrimitive,
+            float payoutRatio = PayoutRatio.DefaultPrimitive,
+            float serviceChargeRatio = ServiceChargeRatio.DefaultPrimitive)
         {
             return new ChallengeSettings(bestOf, entries, entryFee, payoutRatio, serviceChargeRatio);
         }
@@ -220,18 +219,25 @@ namespace eDoxa.Challenges.Domain.Factories
             switch (state)
             {
                 case ChallengeState.Draft:
+
                     return CreateChallengeTimelineAsDraft();
                 case ChallengeState.Configured:
+
                     return CreateChallengeTimelineAsConfigured();
                 case ChallengeState.Opened:
+
                     return CreateChallengeTimelineAsOpened();
                 case ChallengeState.InProgress:
+
                     return CreateChallengeTimelineAsInProgress();
                 case ChallengeState.Ended:
+
                     return CreateChallengeTimelineAsEnded();
                 case ChallengeState.Closed:
+
                     return CreateChallengeTimelineAsClosed();
                 default:
+
                     throw new ArgumentOutOfRangeException(nameof(state));
             }
         }
@@ -310,7 +316,7 @@ namespace eDoxa.Challenges.Domain.Factories
 
         public Participant CreateParticipant(int? bestOf = null)
         {
-            var settings = this.CreateChallengeSettings(bestOf ?? ChallengeSettings.DefaultBestOf);
+            var settings = this.CreateChallengeSettings(bestOf ?? BestOf.Default.ToInt32());
 
             var challenge = this.CreateChallenge(settings: settings);
 

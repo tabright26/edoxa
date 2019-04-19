@@ -15,6 +15,7 @@ using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Strategies;
 using eDoxa.Challenges.Domain.Factories;
+using eDoxa.Challenges.Domain.ValueObjects;
 using eDoxa.Seedwork.Domain.Common.Enums;
 
 using FluentAssertions;
@@ -57,7 +58,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Strat
             var strategy = new DefaultChallengeScoreboardStrategy(challenge);
 
             // Assert
-            strategy.Scoreboard.Should().HaveCount(challenge.Settings.Entries);
+            strategy.Scoreboard.Should().HaveCount(challenge.Settings.Entries.ToInt32());
             strategy.Scoreboard.As<IReadOnlyDictionary<UserId, Score>>().Should().BeInDescendingOrder(participant => participant.Value);
         }
 
@@ -78,15 +79,15 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Strat
                 new ChallengeSettings(
                     bestOf,
                     entries,
-                    ChallengeSettings.DefaultEntryFee,                    
-                    ChallengeSettings.DefaultPayoutRatio,
-                    ChallengeSettings.DefaultServiceChargeRatio
+                    EntryFee.Default.ToDecimal(),
+                    PayoutRatio.Default.ToSingle(),
+                    ServiceChargeRatio.Default.ToSingle()
                 )
             )
             {
                 this.Publish(MockChallengeScoringStrategy());
 
-                for (var i = 0; i < Settings.Entries; i++)
+                for (var i = 0; i < Settings.Entries.ToInt32(); i++)
                 {
                     var userId = new UserId();
 
@@ -94,7 +95,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Strat
 
                     var random = new Random();
 
-                    for (var j = 0; j < random.Next(0, Settings.BestOf + 10); j++)
+                    for (var j = 0; j < random.Next(0, Settings.BestOf.ToInt32() + 10); j++)
                     {
                         this.SnapshotParticipantMatch(participant.Id, ChallengeAggregateFactory.CreateChallengeStats());
                     }

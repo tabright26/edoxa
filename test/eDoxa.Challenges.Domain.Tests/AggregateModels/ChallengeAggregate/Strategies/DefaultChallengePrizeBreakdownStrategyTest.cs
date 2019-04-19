@@ -15,6 +15,7 @@ using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Strategies;
 using eDoxa.Challenges.Domain.Factories;
+using eDoxa.Challenges.Domain.ValueObjects;
 using eDoxa.Seedwork.Domain.Common.Enums;
 
 using FluentAssertions;
@@ -28,17 +29,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Strat
     [TestClass]
     public sealed class DefaultChallengePrizeBreakdownStrategyTest
     {
-        private static readonly ChallengeAggregateFactory _factory = ChallengeAggregateFactory.Instance;
-
-        //[TestMethod]
-        //public void Constructor_NullReference_ShouldThrowArgumentNullException()
-        //{
-        //    // Act
-        //    var action = new Action(() => new DefaultChallengePrizeBreakdownStrategy(null));
-
-        //    // Assert
-        //    action.Should().Throw<ArgumentNullException>();
-        //}
+        private static readonly ChallengeAggregateFactory ChallengeAggregateFactory = ChallengeAggregateFactory.Instance;
 
         // TODO: This algorithm does not work when registration fees are higher than entries.
         //[DataRow(100, 100D, 0.3F, 0.29F)]
@@ -58,11 +49,11 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Strat
             var challenge = new MockChallenge(entries, entryFee, payoutRatio, serviceChargeRatio);
 
             // Act
-            var strategy = new DefaultChallengePrizeBreakdownStrategy(challenge.LiveData.PayoutEntries, challenge.LiveData.PrizePool);
+            var strategy = new DefaultChallengePrizeBreakdownStrategy(challenge.LiveData.PayoutEntries.ToInt32(), challenge.LiveData.PrizePool.ToDecimal());
 
             // Assert
-            strategy.PrizeBreakdown.Should().HaveCount(challenge.LiveData.PayoutEntries);
-            strategy.PrizeBreakdown.Sum(prize => prize.Value).Should().Be(challenge.LiveData.PrizePool);
+            strategy.PrizeBreakdown.Should().HaveCount(challenge.LiveData.PayoutEntries.ToInt32());
+            strategy.PrizeBreakdown.Sum(prize => prize.Value).Should().Be(challenge.LiveData.PrizePool.ToDecimal());
         }
 
         [DataRow(1000, 0.25D, 0.5F, 0.21F)]
@@ -82,18 +73,18 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Strat
             var challenge = new MockChallenge(entries, entryFee, payoutRatio, serviceChargeRatio);
 
             // Act
-            var strategy = new DefaultChallengePrizeBreakdownStrategy(challenge.Settings.PayoutEntries, challenge.Settings.PrizePool);
+            var strategy = new DefaultChallengePrizeBreakdownStrategy(challenge.Settings.PayoutEntries.ToInt32(), challenge.Settings.PrizePool.ToDecimal());
 
             // Assert
-            strategy.PrizeBreakdown.Should().HaveCount(challenge.Settings.PayoutEntries);
-            strategy.PrizeBreakdown.Sum(prize => prize.Value).Should().Be(challenge.Settings.PrizePool);
+            strategy.PrizeBreakdown.Should().HaveCount(challenge.Settings.PayoutEntries.ToInt32());
+            strategy.PrizeBreakdown.Sum(prize => prize.Value).Should().Be(challenge.Settings.PrizePool.ToDecimal());
         }
 
         private static IChallengeScoringStrategy MockChallengeScoringStrategy()
         {
             var mock = new Mock<IChallengeScoringStrategy>();
 
-            mock.SetupGet(x => x.Scoring).Returns(_factory.CreateChallengeScoring());
+            mock.SetupGet(x => x.Scoring).Returns(ChallengeAggregateFactory.CreateChallengeScoring());
 
             return mock.Object;
         }
@@ -103,7 +94,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Strat
             public MockChallenge(int entries, double entryFee, float payoutRatio, float serviceChargeRatio) : base(
                 Game.LeagueOfLegends,
                 new ChallengeName(nameof(MockChallenge)),
-                new ChallengeSettings(ChallengeSettings.DefaultBestOf, entries, (decimal) entryFee, payoutRatio, serviceChargeRatio)
+                new ChallengeSettings(BestOf.Default.ToInt32(), entries, (decimal) entryFee, payoutRatio, serviceChargeRatio)
             )
             {
                 this.Publish(MockChallengeScoringStrategy());

@@ -96,7 +96,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             {
                 var factory = ChallengePrizeBreakdownFactory.Instance;
 
-                var strategy = factory.Create(Settings.Type, Settings.PayoutEntries, Settings.PrizePool);
+                var strategy = factory.Create(Settings.Type, Settings.PayoutEntries.ToInt32(), Settings.PrizePool.ToDecimal());
 
                 return strategy.PrizeBreakdown;
             }
@@ -162,7 +162,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
                 throw new ArgumentException("The participant is already registered.", nameof(userId));
             }
 
-            if (LiveData.Entries >= Settings.Entries)
+            if (LiveData.Entries.ToInt32() >= Settings.Entries.ToInt32())
             {
                 throw new InvalidOperationException("The maximum number of participants has been reached.");
             }

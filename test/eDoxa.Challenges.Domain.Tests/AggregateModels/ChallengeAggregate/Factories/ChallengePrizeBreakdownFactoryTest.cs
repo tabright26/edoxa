@@ -33,7 +33,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Facto
             var factory = ChallengePrizeBreakdownFactory.Instance;
 
             // Act
-            var strategy = factory.Create(challenge.Settings.Type, challenge.Settings.PayoutEntries, challenge.Settings.PrizePool);
+            var strategy = factory.Create(challenge.Settings.Type, challenge.Settings.PayoutEntries.ToInt32(), challenge.Settings.PrizePool.ToDecimal());
 
             // Assert
             strategy.PrizeBreakdown.Should().NotBeNull();
@@ -49,7 +49,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Facto
             var factory = ChallengePrizeBreakdownFactory.Instance;
 
             // Act
-            var action = new Action(() => factory.Create(challenge.Settings.Type, challenge.Settings.PayoutEntries, challenge.Settings.PrizePool));
+            var action = new Action(() => factory.Create(challenge.Settings.Type, challenge.Settings.PayoutEntries.ToInt32(), challenge.Settings.PrizePool.ToDecimal()));
 
             // Assert
             action.Should().Throw<NotImplementedException>();

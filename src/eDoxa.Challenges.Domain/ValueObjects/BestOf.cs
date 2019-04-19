@@ -12,23 +12,29 @@ using System;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
+using JetBrains.Annotations;
+
 namespace eDoxa.Challenges.Domain.ValueObjects
 {
-    public class BestOf : ValueObject
+    public partial class BestOf : ValueObject
     {
         internal const int MinBestOf = 1;
         internal const int MaxBestOf = 7;
+        internal const int DefaultPrimitive = 3;
 
-        public static readonly BestOf Default = new BestOf(3);
+        public static readonly BestOf Default = new BestOf(DefaultPrimitive);
 
         private readonly int _bestOf;
 
-        public BestOf(int bestOf)
+        public BestOf(int bestOf, bool validate = true)
         {
-            if (bestOf < MinBestOf ||
-                bestOf > MaxBestOf)
+            if (validate)
             {
-                throw new ArgumentException(nameof(bestOf));
+                if (bestOf < MinBestOf ||
+                    bestOf > MaxBestOf)
+                {
+                    throw new ArgumentException(nameof(bestOf));
+                }
             }
 
             _bestOf = bestOf;
@@ -37,6 +43,19 @@ namespace eDoxa.Challenges.Domain.ValueObjects
         public int ToInt32()
         {
             return _bestOf;
+        }
+    }
+
+    public partial class BestOf : IComparable, IComparable<BestOf>
+    {
+        public int CompareTo([CanBeNull] object obj)
+        {
+            return this.CompareTo(obj as BestOf);
+        }
+
+        public int CompareTo([CanBeNull] BestOf other)
+        {
+            return _bestOf.CompareTo(other?._bestOf);
         }
     }
 }

@@ -1,18 +1,18 @@
 ﻿// Filename: ChallengeSettingsTest.cs
-// Date Created: 2019-03-18
+// Date Created: 2019-04-14
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
 
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Helpers;
 using eDoxa.Challenges.Domain.Factories;
+using eDoxa.Challenges.Domain.ValueObjects;
 using eDoxa.Testing.MSTest.Extensions;
 
 using FluentAssertions;
@@ -30,21 +30,21 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void Constructor_Initialize_ShouldNotThrowException()
         {
             // Arrange
-            const int bestOf = ChallengeSettings.DefaultBestOf;
-            const int entries = ChallengeSettings.DefaultEntries;
-            const decimal entryFee = ChallengeSettings.DefaultEntryFee;
-            const float payoutRatio = ChallengeSettings.DefaultPayoutRatio;
-            const float serviceChargeRatio = ChallengeSettings.DefaultServiceChargeRatio;
+            var bestOf = BestOf.Default.ToInt32();
+            var entries = Entries.Default.ToInt32();
+            var entryFee = EntryFee.Default.ToDecimal();
+            var payoutRatio = PayoutRatio.Default.ToSingle();
+            var serviceChargeRatio = ServiceChargeRatio.Default.ToSingle();
 
             // Act
             var settings = ChallengeAggregateFactory.CreateChallengeSettings();
 
             // Assert
-            settings.BestOf.Should().Be(bestOf);
-            settings.Entries.Should().Be(entries);
-            settings.EntryFee.Should().Be(entryFee);
-            settings.PayoutRatio.Should().Be(payoutRatio);
-            settings.ServiceChargeRatio.Should().Be(serviceChargeRatio);
+            settings.BestOf.ToInt32().Should().Be(bestOf);
+            settings.Entries.ToInt32().Should().Be(entries);
+            settings.EntryFee.ToDecimal().Should().Be(entryFee);
+            settings.PayoutRatio.ToSingle().Should().Be(payoutRatio);
+            settings.ServiceChargeRatio.ToSingle().Should().Be(serviceChargeRatio);
         }
 
         [TestMethod]
@@ -75,115 +75,68 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             action.Should().Throw<ArgumentException>();
         }
 
-        [DataRow(ChallengeSettings.MinEntries - 1)]
-        [DataRow(ChallengeSettings.MaxEntries + 1)]
-        [DataRow(ChallengeSettings.DefaultEntries - 5)]
+        [DataRow(Entries.MinEntries - 1)]
+        [DataRow(Entries.MaxEntries + 1)]
+        [DataRow(Entries.DefaultPrimitive - 5)]
         [DataTestMethod]
-        public void Entries_ArgumentOutOfRange_ShouldThrowArgumentOutOfRangeException(int entries)
+        public void Entries_InvalidArgument_ShouldThrowArgumentException(int entries)
         {
-            // Arrange
-            var settings = ChallengeAggregateFactory.CreateChallengeSettings();
-
             // Act
-            var action = new Action(() => settings.SetProperty(nameof(ChallengeSettings.Entries), entries));
+            var action = new Action(() => new Entries(entries));
 
             // Assert
-            action.Should().Throw<ArgumentOutOfRangeException>();
+            action.Should().Throw<ArgumentException>();
         }
 
-        [DataRow((double) ChallengeSettings.MinEntryFee - 1)]
-        [DataRow((double) ChallengeSettings.MaxEntryFee + 1)]
-        [DataRow((double) ChallengeSettings.DefaultEntryFee - 0.01D)]
+        [DataRow((double) EntryFee.MinEntryFee - 1)]
+        [DataRow((double) EntryFee.MaxEntryFee + 1)]
+        [DataRow((double) EntryFee.DefaultPrimitive - 0.01D)]
         [DataTestMethod]
-        public void EntryFee_ArgumentOutOfRange_ShouldThrowArgumentOutOfRangeException(double entryFee)
+        public void EntryFee_InvalidArgument_ShouldThrowArgumentException(double entryFee)
         {
-            // Arrange
-            var settings = ChallengeAggregateFactory.CreateChallengeSettings();
-
             // Act
-            var action = new Action(() => settings.SetProperty(nameof(ChallengeSettings.EntryFee), (decimal) entryFee));
+            var action = new Action(() => new EntryFee((decimal) entryFee));
 
             // Assert
-            action.Should().Throw<ArgumentOutOfRangeException>();
+            action.Should().Throw<ArgumentException>();
         }
 
-        [DataRow(ChallengeSettings.MinPayoutRatio - 0.1F)]
-        [DataRow(ChallengeSettings.MaxPayoutRatio + 0.1F)]
-        [DataRow(ChallengeSettings.DefaultPayoutRatio - 0.01F)]
+        [DataRow(PayoutRatio.MinPayoutRatio - 0.1F)]
+        [DataRow(PayoutRatio.MaxPayoutRatio + 0.1F)]
+        [DataRow(PayoutRatio.DefaultPrimitive - 0.01F)]
         [DataTestMethod]
-        public void PayoutRatio_ArgumentOutOfRange_ShouldThrowArgumentOutOfRangeException(float payoutRatio)
+        public void PayoutRatio_InvalidArgument_ShouldThrowArgumentException(float payoutRatio)
         {
-            // Arrange
-            var settings = ChallengeAggregateFactory.CreateChallengeSettings();
-
             // Act
-            var action = new Action(() => settings.SetProperty(nameof(ChallengeSettings.PayoutRatio), payoutRatio));
+            var action = new Action(() => new PayoutRatio(payoutRatio));
 
             // Assert
-            action.Should().Throw<ArgumentOutOfRangeException>();
+            action.Should().Throw<ArgumentException>();
         }
 
         [DataTestMethod]
-        [DataRow(ChallengeSettings.MinServiceChargeRatio - 0.1F)]
-        [DataRow(ChallengeSettings.MaxServiceChargeRatio + 0.1F)]
-        [DataRow(ChallengeSettings.DefaultServiceChargeRatio + 0.001F)]
-        public void ServiceCharge_ArgumentOutOfRange_ShouldThrowArgumentOutOfRangeException(float serviceChargeRatio)
+        [DataRow(ServiceChargeRatio.MinServiceChargeRatio - 0.1F)]
+        [DataRow(ServiceChargeRatio.MaxServiceChargeRatio + 0.1F)]
+        [DataRow(ServiceChargeRatio.DefaultPrimitive + 0.001F)]
+        public void ServiceCharge_InvalidArgument_ShouldThrowArgumentException(float serviceChargeRatio)
         {
-            // Arrange
-            var settings = ChallengeAggregateFactory.CreateChallengeSettings();
-
             // Act
-            var action = new Action(() => settings.SetProperty(nameof(ChallengeSettings.ServiceChargeRatio), serviceChargeRatio));
+            var action = new Action(() => new ServiceChargeRatio(serviceChargeRatio));
 
             // Assert
-            action.Should().Throw<ArgumentOutOfRangeException>();
+            action.Should().Throw<ArgumentException>();
         }
 
-        [DataRow(ChallengeSettings.MinBestOf - 1)]
-        [DataRow(ChallengeSettings.MaxBestOf + 1)]
+        [DataRow(BestOf.MinBestOf - 1)]
+        [DataRow(BestOf.MaxBestOf + 1)]
         [DataTestMethod]
-        public void BestOf_ArgumentOutOfRange_ShouldThrowArgumentOutOfRangeException(int bestOf)
+        public void BestOf_InvalidArgument_ShouldThrowArgumentException(int bestOf)
         {
-            // Arrange
-            var settings = ChallengeAggregateFactory.CreateChallengeSettings();
-
             // Act
-            var action = new Action(() => settings.SetProperty(nameof(ChallengeSettings.BestOf), bestOf));
+            var action = new Action(() => new BestOf(bestOf));
 
             // Assert
-            action.Should().Throw<ArgumentOutOfRangeException>();
-        }
-
-        [DataRow(50, 0.5F)]
-        [DataRow(100, 0.6F)]
-        [DataTestMethod]
-        public void PayoutEntries_ValidData_ShouldBeValid(int entries, float payoutRatio)
-        {
-            // Arrange
-            var helper = new ChallengeHelper();
-            var settings = ChallengeAggregateFactory.CreateChallengeSettings(entries: entries, payoutRatio: payoutRatio);
-            
-            // Act
-            var payoutEntries = helper.PayoutEntries(entries, payoutRatio);
-
-            // Assert
-            settings.PayoutEntries.Should().Be(payoutEntries);
-        }
-
-        [DataRow(50, 5D, 0.2F)]
-        [DataRow(100, 10D, 0.3F)]
-        [DataTestMethod]
-        public void PrizePool_ValidData_ShouldBeValid(int entries, double entryFee, float serviceChargeRatio)
-        {
-            // Arrange
-            var helper = new ChallengeHelper();
-            var settings = ChallengeAggregateFactory.CreateChallengeSettings(entries: entries, entryFee: (decimal) entryFee, serviceChargeRatio: serviceChargeRatio);
-
-            // Act
-            var prizePool = helper.PrizePool(entries, (decimal) entryFee, serviceChargeRatio);
-
-            // Assert
-            settings.PrizePool.Should().Be(prizePool);
+            action.Should().Throw<ArgumentException>();
         }
     }
 }

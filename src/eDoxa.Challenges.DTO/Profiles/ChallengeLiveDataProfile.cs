@@ -19,9 +19,9 @@ namespace eDoxa.Challenges.DTO.Profiles
         public ChallengeLiveDataProfile()
         {
             this.CreateMap<ChallengeLiveData, ChallengeLiveDataDTO>()
-                .ForMember(liveData => liveData.Entries, configuration => configuration.MapFrom(liveData => liveData.Entries))
-                .ForMember(liveData => liveData.PayoutEntries, configuration => configuration.MapFrom(liveData => liveData.PayoutEntries))
-                .ForMember(liveData => liveData.PrizePool, configuration => configuration.MapFrom(liveData => liveData.PrizePool))
+                .ForMember(liveData => liveData.Entries, configuration => configuration.MapFrom(liveData => liveData.Entries.ToInt32()))
+                .ForMember(liveData => liveData.PayoutEntries, configuration => configuration.MapFrom(liveData => liveData.PayoutEntries.ToInt32()))
+                .ForMember(liveData => liveData.PrizePool, configuration => configuration.MapFrom(liveData => liveData.PrizePool.ToDecimal()))
                 .ForMember(liveData => liveData.PrizeBreakdown, configuration => configuration.MapFrom(liveData => liveData.PrizeBreakdown));
         }
     }

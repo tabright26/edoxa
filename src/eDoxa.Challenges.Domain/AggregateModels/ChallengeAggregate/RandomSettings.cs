@@ -1,14 +1,16 @@
 ﻿// Filename: RandomSettings.cs
-// Date Created: 2019-03-20
+// Date Created: 2019-04-14
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
+
+using eDoxa.Challenges.Domain.ValueObjects;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
@@ -16,7 +18,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
     {
         private static readonly Random Random = new Random();
 
-        public int NextEntries(int minValue = ChallengeSettings.MinEntries, int maxValue = ChallengeSettings.MaxEntries)
+        public int NextEntries(int minValue = Entries.MinEntries, int maxValue = Entries.MaxEntries)
         {
             if (minValue > maxValue)
             {
@@ -45,7 +47,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             return entries * multiplier;
         }
 
-        public decimal NextEntryFee(decimal minValue = ChallengeSettings.MinEntryFee, decimal maxValue = ChallengeSettings.MaxEntryFee)
+        public decimal NextEntryFee(decimal minValue = EntryFee.MinEntryFee, decimal maxValue = EntryFee.MaxEntryFee)
         {
             if (minValue > maxValue)
             {
@@ -105,7 +107,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             return entryFee * (multiplier / multiplierOfCents);
         }
 
-        public int NextBestOf(int minValue = ChallengeSettings.MinBestOf, int maxValue = ChallengeSettings.MaxBestOf)
+        public int NextBestOf(int minValue = BestOf.MinBestOf, int maxValue = BestOf.MaxBestOf)
         {
             if (minValue > maxValue)
             {

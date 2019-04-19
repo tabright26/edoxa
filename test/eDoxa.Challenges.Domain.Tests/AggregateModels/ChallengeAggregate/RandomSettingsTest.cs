@@ -11,6 +11,7 @@
 using System;
 
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Challenges.Domain.ValueObjects;
 
 using FluentAssertions;
 
@@ -34,8 +35,8 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             var entries = random.NextEntries(minValue, maxValue);
 
             // Assert
-            entries.Should().BeGreaterOrEqualTo(ChallengeSettings.MinEntries);
-            entries.Should().BeLessOrEqualTo(ChallengeSettings.MaxEntries);
+            entries.Should().BeGreaterOrEqualTo(Entries.MinEntries);
+            entries.Should().BeLessOrEqualTo(Entries.MaxEntries);
             (entries % 10 == 0).Should().BeTrue();
         }
 
@@ -46,7 +47,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             var random = new RandomSettings();
 
             // Act
-            var action = new Action(() => random.NextEntries(ChallengeSettings.MaxEntries, ChallengeSettings.MinEntries));
+            var action = new Action(() => random.NextEntries(Entries.MaxEntries, Entries.MinEntries));
 
             // Assert
             action.Should().Throw<ArgumentOutOfRangeException>();
@@ -70,8 +71,8 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             var entryFee = random.NextEntryFee((decimal) minValue, (decimal) maxValue);
 
             // Assert
-            entryFee.Should().BeGreaterOrEqualTo(ChallengeSettings.MinEntryFee);
-            entryFee.Should().BeLessOrEqualTo(ChallengeSettings.MaxEntryFee);
+            entryFee.Should().BeGreaterOrEqualTo(EntryFee.MinEntryFee);
+            entryFee.Should().BeLessOrEqualTo(EntryFee.MaxEntryFee);
             (entryFee % 0.25M == 0).Should().BeTrue();
         }
 
@@ -82,7 +83,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             var random = new RandomSettings();
 
             // Act
-            var action = new Action(() => random.NextEntryFee(ChallengeSettings.MaxEntryFee, ChallengeSettings.MinEntryFee));
+            var action = new Action(() => random.NextEntryFee(EntryFee.MaxEntryFee, EntryFee.MinEntryFee));
 
             // Assert
             action.Should().Throw<ArgumentOutOfRangeException>();
@@ -100,8 +101,8 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             var bestOf = random.NextBestOf(minValue, maxValue);
 
             // Assert
-            bestOf.Should().BeGreaterOrEqualTo(ChallengeSettings.MinBestOf);
-            bestOf.Should().BeLessOrEqualTo(ChallengeSettings.MaxBestOf);
+            bestOf.Should().BeGreaterOrEqualTo(BestOf.MinBestOf);
+            bestOf.Should().BeLessOrEqualTo(BestOf.MaxBestOf);
             (bestOf >= 1 || bestOf <= 7).Should().BeTrue();
         }
 
@@ -112,7 +113,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             var random = new RandomSettings();
 
             // Act
-            var action = new Action(() => random.NextBestOf(ChallengeSettings.MaxBestOf, ChallengeSettings.MinBestOf));
+            var action = new Action(() => random.NextBestOf(BestOf.MaxBestOf, BestOf.MinBestOf));
 
             // Assert
             action.Should().Throw<ArgumentOutOfRangeException>();

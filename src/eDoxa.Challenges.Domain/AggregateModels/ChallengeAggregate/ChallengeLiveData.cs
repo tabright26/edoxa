@@ -1,22 +1,20 @@
 ﻿// Filename: ChallengeLiveData.cs
-// Date Created: 2019-03-20
+// Date Created: 2019-04-14
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Factories;
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Helpers;
+using eDoxa.Challenges.Domain.ValueObjects;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class ChallengeLiveData
     {
-        private static readonly ChallengeHelper Helper = new ChallengeHelper();
-
         private readonly Challenge _challenge;
 
         public ChallengeLiveData(Challenge challenge)
@@ -24,29 +22,11 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             _challenge = challenge;
         }
 
-        public int Entries
-        {
-            get
-            {
-                return _challenge.Participants.Count;
-            }
-        }
+        public Entries Entries => new Entries(_challenge.Participants.Count, false);
 
-        public int PayoutEntries
-        {
-            get
-            {
-                return Helper.PayoutEntries(Entries, _challenge.Settings.PayoutRatio);
-            }
-        }
+        public PayoutEntries PayoutEntries => new PayoutEntries(Entries, _challenge.Settings.PayoutRatio);
 
-        public decimal PrizePool
-        {
-            get
-            {
-                return Helper.PrizePool(Entries, _challenge.Settings.EntryFee, _challenge.Settings.ServiceChargeRatio);
-            }
-        }
+        public PrizePool PrizePool => new PrizePool(Entries, _challenge.Settings.EntryFee, _challenge.Settings.ServiceChargeRatio);
 
         public IChallengePrizeBreakdown PrizeBreakdown
         {
@@ -54,7 +34,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             {
                 var factory = ChallengePrizeBreakdownFactory.Instance;
 
-                var strategy = factory.Create(_challenge.Settings.Type, PayoutEntries, PrizePool);
+                var strategy = factory.Create(_challenge.Settings.Type, PayoutEntries.ToInt32(), PrizePool.ToDecimal());
 
                 return strategy.PrizeBreakdown;
             }

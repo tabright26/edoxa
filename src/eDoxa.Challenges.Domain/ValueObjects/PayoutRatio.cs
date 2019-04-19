@@ -12,24 +12,30 @@ using System;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
+using JetBrains.Annotations;
+
 namespace eDoxa.Challenges.Domain.ValueObjects
 {
-    public class PayoutRatio : ValueObject
+    public partial class PayoutRatio : ValueObject
     {
         internal const float MinPayoutRatio = 0.25F;
         internal const float MaxPayoutRatio = 0.75F;
+        internal const float DefaultPrimitive = 0.5F;
 
-        private static readonly PayoutRatio Default = new PayoutRatio(0.5F);
+        public static readonly PayoutRatio Default = new PayoutRatio(DefaultPrimitive);
 
         private readonly float _payoutRatio;
 
-        public PayoutRatio(float payoutRatio)
+        public PayoutRatio(float payoutRatio, bool validate = true)
         {
-            if (payoutRatio < MinPayoutRatio ||
-                payoutRatio > MaxPayoutRatio ||
-                (decimal) payoutRatio % 0.05M != 0)
+            if (validate)
             {
-                throw new ArgumentException(nameof(payoutRatio));
+                if (payoutRatio < MinPayoutRatio ||
+                    payoutRatio > MaxPayoutRatio ||
+                    (decimal) payoutRatio % 0.05M != 0)
+                {
+                    throw new ArgumentException(nameof(payoutRatio));
+                }
             }
 
             _payoutRatio = payoutRatio;
@@ -38,6 +44,19 @@ namespace eDoxa.Challenges.Domain.ValueObjects
         public float ToSingle()
         {
             return _payoutRatio;
+        }
+    }
+
+    public partial class PayoutRatio : IComparable, IComparable<PayoutRatio>
+    {
+        public int CompareTo([CanBeNull] object obj)
+        {
+            return this.CompareTo(obj as PayoutRatio);
+        }
+
+        public int CompareTo([CanBeNull] PayoutRatio other)
+        {
+            return _payoutRatio.CompareTo(other?._payoutRatio);
         }
     }
 }

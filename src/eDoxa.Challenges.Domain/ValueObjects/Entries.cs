@@ -12,24 +12,30 @@ using System;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
+using JetBrains.Annotations;
+
 namespace eDoxa.Challenges.Domain.ValueObjects
 {
-    public class Entries : ValueObject
+    public partial class Entries : ValueObject
     {
         internal const int MinEntries = 30;
         internal const int MaxEntries = 2000;
+        internal const int DefaultPrimitive = 50;
 
-        public static readonly Entries Default = new Entries(50);
+        public static readonly Entries Default = new Entries(DefaultPrimitive);
 
         private readonly int _entries;
 
-        public Entries(int entries)
+        public Entries(int entries, bool validate = true)
         {
-            if (entries < MinEntries ||
-                entries > MaxEntries ||
-                entries % 10 != 0)
+            if (validate)
             {
-                throw new ArgumentException(nameof(entries));
+                if (entries < MinEntries ||
+                    entries > MaxEntries ||
+                    entries % 10 != 0)
+                {
+                    throw new ArgumentException(nameof(entries));
+                }
             }
 
             _entries = entries;
@@ -38,6 +44,19 @@ namespace eDoxa.Challenges.Domain.ValueObjects
         public int ToInt32()
         {
             return _entries;
+        }
+    }
+
+    public partial class Entries : IComparable, IComparable<Entries>
+    {
+        public int CompareTo([CanBeNull] object obj)
+        {
+            return this.CompareTo(obj as Entries);
+        }
+
+        public int CompareTo([CanBeNull] Entries other)
+        {
+            return _entries.CompareTo(other?._entries);
         }
     }
 }

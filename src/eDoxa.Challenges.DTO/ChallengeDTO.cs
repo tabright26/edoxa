@@ -54,7 +54,7 @@ namespace eDoxa.Challenges.DTO
         [JsonProperty("scoring")]
         public ChallengeScoringDTO Scoring { get; set; }
 
-        [JsonProperty("live")]
+        [JsonProperty("liveData")]
         public ChallengeLiveDataDTO LiveData { get; set; }
 
         [JsonProperty("prizeBreakdown")]
