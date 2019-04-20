@@ -12,7 +12,6 @@ using System.Collections.Generic;
 
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.Factories;
-using eDoxa.Challenges.Domain.ValueObjects;
 
 using FluentAssertions;
 

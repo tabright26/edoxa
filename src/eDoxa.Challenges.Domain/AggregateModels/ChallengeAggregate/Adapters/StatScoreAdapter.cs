@@ -10,8 +10,6 @@
 
 using System;
 
-using eDoxa.Challenges.Domain.ValueObjects;
-
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Adapters
 {
     internal sealed class StatScoreAdapter : IScoreAdapter

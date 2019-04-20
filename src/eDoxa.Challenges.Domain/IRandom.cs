@@ -1,5 +1,5 @@
-﻿// Filename: IChallengePayout.cs
-// Date Created: 2019-04-14
+﻿// Filename: IRandom.cs
+// Date Created: 2019-04-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,14 +8,10 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Collections.Generic;
-
-using eDoxa.Challenges.Domain.AggregateModels;
-
 namespace eDoxa.Challenges.Domain
 {
-    public interface IChallengePayout : IReadOnlyDictionary<Bucket, Prize>
+    public interface IRandom<out T, in TRange>
     {
-        IUserPrizes Snapshot(IChallengeScoreboard scoreboard);
+        T Next(TRange range);
     }
 }

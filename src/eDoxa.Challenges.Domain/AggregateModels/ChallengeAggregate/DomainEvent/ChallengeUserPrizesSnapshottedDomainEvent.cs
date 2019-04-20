@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 
-using eDoxa.Challenges.Domain.ValueObjects;
 using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.DomainEvent

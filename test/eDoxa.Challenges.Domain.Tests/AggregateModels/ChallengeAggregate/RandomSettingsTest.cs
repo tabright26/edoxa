@@ -10,7 +10,7 @@
 
 using System;
 
-using eDoxa.Challenges.Domain.ValueObjects;
+using eDoxa.Challenges.Domain.AggregateModels;
 
 using FluentAssertions;
 
@@ -27,15 +27,21 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         [DataTestMethod]
         public void NextEntries_ValidData_ShouldBeValid(int minValue, int maxValue)
         {
+            // Arrange
+            var random = new EntriesRandom();
+
             // Act
-            Entries.Random(new Entries(minValue), new Entries(maxValue));
+            random.Next(new EntriesRange(new Entries(minValue), new Entries(maxValue)));
         }
 
         [TestMethod]
         public void NextEntries_MinValueGreaterThenMaxValue_ShouldThrowArgumentException()
         {
+            // Arrange
+            var random = new EntriesRandom();
+
             // Act
-            var action = new Action(() => Entries.Random(new Entries(Entries.Max), new Entries(Entries.Min)));
+            var action = new Action(() => random.Next(new EntriesRange(new Entries(Entries.Max), new Entries(Entries.Min))));
 
             // Assert
             action.Should().Throw<ArgumentException>();
@@ -52,15 +58,21 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         [DataTestMethod]
         public void NextEntryFee_ValidData_ShouldBeValid(double minValue, double maxValue)
         {
+            // Arrange
+            var random = new EntryFeeRandom();
+
             // Act
-            EntryFee.Random(new EntryFee((decimal) minValue), new EntryFee((decimal) maxValue));
+            random.Next(new EntryFeeRange(new EntryFee((decimal) minValue), new EntryFee((decimal) maxValue)));
         }
 
         [TestMethod]
         public void NextEntryFee_MinValueGreaterThenMaxValue_ShouldThrowArgumentException()
         {
+            // Arrange
+            var random = new EntryFeeRandom();
+
             // Act
-            var action = new Action(() => EntryFee.Random(new EntryFee(EntryFee.Max), new EntryFee(EntryFee.Min)));
+            var action = new Action(() => random.Next(new EntryFeeRange(new EntryFee(EntryFee.Max), new EntryFee(EntryFee.Min))));
 
             // Assert
             action.Should().Throw<ArgumentException>();
@@ -71,15 +83,21 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         [DataTestMethod]
         public void NextBestOf_ValidData_ShouldBeValid(int minValue, int maxValue)
         {
+            // Arrange
+            var random = new BestOfRandom();
+
             // Act
-            BestOf.Random(new BestOf(minValue), new BestOf(maxValue));
+            random.Next(new BestOfRange(new BestOf(minValue), new BestOf(maxValue)));
         }
 
         [TestMethod]
         public void NextBestOf_MinValueGreaterThenMaxValue_ShouldThrowArgumentException()
         {
+            // Arrange
+            var random = new BestOfRandom();
+
             // Act
-            var action = new Action(() => BestOf.Random(new BestOf(BestOf.Max), new BestOf(BestOf.Min)));
+            var action = new Action(() => random.Next(new BestOfRange(new BestOf(BestOf.Max), new BestOf(BestOf.Min))));
 
             // Assert
             action.Should().Throw<ArgumentException>();

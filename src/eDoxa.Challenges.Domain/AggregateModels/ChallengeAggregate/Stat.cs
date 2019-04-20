@@ -9,7 +9,6 @@
 // this source code package.
 
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Adapters;
-using eDoxa.Challenges.Domain.ValueObjects;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate

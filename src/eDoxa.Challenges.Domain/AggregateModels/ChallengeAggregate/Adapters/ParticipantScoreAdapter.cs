@@ -11,8 +11,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using eDoxa.Challenges.Domain.ValueObjects;
-
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Adapters
 {
     internal sealed class ParticipantScoreAdapter : IScoreAdapter

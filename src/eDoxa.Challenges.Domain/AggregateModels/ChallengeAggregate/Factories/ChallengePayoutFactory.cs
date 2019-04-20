@@ -11,7 +11,6 @@
 using System;
 
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Strategies;
-using eDoxa.Challenges.Domain.ValueObjects;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Factories
 {

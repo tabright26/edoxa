@@ -15,7 +15,6 @@ using System.Linq;
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Factories;
-using eDoxa.Challenges.Domain.ValueObjects;
 using eDoxa.Seedwork.Domain.Common.Enums;
 using eDoxa.Testing.MSTest.Extensions;
 

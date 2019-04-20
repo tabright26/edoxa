@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Challenges.Domain.ValueObjects;
+using eDoxa.Challenges.Domain.AggregateModels;
 
 namespace eDoxa.Challenges.Domain
 {

@@ -12,7 +12,6 @@ using System;
 
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.ValueObjects;
 
 using JetBrains.Annotations;
 

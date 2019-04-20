@@ -1,5 +1,5 @@
 ﻿// Filename: BestOf.cs
-// Date Created: 2019-04-19
+// Date Created: 2019-04-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -14,7 +14,7 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Challenges.Domain.ValueObjects
+namespace eDoxa.Challenges.Domain.AggregateModels
 {
     public partial class BestOf : ValueObject
     {
@@ -45,18 +45,6 @@ namespace eDoxa.Challenges.Domain.ValueObjects
         public static implicit operator int(BestOf bestOf)
         {
             return bestOf._value;
-        }
-
-        public static BestOf Random(BestOf minValue, BestOf maxValue)
-        {
-            if (minValue > maxValue)
-            {
-                throw new ArgumentOutOfRangeException(nameof(minValue));
-            }
-
-            var random = new Random();
-
-            return new BestOf(random.Next(minValue, maxValue + 1));
         }
     }
 

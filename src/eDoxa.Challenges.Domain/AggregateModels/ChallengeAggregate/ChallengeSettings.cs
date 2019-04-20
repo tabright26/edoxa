@@ -11,7 +11,6 @@
 using System;
 using System.ComponentModel;
 
-using eDoxa.Challenges.Domain.ValueObjects;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
@@ -46,35 +45,39 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         internal ChallengeSettings(ChallengePublisherPeriodicity periodicity) : this()
         {
+            var bestOfRandom = new BestOfRandom();
+            var entriesRandom = new EntriesRandom();
+            var entryFeeRandom = new EntryFeeRandom();
+
             switch (periodicity)
             {
                 case ChallengePublisherPeriodicity.Daily:
 
-                    _bestOf = BestOf.Random(new BestOf(1), new BestOf(3));
+                    _bestOf = bestOfRandom.Next(new BestOfRange(new BestOf(1), new BestOf(3)));
 
-                    _entries = Entries.Random(new Entries(30), new Entries(50));
+                    _entries = entriesRandom.Next(new EntriesRange(new Entries(30), new Entries(50)));
 
-                    _entryFee = EntryFee.Random(new EntryFee(0.25M), new EntryFee(5M));
+                    _entryFee = entryFeeRandom.Next(new EntryFeeRange(new EntryFee(0.25M), new EntryFee(5M)));
 
                     break;
 
                 case ChallengePublisherPeriodicity.Weekly:
 
-                    _bestOf = BestOf.Random(new BestOf(3), new BestOf(5));
+                    _bestOf = bestOfRandom.Next(new BestOfRange(new BestOf(3), new BestOf(5)));
 
-                    _entries = Entries.Random(new Entries(75), new Entries(150));
+                    _entries = entriesRandom.Next(new EntriesRange(new Entries(75), new Entries(150)));
 
-                    _entryFee = EntryFee.Random(new EntryFee(2.5M), new EntryFee(10M));
+                    _entryFee = entryFeeRandom.Next(new EntryFeeRange(new EntryFee(2.5M), new EntryFee(10M)));
 
                     break;
 
                 case ChallengePublisherPeriodicity.Monthly:
 
-                    _bestOf = BestOf.Random(new BestOf(3), new BestOf(BestOf.Max));
+                    _bestOf = bestOfRandom.Next(new BestOfRange(new BestOf(3), new BestOf(BestOf.Max)));
 
-                    _entries = Entries.Random(new Entries(200), new Entries(500));
+                    _entries = entriesRandom.Next(new EntriesRange(new Entries(200), new Entries(500)));
 
-                    _entryFee = EntryFee.Random(new EntryFee(10M), new EntryFee(25M));
+                    _entryFee = entryFeeRandom.Next(new EntryFeeRange(new EntryFee(10M), new EntryFee(25M)));
 
                     break;
             }

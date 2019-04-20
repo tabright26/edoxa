@@ -1,5 +1,5 @@
 ﻿// Filename: Entries.cs
-// Date Created: 2019-04-19
+// Date Created: 2019-04-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -15,7 +15,7 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Challenges.Domain.ValueObjects
+namespace eDoxa.Challenges.Domain.AggregateModels
 {
     public partial class Entries : ValueObject
     {
@@ -47,37 +47,6 @@ namespace eDoxa.Challenges.Domain.ValueObjects
         public static implicit operator int(Entries entries)
         {
             return entries._value;
-        }
-
-        public static Entries Random(Entries minValue, Entries maxValue)
-        {
-            if (minValue > maxValue)
-            {
-                throw new ArgumentException(nameof(minValue));
-            }
-
-            // Entries is under 100$
-            var multiplier = 10;
-
-            // Entries is over 100$
-            if (minValue >= 100)
-            {
-                multiplier = 50;
-            }
-
-            // Entries is over 1000$
-            if (minValue >= 1000)
-            {
-                multiplier = 500;
-            }
-
-            var random = new Random();
-
-            var entries = random.Next(minValue, maxValue + 1);
-
-            entries = Optimization.RoundMultiplier(entries, multiplier);
-
-            return new Entries(entries * multiplier);
         }
     }
 

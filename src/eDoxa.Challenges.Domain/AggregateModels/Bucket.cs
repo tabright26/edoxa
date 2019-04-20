@@ -9,15 +9,12 @@
 // this source code package.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
-using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Challenges.Domain.ValueObjects
+namespace eDoxa.Challenges.Domain.AggregateModels
 {
     public partial class Bucket : ValueObject
     {

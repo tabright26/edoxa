@@ -14,7 +14,7 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Challenges.Domain.ValueObjects
+namespace eDoxa.Challenges.Domain.AggregateModels
 {
     public partial class PayoutRatio : ValueObject
     {
