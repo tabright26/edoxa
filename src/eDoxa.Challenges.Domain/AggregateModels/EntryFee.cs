@@ -10,7 +10,6 @@
 
 using System;
 
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Helpers;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 using JetBrains.Annotations;

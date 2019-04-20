@@ -10,11 +10,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Helpers
 {
-    public static class Buckets
+    public sealed class Buckets : Collection<Bucket>, IBuckets
     {
         public static List<int> BucketList(int payoutEntries, int bucketCount)
         {

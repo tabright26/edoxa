@@ -8,14 +8,15 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Collections.ObjectModel;
-
 using Newtonsoft.Json;
 
 namespace eDoxa.Challenges.DTO
 {
-    [JsonArray]
-    public class ChallengePayoutDTO : Collection<BucketDTO>
-    {
+    [JsonObject]
+    public class ChallengePayoutDTO
+    {       
+        [JsonProperty("leftover")] public double Leftover { get; set; }
+
+        [JsonProperty("buckets")] public BucketListDTO Buckets { get; set; }
     }
 }

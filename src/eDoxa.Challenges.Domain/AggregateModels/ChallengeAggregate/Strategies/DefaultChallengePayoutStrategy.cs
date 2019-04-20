@@ -8,6 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Helpers;
+
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Strategies
 {
     public class DefaultChallengePayoutStrategy : IChallengePayoutStrategy
@@ -25,6 +27,16 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Strategies
             _winnerPrize = new WinnerPrize(prizePool);
         }
 
-        public IChallengePayout Payout => new ChallengePayout();
+        public IChallengePayout Payout
+        {
+            get
+            {
+                var buckets = new Buckets();
+
+                var leftover = new PayoutLeftover(0);
+
+                return new ChallengePayout(buckets, leftover);
+            }
+        }
     }
 }

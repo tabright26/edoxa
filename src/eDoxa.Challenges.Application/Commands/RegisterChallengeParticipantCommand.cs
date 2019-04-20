@@ -11,7 +11,6 @@
 using System.Runtime.Serialization;
 
 using eDoxa.Challenges.Domain.AggregateModels;
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Application.Commands;
 
 namespace eDoxa.Challenges.Application.Commands

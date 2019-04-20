@@ -28,6 +28,7 @@ namespace eDoxa.Challenges.DTO.Profiles
                 .ForMember(challenge => challenge.State, configuration => configuration.MapFrom(challenge => challenge.Timeline.State))
                 .ForMember(challenge => challenge.LiveMode, configuration => configuration.MapFrom(challenge => challenge.Timeline.LiveMode))
                 .ForMember(challenge => challenge.Generated, configuration => configuration.MapFrom(challenge => challenge.Settings.Generated))
+                .ForMember(challenge => challenge.Payout, configuration => configuration.MapFrom(challenge => challenge.Payout))
                 .ForMember(
                     challenge => challenge.Scoring,
                     configuration =>
@@ -43,9 +44,7 @@ namespace eDoxa.Challenges.DTO.Profiles
                         configuration.MapFrom(challenge => challenge.LiveData);
                         configuration.Condition(challenge => challenge.Timeline.State >= ChallengeState.Opened);
                     }
-                )
-                .ForMember(challenge => challenge.Payout, configuration => configuration.MapFrom(challenge => challenge.Payout))
-                .ForMember(
+                ).ForMember(
                     challenge => challenge.Participants,
                     configuration =>
                     {

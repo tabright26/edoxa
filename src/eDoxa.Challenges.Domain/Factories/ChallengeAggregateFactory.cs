@@ -16,6 +16,7 @@ using System.Reflection;
 
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Helpers;
 using eDoxa.Seedwork.Domain.Common.Enums;
 using eDoxa.Seedwork.Domain.Factories;
 
@@ -426,7 +427,11 @@ namespace eDoxa.Challenges.Domain.Factories
 
         public IChallengePayout CreateChallengePayout()
         {
-            return new ChallengePayout();
+            var buckets = new Buckets();
+
+            var leftover = new PayoutLeftover(0);
+
+            return new ChallengePayout(buckets, leftover);
         }
     }
 

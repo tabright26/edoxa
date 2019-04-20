@@ -43,6 +43,7 @@ namespace eDoxa.Challenges.DTO.Factories
             yield return new StatProfile();
             yield return new ParticipantProfile();
             yield return new BucketProfile();
+            yield return new BucketListProfile();
         }
     }
 }
