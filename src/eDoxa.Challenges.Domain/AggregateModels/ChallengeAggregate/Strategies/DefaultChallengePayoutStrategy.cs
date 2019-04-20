@@ -12,13 +12,17 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Strategies
 {
     public class DefaultChallengePayoutStrategy : IChallengePayoutStrategy
     {
+        private readonly EntryFee _entryFee;
         private readonly PayoutEntries _payoutEntries;
         private readonly PrizePool _prizePool;
+        private readonly WinnerPrize _winnerPrize;
 
-        public DefaultChallengePayoutStrategy(PayoutEntries payoutEntries, PrizePool prizePool)
+        public DefaultChallengePayoutStrategy(PayoutEntries payoutEntries, PrizePool prizePool, EntryFee entryFee)
         {
             _payoutEntries = payoutEntries;
             _prizePool = prizePool;
+            _entryFee = entryFee;
+            _winnerPrize = new WinnerPrize(prizePool);
         }
 
         public IChallengePayout Payout => new ChallengePayout();

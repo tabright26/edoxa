@@ -96,7 +96,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             {
                 var factory = ChallengePayoutFactory.Instance;
 
-                var strategy = factory.CreatePayout(Settings.Type, Settings.PayoutEntries, Settings.PrizePool);
+                var strategy = factory.CreatePayout(Settings.Type, Settings.PayoutEntries, Settings.PrizePool, Settings.EntryFee);
 
                 return strategy.Payout;
             }

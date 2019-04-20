@@ -33,6 +33,6 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public PrizePool PrizePool => new PrizePool(Entries, _settings.EntryFee, _settings.ServiceChargeRatio);
 
-        public IChallengePayout Payout => ChallengePayoutFactory.CreatePayout(_settings.Type, PayoutEntries, PrizePool).Payout;
+        public IChallengePayout Payout => ChallengePayoutFactory.CreatePayout(_settings.Type, PayoutEntries, PrizePool, _settings.EntryFee).Payout;
     }
 }

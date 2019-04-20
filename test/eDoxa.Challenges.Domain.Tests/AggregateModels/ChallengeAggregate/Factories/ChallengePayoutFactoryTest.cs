@@ -33,7 +33,8 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Facto
             var factory = ChallengePayoutFactory.Instance;
 
             // Act
-            var strategy = factory.CreatePayout(challenge.Settings.Type, challenge.Settings.PayoutEntries, challenge.Settings.PrizePool);
+            var strategy = factory.CreatePayout(challenge.Settings.Type, challenge.Settings.PayoutEntries, challenge.Settings.PrizePool,
+                challenge.Settings.EntryFee);
 
             // Assert
             strategy.Payout.Should().NotBeNull();
@@ -50,7 +51,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Facto
 
             // Act
             var action = new Action(() =>
-                factory.CreatePayout(challenge.Settings.Type, challenge.Settings.PayoutEntries, challenge.Settings.PrizePool));
+                factory.CreatePayout(challenge.Settings.Type, challenge.Settings.PayoutEntries, challenge.Settings.PrizePool, challenge.Settings.EntryFee));
 
             // Assert
             action.Should().Throw<NotImplementedException>();
