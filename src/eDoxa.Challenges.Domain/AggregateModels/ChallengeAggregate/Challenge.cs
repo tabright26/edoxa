@@ -162,7 +162,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
                 throw new ArgumentException("The participant is already registered.", nameof(userId));
             }
 
-            if (LiveData.Entries.ToInt32() >= Settings.Entries.ToInt32())
+            if (LiveData.Entries >= Settings.Entries)
             {
                 throw new InvalidOperationException("The maximum number of participants has been reached.");
             }

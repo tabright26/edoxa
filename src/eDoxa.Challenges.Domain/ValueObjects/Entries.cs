@@ -41,9 +41,9 @@ namespace eDoxa.Challenges.Domain.ValueObjects
             _entries = entries;
         }
 
-        public int ToInt32()
+        public static implicit operator int(Entries entries)
         {
-            return _entries;
+            return entries._entries;
         }
     }
 

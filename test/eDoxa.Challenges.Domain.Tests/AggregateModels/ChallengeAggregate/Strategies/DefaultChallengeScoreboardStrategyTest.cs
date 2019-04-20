@@ -79,15 +79,15 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Strat
                 new ChallengeSettings(
                     bestOf,
                     entries,
-                    EntryFee.Default.ToDecimal(),
-                    PayoutRatio.Default.ToSingle(),
-                    ServiceChargeRatio.Default.ToSingle()
+                    EntryFee.Default,
+                    PayoutRatio.Default,
+                    ServiceChargeRatio.Default
                 )
             )
             {
                 this.Publish(MockChallengeScoringStrategy());
 
-                for (var i = 0; i < Settings.Entries.ToInt32(); i++)
+                for (var i = 0; i < Settings.Entries; i++)
                 {
                     var userId = new UserId();
 
@@ -95,7 +95,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Strat
 
                     var random = new Random();
 
-                    for (var j = 0; j < random.Next(0, Settings.BestOf.ToInt32() + 10); j++)
+                    for (var j = 0; j < random.Next(0, Settings.BestOf + 10); j++)
                     {
                         this.SnapshotParticipantMatch(participant.Id, ChallengeAggregateFactory.CreateChallengeStats());
                     }

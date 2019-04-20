@@ -41,9 +41,9 @@ namespace eDoxa.Challenges.Domain.ValueObjects
             _entryFee = entryFee;
         }
 
-        public decimal ToDecimal()
+        public static implicit operator decimal(EntryFee entryFee)
         {
-            return _entryFee;
+            return entryFee._entryFee;
         }
     }
 

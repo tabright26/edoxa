@@ -41,9 +41,9 @@ namespace eDoxa.Challenges.Domain.ValueObjects
             _payoutRatio = payoutRatio;
         }
 
-        public float ToSingle()
+        public static implicit operator float(PayoutRatio payoutRatio)
         {
-            return _payoutRatio;
+            return payoutRatio._payoutRatio;
         }
     }
 

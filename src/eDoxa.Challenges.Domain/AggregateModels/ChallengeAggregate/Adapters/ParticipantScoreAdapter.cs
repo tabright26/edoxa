@@ -32,7 +32,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Adapters
             {
                 IEnumerable<Match> score = _matches.OrderBy(match => match.TotalScore);
 
-                var bestOf = _bestOf.ToInt32();
+                var bestOf = _bestOf;
 
                 if (_matches.Count >= bestOf)
                 {

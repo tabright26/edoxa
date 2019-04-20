@@ -48,26 +48,26 @@ namespace eDoxa.Challenges.Infrastructure.Configurations
                     challengeSettings.Property(settings => settings.Type).IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field);
 
                     challengeSettings.Property(settings => settings.Entries)
-                        .HasConversion(entries => entries.ToInt32(), entries => new Entries(entries, false))
+                        .HasConversion<int>(entries => entries, entries => new Entries(entries, false))
                         .IsRequired()
                         .UsePropertyAccessMode(PropertyAccessMode.Field);
 
                     challengeSettings.Property(settings => settings.EntryFee)
-                        .HasConversion(entryFee => entryFee.ToDecimal(), entryFee => new EntryFee(entryFee, false))
+                        .HasConversion<decimal>(entryFee => entryFee, entryFee => new EntryFee(entryFee, false))
                         .HasColumnType("decimal(4,2)")
                         .IsRequired()
                         .UsePropertyAccessMode(PropertyAccessMode.Field);
 
                     challengeSettings.Property(settings => settings.BestOf)
-                        .HasConversion(bestOf => bestOf.ToInt32(), bestOf => new BestOf(bestOf, false))
+                        .HasConversion<int>(bestOf => bestOf, bestOf => new BestOf(bestOf, false))
                         .IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field);
 
                     challengeSettings.Property(settings => settings.PayoutRatio)
-                        .HasConversion(payoutRatio => payoutRatio.ToSingle(), payoutRatio => new PayoutRatio(payoutRatio, false)).IsRequired()
+                        .HasConversion<float>(payoutRatio => payoutRatio, payoutRatio => new PayoutRatio(payoutRatio, false)).IsRequired()
                         .UsePropertyAccessMode(PropertyAccessMode.Field);
 
                     challengeSettings.Property(settings => settings.ServiceChargeRatio)
-                        .HasConversion(serviceChargeRatio => serviceChargeRatio.ToSingle(), serviceChargeRatio => new ServiceChargeRatio(serviceChargeRatio, false))
+                        .HasConversion<float>(serviceChargeRatio => serviceChargeRatio, serviceChargeRatio => new ServiceChargeRatio(serviceChargeRatio, false))
                         .IsRequired()
                         .UsePropertyAccessMode(PropertyAccessMode.Field);
 

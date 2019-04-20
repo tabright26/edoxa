@@ -118,7 +118,7 @@ namespace eDoxa.Challenges.Domain.Factories
         {
             var challenge = this.CreateChallenge();
 
-            participantCount = participantCount ?? challenge.Settings.Entries.ToInt32();
+            participantCount = participantCount ?? challenge.Settings.Entries;
 
             for (var index = 0; index < participantCount; index++)
             {
@@ -178,12 +178,12 @@ namespace eDoxa.Challenges.Domain.Factories
                 challenge.GetType().GetField("_timeline", BindingFlags.Instance | BindingFlags.NonPublic)
                     ?.SetValue(challenge, this.CreateChallengeTimeline(ChallengeState.Opened));
 
-                for (var row = 0; row < Random.Next(1, challenge.Settings.Entries.ToInt32() + 1); row++)
+                for (var row = 0; row < Random.Next(1, challenge.Settings.Entries + 1); row++)
                 {
                     var participant = challenge.RegisterParticipant(new UserId(), LinkedAccount.FromGuid(Guid.NewGuid()));
 
                     for (var index = 0;
-                        index < Random.Next(1, challenge.Settings.BestOf.ToInt32() + Random.Next(0, challenge.Settings.BestOf.ToInt32() + 1) + 1);
+                        index < Random.Next(1, challenge.Settings.BestOf + Random.Next(0, challenge.Settings.BestOf + 1) + 1);
                         index++)
                     {
                         var stats = this.CreateChallengeStats();
@@ -316,7 +316,7 @@ namespace eDoxa.Challenges.Domain.Factories
 
         public Participant CreateParticipant(int? bestOf = null)
         {
-            var settings = this.CreateChallengeSettings(bestOf ?? BestOf.Default.ToInt32());
+            var settings = this.CreateChallengeSettings(bestOf ?? BestOf.Default);
 
             var challenge = this.CreateChallenge(settings: settings);
 

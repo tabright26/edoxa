@@ -22,12 +22,12 @@ namespace eDoxa.Challenges.Domain.ValueObjects
 
         public PrizePool(Entries entries, EntryFee entryFee, ServiceChargeRatio serviceChargeRatio)
         {
-            _prizePool = Math.Floor(entries.ToInt32() * entryFee.ToDecimal() * (1 - Convert.ToDecimal(serviceChargeRatio.ToSingle())));
+            _prizePool = Math.Floor(entries * entryFee * (1 - Convert.ToDecimal(serviceChargeRatio)));
         }
 
-        public decimal ToDecimal()
+        public static implicit operator decimal(PrizePool prizePool)
         {
-            return _prizePool;
+            return prizePool._prizePool;
         }
     }
 

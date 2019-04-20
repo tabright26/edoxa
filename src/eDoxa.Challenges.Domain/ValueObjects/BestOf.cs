@@ -40,9 +40,9 @@ namespace eDoxa.Challenges.Domain.ValueObjects
             _bestOf = bestOf;
         }
 
-        public int ToInt32()
+        public static implicit operator int(BestOf bestOf)
         {
-            return _bestOf;
+            return bestOf._bestOf;
         }
     }
 

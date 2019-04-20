@@ -22,12 +22,12 @@ namespace eDoxa.Challenges.Domain.ValueObjects
 
         public PayoutEntries(Entries entries, PayoutRatio payoutRatio)
         {
-            _payoutEntries = Convert.ToInt32(Math.Floor(entries.ToInt32() * payoutRatio.ToSingle()));
+            _payoutEntries = Convert.ToInt32(Math.Floor(entries * payoutRatio));
         }
 
-        public int ToInt32()
+        public static implicit operator int(PayoutEntries payoutEntries)
         {
-            return _payoutEntries;
+            return payoutEntries._payoutEntries;
         }
     }
 

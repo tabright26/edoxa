@@ -30,21 +30,21 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void Constructor_Initialize_ShouldNotThrowException()
         {
             // Arrange
-            var bestOf = BestOf.Default.ToInt32();
-            var entries = Entries.Default.ToInt32();
-            var entryFee = EntryFee.Default.ToDecimal();
-            var payoutRatio = PayoutRatio.Default.ToSingle();
-            var serviceChargeRatio = ServiceChargeRatio.Default.ToSingle();
+            var bestOf = BestOf.Default;
+            var entries = Entries.Default;
+            var entryFee = EntryFee.Default;
+            var payoutRatio = PayoutRatio.Default;
+            var serviceChargeRatio = ServiceChargeRatio.Default;
 
             // Act
             var settings = ChallengeAggregateFactory.CreateChallengeSettings();
 
             // Assert
-            settings.BestOf.ToInt32().Should().Be(bestOf);
-            settings.Entries.ToInt32().Should().Be(entries);
-            settings.EntryFee.ToDecimal().Should().Be(entryFee);
-            settings.PayoutRatio.ToSingle().Should().Be(payoutRatio);
-            settings.ServiceChargeRatio.ToSingle().Should().Be(serviceChargeRatio);
+            settings.BestOf.Should().Be(bestOf);
+            settings.Entries.Should().Be(entries);
+            settings.EntryFee.Should().Be(entryFee);
+            settings.PayoutRatio.Should().Be(payoutRatio);
+            settings.ServiceChargeRatio.Should().Be(serviceChargeRatio);
         }
 
         [TestMethod]

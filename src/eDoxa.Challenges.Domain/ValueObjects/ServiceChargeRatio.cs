@@ -41,9 +41,9 @@ namespace eDoxa.Challenges.Domain.ValueObjects
             _serviceChargeRatio = serviceChargeRatio;
         }
 
-        public float ToSingle()
+        public static implicit operator float(ServiceChargeRatio serviceChargeRatio)
         {
-            return _serviceChargeRatio;
+            return serviceChargeRatio._serviceChargeRatio;
         }
     }
 
