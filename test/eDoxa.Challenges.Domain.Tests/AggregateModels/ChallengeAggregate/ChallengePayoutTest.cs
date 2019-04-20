@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.Factories;
@@ -31,7 +31,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             var payout = ChallengeAggregateFactory.CreateChallengePayout();
 
             // Act
-            var type = typeof(Dictionary<PayoutBucket, Prize>);
+            var type = typeof(Collection<Bucket>);
 
             // Assert
             payout.Should().BeAssignableTo(type);

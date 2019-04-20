@@ -8,14 +8,14 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 using eDoxa.Challenges.Domain.AggregateModels.UserAggregate;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed class ChallengePayout : Dictionary<PayoutBucket, Prize>, IChallengePayout
+    public sealed class ChallengePayout : Collection<Bucket>, IChallengePayout
     {
         public IUserPrizes Snapshot(IChallengeScoreboard scoreboard)
         {
@@ -23,13 +23,13 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
             var userPrizes = new UserPrizes();
 
-            foreach (var payout in this)
+            foreach (var bucket in this)
             {
-                for (var index = 0; index < payout.Key.Size; index++)
+                for (var index = 0; index < bucket.Size; index++)
                 {
                     var userId = userScores.First().Key;
 
-                    userPrizes.Add(userId, payout.Value);
+                    userPrizes.Add(userId, bucket.Prize);
 
                     userScores.Remove(userId);
                 }

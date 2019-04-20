@@ -16,9 +16,9 @@ using JetBrains.Annotations;
 
 namespace eDoxa.Challenges.Domain.AggregateModels
 {
-    public partial class PayoutBucket : ValueObject
+    public partial class Bucket : ValueObject
     {
-        public PayoutBucket(BucketSize size, Prize prize)
+        public Bucket(BucketSize size, Prize prize)
         {
             Size = size;
             Prize = prize;
@@ -29,14 +29,14 @@ namespace eDoxa.Challenges.Domain.AggregateModels
         public Prize Prize { get; }
     }
 
-    public partial class PayoutBucket : IComparable, IComparable<PayoutBucket>
+    public partial class Bucket : IComparable, IComparable<Bucket>
     {
         public int CompareTo([CanBeNull] object obj)
         {
-            return this.CompareTo(obj as PayoutBucket);
+            return this.CompareTo(obj as Bucket);
         }
 
-        public int CompareTo([CanBeNull] PayoutBucket other)
+        public int CompareTo([CanBeNull] Bucket other)
         {
             return Prize.CompareTo(other?.Prize);
         }

@@ -1,11 +1,11 @@
 ﻿// Filename: ChallengesMapperFactory.cs
-// Date Created: 2019-04-03
+// Date Created: 2019-04-14
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
@@ -22,13 +22,7 @@ namespace eDoxa.Challenges.DTO.Factories
     {
         private static readonly Lazy<ChallengesMapperFactory> Lazy = new Lazy<ChallengesMapperFactory>(() => new ChallengesMapperFactory());
 
-        public static ChallengesMapperFactory Instance
-        {
-            get
-            {
-                return Lazy.Value;
-            }
-        }
+        public static ChallengesMapperFactory Instance => Lazy.Value;
     }
 
     public sealed partial class ChallengesMapperFactory : MapperFactory
@@ -48,6 +42,7 @@ namespace eDoxa.Challenges.DTO.Factories
             yield return new MatchProfile();
             yield return new StatProfile();
             yield return new ParticipantProfile();
+            yield return new BucketProfile();
         }
     }
 }

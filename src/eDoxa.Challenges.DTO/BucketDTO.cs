@@ -1,5 +1,5 @@
-﻿// Filename: ChallengePayoutDTO.cs
-// Date Created: 2019-04-14
+﻿// Filename: BucketDTO.cs
+// Date Created: 2019-04-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,14 +8,15 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Collections.ObjectModel;
-
 using Newtonsoft.Json;
 
 namespace eDoxa.Challenges.DTO
 {
-    [JsonArray]
-    public class ChallengePayoutDTO : Collection<BucketDTO>
+    [JsonObject]
+    public class BucketDTO
     {
+        [JsonProperty("size")] public int Size { get; set; }
+
+        [JsonProperty("prize")] public decimal Prize { get; set; }
     }
 }

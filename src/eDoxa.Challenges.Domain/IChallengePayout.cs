@@ -14,7 +14,7 @@ using eDoxa.Challenges.Domain.AggregateModels;
 
 namespace eDoxa.Challenges.Domain
 {
-    public interface IChallengePayout : IReadOnlyDictionary<PayoutBucket, Prize>
+    public interface IChallengePayout : ICollection<Bucket>
     {
         IUserPrizes Snapshot(IChallengeScoreboard scoreboard);
     }
