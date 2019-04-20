@@ -1,5 +1,5 @@
-﻿// Filename: Bucket.cs
-// Date Created: 2019-04-19
+﻿// Filename: PayoutBucket.cs
+// Date Created: 2019-04-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -16,31 +16,29 @@ using JetBrains.Annotations;
 
 namespace eDoxa.Challenges.Domain.AggregateModels
 {
-    public partial class Bucket : ValueObject
+    public partial class PayoutBucket : ValueObject
     {
-        public Bucket(int size = 1)
+        public PayoutBucket(BucketSize size, Prize prize)
         {
-            if (size < 1)
-            {
-                throw new ArgumentException(nameof(size));
-            }
-
             Size = size;
+            Prize = prize;
         }
 
-        public int Size { get; }
+        public BucketSize Size { get; }
+
+        public Prize Prize { get; }
     }
 
-    public partial class Bucket : IComparable, IComparable<Bucket>
+    public partial class PayoutBucket : IComparable, IComparable<PayoutBucket>
     {
         public int CompareTo([CanBeNull] object obj)
         {
-            return this.CompareTo(obj as Bucket);
+            return this.CompareTo(obj as PayoutBucket);
         }
 
-        public int CompareTo([CanBeNull] Bucket other)
+        public int CompareTo([CanBeNull] PayoutBucket other)
         {
-            return Size.CompareTo(other?.Size);
+            return Prize.CompareTo(other?.Prize);
         }
     }
 }

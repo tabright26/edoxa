@@ -29,6 +29,11 @@ namespace eDoxa.Challenges.Domain.AggregateModels
         {
             return prizePool._value;
         }
+
+        public static WinnerPrize operator *(PrizePool prizePool, PrizePoolRatio prizePoolRatio)
+        {
+            return new WinnerPrize(prizePool * Convert.ToDecimal(prizePoolRatio));
+        }
     }
 
     public partial class PrizePool : IComparable, IComparable<PrizePool>

@@ -30,6 +30,11 @@ namespace eDoxa.Challenges.Domain.AggregateModels
             _value = prize;
         }
 
+        protected Prize(WinnerPrize prize)
+        {
+            _value = prize;
+        }
+
         public static implicit operator decimal(Prize prize)
         {
             return prize._value;

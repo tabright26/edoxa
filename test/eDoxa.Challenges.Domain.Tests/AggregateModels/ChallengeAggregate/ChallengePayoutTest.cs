@@ -31,7 +31,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             var payout = ChallengeAggregateFactory.CreateChallengePayout();
 
             // Act
-            var type = typeof(Dictionary<Bucket, Prize>);
+            var type = typeof(Dictionary<PayoutBucket, Prize>);
 
             // Assert
             payout.Should().BeAssignableTo(type);

@@ -15,7 +15,7 @@ using eDoxa.Challenges.Domain.AggregateModels.UserAggregate;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed class ChallengePayout : Dictionary<Bucket, Prize>, IChallengePayout
+    public sealed class ChallengePayout : Dictionary<PayoutBucket, Prize>, IChallengePayout
     {
         public IUserPrizes Snapshot(IChallengeScoreboard scoreboard)
         {

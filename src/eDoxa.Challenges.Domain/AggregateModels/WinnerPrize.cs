@@ -8,16 +8,19 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-
 namespace eDoxa.Challenges.Domain.AggregateModels
 {
     public class WinnerPrize : Prize
     {
-        // TODO: Refactor to a real object.
-        private const float PrizePoolRatio = 0.1F;
+        public WinnerPrize(PrizePool prizePool, PrizePoolRatio prizePoolRatio) : base(prizePool * prizePoolRatio)
+        {
+        }
 
-        public WinnerPrize(PrizePool prizePool) : base(prizePool * Convert.ToDecimal(PrizePoolRatio))
+        public WinnerPrize(PrizePool prizePool) : base(prizePool * PrizePoolRatio.DefaultValue)
+        {
+        }
+
+        internal WinnerPrize(decimal prize) : base(prize)
         {
         }
     }
