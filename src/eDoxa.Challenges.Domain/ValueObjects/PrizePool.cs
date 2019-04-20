@@ -18,16 +18,16 @@ namespace eDoxa.Challenges.Domain.ValueObjects
 {
     public partial class PrizePool : ValueObject
     {
-        private readonly decimal _prizePool;
+        private readonly decimal _value;
 
         public PrizePool(Entries entries, EntryFee entryFee, ServiceChargeRatio serviceChargeRatio)
         {
-            _prizePool = Math.Floor(entries * entryFee * (1 - Convert.ToDecimal(serviceChargeRatio)));
+            _value = Math.Floor(entries * entryFee * (1 - Convert.ToDecimal(serviceChargeRatio)));
         }
 
         public static implicit operator decimal(PrizePool prizePool)
         {
-            return prizePool._prizePool;
+            return prizePool._value;
         }
     }
 
@@ -40,7 +40,7 @@ namespace eDoxa.Challenges.Domain.ValueObjects
 
         public int CompareTo([CanBeNull] PrizePool other)
         {
-            return _prizePool.CompareTo(other?._prizePool);
+            return _value.CompareTo(other?._value);
         }
     }
 }

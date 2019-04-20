@@ -18,16 +18,16 @@ namespace eDoxa.Challenges.Domain.ValueObjects
 {
     public partial class Score : ValueObject
     {
-        private readonly decimal _score;
+        private readonly decimal _value;
 
         internal Score(decimal score)
         {
-            _score = Math.Round(score, 2);
+            _value = Math.Round(score, 2);
         }
 
         public static implicit operator decimal(Score score)
         {
-            return score._score;
+            return score._value;
         }
     }
 
@@ -40,7 +40,7 @@ namespace eDoxa.Challenges.Domain.ValueObjects
 
         public int CompareTo([CanBeNull] Score other)
         {
-            return _score.CompareTo(other?._score);
+            return _value.CompareTo(other?._value);
         }
     }
 }

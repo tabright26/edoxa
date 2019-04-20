@@ -18,32 +18,34 @@ namespace eDoxa.Challenges.Domain.ValueObjects
 {
     public partial class PayoutRatio : ValueObject
     {
-        internal const float MinPayoutRatio = 0.25F;
-        internal const float MaxPayoutRatio = 0.75F;
-        internal const float DefaultPrimitive = 0.5F;
+        internal const float Min = 0.25F;
+        internal const float Max = 0.75F;
+        internal const float Default = 0.5F;
 
-        public static readonly PayoutRatio Default = new PayoutRatio(DefaultPrimitive);
+        public static readonly PayoutRatio MinValue = new PayoutRatio(Min);
+        public static readonly PayoutRatio MaxValue = new PayoutRatio(Max);
+        public static readonly PayoutRatio DefaultValue = new PayoutRatio(Default);
 
-        private readonly float _payoutRatio;
+        private readonly float _value;
 
         public PayoutRatio(float payoutRatio, bool validate = true)
         {
             if (validate)
             {
-                if (payoutRatio < MinPayoutRatio ||
-                    payoutRatio > MaxPayoutRatio ||
+                if (payoutRatio < Min ||
+                    payoutRatio > Max ||
                     (decimal) payoutRatio % 0.05M != 0)
                 {
                     throw new ArgumentException(nameof(payoutRatio));
                 }
             }
 
-            _payoutRatio = payoutRatio;
+            _value = payoutRatio;
         }
 
         public static implicit operator float(PayoutRatio payoutRatio)
         {
-            return payoutRatio._payoutRatio;
+            return payoutRatio._value;
         }
     }
 
@@ -56,7 +58,7 @@ namespace eDoxa.Challenges.Domain.ValueObjects
 
         public int CompareTo([CanBeNull] PayoutRatio other)
         {
-            return _payoutRatio.CompareTo(other?._payoutRatio);
+            return _value.CompareTo(other?._value);
         }
     }
 }

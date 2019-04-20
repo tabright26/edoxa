@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 
 using eDoxa.Challenges.Domain.Factories;
+using eDoxa.Challenges.Domain.ValueObjects;
 
 using FluentAssertions;
 
@@ -30,7 +31,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             var payout = ChallengeAggregateFactory.CreateChallengePayout();
 
             // Act
-            var type = typeof(Dictionary<string, decimal>);
+            var type = typeof(Dictionary<Bucket, Prize>);
 
             // Assert
             payout.Should().BeAssignableTo(type);

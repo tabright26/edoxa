@@ -26,41 +26,55 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         private ServiceChargeRatio _serviceChargeRatio;
         private ChallengeType _type;
 
-        internal ChallengeSettings(int bestOf, int entries, decimal entryFee, float payoutRatio, float serviceChargeRatio) : this(bestOf, entries, entryFee)
+        internal ChallengeSettings(
+            BestOf bestOf,
+            Entries entries,
+            EntryFee entryFee,
+            PayoutRatio payoutRatio,
+            ServiceChargeRatio serviceChargeRatio) : this(bestOf, entries, entryFee)
         {
-            _payoutRatio = new PayoutRatio(payoutRatio);
-            _serviceChargeRatio = new ServiceChargeRatio(serviceChargeRatio);
+            _payoutRatio = payoutRatio;
+            _serviceChargeRatio = serviceChargeRatio;
         }
 
-        internal ChallengeSettings(int bestOf, int entries, decimal entryFee) : this()
+        internal ChallengeSettings(BestOf bestOf, Entries entries, EntryFee entryFee) : this()
         {
-            _bestOf = new BestOf(bestOf);
-            _entries = new Entries(entries);
-            _entryFee = new EntryFee(entryFee);
+            _bestOf = bestOf;
+            _entries = entries;
+            _entryFee = entryFee;
         }
 
         internal ChallengeSettings(ChallengePublisherPeriodicity periodicity) : this()
         {
-            var random = new RandomSettings();
-
             switch (periodicity)
             {
                 case ChallengePublisherPeriodicity.Daily:
-                    _bestOf = new BestOf(random.NextBestOf(1, 3));
-                    _entries = new Entries(random.NextEntries(30, 50));
-                    _entryFee = new EntryFee(random.NextEntryFee(0.25M, 5M));
+
+                    _bestOf = BestOf.Random(new BestOf(1), new BestOf(3));
+
+                    _entries = Entries.Random(new Entries(30), new Entries(50));
+
+                    _entryFee = EntryFee.Random(new EntryFee(0.25M), new EntryFee(5M));
 
                     break;
+
                 case ChallengePublisherPeriodicity.Weekly:
-                    _bestOf = new BestOf(random.NextBestOf(3, 5));
-                    _entries = new Entries(random.NextEntries(75, 150));
-                    _entryFee = new EntryFee(random.NextEntryFee(2.5M, 10M));
+
+                    _bestOf = BestOf.Random(new BestOf(3), new BestOf(5));
+
+                    _entries = Entries.Random(new Entries(75), new Entries(150));
+
+                    _entryFee = EntryFee.Random(new EntryFee(2.5M), new EntryFee(10M));
 
                     break;
+
                 case ChallengePublisherPeriodicity.Monthly:
-                    _bestOf = new BestOf(random.NextBestOf(3));
-                    _entries = new Entries(random.NextEntries(200, 500));
-                    _entryFee = new EntryFee(random.NextEntryFee(10M, 25M));
+
+                    _bestOf = BestOf.Random(new BestOf(3), new BestOf(BestOf.Max));
+
+                    _entries = Entries.Random(new Entries(200), new Entries(500));
+
+                    _entryFee = EntryFee.Random(new EntryFee(10M), new EntryFee(25M));
 
                     break;
             }
@@ -71,11 +85,11 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         internal ChallengeSettings()
         {
             _type = ChallengeType.Default;
-            _bestOf = BestOf.Default;
-            _entries = Entries.Default;
-            _entryFee = EntryFee.Default;
-            _payoutRatio = PayoutRatio.Default;
-            _serviceChargeRatio = ServiceChargeRatio.Default;
+            _bestOf = BestOf.DefaultValue;
+            _entries = Entries.DefaultValue;
+            _entryFee = EntryFee.DefaultValue;
+            _payoutRatio = PayoutRatio.DefaultValue;
+            _serviceChargeRatio = ServiceChargeRatio.DefaultValue;
             _generated = false;
         }
 

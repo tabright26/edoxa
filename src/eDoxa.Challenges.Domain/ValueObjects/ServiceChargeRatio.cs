@@ -18,32 +18,34 @@ namespace eDoxa.Challenges.Domain.ValueObjects
 {
     public partial class ServiceChargeRatio : ValueObject
     {
-        internal const float MinServiceChargeRatio = 0.1F;
-        internal const float MaxServiceChargeRatio = 0.3F;
-        internal const float DefaultPrimitive = 0.2F;
+        internal const float Min = 0.1F;
+        internal const float Max = 0.3F;
+        internal const float Default = 0.2F;
 
-        public static readonly ServiceChargeRatio Default = new ServiceChargeRatio(DefaultPrimitive);
+        public static readonly ServiceChargeRatio MinValue = new ServiceChargeRatio(Min);
+        public static readonly ServiceChargeRatio MaxValue = new ServiceChargeRatio(Max);
+        public static readonly ServiceChargeRatio DefaultValue = new ServiceChargeRatio(Default);
 
-        private readonly float _serviceChargeRatio;
+        private readonly float _value;
 
         public ServiceChargeRatio(float serviceChargeRatio, bool validate = true)
         {
             if (validate)
             {
-                if (serviceChargeRatio < MinServiceChargeRatio ||
-                    serviceChargeRatio > MaxServiceChargeRatio ||
+                if (serviceChargeRatio < Min ||
+                    serviceChargeRatio > Max ||
                     (decimal) serviceChargeRatio % 0.01M != 0)
                 {
                     throw new ArgumentException(nameof(serviceChargeRatio));
                 }
             }
 
-            _serviceChargeRatio = serviceChargeRatio;
+            _value = serviceChargeRatio;
         }
 
         public static implicit operator float(ServiceChargeRatio serviceChargeRatio)
         {
-            return serviceChargeRatio._serviceChargeRatio;
+            return serviceChargeRatio._value;
         }
     }
 
@@ -56,7 +58,7 @@ namespace eDoxa.Challenges.Domain.ValueObjects
 
         public int CompareTo([CanBeNull] ServiceChargeRatio other)
         {
-            return _serviceChargeRatio.CompareTo(other?._serviceChargeRatio);
+            return _value.CompareTo(other?._value);
         }
     }
 }

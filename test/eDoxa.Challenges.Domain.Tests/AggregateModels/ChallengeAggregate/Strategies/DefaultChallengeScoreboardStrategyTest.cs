@@ -73,15 +73,15 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Strat
 
         private class MockChallenge : Challenge
         {
-            public MockChallenge(int entries, int bestOf) : base(
+            public MockChallenge(Entries entries, BestOf bestOf) : base(
                 Game.LeagueOfLegends,
                 new ChallengeName(nameof(Challenge)),
                 new ChallengeSettings(
                     bestOf,
                     entries,
-                    EntryFee.Default,
-                    PayoutRatio.Default,
-                    ServiceChargeRatio.Default
+                    EntryFee.DefaultValue,
+                    PayoutRatio.DefaultValue,
+                    ServiceChargeRatio.DefaultValue
                 )
             )
             {

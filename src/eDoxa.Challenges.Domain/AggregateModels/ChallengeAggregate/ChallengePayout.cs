@@ -8,49 +8,34 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using eDoxa.Challenges.Domain.ValueObjects;
+
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed class ChallengePayout : Dictionary<string, decimal>, IChallengePayout
+    public sealed class ChallengePayout : Dictionary<Bucket, Prize>, IChallengePayout
     {
-        public IReadOnlyDictionary<Guid, decimal?> Snapshot(IChallengeScoreboard scoreboard)
+        public IReadOnlyDictionary<UserId, Prize> Snapshot(IChallengeScoreboard scoreboard)
         {
-            var prizes = new Dictionary<Guid, decimal?>();
+            var userScores = scoreboard.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, t => t.Value);
 
-            for (var index = 0; index < scoreboard.Count; index++)
+            var userPrizes = new Dictionary<UserId, Prize>();
+
+            foreach (var payout in this)
             {
-                var board = scoreboard.ElementAt(index);
-
-                var userId = board.Key;
-
-                var score = board.Value;
-
-                if (score == null)
+                for (var index = 0; index < payout.Key.Size; index++)
                 {
-                    prizes.Add(userId.ToGuid(), null);
+                    var userId = userScores.First().Key;
 
-                    continue;
-                }
+                    userPrizes.Add(userId, payout.Value);
 
-                try
-                {
-                    // TODO: Refactor this part of the algorithm when prize breakdown default strategy will be debug.
-                    var payout = this.ElementAt(index);
-
-                    var prize = payout.Value;
-
-                    prizes.Add(userId.ToGuid(), prize);
-                }
-                catch (ArgumentOutOfRangeException)
-                {
-                    prizes.Add(userId.ToGuid(), decimal.Zero);
+                    userScores.Remove(userId);
                 }
             }
 
-            return prizes;
+            return userPrizes;
         }
     }
 }

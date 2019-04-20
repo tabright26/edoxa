@@ -202,13 +202,14 @@ namespace eDoxa.Challenges.Domain.Factories
     internal sealed partial class ChallengeAggregateFactory
     {
         public ChallengeSettings CreateChallengeSettings(
-            int bestOf = BestOf.DefaultPrimitive,
-            int entries = Entries.DefaultPrimitive,
-            decimal entryFee = EntryFee.DefaultPrimitive,
-            float payoutRatio = PayoutRatio.DefaultPrimitive,
-            float serviceChargeRatio = ServiceChargeRatio.DefaultPrimitive)
+            int bestOf = BestOf.Default,
+            int entries = Entries.Default,
+            decimal entryFee = EntryFee.Default,
+            float payoutRatio = PayoutRatio.Default,
+            float serviceChargeRatio = ServiceChargeRatio.Default)
         {
-            return new ChallengeSettings(bestOf, entries, entryFee, payoutRatio, serviceChargeRatio);
+            return new ChallengeSettings(new BestOf(bestOf), new Entries(entries), new EntryFee(entryFee), new PayoutRatio(payoutRatio),
+                new ServiceChargeRatio(serviceChargeRatio));
         }
     }
 
@@ -316,7 +317,7 @@ namespace eDoxa.Challenges.Domain.Factories
 
         public Participant CreateParticipant(int? bestOf = null)
         {
-            var settings = this.CreateChallengeSettings(bestOf ?? BestOf.Default);
+            var settings = this.CreateChallengeSettings(bestOf ?? BestOf.DefaultValue);
 
             var challenge = this.CreateChallenge(settings: settings);
 

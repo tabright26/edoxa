@@ -19,6 +19,11 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Helpers
             return Convert.ToInt32(Math.Floor(dividend / divisor));
         }
 
+        public static int RoundMultiplier(decimal value, int multiplier)
+        {
+            return (int)Math.Round(value / multiplier);
+        }
+
         public static double Bisection(Func<double, double> func, double a, double b)
         {
             while (func(a) * func(b) > 0)

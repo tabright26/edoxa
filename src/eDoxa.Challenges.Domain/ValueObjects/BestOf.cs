@@ -18,31 +18,45 @@ namespace eDoxa.Challenges.Domain.ValueObjects
 {
     public partial class BestOf : ValueObject
     {
-        internal const int MinBestOf = 1;
-        internal const int MaxBestOf = 7;
-        internal const int DefaultPrimitive = 3;
+        internal const int Min = 1;
+        internal const int Max = 7;
+        internal const int Default = 3;
 
-        public static readonly BestOf Default = new BestOf(DefaultPrimitive);
+        internal static readonly BestOf MinValue = new BestOf(Min);
+        internal static readonly BestOf MaxValue = new BestOf(Max);
+        internal static readonly BestOf DefaultValue = new BestOf(Default);
 
-        private readonly int _bestOf;
+        private readonly int _value;
 
         public BestOf(int bestOf, bool validate = true)
         {
             if (validate)
             {
-                if (bestOf < MinBestOf ||
-                    bestOf > MaxBestOf)
+                if (bestOf < Min ||
+                    bestOf > Max)
                 {
                     throw new ArgumentException(nameof(bestOf));
                 }
             }
 
-            _bestOf = bestOf;
+            _value = bestOf;
         }
 
         public static implicit operator int(BestOf bestOf)
         {
-            return bestOf._bestOf;
+            return bestOf._value;
+        }
+
+        public static BestOf Random(BestOf minValue, BestOf maxValue)
+        {
+            if (minValue > maxValue)
+            {
+                throw new ArgumentOutOfRangeException(nameof(minValue));
+            }
+
+            var random = new Random();
+
+            return new BestOf(random.Next(minValue, maxValue + 1));
         }
     }
 
@@ -55,7 +69,7 @@ namespace eDoxa.Challenges.Domain.ValueObjects
 
         public int CompareTo([CanBeNull] BestOf other)
         {
-            return _bestOf.CompareTo(other?._bestOf);
+            return _value.CompareTo(other?._value);
         }
     }
 }

@@ -30,11 +30,11 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void Constructor_Initialize_ShouldNotThrowException()
         {
             // Arrange
-            var bestOf = BestOf.Default;
-            var entries = Entries.Default;
-            var entryFee = EntryFee.Default;
-            var payoutRatio = PayoutRatio.Default;
-            var serviceChargeRatio = ServiceChargeRatio.Default;
+            var bestOf = BestOf.DefaultValue;
+            var entries = Entries.DefaultValue;
+            var entryFee = EntryFee.DefaultValue;
+            var payoutRatio = PayoutRatio.DefaultValue;
+            var serviceChargeRatio = ServiceChargeRatio.DefaultValue;
 
             // Act
             var settings = ChallengeAggregateFactory.CreateChallengeSettings();
@@ -75,9 +75,9 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             action.Should().Throw<ArgumentException>();
         }
 
-        [DataRow(Entries.MinEntries - 1)]
-        [DataRow(Entries.MaxEntries + 1)]
-        [DataRow(Entries.DefaultPrimitive - 5)]
+        [DataRow(Entries.Min - 1)]
+        [DataRow(Entries.Max + 1)]
+        [DataRow(Entries.Default - 5)]
         [DataTestMethod]
         public void Entries_InvalidArgument_ShouldThrowArgumentException(int entries)
         {
@@ -88,9 +88,9 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             action.Should().Throw<ArgumentException>();
         }
 
-        [DataRow((double) EntryFee.MinEntryFee - 1)]
-        [DataRow((double) EntryFee.MaxEntryFee + 1)]
-        [DataRow((double) EntryFee.DefaultPrimitive - 0.01D)]
+        [DataRow((double) EntryFee.Min - 1)]
+        [DataRow((double) EntryFee.Max + 1)]
+        [DataRow((double) EntryFee.Default - 0.01D)]
         [DataTestMethod]
         public void EntryFee_InvalidArgument_ShouldThrowArgumentException(double entryFee)
         {
@@ -101,9 +101,9 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             action.Should().Throw<ArgumentException>();
         }
 
-        [DataRow(PayoutRatio.MinPayoutRatio - 0.1F)]
-        [DataRow(PayoutRatio.MaxPayoutRatio + 0.1F)]
-        [DataRow(PayoutRatio.DefaultPrimitive - 0.01F)]
+        [DataRow(PayoutRatio.Min - 0.1F)]
+        [DataRow(PayoutRatio.Max + 0.1F)]
+        [DataRow(PayoutRatio.Default - 0.01F)]
         [DataTestMethod]
         public void PayoutRatio_InvalidArgument_ShouldThrowArgumentException(float payoutRatio)
         {
@@ -115,9 +115,9 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         }
 
         [DataTestMethod]
-        [DataRow(ServiceChargeRatio.MinServiceChargeRatio - 0.1F)]
-        [DataRow(ServiceChargeRatio.MaxServiceChargeRatio + 0.1F)]
-        [DataRow(ServiceChargeRatio.DefaultPrimitive + 0.001F)]
+        [DataRow(ServiceChargeRatio.Min - 0.1F)]
+        [DataRow(ServiceChargeRatio.Max + 0.1F)]
+        [DataRow(ServiceChargeRatio.Default + 0.001F)]
         public void ServiceCharge_InvalidArgument_ShouldThrowArgumentException(float serviceChargeRatio)
         {
             // Act
@@ -127,8 +127,8 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             action.Should().Throw<ArgumentException>();
         }
 
-        [DataRow(BestOf.MinBestOf - 1)]
-        [DataRow(BestOf.MaxBestOf + 1)]
+        [DataRow(BestOf.Min - 1)]
+        [DataRow(BestOf.Max + 1)]
         [DataTestMethod]
         public void BestOf_InvalidArgument_ShouldThrowArgumentException(int bestOf)
         {

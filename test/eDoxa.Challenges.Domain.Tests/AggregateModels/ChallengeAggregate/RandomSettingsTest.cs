@@ -1,16 +1,15 @@
-﻿// Filename: ChallengeSettingsHelperTest.cs
-// Date Created: 2019-03-18
+﻿// Filename: RandomSettingsTest.cs
+// Date Created: 2019-04-14
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
 
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.ValueObjects;
 
 using FluentAssertions;
@@ -28,29 +27,18 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         [DataTestMethod]
         public void NextEntries_ValidData_ShouldBeValid(int minValue, int maxValue)
         {
-            // Arrange
-            var random = new RandomSettings();
-
             // Act
-            var entries = random.NextEntries(minValue, maxValue);
-
-            // Assert
-            entries.Should().BeGreaterOrEqualTo(Entries.MinEntries);
-            entries.Should().BeLessOrEqualTo(Entries.MaxEntries);
-            (entries % 10 == 0).Should().BeTrue();
+            Entries.Random(new Entries(minValue), new Entries(maxValue));
         }
 
         [TestMethod]
-        public void NextEntries_MinValueGreaterThenMaxValue_ShouldThrowArgumentOutOfRangeException()
+        public void NextEntries_MinValueGreaterThenMaxValue_ShouldThrowArgumentException()
         {
-            // Arrange
-            var random = new RandomSettings();
-
             // Act
-            var action = new Action(() => random.NextEntries(Entries.MaxEntries, Entries.MinEntries));
+            var action = new Action(() => Entries.Random(new Entries(Entries.Max), new Entries(Entries.Min)));
 
             // Assert
-            action.Should().Throw<ArgumentOutOfRangeException>();
+            action.Should().Throw<ArgumentException>();
         }
 
         [DataRow(0.25D, 0.25D)]
@@ -64,29 +52,18 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         [DataTestMethod]
         public void NextEntryFee_ValidData_ShouldBeValid(double minValue, double maxValue)
         {
-            // Arrange
-            var random = new RandomSettings();
-
             // Act
-            var entryFee = random.NextEntryFee((decimal) minValue, (decimal) maxValue);
-
-            // Assert
-            entryFee.Should().BeGreaterOrEqualTo(EntryFee.MinEntryFee);
-            entryFee.Should().BeLessOrEqualTo(EntryFee.MaxEntryFee);
-            (entryFee % 0.25M == 0).Should().BeTrue();
+            EntryFee.Random(new EntryFee((decimal) minValue), new EntryFee((decimal) maxValue));
         }
 
         [TestMethod]
-        public void NextEntryFee_MinValueGreaterThenMaxValue_ShouldThrowArgumentOutOfRangeException()
+        public void NextEntryFee_MinValueGreaterThenMaxValue_ShouldThrowArgumentException()
         {
-            // Arrange
-            var random = new RandomSettings();
-
             // Act
-            var action = new Action(() => random.NextEntryFee(EntryFee.MaxEntryFee, EntryFee.MinEntryFee));
+            var action = new Action(() => EntryFee.Random(new EntryFee(EntryFee.Max), new EntryFee(EntryFee.Min)));
 
             // Assert
-            action.Should().Throw<ArgumentOutOfRangeException>();
+            action.Should().Throw<ArgumentException>();
         }
 
         [DataRow(1, 7)]
@@ -94,29 +71,18 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         [DataTestMethod]
         public void NextBestOf_ValidData_ShouldBeValid(int minValue, int maxValue)
         {
-            // Arrange
-            var random = new RandomSettings();
-
             // Act
-            var bestOf = random.NextBestOf(minValue, maxValue);
-
-            // Assert
-            bestOf.Should().BeGreaterOrEqualTo(BestOf.MinBestOf);
-            bestOf.Should().BeLessOrEqualTo(BestOf.MaxBestOf);
-            (bestOf >= 1 || bestOf <= 7).Should().BeTrue();
+            BestOf.Random(new BestOf(minValue), new BestOf(maxValue));
         }
 
         [TestMethod]
-        public void NextBestOf_MinValueGreaterThenMaxValue_ShouldThrowArgumentOutOfRangeException()
+        public void NextBestOf_MinValueGreaterThenMaxValue_ShouldThrowArgumentException()
         {
-            // Arrange
-            var random = new RandomSettings();
-
             // Act
-            var action = new Action(() => random.NextBestOf(BestOf.MaxBestOf, BestOf.MinBestOf));
+            var action = new Action(() => BestOf.Random(new BestOf(BestOf.Max), new BestOf(BestOf.Min)));
 
             // Assert
-            action.Should().Throw<ArgumentOutOfRangeException>();
+            action.Should().Throw<ArgumentException>();
         }
     }
 }

@@ -8,13 +8,15 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Collections.Generic;
+
+using eDoxa.Challenges.Domain.AggregateModels;
+using eDoxa.Challenges.Domain.ValueObjects;
 
 namespace eDoxa.Challenges.Domain
 {
-    public interface IChallengePayout : IReadOnlyDictionary<string, decimal>
+    public interface IChallengePayout : IReadOnlyDictionary<Bucket, Prize>
     {
-        IReadOnlyDictionary<Guid, decimal?> Snapshot(IChallengeScoreboard scoreboard);
+        IReadOnlyDictionary<UserId, Prize> Snapshot(IChallengeScoreboard scoreboard);
     }
 }

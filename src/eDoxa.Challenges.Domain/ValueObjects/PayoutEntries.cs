@@ -18,16 +18,16 @@ namespace eDoxa.Challenges.Domain.ValueObjects
 {
     public partial class PayoutEntries : ValueObject
     {
-        private readonly int _payoutEntries;
+        private readonly int _value;
 
         public PayoutEntries(Entries entries, PayoutRatio payoutRatio)
         {
-            _payoutEntries = Convert.ToInt32(Math.Floor(entries * payoutRatio));
+            _value = Convert.ToInt32(Math.Floor(entries * payoutRatio));
         }
 
         public static implicit operator int(PayoutEntries payoutEntries)
         {
-            return payoutEntries._payoutEntries;
+            return payoutEntries._value;
         }
     }
 
@@ -40,7 +40,7 @@ namespace eDoxa.Challenges.Domain.ValueObjects
 
         public int CompareTo([CanBeNull] PayoutEntries other)
         {
-            return _payoutEntries.CompareTo(other?._payoutEntries);
+            return _value.CompareTo(other?._value);
         }
     }
 }
