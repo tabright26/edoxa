@@ -12,7 +12,7 @@ using System.Collections.Generic;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed class ChallengeScoring : Dictionary<string, float>, IChallengeScoring
+    public sealed class ChallengeScoring : Dictionary<StatName, StatWeighting>, IChallengeScoring
     {
     }
 }

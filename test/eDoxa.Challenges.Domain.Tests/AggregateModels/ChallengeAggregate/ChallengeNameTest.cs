@@ -38,22 +38,12 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             // Assert
             name.ToString().Should().Be(input);
         }
-
+        
+        [DataRow(null)]
+        [DataRow("  ")]
         [DataRow("challenge_name")]
         [DataRow("!@#$!@*&")]
         [DataTestMethod]
-        public void Value_InvalidFormat_ShouldThrowFormatException(string input)
-        {
-            // Act
-            var action = new Action(() => ChallengeAggregateFactory.CreateChallengeName(input));
-
-            // Assert
-            action.Should().Throw<FormatException>();
-        }
-
-        [DataTestMethod]
-        [DataRow(null)]
-        [DataRow("  ")]
         public void Value_InvalidArgument_ShouldThrowArgumentException(string input)
         {
             // Act
@@ -61,19 +51,6 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
 
             // Assert
             action.Should().Throw<ArgumentException>();
-        }
-
-        [TestMethod]
-        public void Operator_String_ShouldBeInput()
-        {
-            // Arrange
-            var name = ChallengeAggregateFactory.CreateChallengeName();
-
-            // Act
-            string input = name;
-
-            // Assert
-            name.ToString().Should().Be(input);
         }
 
         [TestMethod]

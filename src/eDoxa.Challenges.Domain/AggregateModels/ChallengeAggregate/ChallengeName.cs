@@ -1,11 +1,11 @@
 ﻿// Filename: ChallengeName.cs
-// Date Created: 2019-03-20
+// Date Created: 2019-04-14
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
@@ -13,42 +13,23 @@ using System.Linq;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
+using JetBrains.Annotations;
+
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed class ChallengeName : ValueObject
+    public partial class ChallengeName : ValueObject
     {
-        private string _value;
+        private readonly string _value;
 
-        public ChallengeName(string value)
+        public ChallengeName(string name)
         {
-            Value = value;
-        }
-
-        public string Value
-        {
-            get
+            if (string.IsNullOrWhiteSpace(name) ||
+                !name.All(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || c == '(' || c == ')'))
             {
-                return _value;
+                throw new ArgumentException(nameof(name));
             }
-            private set
-            {
-                if (string.IsNullOrWhiteSpace(value))
-                {
-                    throw new ArgumentException(nameof(Value));
-                }
 
-                if (!value.All(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || c == '(' || c == ')'))
-                {
-                    throw new FormatException(nameof(Value));
-                }
-
-                _value = value.Trim();
-            }
-        }
-
-        public static implicit operator string(ChallengeName name)
-        {
-            return name.ToString();
+            _value = name.Trim();
         }
 
         public static implicit operator ChallengeName(string name)
@@ -59,6 +40,19 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         public override string ToString()
         {
             return _value;
+        }
+    }
+
+    public partial class ChallengeName : IComparable, IComparable<ChallengeName>
+    {
+        public int CompareTo([CanBeNull] object obj)
+        {
+            return this.CompareTo(obj as ChallengeName);
+        }
+
+        public int CompareTo([CanBeNull] ChallengeName other)
+        {
+            return string.Compare(_value, other?._value, StringComparison.Ordinal);
         }
     }
 }

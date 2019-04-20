@@ -55,16 +55,18 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
                 var name = item.Key;
 
-                if (stats.ContainsKey(name))
+                if (!stats.ContainsKey(name))
                 {
-                    var value = Convert.ToDouble(stats[name]);
-
-                    var weighting = item.Value;
-
-                    var stat = new Stat(Id, name, value, weighting);
-
-                    _stats.Add(stat);
+                    continue;
                 }
+
+                var value = stats[name];
+
+                var weighting = item.Value;
+
+                var stat = new Stat(Id, name, value, weighting);
+
+                _stats.Add(stat);
             }
         }
     }

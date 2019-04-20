@@ -11,17 +11,18 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using eDoxa.Challenges.Domain.AggregateModels.UserAggregate;
 using eDoxa.Challenges.Domain.ValueObjects;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class ChallengePayout : Dictionary<Bucket, Prize>, IChallengePayout
     {
-        public IReadOnlyDictionary<UserId, Prize> Snapshot(IChallengeScoreboard scoreboard)
+        public IUserPrizes Snapshot(IChallengeScoreboard scoreboard)
         {
             var userScores = scoreboard.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, t => t.Value);
 
-            var userPrizes = new Dictionary<UserId, Prize>();
+            var userPrizes = new UserPrizes();
 
             foreach (var payout in this)
             {

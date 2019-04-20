@@ -17,6 +17,6 @@ namespace eDoxa.Challenges.Domain
 {
     public interface IChallengePayout : IReadOnlyDictionary<Bucket, Prize>
     {
-        IReadOnlyDictionary<UserId, Prize> Snapshot(IChallengeScoreboard scoreboard);
+        IUserPrizes Snapshot(IChallengeScoreboard scoreboard);
     }
 }

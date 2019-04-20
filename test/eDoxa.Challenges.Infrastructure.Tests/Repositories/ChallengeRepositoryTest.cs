@@ -297,7 +297,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
                         {
                             stat.Id.ToGuid().Should().NotBeEmpty();
                             stat.MatchId.ToGuid().Should().NotBeEmpty();
-                            stat.Name.Should().NotBeNullOrWhiteSpace();
+                            stat.Name.Should().NotBeNull();
                             stat.Score.Should().NotBeNull();
                         }
                     }

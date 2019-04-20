@@ -14,7 +14,7 @@ using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 
 namespace eDoxa.Challenges.Domain
 {
-    public interface IChallengeStats : IReadOnlyDictionary<string, object>
+    public interface IChallengeStats : IReadOnlyDictionary<StatName, StatValue>
     {
         LinkedMatch LinkedMatch { get; }
     }

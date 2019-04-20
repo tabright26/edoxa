@@ -1,16 +1,18 @@
 ﻿// Filename: StatConfiguration.cs
-// Date Created: 2019-03-20
+// Date Created: 2019-04-14
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
+
 using JetBrains.Annotations;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -23,20 +25,25 @@ namespace eDoxa.Challenges.Infrastructure.Configurations
             builder.ToTable(nameof(ChallengesDbContext.Stats));
 
             builder.Property(stat => stat.Id)
-                   .HasConversion(matchId => matchId.ToGuid(), value => StatId.FromGuid(value))
-                   .IsRequired()
-                   .UsePropertyAccessMode(PropertyAccessMode.Field);
+                .HasConversion(matchId => matchId.ToGuid(), value => StatId.FromGuid(value))
+                .IsRequired()
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.Property(stat => stat.MatchId)
-                   .HasConversion(matchId => matchId.ToGuid(), value => MatchId.FromGuid(value))
-                   .IsRequired()
-                   .UsePropertyAccessMode(PropertyAccessMode.Field);
+                .HasConversion(matchId => matchId.ToGuid(), value => MatchId.FromGuid(value))
+                .IsRequired()
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
 
-            builder.Property(stat => stat.Name).IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field);
+            builder.Property(stat => stat.Name)
+                .HasConversion(name => name.ToString(), name => new StatName(name))
+                .IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field);
 
-            builder.Property(stat => stat.Value).IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field);
+            builder.Property(stat => stat.Value)
+                .HasConversion<double>(value => value, value => new StatValue(value)).IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field);
 
-            builder.Property(stat => stat.Weighting).IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field);
+            builder.Property(stat => stat.Weighting)
+                .HasConversion<float>(weighting => weighting, weighting => new StatWeighting(weighting)).IsRequired()
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.Ignore(stat => stat.Score);
 

@@ -8,6 +8,7 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Factories;
 
 using FluentAssertions;
@@ -29,13 +30,17 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         [DataTestMethod]
         public void Stat_Score_ShouldNotBeNull(string name, double value, float weighting)
         {
+            // Arrange
+            var statValue = new StatValue(value);
+            var statWeighting = new StatWeighting(weighting);
+
             // Act
-            var stat = _factory.CreateStat(name, value, weighting);
+            var stat = _factory.CreateStat(name, statValue, statWeighting);
 
             // Assert
             stat.Name.Should().Be(name);
-            stat.Value.Should().Be(value);
-            stat.Weighting.Should().Be(weighting);
+            stat.Value.Should().Be(statValue);
+            stat.Weighting.Should().Be(statWeighting);
             stat.Score.Should().NotBeNull();
         }
     }

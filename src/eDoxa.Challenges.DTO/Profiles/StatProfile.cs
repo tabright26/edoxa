@@ -19,10 +19,10 @@ namespace eDoxa.Challenges.DTO.Profiles
         public StatProfile()
         {
             this.CreateMap<Stat, StatDTO>()
-                .ForMember(stat => stat.Name, configuration => configuration.MapFrom(stat => stat.Name))
-                .ForMember(stat => stat.Value, configuration => configuration.MapFrom(stat => stat.Value))
-                .ForMember(stat => stat.Weighting, configuration => configuration.MapFrom(stat => stat.Weighting))
-                .ForMember(stat => stat.Score, configuration => configuration.MapFrom(stat => stat.Score));
+                .ForMember(stat => stat.Name, configuration => configuration.MapFrom(stat => stat.Name.ToString()))
+                .ForMember(stat => stat.Value, configuration => configuration.MapFrom<double>(stat => stat.Value))
+                .ForMember(stat => stat.Weighting, configuration => configuration.MapFrom<float>(stat => stat.Weighting))
+                .ForMember(stat => stat.Score, configuration => configuration.MapFrom<decimal>(stat => stat.Score));
         }
     }
 }

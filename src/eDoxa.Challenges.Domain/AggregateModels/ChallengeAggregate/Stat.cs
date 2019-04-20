@@ -17,11 +17,11 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
     public class Stat : Entity<StatId>
     {
         private MatchId _matchId;
-        private string _name;
-        private double _value;
-        private float _weighting;
+        private StatName _name;
+        private StatValue _value;
+        private StatWeighting _weighting;
 
-        internal Stat(MatchId matchId, string name, double value, float weighting)
+        internal Stat(MatchId matchId, StatName name, StatValue value, StatWeighting weighting)
         {
             _matchId = matchId;
             _name = name;
@@ -31,11 +31,11 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public MatchId MatchId => _matchId;
 
-        public string Name => _name;
+        public StatName Name => _name;
 
-        public double Value => _value;
+        public StatValue Value => _value;
 
-        public float Weighting => _weighting;
+        public StatWeighting Weighting => _weighting;
 
         public Score Score => new StatScoreAdapter(this).Score;
     }

@@ -37,8 +37,8 @@ namespace eDoxa.Challenges.Infrastructure.Configurations
             builder.Property(challenge => challenge.Game).IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.Property(challenge => challenge.Name)
-                .IsRequired()
                 .HasConversion(name => name.ToString(), name => new ChallengeName(name))
+                .IsRequired()
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.OwnsOne(

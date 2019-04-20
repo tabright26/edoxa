@@ -362,12 +362,12 @@ namespace eDoxa.Challenges.Domain.Factories
 
     internal sealed partial class ChallengeAggregateFactory
     {
-        public Stat CreateStat(MatchId matchId, string name, double value, float weighting)
+        public Stat CreateStat(MatchId matchId, StatName name, StatValue value, StatWeighting weighting)
         {
             return new Stat(matchId, name, value, weighting);
         }
 
-        public Stat CreateStat(string name, double value, float weighting)
+        public Stat CreateStat(StatName name, StatValue value, StatWeighting weighting)
         {
             return this.CreateStat(new MatchId(), name, value, weighting);
         }
@@ -388,11 +388,11 @@ namespace eDoxa.Challenges.Domain.Factories
         {
             return new ChallengeScoring
             {
-                [Kills] = 4F,
-                [Deaths] = -3F,
-                [Assists] = 3F,
-                [TotalDamageDealtToChampions] = 0.00015F,
-                [TotalHeal] = 0.0008F
+                [Kills] = new StatWeighting(4F),
+                [Deaths] = new StatWeighting(-3F),
+                [Assists] = new StatWeighting(3F),
+                [TotalDamageDealtToChampions] = new StatWeighting(0.00015F),
+                [TotalHeal] = new StatWeighting(0.0008F)
             };
         }
     }

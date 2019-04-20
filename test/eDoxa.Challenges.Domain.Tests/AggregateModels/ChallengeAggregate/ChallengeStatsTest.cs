@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 
+using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Factories;
 
 using FluentAssertions;
@@ -30,7 +31,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             var stats = ChallengeAggregateFactory.CreateChallengeStats();
 
             // Act
-            var type = typeof(Dictionary<string, object>);
+            var type = typeof(Dictionary<StatName, StatValue>);
 
             // Assert
             stats.Should().BeAssignableTo(type);

@@ -1,11 +1,11 @@
 ﻿// Filename: LeagueOfLegendsDefaultChallengeScoringStrategy.cs
-// Date Created: 2019-03-05
+// Date Created: 2019-04-14
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
@@ -15,19 +15,14 @@ namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.Strategies
 {
     internal sealed class LeagueOfLegendsDefaultChallengeScoringStrategy : IChallengeScoringStrategy
     {
-        public IChallengeScoring Scoring
-        {
-            get
+        public IChallengeScoring Scoring =>
+            new ChallengeScoring
             {
-                return new ChallengeScoring
-                {
-                    [nameof(LeagueOfLegendsParticipantStatsDTO.Kills)] = 4,
-                    [nameof(LeagueOfLegendsParticipantStatsDTO.Deaths)] = -3,
-                    [nameof(LeagueOfLegendsParticipantStatsDTO.Assists)] = 3,
-                    [nameof(LeagueOfLegendsParticipantStatsDTO.TotalDamageDealtToChampions)] = 0.0008F,
-                    [nameof(LeagueOfLegendsParticipantStatsDTO.TotalHeal)] = 0.0015F
-                };
-            }
-        }
+                [nameof(LeagueOfLegendsParticipantStatsDTO.Kills)] = new StatWeighting(4),
+                [nameof(LeagueOfLegendsParticipantStatsDTO.Deaths)] = new StatWeighting(-3),
+                [nameof(LeagueOfLegendsParticipantStatsDTO.Assists)] = new StatWeighting(3),
+                [nameof(LeagueOfLegendsParticipantStatsDTO.TotalDamageDealtToChampions)] = new StatWeighting(0.0008F),
+                [nameof(LeagueOfLegendsParticipantStatsDTO.TotalHeal)] = new StatWeighting(0.0015F)
+            };
     }
 }

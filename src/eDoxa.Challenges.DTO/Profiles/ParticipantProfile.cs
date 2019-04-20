@@ -23,7 +23,7 @@ namespace eDoxa.Challenges.DTO.Profiles
             this.CreateMap<Participant, ParticipantDTO>()
                 .ForMember(participant => participant.Id, configuration => configuration.MapFrom(participant => participant.Id.ToGuid()))
                 .ForMember(participant => participant.UserId, configuration => configuration.MapFrom(participant => participant.UserId.ToGuid()))
-                .ForMember(participant => participant.AverageScore, configuration => configuration.MapFrom(participant => participant.AverageScore))
+                .ForMember(participant => participant.AverageScore, configuration => configuration.MapFrom<decimal>(participant => participant.AverageScore))
                 .ForMember(participant => participant.Matches, configuration => configuration.MapFrom(participant => participant.Matches.OrderBy(match => match.Timestamp)));
         }
     }

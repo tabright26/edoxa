@@ -26,12 +26,12 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             return !(left == right);
         }
 
-        public sealed override bool Equals([CanBeNull] object obj)
+        public override bool Equals([CanBeNull] object obj)
         {
             return base.Equals(obj);
         }
 
-        public sealed override int GetHashCode()
+        public override int GetHashCode()
         {
             return base.GetHashCode();
         }
