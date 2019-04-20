@@ -1,4 +1,4 @@
-﻿// Filename: Prize.cs
+﻿// Filename: IScoreAdapter.cs
 // Date Created: 2019-04-19
 // 
 // ================================================
@@ -8,9 +8,12 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
+using eDoxa.Challenges.Domain.ValueObjects;
+
+namespace eDoxa.Challenges.Domain
 {
-    public class Prize
+    public interface IScoreAdapter
     {
+        Score Score { get; }
     }
 }

@@ -88,7 +88,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             protected set => _scoring = value;
         }
 
-        public ChallengeLiveData LiveData => new ChallengeLiveData(this);
+        public ChallengeLiveData LiveData => new ChallengeLiveData(Settings, Participants);
 
         public IChallengePayout Payout
         {
@@ -96,7 +96,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             {
                 var factory = ChallengePayoutFactory.Instance;
 
-                var strategy = factory.Create(Settings.Type, Settings.PayoutEntries.ToInt32(), Settings.PrizePool.ToDecimal());
+                var strategy = factory.CreatePayout(Settings.Type, Settings.PayoutEntries, Settings.PrizePool);
 
                 return strategy.Payout;
             }

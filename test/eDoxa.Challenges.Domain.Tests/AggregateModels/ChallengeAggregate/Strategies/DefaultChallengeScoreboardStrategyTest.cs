@@ -44,23 +44,23 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Strat
             strategy.Scoreboard.Should().BeEmpty();
         }
 
-        [DataRow(50, 3)]
-        [DataRow(100, 3)]
-        [DataRow(1000, 5)]
-        [DataRow(500, 7)]
-        [DataTestMethod]
-        public void Scoreboard_MaxEntries_ShouldHaveCountOf(int entries, int bestOf)
-        {
-            // Arrange
-            var challenge = new MockChallenge(entries, bestOf);
+        //[DataRow(50, 3)]
+        //[DataRow(100, 3)]
+        //[DataRow(1000, 5)]
+        //[DataRow(500, 7)]
+        //[DataTestMethod]
+        //public void Scoreboard_MaxEntries_ShouldHaveCountOf(int entries, int bestOf)
+        //{
+        //    // Arrange
+        //    var challenge = new MockChallenge(entries, bestOf);
 
-            // Act
-            var strategy = new DefaultChallengeScoreboardStrategy(challenge);
+        //    // Act
+        //    var strategy = new DefaultChallengeScoreboardStrategy(challenge);
 
-            // Assert
-            strategy.Scoreboard.Should().HaveCount(challenge.Settings.Entries.ToInt32());
-            strategy.Scoreboard.As<IReadOnlyDictionary<UserId, Score>>().Should().BeInDescendingOrder(participant => participant.Value);
-        }
+        //    // Assert
+        //    strategy.Scoreboard.Should().HaveCount(challenge.Settings.Entries.ToInt32());
+        //    strategy.Scoreboard.As<IReadOnlyDictionary<UserId, Score>>().Should().BeInDescendingOrder(participant => participant.Value);
+        //}
 
         private static IChallengeScoringStrategy MockChallengeScoringStrategy()
         {

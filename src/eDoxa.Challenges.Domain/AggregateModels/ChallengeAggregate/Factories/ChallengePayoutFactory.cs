@@ -11,25 +11,23 @@
 using System;
 
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Strategies;
+using eDoxa.Challenges.Domain.ValueObjects;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Factories
 {
     public sealed class ChallengePayoutFactory
     {
-        private static readonly Lazy<ChallengePayoutFactory> Lazy =
-            new Lazy<ChallengePayoutFactory>(() => new ChallengePayoutFactory());
+        private static readonly Lazy<ChallengePayoutFactory> Lazy = new Lazy<ChallengePayoutFactory>(() => new ChallengePayoutFactory());
 
         public static ChallengePayoutFactory Instance => Lazy.Value;
 
-        public IChallengePayoutStrategy Create(ChallengeType type, int payoutEntries, decimal prizePool)
+        public IChallengePayoutStrategy CreatePayout(ChallengeType type, PayoutEntries payoutEntries, PrizePool prizePool)
         {
             switch (type)
             {
                 case ChallengeType.Default:
-
                     return new DefaultChallengePayoutStrategy(payoutEntries, prizePool);
                 default:
-
                     throw new NotImplementedException();
             }
         }

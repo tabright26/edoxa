@@ -8,6 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Collections.Generic;
+
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Factories;
 using eDoxa.Challenges.Domain.ValueObjects;
 
@@ -15,29 +17,23 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class ChallengeLiveData
     {
-        private readonly Challenge _challenge;
+        private static readonly ChallengePayoutFactory ChallengePayoutFactory = ChallengePayoutFactory.Instance;
 
-        public ChallengeLiveData(Challenge challenge)
+        private readonly IReadOnlyCollection<Participant> _participants;
+        private readonly ChallengeSettings _settings;
+
+        public ChallengeLiveData(ChallengeSettings settings, IReadOnlyCollection<Participant> participants)
         {
-            _challenge = challenge;
+            _settings = settings;
+            _participants = participants;
         }
 
-        public Entries Entries => new Entries(_challenge.Participants.Count, false);
+        public Entries Entries => new Entries(_participants.Count, false);
 
-        public PayoutEntries PayoutEntries => new PayoutEntries(Entries, _challenge.Settings.PayoutRatio);
+        public PayoutEntries PayoutEntries => new PayoutEntries(Entries, _settings.PayoutRatio);
 
-        public PrizePool PrizePool => new PrizePool(Entries, _challenge.Settings.EntryFee, _challenge.Settings.ServiceChargeRatio);
+        public PrizePool PrizePool => new PrizePool(Entries, _settings.EntryFee, _settings.ServiceChargeRatio);
 
-        public IChallengePayout Payout
-        {
-            get
-            {
-                var factory = ChallengePayoutFactory.Instance;
-
-                var strategy = factory.Create(_challenge.Settings.Type, PayoutEntries.ToInt32(), PrizePool.ToDecimal());
-
-                return strategy.Payout;
-            }
-        }
+        public IChallengePayout Payout => ChallengePayoutFactory.CreatePayout(_settings.Type, PayoutEntries, PrizePool).Payout;
     }
 }

@@ -77,23 +77,5 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             // Assert
             score.Should().NotBeNull();
         }
-
-        [DataRow(0, 1)]
-        [DataRow(1, 2)]
-        [DataRow(2, 3)]
-        [DataRow(3, 4)]
-        [DataRow(4, 5)]
-        [DataTestMethod]
-        public void AverageScore_MatchCountLowerThanBestOf_ShouldBeNull(int matchCount, int bestOf)
-        {
-            // Arrange
-            var participant = _challengeAggregateFactory.CreateParticipantWithMatches(matchCount, bestOf);
-
-            // Act
-            var score = participant.AverageScore;
-
-            // Assert
-            score.Should().BeNull();
-        }
     }
 }

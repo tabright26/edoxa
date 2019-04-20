@@ -1,4 +1,4 @@
-﻿// Filename: Bucket.cs
+﻿// Filename: Prize.cs
 // Date Created: 2019-04-19
 // 
 // ================================================
@@ -8,9 +8,9 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
+namespace eDoxa.Challenges.Domain.ValueObjects
 {
-    public class Bucket
+    public class Prize
     {
     }
 }

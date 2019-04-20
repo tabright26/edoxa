@@ -1,27 +1,29 @@
 ﻿// Filename: Match.cs
-// Date Created: 2019-03-20
+// Date Created: 2019-04-14
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Adapters;
+using eDoxa.Challenges.Domain.ValueObjects;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public class Match : Entity<MatchId>
     {
-        private DateTime _timestamp;
         private LinkedMatch _linkedMatch;
         private Participant _participant;
         private HashSet<Stat> _stats;
+        private DateTime _timestamp;
 
         internal Match(Participant participant, LinkedMatch linkedMatch) : this()
         {
@@ -35,45 +37,15 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             _stats = new HashSet<Stat>();
         }
 
-        public DateTime Timestamp
-        {
-            get
-            {
-                return _timestamp;
-            }
-        }
+        public DateTime Timestamp => _timestamp;
 
-        public LinkedMatch LinkedMatch
-        {
-            get
-            {
-                return _linkedMatch;
-            }
-        }
+        public LinkedMatch LinkedMatch => _linkedMatch;
 
-        public Score TotalScore
-        {
-            get
-            {
-                return Score.FromMatch(this);
-            }
-        }
+        public Score TotalScore => new MatchScoreAdapter(this).Score;
 
-        public Participant Participant
-        {
-            get
-            {
-                return _participant;
-            }
-        }
+        public Participant Participant => _participant;
 
-        public IReadOnlyCollection<Stat> Stats
-        {
-            get
-            {
-                return _stats;
-            }
-        }
+        public IReadOnlyCollection<Stat> Stats => _stats;
 
         public void SnapshotStats(IChallengeStats stats, IChallengeScoring scoring)
         {

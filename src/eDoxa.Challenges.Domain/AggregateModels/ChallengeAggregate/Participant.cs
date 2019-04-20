@@ -1,28 +1,29 @@
 ﻿// Filename: Participant.cs
-// Date Created: 2019-03-20
+// Date Created: 2019-04-14
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
 using System.Collections.Generic;
 
+using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Adapters;
+using eDoxa.Challenges.Domain.ValueObjects;
 using eDoxa.Seedwork.Domain.Aggregate;
-using JetBrains.Annotations;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public class Participant : Entity<ParticipantId>
     {
-        private DateTime _timestamp;
-        private LinkedAccount _linkedAccount;
-        private UserId _userId;
         private Challenge _challenge;
+        private LinkedAccount _linkedAccount;
         private HashSet<Match> _matches;
+        private DateTime _timestamp;
+        private UserId _userId;
 
         internal Participant(Challenge challenge, UserId userId, LinkedAccount linkedAccount) : this()
         {
@@ -37,54 +38,17 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             _matches = new HashSet<Match>();
         }
 
-        public DateTime Timestamp
-        {
-            get
-            {
-                return _timestamp;
-            }
-        }
+        public DateTime Timestamp => _timestamp;
 
-        public LinkedAccount LinkedAccount
-        {
-            get
-            {
-                return _linkedAccount;
-            }
-        }
+        public LinkedAccount LinkedAccount => _linkedAccount;
 
-        [CanBeNull]
-        public Score AverageScore
-        {
-            get
-            {
-                return Score.FromParticipant(this);
-            }
-        }
+        public Score AverageScore => new ParticipantScoreAdapter(this).Score;
 
-        public UserId UserId
-        {
-            get
-            {
-                return _userId;
-            }
-        }
+        public UserId UserId => _userId;
 
-        public Challenge Challenge
-        {
-            get
-            {
-                return _challenge;
-            }
-        }
+        public Challenge Challenge => _challenge;
 
-        public IReadOnlyCollection<Match> Matches
-        {
-            get
-            {
-                return _matches;
-            }
-        }
+        public IReadOnlyCollection<Match> Matches => _matches;
 
         public void SnapshotMatch(IChallengeStats stats, IChallengeScoring scoring)
         {

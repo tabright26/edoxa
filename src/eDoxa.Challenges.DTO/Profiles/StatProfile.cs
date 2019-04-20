@@ -22,7 +22,7 @@ namespace eDoxa.Challenges.DTO.Profiles
                 .ForMember(stat => stat.Name, configuration => configuration.MapFrom(stat => stat.Name))
                 .ForMember(stat => stat.Value, configuration => configuration.MapFrom(stat => stat.Value))
                 .ForMember(stat => stat.Weighting, configuration => configuration.MapFrom(stat => stat.Weighting))
-                .ForMember(stat => stat.Score, configuration => configuration.MapFrom(stat => stat.Score.ToDecimal()));
+                .ForMember(stat => stat.Score, configuration => configuration.MapFrom(stat => stat.Score));
         }
     }
 }

@@ -8,56 +8,21 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-using System.Linq;
+using eDoxa.Challenges.Domain.ValueObjects;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Strategies
 {
     public class DefaultChallengePayoutStrategy : IChallengePayoutStrategy
     {
-        private const float Factor = 0.9F;
+        private readonly PayoutEntries _payoutEntries;
+        private readonly PrizePool _prizePool;
 
-        private readonly int _payoutEntries;
-        private readonly decimal _prizePool;
-
-        // TODO: This algorithm does not work when registration fees are higher than entries.
-        // TODO: Refactor the prize breakdown to manage prize groups.
-        public DefaultChallengePayoutStrategy(int payoutEntries, decimal prizePool)
+        public DefaultChallengePayoutStrategy(PayoutEntries payoutEntries, PrizePool prizePool)
         {
             _payoutEntries = payoutEntries;
             _prizePool = prizePool;
         }
 
-        public IChallengePayout Payout
-        {
-            get
-            {
-                var payout = new ChallengePayout();
-
-                for (var index = 1; index <= _payoutEntries; index++)
-                {
-                    var prize = ComputePrize(index);
-
-                    payout.Add(index.ToString(), prize);
-                }
-
-                if (payout.ContainsKey(1.ToString()))
-                {
-                    payout[1.ToString()] += _prizePool - payout.Sum(x => x.Value);
-                }
-
-                return payout;
-
-                decimal ComputePrize(int index)
-                {
-                    return Math.Round(
-                        Math.Floor(
-                            ((1 - (decimal) Factor) / 1 - (decimal) Math.Pow(Factor, _payoutEntries)) * (decimal) Math.Pow(Factor, index - 1) * _prizePool
-                        ),
-                        2
-                    );
-                }
-            }
-        }
+        public IChallengePayout Payout => new ChallengePayout();
     }
 }

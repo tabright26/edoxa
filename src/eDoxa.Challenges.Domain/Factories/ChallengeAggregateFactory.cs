@@ -303,7 +303,7 @@ namespace eDoxa.Challenges.Domain.Factories
     {
         public ChallengeLiveData CreateChallengeLive(Challenge challenge)
         {
-            return new ChallengeLiveData(challenge);
+            return new ChallengeLiveData(challenge.Settings, challenge.Participants);
         }
     }
 
