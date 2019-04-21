@@ -19,7 +19,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels
     public partial class Entries : ValueObject
     {
         internal const int Min = 30;
-        internal const int Max = 2000;
+        internal const int Max = 2500;
         internal const int Default = 50;
 
         public static readonly Entries MinValue = new Entries(Min);
@@ -46,6 +46,11 @@ namespace eDoxa.Challenges.Domain.AggregateModels
         public static implicit operator int(Entries entries)
         {
             return entries._value;
+        }
+
+        public override string ToString()
+        {
+            return _value.ToString();
         }
     }
 

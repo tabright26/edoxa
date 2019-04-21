@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Helpers;
+using System;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Strategies
 {
@@ -17,26 +17,50 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Strategies
         private readonly EntryFee _entryFee;
         private readonly PayoutEntries _payoutEntries;
         private readonly PrizePool _prizePool;
-        private readonly WinnerPrize _winnerPrize;
 
         public DefaultChallengePayoutStrategy(PayoutEntries payoutEntries, PrizePool prizePool, EntryFee entryFee)
         {
             _payoutEntries = payoutEntries;
             _prizePool = prizePool;
             _entryFee = entryFee;
-            _winnerPrize = new WinnerPrize(prizePool);
         }
 
         public IChallengePayout Payout
         {
             get
             {
-                var buckets = new Buckets();
+                try
+                {
+                    if (_payoutEntries < 10)
+                    {
+                        return this.CreatePayout();
+                    }
 
-                var leftover = new PayoutLeftover(0);
+                    var prizes = new Prizes(_payoutEntries, _prizePool, _entryFee);
+                    var bucketSizes = new BucketSizes(_payoutEntries, 5);
 
-                return new ChallengePayout(buckets, leftover);
+                    var (initialPrizes, leftover) = Prizes.InitPrizes(prizes, bucketSizes);
+                    var (finalPrizes, finalBucketSizes, finalLeftover) = Prizes.SpendLeftover(initialPrizes, bucketSizes, leftover);
+
+                    var buckets = new Buckets(finalBucketSizes, finalPrizes);
+
+                    return new ChallengePayout(buckets, finalLeftover);
+                }
+                catch (Exception)
+                {
+                    return this.CreatePayout();
+                }
             }
+        }
+
+        private ChallengePayout CreatePayout()
+        {
+            var payoutEntries = new PayoutEntries(Entries.DefaultValue, PayoutRatio.DefaultValue);
+
+            return new ChallengePayout(
+                new Buckets(new BucketSizes(payoutEntries, 10),
+                    new Prizes(payoutEntries, new PrizePool(Entries.DefaultValue, EntryFee.DefaultValue, ServiceChargeRatio.DefaultValue),
+                        EntryFee.DefaultValue)), new PayoutLeftover(0));
         }
     }
 }

@@ -1,5 +1,5 @@
-﻿// Filename: Buckets.cs
-// Date Created: 2019-04-19
+﻿// Filename: BucketSizes.cs
+// Date Created: 2019-04-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,56 +10,55 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Helpers
-{
-    public sealed class Buckets : Collection<Bucket>, IBuckets
-    {
-        public static List<int> BucketList(int payoutEntries, int bucketCount)
-        {
-            var buckets = new List<int>();
+using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Helpers;
 
+namespace eDoxa.Challenges.Domain.AggregateModels
+{
+    public sealed class BucketSizes : List<BucketSize>, IBucketSizes
+    {
+        public BucketSizes(PayoutEntries payoutEntries, int bucketCount)
+        {
             // Must be at least 4 winners
             if (payoutEntries < 4)
             {
-                return buckets;
+                return;
             }
 
             // Must be more or an equal number of winners than the number of buckets.
             if (payoutEntries < bucketCount)
             {
-                return buckets;
+                return;
             }
 
             // The first four buckets have size 1.
             if (payoutEntries > 4 && bucketCount <= 4)
             {
-                return buckets;
+                return;
             }
 
             // First 4 buckets of size 1
             for (var index = 0; index < 4; index++)
             {
-                buckets.Add(1);
+                this.Add(BucketSize.DefaultValue);
             }
 
-            if (payoutEntries - buckets.Sum() == 1)
+            if (payoutEntries - this.Sum(x => x) == 1)
             {
-                buckets.Add(1); // Size of bucket 5 = 1
+                this.Add(BucketSize.DefaultValue); // Size of bucket 5 = 1
 
-                return buckets;
+                return;
             }
 
             if (payoutEntries == bucketCount)
             {
                 for (var index = 0; index < payoutEntries - 4; index++)
                 {
-                    buckets.Add(1);
+                    this.Add(BucketSize.DefaultValue);
                 }
 
-                return buckets;
+                return;
             }
 
             var beta = Beta(payoutEntries, bucketCount);
@@ -74,35 +73,37 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Helpers
 
                 var buckSize = Convert.ToInt32(thisBuckSize);
 
-                buckets.Add(buckSize);
+                this.Add(new BucketSize(buckSize));
 
                 bucketSum += buckSize;
 
                 i += 1;
             }
 
-            var removeBucketSize = buckets.Sum() - payoutEntries;
+            var removeBucketSize = this.Sum(x => x) - payoutEntries;
 
             // We need to decrease some sizes
             if (removeBucketSize > 0)
             {
-                buckets = RemoveRange(buckets, removeBucketSize);
+                this.RemoveRange(this, removeBucketSize);
             }
 
-            if (buckets.Count < bucketCount)
+            if (Count < bucketCount)
             {
-                buckets = AddRange(buckets, bucketCount);
+                this.AddRange(this, bucketCount);
             }
 
-            removeBucketSize = buckets.Sum() - payoutEntries;
+            removeBucketSize = this.Sum(x => x) - payoutEntries;
 
             // We need to decrease some sizes
             if (removeBucketSize > 0)
             {
-                buckets = RemoveRange(buckets, removeBucketSize);
+                this.RemoveRange(this, removeBucketSize);
             }
+        }
 
-            return buckets;
+        public BucketSizes(IBucketSizes prizes) : base(prizes)
+        {
         }
 
         private static double Beta(int payoutEntries, int bucketCount)
@@ -120,11 +121,11 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Helpers
             }, -1, 2);
         }
 
-        private static List<int> RemoveRange(List<int> bucketSizes, int toRemove)
+        private void RemoveRange(BucketSizes bucketSizes, int toRemove)
         {
             if (bucketSizes.Count == 0)
             {
-                return bucketSizes;
+                return;
             }
 
             var index = bucketSizes.Count - 1;
@@ -135,13 +136,13 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Helpers
 
                 if (diff >= toRemove)
                 {
-                    bucketSizes[index] -= toRemove;
+                    bucketSizes[index] = new BucketSize(bucketSizes[index] - toRemove);
 
                     toRemove = 0;
                 }
                 else
                 {
-                    bucketSizes[index] -= diff;
+                    bucketSizes[index] = new BucketSize(bucketSizes[index] - diff);
 
                     toRemove -= diff;
 
@@ -151,25 +152,21 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Helpers
 
             if (toRemove != 0)
             {
-                RemoveRange(bucketSizes, toRemove);
+                this.RemoveRange(bucketSizes, toRemove);
             }
-
-            return bucketSizes;
         }
 
         //Note: Some errors can occurs, like init_buck_size(15, 12)
         //Typically errors will occurs when num_wins is near num_bucks.
-        private static List<int> AddRange(List<int> bucketSizes, int numBucks)
+        private void AddRange(BucketSizes bucketSizes, int numBucks)
         {
             var numBuckToAdd = numBucks - bucketSizes.Count;
 
             // First try to extend with ones. 
             for (var index = 0; index < numBuckToAdd; index++)
             {
-                bucketSizes.Add(1);
+                bucketSizes.Add(BucketSize.DefaultValue);
             }
-
-            return bucketSizes;
         }
     }
 }

@@ -38,6 +38,11 @@ namespace eDoxa.Challenges.Domain.AggregateModels
         {
             return bucketSize._value;
         }
+
+        public override string ToString()
+        {
+            return _value.ToString();
+        }
     }
 
     public partial class BucketSize : IComparable, IComparable<BucketSize>

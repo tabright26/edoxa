@@ -9,6 +9,7 @@
 // this source code package.
 
 using System;
+using System.Globalization;
 
 using JetBrains.Annotations;
 
@@ -26,6 +27,11 @@ namespace eDoxa.Challenges.Domain.AggregateModels
         public static implicit operator double(PayoutLeftover leftover)
         {
             return leftover._value;
+        }
+
+        public override string ToString()
+        {
+            return _value.ToString(CultureInfo.InvariantCulture);
         }
     }
 

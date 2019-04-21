@@ -9,6 +9,7 @@
 // this source code package.
 
 using System;
+using System.Globalization;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
@@ -28,6 +29,11 @@ namespace eDoxa.Challenges.Domain.AggregateModels
         public static implicit operator decimal(Score score)
         {
             return score._value;
+        }
+
+        public override string ToString()
+        {
+            return _value.ToString(CultureInfo.InvariantCulture);
         }
     }
 

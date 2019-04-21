@@ -9,6 +9,7 @@
 // this source code package.
 
 using System;
+using System.Globalization;
 
 using JetBrains.Annotations;
 
@@ -26,6 +27,16 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         public static implicit operator float(StatWeighting weighting)
         {
             return weighting._value;
+        }
+
+        public override string ToString()
+        {
+            return _value.ToString(CultureInfo.InvariantCulture);
+        }
+
+        public float ToSingle()
+        {
+            return _value;
         }
     }
 
@@ -57,6 +68,6 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         public int CompareTo([CanBeNull] StatWeighting other)
         {
             return _value.CompareTo(other?._value);
-        }
+        }        
     }
 }

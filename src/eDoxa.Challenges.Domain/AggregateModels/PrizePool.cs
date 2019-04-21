@@ -9,6 +9,7 @@
 // this source code package.
 
 using System;
+using System.Globalization;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
@@ -33,6 +34,16 @@ namespace eDoxa.Challenges.Domain.AggregateModels
         public static WinnerPrize operator *(PrizePool prizePool, PrizePoolRatio prizePoolRatio)
         {
             return new WinnerPrize(prizePool * Convert.ToDecimal(prizePoolRatio));
+        }
+
+        public override string ToString()
+        {
+            return _value.ToString(CultureInfo.InvariantCulture);
+        }
+
+        public double ToDouble()
+        {
+            return Convert.ToDouble(this);
         }
     }
 

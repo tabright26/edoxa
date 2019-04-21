@@ -8,7 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Helpers;
+using eDoxa.Challenges.Domain.AggregateModels;
+using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -20,16 +21,19 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         [TestMethod]
         public void M()
         {
-            var winners = 1250;
-            var prizePool = 22500;
-            var firstPrize = 4500;
-            var entryFee = 5;
-            var numBuck = 10;
+            var entries = new Entries(2500);
+            var entryFee = new EntryFee(25);
+            var payoutEntries = new PayoutEntries(entries, new PayoutRatio(0.5F));
+            var prizePool = new PrizePool(entries, entryFee, new ServiceChargeRatio(0.2F));
 
-            var unperfectPrizes = Prizes.GetUnperfectPrize(winners, prizePool, firstPrize, entryFee);
-            var bucketSizes = Buckets.BucketList(winners, numBuck);
-            var (initialPrizes, leftover) = Prizes.InitPrizes(unperfectPrizes, bucketSizes);
+            var prizes = new Prizes(payoutEntries, prizePool, entryFee);
+            var bucketSizes = new BucketSizes(payoutEntries, 10);
+
+            var (initialPrizes, leftover) = Prizes.InitPrizes(prizes, bucketSizes);
             var (finalPrizes, finalBucketSizes, finalLeftover) = Prizes.SpendLeftover(initialPrizes, bucketSizes, leftover);
+
+            var buckets = new Buckets(finalBucketSizes, finalPrizes);
+            var payout = new ChallengePayout(buckets, finalLeftover);
         }
     }
 }

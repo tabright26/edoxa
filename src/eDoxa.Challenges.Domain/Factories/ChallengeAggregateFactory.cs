@@ -16,7 +16,6 @@ using System.Reflection;
 
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Helpers;
 using eDoxa.Seedwork.Domain.Common.Enums;
 using eDoxa.Seedwork.Domain.Factories;
 
@@ -416,35 +415,6 @@ namespace eDoxa.Challenges.Domain.Factories
 
     internal sealed partial class ChallengeAggregateFactory
     {
-        public IChallengePayoutStrategy CreateChallengePayoutStrategy()
-        {
-            var mock = new Mock<IChallengePayoutStrategy>();
-
-            mock.SetupGet(strategy => strategy.Payout).Returns(this.CreateChallengePayout());
-
-            return mock.Object;
-        }
-
-        public IChallengePayout CreateChallengePayout()
-        {
-            var buckets = new Buckets();
-
-            var leftover = new PayoutLeftover(0);
-
-            return new ChallengePayout(buckets, leftover);
-        }
-    }
-
-    internal sealed partial class ChallengeAggregateFactory
-    {
-        public IChallengeStatsAdapter CreateChallengeStatsAdapter()
-        {
-            var mock = new Mock<IChallengeStatsAdapter>();
-
-            mock.SetupGet(strategy => strategy.Stats).Returns(this.CreateChallengeStats());
-
-            return mock.Object;
-        }
 
         public IChallengeStats CreateChallengeStats(LinkedMatch linkedMatch = null)
         {

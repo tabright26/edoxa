@@ -29,6 +29,11 @@ namespace eDoxa.Challenges.Domain.AggregateModels
         {
             return payoutEntries._value;
         }
+
+        public override string ToString()
+        {
+            return _value.ToString();
+        }
     }
 
     public partial class PayoutEntries : IComparable, IComparable<PayoutEntries>

@@ -10,7 +10,6 @@
 
 using System.Linq;
 
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Helpers;
 using eDoxa.Challenges.Domain.AggregateModels.UserAggregate;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
@@ -18,16 +17,17 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
     public sealed class ChallengePayout : IChallengePayout
     {
         private readonly Buckets _buckets;
+        private readonly PayoutLeftover _leftover;
 
         public ChallengePayout(Buckets buckets, PayoutLeftover leftover)
         {
             _buckets = buckets;
-            Leftover = leftover;
+            _leftover = leftover;
         }
 
-        public IBuckets Buckets => _buckets;
+        public PayoutLeftover Leftover => _leftover;
 
-        public PayoutLeftover Leftover { get; }
+        public IBuckets Buckets => _buckets;
 
         public IUserPrizes Snapshot(IChallengeScoreboard scoreboard)
         {
@@ -35,17 +35,17 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
             var userPrizes = new UserPrizes();
 
-            foreach (var bucket in Buckets)
-            {
-                for (var index = 0; index < bucket.Size; index++)
-                {
-                    var userId = userScores.First().Key;
+            //foreach (var bucket in Buckets)
+            //{
+            //    for (var index = 0; index < bucket.Size; index++)
+            //    {
+            //        var userId = userScores.First().Key;
 
-                    userPrizes.Add(userId, bucket.Prize);
+            //        userPrizes.Add(userId, bucket.Prize);
 
-                    userScores.Remove(userId);
-                }
-            }
+            //        userScores.Remove(userId);
+            //    }
+            //}
 
             return userPrizes;
         }

@@ -9,6 +9,7 @@
 // this source code package.
 
 using System;
+using System.Globalization;
 
 using JetBrains.Annotations;
 
@@ -40,6 +41,11 @@ namespace eDoxa.Challenges.Domain.AggregateModels
         public static implicit operator float(PrizePoolRatio prizePoolRatio)
         {
             return prizePoolRatio._value;
+        }
+
+        public override string ToString()
+        {
+            return _value.ToString(CultureInfo.InvariantCulture);
         }
     }
 

@@ -12,7 +12,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Helpers
+using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Helpers;
+
+namespace eDoxa.Challenges.Domain.AggregateModels
 {
     public static class NiceNumber
     {

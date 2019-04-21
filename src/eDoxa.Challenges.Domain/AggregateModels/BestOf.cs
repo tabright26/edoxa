@@ -46,6 +46,11 @@ namespace eDoxa.Challenges.Domain.AggregateModels
         {
             return bestOf._value;
         }
+
+        public override string ToString()
+        {
+            return _value.ToString();
+        }
     }
 
     public partial class BestOf : IComparable, IComparable<BestOf>

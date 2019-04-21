@@ -23,7 +23,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Helpers
         {
             return (int)Math.Round(value / multiplier);
         }
-
+        
         public static double Bisection(Func<double, double> func, double a, double b)
         {
             while (func(a) * func(b) > 0)
