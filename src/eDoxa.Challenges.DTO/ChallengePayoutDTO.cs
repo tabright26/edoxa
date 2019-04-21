@@ -15,8 +15,6 @@ namespace eDoxa.Challenges.DTO
     [JsonObject]
     public class ChallengePayoutDTO
     {       
-        [JsonProperty("leftover")] public double Leftover { get; set; }
-
         [JsonProperty("buckets")] public BucketListDTO Buckets { get; set; }
     }
 }

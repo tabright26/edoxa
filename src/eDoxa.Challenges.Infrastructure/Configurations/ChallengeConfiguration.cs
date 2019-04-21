@@ -12,13 +12,12 @@ using System;
 
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Challenges.Infrastructure.Converters;
 
 using JetBrains.Annotations;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-using Newtonsoft.Json;
 
 namespace eDoxa.Challenges.Infrastructure.Configurations
 {
@@ -117,10 +116,7 @@ namespace eDoxa.Challenges.Infrastructure.Configurations
             );
 
             builder.Property(challenge => challenge.Scoring)
-                .HasConversion(
-                    scoring => JsonConvert.SerializeObject(scoring, Formatting.None),
-                    scoring => JsonConvert.DeserializeObject<ChallengeScoring>(scoring)
-                )
+                .HasConversion(new ChallengeScoringConverter())
                 .IsRequired(false)
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 

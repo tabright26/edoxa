@@ -9,7 +9,6 @@
 // this source code package.
 
 using System;
-using System.Globalization;
 
 using JetBrains.Annotations;
 
@@ -31,12 +30,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public override string ToString()
         {
-            return _value.ToString(CultureInfo.InvariantCulture);
-        }
-
-        public float ToSingle()
-        {
-            return _value;
+            return _value.ToString("R");
         }
     }
 
