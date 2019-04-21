@@ -8,14 +8,17 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
+using System.Linq.Expressions;
+
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Domain.Specifications;
 
 using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Seedwork.Domain.Tests.Specifications
+namespace eDoxa.Specifications.Tests
 {
     [TestClass]
     public sealed class SpecificationTest
@@ -119,9 +122,9 @@ namespace eDoxa.Seedwork.Domain.Tests.Specifications
 
         private sealed class MockSpecification : Specification<MockEntity>
         {
-            public override bool IsSatisfiedBy(MockEntity entity)
+            public override Expression<Func<MockEntity, bool>> ToExpression()
             {
-                return true;
+                return _ => true;
             }
         }
     }
