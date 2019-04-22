@@ -81,7 +81,8 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Strat
                     EntryFee.DefaultValue,
                     PayoutRatio.DefaultValue,
                     ServiceChargeRatio.DefaultValue
-                )
+                ),
+                new ChallengeTimeline()
             )
             {
                 this.Publish(MockChallengeScoringStrategy());
@@ -103,7 +104,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Strat
                 }
             }
 
-            public MockChallenge() : base(Game.LeagueOfLegends, new ChallengeName(nameof(Challenge)))
+            public MockChallenge() : base(Game.LeagueOfLegends, new ChallengeName(nameof(Challenge)), new DefaultChallengeSetup(), new ChallengeTimeline())
             {
             }
         }

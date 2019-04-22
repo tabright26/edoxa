@@ -26,35 +26,22 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
     public class Challenge : Entity<ChallengeId>, IAggregateRoot
     {
         private Game _game;
-        private ChallengeName _name;
-        private HashSet<Participant> _participants;
-        private IChallengeScoring _scoring;
+        private ChallengeName _name;        
         private ChallengeSetup _setup;
         private ChallengeTimeline _timeline;
+        private IChallengeScoring _scoring;
+        private HashSet<Participant> _participants;
 
-        internal Challenge(Game game, ChallengeName name, ChallengePublisherPeriodicity periodicity) : this(game, name)
-        {
-            _setup = new RandomChallengeSetup(periodicity);
-            _timeline = new ChallengeTimeline(periodicity);
-        }
-
-        internal Challenge(Game game, ChallengeName name, ChallengeSetup setup) : this(game, name)
-        {
-            _setup = setup;
-        }
-
-        internal Challenge(Game game, ChallengeName name) : this()
+        internal Challenge(Game game, ChallengeName name, ChallengeSetup setup, ChallengeTimeline timeline) : this()
         {
             Game = game;
             _name = name;
+            _setup = setup;
+            _timeline = timeline;
         }
 
         private Challenge()
         {
-            _game = Game.None;
-            _name = null;
-            _setup = new DefaultChallengeSetup();
-            _timeline = new ChallengeTimeline();
             _scoring = null;
             _participants = new HashSet<Participant>();
         }

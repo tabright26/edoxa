@@ -55,7 +55,7 @@ namespace eDoxa.Challenges.Domain.Services.Tests.Factories
 
         private sealed class MockChallenge : Challenge
         {
-            public MockChallenge(ChallengeType type, Game game) : base(game, new ChallengeName(nameof(Challenge)))
+            public MockChallenge(ChallengeType type, Game game) : base(game, new ChallengeName(nameof(Challenge)), new DefaultChallengeSetup(), new ChallengeTimeline())
             {
                 Setup.SetPrivateField("_type", type);
             }

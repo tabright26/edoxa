@@ -16,7 +16,7 @@ namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends
 {
     public class LeagueOfLegendsChallenge : Challenge
     {
-        public LeagueOfLegendsChallenge(ChallengeName name, ChallengePublisherPeriodicity periodicity) : base(Game.LeagueOfLegends, name, periodicity)
+        public LeagueOfLegendsChallenge(ChallengeName name, ChallengePublisherPeriodicity periodicity) : base(Game.LeagueOfLegends, name, new RandomChallengeSetup(periodicity), new ChallengeTimeline(periodicity))
         {
             var factory = LeagueOfLegendsChallengeScoringFactory.Instance;
 

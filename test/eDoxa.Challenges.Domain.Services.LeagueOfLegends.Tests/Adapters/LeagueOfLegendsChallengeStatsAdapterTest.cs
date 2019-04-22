@@ -49,7 +49,7 @@ namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.Tests.Adapters
 
         private sealed class MockChallenge : Challenge
         {
-            public MockChallenge() : base(Game.LeagueOfLegends, new ChallengeName(nameof(MockChallenge)))
+            public MockChallenge() : base(Game.LeagueOfLegends, new ChallengeName(nameof(MockChallenge)), new DefaultChallengeSetup(), new ChallengeTimeline())
             {
                 var factory = ChallengeScoringFactory.Instance;
 

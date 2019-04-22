@@ -79,7 +79,7 @@ namespace eDoxa.Challenges.Domain.Factories
     {
         public Challenge CreateChallenge(Game game, ChallengeName name, ChallengeSetup setup)
         {
-            return new Challenge(game, name, setup);
+            return new Challenge(game, name, setup, this.CreateChallengeTimeline());
         }
 
         public Challenge CreateChallenge(ChallengeState state = ChallengeState.Opened, ChallengeSetup setup = null)
