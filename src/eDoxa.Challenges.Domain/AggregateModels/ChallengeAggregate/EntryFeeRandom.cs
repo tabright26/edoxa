@@ -10,9 +10,9 @@
 
 using System;
 
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Helpers;
+using eDoxa.Seedwork.Domain.Common;
 
-namespace eDoxa.Challenges.Domain.AggregateModels
+namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class EntryFeeRandom : IRandom<EntryFee, EntryFeeRange>
     {

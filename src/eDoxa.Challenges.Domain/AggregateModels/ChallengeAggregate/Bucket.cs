@@ -14,7 +14,7 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Challenges.Domain.AggregateModels
+namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public partial class Bucket : ValueObject
     {

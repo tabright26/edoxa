@@ -10,7 +10,7 @@
 
 using System;
 
-namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Helpers
+namespace eDoxa.Seedwork.Domain.Common
 {
     public static class Optimization
     {

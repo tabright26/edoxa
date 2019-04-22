@@ -10,7 +10,7 @@
 
 using System.Collections.ObjectModel;
 
-namespace eDoxa.Challenges.Domain.AggregateModels
+namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class Buckets : Collection<Bucket>, IBuckets
     {

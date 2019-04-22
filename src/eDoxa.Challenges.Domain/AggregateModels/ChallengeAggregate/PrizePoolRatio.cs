@@ -13,7 +13,7 @@ using System.Globalization;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Challenges.Domain.AggregateModels
+namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public partial class PrizePoolRatio
     {

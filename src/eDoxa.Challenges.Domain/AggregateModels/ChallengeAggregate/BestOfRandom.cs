@@ -10,7 +10,7 @@
 
 using System;
 
-namespace eDoxa.Challenges.Domain.AggregateModels
+namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class BestOfRandom : IRandom<BestOf, BestOfRange>
     {

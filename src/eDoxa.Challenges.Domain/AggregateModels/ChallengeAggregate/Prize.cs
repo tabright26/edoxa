@@ -1,4 +1,4 @@
-﻿// Filename: PrizePool.cs
+﻿// Filename: Prize.cs
 // Date Created: 2019-04-19
 // 
 // ================================================
@@ -15,25 +15,30 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Challenges.Domain.AggregateModels
+namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public partial class PrizePool : ValueObject
+    public partial class Prize : ValueObject
     {
         private readonly decimal _value;
 
-        public PrizePool(Entries entries, EntryFee entryFee, ServiceChargeRatio serviceChargeRatio)
+        public Prize(decimal prize)
         {
-            _value = Math.Floor(entries * entryFee * (1 - Convert.ToDecimal(serviceChargeRatio)));
+            if (prize < 0)
+            {
+                throw new ArgumentException(nameof(prize));
+            }
+
+            _value = prize;
         }
 
-        public static implicit operator decimal(PrizePool prizePool)
+        protected Prize(WinnerPrize prize)
         {
-            return prizePool._value;
+            _value = prize;
         }
 
-        public static WinnerPrize operator *(PrizePool prizePool, PrizePoolRatio prizePoolRatio)
+        public static implicit operator decimal(Prize prize)
         {
-            return new WinnerPrize(prizePool * Convert.ToDecimal(prizePoolRatio));
+            return prize._value;
         }
 
         public override string ToString()
@@ -47,14 +52,14 @@ namespace eDoxa.Challenges.Domain.AggregateModels
         }
     }
 
-    public partial class PrizePool : IComparable, IComparable<PrizePool>
+    public partial class Prize : IComparable, IComparable<Prize>
     {
         public int CompareTo([CanBeNull] object obj)
         {
-            return this.CompareTo(obj as PrizePool);
+            return this.CompareTo(obj as Prize);
         }
 
-        public int CompareTo([CanBeNull] PrizePool other)
+        public int CompareTo([CanBeNull] Prize other)
         {
             return _value.CompareTo(other?._value);
         }

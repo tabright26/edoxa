@@ -1,4 +1,4 @@
-﻿// Filename: EntryFeeRange.cs
+﻿// Filename: EntriesRange.cs
 // Date Created: 2019-04-20
 // 
 // ================================================
@@ -10,11 +10,11 @@
 
 using System;
 
-namespace eDoxa.Challenges.Domain.AggregateModels
+namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed class EntryFeeRange
+    public sealed class EntriesRange
     {
-        public EntryFeeRange(EntryFee minValue, EntryFee maxValue)
+        public EntriesRange(Entries minValue, Entries maxValue)
         {
             if (minValue > maxValue)
             {
@@ -25,8 +25,8 @@ namespace eDoxa.Challenges.Domain.AggregateModels
             MaxValue = maxValue;
         }
 
-        public EntryFee MinValue { get; }
+        public Entries MinValue { get; }
 
-        public EntryFee MaxValue { get; }
+        public Entries MaxValue { get; }
     }
 }

@@ -1,4 +1,4 @@
-﻿// Filename: LinkedAccount.cs
+﻿// Filename: LinkedMatch.cs
 // Date Created: 2019-03-20
 // 
 // ============================================================
@@ -13,13 +13,13 @@ using System.Linq;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
-namespace eDoxa.Challenges.Domain.AggregateModels
+namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed class LinkedAccount : ValueObject
+    public sealed class LinkedMatch : ValueObject
     {
         private string _ref;
 
-        private LinkedAccount(string input)
+        private LinkedMatch(string input)
         {
             Ref = input;
         }
@@ -46,12 +46,17 @@ namespace eDoxa.Challenges.Domain.AggregateModels
             }
         }
 
-        public static LinkedAccount Parse(string input)
+        public static LinkedMatch Parse(string input)
         {
-            return new LinkedAccount(input);
+            return new LinkedMatch(input);
         }
 
-        public static LinkedAccount FromGuid(Guid input)
+        public static LinkedMatch FromLong(long input)
+        {
+            return Parse(input.ToString());
+        }
+
+        public static LinkedMatch FromGuid(Guid input)
         {
             return Parse(input.ToString());
         }

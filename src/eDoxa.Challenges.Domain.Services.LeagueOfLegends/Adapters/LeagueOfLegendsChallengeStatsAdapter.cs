@@ -10,7 +10,6 @@
 
 using System.Linq;
 
-using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Services.LeagueOfLegends.DTO;
 

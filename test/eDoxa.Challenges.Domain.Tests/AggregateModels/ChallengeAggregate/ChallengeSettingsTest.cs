@@ -10,7 +10,6 @@
 
 using System;
 
-using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Factories;
 using eDoxa.Testing.MSTest.Extensions;

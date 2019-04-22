@@ -10,6 +10,8 @@
 
 using System.Collections.Generic;
 
+using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
+
 namespace eDoxa.Challenges.Domain.AggregateModels.UserAggregate
 {
     public sealed class UserPrizes : Dictionary<UserId, Prize>, IUserPrizes

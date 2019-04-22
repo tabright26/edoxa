@@ -11,7 +11,7 @@
 using System;
 using System.Collections.Generic;
 
-using eDoxa.Challenges.Domain.AggregateModels;
+using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 
 using FluentAssertions;
 
