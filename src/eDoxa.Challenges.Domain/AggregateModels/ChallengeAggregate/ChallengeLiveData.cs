@@ -11,10 +11,11 @@
 using System.Collections.Generic;
 
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Factories;
+using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed class ChallengeLiveData
+    public sealed class ChallengeLiveData : ValueObject
     {
         private static readonly ChallengePayoutFactory ChallengePayoutFactory = ChallengePayoutFactory.Instance;
 

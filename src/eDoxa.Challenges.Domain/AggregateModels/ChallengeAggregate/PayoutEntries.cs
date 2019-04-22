@@ -10,13 +10,11 @@
 
 using System;
 
-using eDoxa.Seedwork.Domain.Aggregate;
-
 using JetBrains.Annotations;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public partial class PayoutEntries : ValueObject
+    public partial class PayoutEntries
     {
         private readonly int _value;
 
@@ -33,6 +31,24 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         public override string ToString()
         {
             return _value.ToString();
+        }
+    }
+
+    public partial class PayoutEntries : IEquatable<PayoutEntries>
+    {
+        public bool Equals([CanBeNull] PayoutEntries other)
+        {
+            return _value.Equals(other?._value);
+        }
+
+        public override bool Equals([CanBeNull] object obj)
+        {
+            return this.Equals(obj as PayoutEntries);
+        }
+
+        public override int GetHashCode()
+        {
+            return _value.GetHashCode();
         }
     }
 

@@ -11,13 +11,11 @@
 using System;
 using System.Globalization;
 
-using eDoxa.Seedwork.Domain.Aggregate;
-
 using JetBrains.Annotations;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public partial class ServiceChargeRatio : ValueObject
+    public partial class ServiceChargeRatio
     {
         internal const float Min = 0.1F;
         internal const float Max = 0.3F;
@@ -52,6 +50,24 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         public override string ToString()
         {
             return _value.ToString(CultureInfo.InvariantCulture);
+        }
+    }
+
+    public partial class ServiceChargeRatio : IEquatable<ServiceChargeRatio>
+    {
+        public bool Equals([CanBeNull] ServiceChargeRatio other)
+        {
+            return _value.Equals(other?._value);
+        }
+
+        public override bool Equals([CanBeNull] object obj)
+        {
+            return this.Equals(obj as ServiceChargeRatio);
+        }
+
+        public override int GetHashCode()
+        {
+            return _value.GetHashCode();
         }
     }
 

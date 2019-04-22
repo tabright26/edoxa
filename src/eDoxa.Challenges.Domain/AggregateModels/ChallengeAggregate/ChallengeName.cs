@@ -11,13 +11,11 @@
 using System;
 using System.Linq;
 
-using eDoxa.Seedwork.Domain.Aggregate;
-
 using JetBrains.Annotations;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public partial class ChallengeName : ValueObject
+    public partial class ChallengeName
     {
         private readonly string _value;
 
@@ -40,6 +38,24 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         public override string ToString()
         {
             return _value;
+        }
+    }
+
+    public partial class ChallengeName : IEquatable<ChallengeName>
+    {
+        public bool Equals([CanBeNull] ChallengeName other)
+        {
+            return _value.Equals(other?._value);
+        }
+
+        public override bool Equals([CanBeNull] object obj)
+        {
+            return this.Equals(obj as ChallengeName);
+        }
+
+        public override int GetHashCode()
+        {
+            return _value.GetHashCode();
         }
     }
 

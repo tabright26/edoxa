@@ -34,7 +34,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             return _value.ToString(CultureInfo.InvariantCulture);
         }
     }
-
+    
     public partial class PayoutLeftover : IEquatable<PayoutLeftover>
     {
         public bool Equals([CanBeNull] PayoutLeftover other)

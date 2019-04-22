@@ -9,15 +9,12 @@
 // this source code package.
 
 using System;
-using System.Globalization;
-
-using eDoxa.Seedwork.Domain.Aggregate;
 
 using JetBrains.Annotations;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public partial class PayoutRatio : ValueObject
+    public partial class PayoutRatio
     {
         internal const float Min = 0.25F;
         internal const float Max = 0.75F;
@@ -51,7 +48,25 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public override string ToString()
         {
-            return _value.ToString(CultureInfo.InvariantCulture);
+            return _value.ToString("R");
+        }
+    }
+
+    public partial class PayoutRatio : IEquatable<PayoutRatio>
+    {
+        public bool Equals([CanBeNull] PayoutRatio other)
+        {
+            return _value.Equals(other?._value);
+        }
+
+        public override bool Equals([CanBeNull] object obj)
+        {
+            return this.Equals(obj as PayoutRatio);
+        }
+
+        public override int GetHashCode()
+        {
+            return _value.GetHashCode();
         }
     }
 

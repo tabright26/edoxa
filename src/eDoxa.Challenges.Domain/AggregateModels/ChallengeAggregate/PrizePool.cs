@@ -11,13 +11,11 @@
 using System;
 using System.Globalization;
 
-using eDoxa.Seedwork.Domain.Aggregate;
-
 using JetBrains.Annotations;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public partial class PrizePool : ValueObject
+    public partial class PrizePool
     {
         private readonly decimal _value;
 
@@ -44,6 +42,24 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         public double ToDouble()
         {
             return Convert.ToDouble(this);
+        }
+    }
+
+    public partial class PrizePool : IEquatable<PrizePool>
+    {
+        public bool Equals([CanBeNull] PrizePool other)
+        {
+            return _value.Equals(other?._value);
+        }
+
+        public override bool Equals([CanBeNull] object obj)
+        {
+            return this.Equals(obj as PrizePool);
+        }
+
+        public override int GetHashCode()
+        {
+            return _value.GetHashCode();
         }
     }
 

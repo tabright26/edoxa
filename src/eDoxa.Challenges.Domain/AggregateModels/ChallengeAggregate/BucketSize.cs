@@ -10,13 +10,11 @@
 
 using System;
 
-using eDoxa.Seedwork.Domain.Aggregate;
-
 using JetBrains.Annotations;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public partial class BucketSize : ValueObject
+    public partial class BucketSize
     {
         internal const int Default = 1;
 
@@ -42,6 +40,24 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         public override string ToString()
         {
             return _value.ToString();
+        }
+    }
+
+    public partial class BucketSize : IEquatable<BucketSize>
+    {
+        public bool Equals([CanBeNull] BucketSize other)
+        {
+            return _value.Equals(other?._value);
+        }
+
+        public override bool Equals([CanBeNull] object obj)
+        {
+            return this.Equals(obj as BucketSize);
+        }
+
+        public override int GetHashCode()
+        {
+            return _value.GetHashCode();
         }
     }
 
