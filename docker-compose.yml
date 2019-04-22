@@ -40,26 +40,6 @@ services:
       - edoxa.rabbitmq.broker 
       - edoxa.identity
 
-  edoxa.notifications.api:
-    image: $ACR_REGISTRY/notifications.api:$ACR_TAG
-    build:
-      context: .
-      dockerfile: src/eDoxa.Notifications.Api/Dockerfile
-    depends_on:
-      - edoxa.mssql.data
-      - edoxa.rabbitmq.broker 
-      - edoxa.identity
-
-  edoxa.challenges.backgroundtasks:
-    image: $ACR_REGISTRY/challenges.backgroundtasks:$ACR_TAG
-    build:
-      context: .
-      dockerfile: src/eDoxa.Challenges.BackgroundTasks/Dockerfile
-    depends_on:
-      - edoxa.mssql.data
-      - edoxa.rabbitmq.broker 
-      - edoxa.challenges.api
-
   #edoxa.web.spa:
   #  image: $ACR_REGISTRY/web.spa:$ACR_TAG
   #  build:

@@ -78,37 +78,6 @@ services:
     ports:
       - "5003:80"
 
-  edoxa.notifications.api:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:80
-      - ConnectionStrings__Sql=${SQLSERVER_NOTIFICATIONS:-Server=edoxa.mssql.data;Database=eDoxa.Services.Notifications;User Id=sa;Password=fnU3Www9TnBDp3MA}
-      - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
-      - AzureServiceBus__Enable=${ASB_ENABLE:-false}
-      - ServiceBus__HostName=${ASB_HOSTNAME:-edoxa.rabbitmq.broker}
-      - ServiceBus__UserName=${ASB_USERNAME:-admin}
-      - ServiceBus__Password=${ASB_PASSWORD:-4t8SaVXVMy0rT2kM}
-      - ServiceBus__RetryCount=${ASB_RETRYCOUNT:-5}
-      - ServiceBus__Subscription=Notifications      
-      - Authority=${URL:-http://localhost}:5000
-      - IdentityServer__Url=http://edoxa.identity
-    ports:
-      - "5005:80"
-
-  edoxa.challenges.backgroundtasks:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:80
-      - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
-      - AzureServiceBus__Enable=${ASB_ENABLE:-false}
-      - ServiceBus__HostName=${ASB_HOSTNAME:-edoxa.rabbitmq.broker}
-      - ServiceBus__UserName=${ASB_USERNAME:-admin}
-      - ServiceBus__Password=${ASB_PASSWORD:-4t8SaVXVMy0rT2kM}
-      - ServiceBus__RetryCount=${ASB_RETRYCOUNT:-5}
-      - ServiceBus__Subscription=BackgroundTasks
-    ports:
-      - "5052:80"
-
   #edoxa.web.spa:
   #  environment:
   #    - ASPNETCORE_ENVIRONMENT=Development
@@ -129,19 +98,15 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}            
-      - HealthChecks__Endpoints__0__Name=eDoxa Web Spa
-      - HealthChecks__Endpoints__0__Uri=http://edoxa.web.spa/health
-      - HealthChecks__Endpoints__1__Name=eDoxa Identity
-      - HealthChecks__Endpoints__1__Uri=http://edoxa.identity/health
-      - HealthChecks__Endpoints__2__Name=eDoxa Cashier API
-      - HealthChecks__Endpoints__2__Uri=http://edoxa.cashier.api/health
-      - HealthChecks__Endpoints__3__Name=eDoxa Notifications API
-      - HealthChecks__Endpoints__3__Uri=http://edoxa.notifications.api/health
-      - HealthChecks__Endpoints__4__Name=eDoxa Challenges API
-      - HealthChecks__Endpoints__4__Uri=http://edoxa.challenges.api/health
-      - HealthChecks__Endpoints__5__Name=eDoxa Challenges Background Tasks
-      - HealthChecks__Endpoints__5__Uri=http://edoxa.challenges.backgroundtasks/health
+      - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}                  
+      - HealthChecks__Endpoints__0__Name=eDoxa Identity
+      - HealthChecks__Endpoints__0__Uri=http://edoxa.identity/health
+      - HealthChecks__Endpoints__1__Name=eDoxa Cashier API
+      - HealthChecks__Endpoints__1__Uri=http://edoxa.cashier.api/health
+      - HealthChecks__Endpoints__2__Name=eDoxa Challenges API
+      - HealthChecks__Endpoints__2__Uri=http://edoxa.challenges.api/health
+      - HealthChecks__Endpoints__3__Name=eDoxa Web Spa
+      - HealthChecks__Endpoints__3__Uri=http://edoxa.web.spa/health
       - HealthChecks__EvaluationTimeInSeconds=15
       - HealthChecks__MinimumSecondsBetweenFailureNotifications=60
     ports:
