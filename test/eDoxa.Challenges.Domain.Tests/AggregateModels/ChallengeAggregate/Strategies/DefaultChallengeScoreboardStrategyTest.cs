@@ -9,6 +9,7 @@
 // this source code package.
 
 using System;
+using System.Linq;
 
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
@@ -89,7 +90,9 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Strat
                 {
                     var userId = new UserId();
 
-                    var participant = this.RegisterParticipant(userId, LinkedAccount.FromGuid(Guid.NewGuid()));
+                    this.RegisterParticipant(userId, LinkedAccount.FromGuid(Guid.NewGuid()));
+
+                    var participant = Participants.Single(x => x.UserId == userId);
 
                     var random = new Random();
 

@@ -15,9 +15,11 @@ using System.Linq;
 
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.DomainEvent;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Factories;
+using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Specifications;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Common.Enums;
+using eDoxa.Specifications.Factories;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
@@ -155,40 +157,42 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             this.AddDomainEvent(domainEvent);
         }
 
-        public Participant RegisterParticipant(UserId userId, LinkedAccount linkedAccount)
+        public void RegisterParticipant(UserId userId, LinkedAccount linkedAccount)
         {
-            if (Participants.Any(x => x.UserId == userId))
+            if (!this.CanRegisterParticipant(userId))
             {
-                throw new ArgumentException("The participant is already registered.", nameof(userId));
+                throw new InvalidOperationException();
             }
 
-            if (LiveData.Entries >= Setup.Entries)
-            {
-                throw new InvalidOperationException("The maximum number of participants has been reached.");
-            }
+            _participants.Add(new Participant(this, userId, linkedAccount));
+        }
 
-            if (!Timeline.State.HasFlag(ChallengeState.Opened))
-            {
-                throw new InvalidOperationException("The participant can only register during the registration period.");
-            }
+        private bool CanRegisterParticipant(UserId userId)
+        {
+            var specification = SpecificationFactory.Instance.CreateSpecification<Challenge>()
+                .And(new ParticipantAlreadyRegisteredSpecification(userId).Not())
+                .And(new ChallengeFullSpecification().Not())
+                .And(new ChallengeOpenedSpecification());
 
-            var participant = new Participant(this, userId, linkedAccount);
-
-            _participants.Add(participant);
-
-            return participant;
+            return specification.IsSatisfiedBy(this);
         }
 
         public void SnapshotParticipantMatch(ParticipantId participantId, IChallengeStats stats)
         {
-            var participant = Participants.SingleOrDefault(x => x.Id == participantId);
-
-            if (participant == null)
+            if (!this.CanSnapshotParticipantMatch(participantId))
             {
-                throw new ArgumentException($"This {nameof(participantId)} ({participantId}) does not exist.", nameof(participantId));
+                throw new InvalidOperationException();
             }
 
-            participant.SnapshotMatch(stats, Scoring);
+            Participants.Single(participant => participant.Id == participantId).SnapshotMatch(stats, Scoring);
+        }
+
+        private bool CanSnapshotParticipantMatch(ParticipantId participantId)
+        {
+            var specification = SpecificationFactory.Instance.CreateSpecification<Challenge>()
+                .And(new ParticipantExistsSpecification(participantId));
+
+            return specification.IsSatisfiedBy(this);
         }
     }
 }

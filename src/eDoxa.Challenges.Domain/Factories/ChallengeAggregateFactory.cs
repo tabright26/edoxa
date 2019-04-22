@@ -179,7 +179,11 @@ namespace eDoxa.Challenges.Domain.Factories
 
                 for (var row = 0; row < Random.Next(1, challenge.Setup.Entries + 1); row++)
                 {
-                    var participant = challenge.RegisterParticipant(new UserId(), LinkedAccount.FromGuid(Guid.NewGuid()));
+                    var userId = new UserId();
+
+                    challenge.RegisterParticipant(userId, LinkedAccount.FromGuid(Guid.NewGuid()));
+
+                    var participant = challenge.Participants.Single(x => x.UserId == userId);
 
                     for (var index = 0;
                         index < Random.Next(1, challenge.Setup.BestOf + Random.Next(0, challenge.Setup.BestOf + 1) + 1);

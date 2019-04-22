@@ -183,7 +183,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         }
 
         [TestMethod]
-        public void RegisterParticipant_WhoAlreadyExist_ShouldThrowArgumentException()
+        public void RegisterParticipant_WhoAlreadyExist_ShouldThrowInvalidOperationException()
         {
             // Arrange
             var userId = new UserId();
@@ -193,7 +193,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             var action = new Action(() => challenge.RegisterParticipant(userId, LinkedAccount.FromGuid(Guid.NewGuid())));
 
             // Act => Assert
-            action.Should().Throw<ArgumentException>();
+            action.Should().Throw<InvalidOperationException>();
         }
 
         [TestMethod]
@@ -237,7 +237,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         }
 
         [TestMethod]
-        public void SnapshotParticipantMatch_ParticipantNotRegistered_ShouldThrowArgumentException()
+        public void SnapshotParticipantMatch_ParticipantNotRegistered_ShouldThrowInvalidOperationException()
         {
             // Arrange
             var challenge = ChallengeAggregateFactory.CreateChallenge(ChallengeState.Draft);
@@ -246,7 +246,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             var action = new Action(() => challenge.SnapshotParticipantMatch(new ParticipantId(), ChallengeAggregateFactory.CreateChallengeStats()));
 
             // Assert
-            action.Should().Throw<ArgumentException>();
+            action.Should().Throw<InvalidOperationException>();
         }
     }
 }
