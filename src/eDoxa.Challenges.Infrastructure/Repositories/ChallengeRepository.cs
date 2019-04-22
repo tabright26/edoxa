@@ -61,7 +61,7 @@ namespace eDoxa.Challenges.Infrastructure.Repositories
             return await _context.Challenges.Include(ExpandParticipantMatchStats)
                                  .Where(
                                      challenge => (challenge.Game & game) != Game.None &&
-                                                  (challenge.Settings.Type & type) != ChallengeType.None &&
+                                                  (challenge.Setup.Type & type) != ChallengeType.None &&
                                                   (challenge.Timeline.State & state) != ChallengeState.None
                                  )
                                  .OrderBy(challenge => challenge.Timeline.StartedAt)

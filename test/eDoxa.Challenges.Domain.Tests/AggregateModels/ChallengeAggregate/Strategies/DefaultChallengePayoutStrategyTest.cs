@@ -80,7 +80,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Strat
         //    public MockChallenge(int entries, double entryFee, float payoutRatio, float serviceChargeRatio) : base(
         //        Game.LeagueOfLegends,
         //        new ChallengeName(nameof(MockChallenge)),
-        //        new ChallengeSettings(BestOf.Default.ToInt32(), entries, (decimal) entryFee, payoutRatio, serviceChargeRatio)
+        //        new ChallengeSetup(BestOf.Default.ToInt32(), entries, (decimal) entryFee, payoutRatio, serviceChargeRatio)
         //    )
         //    {
         //        this.Publish(MockChallengeScoringStrategy());

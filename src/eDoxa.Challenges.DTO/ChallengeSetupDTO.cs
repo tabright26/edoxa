@@ -1,4 +1,4 @@
-﻿// Filename: ChallengeSettingsDTO.cs
+﻿// Filename: ChallengeSetupDTO.cs
 // Date Created: 2019-04-03
 // 
 // ============================================================
@@ -13,7 +13,7 @@ using Newtonsoft.Json;
 namespace eDoxa.Challenges.DTO
 {
     [JsonObject]
-    public class ChallengeSettingsDTO
+    public class ChallengeSetupDTO
     {
         [JsonProperty("bestOf")]
         public int BestOf { get; set; }

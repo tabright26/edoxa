@@ -37,7 +37,7 @@ namespace eDoxa.Challenges.DTO.Factories
             yield return new ChallengePayoutProfile();
             yield return new ChallengeProfile();
             yield return new ChallengeScoringProfile();
-            yield return new ChallengeSettingsProfile();
+            yield return new ChallengeSetupProfile();
             yield return new ChallengeTimelineProfile();
             yield return new MatchProfile();
             yield return new StatProfile();

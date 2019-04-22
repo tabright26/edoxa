@@ -1,4 +1,4 @@
-﻿// Filename: ChallengeSettingsTest.cs
+﻿// Filename: ChallengeSetupTest.cs
 // Date Created: 2019-04-14
 // 
 // ================================================
@@ -21,7 +21,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
 {
     [TestClass]
-    public sealed class ChallengeSettingsTest
+    public sealed class ChallengeSetupTest
     {
         private static readonly ChallengeAggregateFactory ChallengeAggregateFactory = ChallengeAggregateFactory.Instance;
 
@@ -36,24 +36,24 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             var serviceChargeRatio = ServiceChargeRatio.DefaultValue;
 
             // Act
-            var settings = ChallengeAggregateFactory.CreateChallengeSettings();
+            var setup = ChallengeAggregateFactory.CreateChallengeSetup();
 
             // Assert
-            settings.BestOf.Should().Be(bestOf);
-            settings.Entries.Should().Be(entries);
-            settings.EntryFee.Should().Be(entryFee);
-            settings.PayoutRatio.Should().Be(payoutRatio);
-            settings.ServiceChargeRatio.Should().Be(serviceChargeRatio);
+            setup.BestOf.Should().Be(bestOf);
+            setup.Entries.Should().Be(entries);
+            setup.EntryFee.Should().Be(entryFee);
+            setup.PayoutRatio.Should().Be(payoutRatio);
+            setup.ServiceChargeRatio.Should().Be(serviceChargeRatio);
         }
 
         [TestMethod]
         public void Type_InvalidEnumArgument_ShouldThrowInvalidEnumArgumentException()
         {
             // Arrange
-            var settings = ChallengeAggregateFactory.CreateChallengeSettings();
+            var setup = ChallengeAggregateFactory.CreateChallengeSetup();
 
             // Act
-            var action = new Action(() => settings.SetProperty(nameof(ChallengeSettings.Type), (ChallengeType) 1000));
+            var action = new Action(() => setup.SetProperty(nameof(ChallengeSetup.Type), (ChallengeType) 1000));
 
             // Assert
             action.Should().Throw<ArgumentException>();
@@ -65,10 +65,10 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void Type_InvalidArgument_ShouldThrowArgumentException(ChallengeType type)
         {
             // Arrange
-            var settings = ChallengeAggregateFactory.CreateChallengeSettings();
+            var setup = ChallengeAggregateFactory.CreateChallengeSetup();
 
             // Act
-            var action = new Action(() => settings.SetProperty(nameof(ChallengeSettings.Type), type));
+            var action = new Action(() => setup.SetProperty(nameof(ChallengeSetup.Type), type));
 
             // Assert
             action.Should().Throw<ArgumentException>();

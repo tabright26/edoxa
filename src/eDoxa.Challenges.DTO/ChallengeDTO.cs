@@ -48,8 +48,8 @@ namespace eDoxa.Challenges.DTO
         [JsonProperty("timeline")]
         public ChallengeTimelineDTO Timeline { get; set; }
 
-        [JsonProperty("settings")]
-        public ChallengeSettingsDTO Settings { get; set; }
+        [JsonProperty("setup")]
+        public ChallengeSetupDTO Setup { get; set; }
 
         [JsonProperty("liveData")]
         public ChallengeLiveDataDTO LiveData { get; set; }

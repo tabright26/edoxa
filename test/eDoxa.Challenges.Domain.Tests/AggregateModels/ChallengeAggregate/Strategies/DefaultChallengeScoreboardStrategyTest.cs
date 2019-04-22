@@ -74,7 +74,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Strat
             public MockChallenge(Entries entries, BestOf bestOf) : base(
                 Game.LeagueOfLegends,
                 new ChallengeName(nameof(Challenge)),
-                new ChallengeSettings(
+                new ChallengeSetup(
                     bestOf,
                     entries,
                     EntryFee.DefaultValue,
@@ -85,7 +85,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Strat
             {
                 this.Publish(MockChallengeScoringStrategy());
 
-                for (var i = 0; i < Settings.Entries; i++)
+                for (var i = 0; i < Setup.Entries; i++)
                 {
                     var userId = new UserId();
 
@@ -93,7 +93,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Strat
 
                     var random = new Random();
 
-                    for (var j = 0; j < random.Next(0, Settings.BestOf + 10); j++)
+                    for (var j = 0; j < random.Next(0, Setup.BestOf + 10); j++)
                     {
                         this.SnapshotParticipantMatch(participant.Id, ChallengeAggregateFactory.CreateChallengeStats());
                     }

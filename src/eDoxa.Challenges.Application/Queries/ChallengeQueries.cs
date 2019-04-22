@@ -53,7 +53,7 @@ namespace eDoxa.Challenges.Application.Queries
                 .Where(
                     challenge => challenge.Participants.Any(participant => participant.UserId == userId) &&
                                  (challenge.Game & game) != Game.None &&
-                                 (challenge.Settings.Type & type) != ChallengeType.None &&
+                                 (challenge.Setup.Type & type) != ChallengeType.None &&
                                  (challenge.Timeline.State & state) != ChallengeState.None
                 )
                 .OrderBy(challenge => challenge.Timeline.StartedAt)
@@ -66,11 +66,11 @@ namespace eDoxa.Challenges.Application.Queries
                 .Include(ExpandParticipantMatchStats)
                 .Where(
                     challenge => (challenge.Game & game) != Game.None &&
-                                 (challenge.Settings.Type & type) != ChallengeType.None &&
+                                 (challenge.Setup.Type & type) != ChallengeType.None &&
                                  (challenge.Timeline.State & state) != ChallengeState.None
                 )
                 .OrderBy(challenge => challenge.Game)
-                .ThenBy(challenge => challenge.Settings.Type)
+                .ThenBy(challenge => challenge.Setup.Type)
                 .ThenBy(challenge => challenge.Timeline.State)
                 .ThenBy(challenge => challenge.LiveData.Entries)
                 .ThenBy(challenge => challenge.Timeline.StartedAt)

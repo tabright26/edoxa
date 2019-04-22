@@ -41,7 +41,7 @@ namespace eDoxa.Challenges.Application.Tests.Asserts
 
             challenge.Name.Should().NotBeNullOrWhiteSpace();
 
-            challenge.Settings.Should().NotBeNull();
+            challenge.Setup.Should().NotBeNull();
 
             challenge.Timeline.Should().NotBeNull();
 

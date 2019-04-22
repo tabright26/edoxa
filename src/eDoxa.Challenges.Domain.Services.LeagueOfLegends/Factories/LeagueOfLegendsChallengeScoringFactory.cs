@@ -30,7 +30,7 @@ namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.Factories
 
         public IChallengeScoringStrategy Create(Challenge challenge)
         {
-            switch (challenge.Settings.Type)
+            switch (challenge.Setup.Type)
             {
                 case ChallengeType.Default:
                     return new LeagueOfLegendsDefaultChallengeScoringStrategy();

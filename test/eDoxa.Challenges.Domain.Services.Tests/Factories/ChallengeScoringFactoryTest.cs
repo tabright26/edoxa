@@ -57,7 +57,7 @@ namespace eDoxa.Challenges.Domain.Services.Tests.Factories
         {
             public MockChallenge(ChallengeType type, Game game) : base(game, new ChallengeName(nameof(Challenge)))
             {
-                Settings.SetPrivateField("_type", type);
+                Setup.SetPrivateField("_type", type);
             }
         }
     }

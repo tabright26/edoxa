@@ -57,7 +57,7 @@ namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.Tests.Factories
         {
             public MockChallenge(ChallengeType type) : base(Game.LeagueOfLegends, new ChallengeName(nameof(Challenge)))
             {
-                Settings.SetPrivateField("_type", type);
+                Setup.SetPrivateField("_type", type);
             }
         }
     }

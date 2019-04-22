@@ -77,16 +77,16 @@ namespace eDoxa.Challenges.Domain.Factories
 
     internal sealed partial class ChallengeAggregateFactory
     {
-        public Challenge CreateChallenge(Game game, ChallengeName name, ChallengeSettings settings)
+        public Challenge CreateChallenge(Game game, ChallengeName name, ChallengeSetup setup)
         {
-            return new Challenge(game, name, settings);
+            return new Challenge(game, name, setup);
         }
 
-        public Challenge CreateChallenge(ChallengeState state = ChallengeState.Opened, ChallengeSettings settings = null)
+        public Challenge CreateChallenge(ChallengeState state = ChallengeState.Opened, ChallengeSetup setup = null)
         {
-            settings = settings ?? new ChallengeSettings();
+            setup = setup ?? new ChallengeSetup();
 
-            var challenge = this.CreateChallenge(Game.LeagueOfLegends, nameof(Challenge), settings);
+            var challenge = this.CreateChallenge(Game.LeagueOfLegends, nameof(Challenge), setup);
 
             var timeline = this.CreateChallengeTimeline(state);
 
@@ -117,7 +117,7 @@ namespace eDoxa.Challenges.Domain.Factories
         {
             var challenge = this.CreateChallenge();
 
-            participantCount = participantCount ?? challenge.Settings.Entries;
+            participantCount = participantCount ?? challenge.Setup.Entries;
 
             for (var index = 0; index < participantCount; index++)
             {
@@ -177,12 +177,12 @@ namespace eDoxa.Challenges.Domain.Factories
                 challenge.GetType().GetField("_timeline", BindingFlags.Instance | BindingFlags.NonPublic)
                     ?.SetValue(challenge, this.CreateChallengeTimeline(ChallengeState.Opened));
 
-                for (var row = 0; row < Random.Next(1, challenge.Settings.Entries + 1); row++)
+                for (var row = 0; row < Random.Next(1, challenge.Setup.Entries + 1); row++)
                 {
                     var participant = challenge.RegisterParticipant(new UserId(), LinkedAccount.FromGuid(Guid.NewGuid()));
 
                     for (var index = 0;
-                        index < Random.Next(1, challenge.Settings.BestOf + Random.Next(0, challenge.Settings.BestOf + 1) + 1);
+                        index < Random.Next(1, challenge.Setup.BestOf + Random.Next(0, challenge.Setup.BestOf + 1) + 1);
                         index++)
                     {
                         var stats = this.CreateChallengeStats();
@@ -200,14 +200,14 @@ namespace eDoxa.Challenges.Domain.Factories
 
     internal sealed partial class ChallengeAggregateFactory
     {
-        public ChallengeSettings CreateChallengeSettings(
+        public ChallengeSetup CreateChallengeSetup(
             int bestOf = BestOf.Default,
             int entries = Entries.Default,
             decimal entryFee = EntryFee.Default,
             float payoutRatio = PayoutRatio.Default,
             float serviceChargeRatio = ServiceChargeRatio.Default)
         {
-            return new ChallengeSettings(new BestOf(bestOf), new Entries(entries), new EntryFee(entryFee), new PayoutRatio(payoutRatio),
+            return new ChallengeSetup(new BestOf(bestOf), new Entries(entries), new EntryFee(entryFee), new PayoutRatio(payoutRatio),
                 new ServiceChargeRatio(serviceChargeRatio));
         }
     }
@@ -303,7 +303,7 @@ namespace eDoxa.Challenges.Domain.Factories
     {
         public ChallengeLiveData CreateChallengeLive(Challenge challenge)
         {
-            return new ChallengeLiveData(challenge.Settings, challenge.Participants);
+            return new ChallengeLiveData(challenge.Setup, challenge.Participants);
         }
     }
 
@@ -316,9 +316,9 @@ namespace eDoxa.Challenges.Domain.Factories
 
         public Participant CreateParticipant(int? bestOf = null)
         {
-            var settings = this.CreateChallengeSettings(bestOf ?? BestOf.DefaultValue);
+            var setup = this.CreateChallengeSetup(bestOf ?? BestOf.DefaultValue);
 
-            var challenge = this.CreateChallenge(settings: settings);
+            var challenge = this.CreateChallenge(setup: setup);
 
             var linkedAccount = this.CreateLinkedAccount();
 

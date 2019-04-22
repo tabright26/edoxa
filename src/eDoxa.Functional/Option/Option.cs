@@ -10,6 +10,8 @@
 
 using System;
 
+using JetBrains.Annotations;
+
 namespace eDoxa.Functional.Option
 {
     public abstract class Option<T>
@@ -28,9 +30,16 @@ namespace eDoxa.Functional.Option
 
         public abstract Option<TResult> MapOptional<TResult>(Func<T, Option<TResult>> map);
 
-        public abstract T Reduce(T whenNone);
+        [CanBeNull]
+        public abstract T Reduce([CanBeNull] T whenNone);
 
         public abstract T Reduce(Func<T> whenNone);
+
+        [CanBeNull]
+        public T Default()
+        {
+            return default;
+        }
 
         public Option<TCast> OfType<TCast>()
         where TCast : class

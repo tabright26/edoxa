@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Factories;
+using eDoxa.Functional.Option;
 
 using FluentAssertions;
 
@@ -32,7 +33,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             var scoreboard = ChallengeAggregateFactory.CreateChallengeScoreboard();
 
             // Act
-            var type = typeof(Dictionary<UserId, Score>);
+            var type = typeof(Dictionary<UserId, Option<Score>>);
 
             // Assert
             scoreboard.Should().BeAssignableTo(type);

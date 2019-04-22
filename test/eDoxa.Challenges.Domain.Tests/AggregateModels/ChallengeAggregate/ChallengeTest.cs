@@ -35,15 +35,15 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             // Arrange
             const Game game = Game.LeagueOfLegends;
             var name = new ChallengeName(nameof(Challenge));
-            var settings = new ChallengeSettings();
+            var setup = new ChallengeSetup();
 
             // Act
-            var challenge = ChallengeAggregateFactory.CreateChallenge(game, name, settings);
+            var challenge = ChallengeAggregateFactory.CreateChallenge(game, name, setup);
 
             // Assert
             challenge.Game.Should().Be(game);
             challenge.Name.Should().Be(name);
-            challenge.Settings.Should().Be(settings);
+            challenge.Setup.Should().Be(setup);
             challenge.Scoring.Should().BeNull();
             challenge.LiveData.Payout.Should().NotBeNull();
 
@@ -51,10 +51,10 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             challenge.Scoreboard.Should().BeEmpty();
             challenge.Participants.Should().BeEmpty();
             challenge.LiveData.Entries.Should().Be(new Entries(challenge.Participants.Count, false));
-            challenge.LiveData.PayoutEntries.Should().Be(new PayoutEntries(challenge.LiveData.Entries, challenge.Settings.PayoutRatio));
+            challenge.LiveData.PayoutEntries.Should().Be(new PayoutEntries(challenge.LiveData.Entries, challenge.Setup.PayoutRatio));
 
             challenge.LiveData.PrizePool.Should()
-                .Be(new PrizePool(challenge.LiveData.Entries, challenge.Settings.EntryFee, challenge.Settings.ServiceChargeRatio));
+                .Be(new PrizePool(challenge.LiveData.Entries, challenge.Setup.EntryFee, challenge.Setup.ServiceChargeRatio));
         }
 
         [TestMethod]

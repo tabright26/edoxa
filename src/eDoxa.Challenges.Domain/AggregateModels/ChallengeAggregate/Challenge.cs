@@ -1,5 +1,5 @@
 ﻿// Filename: Challenge.cs
-// Date Created: 2019-04-14
+// Date Created: 2019-04-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -27,18 +27,18 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         private ChallengeName _name;
         private HashSet<Participant> _participants;
         private IChallengeScoring _scoring;
-        private ChallengeSettings _settings;
+        private ChallengeSetup _setup;
         private ChallengeTimeline _timeline;
 
         internal Challenge(Game game, ChallengeName name, ChallengePublisherPeriodicity periodicity) : this(game, name)
         {
-            _settings = new ChallengeSettings(periodicity);
+            _setup = new ChallengeSetup(periodicity);
             _timeline = new ChallengeTimeline(periodicity);
         }
 
-        internal Challenge(Game game, ChallengeName name, ChallengeSettings settings) : this(game, name)
+        internal Challenge(Game game, ChallengeName name, ChallengeSetup setup) : this(game, name)
         {
-            _settings = settings;
+            _setup = setup;
         }
 
         internal Challenge(Game game, ChallengeName name) : this()
@@ -51,7 +51,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         {
             _game = Game.None;
             _name = null;
-            _settings = new ChallengeSettings();
+            _setup = new ChallengeSetup();
             _timeline = new ChallengeTimeline();
             _scoring = null;
             _participants = new HashSet<Participant>();
@@ -78,7 +78,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public ChallengeName Name => _name;
 
-        public ChallengeSettings Settings => _settings;
+        public ChallengeSetup Setup => _setup;
 
         public ChallengeTimeline Timeline => _timeline;
 
@@ -88,7 +88,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             protected set => _scoring = value;
         }
 
-        public ChallengeLiveData LiveData => new ChallengeLiveData(Settings, Participants);
+        public ChallengeLiveData LiveData => new ChallengeLiveData(Setup, Participants);
 
         public IChallengePayout Payout
         {
@@ -96,7 +96,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             {
                 var factory = ChallengePayoutFactory.Instance;
 
-                var strategy = factory.CreatePayout(Settings.Type, Settings.PayoutEntries, Settings.PrizePool, Settings.EntryFee);
+                var strategy = factory.CreatePayout(Setup.Type, Setup.PayoutEntries, Setup.PrizePool, Setup.EntryFee);
 
                 return strategy.Payout;
             }
@@ -162,7 +162,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
                 throw new ArgumentException("The participant is already registered.", nameof(userId));
             }
 
-            if (LiveData.Entries >= Settings.Entries)
+            if (LiveData.Entries >= Setup.Entries)
             {
                 throw new InvalidOperationException("The maximum number of participants has been reached.");
             }

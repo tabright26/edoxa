@@ -33,8 +33,8 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Facto
             var factory = ChallengePayoutFactory.Instance;
 
             // Act
-            var strategy = factory.CreatePayout(challenge.Settings.Type, challenge.Settings.PayoutEntries, challenge.Settings.PrizePool,
-                challenge.Settings.EntryFee);
+            var strategy = factory.CreatePayout(challenge.Setup.Type, challenge.Setup.PayoutEntries, challenge.Setup.PrizePool,
+                challenge.Setup.EntryFee);
 
             // Assert
             strategy.Payout.Should().NotBeNull();
@@ -51,7 +51,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Facto
 
             // Act
             var action = new Action(() =>
-                factory.CreatePayout(challenge.Settings.Type, challenge.Settings.PayoutEntries, challenge.Settings.PrizePool, challenge.Settings.EntryFee));
+                factory.CreatePayout(challenge.Setup.Type, challenge.Setup.PayoutEntries, challenge.Setup.PrizePool, challenge.Setup.EntryFee));
 
             // Assert
             action.Should().Throw<NotImplementedException>();
@@ -61,7 +61,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Facto
         {
             public MockChallenge(ChallengeType type) : base(Game.LeagueOfLegends, new ChallengeName(nameof(Challenge)))
             {
-                Settings.SetPrivateField("_type", type);
+                Setup.SetPrivateField("_type", type);
             }
         }
     }

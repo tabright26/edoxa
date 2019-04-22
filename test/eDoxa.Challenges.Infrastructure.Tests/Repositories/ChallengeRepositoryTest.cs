@@ -267,7 +267,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
                 challenge.Game.Should().NotBe(Game.All);
                 challenge.Game.Should().NotBe(Game.None);
                 challenge.Name.ToString().Should().NotBeNullOrWhiteSpace();
-                challenge.Settings.Should().NotBeNull();
+                challenge.Setup.Should().NotBeNull();
                 challenge.Timeline.Should().NotBeNull();
                 challenge.LiveData.Should().NotBeNull();
                 challenge.Scoring.Should().NotBeNull();

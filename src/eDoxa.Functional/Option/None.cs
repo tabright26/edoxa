@@ -35,8 +35,9 @@ namespace eDoxa.Functional.Option
         {
             return None.Value;
         }
-
-        public override T Reduce(T whenNone)
+        
+        [CanBeNull]
+        public override T Reduce([CanBeNull] T whenNone = default)
         {
             return whenNone;
         }

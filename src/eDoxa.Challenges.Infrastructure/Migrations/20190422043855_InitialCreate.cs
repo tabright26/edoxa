@@ -1,4 +1,14 @@
-﻿using System;
+﻿// Filename: 20190422043855_InitialCreate.cs
+// Date Created: 2019-04-22
+// 
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
+// this source code package.
+
+using System;
 
 using Microsoft.EntityFrameworkCore.Migrations;
 
@@ -28,24 +38,19 @@ namespace eDoxa.Challenges.Infrastructure.Migrations
                     Origin = table.Column<string>(nullable: true),
                     IdempotencyKey = table.Column<Guid>(nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RequestLogs", x => x.Id);
-                }
-            );
+                constraints: table => { table.PrimaryKey("PK_RequestLogs", x => x.Id); });
 
             migrationBuilder.CreateTable(
                 "Challenges",
                 schema: "edoxa",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(), Game = table.Column<int>(), Name = table.Column<string>(), Scoring = table.Column<string>(nullable: true)
+                    Id = table.Column<Guid>(),
+                    Game = table.Column<int>(),
+                    Name = table.Column<string>(),
+                    Scoring = table.Column<string>(nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Challenges", x => x.Id);
-                }
-            );
+                constraints: table => { table.PrimaryKey("PK_Challenges", x => x.Id); });
 
             migrationBuilder.CreateTable(
                 "Users",
@@ -54,40 +59,34 @@ namespace eDoxa.Challenges.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>()
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.Id);
-                }
-            );
+                constraints: table => { table.PrimaryKey("PK_Users", x => x.Id); });
 
             migrationBuilder.CreateTable(
-                "ChallengeSettings",
+                "ChallengeSetups",
                 schema: "edoxa",
                 columns: table => new
                 {
                     ChallengeId = table.Column<Guid>(),
                     Type = table.Column<int>(),
+                    Generated = table.Column<bool>(),
                     BestOf = table.Column<int>(),
                     Entries = table.Column<int>(),
                     EntryFee = table.Column<decimal>("decimal(4,2)"),
                     PayoutRatio = table.Column<float>(),
-                    ServiceChargeRatio = table.Column<float>(),
-                    Generated = table.Column<bool>()
+                    ServiceChargeRatio = table.Column<float>()
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ChallengeSettings", x => x.ChallengeId);
+                    table.PrimaryKey("PK_ChallengeSetups", x => x.ChallengeId);
 
                     table.ForeignKey(
-                        "FK_ChallengeSettings_Challenges_ChallengeId",
+                        "FK_ChallengeSetups_Challenges_ChallengeId",
                         x => x.ChallengeId,
                         principalSchema: "edoxa",
                         principalTable: "Challenges",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade
-                    );
-                }
-            );
+                        onDelete: ReferentialAction.Cascade);
+                });
 
             migrationBuilder.CreateTable(
                 "ChallengeTimelines",
@@ -112,10 +111,8 @@ namespace eDoxa.Challenges.Infrastructure.Migrations
                         principalSchema: "edoxa",
                         principalTable: "Challenges",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade
-                    );
-                }
-            );
+                        onDelete: ReferentialAction.Cascade);
+                });
 
             migrationBuilder.CreateTable(
                 "Participants",
@@ -138,17 +135,18 @@ namespace eDoxa.Challenges.Infrastructure.Migrations
                         principalSchema: "edoxa",
                         principalTable: "Challenges",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade
-                    );
-                }
-            );
+                        onDelete: ReferentialAction.Cascade);
+                });
 
             migrationBuilder.CreateTable(
                 "Matches",
                 schema: "edoxa",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(), Timestamp = table.Column<DateTime>(), LinkedMatch = table.Column<string>(), ParticipantId = table.Column<Guid>()
+                    Id = table.Column<Guid>(),
+                    Timestamp = table.Column<DateTime>(),
+                    LinkedMatch = table.Column<string>(),
+                    ParticipantId = table.Column<Guid>()
                 },
                 constraints: table =>
                 {
@@ -160,10 +158,8 @@ namespace eDoxa.Challenges.Infrastructure.Migrations
                         principalSchema: "edoxa",
                         principalTable: "Participants",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade
-                    );
-                }
-            );
+                        onDelete: ReferentialAction.Cascade);
+                });
 
             migrationBuilder.CreateTable(
                 "Stats",
@@ -186,10 +182,8 @@ namespace eDoxa.Challenges.Infrastructure.Migrations
                         principalSchema: "edoxa",
                         principalTable: "Matches",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade
-                    );
-                }
-            );
+                        onDelete: ReferentialAction.Cascade);
+                });
 
             migrationBuilder.CreateIndex(
                 "IX_RequestLogs_IdempotencyKey",
@@ -197,21 +191,32 @@ namespace eDoxa.Challenges.Infrastructure.Migrations
                 table: "RequestLogs",
                 column: "IdempotencyKey",
                 unique: true,
-                filter: "[IdempotencyKey] IS NOT NULL"
-            );
+                filter: "[IdempotencyKey] IS NOT NULL");
 
-            migrationBuilder.CreateIndex("IX_Matches_ParticipantId", schema: "edoxa", table: "Matches", column: "ParticipantId");
+            migrationBuilder.CreateIndex(
+                "IX_Matches_ParticipantId",
+                schema: "edoxa",
+                table: "Matches",
+                column: "ParticipantId");
 
-            migrationBuilder.CreateIndex("IX_Participants_ChallengeId", schema: "edoxa", table: "Participants", column: "ChallengeId");
+            migrationBuilder.CreateIndex(
+                "IX_Participants_ChallengeId",
+                schema: "edoxa",
+                table: "Participants",
+                column: "ChallengeId");
 
-            migrationBuilder.CreateIndex("IX_Stats_MatchId", schema: "edoxa", table: "Stats", column: "MatchId");
+            migrationBuilder.CreateIndex(
+                "IX_Stats_MatchId",
+                schema: "edoxa",
+                table: "Stats",
+                column: "MatchId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable("RequestLogs", "dbo");
 
-            migrationBuilder.DropTable("ChallengeSettings", "edoxa");
+            migrationBuilder.DropTable("ChallengeSetups", "edoxa");
 
             migrationBuilder.DropTable("ChallengeTimelines", "edoxa");
 

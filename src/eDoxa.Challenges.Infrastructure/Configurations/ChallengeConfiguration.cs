@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeConfiguration.cs
-// Date Created: 2019-04-14
+// Date Created: 2019-04-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -40,42 +40,42 @@ namespace eDoxa.Challenges.Infrastructure.Configurations
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.OwnsOne(
-                challenge => challenge.Settings,
-                challengeSettings =>
+                challenge => challenge.Setup,
+                challengeSetup =>
                 {
-                    challengeSettings.Property(settings => settings.Type).IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field);
+                    challengeSetup.Property(setup => setup.Type).IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field);
 
-                    challengeSettings.Property(settings => settings.Entries)
+                    challengeSetup.Property(setup => setup.Entries)
                         .HasConversion<int>(entries => entries, entries => new Entries(entries, false))
                         .IsRequired()
                         .UsePropertyAccessMode(PropertyAccessMode.Field);
 
-                    challengeSettings.Property(settings => settings.EntryFee)
+                    challengeSetup.Property(setup => setup.EntryFee)
                         .HasConversion<decimal>(entryFee => entryFee, entryFee => new EntryFee(entryFee, false))
                         .HasColumnType("decimal(4,2)")
                         .IsRequired()
                         .UsePropertyAccessMode(PropertyAccessMode.Field);
 
-                    challengeSettings.Property(settings => settings.BestOf)
+                    challengeSetup.Property(setup => setup.BestOf)
                         .HasConversion<int>(bestOf => bestOf, bestOf => new BestOf(bestOf, false))
                         .IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field);
 
-                    challengeSettings.Property(settings => settings.PayoutRatio)
+                    challengeSetup.Property(setup => setup.PayoutRatio)
                         .HasConversion<float>(payoutRatio => payoutRatio, payoutRatio => new PayoutRatio(payoutRatio, false)).IsRequired()
                         .UsePropertyAccessMode(PropertyAccessMode.Field);
 
-                    challengeSettings.Property(settings => settings.ServiceChargeRatio)
+                    challengeSetup.Property(setup => setup.ServiceChargeRatio)
                         .HasConversion<float>(serviceChargeRatio => serviceChargeRatio, serviceChargeRatio => new ServiceChargeRatio(serviceChargeRatio, false))
                         .IsRequired()
                         .UsePropertyAccessMode(PropertyAccessMode.Field);
 
-                    challengeSettings.Property(settings => settings.Generated).IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field);
+                    challengeSetup.Property(setup => setup.Generated).IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field);
 
-                    challengeSettings.Ignore(settings => settings.PayoutEntries);
+                    challengeSetup.Ignore(setup => setup.PayoutEntries);
 
-                    challengeSettings.Ignore(settings => settings.PrizePool);
+                    challengeSetup.Ignore(setup => setup.PrizePool);
 
-                    challengeSettings.ToTable("ChallengeSettings");
+                    challengeSetup.ToTable("ChallengeSetups");
                 }
             );
 
@@ -132,7 +132,7 @@ namespace eDoxa.Challenges.Infrastructure.Configurations
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Metadata.FindNavigation(nameof(Challenge.Settings)).SetPropertyAccessMode(PropertyAccessMode.Field);
+            builder.Metadata.FindNavigation(nameof(Challenge.Setup)).SetPropertyAccessMode(PropertyAccessMode.Field);
 
             builder.Metadata.FindNavigation(nameof(Challenge.Timeline)).SetPropertyAccessMode(PropertyAccessMode.Field);
 

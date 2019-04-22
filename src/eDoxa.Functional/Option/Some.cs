@@ -64,7 +64,7 @@ namespace eDoxa.Functional.Option
             return map(Content);
         }
 
-        public override T Reduce(T whenNone)
+        public override T Reduce([CanBeNull] T whenNone = default)
         {
             return Content;
         }

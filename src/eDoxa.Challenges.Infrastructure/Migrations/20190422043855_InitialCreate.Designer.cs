@@ -4,11 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using eDoxa.Challenges.Infrastructure;
 
 namespace eDoxa.Challenges.Infrastructure.Migrations
 {
     [DbContext(typeof(ChallengesDbContext))]
-    [Migration("20190401041114_InitialCreate")]
+    [Migration("20190422043855_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -16,7 +18,7 @@ namespace eDoxa.Challenges.Infrastructure.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("edoxa")
-                .HasAnnotation("ProductVersion", "2.2.3-servicing-35854")
+                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -137,7 +139,7 @@ namespace eDoxa.Challenges.Infrastructure.Migrations
 
             modelBuilder.Entity("eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Challenge", b =>
                 {
-                    b.OwnsOne("eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.ChallengeSettings", "Settings", b1 =>
+                    b.OwnsOne("eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.ChallengeSetup", "Setup", b1 =>
                         {
                             b1.Property<Guid>("ChallengeId");
 
@@ -158,11 +160,11 @@ namespace eDoxa.Challenges.Infrastructure.Migrations
 
                             b1.HasKey("ChallengeId");
 
-                            b1.ToTable("ChallengeSettings","edoxa");
+                            b1.ToTable("ChallengeSetups","edoxa");
 
                             b1.HasOne("eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Challenge")
-                                .WithOne("Settings")
-                                .HasForeignKey("eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.ChallengeSettings", "ChallengeId")
+                                .WithOne("Setup")
+                                .HasForeignKey("eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.ChallengeSetup", "ChallengeId")
                                 .OnDelete(DeleteBehavior.Cascade);
                         });
 

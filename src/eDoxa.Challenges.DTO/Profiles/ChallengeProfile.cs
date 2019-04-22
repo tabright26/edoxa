@@ -24,10 +24,10 @@ namespace eDoxa.Challenges.DTO.Profiles
                 .ForMember(challenge => challenge.Id, config => config.MapFrom(challenge => challenge.Id.ToGuid()))
                 .ForMember(challenge => challenge.Name, config => config.MapFrom(challenge => challenge.Name.ToString()))
                 .ForMember(challenge => challenge.Game, config => config.MapFrom(challenge => challenge.Game))
-                .ForMember(challenge => challenge.Type, config => config.MapFrom(challenge => challenge.Settings.Type))
+                .ForMember(challenge => challenge.Type, config => config.MapFrom(challenge => challenge.Setup.Type))
                 .ForMember(challenge => challenge.State, config => config.MapFrom(challenge => challenge.Timeline.State))
                 .ForMember(challenge => challenge.LiveMode, config => config.MapFrom(challenge => challenge.Timeline.LiveMode))
-                .ForMember(challenge => challenge.Generated, config => config.MapFrom(challenge => challenge.Settings.Generated))
+                .ForMember(challenge => challenge.Generated, config => config.MapFrom(challenge => challenge.Setup.Generated))
                 .ForMember(challenge => challenge.Payout, config => config.MapFrom(challenge => challenge.Payout))
                 .ForMember(
                     challenge => challenge.Scoring,

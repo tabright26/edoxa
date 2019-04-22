@@ -20,7 +20,7 @@ namespace eDoxa.Functional.Extensions
     {
         public static Option<T> FirstOrNone<T>(this IEnumerable<T> sequence)
         {
-            return sequence.Select(x => (Option<T>) new Some<T>(x))
+            return sequence.Select(selector => (Option<T>) new Some<T>(selector))
                 .DefaultIfEmpty(None.Value)
                 .First();
         }
@@ -30,11 +30,21 @@ namespace eDoxa.Functional.Extensions
             return sequence.Where(predicate).FirstOrNone();
         }
 
-        public static IEnumerable<TResult> SelectOptional<T, TResult>(this IEnumerable<T> sequence, Func<T, Option<TResult>> map)
+        public static IEnumerable<TResult> OptionalSelect<T, TResult>(this IEnumerable<T> sequence, Func<T, Option<TResult>> map)
         {
             return sequence.Select(map)
                 .OfType<Some<TResult>>()
                 .Select(some => some.Content);
+        }
+
+        public static IEnumerable<T> OptionalOrderBy<T, TResult>(this IEnumerable<T> sequence, Func<T, Option<TResult>> map)
+        {
+            return sequence.OrderBy(keySelector => map(keySelector).Default());
+        }
+
+        public static IEnumerable<T> OptionalOrderByDescending<T, TResult>(this IEnumerable<T> sequence, Func<T, Option<TResult>> map)
+        {
+            return sequence.OrderByDescending(keySelector => map(keySelector).Default());
         }
     }
 }

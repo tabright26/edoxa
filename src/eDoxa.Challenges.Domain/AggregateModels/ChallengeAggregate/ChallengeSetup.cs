@@ -1,5 +1,5 @@
-﻿// Filename: ChallengeSettings.cs
-// Date Created: 2019-04-14
+﻿// Filename: ChallengeSetup.cs
+// Date Created: 2019-04-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -15,7 +15,7 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public class ChallengeSettings : ValueObject
+    public class ChallengeSetup : ValueObject
     {
         private BestOf _bestOf;
         private Entries _entries;
@@ -25,25 +25,16 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         private ServiceChargeRatio _serviceChargeRatio;
         private ChallengeType _type;
 
-        internal ChallengeSettings(
-            BestOf bestOf,
-            Entries entries,
-            EntryFee entryFee,
-            PayoutRatio payoutRatio,
-            ServiceChargeRatio serviceChargeRatio) : this(bestOf, entries, entryFee)
-        {
-            _payoutRatio = payoutRatio;
-            _serviceChargeRatio = serviceChargeRatio;
-        }
-
-        internal ChallengeSettings(BestOf bestOf, Entries entries, EntryFee entryFee) : this()
+        internal ChallengeSetup(BestOf bestOf, Entries entries, EntryFee entryFee, PayoutRatio payoutRatio, ServiceChargeRatio serviceChargeRatio)
         {
             _bestOf = bestOf;
             _entries = entries;
             _entryFee = entryFee;
+            _payoutRatio = payoutRatio;
+            _serviceChargeRatio = serviceChargeRatio;
         }
 
-        internal ChallengeSettings(ChallengePublisherPeriodicity periodicity) : this()
+        internal ChallengeSetup(ChallengePublisherPeriodicity periodicity) : this()
         {
             var bestOfRandom = new BestOfRandom();
             var entriesRandom = new EntriesRandom();
@@ -85,7 +76,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             _generated = true;
         }
 
-        internal ChallengeSettings()
+        internal ChallengeSetup()
         {
             _type = ChallengeType.Default;
             _bestOf = BestOf.DefaultValue;

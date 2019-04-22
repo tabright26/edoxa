@@ -22,7 +22,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Factories
 
         public IChallengeScoreboardStrategy Create(Challenge challenge)
         {
-            switch (challenge.Settings.Type)
+            switch (challenge.Setup.Type)
             {
                 case ChallengeType.Default:
 
