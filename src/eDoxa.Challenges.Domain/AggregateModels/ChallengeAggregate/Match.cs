@@ -12,12 +12,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public class Match : Entity<MatchId>, IAggregateRoot
+    public class Match : Entity<MatchId>
     {
         private LinkedMatch _linkedMatch;
         private Participant _participant;

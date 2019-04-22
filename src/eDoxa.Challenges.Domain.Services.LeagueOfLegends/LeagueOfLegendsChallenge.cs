@@ -14,15 +14,12 @@ using eDoxa.Seedwork.Domain.Common.Enums;
 
 namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends
 {
-    public class LeagueOfLegendsChallenge : Challenge
+    public sealed class LeagueOfLegendsChallenge : Challenge
     {
         public LeagueOfLegendsChallenge(ChallengeName name, ChallengePublisherPeriodicity periodicity) : base(Game.LeagueOfLegends, name, new RandomChallengeSetup(periodicity), new ChallengeTimeline(periodicity))
         {
-            var factory = LeagueOfLegendsChallengeScoringFactory.Instance;
-
-            var strategy = factory.Create(this);
-
-            Scoring = strategy.Scoring;
+            // TODO: Refactor in a method.
+            Scoring = LeagueOfLegendsChallengeScoringFactory.Instance.CreateScoring(this).Scoring;
         }
     }
 }

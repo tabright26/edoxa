@@ -36,7 +36,7 @@ namespace eDoxa.Challenges.Domain.Services.Factories
 
                     var factory = LeagueOfLegendsChallengeScoringFactory.Instance;
 
-                    return factory.Create(challenge);
+                    return factory.CreateScoring(challenge);
 
                 default:
 

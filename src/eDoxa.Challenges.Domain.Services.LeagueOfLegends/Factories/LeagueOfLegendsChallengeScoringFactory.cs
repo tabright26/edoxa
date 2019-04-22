@@ -28,7 +28,7 @@ namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.Factories
             }
         }
 
-        public IChallengeScoringStrategy Create(Challenge challenge)
+        public IChallengeScoringStrategy CreateScoring(Challenge challenge)
         {
             switch (challenge.Setup.Type)
             {

@@ -32,7 +32,7 @@ namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.Tests.Factories
             var factory = LeagueOfLegendsChallengeScoringFactory.Instance;
 
             // Act
-            var strategy = factory.Create(new MockChallenge(type));
+            var strategy = factory.CreateScoring(new MockChallenge(type));
 
             // Assert
             strategy.Scoring.Should().NotBeNull();
@@ -47,7 +47,7 @@ namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.Tests.Factories
             var factory = LeagueOfLegendsChallengeScoringFactory.Instance;
 
             // Act
-            var action = new Action(() => factory.Create(new MockChallenge(type)));
+            var action = new Action(() => factory.CreateScoring(new MockChallenge(type)));
 
             // Assert
             action.Should().Throw<NotImplementedException>();

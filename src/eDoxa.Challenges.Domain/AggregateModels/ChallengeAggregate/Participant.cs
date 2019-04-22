@@ -12,12 +12,11 @@ using System;
 using System.Collections.Generic;
 
 using eDoxa.Functional.Option;
-using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public class Participant : Entity<ParticipantId>, IAggregateRoot
+    public class Participant : Entity<ParticipantId>
     {
         private Challenge _challenge;
         private LinkedAccount _linkedAccount;
