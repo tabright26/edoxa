@@ -10,9 +10,9 @@
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed class ChallengeSetupDefaults : ChallengeSetup
+    public sealed class DefaultChallengeSetup : ChallengeSetup
     {
-        public ChallengeSetupDefaults() : base(
+        public DefaultChallengeSetup() : base(
             BestOf.DefaultValue,
             Entries.DefaultValue,
             EntryFee.DefaultValue,

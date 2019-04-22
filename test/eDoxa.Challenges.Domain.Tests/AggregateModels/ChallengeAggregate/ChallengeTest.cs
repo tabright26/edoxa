@@ -35,7 +35,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             // Arrange
             const Game game = Game.LeagueOfLegends;
             var name = new ChallengeName(nameof(Challenge));
-            var setup = new ChallengeSetup();
+            var setup = new DefaultChallengeSetup();
 
             // Act
             var challenge = ChallengeAggregateFactory.CreateChallenge(game, name, setup);

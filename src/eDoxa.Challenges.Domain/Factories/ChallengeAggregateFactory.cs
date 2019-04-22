@@ -84,7 +84,7 @@ namespace eDoxa.Challenges.Domain.Factories
 
         public Challenge CreateChallenge(ChallengeState state = ChallengeState.Opened, ChallengeSetup setup = null)
         {
-            setup = setup ?? new ChallengeSetup();
+            setup = setup ?? new DefaultChallengeSetup();
 
             var challenge = this.CreateChallenge(Game.LeagueOfLegends, nameof(Challenge), setup);
 

@@ -20,71 +20,20 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         private BestOf _bestOf;
         private Entries _entries;
         private EntryFee _entryFee;
-        private bool _generated;
         private PayoutRatio _payoutRatio;
         private ServiceChargeRatio _serviceChargeRatio;
         private ChallengeType _type;
+        private bool _generated;
 
-        internal ChallengeSetup(BestOf bestOf, Entries entries, EntryFee entryFee, PayoutRatio payoutRatio, ServiceChargeRatio serviceChargeRatio)
+        internal ChallengeSetup(BestOf bestOf, Entries entries, EntryFee entryFee, PayoutRatio payoutRatio, ServiceChargeRatio serviceChargeRatio, bool generated = false)
         {
             _bestOf = bestOf;
             _entries = entries;
             _entryFee = entryFee;
             _payoutRatio = payoutRatio;
-            _serviceChargeRatio = serviceChargeRatio;
-        }
-
-        internal ChallengeSetup(ChallengePublisherPeriodicity periodicity) : this()
-        {
-            var bestOfRandom = new BestOfRandom();
-            var entriesRandom = new EntriesRandom();
-            var entryFeeRandom = new EntryFeeRandom();
-
-            switch (periodicity)
-            {
-                case ChallengePublisherPeriodicity.Daily:
-
-                    _bestOf = bestOfRandom.Next(new BestOfRange(new BestOf(1), new BestOf(3)));
-
-                    _entries = entriesRandom.Next(new EntriesRange(new Entries(30), new Entries(50)));
-
-                    _entryFee = entryFeeRandom.Next(new EntryFeeRange(new EntryFee(0.25M), new EntryFee(5M)));
-
-                    break;
-
-                case ChallengePublisherPeriodicity.Weekly:
-
-                    _bestOf = bestOfRandom.Next(new BestOfRange(new BestOf(3), new BestOf(5)));
-
-                    _entries = entriesRandom.Next(new EntriesRange(new Entries(75), new Entries(150)));
-
-                    _entryFee = entryFeeRandom.Next(new EntryFeeRange(new EntryFee(2.5M), new EntryFee(10M)));
-
-                    break;
-
-                case ChallengePublisherPeriodicity.Monthly:
-
-                    _bestOf = bestOfRandom.Next(new BestOfRange(new BestOf(3), new BestOf(BestOf.Max)));
-
-                    _entries = entriesRandom.Next(new EntriesRange(new Entries(200), new Entries(500)));
-
-                    _entryFee = entryFeeRandom.Next(new EntryFeeRange(new EntryFee(10M), new EntryFee(25M)));
-
-                    break;
-            }
-
-            _generated = true;
-        }
-
-        internal ChallengeSetup()
-        {
+            _serviceChargeRatio = serviceChargeRatio;            
+            _generated = generated;
             _type = ChallengeType.Default;
-            _bestOf = BestOf.DefaultValue;
-            _entries = Entries.DefaultValue;
-            _entryFee = EntryFee.DefaultValue;
-            _payoutRatio = PayoutRatio.DefaultValue;
-            _serviceChargeRatio = ServiceChargeRatio.DefaultValue;
-            _generated = false;
         }
 
         public ChallengeType Type

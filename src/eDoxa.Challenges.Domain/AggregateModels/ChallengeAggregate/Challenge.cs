@@ -34,7 +34,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         internal Challenge(Game game, ChallengeName name, ChallengePublisherPeriodicity periodicity) : this(game, name)
         {
-            _setup = new ChallengeSetup(periodicity);
+            _setup = new RandomChallengeSetup(periodicity);
             _timeline = new ChallengeTimeline(periodicity);
         }
 
@@ -53,7 +53,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         {
             _game = Game.None;
             _name = null;
-            _setup = new ChallengeSetup();
+            _setup = new DefaultChallengeSetup();
             _timeline = new ChallengeTimeline();
             _scoring = null;
             _participants = new HashSet<Participant>();
