@@ -1,5 +1,5 @@
-﻿// Filename: ChallengeScoreboard.cs
-// Date Created: 2019-04-14
+﻿// Filename: StatScore.cs
+// Date Created: 2019-04-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,13 +8,14 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Collections.Generic;
-
-using eDoxa.Functional.Option;
+using System;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed class ChallengeScoreboard : Dictionary<UserId, Option<Score>>, IChallengeScoreboard
+    public class StatScore : Score
     {
+        internal StatScore(Stat stat) : base(Convert.ToDecimal(stat.Value) * Convert.ToDecimal(stat.Weighting))
+        {
+        }
     }
 }

@@ -19,11 +19,11 @@ namespace eDoxa.Challenges.DTO.Profiles
         public ChallengeTimelineProfile()
         {
             this.CreateMap<ChallengeTimeline, ChallengeTimelineDTO>()
-                .ForMember(timeline => timeline.CreatedAt, configuration => configuration.MapFrom(timeline => timeline.CreatedAt))
-                .ForMember(timeline => timeline.PublishedAt, configuration => configuration.MapFrom(timeline => timeline.PublishedAt))
-                .ForMember(timeline => timeline.StartedAt, configuration => configuration.MapFrom(timeline => timeline.StartedAt))
-                .ForMember(timeline => timeline.EndedAt, configuration => configuration.MapFrom(timeline => timeline.EndedAt))
-                .ForMember(timeline => timeline.ClosedAt, configuration => configuration.MapFrom(timeline => timeline.ClosedAt));
+                .ForMember(timeline => timeline.CreatedAt, config => config.MapFrom(timeline => timeline.CreatedAt))
+                .ForMember(timeline => timeline.PublishedAt, config => config.MapFrom(timeline => timeline.PublishedAt))
+                .ForMember(timeline => timeline.StartedAt, config => config.MapFrom(timeline => timeline.StartedAt))
+                .ForMember(timeline => timeline.EndedAt, config => config.MapFrom(timeline => timeline.EndedAt))
+                .ForMember(timeline => timeline.ClosedAt, config => config.MapFrom(timeline => timeline.ClosedAt));
         }
     }
 }

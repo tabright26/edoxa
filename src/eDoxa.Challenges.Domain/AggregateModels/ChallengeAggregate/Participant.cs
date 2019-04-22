@@ -1,5 +1,5 @@
 ﻿// Filename: Participant.cs
-// Date Created: 2019-04-14
+// Date Created: 2019-04-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,7 +11,7 @@
 using System;
 using System.Collections.Generic;
 
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Adapters;
+using eDoxa.Functional.Option;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
 
@@ -42,11 +42,11 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public LinkedAccount LinkedAccount => _linkedAccount;
 
-        public Score AverageScore => new ParticipantScoreAdapter(this).Score;
-
         public UserId UserId => _userId;
 
         public Challenge Challenge => _challenge;
+
+        public Option<Score> AverageScore => Matches.Count >= Challenge.Settings.BestOf ? (Option<Score>) new ParticipantScore(this) : None.Value;
 
         public IReadOnlyCollection<Match> Matches => _matches;
 

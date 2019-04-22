@@ -8,7 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Adapters;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
@@ -36,6 +35,6 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public StatWeighting Weighting => _weighting;
 
-        public Score Score => new StatScoreAdapter(this).Score;
+        public Score Score => new StatScore(this);
     }
 }

@@ -21,10 +21,10 @@ namespace eDoxa.Challenges.DTO.Profiles
         public MatchProfile()
         {
             this.CreateMap<Match, MatchDTO>()
-                .ForMember(match => match.Id, configuration => configuration.MapFrom(match => match.Id.ToGuid()))
-                .ForMember(match => match.Timestamp, configuration => configuration.MapFrom(match => match.Timestamp))
-                .ForMember(match => match.TotalScore, configuration => configuration.MapFrom<decimal>(match => match.TotalScore))
-                .ForMember(match => match.Stats, configuration => configuration.MapFrom(match => match.Stats.OrderBy(stat => stat.Name)));
+                .ForMember(match => match.Id, config => config.MapFrom(match => match.Id.ToGuid()))
+                .ForMember(match => match.Timestamp, config => config.MapFrom(match => match.Timestamp))
+                .ForMember(match => match.TotalScore, config => config.MapFrom<decimal>(match => match.TotalScore))
+                .ForMember(match => match.Stats, config => config.MapFrom(match => match.Stats.OrderBy(stat => stat.Name)));
         }
     }
 }

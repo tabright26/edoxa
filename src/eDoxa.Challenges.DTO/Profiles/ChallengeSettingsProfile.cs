@@ -19,11 +19,11 @@ namespace eDoxa.Challenges.DTO.Profiles
         public ChallengeSettingsProfile()
         {
             this.CreateMap<ChallengeSettings, ChallengeSettingsDTO>()
-                .ForMember(settings => settings.BestOf, configuration => configuration.MapFrom<int>(settings => settings.BestOf))
-                .ForMember(settings => settings.Entries, configuration => configuration.MapFrom<int>(settings => settings.Entries))
-                .ForMember(settings => settings.PayoutEntries, configuration => configuration.MapFrom<int>(settings => settings.PayoutEntries))
-                .ForMember(settings => settings.EntryFee, configuration => configuration.MapFrom<decimal>(settings => settings.EntryFee))
-                .ForMember(settings => settings.PrizePool, configuration => configuration.MapFrom<decimal>(settings => settings.PrizePool));
+                .ForMember(settings => settings.BestOf, config => config.MapFrom<int>(settings => settings.BestOf))
+                .ForMember(settings => settings.Entries, config => config.MapFrom<int>(settings => settings.Entries))
+                .ForMember(settings => settings.PayoutEntries, config => config.MapFrom<int>(settings => settings.PayoutEntries))
+                .ForMember(settings => settings.EntryFee, config => config.MapFrom<decimal>(settings => settings.EntryFee))
+                .ForMember(settings => settings.PrizePool, config => config.MapFrom<decimal>(settings => settings.PrizePool));
         }
     }
 }

@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Adapters;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
 
@@ -41,7 +40,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public LinkedMatch LinkedMatch => _linkedMatch;
 
-        public Score TotalScore => new MatchScoreAdapter(this).Score;
+        public Score TotalScore => new MatchScore(this);
 
         public Participant Participant => _participant;
 
