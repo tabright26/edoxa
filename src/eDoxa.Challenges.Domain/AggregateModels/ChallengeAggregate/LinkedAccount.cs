@@ -1,64 +1,89 @@
 ﻿// Filename: LinkedAccount.cs
-// Date Created: 2019-03-20
+// Date Created: 2019-04-21
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
 using System.Linq;
 
-using eDoxa.Seedwork.Domain.Aggregate;
+using JetBrains.Annotations;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed class LinkedAccount : ValueObject
+    public sealed partial class LinkedAccount
     {
-        private string _ref;
+        private readonly string _value;
 
-        private LinkedAccount(string input)
+        public LinkedAccount(string linkedAccount)
         {
-            Ref = input;
-        }
-
-        public string Ref
-        {
-            get
+            if (string.IsNullOrWhiteSpace(linkedAccount) ||
+                !linkedAccount.All(c => char.IsLetterOrDigit(c) || c == '-' || c == '_'))
             {
-                return _ref;
+                throw new ArgumentException(nameof(linkedAccount));
             }
-            private set
+
+            _value = linkedAccount;
+        }
+
+        public LinkedAccount(Guid linkedAccount)
+        {
+            if (linkedAccount == Guid.Empty)
             {
-                if (string.IsNullOrWhiteSpace(value))
-                {
-                    throw new ArgumentException(nameof(Ref));
-                }
-
-                if (!value.All(c => char.IsLetterOrDigit(c) || c == '-' || c == '_'))
-                {
-                    throw new FormatException(nameof(Ref));
-                }
-
-                _ref = value;
+                throw new ArgumentException(nameof(linkedAccount));
             }
+
+            _value = linkedAccount.ToString();
         }
 
-        public static LinkedAccount Parse(string input)
+        public static implicit operator LinkedAccount(string linkedAccount)
         {
-            return new LinkedAccount(input);
+            return new LinkedAccount(linkedAccount);
         }
 
-        public static LinkedAccount FromGuid(Guid input)
+        public static implicit operator LinkedAccount(Guid linkedAccount)
         {
-            return Parse(input.ToString());
+            return new LinkedAccount(linkedAccount);
         }
 
         public override string ToString()
         {
-            return _ref;
+            return _value;
+        }
+    }
+
+    public partial class LinkedAccount : IEquatable<LinkedAccount>
+    {
+        public bool Equals([CanBeNull] LinkedAccount other)
+        {
+            return _value.Equals(other?._value);
+        }
+
+        public override bool Equals([CanBeNull] object obj)
+        {
+            return this.Equals(obj as LinkedAccount);
+        }
+
+        public override int GetHashCode()
+        {
+            return _value.GetHashCode();
+        }
+    }
+
+    public partial class LinkedAccount : IComparable, IComparable<LinkedAccount>
+    {
+        public int CompareTo([CanBeNull] object obj)
+        {
+            return this.CompareTo(obj as LinkedAccount);
+        }
+
+        public int CompareTo([CanBeNull] LinkedAccount other)
+        {
+            return string.Compare(_value, other?._value, StringComparison.Ordinal);
         }
     }
 }

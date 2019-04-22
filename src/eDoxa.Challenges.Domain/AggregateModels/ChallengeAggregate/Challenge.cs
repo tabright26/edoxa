@@ -92,29 +92,9 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public ChallengeLiveData LiveData => new ChallengeLiveData(Setup, Participants);
 
-        public IChallengePayout Payout
-        {
-            get
-            {
-                var factory = ChallengePayoutFactory.Instance;
+        public IChallengePayout Payout => ChallengePayoutFactory.Instance.CreatePayout(Setup.Type, Setup.PayoutEntries, Setup.PrizePool, Setup.EntryFee).Payout;
 
-                var strategy = factory.CreatePayout(Setup.Type, Setup.PayoutEntries, Setup.PrizePool, Setup.EntryFee);
-
-                return strategy.Payout;
-            }
-        }
-
-        public IChallengeScoreboard Scoreboard
-        {
-            get
-            {
-                var factory = ChallengeScoreboardFactory.Instance;
-
-                var strategy = factory.Create(this);
-
-                return strategy.Scoreboard;
-            }
-        }
+        public IChallengeScoreboard Scoreboard => ChallengeScoreboardFactory.Instance.CreateScoreboard(this).Scoreboard;
 
         public IReadOnlyCollection<Participant> Participants => _participants;
 

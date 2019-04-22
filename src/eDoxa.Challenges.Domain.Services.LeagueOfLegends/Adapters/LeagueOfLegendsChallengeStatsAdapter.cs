@@ -30,7 +30,7 @@ namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.Adapters
         {
             get
             {
-                var linkedMatch = LinkedMatch.FromLong(_match.GameId);
+                var linkedMatch = new LinkedMatch(_match.GameId);
 
                 var participantId = _match.ParticipantIdentities
                                           .Single(participantIdentity => participantIdentity.Player.AccountId == _linkedAccount.ToString())

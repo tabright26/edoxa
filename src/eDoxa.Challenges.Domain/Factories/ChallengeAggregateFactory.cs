@@ -42,7 +42,7 @@ namespace eDoxa.Challenges.Domain.Factories
         internal const string TotalDamageDealtToChampions = nameof(TotalDamageDealtToChampions);
         internal const string TotalHeal = nameof(TotalHeal);
 
-        public static readonly LinkedMatch AdminLinkedMatch = LinkedMatch.FromLong(2973265231);
+        public static readonly LinkedMatch AdminLinkedMatch = new LinkedMatch(2973265231);
 
         private static readonly Random Random = new Random();
 
@@ -53,12 +53,12 @@ namespace eDoxa.Challenges.Domain.Factories
 
         public LinkedAccount CreateLinkedAccount()
         {
-            return LinkedAccount.FromGuid(Guid.NewGuid());
+            return new LinkedAccount(Guid.NewGuid());
         }
 
         public LinkedMatch CreateLinkedMatch()
         {
-            return LinkedMatch.FromGuid(Guid.NewGuid());
+            return new LinkedMatch(Guid.NewGuid());
         }
 
         private static IEnumerable<ChallengeState> OtherStates(ChallengeState state)
@@ -181,7 +181,7 @@ namespace eDoxa.Challenges.Domain.Factories
                 {
                     var userId = new UserId();
 
-                    challenge.RegisterParticipant(userId, LinkedAccount.FromGuid(Guid.NewGuid()));
+                    challenge.RegisterParticipant(userId, new LinkedAccount(Guid.NewGuid()));
 
                     var participant = challenge.Participants.Single(x => x.UserId == userId);
 
@@ -422,7 +422,7 @@ namespace eDoxa.Challenges.Domain.Factories
 
         public IChallengeStats CreateChallengeStats(LinkedMatch linkedMatch = null)
         {
-            linkedMatch = linkedMatch ?? LinkedMatch.FromLong(2233345251);
+            linkedMatch = linkedMatch ?? new LinkedMatch(2233345251);
 
             return new ChallengeStats(
                 linkedMatch,

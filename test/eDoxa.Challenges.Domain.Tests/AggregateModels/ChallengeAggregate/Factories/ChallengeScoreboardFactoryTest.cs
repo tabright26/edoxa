@@ -32,7 +32,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Facto
             var factory = ChallengeScoreboardFactory.Instance;
 
             // Act
-            var strategy = factory.Create(new MockChallenge(type));
+            var strategy = factory.CreateScoreboard(new MockChallenge(type));
 
             // Assert
             strategy.Scoreboard.Should().NotBeNull();
@@ -47,7 +47,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Facto
             var factory = ChallengeScoreboardFactory.Instance;
 
             // Act
-            var action = new Action(() => factory.Create(new MockChallenge(type)));
+            var action = new Action(() => factory.CreateScoreboard(new MockChallenge(type)));
 
             // Assert
             action.Should().Throw<NotImplementedException>();

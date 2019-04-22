@@ -1,69 +1,104 @@
 ﻿// Filename: LinkedMatch.cs
-// Date Created: 2019-03-20
+// Date Created: 2019-04-21
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
 using System.Linq;
 
-using eDoxa.Seedwork.Domain.Aggregate;
+using JetBrains.Annotations;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed class LinkedMatch : ValueObject
+    public sealed partial class LinkedMatch
     {
-        private string _ref;
+        private readonly string _value;
 
-        private LinkedMatch(string input)
+        public LinkedMatch(string linkedMatch)
         {
-            Ref = input;
-        }
-
-        public string Ref
-        {
-            get
+            if (string.IsNullOrWhiteSpace(linkedMatch) ||
+                !linkedMatch.All(c => char.IsLetterOrDigit(c) || c == '-' || c == '_'))
             {
-                return _ref;
+                throw new ArgumentException(nameof(linkedMatch));
             }
-            private set
+
+            _value = linkedMatch;
+        }
+
+        public LinkedMatch(long linkedMatch)
+        {
+            if (linkedMatch < 0)
             {
-                if (string.IsNullOrWhiteSpace(value))
-                {
-                    throw new ArgumentException(nameof(Ref));
-                }
-
-                if (!value.All(c => char.IsLetterOrDigit(c) || c == '-' || c == '_'))
-                {
-                    throw new FormatException(nameof(Ref));
-                }
-
-                _ref = value;
+                throw new ArgumentException(nameof(linkedMatch));
             }
+
+            _value = linkedMatch.ToString();
         }
 
-        public static LinkedMatch Parse(string input)
+        public LinkedMatch(Guid linkedMatch)
         {
-            return new LinkedMatch(input);
+            if (linkedMatch == Guid.Empty)
+            {
+                throw new ArgumentException(nameof(linkedMatch));
+            }
+
+            _value = linkedMatch.ToString();
         }
 
-        public static LinkedMatch FromLong(long input)
+        public static implicit operator LinkedMatch(string linkedMatch)
         {
-            return Parse(input.ToString());
+            return new LinkedMatch(linkedMatch);
         }
 
-        public static LinkedMatch FromGuid(Guid input)
+        public static implicit operator LinkedMatch(long linkedMatch)
         {
-            return Parse(input.ToString());
+            return new LinkedMatch(linkedMatch);
+        }
+
+        public static implicit operator LinkedMatch(Guid linkedMatch)
+        {
+            return new LinkedMatch(linkedMatch);
         }
 
         public override string ToString()
         {
-            return _ref;
+            return _value;
+        }
+    }
+
+    public partial class LinkedMatch : IEquatable<LinkedMatch>
+    {
+        public bool Equals([CanBeNull] LinkedMatch other)
+        {
+            return _value.Equals(other?._value);
+        }
+
+        public override bool Equals([CanBeNull] object obj)
+        {
+            return this.Equals(obj as LinkedMatch);
+        }
+
+        public override int GetHashCode()
+        {
+            return _value.GetHashCode();
+        }
+    }
+
+    public partial class LinkedMatch : IComparable, IComparable<LinkedMatch>
+    {
+        public int CompareTo([CanBeNull] object obj)
+        {
+            return this.CompareTo(obj as LinkedMatch);
+        }
+
+        public int CompareTo([CanBeNull] LinkedMatch other)
+        {
+            return string.Compare(_value, other?._value, StringComparison.Ordinal);
         }
     }
 }

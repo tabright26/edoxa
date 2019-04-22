@@ -37,7 +37,7 @@ namespace eDoxa.Challenges.Infrastructure.Configurations
                    .UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.Property(participant => participant.LinkedAccount)
-                   .HasConversion(linkedAccount => linkedAccount.ToString(), input => LinkedAccount.Parse(input))
+                   .HasConversion(linkedAccount => linkedAccount.ToString(), linkedAccount => new LinkedAccount(linkedAccount))
                    .IsRequired()
                    .UsePropertyAccessMode(PropertyAccessMode.Field);
 

@@ -23,18 +23,18 @@ namespace eDoxa.Challenges.Infrastructure.Configurations
             builder.ToTable(nameof(ChallengesDbContext.Matches));
 
             builder.Property(match => match.Id)
-                   .HasConversion(matchId => matchId.ToGuid(), value => MatchId.FromGuid(value))
+                   .HasConversion(matchId => matchId.ToGuid(), matchId => MatchId.FromGuid(matchId))
                    .IsRequired()
                    .UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.Property(match => match.Timestamp).IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.Property<ParticipantId>(nameof(ParticipantId))
-                   .HasConversion(participantId => participantId.ToGuid(), value => ParticipantId.FromGuid(value))
+                   .HasConversion(participantId => participantId.ToGuid(), participantId => ParticipantId.FromGuid(participantId))
                    .IsRequired();
 
             builder.Property(match => match.LinkedMatch)
-                   .HasConversion(linkedMatch => linkedMatch.ToString(), input => LinkedMatch.Parse(input))
+                   .HasConversion(linkedMatch => linkedMatch.ToString(), linkedMatch => new LinkedMatch(linkedMatch))
                    .IsRequired()
                    .UsePropertyAccessMode(PropertyAccessMode.Field);
 

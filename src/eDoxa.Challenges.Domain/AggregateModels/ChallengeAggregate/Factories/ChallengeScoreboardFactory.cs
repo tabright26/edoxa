@@ -20,7 +20,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Factories
 
         public static ChallengeScoreboardFactory Instance => Lazy.Value;
 
-        public IChallengeScoreboardStrategy Create(Challenge challenge)
+        public IChallengeScoreboardStrategy CreateScoreboard(Challenge challenge)
         {
             switch (challenge.Setup.Type)
             {

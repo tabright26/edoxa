@@ -32,7 +32,7 @@ namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.Tests.Adapters
             // Arrange
             var matches = LeagueOfLegendsDTO.DeserializeMatches();
             var userId = new UserId();
-            var linkedAccount = LinkedAccount.Parse("NzH50JS-LCAu0UEY4EMjuS710F_U_8pLfEpNib9X06dD4w");
+            var linkedAccount = new LinkedAccount("NzH50JS-LCAu0UEY4EMjuS710F_U_8pLfEpNib9X06dD4w");
             var challenge = new MockChallenge();
             challenge.RegisterParticipant(userId, linkedAccount);
 

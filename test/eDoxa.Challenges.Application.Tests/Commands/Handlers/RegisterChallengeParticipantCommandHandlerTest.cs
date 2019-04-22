@@ -36,7 +36,7 @@ namespace eDoxa.Challenges.Application.Tests.Commands.Handlers
             // Arrange
             var command = new RegisterChallengeParticipantCommand(new ChallengeId(), new UserId())
             {
-                LinkedAccount = LinkedAccount.FromGuid(Guid.NewGuid())
+                LinkedAccount = new LinkedAccount(Guid.NewGuid())
             };
 
             var mockChallengeRepository = new Mock<IChallengeRepository>();

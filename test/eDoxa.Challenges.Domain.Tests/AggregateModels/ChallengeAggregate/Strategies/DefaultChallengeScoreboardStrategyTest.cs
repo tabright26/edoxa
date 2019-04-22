@@ -90,7 +90,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Strat
                 {
                     var userId = new UserId();
 
-                    this.RegisterParticipant(userId, LinkedAccount.FromGuid(Guid.NewGuid()));
+                    this.RegisterParticipant(userId, new LinkedAccount(Guid.NewGuid()));
 
                     var participant = Participants.Single(x => x.UserId == userId);
 

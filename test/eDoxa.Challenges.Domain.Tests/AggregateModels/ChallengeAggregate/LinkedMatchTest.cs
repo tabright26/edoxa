@@ -28,10 +28,10 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             var input = Guid.NewGuid();
 
             // Act
-            var linkedMatch = LinkedMatch.FromGuid(input);
+            var linkedMatch = new LinkedMatch(input);
 
             // Assert
-            linkedMatch.Ref.Should().Be(input.ToString());
+            linkedMatch.ToString().Should().Be(input.ToString());
         }
 
         [DataRow("9876543210")]
@@ -43,31 +43,21 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void Parse_ValidFormat_ShouldBe(string input)
         {
             // Act
-            var linkedMatch = LinkedMatch.Parse(input);
+            var linkedMatch = new LinkedMatch(input);
 
             // Assert
-            linkedMatch.Ref.Should().Be(input);
+            linkedMatch.ToString().Should().Be(input);
         }
-
+        
         [DataRow("!@#$%^&*()")]
-        [DataRow("9i8h7g 6f5e4d3 c2b1a0")]
-        [DataTestMethod]
-        public void Parse_InvalidFormat_ShouldThrowFormatException(string input)
-        {
-            // Act
-            var action = new Action(() => LinkedMatch.Parse(input));
-
-            // Assert
-            action.Should().Throw<FormatException>();
-        }
-
-        [DataRow(null)]
+        [DataRow("9i8h7g 6f5e4d3 c2b1a0")]        
         [DataRow("  ")]
+        [DataRow(null)]
         [DataTestMethod]
         public void Parse_InvalidArgument_ShouldThrowArgumentException(string input)
         {
             // Act
-            var action = new Action(() => LinkedMatch.Parse(input));
+            var action = new Action(() => new LinkedMatch(input));
 
             // Assert
             action.Should().Throw<ArgumentException>();

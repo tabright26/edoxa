@@ -176,7 +176,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             var challenge = ChallengeAggregateFactory.CreateChallenge();
 
             // Act
-            challenge.RegisterParticipant(new UserId(), LinkedAccount.FromGuid(Guid.NewGuid()));
+            challenge.RegisterParticipant(new UserId(), new LinkedAccount(Guid.NewGuid()));
 
             // Assert
             challenge.Participants.Should().NotBeEmpty();
@@ -190,7 +190,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             var challenge = ChallengeAggregateFactory.CreateChallengeWithParticipant(userId);
 
             // Act
-            var action = new Action(() => challenge.RegisterParticipant(userId, LinkedAccount.FromGuid(Guid.NewGuid())));
+            var action = new Action(() => challenge.RegisterParticipant(userId, new LinkedAccount(Guid.NewGuid())));
 
             // Act => Assert
             action.Should().Throw<InvalidOperationException>();
@@ -203,7 +203,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             var challenge = ChallengeAggregateFactory.CreateChallengeWithParticipants();
 
             // Act
-            var action = new Action(() => challenge.RegisterParticipant(new UserId(), LinkedAccount.FromGuid(Guid.NewGuid())));
+            var action = new Action(() => challenge.RegisterParticipant(new UserId(), new LinkedAccount(Guid.NewGuid())));
 
             // Assert
             action.Should().Throw<InvalidOperationException>();
@@ -216,7 +216,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             var challenge = ChallengeAggregateFactory.CreateChallenge(ChallengeState.Draft);
 
             // Act
-            var action = new Action(() => challenge.RegisterParticipant(new UserId(), LinkedAccount.FromGuid(Guid.NewGuid())));
+            var action = new Action(() => challenge.RegisterParticipant(new UserId(), new LinkedAccount(Guid.NewGuid())));
 
             // Assert
             action.Should().Throw<InvalidOperationException>();
