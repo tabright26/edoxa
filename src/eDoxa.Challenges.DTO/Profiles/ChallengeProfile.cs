@@ -33,7 +33,7 @@ namespace eDoxa.Challenges.DTO.Profiles
                     challenge => challenge.Scoring,
                     config =>
                     {
-                        config.MapFrom(challenge => challenge.Scoring);
+                        config.MapFrom(challenge => challenge.Scoring.SingleOrDefault());
                         config.Condition(challenge => challenge.Timeline.State >= ChallengeState1.Opened);
                     }
                 )

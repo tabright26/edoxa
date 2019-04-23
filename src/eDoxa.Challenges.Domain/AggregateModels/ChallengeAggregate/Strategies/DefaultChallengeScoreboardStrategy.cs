@@ -27,7 +27,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Strategies
             {
                 var scoreboard = new ChallengeScoreboard();
 
-                foreach (var participant in _challenge.Participants.OrderByDescending(participant => participant.AverageScore.Select(score => (decimal?) score).SingleOrDefault()))
+                foreach (var participant in _challenge.Participants.OrderByDescending(participant => participant.AverageScore.SingleOrDefault()))
                 {
                     scoreboard.Add(participant.UserId, participant.AverageScore);
                 }

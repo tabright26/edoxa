@@ -39,21 +39,21 @@ namespace eDoxa.Challenges.Application.Tests.Services
 
             var mockChallengeRepository = new Mock<IChallengeRepository>();
 
-            mockChallengeRepository.Setup(repository => repository.Create(It.IsAny<IEnumerable<Challenge>>())).Verifiable();
+            mockChallengeRepository.Setup(repository => repository.Create(It.IsAny<Challenge>())).Verifiable();
 
             mockChallengeRepository.Setup(repository => repository.UnitOfWork.CommitAndDispatchDomainEventsAsync(It.IsAny<CancellationToken>()))
                                    .Returns(Task.CompletedTask)
                                    .Verifiable();
-
-            // Act
+            
             var service = new ChallengeMonthlyPublisherService(mockLogger.Object, mockChallengeRepository.Object);
 
-            // Assert
+            // Act
             await service.PublishAsync();
 
-            mockChallengeRepository.Verify();
+            // Assert
+            mockChallengeRepository.Verify(repository => repository.Create(It.IsAny<Challenge>()));
 
-            mockChallengeRepository.Verify();
+            mockChallengeRepository.Verify(repository => repository.UnitOfWork.CommitAndDispatchDomainEventsAsync(It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }

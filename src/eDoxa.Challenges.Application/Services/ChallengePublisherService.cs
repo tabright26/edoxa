@@ -1,17 +1,19 @@
 ﻿// Filename: ChallengePublisherService.cs
-// Date Created: 2019-03-22
+// Date Created: 2019-04-21
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Factories;
 using eDoxa.Challenges.Domain.Services;
 using eDoxa.Challenges.Domain.Services.Factories;
 using eDoxa.Seedwork.Domain.Common.Enums;
@@ -23,7 +25,9 @@ namespace eDoxa.Challenges.Application.Services
 {
     public abstract class ChallengePublisherService : IChallengePublisherService
     {
-        protected static readonly ChallengePubliserFactory Factory = ChallengePubliserFactory.Instance;
+        protected static readonly ChallengePubliserFactory ChallengePubliserFactory = ChallengePubliserFactory.Instance;
+        protected static readonly ChallengeScoringFactory ChallengeScoringFactory = ChallengeScoringFactory.Instance;
+        protected static readonly ChallengeTimelineFactory ChallengeTimelineFactory = ChallengeTimelineFactory.Instance;
 
         private readonly ILogger _logger;
 
@@ -32,9 +36,7 @@ namespace eDoxa.Challenges.Application.Services
             _logger = logger;
         }
 
-        public abstract Task PublishAsync();
-
-        protected Game[] Games
+        protected IEnumerable<Game> Games
         {
             get
             {
@@ -47,6 +49,8 @@ namespace eDoxa.Challenges.Application.Services
                 return games.ToArray();
             }
         }
+
+        public abstract Task PublishAsync();
 
         protected async Task TryPublish(Func<Task> publishing)
         {

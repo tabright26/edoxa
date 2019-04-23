@@ -14,7 +14,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class DefaultChallenge : Challenge
     {
-        internal DefaultChallenge(Game game, ChallengeName name) : base(game, name, new DefaultChallengeSetup(), new ChallengeTimeline())
+        internal DefaultChallenge(Game game, ChallengeName name) : base(game, name, new DefaultChallengeSetup())
         {
         }
     }

@@ -32,7 +32,7 @@ namespace eDoxa.Challenges.Domain.Services.Tests.Factories
             var factory = ChallengeScoringFactory.Instance;
 
             // Act
-            var strategy = factory.Create(new MockChallenge(type, game));
+            var strategy = factory.CreateScoringStrategy(new MockChallenge(type, game));
 
             // Assert
             strategy.Scoring.Should().NotBeNull();
@@ -47,7 +47,7 @@ namespace eDoxa.Challenges.Domain.Services.Tests.Factories
             var factory = ChallengeScoringFactory.Instance;
 
             // Act
-            var action = new Action(() => factory.Create(new MockChallenge(type, game)));
+            var action = new Action(() => factory.CreateScoringStrategy(new MockChallenge(type, game)));
 
             // Assert
             action.Should().Throw<NotImplementedException>();
@@ -55,7 +55,7 @@ namespace eDoxa.Challenges.Domain.Services.Tests.Factories
 
         private sealed class MockChallenge : Challenge
         {
-            public MockChallenge(ChallengeType type, Game game) : base(game, new ChallengeName(nameof(Challenge)), new DefaultChallengeSetup(), new ChallengeTimeline())
+            public MockChallenge(ChallengeType type, Game game) : base(game, new ChallengeName(nameof(Challenge)), new DefaultChallengeSetup())
             {
                 Setup.SetPrivateField("_type", type);
             }

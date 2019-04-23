@@ -44,7 +44,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             challenge.Game.Should().Be(game);
             challenge.Name.Should().Be(name);
             challenge.Setup.Should().Be(setup);
-            challenge.Scoring.Should().BeNull();
+            challenge.Scoring.Should().BeEmpty();
             challenge.LiveData.Payout.Should().NotBeNull();
 
             //challenge.Payout.Should().NotBeEmpty();

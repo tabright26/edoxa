@@ -14,7 +14,7 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public class ChallengeTimeline : ValueObject
+    public class ChallengeTimeline : ValueObject, IChallengeTimeline
     {
         private DateTime? _closedAt;
         private DateTime _createdAt;

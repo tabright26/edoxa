@@ -1,13 +1,14 @@
 ﻿// Filename: ChallengeDailyPublisherService.cs
-// Date Created: 2019-03-22
+// Date Created: 2019-04-21
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
@@ -20,6 +21,8 @@ namespace eDoxa.Challenges.Application.Services
 {
     public sealed partial class ChallengeDailyPublisherService : ChallengePublisherService
     {
+        private static readonly ChallengeInterval Interval = ChallengeInterval.Daily;
+
         private readonly IChallengeRepository _challengeRepository;
 
         public ChallengeDailyPublisherService(ILogger logger, IChallengeRepository challengeRepository) : base(logger)
@@ -37,9 +40,15 @@ namespace eDoxa.Challenges.Application.Services
                 await this.TryPublish(
                     async () =>
                     {
-                        var strategy = Factory.Create(ChallengeInterval.Daily, game);
+                        var challenges = ChallengePubliserFactory.CreatePublisherStrategy(Interval, game).Challenges.ToList();
 
-                        _challengeRepository.Create(strategy.Challenges);
+                        foreach (var challenge in challenges)
+                        {
+                            challenge.Publish(ChallengeScoringFactory.CreateScoringStrategy(challenge),
+                                ChallengeTimelineFactory.CreateTimelineStrategy(Interval));
+
+                            _challengeRepository.Create(challenge);
+                        }
 
                         await _challengeRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync();
                     }

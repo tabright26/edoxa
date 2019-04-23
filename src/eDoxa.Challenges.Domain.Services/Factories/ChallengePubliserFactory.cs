@@ -22,7 +22,7 @@ namespace eDoxa.Challenges.Domain.Services.Factories
 
         public static ChallengePubliserFactory Instance => Lazy.Value;
 
-        public IChallengePublisherStrategy Create(ChallengeInterval interval, Game game)
+        public IChallengePublisherStrategy CreatePublisherStrategy(ChallengeInterval interval, Game game)
         {
             switch (game)
             {

@@ -8,18 +8,13 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Factories;
 using eDoxa.Seedwork.Domain.Common.Enums;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class RandomChallenge : Challenge
     {
-        internal RandomChallenge(Game game, ChallengeName name, ChallengeInterval interval) : base(
-            game,
-            name,
-            new RandomChallengeSetup(interval),
-            ChallengeTimelineFactory.Instance.CreateTimeline(interval))
+        internal RandomChallenge(Game game, ChallengeName name, ChallengeInterval interval) : base(game, name, new RandomChallengeSetup(interval))
         {
         }
     }

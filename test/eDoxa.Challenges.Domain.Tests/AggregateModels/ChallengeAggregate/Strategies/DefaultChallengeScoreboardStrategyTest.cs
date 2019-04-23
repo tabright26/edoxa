@@ -21,8 +21,6 @@ using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Moq;
-
 namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Strategies
 {
     [TestClass]
@@ -61,15 +59,6 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Strat
         //    strategy.Scoreboard.As<IReadOnlyDictionary<UserId, Score>>().Should().BeInDescendingOrder(participant => participant.Value);
         //}
 
-        private static IChallengeScoringStrategy MockChallengeScoringStrategy()
-        {
-            var mock = new Mock<IChallengeScoringStrategy>();
-
-            mock.SetupGet(strategy => strategy.Scoring).Returns(ChallengeAggregateFactory.CreateChallengeScoring());
-
-            return mock.Object;
-        }
-
         private class MockChallenge : Challenge
         {
             public MockChallenge(Entries entries, BestOf bestOf) : base(
@@ -81,11 +70,10 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Strat
                     EntryFee.DefaultValue,
                     PayoutRatio.DefaultValue,
                     ServiceChargeRatio.DefaultValue
-                ),
-                new ChallengeTimeline()
+                )
             )
             {
-                this.Publish(MockChallengeScoringStrategy());
+                this.Publish(ChallengeAggregateFactory.Instance.CreateChallengeScoringStrategy());
 
                 for (var i = 0; i < Setup.Entries; i++)
                 {
@@ -104,7 +92,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Strat
                 }
             }
 
-            public MockChallenge() : base(Game.LeagueOfLegends, new ChallengeName(nameof(Challenge)), new DefaultChallengeSetup(), new ChallengeTimeline())
+            public MockChallenge() : base(Game.LeagueOfLegends, new ChallengeName(nameof(Challenge)), new DefaultChallengeSetup())
             {
             }
         }

@@ -58,7 +58,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
             if (interval == ChallengeInterval.Weekly)
             {
-                return EntriesRandom.Next(new EntriesRange(new Entries(75), new Entries(150)));
+                return EntriesRandom.Next(new EntriesRange(new Entries(80), new Entries(150)));
             }
 
             if (interval == ChallengeInterval.Monthly)

@@ -16,6 +16,7 @@ using System.Reflection;
 
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Functional.Maybe;
 using eDoxa.Seedwork.Domain.Common.Enums;
 using eDoxa.Seedwork.Domain.Factories;
 
@@ -79,7 +80,7 @@ namespace eDoxa.Challenges.Domain.Factories
     {
         public Challenge CreateChallenge(Game game, ChallengeName name, ChallengeSetup setup)
         {
-            return new Challenge(game, name, setup, this.CreateChallengeTimeline());
+            return new Challenge(game, name, setup);
         }
 
         public Challenge CreateChallenge(ChallengeState1 state = ChallengeState1.Opened, ChallengeSetup setup = null)
@@ -94,7 +95,7 @@ namespace eDoxa.Challenges.Domain.Factories
 
             if (state >= ChallengeState1.Opened)
             {
-                var scoring = this.CreateChallengeScoring();
+                var scoring = new Maybe<IChallengeScoring>(this.CreateChallengeScoring());
 
                 challenge.GetType().GetField("_scoring", BindingFlags.Instance | BindingFlags.NonPublic)?.SetValue(challenge, scoring);
             }
@@ -174,20 +175,20 @@ namespace eDoxa.Challenges.Domain.Factories
             {
                 var timeline = challenge.Timeline;
 
-                challenge.GetType().GetField("_timeline", BindingFlags.Instance | BindingFlags.NonPublic)
-                    ?.SetValue(challenge, this.CreateChallengeTimeline(ChallengeState1.Opened));
+                challenge.GetType().GetField("_timeline", BindingFlags.Instance | BindingFlags.NonPublic)?.SetValue(challenge, this.CreateChallengeTimeline(ChallengeState1.Opened));
 
                 for (var row = 0; row < Random.Next(1, challenge.Setup.Entries + 1); row++)
                 {
                     var userId = new UserId();
 
                     challenge.RegisterParticipant(userId, new LinkedAccount(Guid.NewGuid()));
+                }
 
-                    var participant = challenge.Participants.Single(x => x.UserId == userId);
+                challenge.GetType().GetField("_timeline", BindingFlags.Instance | BindingFlags.NonPublic)?.SetValue(challenge, this.CreateChallengeTimeline(ChallengeState1.InProgress));
 
-                    for (var index = 0;
-                        index < Random.Next(1, challenge.Setup.BestOf + Random.Next(0, challenge.Setup.BestOf + 1) + 1);
-                        index++)
+                foreach (var participant in challenge.Participants)
+                {
+                    for (var index = 0; index < Random.Next(1, challenge.Setup.BestOf + Random.Next(0, challenge.Setup.BestOf + 1) + 1); index++)
                     {
                         var stats = this.CreateChallengeStats();
 

@@ -10,6 +10,8 @@
 
 using System;
 
+using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Strategies;
+
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Factories
 {
     public sealed class ChallengeTimelineFactory
@@ -18,21 +20,21 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Factories
 
         public static ChallengeTimelineFactory Instance => Lazy.Value;
 
-        public ChallengeTimeline CreateTimeline(ChallengeInterval interval)
+        public IChallengeTimelineStrategy CreateTimelineStrategy(ChallengeInterval interval)
         {
             if (interval == ChallengeInterval.Daily)
             {
-                return new ChallengeTimelineDaily();
+                return new DefaultChallengeTimelineDailyStrategy();
             }
 
             if (interval == ChallengeInterval.Weekly)
             {
-                return new ChallengeTimelineWeekly();
+                return new DefaultChallengeTimelineWeeklyStrategy();
             }
 
             if (interval == ChallengeInterval.Monthly)
             {
-                return new ChallengeTimelineMonthly();
+                return new DefaultChallengeTimelineMonthlyStrategy();
             }
 
             throw new ArgumentException(nameof(interval));

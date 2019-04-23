@@ -20,6 +20,8 @@ namespace eDoxa.Challenges.Domain.Repositories
 {
     public interface IChallengeRepository : IRepository<Challenge>
     {
+        void Create(Challenge challenge);
+
         void Create(IEnumerable<Challenge> challenges);
 
         Task<IReadOnlyCollection<Challenge>> FindChallengesAsync(
