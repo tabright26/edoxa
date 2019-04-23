@@ -48,7 +48,7 @@ namespace eDoxa.Challenges.Infrastructure
 
             if (!Challenges.Any())
             {
-                var challenges = ChallengeAggregateFactory.CreateRandomChallengesWithOtherStates(ChallengeState.Opened);
+                var challenges = ChallengeAggregateFactory.CreateRandomChallengesWithOtherStates(ChallengeState1.Opened);
 
                 Challenges.AddRange(challenges);
 

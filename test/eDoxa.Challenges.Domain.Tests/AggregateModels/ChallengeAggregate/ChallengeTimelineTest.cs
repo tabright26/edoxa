@@ -36,7 +36,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             timeline.StartedAt.Should().BeNull();
             timeline.EndedAt.Should().BeNull();
             timeline.ClosedAt.Should().BeNull();
-            timeline.State.Should().HaveFlag(ChallengeState.Draft);
+            timeline.State.Should().HaveFlag(ChallengeState1.Draft);
         }
 
         [TestMethod]
@@ -111,7 +111,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         {
             // Arrange
             var extensionPeriod = TimelineExtensionPeriod.Min;
-            var timeline = _challengeAggregateFactory.CreateChallengeTimeline(ChallengeState.Configured);
+            var timeline = _challengeAggregateFactory.CreateChallengeTimeline(ChallengeState1.Configured);
 
             // Act
             var action = new Action(() =>
@@ -131,79 +131,79 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             var state = timeline.State;
 
             // Assert
-            state.Should().HaveFlag(ChallengeState.Draft);
+            state.Should().HaveFlag(ChallengeState1.Draft);
         }
 
         [TestMethod]
         public void State_IsConfigured_ShouldBeTrue()
         {
             // Arrange
-            var timeline = _challengeAggregateFactory.CreateChallengeTimeline(ChallengeState.Configured);
+            var timeline = _challengeAggregateFactory.CreateChallengeTimeline(ChallengeState1.Configured);
 
             // Act
             var state = timeline.State;
 
             // Assert
-            state.Should().HaveFlag(ChallengeState.Configured);
+            state.Should().HaveFlag(ChallengeState1.Configured);
         }
 
         [TestMethod]
         public void State_IsOpened_ShouldBeTrue()
         {
             // Arrange
-            var timeline = _challengeAggregateFactory.CreateChallengeTimeline(ChallengeState.Opened);
+            var timeline = _challengeAggregateFactory.CreateChallengeTimeline(ChallengeState1.Opened);
 
             // Act
             var state = timeline.State;
 
             // Assert
-            state.Should().HaveFlag(ChallengeState.Opened);
+            state.Should().HaveFlag(ChallengeState1.Opened);
         }
 
         [TestMethod]
         public void State_IsStarted_ShouldBeTrue()
         {
             // Arrange
-            var timeline = _challengeAggregateFactory.CreateChallengeTimeline(ChallengeState.InProgress);
+            var timeline = _challengeAggregateFactory.CreateChallengeTimeline(ChallengeState1.InProgress);
 
             // Act
             var state = timeline.State;
 
             // Assert
-            state.Should().HaveFlag(ChallengeState.InProgress);
+            state.Should().HaveFlag(ChallengeState1.InProgress);
         }
 
         [TestMethod]
         public void State_IsEnded_ShouldBeTrue()
         {
             // Arrange
-            var timeline = _challengeAggregateFactory.CreateChallengeTimeline(ChallengeState.Ended);
+            var timeline = _challengeAggregateFactory.CreateChallengeTimeline(ChallengeState1.Ended);
 
             // Act
             var state = timeline.State;
 
             // Assert
-            state.Should().HaveFlag(ChallengeState.Ended);
+            state.Should().HaveFlag(ChallengeState1.Ended);
         }
 
         [TestMethod]
         public void State_IsClosed_ShouldBeTrue()
         {
             // Arrange
-            var timeline = _challengeAggregateFactory.CreateChallengeTimeline(ChallengeState.Closed);
+            var timeline = _challengeAggregateFactory.CreateChallengeTimeline(ChallengeState1.Closed);
 
             // Act
             var state = timeline.State;
 
             // Assert
-            state.Should().HaveFlag(ChallengeState.Closed);
+            state.Should().HaveFlag(ChallengeState1.Closed);
         }
 
         [TestMethod]
         public void Close_IsNotEnded_ShouldThrowInvalidOperationException()
         {
             // Arrange
-            var timeline = _challengeAggregateFactory.CreateChallengeTimeline(ChallengeState.InProgress);
+            var timeline = _challengeAggregateFactory.CreateChallengeTimeline(ChallengeState1.InProgress);
 
             // Act
             var action = new Action(() => timeline.Close());

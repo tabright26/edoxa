@@ -34,8 +34,8 @@ namespace eDoxa.Challenges.Application.Tests.Services
             // Arrange
             var mockChallengeRepository = new Mock<IChallengeRepository>();
 
-            mockChallengeRepository.Setup(repository => repository.FindChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeType>(), ChallengeState.Ended))
-                                   .ReturnsAsync(ChallengeAggregateFactory.CreateRandomChallenges(ChallengeState.Ended))
+            mockChallengeRepository.Setup(repository => repository.FindChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeType>(), ChallengeState1.Ended))
+                                   .ReturnsAsync(ChallengeAggregateFactory.CreateRandomChallenges(ChallengeState1.Ended))
                                    .Verifiable();
 
             mockChallengeRepository.Setup(repository => repository.UnitOfWork.CommitAndDispatchDomainEventsAsync(It.IsAny<CancellationToken>()))
@@ -49,7 +49,7 @@ namespace eDoxa.Challenges.Application.Tests.Services
             await service.CloseAsync();
 
             mockChallengeRepository.Verify(
-                repository => repository.FindChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeType>(), ChallengeState.Ended),
+                repository => repository.FindChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeType>(), ChallengeState1.Ended),
                 Times.Once
             );
 

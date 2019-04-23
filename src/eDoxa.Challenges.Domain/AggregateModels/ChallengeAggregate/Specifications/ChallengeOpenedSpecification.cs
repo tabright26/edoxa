@@ -19,7 +19,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Specificati
     {
         public override Expression<Func<Challenge, bool>> ToExpression()
         {
-            return challenge => challenge.Timeline.State.HasFlag(ChallengeState.Opened);
+            return challenge => challenge.Timeline.State.HasFlag(ChallengeState1.Opened);
         }
     }
 }

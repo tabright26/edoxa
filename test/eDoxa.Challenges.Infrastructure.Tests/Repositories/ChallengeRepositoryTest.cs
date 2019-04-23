@@ -103,7 +103,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
 
                     // Act
                     var challenges =
-                        await repository.FindChallengesAsync(Game.All, ChallengeType.All, ChallengeState.All);
+                        await repository.FindChallengesAsync(Game.All, ChallengeType.All, ChallengeState1.All);
 
                     // Assert
                     ChallengeRepositoryAssert.IsLoaded(challenges);
@@ -123,7 +123,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
 
                     // Act
                     var challenges =
-                        await repository.FindChallengesAsync(Game.All, ChallengeType.All, ChallengeState.All);
+                        await repository.FindChallengesAsync(Game.All, ChallengeType.All, ChallengeState1.All);
 
                     // Assert
                     challenges.Should().BeEmpty();
@@ -131,12 +131,12 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
             }
         }
 
-        [DataRow(Game.All, ChallengeType.All, ChallengeState.None)]
-        [DataRow(Game.All, ChallengeType.None, ChallengeState.All)]
-        [DataRow(Game.None, ChallengeType.All, ChallengeState.All)]
+        [DataRow(Game.All, ChallengeType.All, ChallengeState1.None)]
+        [DataRow(Game.All, ChallengeType.None, ChallengeState1.All)]
+        [DataRow(Game.None, ChallengeType.All, ChallengeState1.All)]
         [DataTestMethod]
         public async Task FindChallengesAsync_ByNoneFlags_ShouldBeEmpty(Game game, ChallengeType type,
-            ChallengeState state)
+            ChallengeState1 state)
         {
             using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
             {
@@ -165,14 +165,14 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
             }
         }
 
-        [DataRow(ChallengeState.Draft)]
-        [DataRow(ChallengeState.Configured)]
-        [DataRow(ChallengeState.Opened)]
-        [DataRow(ChallengeState.InProgress)]
-        [DataRow(ChallengeState.Ended)]
-        [DataRow(ChallengeState.Closed)]
+        [DataRow(ChallengeState1.Draft)]
+        [DataRow(ChallengeState1.Configured)]
+        [DataRow(ChallengeState1.Opened)]
+        [DataRow(ChallengeState1.InProgress)]
+        [DataRow(ChallengeState1.Ended)]
+        [DataRow(ChallengeState1.Closed)]
         [DataTestMethod]
-        public async Task FindChallengesAsync_ByState_ShouldHaveCountOfFive(ChallengeState state)
+        public async Task FindChallengesAsync_ByState_ShouldHaveCountOfFive(ChallengeState1 state)
         {
             using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
             {

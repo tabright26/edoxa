@@ -61,7 +61,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void Game_InvalidEnumArgument_ShouldThrowInvalidEnumArgumentException()
         {
             // Arrange
-            var challenge = ChallengeAggregateFactory.CreateChallenge(ChallengeState.Draft);
+            var challenge = ChallengeAggregateFactory.CreateChallenge(ChallengeState1.Draft);
 
             // Act
             var action = new Action(() => challenge.SetProperty(nameof(Challenge.Game), (Game) 1000));
@@ -76,7 +76,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void Game_InvalidArgument_ShouldThrowArgumentException(Game game)
         {
             // Arrange
-            var challenge = ChallengeAggregateFactory.CreateChallenge(ChallengeState.Draft);
+            var challenge = ChallengeAggregateFactory.CreateChallenge(ChallengeState1.Draft);
 
             // Act
             var action = new Action(() => challenge.SetProperty(nameof(Challenge.Game), game));
@@ -89,7 +89,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void Configure1_WhenTimelineStateIsDraft_ShouldBeConfigured()
         {
             // Arrange
-            var challenge = ChallengeAggregateFactory.CreateChallenge(ChallengeState.Draft);
+            var challenge = ChallengeAggregateFactory.CreateChallenge(ChallengeState1.Draft);
 
             // Act
             challenge.Configure(
@@ -100,59 +100,59 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             );
 
             // Assert
-            challenge.Timeline.State.Should().HaveFlag(ChallengeState.Configured);
+            challenge.Timeline.State.Should().HaveFlag(ChallengeState1.Configured);
         }
 
         [TestMethod]
         public void Configure2_WhenTimelineStateIsDraft_ShouldBeConfigured()
         {
             // Arrange
-            var challenge = ChallengeAggregateFactory.CreateChallenge(ChallengeState.Draft);
+            var challenge = ChallengeAggregateFactory.CreateChallenge(ChallengeState1.Draft);
 
             // Act
             challenge.Configure(ChallengeAggregateFactory.CreateChallengeScoringStrategy(), TimelinePublishedAt.Max);
 
             // Assert
-            challenge.Timeline.State.Should().HaveFlag(ChallengeState.Configured);
+            challenge.Timeline.State.Should().HaveFlag(ChallengeState1.Configured);
         }
 
         [TestMethod]
         public void Publish1_WhenTimelineStateIsDraft_ShouldBeOpened()
         {
             // Arrange
-            var challenge = ChallengeAggregateFactory.CreateChallenge(ChallengeState.Draft);
+            var challenge = ChallengeAggregateFactory.CreateChallenge(ChallengeState1.Draft);
 
             // Act
             challenge.Publish(ChallengeAggregateFactory.CreateChallengeScoringStrategy(), TimelineRegistrationPeriod.Default, TimelineExtensionPeriod.Default);
 
             // Assert
-            challenge.Timeline.State.Should().HaveFlag(ChallengeState.Opened);
+            challenge.Timeline.State.Should().HaveFlag(ChallengeState1.Opened);
         }
 
         [TestMethod]
         public void Publish2_WhenTimelineStateIsDraft_ShouldBeOpened()
         {
             // Arrange
-            var challenge = ChallengeAggregateFactory.CreateChallenge(ChallengeState.Draft);
+            var challenge = ChallengeAggregateFactory.CreateChallenge(ChallengeState1.Draft);
 
             // Act
             challenge.Publish(ChallengeAggregateFactory.CreateChallengeScoringStrategy());
 
             // Assert
-            challenge.Timeline.State.Should().HaveFlag(ChallengeState.Opened);
+            challenge.Timeline.State.Should().HaveFlag(ChallengeState1.Opened);
         }
 
         [TestMethod]
         public void Close_WhenTimelineStateIsEnded_ShouldBeClosed()
         {
             // Arrange
-            var challenge = ChallengeAggregateFactory.CreateChallenge(ChallengeState.Ended);
+            var challenge = ChallengeAggregateFactory.CreateChallenge(ChallengeState1.Ended);
 
             // Act
             challenge.Close();
 
             // Assert
-            challenge.Timeline.State.Should().HaveFlag(ChallengeState.Closed);
+            challenge.Timeline.State.Should().HaveFlag(ChallengeState1.Closed);
         }
 
         [TestMethod]
@@ -212,7 +212,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void RegisterParticipant_TimelineStateNotOpened_ShouldThrowInvalidOperationException()
         {
             // Arrange
-            var challenge = ChallengeAggregateFactory.CreateChallenge(ChallengeState.Draft);
+            var challenge = ChallengeAggregateFactory.CreateChallenge(ChallengeState1.Draft);
 
             // Act
             var action = new Action(() => challenge.RegisterParticipant(new UserId(), new LinkedAccount(Guid.NewGuid())));
@@ -239,7 +239,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void SnapshotParticipantMatch_ParticipantNotRegistered_ShouldThrowInvalidOperationException()
         {
             // Arrange
-            var challenge = ChallengeAggregateFactory.CreateChallenge(ChallengeState.Draft);
+            var challenge = ChallengeAggregateFactory.CreateChallenge(ChallengeState1.Draft);
 
             // Act
             var action = new Action(() => challenge.SnapshotParticipantMatch(new ParticipantId(), ChallengeAggregateFactory.CreateChallengeStats()));

@@ -33,7 +33,7 @@ namespace eDoxa.Challenges.Application.Tests.DomainEventHandlers
         public async Task Handle_PublishAsync_ShouldBeInvokedExactlyOneTime()
         {
             // Arrange
-            var challenge = ChallengeAggregateFactory.CreateChallenge(ChallengeState.Closed);
+            var challenge = ChallengeAggregateFactory.CreateChallenge(ChallengeState1.Closed);
 
             var userPrizes = challenge.Payout.Snapshot(challenge.Scoreboard);
 

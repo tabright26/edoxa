@@ -56,13 +56,13 @@ namespace eDoxa.Challenges.Infrastructure.Repositories
             _context.Challenges.AddRange(challenges);
         }
 
-        public async Task<IReadOnlyCollection<Challenge>> FindChallengesAsync(Game game, ChallengeType type, ChallengeState state)
+        public async Task<IReadOnlyCollection<Challenge>> FindChallengesAsync(Game game, ChallengeType type, ChallengeState1 state)
         {
             return await _context.Challenges.Include(ExpandParticipantMatchStats)
                                  .Where(
                                      challenge => (challenge.Game & game) != Game.None &&
                                                   (challenge.Setup.Type & type) != ChallengeType.None &&
-                                                  (challenge.Timeline.State & state) != ChallengeState.None
+                                                  (challenge.Timeline.State & state) != ChallengeState1.None
                                  )
                                  .OrderBy(challenge => challenge.Timeline.StartedAt)
                                  .ToListAsync();

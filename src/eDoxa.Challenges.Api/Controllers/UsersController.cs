@@ -47,7 +47,7 @@ namespace eDoxa.Challenges.Api.Controllers
             UserId userId,
             Game game = Game.All,
             ChallengeType type = ChallengeType.All,
-            ChallengeState state = ChallengeState.All)
+            ChallengeState1 state = ChallengeState1.All)
         {
             try
             {

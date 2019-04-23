@@ -19,7 +19,7 @@ namespace eDoxa.Challenges.DTO.Queries
 {
     public interface IChallengeQueries
     {
-        Task<ChallengeListDTO> FindChallengesAsync(Game game = Game.All, ChallengeType type = ChallengeType.All, ChallengeState state = ChallengeState.All);
+        Task<ChallengeListDTO> FindChallengesAsync(Game game = Game.All, ChallengeType type = ChallengeType.All, ChallengeState1 state = ChallengeState1.All);
        
         [ItemCanBeNull]
         Task<ChallengeDTO> FindChallengeAsync(ChallengeId challengeId);
@@ -28,6 +28,6 @@ namespace eDoxa.Challenges.DTO.Queries
             UserId userId,
             Game game = Game.All,
             ChallengeType type = ChallengeType.All,
-            ChallengeState state = ChallengeState.All);
+            ChallengeState1 state = ChallengeState1.All);
     }
 }

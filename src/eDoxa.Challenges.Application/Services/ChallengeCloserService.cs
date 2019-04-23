@@ -28,7 +28,7 @@ namespace eDoxa.Challenges.Application.Services
 
         public async Task CloseAsync()
         {
-            var challenges = await _challengeRepository.FindChallengesAsync(Game.All, ChallengeType.All, ChallengeState.Ended);
+            var challenges = await _challengeRepository.FindChallengesAsync(Game.All, ChallengeType.All, ChallengeState1.Ended);
 
             foreach (var challenge in challenges)
             {

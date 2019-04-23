@@ -61,15 +61,15 @@ namespace eDoxa.Challenges.Domain.Factories
             return new LinkedMatch(Guid.NewGuid());
         }
 
-        private static IEnumerable<ChallengeState> OtherStates(ChallengeState state)
+        private static IEnumerable<ChallengeState1> OtherStates(ChallengeState1 state)
         {
-            var states = Enum.GetValues(typeof(ChallengeState)).Cast<ChallengeState>().ToList();
+            var states = Enum.GetValues(typeof(ChallengeState1)).Cast<ChallengeState1>().ToList();
 
             states.Remove(state);
 
-            states.Remove(ChallengeState.None);
+            states.Remove(ChallengeState1.None);
 
-            states.Remove(ChallengeState.All);
+            states.Remove(ChallengeState1.All);
 
             return states;
         }
@@ -82,7 +82,7 @@ namespace eDoxa.Challenges.Domain.Factories
             return new Challenge(game, name, setup, this.CreateChallengeTimeline());
         }
 
-        public Challenge CreateChallenge(ChallengeState state = ChallengeState.Opened, ChallengeSetup setup = null)
+        public Challenge CreateChallenge(ChallengeState1 state = ChallengeState1.Opened, ChallengeSetup setup = null)
         {
             setup = setup ?? new DefaultChallengeSetup();
 
@@ -92,7 +92,7 @@ namespace eDoxa.Challenges.Domain.Factories
 
             challenge.GetType().GetField("_timeline", BindingFlags.Instance | BindingFlags.NonPublic)?.SetValue(challenge, timeline);
 
-            if (state >= ChallengeState.Opened)
+            if (state >= ChallengeState1.Opened)
             {
                 var scoring = this.CreateChallengeScoring();
 
@@ -129,17 +129,17 @@ namespace eDoxa.Challenges.Domain.Factories
             return challenge;
         }
 
-        public Challenge CreateRandomChallenge(ChallengeState state = ChallengeState.Opened)
+        public Challenge CreateRandomChallenge(ChallengeState1 state = ChallengeState1.Opened)
         {
             return this.CreateRandomChallenges(state).First();
         }
 
-        public IReadOnlyCollection<Challenge> CreateRandomChallengesWithOtherStates(ChallengeState state)
+        public IReadOnlyCollection<Challenge> CreateRandomChallengesWithOtherStates(ChallengeState1 state)
         {
             return this.CreateRandomChallenges(state).Union(this.CreateOtherRandomChallenges(state)).ToList();
         }
 
-        public IReadOnlyCollection<Challenge> CreateRandomChallenges(ChallengeState state = ChallengeState.Opened)
+        public IReadOnlyCollection<Challenge> CreateRandomChallenges(ChallengeState1 state = ChallengeState1.Opened)
         {
             var challenges = new Collection<Challenge>();
 
@@ -151,7 +151,7 @@ namespace eDoxa.Challenges.Domain.Factories
             return challenges;
         }
 
-        private IReadOnlyCollection<Challenge> CreateOtherRandomChallenges(ChallengeState state)
+        private IReadOnlyCollection<Challenge> CreateOtherRandomChallenges(ChallengeState1 state)
         {
             var challenges = new Collection<Challenge>();
 
@@ -166,16 +166,16 @@ namespace eDoxa.Challenges.Domain.Factories
             return challenges;
         }
 
-        private Challenge CreateRandomChallengeFromState(ChallengeState state)
+        private Challenge CreateRandomChallengeFromState(ChallengeState1 state)
         {
             var challenge = this.CreateChallenge(state);
 
-            if (state >= ChallengeState.Opened)
+            if (state >= ChallengeState1.Opened)
             {
                 var timeline = challenge.Timeline;
 
                 challenge.GetType().GetField("_timeline", BindingFlags.Instance | BindingFlags.NonPublic)
-                    ?.SetValue(challenge, this.CreateChallengeTimeline(ChallengeState.Opened));
+                    ?.SetValue(challenge, this.CreateChallengeTimeline(ChallengeState1.Opened));
 
                 for (var row = 0; row < Random.Next(1, challenge.Setup.Entries + 1); row++)
                 {
@@ -218,26 +218,26 @@ namespace eDoxa.Challenges.Domain.Factories
 
     internal sealed partial class ChallengeAggregateFactory
     {
-        public ChallengeTimeline CreateChallengeTimeline(ChallengeState state = ChallengeState.Draft)
+        public ChallengeTimeline CreateChallengeTimeline(ChallengeState1 state = ChallengeState1.Draft)
         {
             switch (state)
             {
-                case ChallengeState.Draft:
+                case ChallengeState1.Draft:
 
                     return CreateChallengeTimelineAsDraft();
-                case ChallengeState.Configured:
+                case ChallengeState1.Configured:
 
                     return CreateChallengeTimelineAsConfigured();
-                case ChallengeState.Opened:
+                case ChallengeState1.Opened:
 
                     return CreateChallengeTimelineAsOpened();
-                case ChallengeState.InProgress:
+                case ChallengeState1.InProgress:
 
                     return CreateChallengeTimelineAsInProgress();
-                case ChallengeState.Ended:
+                case ChallengeState1.Ended:
 
                     return CreateChallengeTimelineAsEnded();
-                case ChallengeState.Closed:
+                case ChallengeState1.Closed:
 
                     return CreateChallengeTimelineAsClosed();
                 default:

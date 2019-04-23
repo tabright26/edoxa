@@ -46,7 +46,7 @@ namespace eDoxa.Challenges.Application.Queries
             UserId userId,
             Game game,
             ChallengeType type,
-            ChallengeState state)
+            ChallengeState1 state)
         {
             return await _context.Challenges.AsNoTracking()
                 .Include(ExpandParticipantMatchStats)
@@ -54,20 +54,20 @@ namespace eDoxa.Challenges.Application.Queries
                     challenge => challenge.Participants.Any(participant => participant.UserId == userId) &&
                                  (challenge.Game & game) != Game.None &&
                                  (challenge.Setup.Type & type) != ChallengeType.None &&
-                                 (challenge.Timeline.State & state) != ChallengeState.None
+                                 (challenge.Timeline.State & state) != ChallengeState1.None
                 )
                 .OrderBy(challenge => challenge.Timeline.StartedAt)
                 .ToListAsync();
         }
 
-        private async Task<IEnumerable<Challenge>> FindChallengesAsNoTrackingAsync(Game game, ChallengeType type, ChallengeState state)
+        private async Task<IEnumerable<Challenge>> FindChallengesAsNoTrackingAsync(Game game, ChallengeType type, ChallengeState1 state)
         {
             return await _context.Challenges.AsNoTracking()
                 .Include(ExpandParticipantMatchStats)
                 .Where(
                     challenge => (challenge.Game & game) != Game.None &&
                                  (challenge.Setup.Type & type) != ChallengeType.None &&
-                                 (challenge.Timeline.State & state) != ChallengeState.None
+                                 (challenge.Timeline.State & state) != ChallengeState1.None
                 )
                 .OrderBy(challenge => challenge.Game)
                 .ThenBy(challenge => challenge.Setup.Type)
@@ -88,7 +88,7 @@ namespace eDoxa.Challenges.Application.Queries
 
     public sealed partial class ChallengeQueries : IChallengeQueries
     {
-        public async Task<ChallengeListDTO> FindChallengesAsync(Game game, ChallengeType type, ChallengeState state)
+        public async Task<ChallengeListDTO> FindChallengesAsync(Game game, ChallengeType type, ChallengeState1 state)
         {
             var challenges = await this.FindChallengesAsNoTrackingAsync(game, type, state);
 
@@ -103,7 +103,7 @@ namespace eDoxa.Challenges.Application.Queries
             return _mapper.Map<ChallengeDTO>(challenge);
         }
 
-        public async Task<ChallengeListDTO> FindUserChallengeHistoryAsync(UserId userId, Game game, ChallengeType type, ChallengeState state)
+        public async Task<ChallengeListDTO> FindUserChallengeHistoryAsync(UserId userId, Game game, ChallengeType type, ChallengeState1 state)
         {
             var challenges = await this.FindUserChallengeHistoryAsNoTrackingAsync(userId, game, type, state);
 

@@ -125,38 +125,38 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public DateTime? EndedAt => _publishedAt + _registrationPeriod + _extensionPeriod;
 
-        public ChallengeState State
+        public ChallengeState1 State
         {
             get
             {
                 if (this.IsClosed())
                 {
-                    return ChallengeState.Closed;
+                    return ChallengeState1.Closed;
                 }
 
                 if (this.IsEnded())
                 {
-                    return ChallengeState.Ended;
+                    return ChallengeState1.Ended;
                 }
 
                 if (this.IsInProgress())
                 {
-                    return ChallengeState.InProgress;
+                    return ChallengeState1.InProgress;
                 }
 
                 if (this.IsOpened())
                 {
-                    var state = ChallengeState.Opened;
+                    var state = ChallengeState1.Opened;
 
                     if (_liveMode)
                     {
-                        state |= ChallengeState.InProgress;
+                        state |= ChallengeState1.InProgress;
                     }
 
                     return state;
                 }
 
-                return this.IsConfigured() ? ChallengeState.Configured : ChallengeState.Draft;
+                return this.IsConfigured() ? ChallengeState1.Configured : ChallengeState1.Draft;
             }
         }
 

@@ -37,7 +37,7 @@ namespace eDoxa.Challenges.DTO
 
         [JsonProperty("state")]
         [JsonConverter(typeof(StringEnumConverter))]
-        public ChallengeState State { get; set; }
+        public ChallengeState1 State { get; set; }
 
         [JsonProperty("liveMode")]
         public bool LiveMode { get; set; }

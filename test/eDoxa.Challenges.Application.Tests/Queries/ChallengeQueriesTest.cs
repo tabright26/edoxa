@@ -52,7 +52,7 @@ namespace eDoxa.Challenges.Application.Tests.Queries
                     var queries = new ChallengeQueries(context, ChallengesMapperFactory.CreateMapper());
 
                     // Act
-                    var challengeDTO = await queries.FindChallengesAsync(Game.All, ChallengeType.All, ChallengeState.Opened);
+                    var challengeDTO = await queries.FindChallengesAsync(Game.All, ChallengeType.All, ChallengeState1.Opened);
 
                     // Assert
                     ChallengesAssert.IsMapped(challengeDTO);

@@ -60,7 +60,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
             };
             
 
-            _queries.Setup(queries => queries.FindChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeType>(), It.IsAny<ChallengeState>()))
+            _queries.Setup(queries => queries.FindChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeType>(), It.IsAny<ChallengeState1>()))
                     .ReturnsAsync(value)
                     .Verifiable();
 
@@ -80,7 +80,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
         public async Task FindChallengesAsync_ShouldBeNoContentResult()
         {
             // Arrange
-            _queries.Setup(queries => queries.FindChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeType>(), It.IsAny<ChallengeState>()))
+            _queries.Setup(queries => queries.FindChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeType>(), It.IsAny<ChallengeState1>()))
                     .ReturnsAsync(new ChallengeListDTO())
                     .Verifiable();
 
@@ -100,7 +100,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
         public async Task FindChallengesAsync_ShouldBeBadRequestObjectResult()
         {
             // Arrange
-            _queries.Setup(queries => queries.FindChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeType>(), It.IsAny<ChallengeState>()))
+            _queries.Setup(queries => queries.FindChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeType>(), It.IsAny<ChallengeState1>()))
                     .ThrowsAsync(new Exception())
                     .Verifiable();
 

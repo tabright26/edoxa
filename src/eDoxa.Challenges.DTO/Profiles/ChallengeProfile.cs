@@ -34,7 +34,7 @@ namespace eDoxa.Challenges.DTO.Profiles
                     config =>
                     {
                         config.MapFrom(challenge => challenge.Scoring);
-                        config.Condition(challenge => challenge.Timeline.State >= ChallengeState.Opened);
+                        config.Condition(challenge => challenge.Timeline.State >= ChallengeState1.Opened);
                     }
                 )
                 .ForMember(
@@ -42,14 +42,14 @@ namespace eDoxa.Challenges.DTO.Profiles
                     config =>
                     {
                         config.MapFrom(challenge => challenge.LiveData);
-                        config.Condition(challenge => challenge.Timeline.State >= ChallengeState.Opened);
+                        config.Condition(challenge => challenge.Timeline.State >= ChallengeState1.Opened);
                     }
                 ).ForMember(
                     challenge => challenge.Participants,
                     config =>
                     {
                         config.MapFrom(challenge => challenge.Participants.OrderBy(participant => participant.Timestamp));
-                        config.Condition(challenge => challenge.Timeline.State >= ChallengeState.Opened);
+                        config.Condition(challenge => challenge.Timeline.State >= ChallengeState1.Opened);
                     }
                 );
         }

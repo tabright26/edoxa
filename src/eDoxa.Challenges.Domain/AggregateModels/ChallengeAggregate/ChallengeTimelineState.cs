@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeTimelineState.cs
-// Date Created: 2019-04-22
+// Date Created: 2019-04-23
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,43 +8,59 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
+
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class ChallengeTimelineState
     {
-        private readonly long _value;
-        private readonly string _displayName;        
+        private readonly ChallengeTimeline _timeline;
 
-        private ChallengeTimelineState(long value, string displayName)
+        public ChallengeTimelineState(ChallengeTimeline timeline)
         {
-            _value = value;
-            _displayName = displayName;
+            _timeline = timeline;
         }
 
-        public static ChallengeTimelineState None { get; } = new ChallengeTimelineState(0, nameof(None));
+        public ChallengeState1 Current =>
+            this.IsClosed() ? ChallengeState1.Closed :
+            this.IsEnded() ? ChallengeState1.Ended :
+            this.IsInProgress() ? ChallengeState1.InProgress :
+            this.IsOpened() ? ChallengeState1.Opened :
+            this.IsConfigured() ? ChallengeState1.Configured : ChallengeState1.Draft;
 
-        public static ChallengeTimelineState Draft { get; } = new ChallengeTimelineState(1 << 0, nameof(Draft));
-
-        public static ChallengeTimelineState Configured { get; } = new ChallengeTimelineState(1 << 1, nameof(Configured));
-
-        public static ChallengeTimelineState Opened { get; } = new ChallengeTimelineState(1 << 2, nameof(Opened));
-
-        public static ChallengeTimelineState InProgress { get; } = new ChallengeTimelineState(1 << 3, nameof(InProgress));
-
-        public static ChallengeTimelineState Ended { get; } = new ChallengeTimelineState(1 << 4, nameof(Ended));
-
-        public static ChallengeTimelineState Closed { get; } = new ChallengeTimelineState(1 << 5, nameof(Closed));
-
-        public static ChallengeTimelineState All { get; } = new ChallengeTimelineState(~None, nameof(All));
-
-        public static implicit operator long(ChallengeTimelineState state)
+        private bool IsDraft()
         {
-            return state._value;
+            return _timeline.PublishedAt == null;
         }
 
-        public override string ToString()
+        private bool IsConfigured()
         {
-            return _displayName;
+            return !this.IsDraft() && !this.IsPublish();
+        }
+
+        private bool IsPublish()
+        {
+            return !this.IsDraft() && _timeline.PublishedAt <= DateTime.UtcNow;
+        }
+
+        private bool IsOpened()
+        {
+            return this.IsPublish() && !this.IsInProgress();
+        }
+
+        private bool IsInProgress()
+        {
+            return !this.IsDraft() && _timeline.StartedAt <= DateTime.UtcNow;
+        }
+
+        private bool IsEnded()
+        {
+            return !this.IsDraft() && _timeline.EndedAt <= DateTime.UtcNow;
+        }
+
+        private bool IsClosed()
+        {
+            return _timeline.ClosedAt != null;
         }
     }
 }
