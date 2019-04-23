@@ -1,11 +1,11 @@
 ﻿// Filename: LeagueOfLegendsChallengePublisherFactory.cs
-// Date Created: 2019-03-05
+// Date Created: 2019-04-21
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
@@ -20,27 +20,26 @@ namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.Factories
         private static readonly Lazy<LeagueOfLegendsChallengePublisherFactory> Lazy =
             new Lazy<LeagueOfLegendsChallengePublisherFactory>(() => new LeagueOfLegendsChallengePublisherFactory());
 
-        public static LeagueOfLegendsChallengePublisherFactory Instance
-        {
-            get
-            {
-                return Lazy.Value;
-            }
-        }
+        public static LeagueOfLegendsChallengePublisherFactory Instance => Lazy.Value;
 
-        public IChallengePublisherStrategy Create(ChallengePublisherPeriodicity periodicity)
+        public IChallengePublisherStrategy CreatePublisher(ChallengeInterval interval)
         {
-            switch (periodicity)
+            if (interval == ChallengeInterval.Daily)
             {
-                case ChallengePublisherPeriodicity.Daily:
-                    return new LeagueOfLegendsDailyChallengePublisherStrategy();
-                case ChallengePublisherPeriodicity.Weekly:
-                    return new LeagueOfLegendsWeeklyChallengePublisherStrategy();
-                case ChallengePublisherPeriodicity.Monthly:
-                    return new LeagueOfLegendsMonthlyChallengePublisherStrategy();
-                default:
-                    throw new NotImplementedException();
+                return new LeagueOfLegendsDailyChallengePublisherStrategy();
             }
+
+            if (interval == ChallengeInterval.Weekly)
+            {
+                return new LeagueOfLegendsWeeklyChallengePublisherStrategy();
+            }
+
+            if (interval == ChallengeInterval.Monthly)
+            {
+                return new LeagueOfLegendsMonthlyChallengePublisherStrategy();
+            }
+
+            throw new ArgumentException(nameof(interval));
         }
     }
 }

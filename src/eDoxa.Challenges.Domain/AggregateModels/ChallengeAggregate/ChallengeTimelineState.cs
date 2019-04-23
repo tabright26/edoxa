@@ -15,7 +15,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         private readonly long _value;
         private readonly string _displayName;        
 
-        public ChallengeTimelineState(long value, string displayName)
+        private ChallengeTimelineState(long value, string displayName)
         {
             _value = value;
             _displayName = displayName;

@@ -15,11 +15,11 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class RandomChallenge : Challenge
     {
-        internal RandomChallenge(Game game, ChallengeName name, ChallengePublisherPeriodicity periodicity) : base(
+        internal RandomChallenge(Game game, ChallengeName name, ChallengeInterval interval) : base(
             game,
             name,
-            new RandomChallengeSetup(periodicity),
-            ChallengeTimelineFactory.Instance.CreateTimeline(periodicity))
+            new RandomChallengeSetup(interval),
+            ChallengeTimelineFactory.Instance.CreateTimeline(interval))
         {
         }
     }

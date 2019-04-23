@@ -8,14 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.Services.Factories;
-using eDoxa.Seedwork.Domain.Common.Enums;
-
-using FluentAssertions;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Challenges.Domain.Services.Tests.Factories
@@ -23,39 +15,39 @@ namespace eDoxa.Challenges.Domain.Services.Tests.Factories
     [TestClass]
     public sealed class ChallengePubliserFactoryTest
     {
-        [DataRow(ChallengePublisherPeriodicity.Daily, Game.LeagueOfLegends)]
-        [DataRow(ChallengePublisherPeriodicity.Weekly, Game.LeagueOfLegends)]
-        [DataRow(ChallengePublisherPeriodicity.Monthly, Game.LeagueOfLegends)]
-        [DataTestMethod]
-        public void Create_ImplementedType_ShouldNotBeNull(ChallengePublisherPeriodicity periodicity, Game game)
-        {
-            // Arrange
-            var factory = ChallengePubliserFactory.Instance;
+        //[DataRow(ChallengeInterval.Daily, Game.LeagueOfLegends)]
+        //[DataRow(ChallengeInterval.Weekly, Game.LeagueOfLegends)]
+        //[DataRow(ChallengeInterval.Monthly, Game.LeagueOfLegends)]
+        //[DataTestMethod]
+        //public void Create_ImplementedType_ShouldNotBeNull(ChallengeInterval periodicity, Game game)
+        //{
+        //    // Arrange
+        //    var factory = ChallengePubliserFactory.Instance;
 
-            // Act
-            var strategy = factory.Create(periodicity, game);
+        //    // Act
+        //    var strategy = factory.Create(periodicity, game);
 
-            // Assert
-            strategy.Challenges.Should().NotBeNull();
-        }
+        //    // Assert
+        //    strategy.Challenges.Should().NotBeNull();
+        //}
 
-        [DataRow(ChallengePublisherPeriodicity.Daily, Game.CSGO)]
-        [DataRow(ChallengePublisherPeriodicity.Weekly, Game.CSGO)]
-        [DataRow(ChallengePublisherPeriodicity.Monthly, Game.CSGO)]
-        [DataRow(ChallengePublisherPeriodicity.Daily, Game.Fortnite)]
-        [DataRow(ChallengePublisherPeriodicity.Weekly, Game.Fortnite)]
-        [DataRow(ChallengePublisherPeriodicity.Monthly, Game.Fortnite)]
-        [DataTestMethod]
-        public void Create_NotImplementedType_ShouldThrowNotImplementedException(ChallengePublisherPeriodicity periodicity, Game game)
-        {
-            // Arrange
-            var factory = ChallengePubliserFactory.Instance;
+        //[DataRow(ChallengeInterval.Daily, Game.CSGO)]
+        //[DataRow(ChallengeInterval.Weekly, Game.CSGO)]
+        //[DataRow(ChallengeInterval.Monthly, Game.CSGO)]
+        //[DataRow(ChallengeInterval.Daily, Game.Fortnite)]
+        //[DataRow(ChallengeInterval.Weekly, Game.Fortnite)]
+        //[DataRow(ChallengeInterval.Monthly, Game.Fortnite)]
+        //[DataTestMethod]
+        //public void Create_NotImplementedType_ShouldThrowNotImplementedException(ChallengeInterval periodicity, Game game)
+        //{
+        //    // Arrange
+        //    var factory = ChallengePubliserFactory.Instance;
 
-            // Act
-            var action = new Action(() => factory.Create(periodicity, game));
+        //    // Act
+        //    var action = new Action(() => factory.Create(periodicity, game));
 
-            // Assert
-            action.Should().Throw<NotImplementedException>();
-        }
+        //    // Assert
+        //    action.Should().Throw<NotImplementedException>();
+        //}
     }
 }

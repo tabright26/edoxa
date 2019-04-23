@@ -20,9 +20,9 @@ namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.Strategies
         {
             get
             {
-                yield return new LeagueOfLegendsChallenge("Weekly 1", ChallengePublisherPeriodicity.Weekly);
-                yield return new LeagueOfLegendsChallenge("Weekly 2", ChallengePublisherPeriodicity.Weekly);
-                yield return new LeagueOfLegendsChallenge("Weekly 3", ChallengePublisherPeriodicity.Weekly);
+                yield return new LeagueOfLegendsChallenge("Weekly 1", ChallengeInterval.Weekly);
+                yield return new LeagueOfLegendsChallenge("Weekly 2", ChallengeInterval.Weekly);
+                yield return new LeagueOfLegendsChallenge("Weekly 3", ChallengeInterval.Weekly);
             }
         }
     }

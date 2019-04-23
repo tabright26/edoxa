@@ -17,11 +17,11 @@ namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends
 {
     public sealed class LeagueOfLegendsChallenge : Challenge
     {
-        public LeagueOfLegendsChallenge(ChallengeName name, ChallengePublisherPeriodicity periodicity) : base(
+        public LeagueOfLegendsChallenge(ChallengeName name, ChallengeInterval interval) : base(
             Game.LeagueOfLegends,
             name,
-            new RandomChallengeSetup(periodicity),
-            ChallengeTimelineFactory.Instance.CreateTimeline(periodicity)
+            new RandomChallengeSetup(interval),
+            ChallengeTimelineFactory.Instance.CreateTimeline(interval)
         )
         {
             // TODO: Refactor in a method.

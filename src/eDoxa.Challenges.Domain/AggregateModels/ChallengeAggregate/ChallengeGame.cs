@@ -15,7 +15,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         private readonly string _displayName;
         private readonly long _value;
 
-        public ChallengeGame(long value, string displayName)
+        private ChallengeGame(long value, string displayName)
         {
             _value = value;
             _displayName = displayName;

@@ -18,26 +18,24 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Factories
 
         public static ChallengeTimelineFactory Instance => Lazy.Value;
 
-        public ChallengeTimeline CreateTimeline(ChallengePublisherPeriodicity periodicity)
+        public ChallengeTimeline CreateTimeline(ChallengeInterval interval)
         {
-            switch (periodicity)
+            if (interval == ChallengeInterval.Daily)
             {
-                case ChallengePublisherPeriodicity.Daily:
-
-                    return new ChallengeTimelineDaily();
-
-                case ChallengePublisherPeriodicity.Weekly:
-
-                    return new ChallengeTimelineDaily();
-
-                case ChallengePublisherPeriodicity.Monthly:
-
-                    return new ChallengeTimelineDaily();
-
-                default:
-
-                    throw new ArgumentException(nameof(periodicity));
+                return new ChallengeTimelineDaily();
             }
+
+            if (interval == ChallengeInterval.Weekly)
+            {
+                return new ChallengeTimelineWeekly();
+            }
+
+            if (interval == ChallengeInterval.Monthly)
+            {
+                return new ChallengeTimelineMonthly();
+            }
+
+            throw new ArgumentException(nameof(interval));
         }
     }
 }

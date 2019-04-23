@@ -37,7 +37,7 @@ namespace eDoxa.Challenges.Application.Services
                 await this.TryPublish(
                     async () =>
                     {
-                        var strategy = Factory.Create(ChallengePublisherPeriodicity.Weekly, game);
+                        var strategy = Factory.Create(ChallengeInterval.Weekly, game);
 
                         _challengeRepository.Create(strategy.Challenges);
 

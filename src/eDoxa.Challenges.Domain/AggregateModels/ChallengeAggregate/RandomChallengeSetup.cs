@@ -18,10 +18,10 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         private static readonly EntriesRandom EntriesRandom = new EntriesRandom();
         private static readonly EntryFeeRandom EntryFeeRandom = new EntryFeeRandom();
 
-        public RandomChallengeSetup(ChallengePublisherPeriodicity periodicity) : base(
-            NextBestOf(periodicity),
-            NextEntries(periodicity),
-            NextEntryFee(periodicity),
+        public RandomChallengeSetup(ChallengeInterval interval) : base(
+            NextBestOf(interval),
+            NextEntries(interval),
+            NextEntryFee(interval),
             PayoutRatio.DefaultValue,
             ServiceChargeRatio.DefaultValue,
             true
@@ -29,70 +29,64 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         {
         }
 
-        private static BestOf NextBestOf(ChallengePublisherPeriodicity periodicity)
+        private static BestOf NextBestOf(ChallengeInterval interval)
         {
-            switch (periodicity)
+            if (interval == ChallengeInterval.Daily)
             {
-                case ChallengePublisherPeriodicity.Daily:
-
-                    return BestOfRandom.Next(new BestOfRange(new BestOf(1), new BestOf(3)));
-
-                case ChallengePublisherPeriodicity.Weekly:
-
-                    return BestOfRandom.Next(new BestOfRange(new BestOf(3), new BestOf(5)));
-
-                case ChallengePublisherPeriodicity.Monthly:
-
-                    return BestOfRandom.Next(new BestOfRange(new BestOf(3), new BestOf(BestOf.Max)));
-
-                default:
-
-                    throw new ArgumentException(nameof(periodicity));
+                return BestOfRandom.Next(new BestOfRange(new BestOf(1), new BestOf(3)));
             }
+
+            if (interval == ChallengeInterval.Weekly)
+            {
+                return BestOfRandom.Next(new BestOfRange(new BestOf(3), new BestOf(5)));
+            }
+
+            if (interval == ChallengeInterval.Monthly)
+            {
+                return BestOfRandom.Next(new BestOfRange(new BestOf(3), new BestOf(BestOf.Max)));
+            }
+
+            throw new ArgumentException(nameof(interval));
         }
 
-        private static Entries NextEntries(ChallengePublisherPeriodicity periodicity)
+        private static Entries NextEntries(ChallengeInterval interval)
         {
-            switch (periodicity)
+            if (interval == ChallengeInterval.Daily)
             {
-                case ChallengePublisherPeriodicity.Daily:
-
-                    return EntriesRandom.Next(new EntriesRange(new Entries(30), new Entries(50)));
-
-                case ChallengePublisherPeriodicity.Weekly:
-
-                    return EntriesRandom.Next(new EntriesRange(new Entries(75), new Entries(150)));
-
-                case ChallengePublisherPeriodicity.Monthly:
-
-                    return EntriesRandom.Next(new EntriesRange(new Entries(200), new Entries(500)));
-
-                default:
-
-                    throw new ArgumentException(nameof(periodicity));
+                return EntriesRandom.Next(new EntriesRange(new Entries(30), new Entries(50)));
             }
+
+            if (interval == ChallengeInterval.Weekly)
+            {
+                return EntriesRandom.Next(new EntriesRange(new Entries(75), new Entries(150)));
+            }
+
+            if (interval == ChallengeInterval.Monthly)
+            {
+                return EntriesRandom.Next(new EntriesRange(new Entries(200), new Entries(500)));
+            }
+
+            throw new ArgumentException(nameof(interval));
         }
 
-        private static EntryFee NextEntryFee(ChallengePublisherPeriodicity periodicity)
+        private static EntryFee NextEntryFee(ChallengeInterval interval)
         {
-            switch (periodicity)
+            if (interval == ChallengeInterval.Daily)
             {
-                case ChallengePublisherPeriodicity.Daily:
-
-                    return EntryFeeRandom.Next(new EntryFeeRange(new EntryFee(0.25M), new EntryFee(5M)));
-
-                case ChallengePublisherPeriodicity.Weekly:
-
-                    return EntryFeeRandom.Next(new EntryFeeRange(new EntryFee(2.5M), new EntryFee(10M)));
-
-                case ChallengePublisherPeriodicity.Monthly:
-
-                    return EntryFeeRandom.Next(new EntryFeeRange(new EntryFee(10M), new EntryFee(25M)));
-
-                default:
-
-                    throw new ArgumentException(nameof(periodicity));
+                return EntryFeeRandom.Next(new EntryFeeRange(new EntryFee(0.25M), new EntryFee(5M)));
             }
+
+            if (interval == ChallengeInterval.Weekly)
+            {
+                return EntryFeeRandom.Next(new EntryFeeRange(new EntryFee(2.5M), new EntryFee(10M)));
+            }
+
+            if (interval == ChallengeInterval.Monthly)
+            {
+                return EntryFeeRandom.Next(new EntryFeeRange(new EntryFee(10M), new EntryFee(25M)));
+            }
+
+            throw new ArgumentException(nameof(interval));
         }
     }
 }

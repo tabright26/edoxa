@@ -15,17 +15,17 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         private readonly string _displayName;
         private readonly long _value;
 
-        public ChallengeInterval(long value, string displayName)
+        private ChallengeInterval(long value, string displayName)
         {
             _value = value;
             _displayName = displayName;
         }
 
-        public static ChallengeGame Daily { get; } = new ChallengeGame(1 << 0, nameof(Daily));
+        public static ChallengeInterval Daily { get; } = new ChallengeInterval(1 << 0, nameof(Daily));
 
-        public static ChallengeGame Weekly { get; } = new ChallengeGame(1 << 1, nameof(Weekly));
+        public static ChallengeInterval Weekly { get; } = new ChallengeInterval(1 << 1, nameof(Weekly));
 
-        public static ChallengeGame Monthly { get; } = new ChallengeGame(1 << 2, nameof(Monthly));
+        public static ChallengeInterval Monthly { get; } = new ChallengeInterval(1 << 2, nameof(Monthly));
 
         public static implicit operator long(ChallengeInterval state)
         {
