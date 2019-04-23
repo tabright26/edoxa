@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeScoreboardFactory.cs
-// Date Created: 2019-04-14
+// Date Created: 2019-04-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -27,9 +27,10 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Factories
                 case ChallengeType.Default:
 
                     return new DefaultChallengeScoreboardStrategy(challenge);
+
                 default:
 
-                    throw new NotImplementedException();
+                    throw new ArgumentException(nameof(challenge.Setup.Type));
             }
         }
     }

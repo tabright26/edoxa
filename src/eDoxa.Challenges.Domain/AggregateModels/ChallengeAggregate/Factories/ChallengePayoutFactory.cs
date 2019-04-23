@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengePayoutFactory.cs
-// Date Created: 2019-04-14
+// Date Created: 2019-04-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -25,9 +25,12 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Factories
             switch (type)
             {
                 case ChallengeType.Default:
+
                     return new DefaultChallengePayoutStrategy(payoutEntries, prizePool, entryFee);
+
                 default:
-                    throw new NotImplementedException();
+
+                    throw new ArgumentException(nameof(type));
             }
         }
     }

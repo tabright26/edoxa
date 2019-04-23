@@ -43,7 +43,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Facto
         [DataRow(ChallengeType.None)]
         [DataRow(ChallengeType.All)]
         [DataTestMethod]
-        public void Create_NotImplementedType_ShouldThrowNotImplementedException(ChallengeType type)
+        public void Create_NotImplementedType_ShouldThrowArgumentException(ChallengeType type)
         {
             // Arrange
             var challenge = new MockChallenge(type);
@@ -54,7 +54,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Facto
                 factory.CreatePayout(challenge.Setup.Type, challenge.Setup.PayoutEntries, challenge.Setup.PrizePool, challenge.Setup.EntryFee));
 
             // Assert
-            action.Should().Throw<NotImplementedException>();
+            action.Should().Throw<ArgumentException>();
         }
 
         private sealed class MockChallenge : Challenge

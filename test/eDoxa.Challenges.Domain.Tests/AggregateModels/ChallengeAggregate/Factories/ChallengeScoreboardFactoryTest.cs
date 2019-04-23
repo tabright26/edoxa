@@ -41,7 +41,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Facto
         [DataRow(ChallengeType.None)]
         [DataRow(ChallengeType.All)]
         [DataTestMethod]
-        public void Create_NotImplementedType_ShouldThrowNotImplementedException(ChallengeType type)
+        public void Create_NotImplementedType_ShouldThrowArgumentException(ChallengeType type)
         {
             // Arrange
             var factory = ChallengeScoreboardFactory.Instance;
@@ -50,7 +50,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Facto
             var action = new Action(() => factory.CreateScoreboard(new MockChallenge(type)));
 
             // Assert
-            action.Should().Throw<NotImplementedException>();
+            action.Should().Throw<ArgumentException>();
         }
 
         private sealed class MockChallenge : Challenge

@@ -14,7 +14,7 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed class ChallengeTimeline : ValueObject
+    public class ChallengeTimeline : ValueObject
     {
         private DateTime? _closedAt;
         private DateTime _createdAt;
@@ -23,28 +23,11 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         private DateTime? _publishedAt;
         private TimeSpan? _registrationPeriod;
 
-        internal ChallengeTimeline(ChallengePublisherPeriodicity periodicity) : this()
+        internal ChallengeTimeline(TimeSpan registrationPeriod, TimeSpan extensionPeriod)
         {
+            _registrationPeriod = registrationPeriod;
+            _extensionPeriod = extensionPeriod;
             _publishedAt = DateTime.UtcNow;
-
-            switch (periodicity)
-            {
-                case ChallengePublisherPeriodicity.Daily:
-                    _registrationPeriod = TimeSpan.FromHours(6);
-                    _extensionPeriod = TimeSpan.FromHours(18);
-
-                    break;
-                case ChallengePublisherPeriodicity.Weekly:
-                    _registrationPeriod = TimeSpan.FromDays(1.5);
-                    _extensionPeriod = TimeSpan.FromDays(5.5);
-
-                    break;
-                case ChallengePublisherPeriodicity.Monthly:
-                    _registrationPeriod = TimeSpan.FromDays(7);
-                    _extensionPeriod = TimeSpan.FromDays(21);
-
-                    break;
-            }
         }
 
         internal ChallengeTimeline()
