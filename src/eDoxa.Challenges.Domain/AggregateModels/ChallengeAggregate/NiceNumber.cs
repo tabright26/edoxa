@@ -16,6 +16,7 @@ using eDoxa.Seedwork.Domain.Common;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
+    // TODO: To defend.
     public static class NiceNumber
     {
         // TODO: This need to be optimized for large number like 5000000 (very slow).

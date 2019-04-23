@@ -25,7 +25,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
                 throw new ArgumentException("Wrong choice of parameters, prize_pool must be increase.");
             }
             
-            var winnerPrize = new WinnerPrize(prizePool);
+            var winnerPrize = new FirstPrize(prizePool);
 
             var alpha = Alpha(payoutEntries, prizePool, entryFee, winnerPrize);
 
@@ -144,9 +144,9 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             return (prizes, bucketSizes, leftover);
         }
 
-        private static double Alpha(PayoutEntries payoutEntries, PrizePool prizePool, EntryFee entryFee, WinnerPrize winnerPrize)
+        private static double Alpha(PayoutEntries payoutEntries, PrizePool prizePool, EntryFee entryFee, FirstPrize firstPrize)
         {
-            var b = 1 - Math.Log((prizePool.ToDouble() - payoutEntries * entryFee.ToDouble()) / (winnerPrize.ToDouble() - entryFee.ToDouble())) /
+            var b = 1 - Math.Log((prizePool.ToDouble() - payoutEntries * entryFee.ToDouble()) / (firstPrize.ToDouble() - entryFee.ToDouble())) /
                     Math.Log(payoutEntries);
 
             return Optimization.Bisection(a =>
@@ -158,7 +158,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
                     count += 1 / Math.Pow(index, a);
                 }
 
-                return prizePool.ToDouble() - payoutEntries * entryFee.ToDouble() - (winnerPrize.ToDouble() - entryFee.ToDouble()) * count;
+                return prizePool.ToDouble() - payoutEntries * entryFee.ToDouble() - (firstPrize.ToDouble() - entryFee.ToDouble()) * count;
             }, 0, b);
         }
     }

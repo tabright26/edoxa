@@ -29,9 +29,9 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             return prizePool._value;
         }
 
-        public static WinnerPrize operator *(PrizePool prizePool, PrizePoolRatio prizePoolRatio)
+        public static FirstPrize operator *(PrizePool prizePool, PrizePoolRatio prizePoolRatio)
         {
-            return new WinnerPrize(prizePool * Convert.ToDecimal(prizePoolRatio));
+            return new FirstPrize(prizePool * Convert.ToDecimal(prizePoolRatio));
         }
 
         public override string ToString()

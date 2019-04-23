@@ -10,17 +10,17 @@
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public class WinnerPrize : Prize
+    public sealed class FirstPrize : Prize
     {
-        public WinnerPrize(PrizePool prizePool, PrizePoolRatio prizePoolRatio) : base(prizePool * prizePoolRatio)
+        public FirstPrize(PrizePool prizePool, PrizePoolRatio prizePoolRatio) : base(prizePool * prizePoolRatio)
         {
         }
 
-        public WinnerPrize(PrizePool prizePool) : base(prizePool * PrizePoolRatio.DefaultValue)
+        public FirstPrize(PrizePool prizePool) : base(prizePool * PrizePoolRatio.DefaultValue)
         {
         }
 
-        internal WinnerPrize(decimal prize) : base(prize)
+        internal FirstPrize(decimal prize) : base(prize)
         {
         }
     }

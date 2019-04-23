@@ -29,7 +29,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             _value = prize;
         }
 
-        protected Prize(WinnerPrize prize)
+        protected Prize(FirstPrize prize)
         {
             _value = prize;
         }

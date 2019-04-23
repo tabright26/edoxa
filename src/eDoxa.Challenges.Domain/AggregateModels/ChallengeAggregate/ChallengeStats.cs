@@ -14,6 +14,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     internal sealed class ChallengeStats : Dictionary<StatName, StatValue>, IChallengeStats
     {
+        // TODO: To defend.
         internal ChallengeStats(LinkedMatch linkedMatch, object stats)
         {
             LinkedMatch = linkedMatch;

@@ -14,6 +14,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class Buckets : Collection<Bucket>, IBuckets
     {
+        // TODO: To defend.
         public Buckets(IBucketSizes bucketSizes, IPrizes prizes)
         {
             for (var index = 0; index < bucketSizes.Count; index++)

@@ -23,7 +23,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         private DateTime? _publishedAt;
         private TimeSpan? _registrationPeriod;
 
-        internal ChallengeTimeline(TimeSpan registrationPeriod, TimeSpan extensionPeriod)
+        internal ChallengeTimeline(TimeSpan registrationPeriod, TimeSpan extensionPeriod) : this()
         {
             _registrationPeriod = registrationPeriod;
             _extensionPeriod = extensionPeriod;

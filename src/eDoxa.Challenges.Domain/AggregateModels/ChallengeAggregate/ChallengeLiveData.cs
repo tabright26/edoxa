@@ -17,8 +17,6 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class ChallengeLiveData : ValueObject
     {
-        private static readonly ChallengePayoutFactory ChallengePayoutFactory = ChallengePayoutFactory.Instance;
-
         private readonly IReadOnlyCollection<Participant> _participants;
         private readonly ChallengeSetup _setup;
 
@@ -34,6 +32,6 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public PrizePool PrizePool => new PrizePool(Entries, _setup.EntryFee, _setup.ServiceChargeRatio);
 
-        public IChallengePayout Payout => ChallengePayoutFactory.CreatePayout(_setup.Type, PayoutEntries, PrizePool, _setup.EntryFee).Payout;
+        public IChallengePayout Payout => ChallengePayoutFactory.Instance.CreatePayout(_setup.Type, PayoutEntries, PrizePool, _setup.EntryFee).Payout;
     }
 }
