@@ -33,11 +33,11 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Strategies
                 {
                     if (_payoutEntries < 10)
                     {
-                        return this.CreatePayout();
+                        return CreatePayout();
                     }
 
                     var prizes = new Prizes(_payoutEntries, _prizePool, _entryFee);
-                    var bucketSizes = new BucketSizes(_payoutEntries, 5);
+                    var bucketSizes = new BucketSizes(_payoutEntries, new BucketCount(5));
 
                     var (initialPrizes, leftover) = Prizes.InitPrizes(prizes, bucketSizes);
                     var (finalPrizes, finalBucketSizes, finalLeftover) = Prizes.SpendLeftover(initialPrizes, bucketSizes, leftover);
@@ -48,17 +48,17 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Strategies
                 }
                 catch (Exception)
                 {
-                    return this.CreatePayout();
+                    return CreatePayout();
                 }
             }
         }
 
-        private ChallengePayout CreatePayout()
+        private static ChallengePayout CreatePayout()
         {
             var payoutEntries = new PayoutEntries(Entries.DefaultValue, PayoutRatio.DefaultValue);
 
             return new ChallengePayout(
-                new Buckets(new BucketSizes(payoutEntries, 10),
+                new Buckets(new BucketSizes(payoutEntries, new BucketCount(10)),
                     new Prizes(payoutEntries, new PrizePool(Entries.DefaultValue, EntryFee.DefaultValue, ServiceChargeRatio.DefaultValue),
                         EntryFee.DefaultValue)), new PayoutLeftover(0));
         }

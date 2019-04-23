@@ -21,17 +21,29 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void M()
         {
             var entries = new Entries(2500);
+
             var entryFee = new EntryFee(25);
-            var payoutEntries = new PayoutEntries(entries, new PayoutRatio(0.5F));
-            var prizePool = new PrizePool(entries, entryFee, new ServiceChargeRatio(0.2F));
+
+            var payoutRatio = new PayoutRatio(0.5F);
+
+            var serviceChargeRatio = new ServiceChargeRatio(0.2F);
+
+            var bucketCount = new BucketCount(10);
+
+            var payoutEntries = new PayoutEntries(entries, payoutRatio);
+
+            var prizePool = new PrizePool(entries, entryFee, serviceChargeRatio);
 
             var prizes = new Prizes(payoutEntries, prizePool, entryFee);
-            var bucketSizes = new BucketSizes(payoutEntries, 10);
+
+            var bucketSizes = new BucketSizes(payoutEntries, bucketCount);
 
             var (initialPrizes, leftover) = Prizes.InitPrizes(prizes, bucketSizes);
+
             var (finalPrizes, finalBucketSizes, finalLeftover) = Prizes.SpendLeftover(initialPrizes, bucketSizes, leftover);
 
             var buckets = new Buckets(finalBucketSizes, finalPrizes);
+
             var payout = new ChallengePayout(buckets, finalLeftover);
         }
     }

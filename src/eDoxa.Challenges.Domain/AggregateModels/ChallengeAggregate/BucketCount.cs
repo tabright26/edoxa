@@ -24,6 +24,11 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public BucketCount(int count)
         {
+            if (count < 0)
+            {
+                throw new ArgumentException(nameof(count));
+            }
+
             _value = count;
         }
 

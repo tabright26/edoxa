@@ -1,5 +1,5 @@
 ﻿// Filename: BucketSizes.cs
-// Date Created: 2019-04-20
+// Date Created: 2019-04-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -18,7 +18,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class BucketSizes : List<BucketSize>, IBucketSizes
     {
-        public BucketSizes(PayoutEntries payoutEntries, int bucketCount)
+        public BucketSizes(PayoutEntries payoutEntries, BucketCount bucketCount)
         {
             // Must be at least 4 winners
             if (payoutEntries < 4)
@@ -80,25 +80,25 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
                 i += 1;
             }
 
-            var removeBucketSize = this.Sum(x => x) - payoutEntries;
+            var removeBucketCount = new BucketCount(this.Sum(x => x) - payoutEntries);
 
             // We need to decrease some sizes
-            if (removeBucketSize > 0)
+            if (removeBucketCount > 0)
             {
-                this.RemoveRange(this, removeBucketSize);
+                this.RemoveRange(this, removeBucketCount);
             }
 
             if (Count < bucketCount)
             {
-                this.AddRange(this, bucketCount);
+                AddRange(this, bucketCount);
             }
 
-            removeBucketSize = this.Sum(x => x) - payoutEntries;
+            removeBucketCount = new BucketCount(this.Sum(x => x) - payoutEntries);
 
             // We need to decrease some sizes
-            if (removeBucketSize > 0)
+            if (removeBucketCount > 0)
             {
-                this.RemoveRange(this, removeBucketSize);
+                this.RemoveRange(this, removeBucketCount);
             }
         }
 
@@ -106,7 +106,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         {
         }
 
-        private static double Beta(int payoutEntries, int bucketCount)
+        private static double Beta(PayoutEntries payoutEntries, BucketCount bucketCount)
         {
             return Optimization.Bisection(b =>
             {
@@ -121,7 +121,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             }, -1, 2);
         }
 
-        private void RemoveRange(BucketSizes bucketSizes, int toRemove)
+        private void RemoveRange(BucketSizes bucketSizes, BucketCount bucketCount)
         {
             if (bucketSizes.Count == 0)
             {
@@ -130,37 +130,37 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
             var index = bucketSizes.Count - 1;
 
-            while (toRemove > 0)
+            while (bucketCount > 0)
             {
                 var diff = bucketSizes[index] - bucketSizes[index - 1];
 
-                if (diff >= toRemove)
+                if (diff >= bucketCount)
                 {
-                    bucketSizes[index] = new BucketSize(bucketSizes[index] - toRemove);
+                    bucketSizes[index] = new BucketSize(bucketSizes[index] - bucketCount);
 
-                    toRemove = 0;
+                    bucketCount = BucketCount.EmptyValue;
                 }
                 else
                 {
                     bucketSizes[index] = new BucketSize(bucketSizes[index] - diff);
 
-                    toRemove -= diff;
+                    bucketCount = new BucketCount(bucketCount - diff);
 
                     index -= 1;
                 }
             }
 
-            if (toRemove != 0)
+            if (bucketCount != 0)
             {
-                this.RemoveRange(bucketSizes, toRemove);
+                this.RemoveRange(bucketSizes, bucketCount);
             }
         }
 
         //Note: Some errors can occurs, like init_buck_size(15, 12)
         //Typically errors will occurs when num_wins is near num_bucks.
-        private void AddRange(BucketSizes bucketSizes, int numBucks)
+        private static void AddRange(BucketSizes bucketSizes, BucketCount bucketCount)
         {
-            var numBuckToAdd = numBucks - bucketSizes.Count;
+            var numBuckToAdd = bucketCount - bucketSizes.Count;
 
             // First try to extend with ones. 
             for (var index = 0; index < numBuckToAdd; index++)
