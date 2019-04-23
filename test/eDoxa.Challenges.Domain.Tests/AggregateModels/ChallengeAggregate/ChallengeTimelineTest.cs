@@ -198,18 +198,5 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             // Assert
             state.Should().HaveFlag(ChallengeState1.Closed);
         }
-
-        [TestMethod]
-        public void Close_IsNotEnded_ShouldThrowInvalidOperationException()
-        {
-            // Arrange
-            var timeline = _challengeAggregateFactory.CreateChallengeTimeline(ChallengeState1.InProgress);
-
-            // Act
-            var action = new Action(() => timeline.Close());
-
-            // Assert
-            action.Should().Throw<InvalidOperationException>();
-        }
     }
 }

@@ -1,4 +1,4 @@
-﻿// Filename: ChallengeFullSpecification.cs
+﻿// Filename: ChallengeIsFullSpecification.cs
 // Date Created: 2019-04-22
 // 
 // ================================================
@@ -15,7 +15,7 @@ using eDoxa.Specifications;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Specifications
 {
-    public sealed class ChallengeFullSpecification : Specification<Challenge>
+    public sealed class ChallengeIsFullSpecification : Specification<Challenge>
     {
         public override Expression<Func<Challenge, bool>> ToExpression()
         {

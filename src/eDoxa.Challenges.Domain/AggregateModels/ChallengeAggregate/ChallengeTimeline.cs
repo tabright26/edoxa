@@ -125,40 +125,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public DateTime? EndedAt => _publishedAt + _registrationPeriod + _extensionPeriod;
 
-        public ChallengeState1 State
-        {
-            get
-            {
-                if (this.IsClosed())
-                {
-                    return ChallengeState1.Closed;
-                }
-
-                if (this.IsEnded())
-                {
-                    return ChallengeState1.Ended;
-                }
-
-                if (this.IsInProgress())
-                {
-                    return ChallengeState1.InProgress;
-                }
-
-                if (this.IsOpened())
-                {
-                    var state = ChallengeState1.Opened;
-
-                    if (_liveMode)
-                    {
-                        state |= ChallengeState1.InProgress;
-                    }
-
-                    return state;
-                }
-
-                return this.IsConfigured() ? ChallengeState1.Configured : ChallengeState1.Draft;
-            }
-        }
+        public ChallengeState1 State => new ChallengeTimelineState(this).Current;
 
         public ChallengeTimeline Configure(DateTime publishedAt, TimeSpan registrationPeriod, TimeSpan extensionPeriod)
         {
@@ -208,11 +175,6 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public ChallengeTimeline Close()
         {
-            if (!this.IsEnded())
-            {
-                throw new InvalidOperationException("The challenge can not be closed because it is not ended.");
-            }
-
             return new ChallengeTimeline
             {
                 _createdAt = CreatedAt,
@@ -221,41 +183,6 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
                 _extensionPeriod = ExtensionPeriod,
                 _closedAt = DateTime.UtcNow
             };
-        }
-
-        private bool IsDraft()
-        {
-            return PublishedAt == null;
-        }
-
-        private bool IsConfigured()
-        {
-            return !this.IsDraft() && !this.IsPublish();
-        }
-
-        private bool IsPublish()
-        {
-            return !this.IsDraft() && PublishedAt <= DateTime.UtcNow;
-        }
-
-        private bool IsOpened()
-        {
-            return this.IsPublish() && !this.IsInProgress();
-        }
-
-        private bool IsInProgress()
-        {
-            return !this.IsDraft() && StartedAt <= DateTime.UtcNow;
-        }
-
-        private bool IsEnded()
-        {
-            return !this.IsDraft() && EndedAt <= DateTime.UtcNow;
-        }
-
-        private bool IsClosed()
-        {
-            return ClosedAt != null;
         }
     }
 }

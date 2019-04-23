@@ -26,11 +26,11 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
     public class Challenge : Entity<ChallengeId>, IAggregateRoot
     {
         private Game _game;
-        private ChallengeName _name;        
+        private ChallengeName _name;
+        private HashSet<Participant> _participants;
+        private IChallengeScoring _scoring;
         private ChallengeSetup _setup;
         private ChallengeTimeline _timeline;
-        private IChallengeScoring _scoring;
-        private HashSet<Participant> _participants;
 
         internal Challenge(Game game, ChallengeName name, ChallengeSetup setup, ChallengeTimeline timeline) : this()
         {
@@ -115,6 +115,11 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public void Close()
         {
+            if (!this.CanClose())
+            {
+                throw new InvalidOperationException();
+            }
+
             _timeline = Timeline.Close();
 
             var userPrizes = Payout.Snapshot(Scoreboard);
@@ -122,6 +127,14 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             var domainEvent = new ChallengeUserPrizesSnapshottedDomainEvent(Id.ToGuid(), userPrizes);
 
             this.AddDomainEvent(domainEvent);
+        }
+
+        private bool CanClose()
+        {
+            var specification = SpecificationFactory.Instance.CreateSpecification<Challenge>()
+                .And(new ChallengeEndedSpecification());
+
+            return specification.IsSatisfiedBy(this);
         }
 
         public void RegisterParticipant(UserId userId, LinkedAccount linkedAccount)
@@ -138,7 +151,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         {
             var specification = SpecificationFactory.Instance.CreateSpecification<Challenge>()
                 .And(new ParticipantAlreadyRegisteredSpecification(userId).Not())
-                .And(new ChallengeFullSpecification().Not())
+                .And(new ChallengeIsFullSpecification().Not())
                 .And(new ChallengeOpenedSpecification());
 
             return specification.IsSatisfiedBy(this);
