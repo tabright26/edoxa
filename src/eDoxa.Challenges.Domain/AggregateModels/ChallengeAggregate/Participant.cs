@@ -11,7 +11,7 @@
 using System;
 using System.Collections.Generic;
 
-using eDoxa.Functional.Option;
+using eDoxa.Functional.Maybe;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
@@ -45,7 +45,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public Challenge Challenge => _challenge;
 
-        public Option<Score> AverageScore => Matches.Count >= Challenge.Setup.BestOf ? (Option<Score>) new ParticipantScore(this) : None.Value;
+        public Maybe<Score> AverageScore => Matches.Count >= Challenge.Setup.BestOf ? new Maybe<Score>(new ParticipantScore(this)) : new Maybe<Score>();
 
         public IReadOnlyCollection<Match> Matches => _matches;
 

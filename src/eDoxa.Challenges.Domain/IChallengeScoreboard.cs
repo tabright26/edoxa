@@ -12,11 +12,11 @@ using System.Collections.Generic;
 
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Functional.Option;
+using eDoxa.Functional.Maybe;
 
 namespace eDoxa.Challenges.Domain
 {
-    public interface IChallengeScoreboard : IReadOnlyDictionary<UserId, Option<Score>>
+    public interface IChallengeScoreboard : IReadOnlyDictionary<UserId, Maybe<Score>>
     {
     }
 }

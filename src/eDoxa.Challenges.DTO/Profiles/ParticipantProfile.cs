@@ -12,7 +12,6 @@ using System.Linq;
 
 using AutoMapper;
 
-using eDoxa.AutoMapper.Extensions;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 
 namespace eDoxa.Challenges.DTO.Profiles
@@ -24,7 +23,7 @@ namespace eDoxa.Challenges.DTO.Profiles
             this.CreateMap<Participant, ParticipantDTO>()
                 .ForMember(participant => participant.Id, config => config.MapFrom(participant => participant.Id.ToGuid()))
                 .ForMember(participant => participant.UserId, config => config.MapFrom(participant => participant.UserId.ToGuid()))
-                .ForMember(participant => participant.AverageScore, config => config.OptionalMapFrom(participant => participant.AverageScore.Map<decimal?>(score => score)))
+                .ForMember(participant => participant.AverageScore, config => config.MapFrom(participant => participant.AverageScore.Select(score => (decimal?) score).SingleOrDefault()))
                 .ForMember(participant => participant.Matches, config => config.MapFrom(participant => participant.Matches.OrderBy(match => match.Timestamp)));
         }
     }

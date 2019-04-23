@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Functional.Extensions;
+using System.Linq;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Strategies
 {
@@ -27,8 +27,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Strategies
             {
                 var scoreboard = new ChallengeScoreboard();
 
-                foreach (var participant in _challenge.Participants.OptionalOrderByDescending(participant =>
-                    participant.AverageScore.Map<decimal?>(score => score)))
+                foreach (var participant in _challenge.Participants.OrderByDescending(participant => participant.AverageScore.Select(score => (decimal?) score).SingleOrDefault()))
                 {
                     scoreboard.Add(participant.UserId, participant.AverageScore);
                 }

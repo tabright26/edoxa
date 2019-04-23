@@ -10,11 +10,11 @@
 
 using System.Collections.Generic;
 
-using eDoxa.Functional.Option;
+using eDoxa.Functional.Maybe;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed class ChallengeScoreboard : Dictionary<UserId, Option<Score>>, IChallengeScoreboard
+    public sealed class ChallengeScoreboard : Dictionary<UserId, Maybe<Score>>, IChallengeScoreboard
     {
     }
 }
