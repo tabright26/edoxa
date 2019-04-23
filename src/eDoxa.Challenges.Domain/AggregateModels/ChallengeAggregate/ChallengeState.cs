@@ -8,20 +8,12 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class ChallengeState
     {
         private readonly string _displayName;
-        private readonly ChallengeTimeline _timeline;
         private readonly long _value;
-
-        public ChallengeState(ChallengeTimeline timeline)
-        {
-            _timeline = timeline;
-        }
 
         private ChallengeState(long value, string displayName)
         {
@@ -45,34 +37,6 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public static ChallengeState All { get; } = new ChallengeState(~None, nameof(All));
 
-        public ChallengeState Current
-        {
-            get
-            {
-                if (this.IsClosed())
-                {
-                    return Closed;
-                }
-
-                if (this.IsEnded())
-                {
-                    return Ended;
-                }
-
-                if (this.IsInProgress())
-                {
-                    return InProgress;
-                }
-
-                if (this.IsOpened())
-                {
-                    return Opened;
-                }
-
-                return this.IsConfigured() ? Configured : Draft;
-            }
-        }
-
         public static implicit operator long(ChallengeState state)
         {
             return state._value;
@@ -81,41 +45,6 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         public override string ToString()
         {
             return _displayName;
-        }
-
-        private bool IsDraft()
-        {
-            return _timeline.PublishedAt == null;
-        }
-
-        private bool IsConfigured()
-        {
-            return !this.IsDraft() && !this.IsPublish();
-        }
-
-        private bool IsPublish()
-        {
-            return !this.IsDraft() && _timeline.PublishedAt <= DateTime.UtcNow;
-        }
-
-        private bool IsOpened()
-        {
-            return this.IsPublish() && !this.IsInProgress();
-        }
-
-        private bool IsInProgress()
-        {
-            return !this.IsDraft() && _timeline.StartedAt <= DateTime.UtcNow;
-        }
-
-        private bool IsEnded()
-        {
-            return !this.IsDraft() && _timeline.EndedAt <= DateTime.UtcNow;
-        }
-
-        private bool IsClosed()
-        {
-            return _timeline.ClosedAt != null;
         }
     }
 }
