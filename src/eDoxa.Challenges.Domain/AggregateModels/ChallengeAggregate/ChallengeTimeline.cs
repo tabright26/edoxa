@@ -1,11 +1,11 @@
 ﻿// Filename: ChallengeTimeline.cs
-// Date Created: 2019-03-20
+// Date Created: 2019-04-21
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
@@ -14,26 +14,14 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed partial class ChallengeTimeline
+    public sealed class ChallengeTimeline : ValueObject
     {
-        internal static readonly DateTime MinPublishedAt = DateTime.UtcNow;
-        internal static readonly DateTime MaxPublishedAt = MinPublishedAt.AddMonths(1);
-        internal static readonly TimeSpan DefaultRegistrationPeriod = TimeSpan.FromHours(4);
-        internal static readonly TimeSpan MinRegistrationPeriod = TimeSpan.FromHours(4);
-        internal static readonly TimeSpan MaxRegistrationPeriod = TimeSpan.FromDays(7);
-        internal static readonly TimeSpan DefaultExtensionPeriod = TimeSpan.FromDays(8);
-        internal static readonly TimeSpan MinExtensionPeriod = TimeSpan.FromHours(8);
-        internal static readonly TimeSpan MaxExtensionPeriod = TimeSpan.FromDays(28);
-    }
-
-    public sealed partial class ChallengeTimeline : ValueObject
-    {
-        private bool _liveMode;
+        private DateTime? _closedAt;
         private DateTime _createdAt;
+        private TimeSpan? _extensionPeriod;
+        private bool _liveMode;
         private DateTime? _publishedAt;
         private TimeSpan? _registrationPeriod;
-        private TimeSpan? _extensionPeriod;
-        private DateTime? _closedAt;
 
         internal ChallengeTimeline(ChallengePublisherPeriodicity periodicity) : this()
         {
@@ -44,14 +32,17 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
                 case ChallengePublisherPeriodicity.Daily:
                     _registrationPeriod = TimeSpan.FromHours(6);
                     _extensionPeriod = TimeSpan.FromHours(18);
+
                     break;
                 case ChallengePublisherPeriodicity.Weekly:
                     _registrationPeriod = TimeSpan.FromDays(1.5);
                     _extensionPeriod = TimeSpan.FromDays(5.5);
+
                     break;
                 case ChallengePublisherPeriodicity.Monthly:
                     _registrationPeriod = TimeSpan.FromDays(7);
                     _extensionPeriod = TimeSpan.FromDays(21);
+
                     break;
             }
         }
@@ -68,22 +59,19 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public DateTime? PublishedAt
         {
-            get
-            {
-                return _publishedAt;
-            }
+            get => _publishedAt;
             private set
             {
                 var publishedAt = value ?? throw new ArgumentNullException(nameof(PublishedAt));
 
                 publishedAt = publishedAt.ToUniversalTime();
 
-                if (publishedAt < MinPublishedAt)
+                if (publishedAt < TimelinePublishedAt.Min)
                 {
                     throw new ArgumentOutOfRangeException(nameof(PublishedAt));
                 }
 
-                if (publishedAt > MaxPublishedAt)
+                if (publishedAt > TimelinePublishedAt.Max)
                 {
                     throw new ArgumentOutOfRangeException(nameof(PublishedAt));
                 }
@@ -92,30 +80,21 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             }
         }
 
-        public DateTime? ClosedAt
-        {
-            get
-            {
-                return _closedAt;
-            }
-        }
+        public DateTime? ClosedAt => _closedAt;
 
         public TimeSpan? RegistrationPeriod
         {
-            get
-            {
-                return _registrationPeriod;
-            }
+            get => _registrationPeriod;
             private set
             {
                 var registrationPeriod = value ?? throw new ArgumentNullException(nameof(RegistrationPeriod));
 
-                if (registrationPeriod < MinRegistrationPeriod)
+                if (registrationPeriod < TimelineRegistrationPeriod.Min)
                 {
                     throw new ArgumentOutOfRangeException(nameof(RegistrationPeriod));
                 }
 
-                if (registrationPeriod > MaxRegistrationPeriod)
+                if (registrationPeriod > TimelineRegistrationPeriod.Max)
                 {
                     throw new ArgumentOutOfRangeException(nameof(RegistrationPeriod));
                 }
@@ -126,20 +105,17 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public TimeSpan? ExtensionPeriod
         {
-            get
-            {
-                return _extensionPeriod;
-            }
+            get => _extensionPeriod;
             private set
             {
                 var extensionPeriod = value ?? throw new ArgumentNullException(nameof(ExtensionPeriod));
 
-                if (extensionPeriod < MinExtensionPeriod)
+                if (extensionPeriod < TimelineExtensionPeriod.Min)
                 {
                     throw new ArgumentOutOfRangeException(nameof(ExtensionPeriod));
                 }
 
-                if (extensionPeriod > MaxExtensionPeriod)
+                if (extensionPeriod > TimelineExtensionPeriod.Max)
                 {
                     throw new ArgumentOutOfRangeException(nameof(ExtensionPeriod));
                 }
@@ -158,37 +134,13 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             }
         }
 
-        public bool LiveMode
-        {
-            get
-            {
-                return _liveMode;
-            }
-        }
+        public bool LiveMode => _liveMode;
 
-        public DateTime CreatedAt
-        {
-            get
-            {
-                return _createdAt;
-            }
-        }
+        public DateTime CreatedAt => _createdAt;
 
-        public DateTime? StartedAt
-        {
-            get
-            {
-                return _publishedAt + _registrationPeriod;
-            }
-        }
+        public DateTime? StartedAt => _publishedAt + _registrationPeriod;
 
-        public DateTime? EndedAt
-        {
-            get
-            {
-                return _publishedAt + _registrationPeriod + _extensionPeriod;
-            }
-        }
+        public DateTime? EndedAt => _publishedAt + _registrationPeriod + _extensionPeriod;
 
         public ChallengeState State
         {
@@ -241,8 +193,8 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             return new ChallengeTimeline
             {
                 _createdAt = CreatedAt,
-                _registrationPeriod = DefaultRegistrationPeriod,
-                _extensionPeriod = DefaultExtensionPeriod,
+                _registrationPeriod = TimelineRegistrationPeriod.Default,
+                _extensionPeriod = TimelineExtensionPeriod.Default,
                 PublishedAt = publishedAt,
                 _closedAt = ClosedAt
             };
@@ -264,9 +216,9 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             return new ChallengeTimeline
             {
                 _createdAt = CreatedAt,
-                _registrationPeriod = DefaultRegistrationPeriod,
-                _extensionPeriod = DefaultExtensionPeriod,
-                _publishedAt = MinPublishedAt,
+                _registrationPeriod = TimelineRegistrationPeriod.Default,
+                _extensionPeriod = TimelineExtensionPeriod.Default,
+                _publishedAt = TimelinePublishedAt.Min,
                 _closedAt = ClosedAt
             };
         }

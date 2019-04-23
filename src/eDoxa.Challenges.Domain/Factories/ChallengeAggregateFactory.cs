@@ -253,11 +253,11 @@ namespace eDoxa.Challenges.Domain.Factories
 
         private static ChallengeTimeline CreateChallengeTimelineAsConfigured()
         {
-            var publishedAt = ChallengeTimeline.MinPublishedAt.AddDays(1);
+            var publishedAt = TimelinePublishedAt.Min.AddDays(1);
 
             var timeline = CreateChallengeTimelineAsDraft();
 
-            timeline = timeline.Configure(publishedAt, ChallengeTimeline.DefaultRegistrationPeriod, ChallengeTimeline.DefaultExtensionPeriod);
+            timeline = timeline.Configure(publishedAt, TimelineRegistrationPeriod.Default, TimelineExtensionPeriod.Default);
 
             return timeline;
         }
@@ -266,7 +266,7 @@ namespace eDoxa.Challenges.Domain.Factories
         {
             var timeline = CreateChallengeTimelineAsDraft();
 
-            timeline = timeline.Publish(ChallengeTimeline.DefaultRegistrationPeriod, ChallengeTimeline.DefaultExtensionPeriod);
+            timeline = timeline.Publish(TimelineRegistrationPeriod.Default, TimelineExtensionPeriod.Default);
 
             return timeline;
         }
@@ -275,7 +275,7 @@ namespace eDoxa.Challenges.Domain.Factories
         {
             var timeline = CreateChallengeTimelineAsOpened();
 
-            var publishedAt = timeline.PublishedAt - ChallengeTimeline.DefaultExtensionPeriod;
+            var publishedAt = timeline.PublishedAt - TimelineExtensionPeriod.Default;
 
             timeline.GetType().GetField("_publishedAt", BindingFlags.NonPublic | BindingFlags.Instance)?.SetValue(timeline, publishedAt);
 
@@ -286,7 +286,7 @@ namespace eDoxa.Challenges.Domain.Factories
         {
             var timeline = CreateChallengeTimelineAsInProgress();
 
-            var publishedAt = timeline.PublishedAt - ChallengeTimeline.DefaultRegistrationPeriod;
+            var publishedAt = timeline.PublishedAt - TimelineRegistrationPeriod.Default;
 
             timeline.GetType().GetField("_publishedAt", BindingFlags.NonPublic | BindingFlags.Instance)?.SetValue(timeline, publishedAt);
 

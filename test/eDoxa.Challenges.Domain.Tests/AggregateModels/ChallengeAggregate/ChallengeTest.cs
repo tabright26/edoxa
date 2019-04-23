@@ -94,9 +94,9 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             // Act
             challenge.Configure(
                 ChallengeAggregateFactory.CreateChallengeScoringStrategy(),
-                ChallengeTimeline.MaxPublishedAt,
-                ChallengeTimeline.DefaultRegistrationPeriod,
-                ChallengeTimeline.DefaultExtensionPeriod
+                TimelinePublishedAt.Max,
+                TimelineRegistrationPeriod.Default,
+                TimelineExtensionPeriod.Default
             );
 
             // Assert
@@ -110,7 +110,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             var challenge = ChallengeAggregateFactory.CreateChallenge(ChallengeState.Draft);
 
             // Act
-            challenge.Configure(ChallengeAggregateFactory.CreateChallengeScoringStrategy(), ChallengeTimeline.MaxPublishedAt);
+            challenge.Configure(ChallengeAggregateFactory.CreateChallengeScoringStrategy(), TimelinePublishedAt.Max);
 
             // Assert
             challenge.Timeline.State.Should().HaveFlag(ChallengeState.Configured);
@@ -123,8 +123,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             var challenge = ChallengeAggregateFactory.CreateChallenge(ChallengeState.Draft);
 
             // Act
-            challenge.Publish(ChallengeAggregateFactory.CreateChallengeScoringStrategy(), ChallengeTimeline.DefaultRegistrationPeriod,
-                ChallengeTimeline.DefaultExtensionPeriod);
+            challenge.Publish(ChallengeAggregateFactory.CreateChallengeScoringStrategy(), TimelineRegistrationPeriod.Default, TimelineExtensionPeriod.Default);
 
             // Assert
             challenge.Timeline.State.Should().HaveFlag(ChallengeState.Opened);

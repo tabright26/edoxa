@@ -44,7 +44,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         {
             var rowData = new[]
             {
-                ChallengeTimeline.MinPublishedAt.AddTicks(-1), ChallengeTimeline.MaxPublishedAt.AddTicks(1)
+                TimelinePublishedAt.Min.AddTicks(-1), TimelinePublishedAt.Max.AddTicks(1)
             };
 
             foreach (var publishedAt in rowData)
@@ -65,8 +65,8 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         {
             var rowData = new[]
             {
-                ChallengeTimeline.MinRegistrationPeriod - TimeSpan.FromTicks(1),
-                ChallengeTimeline.MaxRegistrationPeriod + TimeSpan.FromTicks(1)
+                TimelineRegistrationPeriod.Min - TimeSpan.FromTicks(1),
+                TimelineRegistrationPeriod.Max + TimeSpan.FromTicks(1)
             };
 
             foreach (var registrationPeriod in rowData)
@@ -88,8 +88,8 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         {
             var rowData = new[]
             {
-                ChallengeTimeline.MinExtensionPeriod - TimeSpan.FromTicks(1),
-                ChallengeTimeline.MaxExtensionPeriod + TimeSpan.FromTicks(1)
+                TimelineExtensionPeriod.Min - TimeSpan.FromTicks(1),
+                TimelineExtensionPeriod.Max + TimeSpan.FromTicks(1)
             };
 
             foreach (var extensionPeriod in rowData)
@@ -110,7 +110,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void ExtensionPeriod_LessThanThreeTimesRegistrationPeriod_ShouldThrowArgumentOutOfRangeException()
         {
             // Arrange
-            var extensionPeriod = ChallengeTimeline.MinExtensionPeriod;
+            var extensionPeriod = TimelineExtensionPeriod.Min;
             var timeline = _challengeAggregateFactory.CreateChallengeTimeline(ChallengeState.Configured);
 
             // Act
