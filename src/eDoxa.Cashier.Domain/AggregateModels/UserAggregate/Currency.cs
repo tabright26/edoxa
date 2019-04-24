@@ -1,5 +1,5 @@
 ﻿// Filename: Currency.cs
-// Date Created: 2019-04-14
+// Date Created: 2019-04-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,102 +9,49 @@
 // this source code package.
 
 using System;
-using System.Collections.Generic;
-using System.Reflection;
-
-using eDoxa.Seedwork.Domain.Aggregate;
 
 using JetBrains.Annotations;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 {
-    public abstract partial class Currency<TCurrency> : BaseObject
-    where TCurrency : Currency<TCurrency>, new()
+    public abstract partial class Currency<TCurrency>
+    where TCurrency : Currency<TCurrency>
     {
-        public static readonly TCurrency Empty = FromDecimal(decimal.Zero);
+        private readonly decimal _value;
 
-        protected virtual decimal Amount { get; set; }
-
-        public static bool operator ==(Currency<TCurrency> left, Currency<TCurrency> right)
+        protected Currency(decimal value)
         {
-            return EqualityComparer<Currency<TCurrency>>.Default.Equals(left, right);
+            _value = value;
         }
 
-        public static bool operator !=(Currency<TCurrency> left, Currency<TCurrency> right)
+        protected Currency()
         {
-            return !(left == right);
+            _value = 0;
         }
 
-        public static bool operator <(Currency<TCurrency> left, Currency<TCurrency> right)
+        public static implicit operator decimal(Currency<TCurrency> currency)
         {
-            return left.Amount < right.Amount;
-        }
-
-        public static bool operator >(Currency<TCurrency> left, Currency<TCurrency> right)
-        {
-            return left.Amount > right.Amount;
-        }
-
-        public static bool operator <=(Currency<TCurrency> left, Currency<TCurrency> right)
-        {
-            return left.Amount <= right.Amount;
-        }
-
-        public static bool operator >=(Currency<TCurrency> left, Currency<TCurrency> right)
-        {
-            return left.Amount >= right.Amount;
-        }
-
-        public static TCurrency operator +(Currency<TCurrency> left, Currency<TCurrency> right)
-        {
-            return FromDecimal(left.Amount + right.Amount);
-        }
-
-        public static TCurrency operator -(Currency<TCurrency> left, Currency<TCurrency> right)
-        {
-            return left < right
-                ? throw new InvalidOperationException("The currency difference can not be less than zero.")
-                : FromDecimal(left.Amount - right.Amount);
-        }
-
-        public static TCurrency operator *(Currency<TCurrency> currency, int multiplier)
-        {
-            return multiplier < 1
-                ? throw new InvalidOperationException("The currency multiplier can not be less than one.")
-                : FromDecimal(currency.Amount * multiplier);
-        }
-
-        public static TCurrency FromDecimal(decimal amount)
-        {
-            return new TCurrency
-            {
-                Amount = amount
-            };
-        }
-
-        public sealed override bool Equals([CanBeNull] object obj)
-        {
-            return base.Equals(obj);
-        }
-
-        public sealed override int GetHashCode()
-        {
-            return base.GetHashCode();
+            return currency._value;
         }
 
         public abstract override string ToString();
+    }
 
-        public decimal ToDecimal()
+    public abstract partial class Currency<TCurrency> : IEquatable<TCurrency>
+    {
+        public bool Equals([CanBeNull] TCurrency other)
         {
-            return Amount;
+            return _value.Equals(other?._value);
         }
 
-        protected sealed override PropertyInfo[] TypeSignatureProperties()
+        public override bool Equals([CanBeNull] object obj)
         {
-            return new[]
-            {
-                this.GetType().GetProperty(nameof(Amount), BindingFlags.NonPublic | BindingFlags.Instance)
-            };
+            return this.Equals(obj as TCurrency);
+        }
+
+        public override int GetHashCode()
+        {
+            return _value.GetHashCode();
         }
     }
 
@@ -117,7 +64,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 
         public int CompareTo([CanBeNull] TCurrency other)
         {
-            return Amount.CompareTo(other?.Amount);
+            return _value.CompareTo(other?._value);
         }
     }
 }

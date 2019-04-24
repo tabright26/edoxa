@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using eDoxa.Cashier.Infrastructure;
 
 namespace eDoxa.Cashier.Infrastructure.Migrations
 {
     [DbContext(typeof(CashierDbContext))]
-    internal class CashierDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190424222757_InitialCreate1")]
+    partial class InitialCreate1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -75,12 +75,12 @@ namespace eDoxa.Cashier.Domain.Factories
 
         public Money CreateMoney()
         {
-            return Money.Empty;
+            return Money.Zero;
         }
 
         public Token CreateToken()
         {
-            return Token.Empty;
+            return Token.Zero;
         }
 
         public Card CreateCard()

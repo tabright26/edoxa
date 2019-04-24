@@ -18,13 +18,13 @@ namespace eDoxa.Cashier.DTO.Profiles
     {
         public CurrencyProfile()
         {
-            this.CreateMap<Account<Money>, CurrencyDTO>()
-                .ForMember(currency => currency.Balance, config => config.MapFrom(account => account.Balance.ToDecimal()))
-                .ForMember(currency => currency.Pending, config => config.MapFrom(account => account.Pending.ToDecimal()));
+            this.CreateMap<MoneyAccount, CurrencyDTO>()
+                .ForMember(currency => currency.Balance, config => config.MapFrom<decimal>(account => account.Balance))
+                .ForMember(currency => currency.Pending, config => config.MapFrom<decimal>(account => account.Pending));
 
-            this.CreateMap<Account<Token>, CurrencyDTO>()
-                .ForMember(currency => currency.Balance, config => config.MapFrom(account => account.Balance.ToDecimal()))
-                .ForMember(currency => currency.Pending, config => config.MapFrom(account => account.Pending.ToDecimal()));
+            this.CreateMap<TokenAccount, CurrencyDTO>()
+                .ForMember(currency => currency.Balance, config => config.MapFrom<decimal>(account => account.Balance))
+                .ForMember(currency => currency.Pending, config => config.MapFrom<decimal>(account => account.Pending));
         }
     }
 }

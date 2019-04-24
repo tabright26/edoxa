@@ -29,14 +29,14 @@ namespace eDoxa.Cashier.Domain.Tests.AggregateModels.UserAggregate
         public void Add_Amount_ShouldBeResult(int amount1, int amount2, int result)
         {
             // Arrange
-            var token1 = Token.FromDecimal(amount1);
-            var token2 = Token.FromDecimal(amount2);
+            var token1 = new Token(amount1);
+            var token2 = new Token(amount2);
 
             // Act
             var token = token1 + token2;
 
             // Assert
-            token.ToDecimal().Should().Be(result);
+            token.As<decimal>().Should().Be(result);
         }
 
         [DataRow(100000, 50000, 50000)]
@@ -48,32 +48,14 @@ namespace eDoxa.Cashier.Domain.Tests.AggregateModels.UserAggregate
         public void Subtract_Amount_ShouldBeResult(int amount1, int amount2, int result)
         {
             // Arrange
-            var token1 = Token.FromDecimal(amount1);
-            var token2 = Token.FromDecimal(amount2);
+            var token1 = new Token(amount1);
+            var token2 = new Token(amount2);
 
             // Act
             var token = token1 - token2;
 
             // Assert
-            token.ToDecimal().Should().Be(result);
-        }
-
-        [DataRow(100000, 3, 300000)]
-        [DataRow(1000000, 5, 5000000)]
-        [DataRow(500000, 2, 1000000)]
-        [DataRow(100000, 5, 500000)]
-        [DataRow(10000, 10, 100000)]
-        [DataTestMethod]
-        public void Muliply_Amount_ShouldBeResult(int amount, int multiplier, int result)
-        {
-            // Arrange
-            var token = Token.FromDecimal(amount);
-
-            // Act
-            token = token * multiplier;
-
-            // Assert
-            token.ToDecimal().Should().Be(result);
+            token.As<decimal>().Should().Be(result);
         }
     }
 }

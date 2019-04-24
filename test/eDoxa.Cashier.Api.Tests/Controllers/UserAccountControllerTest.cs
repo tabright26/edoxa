@@ -128,9 +128,9 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
 
             var money = _userAggregateFactory.CreateMoney();
 
-            var command = new WithdrawalCommand(money.ToDecimal());
+            var command = new WithdrawalCommand(money);
 
-            _mediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(money.ToDecimal()).Verifiable();
+            _mediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(money).Verifiable();
 
             var controller = new UserAccountController(_logger.Object, _queries.Object, _mediator.Object);
 
@@ -155,7 +155,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
 
             var money = _userAggregateFactory.CreateMoney();
 
-            var command = new WithdrawalCommand(money.ToDecimal());
+            var command = new WithdrawalCommand(money);
 
             _mediator.Setup(mediator => mediator.Send(command, default)).ThrowsAsync(new Exception()).Verifiable();
 
@@ -186,7 +186,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
 
             var command = new AddFundsCommand(MoneyBundleType.Ten);
 
-            _mediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(money.ToDecimal()).Verifiable();
+            _mediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(money).Verifiable();
 
             var controller = new UserAccountController(_logger.Object, _queries.Object, _mediator.Object);
 
@@ -240,7 +240,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
 
             var command = new BuyTokensCommand(TokenBundleType.FiftyThousand);
 
-            _mediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(token.ToDecimal()).Verifiable();
+            _mediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(token).Verifiable();
 
             var controller = new UserAccountController(_logger.Object, _queries.Object, _mediator.Object);
 

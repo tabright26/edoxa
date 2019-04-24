@@ -1,5 +1,5 @@
 ﻿// Filename: Account.cs
-// Date Created: 2019-04-14
+// Date Created: 2019-04-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -14,8 +14,8 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 {
     public class Account : Entity<AccountId>
     {
-        private Account<Money> _funds;
-        private Account<Token> _tokens;
+        private MoneyAccount _funds;
+        private TokenAccount _tokens;
         private User _user;
 
         public Account(User user) : this()
@@ -25,13 +25,13 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 
         private Account()
         {
-            _funds = new Account<Money>();
-            _tokens = new Account<Token>();
+            _funds = new MoneyAccount();
+            _tokens = new TokenAccount();
         }
 
-        public Account<Money> Funds => _funds;
+        public MoneyAccount Funds => _funds;
 
-        public Account<Token> Tokens => _tokens;
+        public TokenAccount Tokens => _tokens;
 
         public User User => _user;
 
@@ -51,40 +51,75 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
         }
     }
 
-    public class Account<TCurrency>
-    where TCurrency : Currency<TCurrency>, new()
+    public class MoneyAccount : IAccount<Money>
     {
-        private TCurrency _balance;
-        private TCurrency _pending;
+        private Money _balance;
+        private Money _pending;
 
-        public Account()
+        public MoneyAccount()
         {
-            _balance = Currency<TCurrency>.Empty;
-            _pending = Currency<TCurrency>.Empty;
+            _balance = Money.Zero;
+            _pending = Money.Zero;
         }
 
-        public TCurrency Balance => _balance;
+        public Money Balance => _balance;
 
-        public TCurrency Pending => _pending;
+        public Money Pending => _pending;
 
-        public void AddBalance(TCurrency currency)
+        public void AddBalance(Money currency)
         {
-            _balance += currency;
+            _balance = new Money((long) _balance + (long) currency);
         }
 
-        public void AddPending(TCurrency currency)
+        public void AddPending(Money currency)
         {
-            _pending += currency;
+            _pending = new Money((long) _pending + (long) currency);
         }
 
-        public void SubtractBalance(TCurrency currency)
+        public void SubtractBalance(Money currency)
         {
-            _balance -= currency;
+            _balance = new Money((long) _balance - (long) currency);
         }
 
-        public void SubtractPending(TCurrency currency)
+        public void SubtractPending(Money currency)
         {
-            _pending -= currency;
+            _pending = new Money((long) _pending - (long) currency);
+        }
+    }
+
+    public class TokenAccount : IAccount<Token>
+    {
+        private Token _balance;
+        private Token _pending;
+
+        public TokenAccount()
+        {
+            _balance = Token.Zero;
+            _pending = Token.Zero;
+        }
+
+        public Token Balance => _balance;
+
+        public Token Pending => _pending;
+
+        public void AddBalance(Token currency)
+        {
+            _balance = new Token((long) _balance + (long) currency);
+        }
+
+        public void AddPending(Token currency)
+        {
+            _pending = new Token((long) _pending + (long) currency);
+        }
+
+        public void SubtractBalance(Token currency)
+        {
+            _balance = new Token((long) _balance - (long) currency);
+        }
+
+        public void SubtractPending(Token currency)
+        {
+            _pending = new Token((long) _pending - (long) currency);
         }
     }
 }

@@ -34,7 +34,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             // Arrange
             var money = _userAggregateFactory.CreateMoney();
 
-            var command = new WithdrawalCommand(money.ToDecimal());
+            var command = new WithdrawalCommand(money);
 
             var mockUserRepository = new Mock<IUserRepository>();
 

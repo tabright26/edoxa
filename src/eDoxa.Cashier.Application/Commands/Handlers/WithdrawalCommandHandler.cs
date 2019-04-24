@@ -31,13 +31,13 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         {
             var user = await _userRepository.FindAsync(command.UserId);
 
-            var money = Money.FromDecimal(command.Amount);
+            var money = new Money(command.Amount);
 
             money = user.Withdrawal(money);
 
             await _userRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
-            return money.ToDecimal();
+            return money;
         }
     }
 }

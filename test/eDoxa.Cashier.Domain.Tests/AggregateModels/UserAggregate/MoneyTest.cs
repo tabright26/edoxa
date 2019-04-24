@@ -28,14 +28,14 @@ namespace eDoxa.Cashier.Domain.Tests.AggregateModels.UserAggregate
         public void Add_Amount_ShouldBeResult(int amount1, int amount2, int result)
         {
             // Arrange
-            var money1 = Money.FromDecimal(amount1);
-            var money2 = Money.FromDecimal(amount2);
+            var money1 = new Money(amount1);
+            var money2 = new Money(amount2);
 
             // Act
             var money = money1 + money2;
 
             // Assert
-            money.ToDecimal().Should().Be(result);
+            money.As<decimal>().Should().Be(result);
         }
 
         [DataRow(10, 10, 0)]
@@ -47,32 +47,14 @@ namespace eDoxa.Cashier.Domain.Tests.AggregateModels.UserAggregate
         public void Subtract_Amount_ShouldBeResult(int amount1, int amount2, int result)
         {
             // Arrange
-            var money1 = Money.FromDecimal(amount1);
-            var money2 = Money.FromDecimal(amount2);
+            var money1 = new Money(amount1);
+            var money2 = new Money(amount2);
 
             // Act
             var money = money1 - money2;
 
             // Assert
-            money.ToDecimal().Should().Be(result);
-        }
-
-        [DataRow(10, 3, 30)]
-        [DataRow(20, 5, 100)]
-        [DataRow(50, 2, 100)]
-        [DataRow(100, 5, 500)]
-        [DataRow(500, 1, 500)]
-        [DataTestMethod]
-        public void Muliply_Amount_ShouldBeResult(int amount, int multiplier, int result)
-        {
-            // Arrange
-            var money = Money.FromDecimal(amount);
-
-            // Act
-            money = money * multiplier;
-
-            // Assert
-            money.ToDecimal().Should().Be(result);
+            money.As<decimal>().Should().Be(result);
         }
     }
 }

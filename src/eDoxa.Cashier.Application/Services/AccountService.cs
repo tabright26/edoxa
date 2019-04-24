@@ -35,7 +35,7 @@ namespace eDoxa.Cashier.Application.Services
         }
 
         public async Task TransactionAsync<TCurrency>(User user, CurrencyBundle<TCurrency> bundle, CancellationToken cancellationToken = default)
-        where TCurrency : Currency<TCurrency>, new()
+        where TCurrency : Currency<TCurrency>
         {
             var customer = await _customerService.GetAsync(user.CustomerId.ToString(), cancellationToken: cancellationToken);
 

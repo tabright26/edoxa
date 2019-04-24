@@ -32,7 +32,7 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
             builder.Property<UserId>(nameof(UserId)).HasConversion(userId => userId.ToGuid(), value => UserId.FromGuid(value)).IsRequired();
 
             builder.Property(transaction => transaction.Price)
-                .HasConversion(price => price.ToDecimal(), price => Money.FromDecimal(price)).IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field);
+                .HasConversion<decimal>(price => price, price => new Money(price)).IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.Property(transaction => transaction.Description)
                 .HasConversion(description => description.ToString(), description => new TransactionDescription(description)).IsRequired()

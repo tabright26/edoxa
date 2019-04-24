@@ -11,7 +11,7 @@
 namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 {
     public abstract class CurrencyBundle<TCurrency>
-    where TCurrency : Currency<TCurrency>, new()
+    where TCurrency : Currency<TCurrency>
     {
         protected CurrencyBundle(Money price, TCurrency amount)
         {
