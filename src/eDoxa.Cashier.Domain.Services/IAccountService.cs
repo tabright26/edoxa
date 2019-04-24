@@ -17,7 +17,7 @@ namespace eDoxa.Cashier.Domain.Services
 {
     public interface IAccountService
     {
-        Task TransactionAsync<TCurrency>(User user, CurrencyBundle<TCurrency> bundle, CancellationToken cancellationToken = default)
-        where TCurrency : Currency<TCurrency>;
+        Task TransactionAsync<TCurrency>(User user, Bundle<TCurrency> bundle, CancellationToken cancellationToken = default)
+        where TCurrency : ICurrency;
     }
 }

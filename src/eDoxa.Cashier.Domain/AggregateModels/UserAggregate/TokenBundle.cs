@@ -10,7 +10,7 @@
 
 namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 {
-    public sealed class TokenBundle : CurrencyBundle<Token>
+    public sealed class TokenBundle : Bundle<Token>
     {
         public TokenBundle(Money price, Token amount) : base(price, amount)
         {

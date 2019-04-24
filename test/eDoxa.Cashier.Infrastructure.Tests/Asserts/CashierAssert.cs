@@ -38,7 +38,7 @@ namespace eDoxa.Cashier.Infrastructure.Tests.Asserts
         }
 
         private static void IsMapped<TCurrency>(IAccount<TCurrency> account)
-        where TCurrency : Currency<TCurrency>
+        where TCurrency : ICurrency
         {
             account.Should().NotBeNull();
 
@@ -48,7 +48,7 @@ namespace eDoxa.Cashier.Infrastructure.Tests.Asserts
         }
 
         private static void IsMapped<TCurrency>(TCurrency currency)
-        where TCurrency : Currency<TCurrency>
+        where TCurrency : ICurrency
         {
             currency.Should().NotBeNull();
 

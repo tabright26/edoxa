@@ -36,7 +36,7 @@ namespace eDoxa.Cashier.Domain.Tests.AggregateModels.UserAggregate
             var token = token1 + token2;
 
             // Assert
-            token.As<decimal>().Should().Be(result);
+            token.As<long>().Should().Be(result);
         }
 
         [DataRow(100000, 50000, 50000)]
@@ -55,7 +55,7 @@ namespace eDoxa.Cashier.Domain.Tests.AggregateModels.UserAggregate
             var token = token1 - token2;
 
             // Assert
-            token.As<decimal>().Should().Be(result);
+            token.As<long>().Should().Be(result);
         }
     }
 }

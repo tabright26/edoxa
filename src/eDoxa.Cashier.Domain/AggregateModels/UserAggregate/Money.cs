@@ -10,11 +10,13 @@
 
 using System;
 
+using JetBrains.Annotations;
+
 namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 {
-    public sealed class Money : Currency<Money>
+    public sealed partial class Money : ICurrency
     {
-        internal static readonly Money Zero = new Money();
+        internal static readonly Money Zero = new Money(0);
         internal static readonly Money Five = new Money(5);
         internal static readonly Money Ten = new Money(10);
         internal static readonly Money Twenty = new Money(20);
@@ -23,12 +25,16 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
         internal static readonly Money OneHundred = new Money(100);
         internal static readonly Money FiveHundred = new Money(500);
 
-        public Money(decimal amount) : base(amount)
+        private readonly decimal _value;
+
+        public Money(decimal value)
         {
+            _value = value;
         }
 
-        private Money()
+        public static implicit operator decimal(Money currency)
         {
+            return currency._value;
         }
 
         public override string ToString()
@@ -39,6 +45,37 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
         public int AsCents()
         {
             return Convert.ToInt32(this * 100);
+        }
+    }
+
+    public sealed partial class Money : IEquatable<Money>
+    {
+        public bool Equals([CanBeNull] Money other)
+        {
+            return _value.Equals(other?._value);
+        }
+
+        public override bool Equals([CanBeNull] object obj)
+        {
+            return this.Equals(obj as Money);
+        }
+
+        public override int GetHashCode()
+        {
+            return _value.GetHashCode();
+        }
+    }
+
+    public sealed partial class Money : IComparable, IComparable<Money>
+    {
+        public int CompareTo([CanBeNull] object obj)
+        {
+            return this.CompareTo(obj as Money);
+        }
+
+        public int CompareTo([CanBeNull] Money other)
+        {
+            return _value.CompareTo(other?._value);
         }
     }
 }

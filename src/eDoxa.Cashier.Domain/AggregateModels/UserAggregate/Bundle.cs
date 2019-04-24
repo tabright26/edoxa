@@ -1,4 +1,4 @@
-﻿// Filename: CurrencyBundle.cs
+﻿// Filename: Bundle.cs
 // Date Created: 2019-04-14
 // 
 // ================================================
@@ -10,10 +10,10 @@
 
 namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 {
-    public abstract class CurrencyBundle<TCurrency>
-    where TCurrency : Currency<TCurrency>
+    public abstract class Bundle<TCurrency>
+    where TCurrency : ICurrency
     {
-        protected CurrencyBundle(Money price, TCurrency amount)
+        protected Bundle(Money price, TCurrency amount)
         {
             Price = price;
             Amount = amount;

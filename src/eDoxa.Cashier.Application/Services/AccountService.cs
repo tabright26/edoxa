@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Application.Adapters;
+using eDoxa.Cashier.Domain;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Stripe.Validators;
@@ -34,8 +35,8 @@ namespace eDoxa.Cashier.Application.Services
             _invoiceItemService = invoiceItemService;
         }
 
-        public async Task TransactionAsync<TCurrency>(User user, CurrencyBundle<TCurrency> bundle, CancellationToken cancellationToken = default)
-        where TCurrency : Currency<TCurrency>
+        public async Task TransactionAsync<TCurrency>(User user, Bundle<TCurrency> bundle, CancellationToken cancellationToken = default)
+        where TCurrency : ICurrency
         {
             var customer = await _customerService.GetAsync(user.CustomerId.ToString(), cancellationToken: cancellationToken);
 
