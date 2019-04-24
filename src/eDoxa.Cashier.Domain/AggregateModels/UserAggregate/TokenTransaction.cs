@@ -1,5 +1,5 @@
-﻿// Filename: ExternalTransaction.cs
-// Date Created: 2019-04-16
+﻿// Filename: TokenTransaction.cs
+// Date Created: 2019-04-24
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,10 +10,7 @@
 
 namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 {
-    public sealed class ExternalTransaction : Transaction
+    public class TokenTransaction : ITokenTransaction
     {
-        public ExternalTransaction(User user, Money price, TransactionDescription description) : base(user, price, description, TransactionType.External)
-        {
-        }
     }
 }

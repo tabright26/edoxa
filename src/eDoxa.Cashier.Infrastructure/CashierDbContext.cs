@@ -63,8 +63,6 @@ namespace eDoxa.Cashier.Infrastructure
 
         public DbSet<Account> Accounts => this.Set<Account>();
 
-        public DbSet<Transaction> Transactions => this.Set<Transaction>();
-
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -74,8 +72,6 @@ namespace eDoxa.Cashier.Infrastructure
             builder.ApplyConfiguration(new UserConfiguration());
 
             builder.ApplyConfiguration(new AccountConfiguration());
-
-            builder.ApplyConfiguration(new TransactionConfiguration());
         }
     }
 }

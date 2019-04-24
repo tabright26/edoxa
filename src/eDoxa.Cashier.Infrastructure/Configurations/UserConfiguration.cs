@@ -38,12 +38,12 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
 
             builder.HasOne(user => user.Account).WithOne(account => account.User).IsRequired().OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasMany(user => user.Transactions).WithOne(transaction => transaction.User).HasForeignKey(nameof(UserId)).IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
+            //builder.HasMany(user => user.Transactions).WithOne(transaction => transaction.User).HasForeignKey(nameof(UserId)).IsRequired()
+            //    .OnDelete(DeleteBehavior.Cascade);
 
             builder.Metadata.FindNavigation(nameof(User.Account)).SetPropertyAccessMode(PropertyAccessMode.Field);
 
-            builder.Metadata.FindNavigation(nameof(User.Transactions)).SetPropertyAccessMode(PropertyAccessMode.Field);
+            //builder.Metadata.FindNavigation(nameof(User.Transactions)).SetPropertyAccessMode(PropertyAccessMode.Field);
         }
     }
 }

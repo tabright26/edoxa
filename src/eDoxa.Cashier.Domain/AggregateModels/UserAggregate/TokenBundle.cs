@@ -1,5 +1,5 @@
 ﻿// Filename: TokenBundle.cs
-// Date Created: 2019-04-14
+// Date Created: 2019-04-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -14,11 +14,6 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
     {
         public TokenBundle(Money price, Token amount) : base(price, amount)
         {
-        }
-
-        public override Transaction CreateTransaction(User user)
-        {
-            return new ExternalTransaction(user, Price, TransactionDescription.TokensBought);
         }
     }
 }

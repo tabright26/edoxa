@@ -1,5 +1,5 @@
 ﻿// Filename: Bundle.cs
-// Date Created: 2019-04-14
+// Date Created: 2019-04-24
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -21,8 +21,6 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 
         public TCurrency Amount { get; }
 
-        protected Money Price { get; }
-
-        public abstract Transaction CreateTransaction(User user);
+        public Money Price { get; }
     }
 }

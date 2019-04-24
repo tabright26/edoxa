@@ -1,5 +1,5 @@
 ﻿// Filename: AccountService.cs
-// Date Created: 2019-04-14
+// Date Created: 2019-04-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,7 +11,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Application.Adapters;
 using eDoxa.Cashier.Domain;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.Domain.Services;
@@ -44,25 +43,28 @@ namespace eDoxa.Cashier.Application.Services
 
             validator.Validate(customer);
 
-            var transaction = bundle.CreateTransaction(user);
-
-            await _invoiceItemService.CreateAsync(InvoiceItemCreateOptions(transaction), cancellationToken: cancellationToken);
+            await _invoiceItemService.CreateAsync(InvoiceItemCreateOptions(user, bundle), cancellationToken: cancellationToken);
 
             await _invoiceService.CreateAsync(InvoiceCreateOptions(customer), cancellationToken: cancellationToken);
         }
 
-        private static InvoiceItemCreateOptions InvoiceItemCreateOptions(Transaction transaction)
+        private static InvoiceItemCreateOptions InvoiceItemCreateOptions<TCurrency>(User user, Bundle<TCurrency> bundle)
+        where TCurrency : ICurrency
         {
-            var adapter = new InvoiceItemCreateOptionsAdapter(transaction);
-
-            return adapter.InvoiceItemCreateOptions;
+            return new InvoiceItemCreateOptions
+            {
+                CustomerId = user.CustomerId.ToString(),
+                Description = "eDoxa",
+                Amount = bundle.Price.AsCents(),
+                Currency = "usd"
+            };
         }
 
         private static InvoiceCreateOptions InvoiceCreateOptions(Customer customer)
         {
             return new InvoiceCreateOptions
             {
-                CustomerId = customer.Id, TaxPercent = Transaction.TaxPercent, AutoAdvance = true, DefaultSource = customer.DefaultSource.Id
+                CustomerId = customer.Id, TaxPercent = 15M, AutoAdvance = true, DefaultSource = customer.DefaultSource.Id
             };
         }
     }

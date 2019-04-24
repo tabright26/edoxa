@@ -1,5 +1,5 @@
-﻿// Filename: MoneyBundle.cs
-// Date Created: 2019-04-21
+﻿// Filename: ITokenTransaction.cs
+// Date Created: 2019-04-24
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,12 +8,9 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
+namespace eDoxa.Cashier.Domain
 {
-    public sealed class MoneyBundle : Bundle<Money>
+    public interface ITokenTransaction : ITransaction
     {
-        public MoneyBundle(Money amount) : base(amount, amount)
-        {
-        }
     }
 }
