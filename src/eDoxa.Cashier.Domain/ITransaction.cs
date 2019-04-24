@@ -8,9 +8,15 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
+
 namespace eDoxa.Cashier.Domain
 {
-    public interface ITransaction
+    public interface ITransaction<out TCurrency>
+    where TCurrency : ICurrency
     {
+        DateTime Timestamp { get; }
+
+        TCurrency Amount { get; }
     }
 }

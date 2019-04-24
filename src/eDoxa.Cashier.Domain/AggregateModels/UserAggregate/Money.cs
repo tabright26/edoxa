@@ -32,9 +32,14 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
             _value = value;
         }
 
-        public static implicit operator decimal(Money currency)
+        public static implicit operator decimal(Money money)
         {
-            return currency._value;
+            return money._value;
+        }
+
+        public static Money operator -(Money money)
+        {
+            return new Money(-money._value);
         }
 
         public override string ToString()

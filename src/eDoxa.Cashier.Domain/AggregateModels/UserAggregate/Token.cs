@@ -36,6 +36,11 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
             return token._value;
         }
 
+        public static Token operator -(Token token)
+        {
+            return new Token(-token._value);
+        }
+
         public override string ToString()
         {
             return Convert.ToInt32(this).ToString();

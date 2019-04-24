@@ -8,9 +8,11 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
+
 namespace eDoxa.Cashier.Domain
 {
-    public interface ITokenTransaction : ITransaction
+    public interface ITokenTransaction : ITransaction<Token>
     {
     }
 }

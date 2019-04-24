@@ -26,22 +26,22 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 
         public void AddBalance(Token amount)
         {
-            _balance = new Token((long) _balance + (long) amount);
+            _balance = new Token(_balance + amount);
         }
 
         public void AddPending(Token amount)
         {
-            _pending = new Token((long) _pending + (long) amount);
+            _pending = new Token(_pending + amount);
         }
 
         public void SubtractBalance(Token amount)
         {
-            _balance = new Token((long) _balance - (long) amount);
+            _balance = new Token(_balance - amount);
         }
 
         public void SubtractPending(Token amount)
         {
-            _pending = new Token((long) _pending - (long) amount);
+            _pending = new Token(_pending - amount);
         }
     }
 }
