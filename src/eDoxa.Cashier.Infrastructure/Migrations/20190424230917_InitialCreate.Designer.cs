@@ -10,8 +10,8 @@ using eDoxa.Cashier.Infrastructure;
 namespace eDoxa.Cashier.Infrastructure.Migrations
 {
     [DbContext(typeof(CashierDbContext))]
-    [Migration("20190424222757_InitialCreate1")]
-    partial class InitialCreate1
+    [Migration("20190424230917_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,26 +34,6 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Accounts");
-                });
-
-            modelBuilder.Entity("eDoxa.Cashier.Domain.AggregateModels.UserAggregate.Transaction", b =>
-                {
-                    b.Property<Guid>("Id");
-
-                    b.Property<string>("Description")
-                        .IsRequired();
-
-                    b.Property<decimal>("Price");
-
-                    b.Property<int>("Type");
-
-                    b.Property<Guid>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Transactions");
                 });
 
             modelBuilder.Entity("eDoxa.Cashier.Domain.AggregateModels.UserAggregate.User", b =>
@@ -142,14 +122,6 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                                 .HasForeignKey("eDoxa.Cashier.Domain.AggregateModels.UserAggregate.TokenAccount", "AccountId")
                                 .OnDelete(DeleteBehavior.Cascade);
                         });
-                });
-
-            modelBuilder.Entity("eDoxa.Cashier.Domain.AggregateModels.UserAggregate.Transaction", b =>
-                {
-                    b.HasOne("eDoxa.Cashier.Domain.AggregateModels.UserAggregate.User", "User")
-                        .WithMany("Transactions")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }
