@@ -8,8 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate.DomainEvents;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
@@ -19,8 +17,9 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 {
     public class User : Entity<UserId>, IAggregateRoot
     {
-        private Account _account;
         private CustomerId _customerId;
+        private MoneyAccount _funds;
+        private TokenAccount _tokens;
 
         private User(UserId userId, CustomerId customerId) : this()
         {
@@ -30,12 +29,15 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 
         private User()
         {
-            _account = new Account(this);
+            _funds = new MoneyAccount(this);
+            _tokens = new TokenAccount(this);
         }
 
         public CustomerId CustomerId => _customerId;
 
-        public Account Account => _account;
+        public MoneyAccount Funds => _funds;
+
+        public TokenAccount Tokens => _tokens;
 
         public static User Create(UserId userId, CustomerId customerId)
         {
@@ -53,28 +55,23 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 
         public Money AddFunds(MoneyBundle bundle)
         {
-            Account.AddFunds(bundle.Amount);
+            Funds.AddBalance(bundle.Amount);
 
-            return Account.Funds.Balance;
+            return Funds.Balance;
         }
 
-        public Money Withdrawal(Money amount)
+        public Money Withdraw(Money amount)
         {
-            Account.Withdrawal(amount);
+            Funds.SubtractBalance(amount);
 
-            return Account.Funds.Balance;
+            return Funds.Balance;
         }
 
         public Token BuyTokens(TokenBundle bundle)
         {
-            Account.BuyTokens(bundle.Amount);
+            Tokens.AddBalance(bundle.Amount);
 
-            return Account.Tokens.Balance;
-        }
-
-        public void AddExternalTransaction()
-        {
-            throw new NotImplementedException();
+            return Tokens.Balance;
         }
     }
 }

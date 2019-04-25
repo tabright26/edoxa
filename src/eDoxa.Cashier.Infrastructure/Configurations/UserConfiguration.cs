@@ -1,5 +1,5 @@
 ﻿// Filename: UserConfiguration.cs
-// Date Created: 2019-04-14
+// Date Created: 2019-04-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -25,7 +25,7 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
             builder.ToTable(nameof(CashierDbContext.Users));
 
             builder.Property(user => user.Id)
-                .HasConversion(userId => userId.ToGuid(), value => UserId.FromGuid(value))
+                .HasConversion(userId => userId.ToGuid(), userId => UserId.FromGuid(userId))
                 .IsRequired()
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 
@@ -34,16 +34,11 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
                 .IsRequired()
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 
+            builder.HasOne(user => user.Funds).WithOne(account => account.User).IsRequired().OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(user => user.Tokens).WithOne(account => account.User).IsRequired().OnDelete(DeleteBehavior.Cascade);
+
             builder.HasKey(user => user.Id);
-
-            builder.HasOne(user => user.Account).WithOne(account => account.User).IsRequired().OnDelete(DeleteBehavior.Cascade);
-
-            //builder.HasMany(user => user.Transactions).WithOne(transaction => transaction.User).HasForeignKey(nameof(UserId)).IsRequired()
-            //    .OnDelete(DeleteBehavior.Cascade);
-
-            builder.Metadata.FindNavigation(nameof(User.Account)).SetPropertyAccessMode(PropertyAccessMode.Field);
-
-            //builder.Metadata.FindNavigation(nameof(User.Transactions)).SetPropertyAccessMode(PropertyAccessMode.Field);
         }
     }
 }

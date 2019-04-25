@@ -17,6 +17,6 @@ namespace eDoxa.Cashier.DTO.Queries
     public interface IAccountQueries
     {
         [ItemCanBeNull]
-        Task<AccountDTO> FindUserAccountAsync(UserId userId);
+        Task<MoneyAccountDTO> FindUserAccountAsync(UserId userId);
     }
 }

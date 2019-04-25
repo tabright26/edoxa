@@ -14,13 +14,13 @@ using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 
 namespace eDoxa.Cashier.DTO.Profiles
 {
-    public sealed class AccountProfile : Profile
+    public sealed class MoneyAccountProfile : Profile
     {
-        public AccountProfile()
+        public MoneyAccountProfile()
         {
-            this.CreateMap<Account, AccountDTO>()
-                .ForMember(account => account.Funds, config => config.MapFrom(account => account.Funds))
-                .ForMember(account => account.Tokens, config => config.MapFrom(account => account.Tokens));
+            this.CreateMap<MoneyAccount, MoneyAccountDTO>()
+                .ForMember(account => account.Balance, config => config.MapFrom(account => account.Balance))
+                .ForMember(account => account.Pending, config => config.MapFrom(account => account.Pending));
         }
     }
 }

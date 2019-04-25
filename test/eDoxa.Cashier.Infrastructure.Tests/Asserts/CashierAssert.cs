@@ -8,7 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Cashier.Domain;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 
 using FluentAssertions;
@@ -23,36 +22,18 @@ namespace eDoxa.Cashier.Infrastructure.Tests.Asserts
 
             user.Id.Should().NotBeNull();
 
-            IsMapped(user.Account);
+            IsMapped(user.Funds);
         }
 
-        private static void IsMapped(Account account)
+        private static void IsMapped(MoneyAccount account)
         {
             account.Should().NotBeNull();
 
             account.Id.Should().NotBeNull();
 
-            IsMapped(account.Funds);
+            account.Balance.As<decimal>().Should().BeGreaterOrEqualTo(decimal.Zero);
 
-            IsMapped(account.Tokens);
-        }
-
-        private static void IsMapped<TCurrency>(IAccount<TCurrency> account)
-        where TCurrency : ICurrency
-        {
-            account.Should().NotBeNull();
-
-            IsMapped(account.Balance);
-
-            IsMapped(account.Pending);
-        }
-
-        private static void IsMapped<TCurrency>(TCurrency currency)
-        where TCurrency : ICurrency
-        {
-            currency.Should().NotBeNull();
-
-            currency.As<decimal>().Should().BeGreaterOrEqualTo(decimal.Zero);
+            account.Pending.As<decimal>().Should().BeGreaterOrEqualTo(decimal.Zero);
         }
     }
 }

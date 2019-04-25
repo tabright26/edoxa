@@ -16,17 +16,25 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 {
     public sealed class MoneyTransaction : Entity<TransactionId>, IMoneyTransaction
     {
-        private Money _money;
+        private MoneyAccount _account;
+        private Money _amount;
         private DateTime _timestamp;
 
-        public MoneyTransaction(Money money)
+        public MoneyTransaction(MoneyAccount account, Money amount) : this()
         {
-            _money = money;
+            _account = account;
+            _amount = amount;            
+        }
+
+        private MoneyTransaction()
+        {
             _timestamp = DateTime.UtcNow;
         }
 
         public DateTime Timestamp => _timestamp;
 
-        public Money Amount => _money;
+        public Money Amount => _amount;
+
+        public MoneyAccount Account => _account;
     }
 }

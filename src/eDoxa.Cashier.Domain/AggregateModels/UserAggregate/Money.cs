@@ -27,9 +27,9 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 
         private readonly decimal _value;
 
-        public Money(decimal value)
+        public Money(decimal amount)
         {
-            _value = value;
+            _value = amount;
         }
 
         public static implicit operator decimal(Money money)

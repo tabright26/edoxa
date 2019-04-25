@@ -1,5 +1,5 @@
 ﻿// Filename: CashierDbContext.cs
-// Date Created: 2019-04-14
+// Date Created: 2019-04-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -61,7 +61,13 @@ namespace eDoxa.Cashier.Infrastructure
 
         public DbSet<User> Users => this.Set<User>();
 
-        public DbSet<Account> Accounts => this.Set<Account>();
+        public DbSet<MoneyAccount> MoneyAccounts => this.Set<MoneyAccount>();
+
+        public DbSet<MoneyTransaction> MoneyTransactions => this.Set<MoneyTransaction>();
+
+        public DbSet<TokenAccount> TokenAccounts => this.Set<TokenAccount>();
+
+        public DbSet<TokenTransaction> TokenTransactions => this.Set<TokenTransaction>();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -71,7 +77,13 @@ namespace eDoxa.Cashier.Infrastructure
 
             builder.ApplyConfiguration(new UserConfiguration());
 
-            builder.ApplyConfiguration(new AccountConfiguration());
+            builder.ApplyConfiguration(new MoneyAccountConfiguration());
+
+            builder.ApplyConfiguration(new MoneyTransactionConfiguration());
+
+            builder.ApplyConfiguration(new TokenAccountConfiguration());
+
+            builder.ApplyConfiguration(new TokenTransactionConfiguration());
         }
     }
 }

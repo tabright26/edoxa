@@ -19,6 +19,7 @@ using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Cashier.Infrastructure;
 using JetBrains.Annotations;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Cashier.Application.Queries
@@ -34,20 +35,20 @@ namespace eDoxa.Cashier.Application.Queries
             _mapper = mapper;
         }
 
-        private async Task<Account> FindUserAccountAsNoTrackingAsync(UserId userId)
+        private async Task<MoneyAccount> FindUserAccountAsNoTrackingAsync(UserId userId)
         {
-            return await _context.Accounts.AsNoTracking().Where(account => account.User.Id == userId).SingleOrDefaultAsync();
+            return (await _context.Users.AsNoTracking().Where(account => account.Id == userId).SingleOrDefaultAsync()).Funds;
         }
     }
 
     public sealed partial class AccountQueries : IAccountQueries
     {
         [ItemCanBeNull]
-        public async Task<AccountDTO> FindUserAccountAsync(UserId userId)
+        public async Task<MoneyAccountDTO> FindUserAccountAsync(UserId userId)
         {
             var account = await this.FindUserAccountAsNoTrackingAsync(userId);
 
-            return _mapper.Map<AccountDTO>(account);
+            return _mapper.Map<MoneyAccountDTO>(account);
         }
     }
 }

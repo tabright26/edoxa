@@ -40,7 +40,7 @@ namespace eDoxa.Cashier.Application.Queries
 
         public async Task<User> FindUserAsNoTrackingAsync(UserId userId)
         {
-            return await _context.Users.AsNoTracking().Include(user => user.Account).Where(user => user.Id == userId).SingleOrDefaultAsync();
+            return await _context.Users.AsNoTracking()./*Include(user => user.Account).*/Where(user => user.Id == userId).SingleOrDefaultAsync();
         }
     }
 

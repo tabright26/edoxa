@@ -50,7 +50,17 @@ namespace eDoxa.Cashier.Domain.Factories
     {
         public User CreateAdmin()
         {
-            return User.Create(AdminData);
+            var user = User.Create(AdminData);
+
+            var bundles = new MoneyBundles();
+
+            user.AddFunds(bundles[MoneyBundleType.OneHundred]);
+
+            user.Withdraw(new Money(50));
+
+            user.AddFunds(bundles[MoneyBundleType.Twenty]);
+
+            return user;
         }
 
         public User CreateFrancis()

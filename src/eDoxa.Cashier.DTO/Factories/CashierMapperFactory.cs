@@ -39,7 +39,7 @@ namespace eDoxa.Cashier.DTO.Factories
             yield return new CardListProfile();
             yield return new CardProfile();
             yield return new CurrencyProfile();
-            yield return new AccountProfile();
+            yield return new MoneyAccountProfile();
         }
     }
 }

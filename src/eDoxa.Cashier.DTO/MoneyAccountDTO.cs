@@ -13,12 +13,12 @@ using Newtonsoft.Json;
 namespace eDoxa.Cashier.DTO
 {
     [JsonObject]
-    public class AccountDTO
+    public class MoneyAccountDTO
     {
-        [JsonProperty("funds")]
-        public CurrencyDTO Funds { get; set; }
+        [JsonProperty("balance")]
+        public decimal Balance { get; set; }
 
-        [JsonProperty("tokens")]
-        public CurrencyDTO Tokens { get; set; }
+        [JsonProperty("pending")]
+        public decimal Pending { get; set; }
     }
 }

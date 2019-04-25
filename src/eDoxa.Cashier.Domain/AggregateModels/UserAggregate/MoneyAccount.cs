@@ -8,32 +8,46 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Collections.Generic;
+using System.Linq;
+
+using eDoxa.Seedwork.Domain.Aggregate;
+
 namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 {
-    public class MoneyAccount : IAccount<Money>
+    public class MoneyAccount : Entity<AccountId>, IAccount<Money>
     {
-        private Money _balance;
-
         private Money _pending;
+        private HashSet<MoneyTransaction> _transactions;
+        private User _user;
 
-        public MoneyAccount()
+        public MoneyAccount(User user) : this()
         {
-            _balance = Money.Zero;
-            _pending = Money.Zero;
+            _user = user;
         }
 
-        public Money Balance => _balance;
+        private MoneyAccount()
+        {
+            _pending = Money.Zero;
+            _transactions = new HashSet<MoneyTransaction>();
+        }
+
+        public User User => _user;
+
+        public IReadOnlyCollection<MoneyTransaction> Transactions => _transactions;
+
+        public Money Balance => new Money(Transactions.Sum(transaction => transaction.Amount));
 
         public Money Pending => _pending;
 
         public void AddBalance(Money amount)
         {
-            _balance = new Money(_balance + amount);
+            _transactions.Add(new MoneyTransaction(this, amount));
         }
 
         public void SubtractBalance(Money amount)
         {
-            _balance = new Money(_balance - amount);
+            _transactions.Add(new MoneyTransaction(this, -amount));
         }
 
         public void AddPending(Money amount)

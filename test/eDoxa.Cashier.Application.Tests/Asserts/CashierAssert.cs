@@ -16,22 +16,13 @@ namespace eDoxa.Cashier.Application.Tests.Asserts
 {
     internal static class CashierAssert
     {
-        public static void IsMapped([CanBeNull] AccountDTO account)
+        public static void IsMapped([CanBeNull] MoneyAccountDTO account)
         {
             account.Should().NotBeNull();
 
-            IsMapped(account?.Funds);
+            account?.Balance.Should().BeGreaterOrEqualTo(decimal.Zero);
 
-            IsMapped(account?.Tokens);
-        }
-
-        private static void IsMapped([CanBeNull] CurrencyDTO currency)
-        {
-            currency.Should().NotBeNull();
-
-            currency?.Balance.Should().BeGreaterOrEqualTo(decimal.Zero);
-
-            currency?.Pending.Should().BeGreaterOrEqualTo(decimal.Zero);
+            account?.Pending.Should().BeGreaterOrEqualTo(decimal.Zero);
         }
     }
 }

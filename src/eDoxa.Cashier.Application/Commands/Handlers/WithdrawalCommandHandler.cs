@@ -33,7 +33,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 
             var money = new Money(command.Amount);
 
-            money = user.Withdrawal(money);
+            money = user.Withdraw(money);
 
             await _userRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 

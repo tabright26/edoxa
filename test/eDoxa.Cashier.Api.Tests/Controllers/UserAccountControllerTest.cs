@@ -55,7 +55,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Arrange
             var user = _userAggregateFactory.CreateUser();
 
-            _queries.Setup(queries => queries.FindUserAccountAsync(It.IsAny<UserId>())).ReturnsAsync(new AccountDTO()).Verifiable();
+            _queries.Setup(queries => queries.FindUserAccountAsync(It.IsAny<UserId>())).ReturnsAsync(new MoneyAccountDTO()).Verifiable();
 
             var controller = new UserAccountController(_logger.Object, _queries.Object, _mediator.Object);
 
@@ -78,7 +78,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Arrange
             var user = _userAggregateFactory.CreateUser();
 
-            _queries.Setup(queries => queries.FindUserAccountAsync(It.IsAny<UserId>())).ReturnsAsync((AccountDTO) null).Verifiable();
+            _queries.Setup(queries => queries.FindUserAccountAsync(It.IsAny<UserId>())).ReturnsAsync((MoneyAccountDTO) null).Verifiable();
 
             var controller = new UserAccountController(_logger.Object, _queries.Object, _mediator.Object);
 

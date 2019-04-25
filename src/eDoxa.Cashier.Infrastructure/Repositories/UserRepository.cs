@@ -1,11 +1,11 @@
 ﻿// Filename: UserRepository.cs
-// Date Created: 2019-04-09
+// Date Created: 2019-04-21
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System.Linq;
@@ -29,13 +29,7 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
             _context = context;
         }
 
-        public IUnitOfWork UnitOfWork
-        {
-            get
-            {
-                return _context;
-            }
-        }
+        public IUnitOfWork UnitOfWork => _context;
     }
 
     public sealed partial class UserRepository : IUserRepository
@@ -47,12 +41,12 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
 
         public async Task<User> FindAsync(UserId userId)
         {
-            return await _context.Users.Include(user => user.Account).Where(user => user.Id == userId).SingleOrDefaultAsync();
+            return await _context.Users. /*Include(user => user.Account).*/Where(user => user.Id == userId).SingleOrDefaultAsync();
         }
 
         public async Task<User> FindAsNoTrackingAsync(UserId userId)
         {
-            return await _context.Users.AsNoTracking().Include(user => user.Account).Where(user => user.Id == userId).SingleOrDefaultAsync();
+            return await _context.Users.AsNoTracking() /*.Include(user => user.Account)*/.Where(user => user.Id == userId).SingleOrDefaultAsync();
         }
     }
 }

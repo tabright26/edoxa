@@ -17,16 +17,24 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
     public sealed class TokenTransaction : Entity<TransactionId>, ITokenTransaction
     {
         private DateTime _timestamp;
-        private Token _token;
+        private TokenAccount _account;
+        private Token _amount;
 
-        public TokenTransaction(Token token)
+        public TokenTransaction(TokenAccount account, Token amount) : this()
         {
-            _token = token;
+            _account = account;
+            _amount = amount;            
+        }
+
+        private TokenTransaction()
+        {
             _timestamp = DateTime.UtcNow;
         }
 
         public DateTime Timestamp => _timestamp;
 
-        public Token Amount => _token;
+        public Token Amount => _amount;
+
+        public TokenAccount Account => _account;
     }
 }
