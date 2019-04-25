@@ -26,18 +26,18 @@ using Microsoft.Extensions.Options;
 
 namespace eDoxa.Identity.Areas.Identity
 {
-    public class ProfileService : IProfileService
+    public class CustomProfileService : IProfileService
     {
         private readonly IUserClaimsPrincipalFactory<User> _factory;
-        private readonly ILogger<ProfileService> _logger;
+        private readonly ILogger<CustomProfileService> _logger;
         private readonly IdentityOptions _options;
         private readonly UserService _userService;
 
-        public ProfileService(
+        public CustomProfileService(
             IUserClaimsPrincipalFactory<User> factory,
             UserService userService,
             IOptions<IdentityOptions> optionsAccessor,
-            ILogger<ProfileService> logger)
+            ILogger<CustomProfileService> logger)
         {
             _factory = factory;
             _userService = userService;

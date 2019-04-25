@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-04-14
+// Date Created: 2019-04-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -26,8 +26,6 @@ using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.ServiceBus.Extensions;
 using eDoxa.Swagger.Extensions;
-
-using IdentityServer4.Configuration;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -56,12 +54,12 @@ namespace eDoxa.Identity
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddHealthChecks(Configuration);
-           
+
             services.AddEntityFrameworkSqlServer();
 
             services.AddIntegrationEventDbContext(Configuration, Assembly.GetAssembly(typeof(IdentityDbContext)));
 
-            services.AddDbContext<IdentityDbContext>(Configuration);            
+            services.AddDbContext<IdentityDbContext>(Configuration);
 
             services.AddIdentity<User, Role>(
                     options =>
@@ -108,7 +106,7 @@ namespace eDoxa.Identity
 
             services.AddServiceBus(Configuration);
 
-            services.AddIdentityServer(
+            var builder = services.AddIdentityServer(
                     options =>
                     {
                         options.Authentication.CookieLifetime = TimeSpan.FromHours(2);
@@ -117,14 +115,10 @@ namespace eDoxa.Identity
                         options.Events.RaiseFailureEvents = true;
                         options.Events.RaiseSuccessEvents = true;
                         options.IssuerUri = Configuration["IdentityServer:IssuerUrl"];
-
-                        options.UserInteraction = new UserInteractionOptions
-                        {
-                            LoginUrl = Configuration["IdentityServer:UserInteraction:LoginUrl"],
-                            LogoutUrl = Configuration["IdentityServer:UserInteraction:LogoutUrl"],
-                            ErrorUrl = Configuration["IdentityServer:UserInteraction:ErrorUrl"],
-                            ConsentUrl = Configuration["IdentityServer:UserInteraction:ConsentUrl"]
-                        };
+                        options.UserInteraction.LoginUrl = Configuration["IdentityServer:UserInteraction:LoginUrl"];
+                        options.UserInteraction.LogoutUrl = Configuration["IdentityServer:UserInteraction:LogoutUrl"];
+                        options.UserInteraction.ErrorUrl = Configuration["IdentityServer:UserInteraction:ErrorUrl"];
+                        options.UserInteraction.ConsentUrl = Configuration["IdentityServer:UserInteraction:ConsentUrl"];
                     }
                 )
                 .AddDeveloperSigningCredential()
@@ -157,7 +151,12 @@ namespace eDoxa.Identity
                         operationalStoreOptions.DefaultSchema = "idsrv";
                     }
                 )
-                .AddProfileService<ProfileService>();
+                .AddProfileService<CustomProfileService>();
+
+            if (Environment.IsDevelopment())
+            {
+                builder.AddCorsPolicyService<CustomCorsPolicyService>();
+            }
 
             services.AddAuthentication()
                 .AddFacebook(
