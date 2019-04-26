@@ -12,7 +12,7 @@ using System;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
-namespace eDoxa.Cashier.Domain.AggregateModels
+namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 {
     public abstract class Transaction<TCurrency> : Entity<TransactionId>, ITransaction<TCurrency>
     where TCurrency : ICurrency

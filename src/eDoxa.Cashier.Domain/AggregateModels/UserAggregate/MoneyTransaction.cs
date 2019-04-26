@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
+namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 {
     public class MoneyTransaction : Transaction<Money>, IMoneyTransaction
     {

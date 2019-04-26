@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
+namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 {
     public sealed class TokenPendingTransaction : TokenTransaction
     {

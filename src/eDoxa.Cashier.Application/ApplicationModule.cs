@@ -34,7 +34,8 @@ namespace eDoxa.Cashier.Application
             builder.RegisterType<AccountService>().As<IAccountService>().InstancePerLifetimeScope();
 
             // Queries
-            builder.RegisterType<AccountQueries>().As<IAccountQueries>().InstancePerLifetimeScope();
+            builder.RegisterType<MoneyAccountQueries>().As<IMoneyAccountQueries>().InstancePerLifetimeScope();
+            builder.RegisterType<TokenAccountQueries>().As<ITokenAccountQueries>().InstancePerLifetimeScope();
             builder.RegisterType<AddressQueries>().As<IAddressQueries>().InstancePerLifetimeScope();
             builder.RegisterType<CardQueries>().As<ICardQueries>().InstancePerLifetimeScope();
         }

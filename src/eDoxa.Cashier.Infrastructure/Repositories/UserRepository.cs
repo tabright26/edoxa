@@ -41,12 +41,20 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
 
         public async Task<User> FindAsync(UserId userId)
         {
-            return await _context.Users. /*Include(user => user.Account).*/Where(user => user.Id == userId).SingleOrDefaultAsync();
+            return await _context.Users
+                .Include(user => user.MoneyAccount.Transactions)
+                .Include(user => user.TokenAccount.Transactions)
+                .Where(user => user.Id == userId)
+                .SingleOrDefaultAsync();
         }
 
         public async Task<User> FindAsNoTrackingAsync(UserId userId)
         {
-            return await _context.Users.AsNoTracking() /*.Include(user => user.Account)*/.Where(user => user.Id == userId).SingleOrDefaultAsync();
+            return await _context.Users.AsNoTracking()
+                .Include(user => user.MoneyAccount.Transactions)
+                .Include(user => user.TokenAccount.Transactions)
+                .Where(user => user.Id == userId)
+                .SingleOrDefaultAsync();
         }
     }
 }

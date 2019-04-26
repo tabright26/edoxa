@@ -11,8 +11,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
-using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.Infrastructure.Configurations;

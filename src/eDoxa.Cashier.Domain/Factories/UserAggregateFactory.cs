@@ -11,13 +11,12 @@
 using System;
 
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Domain.Factories;
 
 using Stripe;
 
-using Token = eDoxa.Cashier.Domain.AggregateModels.Token;
+using Token = eDoxa.Cashier.Domain.AggregateModels.UserAggregate.Token;
 
 namespace eDoxa.Cashier.Domain.Factories
 {
@@ -51,13 +50,13 @@ namespace eDoxa.Cashier.Domain.Factories
     {
         public User CreateAdmin()
         {
-            var user = User.Create(AdminData);
+            var user = new User(AdminData);
 
             var bundles = new MoneyBundles();
 
             user.AddFunds(bundles[MoneyBundleType.OneHundred]);
 
-            user.Funds.Register(new Money(75), new ActivityId());
+            user.MoneyAccount.Register(new Money(65), new ActivityId());
 
             user.Withdraw(new Money(50));
 
@@ -68,22 +67,22 @@ namespace eDoxa.Cashier.Domain.Factories
 
         public User CreateFrancis()
         {
-            return User.Create(FrancisData);
+            return new User(FrancisData);
         }
 
         public User CreateRoy()
         {
-            return User.Create(RoyData);
+            return new User(RoyData);
         }
 
         public User CreateRyan()
         {
-            return User.Create(RyanData);
+            return new User(RyanData);
         }
 
         public User CreateUser()
         {
-            return User.Create(this.CreateUserId(), this.CreateCustomerId());
+            return new User(this.CreateUserId(), this.CreateCustomerId());
         }
 
         public Money CreateMoney()

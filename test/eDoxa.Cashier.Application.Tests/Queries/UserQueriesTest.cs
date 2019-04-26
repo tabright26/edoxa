@@ -46,10 +46,10 @@ namespace eDoxa.Cashier.Application.Tests.Queries
                 using (var context = factory.CreateContext())
                 {
                     // Arrange
-                    var queries = new AccountQueries(context, _cashierMapperFactory.CreateMapper());
+                    var queries = new MoneyAccountQueries(context, _cashierMapperFactory.CreateMapper());
 
                     // Act
-                    var accountDTO = await queries.FindUserAccountAsync(user.Id);
+                    var accountDTO = await queries.FindMoneyAccountAsync(user.Id);
 
                     // Assert
                     CashierAssert.IsMapped(accountDTO);

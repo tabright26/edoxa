@@ -14,8 +14,7 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Api.Controllers;
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
-using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
@@ -38,15 +37,15 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
     {
         private readonly UserAggregateFactory _userAggregateFactory = UserAggregateFactory.Instance;
 
-        private Mock<ILogger<UserAccountController>> _logger;
-        private Mock<IAccountQueries> _queries;
+        private Mock<ILogger<UserMoneyAccountController>> _logger;
+        private Mock<IMoneyAccountQueries> _queries;
         private Mock<IMediator> _mediator;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            _logger = new Mock<ILogger<UserAccountController>>();
-            _queries = new Mock<IAccountQueries>();
+            _logger = new Mock<ILogger<UserMoneyAccountController>>();
+            _queries = new Mock<IMoneyAccountQueries>();
             _mediator = new Mock<IMediator>();
         }
 
@@ -56,12 +55,12 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Arrange
             var user = _userAggregateFactory.CreateUser();
 
-            _queries.Setup(queries => queries.FindUserAccountAsync(It.IsAny<UserId>())).ReturnsAsync(new MoneyAccountDTO()).Verifiable();
+            _queries.Setup(queries => queries.FindMoneyAccountAsync(It.IsAny<UserId>())).ReturnsAsync(new MoneyAccountDTO()).Verifiable();
 
-            var controller = new UserAccountController(_logger.Object, _queries.Object, _mediator.Object);
+            var controller = new UserMoneyAccountController(_logger.Object, _queries.Object, _mediator.Object);
 
             // Act
-            var result = await controller.FindUserAccountAsync(user.Id);
+            var result = await controller.FindMoneyAccountAsync(user.Id);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -79,12 +78,12 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Arrange
             var user = _userAggregateFactory.CreateUser();
 
-            _queries.Setup(queries => queries.FindUserAccountAsync(It.IsAny<UserId>())).ReturnsAsync((MoneyAccountDTO) null).Verifiable();
+            _queries.Setup(queries => queries.FindMoneyAccountAsync(It.IsAny<UserId>())).ReturnsAsync((MoneyAccountDTO) null).Verifiable();
 
-            var controller = new UserAccountController(_logger.Object, _queries.Object, _mediator.Object);
+            var controller = new UserMoneyAccountController(_logger.Object, _queries.Object, _mediator.Object);
 
             // Act
-            var result = await controller.FindUserAccountAsync(user.Id);
+            var result = await controller.FindMoneyAccountAsync(user.Id);
 
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
@@ -102,14 +101,14 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Arrange
             var user = _userAggregateFactory.CreateUser();
 
-            _queries.Setup(queries => queries.FindUserAccountAsync(It.IsAny<UserId>())).ThrowsAsync(new Exception()).Verifiable();
+            _queries.Setup(queries => queries.FindMoneyAccountAsync(It.IsAny<UserId>())).ThrowsAsync(new Exception()).Verifiable();
 
             _logger.SetupLoggerWithLogLevelErrorVerifiable();
 
-            var controller = new UserAccountController(_logger.Object, _queries.Object, _mediator.Object);
+            var controller = new UserMoneyAccountController(_logger.Object, _queries.Object, _mediator.Object);
 
             // Act
-            var result = await controller.FindUserAccountAsync(user.Id);
+            var result = await controller.FindMoneyAccountAsync(user.Id);
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
@@ -133,10 +132,10 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
 
             _mediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(money).Verifiable();
 
-            var controller = new UserAccountController(_logger.Object, _queries.Object, _mediator.Object);
+            var controller = new UserMoneyAccountController(_logger.Object, _queries.Object, _mediator.Object);
 
             // Act
-            var result = await controller.WithdrawalAsync(user.Id, command);
+            var result = await controller.WithdrawAsync(user.Id, command);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -162,10 +161,10 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
 
             _logger.SetupLoggerWithLogLevelErrorVerifiable();
 
-            var controller = new UserAccountController(_logger.Object, _queries.Object, _mediator.Object);
+            var controller = new UserMoneyAccountController(_logger.Object, _queries.Object, _mediator.Object);
 
             // Act
-            var result = await controller.WithdrawalAsync(user.Id, command);
+            var result = await controller.WithdrawAsync(user.Id, command);
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
@@ -189,7 +188,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
 
             _mediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(money).Verifiable();
 
-            var controller = new UserAccountController(_logger.Object, _queries.Object, _mediator.Object);
+            var controller = new UserMoneyAccountController(_logger.Object, _queries.Object, _mediator.Object);
 
             // Act
             var result = await controller.AddFundsAsync(user.Id, command);
@@ -216,7 +215,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
 
             _logger.SetupLoggerWithLogLevelErrorVerifiable();
 
-            var controller = new UserAccountController(_logger.Object, _queries.Object, _mediator.Object);
+            var controller = new UserMoneyAccountController(_logger.Object, _queries.Object, _mediator.Object);
 
             // Act
             var result = await controller.AddFundsAsync(user.Id, command);
@@ -243,7 +242,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
 
             _mediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(token).Verifiable();
 
-            var controller = new UserAccountController(_logger.Object, _queries.Object, _mediator.Object);
+            var controller = new UserMoneyAccountController(_logger.Object, _queries.Object, _mediator.Object);
 
             // Act
             var result = await controller.BuyTokensAsync(user.Id, command);
@@ -270,7 +269,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
 
             _logger.SetupLoggerWithLogLevelErrorVerifiable();
 
-            var controller = new UserAccountController(_logger.Object, _queries.Object, _mediator.Object);
+            var controller = new UserMoneyAccountController(_logger.Object, _queries.Object, _mediator.Object);
 
             // Act
             var result = await controller.BuyTokensAsync(user.Id, command);

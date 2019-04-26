@@ -1,5 +1,5 @@
-﻿// Filename: IAccountQueries.cs
-// Date Created: 2019-04-14
+﻿// Filename: IMoneyAccountQueries.cs
+// Date Created: 2019-04-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,14 +9,16 @@
 // this source code package.
 
 using System.Threading.Tasks;
+
 using eDoxa.Cashier.Domain.AggregateModels;
+
 using JetBrains.Annotations;
 
 namespace eDoxa.Cashier.DTO.Queries
 {
-    public interface IAccountQueries
+    public interface IMoneyAccountQueries
     {
         [ItemCanBeNull]
-        Task<MoneyAccountDTO> FindUserAccountAsync(UserId userId);
+        Task<MoneyAccountDTO> FindMoneyAccountAsync(UserId userId);
     }
 }

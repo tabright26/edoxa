@@ -1,4 +1,4 @@
-﻿// Filename: MoneyPendingTransaction.cs
+﻿// Filename: TokenBundle.cs
 // Date Created: 2019-04-26
 // 
 // ================================================
@@ -8,11 +8,11 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
+namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 {
-    public sealed class MoneyPendingTransaction : MoneyTransaction
+    public sealed class TokenBundle : Bundle<Token>
     {
-        public MoneyPendingTransaction(Money amount, ActivityId activityId) : base(amount, activityId)
+        public TokenBundle(Money price, Token amount) : base(price, amount)
         {
         }
     }

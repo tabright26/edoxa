@@ -34,9 +34,9 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
                 .IsRequired()
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 
-            builder.HasOne(user => user.Funds).WithOne(account => account.User).IsRequired().OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(user => user.MoneyAccount).WithOne(account => account.User).IsRequired().OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasOne(user => user.Tokens).WithOne(account => account.User).IsRequired().OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(user => user.TokenAccount).WithOne(account => account.User).IsRequired().OnDelete(DeleteBehavior.Cascade);
 
             builder.HasKey(user => user.Id);
         }

@@ -12,7 +12,7 @@ using System;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Cashier.Domain.AggregateModels
+namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 {
     public sealed partial class Money : ICurrency
     {

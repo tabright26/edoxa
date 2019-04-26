@@ -12,10 +12,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Domain.Aggregate;
 
-namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
+namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 {
     public class MoneyAccount : Entity<AccountId>, IMoneyAccount
     {

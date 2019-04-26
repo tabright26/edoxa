@@ -1,5 +1,5 @@
-﻿// Filename: IMoneyTransaction.cs
-// Date Created: 2019-04-25
+﻿// Filename: MoneyBundleType.cs
+// Date Created: 2019-04-26
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,11 +8,14 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
-
-namespace eDoxa.Cashier.Domain
+namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 {
-    public interface IMoneyTransaction : ITransaction<Money>
+    public enum MoneyBundleType
     {
+        Ten,
+        Twenty,
+        Fifty,
+        OneHundred,
+        FiveHundred
     }
 }

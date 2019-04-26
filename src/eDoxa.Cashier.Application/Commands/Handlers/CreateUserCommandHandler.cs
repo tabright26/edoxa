@@ -47,7 +47,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 
             var customer = await _service.CreateAsync(options, cancellationToken: cancellationToken);
 
-            var user = User.Create(command.UserId, CustomerId.Parse(customer.Id));
+            var user = new User(command.UserId, CustomerId.Parse(customer.Id));
 
             _userRepository.Create(user);
 

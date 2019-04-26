@@ -1,11 +1,11 @@
-﻿// Filename: UserAccountController.cs
-// Date Created: 2019-04-13
+﻿// Filename: UserMoneyAccountController.cs
+// Date Created: 2019-04-21
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
@@ -28,14 +28,14 @@ namespace eDoxa.Cashier.Api.Controllers
     [ApiController]
     [ApiVersion("1.0")]
     [Produces("application/json")]
-    [Route("api/users/{userId}/account")]
-    public class UserAccountController : ControllerBase
+    [Route("api/users/{userId}/money-account")]
+    public class UserMoneyAccountController : ControllerBase
     {
-        private readonly ILogger<UserAccountController> _logger;
-        private readonly IAccountQueries _queries;
+        private readonly ILogger<UserMoneyAccountController> _logger;
         private readonly IMediator _mediator;
+        private readonly IMoneyAccountQueries _queries;
 
-        public UserAccountController(ILogger<UserAccountController> logger, IAccountQueries queries, IMediator mediator)
+        public UserMoneyAccountController(ILogger<UserMoneyAccountController> logger, IMoneyAccountQueries queries, IMediator mediator)
         {
             _logger = logger;
             _queries = queries;
@@ -43,21 +43,21 @@ namespace eDoxa.Cashier.Api.Controllers
         }
 
         /// <summary>
-        ///     Find a user's account.
+        ///     Find a user's money account.
         /// </summary>
-        [HttpGet(Name = nameof(FindUserAccountAsync))]
-        public async Task<IActionResult> FindUserAccountAsync(UserId userId)
+        [HttpGet(Name = nameof(FindMoneyAccountAsync))]
+        public async Task<IActionResult> FindMoneyAccountAsync(UserId userId)
         {
             try
             {
-                var coins = await _queries.FindUserAccountAsync(userId);
+                var account = await _queries.FindMoneyAccountAsync(userId);
 
-                if (coins == null)
+                if (account == null)
                 {
                     return this.NotFound(string.Empty);
                 }
 
-                return this.Ok(coins);
+                return this.Ok(account);
             }
             catch (Exception exception)
             {
@@ -70,11 +70,10 @@ namespace eDoxa.Cashier.Api.Controllers
         /// <summary>
         ///     Withdraw funds from a user's account.
         /// </summary>
-        [HttpPatch(Name = nameof(WithdrawalAsync))]
-        public async Task<IActionResult> WithdrawalAsync(
+        [HttpPatch(Name = nameof(WithdrawAsync))]
+        public async Task<IActionResult> WithdrawAsync(
             UserId userId,
-            [FromBody]
-            WithdrawalCommand command)
+            [FromBody] WithdrawalCommand command)
         {
             try
             {
@@ -98,8 +97,7 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpPatch("funds", Name = nameof(AddFundsAsync))]
         public async Task<IActionResult> AddFundsAsync(
             UserId userId,
-            [FromBody]
-            AddFundsCommand command)
+            [FromBody] AddFundsCommand command)
         {
             try
             {
@@ -123,8 +121,7 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpPatch("tokens", Name = nameof(BuyTokensAsync))]
         public async Task<IActionResult> BuyTokensAsync(
             UserId userId,
-            [FromBody]
-            BuyTokensCommand command)
+            [FromBody] BuyTokensCommand command)
         {
             try
             {

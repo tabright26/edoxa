@@ -15,7 +15,7 @@ using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Domain.Factories;
 using eDoxa.Identity.Infrastructure.Configurations;
-using eDoxa.Security;
+
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -33,16 +33,7 @@ namespace eDoxa.Identity.Infrastructure
             {
                 var admin = _userAggregateFactory.CreateAdmin();
 
-                Users.AddRange(admin, _userAggregateFactory.CreateFrancis(), _userAggregateFactory.CreateRoy(),
-                    _userAggregateFactory.CreateRyan());
-
-                UserClaims.Add(
-                    new UserClaim
-                    {
-                        ClaimType = CustomClaimTypes.UserCustomerIdClaimType, ClaimValue = "cus_E91yfe6iTcf7jM",
-                        UserId = admin.Id
-                    }
-                );
+                Users.AddRange(admin, _userAggregateFactory.CreateFrancis(), _userAggregateFactory.CreateRoy(), _userAggregateFactory.CreateRyan());
 
                 await this.SaveChangesAsync();
 

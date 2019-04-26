@@ -11,7 +11,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
+namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 {
     public sealed class TokenBundles : ReadOnlyDictionary<TokenBundleType, TokenBundle>
     {

@@ -1,4 +1,4 @@
-﻿// Filename: MoneyBundleType.cs
+﻿// Filename: TokenAccountDTO.cs
 // Date Created: 2019-04-26
 // 
 // ================================================
@@ -8,14 +8,15 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
+using Newtonsoft.Json;
+
+namespace eDoxa.Cashier.DTO
 {
-    public enum MoneyBundleType
+    [JsonObject]
+    public class TokenAccountDTO
     {
-        Ten,
-        Twenty,
-        Fifty,
-        OneHundred,
-        FiveHundred
+        [JsonProperty("balance")] public long Balance { get; set; }
+
+        [JsonProperty("pending")] public long Pending { get; set; }
     }
 }

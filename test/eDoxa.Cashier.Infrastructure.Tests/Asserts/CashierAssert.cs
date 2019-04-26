@@ -8,7 +8,9 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
+using System;
+using System.Collections.Generic;
+
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 
 using FluentAssertions;
@@ -23,7 +25,9 @@ namespace eDoxa.Cashier.Infrastructure.Tests.Asserts
 
             user.Id.Should().NotBeNull();
 
-            IsMapped(user.Funds);
+            IsMapped(user.MoneyAccount);
+
+            IsMapped(user.TokenAccount);
         }
 
         private static void IsMapped(MoneyAccount account)
@@ -35,6 +39,63 @@ namespace eDoxa.Cashier.Infrastructure.Tests.Asserts
             account.Balance.As<decimal>().Should().BeGreaterOrEqualTo(decimal.Zero);
 
             account.Pending.As<decimal>().Should().BeGreaterOrEqualTo(decimal.Zero);
+
+            IsMapped(account.Transactions);
+        }
+
+        private static void IsMapped(IReadOnlyCollection<MoneyTransaction> transactions)
+        {
+            transactions.Should().NotBeNull();
+
+            foreach (var transaction in transactions)
+            {
+                IsMapped(transaction);
+            }
+        }
+
+        private static void IsMapped(MoneyTransaction transaction)
+        {
+            transaction.Should().NotBeNull();
+
+            transaction.Id.Should().NotBeNull();
+
+            transaction.Timestamp.Should().BeBefore(DateTime.UtcNow);
+
+            transaction.Amount.Should().NotBeNull();
+        }
+
+        private static void IsMapped(TokenAccount account)
+        {
+            account.Should().NotBeNull();
+
+            account.Id.Should().NotBeNull();
+
+            account.Balance.As<long>().Should().BeGreaterOrEqualTo(0);
+
+            account.Pending.As<long>().Should().BeGreaterOrEqualTo(0);
+
+            IsMapped(account.Transactions);
+        }
+
+        private static void IsMapped(IReadOnlyCollection<TokenTransaction> transactions)
+        {
+            transactions.Should().NotBeNull();
+
+            foreach (var transaction in transactions)
+            {
+                IsMapped(transaction);
+            }
+        }
+
+        private static void IsMapped(TokenTransaction transaction)
+        {
+            transaction.Should().NotBeNull();
+
+            transaction.Id.Should().NotBeNull();
+
+            transaction.Timestamp.Should().BeBefore(DateTime.UtcNow);
+
+            transaction.Amount.Should().NotBeNull();
         }
     }
 }

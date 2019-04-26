@@ -12,7 +12,6 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain;
-using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Stripe.Validators;

@@ -1,11 +1,11 @@
 ﻿// Filename: CashierMapperFactory.cs
-// Date Created: 2019-04-09
+// Date Created: 2019-04-21
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
@@ -22,13 +22,7 @@ namespace eDoxa.Cashier.DTO.Factories
     {
         private static readonly Lazy<CashierMapperFactory> Lazy = new Lazy<CashierMapperFactory>(() => new CashierMapperFactory());
 
-        public static CashierMapperFactory Instance
-        {
-            get
-            {
-                return Lazy.Value;
-            }
-        }
+        public static CashierMapperFactory Instance => Lazy.Value;
     }
 
     public sealed partial class CashierMapperFactory : MapperFactory
@@ -38,8 +32,10 @@ namespace eDoxa.Cashier.DTO.Factories
             yield return new AddressProfile();
             yield return new CardListProfile();
             yield return new CardProfile();
-            yield return new CurrencyProfile();
             yield return new MoneyAccountProfile();
+            yield return new MoneyTransactionProfile();
+            yield return new TokenAccountProfile();
+            yield return new TokenTransactionProfile();
         }
     }
 }

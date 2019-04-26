@@ -1,5 +1,5 @@
-﻿// Filename: MoneyAccountDTO.cs
-// Date Created: 2019-04-25
+﻿// Filename: MoneyTransactionDTO.cs
+// Date Created: 2019-04-26
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,15 +8,19 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
+
 using Newtonsoft.Json;
 
 namespace eDoxa.Cashier.DTO
 {
     [JsonObject]
-    public class MoneyAccountDTO
+    public class MoneyTransactionDTO
     {
-        [JsonProperty("balance")] public decimal Balance { get; set; }
+        [JsonProperty("id")] public Guid Id { get; set; }
 
-        [JsonProperty("pending")] public decimal Pending { get; set; }
+        [JsonProperty("timestamp")] public DateTime Timestamp { get; set; }
+
+        [JsonProperty("amount")] public decimal Amount { get; set; }
     }
 }

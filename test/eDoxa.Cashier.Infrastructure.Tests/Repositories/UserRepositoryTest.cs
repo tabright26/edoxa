@@ -53,7 +53,7 @@ namespace eDoxa.Cashier.Infrastructure.Tests.Repositories
         [TestMethod]
         public async Task FindAsync_ShouldBeMapped()
         {
-            var user = UserAggregateFactory.CreateUser();
+            var user = UserAggregateFactory.CreateAdmin();
 
             using (var factory = new InMemoryDbContextFactory<CashierDbContext>())
             {

@@ -8,9 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
-using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
-using eDoxa.Cashier.Domain.AggregateModels.UserAggregate.DomainEvents;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Common;
@@ -20,60 +17,52 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
     public class User : Entity<UserId>, IAggregateRoot
     {
         private CustomerId _customerId;
-        private MoneyAccount _funds;
-        private TokenAccount _tokens;
+        private MoneyAccount _moneyAccount;
+        private TokenAccount _tokenAccount;
 
-        private User(UserId userId, CustomerId customerId) : this()
+        public User(UserId userId, CustomerId customerId) : this()
         {
             Id = userId;
             _customerId = customerId;
         }
 
+        public User(UserData data) : this()
+        {
+            Id = UserId.FromGuid(data.Id);
+            _customerId = CustomerId.Parse(data.StripeCustomerId);
+        }
+
         private User()
         {
-            _funds = new MoneyAccount(this);
-            _tokens = new TokenAccount(this);
+            _moneyAccount = new MoneyAccount(this);
+            _tokenAccount = new TokenAccount(this);
         }
 
         public CustomerId CustomerId => _customerId;
 
-        public MoneyAccount Funds => _funds;
+        public MoneyAccount MoneyAccount => _moneyAccount;
 
-        public TokenAccount Tokens => _tokens;
-
-        public static User Create(UserId userId, CustomerId customerId)
-        {
-            var user = new User(userId, customerId);
-
-            user.AddDomainEvent(new UserCreatedDomainEvent(userId, customerId));
-
-            return user;
-        }
-
-        public static User Create(UserData data)
-        {
-            return new User(UserId.FromGuid(data.Id), CustomerId.Parse(data.StripeCustomerId));
-        }
+        public TokenAccount TokenAccount => _tokenAccount;
 
         public Money AddFunds(MoneyBundle bundle)
         {
-            Funds.Deposit(bundle.Amount);
+            MoneyAccount.Deposit(bundle.Amount);
 
-            return Funds.Balance;
+            return MoneyAccount.Balance;
         }
 
         public Money Withdraw(Money amount)
         {
-            Funds.Withdraw(amount);
+            MoneyAccount.Withdraw(amount);
 
-            return Funds.Balance;
+            return MoneyAccount.Balance;
         }
 
         public Token BuyTokens(TokenBundle bundle)
         {
-            Tokens.Deposit(bundle.Amount);
+            TokenAccount.Deposit(bundle.Amount);
 
-            return Tokens.Balance;
+            return TokenAccount.Balance;
         }
     }
 }
