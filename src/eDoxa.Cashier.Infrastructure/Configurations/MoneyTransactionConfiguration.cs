@@ -1,5 +1,5 @@
 ﻿// Filename: MoneyTransactionConfiguration.cs
-// Date Created: 2019-04-24
+// Date Created: 2019-04-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,7 +9,7 @@
 // this source code package.
 
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 
 using JetBrains.Annotations;
 
@@ -40,6 +40,15 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
             builder.Property(transaction => transaction.Amount)
                 .HasConversion<decimal>(money => money, money => new Money(money))
                 .IsRequired()
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
+
+            builder.Property(transaction => transaction.Pending)
+                .IsRequired()
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
+
+            builder.Property(transaction => transaction.ActivityId)
+                .HasConversion(activityId => activityId.ToString(), activityId => ActivityId.Parse(activityId))
+                .IsRequired(false)
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.HasKey(transaction => transaction.Id);

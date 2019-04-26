@@ -9,7 +9,7 @@
 // this source code package.
 
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 
 using JetBrains.Annotations;
 
@@ -35,13 +35,10 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
 
             builder.Ignore(account => account.Balance);
 
-            builder.Property(account => account.Pending)
-                .HasConversion<decimal>(account => account, amount => new Money(amount))
-                .IsRequired()
-                .UsePropertyAccessMode(PropertyAccessMode.Field);
+            builder.Ignore(account => account.Pending);
 
             builder.HasMany(account => account.Transactions)
-                .WithOne(transaction => transaction.Account)
+                .WithOne()
                 .HasForeignKey(nameof(AccountId))
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);

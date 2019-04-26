@@ -1,5 +1,5 @@
 ﻿// Filename: Money.cs
-// Date Created: 2019-04-21
+// Date Created: 2019-04-26
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,7 +12,7 @@ using System;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
+namespace eDoxa.Cashier.Domain.AggregateModels
 {
     public sealed partial class Money : ICurrency
     {

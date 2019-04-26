@@ -1,5 +1,5 @@
 ﻿// Filename: MoneyBundles.cs
-// Date Created: 2019-04-14
+// Date Created: 2019-04-26
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,7 +11,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
+namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
 {
     public sealed class MoneyBundles : ReadOnlyDictionary<MoneyBundleType, MoneyBundle>
     {

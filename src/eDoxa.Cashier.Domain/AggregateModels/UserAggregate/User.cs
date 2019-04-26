@@ -8,6 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate.DomainEvents;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
@@ -55,21 +57,21 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 
         public Money AddFunds(MoneyBundle bundle)
         {
-            Funds.AddBalance(bundle.Amount);
+            Funds.Deposit(bundle.Amount);
 
             return Funds.Balance;
         }
 
         public Money Withdraw(Money amount)
         {
-            Funds.SubtractBalance(amount);
+            Funds.Withdraw(amount);
 
             return Funds.Balance;
         }
 
         public Token BuyTokens(TokenBundle bundle)
         {
-            Tokens.AddBalance(bundle.Amount);
+            Tokens.Deposit(bundle.Amount);
 
             return Tokens.Balance;
         }

@@ -67,6 +67,14 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             };
         }
 
+        public static TEntityId Parse(string value)
+        {
+            return new TEntityId
+            {
+                Value = Guid.Parse(value)
+            };
+        }
+
         public sealed override bool Equals([CanBeNull] object obj)
         {
             return base.Equals(obj);

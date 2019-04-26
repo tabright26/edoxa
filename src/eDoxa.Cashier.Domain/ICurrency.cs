@@ -1,5 +1,5 @@
 ﻿// Filename: ICurrency.cs
-// Date Created: 2019-04-24
+// Date Created: 2019-04-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.

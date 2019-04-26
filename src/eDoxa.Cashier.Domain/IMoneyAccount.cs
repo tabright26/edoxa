@@ -1,4 +1,4 @@
-﻿// Filename: IMoneyTransaction.cs
+﻿// Filename: IMoneyAccount.cs
 // Date Created: 2019-04-25
 // 
 // ================================================
@@ -12,7 +12,8 @@ using eDoxa.Cashier.Domain.AggregateModels;
 
 namespace eDoxa.Cashier.Domain
 {
-    public interface IMoneyTransaction : ITransaction<Money>
+    public interface IMoneyAccount : IAccount<Money>
     {
+        IMoneyTransaction Withdraw(Money amount);
     }
 }

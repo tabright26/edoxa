@@ -1,5 +1,5 @@
-﻿// Filename: MoneyBundleType.cs
-// Date Created: 2019-04-14
+﻿// Filename: ITokenAccount.cs
+// Date Created: 2019-04-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,14 +8,11 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
+using eDoxa.Cashier.Domain.AggregateModels;
+
+namespace eDoxa.Cashier.Domain
 {
-    public enum MoneyBundleType
+    public interface ITokenAccount : IAccount<Token>
     {
-        Ten,
-        Twenty,
-        Fifty,
-        OneHundred,
-        FiveHundred
     }
 }

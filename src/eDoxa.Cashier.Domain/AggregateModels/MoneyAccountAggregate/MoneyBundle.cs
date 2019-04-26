@@ -1,5 +1,5 @@
-﻿// Filename: TokenBundle.cs
-// Date Created: 2019-04-21
+﻿// Filename: MoneyBundle.cs
+// Date Created: 2019-04-26
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,11 +8,11 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
+namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
 {
-    public sealed class TokenBundle : Bundle<Token>
+    public sealed class MoneyBundle : Bundle<Money>
     {
-        public TokenBundle(Money price, Token amount) : base(price, amount)
+        public MoneyBundle(Money amount) : base(amount, amount)
         {
         }
     }

@@ -1,4 +1,4 @@
-﻿// Filename: IMoneyTransaction.cs
+﻿// Filename: ActivityId.cs
 // Date Created: 2019-04-25
 // 
 // ================================================
@@ -8,11 +8,14 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Cashier.Domain.AggregateModels;
+using System.ComponentModel;
 
-namespace eDoxa.Cashier.Domain
+using eDoxa.Seedwork.Domain.Aggregate;
+
+namespace eDoxa.Cashier.Domain.AggregateModels
 {
-    public interface IMoneyTransaction : ITransaction<Money>
+    [TypeConverter(typeof(EntityIdTypeConverter))]
+    public sealed class ActivityId : EntityId<ActivityId>
     {
     }
 }

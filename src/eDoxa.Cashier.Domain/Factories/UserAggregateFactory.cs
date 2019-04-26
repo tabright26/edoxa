@@ -1,5 +1,5 @@
 ﻿// Filename: UserAggregateFactory.cs
-// Date Created: 2019-04-14
+// Date Created: 2019-04-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,12 +11,13 @@
 using System;
 
 using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Domain.Factories;
 
 using Stripe;
 
-using Token = eDoxa.Cashier.Domain.AggregateModels.UserAggregate.Token;
+using Token = eDoxa.Cashier.Domain.AggregateModels.Token;
 
 namespace eDoxa.Cashier.Domain.Factories
 {
@@ -55,6 +56,8 @@ namespace eDoxa.Cashier.Domain.Factories
             var bundles = new MoneyBundles();
 
             user.AddFunds(bundles[MoneyBundleType.OneHundred]);
+
+            user.Funds.Register(new Money(75), new ActivityId());
 
             user.Withdraw(new Money(50));
 

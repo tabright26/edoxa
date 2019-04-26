@@ -1,5 +1,5 @@
 ﻿// Filename: IAccount.cs
-// Date Created: 2019-04-24
+// Date Created: 2019-04-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -7,6 +7,8 @@
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
+
+using eDoxa.Cashier.Domain.AggregateModels;
 
 namespace eDoxa.Cashier.Domain
 {
@@ -17,12 +19,10 @@ namespace eDoxa.Cashier.Domain
 
         TCurrency Pending { get; }
 
-        void AddBalance(TCurrency amount);
+        ITransaction<TCurrency> Deposit(TCurrency amount);
 
-        void AddPending(TCurrency amount);
+        ITransaction<TCurrency> Register(TCurrency amount, ActivityId activityId);
 
-        void SubtractBalance(TCurrency amount);
-
-        void SubtractPending(TCurrency amount);
+        ITransaction<TCurrency> Payoff(TCurrency amount, ActivityId activityId);
     }
 }
