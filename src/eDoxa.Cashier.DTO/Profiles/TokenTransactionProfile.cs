@@ -14,7 +14,7 @@ using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 
 namespace eDoxa.Cashier.DTO.Profiles
 {
-    public sealed class TokenTransactionProfile : Profile
+    internal sealed class TokenTransactionProfile : Profile
     {
         public TokenTransactionProfile()
         {

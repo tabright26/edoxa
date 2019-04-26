@@ -1,4 +1,4 @@
-﻿// Filename: AddFundsCommandValidator.cs
+﻿// Filename: WithdrawalCommandValidator.cs
 // Date Created: 2019-04-09
 // 
 // ============================================================
@@ -14,9 +14,9 @@ using FluentValidation;
 
 namespace eDoxa.Cashier.Application.Commands.Validations
 {
-    public sealed class AddFundsCommandValidator : CommandValidator<AddFundsCommand>
+    public sealed class WithdrawMoneyCommandValidator : CommandValidator<WithdrawMoneyCommand>
     {
-        public AddFundsCommandValidator()
+        public WithdrawMoneyCommandValidator()
         {
             this.RuleFor(command => command.UserId).NotEmpty();
         }

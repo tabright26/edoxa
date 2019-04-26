@@ -33,7 +33,7 @@ using Moq;
 namespace eDoxa.Cashier.Api.Tests.Controllers
 {
     [TestClass]
-    public sealed class UserAccountControllerTest
+    public sealed class UserMoneyAccountControllerTest
     {
         private readonly UserAggregateFactory _userAggregateFactory = UserAggregateFactory.Instance;
 
@@ -55,7 +55,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Arrange
             var user = _userAggregateFactory.CreateUser();
 
-            _queries.Setup(queries => queries.FindMoneyAccountAsync(It.IsAny<UserId>())).ReturnsAsync(new MoneyAccountDTO()).Verifiable();
+            _queries.Setup(queries => queries.FindAccountAsync(It.IsAny<UserId>())).ReturnsAsync(new MoneyAccountDTO()).Verifiable();
 
             var controller = new UserMoneyAccountController(_logger.Object, _queries.Object, _mediator.Object);
 
@@ -78,7 +78,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Arrange
             var user = _userAggregateFactory.CreateUser();
 
-            _queries.Setup(queries => queries.FindMoneyAccountAsync(It.IsAny<UserId>())).ReturnsAsync((MoneyAccountDTO) null).Verifiable();
+            _queries.Setup(queries => queries.FindAccountAsync(It.IsAny<UserId>())).ReturnsAsync((MoneyAccountDTO) null).Verifiable();
 
             var controller = new UserMoneyAccountController(_logger.Object, _queries.Object, _mediator.Object);
 
@@ -101,7 +101,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Arrange
             var user = _userAggregateFactory.CreateUser();
 
-            _queries.Setup(queries => queries.FindMoneyAccountAsync(It.IsAny<UserId>())).ThrowsAsync(new Exception()).Verifiable();
+            _queries.Setup(queries => queries.FindAccountAsync(It.IsAny<UserId>())).ThrowsAsync(new Exception()).Verifiable();
 
             _logger.SetupLoggerWithLogLevelErrorVerifiable();
 
@@ -128,14 +128,14 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
 
             var money = _userAggregateFactory.CreateMoney();
 
-            var command = new WithdrawalCommand(money);
+            var command = new WithdrawMoneyCommand(money);
 
             _mediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(money).Verifiable();
 
             var controller = new UserMoneyAccountController(_logger.Object, _queries.Object, _mediator.Object);
 
             // Act
-            var result = await controller.WithdrawAsync(user.Id, command);
+            var result = await controller.WithdrawMoneyAsync(user.Id, command);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -155,7 +155,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
 
             var money = _userAggregateFactory.CreateMoney();
 
-            var command = new WithdrawalCommand(money);
+            var command = new WithdrawMoneyCommand(money);
 
             _mediator.Setup(mediator => mediator.Send(command, default)).ThrowsAsync(new Exception()).Verifiable();
 
@@ -164,7 +164,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             var controller = new UserMoneyAccountController(_logger.Object, _queries.Object, _mediator.Object);
 
             // Act
-            var result = await controller.WithdrawAsync(user.Id, command);
+            var result = await controller.WithdrawMoneyAsync(user.Id, command);
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
@@ -184,14 +184,14 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
 
             var money = _userAggregateFactory.CreateMoney();
 
-            var command = new AddFundsCommand(MoneyBundleType.Ten);
+            var command = new DepositMoneyCommand(MoneyBundleType.Ten);
 
             _mediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(money).Verifiable();
 
             var controller = new UserMoneyAccountController(_logger.Object, _queries.Object, _mediator.Object);
 
             // Act
-            var result = await controller.AddFundsAsync(user.Id, command);
+            var result = await controller.DepositMoneyAsync(user.Id, command);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -209,7 +209,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Arrange
             var user = _userAggregateFactory.CreateUser();
 
-            var command = new AddFundsCommand(MoneyBundleType.Ten);
+            var command = new DepositMoneyCommand(MoneyBundleType.Ten);
 
             _mediator.Setup(mediator => mediator.Send(command, default)).ThrowsAsync(new Exception()).Verifiable();
 
@@ -218,61 +218,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             var controller = new UserMoneyAccountController(_logger.Object, _queries.Object, _mediator.Object);
 
             // Act
-            var result = await controller.AddFundsAsync(user.Id, command);
-
-            // Assert
-            result.Should().BeOfType<BadRequestObjectResult>();
-
-            _logger.Verify();
-
-            _queries.Verify();
-
-            _mediator.Verify();
-        }
-
-        [TestMethod]
-        public async Task BuyTokensAsync_ShouldBeOkObjectResult()
-        {
-            // Arrange
-            var user = _userAggregateFactory.CreateUser();
-
-            var token = _userAggregateFactory.CreateToken();
-
-            var command = new BuyTokensCommand(TokenBundleType.FiftyThousand);
-
-            _mediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(token).Verifiable();
-
-            var controller = new UserMoneyAccountController(_logger.Object, _queries.Object, _mediator.Object);
-
-            // Act
-            var result = await controller.BuyTokensAsync(user.Id, command);
-
-            // Assert
-            result.Should().BeOfType<OkObjectResult>();
-
-            _logger.VerifyNoOtherCalls();
-
-            _queries.Verify();
-
-            _mediator.Verify();
-        }
-
-        [TestMethod]
-        public async Task BuyTokensAsync_ShouldBeBadRequestObjectResult()
-        {
-            // Arrange
-            var user = _userAggregateFactory.CreateUser();
-
-            var command = new BuyTokensCommand(TokenBundleType.FiftyThousand);
-
-            _mediator.Setup(mediator => mediator.Send(command, default)).ThrowsAsync(new Exception()).Verifiable();
-
-            _logger.SetupLoggerWithLogLevelErrorVerifiable();
-
-            var controller = new UserMoneyAccountController(_logger.Object, _queries.Object, _mediator.Object);
-
-            // Act
-            var result = await controller.BuyTokensAsync(user.Id, command);
+            var result = await controller.DepositMoneyAsync(user.Id, command);
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();

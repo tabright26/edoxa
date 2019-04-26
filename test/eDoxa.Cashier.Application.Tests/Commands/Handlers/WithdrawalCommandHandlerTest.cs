@@ -34,7 +34,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             // Arrange
             var money = _userAggregateFactory.CreateMoney();
 
-            var command = new WithdrawalCommand(money);
+            var command = new WithdrawMoneyCommand(money);
 
             var mockUserRepository = new Mock<IUserRepository>();
 
@@ -44,7 +44,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
                               .Returns(Task.CompletedTask)
                               .Verifiable();
 
-            var handler = new WithdrawalCommandHandler(mockUserRepository.Object);
+            var handler = new WithdrawMoneyCommandHandler(mockUserRepository.Object);
 
             // Act
             await handler.Handle(command, default);

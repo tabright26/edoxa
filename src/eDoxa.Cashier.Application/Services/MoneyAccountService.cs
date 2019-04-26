@@ -20,13 +20,13 @@ using Stripe;
 
 namespace eDoxa.Cashier.Application.Services
 {
-    public sealed class AccountService : IAccountService
+    public sealed class MoneyAccountService : IMoneyAccountService
     {
         private readonly CustomerService _customerService;
         private readonly InvoiceItemService _invoiceItemService;
         private readonly InvoiceService _invoiceService;
 
-        public AccountService(CustomerService customerService, InvoiceService invoiceService, InvoiceItemService invoiceItemService)
+        public MoneyAccountService(CustomerService customerService, InvoiceService invoiceService, InvoiceItemService invoiceItemService)
         {
             _customerService = customerService;
             _customerService.ExpandDefaultSource = true;

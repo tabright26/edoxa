@@ -20,6 +20,7 @@ using MediatR;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Cashier.Api.Controllers
@@ -50,7 +51,7 @@ namespace eDoxa.Cashier.Api.Controllers
         {
             try
             {
-                var account = await _queries.FindMoneyAccountAsync(userId);
+                var account = await _queries.FindAccountAsync(userId);
 
                 if (account == null)
                 {
@@ -68,12 +69,12 @@ namespace eDoxa.Cashier.Api.Controllers
         }
 
         /// <summary>
-        ///     Withdraw funds from a user's account.
+        ///     Deposit money on a user's account.
         /// </summary>
-        [HttpPatch(Name = nameof(WithdrawAsync))]
-        public async Task<IActionResult> WithdrawAsync(
+        [HttpPatch("deposit", Name = nameof(DepositMoneyAsync))]
+        public async Task<IActionResult> DepositMoneyAsync(
             UserId userId,
-            [FromBody] WithdrawalCommand command)
+            [FromBody] DepositMoneyCommand command)
         {
             try
             {
@@ -92,12 +93,12 @@ namespace eDoxa.Cashier.Api.Controllers
         }
 
         /// <summary>
-        ///     Deposit funds on a user's account.
+        ///     Withdraw money from a user's account.
         /// </summary>
-        [HttpPatch("funds", Name = nameof(AddFundsAsync))]
-        public async Task<IActionResult> AddFundsAsync(
+        [HttpPatch("withdraw", Name = nameof(WithdrawMoneyAsync))]
+        public async Task<IActionResult> WithdrawMoneyAsync(
             UserId userId,
-            [FromBody] AddFundsCommand command)
+            [FromBody] WithdrawMoneyCommand command)
         {
             try
             {
@@ -116,20 +117,21 @@ namespace eDoxa.Cashier.Api.Controllers
         }
 
         /// <summary>
-        ///     Buy tokens on a user's account.
+        ///     Find a user's money transactions.
         /// </summary>
-        [HttpPatch("tokens", Name = nameof(BuyTokensAsync))]
-        public async Task<IActionResult> BuyTokensAsync(
-            UserId userId,
-            [FromBody] BuyTokensCommand command)
+        [HttpGet("transactions", Name = nameof(FindMoneyTransactionsAsync))]
+        public async Task<IActionResult> FindMoneyTransactionsAsync(UserId userId)
         {
             try
             {
-                command.UserId = userId;
+                var transactions = await _queries.FindTransactionsAsync(userId);
 
-                var token = await _mediator.SendCommandAsync(command);
+                if (!transactions.Any())
+                {
+                    return this.NoContent();
+                }
 
-                return this.Ok(token);
+                return this.Ok(transactions);
             }
             catch (Exception exception)
             {

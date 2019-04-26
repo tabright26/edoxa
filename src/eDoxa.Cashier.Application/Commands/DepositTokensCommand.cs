@@ -1,5 +1,5 @@
-﻿// Filename: WithdrawalCommand.cs
-// Date Created: 2019-04-09
+﻿// Filename: BuyTokensCommand.cs
+// Date Created: 2019-04-14
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -11,22 +11,23 @@
 using System.Runtime.Serialization;
 
 using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Application.Commands;
 
 namespace eDoxa.Cashier.Application.Commands
 {
     [DataContract]
-    public class WithdrawalCommand : Command<decimal>
+    public class DepositTokensCommand : Command<decimal>
     {
-        public WithdrawalCommand(decimal amount)
+        public DepositTokensCommand(TokenBundleType bundleType)
         {
-            Amount = amount;
+            BundleType = bundleType;
         }
 
         [IgnoreDataMember]
         public UserId UserId { get; set; }
 
-        [DataMember(Name = "amount")]
-        public decimal Amount { get; private set; }
+        [DataMember]
+        public TokenBundleType BundleType { get; private set; }
     }
 }

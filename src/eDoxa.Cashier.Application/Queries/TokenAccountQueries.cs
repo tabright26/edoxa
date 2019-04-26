@@ -36,20 +36,30 @@ namespace eDoxa.Cashier.Application.Queries
             _mapper = mapper;
         }
 
-        private async Task<TokenAccount> FindMoneyAccountAsNoTrackingAsync(UserId userId)
+        private async Task<TokenAccount> FindAccountAsNoTrackingAsync(UserId userId)
         {
-            return await _context.TokenAccounts.AsNoTracking().Include(transaction => transaction.Transactions).Where(account => account.User.Id == userId).SingleOrDefaultAsync();
+            return await _context.TokenAccounts.AsNoTracking()
+                .Include(transaction => transaction.Transactions)
+                .Where(account => account.User.Id == userId)
+                .SingleOrDefaultAsync();
         }
     }
 
     public sealed partial class TokenAccountQueries : ITokenAccountQueries
     {
         [ItemCanBeNull]
-        public async Task<TokenAccountDTO> FindTokenAccountAsync(UserId userId)
+        public async Task<TokenAccountDTO> FindAccountAsync(UserId userId)
         {
-            var account = await this.FindMoneyAccountAsNoTrackingAsync(userId);
+            var account = await this.FindAccountAsNoTrackingAsync(userId);
 
             return _mapper.Map<TokenAccountDTO>(account);
+        }
+
+        public async Task<TokenTransactionListDTO> FindTransactionsAsync(UserId userId)
+        {
+            var account = await this.FindAccountAsNoTrackingAsync(userId);
+
+            return _mapper.Map<TokenTransactionListDTO>(account.Transactions);
         }
     }
 }

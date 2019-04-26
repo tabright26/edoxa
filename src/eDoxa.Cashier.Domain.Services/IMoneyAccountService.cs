@@ -15,7 +15,7 @@ using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 
 namespace eDoxa.Cashier.Domain.Services
 {
-    public interface IAccountService
+    public interface IMoneyAccountService
     {
         Task TransactionAsync<TCurrency>(User user, Bundle<TCurrency> bundle, CancellationToken cancellationToken = default)
         where TCurrency : ICurrency;

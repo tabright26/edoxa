@@ -17,7 +17,7 @@ using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 
 namespace eDoxa.Challenges.DTO.Profiles
 {
-    public sealed class ParticipantListProfile : Profile
+    internal sealed class ParticipantListProfile : Profile
     {
         public ParticipantListProfile()
         {

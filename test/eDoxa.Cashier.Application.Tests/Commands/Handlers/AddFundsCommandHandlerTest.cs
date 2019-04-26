@@ -36,9 +36,9 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             // Arrange
             var user = _userAggregateFactory.CreateUser();
 
-            var command = new AddFundsCommand(MoneyBundleType.Ten);
+            var command = new DepositMoneyCommand(MoneyBundleType.Ten);
 
-            var mockAccountService = new Mock<IAccountService>();
+            var mockAccountService = new Mock<IMoneyAccountService>();
 
             mockAccountService.Setup(service => service.TransactionAsync(It.IsAny<User>(), It.IsAny<MoneyBundle>(), It.IsAny<CancellationToken>()))
                               .Returns(Task.CompletedTask)
@@ -52,7 +52,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
                               .Returns(Task.CompletedTask)
                               .Verifiable();
 
-            var handler = new AddFundsCommandHandler(mockUserRepository.Object, mockAccountService.Object);
+            var handler = new DepositMoneyCommandHandler(mockUserRepository.Object, mockAccountService.Object);
 
             // Act
             await handler.Handle(command, default);

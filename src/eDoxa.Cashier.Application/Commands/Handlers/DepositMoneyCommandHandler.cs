@@ -1,4 +1,4 @@
-﻿// Filename: BuyTokensCommandHandler.cs
+﻿// Filename: AddFundsCommandHandler.cs
 // Date Created: 2019-04-14
 // 
 // ============================================================
@@ -19,32 +19,32 @@ using JetBrains.Annotations;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
-    public sealed class BuyTokensCommandHandler : ICommandHandler<BuyTokensCommand, decimal>
+    public sealed class DepositMoneyCommandHandler : ICommandHandler<DepositMoneyCommand, decimal>
     {
-        private static readonly TokenBundles Bundles = new TokenBundles();
+        private static readonly MoneyBundles Bundles = new MoneyBundles();
 
         private readonly IUserRepository _userRepository;
-        private readonly IAccountService _accountService;
+        private readonly IMoneyAccountService _moneyAccountService;
 
-        public BuyTokensCommandHandler(IUserRepository userRepository, IAccountService accountService)
+        public DepositMoneyCommandHandler(IUserRepository userRepository, IMoneyAccountService moneyAccountService)
         {
             _userRepository = userRepository;
-            _accountService = accountService;
+            _moneyAccountService = moneyAccountService;
         }
 
-        public async Task<decimal> Handle([NotNull] BuyTokensCommand command, CancellationToken cancellationToken)
+        public async Task<decimal> Handle([NotNull] DepositMoneyCommand command, CancellationToken cancellationToken)
         {
             var user = await _userRepository.FindAsync(command.UserId);
 
             var bundle = Bundles[command.BundleType];
 
-            await _accountService.TransactionAsync(user, bundle, cancellationToken);
+            await _moneyAccountService.TransactionAsync(user, bundle, cancellationToken);
 
-            var tokenBalance = user.BuyTokens(bundle);
+            var balance = user.AddFunds(bundle);
 
             await _userRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
-            return tokenBalance;
+            return balance;
         }
     }
 }

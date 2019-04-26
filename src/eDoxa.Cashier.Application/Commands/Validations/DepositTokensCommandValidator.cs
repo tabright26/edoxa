@@ -14,9 +14,9 @@ using FluentValidation;
 
 namespace eDoxa.Cashier.Application.Commands.Validations
 {
-    public sealed class BuyTokensCommandValidator : CommandValidator<BuyTokensCommand>
+    public sealed class DepositTokensCommandValidator : CommandValidator<DepositTokensCommand>
     {
-        public BuyTokensCommandValidator()
+        public DepositTokensCommandValidator()
         {
             this.RuleFor(command => command.UserId).NotEmpty();
         }

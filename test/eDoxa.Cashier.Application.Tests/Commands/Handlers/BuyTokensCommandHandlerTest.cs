@@ -34,9 +34,9 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         public async Task Handle_FindAsync_ShouldBeInvokedExactlyOneTime()
         {
             // Arrange
-            var command = new BuyTokensCommand(TokenBundleType.FiftyThousand);
+            var command = new DepositTokensCommand(TokenBundleType.FiftyThousand);
 
-            var mockAccountService = new Mock<IAccountService>();
+            var mockAccountService = new Mock<IMoneyAccountService>();
 
             mockAccountService.Setup(service => service.TransactionAsync(It.IsAny<User>(), It.IsAny<TokenBundle>(), It.IsAny<CancellationToken>()))
                               .Returns(Task.CompletedTask)
@@ -50,7 +50,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
                               .Returns(Task.CompletedTask)
                               .Verifiable();
 
-            var handler = new BuyTokensCommandHandler(mockUserRepository.Object, mockAccountService.Object);
+            var handler = new DepositTokensCommandHandler(mockUserRepository.Object, mockAccountService.Object);
 
             // Act
             await handler.Handle(command, default);

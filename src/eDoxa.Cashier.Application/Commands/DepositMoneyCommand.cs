@@ -1,4 +1,4 @@
-﻿// Filename: BuyTokensCommand.cs
+﻿// Filename: AddFundsCommand.cs
 // Date Created: 2019-04-14
 // 
 // ============================================================
@@ -17,9 +17,9 @@ using eDoxa.Seedwork.Application.Commands;
 namespace eDoxa.Cashier.Application.Commands
 {
     [DataContract]
-    public class BuyTokensCommand : Command<decimal>
+    public class DepositMoneyCommand : Command<decimal>
     {
-        public BuyTokensCommand(TokenBundleType bundleType)
+        public DepositMoneyCommand(MoneyBundleType bundleType)
         {
             BundleType = bundleType;
         }
@@ -27,7 +27,7 @@ namespace eDoxa.Cashier.Application.Commands
         [IgnoreDataMember]
         public UserId UserId { get; set; }
 
-        [DataMember]
-        public TokenBundleType BundleType { get; private set; }
+        [DataMember(Name = "packType")]
+        public MoneyBundleType BundleType { get; private set; }
     }
 }

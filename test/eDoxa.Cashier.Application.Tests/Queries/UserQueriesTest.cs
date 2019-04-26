@@ -49,7 +49,7 @@ namespace eDoxa.Cashier.Application.Tests.Queries
                     var queries = new MoneyAccountQueries(context, _cashierMapperFactory.CreateMapper());
 
                     // Act
-                    var accountDTO = await queries.FindMoneyAccountAsync(user.Id);
+                    var accountDTO = await queries.FindAccountAsync(user.Id);
 
                     // Assert
                     CashierAssert.IsMapped(accountDTO);

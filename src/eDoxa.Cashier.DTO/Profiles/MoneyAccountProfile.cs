@@ -14,7 +14,7 @@ using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 
 namespace eDoxa.Cashier.DTO.Profiles
 {
-    public sealed class MoneyAccountProfile : Profile
+    internal sealed class MoneyAccountProfile : Profile
     {
         public MoneyAccountProfile()
         {
