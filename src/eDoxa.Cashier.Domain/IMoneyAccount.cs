@@ -9,11 +9,12 @@
 // this source code package.
 
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
+using eDoxa.Functional.Maybe;
 
 namespace eDoxa.Cashier.Domain
 {
-    public interface IMoneyAccount : IAccount<Money>
+    public interface IMoneyAccount : IAccount<Money, IMoneyTransaction>
     {
-        IMoneyTransaction Withdraw(Money amount);
+        Maybe<IMoneyTransaction> TryWithdraw(Money amount);
     }
 }

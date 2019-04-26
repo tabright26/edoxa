@@ -24,7 +24,5 @@ namespace eDoxa.Cashier.Domain
         ActivityId ActivityId { get; }
 
         bool Pending { get; }
-
-        void Complete();
     }
 }

@@ -8,6 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Functional.Maybe;
+
 namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 {
     public class TokenTransaction : Transaction<Token>, ITokenTransaction
@@ -18,6 +20,13 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 
         protected TokenTransaction(Token amount, ActivityId activityId) : base(amount, activityId)
         {
+        }
+
+        public Maybe<TokenTransaction> TryPayoff(Token amount)
+        {
+            this.Complete();
+
+            return -Amount < amount ? new Maybe<TokenTransaction>(new TokenTransaction(amount)) : new Maybe<TokenTransaction>();
         }
     }
 }

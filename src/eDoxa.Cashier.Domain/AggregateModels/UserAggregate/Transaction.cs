@@ -49,7 +49,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 
         public bool Pending => _pending;
 
-        public void Complete()
+        protected void Complete()
         {
             _pending = false;
         }

@@ -12,7 +12,7 @@ using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 
 namespace eDoxa.Cashier.Domain
 {
-    public interface ITokenAccount : IAccount<Token>
+    public interface ITokenAccount : IAccount<Token, ITokenTransaction>
     {
     }
 }

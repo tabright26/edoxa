@@ -8,11 +8,13 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using eDoxa.Functional.Maybe;
 using eDoxa.Seedwork.Domain.Aggregate;
+
+using Serilog;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 {
@@ -39,7 +41,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 
         public Token Pending => new Token(Transactions.Where(transaction => transaction.Pending).Sum(transaction => transaction.Amount));
 
-        public ITransaction<Token> Deposit(Token amount)
+        public ITokenTransaction Deposit(Token amount)
         {
             var transaction = new TokenTransaction(amount);
 
@@ -48,18 +50,46 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
             return transaction;
         }
 
-        public ITransaction<Token> Register(Token amount, ActivityId activityId)
+        public Maybe<ITokenTransaction> TryRegister(Token amount, ActivityId activityId)
         {
+            if (Balance < amount)
+            {
+                return new Maybe<ITokenTransaction>();
+            }
+
             var transaction = new TokenPendingTransaction(-amount, activityId);
 
-            _transactions.Add(transaction);
+            if (!_transactions.Add(transaction))
+            {
+                return new Maybe<ITokenTransaction>();
+            }
 
-            return transaction;
+            Log.Information($"{User} register to {activityId} amount {amount} - balance {Balance}");
+
+            return new Maybe<ITokenTransaction>(transaction);
         }
 
-        public ITransaction<Token> Payoff(Token amount, ActivityId activityId)
+        public Maybe<ITokenTransaction> TryPayoff(Token amount, ActivityId activityId)
         {
-            throw new NotImplementedException();
+            return Transactions.Where(transaction => transaction.Pending && transaction.ActivityId == activityId)
+                .Select(transaction => this.TryPayoff(amount, transaction))
+                .DefaultIfEmpty(new Maybe<ITokenTransaction>())
+                .Single();
+        }
+
+        private Maybe<ITokenTransaction> TryPayoff(Token amount, ITokenTransaction transaction)
+        {
+            return transaction.TryPayoff(amount).Select(payoff =>
+            {
+                if (!_transactions.Add(payoff))
+                {
+                    return new Maybe<ITokenTransaction>();
+                }
+
+                Log.Information($"{User} deposit amount {amount} - balance {Balance}");
+
+                return new Maybe<ITokenTransaction>(payoff);
+            }).Single();
         }
     }
 }

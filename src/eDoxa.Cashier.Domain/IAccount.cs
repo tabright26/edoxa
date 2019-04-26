@@ -9,20 +9,22 @@
 // this source code package.
 
 using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Functional.Maybe;
 
 namespace eDoxa.Cashier.Domain
 {
-    public interface IAccount<TCurrency>
+    public interface IAccount<TCurrency, TTransaction>
     where TCurrency : ICurrency
+    where TTransaction : ITransaction<TCurrency>
     {
         TCurrency Balance { get; }
 
         TCurrency Pending { get; }
 
-        ITransaction<TCurrency> Deposit(TCurrency amount);
+        TTransaction Deposit(TCurrency amount);
 
-        ITransaction<TCurrency> Register(TCurrency amount, ActivityId activityId);
+        Maybe<TTransaction> TryRegister(TCurrency amount, ActivityId activityId);
 
-        ITransaction<TCurrency> Payoff(TCurrency amount, ActivityId activityId);
+        Maybe<TTransaction> TryPayoff(TCurrency amount, ActivityId activityId);
     }
 }

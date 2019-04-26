@@ -53,7 +53,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 
         public Money Withdraw(Money amount)
         {
-            MoneyAccount.Withdraw(amount);
+            MoneyAccount.TryWithdraw(amount);
 
             return MoneyAccount.Balance;
         }
@@ -63,6 +63,11 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
             TokenAccount.Deposit(bundle.Amount);
 
             return TokenAccount.Balance;
+        }
+
+        public override string ToString()
+        {
+            return Id.ToString();
         }
     }
 }

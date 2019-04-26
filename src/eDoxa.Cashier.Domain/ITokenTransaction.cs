@@ -9,10 +9,12 @@
 // this source code package.
 
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
+using eDoxa.Functional.Maybe;
 
 namespace eDoxa.Cashier.Domain
 {
     public interface ITokenTransaction : ITransaction<Token>
     {
+        Maybe<TokenTransaction> TryPayoff(Token amount);
     }
 }

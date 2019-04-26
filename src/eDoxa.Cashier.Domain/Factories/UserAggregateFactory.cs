@@ -56,7 +56,7 @@ namespace eDoxa.Cashier.Domain.Factories
 
             user.AddFunds(bundles[MoneyBundleType.OneHundred]);
 
-            user.MoneyAccount.Register(new Money(65), new ActivityId());
+            user.MoneyAccount.TryRegister(new Money(65), new ActivityId());
 
             user.Withdraw(new Money(50));
 
