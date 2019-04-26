@@ -8,13 +8,19 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Collections.Generic;
+
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Functional.Maybe;
+using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Cashier.Domain
 {
-    public interface IMoneyAccount : IAccount<Money, IMoneyTransaction>
+    public interface IMoneyAccount : IAccount<Money, IMoneyTransaction>, IEntity<AccountId>
     {
+        IReadOnlyCollection<MoneyTransaction> Transactions { get; }
+
         Maybe<IMoneyTransaction> TryWithdraw(Money amount);
     }
 }

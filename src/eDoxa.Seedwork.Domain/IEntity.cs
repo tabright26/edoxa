@@ -1,14 +1,16 @@
 ﻿// Filename: IEntity.cs
-// Date Created: 2019-03-04
+// Date Created: 2019-04-21
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System.Collections.Generic;
+
+using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Seedwork.Domain
 {
@@ -17,5 +19,11 @@ namespace eDoxa.Seedwork.Domain
         IReadOnlyCollection<IDomainEvent> DomainEvents { get; }
 
         void ClearDomainEvents();
+    }
+
+    public interface IEntity<out TEntityId> : IEntity
+    where TEntityId : EntityId<TEntityId>, new()
+    {
+        TEntityId Id { get; }
     }
 }

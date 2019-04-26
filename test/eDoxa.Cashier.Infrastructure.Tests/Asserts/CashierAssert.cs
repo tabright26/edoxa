@@ -31,7 +31,7 @@ namespace eDoxa.Cashier.Infrastructure.Tests.Asserts
             IsMapped(user.TokenAccount);
         }
 
-        private static void IsMapped(MoneyAccount account)
+        private static void IsMapped(IMoneyAccount account)
         {
             account.Should().NotBeNull();
 
@@ -58,14 +58,14 @@ namespace eDoxa.Cashier.Infrastructure.Tests.Asserts
         {
             transaction.Should().NotBeNull();
 
-            //transaction.Id.Should().NotBeNull();
+            transaction.Id.Should().NotBeNull();
 
             transaction.Timestamp.Should().BeBefore(DateTime.UtcNow);
 
             transaction.Amount.Should().NotBeNull();
         }
 
-        private static void IsMapped(TokenAccount account)
+        private static void IsMapped(ITokenAccount account)
         {
             account.Should().NotBeNull();
 
@@ -92,7 +92,7 @@ namespace eDoxa.Cashier.Infrastructure.Tests.Asserts
         {
             transaction.Should().NotBeNull();
 
-            //transaction.Id.Should().NotBeNull();
+            transaction.Id.Should().NotBeNull();
 
             transaction.Timestamp.Should().BeBefore(DateTime.UtcNow);
 

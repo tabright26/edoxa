@@ -8,12 +8,14 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Functional.Maybe;
+using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Cashier.Domain
 {
-    public interface ITokenTransaction : ITransaction<Token>
+    public interface ITokenTransaction : ITransaction<Token>, IEntity<TransactionId>
     {
         Maybe<TokenTransaction> TryPayoff(Token amount);
     }
