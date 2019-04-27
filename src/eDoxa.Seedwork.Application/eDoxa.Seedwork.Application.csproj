@@ -15,17 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\eDoxa.AutoMapper\eDoxa.AutoMapper.csproj" />
     <ProjectReference Include="..\eDoxa.Security\eDoxa.Security.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Infrastructure\eDoxa.Seedwork.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="IdentityModel">
-      <HintPath>..\..\..\..\..\.nuget\packages\identitymodel\3.10.3\lib\netstandard2.0\IdentityModel.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Identity.Core">
-      <HintPath>..\..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.extensions.identity.core\2.2.0\lib\netstandard2.0\Microsoft.Extensions.Identity.Core.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>

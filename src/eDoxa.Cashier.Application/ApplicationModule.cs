@@ -27,6 +27,8 @@ namespace eDoxa.Cashier.Application
         {
             base.Load(builder);
 
+            builder.RegisterModule<MediatorModule<ApplicationModule>>();
+
             // Repositories
             builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerLifetimeScope();
 

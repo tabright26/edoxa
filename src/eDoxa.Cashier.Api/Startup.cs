@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-04-14
+// Date Created: 2019-04-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -56,13 +56,13 @@ namespace eDoxa.Cashier.Api
 
             services.AddIntegrationEventDbContext(Configuration, Assembly.GetAssembly(typeof(CashierDbContext)));
 
-            services.AddDbContext<CashierDbContext>(Configuration);            
+            services.AddDbContext<CashierDbContext>(Configuration);
 
             services.AddVersioning(new ApiVersion(1, 0));
 
             services.AddAutoMapper(CashierMapperFactory.Instance);
 
-            services.AddMvcWithApiBehavior();
+            services.AddCustomMvc();
 
             services.AddSwagger(Configuration, Environment);
 
@@ -82,6 +82,8 @@ namespace eDoxa.Cashier.Api
             application.UseHealthChecks();
 
             application.UseCorsPolicy();
+
+            application.UseCustomExceptionHandler();
 
             application.UseAuthentication();
 

@@ -61,7 +61,7 @@ namespace eDoxa.Challenges.Api
 
             services.AddAutoMapper(ChallengesMapperFactory.Instance);
 
-            services.AddMvcWithApiBehavior();
+            services.AddCustomMvc();
 
             services.AddSwagger(Configuration, Environment);
 
@@ -79,6 +79,8 @@ namespace eDoxa.Challenges.Api
             application.UseHealthChecks();
 
             application.UseCorsPolicy();
+
+            application.UseCustomExceptionHandler();
 
             application.UseAuthentication();
 

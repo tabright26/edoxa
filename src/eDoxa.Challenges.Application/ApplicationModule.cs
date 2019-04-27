@@ -26,6 +26,8 @@ namespace eDoxa.Challenges.Application
         {
             base.Load(builder);
 
+            builder.RegisterModule<MediatorModule<ApplicationModule>>();
+
             // Repositories
             builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerLifetimeScope();
             builder.RegisterType<ChallengeRepository>().As<IChallengeRepository>().InstancePerLifetimeScope();

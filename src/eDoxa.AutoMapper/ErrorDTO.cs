@@ -34,5 +34,10 @@ namespace eDoxa.AutoMapper
         [JsonProperty("statusCode")] public int StatusCode { get; }
 
         [JsonProperty("message")] public string Message { get; }
+
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
     }
 }

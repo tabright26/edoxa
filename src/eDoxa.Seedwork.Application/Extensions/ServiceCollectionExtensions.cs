@@ -10,7 +10,6 @@
 
 using eDoxa.Seedwork.Application.Filters;
 
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -33,8 +32,8 @@ namespace eDoxa.Seedwork.Application.Extensions
 
             services.AddVersionedApiExplorer(options => options.GroupNameFormat = "'v'VV");
         }
-
-        public static void AddMvc(this IServiceCollection services)
+        
+        public static void AddCustomMvc(this IServiceCollection services)
         {
             var builder = services.AddMvc(
                 options =>
@@ -49,41 +48,6 @@ namespace eDoxa.Seedwork.Application.Extensions
             builder.AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
             builder.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-        }
-
-        public static void AddMvcWithApiBehavior(this IServiceCollection services)
-        {
-            services.AddMvc();
-
-            services.ConfigureApiBehavior();
-        }
-
-        private static void ConfigureApiBehavior(this IServiceCollection services)
-        {
-            services.AddOptions();
-
-            services.Configure<ApiBehaviorOptions>(
-                options =>
-                {
-                    options.InvalidModelStateResponseFactory = context =>
-                    {
-                        var validationProblemDetails = new ValidationProblemDetails(context.ModelState)
-                        {
-                            Instance = context.HttpContext.Request.Path,
-                            Status = StatusCodes.Status400BadRequest,
-                            Detail = "Please refer to the errors property for additional details."
-                        };
-
-                        return new BadRequestObjectResult(validationProblemDetails)
-                        {
-                            ContentTypes =
-                            {
-                                "application/problem+json", "application/problem+xml"
-                            }
-                        };
-                    };
-                }
-            );
         }
     }
 }

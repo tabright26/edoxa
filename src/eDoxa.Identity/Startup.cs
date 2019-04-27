@@ -98,7 +98,7 @@ namespace eDoxa.Identity
 
             services.AddAutoMapper(IdentityMapperFactory.Instance);
 
-            services.AddMvcWithApiBehavior();
+            services.AddCustomMvc();
 
             services.AddSwagger(Configuration, Environment);
 
@@ -204,6 +204,7 @@ namespace eDoxa.Identity
             }
             else
             {
+                //application.UseCustomExceptionHandler();
                 application.UseExceptionHandler("/Home/Error");
                 application.UseHsts();
             }

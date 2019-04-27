@@ -26,6 +26,8 @@ namespace eDoxa.Identity.Application
         {
             base.Load(builder);
 
+            builder.RegisterModule<MediatorModule<ApplicationModule>>();
+
             builder.RegisterModule<IntegrationEventModule<ApplicationModule, IdentityDbContext>>();
 
             // Repositories
