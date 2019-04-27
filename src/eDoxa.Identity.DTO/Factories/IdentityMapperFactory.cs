@@ -1,11 +1,11 @@
 ﻿// Filename: IdentityMapperFactory.cs
-// Date Created: 2019-04-03
+// Date Created: 2019-04-21
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
@@ -22,13 +22,7 @@ namespace eDoxa.Identity.DTO.Factories
     {
         private static readonly Lazy<IdentityMapperFactory> Lazy = new Lazy<IdentityMapperFactory>(() => new IdentityMapperFactory());
 
-        public static IdentityMapperFactory Instance
-        {
-            get
-            {
-                return Lazy.Value;
-            }
-        }
+        public static IdentityMapperFactory Instance => Lazy.Value;
     }
 
     public sealed partial class IdentityMapperFactory : MapperFactory

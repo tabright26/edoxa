@@ -41,13 +41,18 @@ namespace eDoxa.Cashier.Application.Queries
 
         private async Task<User> FindUserAsNoTrackingAsync(UserId userId)
         {
-            return await _context.Users.AsNoTracking() /*.Include(user => user.Account)*/.Where(user => user.Id == userId).SingleOrDefaultAsync();
+            return await _context.Users
+                .AsNoTracking()
+                .Include(user => user.MoneyAccount.Transactions)
+                .Include(user => user.TokenAccount.Transactions)
+                .Where(user => user.Id == userId)
+                .SingleOrDefaultAsync();
         }
     }
 
     public sealed partial class AddressQueries : IAddressQueries
     {
-        public async Task<Maybe<AddressDTO>> FindUserAddressAsync(UserId userId)
+        public async Task<Option<AddressDTO>> FindUserAddressAsync(UserId userId)
         {
             var user = await this.FindUserAsNoTrackingAsync(userId);
 
@@ -57,7 +62,7 @@ namespace eDoxa.Cashier.Application.Queries
 
             var mapper = _mapper.Map<AddressDTO>(address);
 
-            return mapper != null ? new Maybe<AddressDTO>(mapper) : new Maybe<AddressDTO>();
+            return mapper != null ? new Option<AddressDTO>(mapper) : new Option<AddressDTO>();
         }
     }
 }

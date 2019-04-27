@@ -50,7 +50,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
             return MoneyAccount.Deposit(bundle.Amount);
         }
 
-        public Maybe<IMoneyTransaction> WithdrawMoney(Money amount)
+        public Option<IMoneyTransaction> WithdrawMoney(Money amount)
         {
             return MoneyAccount.TryWithdraw(amount);
         }

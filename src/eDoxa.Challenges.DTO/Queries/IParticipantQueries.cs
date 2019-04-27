@@ -17,8 +17,8 @@ namespace eDoxa.Challenges.DTO.Queries
 {
     public interface IParticipantQueries
     {
-        Task<Maybe<ParticipantListDTO>> FindChallengeParticipantsAsync(ChallengeId challengeId);
+        Task<Option<ParticipantListDTO>> FindChallengeParticipantsAsync(ChallengeId challengeId);
 
-        Task<Maybe<ParticipantDTO>> FindParticipantAsync(ParticipantId participantId);
+        Task<Option<ParticipantDTO>> FindParticipantAsync(ParticipantId participantId);
     }
 }

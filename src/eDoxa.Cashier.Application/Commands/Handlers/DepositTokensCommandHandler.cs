@@ -22,7 +22,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
-    public sealed class DepositTokensCommandHandler : ICommandHandler<DepositTokensCommand, IActionResult>
+    internal sealed class DepositTokensCommandHandler : ICommandHandler<DepositTokensCommand, IActionResult>
     {
         private static readonly TokenBundles Bundles = new TokenBundles();
         private readonly IMoneyAccountService _moneyAccountService;

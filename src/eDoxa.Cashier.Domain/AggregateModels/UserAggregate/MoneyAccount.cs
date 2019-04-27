@@ -53,64 +53,64 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
             return transaction;
         }
 
-        public Maybe<IMoneyTransaction> TryRegister(Money amount, ActivityId activityId)
+        public Option<IMoneyTransaction> TryRegister(Money amount, ActivityId activityId)
         {
             if (Balance < amount)
             {
-                return new Maybe<IMoneyTransaction>();
+                return new Option<IMoneyTransaction>();
             }
 
             var transaction = new MoneyPendingTransaction(-amount, activityId);
 
             if (!_transactions.Add(transaction))
             {
-                return new Maybe<IMoneyTransaction>();
+                return new Option<IMoneyTransaction>();
             }
 
             Log.Information($"{User} register to {activityId} amount {amount} - balance {Balance}");
 
-            return new Maybe<IMoneyTransaction>(transaction);
+            return new Option<IMoneyTransaction>(transaction);
         }
 
-        public Maybe<IMoneyTransaction> TryPayoff(Money amount, ActivityId activityId)
+        public Option<IMoneyTransaction> TryPayoff(Money amount, ActivityId activityId)
         {
             return Transactions.Where(transaction => transaction.Pending && transaction.LinkedId == activityId.ToString())
                 .Select(transaction => this.TryPayoff(amount, transaction))
-                .DefaultIfEmpty(new Maybe<IMoneyTransaction>())
+                .DefaultIfEmpty(new Option<IMoneyTransaction>())
                 .Single();
         }
 
-        public Maybe<IMoneyTransaction> TryWithdraw(Money amount)
+        public Option<IMoneyTransaction> TryWithdraw(Money amount)
         {
             if (Balance < amount)
             {
-                return new Maybe<IMoneyTransaction>();
+                return new Option<IMoneyTransaction>();
             }
 
             var transaction = new MoneyTransaction(-amount);
 
             if (!_transactions.Add(transaction))
             {
-                return new Maybe<IMoneyTransaction>();
+                return new Option<IMoneyTransaction>();
             }
 
             Log.Information($"{User} withdrew amount {amount} - balance {Balance}");
 
-            return new Maybe<IMoneyTransaction>(transaction);
+            return new Option<IMoneyTransaction>(transaction);
         }
 
-        private Maybe<IMoneyTransaction> TryPayoff(Money amount, IMoneyTransaction transaction)
+        private Option<IMoneyTransaction> TryPayoff(Money amount, IMoneyTransaction transaction)
         {
             return transaction.TryPayoff(amount).Select(payoff =>
             {
                 if (!_transactions.Add(payoff))
                 {
-                    return new Maybe<IMoneyTransaction>();
+                    return new Option<IMoneyTransaction>();
                 }
 
                 Log.Information($"{User} deposit amount {amount} - balance {Balance}");
 
-                return new Maybe<IMoneyTransaction>(payoff);
+                return new Option<IMoneyTransaction>(payoff);
             }).Single();
         }
     }

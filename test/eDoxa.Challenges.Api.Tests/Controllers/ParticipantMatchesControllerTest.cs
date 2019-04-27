@@ -53,7 +53,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
                 }
             };
 
-            _queries.Setup(queries => queries.FindParticipantMatchesAsync(It.IsAny<ParticipantId>())).ReturnsAsync(new Maybe<MatchListDTO>(value)).Verifiable();
+            _queries.Setup(queries => queries.FindParticipantMatchesAsync(It.IsAny<ParticipantId>())).ReturnsAsync(new Option<MatchListDTO>(value)).Verifiable();
 
             var controller = new ParticipantMatchesController(_queries.Object);
 
@@ -72,7 +72,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
         public async Task FindParticipantMatchesAsync_ShouldBeNoContentResult()
         {
             // Arrange
-            _queries.Setup(queries => queries.FindParticipantMatchesAsync(It.IsAny<ParticipantId>())).ReturnsAsync(new Maybe<MatchListDTO>()).Verifiable();
+            _queries.Setup(queries => queries.FindParticipantMatchesAsync(It.IsAny<ParticipantId>())).ReturnsAsync(new Option<MatchListDTO>()).Verifiable();
 
             var controller = new ParticipantMatchesController(_queries.Object);
 

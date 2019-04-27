@@ -19,7 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace eDoxa.Challenges.Application.Commands
 {
     [DataContract]
-    public class RegisterChallengeParticipantCommand : Command<IActionResult>
+    public sealed class RegisterChallengeParticipantCommand : Command<IActionResult>
     {
         public RegisterChallengeParticipantCommand(ChallengeId challengeId, UserId userId)
         {
@@ -29,8 +29,8 @@ namespace eDoxa.Challenges.Application.Commands
 
         [IgnoreDataMember] public LinkedAccount LinkedAccount { get; set; }
 
-        [DataMember] public ChallengeId ChallengeId { get; private set; }
+        [DataMember(Name = "challengeId")] public ChallengeId ChallengeId { get; private set; }
 
-        [DataMember] public UserId UserId { get; private set; }
+        [DataMember(Name = "userId")] public UserId UserId { get; private set; }
     }
 }

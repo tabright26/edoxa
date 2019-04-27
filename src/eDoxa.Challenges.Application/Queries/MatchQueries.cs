@@ -27,7 +27,7 @@ namespace eDoxa.Challenges.Application.Queries
 {
     public sealed partial class MatchQueries
     {
-        private static readonly string ExpandStats = nameof(Match.Stats);
+        private const string NavigationPropertyPath = nameof(Match.Stats);
 
         private readonly ChallengesDbContext _context;
         private readonly IMapper _mapper;
@@ -40,8 +40,9 @@ namespace eDoxa.Challenges.Application.Queries
 
         private async Task<IEnumerable<Match>> FindParticipantMatchesAsNoTrackingAsync(ParticipantId participantId)
         {
-            return await _context.Matches.AsNoTracking()
-                .Include(ExpandStats)
+            return await _context.Matches
+                .AsNoTracking()
+                .Include(NavigationPropertyPath)
                 .Where(match => match.Participant.Id == participantId)
                 .OrderBy(match => match.Timestamp)
                 .ToListAsync();
@@ -49,28 +50,32 @@ namespace eDoxa.Challenges.Application.Queries
 
         private async Task<Match> FindMatchAsNoTrackingAsync(MatchId matchId)
         {
-            return await _context.Matches.AsNoTracking().Include(ExpandStats).Where(match => match.Id == matchId).SingleOrDefaultAsync();
+            return await _context.Matches
+                .AsNoTracking()
+                .Include(NavigationPropertyPath)
+                .Where(match => match.Id == matchId)
+                .SingleOrDefaultAsync();
         }
     }
 
     public sealed partial class MatchQueries : IMatchQueries
     {
-        public async Task<Maybe<MatchListDTO>> FindParticipantMatchesAsync(ParticipantId participantId)
+        public async Task<Option<MatchListDTO>> FindParticipantMatchesAsync(ParticipantId participantId)
         {
             var matches = await this.FindParticipantMatchesAsNoTrackingAsync(participantId);
 
-            var mapper = _mapper.Map<MatchListDTO>(matches);
+            var list = _mapper.Map<MatchListDTO>(matches);
 
-            return mapper.Any() ? new Maybe<MatchListDTO>(mapper) : new Maybe<MatchListDTO>();
+            return list.Any() ? new Option<MatchListDTO>(list) : new Option<MatchListDTO>();
         }
 
-        public async Task<Maybe<MatchDTO>> FindMatchAsync(MatchId matchId)
+        public async Task<Option<MatchDTO>> FindMatchAsync(MatchId matchId)
         {
             var match = await this.FindMatchAsNoTrackingAsync(matchId);
 
             var mapper = _mapper.Map<MatchDTO>(match);
 
-            return mapper != null ? new Maybe<MatchDTO>(mapper) : new Maybe<MatchDTO>();
+            return mapper != null ? new Option<MatchDTO>(mapper) : new Option<MatchDTO>();
         }
     }
 }

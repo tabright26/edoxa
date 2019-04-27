@@ -1,11 +1,11 @@
 ﻿// Filename: RegisterChallengeParticipantCommandValidator.cs
-// Date Created: 2019-03-21
+// Date Created: 2019-04-21
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using eDoxa.Seedwork.Application.Commands.Validations;
@@ -14,7 +14,7 @@ using FluentValidation;
 
 namespace eDoxa.Challenges.Application.Commands.Validations
 {
-    public class RegisterChallengeParticipantCommandValidator : CommandValidator<RegisterChallengeParticipantCommand>
+    internal sealed class RegisterChallengeParticipantCommandValidator : CommandValidator<RegisterChallengeParticipantCommand>
     {
         public RegisterChallengeParticipantCommandValidator()
         {

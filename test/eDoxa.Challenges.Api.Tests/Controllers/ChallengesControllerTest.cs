@@ -56,7 +56,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
             };
 
             _queries.Setup(queries => queries.FindChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeType>(), It.IsAny<ChallengeState1>()))
-                .ReturnsAsync(new Maybe<ChallengeListDTO>(value))
+                .ReturnsAsync(new Option<ChallengeListDTO>(value))
                 .Verifiable();
 
             var controller = new ChallengesController(_queries.Object);
@@ -77,7 +77,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
         {
             // Arrange
             _queries.Setup(queries => queries.FindChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeType>(), It.IsAny<ChallengeState1>()))
-                .ReturnsAsync(new Maybe<ChallengeListDTO>())
+                .ReturnsAsync(new Option<ChallengeListDTO>())
                 .Verifiable();
 
             var controller = new ChallengesController(_queries.Object);
@@ -98,7 +98,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
         {
             // Arrange        
             _queries.Setup(queries => queries.FindChallengeAsync(It.IsAny<ChallengeId>()))
-                .ReturnsAsync(new Maybe<ChallengeDTO>(new ChallengeDTO()))
+                .ReturnsAsync(new Option<ChallengeDTO>(new ChallengeDTO()))
                 .Verifiable();
 
             var controller = new ChallengesController(_queries.Object);
@@ -119,7 +119,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
         {
             // Arrange
             _queries.Setup(queries => queries.FindChallengeAsync(It.IsAny<ChallengeId>()))
-                .ReturnsAsync(new Maybe<ChallengeDTO>())
+                .ReturnsAsync(new Option<ChallengeDTO>())
                 .Verifiable();
 
             var controller = new ChallengesController(_queries.Object);

@@ -22,11 +22,11 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
         {
         }
 
-        public Maybe<MoneyTransaction> TryPayoff(Money amount)
+        public Option<MoneyTransaction> TryPayoff(Money amount)
         {
             this.Complete();
 
-            return -Amount < amount ? new Maybe<MoneyTransaction>(new MoneyTransaction(amount)) : new Maybe<MoneyTransaction>();
+            return -Amount < amount ? new Option<MoneyTransaction>(new MoneyTransaction(amount)) : new Option<MoneyTransaction>();
         }
     }
 }

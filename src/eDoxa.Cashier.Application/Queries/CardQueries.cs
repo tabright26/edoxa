@@ -41,24 +41,29 @@ namespace eDoxa.Cashier.Application.Queries
 
         private async Task<User> FindUserAsNoTrackingAsync(UserId userId)
         {
-            return await _context.Users.AsNoTracking(). /*Include(user => user.Account).*/Where(user => user.Id == userId).SingleOrDefaultAsync();
+            return await _context.Users
+                .AsNoTracking()
+                .Include(user => user.MoneyAccount.Transactions)
+                .Include(user => user.TokenAccount.Transactions)
+                .Where(user => user.Id == userId)
+                .SingleOrDefaultAsync();
         }
     }
 
     public sealed partial class CardQueries : ICardQueries
     {
-        public async Task<Maybe<CardListDTO>> FindUserCardsAsync(UserId userId)
+        public async Task<Option<CardListDTO>> FindUserCardsAsync(UserId userId)
         {
             var user = await this.FindUserAsNoTrackingAsync(userId);
 
             var cards = await _cardService.ListAsync(user.CustomerId.ToString());
 
-            var mapper = _mapper.Map<CardListDTO>(cards);
+            var list = _mapper.Map<CardListDTO>(cards);
 
-            return mapper.Any() ? new Maybe<CardListDTO>(mapper) : new Maybe<CardListDTO>();
+            return list.Any() ? new Option<CardListDTO>(list) : new Option<CardListDTO>();
         }
 
-        public async Task<Maybe<CardDTO>> FindUserCardAsync(UserId userId, CardId cardId)
+        public async Task<Option<CardDTO>> FindUserCardAsync(UserId userId, CardId cardId)
         {
             var user = await this.FindUserAsNoTrackingAsync(userId);
 
@@ -66,7 +71,7 @@ namespace eDoxa.Cashier.Application.Queries
 
             var mapper = _mapper.Map<CardDTO>(card);
 
-            return mapper != null ? new Maybe<CardDTO>(mapper) : new Maybe<CardDTO>();
+            return mapper != null ? new Option<CardDTO>(mapper) : new Option<CardDTO>();
         }
     }
 }

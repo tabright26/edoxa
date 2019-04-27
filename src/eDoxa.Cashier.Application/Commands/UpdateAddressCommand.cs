@@ -18,7 +18,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace eDoxa.Cashier.Application.Commands
 {
     [DataContract]
-    public class UpdateAddressCommand : Command<IActionResult>
+    public sealed class UpdateAddressCommand : Command<IActionResult>
     {
         public UpdateAddressCommand(UserId userId, string city, string country, string line1, string line2, string postalCode, string state)
         {

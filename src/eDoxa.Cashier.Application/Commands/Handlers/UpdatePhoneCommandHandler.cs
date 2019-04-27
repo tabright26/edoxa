@@ -1,11 +1,11 @@
 ﻿// Filename: UpdatePhoneCommandHandler.cs
-// Date Created: 2019-04-09
+// Date Created: 2019-04-21
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System.Threading;
@@ -13,15 +13,17 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Seedwork.Application.Commands.Handlers;
+
 using JetBrains.Annotations;
+
 using Stripe;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
-    public sealed class UpdatePhoneCommandHandler : AsyncCommandHandler<UpdatePhoneCommand>
+    internal sealed class UpdatePhoneCommandHandler : AsyncCommandHandler<UpdatePhoneCommand>
     {
-        private readonly IUserRepository _userRepository;
         private readonly CustomerService _service;
+        private readonly IUserRepository _userRepository;
 
         public UpdatePhoneCommandHandler(IUserRepository userRepository, CustomerService service)
         {

@@ -18,7 +18,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace eDoxa.Cashier.Application.Commands
 {
     [DataContract]
-    public class CreateCardCommand : Command<IActionResult>
+    public sealed class CreateCardCommand : Command<IActionResult>
     {
         public CreateCardCommand(string sourceToken, bool defaultCard = false)
         {
@@ -28,8 +28,9 @@ namespace eDoxa.Cashier.Application.Commands
 
         [IgnoreDataMember] public UserId UserId { get; set; }
 
-        [DataMember] public string SourceToken { get; private set; }
+        [DataMember(Name = "sourceToken")] public string SourceToken { get; private set; }
 
-        [DataMember(IsRequired = false)] public bool DefaultCard { get; private set; }
+        [DataMember(Name = "defaultCard", IsRequired = false)]
+        public bool DefaultCard { get; private set; }
     }
 }

@@ -54,7 +54,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
                 }
             };
 
-            _queries.Setup(queries => queries.FindChallengeParticipantsAsync(It.IsAny<ChallengeId>())).ReturnsAsync(new Maybe<ParticipantListDTO>(value)).Verifiable();
+            _queries.Setup(queries => queries.FindChallengeParticipantsAsync(It.IsAny<ChallengeId>())).ReturnsAsync(new Option<ParticipantListDTO>(value)).Verifiable();
 
             var controller = new ChallengeParticipantsController(_queries.Object, _mediator.Object);
 
@@ -72,7 +72,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
         {
             // Arrange
             _queries.Setup(queries => queries.FindChallengeParticipantsAsync(It.IsAny<ChallengeId>()))
-                .ReturnsAsync(new Maybe<ParticipantListDTO>())
+                .ReturnsAsync(new Option<ParticipantListDTO>())
                 .Verifiable();
 
             var controller = new ChallengeParticipantsController(_queries.Object, _mediator.Object);

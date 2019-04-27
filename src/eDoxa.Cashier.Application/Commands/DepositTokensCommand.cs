@@ -19,7 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace eDoxa.Cashier.Application.Commands
 {
     [DataContract]
-    public class DepositTokensCommand : Command<IActionResult>
+    public sealed class DepositTokensCommand : Command<IActionResult>
     {
         public DepositTokensCommand(TokenBundleType bundleType)
         {
@@ -28,6 +28,6 @@ namespace eDoxa.Cashier.Application.Commands
 
         [IgnoreDataMember] public UserId UserId { get; set; }
 
-        [DataMember] public TokenBundleType BundleType { get; private set; }
+        [DataMember(Name = "bundleType")] public TokenBundleType BundleType { get; private set; }
     }
 }

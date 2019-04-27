@@ -18,7 +18,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace eDoxa.Cashier.Application.Commands
 {
     [DataContract]
-    public class WithdrawMoneyCommand : Command<IActionResult>
+    public sealed class WithdrawMoneyCommand : Command<IActionResult>
     {
         public WithdrawMoneyCommand(decimal amount)
         {

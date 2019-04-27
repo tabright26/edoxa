@@ -23,8 +23,8 @@ namespace eDoxa.Cashier.Domain
 
         TTransaction Deposit(TCurrency amount);
 
-        Maybe<TTransaction> TryRegister(TCurrency amount, ActivityId activityId);
+        Option<TTransaction> TryRegister(TCurrency amount, ActivityId activityId);
 
-        Maybe<TTransaction> TryPayoff(TCurrency amount, ActivityId activityId);
+        Option<TTransaction> TryPayoff(TCurrency amount, ActivityId activityId);
     }
 }

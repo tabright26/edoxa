@@ -13,16 +13,16 @@ using System.Collections.Generic;
 
 namespace eDoxa.Functional.Maybe
 {
-    public sealed class Maybe<T> : IEnumerable<T>
+    public sealed class Option<T> : IEnumerable<T>
     {
         private readonly IEnumerable<T> _values;
 
-        public Maybe()
+        public Option()
         {
             _values = new T[0];
         }
 
-        public Maybe(T value)
+        public Option(T value)
         {
             _values = new[] {value};
         }

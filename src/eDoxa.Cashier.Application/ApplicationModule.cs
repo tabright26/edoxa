@@ -34,13 +34,17 @@ namespace eDoxa.Cashier.Application
 
             // Services
             builder.RegisterType<MoneyAccountService>().As<IMoneyAccountService>().InstancePerLifetimeScope();
+
             builder.RegisterType<TokenAccountService>().As<ITokenAccountService>().InstancePerLifetimeScope();
 
             // Queries
-            builder.RegisterType<MoneyAccountQueries>().As<IMoneyAccountQueries>().InstancePerLifetimeScope();
-            builder.RegisterType<TokenAccountQueries>().As<ITokenAccountQueries>().InstancePerLifetimeScope();
             builder.RegisterType<AddressQueries>().As<IAddressQueries>().InstancePerLifetimeScope();
+
             builder.RegisterType<CardQueries>().As<ICardQueries>().InstancePerLifetimeScope();
+
+            builder.RegisterType<MoneyAccountQueries>().As<IMoneyAccountQueries>().InstancePerLifetimeScope();
+
+            builder.RegisterType<TokenAccountQueries>().As<ITokenAccountQueries>().InstancePerLifetimeScope();            
         }
     }
 }

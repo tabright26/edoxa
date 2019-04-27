@@ -32,13 +32,18 @@ namespace eDoxa.Identity.Application
 
             // Repositories
             builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerLifetimeScope();
+
             builder.RegisterType<RoleRepository>().As<IRoleRepository>().InstancePerLifetimeScope();
 
             // Services
             builder.RegisterType<UserService>().InstancePerLifetimeScope();
+
             builder.RegisterType<UserService>().As<IUserService>().InstancePerLifetimeScope();
+
             builder.RegisterType<RoleService>().InstancePerLifetimeScope();
+
             builder.RegisterType<SignInService>().InstancePerLifetimeScope();
+
             builder.RegisterType<RedirectionService>().As<IRedirectionService>().InstancePerLifetimeScope();
 
             // Queries

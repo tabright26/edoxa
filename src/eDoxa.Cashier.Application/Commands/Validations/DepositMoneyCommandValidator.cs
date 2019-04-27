@@ -14,7 +14,7 @@ using FluentValidation;
 
 namespace eDoxa.Cashier.Application.Commands.Validations
 {
-    public sealed class DepositMoneyCommandValidator : CommandValidator<DepositMoneyCommand>
+    internal sealed class DepositMoneyCommandValidator : CommandValidator<DepositMoneyCommand>
     {
         public DepositMoneyCommandValidator()
         {

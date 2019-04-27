@@ -16,7 +16,7 @@ using eDoxa.Functional.Maybe;
 
 namespace eDoxa.Challenges.Domain
 {
-    public interface IChallengeScoreboard : IReadOnlyDictionary<UserId, Maybe<Score>>
+    public interface IChallengeScoreboard : IReadOnlyDictionary<UserId, Option<Score>>
     {
     }
 }

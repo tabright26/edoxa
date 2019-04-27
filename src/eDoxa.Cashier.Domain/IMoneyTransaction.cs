@@ -17,6 +17,6 @@ namespace eDoxa.Cashier.Domain
 {
     public interface IMoneyTransaction : ITransaction<Money>, IEntity<TransactionId>
     {
-        Maybe<MoneyTransaction> TryPayoff(Money amount);
+        Option<MoneyTransaction> TryPayoff(Money amount);
     }
 }

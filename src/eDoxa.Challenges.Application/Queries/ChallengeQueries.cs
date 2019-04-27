@@ -28,9 +28,7 @@ namespace eDoxa.Challenges.Application.Queries
 {
     public sealed partial class ChallengeQueries
     {
-        private static readonly string ExpandParticipants = nameof(Challenge.Participants);
-        private static readonly string ExpandParticipantMatches = $"{ExpandParticipants}.{nameof(Participant.Matches)}";
-        private static readonly string ExpandParticipantMatchStats = $"{ExpandParticipantMatches}.{nameof(Match.Stats)}";
+        private static readonly string NavigationPropertyPath = $"{nameof(Challenge.Participants)}.{nameof(Participant.Matches)}.{nameof(Match.Stats)}";
 
         private readonly ChallengesDbContext _context;
         private readonly IMapper _mapper;
@@ -47,8 +45,9 @@ namespace eDoxa.Challenges.Application.Queries
             ChallengeType type,
             ChallengeState1 state)
         {
-            return await _context.Challenges.AsNoTracking()
-                .Include(ExpandParticipantMatchStats)
+            return await _context.Challenges
+                .AsNoTracking()
+                .Include(NavigationPropertyPath)
                 .Where(
                     challenge => challenge.Participants.Any(participant => participant.UserId == userId) &&
                                  (challenge.Game & game) != Game.None &&
@@ -61,8 +60,9 @@ namespace eDoxa.Challenges.Application.Queries
 
         private async Task<IEnumerable<Challenge>> FindChallengesAsNoTrackingAsync(Game game, ChallengeType type, ChallengeState1 state)
         {
-            return await _context.Challenges.AsNoTracking()
-                .Include(ExpandParticipantMatchStats)
+            return await _context.Challenges
+                .AsNoTracking()
+                .Include(NavigationPropertyPath)
                 .Where(
                     challenge => (challenge.Game & game) != Game.None &&
                                  (challenge.Setup.Type & type) != ChallengeType.None &&
@@ -78,8 +78,9 @@ namespace eDoxa.Challenges.Application.Queries
 
         private async Task<Challenge> FindChallengeAsNoTrackingAsync(ChallengeId challengeId)
         {
-            return await _context.Challenges.AsNoTracking()
-                .Include(ExpandParticipantMatchStats)
+            return await _context.Challenges
+                .AsNoTracking()
+                .Include(NavigationPropertyPath)
                 .Where(challenge => challenge.Id == challengeId)
                 .SingleOrDefaultAsync();
         }
@@ -87,31 +88,31 @@ namespace eDoxa.Challenges.Application.Queries
 
     public sealed partial class ChallengeQueries : IChallengeQueries
     {
-        public async Task<Maybe<ChallengeListDTO>> FindChallengesAsync(Game game, ChallengeType type, ChallengeState1 state)
+        public async Task<Option<ChallengeListDTO>> FindChallengesAsync(Game game, ChallengeType type, ChallengeState1 state)
         {
             var challenges = await this.FindChallengesAsNoTrackingAsync(game, type, state);
 
-            var mapper = _mapper.Map<ChallengeListDTO>(challenges);
+            var list = _mapper.Map<ChallengeListDTO>(challenges);
 
-            return mapper.Any() ? new Maybe<ChallengeListDTO>(mapper) : new Maybe<ChallengeListDTO>();
+            return list.Any() ? new Option<ChallengeListDTO>(list) : new Option<ChallengeListDTO>();
         }
 
-        public async Task<Maybe<ChallengeDTO>> FindChallengeAsync(ChallengeId challengeId)
+        public async Task<Option<ChallengeDTO>> FindChallengeAsync(ChallengeId challengeId)
         {
             var challenge = await this.FindChallengeAsNoTrackingAsync(challengeId);
 
             var mapper = _mapper.Map<ChallengeDTO>(challenge);
 
-            return mapper != null ? new Maybe<ChallengeDTO>(mapper) : new Maybe<ChallengeDTO>();
+            return mapper != null ? new Option<ChallengeDTO>(mapper) : new Option<ChallengeDTO>();
         }
 
-        public async Task<Maybe<ChallengeListDTO>> FindUserChallengeHistoryAsync(UserId userId, Game game, ChallengeType type, ChallengeState1 state)
+        public async Task<Option<ChallengeListDTO>> FindUserChallengeHistoryAsync(UserId userId, Game game, ChallengeType type, ChallengeState1 state)
         {
             var challenges = await this.FindUserChallengeHistoryAsNoTrackingAsync(userId, game, type, state);
 
-            var mapper = _mapper.Map<ChallengeListDTO>(challenges);
+            var list = _mapper.Map<ChallengeListDTO>(challenges);
 
-            return mapper.Any() ? new Maybe<ChallengeListDTO>(mapper) : new Maybe<ChallengeListDTO>();
+            return list.Any() ? new Option<ChallengeListDTO>(list) : new Option<ChallengeListDTO>();
         }
     }
 }

@@ -50,45 +50,45 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
             return transaction;
         }
 
-        public Maybe<ITokenTransaction> TryRegister(Token amount, ActivityId activityId)
+        public Option<ITokenTransaction> TryRegister(Token amount, ActivityId activityId)
         {
             if (Balance < amount)
             {
-                return new Maybe<ITokenTransaction>();
+                return new Option<ITokenTransaction>();
             }
 
             var transaction = new TokenPendingTransaction(-amount, activityId);
 
             if (!_transactions.Add(transaction))
             {
-                return new Maybe<ITokenTransaction>();
+                return new Option<ITokenTransaction>();
             }
 
             Log.Information($"{User} register to {activityId} amount {amount} - balance {Balance}");
 
-            return new Maybe<ITokenTransaction>(transaction);
+            return new Option<ITokenTransaction>(transaction);
         }
 
-        public Maybe<ITokenTransaction> TryPayoff(Token amount, ActivityId activityId)
+        public Option<ITokenTransaction> TryPayoff(Token amount, ActivityId activityId)
         {
             return Transactions.Where(transaction => transaction.Pending && transaction.LinkedId == activityId.ToString())
                 .Select(transaction => this.TryPayoff(amount, transaction))
-                .DefaultIfEmpty(new Maybe<ITokenTransaction>())
+                .DefaultIfEmpty(new Option<ITokenTransaction>())
                 .Single();
         }
 
-        private Maybe<ITokenTransaction> TryPayoff(Token amount, ITokenTransaction transaction)
+        private Option<ITokenTransaction> TryPayoff(Token amount, ITokenTransaction transaction)
         {
             return transaction.TryPayoff(amount).Select(payoff =>
             {
                 if (!_transactions.Add(payoff))
                 {
-                    return new Maybe<ITokenTransaction>();
+                    return new Option<ITokenTransaction>();
                 }
 
                 Log.Information($"{User} deposit amount {amount} - balance {Balance}");
 
-                return new Maybe<ITokenTransaction>(payoff);
+                return new Option<ITokenTransaction>(payoff);
             }).Single();
         }
     }

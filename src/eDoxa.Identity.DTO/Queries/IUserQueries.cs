@@ -16,6 +16,6 @@ namespace eDoxa.Identity.DTO.Queries
 {
     public interface IUserQueries
     {
-        Task<Maybe<UserListDTO>> FindUsersAsync();
+        Task<Option<UserListDTO>> FindUsersAsync();
     }
 }

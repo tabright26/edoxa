@@ -21,9 +21,7 @@ using JetBrains.Annotations;
 
 namespace eDoxa.Challenges.Application.DomainEventHandlers
 {
-    public sealed class
-        ChallengeUserPrizesSnapshottedDomainEventHandler : IDomainEventHandler<ChallengeUserPrizesSnapshottedDomainEvent
-        >
+    internal sealed class ChallengeUserPrizesSnapshottedDomainEventHandler : IDomainEventHandler<ChallengeUserPrizesSnapshottedDomainEvent>
     {
         private readonly IIntegrationEventService _integrationEventService;
 

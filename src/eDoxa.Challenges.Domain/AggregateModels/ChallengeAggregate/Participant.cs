@@ -45,7 +45,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public Challenge Challenge => _challenge;
 
-        public Maybe<Score> AverageScore => Matches.Count >= Challenge.Setup.BestOf ? new Maybe<Score>(new ParticipantScore(this)) : new Maybe<Score>();
+        public Option<Score> AverageScore => Matches.Count >= Challenge.Setup.BestOf ? new Option<Score>(new ParticipantScore(this)) : new Option<Score>();
 
         public IReadOnlyCollection<Match> Matches => _matches;
 

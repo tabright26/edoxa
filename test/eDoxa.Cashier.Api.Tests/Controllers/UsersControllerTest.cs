@@ -52,7 +52,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Arrange
             var userId = _userAggregateFactory.CreateUserId();
 
-            _queries.Setup(queries => queries.FindUserAddressAsync(It.IsAny<UserId>())).ReturnsAsync(new Maybe<AddressDTO>(new AddressDTO()))
+            _queries.Setup(queries => queries.FindUserAddressAsync(It.IsAny<UserId>())).ReturnsAsync(new Option<AddressDTO>(new AddressDTO()))
                 .Verifiable();
 
             var controller = new UsersController(_queries.Object, _mediator.Object);

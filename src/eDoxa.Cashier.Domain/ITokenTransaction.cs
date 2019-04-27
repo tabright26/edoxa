@@ -17,6 +17,6 @@ namespace eDoxa.Cashier.Domain
 {
     public interface ITokenTransaction : ITransaction<Token>, IEntity<TransactionId>
     {
-        Maybe<TokenTransaction> TryPayoff(Token amount);
+        Option<TokenTransaction> TryPayoff(Token amount);
     }
 }

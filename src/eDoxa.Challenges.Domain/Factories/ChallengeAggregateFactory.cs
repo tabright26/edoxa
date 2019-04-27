@@ -95,7 +95,7 @@ namespace eDoxa.Challenges.Domain.Factories
 
             if (state >= ChallengeState1.Opened)
             {
-                var scoring = new Maybe<IChallengeScoring>(this.CreateChallengeScoring());
+                var scoring = new Option<IChallengeScoring>(this.CreateChallengeScoring());
 
                 challenge.GetType().GetField("_scoring", BindingFlags.Instance | BindingFlags.NonPublic)?.SetValue(challenge, scoring);
             }

@@ -53,7 +53,7 @@ namespace eDoxa.Identity.Api.Tests.Controllers
             };
 
             _queries.Setup(service => service.FindUsersAsync())
-                .ReturnsAsync(new Maybe<UserListDTO>(value))
+                .ReturnsAsync(new Option<UserListDTO>(value))
                 .Verifiable();
 
             var controller = new UsersController(_queries.Object, _service.Object);
@@ -71,7 +71,7 @@ namespace eDoxa.Identity.Api.Tests.Controllers
         public async Task FindUsersAsync_ShouldBeNoContentObjectResult()
         {
             // Arrange
-            _queries.Setup(queries => queries.FindUsersAsync()).ReturnsAsync(new Maybe<UserListDTO>()).Verifiable();
+            _queries.Setup(queries => queries.FindUsersAsync()).ReturnsAsync(new Option<UserListDTO>()).Verifiable();
 
             var controller = new UsersController(_queries.Object, _service.Object);
 

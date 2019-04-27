@@ -17,6 +17,6 @@ namespace eDoxa.Cashier.DTO.Queries
 {
     public interface IAddressQueries
     {
-        Task<Maybe<AddressDTO>> FindUserAddressAsync(UserId userId);
+        Task<Option<AddressDTO>> FindUserAddressAsync(UserId userId);
     }
 }

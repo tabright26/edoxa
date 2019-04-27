@@ -37,29 +37,32 @@ namespace eDoxa.Cashier.Application.Queries
 
         private async Task<MoneyAccount> FindAccountAsNoTrackingAsync(UserId userId)
         {
-            return await _context.MoneyAccounts.AsNoTracking().Include(transaction => transaction.Transactions).Where(account => account.User.Id == userId)
+            return await _context.MoneyAccounts
+                .AsNoTracking()
+                .Include(transaction => transaction.Transactions)
+                .Where(account => account.User.Id == userId)
                 .SingleOrDefaultAsync();
         }
     }
 
     public sealed partial class MoneyAccountQueries : IMoneyAccountQueries
     {
-        public async Task<Maybe<MoneyAccountDTO>> FindAccountAsync(UserId userId)
+        public async Task<Option<MoneyAccountDTO>> FindAccountAsync(UserId userId)
         {
             var account = await this.FindAccountAsNoTrackingAsync(userId);
 
             var mapper = _mapper.Map<MoneyAccountDTO>(account);
 
-            return mapper != null ? new Maybe<MoneyAccountDTO>(mapper) : new Maybe<MoneyAccountDTO>();
+            return mapper != null ? new Option<MoneyAccountDTO>(mapper) : new Option<MoneyAccountDTO>();
         }
 
-        public async Task<Maybe<MoneyTransactionListDTO>> FindTransactionsAsync(UserId userId)
+        public async Task<Option<MoneyTransactionListDTO>> FindTransactionsAsync(UserId userId)
         {
             var account = await this.FindAccountAsNoTrackingAsync(userId);
 
-            var mapper = _mapper.Map<MoneyTransactionListDTO>(account.Transactions);
+            var list = _mapper.Map<MoneyTransactionListDTO>(account.Transactions);
 
-            return mapper.Any() ? new Maybe<MoneyTransactionListDTO>(mapper) : new Maybe<MoneyTransactionListDTO>();
+            return list.Any() ? new Option<MoneyTransactionListDTO>(list) : new Option<MoneyTransactionListDTO>();
         }
     }
 }

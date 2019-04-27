@@ -27,8 +27,7 @@ namespace eDoxa.Challenges.Application.Queries
 {
     public sealed partial class ParticipantQueries
     {
-        private static readonly string ExpandMatches = nameof(Participant.Matches);
-        private static readonly string ExpandMatchStats = $"{ExpandMatches}.{nameof(Match.Stats)}";
+        private static readonly string NavigationPropertyPath = $"{nameof(Participant.Matches)}.{nameof(Match.Stats)}";
 
         private readonly ChallengesDbContext _context;
         private readonly IMapper _mapper;
@@ -41,8 +40,9 @@ namespace eDoxa.Challenges.Application.Queries
 
         private async Task<IEnumerable<Participant>> FindChallengeParticipantsAsNoTrackingAsync(ChallengeId challengeId)
         {
-            return await _context.Participants.AsNoTracking()
-                .Include(ExpandMatchStats)
+            return await _context.Participants
+                .AsNoTracking()
+                .Include(NavigationPropertyPath)
                 .Where(participant => participant.Challenge.Id == challengeId)
                 .OrderBy(participant => participant.Timestamp)
                 .ToListAsync();
@@ -50,8 +50,9 @@ namespace eDoxa.Challenges.Application.Queries
 
         private async Task<Participant> FindParticipantAsNoTrackingAsync(ParticipantId participantId)
         {
-            return await _context.Participants.AsNoTracking()
-                .Include(ExpandMatchStats)
+            return await _context.Participants
+                .AsNoTracking()
+                .Include(NavigationPropertyPath)
                 .Where(participant => participant.Id == participantId)
                 .SingleOrDefaultAsync();
         }
@@ -59,22 +60,22 @@ namespace eDoxa.Challenges.Application.Queries
 
     public sealed partial class ParticipantQueries : IParticipantQueries
     {
-        public async Task<Maybe<ParticipantListDTO>> FindChallengeParticipantsAsync(ChallengeId challengeId)
+        public async Task<Option<ParticipantListDTO>> FindChallengeParticipantsAsync(ChallengeId challengeId)
         {
             var participants = await this.FindChallengeParticipantsAsNoTrackingAsync(challengeId);
 
-            var mapper = _mapper.Map<ParticipantListDTO>(participants);
+            var list = _mapper.Map<ParticipantListDTO>(participants);
 
-            return mapper.Any() ? new Maybe<ParticipantListDTO>(mapper) : new Maybe<ParticipantListDTO>();
+            return list.Any() ? new Option<ParticipantListDTO>(list) : new Option<ParticipantListDTO>();
         }
 
-        public async Task<Maybe<ParticipantDTO>> FindParticipantAsync(ParticipantId participantId)
+        public async Task<Option<ParticipantDTO>> FindParticipantAsync(ParticipantId participantId)
         {
             var participant = await this.FindParticipantAsNoTrackingAsync(participantId);
 
             var mapper = _mapper.Map<ParticipantDTO>(participant);
 
-            return mapper != null ? new Maybe<ParticipantDTO>(mapper) : new Maybe<ParticipantDTO>();
+            return mapper != null ? new Option<ParticipantDTO>(mapper) : new Option<ParticipantDTO>();
         }
     }
 }

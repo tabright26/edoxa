@@ -21,6 +21,6 @@ namespace eDoxa.Cashier.Domain
     {
         IReadOnlyCollection<MoneyTransaction> Transactions { get; }
 
-        Maybe<IMoneyTransaction> TryWithdraw(Money amount);
+        Option<IMoneyTransaction> TryWithdraw(Money amount);
     }
 }

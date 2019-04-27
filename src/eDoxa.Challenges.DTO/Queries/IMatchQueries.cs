@@ -17,8 +17,8 @@ namespace eDoxa.Challenges.DTO.Queries
 {
     public interface IMatchQueries
     {
-        Task<Maybe<MatchListDTO>> FindParticipantMatchesAsync(ParticipantId participantId);
+        Task<Option<MatchListDTO>> FindParticipantMatchesAsync(ParticipantId participantId);
 
-        Task<Maybe<MatchDTO>> FindMatchAsync(MatchId matchId);
+        Task<Option<MatchDTO>> FindMatchAsync(MatchId matchId);
     }
 }

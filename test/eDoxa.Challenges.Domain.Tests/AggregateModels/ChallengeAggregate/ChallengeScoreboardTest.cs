@@ -33,7 +33,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             var scoreboard = ChallengeAggregateFactory.CreateChallengeScoreboard();
 
             // Act
-            var type = typeof(Dictionary<UserId, Maybe<Score>>);
+            var type = typeof(Dictionary<UserId, Option<Score>>);
 
             // Assert
             scoreboard.Should().BeAssignableTo(type);

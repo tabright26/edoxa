@@ -22,7 +22,7 @@ using Stripe;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
-    public sealed class UpdateAddressCommandHandler : ICommandHandler<UpdateAddressCommand, IActionResult>
+    internal sealed class UpdateAddressCommandHandler : ICommandHandler<UpdateAddressCommand, IActionResult>
     {
         private readonly CustomerService _service;
         private readonly IUserRepository _userRepository;

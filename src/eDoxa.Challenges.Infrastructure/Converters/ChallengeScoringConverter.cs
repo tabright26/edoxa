@@ -24,7 +24,7 @@ using Newtonsoft.Json;
 
 namespace eDoxa.Challenges.Infrastructure.Converters
 {
-    public sealed class ChallengeScoringConverter : ValueConverter<Maybe<IChallengeScoring>, string>
+    public sealed class ChallengeScoringConverter : ValueConverter<Option<IChallengeScoring>, string>
     {
         private static readonly IMapper Mapper = new Mapper(new MapperConfiguration(config =>
         {
@@ -36,8 +36,8 @@ namespace eDoxa.Challenges.Infrastructure.Converters
         public ChallengeScoringConverter() : base(
             scoring => JsonConvert.SerializeObject(Mapper.Map<Dictionary<string, float>>(scoring.SingleOrDefault()), Formatting.None),
             scoring => scoring != null
-                ? new Maybe<IChallengeScoring>(Mapper.Map<ChallengeScoring>(JsonConvert.DeserializeObject<Dictionary<string, float>>(scoring)))
-                : new Maybe<IChallengeScoring>()
+                ? new Option<IChallengeScoring>(Mapper.Map<ChallengeScoring>(JsonConvert.DeserializeObject<Dictionary<string, float>>(scoring)))
+                : new Option<IChallengeScoring>()
         )
         {
         }

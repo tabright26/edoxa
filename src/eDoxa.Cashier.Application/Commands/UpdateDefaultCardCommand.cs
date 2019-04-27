@@ -18,7 +18,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace eDoxa.Cashier.Application.Commands
 {
     [DataContract]
-    public class UpdateDefaultCardCommand : Command<IActionResult>
+    public sealed class UpdateDefaultCardCommand : Command<IActionResult>
     {
         public UpdateDefaultCardCommand(UserId userId, CardId cardId)
         {

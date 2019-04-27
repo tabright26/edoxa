@@ -1,11 +1,11 @@
 ﻿// Filename: CreateUserCommandHandler.cs
-// Date Created: 2019-04-09
+// Date Created: 2019-04-21
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System.Collections.Generic;
@@ -16,15 +16,17 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Seedwork.Application.Commands.Handlers;
+
 using JetBrains.Annotations;
+
 using Stripe;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
-    public sealed class CreateUserCommandHandler : AsyncCommandHandler<CreateUserCommand>
+    internal sealed class CreateUserCommandHandler : AsyncCommandHandler<CreateUserCommand>
     {
-        private readonly IUserRepository _userRepository;
         private readonly CustomerService _service;
+        private readonly IUserRepository _userRepository;
 
         public CreateUserCommandHandler(IUserRepository userRepository, CustomerService service)
         {

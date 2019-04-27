@@ -56,7 +56,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
             };
 
             _queries.Setup(queries => queries.FindUserChallengeHistoryAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<ChallengeType>(), It.IsAny<ChallengeState1>()))
-                .ReturnsAsync(new Maybe<ChallengeListDTO>(value))
+                .ReturnsAsync(new Option<ChallengeListDTO>(value))
                 .Verifiable();
 
             var controller = new UsersController(_queries.Object);
@@ -77,7 +77,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
         {
             // Arrange
             _queries.Setup(queries => queries.FindUserChallengeHistoryAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<ChallengeType>(), It.IsAny<ChallengeState1>()))
-                .ReturnsAsync(new Maybe<ChallengeListDTO>())
+                .ReturnsAsync(new Option<ChallengeListDTO>())
                 .Verifiable();
 
             var controller = new UsersController(_queries.Object);

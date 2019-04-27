@@ -14,7 +14,7 @@ using eDoxa.Functional.Maybe;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed class ChallengeScoreboard : Dictionary<UserId, Maybe<Score>>, IChallengeScoreboard
+    public sealed class ChallengeScoreboard : Dictionary<UserId, Option<Score>>, IChallengeScoreboard
     {
     }
 }

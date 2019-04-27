@@ -20,7 +20,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace eDoxa.Challenges.Application.Commands.Handlers
 {
-    public class RegisterChallengeParticipantCommandHandler : ICommandHandler<RegisterChallengeParticipantCommand, IActionResult>
+    internal sealed class RegisterChallengeParticipantCommandHandler : ICommandHandler<RegisterChallengeParticipantCommand, IActionResult>
     {
         private readonly IChallengeRepository _challengeRepository;
 

@@ -1,11 +1,11 @@
 ﻿// Filename: UpdatePhoneCommand.cs
-// Date Created: 2019-04-09
+// Date Created: 2019-04-21
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System.Runtime.Serialization;
@@ -16,7 +16,7 @@ using eDoxa.Seedwork.Application.Commands;
 namespace eDoxa.Cashier.Application.Commands
 {
     [DataContract]
-    public class UpdatePhoneCommand : Command
+    public sealed class UpdatePhoneCommand : Command
     {
         public UpdatePhoneCommand(UserId userId, string phone)
         {
@@ -24,10 +24,8 @@ namespace eDoxa.Cashier.Application.Commands
             Phone = phone;
         }
 
-        [DataMember]
-        public UserId UserId { get; private set; }
+        [DataMember(Name = "userId")] public UserId UserId { get; private set; }
 
-        [DataMember]
-        public string Phone { get; private set; }
+        [DataMember(Name = "phone")] public string Phone { get; private set; }
     }
 }

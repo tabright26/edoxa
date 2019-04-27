@@ -44,7 +44,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
         public async Task FindMatchAsync_ShouldBeOkObjectResult()
         {
             // Arrange        
-            _queries.Setup(queries => queries.FindMatchAsync(It.IsAny<MatchId>())).ReturnsAsync(new Maybe<MatchDTO>(new MatchDTO())).Verifiable();
+            _queries.Setup(queries => queries.FindMatchAsync(It.IsAny<MatchId>())).ReturnsAsync(new Option<MatchDTO>(new MatchDTO())).Verifiable();
 
             var controller = new MatchesController(_queries.Object);
 
@@ -61,7 +61,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
         public async Task FindMatchAsync_ShouldBeNotFoundObjectResult()
         {
             // Arrange
-            _queries.Setup(queries => queries.FindMatchAsync(It.IsAny<MatchId>())).ReturnsAsync(new Maybe<MatchDTO>()).Verifiable();
+            _queries.Setup(queries => queries.FindMatchAsync(It.IsAny<MatchId>())).ReturnsAsync(new Option<MatchDTO>()).Verifiable();
 
             var controller = new MatchesController(_queries.Object);
 

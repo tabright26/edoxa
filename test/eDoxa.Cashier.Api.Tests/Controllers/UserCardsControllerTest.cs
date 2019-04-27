@@ -54,7 +54,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Arrange
             var userId = _userAggregateFactory.CreateUserId();
 
-            _queries.Setup(queries => queries.FindUserCardsAsync(It.IsAny<UserId>())).ReturnsAsync(new Maybe<CardListDTO>(new CardListDTO
+            _queries.Setup(queries => queries.FindUserCardsAsync(It.IsAny<UserId>())).ReturnsAsync(new Option<CardListDTO>(new CardListDTO
             {
                 Items = new List<CardDTO>
                 {
@@ -81,7 +81,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Arrange
             var userId = _userAggregateFactory.CreateUserId();
 
-            _queries.Setup(queries => queries.FindUserCardsAsync(It.IsAny<UserId>())).ReturnsAsync(new Maybe<CardListDTO>()).Verifiable();
+            _queries.Setup(queries => queries.FindUserCardsAsync(It.IsAny<UserId>())).ReturnsAsync(new Option<CardListDTO>()).Verifiable();
 
             var controller = new UserCardsController(_queries.Object, _mediator.Object);
 
@@ -130,7 +130,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
 
             var cardId = _userAggregateFactory.CreateCardId();
 
-            _queries.Setup(queries => queries.FindUserCardAsync(It.IsAny<UserId>(), It.IsAny<CardId>())).ReturnsAsync(new Maybe<CardDTO>(new CardDTO())).Verifiable();
+            _queries.Setup(queries => queries.FindUserCardAsync(It.IsAny<UserId>(), It.IsAny<CardId>())).ReturnsAsync(new Option<CardDTO>(new CardDTO())).Verifiable();
 
             var controller = new UserCardsController(_queries.Object, _mediator.Object);
 

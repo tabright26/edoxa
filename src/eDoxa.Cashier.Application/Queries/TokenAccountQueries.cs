@@ -37,7 +37,8 @@ namespace eDoxa.Cashier.Application.Queries
 
         private async Task<TokenAccount> FindAccountAsNoTrackingAsync(UserId userId)
         {
-            return await _context.TokenAccounts.AsNoTracking()
+            return await _context.TokenAccounts
+                .AsNoTracking()
                 .Include(transaction => transaction.Transactions)
                 .Where(account => account.User.Id == userId)
                 .SingleOrDefaultAsync();
@@ -46,22 +47,22 @@ namespace eDoxa.Cashier.Application.Queries
 
     public sealed partial class TokenAccountQueries : ITokenAccountQueries
     {
-        public async Task<Maybe<TokenAccountDTO>> FindAccountAsync(UserId userId)
+        public async Task<Option<TokenAccountDTO>> FindAccountAsync(UserId userId)
         {
             var account = await this.FindAccountAsNoTrackingAsync(userId);
 
             var mapper = _mapper.Map<TokenAccountDTO>(account);
 
-            return mapper != null ? new Maybe<TokenAccountDTO>(mapper) : new Maybe<TokenAccountDTO>();
+            return mapper != null ? new Option<TokenAccountDTO>(mapper) : new Option<TokenAccountDTO>();
         }
 
-        public async Task<Maybe<TokenTransactionListDTO>> FindTransactionsAsync(UserId userId)
+        public async Task<Option<TokenTransactionListDTO>> FindTransactionsAsync(UserId userId)
         {
             var account = await this.FindAccountAsNoTrackingAsync(userId);
 
-            var mapper = _mapper.Map<TokenTransactionListDTO>(account.Transactions);
+            var list = _mapper.Map<TokenTransactionListDTO>(account.Transactions);
 
-            return mapper.Any() ? new Maybe<TokenTransactionListDTO>(mapper) : new Maybe<TokenTransactionListDTO>();
+            return list.Any() ? new Option<TokenTransactionListDTO>(list) : new Option<TokenTransactionListDTO>();
         }
     }
 }

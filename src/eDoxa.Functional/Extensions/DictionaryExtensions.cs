@@ -16,9 +16,9 @@ namespace eDoxa.Functional.Extensions
 {
     public static class DictionaryExtensions
     {
-        public static Maybe<TValue> TryGetValue<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key)
+        public static Option<TValue> TryGetValue<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key)
         {
-            return dictionary.TryGetValue(key, out var value) ? new Maybe<TValue>(value) : new Maybe<TValue>();
+            return dictionary.TryGetValue(key, out var value) ? new Option<TValue>(value) : new Option<TValue>();
         }
     }
 }

@@ -30,18 +30,25 @@ namespace eDoxa.Challenges.Application
 
             // Repositories
             builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerLifetimeScope();
+
             builder.RegisterType<ChallengeRepository>().As<IChallengeRepository>().InstancePerLifetimeScope();
 
             // Queries
             builder.RegisterType<ChallengeQueries>().As<IChallengeQueries>().InstancePerLifetimeScope();
+
             builder.RegisterType<ParticipantQueries>().As<IParticipantQueries>().InstancePerLifetimeScope();
+
             builder.RegisterType<MatchQueries>().As<IMatchQueries>().InstancePerLifetimeScope();
 
             // Services
             builder.RegisterType<ChallengeDailyPublisherService>().As<IChallengeDailyPublisherService>().InstancePerLifetimeScope();
+
             builder.RegisterType<ChallengeWeeklyPublisherService>().As<IChallengeWeeklyPublisherService>().InstancePerLifetimeScope();
+
             builder.RegisterType<ChallengeMonthlyPublisherService>().As<IChallengeMonthlyPublisherService>().InstancePerLifetimeScope();
+
             builder.RegisterType<ChallengeSynchronizerService>().As<IChallengeSynchronizerService>().InstancePerLifetimeScope();
+
             builder.RegisterType<ChallengeCloserService>().As<IChallengeCloserService>().InstancePerLifetimeScope();
         }
     }

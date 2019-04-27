@@ -18,7 +18,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace eDoxa.Cashier.Application.Commands
 {
     [DataContract]
-    public class DeleteCardCommand : Command<IActionResult>
+    public sealed class DeleteCardCommand : Command<IActionResult>
     {
         public DeleteCardCommand(UserId userId, CardId cardId)
         {

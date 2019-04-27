@@ -44,7 +44,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
         public async Task FindParticipantAsync_ShouldBeOkObjectResult()
         {
             // Arrange        
-            _queries.Setup(queries => queries.FindParticipantAsync(It.IsAny<ParticipantId>())).ReturnsAsync(new Maybe<ParticipantDTO>(new ParticipantDTO())).Verifiable();
+            _queries.Setup(queries => queries.FindParticipantAsync(It.IsAny<ParticipantId>())).ReturnsAsync(new Option<ParticipantDTO>(new ParticipantDTO())).Verifiable();
 
             var controller = new ParticipantsController(_queries.Object);
 
@@ -63,7 +63,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
         public async Task FindParticipantAsync_ShouldBeNotFoundObjectResult()
         {
             // Arrange
-            _queries.Setup(queries => queries.FindParticipantAsync(It.IsAny<ParticipantId>())).ReturnsAsync(new Maybe<ParticipantDTO>()).Verifiable();
+            _queries.Setup(queries => queries.FindParticipantAsync(It.IsAny<ParticipantId>())).ReturnsAsync(new Option<ParticipantDTO>()).Verifiable();
 
             var controller = new ParticipantsController(_queries.Object);
 

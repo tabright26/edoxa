@@ -37,19 +37,21 @@ namespace eDoxa.Identity.Application.Queries
 
         private async Task<IEnumerable<User>> FindUsersAsNoTrackingAsync()
         {
-            return await _context.Users.AsNoTracking().ToListAsync();
+            return await _context.Users
+                .AsNoTracking()
+                .ToListAsync();
         }
     }
 
     public sealed partial class UserQueries : IUserQueries
     {
-        public async Task<Maybe<UserListDTO>> FindUsersAsync()
+        public async Task<Option<UserListDTO>> FindUsersAsync()
         {
             var users = await this.FindUsersAsNoTrackingAsync();
 
-            var mapper = _mapper.Map<UserListDTO>(users);
+            var list = _mapper.Map<UserListDTO>(users);
 
-            return mapper.Any() ? new Maybe<UserListDTO>(mapper) : new Maybe<UserListDTO>();
+            return list.Any() ? new Option<UserListDTO>(list) : new Option<UserListDTO>();
         }
     }
 }

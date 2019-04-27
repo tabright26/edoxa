@@ -30,7 +30,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         private ChallengeName _name;
         private ChallengeSetup _setup;
         private ChallengeTimeline _timeline;
-        private Maybe<IChallengeScoring> _scoring;
+        private Option<IChallengeScoring> _scoring;
         private HashSet<Participant> _participants;
 
         internal Challenge(Game game, ChallengeName name, ChallengeSetup setup) : this()
@@ -43,7 +43,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         private Challenge()
         {
             _timeline = new ChallengeTimeline();
-            _scoring = new Maybe<IChallengeScoring>();
+            _scoring = new Option<IChallengeScoring>();
             _participants = new HashSet<Participant>();
         }
 
@@ -74,7 +74,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public ChallengeLiveData LiveData => new ChallengeLiveData(Setup, Participants);
 
-        public Maybe<IChallengeScoring> Scoring => _scoring;
+        public Option<IChallengeScoring> Scoring => _scoring;
 
         public IChallengePayout Payout => ChallengePayoutFactory.Instance.CreatePayout(Setup.Type, Setup.PayoutEntries, Setup.PrizePool, Setup.EntryFee).Payout;
 
@@ -84,14 +84,14 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public void Configure(IChallengeScoringStrategy strategy, DateTime publishedAt, TimeSpan registrationPeriod, TimeSpan extensionPeriod)
         {
-            _scoring = new Maybe<IChallengeScoring>(strategy.Scoring);
+            _scoring = new Option<IChallengeScoring>(strategy.Scoring);
 
             _timeline = Timeline.Configure(publishedAt, registrationPeriod, extensionPeriod);
         }
 
         public void Configure(IChallengeScoringStrategy strategy, DateTime publishedAt)
         {
-            _scoring = new Maybe<IChallengeScoring>(strategy.Scoring);
+            _scoring = new Option<IChallengeScoring>(strategy.Scoring);
 
             _timeline = Timeline.Configure(publishedAt);
         }
@@ -106,21 +106,21 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public void Publish(IChallengeScoringStrategy strategy, TimeSpan registrationPeriod, TimeSpan extensionPeriod)
         {
-            _scoring = new Maybe<IChallengeScoring>(strategy.Scoring);
+            _scoring = new Option<IChallengeScoring>(strategy.Scoring);
 
             _timeline = Timeline.Publish(registrationPeriod, extensionPeriod);
         }
 
         public void Publish(IChallengeScoringStrategy strategy)
         {
-            _scoring = new Maybe<IChallengeScoring>(strategy.Scoring);
+            _scoring = new Option<IChallengeScoring>(strategy.Scoring);
 
             _timeline = Timeline.Publish();
         }
 
         public void Publish(IChallengeScoringStrategy scoringStrategy, IChallengeTimelineStrategy timelineStrategy)
         {
-            _scoring = new Maybe<IChallengeScoring>(scoringStrategy.Scoring);
+            _scoring = new Option<IChallengeScoring>(scoringStrategy.Scoring);
 
             _timeline = Timeline.Publish(timelineStrategy.Timeline.RegistrationPeriod.Value, timelineStrategy.Timeline.ExtensionPeriod.Value);
         }
