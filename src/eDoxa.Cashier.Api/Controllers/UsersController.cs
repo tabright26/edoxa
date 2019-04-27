@@ -8,6 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Application.Commands;
@@ -46,7 +47,11 @@ namespace eDoxa.Cashier.Api.Controllers
         {
             var address = await _queries.FindUserAddressAsync(userId);
 
-            return this.Ok(address);
+            return address
+                .Select(this.Ok)
+                .Cast<IActionResult>()
+                .DefaultIfEmpty(this.NotFound(string.Empty))
+                .Single();
         }
 
         /// <summary>

@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeQueries.cs
-// Date Created: 2019-04-14
+// Date Created: 2019-04-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -19,9 +19,8 @@ using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.DTO;
 using eDoxa.Challenges.DTO.Queries;
 using eDoxa.Challenges.Infrastructure;
+using eDoxa.Functional.Maybe;
 using eDoxa.Seedwork.Domain.Common.Enums;
-
-using JetBrains.Annotations;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -88,26 +87,31 @@ namespace eDoxa.Challenges.Application.Queries
 
     public sealed partial class ChallengeQueries : IChallengeQueries
     {
-        public async Task<ChallengeListDTO> FindChallengesAsync(Game game, ChallengeType type, ChallengeState1 state)
+        public async Task<Maybe<ChallengeListDTO>> FindChallengesAsync(Game game, ChallengeType type, ChallengeState1 state)
         {
             var challenges = await this.FindChallengesAsNoTrackingAsync(game, type, state);
 
-            return _mapper.Map<ChallengeListDTO>(challenges);
+            var mapper = _mapper.Map<ChallengeListDTO>(challenges);
+
+            return mapper.Any() ? new Maybe<ChallengeListDTO>(mapper) : new Maybe<ChallengeListDTO>();
         }
 
-        [ItemCanBeNull]
-        public async Task<ChallengeDTO> FindChallengeAsync(ChallengeId challengeId)
+        public async Task<Maybe<ChallengeDTO>> FindChallengeAsync(ChallengeId challengeId)
         {
             var challenge = await this.FindChallengeAsNoTrackingAsync(challengeId);
 
-            return _mapper.Map<ChallengeDTO>(challenge);
+            var mapper = _mapper.Map<ChallengeDTO>(challenge);
+
+            return mapper != null ? new Maybe<ChallengeDTO>(mapper) : new Maybe<ChallengeDTO>();
         }
 
-        public async Task<ChallengeListDTO> FindUserChallengeHistoryAsync(UserId userId, Game game, ChallengeType type, ChallengeState1 state)
+        public async Task<Maybe<ChallengeListDTO>> FindUserChallengeHistoryAsync(UserId userId, Game game, ChallengeType type, ChallengeState1 state)
         {
             var challenges = await this.FindUserChallengeHistoryAsNoTrackingAsync(userId, game, type, state);
 
-            return _mapper.Map<ChallengeListDTO>(challenges);
+            var mapper = _mapper.Map<ChallengeListDTO>(challenges);
+
+            return mapper.Any() ? new Maybe<ChallengeListDTO>(mapper) : new Maybe<ChallengeListDTO>();
         }
     }
 }

@@ -8,6 +8,7 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Application.Queries;
@@ -52,7 +53,7 @@ namespace eDoxa.Cashier.Application.Tests.Queries
                     var accountDTO = await queries.FindAccountAsync(user.Id);
 
                     // Assert
-                    CashierAssert.IsMapped(accountDTO);
+                    CashierAssert.IsMapped(accountDTO.Single());
                 }
             }
         }

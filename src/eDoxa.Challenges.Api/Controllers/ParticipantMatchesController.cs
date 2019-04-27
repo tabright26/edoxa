@@ -41,12 +41,11 @@ namespace eDoxa.Challenges.Api.Controllers
         {
             var matches = await _queries.FindParticipantMatchesAsync(participantId);
 
-            if (!matches.Any())
-            {
-                return this.NoContent();
-            }
-
-            return this.Ok(matches);
+            return matches
+                .Select(this.Ok)
+                .Cast<IActionResult>()
+                .DefaultIfEmpty(this.NoContent())
+                .Single();
         }
     }
 }

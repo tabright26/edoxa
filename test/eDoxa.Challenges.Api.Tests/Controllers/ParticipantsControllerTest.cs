@@ -14,6 +14,7 @@ using eDoxa.Challenges.Api.Controllers;
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.DTO;
 using eDoxa.Challenges.DTO.Queries;
+using eDoxa.Functional.Maybe;
 
 using FluentAssertions;
 
@@ -43,7 +44,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
         public async Task FindParticipantAsync_ShouldBeOkObjectResult()
         {
             // Arrange        
-            _queries.Setup(queries => queries.FindParticipantAsync(It.IsAny<ParticipantId>())).ReturnsAsync(new ParticipantDTO()).Verifiable();
+            _queries.Setup(queries => queries.FindParticipantAsync(It.IsAny<ParticipantId>())).ReturnsAsync(new Maybe<ParticipantDTO>(new ParticipantDTO())).Verifiable();
 
             var controller = new ParticipantsController(_queries.Object);
 
@@ -62,7 +63,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
         public async Task FindParticipantAsync_ShouldBeNotFoundObjectResult()
         {
             // Arrange
-            _queries.Setup(queries => queries.FindParticipantAsync(It.IsAny<ParticipantId>())).ReturnsAsync((ParticipantDTO) null).Verifiable();
+            _queries.Setup(queries => queries.FindParticipantAsync(It.IsAny<ParticipantId>())).ReturnsAsync(new Maybe<ParticipantDTO>()).Verifiable();
 
             var controller = new ParticipantsController(_queries.Object);
 

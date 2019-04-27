@@ -1,5 +1,5 @@
 ﻿// Filename: IMoneyAccountQueries.cs
-// Date Created: 2019-04-21
+// Date Created: 2019-04-26
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,16 +11,14 @@
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.AggregateModels;
-
-using JetBrains.Annotations;
+using eDoxa.Functional.Maybe;
 
 namespace eDoxa.Cashier.DTO.Queries
 {
     public interface IMoneyAccountQueries
     {
-        [ItemCanBeNull]
-        Task<MoneyAccountDTO> FindAccountAsync(UserId userId);
+        Task<Maybe<MoneyAccountDTO>> FindAccountAsync(UserId userId);
 
-        Task<MoneyTransactionListDTO> FindTransactionsAsync(UserId userId);
+        Task<Maybe<MoneyTransactionListDTO>> FindTransactionsAsync(UserId userId);
     }
 }

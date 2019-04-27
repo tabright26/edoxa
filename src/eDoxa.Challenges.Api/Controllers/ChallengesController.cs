@@ -46,12 +46,11 @@ namespace eDoxa.Challenges.Api.Controllers
         {
             var challenges = await _queries.FindChallengesAsync(game, type, state);
 
-            if (!challenges.Any())
-            {
-                return this.NoContent();
-            }
-
-            return this.Ok(challenges);
+            return challenges
+                .Select(this.Ok)
+                .Cast<IActionResult>()
+                .DefaultIfEmpty(this.NoContent())
+                .Single();
         }
 
         /// <summary>
@@ -62,12 +61,11 @@ namespace eDoxa.Challenges.Api.Controllers
         {
             var challenge = await _queries.FindChallengeAsync(challengeId);
 
-            if (challenge == null)
-            {
-                return this.NotFound(string.Empty);
-            }
-
-            return this.Ok(challenge);
+            return challenge
+                .Select(this.Ok)
+                .Cast<IActionResult>()
+                .DefaultIfEmpty(this.NotFound(string.Empty))
+                .Single();
         }
     }
 }

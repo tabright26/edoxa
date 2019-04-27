@@ -17,6 +17,7 @@ using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
+using eDoxa.Functional.Maybe;
 
 using FluentAssertions;
 
@@ -50,7 +51,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Arrange
             var user = _userAggregateFactory.CreateUser();
 
-            _queries.Setup(queries => queries.FindAccountAsync(It.IsAny<UserId>())).ReturnsAsync(new MoneyAccountDTO()).Verifiable();
+            _queries.Setup(queries => queries.FindAccountAsync(It.IsAny<UserId>())).ReturnsAsync(new Maybe<MoneyAccountDTO>(new MoneyAccountDTO())).Verifiable();
 
             var controller = new UserMoneyAccountController(_queries.Object, _mediator.Object);
 
@@ -71,7 +72,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Arrange
             var user = _userAggregateFactory.CreateUser();
 
-            _queries.Setup(queries => queries.FindAccountAsync(It.IsAny<UserId>())).ReturnsAsync((MoneyAccountDTO) null).Verifiable();
+            _queries.Setup(queries => queries.FindAccountAsync(It.IsAny<UserId>())).ReturnsAsync(new Maybe<MoneyAccountDTO>()).Verifiable();
 
             var controller = new UserMoneyAccountController(_queries.Object, _mediator.Object);
 

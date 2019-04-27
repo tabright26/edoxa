@@ -1,11 +1,11 @@
 ﻿// Filename: CardQueries.cs
-// Date Created: 2019-04-09
+// Date Created: 2019-04-21
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System.Linq;
@@ -18,6 +18,7 @@ using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Cashier.Infrastructure;
+using eDoxa.Functional.Maybe;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -27,8 +28,8 @@ namespace eDoxa.Cashier.Application.Queries
 {
     public sealed partial class CardQueries
     {
-        private readonly CashierDbContext _context;
         private readonly CardService _cardService;
+        private readonly CashierDbContext _context;
         private readonly IMapper _mapper;
 
         public CardQueries(CashierDbContext context, CardService cardService, IMapper mapper)
@@ -38,30 +39,34 @@ namespace eDoxa.Cashier.Application.Queries
             _mapper = mapper;
         }
 
-        public async Task<User> FindUserAsNoTrackingAsync(UserId userId)
+        private async Task<User> FindUserAsNoTrackingAsync(UserId userId)
         {
-            return await _context.Users.AsNoTracking()./*Include(user => user.Account).*/Where(user => user.Id == userId).SingleOrDefaultAsync();
+            return await _context.Users.AsNoTracking(). /*Include(user => user.Account).*/Where(user => user.Id == userId).SingleOrDefaultAsync();
         }
     }
 
     public sealed partial class CardQueries : ICardQueries
     {
-        public async Task<CardListDTO> FindUserCardsAsync(UserId userId)
+        public async Task<Maybe<CardListDTO>> FindUserCardsAsync(UserId userId)
         {
             var user = await this.FindUserAsNoTrackingAsync(userId);
 
             var cards = await _cardService.ListAsync(user.CustomerId.ToString());
 
-            return _mapper.Map<CardListDTO>(cards);
+            var mapper = _mapper.Map<CardListDTO>(cards);
+
+            return mapper.Any() ? new Maybe<CardListDTO>(mapper) : new Maybe<CardListDTO>();
         }
 
-        public async Task<CardDTO> FindUserCardAsync(UserId userId, CardId cardId)
+        public async Task<Maybe<CardDTO>> FindUserCardAsync(UserId userId, CardId cardId)
         {
             var user = await this.FindUserAsNoTrackingAsync(userId);
 
             var card = await _cardService.GetAsync(user.CustomerId.ToString(), cardId.ToString());
 
-            return _mapper.Map<CardDTO>(card);
+            var mapper = _mapper.Map<CardDTO>(card);
+
+            return mapper != null ? new Maybe<CardDTO>(mapper) : new Maybe<CardDTO>();
         }
     }
 }

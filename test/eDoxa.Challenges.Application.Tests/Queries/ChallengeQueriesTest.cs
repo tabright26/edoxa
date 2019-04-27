@@ -8,6 +8,7 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Application.Queries;
@@ -55,7 +56,7 @@ namespace eDoxa.Challenges.Application.Tests.Queries
                     var challengeDTO = await queries.FindChallengesAsync(Game.All, ChallengeType.All, ChallengeState1.Opened);
 
                     // Assert
-                    ChallengesAssert.IsMapped(challengeDTO);
+                    ChallengesAssert.IsMapped(challengeDTO.Single());
                 }
             }
         }

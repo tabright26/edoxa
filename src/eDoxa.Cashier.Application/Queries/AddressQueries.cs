@@ -1,11 +1,11 @@
 ﻿// Filename: AddressQueries.cs
-// Date Created: 2019-04-09
+// Date Created: 2019-04-21
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System.Linq;
@@ -18,6 +18,7 @@ using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Cashier.Infrastructure;
+using eDoxa.Functional.Maybe;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -40,13 +41,13 @@ namespace eDoxa.Cashier.Application.Queries
 
         private async Task<User> FindUserAsNoTrackingAsync(UserId userId)
         {
-            return await _context.Users.AsNoTracking()/*.Include(user => user.Account)*/.Where(user => user.Id == userId).SingleOrDefaultAsync();
+            return await _context.Users.AsNoTracking() /*.Include(user => user.Account)*/.Where(user => user.Id == userId).SingleOrDefaultAsync();
         }
     }
 
     public sealed partial class AddressQueries : IAddressQueries
     {
-        public async Task<AddressDTO> FindUserAddressAsync(UserId userId)
+        public async Task<Maybe<AddressDTO>> FindUserAddressAsync(UserId userId)
         {
             var user = await this.FindUserAsNoTrackingAsync(userId);
 
@@ -54,7 +55,9 @@ namespace eDoxa.Cashier.Application.Queries
 
             var address = customer?.Shipping?.Address;
 
-            return _mapper.Map<AddressDTO>(address);
+            var mapper = _mapper.Map<AddressDTO>(address);
+
+            return mapper != null ? new Maybe<AddressDTO>(mapper) : new Maybe<AddressDTO>();
         }
     }
 }

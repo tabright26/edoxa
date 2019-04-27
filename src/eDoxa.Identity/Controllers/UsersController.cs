@@ -45,12 +45,11 @@ namespace eDoxa.Identity.Controllers
         {
             var users = await _queries.FindUsersAsync();
 
-            if (!users.Any())
-            {
-                return this.NoContent();
-            }
-
-            return this.Ok(users);
+            return users
+                .Select(this.Ok)
+                .Cast<IActionResult>()
+                .DefaultIfEmpty(this.NoContent())
+                .Single();
         }
 
         /// <summary>

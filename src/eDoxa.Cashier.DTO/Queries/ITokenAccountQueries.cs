@@ -11,16 +11,14 @@
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.AggregateModels;
-
-using JetBrains.Annotations;
+using eDoxa.Functional.Maybe;
 
 namespace eDoxa.Cashier.DTO.Queries
 {
     public interface ITokenAccountQueries
     {
-        [ItemCanBeNull]
-        Task<TokenAccountDTO> FindAccountAsync(UserId userId);
+        Task<Maybe<TokenAccountDTO>> FindAccountAsync(UserId userId);
 
-        Task<TokenTransactionListDTO> FindTransactionsAsync(UserId userId);
+        Task<Maybe<TokenTransactionListDTO>> FindTransactionsAsync(UserId userId);
     }
 }

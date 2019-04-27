@@ -9,10 +9,12 @@
 // this source code package.
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using AutoMapper;
 
+using eDoxa.Functional.Maybe;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.DTO;
 using eDoxa.Identity.DTO.Queries;
@@ -41,11 +43,13 @@ namespace eDoxa.Identity.Application.Queries
 
     public sealed partial class UserQueries : IUserQueries
     {
-        public async Task<UserListDTO> FindUsersAsync()
+        public async Task<Maybe<UserListDTO>> FindUsersAsync()
         {
             var users = await this.FindUsersAsNoTrackingAsync();
 
-            return _mapper.Map<UserListDTO>(users);
+            var mapper = _mapper.Map<UserListDTO>(users);
+
+            return mapper.Any() ? new Maybe<UserListDTO>(mapper) : new Maybe<UserListDTO>();
         }
     }
 }

@@ -11,6 +11,7 @@
 using System;
 using System.Threading.Tasks;
 
+using eDoxa.Functional.Maybe;
 using eDoxa.Identity.Application.Services;
 using eDoxa.Identity.Controllers;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
@@ -43,16 +44,16 @@ namespace eDoxa.Identity.Api.Tests.Controllers
         public async Task FindUsersAsync_ShouldBeOkObjectResult()
         {
             // Arrange
+            var value = new UserListDTO
+            {
+                Items =
+                {
+                    new UserDTO()
+                }
+            };
+
             _queries.Setup(service => service.FindUsersAsync())
-                .ReturnsAsync(
-                    new UserListDTO
-                    {
-                        Items =
-                        {
-                            new UserDTO()
-                        }
-                    }
-                )
+                .ReturnsAsync(new Maybe<UserListDTO>(value))
                 .Verifiable();
 
             var controller = new UsersController(_queries.Object, _service.Object);
@@ -70,7 +71,7 @@ namespace eDoxa.Identity.Api.Tests.Controllers
         public async Task FindUsersAsync_ShouldBeNoContentObjectResult()
         {
             // Arrange
-            _queries.Setup(queries => queries.FindUsersAsync()).ReturnsAsync(new UserListDTO()).Verifiable();
+            _queries.Setup(queries => queries.FindUsersAsync()).ReturnsAsync(new Maybe<UserListDTO>()).Verifiable();
 
             var controller = new UsersController(_queries.Object, _service.Object);
 

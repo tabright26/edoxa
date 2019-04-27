@@ -1,11 +1,11 @@
 ﻿// Filename: ParticipantQueries.cs
-// Date Created: 2019-03-21
+// Date Created: 2019-04-21
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System.Collections.Generic;
@@ -19,7 +19,8 @@ using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.DTO;
 using eDoxa.Challenges.DTO.Queries;
 using eDoxa.Challenges.Infrastructure;
-using JetBrains.Annotations;
+using eDoxa.Functional.Maybe;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Challenges.Application.Queries
@@ -41,36 +42,39 @@ namespace eDoxa.Challenges.Application.Queries
         private async Task<IEnumerable<Participant>> FindChallengeParticipantsAsNoTrackingAsync(ChallengeId challengeId)
         {
             return await _context.Participants.AsNoTracking()
-                                 .Include(ExpandMatchStats)
-                                 .Where(participant => participant.Challenge.Id == challengeId)
-                                 .OrderBy(participant => participant.Timestamp)
-                                 .ToListAsync();
+                .Include(ExpandMatchStats)
+                .Where(participant => participant.Challenge.Id == challengeId)
+                .OrderBy(participant => participant.Timestamp)
+                .ToListAsync();
         }
 
         private async Task<Participant> FindParticipantAsNoTrackingAsync(ParticipantId participantId)
         {
             return await _context.Participants.AsNoTracking()
-                                 .Include(ExpandMatchStats)
-                                 .Where(participant => participant.Id == participantId)
-                                 .SingleOrDefaultAsync();
+                .Include(ExpandMatchStats)
+                .Where(participant => participant.Id == participantId)
+                .SingleOrDefaultAsync();
         }
     }
 
     public sealed partial class ParticipantQueries : IParticipantQueries
     {
-        public async Task<ParticipantListDTO> FindChallengeParticipantsAsync(ChallengeId challengeId)
+        public async Task<Maybe<ParticipantListDTO>> FindChallengeParticipantsAsync(ChallengeId challengeId)
         {
             var participants = await this.FindChallengeParticipantsAsNoTrackingAsync(challengeId);
 
-            return _mapper.Map<ParticipantListDTO>(participants);
+            var mapper = _mapper.Map<ParticipantListDTO>(participants);
+
+            return mapper.Any() ? new Maybe<ParticipantListDTO>(mapper) : new Maybe<ParticipantListDTO>();
         }
 
-        [ItemCanBeNull]
-        public async Task<ParticipantDTO> FindParticipantAsync(ParticipantId participantId)
+        public async Task<Maybe<ParticipantDTO>> FindParticipantAsync(ParticipantId participantId)
         {
             var participant = await this.FindParticipantAsNoTrackingAsync(participantId);
 
-            return _mapper.Map<ParticipantDTO>(participant);
+            var mapper = _mapper.Map<ParticipantDTO>(participant);
+
+            return mapper != null ? new Maybe<ParticipantDTO>(mapper) : new Maybe<ParticipantDTO>();
         }
     }
 }

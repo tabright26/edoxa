@@ -8,6 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Application.Commands;
@@ -19,7 +20,6 @@ using MediatR;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Internal;
 
 namespace eDoxa.Cashier.Api.Controllers
 {
@@ -47,12 +47,11 @@ namespace eDoxa.Cashier.Api.Controllers
         {
             var account = await _queries.FindAccountAsync(userId);
 
-            if (account == null)
-            {
-                return this.NotFound(string.Empty);
-            }
-
-            return this.Ok(account);
+            return account
+                .Select(this.Ok)
+                .Cast<IActionResult>()
+                .DefaultIfEmpty(this.NotFound(string.Empty))
+                .Single();
         }
 
         /// <summary>
@@ -89,12 +88,11 @@ namespace eDoxa.Cashier.Api.Controllers
         {
             var transactions = await _queries.FindTransactionsAsync(userId);
 
-            if (!transactions.Any())
-            {
-                return this.NoContent();
-            }
-
-            return this.Ok(transactions);
+            return transactions
+                .Select(this.Ok)
+                .Cast<IActionResult>()
+                .DefaultIfEmpty(this.NoContent())
+                .Single();
         }
     }
 }

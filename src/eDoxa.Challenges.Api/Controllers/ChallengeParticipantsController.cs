@@ -47,12 +47,11 @@ namespace eDoxa.Challenges.Api.Controllers
         {
             var participants = await _queries.FindChallengeParticipantsAsync(challengeId);
 
-            if (!participants.Any())
-            {
-                return this.NoContent();
-            }
-
-            return this.Ok(participants);
+            return participants
+                .Select(this.Ok)
+                .Cast<IActionResult>()
+                .DefaultIfEmpty(this.NoContent())
+                .Single();
         }
 
         /// <summary>

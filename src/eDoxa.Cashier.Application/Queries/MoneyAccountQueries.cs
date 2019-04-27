@@ -1,5 +1,5 @@
 ﻿// Filename: MoneyAccountQueries.cs
-// Date Created: 2019-04-21
+// Date Created: 2019-04-26
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -18,8 +18,7 @@ using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Cashier.Infrastructure;
-
-using JetBrains.Annotations;
+using eDoxa.Functional.Maybe;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -38,25 +37,29 @@ namespace eDoxa.Cashier.Application.Queries
 
         private async Task<MoneyAccount> FindAccountAsNoTrackingAsync(UserId userId)
         {
-            return await _context.MoneyAccounts.AsNoTracking().Include(transaction => transaction.Transactions).Where(account => account.User.Id == userId).SingleOrDefaultAsync();
+            return await _context.MoneyAccounts.AsNoTracking().Include(transaction => transaction.Transactions).Where(account => account.User.Id == userId)
+                .SingleOrDefaultAsync();
         }
     }
 
     public sealed partial class MoneyAccountQueries : IMoneyAccountQueries
     {
-        [ItemCanBeNull]
-        public async Task<MoneyAccountDTO> FindAccountAsync(UserId userId)
+        public async Task<Maybe<MoneyAccountDTO>> FindAccountAsync(UserId userId)
         {
             var account = await this.FindAccountAsNoTrackingAsync(userId);
 
-            return _mapper.Map<MoneyAccountDTO>(account);
+            var mapper = _mapper.Map<MoneyAccountDTO>(account);
+
+            return mapper != null ? new Maybe<MoneyAccountDTO>(mapper) : new Maybe<MoneyAccountDTO>();
         }
 
-        public async Task<MoneyTransactionListDTO> FindTransactionsAsync(UserId userId)
+        public async Task<Maybe<MoneyTransactionListDTO>> FindTransactionsAsync(UserId userId)
         {
             var account = await this.FindAccountAsNoTrackingAsync(userId);
 
-            return _mapper.Map<MoneyTransactionListDTO>(account.Transactions);
+            var mapper = _mapper.Map<MoneyTransactionListDTO>(account.Transactions);
+
+            return mapper.Any() ? new Maybe<MoneyTransactionListDTO>(mapper) : new Maybe<MoneyTransactionListDTO>();
         }
     }
 }

@@ -19,7 +19,7 @@ using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Seedwork.Application.Middlewares
 {
-    public class CustomExceptionHandlerMiddleware
+    public sealed class CustomExceptionHandlerMiddleware
     {
         private readonly IHostingEnvironment _environment;
         private readonly ILogger<CustomExceptionHandlerMiddleware> _logger;

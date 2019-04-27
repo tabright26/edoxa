@@ -15,6 +15,7 @@ using eDoxa.Challenges.Api.Controllers;
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.DTO;
 using eDoxa.Challenges.DTO.Queries;
+using eDoxa.Functional.Maybe;
 
 using FluentAssertions;
 
@@ -52,7 +53,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
                 }
             };
 
-            _queries.Setup(queries => queries.FindParticipantMatchesAsync(It.IsAny<ParticipantId>())).ReturnsAsync(value).Verifiable();
+            _queries.Setup(queries => queries.FindParticipantMatchesAsync(It.IsAny<ParticipantId>())).ReturnsAsync(new Maybe<MatchListDTO>(value)).Verifiable();
 
             var controller = new ParticipantMatchesController(_queries.Object);
 
@@ -71,7 +72,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
         public async Task FindParticipantMatchesAsync_ShouldBeNoContentResult()
         {
             // Arrange
-            _queries.Setup(queries => queries.FindParticipantMatchesAsync(It.IsAny<ParticipantId>())).ReturnsAsync(new MatchListDTO()).Verifiable();
+            _queries.Setup(queries => queries.FindParticipantMatchesAsync(It.IsAny<ParticipantId>())).ReturnsAsync(new Maybe<MatchListDTO>()).Verifiable();
 
             var controller = new ParticipantMatchesController(_queries.Object);
 

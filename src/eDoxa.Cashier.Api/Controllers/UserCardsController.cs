@@ -8,6 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Application.Commands;
@@ -46,7 +47,11 @@ namespace eDoxa.Cashier.Api.Controllers
         {
             var cards = await _queries.FindUserCardsAsync(userId);
 
-            return this.Ok(cards);
+            return cards
+                .Select(this.Ok)
+                .Cast<IActionResult>()
+                .DefaultIfEmpty(this.NoContent())
+                .Single();
         }
 
         /// <summary>
@@ -70,7 +75,11 @@ namespace eDoxa.Cashier.Api.Controllers
         {
             var card = await _queries.FindUserCardAsync(userId, cardId);
 
-            return this.Ok(card);
+            return card
+                .Select(this.Ok)
+                .Cast<IActionResult>()
+                .DefaultIfEmpty(this.NotFound(string.Empty))
+                .Single();
         }
 
         /// <summary>

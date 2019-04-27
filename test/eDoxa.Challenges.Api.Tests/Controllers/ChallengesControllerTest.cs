@@ -16,6 +16,7 @@ using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.DTO;
 using eDoxa.Challenges.DTO.Queries;
+using eDoxa.Functional.Maybe;
 using eDoxa.Seedwork.Domain.Common.Enums;
 
 using FluentAssertions;
@@ -55,7 +56,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
             };
 
             _queries.Setup(queries => queries.FindChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeType>(), It.IsAny<ChallengeState1>()))
-                .ReturnsAsync(value)
+                .ReturnsAsync(new Maybe<ChallengeListDTO>(value))
                 .Verifiable();
 
             var controller = new ChallengesController(_queries.Object);
@@ -76,7 +77,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
         {
             // Arrange
             _queries.Setup(queries => queries.FindChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeType>(), It.IsAny<ChallengeState1>()))
-                .ReturnsAsync(new ChallengeListDTO())
+                .ReturnsAsync(new Maybe<ChallengeListDTO>())
                 .Verifiable();
 
             var controller = new ChallengesController(_queries.Object);
@@ -97,7 +98,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
         {
             // Arrange        
             _queries.Setup(queries => queries.FindChallengeAsync(It.IsAny<ChallengeId>()))
-                .ReturnsAsync(new ChallengeDTO())
+                .ReturnsAsync(new Maybe<ChallengeDTO>(new ChallengeDTO()))
                 .Verifiable();
 
             var controller = new ChallengesController(_queries.Object);
@@ -118,7 +119,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
         {
             // Arrange
             _queries.Setup(queries => queries.FindChallengeAsync(It.IsAny<ChallengeId>()))
-                .ReturnsAsync((ChallengeDTO) null)
+                .ReturnsAsync(new Maybe<ChallengeDTO>())
                 .Verifiable();
 
             var controller = new ChallengesController(_queries.Object);

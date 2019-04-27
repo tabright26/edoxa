@@ -8,6 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,6 +18,7 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
+using eDoxa.Functional.Maybe;
 
 using FluentAssertions;
 
@@ -52,7 +54,13 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Arrange
             var userId = _userAggregateFactory.CreateUserId();
 
-            _queries.Setup(queries => queries.FindUserCardsAsync(It.IsAny<UserId>())).ReturnsAsync(new CardListDTO()).Verifiable();
+            _queries.Setup(queries => queries.FindUserCardsAsync(It.IsAny<UserId>())).ReturnsAsync(new Maybe<CardListDTO>(new CardListDTO
+            {
+                Items = new List<CardDTO>
+                {
+                    new CardDTO()
+                }
+            })).Verifiable();
 
             var controller = new UserCardsController(_queries.Object, _mediator.Object);
 
@@ -61,6 +69,27 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
+
+            _queries.Verify();
+
+            _mediator.VerifyNoOtherCalls();
+        }
+
+        [TestMethod]
+        public async Task FindUserCardsAsync_ShouldBeNoContentObjectResult()
+        {
+            // Arrange
+            var userId = _userAggregateFactory.CreateUserId();
+
+            _queries.Setup(queries => queries.FindUserCardsAsync(It.IsAny<UserId>())).ReturnsAsync(new Maybe<CardListDTO>()).Verifiable();
+
+            var controller = new UserCardsController(_queries.Object, _mediator.Object);
+
+            // Act
+            var result = await controller.FindUserCardsAsync(userId);
+
+            // Assert
+            result.Should().BeOfType<NoContentResult>();
 
             _queries.Verify();
 
@@ -101,7 +130,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
 
             var cardId = _userAggregateFactory.CreateCardId();
 
-            _queries.Setup(queries => queries.FindUserCardAsync(It.IsAny<UserId>(), It.IsAny<CardId>())).ReturnsAsync(new CardDTO()).Verifiable();
+            _queries.Setup(queries => queries.FindUserCardAsync(It.IsAny<UserId>(), It.IsAny<CardId>())).ReturnsAsync(new Maybe<CardDTO>(new CardDTO())).Verifiable();
 
             var controller = new UserCardsController(_queries.Object, _mediator.Object);
 

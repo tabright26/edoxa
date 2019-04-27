@@ -10,10 +10,12 @@
 
 using System.Threading.Tasks;
 
+using eDoxa.Functional.Maybe;
+
 namespace eDoxa.Identity.DTO.Queries
 {
     public interface IUserQueries
     {
-        Task<UserListDTO> FindUsersAsync();
+        Task<Maybe<UserListDTO>> FindUsersAsync();
     }
 }

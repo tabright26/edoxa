@@ -18,8 +18,7 @@ using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Cashier.Infrastructure;
-
-using JetBrains.Annotations;
+using eDoxa.Functional.Maybe;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -47,19 +46,22 @@ namespace eDoxa.Cashier.Application.Queries
 
     public sealed partial class TokenAccountQueries : ITokenAccountQueries
     {
-        [ItemCanBeNull]
-        public async Task<TokenAccountDTO> FindAccountAsync(UserId userId)
+        public async Task<Maybe<TokenAccountDTO>> FindAccountAsync(UserId userId)
         {
             var account = await this.FindAccountAsNoTrackingAsync(userId);
 
-            return _mapper.Map<TokenAccountDTO>(account);
+            var mapper = _mapper.Map<TokenAccountDTO>(account);
+
+            return mapper != null ? new Maybe<TokenAccountDTO>(mapper) : new Maybe<TokenAccountDTO>();
         }
 
-        public async Task<TokenTransactionListDTO> FindTransactionsAsync(UserId userId)
+        public async Task<Maybe<TokenTransactionListDTO>> FindTransactionsAsync(UserId userId)
         {
             var account = await this.FindAccountAsNoTrackingAsync(userId);
 
-            return _mapper.Map<TokenTransactionListDTO>(account.Transactions);
+            var mapper = _mapper.Map<TokenTransactionListDTO>(account.Transactions);
+
+            return mapper.Any() ? new Maybe<TokenTransactionListDTO>(mapper) : new Maybe<TokenTransactionListDTO>();
         }
     }
 }

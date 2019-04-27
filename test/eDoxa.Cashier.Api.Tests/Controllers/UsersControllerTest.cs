@@ -16,6 +16,7 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
+using eDoxa.Functional.Maybe;
 
 using FluentAssertions;
 
@@ -51,7 +52,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Arrange
             var userId = _userAggregateFactory.CreateUserId();
 
-            _queries.Setup(queries => queries.FindUserAddressAsync(It.IsAny<UserId>())).ReturnsAsync(new AddressDTO())
+            _queries.Setup(queries => queries.FindUserAddressAsync(It.IsAny<UserId>())).ReturnsAsync(new Maybe<AddressDTO>(new AddressDTO()))
                 .Verifiable();
 
             var controller = new UsersController(_queries.Object, _mediator.Object);

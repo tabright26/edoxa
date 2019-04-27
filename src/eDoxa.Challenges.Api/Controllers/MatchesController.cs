@@ -8,6 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Domain.AggregateModels;
@@ -40,12 +41,11 @@ namespace eDoxa.Challenges.Api.Controllers
         {
             var match = await _queries.FindMatchAsync(matchId);
 
-            if (match == null)
-            {
-                return this.NotFound(string.Empty);
-            }
-
-            return this.Ok(match);
+            return match
+                .Select(this.Ok)
+                .Cast<IActionResult>()
+                .DefaultIfEmpty(this.NotFound(string.Empty))
+                .Single();
         }
     }
 }
