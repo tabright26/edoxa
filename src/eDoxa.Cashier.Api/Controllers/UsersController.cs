@@ -1,25 +1,24 @@
 ﻿// Filename: UsersController.cs
-// Date Created: 2019-04-13
+// Date Created: 2019-04-21
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Seedwork.Application.Extensions;
+
 using MediatR;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Cashier.Api.Controllers
 {
@@ -30,13 +29,11 @@ namespace eDoxa.Cashier.Api.Controllers
     [Route("api/users")]
     public class UsersController : ControllerBase
     {
-        private readonly ILogger<UsersController> _logger;
-        private readonly IAddressQueries _queries;
         private readonly IMediator _mediator;
+        private readonly IAddressQueries _queries;
 
-        public UsersController(ILogger<UsersController> logger, IAddressQueries queries, IMediator mediator)
+        public UsersController(IAddressQueries queries, IMediator mediator)
         {
-            _logger = logger;
             _queries = queries;
             _mediator = mediator;
         }
@@ -47,18 +44,9 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpGet("{userId}/address", Name = nameof(FindUserAddressAsync))]
         public async Task<IActionResult> FindUserAddressAsync(UserId userId)
         {
-            try
-            {
-                var address = await _queries.FindUserAddressAsync(userId);
+            var address = await _queries.FindUserAddressAsync(userId);
 
-                return this.Ok(address);
-            }
-            catch (Exception exception)
-            {
-                _logger.LogError(exception, exception.Message);
-            }
-
-            return this.BadRequest(string.Empty);
+            return this.Ok(address);
         }
 
         /// <summary>
@@ -67,27 +55,17 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpPut("{userId}/address", Name = nameof(UpdateAddressAsync))]
         public async Task<IActionResult> UpdateAddressAsync(
             UserId userId,
-            [FromBody]
-            UpdateAddressCommand command)
+            [FromBody] UpdateAddressCommand command)
         {
-            try
-            {
-                command.UserId = userId;
+            command.UserId = userId;
 
-                command.Name = "Francis Quenneville"; // TODO: 
+            command.Name = "Francis Quenneville"; // TODO: 
 
-                command.Phone = "5147580313"; // TODO: 
+            command.Phone = "5147580313"; // TODO: 
 
-                var address = await _mediator.SendCommandAsync(command);
+            var address = await _mediator.SendCommandAsync(command);
 
-                return this.Ok(address);
-            }
-            catch (Exception exception)
-            {
-                _logger.LogError(exception, exception.Message);
-            }
-
-            return this.BadRequest(string.Empty);
+            return this.Ok(address);
         }
     }
 }

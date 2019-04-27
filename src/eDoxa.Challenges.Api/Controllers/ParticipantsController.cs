@@ -1,14 +1,13 @@
 ﻿// Filename: ParticipantsController.cs
-// Date Created: 2019-03-17
+// Date Created: 2019-04-21
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Domain.AggregateModels;
@@ -16,7 +15,6 @@ using eDoxa.Challenges.DTO.Queries;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Challenges.Api.Controllers
 {
@@ -27,12 +25,10 @@ namespace eDoxa.Challenges.Api.Controllers
     [Route("api/participants")]
     public class ParticipantsController : ControllerBase
     {
-        private readonly ILogger<ParticipantsController> _logger;
         private readonly IParticipantQueries _queries;
 
-        public ParticipantsController(ILogger<ParticipantsController> logger, IParticipantQueries queries)
+        public ParticipantsController(IParticipantQueries queries)
         {
-            _logger = logger;
             _queries = queries;
         }
 
@@ -42,23 +38,14 @@ namespace eDoxa.Challenges.Api.Controllers
         [HttpGet("{participantId}", Name = nameof(FindParticipantAsync))]
         public async Task<IActionResult> FindParticipantAsync(ParticipantId participantId)
         {
-            try
-            {
-                var participant = await _queries.FindParticipantAsync(participantId);
+            var participant = await _queries.FindParticipantAsync(participantId);
 
-                if (participant == null)
-                {
-                    return this.NotFound(string.Empty);
-                }
-
-                return this.Ok(participant);
-            }
-            catch (Exception exception)
+            if (participant == null)
             {
-                _logger.LogError(exception, exception.Message);
+                return this.NotFound(string.Empty);
             }
 
-            return this.BadRequest(string.Empty);
+            return this.Ok(participant);
         }
     }
 }

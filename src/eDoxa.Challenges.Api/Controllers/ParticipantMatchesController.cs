@@ -1,14 +1,13 @@
 ﻿// Filename: ParticipantMatchesController.cs
-// Date Created: 2019-03-18
+// Date Created: 2019-04-21
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,7 +16,6 @@ using eDoxa.Challenges.DTO.Queries;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Challenges.Api.Controllers
 {
@@ -28,12 +26,10 @@ namespace eDoxa.Challenges.Api.Controllers
     [Route("api/participants/{participantId}/matches")]
     public class ParticipantMatchesController : ControllerBase
     {
-        private readonly ILogger<ParticipantMatchesController> _logger;
         private readonly IMatchQueries _queries;
 
-        public ParticipantMatchesController(ILogger<ParticipantMatchesController> logger, IMatchQueries queries)
+        public ParticipantMatchesController(IMatchQueries queries)
         {
-            _logger = logger;
             _queries = queries;
         }
 
@@ -43,23 +39,14 @@ namespace eDoxa.Challenges.Api.Controllers
         [HttpGet(Name = nameof(FindParticipantMatchesAsync))]
         public async Task<IActionResult> FindParticipantMatchesAsync(ParticipantId participantId)
         {
-            try
-            {
-                var matches = await _queries.FindParticipantMatchesAsync(participantId);
+            var matches = await _queries.FindParticipantMatchesAsync(participantId);
 
-                if (!matches.Any())
-                {
-                    return this.NoContent();
-                }
-
-                return this.Ok(matches);
-            }
-            catch (Exception exception)
+            if (!matches.Any())
             {
-                _logger.LogError(exception, exception.Message);
+                return this.NoContent();
             }
 
-            return this.BadRequest(string.Empty);
+            return this.Ok(matches);
         }
     }
 }

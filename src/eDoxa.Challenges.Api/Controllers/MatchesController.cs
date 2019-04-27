@@ -1,14 +1,13 @@
 ﻿// Filename: MatchesController.cs
-// Date Created: 2019-03-18
+// Date Created: 2019-04-21
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Domain.AggregateModels;
@@ -16,7 +15,6 @@ using eDoxa.Challenges.DTO.Queries;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Challenges.Api.Controllers
 {
@@ -27,12 +25,10 @@ namespace eDoxa.Challenges.Api.Controllers
     [Route("api/matches")]
     public class MatchesController : ControllerBase
     {
-        private readonly ILogger<MatchesController> _logger;
         private readonly IMatchQueries _queries;
 
-        public MatchesController(ILogger<MatchesController> logger, IMatchQueries queries)
+        public MatchesController(IMatchQueries queries)
         {
-            _logger = logger;
             _queries = queries;
         }
 
@@ -42,23 +38,14 @@ namespace eDoxa.Challenges.Api.Controllers
         [HttpGet("{matchId}", Name = nameof(FindMatchAsync))]
         public async Task<IActionResult> FindMatchAsync(MatchId matchId)
         {
-            try
-            {
-                var match = await _queries.FindMatchAsync(matchId);
+            var match = await _queries.FindMatchAsync(matchId);
 
-                if (match == null)
-                {
-                    return this.NotFound(string.Empty);
-                }
-
-                return this.Ok(match);
-            }
-            catch (Exception exception)
+            if (match == null)
             {
-                _logger.LogError(exception, exception.Message);
+                return this.NotFound(string.Empty);
             }
 
-            return this.BadRequest(string.Empty);
+            return this.Ok(match);
         }
     }
 }

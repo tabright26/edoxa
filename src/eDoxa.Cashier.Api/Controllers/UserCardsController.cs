@@ -1,14 +1,13 @@
 ﻿// Filename: UserCardsController.cs
-// Date Created: 2019-04-13
+// Date Created: 2019-04-21
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Application.Commands;
@@ -20,7 +19,6 @@ using MediatR;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Cashier.Api.Controllers
 {
@@ -31,13 +29,11 @@ namespace eDoxa.Cashier.Api.Controllers
     [Route("api/users/{userId}/cards")]
     public class UserCardsController : ControllerBase
     {
-        private readonly ILogger<UserCardsController> _logger;
-        private readonly ICardQueries _queries;
         private readonly IMediator _mediator;
+        private readonly ICardQueries _queries;
 
-        public UserCardsController(ILogger<UserCardsController> logger, ICardQueries queries, IMediator mediator)
+        public UserCardsController(ICardQueries queries, IMediator mediator)
         {
-            _logger = logger;
             _queries = queries;
             _mediator = mediator;
         }
@@ -48,18 +44,9 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpGet(Name = nameof(FindUserCardsAsync))]
         public async Task<IActionResult> FindUserCardsAsync(UserId userId)
         {
-            try
-            {
-                var cards = await _queries.FindUserCardsAsync(userId);
+            var cards = await _queries.FindUserCardsAsync(userId);
 
-                return this.Ok(cards);
-            }
-            catch (Exception exception)
-            {
-                _logger.LogError(exception, exception.Message);
-            }
-
-            return this.BadRequest(string.Empty);
+            return this.Ok(cards);
         }
 
         /// <summary>
@@ -68,32 +55,23 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpPost(Name = nameof(CreateCardAsync))]
         public async Task<IActionResult> CreateCardAsync(
             UserId userId,
-            [FromBody]
-            CreateCardCommand command)
+            [FromBody] CreateCardCommand command)
         {
-            try
-            {
-                command.UserId = userId;
+            command.UserId = userId;
 
-                var card = await _mediator.SendCommandAsync(command);
+            var card = await _mediator.SendCommandAsync(command);
 
-                return this.Created(
-                    Url.Link(
-                        nameof(this.FindUserCardAsync),
-                        new
-                        {
-                            userId, cardId = card.Id
-                        }
-                    ),
-                    card
-                );
-            }
-            catch (Exception exception)
-            {
-                _logger.LogError(exception, exception.Message);
-            }
-
-            return this.BadRequest(string.Empty);
+            return this.Created(
+                Url.Link(
+                    nameof(this.FindUserCardAsync),
+                    new
+                    {
+                        userId,
+                        cardId = card.Id
+                    }
+                ),
+                card
+            );
         }
 
         /// <summary>
@@ -102,18 +80,9 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpGet("{cardId}", Name = nameof(FindUserCardAsync))]
         public async Task<IActionResult> FindUserCardAsync(UserId userId, CardId cardId)
         {
-            try
-            {
-                var card = await _queries.FindUserCardAsync(userId, cardId);
+            var card = await _queries.FindUserCardAsync(userId, cardId);
 
-                return this.Ok(card);
-            }
-            catch (Exception exception)
-            {
-                _logger.LogError(exception, exception.Message);
-            }
-
-            return this.BadRequest(string.Empty);
+            return this.Ok(card);
         }
 
         /// <summary>
@@ -122,20 +91,11 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpDelete("{cardId}", Name = nameof(DeleteCardAsync))]
         public async Task<IActionResult> DeleteCardAsync(UserId userId, CardId cardId)
         {
-            try
-            {
-                var command = new DeleteCardCommand(userId, cardId);
+            var command = new DeleteCardCommand(userId, cardId);
 
-                await _mediator.SendCommandAsync(command);
+            await _mediator.SendCommandAsync(command);
 
-                return this.Ok(string.Empty);
-            }
-            catch (Exception exception)
-            {
-                _logger.LogError(exception, exception.Message);
-            }
-
-            return this.BadRequest(string.Empty);
+            return this.Ok(string.Empty);
         }
 
         /// <summary>
@@ -144,20 +104,11 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpPatch("{cardId}/default", Name = nameof(UpdateDefaultCardAsync))]
         public async Task<IActionResult> UpdateDefaultCardAsync(UserId userId, CardId cardId)
         {
-            try
-            {
-                var command = new UpdateDefaultCardCommand(userId, cardId);
+            var command = new UpdateDefaultCardCommand(userId, cardId);
 
-                var customer = await _mediator.SendCommandAsync(command);
+            var customer = await _mediator.SendCommandAsync(command);
 
-                return this.Ok(customer);
-            }
-            catch (Exception exception)
-            {
-                _logger.LogError(exception, exception.Message);
-            }
-
-            return this.BadRequest(string.Empty);
+            return this.Ok(customer);
         }
     }
 }

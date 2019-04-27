@@ -1,11 +1,11 @@
-﻿// Filename: AddFundsCommand.cs
-// Date Created: 2019-04-14
+﻿// Filename: DepositMoneyCommand.cs
+// Date Created: 2019-04-26
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System.Runtime.Serialization;
@@ -24,10 +24,8 @@ namespace eDoxa.Cashier.Application.Commands
             BundleType = bundleType;
         }
 
-        [IgnoreDataMember]
-        public UserId UserId { get; set; }
+        [IgnoreDataMember] public UserId UserId { get; set; }
 
-        [DataMember(Name = "packType")]
-        public MoneyBundleType BundleType { get; private set; }
+        [DataMember(Name = "bundleType")] public MoneyBundleType BundleType { get; private set; }
     }
 }

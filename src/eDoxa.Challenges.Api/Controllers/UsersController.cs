@@ -1,14 +1,13 @@
 ﻿// Filename: UsersController.cs
-// Date Created: 2019-03-18
+// Date Created: 2019-04-21
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,7 +18,6 @@ using eDoxa.Seedwork.Domain.Common.Enums;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Challenges.Api.Controllers
 {
@@ -30,12 +28,10 @@ namespace eDoxa.Challenges.Api.Controllers
     [Route("api/users")]
     public class UsersController : ControllerBase
     {
-        private readonly ILogger<UsersController> _logger;
         private readonly IChallengeQueries _queries;
 
-        public UsersController(ILogger<UsersController> logger, IChallengeQueries queries)
+        public UsersController(IChallengeQueries queries)
         {
-            _logger = logger;
             _queries = queries;
         }
 
@@ -49,23 +45,14 @@ namespace eDoxa.Challenges.Api.Controllers
             ChallengeType type = ChallengeType.All,
             ChallengeState1 state = ChallengeState1.All)
         {
-            try
-            {
-                var challenges = await _queries.FindUserChallengeHistoryAsync(userId, game, type, state);
+            var challenges = await _queries.FindUserChallengeHistoryAsync(userId, game, type, state);
 
-                if (!challenges.Any())
-                {
-                    return this.NoContent();
-                }
-
-                return this.Ok(challenges);
-            }
-            catch (Exception exception)
+            if (!challenges.Any())
             {
-                _logger.LogError(exception, exception.Message);
+                return this.NoContent();
             }
 
-            return this.BadRequest(string.Empty);
+            return this.Ok(challenges);
         }
     }
 }

@@ -8,7 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Controllers;
@@ -16,14 +15,12 @@ using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.DTO.Queries;
-using eDoxa.Testing.MSTest.Extensions;
 
 using FluentAssertions;
 
 using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
@@ -34,15 +31,13 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
     public sealed class UserTokenAccountControllerTest
     {
         private readonly UserAggregateFactory _userAggregateFactory = UserAggregateFactory.Instance;
-
-        private Mock<ILogger<UserTokenAccountController>> _logger;
-        private Mock<ITokenAccountQueries> _queries;
         private Mock<IMediator> _mediator;
+
+        private Mock<ITokenAccountQueries> _queries;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            _logger = new Mock<ILogger<UserTokenAccountController>>();
             _queries = new Mock<ITokenAccountQueries>();
             _mediator = new Mock<IMediator>();
         }
@@ -59,42 +54,13 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
 
             _mediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(token).Verifiable();
 
-            var controller = new UserTokenAccountController(_logger.Object, _queries.Object, _mediator.Object);
+            var controller = new UserTokenAccountController(_queries.Object, _mediator.Object);
 
             // Act
             var result = await controller.DepositTokensAsync(user.Id, command);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
-
-            _logger.VerifyNoOtherCalls();
-
-            _queries.Verify();
-
-            _mediator.Verify();
-        }
-
-        [TestMethod]
-        public async Task BuyTokensAsync_ShouldBeBadRequestObjectResult()
-        {
-            // Arrange
-            var user = _userAggregateFactory.CreateUser();
-
-            var command = new DepositTokensCommand(TokenBundleType.FiftyThousand);
-
-            _mediator.Setup(mediator => mediator.Send(command, default)).ThrowsAsync(new Exception()).Verifiable();
-
-            _logger.SetupLoggerWithLogLevelErrorVerifiable();
-
-            var controller = new UserTokenAccountController(_logger.Object, _queries.Object, _mediator.Object);
-
-            // Act
-            var result = await controller.DepositTokensAsync(user.Id, command);
-
-            // Assert
-            result.Should().BeOfType<BadRequestObjectResult>();
-
-            _logger.Verify();
 
             _queries.Verify();
 

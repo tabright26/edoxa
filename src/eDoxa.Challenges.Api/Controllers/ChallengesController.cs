@@ -1,14 +1,13 @@
 ﻿// Filename: ChallengesController.cs
-// Date Created: 2019-03-18
+// Date Created: 2019-04-21
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,7 +18,6 @@ using eDoxa.Seedwork.Domain.Common.Enums;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Challenges.Api.Controllers
 {
@@ -30,12 +28,10 @@ namespace eDoxa.Challenges.Api.Controllers
     [Route("api/challenges")]
     public class ChallengesController : ControllerBase
     {
-        private readonly ILogger<ChallengesController> _logger;
         private readonly IChallengeQueries _queries;
 
-        public ChallengesController(ILogger<ChallengesController> logger, IChallengeQueries queries)
+        public ChallengesController(IChallengeQueries queries)
         {
-            _logger = logger;
             _queries = queries;
         }
 
@@ -48,23 +44,14 @@ namespace eDoxa.Challenges.Api.Controllers
             ChallengeType type = ChallengeType.All,
             ChallengeState1 state = ChallengeState1.All)
         {
-            try
-            {
-                var challenges = await _queries.FindChallengesAsync(game, type, state);
+            var challenges = await _queries.FindChallengesAsync(game, type, state);
 
-                if (!challenges.Any())
-                {
-                    return this.NoContent();
-                }
-
-                return this.Ok(challenges);
-            }
-            catch (Exception exception)
+            if (!challenges.Any())
             {
-                _logger.LogError(exception, exception.Message);
+                return this.NoContent();
             }
 
-            return this.BadRequest(string.Empty);
+            return this.Ok(challenges);
         }
 
         /// <summary>
@@ -73,23 +60,14 @@ namespace eDoxa.Challenges.Api.Controllers
         [HttpGet("{challengeId}", Name = nameof(FindChallengeAsync))]
         public async Task<IActionResult> FindChallengeAsync(ChallengeId challengeId)
         {
-            try
-            {
-                var challenge = await _queries.FindChallengeAsync(challengeId);
+            var challenge = await _queries.FindChallengeAsync(challengeId);
 
-                if (challenge == null)
-                {
-                    return this.NotFound(string.Empty);
-                }
-
-                return this.Ok(challenge);
-            }
-            catch (Exception exception)
+            if (challenge == null)
             {
-                _logger.LogError(exception, exception.Message);
+                return this.NotFound(string.Empty);
             }
 
-            return this.BadRequest(string.Empty);
+            return this.Ok(challenge);
         }
     }
 }

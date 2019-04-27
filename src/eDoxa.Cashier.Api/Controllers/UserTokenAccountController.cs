@@ -8,7 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Application.Commands;
@@ -21,7 +20,6 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Cashier.Api.Controllers
 {
@@ -32,13 +30,11 @@ namespace eDoxa.Cashier.Api.Controllers
     [Route("api/users/{userId}/token-account")]
     public class UserTokenAccountController : ControllerBase
     {
-        private readonly ILogger<UserTokenAccountController> _logger;
         private readonly IMediator _mediator;
         private readonly ITokenAccountQueries _queries;
 
-        public UserTokenAccountController(ILogger<UserTokenAccountController> logger, ITokenAccountQueries queries, IMediator mediator)
+        public UserTokenAccountController(ITokenAccountQueries queries, IMediator mediator)
         {
-            _logger = logger;
             _queries = queries;
             _mediator = mediator;
         }
@@ -49,23 +45,14 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpGet(Name = nameof(FindTokenAccountAsync))]
         public async Task<IActionResult> FindTokenAccountAsync(UserId userId)
         {
-            try
-            {
-                var account = await _queries.FindAccountAsync(userId);
+            var account = await _queries.FindAccountAsync(userId);
 
-                if (account == null)
-                {
-                    return this.NotFound(string.Empty);
-                }
-
-                return this.Ok(account);
-            }
-            catch (Exception exception)
+            if (account == null)
             {
-                _logger.LogError(exception, exception.Message);
+                return this.NotFound(string.Empty);
             }
 
-            return this.BadRequest(string.Empty);
+            return this.Ok(account);
         }
 
         /// <summary>
@@ -76,20 +63,11 @@ namespace eDoxa.Cashier.Api.Controllers
             UserId userId,
             [FromBody] DepositTokensCommand command)
         {
-            try
-            {
-                command.UserId = userId;
+            command.UserId = userId;
 
-                var token = await _mediator.SendCommandAsync(command);
+            var token = await _mediator.SendCommandAsync(command);
 
-                return this.Ok(token);
-            }
-            catch (Exception exception)
-            {
-                _logger.LogError(exception, exception.Message);
-            }
-
-            return this.BadRequest(string.Empty);
+            return this.Ok(token);
         }
 
         /// <summary>
@@ -98,23 +76,14 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpGet("transactions", Name = nameof(FindTokenTransactionsAsync))]
         public async Task<IActionResult> FindTokenTransactionsAsync(UserId userId)
         {
-            try
-            {
-                var transactions = await _queries.FindTransactionsAsync(userId);
+            var transactions = await _queries.FindTransactionsAsync(userId);
 
-                if (!transactions.Any())
-                {
-                    return this.NoContent();
-                }
-
-                return this.Ok(transactions);
-            }
-            catch (Exception exception)
+            if (!transactions.Any())
             {
-                _logger.LogError(exception, exception.Message);
+                return this.NoContent();
             }
 
-            return this.BadRequest(string.Empty);
+            return this.Ok(transactions);
         }
     }
 }
