@@ -17,22 +17,22 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
     public abstract class Transaction<TCurrency> : Entity<TransactionId>, ITransaction<TCurrency>
     where TCurrency : ICurrency
     {
-        private ActivityId _activityId;
         private TCurrency _amount;
+        private string _linkedId;
         private bool _pending;
         private DateTime _timestamp;
 
-        protected Transaction(TCurrency amount, ActivityId activityId) : this()
+        protected Transaction(TCurrency amount, string linkedId) : this()
         {
             _amount = amount;
-            _activityId = activityId;
+            _linkedId = linkedId;
             _pending = true;
         }
 
         protected Transaction(TCurrency amount) : this()
         {
             _amount = amount;
-            _activityId = null;
+            _linkedId = null;
             _pending = false;
         }
 
@@ -45,7 +45,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 
         public TCurrency Amount => _amount;
 
-        public ActivityId ActivityId => _activityId;
+        public string LinkedId => _linkedId;
 
         public bool Pending => _pending;
 

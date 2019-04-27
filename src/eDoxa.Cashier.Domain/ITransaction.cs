@@ -10,19 +10,17 @@
 
 using System;
 
-using eDoxa.Cashier.Domain.AggregateModels;
-
 namespace eDoxa.Cashier.Domain
 {
     public interface ITransaction<out TCurrency>
     where TCurrency : ICurrency
     {
-        DateTime Timestamp { get; }
-
         TCurrency Amount { get; }
 
-        ActivityId ActivityId { get; }
+        string LinkedId { get; }
 
         bool Pending { get; }
+
+        DateTime Timestamp { get; }        
     }
 }

@@ -8,6 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Functional.Maybe;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Common;
@@ -44,25 +45,19 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 
         public TokenAccount TokenAccount => _tokenAccount;
 
-        public Money AddFunds(MoneyBundle bundle)
+        public IMoneyTransaction DepositMoney(MoneyBundle bundle)
         {
-            MoneyAccount.Deposit(bundle.Amount);
-
-            return MoneyAccount.Balance;
+            return MoneyAccount.Deposit(bundle.Amount);
         }
 
-        public Money Withdraw(Money amount)
+        public Maybe<IMoneyTransaction> WithdrawMoney(Money amount)
         {
-            MoneyAccount.TryWithdraw(amount);
-
-            return MoneyAccount.Balance;
+            return MoneyAccount.TryWithdraw(amount);
         }
 
-        public Token BuyTokens(TokenBundle bundle)
+        public ITokenTransaction DepositTokens(TokenBundle bundle)
         {
-            TokenAccount.Deposit(bundle.Amount);
-
-            return TokenAccount.Balance;
+            return TokenAccount.Deposit(bundle.Amount);
         }
 
         public override string ToString()

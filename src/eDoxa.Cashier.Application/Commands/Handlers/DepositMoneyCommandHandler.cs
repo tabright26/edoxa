@@ -40,11 +40,11 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 
             await _moneyAccountService.TransactionAsync(user, bundle, cancellationToken);
 
-            var balance = user.AddFunds(bundle);
+            var balance = user.DepositMoney(bundle);
 
             await _userRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
-            return balance;
+            return balance.Amount;
         }
     }
 }

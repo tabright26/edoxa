@@ -54,13 +54,13 @@ namespace eDoxa.Cashier.Domain.Factories
 
             var bundles = new MoneyBundles();
 
-            user.AddFunds(bundles[MoneyBundleType.OneHundred]);
+            user.DepositMoney(bundles[MoneyBundleType.OneHundred]);
 
             user.MoneyAccount.TryRegister(new Money(65), new ActivityId());
 
-            user.Withdraw(new Money(50));
+            user.WithdrawMoney(new Money(50));
 
-            user.AddFunds(bundles[MoneyBundleType.Twenty]);
+            user.DepositMoney(bundles[MoneyBundleType.Twenty]);
 
             return user;
         }

@@ -18,7 +18,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
         {
         }
 
-        protected TokenTransaction(Token amount, ActivityId activityId) : base(amount, activityId)
+        protected TokenTransaction(Token amount, ActivityId activityId) : base(amount, activityId.ToString())
         {
         }
 

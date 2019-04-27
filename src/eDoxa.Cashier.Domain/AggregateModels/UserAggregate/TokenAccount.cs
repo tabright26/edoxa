@@ -71,7 +71,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 
         public Maybe<ITokenTransaction> TryPayoff(Token amount, ActivityId activityId)
         {
-            return Transactions.Where(transaction => transaction.Pending && transaction.ActivityId == activityId)
+            return Transactions.Where(transaction => transaction.Pending && transaction.LinkedId == activityId.ToString())
                 .Select(transaction => this.TryPayoff(amount, transaction))
                 .DefaultIfEmpty(new Maybe<ITokenTransaction>())
                 .Single();

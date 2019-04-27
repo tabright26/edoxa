@@ -8,6 +8,7 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -33,11 +34,11 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 
             var money = new Money(command.Amount);
 
-            money = user.Withdraw(money);
+            var transaction = user.WithdrawMoney(money).Single();
 
             await _userRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
-            return money;
+            return transaction.Amount;
         }
     }
 }

@@ -12,7 +12,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 {
     public sealed class TokenPendingTransaction : TokenTransaction
     {
-        public TokenPendingTransaction(Token amount, ActivityId activityId) : base(amount, activityId)
+        public TokenPendingTransaction(Token amount, ActivityId linkedId) : base(amount, linkedId)
         {
         }
     }

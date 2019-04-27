@@ -1,4 +1,4 @@
-﻿// Filename: 20190426171328_InitialCreate.cs
+﻿// Filename: 20190426235754_InitialCreate.cs
 // Date Created: 2019-04-26
 // 
 // ================================================
@@ -18,9 +18,11 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.EnsureSchema("edoxa");
+            migrationBuilder.EnsureSchema(
+                "edoxa");
 
-            migrationBuilder.EnsureSchema("dbo");
+            migrationBuilder.EnsureSchema(
+                "dbo");
 
             migrationBuilder.CreateTable(
                 "RequestLogs",
@@ -100,7 +102,7 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                     Id = table.Column<Guid>(),
                     Timestamp = table.Column<DateTime>(),
                     Amount = table.Column<decimal>(),
-                    ActivityId = table.Column<string>(nullable: true),
+                    LinkedId = table.Column<string>(nullable: true),
                     Pending = table.Column<bool>(),
                     AccountId = table.Column<Guid>()
                 },
@@ -125,7 +127,7 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                     Id = table.Column<Guid>(),
                     Timestamp = table.Column<DateTime>(),
                     Amount = table.Column<long>(),
-                    ActivityId = table.Column<string>(nullable: true),
+                    LinkedId = table.Column<string>(nullable: true),
                     Pending = table.Column<bool>(),
                     AccountId = table.Column<Guid>()
                 },

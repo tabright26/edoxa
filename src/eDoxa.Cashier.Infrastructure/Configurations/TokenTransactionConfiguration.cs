@@ -46,8 +46,7 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
                 .IsRequired()
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 
-            builder.Property(transaction => transaction.ActivityId)
-                .HasConversion(activityId => activityId.ToString(), activityId => ActivityId.Parse(activityId))
+            builder.Property(transaction => transaction.LinkedId)
                 .IsRequired(false)
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 
