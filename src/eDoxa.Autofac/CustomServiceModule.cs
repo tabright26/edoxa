@@ -20,10 +20,8 @@ namespace eDoxa.Autofac
     {
         protected override void Load([NotNull] ContainerBuilder builder)
         {
-            builder.RegisterModule<MediatorModule<TStartup>>();
             builder.RegisterModule<RequestModule<TContext>>();
             builder.RegisterModule<IntegrationEventModule<TStartup, TContext>>();
-            builder.RegisterModule<FluentValidationModule<TStartup>>();
         }
     }
 }
