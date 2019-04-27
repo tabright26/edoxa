@@ -1,11 +1,11 @@
 ﻿// Filename: DeleteCardCommandHandlerTest.cs
-// Date Created: 2019-04-09
+// Date Created: 2019-04-21
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System.Threading;
@@ -45,20 +45,20 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             mockUserRepository.Setup(repository => repository.FindAsNoTrackingAsync(It.IsAny<UserId>())).ReturnsAsync(user).Verifiable();
 
             mockCardService.Setup(
-                               service => service.DeleteAsync(
-                                   It.IsAny<string>(),
-                                   It.IsAny<string>(),
-                                   It.IsAny<RequestOptions>(),
-                                   It.IsAny<CancellationToken>()
-                               )
-                           )
-                           .ReturnsAsync(card)
-                           .Verifiable();
+                    service => service.DeleteAsync(
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<RequestOptions>(),
+                        It.IsAny<CancellationToken>()
+                    )
+                )
+                .ReturnsAsync(card)
+                .Verifiable();
 
             var handler = new DeleteCardCommandHandler(mockUserRepository.Object, mockCardService.Object);
 
             // Act
-            await handler.HandleAsync(new DeleteCardCommand(user.Id, CardId.Parse(card.Id)));
+            await handler.Handle(new DeleteCardCommand(user.Id, CardId.Parse(card.Id)), default);
 
             // Assert
             mockUserRepository.Verify(repository => repository.FindAsNoTrackingAsync(It.IsAny<UserId>()), Times.Once);

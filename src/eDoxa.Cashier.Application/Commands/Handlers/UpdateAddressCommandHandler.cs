@@ -1,11 +1,11 @@
 ﻿// Filename: UpdateAddressCommandHandler.cs
-// Date Created: 2019-04-09
+// Date Created: 2019-04-21
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System.Threading;
@@ -13,15 +13,19 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Seedwork.Application.Commands.Handlers;
+
 using JetBrains.Annotations;
+
+using Microsoft.AspNetCore.Mvc;
+
 using Stripe;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
-    public sealed class UpdateAddressCommandHandler : ICommandHandler<UpdateAddressCommand, Address>
+    public sealed class UpdateAddressCommandHandler : ICommandHandler<UpdateAddressCommand, IActionResult>
     {
-        private readonly IUserRepository _userRepository;
         private readonly CustomerService _service;
+        private readonly IUserRepository _userRepository;
 
         public UpdateAddressCommandHandler(IUserRepository userRepository, CustomerService service)
         {
@@ -30,7 +34,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         }
 
         [ItemCanBeNull]
-        public async Task<Address> Handle([NotNull] UpdateAddressCommand command, CancellationToken cancellationToken)
+        public async Task<IActionResult> Handle([NotNull] UpdateAddressCommand command, CancellationToken cancellationToken)
         {
             var user = await _userRepository.FindAsNoTrackingAsync(command.UserId);
 
@@ -54,7 +58,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 
             var customer = await _service.UpdateAsync(user.CustomerId.ToString(), options, cancellationToken: cancellationToken);
 
-            return customer?.Shipping?.Address;
+            return new OkObjectResult(customer?.Shipping?.Address);
         }
     }
 }

@@ -63,9 +63,7 @@ namespace eDoxa.Cashier.Api.Controllers
 
             command.Phone = "5147580313"; // TODO: 
 
-            var address = await _mediator.SendCommandAsync(command);
-
-            return this.Ok(address);
+            return await _mediator.SendCommandAsync(command);
         }
     }
 }

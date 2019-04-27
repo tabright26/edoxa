@@ -96,7 +96,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
 
             var command = new WithdrawMoneyCommand(money);
 
-            _mediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(money).Verifiable();
+            _mediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(new OkObjectResult(money)).Verifiable();
 
             var controller = new UserMoneyAccountController(_queries.Object, _mediator.Object);
 
@@ -121,7 +121,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
 
             var command = new DepositMoneyCommand(MoneyBundleType.Ten);
 
-            _mediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(money).Verifiable();
+            _mediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(new OkObjectResult(money)).Verifiable();
 
             var controller = new UserMoneyAccountController(_queries.Object, _mediator.Object);
 

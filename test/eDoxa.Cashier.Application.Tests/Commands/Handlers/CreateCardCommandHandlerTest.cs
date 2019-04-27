@@ -1,11 +1,11 @@
 ﻿// Filename: CreateCardCommandHandlerTest.cs
-// Date Created: 2019-04-14
+// Date Created: 2019-04-21
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System.Threading;
@@ -19,6 +19,7 @@ using eDoxa.Cashier.Domain.Repositories;
 
 using FluentAssertions;
 
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
@@ -49,28 +50,28 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             mockUserRepository.Setup(repository => repository.FindAsNoTrackingAsync(It.IsAny<UserId>())).ReturnsAsync(user).Verifiable();
 
             mockCustomerService.Setup(
-                                   service => service.UpdateAsync(
-                                       It.IsAny<string>(),
-                                       It.IsAny<CustomerUpdateOptions>(),
-                                       It.IsAny<RequestOptions>(),
-                                       It.IsAny<CancellationToken>()
-                                   )
-                               )
-                               .ReturnsAsync(customer)
-                               .Verifiable();
+                    service => service.UpdateAsync(
+                        It.IsAny<string>(),
+                        It.IsAny<CustomerUpdateOptions>(),
+                        It.IsAny<RequestOptions>(),
+                        It.IsAny<CancellationToken>()
+                    )
+                )
+                .ReturnsAsync(customer)
+                .Verifiable();
 
             var mockCardService = new Mock<CardService>();
 
             mockCardService.Setup(
-                               service => service.CreateAsync(
-                                   It.IsAny<string>(),
-                                   It.IsAny<CardCreateOptions>(),
-                                   It.IsAny<RequestOptions>(),
-                                   It.IsAny<CancellationToken>()
-                               )
-                           )
-                           .ReturnsAsync(card)
-                           .Verifiable();
+                    service => service.CreateAsync(
+                        It.IsAny<string>(),
+                        It.IsAny<CardCreateOptions>(),
+                        It.IsAny<RequestOptions>(),
+                        It.IsAny<CancellationToken>()
+                    )
+                )
+                .ReturnsAsync(card)
+                .Verifiable();
 
             var handler = new CreateCardCommandHandler(mockUserRepository.Object, mockCustomerService.Object, mockCardService.Object);
 
@@ -78,7 +79,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             var response = await handler.Handle(new CreateCardCommand(card.Id, true), default);
 
             // Assert
-            response.Should().Be(card);
+            response.Should().BeEquivalentTo(new OkObjectResult(card));
 
             mockUserRepository.Verify(repository => repository.FindAsNoTrackingAsync(It.IsAny<UserId>()), Times.Once);
 

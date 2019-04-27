@@ -1,11 +1,11 @@
-﻿// Filename: BuyTokensCommandHandler.cs
-// Date Created: 2019-04-14
+﻿// Filename: DepositTokensCommandHandler.cs
+// Date Created: 2019-04-26
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System.Threading;
@@ -15,16 +15,19 @@ using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Seedwork.Application.Commands.Handlers;
+
 using JetBrains.Annotations;
+
+using Microsoft.AspNetCore.Mvc;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
-    public sealed class DepositTokensCommandHandler : ICommandHandler<DepositTokensCommand, decimal>
+    public sealed class DepositTokensCommandHandler : ICommandHandler<DepositTokensCommand, IActionResult>
     {
         private static readonly TokenBundles Bundles = new TokenBundles();
+        private readonly IMoneyAccountService _moneyAccountService;
 
         private readonly IUserRepository _userRepository;
-        private readonly IMoneyAccountService _moneyAccountService;
 
         public DepositTokensCommandHandler(IUserRepository userRepository, IMoneyAccountService moneyAccountService)
         {
@@ -32,7 +35,8 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
             _moneyAccountService = moneyAccountService;
         }
 
-        public async Task<decimal> Handle([NotNull] DepositTokensCommand command, CancellationToken cancellationToken)
+        [ItemNotNull]
+        public async Task<IActionResult> Handle([NotNull] DepositTokensCommand command, CancellationToken cancellationToken)
         {
             var user = await _userRepository.FindAsync(command.UserId);
 
@@ -44,7 +48,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 
             await _userRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
-            return tokenBalance.Amount;
+            return new ObjectResult(tokenBalance.Amount);
         }
     }
 }

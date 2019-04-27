@@ -80,7 +80,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             var command = new UpdateAddressCommand(userId, address.City, address.Country, address.Line1, address.Line2,
                 address.PostalCode, address.State);
 
-            _mediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(new Address()).Verifiable();
+            _mediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(new OkObjectResult(new Address())).Verifiable();
 
             var controller = new UsersController(_queries.Object, _mediator.Object);
 

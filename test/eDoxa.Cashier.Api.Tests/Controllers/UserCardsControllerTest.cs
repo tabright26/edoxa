@@ -35,17 +35,15 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
     public sealed class UserCardsControllerTest
     {
         private readonly UserAggregateFactory _userAggregateFactory = UserAggregateFactory.Instance;
-        private Mock<IMediator> _mediator;
 
+        private Mock<IMediator> _mediator;
         private Mock<ICardQueries> _queries;
-        private Mock<IUrlHelper> _urlHelper;
 
         [TestInitialize]
         public void TestInitialize()
         {
             _queries = new Mock<ICardQueries>();
             _mediator = new Mock<IMediator>();
-            _urlHelper = new Mock<IUrlHelper>();
         }
 
         [TestMethod]
@@ -79,26 +77,20 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
 
             var command = new CreateCardCommand(cardId.ToString());
 
-            _mediator.Setup(mediator => mediator.Send(It.IsAny<CreateCardCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Card()).Verifiable();
+            _mediator.Setup(mediator => mediator.Send(It.IsAny<CreateCardCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new OkObjectResult(new Card())).Verifiable();
 
-            _urlHelper.Setup(helper => helper.Link(It.IsAny<string>(), It.IsAny<object>())).Returns(string.Empty).Verifiable();
-
-            var controller = new UserCardsController(_queries.Object, _mediator.Object)
-            {
-                Url = _urlHelper.Object
-            };
+            var controller = new UserCardsController(_queries.Object, _mediator.Object);
 
             // Act
             var result = await controller.CreateCardAsync(userId, command);
 
             // Assert
-            result.Should().BeOfType<CreatedResult>();
+            result.Should().BeOfType<OkObjectResult>();
 
             _queries.VerifyNoOtherCalls();
 
             _mediator.Verify();
-
-            _urlHelper.Verify();
         }
 
         [TestMethod]
@@ -132,7 +124,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
 
             var cardId = _userAggregateFactory.CreateCardId();
 
-            _mediator.Setup(mediator => mediator.Send(It.IsAny<DeleteCardCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Unit()).Verifiable();
+            _mediator.Setup(mediator => mediator.Send(It.IsAny<DeleteCardCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(new OkResult()).Verifiable();
 
             var controller = new UserCardsController(_queries.Object, _mediator.Object);
 
@@ -140,13 +132,11 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             var result = await controller.DeleteCardAsync(userId, cardId);
 
             // Assert
-            result.Should().BeOfType<OkObjectResult>();
+            result.Should().BeOfType<OkResult>();
 
             _queries.VerifyNoOtherCalls();
 
             _mediator.Verify();
-
-            _urlHelper.VerifyNoOtherCalls();
         }
 
         [TestMethod]
@@ -158,7 +148,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             var cardId = _userAggregateFactory.CreateCardId();
 
             _mediator.Setup(mediator => mediator.Send(It.IsAny<UpdateDefaultCardCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new Customer())
+                .ReturnsAsync(new OkObjectResult(new Customer()))
                 .Verifiable();
 
             var controller = new UserCardsController(_queries.Object, _mediator.Object);

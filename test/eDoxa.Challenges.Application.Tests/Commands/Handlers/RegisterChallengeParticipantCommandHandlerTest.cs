@@ -1,11 +1,11 @@
 ﻿// Filename: RegisterChallengeParticipantCommandHandlerTest.cs
-// Date Created: 2019-03-22
+// Date Created: 2019-04-21
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
@@ -19,6 +19,9 @@ using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Factories;
 using eDoxa.Challenges.Domain.Repositories;
 
+using FluentAssertions;
+
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
@@ -42,18 +45,20 @@ namespace eDoxa.Challenges.Application.Tests.Commands.Handlers
             var mockChallengeRepository = new Mock<IChallengeRepository>();
 
             mockChallengeRepository.Setup(repository => repository.FindChallengeAsync(It.IsAny<ChallengeId>()))
-                                   .ReturnsAsync(ChallengeAggregateFactory.CreateChallenge())
-                                   .Verifiable();
+                .ReturnsAsync(ChallengeAggregateFactory.CreateChallenge())
+                .Verifiable();
 
             mockChallengeRepository.Setup(repository => repository.UnitOfWork.CommitAndDispatchDomainEventsAsync(It.IsAny<CancellationToken>()))
-                                   .Returns(Task.CompletedTask)
-                                   .Verifiable();
+                .Returns(Task.CompletedTask)
+                .Verifiable();
 
             // Act
             var handler = new RegisterChallengeParticipantCommandHandler(mockChallengeRepository.Object);
 
             // Assert
-            await handler.HandleAsync(command);
+            var result = await handler.Handle(command, default);
+
+            result.Should().BeOfType<OkResult>();
 
             mockChallengeRepository.Verify(repository => repository.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Once);
 

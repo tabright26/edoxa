@@ -14,10 +14,12 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Application.Commands;
 
+using Microsoft.AspNetCore.Mvc;
+
 namespace eDoxa.Cashier.Application.Commands
 {
     [DataContract]
-    public class DepositMoneyCommand : Command<decimal>
+    public class DepositMoneyCommand : Command<IActionResult>
     {
         public DepositMoneyCommand(MoneyBundleType bundleType)
         {

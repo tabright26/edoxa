@@ -65,9 +65,7 @@ namespace eDoxa.Cashier.Api.Controllers
         {
             command.UserId = userId;
 
-            var token = await _mediator.SendCommandAsync(command);
-
-            return this.Ok(token);
+            return await _mediator.SendCommandAsync(command);
         }
 
         /// <summary>

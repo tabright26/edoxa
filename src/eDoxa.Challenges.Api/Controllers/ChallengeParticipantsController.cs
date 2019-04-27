@@ -63,9 +63,7 @@ namespace eDoxa.Challenges.Api.Controllers
         {
             //command.LinkedAccount = User.FindFirst("").Value; // TODO: Create LinkedAccount service.
 
-            await _mediator.SendCommandAsync(command);
-
-            return this.Ok(string.Empty);
+            return await _mediator.SendCommandAsync(command);
         }
     }
 }

@@ -1,11 +1,11 @@
 ﻿// Filename: UpdateDefaultCardCommandHandlerTest.cs
-// Date Created: 2019-04-09
+// Date Created: 2019-04-21
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System.Threading;
@@ -19,6 +19,7 @@ using eDoxa.Cashier.Domain.Repositories;
 
 using FluentAssertions;
 
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
@@ -49,15 +50,15 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             mockUserRepository.Setup(repository => repository.FindAsNoTrackingAsync(It.IsAny<UserId>())).ReturnsAsync(user).Verifiable();
 
             mockCustomerService.Setup(
-                                   service => service.UpdateAsync(
-                                       It.IsAny<string>(),
-                                       It.IsAny<CustomerUpdateOptions>(),
-                                       It.IsAny<RequestOptions>(),
-                                       It.IsAny<CancellationToken>()
-                                   )
-                               )
-                               .ReturnsAsync(customer)
-                               .Verifiable();
+                    service => service.UpdateAsync(
+                        It.IsAny<string>(),
+                        It.IsAny<CustomerUpdateOptions>(),
+                        It.IsAny<RequestOptions>(),
+                        It.IsAny<CancellationToken>()
+                    )
+                )
+                .ReturnsAsync(customer)
+                .Verifiable();
 
             var handler = new UpdateDefaultCardCommandHandler(mockUserRepository.Object, mockCustomerService.Object);
 
@@ -65,7 +66,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             var response = await handler.Handle(new UpdateDefaultCardCommand(user.Id, cardId), default);
 
             // Assert
-            response.Should().Be(customer);
+            response.Should().BeEquivalentTo(new OkObjectResult(customer));
 
             mockUserRepository.Verify(repository => repository.FindAsNoTrackingAsync(It.IsAny<UserId>()), Times.Once);
 

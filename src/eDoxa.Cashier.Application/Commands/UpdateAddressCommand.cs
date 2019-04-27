@@ -1,11 +1,11 @@
 ﻿// Filename: UpdateAddressCommand.cs
-// Date Created: 2019-04-09
+// Date Created: 2019-04-21
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System.Runtime.Serialization;
@@ -13,12 +13,12 @@ using System.Runtime.Serialization;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Seedwork.Application.Commands;
 
-using Stripe;
+using Microsoft.AspNetCore.Mvc;
 
 namespace eDoxa.Cashier.Application.Commands
 {
     [DataContract]
-    public class UpdateAddressCommand : Command<Address>
+    public class UpdateAddressCommand : Command<IActionResult>
     {
         public UpdateAddressCommand(UserId userId, string city, string country, string line1, string line2, string postalCode, string state)
         {
@@ -31,14 +31,11 @@ namespace eDoxa.Cashier.Application.Commands
             State = state;
         }
 
-        [IgnoreDataMember]
-        public UserId UserId { get; set; }
+        [IgnoreDataMember] public UserId UserId { get; set; }
 
-        [IgnoreDataMember]
-        public string Name { get; set; }
+        [IgnoreDataMember] public string Name { get; set; }
 
-        [IgnoreDataMember]
-        public string Phone { get; set; }
+        [IgnoreDataMember] public string Phone { get; set; }
 
         [DataMember(Name = "city", IsRequired = false)]
         public string City { get; private set; }

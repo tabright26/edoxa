@@ -59,19 +59,7 @@ namespace eDoxa.Cashier.Api.Controllers
         {
             command.UserId = userId;
 
-            var card = await _mediator.SendCommandAsync(command);
-
-            return this.Created(
-                Url.Link(
-                    nameof(this.FindUserCardAsync),
-                    new
-                    {
-                        userId,
-                        cardId = card.Id
-                    }
-                ),
-                card
-            );
+            return await _mediator.SendCommandAsync(command);
         }
 
         /// <summary>
@@ -93,9 +81,7 @@ namespace eDoxa.Cashier.Api.Controllers
         {
             var command = new DeleteCardCommand(userId, cardId);
 
-            await _mediator.SendCommandAsync(command);
-
-            return this.Ok(string.Empty);
+            return await _mediator.SendCommandAsync(command);
         }
 
         /// <summary>
@@ -106,9 +92,7 @@ namespace eDoxa.Cashier.Api.Controllers
         {
             var command = new UpdateDefaultCardCommand(userId, cardId);
 
-            var customer = await _mediator.SendCommandAsync(command);
-
-            return this.Ok(customer);
+            return await _mediator.SendCommandAsync(command);
         }
     }
 }

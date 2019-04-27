@@ -91,7 +91,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
             // Arrange
             var command = new RegisterChallengeParticipantCommand(new ChallengeId(), new UserId());
 
-            _mediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(It.IsAny<Unit>()).Verifiable();
+            _mediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(new OkResult()).Verifiable();
 
             var controller = new ChallengeParticipantsController(_queries.Object, _mediator.Object);
 
@@ -99,8 +99,10 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
             var result = await controller.RegisterChallengeParticipantAsync(command);
 
             // Assert
-            result.Should().BeOfType<OkObjectResult>();
+            result.Should().BeOfType<OkResult>();
+
             _queries.VerifyNoOtherCalls();
+
             _mediator.Verify();
         }
     }

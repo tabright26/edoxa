@@ -65,9 +65,7 @@ namespace eDoxa.Cashier.Api.Controllers
         {
             command.UserId = userId;
 
-            var money = await _mediator.SendCommandAsync(command);
-
-            return this.Ok(money);
+            return await _mediator.SendCommandAsync(command);
         }
 
         /// <summary>
@@ -80,9 +78,7 @@ namespace eDoxa.Cashier.Api.Controllers
         {
             command.UserId = userId;
 
-            var money = await _mediator.SendCommandAsync(command);
-
-            return this.Ok(money);
+            return await _mediator.SendCommandAsync(command);
         }
 
         /// <summary>

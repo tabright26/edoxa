@@ -1,11 +1,11 @@
 ﻿// Filename: UpdateDefaultCardCommand.cs
-// Date Created: 2019-04-09
+// Date Created: 2019-04-21
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System.Runtime.Serialization;
@@ -13,12 +13,12 @@ using System.Runtime.Serialization;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Seedwork.Application.Commands;
 
-using Stripe;
+using Microsoft.AspNetCore.Mvc;
 
 namespace eDoxa.Cashier.Application.Commands
 {
     [DataContract]
-    public class UpdateDefaultCardCommand : Command<Customer>
+    public class UpdateDefaultCardCommand : Command<IActionResult>
     {
         public UpdateDefaultCardCommand(UserId userId, CardId cardId)
         {
@@ -26,10 +26,8 @@ namespace eDoxa.Cashier.Application.Commands
             CardId = cardId;
         }
 
-        [IgnoreDataMember]
-        public UserId UserId { get; private set; }
+        [IgnoreDataMember] public UserId UserId { get; private set; }
 
-        [IgnoreDataMember]
-        public CardId CardId { get; private set; }
+        [IgnoreDataMember] public CardId CardId { get; private set; }
     }
 }

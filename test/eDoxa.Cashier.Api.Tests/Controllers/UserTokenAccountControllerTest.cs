@@ -52,7 +52,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
 
             var command = new DepositTokensCommand(TokenBundleType.FiftyThousand);
 
-            _mediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(token).Verifiable();
+            _mediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(new OkObjectResult(token)).Verifiable();
 
             var controller = new UserTokenAccountController(_queries.Object, _mediator.Object);
 
