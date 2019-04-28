@@ -48,7 +48,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 
             await _userRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
-            return new ObjectResult(balance.Amount);
+            return new OkObjectResult((decimal) balance.Amount);
         }
     }
 }

@@ -10,7 +10,7 @@ using eDoxa.Cashier.Infrastructure;
 namespace eDoxa.Cashier.Infrastructure.Migrations
 {
     [DbContext(typeof(CashierDbContext))]
-    [Migration("20190426235754_InitialCreate")]
+    [Migration("20190428020428_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -104,10 +104,12 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("eDoxa.Seedwork.Infrastructure.Repositories.RequestLogEntry", b =>
+            modelBuilder.Entity("eDoxa.Seedwork.Infrastructure.Repositories.LogEntry", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Date");
 
                     b.Property<Guid?>("IdempotencyKey");
 
@@ -119,9 +121,13 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
 
                     b.Property<string>("RemoteIpAddress");
 
-                    b.Property<DateTime>("Time");
+                    b.Property<string>("RequestBody");
 
-                    b.Property<int>("Type");
+                    b.Property<string>("RequestType");
+
+                    b.Property<string>("ResponseBody");
+
+                    b.Property<string>("ResponseType");
 
                     b.Property<string>("Url");
 
@@ -133,7 +139,7 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                         .IsUnique()
                         .HasFilter("[IdempotencyKey] IS NOT NULL");
 
-                    b.ToTable("RequestLogs","dbo");
+                    b.ToTable("Logs","dbo");
                 });
 
             modelBuilder.Entity("eDoxa.Cashier.Domain.AggregateModels.UserAggregate.MoneyAccount", b =>

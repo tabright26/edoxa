@@ -100,10 +100,12 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("eDoxa.Seedwork.Infrastructure.Repositories.RequestLogEntry", b =>
+            modelBuilder.Entity("eDoxa.Seedwork.Infrastructure.Repositories.LogEntry", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Date");
 
                     b.Property<Guid?>("IdempotencyKey");
 
@@ -115,9 +117,13 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
 
                     b.Property<string>("RemoteIpAddress");
 
-                    b.Property<DateTime>("Time");
+                    b.Property<string>("RequestBody");
 
-                    b.Property<int>("Type");
+                    b.Property<string>("RequestType");
+
+                    b.Property<string>("ResponseBody");
+
+                    b.Property<string>("ResponseType");
 
                     b.Property<string>("Url");
 
@@ -129,7 +135,7 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                         .IsUnique()
                         .HasFilter("[IdempotencyKey] IS NOT NULL");
 
-                    b.ToTable("RequestLogs","dbo");
+                    b.ToTable("Logs","dbo");
                 });
 
             modelBuilder.Entity("eDoxa.Cashier.Domain.AggregateModels.UserAggregate.MoneyAccount", b =>

@@ -11,7 +11,8 @@
 using System;
 using System.Globalization;
 
-using eDoxa.Seedwork.Infrastructure.Constants;
+using eDoxa.Seedwork.Domain.Constants;
+
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc.Filters;
 

@@ -8,78 +8,62 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Reflection;
-using System.Runtime.Serialization;
-using System.Threading.Tasks;
-
-using Autofac;
-
-using eDoxa.Seedwork.Application.Commands;
-using eDoxa.Seedwork.Application.Commands.Behaviors;
-
-using FluentValidation;
-using FluentValidation.Results;
-
-using MediatR;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using Moq;
 
 namespace eDoxa.Seedwork.Application.Tests.Commands.Behaviors
 {
     [TestClass]
     public sealed class CommandValidatorBehaviorTest
     {
-        [TestMethod]
-        public async Task Test1()
-        {
-            // Arrange
-            var validator = new Mock<IValidator<MockCommand>>();
+        //[TestMethod]
+        //public async Task Test1()
+        //{
+        //    // Arrange
+        //    var validator = new Mock<IValidator<MockCommand>>();
 
-            validator.Setup(command => command.Validate(It.IsAny<MockCommand>()))
-                     .Returns(
-                         new ValidationResult(
-                             new[]
-                             {
-                                 new ValidationFailure("propertyName", "errorMessage")
-                             }
-                         )
-                     );
+        //    validator.Setup(command => command.Validate(It.IsAny<MockCommand>()))
+        //             .Returns(
+        //                 new ValidationResult(
+        //                     new[]
+        //                     {
+        //                         new ValidationFailure("propertyName", "errorMessage")
+        //                     }
+        //                 )
+        //             );
 
-            var builder = MockContainerBuilder();
-            builder.RegisterInstance(validator.Object).AsImplementedInterfaces();
-            var container = builder.Build();
-            var mediator = container.Resolve<IMediator>();
+        //    var builder = MockContainerBuilder();
+        //    builder.RegisterInstance(validator.Object).AsImplementedInterfaces();
+        //    var container = builder.Build();
+        //    var mediator = container.Resolve<IMediator>();
 
-            // Act => Assert
-            await Assert.ThrowsExceptionAsync<ValidationException>(async () => await mediator.Send(new MockCommand()));
-        }
+        //    // Act => Assert
+        //    await Assert.ThrowsExceptionAsync<ValidationException>(async () => await mediator.Send(new MockCommand()));
+        //}
 
-        private static ContainerBuilder MockContainerBuilder()
-        {
-            var builder = new ContainerBuilder();
+        //private static ContainerBuilder MockContainerBuilder()
+        //{
+        //    var builder = new ContainerBuilder();
 
-            builder.RegisterAssemblyTypes(typeof(IMediator).GetTypeInfo().Assembly).AsImplementedInterfaces();
+        //    builder.RegisterAssemblyTypes(typeof(IMediator).GetTypeInfo().Assembly).AsImplementedInterfaces();
 
-            // Register MediatR service factory.
-            builder.Register<ServiceFactory>(
-                context =>
-                {
-                    var componentContext = context.Resolve<IComponentContext>();
+        //    // Register MediatR service factory.
+        //    builder.Register<ServiceFactory>(
+        //        context =>
+        //        {
+        //            var componentContext = context.Resolve<IComponentContext>();
 
-                    return type => componentContext.TryResolve(type, out var instance) ? instance : null;
-                }
-            );
+        //            return type => componentContext.TryResolve(type, out var instance) ? instance : null;
+        //        }
+        //    );
 
-            builder.RegisterGeneric(typeof(CommandValidationBehavior<,>)).As(typeof(IPipelineBehavior<,>));
+        //    builder.RegisterGeneric(typeof(CommandValidationBehavior<,>)).As(typeof(IPipelineBehavior<,>));
 
-            return builder;
-        }
+        //    return builder;
+        //}
 
-        [DataContract]
-        public sealed class MockCommand : Command
-        {
-        }
+        //[DataContract]
+        //public sealed class MockCommand : Command
+        //{
+        //}
     }
 }

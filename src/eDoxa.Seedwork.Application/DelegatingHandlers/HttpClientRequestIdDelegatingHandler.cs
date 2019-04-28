@@ -13,7 +13,8 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Seedwork.Infrastructure.Constants;
+using eDoxa.Seedwork.Domain.Constants;
+
 using JetBrains.Annotations;
 
 namespace eDoxa.Seedwork.Application.DelegatingHandlers

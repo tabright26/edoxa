@@ -8,14 +8,14 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-namespace eDoxa.Seedwork.Infrastructure.Constants
+namespace eDoxa.Seedwork.Domain.Constants
 {
     public static class CustomHeaderNames
     {
         public const string IdempotencyKey = "X-Idempotency-Key";
         public const string RequestId = "Request-Id";
         public const string RequestDate = "Request-Date";
-        public const string EdoxaVersion = "Edoxa-Version";
+        public const string Version = "Edoxa-Version";
         public const string Origin = "Origin";
     }
 }

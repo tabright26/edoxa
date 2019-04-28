@@ -8,6 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,37 +19,37 @@ using JetBrains.Annotations;
 using MediatR;
 
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.Seedwork.Application.Commands.Behaviors
 {
-    /// <summary>
-    ///     Provides a base implementation for handling duplicate request and ensuring request updates, in the cases where a
-    ///     request sent by client is used to detect duplicate requests.
-    /// </summary>
-    /// <typeparam name="TCommand">The type of the <see cref="ICommand{TResponse}" />.</typeparam>
-    /// <typeparam name="TResponse">The type of the command response.</typeparam>
-    public sealed class CommandBehavior<TCommand, TResponse> : IPipelineBehavior<TCommand, TResponse>
+    public sealed class CommandBehavior<TCommand, TResult> : IPipelineBehavior<TCommand, TResult>
     where TCommand : IBaseCommand
     {
-        [CanBeNull] private readonly IHttpContextAccessor _contextAccessor;
-        private readonly IRequestLogService _requestLogService;
+        private readonly ICommandService _commandService;
+        private readonly IServiceProvider _serviceProvider;
 
-        public CommandBehavior([CanBeNull] IHttpContextAccessor contextAccessor, IRequestLogService requestLogService)
+        public CommandBehavior(ICommandService commandService, IServiceProvider serviceProvider)
         {
-            _contextAccessor = contextAccessor;
-            _requestLogService = requestLogService;
+            _commandService = commandService;
+            _serviceProvider = serviceProvider;
         }
 
         [ItemNotNull]
-        public async Task<TResponse> Handle([NotNull] TCommand command, CancellationToken cancellationToken, [NotNull] RequestHandlerDelegate<TResponse> next)
+        public async Task<TResult> Handle([NotNull] TCommand command, CancellationToken cancellationToken, [NotNull] RequestHandlerDelegate<TResult> next)
         {
-            //TODO: This must be implemented before eDoxa v.3 (Release 1)
-            //var response = await next();
+            if (!typeof(IActionResult).IsAssignableFrom(typeof(TResult)))
+            {
+                return await next();
+            }
 
-            var httpContext = _contextAccessor?.HttpContext;
+            var accessor = _serviceProvider.GetService<IHttpContextAccessor>();
 
-            //TODO: This must be implemented before eDoxa v.3 (Release 1)
-            await _requestLogService.CreateAsync(httpContext /*, command, response*/);
+            if (accessor?.HttpContext is HttpContext context)
+            {
+                await _commandService.LogEntryAsync(context);
+            }
 
             return await next();
         }

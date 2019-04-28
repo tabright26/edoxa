@@ -13,7 +13,8 @@ using System.Linq;
 using System.Net;
 
 using eDoxa.IdentityServer;
-using eDoxa.Seedwork.Infrastructure.Constants;
+using eDoxa.Seedwork.Domain.Constants;
+
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

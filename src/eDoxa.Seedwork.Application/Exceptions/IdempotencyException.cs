@@ -1,4 +1,4 @@
-﻿// Filename: IRequestLogRepository.cs
+﻿// Filename: IdempotentRequestException.cs
 // Date Created: 2019-03-04
 // 
 // ============================================================
@@ -8,15 +8,15 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Seedwork.Domain;
+using System;
 using JetBrains.Annotations;
 
-namespace eDoxa.Seedwork.Infrastructure.Repositories
+namespace eDoxa.Seedwork.Application.Exceptions
 {
-    public interface IRequestLogRepository : IRepository<RequestLogEntry>
+    public class IdempotencyException : Exception
     {
-        void Create(RequestLogEntry requestLog);
-
-        bool IdempotencyKeyExists([CanBeNull] string idempotencyKey);
+        public IdempotencyException([CanBeNull] string idempotencyKey) : base($"The HTTP request with IdempotencyKey '{idempotencyKey}' was already executed.")
+        {
+        }
     }
 }

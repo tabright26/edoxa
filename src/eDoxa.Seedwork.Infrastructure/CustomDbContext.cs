@@ -1,11 +1,11 @@
 ﻿// Filename: CustomDbContext.cs
-// Date Created: 2019-03-04
+// Date Created: 2019-04-21
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System.Linq;
@@ -13,12 +13,15 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Infrastructure.Extensions;
-using eDoxa.Seedwork.Infrastructure.Repositories;
+
 using JetBrains.Annotations;
+
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
+
 using Moq;
 
 namespace eDoxa.Seedwork.Infrastructure
@@ -40,6 +43,8 @@ namespace eDoxa.Seedwork.Infrastructure
 
             _mediator = mock.Object;
         }
+
+        public DbSet<LogEntry> Logs => this.Set<LogEntry>();
 
         public async Task CommitAsync(CancellationToken cancellationToken = default)
         {
@@ -63,37 +68,41 @@ namespace eDoxa.Seedwork.Infrastructure
             }
         }
 
-        public DbSet<RequestLogEntry> RequestLogs
-        {
-            get
-            {
-                return this.Set<RequestLogEntry>();
-            }
-        }
-
         protected override void OnModelCreating([NotNull] ModelBuilder builder)
         {
-            builder.Entity<RequestLogEntry>(
+            builder.Entity<LogEntry>(
                 entity =>
                 {
-                    entity.ToTable(nameof(RequestLogs), DefaultSchema);
-                    entity.HasKey(logEntry => logEntry.Id);
-                    entity.Property(logEntry => logEntry.Id).IsRequired();
-                    entity.Property(logEntry => logEntry.Time).IsRequired();
-                    entity.Property(logEntry => logEntry.Type).IsRequired();
-                    entity.Property(logEntry => logEntry.Version).IsRequired(false);
-                    entity.Property(logEntry => logEntry.Method).IsRequired(false);
-                    entity.Property(logEntry => logEntry.Url).IsRequired(false);
-                    entity.Property(logEntry => logEntry.LocalIpAddress).IsRequired(false);
-                    entity.Property(logEntry => logEntry.RemoteIpAddress).IsRequired(false);
-                    entity.Property(logEntry => logEntry.Origin).IsRequired(false);
-                    entity.Property(logEntry => logEntry.IdempotencyKey).IsRequired(false);
+                    entity.ToTable(nameof(Logs), DefaultSchema);
 
-                    //TODO: This must be implemented before eDoxa v.3 (Release 1)
-                    //entity.Property(logEntry => logEntry.RequestBody).IsRequired(false);
-                    //entity.Property(logEntry => logEntry.RequestType).IsRequired(false);
-                    //entity.Property(logEntry => logEntry.ResponseBody).IsRequired(false);
-                    //entity.Property(logEntry => logEntry.ResponseType).IsRequired(false);
+                    entity.Property(logEntry => logEntry.Id).IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field);
+
+                    entity.Property(logEntry => logEntry.Date).IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field);
+
+                    entity.Property(logEntry => logEntry.Version).IsRequired(false).UsePropertyAccessMode(PropertyAccessMode.Field);
+
+                    entity.Property(logEntry => logEntry.Method).IsRequired(false).UsePropertyAccessMode(PropertyAccessMode.Field);
+
+                    entity.Property(logEntry => logEntry.Url).IsRequired(false).UsePropertyAccessMode(PropertyAccessMode.Field);
+
+                    entity.Property(logEntry => logEntry.LocalIpAddress).IsRequired(false).UsePropertyAccessMode(PropertyAccessMode.Field);
+
+                    entity.Property(logEntry => logEntry.RemoteIpAddress).IsRequired(false).UsePropertyAccessMode(PropertyAccessMode.Field);
+
+                    entity.Property(logEntry => logEntry.Origin).IsRequired(false).UsePropertyAccessMode(PropertyAccessMode.Field);
+
+                    entity.Property(logEntry => logEntry.RequestBody).IsRequired(false).UsePropertyAccessMode(PropertyAccessMode.Field);
+
+                    entity.Property(logEntry => logEntry.RequestType).IsRequired(false).UsePropertyAccessMode(PropertyAccessMode.Field);
+
+                    entity.Property(logEntry => logEntry.ResponseBody).IsRequired(false).UsePropertyAccessMode(PropertyAccessMode.Field);
+
+                    entity.Property(logEntry => logEntry.ResponseType).IsRequired(false).UsePropertyAccessMode(PropertyAccessMode.Field);
+
+                    entity.Property(logEntry => logEntry.IdempotencyKey).IsRequired(false).UsePropertyAccessMode(PropertyAccessMode.Field);
+
+                    entity.HasKey(logEntry => logEntry.Id);
+
                     entity.HasIndex(logEntry => logEntry.IdempotencyKey).IsUnique();
                 }
             );

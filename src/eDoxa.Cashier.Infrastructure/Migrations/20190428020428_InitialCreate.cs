@@ -1,5 +1,5 @@
-﻿// Filename: 20190426235754_InitialCreate.cs
-// Date Created: 2019-04-26
+﻿// Filename: 20190428020428_InitialCreate.cs
+// Date Created: 2019-04-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -25,22 +25,25 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                 "dbo");
 
             migrationBuilder.CreateTable(
-                "RequestLogs",
+                "Logs",
                 schema: "dbo",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(),
-                    Time = table.Column<DateTime>(),
-                    Type = table.Column<int>(),
+                    Date = table.Column<DateTime>(),
+                    Version = table.Column<string>(nullable: true),
+                    Origin = table.Column<string>(nullable: true),
                     Method = table.Column<string>(nullable: true),
                     Url = table.Column<string>(nullable: true),
                     LocalIpAddress = table.Column<string>(nullable: true),
                     RemoteIpAddress = table.Column<string>(nullable: true),
-                    Version = table.Column<string>(nullable: true),
-                    Origin = table.Column<string>(nullable: true),
+                    RequestBody = table.Column<string>(nullable: true),
+                    RequestType = table.Column<string>(nullable: true),
+                    ResponseBody = table.Column<string>(nullable: true),
+                    ResponseType = table.Column<string>(nullable: true),
                     IdempotencyKey = table.Column<Guid>(nullable: true)
                 },
-                constraints: table => { table.PrimaryKey("PK_RequestLogs", x => x.Id); });
+                constraints: table => { table.PrimaryKey("PK_Logs", x => x.Id); });
 
             migrationBuilder.CreateTable(
                 "Users",
@@ -145,9 +148,9 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                "IX_RequestLogs_IdempotencyKey",
+                "IX_Logs_IdempotencyKey",
                 schema: "dbo",
-                table: "RequestLogs",
+                table: "Logs",
                 column: "IdempotencyKey",
                 unique: true,
                 filter: "[IdempotencyKey] IS NOT NULL");
@@ -182,7 +185,7 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                "RequestLogs",
+                "Logs",
                 "dbo");
 
             migrationBuilder.DropTable(
