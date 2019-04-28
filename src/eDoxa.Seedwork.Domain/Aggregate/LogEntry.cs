@@ -14,6 +14,8 @@ using eDoxa.Seedwork.Domain.Constants;
 
 using Microsoft.AspNetCore.Http;
 
+using Newtonsoft.Json;
+
 namespace eDoxa.Seedwork.Domain.Aggregate
 {
     public class LogEntry : IAggregateRoot
@@ -32,7 +34,7 @@ namespace eDoxa.Seedwork.Domain.Aggregate
         private string _url;
         private string _version;
 
-        public LogEntry(HttpContext httpContext, string idempotencyKey = null) : this()
+        protected LogEntry(HttpContext httpContext, string idempotencyKey = null) : this()
         {
             _id = Guid.Parse(httpContext.Response.Headers[CustomHeaderNames.RequestId]);
             _date = DateTime.Parse(httpContext.Response.Headers[CustomHeaderNames.RequestDate]);
@@ -78,5 +80,23 @@ namespace eDoxa.Seedwork.Domain.Aggregate
         public string ResponseType => _responseType;
 
         public Guid? IdempotencyKey => _idempotencyKey;
+
+        protected void SetRequest(object request)
+        {
+            var json = JsonConvert.SerializeObject(request);
+
+            _requestBody = json != "{}" ? json : null;
+
+            _requestType = request.GetType().FullName;
+        }
+
+        protected void SetResponse(object response)
+        {
+            var json = JsonConvert.SerializeObject(response);
+
+            _responseBody = json != "{}" ? json : null;
+
+            _responseType = response.GetType().FullName;
+        }
     }
 }

@@ -10,12 +10,15 @@
 
 using System.Threading.Tasks;
 
+using eDoxa.Commands.Abstractions;
+
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace eDoxa.Commands.Services
 {
     public interface ICommandService
     {
-        Task LogEntryAsync(HttpContext context);
+        Task LogEntryAsync(ICommand<IActionResult> command, IActionResult result, HttpContext context);
     }
 }

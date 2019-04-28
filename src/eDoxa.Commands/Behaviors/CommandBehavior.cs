@@ -40,19 +40,21 @@ namespace eDoxa.Commands.Behaviors
         [ItemNotNull]
         public async Task<TResult> Handle([NotNull] TCommand command, CancellationToken cancellationToken, [NotNull] RequestHandlerDelegate<TResult> next)
         {
+            var result = await next();
+
             if (!typeof(IActionResult).IsAssignableFrom(typeof(TResult)))
             {
-                return await next();
+                return result;
             }
 
             var accessor = _serviceProvider.GetService<IHttpContextAccessor>();
 
             if (accessor?.HttpContext is HttpContext context)
             {
-                await _commandService.LogEntryAsync(context);
+                await _commandService.LogEntryAsync((ICommand<IActionResult>) command, (IActionResult) result, context);
             }
 
-            return await next();
+            return result;
         }
     }
 }

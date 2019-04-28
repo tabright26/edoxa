@@ -8,16 +8,27 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Commands.Abstractions;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace eDoxa.Commands.Infrastructure
 {
     public sealed class CommandLogEntry : LogEntry
     {
-        public CommandLogEntry(HttpContext httpContext, string idempotencyKey = null) : base(httpContext, idempotencyKey)
+        public CommandLogEntry(
+            ICommand<IActionResult> command,
+            IActionResult result,
+            HttpContext httpContext,
+            string idempotencyKey = null) : base(
+            httpContext,
+            idempotencyKey
+        )
         {
+            this.SetRequest(command);
+            this.SetResponse(((ObjectResult) result).Value);
         }
     }
 }

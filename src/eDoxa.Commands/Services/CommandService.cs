@@ -10,12 +10,14 @@
 
 using System.Threading.Tasks;
 
+using eDoxa.Commands.Abstractions;
 using eDoxa.Commands.Exceptions;
 using eDoxa.Commands.Infrastructure;
 using eDoxa.Commands.Infrastructure.Repositories;
 using eDoxa.Seedwork.Domain.Constants;
 
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace eDoxa.Commands.Services
 {
@@ -28,7 +30,7 @@ namespace eDoxa.Commands.Services
             _commandRepository = commandRepository;
         }
 
-        public async Task LogEntryAsync(HttpContext context)
+        public async Task LogEntryAsync(ICommand<IActionResult> command, IActionResult result, HttpContext context)
         {
             var idempotencyKey = context.Request?.Headers[CustomHeaderNames.IdempotencyKey];
 
@@ -37,7 +39,7 @@ namespace eDoxa.Commands.Services
                 throw new IdempotencyException(idempotencyKey);
             }
 
-            var logEntry = new CommandLogEntry(context, idempotencyKey);
+            var logEntry = new CommandLogEntry(command, result, context, idempotencyKey);
 
             _commandRepository.Create(logEntry);
 
