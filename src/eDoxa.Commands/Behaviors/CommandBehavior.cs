@@ -12,7 +12,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Seedwork.Application.Services;
+using eDoxa.Commands.Abstractions;
+using eDoxa.Commands.Services;
 
 using JetBrains.Annotations;
 
@@ -22,7 +23,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace eDoxa.Seedwork.Application.Commands.Behaviors
+namespace eDoxa.Commands.Behaviors
 {
     public sealed class CommandBehavior<TCommand, TResult> : IPipelineBehavior<TCommand, TResult>
     where TCommand : IBaseCommand

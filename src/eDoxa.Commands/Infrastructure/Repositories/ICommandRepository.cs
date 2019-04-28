@@ -13,11 +13,11 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Seedwork.Infrastructure.Repositories
+namespace eDoxa.Commands.Infrastructure.Repositories
 {
     public interface ICommandRepository : IRepository<LogEntry>
     {
-        void Create(LogEntry logEntry);
+        void Create(CommandLogEntry logEntry);
 
         bool IdempotencyKeyExists([CanBeNull] string idempotencyKey);
     }

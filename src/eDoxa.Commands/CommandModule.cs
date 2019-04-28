@@ -1,5 +1,5 @@
-﻿// Filename: MediatorModule.cs
-// Date Created: 2019-04-21
+﻿// Filename: CommandModule.cs
+// Date Created: 2019-04-28
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,16 +8,12 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-using System.Collections.Generic;
 using System.Reflection;
 
 using Autofac;
 
-using eDoxa.Functional.Extensions;
-using eDoxa.Seedwork.Application.Commands.Behaviors;
-using eDoxa.Seedwork.Application.Commands.Handlers;
-using eDoxa.Seedwork.Application.DomainEventHandlers;
+using eDoxa.Commands.Abstractions.Handlers;
+using eDoxa.Commands.Behaviors;
 
 using FluentValidation;
 
@@ -27,19 +23,19 @@ using MediatR;
 
 using Module = Autofac.Module;
 
-namespace eDoxa.Autofac
+namespace eDoxa.Commands
 {
-    public sealed class MediatorModule<TCommandAssembly> : Module
+    public sealed class CommandModule<TCommandHandler> : Module
     {
-        private readonly IReadOnlyList<Type> _handlerTypes = new List<Type> {typeof(IDomainEventHandler<>), typeof(ICommandHandler<,>)};
-
         protected override void Load([NotNull] ContainerBuilder builder)
         {
-            _handlerTypes.ForEach(handlerType => builder.RegisterAssemblyTypes(typeof(TCommandAssembly).GetTypeInfo().Assembly)
-                .AsClosedTypesOf(handlerType)
-                .AsImplementedInterfaces());
+            base.Load(builder);
 
-            builder.RegisterAssemblyTypes(typeof(TCommandAssembly).GetTypeInfo().Assembly)
+            builder.RegisterAssemblyTypes(typeof(TCommandHandler).GetTypeInfo().Assembly)
+                .AsClosedTypesOf(typeof(ICommandHandler<,>))
+                .AsImplementedInterfaces();
+
+            builder.RegisterAssemblyTypes(typeof(TCommandHandler).GetTypeInfo().Assembly)
                 .Where(type => type.IsClosedTypeOf(typeof(IValidator<>)))
                 .AsImplementedInterfaces();
 

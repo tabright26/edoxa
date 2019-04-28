@@ -20,7 +20,7 @@ using MediatR;
 
 using Microsoft.Extensions.Logging;
 
-namespace eDoxa.Seedwork.Application.Commands.Behaviors
+namespace eDoxa.Commands.Behaviors
 {
     public sealed class CommandValidationBehavior<TCommand, TResult> : IPipelineBehavior<TCommand, TResult>
     {

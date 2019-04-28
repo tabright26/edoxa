@@ -29,8 +29,8 @@ namespace eDoxa.Challenges.Infrastructure.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    Date = table.Column<DateTime>(nullable: false),
+                    Id = table.Column<Guid>(),
+                    Date = table.Column<DateTime>(),
                     Version = table.Column<string>(nullable: true),
                     Origin = table.Column<string>(nullable: true),
                     Method = table.Column<string>(nullable: true),
@@ -50,9 +50,9 @@ namespace eDoxa.Challenges.Infrastructure.Migrations
                 schema: "edoxa",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    Game = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: false),
+                    Id = table.Column<Guid>(),
+                    Game = table.Column<int>(),
+                    Name = table.Column<string>(),
                     Scoring = table.Column<string>(nullable: true)
                 },
                 constraints: table => { table.PrimaryKey("PK_Challenges", x => x.Id); });
@@ -62,7 +62,7 @@ namespace eDoxa.Challenges.Infrastructure.Migrations
                 schema: "edoxa",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false)
+                    Id = table.Column<Guid>()
                 },
                 constraints: table => { table.PrimaryKey("PK_Users", x => x.Id); });
 
@@ -71,14 +71,14 @@ namespace eDoxa.Challenges.Infrastructure.Migrations
                 schema: "edoxa",
                 columns: table => new
                 {
-                    ChallengeId = table.Column<Guid>(nullable: false),
-                    Type = table.Column<int>(nullable: false),
-                    Generated = table.Column<bool>(nullable: false),
-                    BestOf = table.Column<int>(nullable: false),
-                    Entries = table.Column<int>(nullable: false),
-                    EntryFee = table.Column<decimal>("decimal(4,2)", nullable: false),
-                    PayoutRatio = table.Column<float>(nullable: false),
-                    ServiceChargeRatio = table.Column<float>(nullable: false)
+                    ChallengeId = table.Column<Guid>(),
+                    Type = table.Column<int>(),
+                    Generated = table.Column<bool>(),
+                    BestOf = table.Column<int>(),
+                    Entries = table.Column<int>(),
+                    EntryFee = table.Column<decimal>("decimal(4,2)"),
+                    PayoutRatio = table.Column<float>(),
+                    ServiceChargeRatio = table.Column<float>()
                 },
                 constraints: table =>
                 {
@@ -98,13 +98,13 @@ namespace eDoxa.Challenges.Infrastructure.Migrations
                 schema: "edoxa",
                 columns: table => new
                 {
-                    ChallengeId = table.Column<Guid>(nullable: false),
+                    ChallengeId = table.Column<Guid>(),
                     PublishedAt = table.Column<DateTime>(nullable: true),
                     ClosedAt = table.Column<DateTime>(nullable: true),
                     RegistrationPeriod = table.Column<long>(nullable: true),
                     ExtensionPeriod = table.Column<long>(nullable: true),
-                    LiveMode = table.Column<bool>(nullable: false),
-                    CreatedAt = table.Column<DateTime>(nullable: false)
+                    LiveMode = table.Column<bool>(),
+                    CreatedAt = table.Column<DateTime>()
                 },
                 constraints: table =>
                 {
@@ -124,11 +124,11 @@ namespace eDoxa.Challenges.Infrastructure.Migrations
                 schema: "edoxa",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    Timestamp = table.Column<DateTime>(nullable: false),
-                    LinkedAccount = table.Column<string>(nullable: false),
-                    UserId = table.Column<Guid>(nullable: false),
-                    ChallengeId = table.Column<Guid>(nullable: false)
+                    Id = table.Column<Guid>(),
+                    Timestamp = table.Column<DateTime>(),
+                    LinkedAccount = table.Column<string>(),
+                    UserId = table.Column<Guid>(),
+                    ChallengeId = table.Column<Guid>()
                 },
                 constraints: table =>
                 {
@@ -148,10 +148,10 @@ namespace eDoxa.Challenges.Infrastructure.Migrations
                 schema: "edoxa",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    Timestamp = table.Column<DateTime>(nullable: false),
-                    LinkedMatch = table.Column<string>(nullable: false),
-                    ParticipantId = table.Column<Guid>(nullable: false)
+                    Id = table.Column<Guid>(),
+                    Timestamp = table.Column<DateTime>(),
+                    LinkedMatch = table.Column<string>(),
+                    ParticipantId = table.Column<Guid>()
                 },
                 constraints: table =>
                 {
@@ -171,11 +171,11 @@ namespace eDoxa.Challenges.Infrastructure.Migrations
                 schema: "edoxa",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    MatchId = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: false),
-                    Value = table.Column<double>(nullable: false),
-                    Weighting = table.Column<float>(nullable: false)
+                    Id = table.Column<Guid>(),
+                    MatchId = table.Column<Guid>(),
+                    Name = table.Column<string>(),
+                    Value = table.Column<double>(),
+                    Weighting = table.Column<float>()
                 },
                 constraints: table =>
                 {

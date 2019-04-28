@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services;
-using eDoxa.Seedwork.Application.Commands.Handlers;
+using eDoxa.Commands.Abstractions.Handlers;
 
 using JetBrains.Annotations;
 

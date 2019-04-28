@@ -11,7 +11,7 @@
 using System.Runtime.Serialization;
 
 using eDoxa.Challenges.Domain.AggregateModels;
-using eDoxa.Seedwork.Application.Commands;
+using eDoxa.Commands.Abstractions;
 
 namespace eDoxa.Challenges.Application.Commands
 {

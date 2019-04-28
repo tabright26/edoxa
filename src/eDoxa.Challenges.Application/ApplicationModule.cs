@@ -9,7 +9,7 @@
 // this source code package.
 
 using Autofac;
-using eDoxa.Autofac;
+
 using eDoxa.Challenges.Application.Queries;
 using eDoxa.Challenges.Application.Services;
 using eDoxa.Challenges.Domain.Repositories;
@@ -17,16 +17,27 @@ using eDoxa.Challenges.Domain.Services;
 using eDoxa.Challenges.DTO.Queries;
 using eDoxa.Challenges.Infrastructure;
 using eDoxa.Challenges.Infrastructure.Repositories;
+using eDoxa.Commands;
+using eDoxa.Seedwork.Application;
+using eDoxa.ServiceBus;
+
+using JetBrains.Annotations;
 
 namespace eDoxa.Challenges.Application
 {
-    public sealed class ApplicationModule : CustomServiceModule<ApplicationModule, ChallengesDbContext>
+    public sealed class ApplicationModule : Module
     {
-        protected override void Load(ContainerBuilder builder)
+        protected override void Load([NotNull] ContainerBuilder builder)
         {
             base.Load(builder);
 
-            builder.RegisterModule<MediatorModule<ApplicationModule>>();
+            builder.RegisterModule<DomainEventModule<ApplicationModule>>();
+
+            builder.RegisterModule<CommandModule<ApplicationModule>>();
+
+            builder.RegisterModule<CommandInfrastructureModule<ChallengesDbContext>>();
+
+            builder.RegisterModule<IntegrationEventModule<ApplicationModule, ChallengesDbContext>>();
 
             // Repositories
             builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerLifetimeScope();

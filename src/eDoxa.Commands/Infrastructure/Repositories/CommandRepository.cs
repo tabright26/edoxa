@@ -12,11 +12,11 @@ using System;
 using System.Linq;
 
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Aggregate;
+using eDoxa.Seedwork.Infrastructure;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Seedwork.Infrastructure.Repositories
+namespace eDoxa.Commands.Infrastructure.Repositories
 {
     public partial class CommandRepository<TDbContext>
     where TDbContext : CustomDbContext
@@ -34,7 +34,7 @@ namespace eDoxa.Seedwork.Infrastructure.Repositories
     public partial class CommandRepository<TDbContext> : ICommandRepository
     where TDbContext : CustomDbContext
     {
-        public void Create(LogEntry logEntry)
+        public void Create(CommandLogEntry logEntry)
         {
             _context.Logs.Add(logEntry);
         }

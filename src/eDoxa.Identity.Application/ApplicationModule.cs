@@ -9,13 +9,17 @@
 // this source code package.
 
 using Autofac;
-using eDoxa.Autofac;
+
+using eDoxa.Commands;
 using eDoxa.Identity.Application.Queries;
 using eDoxa.Identity.Application.Services;
 using eDoxa.Identity.Domain.Repositories;
 using eDoxa.Identity.DTO.Queries;
 using eDoxa.Identity.Infrastructure;
 using eDoxa.Identity.Infrastructure.Repositories;
+using eDoxa.Seedwork.Application;
+using eDoxa.ServiceBus;
+
 using JetBrains.Annotations;
 
 namespace eDoxa.Identity.Application
@@ -26,7 +30,9 @@ namespace eDoxa.Identity.Application
         {
             base.Load(builder);
 
-            builder.RegisterModule<MediatorModule<ApplicationModule>>();
+            builder.RegisterModule<DomainEventModule<ApplicationModule>>();
+
+            builder.RegisterModule<CommandModule<ApplicationModule>>();
 
             builder.RegisterModule<IntegrationEventModule<ApplicationModule, IdentityDbContext>>();
 

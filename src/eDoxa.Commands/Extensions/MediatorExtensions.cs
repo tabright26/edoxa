@@ -1,5 +1,5 @@
 ﻿// Filename: MediatorExtensions.cs
-// Date Created: 2019-04-21
+// Date Created: 2019-04-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,13 +10,13 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Seedwork.Application.Commands;
+using eDoxa.Commands.Abstractions;
 
 using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
 
-namespace eDoxa.Seedwork.Application.Extensions
+namespace eDoxa.Commands.Extensions
 {
     public static class MediatorExtensions
     {

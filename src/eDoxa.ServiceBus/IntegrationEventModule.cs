@@ -13,11 +13,11 @@ using System.Data.Common;
 
 using Autofac;
 
-using eDoxa.ServiceBus;
 using JetBrains.Annotations;
+
 using Microsoft.EntityFrameworkCore;
 
-namespace eDoxa.Autofac
+namespace eDoxa.ServiceBus
 {
     public sealed class IntegrationEventModule<TStartup, TContext> : Module
     where TContext : DbContext

@@ -1,5 +1,5 @@
-﻿// Filename: ICommandService.cs
-// Date Created: 2019-04-27
+﻿// Filename: CommandValidator.cs
+// Date Created: 2019-04-28
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,14 +8,12 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Threading.Tasks;
+using FluentValidation;
 
-using Microsoft.AspNetCore.Http;
-
-namespace eDoxa.Seedwork.Application.Services
+namespace eDoxa.Commands.Abstractions.Validations
 {
-    public interface ICommandService
+    public abstract class CommandValidator<TCommand> : AbstractValidator<TCommand>
+    where TCommand : IBaseCommand
     {
-        Task LogEntryAsync(HttpContext context);
     }
 }

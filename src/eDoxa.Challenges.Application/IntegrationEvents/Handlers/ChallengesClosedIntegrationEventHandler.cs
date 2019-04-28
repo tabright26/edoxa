@@ -11,7 +11,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Application.Commands;
-using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Commands.Extensions;
 using eDoxa.ServiceBus;
 
 using MediatR;

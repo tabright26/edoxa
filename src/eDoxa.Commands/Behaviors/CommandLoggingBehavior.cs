@@ -11,13 +11,15 @@
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Commands.Abstractions;
+
 using JetBrains.Annotations;
 
 using MediatR;
 
 using Microsoft.Extensions.Logging;
 
-namespace eDoxa.Seedwork.Application.Commands.Behaviors
+namespace eDoxa.Commands.Behaviors
 {
     public sealed class CommandLoggingBehavior<TCommand, TResult> : IPipelineBehavior<TCommand, TResult>
     where TCommand : IBaseCommand

@@ -8,6 +8,8 @@
     <ProjectReference Include="..\eDoxa.Autofac\eDoxa.Autofac.csproj" />
     <ProjectReference Include="..\eDoxa.Challenges.DTO\eDoxa.Challenges.DTO.csproj" />
     <ProjectReference Include="..\eDoxa.Challenges.Infrastructure\eDoxa.Challenges.Infrastructure.csproj" />
+    <ProjectReference Include="..\eDoxa.Commands\eDoxa.Commands.csproj" />
+    <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
   </ItemGroup>
 
 </Project>

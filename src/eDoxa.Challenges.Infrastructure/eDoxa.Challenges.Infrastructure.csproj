@@ -10,6 +10,7 @@
     <ProjectReference Include="..\eDoxa.AutoMapper\eDoxa.AutoMapper.csproj" />
     <ProjectReference Include="..\eDoxa.Challenges.Domain.Services\eDoxa.Challenges.Domain.Services.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Infrastructure\eDoxa.Seedwork.Infrastructure.csproj" />
+    <ProjectReference Include="..\eDoxa.ServiceBus\eDoxa.ServiceBus.csproj" />
   </ItemGroup>
 
 </Project>

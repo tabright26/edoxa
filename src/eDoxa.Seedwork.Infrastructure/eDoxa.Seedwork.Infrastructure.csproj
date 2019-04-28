@@ -22,7 +22,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\eDoxa.Seedwork.Domain\eDoxa.Seedwork.Domain.csproj" />
-    <ProjectReference Include="..\eDoxa.ServiceBus\eDoxa.ServiceBus.csproj" />
   </ItemGroup>
 
 </Project>

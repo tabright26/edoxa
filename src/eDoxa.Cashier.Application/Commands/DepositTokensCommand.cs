@@ -12,7 +12,7 @@ using System.Runtime.Serialization;
 
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
-using eDoxa.Seedwork.Application.Commands;
+using eDoxa.Commands.Abstractions;
 
 using Microsoft.AspNetCore.Mvc;
 

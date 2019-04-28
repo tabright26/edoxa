@@ -10,14 +10,14 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Seedwork.Application.Exceptions;
-using eDoxa.Seedwork.Domain.Aggregate;
+using eDoxa.Commands.Exceptions;
+using eDoxa.Commands.Infrastructure;
+using eDoxa.Commands.Infrastructure.Repositories;
 using eDoxa.Seedwork.Domain.Constants;
-using eDoxa.Seedwork.Infrastructure.Repositories;
 
 using Microsoft.AspNetCore.Http;
 
-namespace eDoxa.Seedwork.Application.Services
+namespace eDoxa.Commands.Services
 {
     public class CommandService : ICommandService
     {
@@ -37,7 +37,7 @@ namespace eDoxa.Seedwork.Application.Services
                 throw new IdempotencyException(idempotencyKey);
             }
 
-            var logEntry = new LogEntry(context, idempotencyKey);
+            var logEntry = new CommandLogEntry(context, idempotencyKey);
 
             _commandRepository.Create(logEntry);
 

@@ -26,14 +26,14 @@ namespace eDoxa.Swagger.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddSwagger(
+        public static void AddSwagger(
             this IServiceCollection services,
             IConfiguration configuration,
             IHostingEnvironment environment)
         {
             if (!environment.IsDevelopment())
             {
-                return services;
+                return;
             }
 
             var authority = configuration["Authority"];
@@ -95,8 +95,6 @@ namespace eDoxa.Swagger.Extensions
                     swaggerGenOptions.OperationFilter<CustomOperationFilter>();
                 }
             );
-
-            return services;
         }
     }
 }

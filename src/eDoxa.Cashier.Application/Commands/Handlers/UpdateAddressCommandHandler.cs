@@ -12,7 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Seedwork.Application.Commands.Handlers;
+using eDoxa.Commands.Abstractions.Handlers;
 
 using JetBrains.Annotations;
 

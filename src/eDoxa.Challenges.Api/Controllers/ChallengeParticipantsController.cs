@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using eDoxa.Challenges.Application.Commands;
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.DTO.Queries;
-using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Commands.Extensions;
 
 using MediatR;
 

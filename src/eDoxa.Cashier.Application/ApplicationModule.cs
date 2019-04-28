@@ -10,7 +10,6 @@
 
 using Autofac;
 
-using eDoxa.Autofac;
 using eDoxa.Cashier.Application.Queries;
 using eDoxa.Cashier.Application.Services;
 using eDoxa.Cashier.Domain.Repositories;
@@ -18,16 +17,27 @@ using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.Infrastructure.Repositories;
+using eDoxa.Commands;
+using eDoxa.Seedwork.Application;
+using eDoxa.ServiceBus;
+
+using JetBrains.Annotations;
 
 namespace eDoxa.Cashier.Application
 {
-    public sealed class ApplicationModule : CustomServiceModule<ApplicationModule, CashierDbContext>
+    public sealed class ApplicationModule : Module
     {
-        protected override void Load(ContainerBuilder builder)
+        protected override void Load([NotNull] ContainerBuilder builder)
         {
             base.Load(builder);
 
-            builder.RegisterModule<MediatorModule<ApplicationModule>>();
+            builder.RegisterModule<DomainEventModule<ApplicationModule>>();
+
+            builder.RegisterModule<CommandModule<ApplicationModule>>();
+
+            builder.RegisterModule<CommandInfrastructureModule<CashierDbContext>>();
+
+            builder.RegisterModule<IntegrationEventModule<ApplicationModule, CashierDbContext>>();
 
             // Repositories
             builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerLifetimeScope();
