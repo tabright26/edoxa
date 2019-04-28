@@ -1,11 +1,11 @@
-﻿// Filename: CustomDbContextFactoryTest.cs
-// Date Created: 2019-03-19
+﻿// Filename: InMemoryDbContextFactoryTest.cs
+// Date Created: 2019-04-28
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using eDoxa.Seedwork.Infrastructure.Factories;
@@ -17,10 +17,10 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Seedwork.Infrastructure.Tests
+namespace eDoxa.Seedwork.Infrastructure.Tests.Factories
 {
     [TestClass]
-    public sealed class CustomDbContextFactoryTest
+    public sealed class InMemoryDbContextFactoryTest
     {
         [TestMethod]
         public void Database_CanConnect_ShouldBeTrue()
