@@ -1,5 +1,5 @@
 ﻿// Filename: UserMoneyAccountController.cs
-// Date Created: 2019-04-26
+// Date Created: 2019-04-28
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -50,7 +50,7 @@ namespace eDoxa.Cashier.Api.Controllers
             return account
                 .Select(this.Ok)
                 .Cast<IActionResult>()
-                .DefaultIfEmpty(this.NotFound(string.Empty))
+                .DefaultIfEmpty(this.NotFound("User money account not found."))
                 .Single();
         }
 

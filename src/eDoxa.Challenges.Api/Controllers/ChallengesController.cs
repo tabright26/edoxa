@@ -64,7 +64,7 @@ namespace eDoxa.Challenges.Api.Controllers
             return challenge
                 .Select(this.Ok)
                 .Cast<IActionResult>()
-                .DefaultIfEmpty(this.NotFound(string.Empty))
+                .DefaultIfEmpty(this.NotFound("Challenge not found."))
                 .Single();
         }
     }

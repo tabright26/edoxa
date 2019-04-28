@@ -54,7 +54,8 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
                 }
             };
 
-            _queries.Setup(queries => queries.FindChallengeParticipantsAsync(It.IsAny<ChallengeId>())).ReturnsAsync(new Option<ParticipantListDTO>(value)).Verifiable();
+            _queries.Setup(queries => queries.FindChallengeParticipantsAsync(It.IsAny<ChallengeId>())).ReturnsAsync(new Option<ParticipantListDTO>(value))
+                .Verifiable();
 
             var controller = new ChallengeParticipantsController(_queries.Object, _mediator.Object);
 
@@ -90,14 +91,14 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
         public async Task RegisterChallengeParticipantAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            var command = new RegisterChallengeParticipantCommand(new ChallengeId(), new UserId());
+            var command = new RegisterChallengeParticipantCommand(new UserId());
 
             _mediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(new OkResult()).Verifiable();
 
             var controller = new ChallengeParticipantsController(_queries.Object, _mediator.Object);
 
             // Act
-            var result = await controller.RegisterChallengeParticipantAsync(command);
+            var result = await controller.RegisterChallengeParticipantAsync(new ChallengeId(), command);
 
             // Assert
             result.Should().BeOfType<OkResult>();

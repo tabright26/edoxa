@@ -58,9 +58,11 @@ namespace eDoxa.Challenges.Api.Controllers
         ///     Register a participant to a challenge.
         /// </summary>
         [HttpPatch(Name = nameof(RegisterChallengeParticipantAsync))]
-        public async Task<IActionResult> RegisterChallengeParticipantAsync([FromBody] RegisterChallengeParticipantCommand command)
+        public async Task<IActionResult> RegisterChallengeParticipantAsync(ChallengeId challengeId, [FromBody] RegisterChallengeParticipantCommand command)
         {
-            //command.LinkedAccount = User.FindFirst("").Value; // TODO: Create LinkedAccount service.
+            command.ChallengeId = challengeId;
+
+            command.LinkedAccount = "2133321233"; // TODO: Create LinkedAccount service.
 
             return await _mediator.SendCommandAsync(command);
         }

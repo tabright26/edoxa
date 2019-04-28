@@ -44,7 +44,7 @@ namespace eDoxa.Challenges.Api.Controllers
             return participant
                 .Select(this.Ok)
                 .Cast<IActionResult>()
-                .DefaultIfEmpty(this.NotFound(string.Empty))
+                .DefaultIfEmpty(this.NotFound("Participant not found."))
                 .Single();
         }
     }

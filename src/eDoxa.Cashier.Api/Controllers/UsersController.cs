@@ -50,7 +50,7 @@ namespace eDoxa.Cashier.Api.Controllers
             return address
                 .Select(this.Ok)
                 .Cast<IActionResult>()
-                .DefaultIfEmpty(this.NotFound(string.Empty))
+                .DefaultIfEmpty(this.NotFound("User address not found."))
                 .Single();
         }
 

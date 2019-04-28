@@ -44,7 +44,7 @@ namespace eDoxa.Challenges.Api.Controllers
             return match
                 .Select(this.Ok)
                 .Cast<IActionResult>()
-                .DefaultIfEmpty(this.NotFound(string.Empty))
+                .DefaultIfEmpty(this.NotFound("Match not found."))
                 .Single();
         }
     }

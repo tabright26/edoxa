@@ -37,7 +37,7 @@ namespace eDoxa.Challenges.Application.Tests.Commands.Handlers
         public async Task HandleAsync_FindChallengeAsync_ShouldBeInvokedExactlyOneTime()
         {
             // Arrange
-            var command = new RegisterChallengeParticipantCommand(new ChallengeId(), new UserId())
+            var command = new RegisterChallengeParticipantCommand(new UserId())
             {
                 LinkedAccount = new LinkedAccount(Guid.NewGuid())
             };
@@ -58,7 +58,7 @@ namespace eDoxa.Challenges.Application.Tests.Commands.Handlers
             // Assert
             var result = await handler.Handle(command, default);
 
-            result.Should().BeOfType<OkResult>();
+            result.Should().BeOfType<OkObjectResult>();
 
             mockChallengeRepository.Verify(repository => repository.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Once);
 

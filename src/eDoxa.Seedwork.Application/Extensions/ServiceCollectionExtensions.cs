@@ -25,6 +25,8 @@ namespace eDoxa.Seedwork.Application.Extensions
             {
                 options.Filters.Add<ValidationExceptionFilter>();
                 options.Filters.Add<IdempotencyExceptionFilter>();
+                options.Filters.Add<DbUpdateExceptionFilter>();
+                options.Filters.Add<DbUpdateConcurrencyException>();
             });
 
             builder.AddControllersAsServices();

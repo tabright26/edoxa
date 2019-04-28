@@ -11,6 +11,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Specifications;
 using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Commands.Abstractions.Handlers;
 
@@ -34,11 +35,31 @@ namespace eDoxa.Challenges.Application.Commands.Handlers
         {
             var challenge = await _challengeRepository.FindChallengeAsync(command.ChallengeId);
 
+            if (challenge == null)
+            {
+                return new NotFoundObjectResult("Challenge not found.");
+            }
+
+            if (new ParticipantAlreadyRegisteredSpecification(command.UserId).IsSatisfiedBy(challenge))
+            {
+                return new BadRequestObjectResult("The participant is already registered for the challenge.");
+            }
+
+            if (new ChallengeIsFullSpecification().IsSatisfiedBy(challenge))
+            {
+                return new BadRequestObjectResult("Registration of participants is complete.");
+            }
+
+            if (new ChallengeOpenedSpecification().Not().IsSatisfiedBy(challenge))
+            {
+                return new BadRequestObjectResult("The state of the challenge is not open for registration.");
+            }
+
             challenge.RegisterParticipant(command.UserId, command.LinkedAccount);
 
             await _challengeRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
-            return new OkResult();
+            return new OkObjectResult("The participant has registered successfully.");
         }
     }
 }

@@ -21,15 +21,14 @@ namespace eDoxa.Challenges.Application.Commands
     [DataContract]
     public sealed class RegisterChallengeParticipantCommand : Command<IActionResult>
     {
-        public RegisterChallengeParticipantCommand(ChallengeId challengeId, UserId userId)
+        public RegisterChallengeParticipantCommand(UserId userId)
         {
-            ChallengeId = challengeId;
             UserId = userId;
         }
 
         [IgnoreDataMember] public LinkedAccount LinkedAccount { get; set; }
 
-        [DataMember(Name = "challengeId")] public ChallengeId ChallengeId { get; private set; }
+        [IgnoreDataMember] public ChallengeId ChallengeId { get; set; }
 
         [DataMember(Name = "userId")] public UserId UserId { get; private set; }
     }

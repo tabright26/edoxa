@@ -78,7 +78,7 @@ namespace eDoxa.Cashier.Api.Controllers
             return card
                 .Select(this.Ok)
                 .Cast<IActionResult>()
-                .DefaultIfEmpty(this.NotFound(string.Empty))
+                .DefaultIfEmpty(this.NotFound("User credit card not found."))
                 .Single();
         }
 
