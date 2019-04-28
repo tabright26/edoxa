@@ -1,11 +1,11 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-04-12
+// Date Created: 2019-04-21
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
@@ -25,10 +25,10 @@ using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.ServiceBus.Extensions;
 using eDoxa.Swagger.Extensions;
+using eDoxa.Versioning.Extensions;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -51,17 +51,17 @@ namespace eDoxa.Challenges.Api
         {
             services.AddHealthChecks(Configuration);
 
-            services.AddEntityFrameworkSqlServer();            
+            services.AddEntityFrameworkSqlServer();
 
             services.AddIntegrationEventDbContext(Configuration, Assembly.GetAssembly(typeof(ChallengesDbContext)));
 
             services.AddDbContext<ChallengesDbContext>(Configuration);
 
-            services.AddVersioning(new ApiVersion(1, 0));
+            services.AddVersioning();
 
             services.AddAutoMapper(ChallengesMapperFactory.Instance);
 
-            services.AddCustomMvc();
+            services.AddMvcFilters();
 
             services.AddSwagger(Configuration, Environment);
 

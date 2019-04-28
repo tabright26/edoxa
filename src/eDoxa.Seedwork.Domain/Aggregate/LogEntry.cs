@@ -1,5 +1,5 @@
 ﻿// Filename: LogEntry.cs
-// Date Created: 2019-04-27
+// Date Created: 2019-04-28
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,9 +10,12 @@
 
 using System;
 
-using eDoxa.Seedwork.Domain.Constants;
+using eDoxa.Security;
+using eDoxa.Versioning;
 
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Primitives;
+using Microsoft.Net.Http.Headers;
 
 using Newtonsoft.Json;
 
@@ -34,21 +37,21 @@ namespace eDoxa.Seedwork.Domain.Aggregate
         private string _url;
         private string _version;
 
-        protected LogEntry(HttpContext httpContext, string idempotencyKey = null) : this()
+        protected LogEntry(HttpContext context, Guid idempotencyKey) : this()
         {
-            _id = Guid.Parse(httpContext.Response.Headers[CustomHeaderNames.RequestId]);
-            _date = DateTime.Parse(httpContext.Response.Headers[CustomHeaderNames.RequestDate]);
-            _version = httpContext.Response?.Headers[CustomHeaderNames.Version];
-            _origin = httpContext.Request?.Headers[CustomHeaderNames.Origin];
-            _method = httpContext.Request?.Method;
-            _url = httpContext.Request?.Path.Value.ToLower();
-            _localIpAddress = httpContext.Connection?.LocalIpAddress?.MapToIPv4().ToString();
-            _remoteIpAddress = httpContext.Connection?.RemoteIpAddress?.MapToIPv4().ToString();
-            _idempotencyKey = idempotencyKey != null ? Guid.Parse(idempotencyKey) : (Guid?) null;
+            this.SetVersion(context);
+            _origin = context.Request?.Headers[HeaderNames.Origin];
+            _method = context.Request?.Method;
+            _url = context.Request?.Path.Value.ToLower();
+            _localIpAddress = context.Connection?.LocalIpAddress?.MapToIPv4().ToString();
+            _remoteIpAddress = context.Connection?.RemoteIpAddress?.MapToIPv4().ToString();
+            _idempotencyKey = idempotencyKey != Guid.Empty ? idempotencyKey : (Guid?) null;
         }
 
         private LogEntry()
         {
+            _id = Guid.NewGuid();
+            _date = DateTime.UtcNow;
             _requestType = null;
             _requestBody = null;
             _responseType = null;
@@ -97,6 +100,15 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             _responseBody = json != "{}" ? json : null;
 
             _responseType = response.GetType().FullName;
+        }
+
+        private void SetVersion(HttpContext context)
+        {
+            var defaultVersion = new DefaultApiVersion();
+
+            var version = context.Request.Headers[CustomHeaderNames.Version];
+
+            _version = version != StringValues.Empty ? version.ToString() : defaultVersion.ToString();
         }
     }
 }

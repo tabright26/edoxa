@@ -10,13 +10,11 @@
 
 using System;
 
-using JetBrains.Annotations;
-
-namespace eDoxa.Commands.Exceptions
+namespace eDoxa.Seedwork.Infrastructure.Exceptions
 {
     public class IdempotencyException : Exception
     {
-        public IdempotencyException([CanBeNull] string idempotencyKey) : base($"The HTTP request with IdempotencyKey '{idempotencyKey}' was already executed.")
+        public IdempotencyException(Guid idempotencyKey) : base($"Idempotency exception: {idempotencyKey}.")
         {
         }
     }

@@ -1,5 +1,5 @@
-﻿// Filename: ObjectExtensions.cs
-// Date Created: 2019-04-27
+﻿// Filename: DefaultApiVersion.cs
+// Date Created: 2019-04-28
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,13 +8,14 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-namespace eDoxa.Seedwork.Domain.Extensions
+using Microsoft.AspNetCore.Mvc;
+
+namespace eDoxa.Versioning
 {
-    public static class ObjectExtensions
+    public sealed class DefaultApiVersion : ApiVersion
     {
-        public static string GetGenericTypeName(this object obj)
+        public DefaultApiVersion() : base(1, 0)
         {
-            return obj.GetType().GetGenericName();
         }
     }
 }

@@ -1,11 +1,11 @@
 ﻿// Filename: CustomOperationFilter.cs
-// Date Created: 2019-04-14
+// Date Created: 2019-04-21
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System.Collections.Generic;
@@ -13,9 +13,10 @@ using System.Linq;
 using System.Net;
 
 using eDoxa.IdentityServer;
-using eDoxa.Seedwork.Domain.Constants;
+using eDoxa.Security;
 
 using JetBrains.Annotations;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 

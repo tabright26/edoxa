@@ -1,5 +1,5 @@
 ﻿// Filename: CommandRepository.cs
-// Date Created: 2019-04-27
+// Date Created: 2019-04-28
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,8 +13,6 @@ using System.Linq;
 
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Infrastructure;
-
-using JetBrains.Annotations;
 
 namespace eDoxa.Commands.Infrastructure.Repositories
 {
@@ -39,9 +37,9 @@ namespace eDoxa.Commands.Infrastructure.Repositories
             _context.Logs.Add(logEntry);
         }
 
-        public bool IdempotencyKeyExists([CanBeNull] string idempotencyKey)
+        public bool IdempotencyKeyExists(Guid idempotencyKey)
         {
-            return idempotencyKey != null && _context.Logs.Any(logEntry => logEntry.IdempotencyKey == Guid.Parse(idempotencyKey));
+            return _context.Logs.Any(logEntry => logEntry.IdempotencyKey == idempotencyKey);
         }
     }
 }

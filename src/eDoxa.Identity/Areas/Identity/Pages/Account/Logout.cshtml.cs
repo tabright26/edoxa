@@ -89,7 +89,6 @@ namespace eDoxa.Identity.Areas.Identity.Pages.Account
 
                 try
                 {
-                    // hack: try/catch to handle social providers that throw
                     await HttpContext.SignOutAsync(
                         scheme,
                         new AuthenticationProperties

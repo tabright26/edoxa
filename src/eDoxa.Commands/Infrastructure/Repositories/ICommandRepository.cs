@@ -1,5 +1,5 @@
 ﻿// Filename: ICommandRepository.cs
-// Date Created: 2019-04-27
+// Date Created: 2019-04-28
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,10 +8,10 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
+
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
-
-using JetBrains.Annotations;
 
 namespace eDoxa.Commands.Infrastructure.Repositories
 {
@@ -19,6 +19,6 @@ namespace eDoxa.Commands.Infrastructure.Repositories
     {
         void Create(CommandLogEntry logEntry);
 
-        bool IdempotencyKeyExists([CanBeNull] string idempotencyKey);
+        bool IdempotencyKeyExists(Guid idempotencyKey);
     }
 }

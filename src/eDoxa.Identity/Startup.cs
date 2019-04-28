@@ -26,12 +26,12 @@ using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.ServiceBus.Extensions;
 using eDoxa.Swagger.Extensions;
+using eDoxa.Versioning.Extensions;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -94,11 +94,11 @@ namespace eDoxa.Identity
                 .AddEntityFrameworkStores<IdentityDbContext>()
                 .AddClaimsPrincipalFactory<UserClaimsPrincipalFactory>();
 
-            services.AddVersioning(new ApiVersion(1, 0));
+            services.AddVersioning();
 
             services.AddAutoMapper(IdentityMapperFactory.Instance);
 
-            services.AddCustomMvc();
+            services.AddMvcFilters();
 
             services.AddSwagger(Configuration, Environment);
 

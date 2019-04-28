@@ -8,6 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
+
 using eDoxa.Commands.Abstractions;
 using eDoxa.Seedwork.Domain.Aggregate;
 
@@ -21,9 +23,9 @@ namespace eDoxa.Commands.Infrastructure
         public CommandLogEntry(
             ICommand<IActionResult> command,
             IActionResult result,
-            HttpContext httpContext,
-            string idempotencyKey = null) : base(
-            httpContext,
+            HttpContext context,
+            Guid idempotencyKey) : base(
+            context,
             idempotencyKey
         )
         {

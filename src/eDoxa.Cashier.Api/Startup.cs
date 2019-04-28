@@ -26,10 +26,10 @@ using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.ServiceBus.Extensions;
 using eDoxa.Stripe.Extensions;
 using eDoxa.Swagger.Extensions;
+using eDoxa.Versioning.Extensions;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -58,11 +58,11 @@ namespace eDoxa.Cashier.Api
 
             services.AddDbContext<CashierDbContext>(Configuration);
 
-            services.AddVersioning(new ApiVersion(1, 0));
+            services.AddVersioning();
 
             services.AddAutoMapper(CashierMapperFactory.Instance);
 
-            services.AddCustomMvc();
+            services.AddMvcFilters();
 
             services.AddSwagger(Configuration, Environment);
 
