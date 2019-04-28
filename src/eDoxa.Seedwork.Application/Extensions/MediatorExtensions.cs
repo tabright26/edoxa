@@ -25,7 +25,7 @@ namespace eDoxa.Seedwork.Application.Extensions
             return await mediator.Send(command);
         }
 
-        public static async Task<TResponse> SendCommandAsync<TResponse>(this IMediator mediator, ICommand<TResponse> command)
+        public static async Task<Unit> SendCommandAsync(this IMediator mediator, ICommand<Unit> command)
         {
             return await mediator.Send(command);
         }
