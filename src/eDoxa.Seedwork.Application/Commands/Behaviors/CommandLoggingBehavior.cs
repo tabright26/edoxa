@@ -1,42 +1,44 @@
 ﻿// Filename: CommandLoggingBehavior.cs
-// Date Created: 2019-03-04
+// Date Created: 2019-04-27
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System.Threading;
 using System.Threading.Tasks;
+
 using JetBrains.Annotations;
+
 using MediatR;
 
 using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Seedwork.Application.Commands.Behaviors
 {
-    public sealed class CommandLoggingBehavior<TCommand, TResponse> : IPipelineBehavior<TCommand, TResponse>
+    public sealed class CommandLoggingBehavior<TCommand, TResult> : IPipelineBehavior<TCommand, TResult>
     where TCommand : IBaseCommand
     {
-        private readonly ILogger<CommandLoggingBehavior<TCommand, TResponse>> _logger;
+        private readonly ILogger<CommandLoggingBehavior<TCommand, TResult>> _logger;
 
-        public CommandLoggingBehavior(ILogger<CommandLoggingBehavior<TCommand, TResponse>> logger)
+        public CommandLoggingBehavior(ILogger<CommandLoggingBehavior<TCommand, TResult>> logger)
         {
             _logger = logger;
         }
 
-        [ItemCanBeNull]
-        public async Task<TResponse> Handle([NotNull] TCommand command, CancellationToken cancellationToken, [NotNull] RequestHandlerDelegate<TResponse> next)
+        [ItemNotNull]
+        public async Task<TResult> Handle([NotNull] TCommand command, CancellationToken cancellationToken, [NotNull] RequestHandlerDelegate<TResult> next)
         {
-            _logger.LogInformation($"Handling {typeof(TCommand).Name}");
+            _logger.LogInformation($"Handling {typeof(TCommand).Name}...");
 
-            var response = await next();
+            var result = await next();
 
-            _logger.LogInformation($"Handled {typeof(TResponse).Name}");
+            _logger.LogInformation($"Handled {typeof(TResult).Name}.");
 
-            return response;
+            return result;
         }
     }
 }

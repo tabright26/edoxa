@@ -1,11 +1,11 @@
 ﻿// Filename: CommandValidationBehavior.cs
-// Date Created: 2019-03-04
+// Date Created: 2019-04-27
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System.Linq;
@@ -13,34 +13,45 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using FluentValidation;
+
 using JetBrains.Annotations;
+
 using MediatR;
+
+using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Seedwork.Application.Commands.Behaviors
 {
-    public sealed class CommandValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    public sealed class CommandValidationBehavior<TCommand, TResult> : IPipelineBehavior<TCommand, TResult>
     {
-        private readonly IValidator<TRequest>[] _validators;
+        private readonly ILogger<CommandValidationBehavior<TCommand, TResult>> _logger;
+        private readonly IValidator<TCommand>[] _validators;
 
-        public CommandValidationBehavior(IValidator<TRequest>[] validators)
+        public CommandValidationBehavior(IValidator<TCommand>[] validators, ILogger<CommandValidationBehavior<TCommand, TResult>> logger)
         {
             _validators = validators;
+            _logger = logger;
         }
 
-        [ItemCanBeNull]
-        public async Task<TResponse> Handle([NotNull] TRequest command, CancellationToken cancellationToken, [NotNull] RequestHandlerDelegate<TResponse> next)
+        [ItemNotNull]
+        public async Task<TResult> Handle([NotNull] TCommand command, CancellationToken cancellationToken, [NotNull] RequestHandlerDelegate<TResult> next)
         {
-            var validationFailures = _validators.Select(validator => validator.Validate(command))
-                                                .SelectMany(result => result.Errors)
-                                                .Where(failure => failure != null)
-                                                .ToList();
+            _logger.LogInformation($"Validating {typeof(TCommand).Name}...");
 
-            if (validationFailures.Any())
+            var errors = _validators
+                .Select(validator => validator.Validate(command))
+                .SelectMany(result => result.Errors)
+                .Where(failure => failure != null)
+                .ToList();
+
+            if (!errors.Any())
             {
-                throw new ValidationException($"Command validation errors for type {typeof(TRequest).Name}.", validationFailures);
+                return await next();
             }
 
-            return await next();
+            _logger.LogWarning($"Validation failed for {typeof(TCommand).Name}.");
+
+            throw new ValidationException(errors);
         }
     }
 }
