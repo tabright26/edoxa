@@ -22,5 +22,10 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
                 this.Add(new Bucket(bucketSizes[index], prizes[index]));
             }
         }
+
+        public Buckets()
+        {
+
+        }
     }
 }

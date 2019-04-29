@@ -102,7 +102,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void TestEmptyList_ShouldBe(double numToRound, int niceNumber, int[] perfectPrizes)
         {
             // Act
-            var roundNiceNumber = PrizeUtils.RoundPerfectPrize(numToRound, new List<int>(perfectPrizes));
+            var roundNiceNumber = PrizeUtils.RoundPerfectPrize(new decimal(numToRound), new List<int>(perfectPrizes));
 
             // Assert
             roundNiceNumber.Should().Be(niceNumber);
@@ -116,7 +116,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void TestEmptyList_ShouldThrowArgumentException(double numToRound, int[] niceNumbers)
         {
             // Act
-            var action = new Action(() => PrizeUtils.RoundPerfectPrize(numToRound, new List<int>(niceNumbers)));
+            var action = new Action(() => PrizeUtils.RoundPerfectPrize(new decimal(numToRound), new List<int>(niceNumbers)));
 
             // Assert
             action.Should().Throw<ArgumentException>();

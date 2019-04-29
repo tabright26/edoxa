@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using eDoxa.Functional.Extensions;
 using eDoxa.Seedwork.Domain.Common;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
@@ -19,7 +20,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
     // TODO: To defend.
     public static class PrizeUtils
     {
-        public static (IPrizes initialPrizes, PayoutLeftover leftover) InitPrizes(IPrizes unperfectPrizes, IBucketSizes bucketSizes)
+        public static IPrizes InitPrizes(IPrizes unperfectPrizes, IBucketSizes bucketSizes)
         {
             // Need to check if sum(bucket_sizes) == len(unperfect_prize)
             if (bucketSizes.Sum(bucketSize => bucketSize) != unperfectPrizes.Count)
@@ -34,19 +35,14 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
             var position = 0;
 
-            double leftover = 0;
+            decimal leftover = 0;
 
-            foreach (var bucketSize in bucketSizes)
+            bucketSizes.ForEach(bucketSize =>
             {
-                var list = new Prizes();
-
-                for (var index = position; index < position + bucketSize; index++)
-                {
-                    list.Add(unperfectPrizes[index]);
-                }
+                var list = ((List<Prize>) unperfectPrizes).GetRange(position, position + bucketSize);
 
                 // rounding the first tentative prize to nearest nice number
-                var currentUnperfectPrize = (list.Sum(x => x.ToDouble()) + leftover) / bucketSize;
+                var currentUnperfectPrize = (list.Sum(prize => prize) + leftover) / bucketSize;
 
                 var currentPerfectPrize = RoundPerfectPrize(currentUnperfectPrize, nicePrize);
 
@@ -56,9 +52,9 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
                 leftover = (currentUnperfectPrize - currentPerfectPrize) * bucketSize;
 
                 position += bucketSize;
-            }
+            });
 
-            return (prizes, new PayoutLeftover(leftover));
+            return prizes;
         }
 
 
@@ -110,7 +106,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             return false;
         }
 
-        public static int RoundPerfectPrize(double number, List<int> perfectPrizes)
+        public static int RoundPerfectPrize(decimal number, List<int> perfectPrizes)
         {
             // TODO: Refactor to be defensive by design (replace exception with a non-null default).
             if (perfectPrizes.Count <= 0)

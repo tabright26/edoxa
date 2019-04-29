@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using eDoxa.Seedwork.Domain.Common;
 
@@ -43,64 +42,64 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         {
         }
 
-        public static (IPrizes finalPrizes, IBucketSizes finalBucketSizes, PayoutLeftover finalLeftover) SpendLeftover(
-            IPrizes initialPrizes,
-            IBucketSizes initialBucketSizes,
-            PayoutLeftover leftover)
-        {
-            var prizes = new Prizes(initialPrizes);
-            var bucketSizes = new BucketSizes(initialBucketSizes);
+        //public static (IPrizes finalPrizes, IBucketSizes finalBucketSizes, PayoutLeftover finalLeftover) SpendLeftover(
+        //    IPrizes initialPrizes,
+        //    IBucketSizes initialBucketSizes,
+        //    PayoutLeftover leftover)
+        //{
+        //    var prizes = new Prizes(initialPrizes);
+        //    var bucketSizes = new BucketSizes(initialBucketSizes);
 
-            var niceNumbers = PrizeUtils.PerfectPrizes(prizes);
+        //    var niceNumbers = PrizeUtils.PerfectPrizes(prizes);
 
-            // First : Spend as much of possible leftover on singleton bucket 2 through 4.
-            for (var index = 1; index < 4; index++)
-            {
-                var minVal = Math.Min(prizes[index].ToDouble() + leftover, (prizes[index - 1].ToDouble() + prizes[index].ToDouble()) / 2D);
+        //    // First : Spend as much of possible leftover on singleton bucket 2 through 4.
+        //    for (var index = 1; index < 4; index++)
+        //    {
+        //        var minVal = Math.Min(prizes[index].ToDouble() + leftover, (prizes[index - 1].ToDouble() + prizes[index].ToDouble()) / 2D);
 
-                var niceVal = PrizeUtils.RoundPerfectPrize(minVal, niceNumbers);
+        //        var niceVal = PrizeUtils.RoundPerfectPrize(minVal, niceNumbers);
 
-                leftover = new PayoutLeftover(leftover + prizes[index].ToDouble() - niceVal);
+        //        leftover = new PayoutLeftover(leftover + prizes[index].ToDouble() - niceVal);
 
-                prizes[index] = new Prize(niceVal);
+        //        prizes[index] = new Prize(niceVal);
 
-                // Could choose another value
-                if (Math.Abs(leftover) < 0.01)
-                {
-                    return (prizes, bucketSizes, leftover);
-                }
-            }
+        //        // Could choose another value
+        //        if (Math.Abs(leftover) < 0.01)
+        //        {
+        //            return (prizes, bucketSizes, leftover);
+        //        }
+        //    }
 
-            // Otherwise, we try to adjust starting form the final bucket.
-            var bucketNum = bucketSizes.Count - 1;
+        //    // Otherwise, we try to adjust starting form the final bucket.
+        //    var bucketNum = bucketSizes.Count - 1;
 
-            while (bucketNum > 0)
-            {
-                while (leftover >= bucketSizes[bucketNum])
-                {
-                    prizes[bucketNum] = new Prize(prizes[bucketNum] + 1); // Could lead to nice number violations
+        //    while (bucketNum > 0)
+        //    {
+        //        while (leftover >= bucketSizes[bucketNum])
+        //        {
+        //            prizes[bucketNum] = new Prize(prizes[bucketNum] + 1); // Could lead to nice number violations
 
-                    leftover = new PayoutLeftover(leftover - bucketSizes[bucketNum]);
+        //            leftover = new PayoutLeftover(leftover - bucketSizes[bucketNum]);
 
-                    // Could choose another value
-                    if (Math.Abs(leftover) < 0.01)
-                    {
-                        return (prizes, bucketSizes, leftover);
-                    }
-                }
+        //            // Could choose another value
+        //            if (Math.Abs(leftover) < 0.01)
+        //            {
+        //                return (prizes, bucketSizes, leftover);
+        //            }
+        //        }
 
-                bucketNum -= 1;
+        //        bucketNum -= 1;
 
-                if (Math.Abs(leftover % prizes[bucketNum].ToDouble()) < 0.01)
-                {
-                    bucketSizes[bucketNum] =
-                        new BucketSize(bucketSizes[bucketNum] +
-                                       MathUtils.FloorDiv(leftover, prizes[bucketNum].ToDouble())); // number of winners increase
-                }
-            }
+        //        if (Math.Abs(leftover % prizes[bucketNum].ToDouble()) < 0.01)
+        //        {
+        //            bucketSizes[bucketNum] =
+        //                new BucketSize(bucketSizes[bucketNum] +
+        //                               MathUtils.FloorDiv(leftover, prizes[bucketNum].ToDouble())); // number of winners increase
+        //        }
+        //    }
 
-            return (prizes, bucketSizes, leftover);
-        }
+        //    return (prizes, bucketSizes, leftover);
+        //}
 
         private static double Alpha(PayoutEntries payoutEntries, PrizePool prizePool, EntryFee entryFee, FirstPrize firstPrize)
         {

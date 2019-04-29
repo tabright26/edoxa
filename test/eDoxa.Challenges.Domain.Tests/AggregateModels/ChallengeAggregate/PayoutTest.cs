@@ -38,13 +38,13 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
 
             var bucketSizes = new BucketSizes(payoutEntries, bucketCount);
 
-            var (initialPrizes, leftover) = PrizeUtils.InitPrizes(prizes, bucketSizes);
+            var initialPrizes = PrizeUtils.InitPrizes(prizes, bucketSizes);
 
-            var (finalPrizes, finalBucketSizes, finalLeftover) = Prizes.SpendLeftover(initialPrizes, bucketSizes, leftover);
+            //var (finalPrizes, finalBucketSizes, finalLeftover) = Prizes.SpendLeftover(initialPrizes, bucketSizes, leftover);
 
-            var buckets = new Buckets(finalBucketSizes, finalPrizes);
+            var buckets = new Buckets(bucketSizes, initialPrizes);
 
-            var payout = new Payout(buckets, finalLeftover);
+            var payout = new Payout(buckets, new PayoutLeftover(0));
         }
     }
 }

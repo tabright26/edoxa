@@ -24,6 +24,12 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             _leftover = leftover;
         }
 
+        public Payout()
+        {
+            _buckets = new Buckets();
+            _leftover = new PayoutLeftover(0);
+        }
+
         public PayoutLeftover Leftover => _leftover;
 
         public IBuckets Buckets => _buckets;
