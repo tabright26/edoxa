@@ -38,7 +38,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
 
             var bucketSizes = new BucketSizes(payoutEntries, bucketCount);
 
-            var initialPrizes = PrizeUtils.InitPrizes(prizes, bucketSizes);
+            var initialPrizes = PrizeUtils.PerfectAverages(prizes, bucketSizes);
 
             //var (finalPrizes, finalBucketSizes, finalLeftover) = Prizes.SpendLeftover(initialPrizes, bucketSizes, leftover);
 

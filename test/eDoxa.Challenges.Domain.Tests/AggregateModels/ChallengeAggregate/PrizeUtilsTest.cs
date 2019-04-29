@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 
@@ -102,10 +103,10 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void TestEmptyList_ShouldBe(double numToRound, int niceNumber, int[] perfectPrizes)
         {
             // Act
-            var roundNiceNumber = PrizeUtils.RoundPerfectPrize(new decimal(numToRound), new List<int>(perfectPrizes));
+            var roundNiceNumber = PrizeUtils.PerfectAverage(new decimal(numToRound), perfectPrizes.Select(x => new Prize(x)).ToList());
 
             // Assert
-            roundNiceNumber.Should().Be(niceNumber);
+            roundNiceNumber.Should().Be(new Prize(niceNumber));
         }
 
         [DataRow(28, new int[0])]
@@ -116,7 +117,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void TestEmptyList_ShouldThrowArgumentException(double numToRound, int[] niceNumbers)
         {
             // Act
-            var action = new Action(() => PrizeUtils.RoundPerfectPrize(new decimal(numToRound), new List<int>(niceNumbers)));
+            var action = new Action(() => PrizeUtils.PerfectAverage(new decimal(numToRound), niceNumbers.Select(x => new Prize(x)).ToList()));
 
             // Assert
             action.Should().Throw<ArgumentException>();

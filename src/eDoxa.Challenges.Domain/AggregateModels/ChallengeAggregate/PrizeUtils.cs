@@ -20,7 +20,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
     // TODO: To defend.
     public static class PrizeUtils
     {
-        public static IPrizes InitPrizes(IPrizes unperfectPrizes, IBucketSizes bucketSizes)
+        public static IPrizes PerfectAverages(Prizes unperfectPrizes, IBucketSizes bucketSizes)
         {
             // Need to check if sum(bucket_sizes) == len(unperfect_prize)
             if (bucketSizes.Sum(bucketSize => bucketSize) != unperfectPrizes.Count)
@@ -28,85 +28,40 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
                 throw new ArgumentException("Bucket sizes is incompatible with the number of prizes");
             }
 
+            var perfectPrizeAverages = new Prizes(); // Will contains the first attempt of good prizes
+
             // Take the first unperfect_prize and generate nice numbers list
-            var nicePrize = PerfectPrizes(unperfectPrizes);
+            var perfectPrizes = PerfectPrizes(unperfectPrizes);
 
-            var prizes = new Prizes(); // Will contains the first attempt of good prizes
+            var index = 0;
 
-            var position = 0;
-
-            decimal leftover = 0;
+            decimal leftoverAverage = 0;
 
             bucketSizes.ForEach(bucketSize =>
             {
-                var list = ((List<Prize>) unperfectPrizes).GetRange(position, position + bucketSize);
-
                 // rounding the first tentative prize to nearest nice number
-                var currentUnperfectPrize = (list.Sum(prize => prize) + leftover) / bucketSize;
+                var unperfectPrizeAverage = UnperfectAverage(unperfectPrizes, index, leftoverAverage, bucketSize);
 
-                var currentPerfectPrize = RoundPerfectPrize(currentUnperfectPrize, nicePrize);
+                var perfectPrizeAverage = PerfectAverage(unperfectPrizeAverage, perfectPrizes);
 
-                prizes.Add(new Prize(currentPerfectPrize));
+                perfectPrizeAverages.Add(perfectPrizeAverage);
 
-                // Then compute leftover
-                leftover = (currentUnperfectPrize - currentPerfectPrize) * bucketSize;
+                leftoverAverage = LeftoverAverage(unperfectPrizeAverage, perfectPrizeAverage, bucketSize);
 
-                position += bucketSize;
+                index += bucketSize;
             });
 
-            return prizes;
+            return perfectPrizeAverages;
         }
 
-
-        // TODO: This need to be optimized for large number like 5000000 (very slow).
-        public static List<int> PerfectPrizes(IPrizes prizes)
+        private static decimal UnperfectAverage(Prizes unperfectPrizes, int index, decimal leftover, BucketSize bucketSize)
         {
-            var perfectPrizes = new List<int>();
+            var prizes = unperfectPrizes.GetRange(index, bucketSize);
 
-            for (var perfectPrize = 1; perfectPrize < Convert.ToInt64(prizes.First()) + 1; perfectPrize++)
-            {
-                if (IsPerfectPrize(perfectPrize))
-                {
-                    perfectPrizes.Add(perfectPrize);
-                }
-            }
-
-            return perfectPrizes;
+            return (prizes.Sum(prize => prize) + leftover) / bucketSize;
         }
 
-        public static bool IsPerfectPrize(int prize)
-        {
-            var perfectPrize = (decimal) prize;
-
-            while (perfectPrize > 1000)
-            {
-                perfectPrize /= 10;
-            }
-
-            if (perfectPrize >= 250)
-            {
-                return perfectPrize % 50 == 0;
-            }
-
-            if (perfectPrize >= 100)
-            {
-                return perfectPrize % 25 == 0;
-            }
-
-            if (perfectPrize >= 10)
-            {
-                return perfectPrize % 5 == 0;
-            }
-
-            if (perfectPrize > 0)
-            {
-                return perfectPrize % 1 == 0;
-            }
-
-            return false;
-        }
-
-        public static int RoundPerfectPrize(decimal number, List<int> perfectPrizes)
+        public static Prize PerfectAverage(decimal number, List<Prize> perfectPrizes)
         {
             // TODO: Refactor to be defensive by design (replace exception with a non-null default).
             if (perfectPrizes.Count <= 0)
@@ -153,7 +108,60 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
                 nextPerfectPrize = perfectPrizes[index + 1];
             }
 
-            return currentPerfectPrize;
+            return new Prize(currentPerfectPrize);
+        }
+
+        private static decimal LeftoverAverage(decimal unperfectPrizeAverage, Prize perfectPrizeAverage, BucketSize bucketSize)
+        {
+            return (unperfectPrizeAverage - perfectPrizeAverage) * bucketSize;
+        }
+
+        // TODO: This need to be optimized for large number like 5000000 (very slow).
+        public static List<Prize> PerfectPrizes(IPrizes prizes)
+        {
+            var perfectPrizes = new List<Prize>();
+
+            for (var perfectPrize = 1; perfectPrize < Convert.ToInt64(prizes.First()) + 1; perfectPrize++)
+            {
+                if (IsPerfectPrize(perfectPrize))
+                {
+                    perfectPrizes.Add(new Prize(perfectPrize));
+                }
+            }
+
+            return perfectPrizes;
+        }
+
+        public static bool IsPerfectPrize(int prize)
+        {
+            var perfectPrize = (decimal) prize;
+
+            while (perfectPrize > 1000)
+            {
+                perfectPrize /= 10;
+            }
+
+            if (perfectPrize >= 250)
+            {
+                return perfectPrize % 50 == 0;
+            }
+
+            if (perfectPrize >= 100)
+            {
+                return perfectPrize % 25 == 0;
+            }
+
+            if (perfectPrize >= 10)
+            {
+                return perfectPrize % 5 == 0;
+            }
+
+            if (perfectPrize > 0)
+            {
+                return perfectPrize % 1 == 0;
+            }
+
+            return false;
         }
     }
 }
