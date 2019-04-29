@@ -31,7 +31,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             // Entry fee is under 5$.
             if (entryFee < 5 * multiplierOfCents)
             {
-                entryFee = Optimization.RoundMultiplier(entryFee, multiplierOfCents);
+                entryFee = MathUtils.RoundMultiplier(entryFee, multiplierOfCents);
 
                 if (entryFee == 0)
                 {
@@ -68,7 +68,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
                 multiplier = 500 * multiplierOfCents;
             }
 
-            entryFee = Optimization.RoundMultiplier(entryFee, multiplier);
+            entryFee = MathUtils.RoundMultiplier(entryFee, multiplier);
 
             return new EntryFee(entryFee * (multiplier / multiplierOfCents));
         }

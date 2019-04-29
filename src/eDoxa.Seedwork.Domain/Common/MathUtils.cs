@@ -12,7 +12,7 @@ using System;
 
 namespace eDoxa.Seedwork.Domain.Common
 {
-    public static class Optimization
+    public static class MathUtils
     {
         public static int FloorDiv(double dividend, double divisor)
         {

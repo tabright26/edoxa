@@ -108,7 +108,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         private static double Beta(PayoutEntries payoutEntries, BucketCount bucketCount)
         {
-            return Optimization.Bisection(b =>
+            return MathUtils.Bisection(b =>
             {
                 double count = 0;
 

@@ -39,50 +39,8 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         {
         }
 
-        private Prizes()
+        public Prizes()
         {
-        }
-
-        public static (IPrizes initialPrizes, PayoutLeftover leftover) InitPrizes(IPrizes unperfectPrizes, IBucketSizes bucketSizeList)
-        {
-            // Need to check if sum(bucket_sizes) == len(unperfect_prize)
-            if (bucketSizeList.Sum(x => x) != unperfectPrizes.Count)
-            {
-                throw new ArgumentException("Bucket sizes is incompatible with the number of prizes");
-            }
-
-            // Take the first unperfect_prize and generate nice numbers list
-            var nicePrize = PrizeBuilder.PossibleNiceNumbers(Convert.ToInt32(unperfectPrizes[0]));
-
-            var prizes = new Prizes(); // Will contains the first attempt of good prizes
-
-            var position = 0;
-
-            double leftover = 0;
-
-            foreach (var bucket in bucketSizeList)
-            {
-                var list = new Prizes();
-
-                for (var i = position; i < position + bucket; i++)
-                {
-                    list.Add(unperfectPrizes[i]);
-                }
-
-                // rounding the first tentative prize to nearest nice number
-                var currentPrize = (list.Sum(x => x.ToDouble()) + leftover) / bucket;
-
-                var currentNicePrize = PrizeBuilder.Round(currentPrize, nicePrize);
-
-                prizes.Add(new Prize(currentNicePrize));
-
-                // Then compute leftover
-                leftover = (currentPrize - currentNicePrize) * bucket;
-
-                position += bucket;
-            }
-
-            return (prizes, new PayoutLeftover(leftover));
         }
 
         public static (IPrizes finalPrizes, IBucketSizes finalBucketSizes, PayoutLeftover finalLeftover) SpendLeftover(
@@ -93,14 +51,14 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             var prizes = new Prizes(initialPrizes);
             var bucketSizes = new BucketSizes(initialBucketSizes);
 
-            var niceNumbers = PrizeBuilder.PossibleNiceNumbers(Convert.ToInt32(prizes[0]));
+            var niceNumbers = PrizeUtils.PerfectPrizes(prizes);
 
             // First : Spend as much of possible leftover on singleton bucket 2 through 4.
             for (var index = 1; index < 4; index++)
             {
                 var minVal = Math.Min(prizes[index].ToDouble() + leftover, (prizes[index - 1].ToDouble() + prizes[index].ToDouble()) / 2D);
 
-                var niceVal = PrizeBuilder.Round(minVal, niceNumbers);
+                var niceVal = PrizeUtils.RoundPerfectPrize(minVal, niceNumbers);
 
                 leftover = new PayoutLeftover(leftover + prizes[index].ToDouble() - niceVal);
 
@@ -137,7 +95,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
                 {
                     bucketSizes[bucketNum] =
                         new BucketSize(bucketSizes[bucketNum] +
-                                       Optimization.FloorDiv(leftover, prizes[bucketNum].ToDouble())); // number of winners increase
+                                       MathUtils.FloorDiv(leftover, prizes[bucketNum].ToDouble())); // number of winners increase
                 }
             }
 
@@ -149,7 +107,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             var b = 1 - Math.Log((prizePool.ToDouble() - payoutEntries * entryFee.ToDouble()) / (firstPrize.ToDouble() - entryFee.ToDouble())) /
                     Math.Log(payoutEntries);
 
-            return Optimization.Bisection(a =>
+            return MathUtils.Bisection(a =>
             {
                 double count = 0;
 

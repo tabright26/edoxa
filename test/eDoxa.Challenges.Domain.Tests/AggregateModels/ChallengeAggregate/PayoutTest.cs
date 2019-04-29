@@ -28,17 +28,17 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
 
             var serviceChargeRatio = new ServiceChargeRatio(0.2F);
 
-            var bucketCount = new BucketCount(10);
-
             var payoutEntries = new PayoutEntries(entries, payoutRatio);
 
             var prizePool = new PrizePool(entries, entryFee, serviceChargeRatio);
 
             var prizes = new Prizes(payoutEntries, prizePool, entryFee);
 
+            var bucketCount = new BucketCount(10);
+
             var bucketSizes = new BucketSizes(payoutEntries, bucketCount);
 
-            var (initialPrizes, leftover) = Prizes.InitPrizes(prizes, bucketSizes);
+            var (initialPrizes, leftover) = PrizeUtils.InitPrizes(prizes, bucketSizes);
 
             var (finalPrizes, finalBucketSizes, finalLeftover) = Prizes.SpendLeftover(initialPrizes, bucketSizes, leftover);
 

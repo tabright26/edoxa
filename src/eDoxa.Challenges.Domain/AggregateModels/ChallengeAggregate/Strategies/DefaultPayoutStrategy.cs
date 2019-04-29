@@ -39,7 +39,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Strategies
                     var prizes = new Prizes(_payoutEntries, _prizePool, _entryFee);
                     var bucketSizes = new BucketSizes(_payoutEntries, new BucketCount(5));
 
-                    var (initialPrizes, leftover) = Prizes.InitPrizes(prizes, bucketSizes);
+                    var (initialPrizes, leftover) = PrizeUtils.InitPrizes(prizes, bucketSizes);
                     var (finalPrizes, finalBucketSizes, finalLeftover) = Prizes.SpendLeftover(initialPrizes, bucketSizes, leftover);
 
                     var buckets = new Buckets(finalBucketSizes, finalPrizes);

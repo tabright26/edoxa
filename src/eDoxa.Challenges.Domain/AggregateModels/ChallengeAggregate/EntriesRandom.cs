@@ -37,7 +37,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
             var entries = Random.Next(range.MinValue, range.MaxValue + 1);
 
-            entries = Optimization.RoundMultiplier(entries, multiplier);
+            entries = MathUtils.RoundMultiplier(entries, multiplier);
 
             return new Entries(entries * multiplier);
         }
