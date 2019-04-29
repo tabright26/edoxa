@@ -23,6 +23,6 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Strategies
             _entryFee = entryFee;
         }
 
-        public IPayout Payout => new Payout();
+        public IPayout Payout => new Payout(new Buckets());
     }
 }

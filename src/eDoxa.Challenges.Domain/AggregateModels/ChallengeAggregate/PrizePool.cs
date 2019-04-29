@@ -10,6 +10,7 @@
 
 using System;
 using System.Globalization;
+using System.Linq;
 
 using JetBrains.Annotations;
 
@@ -22,6 +23,11 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         public PrizePool(Entries entries, EntryFee entryFee, ServiceChargeRatio serviceChargeRatio)
         {
             _value = Math.Floor(entries * entryFee * (1 - Convert.ToDecimal(serviceChargeRatio)));
+        }
+
+        public PrizePool(IPayout payout)
+        {
+            _value = payout.Buckets.Sum(bucket => bucket.Prize * bucket.Size);
         }
 
         public static implicit operator decimal(PrizePool prizePool)

@@ -20,7 +20,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
     [TestClass]
     public sealed class StatTest
     {
-        private static readonly ChallengeAggregateFactory _factory = ChallengeAggregateFactory.Instance;
+        private static readonly ChallengeAggregateFactory ChallengeAggregateFactory = ChallengeAggregateFactory.Instance;
 
         [DataRow(ChallengeAggregateFactory.Kills, 457000, 0.00015F)]
         [DataRow(ChallengeAggregateFactory.Assists, 0.1F, 1)]
@@ -35,7 +35,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             var statWeighting = new StatWeighting(weighting);
 
             // Act
-            var stat = _factory.CreateStat(name, statValue, statWeighting);
+            var stat = ChallengeAggregateFactory.CreateStat(name, statValue, statWeighting);
 
             // Assert
             stat.Name.Should().Be(name);

@@ -9,6 +9,7 @@
 // this source code package.
 
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
@@ -23,9 +24,19 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             }
         }
 
+        // TODO: To defend.
         public Buckets()
         {
 
+        }
+
+        public IPrizes Prizes => new Prizes(this.Select(bucket => bucket.Prize).OrderByDescending(prize => prize));
+
+        public IBucketSizes BucketSizes => new BucketSizes(this.Select(bucket => bucket.Size).OrderBy(size => size));
+
+        public decimal Leftover(PrizePool prizePool)
+        {
+            return prizePool - this.Sum(bucket => bucket.Prize * bucket.Size);
         }
     }
 }

@@ -8,6 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Linq;
+
 using eDoxa.Challenges.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Domain.Aggregate;
 
@@ -16,21 +18,11 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
     public sealed class Payout : ValueObject, IPayout
     {
         private readonly Buckets _buckets;
-        private readonly PayoutLeftover _leftover;
 
-        public Payout(Buckets buckets, PayoutLeftover leftover)
+        public Payout(Buckets buckets)
         {
             _buckets = buckets;
-            _leftover = leftover;
         }
-
-        public Payout()
-        {
-            _buckets = new Buckets();
-            _leftover = new PayoutLeftover(0);
-        }
-
-        public PayoutLeftover Leftover => _leftover;
 
         public IBuckets Buckets => _buckets;
 

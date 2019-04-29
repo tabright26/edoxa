@@ -9,6 +9,7 @@
 // this source code package.
 
 using System;
+using System.Linq;
 
 using JetBrains.Annotations;
 
@@ -21,6 +22,11 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         public PayoutEntries(Entries entries, PayoutRatio payoutRatio)
         {
             _value = Convert.ToInt32(Math.Floor(entries * payoutRatio));
+        }
+
+        public PayoutEntries(IPayout payout)
+        {
+            _value = payout.Buckets.Sum(bucket => bucket.Size);
         }
 
         public static implicit operator int(PayoutEntries payoutEntries)

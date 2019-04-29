@@ -102,7 +102,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             }
         }
 
-        public BucketSizes(IBucketSizes prizes) : base(prizes)
+        public BucketSizes(IEnumerable<BucketSize> bucketSizes) : base(bucketSizes)
         {
         }
 

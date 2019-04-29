@@ -10,6 +10,8 @@
 
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 
+using FluentAssertions;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
@@ -39,12 +41,14 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             var bucketSizes = new BucketSizes(payoutEntries, bucketCount);
 
             var initialPrizes = PrizeUtils.PerfectAverages(prizes, bucketSizes);
+           
+            var buckets = BucketUtils.SpendLeftover(initialPrizes, prizePool);
 
-            //var (finalPrizes, finalBucketSizes, finalLeftover) = Prizes.SpendLeftover(initialPrizes, bucketSizes, leftover);
+            var payout = new Payout(buckets);
 
-            var buckets = new Buckets(bucketSizes, initialPrizes);
-
-            var payout = new Payout(buckets, new PayoutLeftover(0));
+            // Assert
+            payoutEntries.Should().Be(new PayoutEntries(payout));
+            prizePool.Should().Be(new PrizePool(payout));
         }
     }
 }

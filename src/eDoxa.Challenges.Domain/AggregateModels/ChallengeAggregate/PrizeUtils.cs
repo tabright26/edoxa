@@ -20,7 +20,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
     // TODO: To defend.
     public static class PrizeUtils
     {
-        public static IPrizes PerfectAverages(Prizes unperfectPrizes, IBucketSizes bucketSizes)
+        public static Buckets PerfectAverages(Prizes unperfectPrizes, IBucketSizes bucketSizes)
         {
             // Need to check if sum(bucket_sizes) == len(unperfect_prize)
             if (bucketSizes.Sum(bucketSize => bucketSize) != unperfectPrizes.Count)
@@ -51,7 +51,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
                 index += bucketSize;
             });
 
-            return perfectPrizeAverages;
+            return new Buckets(bucketSizes, perfectPrizeAverages);
         }
 
         private static decimal UnperfectAverage(Prizes unperfectPrizes, int index, decimal leftover, BucketSize bucketSize)

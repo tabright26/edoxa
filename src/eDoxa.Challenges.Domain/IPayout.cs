@@ -8,14 +8,10 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
-
 namespace eDoxa.Challenges.Domain
 {
     public interface IPayout
     {
-        PayoutLeftover Leftover { get; }
-
         IBuckets Buckets { get; }
 
         IUserPayoff Payoff(IScoreboard scoreboard);
