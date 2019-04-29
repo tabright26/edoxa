@@ -52,7 +52,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             }
 
             // Take the first unperfect_prize and generate nice numbers list
-            var nicePrize = NiceNumber.PossibleNiceNumbers(Convert.ToInt32(unperfectPrizes[0]));
+            var nicePrize = PrizeBuilder.PossibleNiceNumbers(Convert.ToInt32(unperfectPrizes[0]));
 
             var prizes = new Prizes(); // Will contains the first attempt of good prizes
 
@@ -72,7 +72,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
                 // rounding the first tentative prize to nearest nice number
                 var currentPrize = (list.Sum(x => x.ToDouble()) + leftover) / bucket;
 
-                var currentNicePrize = NiceNumber.Round(currentPrize, nicePrize);
+                var currentNicePrize = PrizeBuilder.Round(currentPrize, nicePrize);
 
                 prizes.Add(new Prize(currentNicePrize));
 
@@ -93,14 +93,14 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             var prizes = new Prizes(initialPrizes);
             var bucketSizes = new BucketSizes(initialBucketSizes);
 
-            var niceNumbers = NiceNumber.PossibleNiceNumbers(Convert.ToInt32(prizes[0]));
+            var niceNumbers = PrizeBuilder.PossibleNiceNumbers(Convert.ToInt32(prizes[0]));
 
             // First : Spend as much of possible leftover on singleton bucket 2 through 4.
             for (var index = 1; index < 4; index++)
             {
                 var minVal = Math.Min(prizes[index].ToDouble() + leftover, (prizes[index - 1].ToDouble() + prizes[index].ToDouble()) / 2D);
 
-                var niceVal = NiceNumber.Round(minVal, niceNumbers);
+                var niceVal = PrizeBuilder.Round(minVal, niceNumbers);
 
                 leftover = new PayoutLeftover(leftover + prizes[index].ToDouble() - niceVal);
 

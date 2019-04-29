@@ -8,8 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Challenges.Domain.AggregateModels;
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Challenges.Domain.AggregateModels.MatchAggregate;
 
 using JetBrains.Annotations;
 

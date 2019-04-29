@@ -15,7 +15,7 @@ using System.Linq;
 using AutoMapper;
 
 using eDoxa.Challenges.Domain;
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Functional.Maybe;
 
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
@@ -24,20 +24,20 @@ using Newtonsoft.Json;
 
 namespace eDoxa.Challenges.Infrastructure.Converters
 {
-    public sealed class ChallengeScoringConverter : ValueConverter<Option<IChallengeScoring>, string>
+    public sealed class ChallengeScoringConverter : ValueConverter<Option<IScoring>, string>
     {
         private static readonly IMapper Mapper = new Mapper(new MapperConfiguration(config =>
         {
             config.CreateMap<StatName, string>().ConvertUsing(name => name.ToString());
             config.CreateMap<StatWeighting, float>().ConvertUsing(weighting => Convert.ToSingle(weighting));
-            config.CreateMap<IDictionary<string, float>, ChallengeScoring>().ConvertUsing(dictionary => new ChallengeScoring(dictionary));
+            config.CreateMap<IDictionary<string, float>, Scoring>().ConvertUsing(dictionary => new Scoring(dictionary));
         }));
 
         public ChallengeScoringConverter() : base(
             scoring => JsonConvert.SerializeObject(Mapper.Map<Dictionary<string, float>>(scoring.SingleOrDefault()), Formatting.None),
             scoring => scoring != null
-                ? new Option<IChallengeScoring>(Mapper.Map<ChallengeScoring>(JsonConvert.DeserializeObject<Dictionary<string, float>>(scoring)))
-                : new Option<IChallengeScoring>()
+                ? new Option<IScoring>(Mapper.Map<Scoring>(JsonConvert.DeserializeObject<Dictionary<string, float>>(scoring)))
+                : new Option<IScoring>()
         )
         {
         }

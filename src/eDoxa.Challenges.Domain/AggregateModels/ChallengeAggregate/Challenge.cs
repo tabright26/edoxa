@@ -16,6 +16,9 @@ using System.Linq;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.DomainEvent;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Factories;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Specifications;
+using eDoxa.Challenges.Domain.AggregateModels.ParticipantAggregate;
+using eDoxa.Challenges.Domain.AggregateModels.ParticipantAggregate.Specifications;
+using eDoxa.Challenges.Domain.AggregateModels.UserAggregate;
 using eDoxa.Functional.Maybe;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
@@ -30,7 +33,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         private ChallengeName _name;
         private ChallengeSetup _setup;
         private ChallengeTimeline _timeline;
-        private Option<IChallengeScoring> _scoring;
+        private Option<IScoring> _scoring;
         private HashSet<Participant> _participants;
 
         internal Challenge(Game game, ChallengeName name, ChallengeSetup setup) : this()
@@ -43,7 +46,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         private Challenge()
         {
             _timeline = new ChallengeTimeline();
-            _scoring = new Option<IChallengeScoring>();
+            _scoring = new Option<IScoring>();
             _participants = new HashSet<Participant>();
         }
 
@@ -74,24 +77,24 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public ChallengeLiveData LiveData => new ChallengeLiveData(Setup, Participants);
 
-        public Option<IChallengeScoring> Scoring => _scoring;
+        public Option<IScoring> Scoring => _scoring;
 
-        public IChallengePayout Payout => ChallengePayoutFactory.Instance.CreatePayout(Setup.Type, Setup.PayoutEntries, Setup.PrizePool, Setup.EntryFee).Payout;
+        public IPayout Payout => ChallengePayoutFactory.Instance.CreatePayout(Setup.Type, Setup.PayoutEntries, Setup.PrizePool, Setup.EntryFee).Payout;
 
-        public IChallengeScoreboard Scoreboard => ChallengeScoreboardFactory.Instance.CreateScoreboard(this).Scoreboard;
+        public IScoreboard Scoreboard => ChallengeScoreboardFactory.Instance.CreateScoreboard(this).Scoreboard;
 
         public IReadOnlyCollection<Participant> Participants => _participants;
 
-        public void Configure(IChallengeScoringStrategy strategy, DateTime publishedAt, TimeSpan registrationPeriod, TimeSpan extensionPeriod)
+        public void Configure(IScoringStrategy strategy, DateTime publishedAt, TimeSpan registrationPeriod, TimeSpan extensionPeriod)
         {
-            _scoring = new Option<IChallengeScoring>(strategy.Scoring);
+            _scoring = new Option<IScoring>(strategy.Scoring);
 
             _timeline = Timeline.Configure(publishedAt, registrationPeriod, extensionPeriod);
         }
 
-        public void Configure(IChallengeScoringStrategy strategy, DateTime publishedAt)
+        public void Configure(IScoringStrategy strategy, DateTime publishedAt)
         {
-            _scoring = new Option<IChallengeScoring>(strategy.Scoring);
+            _scoring = new Option<IScoring>(strategy.Scoring);
 
             _timeline = Timeline.Configure(publishedAt);
         }
@@ -104,25 +107,25 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             return specification.IsSatisfiedBy(this);
         }
 
-        public void Publish(IChallengeScoringStrategy strategy, TimeSpan registrationPeriod, TimeSpan extensionPeriod)
+        public void Publish(IScoringStrategy strategy, TimeSpan registrationPeriod, TimeSpan extensionPeriod)
         {
-            _scoring = new Option<IChallengeScoring>(strategy.Scoring);
+            _scoring = new Option<IScoring>(strategy.Scoring);
 
             _timeline = Timeline.Publish(registrationPeriod, extensionPeriod);
         }
 
-        public void Publish(IChallengeScoringStrategy strategy)
+        public void Publish(IScoringStrategy strategy)
         {
-            _scoring = new Option<IChallengeScoring>(strategy.Scoring);
+            _scoring = new Option<IScoring>(strategy.Scoring);
 
             _timeline = Timeline.Publish();
         }
 
-        public void Publish(IChallengeScoringStrategy scoringStrategy, IChallengeTimelineStrategy timelineStrategy)
+        public void Publish(IScoringStrategy scoringStrategy, IChallengeTimelineStrategy challengeTimelineStrategy)
         {
-            _scoring = new Option<IChallengeScoring>(scoringStrategy.Scoring);
+            _scoring = new Option<IScoring>(scoringStrategy.Scoring);
 
-            _timeline = Timeline.Publish(timelineStrategy.Timeline.RegistrationPeriod.Value, timelineStrategy.Timeline.ExtensionPeriod.Value);
+            _timeline = Timeline.Publish(challengeTimelineStrategy.Timeline.RegistrationPeriod.Value, challengeTimelineStrategy.Timeline.ExtensionPeriod.Value);
         }
 
         private bool CanPublish()
@@ -142,11 +145,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
             _timeline = Timeline.Close();
 
-            var userPrizes = Payout.Snapshot(Scoreboard);
-
-            var domainEvent = new ChallengeUserPrizesSnapshottedDomainEvent(Id.ToGuid(), userPrizes);
-
-            this.AddDomainEvent(domainEvent);
+            this.AddDomainEvent(new ChallengePaidOffDomainEvent(Id, Payout.Payoff(Scoreboard)));
         }
 
         private bool CanClose()
@@ -177,7 +176,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             return specification.IsSatisfiedBy(this);
         }
 
-        public void SnapshotParticipantMatch(ParticipantId participantId, IChallengeStats stats)
+        public void SnapshotParticipantMatch(ParticipantId participantId, IMatchStats stats)
         {
             if (!this.CanSnapshotParticipantMatch(participantId))
             {

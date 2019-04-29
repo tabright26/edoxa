@@ -8,7 +8,7 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Challenges.Domain.Services.LeagueOfLegends.DTO;
 using eDoxa.Challenges.Domain.Services.LeagueOfLegends.Strategies;
 
@@ -30,10 +30,10 @@ namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.Tests.Strategies
         public void Scoring_Default_ShouldContain(string key, float value)
         {
             // Act
-            var strategy = new LeagueOfLegendsDefaultChallengeScoringStrategy();
+            var strategy = new LeagueOfLegendsDefaultScoringStrategy();
 
             // Assert
-            strategy.Scoring.As<ChallengeScoring>().Should().Contain(key, new StatWeighting(value));
+            strategy.Scoring.As<Scoring>().Should().Contain(key, new StatWeighting(value));
         }
     }
 }

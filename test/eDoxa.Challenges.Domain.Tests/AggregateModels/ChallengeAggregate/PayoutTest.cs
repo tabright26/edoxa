@@ -44,7 +44,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
 
             var buckets = new Buckets(finalBucketSizes, finalPrizes);
 
-            var payout = new ChallengePayout(buckets, finalLeftover);
+            var payout = new Payout(buckets, finalLeftover);
         }
     }
 }

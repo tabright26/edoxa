@@ -28,7 +28,7 @@ namespace eDoxa.Challenges.Domain.Services.Factories
             }
         }
 
-        public IChallengeScoringStrategy CreateScoringStrategy(Challenge challenge)
+        public IScoringStrategy CreateScoringStrategy(Challenge challenge)
         {
             switch (challenge.Game)
             {

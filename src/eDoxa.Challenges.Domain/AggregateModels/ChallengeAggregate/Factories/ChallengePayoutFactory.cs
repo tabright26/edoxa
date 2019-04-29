@@ -20,13 +20,13 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Factories
 
         public static ChallengePayoutFactory Instance => Lazy.Value;
 
-        public IChallengePayoutStrategy CreatePayout(ChallengeType type, PayoutEntries payoutEntries, PrizePool prizePool, EntryFee entryFee)
+        public IPayoutStrategy CreatePayout(ChallengeType type, PayoutEntries payoutEntries, PrizePool prizePool, EntryFee entryFee)
         {
             switch (type)
             {
                 case ChallengeType.Default:
 
-                    return new DefaultChallengePayoutStrategy(payoutEntries, prizePool, entryFee);
+                    return new DefaultPayoutStrategy(payoutEntries, prizePool, entryFee);
 
                 default:
 

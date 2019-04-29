@@ -10,7 +10,7 @@
 
 using System;
 
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Challenges.Domain.AggregateModels.MatchAggregate;
 
 using FluentAssertions;
 

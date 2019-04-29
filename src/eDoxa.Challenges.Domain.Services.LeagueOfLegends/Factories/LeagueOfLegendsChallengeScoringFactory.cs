@@ -28,12 +28,12 @@ namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.Factories
             }
         }
 
-        public IChallengeScoringStrategy CreateScoring(Challenge challenge)
+        public IScoringStrategy CreateScoring(Challenge challenge)
         {
             switch (challenge.Setup.Type)
             {
                 case ChallengeType.Default:
-                    return new LeagueOfLegendsDefaultChallengeScoringStrategy();
+                    return new LeagueOfLegendsDefaultScoringStrategy();
                 default:
                     throw new NotImplementedException();
             }

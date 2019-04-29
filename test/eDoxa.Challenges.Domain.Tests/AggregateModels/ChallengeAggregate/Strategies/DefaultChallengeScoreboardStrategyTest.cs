@@ -11,9 +11,10 @@
 using System;
 using System.Linq;
 
-using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Strategies;
+using eDoxa.Challenges.Domain.AggregateModels.ParticipantAggregate;
+using eDoxa.Challenges.Domain.AggregateModels.UserAggregate;
 using eDoxa.Challenges.Domain.Factories;
 using eDoxa.Seedwork.Domain.Common.Enums;
 
@@ -35,7 +36,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Strat
             var challenge = new MockChallenge();
 
             // Act
-            var strategy = new DefaultChallengeScoreboardStrategy(challenge);
+            var strategy = new DefaultScoreboardStrategy(challenge);
 
             // Assert
             strategy.Scoreboard.Should().BeEmpty();

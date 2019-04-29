@@ -22,21 +22,21 @@ namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.Factories
 
         public static LeagueOfLegendsChallengePublisherFactory Instance => Lazy.Value;
 
-        public IChallengePublisherStrategy CreatePublisher(ChallengeInterval interval)
+        public IPublisherStrategy CreatePublisher(ChallengeInterval interval)
         {
             if (interval == ChallengeInterval.Daily)
             {
-                return new LeagueOfLegendsDailyChallengePublisherStrategy();
+                return new LeagueOfLegendsDailyPublisherStrategy();
             }
 
             if (interval == ChallengeInterval.Weekly)
             {
-                return new LeagueOfLegendsWeeklyChallengePublisherStrategy();
+                return new LeagueOfLegendsWeeklyPublisherStrategy();
             }
 
             if (interval == ChallengeInterval.Monthly)
             {
-                return new LeagueOfLegendsMonthlyChallengePublisherStrategy();
+                return new LeagueOfLegendsMonthlyPublisherStrategy();
             }
 
             throw new ArgumentException(nameof(interval));

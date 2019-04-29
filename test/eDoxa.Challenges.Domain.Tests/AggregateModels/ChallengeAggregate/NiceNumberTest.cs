@@ -43,7 +43,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void TestZero_ShouldBeTrue(int value)
         {
             // Act
-            var condition = NiceNumber.IsNice(value);
+            var condition = PrizeBuilder.IsNice(value);
 
             // Assert
             condition.Should().BeTrue();
@@ -62,7 +62,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void TestZero_ShouldBeFalse(double value)
         {
             // Act
-            var condition = NiceNumber.IsNice(value);
+            var condition = PrizeBuilder.IsNice(value);
 
             // Assert
             condition.Should().BeFalse();
@@ -89,7 +89,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void TestZero_ShouldBeArrayLength(double value, int length)
         {
             // Act
-            var niceNumbers = NiceNumber.PossibleNiceNumbers(Convert.ToInt32(value));
+            var niceNumbers = PrizeBuilder.PossibleNiceNumbers(Convert.ToInt32(value));
 
             // Assert
             niceNumbers.Count.Should().Be(length);
@@ -103,7 +103,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void TestEmptyList_ShouldBe(double numToRound, int niceNumber, int[] niceNumbers)
         {
             // Act
-            var roundNiceNumber = NiceNumber.Round(numToRound, new List<int>(niceNumbers));
+            var roundNiceNumber = PrizeBuilder.Round(numToRound, new List<int>(niceNumbers));
 
             // Assert
             roundNiceNumber.Should().Be(niceNumber);
@@ -117,7 +117,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void TestEmptyList_ShouldThrowArgumentException(double numToRound, int[] niceNumbers)
         {
             // Act
-            var action = new Action(() => NiceNumber.Round(numToRound, new List<int>(niceNumbers)));
+            var action = new Action(() => PrizeBuilder.Round(numToRound, new List<int>(niceNumbers)));
 
             // Assert
             action.Should().Throw<ArgumentException>();

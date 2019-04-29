@@ -11,7 +11,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Common.Enums;

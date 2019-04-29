@@ -10,7 +10,7 @@
 
 using AutoMapper;
 
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Challenges.Domain.AggregateModels.MatchAggregate;
 
 namespace eDoxa.Challenges.DTO.Profiles
 {
@@ -18,7 +18,7 @@ namespace eDoxa.Challenges.DTO.Profiles
     {
         public ChallengeScoringProfile()
         {
-            this.CreateMap<ChallengeScoring, ChallengeScoringDTO>();
+            this.CreateMap<Scoring, ChallengeScoringDTO>();
         }
     }
 }

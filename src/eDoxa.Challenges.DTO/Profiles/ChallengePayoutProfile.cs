@@ -18,7 +18,7 @@ namespace eDoxa.Challenges.DTO.Profiles
     {
         public ChallengePayoutProfile()
         {
-            this.CreateMap<ChallengePayout, ChallengePayoutDTO>()
+            this.CreateMap<Payout, ChallengePayoutDTO>()
                 .ForMember(payout => payout.Buckets, config => config.MapFrom(payout => payout.Buckets));
         }
     }

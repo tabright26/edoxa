@@ -20,13 +20,13 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Factories
 
         public static ChallengeScoreboardFactory Instance => Lazy.Value;
 
-        public IChallengeScoreboardStrategy CreateScoreboard(Challenge challenge)
+        public IScoreboardStrategy CreateScoreboard(Challenge challenge)
         {
             switch (challenge.Setup.Type)
             {
                 case ChallengeType.Default:
 
-                    return new DefaultChallengeScoreboardStrategy(challenge);
+                    return new DefaultScoreboardStrategy(challenge);
 
                 default:
 

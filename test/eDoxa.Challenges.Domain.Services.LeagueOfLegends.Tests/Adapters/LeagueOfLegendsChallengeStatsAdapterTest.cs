@@ -11,8 +11,9 @@
 using System.Linq;
 using System.Reflection;
 
-using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Challenges.Domain.AggregateModels.ParticipantAggregate;
+using eDoxa.Challenges.Domain.AggregateModels.UserAggregate;
 using eDoxa.Challenges.Domain.Factories;
 using eDoxa.Challenges.Domain.Services.LeagueOfLegends.Adapters;
 using eDoxa.Challenges.Domain.Services.LeagueOfLegends.DTO.Tests;
@@ -48,9 +49,9 @@ namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.Tests.Adapters
 
             foreach (var (_, match) in matches)
             {
-                var adapter = new LeagueOfLegendsChallengeStatsAdapter(linkedAccount, match);
+                var adapter = new LeagueOfLegendsMatchStatsAdapter(linkedAccount, match);
 
-                challenge.SnapshotParticipantMatch(challenge.Participants.Single(x => x.UserId == userId).Id, adapter.Stats);
+                challenge.SnapshotParticipantMatch(challenge.Participants.Single(x => x.UserId == userId).Id, adapter.MatchStats);
             }
 
             // Act => Assert

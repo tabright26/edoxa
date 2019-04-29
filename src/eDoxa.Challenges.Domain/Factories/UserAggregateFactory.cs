@@ -10,7 +10,6 @@
 
 using System;
 
-using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Domain.Factories;
 

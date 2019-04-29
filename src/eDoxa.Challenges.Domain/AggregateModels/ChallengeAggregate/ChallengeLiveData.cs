@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Factories;
+using eDoxa.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
@@ -32,6 +33,6 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public PrizePool PrizePool => new PrizePool(Entries, _setup.EntryFee, _setup.ServiceChargeRatio);
 
-        public IChallengePayout Payout => ChallengePayoutFactory.Instance.CreatePayout(_setup.Type, PayoutEntries, PrizePool, _setup.EntryFee).Payout;
+        public IPayout Payout => ChallengePayoutFactory.Instance.CreatePayout(_setup.Type, PayoutEntries, PrizePool, _setup.EntryFee).Payout;
     }
 }

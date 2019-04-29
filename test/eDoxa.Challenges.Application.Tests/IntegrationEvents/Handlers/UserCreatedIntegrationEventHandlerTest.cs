@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using eDoxa.Challenges.Application.Commands;
 using eDoxa.Challenges.Application.IntegrationEvents;
 using eDoxa.Challenges.Application.IntegrationEvents.Handlers;
-using eDoxa.Challenges.Domain.AggregateModels;
+using eDoxa.Challenges.Domain.AggregateModels.UserAggregate;
 
 using MediatR;
 

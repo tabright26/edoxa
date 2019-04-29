@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Api.Controllers;
-using eDoxa.Challenges.Domain.AggregateModels;
+using eDoxa.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Challenges.DTO;
 using eDoxa.Challenges.DTO.Queries;
 using eDoxa.Functional.Maybe;

@@ -14,15 +14,17 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 
-using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Challenges.Domain.AggregateModels.MatchAggregate;
+using eDoxa.Challenges.Domain.AggregateModels.ParticipantAggregate;
+using eDoxa.Challenges.Domain.AggregateModels.UserAggregate;
 using eDoxa.Functional.Maybe;
 using eDoxa.Seedwork.Domain.Common.Enums;
 using eDoxa.Seedwork.Domain.Factories;
 
 using Moq;
 
-using Match = eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Match;
+using Match = eDoxa.Challenges.Domain.AggregateModels.MatchAggregate.Match;
 
 namespace eDoxa.Challenges.Domain.Factories
 {
@@ -95,7 +97,7 @@ namespace eDoxa.Challenges.Domain.Factories
 
             if (state >= ChallengeState1.Opened)
             {
-                var scoring = new Option<IChallengeScoring>(this.CreateChallengeScoring());
+                var scoring = new Option<IScoring>(this.CreateChallengeScoring());
 
                 challenge.GetType().GetField("_scoring", BindingFlags.Instance | BindingFlags.NonPublic)?.SetValue(challenge, scoring);
             }
@@ -379,18 +381,18 @@ namespace eDoxa.Challenges.Domain.Factories
 
     internal sealed partial class ChallengeAggregateFactory
     {
-        public IChallengeScoringStrategy CreateChallengeScoringStrategy()
+        public IScoringStrategy CreateChallengeScoringStrategy()
         {
-            var mock = new Mock<IChallengeScoringStrategy>();
+            var mock = new Mock<IScoringStrategy>();
 
             mock.SetupGet(strategy => strategy.Scoring).Returns(this.CreateChallengeScoring());
 
             return mock.Object;
         }
 
-        public IChallengeScoring CreateChallengeScoring()
+        public IScoring CreateChallengeScoring()
         {
-            return new ChallengeScoring
+            return new Scoring
             {
                 [Kills] = new StatWeighting(4F),
                 [Deaths] = new StatWeighting(-3F),
@@ -403,29 +405,29 @@ namespace eDoxa.Challenges.Domain.Factories
 
     internal sealed partial class ChallengeAggregateFactory
     {
-        public IChallengeScoreboardStrategy CreateChallengeScoreboardStrategy()
+        public IScoreboardStrategy CreateChallengeScoreboardStrategy()
         {
-            var mock = new Mock<IChallengeScoreboardStrategy>();
+            var mock = new Mock<IScoreboardStrategy>();
 
             mock.SetupGet(strategy => strategy.Scoreboard).Returns(this.CreateChallengeScoreboard());
 
             return mock.Object;
         }
 
-        public IChallengeScoreboard CreateChallengeScoreboard()
+        public IScoreboard CreateChallengeScoreboard()
         {
-            return new ChallengeScoreboard();
+            return new Scoreboard();
         }
     }
 
     internal sealed partial class ChallengeAggregateFactory
     {
 
-        public IChallengeStats CreateChallengeStats(LinkedMatch linkedMatch = null)
+        public IMatchStats CreateChallengeStats(LinkedMatch linkedMatch = null)
         {
             linkedMatch = linkedMatch ?? new LinkedMatch(2233345251);
 
-            return new ChallengeStats(
+            return new MatchStats(
                 linkedMatch,
                 new
                 {

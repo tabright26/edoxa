@@ -10,7 +10,7 @@
 
 using System.Runtime.Serialization;
 
-using eDoxa.Challenges.Domain.AggregateModels;
+using eDoxa.Challenges.Domain.AggregateModels.UserAggregate;
 using eDoxa.Commands.Abstractions;
 
 namespace eDoxa.Challenges.Application.Commands
