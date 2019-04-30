@@ -16,20 +16,30 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed partial class BucketCount
     {
-        internal const int Empty = 0;
-
-        internal static readonly BucketCount EmptyValue = new BucketCount(Empty);
+        internal static readonly BucketCount EmptyValue = new BucketCount();
 
         private readonly int _value;
 
-        public BucketCount(int count)
+        public BucketCount(PayoutEntries payoutEntries)
         {
-            if (count < 0)
-            {
-                throw new ArgumentException(nameof(count));
-            }
+            _value =
+                payoutEntries >= 5000 ? 15 :
+                payoutEntries >= 4000 ? 14 :
+                payoutEntries >= 3000 ? 13 :
+                payoutEntries >= 2000 ? 12 :
+                payoutEntries >= 1500 ? 11 :
+                payoutEntries >= 1000 ? 10 :
+                payoutEntries >= 500 ? 9 :
+                payoutEntries >= 100 ? 8 :
+                payoutEntries >= 50 ? 7 :
+                payoutEntries >= 25 ? 6 :
+                payoutEntries >= 10 ? 5 :
+                payoutEntries;
+        }
 
-            _value = count;
+        private BucketCount()
+        {
+            _value = 0;
         }
 
         public static implicit operator int(BucketCount bucketSize)

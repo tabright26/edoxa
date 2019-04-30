@@ -10,7 +10,7 @@
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Strategies
 {
-    public class DefaultPayoutStrategy : IPayoutStrategy
+    public sealed class DefaultPayoutStrategy : IPayoutStrategy
     {
         private readonly EntryFee _entryFee;
         private readonly PayoutEntries _payoutEntries;
@@ -23,6 +23,6 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Strategies
             _entryFee = entryFee;
         }
 
-        public IPayout Payout => new Payout(new Buckets());
+        public IPayout Payout => new Payout();
     }
 }

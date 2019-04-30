@@ -34,9 +34,9 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public IBucketSizes BucketSizes => new BucketSizes(this.Select(bucket => bucket.Size).OrderBy(size => size));
 
-        public decimal Leftover(PrizePool prizePool)
+        public PayoutLeftover Leftover(PrizePool prizePool)
         {
-            return prizePool - this.Sum(bucket => bucket.Prize * bucket.Size);
+            return new PayoutLeftover(prizePool - this.Sum(bucket => bucket.Prize * bucket.Size));
         }
     }
 }

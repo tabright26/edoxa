@@ -17,14 +17,18 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public partial class PayoutLeftover
     {
-        private readonly double _value;
+        internal const decimal Default = 0;
 
-        public PayoutLeftover(double leftover)
+        internal static readonly PayoutLeftover DefaultValue = new PayoutLeftover(Default);
+
+        private readonly decimal _value;
+
+        public PayoutLeftover(decimal leftover)
         {
             _value = leftover;
         }
 
-        public static implicit operator double(PayoutLeftover leftover)
+        public static implicit operator decimal(PayoutLeftover leftover)
         {
             return leftover._value;
         }

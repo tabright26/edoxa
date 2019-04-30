@@ -72,7 +72,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             var random = new EntryFeeRandom();
 
             // Act
-            var action = new Action(() => random.Next(new EntryFeeRange(new EntryFee(EntryFee.Max), new EntryFee(EntryFee.Min))));
+            var action = new Action(() => random.Next(new EntryFeeRange(EntryFee.MaxValue, EntryFee.MinValue)));
 
             // Assert
             action.Should().Throw<ArgumentException>();

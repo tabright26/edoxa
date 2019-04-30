@@ -20,8 +20,10 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
     // TODO: To defend.
     public static class PrizeUtils
     {
-        public static Buckets PerfectAverages(Prizes unperfectPrizes, IBucketSizes bucketSizes)
+        public static Buckets PerfectAverages(Prizes unperfectPrizes, PayoutEntries payoutEntries)
         {
+            var bucketSizes = new BucketSizes(payoutEntries);
+
             // Need to check if sum(bucket_sizes) == len(unperfect_prize)
             if (bucketSizes.Sum(bucketSize => bucketSize) != unperfectPrizes.Count)
             {
@@ -35,7 +37,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
             var index = 0;
 
-            decimal leftoverAverage = 0;
+            var leftoverAverage = PayoutLeftover.DefaultValue;
 
             bucketSizes.ForEach(bucketSize =>
             {
@@ -54,7 +56,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             return new Buckets(bucketSizes, perfectPrizeAverages);
         }
 
-        private static decimal UnperfectAverage(Prizes unperfectPrizes, int index, decimal leftover, BucketSize bucketSize)
+        private static decimal UnperfectAverage(Prizes unperfectPrizes, int index, PayoutLeftover leftover, BucketSize bucketSize)
         {
             var prizes = unperfectPrizes.GetRange(index, bucketSize);
 
@@ -111,9 +113,9 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             return new Prize(currentPerfectPrize);
         }
 
-        private static decimal LeftoverAverage(decimal unperfectPrizeAverage, Prize perfectPrizeAverage, BucketSize bucketSize)
+        private static PayoutLeftover LeftoverAverage(decimal unperfectPrizeAverage, Prize perfectPrizeAverage, BucketSize bucketSize)
         {
-            return (unperfectPrizeAverage - perfectPrizeAverage) * bucketSize;
+            return new PayoutLeftover((unperfectPrizeAverage - perfectPrizeAverage) * bucketSize);
         }
 
         // TODO: This need to be optimized for large number like 5000000 (very slow).

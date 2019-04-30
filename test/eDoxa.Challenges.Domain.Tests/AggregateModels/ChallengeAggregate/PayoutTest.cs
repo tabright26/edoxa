@@ -19,32 +19,28 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
     [TestClass]
     public sealed class PayoutTest
     {
-        [TestMethod]
-        public void M()
+        [DataRow(2500, 25D, PayoutRatio.Default, ServiceChargeRatio.Default)]
+        //[DataRow(2500, 25D, PayoutRatio.Default, ServiceChargeRatio.Min)]
+        //[DataRow(2500, 25D, PayoutRatio.Default, ServiceChargeRatio.Max)]
+        //[DataRow(2500, 25D, PayoutRatio.Min, ServiceChargeRatio.Default)]
+        //[DataRow(2500, 25D, PayoutRatio.Max, ServiceChargeRatio.Default)]
+        //[DataRow(2500, EntryFee.Min, PayoutRatio.Default, ServiceChargeRatio.Default)]
+        //[DataRow(2500, EntryFee.Max, PayoutRatio.Default, ServiceChargeRatio.Default)]
+        //[DataRow(Entries.Min, EntryFee.Default, PayoutRatio.Default, ServiceChargeRatio.Default)]
+        //[DataRow(Entries.Max, EntryFee.Default, PayoutRatio.Default, ServiceChargeRatio.Default)]
+        [DataTestMethod]
+        public void M(int e, double ef, float pr, float scr)
         {
-            var entries = new Entries(2500);
-
-            var entryFee = new EntryFee(25);
-
-            var payoutRatio = new PayoutRatio(0.5F);
-
-            var serviceChargeRatio = new ServiceChargeRatio(0.2F);
-
+            // Arrange
+            var entries = new Entries(e);
+            var entryFee = new EntryFee(new decimal(ef));
+            var payoutRatio = new PayoutRatio(pr);
+            var serviceChargeRatio = new ServiceChargeRatio(scr);
             var payoutEntries = new PayoutEntries(entries, payoutRatio);
-
             var prizePool = new PrizePool(entries, entryFee, serviceChargeRatio);
 
-            var prizes = new Prizes(payoutEntries, prizePool, entryFee);
-
-            var bucketCount = new BucketCount(10);
-
-            var bucketSizes = new BucketSizes(payoutEntries, bucketCount);
-
-            var initialPrizes = PrizeUtils.PerfectAverages(prizes, bucketSizes);
-           
-            var buckets = BucketUtils.SpendLeftover(initialPrizes, prizePool);
-
-            var payout = new Payout(buckets);
+            // Act
+            var payout = new Payout(payoutEntries, prizePool, entryFee);
 
             // Assert
             payoutEntries.Should().Be(new PayoutEntries(payout));
