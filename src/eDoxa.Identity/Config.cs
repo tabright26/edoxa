@@ -10,7 +10,7 @@
 
 using System.Collections.Generic;
 
-using eDoxa.IdentityServer;
+using eDoxa.IS;
 
 using IdentityServer4;
 using IdentityServer4.Models;

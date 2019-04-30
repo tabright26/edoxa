@@ -10,11 +10,11 @@ services:
   edoxa.rabbitmq.broker:
     image: rabbitmq:latest
 
-  edoxa.identity:
-    image: $ACR_REGISTRY/identity:$ACR_TAG
+  edoxa.idsrv:
+    image: $ACR_REGISTRY/idsrv:$ACR_TAG
     build:
       context: .
-      dockerfile: src/eDoxa.Identity/Dockerfile
+      dockerfile: src/eDoxa.IdentityServer/Dockerfile
     depends_on:
       - edoxa.mssql.data
       - edoxa.redis.data
@@ -28,7 +28,7 @@ services:
     depends_on:
       - edoxa.mssql.data
       - edoxa.rabbitmq.broker 
-      - edoxa.identity
+      - edoxa.idsrv
 
   edoxa.cashier.api:
     image: $ACR_REGISTRY/cashier.api:$ACR_TAG
@@ -38,7 +38,7 @@ services:
     depends_on:
       - edoxa.mssql.data
       - edoxa.rabbitmq.broker 
-      - edoxa.identity
+      - edoxa.idsrv
 
   #edoxa.web.spa:
   #  image: $ACR_REGISTRY/web.spa:$ACR_TAG

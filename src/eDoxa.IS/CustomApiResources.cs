@@ -10,7 +10,7 @@
 
 using IdentityServer4.Models;
 
-namespace eDoxa.IdentityServer
+namespace eDoxa.IS
 {
     public sealed class CustomApiResources
     {

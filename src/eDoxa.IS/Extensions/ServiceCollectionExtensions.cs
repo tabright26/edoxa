@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace eDoxa.IdentityServer.Extensions
+namespace eDoxa.IS.Extensions
 {
     public static class ServiceCollectionExtensions
     {
