@@ -36,8 +36,8 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         {
             // Arrange
             var participant = _challengeAggregateFactory.CreateParticipant();
-            var stats = _challengeAggregateFactory.CreateChallengeStats();
-            var scoring = _challengeAggregateFactory.CreateChallengeScoring();
+            var stats = _challengeAggregateFactory.CreateMatchStats();
+            var scoring = _challengeAggregateFactory.CreateScoring();
 
             // Act
             participant.SnapshotMatch(stats, scoring);

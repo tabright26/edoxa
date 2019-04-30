@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using eDoxa.Functional.Extensions;
 using eDoxa.Seedwork.Domain.Common;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate

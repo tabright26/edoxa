@@ -32,8 +32,8 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
                 payoutEntries >= 500 ? 9 :
                 payoutEntries >= 100 ? 8 :
                 payoutEntries >= 50 ? 7 :
-                payoutEntries >= 25 ? 6 :
-                payoutEntries >= 10 ? 5 :
+                payoutEntries >= 20 ? 6 :
+                payoutEntries >= 5 ? 5 :
                 payoutEntries;
         }
 

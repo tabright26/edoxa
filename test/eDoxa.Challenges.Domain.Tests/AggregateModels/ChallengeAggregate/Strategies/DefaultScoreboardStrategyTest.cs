@@ -25,7 +25,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Strategies
 {
     [TestClass]
-    public sealed class DefaultChallengeScoreboardStrategyTest
+    public sealed class DefaultScoreboardStrategyTest
     {
         private static readonly ChallengeAggregateFactory ChallengeAggregateFactory = ChallengeAggregateFactory.Instance;
 
@@ -74,7 +74,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Strat
                 )
             )
             {
-                this.Publish(ChallengeAggregateFactory.Instance.CreateChallengeScoringStrategy());
+                this.Publish(ChallengeAggregateFactory.Instance.CreateScoringStrategy());
 
                 for (var i = 0; i < Setup.Entries; i++)
                 {
@@ -88,7 +88,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate.Strat
 
                     for (var j = 0; j < random.Next(0, Setup.BestOf + 10); j++)
                     {
-                        this.SnapshotParticipantMatch(participant.Id, ChallengeAggregateFactory.CreateChallengeStats());
+                        this.SnapshotParticipantMatch(participant.Id, ChallengeAggregateFactory.CreateMatchStats());
                     }
                 }
             }

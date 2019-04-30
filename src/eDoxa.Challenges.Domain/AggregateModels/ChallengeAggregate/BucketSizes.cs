@@ -22,21 +22,13 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         {
             var bucketCount = new BucketCount(payoutEntries);
 
-            // Must be at least 3 winners
             if (payoutEntries < 3)
             {
-                return;
-            }
+                for (var index = 0; index < payoutEntries; index++)
+                {
+                    this.Add(BucketSize.DefaultValue);
+                }
 
-            // Must be more or an equal number of winners than the number of buckets.
-            if (payoutEntries < bucketCount)
-            {
-                return;
-            }
-
-            // The first 3 buckets have size 1.
-            if (payoutEntries > 3 && bucketCount <= 3)
-            {
                 return;
             }
 
@@ -48,7 +40,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
             if (payoutEntries - this.PayoutEntries() == 1)
             {
-                this.Add(BucketSize.DefaultValue); // Size of bucket 5 = 1
+                this.Add(BucketSize.DefaultValue); // Size of bucket 4 = 1
 
                 return;
             }
@@ -156,7 +148,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             }
         }
 
-        private int PayoutEntries()
+        public int PayoutEntries()
         {
             return this.Sum(bucketSize => bucketSize);
         }

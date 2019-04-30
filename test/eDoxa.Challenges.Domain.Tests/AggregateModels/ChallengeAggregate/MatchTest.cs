@@ -35,8 +35,8 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void SnapshotStats_Stats_ShouldHaveCountOfScoring()
         {
             // Arrange
-            var scoring = _challengeAggregateFactory.CreateChallengeScoring();
-            var stats = _challengeAggregateFactory.CreateChallengeStats();
+            var scoring = _challengeAggregateFactory.CreateScoring();
+            var stats = _challengeAggregateFactory.CreateMatchStats();
             var match = _challengeAggregateFactory.CreateMatch();
 
             // Act

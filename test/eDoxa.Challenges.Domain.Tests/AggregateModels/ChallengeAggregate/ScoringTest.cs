@@ -20,7 +20,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
 {
     [TestClass]
-    public sealed class ChallengeScoringTest
+    public sealed class ScoringTest
     {
         private static readonly ChallengeAggregateFactory ChallengeAggregateFactory = ChallengeAggregateFactory.Instance;
 
@@ -28,7 +28,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void Scoring_ShouldBeAssignableToType()
         {
             // Arrange
-            var scoring = ChallengeAggregateFactory.CreateChallengeScoring();
+            var scoring = ChallengeAggregateFactory.CreateScoring();
             
             // Act
             var type = typeof(Dictionary<StatName, StatWeighting>);

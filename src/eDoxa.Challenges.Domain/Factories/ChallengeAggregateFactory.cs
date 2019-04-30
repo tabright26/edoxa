@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeAggregateFactory.cs
-// Date Created: 2019-04-14
+// Date Created: 2019-04-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -76,6 +76,21 @@ namespace eDoxa.Challenges.Domain.Factories
 
             return states;
         }
+
+        public BucketSizes CreateBucketSizes(int payoutEntries)
+        {
+            return new BucketSizes(this.CreatePayoutEntries(payoutEntries));
+        }
+
+        public BucketCount CreateBucketCount(int payoutEntries)
+        {
+            return new BucketCount(this.CreatePayoutEntries(payoutEntries));
+        }
+
+        public PayoutEntries CreatePayoutEntries(int payoutEntries)
+        {
+            return new PayoutEntries(new Entries(payoutEntries * 2, false), new PayoutRatio(0.5F, false));
+        }
     }
 
     internal sealed partial class ChallengeAggregateFactory
@@ -97,7 +112,7 @@ namespace eDoxa.Challenges.Domain.Factories
 
             if (state >= ChallengeState1.Opened)
             {
-                var scoring = new Option<IScoring>(this.CreateChallengeScoring());
+                var scoring = new Option<IScoring>(this.CreateScoring());
 
                 challenge.GetType().GetField("_scoring", BindingFlags.Instance | BindingFlags.NonPublic)?.SetValue(challenge, scoring);
             }
@@ -177,7 +192,8 @@ namespace eDoxa.Challenges.Domain.Factories
             {
                 var timeline = challenge.Timeline;
 
-                challenge.GetType().GetField("_timeline", BindingFlags.Instance | BindingFlags.NonPublic)?.SetValue(challenge, this.CreateChallengeTimeline(ChallengeState1.Opened));
+                challenge.GetType().GetField("_timeline", BindingFlags.Instance | BindingFlags.NonPublic)
+                    ?.SetValue(challenge, this.CreateChallengeTimeline(ChallengeState1.Opened));
 
                 for (var row = 0; row < Random.Next(1, challenge.Setup.Entries + 1); row++)
                 {
@@ -186,13 +202,14 @@ namespace eDoxa.Challenges.Domain.Factories
                     challenge.RegisterParticipant(userId, new LinkedAccount(Guid.NewGuid()));
                 }
 
-                challenge.GetType().GetField("_timeline", BindingFlags.Instance | BindingFlags.NonPublic)?.SetValue(challenge, this.CreateChallengeTimeline(ChallengeState1.InProgress));
+                challenge.GetType().GetField("_timeline", BindingFlags.Instance | BindingFlags.NonPublic)
+                    ?.SetValue(challenge, this.CreateChallengeTimeline(ChallengeState1.InProgress));
 
                 foreach (var participant in challenge.Participants)
                 {
                     for (var index = 0; index < Random.Next(1, challenge.Setup.BestOf + Random.Next(0, challenge.Setup.BestOf + 1) + 1); index++)
                     {
-                        var stats = this.CreateChallengeStats();
+                        var stats = this.CreateMatchStats();
 
                         challenge.SnapshotParticipantMatch(participant.Id, stats);
                     }
@@ -217,10 +234,7 @@ namespace eDoxa.Challenges.Domain.Factories
             return new ChallengeSetup(new BestOf(bestOf), new Entries(entries), new EntryFee(entryFee), new PayoutRatio(payoutRatio),
                 new ServiceChargeRatio(serviceChargeRatio));
         }
-    }
 
-    internal sealed partial class ChallengeAggregateFactory
-    {
         public ChallengeTimeline CreateChallengeTimeline(ChallengeState1 state = ChallengeState1.Draft)
         {
             switch (state)
@@ -304,11 +318,22 @@ namespace eDoxa.Challenges.Domain.Factories
 
             return timeline;
         }
-    }
 
-    internal sealed partial class ChallengeAggregateFactory
-    {
-        public ChallengeLiveData CreateChallengeLive(Challenge challenge)
+        public IScoreboardStrategy CreateChallengeScoreboardStrategy()
+        {
+            var mock = new Mock<IScoreboardStrategy>();
+
+            mock.SetupGet(strategy => strategy.Scoreboard).Returns(this.CreateChallengeScoreboard());
+
+            return mock.Object;
+        }
+
+        public IScoreboard CreateChallengeScoreboard()
+        {
+            return new Scoreboard();
+        }
+
+        public ChallengeLiveData CreateChallengeLiveData(Challenge challenge)
         {
             return new ChallengeLiveData(challenge.Setup, challenge.Participants);
         }
@@ -338,9 +363,9 @@ namespace eDoxa.Challenges.Domain.Factories
 
             for (var index = 0; index < matchCount; index++)
             {
-                var stats = this.CreateChallengeStats();
+                var stats = this.CreateMatchStats();
 
-                var scoring = this.CreateChallengeScoring();
+                var scoring = this.CreateScoring();
 
                 participant.SnapshotMatch(stats, scoring);
             }
@@ -364,66 +389,8 @@ namespace eDoxa.Challenges.Domain.Factories
 
             return this.CreateMatch(participant, linkedMatch);
         }
-    }
 
-    internal sealed partial class ChallengeAggregateFactory
-    {
-        public Stat CreateStat(MatchId matchId, StatName name, StatValue value, StatWeighting weighting)
-        {
-            return new Stat(matchId, name, value, weighting);
-        }
-
-        public Stat CreateStat(StatName name, StatValue value, StatWeighting weighting)
-        {
-            return this.CreateStat(new MatchId(), name, value, weighting);
-        }
-    }
-
-    internal sealed partial class ChallengeAggregateFactory
-    {
-        public IScoringStrategy CreateChallengeScoringStrategy()
-        {
-            var mock = new Mock<IScoringStrategy>();
-
-            mock.SetupGet(strategy => strategy.Scoring).Returns(this.CreateChallengeScoring());
-
-            return mock.Object;
-        }
-
-        public IScoring CreateChallengeScoring()
-        {
-            return new Scoring
-            {
-                [Kills] = new StatWeighting(4F),
-                [Deaths] = new StatWeighting(-3F),
-                [Assists] = new StatWeighting(3F),
-                [TotalDamageDealtToChampions] = new StatWeighting(0.00015F),
-                [TotalHeal] = new StatWeighting(0.0008F)
-            };
-        }
-    }
-
-    internal sealed partial class ChallengeAggregateFactory
-    {
-        public IScoreboardStrategy CreateChallengeScoreboardStrategy()
-        {
-            var mock = new Mock<IScoreboardStrategy>();
-
-            mock.SetupGet(strategy => strategy.Scoreboard).Returns(this.CreateChallengeScoreboard());
-
-            return mock.Object;
-        }
-
-        public IScoreboard CreateChallengeScoreboard()
-        {
-            return new Scoreboard();
-        }
-    }
-
-    internal sealed partial class ChallengeAggregateFactory
-    {
-
-        public IMatchStats CreateChallengeStats(LinkedMatch linkedMatch = null)
+        public IMatchStats CreateMatchStats(LinkedMatch linkedMatch = null)
         {
             linkedMatch = linkedMatch ?? new LinkedMatch(2233345251);
 
@@ -438,6 +405,37 @@ namespace eDoxa.Challenges.Domain.Factories
                     TotalHeal = Random.Next(10000, 350000 + 1)
                 }
             );
+        }
+
+        public Stat CreateStat(MatchId matchId, StatName name, StatValue value, StatWeighting weighting)
+        {
+            return new Stat(matchId, name, value, weighting);
+        }
+
+        public Stat CreateStat(StatName name, StatValue value, StatWeighting weighting)
+        {
+            return this.CreateStat(new MatchId(), name, value, weighting);
+        }
+
+        public IScoringStrategy CreateScoringStrategy()
+        {
+            var mock = new Mock<IScoringStrategy>();
+
+            mock.SetupGet(strategy => strategy.Scoring).Returns(this.CreateScoring());
+
+            return mock.Object;
+        }
+
+        public IScoring CreateScoring()
+        {
+            return new Scoring
+            {
+                [Kills] = new StatWeighting(4F),
+                [Deaths] = new StatWeighting(-3F),
+                [Assists] = new StatWeighting(3F),
+                [TotalDamageDealtToChampions] = new StatWeighting(0.00015F),
+                [TotalHeal] = new StatWeighting(0.0008F)
+            };
         }
     }
 }

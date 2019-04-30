@@ -20,7 +20,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
 {
     [TestClass]
-    public sealed class ChallengeStatsTest
+    public sealed class MatchStatsTest
     {
         private static readonly ChallengeAggregateFactory ChallengeAggregateFactory = ChallengeAggregateFactory.Instance;
 
@@ -28,7 +28,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void Stats_ShouldBeAssignableToType()
         {
             // Arrange
-            var stats = ChallengeAggregateFactory.CreateChallengeStats();
+            var stats = ChallengeAggregateFactory.CreateMatchStats();
 
             // Act
             var type = typeof(Dictionary<StatName, StatValue>);
