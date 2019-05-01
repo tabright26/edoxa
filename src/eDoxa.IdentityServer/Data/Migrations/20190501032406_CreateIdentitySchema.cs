@@ -1,4 +1,4 @@
-﻿// Filename: 20190501014731_CreateIdentitySchema.cs
+﻿// Filename: 20190501032406_CreateIdentitySchema.cs
 // Date Created: 2019-04-30
 // 
 // ================================================
@@ -13,7 +13,7 @@ using System;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace eDoxa.IdentityServer.Migrations
+namespace eDoxa.IdentityServer.Data.Migrations
 {
     public partial class CreateIdentitySchema : Migration
     {

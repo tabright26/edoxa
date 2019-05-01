@@ -3,10 +3,10 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using eDoxa.IdentityServer.Data;
 
-namespace eDoxa.IdentityServer.Migrations
+namespace eDoxa.IdentityServer.Data.Migrations
 {
     [DbContext(typeof(IdentityServerDbContext))]
     internal class IdentityServerDbContextModelSnapshot : ModelSnapshot

@@ -15,10 +15,7 @@
                     Account configuration
                 </a>
                 <div class="dropdown-divider"></div>
-                <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new
-                                                                                          {
-                                                                                              area = ""
-                                                                                          })">
+                <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                     <button class="dropdown-item" type="submit">
                         <i class="fa-fw fas fa-sign-out-alt"></i>
                         Logout

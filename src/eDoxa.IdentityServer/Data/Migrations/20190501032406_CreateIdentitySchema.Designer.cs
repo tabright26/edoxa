@@ -7,10 +7,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using eDoxa.IdentityServer.Data;
 
-namespace eDoxa.IdentityServer.Migrations
+namespace eDoxa.IdentityServer.Data.Migrations
 {
     [DbContext(typeof(IdentityServerDbContext))]
-    [Migration("20190501014731_CreateIdentitySchema")]
+    [Migration("20190501032406_CreateIdentitySchema")]
     partial class CreateIdentitySchema
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
