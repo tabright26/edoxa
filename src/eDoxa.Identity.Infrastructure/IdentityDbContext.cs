@@ -31,9 +31,7 @@ namespace eDoxa.Identity.Infrastructure
         {
             if (!Users.Any())
             {
-                var admin = _userAggregateFactory.CreateAdmin();
-
-                Users.AddRange(admin, _userAggregateFactory.CreateFrancis(), _userAggregateFactory.CreateRoy(), _userAggregateFactory.CreateRyan());
+                Users.AddRange(_userAggregateFactory.CreateAdmin(), _userAggregateFactory.CreateFrancis(), _userAggregateFactory.CreateRoy(), _userAggregateFactory.CreateRyan());
 
                 await this.SaveChangesAsync();
 

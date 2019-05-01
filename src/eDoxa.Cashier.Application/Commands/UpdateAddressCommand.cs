@@ -10,7 +10,6 @@
 
 using System.Runtime.Serialization;
 
-using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Commands.Abstractions;
 
 using Microsoft.AspNetCore.Mvc;
@@ -20,9 +19,8 @@ namespace eDoxa.Cashier.Application.Commands
     [DataContract]
     public sealed class UpdateAddressCommand : Command<IActionResult>
     {
-        public UpdateAddressCommand(UserId userId, string city, string country, string line1, string line2, string postalCode, string state)
+        public UpdateAddressCommand(string city, string country, string line1, string line2, string postalCode, string state)
         {
-            UserId = userId;
             City = city;
             Country = country;
             Line1 = line1;
@@ -30,8 +28,6 @@ namespace eDoxa.Cashier.Application.Commands
             PostalCode = postalCode;
             State = state;
         }
-
-        [IgnoreDataMember] public UserId UserId { get; set; }
 
         [IgnoreDataMember] public string Name { get; set; }
 

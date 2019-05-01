@@ -8,6 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,6 +20,7 @@ using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Functional.Maybe;
+using eDoxa.Security.Services;
 
 using FluentAssertions;
 
@@ -34,16 +36,18 @@ using Stripe;
 namespace eDoxa.Cashier.Api.Tests.Controllers
 {
     [TestClass]
-    public sealed class UserCardsControllerTest
+    public sealed class CardsControllerTest
     {
-        private readonly UserAggregateFactory _userAggregateFactory = UserAggregateFactory.Instance;
+        private static readonly UserAggregateFactory UserAggregateFactory = UserAggregateFactory.Instance;
 
+        private Mock<IUserInfoService> _userInfoService;
         private Mock<IMediator> _mediator;
         private Mock<ICardQueries> _queries;
 
         [TestInitialize]
         public void TestInitialize()
         {
+            _userInfoService = new Mock<IUserInfoService>();
             _queries = new Mock<ICardQueries>();
             _mediator = new Mock<IMediator>();
         }
@@ -52,7 +56,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         public async Task FindUserCardsAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            var userId = _userAggregateFactory.CreateUserId();
+            _userInfoService.SetupGet(userInfoService => userInfoService.Subject).Returns(new Option<Guid>(Guid.NewGuid()));
 
             _queries.Setup(queries => queries.FindUserCardsAsync(It.IsAny<UserId>())).ReturnsAsync(new Option<CardListDTO>(new CardListDTO
             {
@@ -62,10 +66,10 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
                 }
             })).Verifiable();
 
-            var controller = new UserCardsController(_queries.Object, _mediator.Object);
+            var controller = new CardsController(_userInfoService.Object, _queries.Object, _mediator.Object);
 
             // Act
-            var result = await controller.FindUserCardsAsync(userId);
+            var result = await controller.FindUserCardsAsync();
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -79,14 +83,14 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         public async Task FindUserCardsAsync_ShouldBeNoContentObjectResult()
         {
             // Arrange
-            var userId = _userAggregateFactory.CreateUserId();
+            _userInfoService.SetupGet(userInfoService => userInfoService.Subject).Returns(new Option<Guid>(Guid.NewGuid()));
 
             _queries.Setup(queries => queries.FindUserCardsAsync(It.IsAny<UserId>())).ReturnsAsync(new Option<CardListDTO>()).Verifiable();
 
-            var controller = new UserCardsController(_queries.Object, _mediator.Object);
+            var controller = new CardsController(_userInfoService.Object, _queries.Object, _mediator.Object);
 
             // Act
-            var result = await controller.FindUserCardsAsync(userId);
+            var result = await controller.FindUserCardsAsync();
 
             // Assert
             result.Should().BeOfType<NoContentResult>();
@@ -100,19 +104,19 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         public async Task CreateCardAsync_ShouldBeCreatedResult()
         {
             // Arrange
-            var userId = _userAggregateFactory.CreateUserId();
-
-            var cardId = _userAggregateFactory.CreateCardId();
+            var cardId = UserAggregateFactory.CreateCardId();
 
             var command = new CreateCardCommand(cardId.ToString());
+
+            _userInfoService.SetupGet(userInfoService => userInfoService.Subject).Returns(new Option<Guid>(Guid.NewGuid()));
 
             _mediator.Setup(mediator => mediator.Send(It.IsAny<CreateCardCommand>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new OkObjectResult(new Card())).Verifiable();
 
-            var controller = new UserCardsController(_queries.Object, _mediator.Object);
+            var controller = new CardsController(_userInfoService.Object, _queries.Object, _mediator.Object);
 
             // Act
-            var result = await controller.CreateCardAsync(userId, command);
+            var result = await controller.CreateCardAsync(command);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -126,16 +130,16 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         public async Task FindUserCardAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            var userId = _userAggregateFactory.CreateUserId();
+            var cardId = UserAggregateFactory.CreateCardId();
 
-            var cardId = _userAggregateFactory.CreateCardId();
+            _userInfoService.SetupGet(userInfoService => userInfoService.Subject).Returns(new Option<Guid>(Guid.NewGuid()));
 
             _queries.Setup(queries => queries.FindUserCardAsync(It.IsAny<UserId>(), It.IsAny<CardId>())).ReturnsAsync(new Option<CardDTO>(new CardDTO())).Verifiable();
 
-            var controller = new UserCardsController(_queries.Object, _mediator.Object);
+            var controller = new CardsController(_userInfoService.Object, _queries.Object, _mediator.Object);
 
             // Act
-            var result = await controller.FindUserCardAsync(userId, cardId);
+            var result = await controller.FindUserCardAsync(cardId);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -149,16 +153,16 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         public async Task DeleteCardAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            var userId = _userAggregateFactory.CreateUserId();
+            var cardId = UserAggregateFactory.CreateCardId();
 
-            var cardId = _userAggregateFactory.CreateCardId();
+            _userInfoService.SetupGet(userInfoService => userInfoService.Subject).Returns(new Option<Guid>(Guid.NewGuid()));
 
             _mediator.Setup(mediator => mediator.Send(It.IsAny<DeleteCardCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(new OkResult()).Verifiable();
 
-            var controller = new UserCardsController(_queries.Object, _mediator.Object);
+            var controller = new CardsController(_userInfoService.Object, _queries.Object, _mediator.Object);
 
             // Act
-            var result = await controller.DeleteCardAsync(userId, cardId);
+            var result = await controller.DeleteCardAsync( cardId);
 
             // Assert
             result.Should().BeOfType<OkResult>();
@@ -172,18 +176,18 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         public async Task UpdateDefaultCardAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            var userId = _userAggregateFactory.CreateUserId();
+            var cardId = UserAggregateFactory.CreateCardId();
 
-            var cardId = _userAggregateFactory.CreateCardId();
+            _userInfoService.SetupGet(userInfoService => userInfoService.Subject).Returns(new Option<Guid>(Guid.NewGuid()));
 
             _mediator.Setup(mediator => mediator.Send(It.IsAny<UpdateDefaultCardCommand>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new OkObjectResult(new Customer()))
                 .Verifiable();
 
-            var controller = new UserCardsController(_queries.Object, _mediator.Object);
+            var controller = new CardsController(_userInfoService.Object, _queries.Object, _mediator.Object);
 
             // Act
-            var result = await controller.UpdateDefaultCardAsync(userId, cardId);
+            var result = await controller.UpdateDefaultCardAsync(cardId);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();

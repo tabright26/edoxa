@@ -8,6 +8,8 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Security.Services;
+
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +20,11 @@ namespace eDoxa.Security.Extensions
 {
     public static class ServiceCollectionExtensions
     {
+        public static void AddUserInfo(this IServiceCollection services)
+        {
+            services.AddSingleton<IUserInfoService, UserInfoService>();
+        }
+
         public static void AddCorsPolicy(this IServiceCollection services)
         {
             services.AddCors(

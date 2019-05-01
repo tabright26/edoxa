@@ -8,6 +8,7 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,6 +17,8 @@ using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Functional.Maybe;
+using eDoxa.Security.Services;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -36,6 +39,10 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
 
             var command = new WithdrawMoneyCommand(money);
 
+            var mockUserInfoService = new Mock<IUserInfoService>();
+
+            mockUserInfoService.SetupGet(userInfoService => userInfoService.Subject).Returns(new Option<Guid>(Guid.NewGuid()));
+
             var mockUserRepository = new Mock<IUserRepository>();
 
             mockUserRepository.Setup(repository => repository.FindAsync(It.IsAny<UserId>())).ReturnsAsync(_userAggregateFactory.CreateUser()).Verifiable();
@@ -44,7 +51,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
                               .Returns(Task.CompletedTask)
                               .Verifiable();
 
-            var handler = new WithdrawMoneyCommandHandler(mockUserRepository.Object);
+            var handler = new WithdrawMoneyCommandHandler(mockUserInfoService.Object, mockUserRepository.Object);
 
             // Act
             await handler.Handle(command, default);

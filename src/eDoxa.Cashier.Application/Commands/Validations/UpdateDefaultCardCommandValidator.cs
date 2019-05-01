@@ -18,7 +18,6 @@ namespace eDoxa.Cashier.Application.Commands.Validations
     {
         public UpdateDefaultCardCommandValidator()
         {
-            this.RuleFor(command => command.UserId).NotEmpty();
             this.RuleFor(command => command.CardId).NotEmpty();
         }
     }

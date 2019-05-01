@@ -8,11 +8,14 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Commands.Abstractions.Handlers;
+using eDoxa.Security.Services;
 
 using JetBrains.Annotations;
 
@@ -25,10 +28,12 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
     internal sealed class UpdateDefaultCardCommandHandler : ICommandHandler<UpdateDefaultCardCommand, IActionResult>
     {
         private readonly CustomerService _service;
+        private readonly IUserInfoService _userInfoService;
         private readonly IUserRepository _userRepository;
 
-        public UpdateDefaultCardCommandHandler(IUserRepository userRepository, CustomerService service)
+        public UpdateDefaultCardCommandHandler(IUserInfoService userInfoService, IUserRepository userRepository, CustomerService service)
         {
+            _userInfoService = userInfoService;
             _userRepository = userRepository;
             _service = service;
         }
@@ -36,7 +41,9 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         [ItemCanBeNull]
         public async Task<IActionResult> Handle([NotNull] UpdateDefaultCardCommand command, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.FindAsNoTrackingAsync(command.UserId);
+            var userId = _userInfoService.Subject.Select(UserId.FromGuid).SingleOrDefault();
+
+            var user = await _userRepository.FindAsNoTrackingAsync(userId);
 
             var options = new CustomerUpdateOptions
             {

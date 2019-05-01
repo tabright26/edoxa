@@ -15,6 +15,7 @@ using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Commands.Extensions;
+using eDoxa.Security.Services;
 
 using MediatR;
 
@@ -27,14 +28,16 @@ namespace eDoxa.Cashier.Api.Controllers
     [ApiController]
     [ApiVersion("1.0")]
     [Produces("application/json")]
-    [Route("api/users/{userId}/money-account")]
-    public class UserMoneyAccountController : ControllerBase
+    [Route("api/account/money")]
+    public sealed class AccountMoneyController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly IUserInfoService _userInfoService;
         private readonly IMoneyAccountQueries _queries;
 
-        public UserMoneyAccountController(IMoneyAccountQueries queries, IMediator mediator)
+        public AccountMoneyController(IUserInfoService userInfoService, IMoneyAccountQueries queries, IMediator mediator)
         {
+            _userInfoService = userInfoService;
             _queries = queries;
             _mediator = mediator;
         }
@@ -43,8 +46,10 @@ namespace eDoxa.Cashier.Api.Controllers
         ///     Find a user's money account.
         /// </summary>
         [HttpGet(Name = nameof(FindMoneyAccountAsync))]
-        public async Task<IActionResult> FindMoneyAccountAsync(UserId userId)
+        public async Task<IActionResult> FindMoneyAccountAsync()
         {
+            var userId = _userInfoService.Subject.Select(UserId.FromGuid).SingleOrDefault();
+
             var account = await _queries.FindAccountAsync(userId);
 
             return account
@@ -58,12 +63,8 @@ namespace eDoxa.Cashier.Api.Controllers
         ///     Deposit money on a user's account.
         /// </summary>
         [HttpPatch("deposit", Name = nameof(DepositMoneyAsync))]
-        public async Task<IActionResult> DepositMoneyAsync(
-            UserId userId,
-            [FromBody] DepositMoneyCommand command)
+        public async Task<IActionResult> DepositMoneyAsync([FromBody] DepositMoneyCommand command)
         {
-            command.UserId = userId;
-
             return await _mediator.SendCommandAsync(command);
         }
 
@@ -71,12 +72,8 @@ namespace eDoxa.Cashier.Api.Controllers
         ///     Withdraw money from a user's account.
         /// </summary>
         [HttpPatch("withdraw", Name = nameof(WithdrawMoneyAsync))]
-        public async Task<IActionResult> WithdrawMoneyAsync(
-            UserId userId,
-            [FromBody] WithdrawMoneyCommand command)
+        public async Task<IActionResult> WithdrawMoneyAsync([FromBody] WithdrawMoneyCommand command)
         {
-            command.UserId = userId;
-
             return await _mediator.SendCommandAsync(command);
         }
 
@@ -84,8 +81,10 @@ namespace eDoxa.Cashier.Api.Controllers
         ///     Find a user's money transactions.
         /// </summary>
         [HttpGet("transactions", Name = nameof(FindMoneyTransactionsAsync))]
-        public async Task<IActionResult> FindMoneyTransactionsAsync(UserId userId)
+        public async Task<IActionResult> FindMoneyTransactionsAsync()
         {
+            var userId = _userInfoService.Subject.Select(UserId.FromGuid).SingleOrDefault();
+
             var transactions = await _queries.FindTransactionsAsync(userId);
 
             return transactions

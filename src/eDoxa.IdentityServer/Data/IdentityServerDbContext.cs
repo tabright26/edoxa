@@ -20,7 +20,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.IdentityServer.Data
 {
-    public class IdentityServerDbContext : IdentityDbContext<User, Role, Guid, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>
+    public sealed class IdentityServerDbContext : IdentityDbContext<User, Role, Guid, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>
     {
         public IdentityServerDbContext(DbContextOptions<IdentityServerDbContext> options) : base(options)
         {

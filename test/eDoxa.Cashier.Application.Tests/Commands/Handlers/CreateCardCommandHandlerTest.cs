@@ -8,6 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,6 +17,8 @@ using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Functional.Maybe;
+using eDoxa.Security.Services;
 
 using FluentAssertions;
 
@@ -42,6 +45,10 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             var customer = _userAggregateFactory.CreateCustomer();
 
             var card = _userAggregateFactory.CreateCard();
+
+            var mockUserInfoService = new Mock<IUserInfoService>();
+
+            mockUserInfoService.SetupGet(userInfoService => userInfoService.Subject).Returns(new Option<Guid>(Guid.NewGuid()));
 
             var mockUserRepository = new Mock<IUserRepository>();
 
@@ -73,7 +80,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
                 .ReturnsAsync(card)
                 .Verifiable();
 
-            var handler = new CreateCardCommandHandler(mockUserRepository.Object, mockCustomerService.Object, mockCardService.Object);
+            var handler = new CreateCardCommandHandler(mockUserInfoService.Object, mockUserRepository.Object, mockCustomerService.Object, mockCardService.Object);
 
             // Act
             var response = await handler.Handle(new CreateCardCommand(card.Id, true), default);

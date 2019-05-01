@@ -15,6 +15,7 @@ using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Commands.Extensions;
+using eDoxa.Security.Services;
 
 using MediatR;
 
@@ -27,14 +28,16 @@ namespace eDoxa.Cashier.Api.Controllers
     [ApiController]
     [ApiVersion("1.0")]
     [Produces("application/json")]
-    [Route("api/users/{userId}/cards")]
-    public class UserCardsController : ControllerBase
+    [Route("api/cards")]
+    public sealed class CardsController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly IUserInfoService _userInfoService;
         private readonly ICardQueries _queries;
 
-        public UserCardsController(ICardQueries queries, IMediator mediator)
+        public CardsController(IUserInfoService userInfoService, ICardQueries queries, IMediator mediator)
         {
+            _userInfoService = userInfoService;
             _queries = queries;
             _mediator = mediator;
         }
@@ -43,8 +46,10 @@ namespace eDoxa.Cashier.Api.Controllers
         ///     Find the user's credit cards.
         /// </summary>
         [HttpGet(Name = nameof(FindUserCardsAsync))]
-        public async Task<IActionResult> FindUserCardsAsync(UserId userId)
+        public async Task<IActionResult> FindUserCardsAsync()
         {
+            var userId = _userInfoService.Subject.Select(UserId.FromGuid).SingleOrDefault();
+
             var cards = await _queries.FindUserCardsAsync(userId);
 
             return cards
@@ -58,12 +63,8 @@ namespace eDoxa.Cashier.Api.Controllers
         ///     Attach a credit card to a user.
         /// </summary>
         [HttpPost(Name = nameof(CreateCardAsync))]
-        public async Task<IActionResult> CreateCardAsync(
-            UserId userId,
-            [FromBody] CreateCardCommand command)
+        public async Task<IActionResult> CreateCardAsync([FromBody] CreateCardCommand command)
         {
-            command.UserId = userId;
-
             return await _mediator.SendCommandAsync(command);
         }
 
@@ -71,8 +72,10 @@ namespace eDoxa.Cashier.Api.Controllers
         ///     Find the user's credit card.
         /// </summary>
         [HttpGet("{cardId}", Name = nameof(FindUserCardAsync))]
-        public async Task<IActionResult> FindUserCardAsync(UserId userId, CardId cardId)
+        public async Task<IActionResult> FindUserCardAsync(CardId cardId)
         {
+            var userId = _userInfoService.Subject.Select(UserId.FromGuid).SingleOrDefault();
+
             var card = await _queries.FindUserCardAsync(userId, cardId);
 
             return card
@@ -86,9 +89,9 @@ namespace eDoxa.Cashier.Api.Controllers
         ///     Detach a credit card from a user.
         /// </summary>
         [HttpDelete("{cardId}", Name = nameof(DeleteCardAsync))]
-        public async Task<IActionResult> DeleteCardAsync(UserId userId, CardId cardId)
+        public async Task<IActionResult> DeleteCardAsync(CardId cardId)
         {
-            var command = new DeleteCardCommand(userId, cardId);
+            var command = new DeleteCardCommand(cardId);
 
             return await _mediator.SendCommandAsync(command);
         }
@@ -97,9 +100,9 @@ namespace eDoxa.Cashier.Api.Controllers
         ///     Update the default user credit card.
         /// </summary>
         [HttpPatch("{cardId}/default", Name = nameof(UpdateDefaultCardAsync))]
-        public async Task<IActionResult> UpdateDefaultCardAsync(UserId userId, CardId cardId)
+        public async Task<IActionResult> UpdateDefaultCardAsync(CardId cardId)
         {
-            var command = new UpdateDefaultCardCommand(userId, cardId);
+            var command = new UpdateDefaultCardCommand(cardId);
 
             return await _mediator.SendCommandAsync(command);
         }

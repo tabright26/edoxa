@@ -20,14 +20,11 @@ namespace eDoxa.Cashier.Application.Commands
     [DataContract]
     public sealed class UpdateDefaultCardCommand : Command<IActionResult>
     {
-        public UpdateDefaultCardCommand(UserId userId, CardId cardId)
+        public UpdateDefaultCardCommand(CardId cardId)
         {
-            UserId = userId;
             CardId = cardId;
         }
-
-        [IgnoreDataMember] public UserId UserId { get; private set; }
-
+        
         [IgnoreDataMember] public CardId CardId { get; private set; }
     }
 }

@@ -8,11 +8,14 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Commands.Abstractions.Handlers;
+using eDoxa.Security.Services;
 
 using JetBrains.Annotations;
 
@@ -26,10 +29,12 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
     {
         private readonly CustomerService _customerService;
         private readonly CardService _service;
+        private readonly IUserInfoService _userInfoService;
         private readonly IUserRepository _userRepository;
 
-        public CreateCardCommandHandler(IUserRepository userRepository, CustomerService customerService, CardService cardService)
+        public CreateCardCommandHandler(IUserInfoService userInfoService, IUserRepository userRepository, CustomerService customerService, CardService cardService)
         {
+            _userInfoService = userInfoService;
             _userRepository = userRepository;
             _customerService = customerService;
             _service = cardService;
@@ -38,7 +43,9 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         [ItemNotNull]
         public async Task<IActionResult> Handle([NotNull] CreateCardCommand command, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.FindAsNoTrackingAsync(command.UserId);
+            var userId = _userInfoService.Subject.Select(UserId.FromGuid).SingleOrDefault();
+
+            var user = await _userRepository.FindAsNoTrackingAsync(userId);
 
             var customerId = user.CustomerId.ToString();
 

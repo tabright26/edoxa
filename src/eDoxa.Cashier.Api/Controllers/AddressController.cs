@@ -15,6 +15,7 @@ using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Commands.Extensions;
+using eDoxa.Security.Services;
 
 using MediatR;
 
@@ -27,14 +28,16 @@ namespace eDoxa.Cashier.Api.Controllers
     [ApiController]
     [ApiVersion("1.0")]
     [Produces("application/json")]
-    [Route("api/users")]
-    public class UsersController : ControllerBase
+    [Route("api/address")]
+    public class AddressController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly IUserInfoService _userInfoService;
         private readonly IAddressQueries _queries;
 
-        public UsersController(IAddressQueries queries, IMediator mediator)
+        public AddressController(IUserInfoService userInfoService, IAddressQueries queries, IMediator mediator)
         {
+            _userInfoService = userInfoService;
             _queries = queries;
             _mediator = mediator;
         }
@@ -42,9 +45,11 @@ namespace eDoxa.Cashier.Api.Controllers
         /// <summary>
         ///     Find the user's address.
         /// </summary>
-        [HttpGet("{userId}/address", Name = nameof(FindUserAddressAsync))]
-        public async Task<IActionResult> FindUserAddressAsync(UserId userId)
+        [HttpGet(Name = nameof(FindUserAddressAsync))]
+        public async Task<IActionResult> FindUserAddressAsync()
         {
+            var userId = _userInfoService.Subject.Select(UserId.FromGuid).SingleOrDefault();
+
             var address = await _queries.FindUserAddressAsync(userId);
 
             return address
@@ -57,13 +62,9 @@ namespace eDoxa.Cashier.Api.Controllers
         /// <summary>
         ///     Update the user's address.
         /// </summary>
-        [HttpPut("{userId}/address", Name = nameof(UpdateAddressAsync))]
-        public async Task<IActionResult> UpdateAddressAsync(
-            UserId userId,
-            [FromBody] UpdateAddressCommand command)
+        [HttpPut(Name = nameof(UpdateAddressAsync))]
+        public async Task<IActionResult> UpdateAddressAsync([FromBody] UpdateAddressCommand command)
         {
-            command.UserId = userId;
-
             command.Name = "Francis Quenneville"; // TODO: 
 
             command.Phone = "5147580313"; // TODO: 

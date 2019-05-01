@@ -8,6 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Controllers;
@@ -15,6 +16,8 @@ using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.DTO.Queries;
+using eDoxa.Functional.Maybe;
+using eDoxa.Security.Services;
 
 using FluentAssertions;
 
@@ -31,13 +34,15 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
     public sealed class UserTokenAccountControllerTest
     {
         private readonly UserAggregateFactory _userAggregateFactory = UserAggregateFactory.Instance;
-        private Mock<IMediator> _mediator;
 
+        private Mock<IUserInfoService> _userInfoService;
+        private Mock<IMediator> _mediator;
         private Mock<ITokenAccountQueries> _queries;
 
         [TestInitialize]
         public void TestInitialize()
         {
+            _userInfoService = new Mock<IUserInfoService>();
             _queries = new Mock<ITokenAccountQueries>();
             _mediator = new Mock<IMediator>();
         }
@@ -52,12 +57,14 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
 
             var command = new DepositTokensCommand(TokenBundleType.FiftyThousand);
 
+            _userInfoService.SetupGet(userInfoService => userInfoService.Subject).Returns(new Option<Guid>(Guid.NewGuid()));
+
             _mediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(new OkObjectResult(token)).Verifiable();
 
-            var controller = new UserTokenAccountController(_queries.Object, _mediator.Object);
+            var controller = new AccountTokenController(_userInfoService.Object, _queries.Object, _mediator.Object);
 
             // Act
-            var result = await controller.DepositTokensAsync(user.Id, command);
+            var result = await controller.DepositTokensAsync(command);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();

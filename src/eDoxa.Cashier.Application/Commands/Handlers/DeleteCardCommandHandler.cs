@@ -8,11 +8,14 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Commands.Abstractions.Handlers;
+using eDoxa.Security.Services;
 
 using JetBrains.Annotations;
 
@@ -25,10 +28,12 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
     internal sealed class DeleteCardCommandHandler : ICommandHandler<DeleteCardCommand, IActionResult>
     {
         private readonly CardService _cardService;
+        private readonly IUserInfoService _userInfoService;
         private readonly IUserRepository _userRepository;
 
-        public DeleteCardCommandHandler(IUserRepository userRepository, CardService cardService)
+        public DeleteCardCommandHandler(IUserInfoService userInfoService, IUserRepository userRepository, CardService cardService)
         {
+            _userInfoService = userInfoService;
             _userRepository = userRepository;
             _cardService = cardService;
         }
@@ -36,7 +41,9 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         [ItemNotNull]
         public async Task<IActionResult> Handle([NotNull] DeleteCardCommand command, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.FindAsNoTrackingAsync(command.UserId);
+            var userId = _userInfoService.Subject.Select(UserId.FromGuid).SingleOrDefault();
+
+            var user = await _userRepository.FindAsNoTrackingAsync(userId);
 
             await _cardService.DeleteAsync(user.CustomerId.ToString(), command.CardId.ToString(), cancellationToken: cancellationToken);
 

@@ -15,6 +15,7 @@ using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Commands.Extensions;
+using eDoxa.Security.Services;
 
 using MediatR;
 
@@ -27,14 +28,16 @@ namespace eDoxa.Cashier.Api.Controllers
     [ApiController]
     [ApiVersion("1.0")]
     [Produces("application/json")]
-    [Route("api/users/{userId}/token-account")]
-    public class UserTokenAccountController : ControllerBase
+    [Route("api/account/token")]
+    public class AccountTokenController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly IUserInfoService _userInfoService;
         private readonly ITokenAccountQueries _queries;
 
-        public UserTokenAccountController(ITokenAccountQueries queries, IMediator mediator)
+        public AccountTokenController(IUserInfoService userInfoService, ITokenAccountQueries queries, IMediator mediator)
         {
+            _userInfoService = userInfoService;
             _queries = queries;
             _mediator = mediator;
         }
@@ -43,8 +46,10 @@ namespace eDoxa.Cashier.Api.Controllers
         ///     Find a user's token account.
         /// </summary>
         [HttpGet(Name = nameof(FindTokenAccountAsync))]
-        public async Task<IActionResult> FindTokenAccountAsync(UserId userId)
+        public async Task<IActionResult> FindTokenAccountAsync()
         {
+            var userId = _userInfoService.Subject.Select(UserId.FromGuid).SingleOrDefault();
+
             var account = await _queries.FindAccountAsync(userId);
 
             return account
@@ -58,12 +63,8 @@ namespace eDoxa.Cashier.Api.Controllers
         ///     Buy tokens on a user's account.
         /// </summary>
         [HttpPatch("deposit", Name = nameof(DepositTokensAsync))]
-        public async Task<IActionResult> DepositTokensAsync(
-            UserId userId,
-            [FromBody] DepositTokensCommand command)
+        public async Task<IActionResult> DepositTokensAsync([FromBody] DepositTokensCommand command)
         {
-            command.UserId = userId;
-
             return await _mediator.SendCommandAsync(command);
         }
 
@@ -71,8 +72,10 @@ namespace eDoxa.Cashier.Api.Controllers
         ///     Find a user's token transactions.
         /// </summary>
         [HttpGet("transactions", Name = nameof(FindTokenTransactionsAsync))]
-        public async Task<IActionResult> FindTokenTransactionsAsync(UserId userId)
+        public async Task<IActionResult> FindTokenTransactionsAsync()
         {
+            var userId = _userInfoService.Subject.Select(UserId.FromGuid).SingleOrDefault();
+
             var transactions = await _queries.FindTransactionsAsync(userId);
 
             return transactions

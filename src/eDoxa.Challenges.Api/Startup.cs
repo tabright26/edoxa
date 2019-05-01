@@ -9,6 +9,7 @@
 // this source code package.
 
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 
 using eDoxa.Autofac.Extensions;
@@ -41,6 +42,7 @@ namespace eDoxa.Challenges.Api
         {
             Configuration = configuration;
             Environment = environment;
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         }
 
         private IHostingEnvironment Environment { get; }
@@ -70,6 +72,8 @@ namespace eDoxa.Challenges.Api
             services.AddServiceBus(Configuration);
 
             services.AddAuthentication(Configuration, CustomScopes.ChallengesApi);
+
+            services.AddUserInfo();
 
             return services.Build<ApplicationModule>();
         }

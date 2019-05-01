@@ -8,6 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,6 +17,8 @@ using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Functional.Maybe;
+using eDoxa.Security.Services;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -38,6 +41,10 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
 
             var card = _userAggregateFactory.CreateCard();
 
+            var mockUserInfoService = new Mock<IUserInfoService>();
+
+            mockUserInfoService.SetupGet(userInfoService => userInfoService.Subject).Returns(new Option<Guid>(Guid.NewGuid()));
+
             var mockUserRepository = new Mock<IUserRepository>();
 
             var mockCardService = new Mock<CardService>();
@@ -55,10 +62,10 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
                 .ReturnsAsync(card)
                 .Verifiable();
 
-            var handler = new DeleteCardCommandHandler(mockUserRepository.Object, mockCardService.Object);
+            var handler = new DeleteCardCommandHandler(mockUserInfoService.Object, mockUserRepository.Object, mockCardService.Object);
 
             // Act
-            await handler.Handle(new DeleteCardCommand(user.Id, CardId.Parse(card.Id)), default);
+            await handler.Handle(new DeleteCardCommand(CardId.Parse(card.Id)), default);
 
             // Assert
             mockUserRepository.Verify(repository => repository.FindAsNoTrackingAsync(It.IsAny<UserId>()), Times.Once);

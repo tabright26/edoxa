@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 using eDoxa.Challenges.Api.Controllers;
 using eDoxa.Challenges.Application.Commands;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.AggregateModels.UserAggregate;
 using eDoxa.Challenges.DTO;
 using eDoxa.Challenges.DTO.Queries;
 using eDoxa.Functional.Maybe;
@@ -92,7 +91,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
         public async Task RegisterChallengeParticipantAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            var command = new RegisterChallengeParticipantCommand(new UserId());
+            var command = new RegisterChallengeParticipantCommand();
 
             _mediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(new OkResult()).Verifiable();
 

@@ -16,9 +16,9 @@ using eDoxa.Challenges.Application.Commands;
 using eDoxa.Challenges.Application.Commands.Handlers;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.AggregateModels.ParticipantAggregate;
-using eDoxa.Challenges.Domain.AggregateModels.UserAggregate;
 using eDoxa.Challenges.Domain.Factories;
 using eDoxa.Challenges.Domain.Repositories;
+using eDoxa.Security.Services;
 
 using FluentAssertions;
 
@@ -38,10 +38,12 @@ namespace eDoxa.Challenges.Application.Tests.Commands.Handlers
         public async Task HandleAsync_FindChallengeAsync_ShouldBeInvokedExactlyOneTime()
         {
             // Arrange
-            var command = new RegisterChallengeParticipantCommand(new UserId())
+            var command = new RegisterChallengeParticipantCommand
             {
                 LinkedAccount = new LinkedAccount(Guid.NewGuid())
             };
+
+            var mockUserInfoServer = new Mock<IUserInfoService>();
 
             var mockChallengeRepository = new Mock<IChallengeRepository>();
 
@@ -54,7 +56,7 @@ namespace eDoxa.Challenges.Application.Tests.Commands.Handlers
                 .Verifiable();
 
             // Act
-            var handler = new RegisterChallengeParticipantCommandHandler(mockChallengeRepository.Object);
+            var handler = new RegisterChallengeParticipantCommandHandler(mockUserInfoServer.Object, mockChallengeRepository.Object);
 
             // Assert
             var result = await handler.Handle(command, default);

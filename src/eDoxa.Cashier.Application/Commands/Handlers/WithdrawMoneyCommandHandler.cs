@@ -12,9 +12,11 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Commands.Abstractions.Handlers;
+using eDoxa.Security.Services;
 
 using JetBrains.Annotations;
 
@@ -24,17 +26,21 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 {
     internal sealed class WithdrawMoneyCommandHandler : ICommandHandler<WithdrawMoneyCommand, IActionResult>
     {
+        private readonly IUserInfoService _userInfoService;
         private readonly IUserRepository _userRepository;
 
-        public WithdrawMoneyCommandHandler(IUserRepository userRepository)
+        public WithdrawMoneyCommandHandler(IUserInfoService userInfoService, IUserRepository userRepository)
         {
+            _userInfoService = userInfoService;
             _userRepository = userRepository;
         }
 
         [ItemNotNull]
         public async Task<IActionResult> Handle([NotNull] WithdrawMoneyCommand command, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.FindAsync(command.UserId);
+            var userId = _userInfoService.Subject.Select(UserId.FromGuid).SingleOrDefault();
+
+            var user = await _userRepository.FindAsync(userId);
 
             var money = new Money(command.Amount);
 

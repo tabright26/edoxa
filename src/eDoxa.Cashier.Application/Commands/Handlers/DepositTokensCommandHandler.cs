@@ -8,13 +8,16 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Commands.Abstractions.Handlers;
+using eDoxa.Security.Services;
 
 using JetBrains.Annotations;
 
@@ -27,10 +30,12 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         private static readonly TokenBundles Bundles = new TokenBundles();
         private readonly IMoneyAccountService _moneyAccountService;
 
+        private readonly IUserInfoService _userInfoService;
         private readonly IUserRepository _userRepository;
 
-        public DepositTokensCommandHandler(IUserRepository userRepository, IMoneyAccountService moneyAccountService)
+        public DepositTokensCommandHandler(IUserInfoService userInfoService, IUserRepository userRepository, IMoneyAccountService moneyAccountService)
         {
+            _userInfoService = userInfoService;
             _userRepository = userRepository;
             _moneyAccountService = moneyAccountService;
         }
@@ -38,7 +43,9 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         [ItemNotNull]
         public async Task<IActionResult> Handle([NotNull] DepositTokensCommand command, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.FindAsync(command.UserId);
+            var userId = _userInfoService.Subject.Select(UserId.FromGuid).SingleOrDefault();
+
+            var user = await _userRepository.FindAsync(userId);
 
             var bundle = Bundles[command.BundleType];
 

@@ -8,13 +8,16 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Specifications;
 using eDoxa.Challenges.Domain.AggregateModels.ParticipantAggregate.Specifications;
+using eDoxa.Challenges.Domain.AggregateModels.UserAggregate;
 using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Commands.Abstractions.Handlers;
+using eDoxa.Security.Services;
 
 using JetBrains.Annotations;
 
@@ -24,16 +27,20 @@ namespace eDoxa.Challenges.Application.Commands.Handlers
 {
     internal sealed class RegisterChallengeParticipantCommandHandler : ICommandHandler<RegisterChallengeParticipantCommand, IActionResult>
     {
+        private readonly IUserInfoService _userInfoService;
         private readonly IChallengeRepository _challengeRepository;
 
-        public RegisterChallengeParticipantCommandHandler(IChallengeRepository challengeRepository)
+        public RegisterChallengeParticipantCommandHandler(IUserInfoService userInfoService, IChallengeRepository challengeRepository)
         {
+            _userInfoService = userInfoService;
             _challengeRepository = challengeRepository;
         }
 
         [ItemNotNull]
         public async Task<IActionResult> Handle([NotNull] RegisterChallengeParticipantCommand command, CancellationToken cancellationToken)
         {
+            var userId = _userInfoService.Subject.Select(UserId.FromGuid).SingleOrDefault();
+
             var challenge = await _challengeRepository.FindChallengeAsync(command.ChallengeId);
 
             if (challenge == null)
@@ -41,7 +48,7 @@ namespace eDoxa.Challenges.Application.Commands.Handlers
                 return new NotFoundObjectResult("Challenge not found.");
             }
 
-            if (new ParticipantAlreadyRegisteredSpecification(command.UserId).IsSatisfiedBy(challenge))
+            if (new ParticipantAlreadyRegisteredSpecification(userId).IsSatisfiedBy(challenge))
             {
                 return new BadRequestObjectResult("The participant is already registered for the challenge.");
             }
@@ -56,7 +63,7 @@ namespace eDoxa.Challenges.Application.Commands.Handlers
                 return new BadRequestObjectResult("The state of the challenge is not open for registration.");
             }
 
-            challenge.RegisterParticipant(command.UserId, command.LinkedAccount);
+            challenge.RegisterParticipant(userId, command.LinkedAccount);
 
             await _challengeRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 

@@ -20,13 +20,10 @@ namespace eDoxa.Cashier.Application.Commands
     [DataContract]
     public sealed class DeleteCardCommand : Command<IActionResult>
     {
-        public DeleteCardCommand(UserId userId, CardId cardId)
+        public DeleteCardCommand(CardId cardId)
         {
-            UserId = userId;
             CardId = cardId;
         }
-
-        [IgnoreDataMember] public UserId UserId { get; private set; }
 
         [IgnoreDataMember] public CardId CardId { get; private set; }
     }

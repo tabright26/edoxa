@@ -3,7 +3,7 @@
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -11,12 +11,15 @@
 using System;
 
 using eDoxa.IdentityServer.Data;
+using eDoxa.IdentityServer.Models;
 using eDoxa.Monitoring.Extensions;
 using eDoxa.Security.Extensions;
+using eDoxa.Seedwork.Infrastructure.Extensions;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.DependencyInjection;
 
 using Serilog;
@@ -35,12 +38,35 @@ namespace eDoxa.IdentityServer
 
                 Log.Information("Applying {Application} context migrations...");
 
-                using (var scope = host.Services.CreateScope())
-                {
-                    var context = scope.ServiceProvider.GetService<IdentityServerDbContext>();
+                host.MigrateDbContext<IdentityServerDbContext>(
+                    (context, provider) =>
+                    {
+                        var environment = provider.GetService<IHostingEnvironment>();
 
-                    context.Database.Migrate();
-                }
+                        if (environment.IsDevelopment())
+                        {
+                            var userManager = provider.GetService<UserManager<User>>();
+
+                            if (!userManager.Users.Any())
+                            {
+                                var user = new User
+                                {
+                                    Id = Guid.Parse("e4655fe0-affd-4323-b022-bdb2ebde6091"),
+                                    Email = "admin@edoxa.gg",
+                                    EmailConfirmed = true,
+                                    NormalizedEmail = "admin@edoxa.gg".ToUpperInvariant(),
+                                    UserName = "Administrator",
+                                    NormalizedUserName = "Administrator".ToUpperInvariant(),
+                                    PhoneNumber = "5147580313",
+                                    PhoneNumberConfirmed = true,
+                                    SecurityStamp = Guid.NewGuid().ToString("D")
+                                };
+
+                                userManager.CreateAsync(user, "Pass@word1").Wait();
+                            }
+                        }
+                    }
+                );
 
                 Log.Information("Starting {Application} web host...");
 

@@ -8,6 +8,7 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,6 +19,8 @@ using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services;
+using eDoxa.Functional.Maybe;
+using eDoxa.Security.Services;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -36,6 +39,10 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             // Arrange
             var command = new DepositTokensCommand(TokenBundleType.FiftyThousand);
 
+            var mockUserInfoService = new Mock<IUserInfoService>();
+
+            mockUserInfoService.SetupGet(userInfoService => userInfoService.Subject).Returns(new Option<Guid>(Guid.NewGuid()));
+
             var mockAccountService = new Mock<IMoneyAccountService>();
 
             mockAccountService.Setup(service => service.TransactionAsync(It.IsAny<User>(), It.IsAny<TokenBundle>(), It.IsAny<CancellationToken>()))
@@ -50,7 +57,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
                               .Returns(Task.CompletedTask)
                               .Verifiable();
 
-            var handler = new DepositTokensCommandHandler(mockUserRepository.Object, mockAccountService.Object);
+            var handler = new DepositTokensCommandHandler(mockUserInfoService.Object, mockUserRepository.Object, mockAccountService.Object);
 
             // Act
             await handler.Handle(command, default);

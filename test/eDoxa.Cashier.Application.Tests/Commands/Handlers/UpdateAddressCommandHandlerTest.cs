@@ -8,6 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,6 +17,8 @@ using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Functional.Maybe;
+using eDoxa.Security.Services;
 
 using FluentAssertions;
 
@@ -43,6 +46,10 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
 
             var address = customer.Shipping.Address;
 
+            var mockUserInfoService = new Mock<IUserInfoService>();
+
+            mockUserInfoService.SetupGet(userInfoService => userInfoService.Subject).Returns(new Option<Guid>(Guid.NewGuid()));
+
             var mockUserRepository = new Mock<IUserRepository>();
 
             var mockCustomerService = new Mock<CustomerService>();
@@ -60,12 +67,10 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
                 .ReturnsAsync(customer)
                 .Verifiable();
 
-            var handler = new UpdateAddressCommandHandler(mockUserRepository.Object, mockCustomerService.Object);
+            var handler = new UpdateAddressCommandHandler(mockUserInfoService.Object, mockUserRepository.Object, mockCustomerService.Object);
 
             // Act
-            var response = await handler.Handle(
-                new UpdateAddressCommand(user.Id, address.City, address.Country, address.Line1, address.Line2, address.PostalCode, address.State),
-                default
+            var response = await handler.Handle(new UpdateAddressCommand(address.City, address.Country, address.Line1, address.Line2, address.PostalCode, address.State), default
             );
 
             // Assert

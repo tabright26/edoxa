@@ -10,7 +10,6 @@
 
 using System.Runtime.Serialization;
 
-using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Commands.Abstractions;
 
@@ -25,9 +24,7 @@ namespace eDoxa.Cashier.Application.Commands
         {
             BundleType = bundleType;
         }
-
-        [IgnoreDataMember] public UserId UserId { get; set; }
-
+        
         [DataMember(Name = "bundleType")] public MoneyBundleType BundleType { get; private set; }
     }
 }

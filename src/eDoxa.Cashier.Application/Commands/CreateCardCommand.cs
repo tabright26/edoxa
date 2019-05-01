@@ -10,7 +10,6 @@
 
 using System.Runtime.Serialization;
 
-using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Commands.Abstractions;
 
 using Microsoft.AspNetCore.Mvc;
@@ -25,8 +24,6 @@ namespace eDoxa.Cashier.Application.Commands
             SourceToken = sourceToken;
             DefaultCard = defaultCard;
         }
-
-        [IgnoreDataMember] public UserId UserId { get; set; }
 
         [DataMember(Name = "sourceToken")] public string SourceToken { get; private set; }
 
