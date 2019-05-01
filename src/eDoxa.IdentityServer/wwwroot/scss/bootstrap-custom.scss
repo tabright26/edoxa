@@ -1,0 +1,11 @@
+﻿$theme-colors: (
+  "primary": #ff6f00
+);
+
+@import "../lib/bootstrap/scss/bootstrap.scss";
+
+a, .btn-link {
+  &:hover {
+    text-decoration: none;
+  }
+}

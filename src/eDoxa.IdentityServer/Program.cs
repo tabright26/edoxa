@@ -16,7 +16,6 @@ using eDoxa.Security.Extensions;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -38,7 +37,7 @@ namespace eDoxa.IdentityServer
 
                 using (var scope = host.Services.CreateScope())
                 {
-                    var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
+                    var context = scope.ServiceProvider.GetService<IdentityServerDbContext>();
 
                     context.Database.Migrate();
                 }

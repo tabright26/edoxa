@@ -1,58 +1,71 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿// Filename: Startup.cs
+// Date Created: 2019-04-30
+// 
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+//  
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
+// this source code package.
+
+using eDoxa.IdentityServer.Data;
+using eDoxa.IdentityServer.Models;
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using eDoxa.IdentityServer.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.IdentityServer
 {
-    public class Startup
+    public sealed class Startup
     {
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<CookiePolicyOptions>(options =>
             {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContext<IdentityServerDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("Sql")));
 
-            services.AddDefaultIdentity<IdentityUser>()
+            services.AddIdentity<User, Role>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<IdentityServerDbContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddIdentityServer()
+            services.AddIdentityServer(options =>
+                {
+                    options.IssuerUri = "null";
+                    options.UserInteraction.LoginUrl = "/Identity/Account/Login";
+                    options.UserInteraction.LogoutUrl = "/Identity/Account/Logout";
+                })
                 .AddDeveloperSigningCredential()
                 .AddInMemoryPersistedGrants()
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryClients(Config.GetClients(Configuration))
-                .AddAspNetIdentity<IdentityUser>();
+                .AddAspNetIdentity<User>();
+
+            //services.AddScoped<UserManager<IdentityUser>>();
+            //services.AddScoped<RoleManager<IdentityRole>>();
+            //services.AddScoped<SignInManager<IdentityUser>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -66,7 +79,6 @@ namespace eDoxa.IdentityServer
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -76,12 +88,13 @@ namespace eDoxa.IdentityServer
 
             app.UseIdentityServer();
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
+            app.UseMvc(
+                routes =>
+                {
+                    routes.MapRoute("area", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                    routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
+                }
+            );
         }
     }
 }
