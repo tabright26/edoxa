@@ -9,7 +9,12 @@
 // this source code package.
 
 using eDoxa.IdentityServer.Data;
+using eDoxa.IdentityServer.Extensions;
 using eDoxa.IdentityServer.Models;
+using eDoxa.IdentityServer.Services;
+using eDoxa.Monitoring.Extensions;
+using eDoxa.Security.Extensions;
+using eDoxa.Seedwork.Infrastructure.Extensions;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -17,7 +22,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -40,18 +44,27 @@ namespace eDoxa.IdentityServer
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddDbContext<IdentityServerDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("Sql")));
+            services.AddHealthChecks(Configuration);
+
+            services.AddEntityFrameworkSqlServer();
+
+            services.AddDbContext<IdentityServerDbContext>(Configuration);
 
             services.AddIdentity<User, Role>()
+                .AddDefaultTokenProviders()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<IdentityServerDbContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            services.AddDataProtection(Configuration);
+
             services.AddIdentityServer(options =>
                 {
+                    options.Events.RaiseErrorEvents = true;
+                    options.Events.RaiseInformationEvents = true;
+                    options.Events.RaiseFailureEvents = true;
+                    options.Events.RaiseSuccessEvents = true;
                     options.IssuerUri = "null";
                     options.UserInteraction.LoginUrl = "/Identity/Account/Login";
                     options.UserInteraction.LogoutUrl = "/Identity/Account/Logout";
@@ -61,16 +74,15 @@ namespace eDoxa.IdentityServer
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryClients(Config.GetClients(Configuration))
-                .AddAspNetIdentity<User>();
-
-            //services.AddScoped<UserManager<IdentityUser>>();
-            //services.AddScoped<RoleManager<IdentityRole>>();
-            //services.AddScoped<SignInManager<IdentityUser>>();
+                .AddAspNetIdentity<User>()
+                .AddCorsPolicyService<CustomCorsPolicyService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseHealthChecks();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -84,6 +96,7 @@ namespace eDoxa.IdentityServer
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseForwardedHeaders();
             app.UseCookiePolicy();
 
             app.UseIdentityServer();

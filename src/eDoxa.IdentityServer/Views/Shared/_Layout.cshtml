@@ -1,13 +1,14 @@
 ﻿@using Microsoft.AspNetCore.Hosting
 @using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
+@using eDoxa.IdentityServer.Models
+@inject SignInManager<User> SignInManager
 @inject IHostingEnvironment HostingEnvironment
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - eDoxa.IdentityServer</title>
+    <title>eDoxa</title>
 
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <environment include="Development">
@@ -62,7 +63,6 @@
             @RenderBody()
         </main>
     </div>
-
     <footer class="footer">
         <nav class="navbar navbar-dark bg-dark">
             <div class="container">

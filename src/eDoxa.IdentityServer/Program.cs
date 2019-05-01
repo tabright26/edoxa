@@ -66,6 +66,7 @@ namespace eDoxa.IdentityServer
                 .CaptureStartupErrors(false)
                 .ConfigureLogging()
                 .UseAzureKeyVault()
+                .UseApplicationInsights()
                 .UseSerilog();
         }
     }

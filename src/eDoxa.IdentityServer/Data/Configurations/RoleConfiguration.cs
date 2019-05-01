@@ -8,8 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
-using eDoxa.Identity.Infrastructure;
+using eDoxa.IdentityServer.Models;
 
 using JetBrains.Annotations;
 
@@ -22,7 +21,7 @@ namespace eDoxa.IdentityServer.Data.Configurations
     {
         public void Configure([NotNull] EntityTypeBuilder<Role> builder)
         {
-            builder.ToTable(nameof(IdentityDbContext.Roles));
+            builder.ToTable(nameof(IdentityServerDbContext.Roles));
         }
     }
 }

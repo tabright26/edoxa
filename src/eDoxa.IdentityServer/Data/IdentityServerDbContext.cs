@@ -22,7 +22,7 @@ namespace eDoxa.IdentityServer.Data
 {
     public class IdentityServerDbContext : IdentityDbContext<User, Role, Guid, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>
     {
-        public IdentityServerDbContext(DbContextOptions<IdentityDbContext> options) : base(options)
+        public IdentityServerDbContext(DbContextOptions<IdentityServerDbContext> options) : base(options)
         {
         }
 
