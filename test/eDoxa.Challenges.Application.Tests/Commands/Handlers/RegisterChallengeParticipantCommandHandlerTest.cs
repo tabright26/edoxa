@@ -18,6 +18,7 @@ using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Challenges.Domain.Factories;
 using eDoxa.Challenges.Domain.Repositories;
+using eDoxa.Functional.Maybe;
 using eDoxa.Security.Services;
 
 using FluentAssertions;
@@ -44,6 +45,10 @@ namespace eDoxa.Challenges.Application.Tests.Commands.Handlers
             };
 
             var mockUserInfoServer = new Mock<IUserInfoService>();
+
+            mockUserInfoServer.SetupGet(mock => mock.Subject)
+                .Returns(new Option<Guid>(Guid.NewGuid()))
+                .Verifiable();
 
             var mockChallengeRepository = new Mock<IChallengeRepository>();
 
