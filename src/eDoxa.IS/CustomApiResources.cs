@@ -28,16 +28,9 @@ namespace eDoxa.IS
             }
         }
 
-        public sealed class ChallengesApi : ApiResource
+        public sealed class ChallengeApi : ApiResource
         {
-            public ChallengesApi() : base("edoxa.challenges.api", "eDoxa Challenges API")
-            {
-            }
-        }
-
-        public sealed class NotificationsApi : ApiResource
-        {
-            public NotificationsApi() : base("edoxa.notifications.api", "eDoxa Notifications API")
+            public ChallengeApi() : base("edoxa.challenge.api", "eDoxa Challenge API")
             {
             }
         }

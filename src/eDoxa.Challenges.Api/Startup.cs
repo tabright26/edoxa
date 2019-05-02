@@ -71,7 +71,7 @@ namespace eDoxa.Challenges.Api
 
             services.AddServiceBus(Configuration);
 
-            services.AddAuthentication(Configuration, CustomScopes.ChallengesApi);
+            services.AddAuthentication(Configuration, CustomScopes.ChallengeApi);
 
             services.AddUserInfo();
 
@@ -90,7 +90,7 @@ namespace eDoxa.Challenges.Api
 
             application.UseStaticFiles();
 
-            application.UseSwagger(Configuration, Environment, provider, true);
+            application.UseSwagger(Configuration, Environment, provider);
 
             application.UseMvcWithDefaultRoute();
 

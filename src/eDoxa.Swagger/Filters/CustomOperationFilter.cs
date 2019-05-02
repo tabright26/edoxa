@@ -97,7 +97,7 @@ namespace eDoxa.Swagger.Filters
                                 {
                                     "oauth2", new[]
                                     {
-                                        CustomScopes.IdentityApi, CustomScopes.CashierApi, CustomScopes.ChallengesApi, CustomScopes.NotificationsApi
+                                        CustomScopes.IdentityApi, CustomScopes.CashierApi, CustomScopes.ChallengeApi
                                     }
                                 }
                             }

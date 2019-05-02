@@ -16,8 +16,6 @@ namespace eDoxa.IS
 
         public static readonly string CashierApi = new CustomApiResources.CashierApi().Name;
 
-        public static readonly string ChallengesApi = new CustomApiResources.ChallengesApi().Name;
-
-        public static readonly string NotificationsApi = new CustomApiResources.NotificationsApi().Name;
+        public static readonly string ChallengeApi = new CustomApiResources.ChallengeApi().Name;
     }
 }

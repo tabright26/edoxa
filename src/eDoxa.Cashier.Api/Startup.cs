@@ -93,7 +93,7 @@ namespace eDoxa.Cashier.Api
 
             application.UseStaticFiles();
 
-            application.UseSwagger(Configuration, Environment, provider, true);
+            application.UseSwagger(Configuration, Environment, provider);
 
             application.UseMvcWithDefaultRoute();
 

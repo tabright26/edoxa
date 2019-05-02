@@ -38,9 +38,7 @@ namespace eDoxa.IdentityServer
 
             yield return new CustomApiResources.CashierApi();
 
-            yield return new CustomApiResources.ChallengesApi();
-
-            yield return new CustomApiResources.NotificationsApi();
+            yield return new CustomApiResources.ChallengeApi();
         }
 
         public static IEnumerable<Client> GetClients(IConfiguration configuration)
@@ -71,17 +69,17 @@ namespace eDoxa.IdentityServer
                 AllowedGrantTypes = GrantTypes.Implicit,
                 AllowedScopes = new HashSet<string>
                 {
-                    CustomScopes.ChallengesApi
+                    CustomScopes.ChallengeApi
                 },
-                ClientId = "edoxa.challenges.swagger.client",
-                ClientName = "eDoxa Challenges API (Swagger UI)",
+                ClientId = "edoxa.challenge.swagger.client",
+                ClientName = "eDoxa Challenge API (Swagger UI)",
                 RedirectUris = new HashSet<string>
                 {
-                    $"{configuration["Challenges:Url"]}/swagger/oauth2-redirect.html"
+                    $"{configuration["Challenge:Url"]}/swagger/oauth2-redirect.html"
                 },
                 PostLogoutRedirectUris = new HashSet<string>
                 {
-                    $"{configuration["Challenges:Url"]}/swagger/"
+                    $"{configuration["Challenge:Url"]}/swagger/"
                 }
             };
 
@@ -102,26 +100,6 @@ namespace eDoxa.IdentityServer
                 PostLogoutRedirectUris = new HashSet<string>
                 {
                     $"{configuration["Cashier:Url"]}/swagger/"
-                }
-            };
-
-            yield return new Client
-            {
-                AllowAccessTokensViaBrowser = true,
-                AllowedGrantTypes = GrantTypes.Implicit,
-                AllowedScopes = new HashSet<string>
-                {
-                    CustomScopes.NotificationsApi
-                },
-                ClientId = "edoxa.notifications.swagger.client",
-                ClientName = "eDoxa Notifications API (Swagger UI)",
-                RedirectUris = new HashSet<string>
-                {
-                    $"{configuration["Notifications:Url"]}/swagger/oauth2-redirect.html"
-                },
-                PostLogoutRedirectUris = new HashSet<string>
-                {
-                    $"{configuration["Notifications:Url"]}/swagger/"
                 }
             };
 
@@ -158,8 +136,7 @@ namespace eDoxa.IdentityServer
                     IdentityServerConstants.StandardScopes.Phone,
                     CustomScopes.IdentityApi,
                     CustomScopes.CashierApi,
-                    CustomScopes.ChallengesApi,
-                    CustomScopes.NotificationsApi
+                    CustomScopes.ChallengeApi
                 }
             };
         }

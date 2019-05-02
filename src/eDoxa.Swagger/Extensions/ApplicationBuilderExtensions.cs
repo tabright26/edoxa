@@ -21,8 +21,7 @@ namespace eDoxa.Swagger.Extensions
             this IApplicationBuilder application,
             IConfiguration configuration,
             IHostingEnvironment environment,
-            IApiVersionDescriptionProvider provider,
-            bool withRedirects = false)
+            IApiVersionDescriptionProvider provider)
         {
             if (!environment.IsDevelopment())
             {
@@ -45,11 +44,6 @@ namespace eDoxa.Swagger.Extensions
                     options.DefaultModelsExpandDepth(-1);
                 }
             );
-
-            if (withRedirects)
-            {
-                application.UseStatusCodePagesWithRedirects("~/swagger");
-            }
         }
     }
 }

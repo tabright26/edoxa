@@ -1,7 +1,7 @@
 version: '3.4'
 
 services:
-  edoxa.mssql.data:
+  mssql:
     environment:
       - SA_PASSWORD=fnU3Www9TnBDp3MA
       - ACCEPT_EULA=Y
@@ -9,11 +9,11 @@ services:
     ports:
       - "1433:1433"
 
-  edoxa.redis.data:
+  redis:
     ports:
       - "6379:6379"
 
-  edoxa.rabbitmq.broker:
+  rabbitmq:
     environment:
       - RABBITMQ_DEFAULT_USER=admin
       - RABBITMQ_DEFAULT_PASS=4t8SaVXVMy0rT2kM
@@ -21,111 +21,104 @@ services:
       - "15672:15672"
       - "5672:5672"
 
-  edoxa.idsrv:
+  idsrv:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - ConnectionStrings__Sql=${SQLSERVER_IDENTITY:-Server=edoxa.mssql.data;Database=eDoxa.Services.Identity;User Id=sa;Password=fnU3Www9TnBDp3MA}
-      - ConnectionStrings__Redis=${REDIS:-edoxa.redis.data}
+      - ConnectionStrings__Sql=${MSSQL_IDENTITY:-Server=mssql;Database=Services.IdentityServer;User Id=sa;Password=fnU3Www9TnBDp3MA}
+      - ConnectionStrings__Redis=${REDIS:-redis}
       - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
       - AzureKubernetesService__Enable=${AKS_ENABLE:-false}
-      - AzureServiceBus__Enable=${ASB_ENABLE:-false}
-      - ServiceBus__HostName=${ASB_HOSTNAME:-edoxa.rabbitmq.broker}
-      - ServiceBus__UserName=${ASB_USERNAME:-admin}
-      - ServiceBus__Password=${ASB_PASSWORD:-4t8SaVXVMy0rT2kM}
-      - ServiceBus__RetryCount=${ASB_RETRYCOUNT:-5}
-      - ServiceBus__Subscription=Identity
       - Authority=${URL:-http://localhost}:5000
       - Identity__Url=${URL:-http://localhost}:5001
-      - Cashier__Url=${URL:-http://localhost}:5003
-      - Challenges__Url=${URL:-http://localhost}:5002      
-      - Notifications__Url=${URL:-http://localhost}:5005
+      - Cashier__Url=${URL:-http://localhost}:5002
+      - Challenge__Url=${URL:-http://localhost}:5003
       - WebSpa__Url=${URL:-http://localhost}:5300
     ports:
       - "5000:80"
 
-  edoxa.identity.api:
+  identity.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - ConnectionStrings__Sql=${SQLSERVER_IDENTITY:-Server=edoxa.mssql.data;Database=eDoxa.Services.Identity.Api;User Id=sa;Password=fnU3Www9TnBDp3MA}
+      - ConnectionStrings__Sql=${MSSQL_IDENTITY:-Server=mssql;Database=Services.Identity;User Id=sa;Password=fnU3Www9TnBDp3MA}
       - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
       - AzureServiceBus__Enable=${ASB_ENABLE:-false}
-      - ServiceBus__HostName=${ASB_HOSTNAME:-edoxa.rabbitmq.broker}
+      - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq}
       - ServiceBus__UserName=${ASB_USERNAME:-admin}
       - ServiceBus__Password=${ASB_PASSWORD:-4t8SaVXVMy0rT2kM}
       - ServiceBus__RetryCount=${ASB_RETRYCOUNT:-5}
       - ServiceBus__Subscription=Identity
       - Authority=${URL:-http://localhost}:5000
-      - IdentityServer__Url=http://edoxa.idsrv
+      - IdentityServer__Url=http://idsrv
     ports:
       - "5001:80"
 
-  edoxa.cashier.api:
+  cashier.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - ConnectionStrings__Sql=${SQLSERVER_CASHIER:-Server=edoxa.mssql.data;Database=eDoxa.Services.Cashier;User Id=sa;Password=fnU3Www9TnBDp3MA}
+      - ConnectionStrings__Sql=${MSSQL_CASHIER:-Server=mssql;Database=Services.Cashier;User Id=sa;Password=fnU3Www9TnBDp3MA}
       - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}      
       - AzureServiceBus__Enable=${ASB_ENABLE:-false}
-      - ServiceBus__HostName=${ASB_HOSTNAME:-edoxa.rabbitmq.broker}
+      - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq}
       - ServiceBus__UserName=${ASB_USERNAME:-admin}
       - ServiceBus__Password=${ASB_PASSWORD:-4t8SaVXVMy0rT2kM}
       - ServiceBus__RetryCount=${ASB_RETRYCOUNT:-5}
       - ServiceBus__Subscription=Cashier      
       - Authority=${URL:-http://localhost}:5000
-      - IdentityServer__Url=http://edoxa.idsrv
-    ports:
-      - "5003:80"
-
-  edoxa.challenges.api:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:80
-      - ConnectionStrings__Sql=${SQLSERVER_CHALLENGES:-Server=edoxa.mssql.data;Database=eDoxa.Services.Challenges;User Id=sa;Password=fnU3Www9TnBDp3MA}      
-      - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
-      - AzureServiceBus__Enable=${ASB_ENABLE:-false}
-      - ServiceBus__HostName=${ASB_HOSTNAME:-edoxa.rabbitmq.broker}
-      - ServiceBus__UserName=${ASB_USERNAME:-admin}
-      - ServiceBus__Password=${ASB_PASSWORD:-4t8SaVXVMy0rT2kM}
-      - ServiceBus__RetryCount=${ASB_RETRYCOUNT:-5}
-      - ServiceBus__Subscription=Challenges      
-      - Authority=${URL:-http://localhost}:5000
-      - IdentityServer__Url=http://edoxa.idsrv
+      - IdentityServer__Url=http://idsrv
     ports:
       - "5002:80"
 
-  #edoxa.web.spa:
+  challenge.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__Sql=${MSSQL_CHALLENGE:-Server=mssql;Database=Services.Challenge;User Id=sa;Password=fnU3Www9TnBDp3MA}      
+      - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
+      - AzureServiceBus__Enable=${ASB_ENABLE:-false}
+      - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq}
+      - ServiceBus__UserName=${ASB_USERNAME:-admin}
+      - ServiceBus__Password=${ASB_PASSWORD:-4t8SaVXVMy0rT2kM}
+      - ServiceBus__RetryCount=${ASB_RETRYCOUNT:-5}
+      - ServiceBus__Subscription=Challenge      
+      - Authority=${URL:-http://localhost}:5000
+      - IdentityServer__Url=http://idsrv
+    ports:
+      - "5003:80"
+
+  #web.spa:
   #  environment:
   #    - ASPNETCORE_ENVIRONMENT=Development
   #    - ASPNETCORE_URLS=http://+:80
-  #    - ConnectionStrings__Redis=${REDIS:-edoxa.redis.data}
+  #    - ConnectionStrings__Redis=${REDIS:-redis}
   #    - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
   #    - AzureKubernetesService__Enable=${AKS_ENABLE:-false}
   #    - Authority=${URL:-http://localhost}:5000  
-  #    - Identity__Url=${URL:-http://localhost}:5000
-  #    - Cashier__Url=${URL:-http://localhost}:5003
-  #    - Challenges__Url=${URL:-http://localhost}:5002
-  #    - Notifications__Url=${URL:-http://localhost}:5005
+  #    - IdentityServer__Url=${URL:-http://localhost}:5000
+  #    - Identity__Url=${URL:-http://localhost}:5001
+  #    - Cashier__Url=${URL:-http://localhost}:5002
+  #    - Challenge__Url=${URL:-http://localhost}:5003
   #    - WebSpa__Url=${URL:-http://localhost}:5300
   #  ports:
   #    - "5300:80"
 
-  edoxa.web.status:
+  web.status:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
       - HealthChecks__Endpoints__0__Name=eDoxa IdentityServer
-      - HealthChecks__Endpoints__0__Uri=http://edoxa.idsrv/health
+      - HealthChecks__Endpoints__0__Uri=http://idsrv/health
       - HealthChecks__Endpoints__1__Name=eDoxa Identity API
-      - HealthChecks__Endpoints__1__Uri=http://edoxa.identity.api/health
+      - HealthChecks__Endpoints__1__Uri=http://identity.api/health
       - HealthChecks__Endpoints__2__Name=eDoxa Cashier API
-      - HealthChecks__Endpoints__2__Uri=http://edoxa.cashier.api/health
-      - HealthChecks__Endpoints__3__Name=eDoxa Challenges API
-      - HealthChecks__Endpoints__3__Uri=http://edoxa.challenges.api/health
+      - HealthChecks__Endpoints__2__Uri=http://cashier.api/health
+      - HealthChecks__Endpoints__3__Name=eDoxa Challenge API
+      - HealthChecks__Endpoints__3__Uri=http://challenge.api/health
       - HealthChecks__Endpoints__4__Name=eDoxa Web Spa
-      - HealthChecks__Endpoints__4__Uri=http://edoxa.web.spa/health
+      - HealthChecks__Endpoints__4__Uri=http://web.spa/health
       - HealthChecks__EvaluationTimeInSeconds=15
       - HealthChecks__MinimumSecondsBetweenFailureNotifications=60
     ports:
