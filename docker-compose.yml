@@ -18,16 +18,16 @@ services:
     depends_on:
       - edoxa.mssql.data
       - edoxa.redis.data
-      - edoxa.rabbitmq.broker 
+      - edoxa.rabbitmq.broker
 
-  edoxa.challenges.api:
-    image: $ACR_REGISTRY/challenges.api:$ACR_TAG
+  edoxa.identity.api:
+    image: $ACR_REGISTRY/identity.api:$ACR_TAG
     build:
       context: .
-      dockerfile: src/eDoxa.Challenges.Api/Dockerfile
+      dockerfile: src/eDoxa.Identity.Api/Dockerfile
     depends_on:
       - edoxa.mssql.data
-      - edoxa.rabbitmq.broker 
+      - edoxa.rabbitmq.broker
       - edoxa.idsrv
 
   edoxa.cashier.api:
@@ -35,6 +35,16 @@ services:
     build:
       context: .
       dockerfile: src/eDoxa.Cashier.Api/Dockerfile
+    depends_on:
+      - edoxa.mssql.data
+      - edoxa.rabbitmq.broker 
+      - edoxa.idsrv
+
+  edoxa.challenges.api:
+    image: $ACR_REGISTRY/challenges.api:$ACR_TAG
+    build:
+      context: .
+      dockerfile: src/eDoxa.Challenges.Api/Dockerfile
     depends_on:
       - edoxa.mssql.data
       - edoxa.rabbitmq.broker 

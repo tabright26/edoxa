@@ -10,14 +10,14 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <NoWarn>1591;1701;1702</NoWarn>
-    <DocumentationFile>bin\Debug\netcoreapp2.2\eDoxa.Identity.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\netcoreapp2.2\eDoxa.Identity.Api.xml</DocumentationFile>
     <OutputPath>bin\Debug\</OutputPath>
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
   </PropertyGroup>
     
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <NoWarn>1591;1701;1702</NoWarn>
-    <DocumentationFile>bin\Release\netcoreapp2.2\eDoxa.Identity.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netcoreapp2.2\eDoxa.Identity.Api.xml</DocumentationFile>
     <OutputPath>bin\Release\</OutputPath>
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
   </PropertyGroup>
