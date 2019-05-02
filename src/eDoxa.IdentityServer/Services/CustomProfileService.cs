@@ -1,18 +1,19 @@
-﻿// Filename: ProfileService.cs
-// Date Created: 2019-04-14
+﻿// Filename: CustomProfileService.cs
+// Date Created: 2019-04-30
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
+using eDoxa.Functional.Extensions;
 using eDoxa.IdentityServer.Models;
+using eDoxa.Security;
 
 using IdentityServer4.Models;
 using IdentityServer4.Services;
@@ -20,70 +21,49 @@ using IdentityServer4.Services;
 using JetBrains.Annotations;
 
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace eDoxa.IdentityServer.Services
 {
-    public class CustomProfileService : IProfileService
+    public sealed class CustomProfileService : IProfileService
     {
-        private readonly IUserClaimsPrincipalFactory<User> _factory;
-        private readonly ILogger<CustomProfileService> _logger;
-        private readonly IdentityOptions _options;
+        private readonly IUserClaimsPrincipalFactory<User> _userClaimsPrincipalFactory;
         private readonly UserManager<User> _userManager;
 
-        public CustomProfileService(
-            IUserClaimsPrincipalFactory<User> factory,
-            UserManager<User> userManager,
-            IOptions<IdentityOptions> optionsAccessor,
-            ILogger<CustomProfileService> logger)
+        public CustomProfileService(IUserClaimsPrincipalFactory<User> userClaimsPrincipalFactory, UserManager<User> userManager)
         {
-            _factory = factory;
+            _userClaimsPrincipalFactory = userClaimsPrincipalFactory;
             _userManager = userManager;
-            _options = optionsAccessor.Value;
-            _logger = logger;
         }
 
         public async Task GetProfileDataAsync([NotNull] ProfileDataRequestContext context)
         {
-            context.LogProfileRequest(_logger);
+            var user = await _userManager.GetUserAsync(context.Subject);
 
-            var user = await _userManager.GetUserAsync(context.Subject) ?? throw new NullReferenceException(nameof(context.Subject));
+            var principal = await _userClaimsPrincipalFactory.CreateAsync(user);
 
-            var principal = await _factory.CreateAsync(user);
-
-            foreach (var claim in principal.Claims)
-            {
-                context.IssuedClaims.Add(claim);
-            }
-
-            context.LogIssuedClaims(_logger);
+            principal.Claims.ForEach(claim => context.IssuedClaims.Add(claim));
         }
 
         public async Task IsActiveAsync([NotNull] IsActiveContext context)
         {
-            context.IsActive = false;
-
             var user = await _userManager.GetUserAsync(context.Subject);
 
             if (user != null)
             {
+                context.IsActive = !await _userManager.IsLockedOutAsync(user);
+
                 if (_userManager.SupportsUserSecurityStamp)
                 {
                     var claims = await _userManager.GetClaimsAsync(user);
 
-                    var securityStamp = claims.SingleOrDefault(claim => claim.Type == _options.ClaimsIdentity.SecurityStampClaimType)?.Value;
+                    var securityStamp = claims.SingleOrDefault(claim => claim.Type == CustomClaimTypes.SecurityStamp)?.Value;
 
-                    if (securityStamp != null)
-                    {
-                        if (await _userManager.GetSecurityStampAsync(user) != securityStamp)
-                        {
-                            return;
-                        }
-                    }
+                    context.IsActive = securityStamp != await _userManager.GetSecurityStampAsync(user);
                 }
-
-                context.IsActive = !await _userManager.IsLockedOutAsync(user);
+            }
+            else
+            {
+                context.IsActive = false;
             }
         }
     }

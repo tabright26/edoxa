@@ -12,6 +12,8 @@ namespace eDoxa.Security
 {
     public static class CustomClaimTypes
     {
-        public const string CustomerId = "customerId";
+        public const string SecurityStamp = "security_stamp";
+        public const string Permission = "permission";
+        public const string CustomerId = "customer_id";
     }
 }

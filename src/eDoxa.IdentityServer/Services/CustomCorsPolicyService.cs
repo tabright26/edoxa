@@ -1,9 +1,9 @@
 ﻿// Filename: CustomCorsPolicyService.cs
-// Date Created: 2019-04-25
+// Date Created: 2019-04-30
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -16,7 +16,7 @@ namespace eDoxa.IdentityServer.Services
 {
     public sealed class CustomCorsPolicyService : DefaultCorsPolicyService
     {
-        public CustomCorsPolicyService(ILogger<DefaultCorsPolicyService> logger) : base(logger)
+        public CustomCorsPolicyService(ILogger<CustomCorsPolicyService> logger) : base(logger)
         {
             AllowAll = true;
         }
