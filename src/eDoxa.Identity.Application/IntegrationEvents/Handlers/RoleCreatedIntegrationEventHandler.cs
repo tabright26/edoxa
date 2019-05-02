@@ -10,26 +10,27 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Application.Services;
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.ServiceBus;
+
+using Microsoft.AspNetCore.Identity;
 
 namespace eDoxa.Identity.Application.IntegrationEvents.Handlers
 {
     public class RoleCreatedIntegrationEventHandler : IIntegrationEventHandler<RoleCreatedIntegrationEvent>
     {
-        private readonly RoleService _roleService;
+        private readonly RoleManager<Role> _roleManager;
 
-        public RoleCreatedIntegrationEventHandler(RoleService roleService)
+        public RoleCreatedIntegrationEventHandler(RoleManager<Role> roleManager)
         {
-            _roleService = roleService;
+            _roleManager = roleManager;
         }
 
         public async Task Handle(RoleCreatedIntegrationEvent integrationEvent)
         {
-            if (!await _roleService.RoleExistsAsync(integrationEvent.RoleName))
+            if (!await _roleManager.RoleExistsAsync(integrationEvent.RoleName))
             {
-                await _roleService.CreateAsync(new Role(integrationEvent.RoleName));
+                await _roleManager.CreateAsync(new Role(integrationEvent.RoleName));
             }
         }
     }

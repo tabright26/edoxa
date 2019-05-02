@@ -98,6 +98,8 @@ namespace eDoxa.IdentityServer
                 {
                     options.IssuerUri = "null";
 
+                    options.Authentication.CookieLifetime = TimeSpan.FromHours(2);
+
                     options.Events.RaiseErrorEvents = true;
                     options.Events.RaiseInformationEvents = true;
                     options.Events.RaiseFailureEvents = true;
@@ -114,10 +116,69 @@ namespace eDoxa.IdentityServer
                 .AddProfileService<CustomProfileService>()
                 .AddAspNetIdentity<User>();
 
+            //.AddConfigurationStore(
+            //    configurationStoreOptions =>
+            //    {
+            //        configurationStoreOptions.ConfigureDbContext = dbContextOptionsBuilder => dbContextOptionsBuilder.UseSqlServer(
+            //            Configuration.GetConnectionString("Sql"),
+            //            sqlServerDbContextOptionsBuilder =>
+            //            {
+            //                sqlServerDbContextOptionsBuilder.MigrationsAssembly(Assembly.GetAssembly(typeof(IdentityDbContext)).GetName().Name);
+            //            }
+            //        );
+
+            //        configurationStoreOptions.DefaultSchema = "idsrv";
+            //    }
+            //)
+            //.AddOperationalStore(
+            //    operationalStoreOptions =>
+            //    {
+            //        operationalStoreOptions.ConfigureDbContext = dbContextOptionsBuilder => dbContextOptionsBuilder.UseSqlServer(
+            //            Configuration.GetConnectionString("Sql"),
+            //            sqlServerDbContextOptionsBuilder =>
+            //            {
+            //                sqlServerDbContextOptionsBuilder.MigrationsAssembly(Assembly.GetAssembly(typeof(IdentityDbContext)).GetName().Name);
+            //            }
+            //        );
+
+            //        operationalStoreOptions.DefaultSchema = "idsrv";
+            //    }
+            //)
+
             if (Environment.IsDevelopment())
             {
                 builder.AddCorsPolicyService<CustomCorsPolicyService>();
             }
+
+            //services.AddAuthentication()
+            //    .AddFacebook(
+            //        facebookOptions =>
+            //        {
+            //            facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
+            //            facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+            //        }
+            //    )
+            //    .AddTwitter(
+            //        twitterOptions =>
+            //        {
+            //            twitterOptions.ConsumerKey = Configuration["Authentication:Twitter:ConsumerKey"];
+            //            twitterOptions.ConsumerSecret = Configuration["Authentication:Twitter:ConsumerSecret"];
+            //        }
+            //    ).AddTwitch(
+            //        twitchOptions =>
+            //        {
+            //            twitchOptions.ClientId = Configuration["Authentication:Twitch:ClientId"];
+            //            twitchOptions.ClientSecret = Configuration["Authentication:Twitch:ClientSecret"];
+            //        }
+            //    )
+            //    .AddBattleNet(
+            //        battleNetOptions =>
+            //        {
+            //            battleNetOptions.ClientId = Configuration["Authentication:BattleNet:ClientId"];
+            //            battleNetOptions.ClientSecret = Configuration["Authentication:BattleNet:ClientSecret"];
+            //        }
+            //    )
+            //    .AddSteam();
         }
 
         public void Configure(IApplicationBuilder application)

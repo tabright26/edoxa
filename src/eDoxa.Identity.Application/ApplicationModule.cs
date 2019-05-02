@@ -12,7 +12,6 @@ using Autofac;
 
 using eDoxa.Commands;
 using eDoxa.Identity.Application.Queries;
-using eDoxa.Identity.Application.Services;
 using eDoxa.Identity.Domain.Repositories;
 using eDoxa.Identity.DTO.Queries;
 using eDoxa.Identity.Infrastructure;
@@ -40,17 +39,6 @@ namespace eDoxa.Identity.Application
             builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerLifetimeScope();
 
             builder.RegisterType<RoleRepository>().As<IRoleRepository>().InstancePerLifetimeScope();
-
-            // Services
-            builder.RegisterType<UserService>().InstancePerLifetimeScope();
-
-            builder.RegisterType<UserService>().As<IUserService>().InstancePerLifetimeScope();
-
-            builder.RegisterType<RoleService>().InstancePerLifetimeScope();
-
-            builder.RegisterType<SignInService>().InstancePerLifetimeScope();
-
-            builder.RegisterType<RedirectionService>().As<IRedirectionService>().InstancePerLifetimeScope();
 
             // Queries
             builder.RegisterType<UserQueries>().As<IUserQueries>().InstancePerLifetimeScope();
