@@ -36,8 +36,9 @@ namespace eDoxa.Swagger.Extensions
                     foreach (var description in provider.ApiVersionDescriptions)
                     {
                         options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName);
+                        
                     }
-
+                    options.RoutePrefix = string.Empty;
                     options.OAuthClientId(configuration["Swagger:ClientId"]);
                     options.OAuthAppName(configuration["Swagger:ClientName"]);
                     options.DefaultModelExpandDepth(0);

@@ -92,7 +92,7 @@ namespace eDoxa.Challenges.Api
 
             application.UseSwagger(Configuration, Environment, provider);
 
-            application.UseMvcWithDefaultRoute();
+            application.UseMvc();
 
             application.UseIntegrationEventSubscriptions();
         }

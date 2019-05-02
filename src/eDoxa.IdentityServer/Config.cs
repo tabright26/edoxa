@@ -55,11 +55,11 @@ namespace eDoxa.IdentityServer
                 ClientName = "eDoxa Identity API (Swagger UI)",
                 RedirectUris = new HashSet<string>
                 {
-                    $"{configuration["Identity:Url"]}/swagger/oauth2-redirect.html"
+                    $"{configuration["Identity:Url"]}/oauth2-redirect.html"
                 },
                 PostLogoutRedirectUris = new HashSet<string>
                 {
-                    $"{configuration["Identity:Url"]}/swagger/"
+                    $"{configuration["Identity:Url"]}/"
                 }
             };
 
@@ -75,11 +75,11 @@ namespace eDoxa.IdentityServer
                 ClientName = "eDoxa Challenge API (Swagger UI)",
                 RedirectUris = new HashSet<string>
                 {
-                    $"{configuration["Challenge:Url"]}/swagger/oauth2-redirect.html"
+                    $"{configuration["Challenge:Url"]}/oauth2-redirect.html"
                 },
                 PostLogoutRedirectUris = new HashSet<string>
                 {
-                    $"{configuration["Challenge:Url"]}/swagger/"
+                    $"{configuration["Challenge:Url"]}/"
                 }
             };
 
@@ -95,11 +95,11 @@ namespace eDoxa.IdentityServer
                 ClientName = "eDoxa Cashier API (Swagger UI)",
                 RedirectUris = new HashSet<string>
                 {
-                    $"{configuration["Cashier:Url"]}/swagger/oauth2-redirect.html"
+                    $"{configuration["Cashier:Url"]}/oauth2-redirect.html"
                 },
                 PostLogoutRedirectUris = new HashSet<string>
                 {
-                    $"{configuration["Cashier:Url"]}/swagger/"
+                    $"{configuration["Cashier:Url"]}/"
                 }
             };
 
