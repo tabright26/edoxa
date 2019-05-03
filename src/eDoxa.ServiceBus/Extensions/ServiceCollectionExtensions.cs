@@ -1,9 +1,9 @@
 ﻿// Filename: ServiceCollectionExtensions.cs
-// Date Created: 2019-04-14
+// Date Created: 2019-04-30
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -13,6 +13,7 @@ using System.Reflection;
 
 using Autofac;
 
+using eDoxa.Security;
 using eDoxa.ServiceBus.Azure;
 using eDoxa.ServiceBus.RabbitMQ;
 
@@ -39,7 +40,7 @@ namespace eDoxa.ServiceBus.Extensions
         {
             services.AddDbContext<IntegrationEventLogDbContext>(
                 options => options.UseSqlServer(
-                    configuration.GetConnectionString("Sql"),
+                    configuration.GetConnectionString(CustomConnectionStrings.SqlServer),
                     sqlServerOptions =>
                     {
                         sqlServerOptions.MigrationsAssembly(migrationsAssembly.GetName().Name);

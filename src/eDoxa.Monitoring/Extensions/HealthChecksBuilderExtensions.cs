@@ -1,14 +1,16 @@
 ﻿// Filename: HealthChecksBuilderExtensions.cs
-// Date Created: 2019-04-13
+// Date Created: 2019-04-30
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
 // 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
+
+using eDoxa.Security;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,7 +42,7 @@ namespace eDoxa.Monitoring.Extensions
         public static void AddSqlServer(this IHealthChecksBuilder builder, IConfiguration configuration)
         {
             builder.AddSqlServer(
-                configuration.GetConnectionString("Sql"),
+                configuration.GetConnectionString(CustomConnectionStrings.SqlServer),
                 name: "microsoft-sql-server",
                 tags: new[]
                 {
@@ -64,7 +66,7 @@ namespace eDoxa.Monitoring.Extensions
         public static void AddRedis(this IHealthChecksBuilder builder, IConfiguration configuration)
         {
             builder.AddRedis(
-                configuration.GetConnectionString("Redis"),
+                configuration.GetConnectionString(CustomConnectionStrings.Redis),
                 "redis",
                 tags: new[]
                 {

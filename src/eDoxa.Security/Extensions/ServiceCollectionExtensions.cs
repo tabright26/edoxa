@@ -46,7 +46,7 @@ namespace eDoxa.Security.Extensions
                 services.AddDataProtection(
                         options => { options.ApplicationDiscriminator = configuration["ApplicationDiscriminator"]; }
                     )
-                    .PersistKeysToRedis(ConnectionMultiplexer.Connect(configuration.GetConnectionString("Redis")), "data-protection");
+                    .PersistKeysToRedis(ConnectionMultiplexer.Connect(configuration.GetConnectionString(CustomConnectionStrings.Redis)), "data-protection");
             }
         }
 
@@ -150,7 +150,11 @@ namespace eDoxa.Security.Extensions
             }
         }
 
-        public static void AddIdentityServerAuthentication(this IServiceCollection services, IConfiguration configuration, IHostingEnvironment environment, ApiResource apiResource)
+        public static void AddIdentityServerAuthentication(
+            this IServiceCollection services,
+            IConfiguration configuration,
+            IHostingEnvironment environment,
+            ApiResource apiResource)
         {
             var authority = configuration.GetValue<string>("IdentityServer:Url");
 
