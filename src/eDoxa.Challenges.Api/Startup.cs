@@ -19,8 +19,8 @@ using eDoxa.Challenges.Application;
 using eDoxa.Challenges.DTO.Factories;
 using eDoxa.Challenges.Infrastructure;
 using eDoxa.Monitoring.Extensions;
-using eDoxa.Security;
 using eDoxa.Security.Extensions;
+using eDoxa.Security.Resources;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.ServiceBus.Extensions;
@@ -37,6 +37,8 @@ namespace eDoxa.Challenges.Api
 {
     public sealed class Startup
     {
+        private static readonly CustomApiResources.ChallengeApi ChallengeApi = new CustomApiResources.ChallengeApi();
+
         public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {
             Configuration = configuration;
@@ -64,13 +66,13 @@ namespace eDoxa.Challenges.Api
 
             services.AddMvcFilters();
 
-            services.AddSwagger(Configuration, Environment);
+            services.AddSwagger(Configuration, Environment, ChallengeApi);
 
             services.AddCorsPolicy();
 
             services.AddServiceBus(Configuration);
 
-            services.AddAuthentication(Configuration, Environment, CustomScopes.ChallengeApi);
+            services.AddIdentityServerAuthentication(Configuration, Environment, ChallengeApi);
 
             services.AddUserInfo();
 
@@ -89,7 +91,7 @@ namespace eDoxa.Challenges.Api
 
             application.UseStaticFiles();
 
-            application.UseSwagger(Configuration, Environment, provider);
+            application.UseSwagger(Environment, provider, ChallengeApi);
 
             application.UseMvc();
 

@@ -19,8 +19,8 @@ using eDoxa.Cashier.Application;
 using eDoxa.Cashier.DTO.Factories;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Monitoring.Extensions;
-using eDoxa.Security;
 using eDoxa.Security.Extensions;
+using eDoxa.Security.Resources;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.ServiceBus.Extensions;
@@ -38,6 +38,8 @@ namespace eDoxa.Cashier.Api
 {
     public sealed class Startup
     {
+        private static readonly CustomApiResources.CashierApi CashierApi = new CustomApiResources.CashierApi();
+
         public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {
             Configuration = configuration;
@@ -65,13 +67,13 @@ namespace eDoxa.Cashier.Api
 
             services.AddMvcFilters();
 
-            services.AddSwagger(Configuration, Environment);
+            services.AddSwagger(Configuration, Environment, CashierApi);
 
             services.AddCorsPolicy();
 
             services.AddServiceBus(Configuration);
 
-            services.AddAuthentication(Configuration, Environment, CustomScopes.CashierApi);
+            services.AddIdentityServerAuthentication(Configuration, Environment, CashierApi);
 
             services.AddUserInfo();
 
@@ -92,7 +94,7 @@ namespace eDoxa.Cashier.Api
 
             application.UseStaticFiles();
 
-            application.UseSwagger(Configuration, Environment, provider);
+            application.UseSwagger(Environment, provider, CashierApi);
 
             application.UseMvc();
 

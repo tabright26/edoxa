@@ -8,21 +8,16 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Infrastructure;
 using eDoxa.IdentityServer.Extensions;
 using eDoxa.Monitoring.Extensions;
-using eDoxa.Security;
 using eDoxa.Security.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -54,10 +49,10 @@ namespace eDoxa.IdentityServer
             services.AddDataProtection(Configuration);
 
             services.AddIdentity<User, Role, IdentityDbContext>(Environment);
-            
-            services.AddIdentityServer<User>(Configuration, Environment);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddIdentityServer<User>(Configuration, Environment);
         }
 
         public void Configure(IApplicationBuilder application)

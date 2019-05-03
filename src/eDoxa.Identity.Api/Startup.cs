@@ -20,8 +20,8 @@ using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.DTO.Factories;
 using eDoxa.Identity.Infrastructure;
 using eDoxa.Monitoring.Extensions;
-using eDoxa.Security;
 using eDoxa.Security.Extensions;
+using eDoxa.Security.Resources;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.ServiceBus.Extensions;
@@ -38,6 +38,8 @@ namespace eDoxa.Identity.Api
 {
     public sealed class Startup
     {
+        private static readonly CustomApiResources.IdentityApi IdentityApi = new CustomApiResources.IdentityApi();
+
         public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {
             Configuration = configuration;
@@ -66,13 +68,13 @@ namespace eDoxa.Identity.Api
 
             services.AddMvcFilters();
 
-            services.AddSwagger(Configuration, Environment);
+            services.AddSwagger(Configuration, Environment, IdentityApi);
 
             services.AddCorsPolicy();
 
             services.AddServiceBus(Configuration);
 
-            services.AddAuthentication(Configuration, Environment, CustomScopes.IdentityApi);
+            services.AddIdentityServerAuthentication(Configuration, Environment, IdentityApi);
 
             services.AddUserInfo();
 
@@ -91,7 +93,7 @@ namespace eDoxa.Identity.Api
 
             application.UseStaticFiles();
 
-            application.UseSwagger(Configuration, Environment, provider);
+            application.UseSwagger(Environment, provider, IdentityApi);
 
             application.UseMvc();
 

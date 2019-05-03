@@ -13,7 +13,9 @@ using System;
 using eDoxa.Security.Factories;
 using eDoxa.Security.Services;
 
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using IdentityServer4.AccessTokenValidation;
+using IdentityServer4.Models;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
@@ -148,20 +150,18 @@ namespace eDoxa.Security.Extensions
             }
         }
 
-        public static void AddAuthentication(this IServiceCollection services, IConfiguration configuration, IHostingEnvironment environment, string audience)
+        public static void AddIdentityServerAuthentication(this IServiceCollection services, IConfiguration configuration, IHostingEnvironment environment, ApiResource apiResource)
         {
             var authority = configuration.GetValue<string>("IdentityServer:Url");
 
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>
-            {
-                options.Audience = audience;
-                options.Authority = authority;
-                options.RequireHttpsMetadata = environment.IsProduction();
-            });
+            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+                .AddIdentityServerAuthentication(options =>
+                    {
+                        options.ApiName = apiResource.Name;
+                        options.Authority = authority;
+                        options.RequireHttpsMetadata = environment.IsProduction();
+                    }
+                );
         }
     }
 }

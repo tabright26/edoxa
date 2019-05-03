@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 
+using eDoxa.Security.Extensions;
 using eDoxa.Security.Resources;
 
 using IdentityServer4;
@@ -43,68 +44,11 @@ namespace eDoxa.Security
 
         public static IEnumerable<Client> GetClients(IConfiguration configuration)
         {
-            yield return new Client
-            {
-                AllowAccessTokensViaBrowser = true,
-                AllowedGrantTypes = GrantTypes.Implicit,
-                AllowedScopes = new HashSet<string>
-                {
-                    CustomScopes.IdentityApi
-                },
-                ClientId = "edoxa.identity.swagger.client",
-                ClientName = "eDoxa Identity API (Swagger UI)",
-                RequireConsent = false,
-                RedirectUris = new HashSet<string>
-                {
-                    $"{configuration["Identity:Url"]}/oauth2-redirect.html"
-                },
-                PostLogoutRedirectUris = new HashSet<string>
-                {
-                    $"{configuration["Identity:Url"]}/"
-                }
-            };
+            yield return new CustomApiResources.IdentityApi().SwaggerClient(configuration["Identity:Url"]);
 
-            yield return new Client
-            {
-                AllowAccessTokensViaBrowser = true,
-                AllowedGrantTypes = GrantTypes.Implicit,
-                AllowedScopes = new HashSet<string>
-                {
-                    CustomScopes.ChallengeApi
-                },
-                ClientId = "edoxa.challenge.swagger.client",
-                ClientName = "eDoxa Challenge API (Swagger UI)",
-                RequireConsent = false,
-                RedirectUris = new HashSet<string>
-                {
-                    $"{configuration["Challenge:Url"]}/oauth2-redirect.html"
-                },
-                PostLogoutRedirectUris = new HashSet<string>
-                {
-                    $"{configuration["Challenge:Url"]}/"
-                }
-            };
+            yield return new CustomApiResources.CashierApi().SwaggerClient(configuration["Cashier:Url"]);
 
-            yield return new Client
-            {
-                AllowAccessTokensViaBrowser = true,
-                AllowedGrantTypes = GrantTypes.Implicit,
-                AllowedScopes = new HashSet<string>
-                {
-                    CustomScopes.CashierApi
-                },
-                ClientId = "edoxa.cashier.swagger.client",
-                ClientName = "eDoxa Cashier API (Swagger UI)",
-                RequireConsent = false,
-                RedirectUris = new HashSet<string>
-                {
-                    $"{configuration["Cashier:Url"]}/oauth2-redirect.html"
-                },
-                PostLogoutRedirectUris = new HashSet<string>
-                {
-                    $"{configuration["Cashier:Url"]}/"
-                }
-            };
+            yield return new CustomApiResources.ChallengeApi().SwaggerClient(configuration["Challenge:Url"]);
 
             yield return new Client
             {
