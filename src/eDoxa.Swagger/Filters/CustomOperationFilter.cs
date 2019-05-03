@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 
-using eDoxa.IS;
 using eDoxa.Security;
 
 using JetBrains.Annotations;

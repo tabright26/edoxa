@@ -62,7 +62,7 @@ namespace eDoxa.Cashier.Api.Controllers
         /// <summary>
         ///     Deposit money on a user's account.
         /// </summary>
-        [HttpPatch("deposit", Name = nameof(DepositMoneyAsync))]
+        [HttpPost("deposit", Name = nameof(DepositMoneyAsync))]
         public async Task<IActionResult> DepositMoneyAsync([FromBody] DepositMoneyCommand command)
         {
             return await _mediator.SendCommandAsync(command);
@@ -71,7 +71,7 @@ namespace eDoxa.Cashier.Api.Controllers
         /// <summary>
         ///     Withdraw money from a user's account.
         /// </summary>
-        [HttpPatch("withdraw", Name = nameof(WithdrawMoneyAsync))]
+        [HttpPost("withdraw", Name = nameof(WithdrawMoneyAsync))]
         public async Task<IActionResult> WithdrawMoneyAsync([FromBody] WithdrawMoneyCommand command)
         {
             return await _mediator.SendCommandAsync(command);

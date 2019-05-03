@@ -28,7 +28,8 @@ namespace eDoxa.Security.Services
             _httpContext = accessor.HttpContext;
         }
 
-        public Option<Guid> Subject => this.TryGetClaim(JwtClaimTypes.Subject).Select(value => new Option<Guid>(new Guid(value))).DefaultIfEmpty(new Option<Guid>()).Single();
+        public Option<Guid> Subject =>
+            this.TryGetClaim(JwtClaimTypes.Subject).Select(value => new Option<Guid>(new Guid(value))).DefaultIfEmpty(new Option<Guid>()).Single();
 
         private Option<string> TryGetClaim(string type)
         {

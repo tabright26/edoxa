@@ -18,9 +18,8 @@ using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Application;
 using eDoxa.Cashier.DTO.Factories;
 using eDoxa.Cashier.Infrastructure;
-using eDoxa.IS;
-using eDoxa.IS.Extensions;
 using eDoxa.Monitoring.Extensions;
+using eDoxa.Security;
 using eDoxa.Security.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
@@ -72,7 +71,7 @@ namespace eDoxa.Cashier.Api
 
             services.AddServiceBus(Configuration);
 
-            services.AddAuthentication(Configuration, CustomScopes.CashierApi);
+            services.AddAuthentication(Configuration, Environment, CustomScopes.CashierApi);
 
             services.AddUserInfo();
 

@@ -17,9 +17,8 @@ using eDoxa.Identity.Api.Extensions;
 using eDoxa.Identity.Application;
 using eDoxa.Identity.DTO.Factories;
 using eDoxa.Identity.Infrastructure;
-using eDoxa.IS;
-using eDoxa.IS.Extensions;
 using eDoxa.Monitoring.Extensions;
+using eDoxa.Security;
 using eDoxa.Security.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
@@ -102,7 +101,7 @@ namespace eDoxa.Identity.Api
 
             services.AddServiceBus(Configuration);
 
-            services.AddAuthentication(Configuration, CustomScopes.IdentityApi);
+            services.AddAuthentication(Configuration, Environment, CustomScopes.IdentityApi);
 
             services.AddUserInfo();
 

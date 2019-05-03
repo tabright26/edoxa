@@ -62,7 +62,7 @@ namespace eDoxa.Cashier.Api.Controllers
         /// <summary>
         ///     Buy tokens on a user's account.
         /// </summary>
-        [HttpPatch("deposit", Name = nameof(DepositTokensAsync))]
+        [HttpPost("deposit", Name = nameof(DepositTokensAsync))]
         public async Task<IActionResult> DepositTokensAsync([FromBody] DepositTokensCommand command)
         {
             return await _mediator.SendCommandAsync(command);

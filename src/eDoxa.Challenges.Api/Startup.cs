@@ -18,9 +18,8 @@ using eDoxa.Challenges.Api.Extensions;
 using eDoxa.Challenges.Application;
 using eDoxa.Challenges.DTO.Factories;
 using eDoxa.Challenges.Infrastructure;
-using eDoxa.IS;
-using eDoxa.IS.Extensions;
 using eDoxa.Monitoring.Extensions;
+using eDoxa.Security;
 using eDoxa.Security.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
@@ -71,7 +70,7 @@ namespace eDoxa.Challenges.Api
 
             services.AddServiceBus(Configuration);
 
-            services.AddAuthentication(Configuration, CustomScopes.ChallengeApi);
+            services.AddAuthentication(Configuration, Environment, CustomScopes.ChallengeApi);
 
             services.AddUserInfo();
 

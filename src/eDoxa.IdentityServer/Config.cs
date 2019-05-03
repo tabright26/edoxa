@@ -1,16 +1,16 @@
 ﻿// Filename: Config.cs
-// Date Created: 2019-04-21
+// Date Created: 2019-04-30
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System.Collections.Generic;
 
-using eDoxa.IS;
+using eDoxa.Security;
 
 using IdentityServer4;
 using IdentityServer4.Models;
@@ -30,6 +30,10 @@ namespace eDoxa.IdentityServer
             yield return new IdentityResources.Email();
 
             yield return new IdentityResources.Phone();
+
+            yield return new CustomIdentityResources.Role();
+
+            yield return new CustomIdentityResources.Permission();
         }
 
         public static IEnumerable<ApiResource> GetApiResources()
@@ -53,6 +57,7 @@ namespace eDoxa.IdentityServer
                 },
                 ClientId = "edoxa.identity.swagger.client",
                 ClientName = "eDoxa Identity API (Swagger UI)",
+                RequireConsent = false,
                 RedirectUris = new HashSet<string>
                 {
                     $"{configuration["Identity:Url"]}/oauth2-redirect.html"
@@ -73,6 +78,7 @@ namespace eDoxa.IdentityServer
                 },
                 ClientId = "edoxa.challenge.swagger.client",
                 ClientName = "eDoxa Challenge API (Swagger UI)",
+                RequireConsent = false,
                 RedirectUris = new HashSet<string>
                 {
                     $"{configuration["Challenge:Url"]}/oauth2-redirect.html"
@@ -93,6 +99,7 @@ namespace eDoxa.IdentityServer
                 },
                 ClientId = "edoxa.cashier.swagger.client",
                 ClientName = "eDoxa Cashier API (Swagger UI)",
+                RequireConsent = false,
                 RedirectUris = new HashSet<string>
                 {
                     $"{configuration["Cashier:Url"]}/oauth2-redirect.html"
@@ -134,6 +141,8 @@ namespace eDoxa.IdentityServer
                     IdentityServerConstants.StandardScopes.Profile,
                     IdentityServerConstants.StandardScopes.Email,
                     IdentityServerConstants.StandardScopes.Phone,
+                    CustomScopes.Roles,
+                    CustomScopes.Permissions,
                     CustomScopes.IdentityApi,
                     CustomScopes.CashierApi,
                     CustomScopes.ChallengeApi
