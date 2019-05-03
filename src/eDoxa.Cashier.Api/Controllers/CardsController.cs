@@ -1,9 +1,9 @@
-﻿// Filename: UserCardsController.cs
-// Date Created: 2019-04-21
+﻿// Filename: CardsController.cs
+// Date Created: 2019-04-30
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -31,14 +31,14 @@ namespace eDoxa.Cashier.Api.Controllers
     [Route("api/cards")]
     public sealed class CardsController : ControllerBase
     {
+        private readonly ICardQueries _cardQueries;
         private readonly IMediator _mediator;
         private readonly IUserInfoService _userInfoService;
-        private readonly ICardQueries _queries;
 
-        public CardsController(IUserInfoService userInfoService, ICardQueries queries, IMediator mediator)
+        public CardsController(IUserInfoService userInfoService, ICardQueries cardQueries, IMediator mediator)
         {
             _userInfoService = userInfoService;
-            _queries = queries;
+            _cardQueries = cardQueries;
             _mediator = mediator;
         }
 
@@ -50,7 +50,7 @@ namespace eDoxa.Cashier.Api.Controllers
         {
             var customerId = _userInfoService.CustomerId.Select(CustomerId.Parse).SingleOrDefault();
 
-            var cards = await _queries.FindUserCardsAsync(customerId);
+            var cards = await _cardQueries.FindUserCardsAsync(customerId);
 
             return cards
                 .Select(this.Ok)
@@ -76,7 +76,7 @@ namespace eDoxa.Cashier.Api.Controllers
         {
             var customerId = _userInfoService.CustomerId.Select(CustomerId.Parse).SingleOrDefault();
 
-            var card = await _queries.FindUserCardAsync(customerId, cardId);
+            var card = await _cardQueries.FindUserCardAsync(customerId, cardId);
 
             return card
                 .Select(this.Ok)
@@ -91,9 +91,7 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpDelete("{cardId}", Name = nameof(DeleteCardAsync))]
         public async Task<IActionResult> DeleteCardAsync(CardId cardId)
         {
-            var command = new DeleteCardCommand(cardId);
-
-            return await _mediator.SendCommandAsync(command);
+            return await _mediator.SendCommandAsync(new DeleteCardCommand(cardId));
         }
 
         /// <summary>
@@ -102,9 +100,7 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpPatch("{cardId}/default", Name = nameof(UpdateDefaultCardAsync))]
         public async Task<IActionResult> UpdateDefaultCardAsync(CardId cardId)
         {
-            var command = new UpdateDefaultCardCommand(cardId);
-
-            return await _mediator.SendCommandAsync(command);
+            return await _mediator.SendCommandAsync(new UpdateCardDefaultCommand(cardId));
         }
     }
 }

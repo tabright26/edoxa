@@ -14,9 +14,9 @@ using FluentValidation;
 
 namespace eDoxa.Cashier.Application.Commands.Validations
 {
-    internal sealed class UpdateDefaultCardCommandValidator : CommandValidator<UpdateDefaultCardCommand>
+    internal sealed class UpdateCardDefaultCommandValidator : CommandValidator<UpdateCardDefaultCommand>
     {
-        public UpdateDefaultCardCommandValidator()
+        public UpdateCardDefaultCommandValidator()
         {
             this.RuleFor(command => command.CardId).NotEmpty();
         }

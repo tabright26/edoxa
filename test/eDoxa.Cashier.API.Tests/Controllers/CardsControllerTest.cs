@@ -1,9 +1,9 @@
-﻿// Filename: UserCardsControllerTest.cs
-// Date Created: 2019-04-21
+﻿// Filename: CardsControllerTest.cs
+// Date Created: 2019-04-30
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -39,26 +39,25 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
     public sealed class CardsControllerTest
     {
         private static readonly UserAggregateFactory UserAggregateFactory = UserAggregateFactory.Instance;
-
-        private Mock<IUserInfoService> _userInfoService;
-        private Mock<IMediator> _mediator;
-        private Mock<ICardQueries> _queries;
+        private Mock<ICardQueries> _mockCardQueries;
+        private Mock<IMediator> _mockMediator;
+        private Mock<IUserInfoService> _mockUserInfoService;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            _userInfoService = new Mock<IUserInfoService>();
-            _queries = new Mock<ICardQueries>();
-            _mediator = new Mock<IMediator>();
+            _mockCardQueries = new Mock<ICardQueries>();
+            _mockMediator = new Mock<IMediator>();
+            _mockUserInfoService = new Mock<IUserInfoService>();
         }
 
         [TestMethod]
         public async Task FindUserCardsAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            _userInfoService.SetupGet(userInfoService => userInfoService.CustomerId).Returns(new Option<string>("cus_123qweqwe"));
+            _mockUserInfoService.SetupGet(userInfoService => userInfoService.CustomerId).Returns(new Option<string>("cus_123qweqwe"));
 
-            _queries.Setup(queries => queries.FindUserCardsAsync(It.IsAny<CustomerId>())).ReturnsAsync(new Option<CardListDTO>(new CardListDTO
+            _mockCardQueries.Setup(queries => queries.FindUserCardsAsync(It.IsAny<CustomerId>())).ReturnsAsync(new Option<CardListDTO>(new CardListDTO
             {
                 Items = new List<CardDTO>
                 {
@@ -66,7 +65,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
                 }
             })).Verifiable();
 
-            var controller = new CardsController(_userInfoService.Object, _queries.Object, _mediator.Object);
+            var controller = new CardsController(_mockUserInfoService.Object, _mockCardQueries.Object, _mockMediator.Object);
 
             // Act
             var result = await controller.FindUserCardsAsync();
@@ -74,20 +73,20 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            _queries.Verify();
+            _mockCardQueries.Verify();
 
-            _mediator.VerifyNoOtherCalls();
+            _mockMediator.VerifyNoOtherCalls();
         }
 
         [TestMethod]
         public async Task FindUserCardsAsync_ShouldBeNoContentObjectResult()
         {
             // Arrange
-            _userInfoService.SetupGet(userInfoService => userInfoService.CustomerId).Returns(new Option<string>("cus_123qweqwe"));
+            _mockUserInfoService.SetupGet(userInfoService => userInfoService.CustomerId).Returns(new Option<string>("cus_123qweqwe"));
 
-            _queries.Setup(queries => queries.FindUserCardsAsync(It.IsAny<CustomerId>())).ReturnsAsync(new Option<CardListDTO>()).Verifiable();
+            _mockCardQueries.Setup(queries => queries.FindUserCardsAsync(It.IsAny<CustomerId>())).ReturnsAsync(new Option<CardListDTO>()).Verifiable();
 
-            var controller = new CardsController(_userInfoService.Object, _queries.Object, _mediator.Object);
+            var controller = new CardsController(_mockUserInfoService.Object, _mockCardQueries.Object, _mockMediator.Object);
 
             // Act
             var result = await controller.FindUserCardsAsync();
@@ -95,9 +94,9 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Assert
             result.Should().BeOfType<NoContentResult>();
 
-            _queries.Verify();
+            _mockCardQueries.Verify();
 
-            _mediator.VerifyNoOtherCalls();
+            _mockMediator.VerifyNoOtherCalls();
         }
 
         [TestMethod]
@@ -108,12 +107,12 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
 
             var command = new CreateCardCommand(cardId.ToString());
 
-            _userInfoService.SetupGet(userInfoService => userInfoService.Subject).Returns(new Option<Guid>(Guid.NewGuid()));
+            _mockUserInfoService.SetupGet(userInfoService => userInfoService.Subject).Returns(new Option<Guid>(Guid.NewGuid()));
 
-            _mediator.Setup(mediator => mediator.Send(It.IsAny<CreateCardCommand>(), It.IsAny<CancellationToken>()))
+            _mockMediator.Setup(mediator => mediator.Send(It.IsAny<CreateCardCommand>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new OkObjectResult(new Card())).Verifiable();
 
-            var controller = new CardsController(_userInfoService.Object, _queries.Object, _mediator.Object);
+            var controller = new CardsController(_mockUserInfoService.Object, _mockCardQueries.Object, _mockMediator.Object);
 
             // Act
             var result = await controller.CreateCardAsync(command);
@@ -121,9 +120,9 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            _queries.VerifyNoOtherCalls();
+            _mockCardQueries.VerifyNoOtherCalls();
 
-            _mediator.Verify();
+            _mockMediator.Verify();
         }
 
         [TestMethod]
@@ -132,11 +131,13 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Arrange
             var cardId = UserAggregateFactory.CreateCardId();
 
-            _userInfoService.SetupGet(userInfoService => userInfoService.CustomerId).Returns(new Option<string>("cus_123qweqwe"));
+            _mockUserInfoService.SetupGet(userInfoService => userInfoService.CustomerId).Returns(new Option<string>("cus_123qweqwe"));
 
-            _queries.Setup(queries => queries.FindUserCardAsync(It.IsAny<CustomerId>(), It.IsAny<CardId>())).ReturnsAsync(new Option<CardDTO>(new CardDTO())).Verifiable();
+            _mockCardQueries.Setup(queries => queries.FindUserCardAsync(It.IsAny<CustomerId>(), It.IsAny<CardId>()))
+                .ReturnsAsync(new Option<CardDTO>(new CardDTO()))
+                .Verifiable();
 
-            var controller = new CardsController(_userInfoService.Object, _queries.Object, _mediator.Object);
+            var controller = new CardsController(_mockUserInfoService.Object, _mockCardQueries.Object, _mockMediator.Object);
 
             // Act
             var result = await controller.FindUserCardAsync(cardId);
@@ -144,9 +145,9 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            _queries.Verify();
+            _mockCardQueries.Verify();
 
-            _mediator.VerifyNoOtherCalls();
+            _mockMediator.VerifyNoOtherCalls();
         }
 
         [TestMethod]
@@ -155,21 +156,22 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Arrange
             var cardId = UserAggregateFactory.CreateCardId();
 
-            _userInfoService.SetupGet(userInfoService => userInfoService.Subject).Returns(new Option<Guid>(Guid.NewGuid()));
+            _mockUserInfoService.SetupGet(userInfoService => userInfoService.Subject).Returns(new Option<Guid>(Guid.NewGuid()));
 
-            _mediator.Setup(mediator => mediator.Send(It.IsAny<DeleteCardCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(new OkResult()).Verifiable();
+            _mockMediator.Setup(mediator => mediator.Send(It.IsAny<DeleteCardCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(new OkResult())
+                .Verifiable();
 
-            var controller = new CardsController(_userInfoService.Object, _queries.Object, _mediator.Object);
+            var controller = new CardsController(_mockUserInfoService.Object, _mockCardQueries.Object, _mockMediator.Object);
 
             // Act
-            var result = await controller.DeleteCardAsync( cardId);
+            var result = await controller.DeleteCardAsync(cardId);
 
             // Assert
             result.Should().BeOfType<OkResult>();
 
-            _queries.VerifyNoOtherCalls();
+            _mockCardQueries.VerifyNoOtherCalls();
 
-            _mediator.Verify();
+            _mockMediator.Verify();
         }
 
         [TestMethod]
@@ -178,13 +180,13 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Arrange
             var cardId = UserAggregateFactory.CreateCardId();
 
-            _userInfoService.SetupGet(userInfoService => userInfoService.Subject).Returns(new Option<Guid>(Guid.NewGuid()));
+            _mockUserInfoService.SetupGet(userInfoService => userInfoService.Subject).Returns(new Option<Guid>(Guid.NewGuid()));
 
-            _mediator.Setup(mediator => mediator.Send(It.IsAny<UpdateDefaultCardCommand>(), It.IsAny<CancellationToken>()))
+            _mockMediator.Setup(mediator => mediator.Send(It.IsAny<UpdateCardDefaultCommand>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new OkObjectResult(new Customer()))
                 .Verifiable();
 
-            var controller = new CardsController(_userInfoService.Object, _queries.Object, _mediator.Object);
+            var controller = new CardsController(_mockUserInfoService.Object, _mockCardQueries.Object, _mockMediator.Object);
 
             // Act
             var result = await controller.UpdateDefaultCardAsync(cardId);
@@ -192,9 +194,9 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            _queries.VerifyNoOtherCalls();
+            _mockCardQueries.VerifyNoOtherCalls();
 
-            _mediator.Verify();
+            _mockMediator.Verify();
         }
     }
 }

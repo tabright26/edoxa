@@ -1,4 +1,4 @@
-﻿// Filename: UpdateAddressCommandHandler.cs
+﻿// Filename: UpdateDefaultCardCommandHandler.cs
 // Date Created: 2019-04-30
 // 
 // ================================================
@@ -23,19 +23,19 @@ using Stripe;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
-    internal sealed class UpdateAddressCommandHandler : ICommandHandler<UpdateAddressCommand, IActionResult>
+    internal sealed class UpdateCardDefaultCommandHandler : ICommandHandler<UpdateCardDefaultCommand, IActionResult>
     {
         private readonly CustomerService _service;
         private readonly IUserInfoService _userInfoService;
 
-        public UpdateAddressCommandHandler(IUserInfoService userInfoService, CustomerService service)
+        public UpdateCardDefaultCommandHandler(IUserInfoService userInfoService, CustomerService service)
         {
             _userInfoService = userInfoService;
             _service = service;
         }
 
         [ItemCanBeNull]
-        public async Task<IActionResult> Handle([NotNull] UpdateAddressCommand command, CancellationToken cancellationToken)
+        public async Task<IActionResult> Handle([NotNull] UpdateCardDefaultCommand command, CancellationToken cancellationToken)
         {
             var customerId = _userInfoService.CustomerId.SingleOrDefault();
 
@@ -46,25 +46,12 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 
             var options = new CustomerUpdateOptions
             {
-                Shipping = new ShippingOptions
-                {
-                    Address = new AddressOptions
-                    {
-                        City = command.City,
-                        Country = command.Country,
-                        Line1 = command.Line1,
-                        Line2 = command.Line2,
-                        PostalCode = command.PostalCode,
-                        State = command.State
-                    },
-                    Name = command.Name,
-                    Phone = command.Phone
-                }
+                DefaultSource = command.CardId.ToString()
             };
 
             var customer = await _service.UpdateAsync(customerId, options, cancellationToken: cancellationToken);
 
-            return new OkObjectResult(customer?.Shipping?.Address);
+            return new OkObjectResult(customer);
         }
     }
 }

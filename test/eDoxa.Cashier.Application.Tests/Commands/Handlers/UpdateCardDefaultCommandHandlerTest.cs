@@ -1,4 +1,4 @@
-﻿// Filename: UpdateAddressCommandHandlerTest.cs
+﻿// Filename: UpdateDefaultCardCommandHandlerTest.cs
 // Date Created: 2019-04-30
 // 
 // ================================================
@@ -30,7 +30,7 @@ using Stripe;
 namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
 {
     [TestClass]
-    public sealed class UpdateAddressCommandHandlerTest
+    public sealed class UpdateCardDefaultCommandHandlerTest
     {
         private readonly UserAggregateFactory _userAggregateFactory = UserAggregateFactory.Instance;
 
@@ -40,14 +40,14 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             // Arrange
             var customer = _userAggregateFactory.CreateCustomer();
 
-            var address = customer.Shipping.Address;
+            var cardId = _userAggregateFactory.CreateCardId();
 
             var mockUserInfoService = new Mock<IUserInfoService>();
 
             mockUserInfoService.SetupGet(userInfoService => userInfoService.Subject).Returns(new Option<Guid>(Guid.NewGuid()));
 
             mockUserInfoService.SetupGet(userInfoService => userInfoService.CustomerId).Returns(new Option<string>(string.Empty));
-
+            
             var mockCustomerService = new Mock<CustomerService>();
 
             mockCustomerService.Setup(
@@ -61,15 +61,13 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
                 .ReturnsAsync(customer)
                 .Verifiable();
 
-            var handler = new UpdateAddressCommandHandler(mockUserInfoService.Object, mockCustomerService.Object);
+            var handler = new UpdateCardDefaultCommandHandler(mockUserInfoService.Object, mockCustomerService.Object);
 
             // Act
-            var response = await handler.Handle(
-                new UpdateAddressCommand(address.City, address.Country, address.Line1, address.Line2, address.PostalCode, address.State), default
-            );
+            var response = await handler.Handle(new UpdateCardDefaultCommand(cardId), default);
 
             // Assert
-            response.Should().BeEquivalentTo(new OkObjectResult(address));
+            response.Should().BeEquivalentTo(new OkObjectResult(customer));
 
             mockCustomerService.Verify(
                 service =>
