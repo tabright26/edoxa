@@ -3,13 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using eDoxa.Identity.Infrastructure;
 
-namespace eDoxa.IdentityServer.Data.Migrations
+namespace eDoxa.Identity.Infrastructure.Migrations
 {
-    [DbContext(typeof(IdentityServerDbContext))]
-    internal class IdentityServerDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(IdentityDbContext))]
+    [Migration("20190503182142_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -18,7 +22,7 @@ namespace eDoxa.IdentityServer.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("eDoxa.IdentityServer.Models.Role", b =>
+            modelBuilder.Entity("eDoxa.Identity.Domain.AggregateModels.RoleAggregate.Role", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -42,7 +46,7 @@ namespace eDoxa.IdentityServer.Data.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("eDoxa.IdentityServer.Models.RoleClaim", b =>
+            modelBuilder.Entity("eDoxa.Identity.Domain.AggregateModels.RoleAggregate.RoleClaim", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -61,7 +65,7 @@ namespace eDoxa.IdentityServer.Data.Migrations
                     b.ToTable("RoleClaims");
                 });
 
-            modelBuilder.Entity("eDoxa.IdentityServer.Models.User", b =>
+            modelBuilder.Entity("eDoxa.Identity.Domain.AggregateModels.UserAggregate.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -112,7 +116,7 @@ namespace eDoxa.IdentityServer.Data.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("eDoxa.IdentityServer.Models.UserClaim", b =>
+            modelBuilder.Entity("eDoxa.Identity.Domain.AggregateModels.UserAggregate.UserClaim", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -131,7 +135,7 @@ namespace eDoxa.IdentityServer.Data.Migrations
                     b.ToTable("UserClaims");
                 });
 
-            modelBuilder.Entity("eDoxa.IdentityServer.Models.UserLogin", b =>
+            modelBuilder.Entity("eDoxa.Identity.Domain.AggregateModels.UserAggregate.UserLogin", b =>
                 {
                     b.Property<string>("LoginProvider");
 
@@ -148,7 +152,7 @@ namespace eDoxa.IdentityServer.Data.Migrations
                     b.ToTable("UserLogins");
                 });
 
-            modelBuilder.Entity("eDoxa.IdentityServer.Models.UserRole", b =>
+            modelBuilder.Entity("eDoxa.Identity.Domain.AggregateModels.UserAggregate.UserRole", b =>
                 {
                     b.Property<Guid>("UserId");
 
@@ -161,7 +165,7 @@ namespace eDoxa.IdentityServer.Data.Migrations
                     b.ToTable("UserRoles");
                 });
 
-            modelBuilder.Entity("eDoxa.IdentityServer.Models.UserToken", b =>
+            modelBuilder.Entity("eDoxa.Identity.Domain.AggregateModels.UserAggregate.UserToken", b =>
                 {
                     b.Property<Guid>("UserId");
 
@@ -176,46 +180,46 @@ namespace eDoxa.IdentityServer.Data.Migrations
                     b.ToTable("UserTokens");
                 });
 
-            modelBuilder.Entity("eDoxa.IdentityServer.Models.RoleClaim", b =>
+            modelBuilder.Entity("eDoxa.Identity.Domain.AggregateModels.RoleAggregate.RoleClaim", b =>
                 {
-                    b.HasOne("eDoxa.IdentityServer.Models.Role")
+                    b.HasOne("eDoxa.Identity.Domain.AggregateModels.RoleAggregate.Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("eDoxa.IdentityServer.Models.UserClaim", b =>
+            modelBuilder.Entity("eDoxa.Identity.Domain.AggregateModels.UserAggregate.UserClaim", b =>
                 {
-                    b.HasOne("eDoxa.IdentityServer.Models.User")
+                    b.HasOne("eDoxa.Identity.Domain.AggregateModels.UserAggregate.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("eDoxa.IdentityServer.Models.UserLogin", b =>
+            modelBuilder.Entity("eDoxa.Identity.Domain.AggregateModels.UserAggregate.UserLogin", b =>
                 {
-                    b.HasOne("eDoxa.IdentityServer.Models.User")
+                    b.HasOne("eDoxa.Identity.Domain.AggregateModels.UserAggregate.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("eDoxa.IdentityServer.Models.UserRole", b =>
+            modelBuilder.Entity("eDoxa.Identity.Domain.AggregateModels.UserAggregate.UserRole", b =>
                 {
-                    b.HasOne("eDoxa.IdentityServer.Models.Role")
+                    b.HasOne("eDoxa.Identity.Domain.AggregateModels.RoleAggregate.Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("eDoxa.IdentityServer.Models.User")
+                    b.HasOne("eDoxa.Identity.Domain.AggregateModels.UserAggregate.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("eDoxa.IdentityServer.Models.UserToken", b =>
+            modelBuilder.Entity("eDoxa.Identity.Domain.AggregateModels.UserAggregate.UserToken", b =>
                 {
-                    b.HasOne("eDoxa.IdentityServer.Models.User")
+                    b.HasOne("eDoxa.Identity.Domain.AggregateModels.UserAggregate.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

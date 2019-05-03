@@ -1,5 +1,5 @@
 ﻿// Filename: CustomApiResources.cs
-// Date Created: 2019-05-02
+// Date Created: 2019-05-03
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,7 +12,7 @@ using System.Linq;
 
 using IdentityServer4.Models;
 
-namespace eDoxa.Security
+namespace eDoxa.Security.Resources
 {
     public sealed class CustomApiResources
     {
@@ -32,9 +32,13 @@ namespace eDoxa.Security
             public CashierApi() : base(
                 "edoxa.cashier.api",
                 "eDoxa Cashier API",
-                new CustomIdentityResources.Role().UserClaims.Union(
-                    new CustomIdentityResources.Permission().UserClaims.Union(
-                        new CustomIdentityResources.Stripe().UserClaims)))
+                new IdentityResources.Profile().UserClaims.Union(
+                    new IdentityResources.Email().UserClaims.Union(
+                        new IdentityResources.Phone().UserClaims.Union(
+                            new IdentityResources.Address().UserClaims.Union(
+                                new CustomIdentityResources.Role().UserClaims.Union(
+                                    new CustomIdentityResources.Permission().UserClaims.Union(
+                                        new CustomIdentityResources.Stripe().UserClaims)))))))
             {
             }
         }
@@ -44,8 +48,9 @@ namespace eDoxa.Security
             public ChallengeApi() : base(
                 "edoxa.challenge.api",
                 "eDoxa Challenge API",
-                new CustomIdentityResources.Role().UserClaims.Union(
-                    new CustomIdentityResources.Permission().UserClaims))
+                new IdentityResources.Profile().UserClaims.Union(
+                    new CustomIdentityResources.Role().UserClaims.Union(
+                        new CustomIdentityResources.Permission().UserClaims)))
             {
             }
         }

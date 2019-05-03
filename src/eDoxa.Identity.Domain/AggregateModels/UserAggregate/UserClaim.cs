@@ -14,10 +14,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
 {
-    /// <summary>
-    ///     Represents a claim that a user prossesses in the system.
-    /// </summary>
-    public class UserClaim : IdentityUserClaim<Guid>
+    public sealed class UserClaim : IdentityUserClaim<Guid>
     {
     }
 }

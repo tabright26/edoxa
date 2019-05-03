@@ -18,7 +18,7 @@ using eDoxa.Challenges.Domain.AggregateModels.UserAggregate;
 using eDoxa.Challenges.DTO;
 using eDoxa.Challenges.DTO.Queries;
 using eDoxa.Functional.Maybe;
-using eDoxa.Security.Services;
+using eDoxa.Security;
 using eDoxa.Seedwork.Domain.Common.Enums;
 
 using FluentAssertions;

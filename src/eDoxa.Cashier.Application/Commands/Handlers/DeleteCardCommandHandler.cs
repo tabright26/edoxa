@@ -13,7 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Commands.Abstractions.Handlers;
-using eDoxa.Security.Services;
+using eDoxa.Security;
 
 using JetBrains.Annotations;
 

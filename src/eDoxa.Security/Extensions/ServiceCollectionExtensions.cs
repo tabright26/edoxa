@@ -8,11 +8,19 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
+
+using eDoxa.Security.Factories;
 using eDoxa.Security.Services;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -22,9 +30,31 @@ namespace eDoxa.Security.Extensions
 {
     public static class ServiceCollectionExtensions
     {
+        // TODO: TO REFACTOR.
         public static void AddUserInfo(this IServiceCollection services)
         {
             services.AddSingleton<IUserInfoService, UserInfoService>();
+        }
+
+        // TODO: THIS IS NOT TESTED.
+        public static void AddDataProtection(this IServiceCollection services, IConfiguration configuration)
+        {
+            if (configuration.GetValue<bool>("AzureKubernetesService:Enable"))
+            {
+                services.AddDataProtection(
+                        options => { options.ApplicationDiscriminator = configuration["ApplicationDiscriminator"]; }
+                    )
+                    .PersistKeysToRedis(ConnectionMultiplexer.Connect(configuration.GetConnectionString("Redis")), "data-protection");
+            }
+        }
+
+        public static void AddCookiePolicy(this IServiceCollection services)
+        {
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
         }
 
         public static void AddCorsPolicy(this IServiceCollection services)
@@ -37,14 +67,84 @@ namespace eDoxa.Security.Extensions
             );
         }
 
-        public static void AddDataProtection(this IServiceCollection services, IConfiguration configuration)
+        public static void AddIdentity<TUser, TRole, TContext>(this IServiceCollection services, IHostingEnvironment environment)
+        where TUser : class
+        where TRole : class
+        where TContext : DbContext
         {
-            if (configuration.GetValue<bool>("AzureKubernetesService:Enable"))
+            services.AddIdentity<TUser, TRole>(options =>
+                {
+                    // Password settings
+                    options.Password.RequireDigit = true;
+                    options.Password.RequiredLength = 8;
+                    options.Password.RequiredUniqueChars = 1;
+                    options.Password.RequireLowercase = true;
+                    options.Password.RequireNonAlphanumeric = true;
+                    options.Password.RequireUppercase = true;
+
+                    // Lockout settings
+                    options.Lockout.AllowedForNewUsers = true;
+                    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                    options.Lockout.MaxFailedAccessAttempts = 5;
+
+                    // User settings
+                    options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_";
+                    options.User.RequireUniqueEmail = true;
+
+                    // Claims settings
+                    options.ClaimsIdentity.SecurityStampClaimType = CustomClaimTypes.SecurityStamp;
+
+                    // SignIn settings
+                    if (environment.IsProduction())
+                    {
+                        options.SignIn.RequireConfirmedEmail = true;
+                        options.SignIn.RequireConfirmedPhoneNumber = true;
+                    }
+                })
+                .AddClaimsPrincipalFactory<CustomUserClaimsPrincipalFactory<TUser, TRole>>()
+                .AddEntityFrameworkStores<TContext>()
+                .AddDefaultTokenProviders()
+                .AddDefaultUI(UIFramework.Bootstrap4);
+        }
+
+        public static void AddIdentityCore<TUser, TRole, TContext>(this IServiceCollection services)
+        where TUser : class
+        where TRole : class
+        where TContext : DbContext
+        {
+            services.AddIdentityCore<TUser>()
+                .AddRoles<TRole>()
+                .AddEntityFrameworkStores<TContext>();
+        }
+
+        public static void AddIdentityServer<TUser>(this IServiceCollection services, IConfiguration configuration, IHostingEnvironment environment)
+        where TUser : IdentityUser<Guid>
+        {
+            var builder = services.AddIdentityServer(options =>
+                {
+                    options.IssuerUri = "null";
+
+                    options.Authentication.CookieLifetime = TimeSpan.FromHours(2);
+
+                    options.Events.RaiseErrorEvents = true;
+                    options.Events.RaiseInformationEvents = true;
+                    options.Events.RaiseFailureEvents = true;
+                    options.Events.RaiseSuccessEvents = true;
+
+                    options.UserInteraction.LoginUrl = "/Identity/Account/Login";
+                    options.UserInteraction.LogoutUrl = "/Identity/Account/Logout";
+                })
+                .AddDeveloperSigningCredential()
+                .AddInMemoryPersistedGrants()
+                .AddInMemoryIdentityResources(Config.GetIdentityResources())
+                .AddInMemoryApiResources(Config.GetApiResources())
+                .AddInMemoryClients(Config.GetClients(configuration))
+                .AddProfileService<CustomProfileService<TUser>>()
+                .AddAspNetIdentity<TUser>();
+
+            if (environment.IsDevelopment())
             {
-                services.AddDataProtection(
-                        options => { options.ApplicationDiscriminator = configuration["ApplicationDiscriminator"]; }
-                    )
-                    .PersistKeysToRedis(ConnectionMultiplexer.Connect(configuration.GetConnectionString("Redis")), "data-protection");
+                builder.AddCorsPolicyService<CustomCorsPolicyService>();
             }
         }
 

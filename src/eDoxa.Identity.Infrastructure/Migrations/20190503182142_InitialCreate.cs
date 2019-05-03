@@ -1,9 +1,9 @@
-﻿// Filename: 20190501032406_CreateIdentitySchema.cs
-// Date Created: 2019-04-30
+﻿// Filename: 20190503182142_InitialCreate.cs
+// Date Created: 2019-05-03
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -13,9 +13,9 @@ using System;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace eDoxa.IdentityServer.Data.Migrations
+namespace eDoxa.Identity.Infrastructure.Migrations
 {
-    public partial class CreateIdentitySchema : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

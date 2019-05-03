@@ -1,16 +1,15 @@
 ﻿// Filename: UserAggregateFactory.cs
-// Date Created: 2019-04-06
+// Date Created: 2019-04-30
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
 // 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
 
-using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Domain.Factories;
 
 namespace eDoxa.Identity.Domain.Factories
@@ -19,35 +18,29 @@ namespace eDoxa.Identity.Domain.Factories
     {
         private static readonly Lazy<UserAggregateFactory> Lazy = new Lazy<UserAggregateFactory>(() => new UserAggregateFactory());
 
-        public static UserAggregateFactory Instance
-        {
-            get
-            {
-                return Lazy.Value;
-            }
-        }
+        public static UserAggregateFactory Instance => Lazy.Value;
     }
 
     public sealed partial class UserAggregateFactory
     {
-        public User CreateAdmin()
-        {
-            return User.Create(AdminData);
-        }
+        //public User CreateAdmin()
+        //{
+        //    return User.Create(AdminData);
+        //}
 
-        public User CreateFrancis()
-        {
-            return User.Create(FrancisData);
-        }
+        //public User CreateFrancis()
+        //{
+        //    return User.Create(FrancisData);
+        //}
 
-        public User CreateRoy()
-        {
-            return User.Create(RoyData);
-        }
+        //public User CreateRoy()
+        //{
+        //    return User.Create(RoyData);
+        //}
 
-        public User CreateRyan()
-        {
-            return User.Create(RyanData);
-        }
+        //public User CreateRyan()
+        //{
+        //    return User.Create(RyanData);
+        //}
     }
 }

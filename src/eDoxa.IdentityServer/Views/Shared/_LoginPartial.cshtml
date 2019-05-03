@@ -1,6 +1,6 @@
 @using IdentityModel
 @using Microsoft.AspNetCore.Identity
-@using eDoxa.IdentityServer.Models
+@using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 @if (SignInManager.IsSignedIn(User))

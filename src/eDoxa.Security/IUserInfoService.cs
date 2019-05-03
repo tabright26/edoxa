@@ -1,5 +1,5 @@
 ﻿// Filename: IUserInfoService.cs
-// Date Created: 2019-05-01
+// Date Created: 2019-05-03
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,7 +12,7 @@ using System;
 
 using eDoxa.Functional.Maybe;
 
-namespace eDoxa.Security.Services
+namespace eDoxa.Security
 {
     public interface IUserInfoService
     {

@@ -14,10 +14,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
 {
-    /// <summary>
-    ///     Represents a login and its associated provider for a user in the system.
-    /// </summary>
-    public class UserLogin : IdentityUserLogin<Guid>
+    public sealed class UserLogin : IdentityUserLogin<Guid>
     {
     }
 }

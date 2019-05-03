@@ -16,7 +16,7 @@ using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Functional.Maybe;
-using eDoxa.Security.Services;
+using eDoxa.Security;
 
 using FluentAssertions;
 

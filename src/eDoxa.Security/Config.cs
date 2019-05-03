@@ -1,5 +1,5 @@
 ﻿// Filename: Config.cs
-// Date Created: 2019-04-30
+// Date Created: 2019-05-03
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,14 +10,14 @@
 
 using System.Collections.Generic;
 
-using eDoxa.Security;
+using eDoxa.Security.Resources;
 
 using IdentityServer4;
 using IdentityServer4.Models;
 
 using Microsoft.Extensions.Configuration;
 
-namespace eDoxa.IdentityServer
+namespace eDoxa.Security
 {
     public static class Config
     {
@@ -26,10 +26,6 @@ namespace eDoxa.IdentityServer
             yield return new IdentityResources.OpenId();
 
             yield return new IdentityResources.Profile();
-
-            yield return new IdentityResources.Email();
-
-            yield return new IdentityResources.Phone();
 
             yield return new CustomIdentityResources.Role();
 
@@ -139,8 +135,6 @@ namespace eDoxa.IdentityServer
                 {
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
-                    IdentityServerConstants.StandardScopes.Email,
-                    IdentityServerConstants.StandardScopes.Phone,
                     CustomScopes.Roles,
                     CustomScopes.Permissions,
                     CustomScopes.IdentityApi,

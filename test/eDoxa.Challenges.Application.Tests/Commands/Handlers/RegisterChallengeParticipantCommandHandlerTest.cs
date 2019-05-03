@@ -19,7 +19,7 @@ using eDoxa.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Challenges.Domain.Factories;
 using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Functional.Maybe;
-using eDoxa.Security.Services;
+using eDoxa.Security;
 
 using FluentAssertions;
 

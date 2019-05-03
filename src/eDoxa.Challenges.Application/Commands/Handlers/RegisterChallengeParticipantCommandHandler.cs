@@ -17,7 +17,7 @@ using eDoxa.Challenges.Domain.AggregateModels.ParticipantAggregate.Specification
 using eDoxa.Challenges.Domain.AggregateModels.UserAggregate;
 using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Commands.Abstractions.Handlers;
-using eDoxa.Security.Services;
+using eDoxa.Security;
 
 using JetBrains.Annotations;
 

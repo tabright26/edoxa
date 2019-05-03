@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.AggregateModels.UserAggregate;
 using eDoxa.Challenges.DTO.Queries;
-using eDoxa.Security.Services;
+using eDoxa.Security;
 using eDoxa.Seedwork.Domain.Common.Enums;
 
 using Microsoft.AspNetCore.Authorization;

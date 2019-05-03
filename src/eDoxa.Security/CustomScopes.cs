@@ -8,6 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Security.Resources;
+
 namespace eDoxa.Security
 {
     public static class CustomScopes

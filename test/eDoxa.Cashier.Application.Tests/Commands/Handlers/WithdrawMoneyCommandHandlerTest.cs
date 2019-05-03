@@ -20,7 +20,7 @@ using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Functional.Maybe;
-using eDoxa.Security.Services;
+using eDoxa.Security;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

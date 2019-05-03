@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using eDoxa.IdentityServer.Models;
 
 using JetBrains.Annotations;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 
 namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
 {

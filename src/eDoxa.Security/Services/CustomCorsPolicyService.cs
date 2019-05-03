@@ -1,5 +1,5 @@
 ﻿// Filename: CustomCorsPolicyService.cs
-// Date Created: 2019-04-30
+// Date Created: 2019-05-03
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,7 +12,7 @@ using IdentityServer4.Services;
 
 using Microsoft.Extensions.Logging;
 
-namespace eDoxa.IdentityServer.Services
+namespace eDoxa.Security.Services
 {
     public sealed class CustomCorsPolicyService : DefaultCorsPolicyService
     {

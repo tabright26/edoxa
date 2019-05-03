@@ -14,10 +14,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace eDoxa.Identity.Domain.AggregateModels.RoleAggregate
 {
-    /// <summary>
-    ///     Represents a claim that is granted to all users within a role in the system.
-    /// </summary>
-    public class RoleClaim : IdentityRoleClaim<Guid>
+    public sealed class RoleClaim : IdentityRoleClaim<Guid>
     {
     }
 }

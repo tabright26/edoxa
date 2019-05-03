@@ -1,5 +1,5 @@
 ﻿// Filename: CustomIdentityResources.cs
-// Date Created: 2019-05-02
+// Date Created: 2019-05-03
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -14,7 +14,7 @@ using IdentityModel;
 
 using IdentityServer4.Models;
 
-namespace eDoxa.Security
+namespace eDoxa.Security.Resources
 {
     public sealed class CustomIdentityResources
     {

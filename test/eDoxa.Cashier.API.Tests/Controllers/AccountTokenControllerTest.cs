@@ -17,7 +17,7 @@ using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Functional.Maybe;
-using eDoxa.Security.Services;
+using eDoxa.Security;
 
 using FluentAssertions;
 

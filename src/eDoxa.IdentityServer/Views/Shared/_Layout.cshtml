@@ -1,6 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Hosting
 @using Microsoft.AspNetCore.Identity
-@using eDoxa.IdentityServer.Models
+@using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 @inject SignInManager<User> SignInManager
 @inject IHostingEnvironment HostingEnvironment
 <!DOCTYPE html>
@@ -32,23 +32,23 @@
                     <partial name="_LoginPartial" />
                     @if (HostingEnvironment.IsDevelopment() && SignInManager.IsSignedIn(User))
                     {
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-link text-dark">
-                            <a asp-action="Index" asp-area="" asp-controller="Grants" class="nav-link text-white">
-                                Grants
-                            </a>
-                        </li>
-                        <li class="nav-link text-dark">
-                            <a asp-action="Index" asp-area="" asp-controller="Device" class="nav-link text-white">
-                                Device
-                            </a>
-                        </li>
-                        <li class="nav-link text-dark">
-                            <a asp-action="Index" asp-area="" asp-controller="Diagnostics" class="nav-link text-white">
-                                Diagnostics
-                            </a>
-                        </li>
-                    </ul>
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-link text-dark">
+                                <a asp-action="Index" asp-area="" asp-controller="Grants" class="nav-link text-white">
+                                    Grants
+                                </a>
+                            </li>
+                            <li class="nav-link text-dark">
+                                <a asp-action="Index" asp-area="" asp-controller="Device" class="nav-link text-white">
+                                    Device
+                                </a>
+                            </li>
+                            <li class="nav-link text-dark">
+                                <a asp-action="Index" asp-area="" asp-controller="Diagnostics" class="nav-link text-white">
+                                    Diagnostics
+                                </a>
+                            </li>
+                        </ul>
                     }
                 </div>
             </div>

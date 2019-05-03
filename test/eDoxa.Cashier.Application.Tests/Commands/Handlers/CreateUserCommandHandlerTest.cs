@@ -8,18 +8,11 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Application.Commands;
-using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.Factories;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using Moq;
-
-using Stripe;
 
 namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
 {

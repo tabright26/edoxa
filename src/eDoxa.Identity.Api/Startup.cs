@@ -15,6 +15,8 @@ using eDoxa.Autofac.Extensions;
 using eDoxa.AutoMapper.Extensions;
 using eDoxa.Identity.Api.Extensions;
 using eDoxa.Identity.Application;
+using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
+using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.DTO.Factories;
 using eDoxa.Identity.Infrastructure;
 using eDoxa.Monitoring.Extensions;
@@ -56,38 +58,7 @@ namespace eDoxa.Identity.Api
 
             services.AddDbContext<IdentityDbContext>(Configuration);
 
-            //services.AddIdentity<User, Role>(
-            //        options =>
-            //        {
-            //            // Password settings
-            //            options.Password.RequireDigit = true;
-            //            options.Password.RequiredLength = 8;
-            //            options.Password.RequiredUniqueChars = 1;
-            //            options.Password.RequireLowercase = true;
-            //            options.Password.RequireNonAlphanumeric = true;
-            //            options.Password.RequireUppercase = true;
-
-            //            // Lockout settings
-            //            options.Lockout.AllowedForNewUsers = true;
-            //            options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-            //            options.Lockout.MaxFailedAccessAttempts = 5;
-
-            //            // User settings
-            //            options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_";
-            //            options.User.RequireUniqueEmail = true;
-
-            //            // SignIn settings
-            //            if (Environment.IsProduction())
-            //            {
-            //                options.SignIn.RequireConfirmedEmail = true;
-            //                options.SignIn.RequireConfirmedPhoneNumber = true;
-            //            }
-            //        }
-            //    )
-            //    .AddDefaultTokenProviders()
-            //    .AddDefaultUI(UIFramework.Bootstrap4)
-            //    .AddEntityFrameworkStores<IdentityDbContext>()
-            //    .AddClaimsPrincipalFactory<UserClaimsPrincipalFactory>();
+            services.AddIdentityCore<User, Role, IdentityDbContext>();
 
             services.AddVersioning();
 

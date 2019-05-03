@@ -1,5 +1,5 @@
 ﻿// Filename: CustomUserClaimsPrincipalFactory.cs
-// Date Created: 2019-05-02
+// Date Created: 2019-05-03
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,20 +12,20 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using eDoxa.IdentityServer.Models;
-
 using IdentityModel;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 
-namespace eDoxa.IdentityServer.Services
+namespace eDoxa.Security.Factories
 {
-    public sealed class CustomUserClaimsPrincipalFactory : UserClaimsPrincipalFactory<User, Role>
+    public sealed class CustomUserClaimsPrincipalFactory<TUser, TRole> : UserClaimsPrincipalFactory<TUser, TRole>
+    where TUser : class
+    where TRole : class
     {
         public CustomUserClaimsPrincipalFactory(
-            UserManager<User> userManager,
-            RoleManager<Role> roleManager,
+            UserManager<TUser> userManager,
+            RoleManager<TRole> roleManager,
             IOptions<IdentityOptions> options) : base(
             userManager,
             roleManager,
@@ -33,7 +33,7 @@ namespace eDoxa.IdentityServer.Services
         {
         }
 
-        protected override async Task<ClaimsIdentity> GenerateClaimsAsync(User user)
+        protected override async Task<ClaimsIdentity> GenerateClaimsAsync(TUser user)
         {
             var identity = await base.GenerateClaimsAsync(user);
 

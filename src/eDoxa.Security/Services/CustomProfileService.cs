@@ -1,5 +1,5 @@
 ﻿// Filename: CustomProfileService.cs
-// Date Created: 2019-04-30
+// Date Created: 2019-05-03
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,12 +8,11 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Functional.Extensions;
-using eDoxa.IdentityServer.Models;
-using eDoxa.Security;
 
 using IdentityServer4.Models;
 using IdentityServer4.Services;
@@ -22,14 +21,15 @@ using JetBrains.Annotations;
 
 using Microsoft.AspNetCore.Identity;
 
-namespace eDoxa.IdentityServer.Services
+namespace eDoxa.Security.Services
 {
-    public sealed class CustomProfileService : IProfileService
+    public sealed class CustomProfileService<TUser> : IProfileService
+    where TUser : IdentityUser<Guid>
     {
-        private readonly IUserClaimsPrincipalFactory<User> _userClaimsPrincipalFactory;
-        private readonly UserManager<User> _userManager;
+        private readonly IUserClaimsPrincipalFactory<TUser> _userClaimsPrincipalFactory;
+        private readonly UserManager<TUser> _userManager;
 
-        public CustomProfileService(IUserClaimsPrincipalFactory<User> userClaimsPrincipalFactory, UserManager<User> userManager)
+        public CustomProfileService(IUserClaimsPrincipalFactory<TUser> userClaimsPrincipalFactory, UserManager<TUser> userManager)
         {
             _userClaimsPrincipalFactory = userClaimsPrincipalFactory;
             _userManager = userManager;

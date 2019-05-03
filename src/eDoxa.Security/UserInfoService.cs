@@ -1,5 +1,5 @@
 ﻿// Filename: UserInfoService.cs
-// Date Created: 2019-05-01
+// Date Created: 2019-05-03
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -17,7 +17,7 @@ using IdentityModel;
 
 using Microsoft.AspNetCore.Http;
 
-namespace eDoxa.Security.Services
+namespace eDoxa.Security
 {
     public sealed class UserInfoService : IUserInfoService
     {
@@ -28,7 +28,8 @@ namespace eDoxa.Security.Services
             _httpContext = accessor.HttpContext;
         }
 
-        public Option<Guid> Subject => this.TryGetClaim(JwtClaimTypes.Subject).Select(value => new Option<Guid>(new Guid(value))).DefaultIfEmpty(new Option<Guid>()).Single();
+        public Option<Guid> Subject =>
+            this.TryGetClaim(JwtClaimTypes.Subject).Select(value => new Option<Guid>(new Guid(value))).DefaultIfEmpty(new Option<Guid>()).Single();
 
         public Option<string> CustomerId => this.TryGetClaim(CustomClaimTypes.CustomerId);
 

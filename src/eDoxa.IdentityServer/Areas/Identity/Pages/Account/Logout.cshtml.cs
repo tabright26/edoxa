@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
+
+using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
+
 using Microsoft.AspNetCore.Authorization;
-using eDoxa.IdentityServer.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

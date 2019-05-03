@@ -2,7 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using eDoxa.IdentityServer.Models;
+
+using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;

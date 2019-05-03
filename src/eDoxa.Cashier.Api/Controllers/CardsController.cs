@@ -15,7 +15,7 @@ using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Commands.Extensions;
-using eDoxa.Security.Services;
+using eDoxa.Security;
 
 using MediatR;
 
