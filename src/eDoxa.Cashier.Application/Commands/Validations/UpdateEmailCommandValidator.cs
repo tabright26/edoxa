@@ -18,7 +18,7 @@ namespace eDoxa.Cashier.Application.Commands.Validations
     {
         public UpdateEmailCommandValidator()
         {
-            this.RuleFor(command => command.UserId).NotEmpty();
+            this.RuleFor(command => command.CustomerId).NotEmpty();
         }
     }
 }

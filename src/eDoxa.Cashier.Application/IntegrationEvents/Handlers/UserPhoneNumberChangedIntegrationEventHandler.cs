@@ -28,7 +28,7 @@ namespace eDoxa.Cashier.Application.IntegrationEvents.Handlers
 
         public async Task Handle(UserPhoneNumberChangedIntegrationEvent integrationEvent)
         {
-            await _mediator.Send(new UpdatePhoneCommand(integrationEvent.UserId, integrationEvent.PhoneNumber));
+            await _mediator.Send(new UpdatePhoneCommand(integrationEvent.CustomerId, integrationEvent.PhoneNumber));
         }
     }
 }

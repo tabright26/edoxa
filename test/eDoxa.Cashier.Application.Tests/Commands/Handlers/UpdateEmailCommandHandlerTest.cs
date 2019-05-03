@@ -1,11 +1,11 @@
 ﻿// Filename: UpdateEmailCommandHandlerTest.cs
-// Date Created: 2019-04-09
+// Date Created: 2019-04-30
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
 // 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System.Threading;
@@ -15,7 +15,6 @@ using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Factories;
-using eDoxa.Cashier.Domain.Repositories;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -38,31 +37,25 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
 
             var customer = _userAggregateFactory.CreateCustomer();
 
-            var mockUserRepository = new Mock<IUserRepository>();
-
             var mockCustomerService = new Mock<CustomerService>();
 
-            mockUserRepository.Setup(repository => repository.FindAsNoTrackingAsync(It.IsAny<UserId>())).ReturnsAsync(user).Verifiable();
-
             mockCustomerService.Setup(
-                                   service => service.UpdateAsync(
-                                       It.IsAny<string>(),
-                                       It.IsAny<CustomerUpdateOptions>(),
-                                       It.IsAny<RequestOptions>(),
-                                       It.IsAny<CancellationToken>()
-                                   )
-                               )
-                               .ReturnsAsync(customer)
-                               .Verifiable();
+                    service => service.UpdateAsync(
+                        It.IsAny<string>(),
+                        It.IsAny<CustomerUpdateOptions>(),
+                        It.IsAny<RequestOptions>(),
+                        It.IsAny<CancellationToken>()
+                    )
+                )
+                .ReturnsAsync(customer)
+                .Verifiable();
 
-            var handler = new UpdateEmailCommandHandler(mockUserRepository.Object, mockCustomerService.Object);
+            var handler = new UpdateEmailCommandHandler(mockCustomerService.Object);
 
             // Act
-            await handler.HandleAsync(new UpdateEmailCommand(user.Id, customer.Email));
+            await handler.HandleAsync(new UpdateEmailCommand(CustomerId.Parse(customer.Id), customer.Email));
 
             // Assert
-            mockUserRepository.Verify(repository => repository.FindAsNoTrackingAsync(It.IsAny<UserId>()), Times.Once);
-
             mockCustomerService.Verify(
                 service =>
                     service.UpdateAsync(It.IsAny<string>(), It.IsAny<CustomerUpdateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),

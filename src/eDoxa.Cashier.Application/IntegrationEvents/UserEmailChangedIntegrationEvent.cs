@@ -13,15 +13,16 @@ using eDoxa.ServiceBus;
 
 namespace eDoxa.Cashier.Application.IntegrationEvents
 {
-    public class UserEmailChangedIntegrationEvent : IntegrationEvent
+    public sealed class UserEmailChangedIntegrationEvent : IntegrationEvent
     {
-        public UserEmailChangedIntegrationEvent(UserId userId, string email)
+        public UserEmailChangedIntegrationEvent(CustomerId customerId, string email)
         {
-            UserId = userId;
+            CustomerId = customerId;
             Email = email;
         }
 
-        public UserId UserId { get; private set; }
+        public CustomerId CustomerId { get; private set; }
+
         public string Email { get; private set; }
     }
 }

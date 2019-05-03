@@ -17,5 +17,7 @@ namespace eDoxa.Security.Services
     public interface IUserInfoService
     {
         Option<Guid> Subject { get; }
+
+        Option<string> CustomerId { get; }
     }
 }

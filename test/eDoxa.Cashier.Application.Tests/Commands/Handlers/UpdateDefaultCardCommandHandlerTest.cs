@@ -1,9 +1,9 @@
 ﻿// Filename: UpdateDefaultCardCommandHandlerTest.cs
-// Date Created: 2019-04-21
+// Date Created: 2019-04-30
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -14,9 +14,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
-using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Factories;
-using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Functional.Maybe;
 using eDoxa.Security.Services;
 
@@ -50,11 +48,9 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
 
             mockUserInfoService.SetupGet(userInfoService => userInfoService.Subject).Returns(new Option<Guid>(Guid.NewGuid()));
 
-            var mockUserRepository = new Mock<IUserRepository>();
-
+            mockUserInfoService.SetupGet(userInfoService => userInfoService.CustomerId).Returns(new Option<string>(string.Empty));
+            
             var mockCustomerService = new Mock<CustomerService>();
-
-            mockUserRepository.Setup(repository => repository.FindAsNoTrackingAsync(It.IsAny<UserId>())).ReturnsAsync(user).Verifiable();
 
             mockCustomerService.Setup(
                     service => service.UpdateAsync(
@@ -67,15 +63,13 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
                 .ReturnsAsync(customer)
                 .Verifiable();
 
-            var handler = new UpdateDefaultCardCommandHandler(mockUserInfoService.Object, mockUserRepository.Object, mockCustomerService.Object);
+            var handler = new UpdateDefaultCardCommandHandler(mockUserInfoService.Object, mockCustomerService.Object);
 
             // Act
             var response = await handler.Handle(new UpdateDefaultCardCommand(cardId), default);
 
             // Assert
             response.Should().BeEquivalentTo(new OkObjectResult(customer));
-
-            mockUserRepository.Verify(repository => repository.FindAsNoTrackingAsync(It.IsAny<UserId>()), Times.Once);
 
             mockCustomerService.Verify(
                 service =>

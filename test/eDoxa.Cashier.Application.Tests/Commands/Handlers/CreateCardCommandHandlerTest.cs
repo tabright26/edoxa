@@ -1,9 +1,9 @@
 ﻿// Filename: CreateCardCommandHandlerTest.cs
-// Date Created: 2019-04-21
+// Date Created: 2019-04-30
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -14,9 +14,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
-using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Factories;
-using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Functional.Maybe;
 using eDoxa.Security.Services;
 
@@ -40,8 +38,6 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         public async Task Handle_FindAsNoTrackingAsync_ShouldBeInvokedExactlyOneTime()
         {
             // Arrange
-            var user = _userAggregateFactory.CreateUser();
-
             var customer = _userAggregateFactory.CreateCustomer();
 
             var card = _userAggregateFactory.CreateCard();
@@ -50,11 +46,9 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
 
             mockUserInfoService.SetupGet(userInfoService => userInfoService.Subject).Returns(new Option<Guid>(Guid.NewGuid()));
 
-            var mockUserRepository = new Mock<IUserRepository>();
+            mockUserInfoService.SetupGet(userInfoService => userInfoService.CustomerId).Returns(new Option<string>(string.Empty));
 
             var mockCustomerService = new Mock<CustomerService>();
-
-            mockUserRepository.Setup(repository => repository.FindAsNoTrackingAsync(It.IsAny<UserId>())).ReturnsAsync(user).Verifiable();
 
             mockCustomerService.Setup(
                     service => service.UpdateAsync(
@@ -80,15 +74,13 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
                 .ReturnsAsync(card)
                 .Verifiable();
 
-            var handler = new CreateCardCommandHandler(mockUserInfoService.Object, mockUserRepository.Object, mockCustomerService.Object, mockCardService.Object);
+            var handler = new CreateCardCommandHandler(mockUserInfoService.Object, mockCustomerService.Object, mockCardService.Object);
 
             // Act
             var response = await handler.Handle(new CreateCardCommand(card.Id, true), default);
 
             // Assert
             response.Should().BeEquivalentTo(new OkObjectResult(card));
-
-            mockUserRepository.Verify(repository => repository.FindAsNoTrackingAsync(It.IsAny<UserId>()), Times.Once);
 
             mockCustomerService.Verify(
                 service =>

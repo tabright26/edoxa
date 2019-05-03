@@ -10,7 +10,6 @@
 
 using JetBrains.Annotations;
 
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace eDoxa.IdentityServer.Attributes
