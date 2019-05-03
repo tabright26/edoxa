@@ -9,7 +9,7 @@
 // this source code package.
 
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
 
 using JetBrains.Annotations;
 
@@ -29,9 +29,10 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
                 .IsRequired()
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 
-            builder.Property<UserId>(nameof(UserId))
+            builder.Property(account => account.UserId)
                 .HasConversion(userId => userId.ToGuid(), userId => UserId.FromGuid(userId))
-                .IsRequired();
+                .IsRequired()
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.Ignore(account => account.Balance);
 

@@ -33,8 +33,6 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         public async Task HandleAsync_FindAsNoTrackingAsync_ShouldBeInvokedExactlyOneTime()
         {
             // Arrange
-            var user = _userAggregateFactory.CreateUser();
-
             var customer = _userAggregateFactory.CreateCustomer();
 
             var mockCustomerService = new Mock<CustomerService>();

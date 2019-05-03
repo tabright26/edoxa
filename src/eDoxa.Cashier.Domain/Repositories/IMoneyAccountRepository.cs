@@ -1,5 +1,5 @@
-﻿// Filename: IMoneyTransaction.cs
-// Date Created: 2019-04-30
+﻿// Filename: IMoneyAccountRepository.cs
+// Date Created: 2019-05-02
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,15 +8,16 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Threading.Tasks;
+
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
-using eDoxa.Functional.Maybe;
 using eDoxa.Seedwork.Domain;
 
-namespace eDoxa.Cashier.Domain
+namespace eDoxa.Cashier.Domain.Repositories
 {
-    public interface IMoneyTransaction : ITransaction<Money>, IEntity<TransactionId>
+    public interface IMoneyAccountRepository : IRepository<MoneyAccount>
     {
-        Option<MoneyTransaction> TryPayoff(Money amount);
+        Task<MoneyAccount> FindUserAccountAsync(UserId userId);
     }
 }

@@ -48,9 +48,9 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpGet(Name = nameof(FindUserAddressAsync))]
         public async Task<IActionResult> FindUserAddressAsync()
         {
-            var userId = _userInfoService.Subject.Select(UserId.FromGuid).SingleOrDefault();
+            var customerId = _userInfoService.CustomerId.Select(CustomerId.Parse).SingleOrDefault();
 
-            var address = await _queries.FindUserAddressAsync(userId);
+            var address = await _queries.FindUserAddressAsync(customerId);
 
             return address
                 .Select(this.Ok)

@@ -11,13 +11,16 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
+using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
+using eDoxa.Functional.Maybe;
 
 namespace eDoxa.Cashier.Domain.Services
 {
     public interface IMoneyAccountService
     {
-        Task TransactionAsync<TCurrency>(User user, Bundle<TCurrency> bundle, CancellationToken cancellationToken = default)
-        where TCurrency : ICurrency;
+        Task<IMoneyTransaction> TransactionAsync(UserId userId, CustomerId customerId, MoneyBundle bundle, CancellationToken cancellationToken = default);
+
+        Task<Option<IMoneyTransaction>> TryWithdrawAsync(UserId userId, decimal amount, CancellationToken cancellationToken = default);
     }
 }

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Controllers;
 using eDoxa.Cashier.Application.Commands;
-using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Functional.Maybe;
@@ -51,8 +51,6 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         public async Task BuyTokensAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            var user = _userAggregateFactory.CreateUser();
-
             var token = _userAggregateFactory.CreateToken();
 
             var command = new DepositTokensCommand(TokenBundleType.FiftyThousand);

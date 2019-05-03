@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Api.Controllers;
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
@@ -53,8 +53,6 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         public async Task FindUserAccountAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            var user = _userAggregateFactory.CreateUser();
-
             _userInfoService.SetupGet(userInfoService => userInfoService.Subject).Returns(new Option<Guid>(Guid.NewGuid()));
 
             _queries.Setup(queries => queries.FindAccountAsync(It.IsAny<UserId>())).ReturnsAsync(new Option<MoneyAccountDTO>(new MoneyAccountDTO())).Verifiable();
@@ -76,8 +74,6 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         public async Task FindUserAccountAsync_ShouldBeNotFoundObjectResult()
         {
             // Arrange
-            var user = _userAggregateFactory.CreateUser();
-
             _userInfoService.SetupGet(userInfoService => userInfoService.Subject).Returns(new Option<Guid>(Guid.NewGuid()));
 
             _queries.Setup(queries => queries.FindAccountAsync(It.IsAny<UserId>())).ReturnsAsync(new Option<MoneyAccountDTO>()).Verifiable();
@@ -99,8 +95,6 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         public async Task WithdrawalAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            var user = _userAggregateFactory.CreateUser();
-
             var money = _userAggregateFactory.CreateMoney();
 
             var command = new WithdrawMoneyCommand(money);
@@ -126,8 +120,6 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         public async Task AddFundsAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            var user = _userAggregateFactory.CreateUser();
-
             var money = _userAggregateFactory.CreateMoney();
 
             var command = new DepositMoneyCommand(MoneyBundleType.Ten);

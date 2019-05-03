@@ -1,9 +1,9 @@
 ﻿// Filename: MoneyAccount.cs
-// Date Created: 2019-04-26
+// Date Created: 2019-05-02
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -12,20 +12,21 @@ using System.Collections.Generic;
 using System.Linq;
 
 using eDoxa.Functional.Maybe;
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 using Serilog;
 
-namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
+namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
 {
-    public class MoneyAccount : Entity<AccountId>, IMoneyAccount
+    public class MoneyAccount : Entity<AccountId>, IMoneyAccount, IAggregateRoot
     {
         private HashSet<MoneyTransaction> _transactions;
-        private User _user;
+        private UserId _userId;
 
-        public MoneyAccount(User user) : this()
+        public MoneyAccount(UserId userId) : this()
         {
-            _user = user;
+            _userId = userId;
         }
 
         private MoneyAccount()
@@ -33,7 +34,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
             _transactions = new HashSet<MoneyTransaction>();
         }
 
-        public User User => _user;
+        public UserId UserId => _userId;
 
         public IReadOnlyCollection<MoneyTransaction> Transactions => _transactions;
 
@@ -47,7 +48,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 
             if (_transactions.Add(transaction))
             {
-                Log.Information($"{User} deposit amount {amount} - balance {Balance}");
+                Log.Information($"{UserId} deposit amount {amount} - balance {Balance}");
             }
 
             return transaction;
@@ -67,7 +68,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
                 return new Option<IMoneyTransaction>();
             }
 
-            Log.Information($"{User} register to {activityId} amount {amount} - balance {Balance}");
+            Log.Information($"{UserId} register to {activityId} amount {amount} - balance {Balance}");
 
             return new Option<IMoneyTransaction>(transaction);
         }
@@ -94,7 +95,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
                 return new Option<IMoneyTransaction>();
             }
 
-            Log.Information($"{User} withdrew amount {amount} - balance {Balance}");
+            Log.Information($"{UserId} withdrew amount {amount} - balance {Balance}");
 
             return new Option<IMoneyTransaction>(transaction);
         }
@@ -108,7 +109,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
                     return new Option<IMoneyTransaction>();
                 }
 
-                Log.Information($"{User} deposit amount {amount} - balance {Balance}");
+                Log.Information($"{UserId} deposit amount {amount} - balance {Balance}");
 
                 return new Option<IMoneyTransaction>(payoff);
             }).Single();

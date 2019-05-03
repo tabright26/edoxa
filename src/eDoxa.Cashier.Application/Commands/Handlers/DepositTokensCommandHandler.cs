@@ -13,8 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
-using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Security.Services;
@@ -28,16 +27,13 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
     internal sealed class DepositTokensCommandHandler : ICommandHandler<DepositTokensCommand, IActionResult>
     {
         private static readonly TokenBundles Bundles = new TokenBundles();
-        private readonly IMoneyAccountService _moneyAccountService;
-
+        private readonly ITokenAccountService _tokenAccountService;
         private readonly IUserInfoService _userInfoService;
-        private readonly IUserRepository _userRepository;
 
-        public DepositTokensCommandHandler(IUserInfoService userInfoService, IUserRepository userRepository, IMoneyAccountService moneyAccountService)
+        public DepositTokensCommandHandler(IUserInfoService userInfoService, ITokenAccountService tokenAccountService)
         {
             _userInfoService = userInfoService;
-            _userRepository = userRepository;
-            _moneyAccountService = moneyAccountService;
+            _tokenAccountService = tokenAccountService;
         }
 
         [ItemNotNull]
@@ -45,17 +41,13 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         {
             var userId = _userInfoService.Subject.Select(UserId.FromGuid).SingleOrDefault();
 
-            var user = await _userRepository.FindAsync(userId);
+            var customerId = _userInfoService.CustomerId.Select(CustomerId.Parse).SingleOrDefault();
 
             var bundle = Bundles[command.BundleType];
 
-            await _moneyAccountService.TransactionAsync(user, bundle, cancellationToken);
+            var transaction = await _tokenAccountService.TransactionAsync(userId, customerId, bundle, cancellationToken);
 
-            var tokenBalance = user.DepositTokens(bundle);
-
-            await _userRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
-
-            return new OkObjectResult((decimal) tokenBalance.Amount);
+            return new OkObjectResult(transaction);
         }
     }
 }

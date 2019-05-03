@@ -56,7 +56,9 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Arrange
             _userInfoService.SetupGet(userInfoService => userInfoService.Subject).Returns(new Option<Guid>(Guid.NewGuid()));
 
-            _queries.Setup(queries => queries.FindUserAddressAsync(It.IsAny<UserId>())).ReturnsAsync(new Option<AddressDTO>(new AddressDTO()))
+            _userInfoService.SetupGet(userInfoService => userInfoService.CustomerId).Returns(new Option<string>("cus_123qweqwe"));
+
+            _queries.Setup(queries => queries.FindUserAddressAsync(It.IsAny<CustomerId>())).ReturnsAsync(new Option<AddressDTO>(new AddressDTO()))
                 .Verifiable();
 
             var controller = new AddressController(_userInfoService.Object, _queries.Object, _mediator.Object);

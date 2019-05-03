@@ -48,9 +48,9 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpGet(Name = nameof(FindUserCardsAsync))]
         public async Task<IActionResult> FindUserCardsAsync()
         {
-            var userId = _userInfoService.Subject.Select(UserId.FromGuid).SingleOrDefault();
+            var customerId = _userInfoService.CustomerId.Select(CustomerId.Parse).SingleOrDefault();
 
-            var cards = await _queries.FindUserCardsAsync(userId);
+            var cards = await _queries.FindUserCardsAsync(customerId);
 
             return cards
                 .Select(this.Ok)
@@ -74,9 +74,9 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpGet("{cardId}", Name = nameof(FindUserCardAsync))]
         public async Task<IActionResult> FindUserCardAsync(CardId cardId)
         {
-            var userId = _userInfoService.Subject.Select(UserId.FromGuid).SingleOrDefault();
+            var customerId = _userInfoService.CustomerId.Select(CustomerId.Parse).SingleOrDefault();
 
-            var card = await _queries.FindUserCardAsync(userId, cardId);
+            var card = await _queries.FindUserCardAsync(customerId, cardId);
 
             return card
                 .Select(this.Ok)

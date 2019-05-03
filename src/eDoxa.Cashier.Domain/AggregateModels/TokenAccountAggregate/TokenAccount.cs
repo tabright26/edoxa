@@ -1,9 +1,9 @@
 ﻿// Filename: TokenAccount.cs
-// Date Created: 2019-04-26
+// Date Created: 2019-05-02
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -12,20 +12,21 @@ using System.Collections.Generic;
 using System.Linq;
 
 using eDoxa.Functional.Maybe;
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 using Serilog;
 
-namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
+namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
 {
-    public class TokenAccount : Entity<AccountId>, ITokenAccount
+    public class TokenAccount : Entity<AccountId>, ITokenAccount, IAggregateRoot
     {
         private HashSet<TokenTransaction> _transactions;
-        private User _user;
+        private UserId _userId;
 
-        public TokenAccount(User user) : this()
+        public TokenAccount(UserId userId) : this()
         {
-            _user = user;
+            _userId = userId;
         }
 
         private TokenAccount()
@@ -33,7 +34,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
             _transactions = new HashSet<TokenTransaction>();
         }
 
-        public User User => _user;
+        public UserId UserId => _userId;
 
         public IReadOnlyCollection<TokenTransaction> Transactions => _transactions;
 
@@ -64,7 +65,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
                 return new Option<ITokenTransaction>();
             }
 
-            Log.Information($"{User} register to {activityId} amount {amount} - balance {Balance}");
+            Log.Information($"{Id} register to {activityId} amount {amount} - balance {Balance}");
 
             return new Option<ITokenTransaction>(transaction);
         }
@@ -86,7 +87,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
                     return new Option<ITokenTransaction>();
                 }
 
-                Log.Information($"{User} deposit amount {amount} - balance {Balance}");
+                Log.Information($"{Id} deposit amount {amount} - balance {Balance}");
 
                 return new Option<ITokenTransaction>(payoff);
             }).Single();

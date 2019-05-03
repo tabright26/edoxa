@@ -56,9 +56,9 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         public async Task FindUserCardsAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            _userInfoService.SetupGet(userInfoService => userInfoService.Subject).Returns(new Option<Guid>(Guid.NewGuid()));
+            _userInfoService.SetupGet(userInfoService => userInfoService.CustomerId).Returns(new Option<string>("cus_123qweqwe"));
 
-            _queries.Setup(queries => queries.FindUserCardsAsync(It.IsAny<UserId>())).ReturnsAsync(new Option<CardListDTO>(new CardListDTO
+            _queries.Setup(queries => queries.FindUserCardsAsync(It.IsAny<CustomerId>())).ReturnsAsync(new Option<CardListDTO>(new CardListDTO
             {
                 Items = new List<CardDTO>
                 {
@@ -83,9 +83,9 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         public async Task FindUserCardsAsync_ShouldBeNoContentObjectResult()
         {
             // Arrange
-            _userInfoService.SetupGet(userInfoService => userInfoService.Subject).Returns(new Option<Guid>(Guid.NewGuid()));
+            _userInfoService.SetupGet(userInfoService => userInfoService.CustomerId).Returns(new Option<string>("cus_123qweqwe"));
 
-            _queries.Setup(queries => queries.FindUserCardsAsync(It.IsAny<UserId>())).ReturnsAsync(new Option<CardListDTO>()).Verifiable();
+            _queries.Setup(queries => queries.FindUserCardsAsync(It.IsAny<CustomerId>())).ReturnsAsync(new Option<CardListDTO>()).Verifiable();
 
             var controller = new CardsController(_userInfoService.Object, _queries.Object, _mediator.Object);
 
@@ -132,9 +132,9 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Arrange
             var cardId = UserAggregateFactory.CreateCardId();
 
-            _userInfoService.SetupGet(userInfoService => userInfoService.Subject).Returns(new Option<Guid>(Guid.NewGuid()));
+            _userInfoService.SetupGet(userInfoService => userInfoService.CustomerId).Returns(new Option<string>("cus_123qweqwe"));
 
-            _queries.Setup(queries => queries.FindUserCardAsync(It.IsAny<UserId>(), It.IsAny<CardId>())).ReturnsAsync(new Option<CardDTO>(new CardDTO())).Verifiable();
+            _queries.Setup(queries => queries.FindUserCardAsync(It.IsAny<CustomerId>(), It.IsAny<CardId>())).ReturnsAsync(new Option<CardDTO>(new CardDTO())).Verifiable();
 
             var controller = new CardsController(_userInfoService.Object, _queries.Object, _mediator.Object);
 

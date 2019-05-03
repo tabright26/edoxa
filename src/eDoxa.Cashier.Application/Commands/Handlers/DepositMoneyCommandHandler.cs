@@ -13,8 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
-using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Security.Services;
@@ -31,31 +30,25 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 
         private readonly IMoneyAccountService _moneyAccountService;
         private readonly IUserInfoService _userInfoService;
-        private readonly IUserRepository _userRepository;
 
-        public DepositMoneyCommandHandler(IUserInfoService userInfoService, IUserRepository userRepository, IMoneyAccountService moneyAccountService)
+        public DepositMoneyCommandHandler(IUserInfoService userInfoService, IMoneyAccountService moneyAccountService)
         {
             _userInfoService = userInfoService;
-            _userRepository = userRepository;
             _moneyAccountService = moneyAccountService;
         }
 
         [ItemNotNull]
         public async Task<IActionResult> Handle([NotNull] DepositMoneyCommand command, CancellationToken cancellationToken)
         {
-            var userId = _userInfoService.Subject.Select(UserId.FromGuid).SingleOrDefault();
-
-            var user = await _userRepository.FindAsync(userId);
-
             var bundle = Bundles[command.BundleType];
 
-            await _moneyAccountService.TransactionAsync(user, bundle, cancellationToken);
+            var userId = _userInfoService.Subject.Select(UserId.FromGuid).SingleOrDefault();
 
-            var balance = user.DepositMoney(bundle);
+            var customerId = _userInfoService.CustomerId.Select(CustomerId.Parse).SingleOrDefault();
 
-            await _userRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+            var transaction = await _moneyAccountService.TransactionAsync(userId, customerId, bundle, cancellationToken);
 
-            return new OkObjectResult((decimal) balance.Amount);
+            return new OkObjectResult(transaction);
         }
     }
 }

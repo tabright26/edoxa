@@ -10,7 +10,7 @@
 
 using AutoMapper;
 
-using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 
 namespace eDoxa.Cashier.DTO.Profiles
 {

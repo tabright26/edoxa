@@ -33,8 +33,6 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         public async Task HandleAsync_FindAsNoTrackingAsync_ShouldBeInvokedExactlyOneTime()
         {
             // Arrange
-            var user = _userAggregateFactory.CreateUser();
-
             var customer = _userAggregateFactory.CreateCustomer();
 
             var mockCustomerService = new Mock<CustomerService>();
@@ -62,11 +60,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             // Assert
             mockCustomerService.Verify(service => service.GetAsync(It.IsAny<string>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()), Times.Once);
 
-            mockCustomerService.Verify(
-                service =>
-                    service.UpdateAsync(It.IsAny<string>(), It.IsAny<CustomerUpdateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
-                Times.Once
-            );
+            mockCustomerService.Verify(service => service.UpdateAsync(It.IsAny<string>(), It.IsAny<CustomerUpdateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }

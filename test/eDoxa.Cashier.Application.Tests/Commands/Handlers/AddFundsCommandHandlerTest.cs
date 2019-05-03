@@ -15,9 +15,7 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
-using eDoxa.Cashier.Domain.Factories;
-using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Functional.Maybe;
 using eDoxa.Security.Services;
@@ -31,48 +29,31 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     [TestClass]
     public sealed class AddFundsCommandHandlerTest
     {
-        private readonly UserAggregateFactory _userAggregateFactory = UserAggregateFactory.Instance;
-
         [TestMethod]
         public async Task Handle_FindAsync_ShouldBeInvokedExactlyOneTime()
         {
             // Arrange
-            var user = _userAggregateFactory.CreateUser();
-
             var command = new DepositMoneyCommand(MoneyBundleType.Ten);
 
             var mockUserInfoService = new Mock<IUserInfoService>();
 
             mockUserInfoService.SetupGet(userInfoService => userInfoService.Subject).Returns(new Option<Guid>(Guid.NewGuid()));
 
+            mockUserInfoService.SetupGet(userInfoService => userInfoService.CustomerId).Returns(new Option<string>("cus_123qweqwe"));
+
             var mockAccountService = new Mock<IMoneyAccountService>();
 
-            mockAccountService.Setup(service => service.TransactionAsync(It.IsAny<User>(), It.IsAny<MoneyBundle>(), It.IsAny<CancellationToken>()))
-                              .Returns(Task.CompletedTask)
+            mockAccountService.Setup(service => service.TransactionAsync(It.IsAny<UserId>(), It.IsAny<CustomerId>(), It.IsAny<MoneyBundle>(), It.IsAny<CancellationToken>()))
+                              .ReturnsAsync(new MoneyTransaction(new Money(10)))
                               .Verifiable();
 
-            var mockUserRepository = new Mock<IUserRepository>();
-
-            mockUserRepository.Setup(repository => repository.FindAsync(It.IsAny<UserId>())).ReturnsAsync(user).Verifiable();
-
-            mockUserRepository.Setup(repository => repository.UnitOfWork.CommitAndDispatchDomainEventsAsync(It.IsAny<CancellationToken>()))
-                              .Returns(Task.CompletedTask)
-                              .Verifiable();
-
-            var handler = new DepositMoneyCommandHandler(mockUserInfoService.Object, mockUserRepository.Object, mockAccountService.Object);
+            var handler = new DepositMoneyCommandHandler(mockUserInfoService.Object, mockAccountService.Object);
 
             // Act
             await handler.Handle(command, default);
 
             // Assert
-            mockAccountService.Verify(
-                service => service.TransactionAsync(It.IsAny<User>(), It.IsAny<MoneyBundle>(), It.IsAny<CancellationToken>()),
-                Times.Once
-            );
-
-            mockUserRepository.Verify(repository => repository.FindAsync(It.IsAny<UserId>()), Times.Once);
-
-            mockUserRepository.Verify(repository => repository.UnitOfWork.CommitAndDispatchDomainEventsAsync(It.IsAny<CancellationToken>()), Times.Once);
+            mockAccountService.Verify(service => service.TransactionAsync(It.IsAny<UserId>(), It.IsAny<CustomerId>(), It.IsAny<MoneyBundle>(), It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }
