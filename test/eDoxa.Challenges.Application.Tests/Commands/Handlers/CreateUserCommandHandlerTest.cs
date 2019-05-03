@@ -15,6 +15,7 @@ using eDoxa.Challenges.Application.Commands;
 using eDoxa.Challenges.Application.Commands.Handlers;
 using eDoxa.Challenges.Domain.AggregateModels.UserAggregate;
 using eDoxa.Challenges.Domain.Repositories;
+using eDoxa.Commands.Extensions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

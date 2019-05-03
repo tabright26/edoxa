@@ -27,7 +27,7 @@ using Moq;
 namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
 {
     [TestClass]
-    public sealed class BuyTokensCommandHandlerTest
+    public sealed class DepositTokensCommandHandlerTest
     {
         [TestMethod]
         public async Task Handle_FindAsync_ShouldBeInvokedExactlyOneTime()

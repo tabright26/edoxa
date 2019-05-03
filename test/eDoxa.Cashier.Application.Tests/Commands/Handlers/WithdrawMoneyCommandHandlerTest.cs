@@ -29,7 +29,7 @@ using Moq;
 namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
 {
     [TestClass]
-    public sealed class WithdrawalCommandHandlerTest
+    public sealed class WithdrawMoneyCommandHandlerTest
     {
         private readonly UserAggregateFactory _userAggregateFactory = UserAggregateFactory.Instance;
 
