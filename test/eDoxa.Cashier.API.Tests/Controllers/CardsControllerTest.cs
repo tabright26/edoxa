@@ -49,7 +49,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             _mockCardQueries = new Mock<ICardQueries>();
             _mockMediator = new Mock<IMediator>();
             _mockUserProfile = new Mock<IUserProfile>();
-            _mockUserProfile.SetupProperties();
+            _mockUserProfile.SetupGetProperties();
         }
 
         [TestMethod]

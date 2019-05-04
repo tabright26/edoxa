@@ -38,7 +38,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         {
             _mockCardService = new Mock<CardService>();
             _mockUserProfile = new Mock<IUserProfile>();
-            _mockUserProfile.SetupProperties();
+            _mockUserProfile.SetupGetProperties();
         }
 
         [TestMethod]

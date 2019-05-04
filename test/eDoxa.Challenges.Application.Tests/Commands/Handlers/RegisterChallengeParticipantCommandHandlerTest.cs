@@ -43,7 +43,7 @@ namespace eDoxa.Challenges.Application.Tests.Commands.Handlers
         {
             _mockChallengeRepository = new Mock<IChallengeRepository>();
             _mockUserProfile = new Mock<IUserProfile>();
-            _mockUserProfile.SetupProperties();
+            _mockUserProfile.SetupGetProperties();
         }
 
         [TestMethod]

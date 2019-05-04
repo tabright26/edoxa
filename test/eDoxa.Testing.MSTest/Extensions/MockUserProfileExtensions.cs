@@ -16,7 +16,7 @@ namespace eDoxa.Testing.MSTest.Extensions
 {
     public static class MockUserProfileExtensions
     {
-        public static void SetupProperties(this Mock<IUserProfile> mockUserProfile)
+        public static void SetupGetProperties(this Mock<IUserProfile> mockUserProfile)
         {
             mockUserProfile.SetupGet(mock => mock.Subject).Returns("e4655fe0-affd-4323-b022-bdb2ebde6091");
 

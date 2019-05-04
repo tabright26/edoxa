@@ -36,7 +36,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         {
             _mockTokenAccountService = new Mock<ITokenAccountService>();
             _mockUserProfile = new Mock<IUserProfile>();
-            _mockUserProfile.SetupProperties();
+            _mockUserProfile.SetupGetProperties();
         }
 
         [TestMethod]

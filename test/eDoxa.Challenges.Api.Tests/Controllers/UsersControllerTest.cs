@@ -45,7 +45,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
             _queries = new Mock<IChallengeQueries>();
             _mediator = new Mock<IMediator>();
             _mockUserProfile = new Mock<IUserProfile>();
-            _mockUserProfile.SetupProperties();
+            _mockUserProfile.SetupGetProperties();
         }
 
         [TestMethod]
