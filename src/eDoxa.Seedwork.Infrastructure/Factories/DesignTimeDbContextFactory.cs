@@ -1,16 +1,20 @@
 ﻿// Filename: DesignTimeDbContextFactory.cs
-// Date Created: 2019-04-13
+// Date Created: 2019-04-30
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
 // 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
 using System.Reflection;
+
+using eDoxa.Security;
+
 using JetBrains.Annotations;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
@@ -20,9 +24,6 @@ namespace eDoxa.Seedwork.Infrastructure.Factories
     public abstract class DesignTimeDbContextFactory<TContext> : IDesignTimeDbContextFactory<TContext>
     where TContext : DbContext
     {
-        [CanBeNull]
-        public abstract TContext CreateDbContext(string[] args);
-
         protected abstract string BasePath { get; }
 
         protected abstract Assembly MigrationsAssembly { get; }
@@ -33,7 +34,8 @@ namespace eDoxa.Seedwork.Infrastructure.Factories
             {
                 var builder = new DbContextOptionsBuilder<TContext>();
 
-                builder.UseSqlServer(Configuration.GetConnectionString("Sql"), options => options.MigrationsAssembly(MigrationsAssembly.GetName().Name));
+                builder.UseSqlServer(Configuration.GetConnectionString(CustomConnectionStrings.SqlServer),
+                    options => options.MigrationsAssembly(MigrationsAssembly.GetName().Name));
 
                 return builder.Options;
             }
@@ -58,5 +60,8 @@ namespace eDoxa.Seedwork.Infrastructure.Factories
                 return builder.Build();
             }
         }
+
+        [CanBeNull]
+        public abstract TContext CreateDbContext(string[] args);
     }
 }

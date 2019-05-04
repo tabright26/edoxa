@@ -1,9 +1,9 @@
 ﻿// Filename: UserAggregateFactory.cs
-// Date Created: 2019-04-21
+// Date Created: 2019-04-30
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -11,12 +11,12 @@
 using System;
 
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Seedwork.Domain.Factories;
 
 using Stripe;
 
-using Token = eDoxa.Cashier.Domain.AggregateModels.UserAggregate.Token;
+using Token = eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate.Token;
 
 namespace eDoxa.Cashier.Domain.Factories
 {
@@ -48,41 +48,9 @@ namespace eDoxa.Cashier.Domain.Factories
 
     public sealed partial class UserAggregateFactory
     {
-        public User CreateAdmin()
+        public UserId CreateAdminId()
         {
-            var user = new User(AdminData);
-
-            var bundles = new MoneyBundles();
-
-            user.DepositMoney(bundles[MoneyBundleType.OneHundred]);
-
-            user.MoneyAccount.TryRegister(new Money(65), new ActivityId());
-
-            user.WithdrawMoney(new Money(50));
-
-            user.DepositMoney(bundles[MoneyBundleType.Twenty]);
-
-            return user;
-        }
-
-        public User CreateFrancis()
-        {
-            return new User(FrancisData);
-        }
-
-        public User CreateRoy()
-        {
-            return new User(RoyData);
-        }
-
-        public User CreateRyan()
-        {
-            return new User(RyanData);
-        }
-
-        public User CreateUser()
-        {
-            return new User(this.CreateUserId(), this.CreateCustomerId());
+            return UserId.FromGuid(AdminData.Id);
         }
 
         public Money CreateMoney()

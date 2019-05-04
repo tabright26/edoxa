@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 
 using eDoxa.Cashier.Domain;
-using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 
 using FluentAssertions;
 
@@ -20,17 +19,6 @@ namespace eDoxa.Cashier.Infrastructure.Tests.Asserts
 {
     internal static class CashierAssert
     {
-        public static void IsMapped(User user)
-        {
-            user.Should().NotBeNull();
-
-            user.Id.Should().NotBeNull();
-
-            IsMapped(user.MoneyAccount);
-
-            IsMapped(user.TokenAccount);
-        }
-
         private static void IsMapped(IMoneyAccount account)
         {
             account.Should().NotBeNull();

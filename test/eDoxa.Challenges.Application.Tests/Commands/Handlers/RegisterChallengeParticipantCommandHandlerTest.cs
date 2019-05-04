@@ -16,9 +16,11 @@ using eDoxa.Challenges.Application.Commands;
 using eDoxa.Challenges.Application.Commands.Handlers;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.AggregateModels.ParticipantAggregate;
-using eDoxa.Challenges.Domain.AggregateModels.UserAggregate;
 using eDoxa.Challenges.Domain.Factories;
 using eDoxa.Challenges.Domain.Repositories;
+using eDoxa.Commands.Extensions;
+using eDoxa.Security.Abstractions;
+using eDoxa.Testing.MSTest.Extensions;
 
 using FluentAssertions;
 
@@ -33,37 +35,45 @@ namespace eDoxa.Challenges.Application.Tests.Commands.Handlers
     public sealed class RegisterChallengeParticipantCommandHandlerTest
     {
         private static readonly ChallengeAggregateFactory ChallengeAggregateFactory = ChallengeAggregateFactory.Instance;
+        private Mock<IChallengeRepository> _mockChallengeRepository;
+        private Mock<IUserProfile> _mockUserProfile;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            _mockChallengeRepository = new Mock<IChallengeRepository>();
+            _mockUserProfile = new Mock<IUserProfile>();
+            _mockUserProfile.SetupGetProperties();
+        }
 
         [TestMethod]
         public async Task HandleAsync_FindChallengeAsync_ShouldBeInvokedExactlyOneTime()
         {
             // Arrange
-            var command = new RegisterChallengeParticipantCommand(new UserId())
+            var command = new RegisterChallengeParticipantCommand
             {
                 LinkedAccount = new LinkedAccount(Guid.NewGuid())
             };
 
-            var mockChallengeRepository = new Mock<IChallengeRepository>();
-
-            mockChallengeRepository.Setup(repository => repository.FindChallengeAsync(It.IsAny<ChallengeId>()))
+            _mockChallengeRepository.Setup(repository => repository.FindChallengeAsync(It.IsAny<ChallengeId>()))
                 .ReturnsAsync(ChallengeAggregateFactory.CreateChallenge())
                 .Verifiable();
 
-            mockChallengeRepository.Setup(repository => repository.UnitOfWork.CommitAndDispatchDomainEventsAsync(It.IsAny<CancellationToken>()))
+            _mockChallengeRepository.Setup(repository => repository.UnitOfWork.CommitAndDispatchDomainEventsAsync(It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
             // Act
-            var handler = new RegisterChallengeParticipantCommandHandler(mockChallengeRepository.Object);
+            var handler = new RegisterChallengeParticipantCommandHandler(_mockUserProfile.Object, _mockChallengeRepository.Object);
 
             // Assert
-            var result = await handler.Handle(command, default);
+            var result = await handler.HandleAsync(command);
 
             result.Should().BeOfType<OkObjectResult>();
 
-            mockChallengeRepository.Verify(repository => repository.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Once);
+            _mockChallengeRepository.Verify(repository => repository.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Once);
 
-            mockChallengeRepository.Verify(repository => repository.UnitOfWork.CommitAndDispatchDomainEventsAsync(It.IsAny<CancellationToken>()), Times.Once);
+            _mockChallengeRepository.Verify(repository => repository.UnitOfWork.CommitAndDispatchDomainEventsAsync(It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }

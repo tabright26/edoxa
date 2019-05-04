@@ -11,7 +11,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.Infrastructure.Configurations;
 using eDoxa.Seedwork.Infrastructure;
@@ -29,22 +30,30 @@ namespace eDoxa.Cashier.Infrastructure
 
         public async Task SeedAsync(ILogger logger)
         {
-            if (!Users.Any())
+            if (!MoneyAccounts.Any())
             {
-                Users.AddRange(
-                    _userAggregateFactory.CreateAdmin(),
-                    _userAggregateFactory.CreateFrancis(),
-                    _userAggregateFactory.CreateRoy(),
-                    _userAggregateFactory.CreateRyan()
-                );
+                MoneyAccounts.Add(new MoneyAccount(_userAggregateFactory.CreateAdminId()));
 
                 await this.SaveChangesAsync();
 
-                logger.LogInformation("The users being populated.");
+                logger.LogInformation("The money accounts being populated.");
             }
             else
             {
-                logger.LogInformation("The users already populated.");
+                logger.LogInformation("The money accounts already populated.");
+            }
+
+            if (!TokenAccounts.Any())
+            {
+                TokenAccounts.Add(new TokenAccount(_userAggregateFactory.CreateAdminId()));
+
+                await this.SaveChangesAsync();
+
+                logger.LogInformation("The token accounts being populated.");
+            }
+            else
+            {
+                logger.LogInformation("The token accounts already populated.");
             }
         }
     }
@@ -59,8 +68,6 @@ namespace eDoxa.Cashier.Infrastructure
         {
         }
 
-        public DbSet<User> Users => this.Set<User>();
-
         public DbSet<MoneyAccount> MoneyAccounts => this.Set<MoneyAccount>();
 
         public DbSet<MoneyTransaction> MoneyTransactions => this.Set<MoneyTransaction>();
@@ -74,8 +81,6 @@ namespace eDoxa.Cashier.Infrastructure
             base.OnModelCreating(builder);
 
             builder.HasDefaultSchema(nameof(eDoxa).ToLower());
-
-            builder.ApplyConfiguration(new UserConfiguration());
 
             builder.ApplyConfiguration(new MoneyAccountConfiguration());
 

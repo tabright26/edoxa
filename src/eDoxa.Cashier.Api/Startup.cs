@@ -9,6 +9,7 @@
 // this source code package.
 
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 
 using eDoxa.Autofac.Extensions;
@@ -17,10 +18,9 @@ using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Application;
 using eDoxa.Cashier.DTO.Factories;
 using eDoxa.Cashier.Infrastructure;
-using eDoxa.IdentityServer;
-using eDoxa.IdentityServer.Extensions;
 using eDoxa.Monitoring.Extensions;
 using eDoxa.Security.Extensions;
+using eDoxa.Security.Resources;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.ServiceBus.Extensions;
@@ -38,10 +38,13 @@ namespace eDoxa.Cashier.Api
 {
     public sealed class Startup
     {
+        private static readonly CustomApiResources.CashierApi CashierApi = new CustomApiResources.CashierApi();
+
         public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {
             Configuration = configuration;
             Environment = environment;
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         }
 
         private IHostingEnvironment Environment { get; }
@@ -64,13 +67,15 @@ namespace eDoxa.Cashier.Api
 
             services.AddMvcFilters();
 
-            services.AddSwagger(Configuration, Environment);
+            services.AddSwagger(Configuration, Environment, CashierApi);
 
             services.AddCorsPolicy();
 
             services.AddServiceBus(Configuration);
 
-            services.AddAuthentication(Configuration, CustomScopes.CashierApi);
+            services.AddIdentityServerAuthentication(Configuration, Environment, CashierApi);
+
+            services.AddUserProfile();
 
             services.AddStripe();
 
@@ -89,9 +94,9 @@ namespace eDoxa.Cashier.Api
 
             application.UseStaticFiles();
 
-            application.UseSwagger(Configuration, Environment, provider, true);
+            application.UseSwagger(Environment, provider, CashierApi);
 
-            application.UseMvcWithDefaultRoute();
+            application.UseMvc();
 
             application.UseIntegrationEventSubscriptions();
 

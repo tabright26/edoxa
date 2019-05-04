@@ -8,10 +8,13 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Security.Extensions;
+
+using IdentityServer4.Models;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.Extensions.Configuration;
 
 namespace eDoxa.Swagger.Extensions
 {
@@ -19,10 +22,8 @@ namespace eDoxa.Swagger.Extensions
     {
         public static void UseSwagger(
             this IApplicationBuilder application,
-            IConfiguration configuration,
             IHostingEnvironment environment,
-            IApiVersionDescriptionProvider provider,
-            bool withRedirects = false)
+            IApiVersionDescriptionProvider provider, ApiResource apiResource)
         {
             if (!environment.IsDevelopment())
             {
@@ -37,19 +38,15 @@ namespace eDoxa.Swagger.Extensions
                     foreach (var description in provider.ApiVersionDescriptions)
                     {
                         options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName);
+                        
                     }
-
-                    options.OAuthClientId(configuration["Swagger:ClientId"]);
-                    options.OAuthAppName(configuration["Swagger:ClientName"]);
+                    options.RoutePrefix = string.Empty;
+                    options.OAuthClientId(apiResource.SwaggerClientId());
+                    options.OAuthAppName(apiResource.SwaggerClientName());
                     options.DefaultModelExpandDepth(0);
                     options.DefaultModelsExpandDepth(-1);
                 }
             );
-
-            if (withRedirects)
-            {
-                application.UseStatusCodePagesWithRedirects("~/swagger");
-            }
         }
     }
 }

@@ -14,10 +14,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
 {
-    /// <summary>
-    ///     Represents the link between a user and a role in the system.
-    /// </summary>
-    public class UserRole : IdentityUserRole<Guid>
+    public sealed class UserRole : IdentityUserRole<Guid>
     {
     }
 }

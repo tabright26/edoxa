@@ -11,10 +11,11 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
-using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Commands.Abstractions.Handlers;
+using eDoxa.Security.Abstractions;
 
 using JetBrains.Annotations;
 
@@ -25,30 +26,27 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
     internal sealed class DepositTokensCommandHandler : ICommandHandler<DepositTokensCommand, IActionResult>
     {
         private static readonly TokenBundles Bundles = new TokenBundles();
-        private readonly IMoneyAccountService _moneyAccountService;
+        private readonly ITokenAccountService _tokenAccountService;
+        private readonly IUserProfile _userProfile;
 
-        private readonly IUserRepository _userRepository;
-
-        public DepositTokensCommandHandler(IUserRepository userRepository, IMoneyAccountService moneyAccountService)
+        public DepositTokensCommandHandler(IUserProfile userProfile, ITokenAccountService tokenAccountService)
         {
-            _userRepository = userRepository;
-            _moneyAccountService = moneyAccountService;
+            _userProfile = userProfile;
+            _tokenAccountService = tokenAccountService;
         }
 
         [ItemNotNull]
         public async Task<IActionResult> Handle([NotNull] DepositTokensCommand command, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.FindAsync(command.UserId);
+            var userId = UserId.Parse(_userProfile.Subject);
+
+            var customerId = CustomerId.Parse(_userProfile.CustomerId);
 
             var bundle = Bundles[command.BundleType];
 
-            await _moneyAccountService.TransactionAsync(user, bundle, cancellationToken);
+            var transaction = await _tokenAccountService.TransactionAsync(userId, customerId, bundle, cancellationToken);
 
-            var tokenBalance = user.DepositTokens(bundle);
-
-            await _userRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
-
-            return new OkObjectResult((decimal) tokenBalance.Amount);
+            return new OkObjectResult(transaction);
         }
     }
 }

@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 
-using eDoxa.IdentityServer;
 using eDoxa.Security;
 
 using JetBrains.Annotations;
@@ -97,7 +96,7 @@ namespace eDoxa.Swagger.Filters
                                 {
                                     "oauth2", new[]
                                     {
-                                        CustomScopes.IdentityApi, CustomScopes.CashierApi, CustomScopes.ChallengesApi, CustomScopes.NotificationsApi
+                                        CustomScopes.IdentityApi, CustomScopes.CashierApi, CustomScopes.ChallengeApi
                                     }
                                 }
                             }

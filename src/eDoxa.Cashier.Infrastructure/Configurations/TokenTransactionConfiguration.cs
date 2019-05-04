@@ -9,7 +9,7 @@
 // this source code package.
 
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
 
 using JetBrains.Annotations;
 

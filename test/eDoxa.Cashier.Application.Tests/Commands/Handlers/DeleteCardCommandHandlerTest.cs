@@ -1,9 +1,9 @@
 ﻿// Filename: DeleteCardCommandHandlerTest.cs
-// Date Created: 2019-04-21
+// Date Created: 2019-04-30
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -15,7 +15,8 @@ using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Factories;
-using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Security.Abstractions;
+using eDoxa.Testing.MSTest.Extensions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -28,23 +29,25 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     [TestClass]
     public sealed class DeleteCardCommandHandlerTest
     {
-        private readonly UserAggregateFactory _userAggregateFactory = UserAggregateFactory.Instance;
+        private static readonly UserAggregateFactory UserAggregateFactory = UserAggregateFactory.Instance;
+        private Mock<CardService> _mockCardService;
+        private Mock<IUserProfile> _mockUserProfile;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            _mockCardService = new Mock<CardService>();
+            _mockUserProfile = new Mock<IUserProfile>();
+            _mockUserProfile.SetupGetProperties();
+        }
 
         [TestMethod]
         public async Task HandleAsync_FindAsNoTrackingAsync_ShouldBeInvokedExactlyOneTime()
         {
             // Arrange
-            var user = _userAggregateFactory.CreateUser();
+            var card = UserAggregateFactory.CreateCard();
 
-            var card = _userAggregateFactory.CreateCard();
-
-            var mockUserRepository = new Mock<IUserRepository>();
-
-            var mockCardService = new Mock<CardService>();
-
-            mockUserRepository.Setup(repository => repository.FindAsNoTrackingAsync(It.IsAny<UserId>())).ReturnsAsync(user).Verifiable();
-
-            mockCardService.Setup(
+            _mockCardService.Setup(
                     service => service.DeleteAsync(
                         It.IsAny<string>(),
                         It.IsAny<string>(),
@@ -55,15 +58,13 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
                 .ReturnsAsync(card)
                 .Verifiable();
 
-            var handler = new DeleteCardCommandHandler(mockUserRepository.Object, mockCardService.Object);
+            var handler = new DeleteCardCommandHandler(_mockUserProfile.Object, _mockCardService.Object);
 
             // Act
-            await handler.Handle(new DeleteCardCommand(user.Id, CardId.Parse(card.Id)), default);
+            await handler.Handle(new DeleteCardCommand(CardId.Parse(card.Id)), default);
 
             // Assert
-            mockUserRepository.Verify(repository => repository.FindAsNoTrackingAsync(It.IsAny<UserId>()), Times.Once);
-
-            mockCardService.Verify(
+            _mockCardService.Verify(
                 service => service.DeleteAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
                 Times.Once
             );

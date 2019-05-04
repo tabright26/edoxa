@@ -26,8 +26,6 @@ namespace eDoxa.Cashier.Api.Extensions
             service.Subscribe<UserCreatedIntegrationEvent, UserCreatedIntegrationEventHandler>();
 
             service.Subscribe<UserEmailChangedIntegrationEvent, UserEmailChangedIntegrationEventHandler>();
-
-            service.Subscribe<UserPhoneNumberChangedIntegrationEvent, UserPhoneNumberChangedIntegrationEventHandler>();
         }
     }
 }

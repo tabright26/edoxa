@@ -71,8 +71,6 @@ namespace eDoxa.Identity.Infrastructure.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
-                    b.Property<int>("CurrentStatus");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256);
 
@@ -94,11 +92,7 @@ namespace eDoxa.Identity.Infrastructure.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
-                    b.Property<int>("PreviousStatus");
-
                     b.Property<string>("SecurityStamp");
-
-                    b.Property<DateTime>("StatusChanged");
 
                     b.Property<bool>("TwoFactorEnabled");
 
@@ -188,48 +182,6 @@ namespace eDoxa.Identity.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("eDoxa.Identity.Domain.AggregateModels.UserAggregate.User", b =>
-                {
-                    b.OwnsOne("eDoxa.Identity.Domain.AggregateModels.UserAggregate.BirthDate", "BirthDate", b1 =>
-                        {
-                            b1.Property<Guid>("UserId");
-
-                            b1.Property<DateTime>("Date")
-                                .HasColumnName("BirthDate");
-
-                            b1.HasKey("UserId");
-
-                            b1.ToTable("Users","edoxa");
-
-                            b1.HasOne("eDoxa.Identity.Domain.AggregateModels.UserAggregate.User")
-                                .WithOne("BirthDate")
-                                .HasForeignKey("eDoxa.Identity.Domain.AggregateModels.UserAggregate.BirthDate", "UserId")
-                                .OnDelete(DeleteBehavior.Cascade);
-                        });
-
-                    b.OwnsOne("eDoxa.Identity.Domain.AggregateModels.UserAggregate.PersonalName", "PersonalName", b1 =>
-                        {
-                            b1.Property<Guid>("UserId");
-
-                            b1.Property<string>("FirstName")
-                                .IsRequired()
-                                .HasColumnName("FirstName");
-
-                            b1.Property<string>("LastName")
-                                .IsRequired()
-                                .HasColumnName("LastName");
-
-                            b1.HasKey("UserId");
-
-                            b1.ToTable("Users","edoxa");
-
-                            b1.HasOne("eDoxa.Identity.Domain.AggregateModels.UserAggregate.User")
-                                .WithOne("PersonalName")
-                                .HasForeignKey("eDoxa.Identity.Domain.AggregateModels.UserAggregate.PersonalName", "UserId")
-                                .OnDelete(DeleteBehavior.Cascade);
-                        });
                 });
 
             modelBuilder.Entity("eDoxa.Identity.Domain.AggregateModels.UserAggregate.UserClaim", b =>

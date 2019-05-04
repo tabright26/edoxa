@@ -11,10 +11,11 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
-using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Commands.Abstractions.Handlers;
+using eDoxa.Security.Abstractions;
 
 using JetBrains.Annotations;
 
@@ -25,30 +26,28 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
     internal sealed class DepositMoneyCommandHandler : ICommandHandler<DepositMoneyCommand, IActionResult>
     {
         private static readonly MoneyBundles Bundles = new MoneyBundles();
+
         private readonly IMoneyAccountService _moneyAccountService;
+        private readonly IUserProfile _userProfile;
 
-        private readonly IUserRepository _userRepository;
-
-        public DepositMoneyCommandHandler(IUserRepository userRepository, IMoneyAccountService moneyAccountService)
+        public DepositMoneyCommandHandler(IUserProfile userProfile, IMoneyAccountService moneyAccountService)
         {
-            _userRepository = userRepository;
+            _userProfile = userProfile;
             _moneyAccountService = moneyAccountService;
         }
 
         [ItemNotNull]
         public async Task<IActionResult> Handle([NotNull] DepositMoneyCommand command, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.FindAsync(command.UserId);
-
             var bundle = Bundles[command.BundleType];
 
-            await _moneyAccountService.TransactionAsync(user, bundle, cancellationToken);
+            var userId = UserId.Parse(_userProfile.Subject);
 
-            var balance = user.DepositMoney(bundle);
+            var customerId = CustomerId.Parse(_userProfile.CustomerId);
 
-            await _userRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+            var transaction = await _moneyAccountService.TransactionAsync(userId, customerId, bundle, cancellationToken);
 
-            return new OkObjectResult((decimal) balance.Amount);
+            return new OkObjectResult(transaction);
         }
     }
 }

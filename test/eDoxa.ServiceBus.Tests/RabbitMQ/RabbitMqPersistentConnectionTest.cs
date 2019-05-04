@@ -1,11 +1,11 @@
 ﻿// Filename: RabbitMqPersistentConnectionTest.cs
-// Date Created: 2019-03-04
+// Date Created: 2019-04-30
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
 // 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
@@ -14,9 +14,10 @@ using eDoxa.ServiceBus.Exceptions;
 using eDoxa.ServiceBus.RabbitMQ;
 using eDoxa.Testing.MSTest.Extensions;
 
+using FluentAssertions;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Internal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
@@ -29,42 +30,32 @@ namespace eDoxa.ServiceBus.Tests.RabbitMQ
     [TestClass]
     public sealed class RabbitMqPersistentConnectionTest
     {
-        private const string HostName = "localhost";
-        private const int Port = 5672;
-        private const string UserName = "admin";
-        private const string Password = "4t8SaVXVMy0rT2kM";
+        private static readonly ConnectionFactory ConnectionFactory = new ConnectionFactory
+        {
+            HostName = "localhost",
+            Port = 5672,
+            UserName = "admin",
+            Password = "4t8SaVXVMy0rT2kM"
+        };
+
+        private Mock<ILogger<RabbitMqPersistentConnection>> _mockLogger;
+
+        public RabbitMqPersistentConnectionTest()
+        {
+            _mockLogger = new Mock<ILogger<RabbitMqPersistentConnection>>();
+            _mockLogger.SetupLog();
+        }
 
         [TestMethod]
         public void TryConnect_IsConnected_ShouldBeTrue()
         {
-            // Arrange
-            var factory = new ConnectionFactory
-            {
-                HostName = HostName, Port = Port, UserName = UserName, Password = Password
-            };
-
-            var mockLogger = new Mock<ILogger<RabbitMqPersistentConnection>>();
-
-            mockLogger.SetupLoggerWithLogInformationVerifiable();
-
-            using (var connection = new RabbitMqPersistentConnection(factory, mockLogger.Object))
+            using (var connection = new RabbitMqPersistentConnection(ConnectionFactory, _mockLogger.Object))
             {
                 // Act
                 connection.TryConnect();
 
                 // Assert
-                Assert.IsTrue(connection.IsConnected);
-
-                mockLogger.Verify(
-                    logger => logger.Log(
-                        LogLevel.Information,
-                        It.IsAny<EventId>(),
-                        It.IsAny<FormattedLogValues>(),
-                        It.IsAny<Exception>(),
-                        It.IsAny<Func<object, Exception, string>>()
-                    ),
-                    Times.Exactly(2)
-                );
+                connection.IsConnected.Should().BeTrue();
             }
         }
 
@@ -72,54 +63,28 @@ namespace eDoxa.ServiceBus.Tests.RabbitMQ
         public void TryConnect_RetryPolicyTryConnectOnce_ShouldThrownBrokerUnreachableException()
         {
             // Arrange
-            var factory = new ConnectionFactory();
+            var connection = new RabbitMqPersistentConnection(new ConnectionFactory(), _mockLogger.Object, 1);
 
-            var mockLogger = new Mock<ILogger<RabbitMqPersistentConnection>>();
+            // Act
+            var action = new Action(() => connection.TryConnect());
 
-            mockLogger.SetupLoggerWithLogInformationVerifiable();
-
-            var connection = new RabbitMqPersistentConnection(factory, mockLogger.Object, 1);
-
-            // Act => Assert
-            Assert.ThrowsException<BrokerUnreachableException>(() => connection.TryConnect());
-
-            mockLogger.Verify(
-                logger => logger.Log(
-                    LogLevel.Warning,
-                    It.IsAny<EventId>(),
-                    It.IsAny<FormattedLogValues>(),
-                    It.IsAny<Exception>(),
-                    It.IsAny<Func<object, Exception, string>>()
-                ),
-                Times.Once()
-            );
+            // Assert
+            action.Should().Throw<BrokerUnreachableException>();
         }
 
         [TestMethod]
         public void CreateChannel_TryConnectAndCreateChannel_ShouldBeNotNull()
         {
-            // Arrange
-            var factory = new ConnectionFactory
+            using (var connection = new RabbitMqPersistentConnection(ConnectionFactory, _mockLogger.Object))
             {
-                HostName = HostName, Port = Port, UserName = UserName, Password = Password
-            };
+                // Arrange
+                connection.TryConnect();
 
-            var mockLogger = new Mock<ILogger<RabbitMqPersistentConnection>>();
+                // Act
+                var channel = connection.CreateChannel();
 
-            using (var connection = new RabbitMqPersistentConnection(factory, mockLogger.Object))
-            {
-                if (connection.TryConnect())
-                {
-                    // Act
-                    var channel = connection.CreateChannel();
-
-                    // Assert
-                    Assert.IsNotNull(channel);
-                }
-                else
-                {
-                    throw new RabbitMqException("The Docker 'edoxa.rabbitmq.broker' container isn't running.");
-                }
+                // Assert
+                channel.Should().NotBeNull();
             }
         }
 
@@ -127,36 +92,20 @@ namespace eDoxa.ServiceBus.Tests.RabbitMQ
         public void CreateChannel_CreateChannelWithoutConnection_ShouldThrownRabbitMqException()
         {
             // Arrange
-            var factory = new ConnectionFactory
-            {
-                HostName = HostName, Port = Port, UserName = UserName, Password = Password
-            };
+            var connection = new RabbitMqPersistentConnection(ConnectionFactory, _mockLogger.Object);
 
-            var mockLogger = new Mock<ILogger<RabbitMqPersistentConnection>>();
+            // Act
+            var action = new Action(() => connection.CreateChannel());
 
-            var connection = new RabbitMqPersistentConnection(factory, mockLogger.Object);
-
-            // Act => Assert
-            Assert.ThrowsException<RabbitMqException>(() => connection.CreateChannel());
+            // Assert
+            action.Should().Throw<RabbitMqException>();
         }
 
-        private static IRabbitMqPersistentConnection GetRabbitMqEventBusPersistentConnection()
+        private IRabbitMqPersistentConnection GetRabbitMqEventBusPersistentConnection()
         {
             var services = new ServiceCollection();
 
-            services.AddSingleton<IRabbitMqPersistentConnection>(
-                serviceProvider =>
-                {
-                    var mockLogger = new Mock<ILogger<RabbitMqPersistentConnection>>();
-
-                    var factory = new ConnectionFactory
-                    {
-                        HostName = HostName, Port = Port, UserName = UserName, Password = Password
-                    };
-
-                    return new RabbitMqPersistentConnection(factory, mockLogger.Object);
-                }
-            );
+            services.AddSingleton<IRabbitMqPersistentConnection>(serviceProvider => new RabbitMqPersistentConnection(ConnectionFactory, _mockLogger.Object));
 
             var provider = services.BuildServiceProvider();
 

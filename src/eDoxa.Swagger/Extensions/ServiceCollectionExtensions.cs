@@ -15,6 +15,8 @@ using System.Reflection;
 
 using eDoxa.Swagger.Filters;
 
+using IdentityServer4.Models;
+
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
@@ -29,7 +31,7 @@ namespace eDoxa.Swagger.Extensions
         public static void AddSwagger(
             this IServiceCollection services,
             IConfiguration configuration,
-            IHostingEnvironment environment)
+            IHostingEnvironment environment, ApiResource apiResource)
         {
             if (!environment.IsDevelopment())
             {
@@ -37,10 +39,6 @@ namespace eDoxa.Swagger.Extensions
             }
 
             var authority = configuration["Authority"];
-
-            var apiResourceName = configuration["ApiResource:Name"];
-
-            var apiResourceDisplayName = configuration["ApiResource:DisplayName"];
 
             var assembly = Assembly.GetCallingAssembly();
 
@@ -57,7 +55,7 @@ namespace eDoxa.Swagger.Extensions
                             description.GroupName,
                             new Info
                             {
-                                Title = apiResourceDisplayName,
+                                Title = apiResource.DisplayName,
                                 Version = description.GroupName,
                                 Description = description.IsDeprecated ? "This API version has been deprecated." : null,
                                 Contact = new Contact
@@ -85,7 +83,7 @@ namespace eDoxa.Swagger.Extensions
                             TokenUrl = authority + "/connect/token",
                             Scopes = new Dictionary<string, string>
                             {
-                                [apiResourceName] = apiResourceDisplayName
+                                [apiResource.Name] = apiResource.DisplayName
                             }
                         }
                     );

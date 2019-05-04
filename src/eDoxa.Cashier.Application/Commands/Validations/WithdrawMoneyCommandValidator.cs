@@ -10,15 +10,9 @@
 
 using eDoxa.Commands.Abstractions.Validations;
 
-using FluentValidation;
-
 namespace eDoxa.Cashier.Application.Commands.Validations
 {
     internal sealed class WithdrawMoneyCommandValidator : CommandValidator<WithdrawMoneyCommand>
     {
-        public WithdrawMoneyCommandValidator()
-        {
-            this.RuleFor(command => command.UserId).NotEmpty();
-        }
     }
 }

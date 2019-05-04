@@ -14,14 +14,15 @@ using Microsoft.AspNetCore.Identity;
 
 namespace eDoxa.Identity.Domain.AggregateModels.RoleAggregate
 {
-    public class Role : IdentityRole<Guid>
+    public sealed class Role : IdentityRole<Guid>
     {
-        public Role(string name) : base(name)
+        public Role(string roleName) : base(roleName)
         {
         }
 
-        private Role()
+        public Role()
         {
+            
         }
     }
 }

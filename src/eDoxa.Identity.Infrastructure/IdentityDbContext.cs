@@ -9,7 +9,6 @@
 // this source code package.
 
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
@@ -25,29 +24,26 @@ namespace eDoxa.Identity.Infrastructure
 {
     public sealed partial class IdentityDbContext
     {
-        private readonly UserAggregateFactory _userAggregateFactory = UserAggregateFactory.Instance;
+        private static readonly UserAggregateFactory UserAggregateFactory = UserAggregateFactory.Instance;
 
         public async Task SeedAsync(ILogger logger)
         {
-            if (!Users.Any())
-            {
-                var admin = _userAggregateFactory.CreateAdmin();
+            //if (!Users.Any())
+            //{
+            //    Users.AddRange(UserAggregateFactory.CreateAdmin(), UserAggregateFactory.CreateFrancis(), UserAggregateFactory.CreateRoy(), UserAggregateFactory.CreateRyan());
 
-                Users.AddRange(admin, _userAggregateFactory.CreateFrancis(), _userAggregateFactory.CreateRoy(), _userAggregateFactory.CreateRyan());
+            //    await this.SaveChangesAsync();
 
-                await this.SaveChangesAsync();
-
-                logger.LogInformation("The users being populated.");
-            }
-            else
-            {
-                logger.LogInformation("The users already populated.");
-            }
+            //    logger.LogInformation("The users being populated.");
+            //}
+            //else
+            //{
+            //    logger.LogInformation("The users already populated.");
+            //}
         }
     }
 
-    public sealed partial class
-        IdentityDbContext : IdentityDbContext<User, Role, Guid, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>
+    public sealed partial class IdentityDbContext : IdentityDbContext<User, Role, Guid, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>
     {
         public IdentityDbContext(DbContextOptions<IdentityDbContext> options) : base(options)
         {

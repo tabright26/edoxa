@@ -8,18 +8,15 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Linq;
-using System.Threading.Tasks;
-
 using eDoxa.Challenges.Application.Commands;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.DTO.Queries;
 using eDoxa.Commands.Extensions;
-
 using MediatR;
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace eDoxa.Challenges.Api.Controllers
 {
@@ -57,7 +54,7 @@ namespace eDoxa.Challenges.Api.Controllers
         /// <summary>
         ///     Register a participant to a challenge.
         /// </summary>
-        [HttpPatch(Name = nameof(RegisterChallengeParticipantAsync))]
+        [HttpPost(Name = nameof(RegisterChallengeParticipantAsync))]
         public async Task<IActionResult> RegisterChallengeParticipantAsync(ChallengeId challengeId, [FromBody] RegisterChallengeParticipantCommand command)
         {
             command.ChallengeId = challengeId;

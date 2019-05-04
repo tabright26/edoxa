@@ -18,14 +18,14 @@ namespace eDoxa.Cashier.Application.Commands
     [DataContract]
     public sealed class UpdateEmailCommand : Command
     {
-        public UpdateEmailCommand(UserId userId, string email)
+        public UpdateEmailCommand(CustomerId customerId, string email)
         {
-            UserId = userId;
+            CustomerId = customerId;
             Email = email;
         }
 
-        [DataMember(Name = "userId")] public UserId UserId { get; private set; }
+        [DataMember(Name = "customerId")] public CustomerId CustomerId { get; private set; }
 
-        [DataMember(Name = "email")] public string Email { get; }
+        [DataMember(Name = "email")] public string Email { get; private set; }
     }
 }

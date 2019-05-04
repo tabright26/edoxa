@@ -28,7 +28,7 @@ namespace eDoxa.Cashier.Application.IntegrationEvents.Handlers
 
         public async Task Handle(UserEmailChangedIntegrationEvent integrationEvent)
         {
-            await _mediator.Send(new UpdateEmailCommand(integrationEvent.UserId, integrationEvent.Email));
+            await _mediator.Send(new UpdateEmailCommand(integrationEvent.CustomerId, integrationEvent.Email));
         }
     }
 }

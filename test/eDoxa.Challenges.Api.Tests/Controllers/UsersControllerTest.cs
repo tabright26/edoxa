@@ -17,7 +17,9 @@ using eDoxa.Challenges.Domain.AggregateModels.UserAggregate;
 using eDoxa.Challenges.DTO;
 using eDoxa.Challenges.DTO.Queries;
 using eDoxa.Functional.Maybe;
+using eDoxa.Security.Abstractions;
 using eDoxa.Seedwork.Domain.Common.Enums;
+using eDoxa.Testing.MSTest.Extensions;
 
 using FluentAssertions;
 
@@ -33,6 +35,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
     [TestClass]
     public sealed class UsersControllerTest
     {
+        private Mock<IUserProfile> _mockUserProfile;
         private Mock<IMediator> _mediator;
         private Mock<IChallengeQueries> _queries;
 
@@ -41,6 +44,8 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
         {
             _queries = new Mock<IChallengeQueries>();
             _mediator = new Mock<IMediator>();
+            _mockUserProfile = new Mock<IUserProfile>();
+            _mockUserProfile.SetupGetProperties();
         }
 
         [TestMethod]
@@ -59,10 +64,10 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
                 .ReturnsAsync(new Option<ChallengeListDTO>(value))
                 .Verifiable();
 
-            var controller = new UsersController(_queries.Object);
+            var controller = new ChallengeHistoryController(_mockUserProfile.Object, _queries.Object);
 
             // Act
-            var result = await controller.FindUserChallengeHistoryAsync(It.IsAny<UserId>());
+            var result = await controller.FindUserChallengeHistoryAsync();
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -80,10 +85,10 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
                 .ReturnsAsync(new Option<ChallengeListDTO>())
                 .Verifiable();
 
-            var controller = new UsersController(_queries.Object);
+            var controller = new ChallengeHistoryController(_mockUserProfile.Object, _queries.Object);
 
             // Act
-            var result = await controller.FindUserChallengeHistoryAsync(It.IsAny<UserId>());
+            var result = await controller.FindUserChallengeHistoryAsync();
 
             // Assert
             result.Should().BeOfType<NoContentResult>();

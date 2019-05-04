@@ -10,10 +10,7 @@
 
 using System;
 
-using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
-
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace eDoxa.Identity.DTO
 {
@@ -24,21 +21,6 @@ namespace eDoxa.Identity.DTO
         public Guid Id { get; set; }
 
         [JsonProperty("username")]
-        public string Username { get; set; }
-
-        [JsonProperty("tag")]
-        public short Tag { get; set; }
-
-        [JsonProperty("currentStatus")]
-        [JsonConverter(typeof(StringEnumConverter))]
-        public UserStatus CurrentStatus { get; set; }
-
-        [JsonProperty("previousStatus")]
-        [JsonConverter(typeof(StringEnumConverter))]
-        public UserStatus PreviousStatus { get; set; }
-
-        [JsonProperty("statusChanged")]
-        [JsonConverter(typeof(UnixDateTimeConverter))]
-        public DateTime StatusChanged { get; set; }
+        public string UserName { get; set; }
     }
 }

@@ -9,6 +9,7 @@
 // this source code package.
 
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 
 using eDoxa.Autofac.Extensions;
@@ -17,10 +18,9 @@ using eDoxa.Challenges.Api.Extensions;
 using eDoxa.Challenges.Application;
 using eDoxa.Challenges.DTO.Factories;
 using eDoxa.Challenges.Infrastructure;
-using eDoxa.IdentityServer;
-using eDoxa.IdentityServer.Extensions;
 using eDoxa.Monitoring.Extensions;
 using eDoxa.Security.Extensions;
+using eDoxa.Security.Resources;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.ServiceBus.Extensions;
@@ -37,10 +37,13 @@ namespace eDoxa.Challenges.Api
 {
     public sealed class Startup
     {
+        private static readonly CustomApiResources.ChallengeApi ChallengeApi = new CustomApiResources.ChallengeApi();
+
         public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {
             Configuration = configuration;
             Environment = environment;
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         }
 
         private IHostingEnvironment Environment { get; }
@@ -63,13 +66,15 @@ namespace eDoxa.Challenges.Api
 
             services.AddMvcFilters();
 
-            services.AddSwagger(Configuration, Environment);
+            services.AddSwagger(Configuration, Environment, ChallengeApi);
 
             services.AddCorsPolicy();
 
             services.AddServiceBus(Configuration);
 
-            services.AddAuthentication(Configuration, CustomScopes.ChallengesApi);
+            services.AddIdentityServerAuthentication(Configuration, Environment, ChallengeApi);
+
+            services.AddUserProfile();
 
             return services.Build<ApplicationModule>();
         }
@@ -86,9 +91,9 @@ namespace eDoxa.Challenges.Api
 
             application.UseStaticFiles();
 
-            application.UseSwagger(Configuration, Environment, provider, true);
+            application.UseSwagger(Environment, provider, ChallengeApi);
 
-            application.UseMvcWithDefaultRoute();
+            application.UseMvc();
 
             application.UseIntegrationEventSubscriptions();
         }

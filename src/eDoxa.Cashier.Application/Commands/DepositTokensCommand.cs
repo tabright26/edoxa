@@ -10,8 +10,7 @@
 
 using System.Runtime.Serialization;
 
-using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
 using eDoxa.Commands.Abstractions;
 
 using Microsoft.AspNetCore.Mvc;
@@ -25,8 +24,6 @@ namespace eDoxa.Cashier.Application.Commands
         {
             BundleType = bundleType;
         }
-
-        [IgnoreDataMember] public UserId UserId { get; set; }
 
         [DataMember(Name = "bundleType")] public TokenBundleType BundleType { get; private set; }
     }

@@ -1,9 +1,9 @@
 ﻿// Filename: DeleteCardCommandHandler.cs
-// Date Created: 2019-04-21
+// Date Created: 2019-04-30
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -11,8 +11,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Commands.Abstractions.Handlers;
+using eDoxa.Security.Abstractions;
 
 using JetBrains.Annotations;
 
@@ -25,20 +26,20 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
     internal sealed class DeleteCardCommandHandler : ICommandHandler<DeleteCardCommand, IActionResult>
     {
         private readonly CardService _cardService;
-        private readonly IUserRepository _userRepository;
+        private readonly IUserProfile _userProfile;
 
-        public DeleteCardCommandHandler(IUserRepository userRepository, CardService cardService)
+        public DeleteCardCommandHandler(IUserProfile userProfile, CardService cardService)
         {
-            _userRepository = userRepository;
+            _userProfile = userProfile;
             _cardService = cardService;
         }
 
         [ItemNotNull]
         public async Task<IActionResult> Handle([NotNull] DeleteCardCommand command, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.FindAsNoTrackingAsync(command.UserId);
+            var customerId = CustomerId.Parse(_userProfile.CustomerId);
 
-            await _cardService.DeleteAsync(user.CustomerId.ToString(), command.CardId.ToString(), cancellationToken: cancellationToken);
+            await _cardService.DeleteAsync(customerId.ToString(), command.CardId.ToString(), cancellationToken: cancellationToken);
 
             return new OkResult();
         }

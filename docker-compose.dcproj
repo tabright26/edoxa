@@ -6,7 +6,7 @@
     <ProjectGuid>702d7d71-3cd1-436f-bd4e-6a488bb3cfc9</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://192.168.0.106:{ServicePort}</DockerServiceUrl>
-    <DockerServiceName>edoxa.identity</DockerServiceName>
+    <DockerServiceName>idsrv</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">

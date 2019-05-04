@@ -8,9 +8,16 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Threading;
+using System.Threading.Tasks;
+
+using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
+
 namespace eDoxa.Cashier.Domain.Services
 {
     public interface ITokenAccountService
     {
+        Task<ITokenTransaction> TransactionAsync(UserId userId, CustomerId customerId, TokenBundle bundle, CancellationToken cancellationToken = default);
     }
 }

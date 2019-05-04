@@ -14,10 +14,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
 {
-    /// <summary>
-    ///     Represents an authentication token for a user in the system.
-    /// </summary>
-    public class UserToken : IdentityUserToken<Guid>
+    public sealed class UserToken : IdentityUserToken<Guid>
     {
     }
 }

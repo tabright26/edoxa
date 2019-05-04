@@ -1,83 +1,74 @@
-﻿// Filename: UserRepositoryTest.cs
-// Date Created: 2019-04-09
-// 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
-// this source code package.
+﻿//// Filename: UserRepositoryTest.cs
+//// Date Created: 2019-04-09
+//// 
+//// ============================================================
+//// Copyright © 2019, Francis Quenneville
+//// All rights reserved.
+//// 
+//// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+//// this source code package.
 
-using System.Threading.Tasks;
+//using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using eDoxa.Cashier.Domain.Factories;
-using eDoxa.Cashier.Infrastructure.Repositories;
-using eDoxa.Cashier.Infrastructure.Tests.Asserts;
-using eDoxa.Seedwork.Infrastructure.Factories;
+//namespace eDoxa.Cashier.Infrastructure.Tests.Repositories
+//{
+//    [TestClass]
+//    public sealed class UserRepositoryTest
+//    {
+//        private static readonly UserAggregateFactory UserAggregateFactory = UserAggregateFactory.Instance;
 
-using FluentAssertions;
+//        [TestMethod]
+//        public async Task Create_User_ShouldNotBeEmpty()
+//        {
+//            using (var factory = new InMemoryDbContextFactory<CashierDbContext>())
+//            {
+//                using (var context = factory.CreateContext())
+//                {
+//                    // Arrange
+//                    var repository = new UserRepository(context);
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+//                    // Act
+//                    repository.Create(UserAggregateFactory.CreateUser());
 
-namespace eDoxa.Cashier.Infrastructure.Tests.Repositories
-{
-    [TestClass]
-    public sealed class UserRepositoryTest
-    {
-        private static readonly UserAggregateFactory UserAggregateFactory = UserAggregateFactory.Instance;
+//                    await repository.UnitOfWork.CommitAsync();
+//                }
 
-        [TestMethod]
-        public async Task Create_User_ShouldNotBeEmpty()
-        {
-            using (var factory = new InMemoryDbContextFactory<CashierDbContext>())
-            {
-                using (var context = factory.CreateContext())
-                {
-                    // Arrange
-                    var repository = new UserRepository(context);
+//                using (var context = factory.CreateContext())
+//                {
+//                    // Assert
+//                    context.Users.Should().NotBeEmpty();
+//                }
+//            }
+//        }
 
-                    // Act
-                    repository.Create(UserAggregateFactory.CreateUser());
+//        [TestMethod]
+//        public async Task FindAsync_ShouldBeMapped()
+//        {
+//            var user = UserAggregateFactory.CreateAdmin();
 
-                    await repository.UnitOfWork.CommitAsync();
-                }
+//            using (var factory = new InMemoryDbContextFactory<CashierDbContext>())
+//            {
+//                using (var context = factory.CreateContext())
+//                {
+//                    var repository = new UserRepository(context);
 
-                using (var context = factory.CreateContext())
-                {
-                    // Assert
-                    context.Users.Should().NotBeEmpty();
-                }
-            }
-        }
+//                    repository.Create(user);
 
-        [TestMethod]
-        public async Task FindAsync_ShouldBeMapped()
-        {
-            var user = UserAggregateFactory.CreateAdmin();
+//                    await repository.UnitOfWork.CommitAsync();
+//                }
 
-            using (var factory = new InMemoryDbContextFactory<CashierDbContext>())
-            {
-                using (var context = factory.CreateContext())
-                {
-                    var repository = new UserRepository(context);
+//                using (var context = factory.CreateContext())
+//                {
+//                    // Arrange
+//                    var repository = new UserRepository(context);
 
-                    repository.Create(user);
+//                    // Act
+//                    user = await repository.FindAsync(user.Id);
 
-                    await repository.UnitOfWork.CommitAsync();
-                }
-
-                using (var context = factory.CreateContext())
-                {
-                    // Arrange
-                    var repository = new UserRepository(context);
-
-                    // Act
-                    user = await repository.FindAsync(user.Id);
-
-                    // Assert
-                    CashierAssert.IsMapped(user);
-                }
-            }
-        }
-    }
-}
+//                    // Assert
+//                    CashierAssert.IsMapped(user);
+//                }
+//            }
+//        }
+//    }
+//}

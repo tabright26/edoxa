@@ -25,7 +25,7 @@ namespace eDoxa.ServiceBus.Tests.Infrastructure.Repositories
         {
             //// Arrange
             //var mockDbConnection = new Mock<DbConnection>();
-            //mockDbConnection.SetupGet(x => x.ConnectionString).Returns("Server=edoxa.mssql.data;Database=eDoxa.Services.Identity;User Id=sa;Password=fnU3Www9TnBDp3MA");
+            //mockDbConnection.SetupGet(x => x.ConnectionString).Returns("Server=mssql;Database=services.idsrv;User Id=sa;Password=fnU3Www9TnBDp3MA");
             //mockDbConnection.SetupGet(x => x.DataSource).Returns("edoxa.mssql.data");
             //mockDbConnection.SetupGet(x => x.Database).Returns("eDoxa.Services.Identity");
 

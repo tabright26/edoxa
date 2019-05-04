@@ -11,27 +11,29 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Application.Services;
+using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.ServiceBus;
+
+using Microsoft.AspNetCore.Identity;
 
 namespace eDoxa.Identity.Application.IntegrationEvents.Handlers
 {
     public class UserClaimRemovedIntegrationEventHandler : IIntegrationEventHandler<UserClaimRemovedIntegrationEvent>
     {
-        private readonly UserService _userService;
+        private readonly UserManager<User> _userManager;
 
-        public UserClaimRemovedIntegrationEventHandler(UserService userService)
+        public UserClaimRemovedIntegrationEventHandler(UserManager<User> userManager)
         {
-            _userService = userService;
+            _userManager = userManager;
         }
 
         public async Task Handle(UserClaimRemovedIntegrationEvent integrationEvent)
         {
-            var user = await _userService.FindByIdAsync(integrationEvent.UserId.ToString());
+            var user = await _userManager.FindByIdAsync(integrationEvent.UserId.ToString());
 
             var claim = new Claim(integrationEvent.Type, integrationEvent.Value);
 
-            await _userService.RemoveClaimAsync(user, claim);
+            await _userManager.RemoveClaimAsync(user, claim);
         }
     }
 }

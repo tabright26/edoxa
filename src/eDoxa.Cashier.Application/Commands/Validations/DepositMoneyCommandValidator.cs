@@ -18,8 +18,6 @@ namespace eDoxa.Cashier.Application.Commands.Validations
     {
         public DepositMoneyCommandValidator()
         {
-            this.RuleFor(command => command.UserId).NotEmpty();
-
             this.RuleFor(command => command.BundleType).IsInEnum();
         }
     }

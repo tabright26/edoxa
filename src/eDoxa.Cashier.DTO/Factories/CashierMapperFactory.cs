@@ -29,7 +29,6 @@ namespace eDoxa.Cashier.DTO.Factories
     {
         protected override IEnumerable<Profile> CreateProfiles()
         {
-            yield return new AddressProfile();
             yield return new CardProfile();
             yield return new CardListProfile();
             yield return new MoneyAccountProfile();

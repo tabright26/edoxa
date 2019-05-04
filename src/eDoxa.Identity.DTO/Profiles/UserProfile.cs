@@ -20,9 +20,7 @@ namespace eDoxa.Identity.DTO.Profiles
         {
             this.CreateMap<User, UserDTO>()
                 .ForMember(user => user.Id, config => config.MapFrom(user => user.Id))
-                .ForMember(user => user.CurrentStatus, config => config.MapFrom(user => user.CurrentStatus))
-                .ForMember(user => user.PreviousStatus, config => config.MapFrom(user => user.PreviousStatus))
-                .ForMember(user => user.StatusChanged, config => config.MapFrom(user => user.StatusChanged));
+                .ForMember(user => user.UserName, config => config.MapFrom(user => user.UserName));
         }
     }
 }

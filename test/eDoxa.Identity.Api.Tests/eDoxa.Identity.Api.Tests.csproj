@@ -13,7 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\eDoxa.Identity\eDoxa.Identity.csproj" />
+    <ProjectReference Include="..\..\src\eDoxa.Identity.Api\eDoxa.Identity.Api.csproj" />
+    <ProjectReference Include="..\..\src\eDoxa.Identity.Application\eDoxa.Identity.Application.csproj" />
+    <ProjectReference Include="..\..\src\eDoxa.Identity.DTO\eDoxa.Identity.DTO.csproj" />
     <ProjectReference Include="..\eDoxa.Testing.MSTest\eDoxa.Testing.MSTest.csproj" />
   </ItemGroup>
 

@@ -10,7 +10,6 @@
 
 using System.Runtime.Serialization;
 
-using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Commands.Abstractions;
 
 using Microsoft.AspNetCore.Mvc;
@@ -24,8 +23,6 @@ namespace eDoxa.Cashier.Application.Commands
         {
             Amount = amount;
         }
-
-        [IgnoreDataMember] public UserId UserId { get; set; }
 
         [DataMember(Name = "amount")] public decimal Amount { get; private set; }
     }

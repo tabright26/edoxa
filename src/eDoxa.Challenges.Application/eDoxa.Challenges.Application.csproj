@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\eDoxa.Autofac\eDoxa.Autofac.csproj" />
+    <ProjectReference Include="..\eDoxa.Challenges.Domain.Services\eDoxa.Challenges.Domain.Services.csproj" />
     <ProjectReference Include="..\eDoxa.Challenges.DTO\eDoxa.Challenges.DTO.csproj" />
     <ProjectReference Include="..\eDoxa.Challenges.Infrastructure\eDoxa.Challenges.Infrastructure.csproj" />
     <ProjectReference Include="..\eDoxa.Commands\eDoxa.Commands.csproj" />

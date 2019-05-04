@@ -1,9 +1,9 @@
 ﻿// Filename: WithdrawMoneyCommandHandler.cs
-// Date Created: 2019-04-26
+// Date Created: 2019-04-30
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -12,9 +12,10 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
-using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.Services;
 using eDoxa.Commands.Abstractions.Handlers;
+using eDoxa.Security.Abstractions;
 
 using JetBrains.Annotations;
 
@@ -24,25 +25,27 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 {
     internal sealed class WithdrawMoneyCommandHandler : ICommandHandler<WithdrawMoneyCommand, IActionResult>
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IMoneyAccountService _moneyAccountService;
+        private readonly IUserProfile _userProfile;
 
-        public WithdrawMoneyCommandHandler(IUserRepository userRepository)
+        public WithdrawMoneyCommandHandler(IUserProfile userProfile, IMoneyAccountService moneyAccountService)
         {
-            _userRepository = userRepository;
+            _userProfile = userProfile;
+            _moneyAccountService = moneyAccountService;
         }
 
         [ItemNotNull]
         public async Task<IActionResult> Handle([NotNull] WithdrawMoneyCommand command, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.FindAsync(command.UserId);
+            var userId = UserId.Parse(_userProfile.Subject);
 
-            var money = new Money(command.Amount);
+            var moneyTransaction = await _moneyAccountService.TryWithdrawAsync(userId, command.Amount, cancellationToken);
 
-            var transaction = user.WithdrawMoney(money).Single();
-
-            await _userRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
-
-            return new OkObjectResult(transaction.Amount);
+            return moneyTransaction
+                .Select(transaction => new OkObjectResult(transaction))
+                .Cast<IActionResult>()
+                .DefaultIfEmpty(new BadRequestResult())
+                .Single();
         }
     }
 }

@@ -1,52 +1,62 @@
 version: '3.4'
 
 services:
-  edoxa.mssql.data:
+  mssql:
     image: microsoft/mssql-server-linux:latest
 
-  edoxa.redis.data:
+  redis:
     image: redis:latest
 
-  edoxa.rabbitmq.broker:
+  rabbitmq:
     image: rabbitmq:latest
 
-  edoxa.identity:
-    image: $ACR_REGISTRY/identity:$ACR_TAG
+  idsrv:
+    image: $ACR_REGISTRY/idsrv:$ACR_TAG
     build:
       context: .
-      dockerfile: src/eDoxa.Identity/Dockerfile
+      dockerfile: src/eDoxa.IdentityServer/Dockerfile
     depends_on:
-      - edoxa.mssql.data
-      - edoxa.redis.data
-      - edoxa.rabbitmq.broker 
+      - mssql
+      - redis
+      - rabbitmq
 
-  edoxa.challenges.api:
-    image: $ACR_REGISTRY/challenges.api:$ACR_TAG
+  identity.api:
+    image: $ACR_REGISTRY/identity.api:$ACR_TAG
     build:
       context: .
-      dockerfile: src/eDoxa.Challenges.Api/Dockerfile
+      dockerfile: src/eDoxa.Identity.Api/Dockerfile
     depends_on:
-      - edoxa.mssql.data
-      - edoxa.rabbitmq.broker 
-      - edoxa.identity
+      - mssql
+      - rabbitmq
+      - idsrv
 
-  edoxa.cashier.api:
+  cashier.api:
     image: $ACR_REGISTRY/cashier.api:$ACR_TAG
     build:
       context: .
       dockerfile: src/eDoxa.Cashier.Api/Dockerfile
     depends_on:
-      - edoxa.mssql.data
-      - edoxa.rabbitmq.broker 
-      - edoxa.identity
+      - mssql
+      - rabbitmq 
+      - idsrv
 
-  #edoxa.web.spa:
+  challenge.api:
+    image: $ACR_REGISTRY/challenge.api:$ACR_TAG
+    build:
+      context: .
+      dockerfile: src/eDoxa.Challenges.Api/Dockerfile
+    depends_on:
+      - mssql
+      - rabbitmq 
+      - idsrv
+
+  #web.spa:
   #  image: $ACR_REGISTRY/web.spa:$ACR_TAG
   #  build:
   #    context: .
   #    dockerfile: src/eDoxa.Web.Spa/Dockerfile
 
-  edoxa.web.status:
+  web.status:
     image: $ACR_REGISTRY/web.status:$ACR_TAG
     build:
       context: .

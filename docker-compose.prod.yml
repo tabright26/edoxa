@@ -1,7 +1,7 @@
 version: '3.4'
 
 services:
-  edoxa.mssql.data:
+  mssql:
     environment:
       - SA_PASSWORD=fnU3Www9TnBDp3MA
       - ACCEPT_EULA=Y
@@ -9,11 +9,11 @@ services:
     ports:
       - "1433"
 
-  edoxa.redis.data:
+  redis:
     ports:
       - "6379"
 
-  edoxa.rabbitmq.broker:
+  rabbitmq:
     environment:
       - RABBITMQ_DEFAULT_USER=admin
       - RABBITMQ_DEFAULT_PASS=4t8SaVXVMy0rT2kM
@@ -21,44 +21,62 @@ services:
       - "15672"
       - "5672"
 
-  edoxa.identity:
+  idsrv:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:80   
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
+      - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
     ports:
       - "5000:80"
 
-  edoxa.challenges.api:
+  identity.api:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:80
+      - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
     ports:
       - "80"
 
-  edoxa.cashier.api:
+  cashier.api:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:80
+      - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
     ports:
       - "80"
 
-  edoxa.notifications.api:
+  challenge.api:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:80
+      - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
     ports:
       - "80"
 
-  edoxa.challenges.backgroundtasks:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:80
-    ports:
-      - "5052:80"
-
-  #edoxa.web.spa:
+  #web.spa:
   #  environment:
-  #    - ASPNETCORE_ENVIRONMENT=Development
+  #    - ASPNETCORE_ENVIRONMENT=Production
   #    - ASPNETCORE_URLS=http://+:80
+  #    - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
   #  ports:
   #    - "5300:80"
+
+  web.status:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
+      - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
+      - HealthChecks__Endpoints__0__Name=eDoxa IdentityServer
+      - HealthChecks__Endpoints__0__Uri=http://idsrv/health
+      - HealthChecks__Endpoints__1__Name=eDoxa Identity API
+      - HealthChecks__Endpoints__1__Uri=http://identity.api/health
+      - HealthChecks__Endpoints__2__Name=eDoxa Cashier API
+      - HealthChecks__Endpoints__2__Uri=http://cashier.api/health
+      - HealthChecks__Endpoints__3__Name=eDoxa Challenge API
+      - HealthChecks__Endpoints__3__Uri=http://challenge.api/health
+      - HealthChecks__Endpoints__4__Name=eDoxa Web Spa
+      - HealthChecks__Endpoints__4__Uri=http://web.spa/health
+      - HealthChecks__EvaluationTimeInSeconds=15
+      - HealthChecks__MinimumSecondsBetweenFailureNotifications=60
+    ports:
+      - "5500:80"

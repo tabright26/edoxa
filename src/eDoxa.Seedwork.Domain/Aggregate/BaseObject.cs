@@ -11,7 +11,8 @@
 using System.Linq;
 using System.Reflection;
 
-using eDoxa.Seedwork.Domain.Reflexion;
+using eDoxa.Reflection;
+
 using JetBrains.Annotations;
 
 namespace eDoxa.Seedwork.Domain.Aggregate
@@ -22,7 +23,7 @@ namespace eDoxa.Seedwork.Domain.Aggregate
 
         private static readonly IDomainSignatureCache DomainSignatureCache = new DomainSignatureCache();
 
-        public override bool Equals([CanBeNull] object obj)
+        public override bool Equals(object obj)
         {
             if (!(obj is BaseObject other))
             {

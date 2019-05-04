@@ -11,27 +11,29 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Application.Services;
+using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.ServiceBus;
+
+using Microsoft.AspNetCore.Identity;
 
 namespace eDoxa.Identity.Application.IntegrationEvents.Handlers
 {
     public class RoleClaimRemovedIntegrationEventHandler : IIntegrationEventHandler<RoleClaimRemovedIntegrationEvent>
     {
-        private readonly RoleService _roleService;
+        private readonly RoleManager<Role> _roleManager;
 
-        public RoleClaimRemovedIntegrationEventHandler(RoleService roleService)
+        public RoleClaimRemovedIntegrationEventHandler(RoleManager<Role> roleManager)
         {
-            _roleService = roleService;
+            _roleManager = roleManager;
         }
 
         public async Task Handle(RoleClaimRemovedIntegrationEvent integrationEvent)
         {
-            if (await _roleService.RoleExistsAsync(integrationEvent.RoleName))
+            if (await _roleManager.RoleExistsAsync(integrationEvent.RoleName))
             {
-                var role = await _roleService.FindByNameAsync(integrationEvent.RoleName);
+                var role = await _roleManager.FindByNameAsync(integrationEvent.RoleName);
 
-                await _roleService.RemoveClaimAsync(role, new Claim(integrationEvent.ClaimType, integrationEvent.ClaimValue));
+                await _roleManager.RemoveClaimAsync(role, new Claim(integrationEvent.ClaimType, integrationEvent.ClaimValue));
             }
         }
     }
