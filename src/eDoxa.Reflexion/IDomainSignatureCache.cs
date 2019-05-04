@@ -9,9 +9,10 @@
 // this source code package.
 
 using System;
+
 using JetBrains.Annotations;
 
-namespace eDoxa.Seedwork.Domain.Reflexion
+namespace eDoxa.Reflexion
 {
     public interface IDomainSignatureCache
     {

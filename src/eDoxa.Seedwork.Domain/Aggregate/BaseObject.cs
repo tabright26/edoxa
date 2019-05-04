@@ -11,7 +11,8 @@
 using System.Linq;
 using System.Reflection;
 
-using eDoxa.Seedwork.Domain.Reflexion;
+using eDoxa.Reflexion;
+
 using JetBrains.Annotations;
 
 namespace eDoxa.Seedwork.Domain.Aggregate

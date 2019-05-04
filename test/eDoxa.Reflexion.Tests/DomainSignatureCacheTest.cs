@@ -12,13 +12,11 @@ using System;
 using System.Reflection;
 
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Domain.Reflexion;
 
 using FluentAssertions;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Seedwork.Domain.Tests.Reflection
+namespace eDoxa.Reflexion.Tests
 {
     [TestClass]
     public sealed class DomainSignatureCacheTest

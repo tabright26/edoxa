@@ -14,7 +14,7 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Testing.MSTest.Extensions
+namespace eDoxa.Reflexion.Tests.Extensions
 {
     public static class EntityExtensions
     {

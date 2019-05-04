@@ -12,9 +12,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 
-using JetBrains.Annotations;
-
-namespace eDoxa.Seedwork.Domain.Reflexion
+namespace eDoxa.Reflexion
 {
     public sealed class DomainSignature
     {
@@ -31,7 +29,7 @@ namespace eDoxa.Seedwork.Domain.Reflexion
 
         public PropertyInfo[] Properties => _properties;
 
-        public override bool Equals([CanBeNull] object obj)
+        public override bool Equals(object obj)
         {
             if (!(obj is DomainSignature other))
             {
