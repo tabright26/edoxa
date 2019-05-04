@@ -10,7 +10,7 @@
 
 using System;
 
-using eDoxa.Reflexion.Tests.Extensions;
+using eDoxa.Reflection.Tests.Extensions;
 using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Testing.MSTest.Extensions;
 

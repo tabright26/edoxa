@@ -11,7 +11,7 @@
 using System;
 using System.Collections.Concurrent;
 
-namespace eDoxa.Reflexion
+namespace eDoxa.Reflection
 {
     public sealed class DomainSignatureCache : IDomainSignatureCache
     {

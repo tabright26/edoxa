@@ -4,6 +4,10 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
 
     <IsPackable>false</IsPackable>
+
+    <AssemblyName>eDoxa.Reflection.Tests</AssemblyName>
+
+    <RootNamespace>eDoxa.Reflection.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\eDoxa.Reflexion\eDoxa.Reflexion.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Seedwork.Domain\eDoxa.Seedwork.Domain.csproj" />
   </ItemGroup>
 

@@ -12,7 +12,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 
-namespace eDoxa.Reflexion
+namespace eDoxa.Reflection
 {
     public sealed class DomainSignature
     {

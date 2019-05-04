@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>eDoxa.Reflection</AssemblyName>
+    <RootNamespace>eDoxa.Reflection</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

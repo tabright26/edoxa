@@ -12,7 +12,7 @@ using System;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Reflexion
+namespace eDoxa.Reflection
 {
     public interface IDomainSignatureCache
     {
