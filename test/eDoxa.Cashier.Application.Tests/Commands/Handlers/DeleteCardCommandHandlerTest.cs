@@ -8,7 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,8 +15,8 @@ using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Factories;
-using eDoxa.Functional.Maybe;
-using eDoxa.Security;
+using eDoxa.Security.Abstractions;
+using eDoxa.Testing.MSTest.Extensions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -30,23 +29,25 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     [TestClass]
     public sealed class DeleteCardCommandHandlerTest
     {
-        private readonly UserAggregateFactory _userAggregateFactory = UserAggregateFactory.Instance;
+        private static readonly UserAggregateFactory UserAggregateFactory = UserAggregateFactory.Instance;
+        private Mock<CardService> _mockCardService;
+        private Mock<IUserProfile> _mockUserProfile;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            _mockCardService = new Mock<CardService>();
+            _mockUserProfile = new Mock<IUserProfile>();
+            _mockUserProfile.SetupProperties();
+        }
 
         [TestMethod]
         public async Task HandleAsync_FindAsNoTrackingAsync_ShouldBeInvokedExactlyOneTime()
         {
             // Arrange
-            var card = _userAggregateFactory.CreateCard();
+            var card = UserAggregateFactory.CreateCard();
 
-            var mockUserInfoService = new Mock<IUserInfoService>();
-
-            mockUserInfoService.SetupGet(userInfoService => userInfoService.Subject).Returns(new Option<Guid>(Guid.NewGuid()));
-
-            mockUserInfoService.SetupGet(userInfoService => userInfoService.CustomerId).Returns(new Option<string>(string.Empty));
-
-            var mockCardService = new Mock<CardService>();
-
-            mockCardService.Setup(
+            _mockCardService.Setup(
                     service => service.DeleteAsync(
                         It.IsAny<string>(),
                         It.IsAny<string>(),
@@ -57,13 +58,13 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
                 .ReturnsAsync(card)
                 .Verifiable();
 
-            var handler = new DeleteCardCommandHandler(mockUserInfoService.Object, mockCardService.Object);
+            var handler = new DeleteCardCommandHandler(_mockUserProfile.Object, _mockCardService.Object);
 
             // Act
             await handler.Handle(new DeleteCardCommand(CardId.Parse(card.Id)), default);
 
             // Assert
-            mockCardService.Verify(
+            _mockCardService.Verify(
                 service => service.DeleteAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
                 Times.Once
             );

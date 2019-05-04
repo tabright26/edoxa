@@ -15,7 +15,7 @@ using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Commands.Extensions;
-using eDoxa.Security;
+using eDoxa.Security.Abstractions;
 
 using MediatR;
 
@@ -33,11 +33,11 @@ namespace eDoxa.Cashier.Api.Controllers
     {
         private readonly ICardQueries _cardQueries;
         private readonly IMediator _mediator;
-        private readonly IUserInfoService _userInfoService;
+        private readonly IUserProfile _userProfile;
 
-        public CardsController(IUserInfoService userInfoService, ICardQueries cardQueries, IMediator mediator)
+        public CardsController(IUserProfile userProfile, ICardQueries cardQueries, IMediator mediator)
         {
-            _userInfoService = userInfoService;
+            _userProfile = userProfile;
             _cardQueries = cardQueries;
             _mediator = mediator;
         }
@@ -48,9 +48,9 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpGet(Name = nameof(FindUserCardsAsync))]
         public async Task<IActionResult> FindUserCardsAsync()
         {
-            var customerId = _userInfoService.CustomerId.Select(CustomerId.Parse).SingleOrDefault();
+            var customerId = _userProfile.CustomerId;
 
-            var cards = await _cardQueries.FindUserCardsAsync(customerId);
+            var cards = await _cardQueries.FindUserCardsAsync(CustomerId.Parse(customerId));
 
             return cards
                 .Select(this.Ok)
@@ -74,9 +74,9 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpGet("{cardId}", Name = nameof(FindUserCardAsync))]
         public async Task<IActionResult> FindUserCardAsync(CardId cardId)
         {
-            var customerId = _userInfoService.CustomerId.Select(CustomerId.Parse).SingleOrDefault();
+            var customerId = _userProfile.CustomerId;
 
-            var card = await _cardQueries.FindUserCardAsync(customerId, cardId);
+            var card = await _cardQueries.FindUserCardAsync(CustomerId.Parse(customerId), cardId);
 
             return card
                 .Select(this.Ok)

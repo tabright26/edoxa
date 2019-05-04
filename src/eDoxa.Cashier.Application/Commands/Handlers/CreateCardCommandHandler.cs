@@ -8,12 +8,12 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Commands.Abstractions.Handlers;
-using eDoxa.Security;
+using eDoxa.Security.Abstractions;
 
 using JetBrains.Annotations;
 
@@ -27,11 +27,11 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
     {
         private readonly CustomerService _customerService;
         private readonly CardService _service;
-        private readonly IUserInfoService _userInfoService;
+        private readonly IUserProfile _userProfile;
 
-        public CreateCardCommandHandler(IUserInfoService userInfoService, CustomerService customerService, CardService cardService)
+        public CreateCardCommandHandler(IUserProfile userProfile, CustomerService customerService, CardService cardService)
         {
-            _userInfoService = userInfoService;
+            _userProfile = userProfile;
             _customerService = customerService;
             _service = cardService;
         }
@@ -39,15 +39,10 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         [ItemNotNull]
         public async Task<IActionResult> Handle([NotNull] CreateCardCommand command, CancellationToken cancellationToken)
         {
-            var customerId = _userInfoService.CustomerId.SingleOrDefault();
-
-            if (customerId == null)
-            {
-                return new NotFoundObjectResult("Stripe CustomerId not found.");
-            }
+            var customerId = CustomerId.Parse(_userProfile.CustomerId);
 
             var card = await _service.CreateAsync(
-                customerId,
+                customerId.ToString(),
                 new CardCreateOptions
                 {
                     SourceToken = command.SourceToken
@@ -58,7 +53,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
             if (command.DefaultCard)
             {
                 await _customerService.UpdateAsync(
-                    customerId,
+                    customerId.ToString(),
                     new CustomerUpdateOptions
                     {
                         DefaultSource = card.Id

@@ -8,15 +8,14 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.Factories;
-using eDoxa.Functional.Maybe;
-using eDoxa.Security;
+using eDoxa.Security.Abstractions;
+using eDoxa.Testing.MSTest.Extensions;
 
 using FluentAssertions;
 
@@ -32,25 +31,29 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     [TestClass]
     public sealed class CreateCardCommandHandlerTest
     {
-        private readonly UserAggregateFactory _userAggregateFactory = UserAggregateFactory.Instance;
+        private static readonly UserAggregateFactory UserAggregateFactory = UserAggregateFactory.Instance;
+        private Mock<CardService> _mockCardService;
+        private Mock<CustomerService> _mockCustomerService;
+        private Mock<IUserProfile> _mockUserProfile;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            _mockCardService = new Mock<CardService>();
+            _mockCustomerService = new Mock<CustomerService>();
+            _mockUserProfile = new Mock<IUserProfile>();
+            _mockUserProfile.SetupProperties();
+        }
 
         [TestMethod]
         public async Task Handle_FindAsNoTrackingAsync_ShouldBeInvokedExactlyOneTime()
         {
             // Arrange
-            var customer = _userAggregateFactory.CreateCustomer();
+            var customer = UserAggregateFactory.CreateCustomer();
 
-            var card = _userAggregateFactory.CreateCard();
+            var card = UserAggregateFactory.CreateCard();
 
-            var mockUserInfoService = new Mock<IUserInfoService>();
-
-            mockUserInfoService.SetupGet(userInfoService => userInfoService.Subject).Returns(new Option<Guid>(Guid.NewGuid()));
-
-            mockUserInfoService.SetupGet(userInfoService => userInfoService.CustomerId).Returns(new Option<string>(string.Empty));
-
-            var mockCustomerService = new Mock<CustomerService>();
-
-            mockCustomerService.Setup(
+            _mockCustomerService.Setup(
                     service => service.UpdateAsync(
                         It.IsAny<string>(),
                         It.IsAny<CustomerUpdateOptions>(),
@@ -61,9 +64,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
                 .ReturnsAsync(customer)
                 .Verifiable();
 
-            var mockCardService = new Mock<CardService>();
-
-            mockCardService.Setup(
+            _mockCardService.Setup(
                     service => service.CreateAsync(
                         It.IsAny<string>(),
                         It.IsAny<CardCreateOptions>(),
@@ -74,7 +75,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
                 .ReturnsAsync(card)
                 .Verifiable();
 
-            var handler = new CreateCardCommandHandler(mockUserInfoService.Object, mockCustomerService.Object, mockCardService.Object);
+            var handler = new CreateCardCommandHandler(_mockUserProfile.Object, _mockCustomerService.Object, _mockCardService.Object);
 
             // Act
             var response = await handler.Handle(new CreateCardCommand(card.Id, true), default);
@@ -82,13 +83,13 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             // Assert
             response.Should().BeEquivalentTo(new OkObjectResult(card));
 
-            mockCustomerService.Verify(
+            _mockCustomerService.Verify(
                 service =>
                     service.UpdateAsync(It.IsAny<string>(), It.IsAny<CustomerUpdateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
                 Times.Once
             );
 
-            mockCardService.Verify(
+            _mockCardService.Verify(
                 service => service.CreateAsync(It.IsAny<string>(), It.IsAny<CardCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
                 Times.Once
             );

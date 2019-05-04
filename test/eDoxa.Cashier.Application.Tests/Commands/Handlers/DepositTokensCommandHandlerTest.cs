@@ -8,7 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,8 +16,8 @@ using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
 using eDoxa.Cashier.Domain.Services;
-using eDoxa.Functional.Maybe;
-using eDoxa.Security;
+using eDoxa.Security.Abstractions;
+using eDoxa.Testing.MSTest.Extensions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -29,31 +28,34 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     [TestClass]
     public sealed class DepositTokensCommandHandlerTest
     {
+        private Mock<ITokenAccountService> _mockTokenAccountService;
+        private Mock<IUserProfile> _mockUserProfile;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            _mockTokenAccountService = new Mock<ITokenAccountService>();
+            _mockUserProfile = new Mock<IUserProfile>();
+            _mockUserProfile.SetupProperties();
+        }
+
         [TestMethod]
         public async Task Handle_FindAsync_ShouldBeInvokedExactlyOneTime()
         {
             // Arrange
             var command = new DepositTokensCommand(TokenBundleType.FiftyThousand);
 
-            var mockUserInfoService = new Mock<IUserInfoService>();
-
-            mockUserInfoService.SetupGet(userInfoService => userInfoService.CustomerId).Returns(new Option<string>("cus_123qweqwe"));
-
-            mockUserInfoService.SetupGet(userInfoService => userInfoService.Subject).Returns(new Option<Guid>(Guid.NewGuid()));
-
-            var mockAccountService = new Mock<ITokenAccountService>();
-
-            mockAccountService.Setup(service => service.TransactionAsync(It.IsAny<UserId>(), It.IsAny<CustomerId>(), It.IsAny<TokenBundle>(), It.IsAny<CancellationToken>()))
+            _mockTokenAccountService.Setup(service => service.TransactionAsync(It.IsAny<UserId>(), It.IsAny<CustomerId>(), It.IsAny<TokenBundle>(), It.IsAny<CancellationToken>()))
                               .ReturnsAsync(new TokenTransaction(new Token(50000)))
                               .Verifiable();
 
-            var handler = new DepositTokensCommandHandler(mockUserInfoService.Object, mockAccountService.Object);
+            var handler = new DepositTokensCommandHandler(_mockUserProfile.Object, _mockTokenAccountService.Object);
 
             // Act
             await handler.Handle(command, default);
 
             // Assert
-            mockAccountService.Verify(
+            _mockTokenAccountService.Verify(
                 service => service.TransactionAsync(It.IsAny<UserId>(), It.IsAny<CustomerId>(), It.IsAny<TokenBundle>(), It.IsAny<CancellationToken>()),
                 Times.Once
             );

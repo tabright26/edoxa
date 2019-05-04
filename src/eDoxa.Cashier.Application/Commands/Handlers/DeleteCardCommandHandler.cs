@@ -8,12 +8,12 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Commands.Abstractions.Handlers;
-using eDoxa.Security;
+using eDoxa.Security.Abstractions;
 
 using JetBrains.Annotations;
 
@@ -26,25 +26,20 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
     internal sealed class DeleteCardCommandHandler : ICommandHandler<DeleteCardCommand, IActionResult>
     {
         private readonly CardService _cardService;
-        private readonly IUserInfoService _userInfoService;
+        private readonly IUserProfile _userProfile;
 
-        public DeleteCardCommandHandler(IUserInfoService userInfoService, CardService cardService)
+        public DeleteCardCommandHandler(IUserProfile userProfile, CardService cardService)
         {
-            _userInfoService = userInfoService;
+            _userProfile = userProfile;
             _cardService = cardService;
         }
 
         [ItemNotNull]
         public async Task<IActionResult> Handle([NotNull] DeleteCardCommand command, CancellationToken cancellationToken)
         {
-            var customerId = _userInfoService.CustomerId.SingleOrDefault();
+            var customerId = CustomerId.Parse(_userProfile.CustomerId);
 
-            if (customerId == null)
-            {
-                return new NotFoundObjectResult("Stripe CustomerId not found.");
-            }
-
-            await _cardService.DeleteAsync(customerId, command.CardId.ToString(), cancellationToken: cancellationToken);
+            await _cardService.DeleteAsync(customerId.ToString(), command.CardId.ToString(), cancellationToken: cancellationToken);
 
             return new OkResult();
         }

@@ -8,7 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Controllers;
@@ -16,8 +15,8 @@ using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.DTO.Queries;
-using eDoxa.Functional.Maybe;
-using eDoxa.Security;
+using eDoxa.Security.Abstractions;
+using eDoxa.Testing.MSTest.Extensions;
 
 using FluentAssertions;
 
@@ -36,14 +35,15 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         private static readonly UserAggregateFactory UserAggregateFactory = UserAggregateFactory.Instance;
         private Mock<IMediator> _mockMediator;
         private Mock<ITokenAccountQueries> _mockTokenAccountQueries;
-        private Mock<IUserInfoService> _mockUserInfoService;
+        private Mock<IUserProfile> _mockUserProfile;
 
         [TestInitialize]
         public void TestInitialize()
         {
             _mockMediator = new Mock<IMediator>();
             _mockTokenAccountQueries = new Mock<ITokenAccountQueries>();
-            _mockUserInfoService = new Mock<IUserInfoService>();
+            _mockUserProfile = new Mock<IUserProfile>();
+            _mockUserProfile.SetupProperties();
         }
 
         [TestMethod]
@@ -54,11 +54,9 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
 
             var command = new DepositTokensCommand(TokenBundleType.FiftyThousand);
 
-            _mockUserInfoService.SetupGet(userInfoService => userInfoService.Subject).Returns(new Option<Guid>(Guid.NewGuid()));
-
             _mockMediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(new OkObjectResult(token)).Verifiable();
 
-            var controller = new AccountTokenController(_mockUserInfoService.Object, _mockTokenAccountQueries.Object, _mockMediator.Object);
+            var controller = new AccountTokenController(_mockUserProfile.Object, _mockTokenAccountQueries.Object, _mockMediator.Object);
 
             // Act
             var result = await controller.DepositTokensAsync(command);

@@ -10,6 +10,7 @@
 
 using System;
 
+using eDoxa.Security.Abstractions;
 using eDoxa.Security.Factories;
 using eDoxa.Security.Services;
 
@@ -32,12 +33,6 @@ namespace eDoxa.Security.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        // TODO: TO REFACTOR.
-        public static void AddUserInfo(this IServiceCollection services)
-        {
-            services.AddSingleton<IUserInfoService, UserInfoService>();
-        }
-
         // TODO: THIS IS NOT TESTED.
         public static void AddDataProtection(this IServiceCollection services, IConfiguration configuration)
         {
@@ -48,6 +43,11 @@ namespace eDoxa.Security.Extensions
                     )
                     .PersistKeysToRedis(ConnectionMultiplexer.Connect(configuration.GetConnectionString(CustomConnectionStrings.Redis)), "data-protection");
             }
+        }
+
+        public static void AddUserProfile(this IServiceCollection services)
+        {
+            services.AddSingleton<IUserProfile, UserProfile>();
         }
 
         public static void AddCookiePolicy(this IServiceCollection services)

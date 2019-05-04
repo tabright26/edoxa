@@ -8,7 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,7 +16,7 @@ using eDoxa.Challenges.Domain.AggregateModels.ParticipantAggregate.Specification
 using eDoxa.Challenges.Domain.AggregateModels.UserAggregate;
 using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Commands.Abstractions.Handlers;
-using eDoxa.Security;
+using eDoxa.Security.Abstractions;
 
 using JetBrains.Annotations;
 
@@ -27,19 +26,19 @@ namespace eDoxa.Challenges.Application.Commands.Handlers
 {
     internal sealed class RegisterChallengeParticipantCommandHandler : ICommandHandler<RegisterChallengeParticipantCommand, IActionResult>
     {
-        private readonly IUserInfoService _userInfoService;
+        private readonly IUserProfile _userProfile;
         private readonly IChallengeRepository _challengeRepository;
 
-        public RegisterChallengeParticipantCommandHandler(IUserInfoService userInfoService, IChallengeRepository challengeRepository)
+        public RegisterChallengeParticipantCommandHandler(IUserProfile userProfile, IChallengeRepository challengeRepository)
         {
-            _userInfoService = userInfoService;
+            _userProfile = userProfile;
             _challengeRepository = challengeRepository;
         }
 
         [ItemNotNull]
         public async Task<IActionResult> Handle([NotNull] RegisterChallengeParticipantCommand command, CancellationToken cancellationToken)
         {
-            var userId = _userInfoService.Subject.Select(UserId.FromGuid).SingleOrDefault();
+            var userId = UserId.Parse(_userProfile.Subject);
 
             var challenge = await _challengeRepository.FindChallengeAsync(command.ChallengeId);
 

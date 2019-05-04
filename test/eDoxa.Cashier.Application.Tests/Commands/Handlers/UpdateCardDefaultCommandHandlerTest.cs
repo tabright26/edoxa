@@ -8,15 +8,15 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.Factories;
-using eDoxa.Functional.Maybe;
-using eDoxa.Security;
+using eDoxa.Commands.Extensions;
+using eDoxa.Security.Abstractions;
+using eDoxa.Testing.MSTest.Extensions;
 
 using FluentAssertions;
 
@@ -32,25 +32,27 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     [TestClass]
     public sealed class UpdateCardDefaultCommandHandlerTest
     {
-        private readonly UserAggregateFactory _userAggregateFactory = UserAggregateFactory.Instance;
+        private static readonly UserAggregateFactory UserAggregateFactory = UserAggregateFactory.Instance;
+        private Mock<CustomerService> _mockCustomerService;
+        private Mock<IUserProfile> _mockUserProfile;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            _mockCustomerService = new Mock<CustomerService>();
+            _mockUserProfile = new Mock<IUserProfile>();
+            _mockUserProfile.SetupProperties();
+        }
 
         [TestMethod]
         public async Task Handle_FindAsNoTrackingAsync_ShouldBeInvokedExactlyOneTime()
         {
             // Arrange
-            var customer = _userAggregateFactory.CreateCustomer();
+            var customer = UserAggregateFactory.CreateCustomer();
 
-            var cardId = _userAggregateFactory.CreateCardId();
+            var cardId = UserAggregateFactory.CreateCardId();
 
-            var mockUserInfoService = new Mock<IUserInfoService>();
-
-            mockUserInfoService.SetupGet(userInfoService => userInfoService.Subject).Returns(new Option<Guid>(Guid.NewGuid()));
-
-            mockUserInfoService.SetupGet(userInfoService => userInfoService.CustomerId).Returns(new Option<string>(string.Empty));
-            
-            var mockCustomerService = new Mock<CustomerService>();
-
-            mockCustomerService.Setup(
+            _mockCustomerService.Setup(
                     service => service.UpdateAsync(
                         It.IsAny<string>(),
                         It.IsAny<CustomerUpdateOptions>(),
@@ -61,15 +63,15 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
                 .ReturnsAsync(customer)
                 .Verifiable();
 
-            var handler = new UpdateCardDefaultCommandHandler(mockUserInfoService.Object, mockCustomerService.Object);
+            var handler = new UpdateCardDefaultCommandHandler(_mockUserProfile.Object, _mockCustomerService.Object);
 
             // Act
-            var response = await handler.Handle(new UpdateCardDefaultCommand(cardId), default);
+            var response = await handler.HandleAsync(new UpdateCardDefaultCommand(cardId));
 
             // Assert
             response.Should().BeEquivalentTo(new OkObjectResult(customer));
 
-            mockCustomerService.Verify(
+            _mockCustomerService.Verify(
                 service =>
                     service.UpdateAsync(It.IsAny<string>(), It.IsAny<CustomerUpdateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
                 Times.Once

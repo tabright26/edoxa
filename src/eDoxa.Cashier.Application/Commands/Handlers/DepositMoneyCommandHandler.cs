@@ -8,7 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,7 +15,7 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Commands.Abstractions.Handlers;
-using eDoxa.Security;
+using eDoxa.Security.Abstractions;
 
 using JetBrains.Annotations;
 
@@ -29,11 +28,11 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         private static readonly MoneyBundles Bundles = new MoneyBundles();
 
         private readonly IMoneyAccountService _moneyAccountService;
-        private readonly IUserInfoService _userInfoService;
+        private readonly IUserProfile _userProfile;
 
-        public DepositMoneyCommandHandler(IUserInfoService userInfoService, IMoneyAccountService moneyAccountService)
+        public DepositMoneyCommandHandler(IUserProfile userProfile, IMoneyAccountService moneyAccountService)
         {
-            _userInfoService = userInfoService;
+            _userProfile = userProfile;
             _moneyAccountService = moneyAccountService;
         }
 
@@ -42,9 +41,9 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         {
             var bundle = Bundles[command.BundleType];
 
-            var userId = _userInfoService.Subject.Select(UserId.FromGuid).SingleOrDefault();
+            var userId = UserId.Parse(_userProfile.Subject);
 
-            var customerId = _userInfoService.CustomerId.Select(CustomerId.Parse).SingleOrDefault();
+            var customerId = CustomerId.Parse(_userProfile.CustomerId);
 
             var transaction = await _moneyAccountService.TransactionAsync(userId, customerId, bundle, cancellationToken);
 

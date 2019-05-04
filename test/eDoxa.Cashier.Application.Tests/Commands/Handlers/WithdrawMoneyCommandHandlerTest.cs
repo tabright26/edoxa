@@ -8,7 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,8 +18,10 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.Domain.Services;
+using eDoxa.Commands.Extensions;
 using eDoxa.Functional.Maybe;
-using eDoxa.Security;
+using eDoxa.Security.Abstractions;
+using eDoxa.Testing.MSTest.Extensions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -31,33 +32,37 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     [TestClass]
     public sealed class WithdrawMoneyCommandHandlerTest
     {
-        private readonly UserAggregateFactory _userAggregateFactory = UserAggregateFactory.Instance;
+        private static readonly UserAggregateFactory UserAggregateFactory = UserAggregateFactory.Instance;
+        private Mock<IMoneyAccountService> _mockMoneyAccountService;
+        private Mock<IUserProfile> _mockUserProfile;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            _mockMoneyAccountService = new Mock<IMoneyAccountService>();
+            _mockUserProfile = new Mock<IUserProfile>();
+            _mockUserProfile.SetupProperties();
+        }
 
         [TestMethod]
         public async Task Handle_FindAsync_ShouldBeInvokedExactlyOneTime()
         {
             // Arrange
-            var money = _userAggregateFactory.CreateMoney();
+            var money = UserAggregateFactory.CreateMoney();
 
             var command = new WithdrawMoneyCommand(money);
 
-            var mockMoneyAccount = new Mock<IMoneyAccountService>();
-
-            mockMoneyAccount.Setup(x => x.TryWithdrawAsync(It.IsAny<UserId>(), It.IsAny<decimal>(), It.IsAny<CancellationToken>()))
+            _mockMoneyAccountService.Setup(x => x.TryWithdrawAsync(It.IsAny<UserId>(), It.IsAny<decimal>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new Option<IMoneyTransaction>(new MoneyTransaction(-new Money(100))))
                 .Verifiable();
 
-            var mockUserInfoService = new Mock<IUserInfoService>();
-
-            mockUserInfoService.SetupGet(userInfoService => userInfoService.Subject).Returns(new Option<Guid>(Guid.NewGuid()));
-
-            var handler = new WithdrawMoneyCommandHandler(mockUserInfoService.Object, mockMoneyAccount.Object);
+            var handler = new WithdrawMoneyCommandHandler(_mockUserProfile.Object, _mockMoneyAccountService.Object);
 
             // Act
-            await handler.Handle(command, default);
+            await handler.HandleAsync(command);
 
             // Assert
-            mockMoneyAccount.Verify();
+            _mockMoneyAccountService.Verify();
         }
     }
 }

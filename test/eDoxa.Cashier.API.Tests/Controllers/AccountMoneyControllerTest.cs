@@ -8,7 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Controllers;
@@ -19,7 +18,8 @@ using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Functional.Maybe;
-using eDoxa.Security;
+using eDoxa.Security.Abstractions;
+using eDoxa.Testing.MSTest.Extensions;
 
 using FluentAssertions;
 
@@ -38,27 +38,26 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         private static readonly UserAggregateFactory UserAggregateFactory = UserAggregateFactory.Instance;
         private Mock<IMediator> _mockMediator;
         private Mock<IMoneyAccountQueries> _mockMoneyAccountQueries;
-        private Mock<IUserInfoService> _mockUserInfoService;
+        private Mock<IUserProfile> _mockUserProfile;
 
         [TestInitialize]
         public void TestInitialize()
         {
             _mockMediator = new Mock<IMediator>();
             _mockMoneyAccountQueries = new Mock<IMoneyAccountQueries>();
-            _mockUserInfoService = new Mock<IUserInfoService>();
+            _mockUserProfile = new Mock<IUserProfile>();
+            _mockUserProfile.SetupProperties();
         }
 
         [TestMethod]
         public async Task FindUserAccountAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            _mockUserInfoService.SetupGet(userInfoService => userInfoService.Subject).Returns(new Option<Guid>(Guid.NewGuid()));
-
             _mockMoneyAccountQueries.Setup(queries => queries.FindAccountAsync(It.IsAny<UserId>()))
                 .ReturnsAsync(new Option<MoneyAccountDTO>(new MoneyAccountDTO()))
                 .Verifiable();
 
-            var controller = new AccountMoneyController(_mockUserInfoService.Object, _mockMoneyAccountQueries.Object, _mockMediator.Object);
+            var controller = new AccountMoneyController(_mockUserProfile.Object, _mockMoneyAccountQueries.Object, _mockMediator.Object);
 
             // Act
             var result = await controller.FindMoneyAccountAsync();
@@ -75,11 +74,9 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         public async Task FindUserAccountAsync_ShouldBeNotFoundObjectResult()
         {
             // Arrange
-            _mockUserInfoService.SetupGet(userInfoService => userInfoService.Subject).Returns(new Option<Guid>(Guid.NewGuid()));
-
             _mockMoneyAccountQueries.Setup(queries => queries.FindAccountAsync(It.IsAny<UserId>())).ReturnsAsync(new Option<MoneyAccountDTO>()).Verifiable();
 
-            var controller = new AccountMoneyController(_mockUserInfoService.Object, _mockMoneyAccountQueries.Object, _mockMediator.Object);
+            var controller = new AccountMoneyController(_mockUserProfile.Object, _mockMoneyAccountQueries.Object, _mockMediator.Object);
 
             // Act
             var result = await controller.FindMoneyAccountAsync();
@@ -100,11 +97,9 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
 
             var command = new WithdrawMoneyCommand(money);
 
-            _mockUserInfoService.SetupGet(userInfoService => userInfoService.Subject).Returns(new Option<Guid>(Guid.NewGuid()));
-
             _mockMediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(new OkObjectResult(money)).Verifiable();
 
-            var controller = new AccountMoneyController(_mockUserInfoService.Object, _mockMoneyAccountQueries.Object, _mockMediator.Object);
+            var controller = new AccountMoneyController(_mockUserProfile.Object, _mockMoneyAccountQueries.Object, _mockMediator.Object);
 
             // Act
             var result = await controller.WithdrawMoneyAsync(command);
@@ -125,11 +120,9 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
 
             var command = new DepositMoneyCommand(MoneyBundleType.Ten);
 
-            _mockUserInfoService.SetupGet(userInfoService => userInfoService.Subject).Returns(new Option<Guid>(Guid.NewGuid()));
-
             _mockMediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(new OkObjectResult(money)).Verifiable();
 
-            var controller = new AccountMoneyController(_mockUserInfoService.Object, _mockMoneyAccountQueries.Object, _mockMediator.Object);
+            var controller = new AccountMoneyController(_mockUserProfile.Object, _mockMoneyAccountQueries.Object, _mockMediator.Object);
 
             // Act
             var result = await controller.DepositMoneyAsync(command);

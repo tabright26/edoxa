@@ -8,12 +8,12 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Commands.Abstractions.Handlers;
-using eDoxa.Security;
+using eDoxa.Security.Abstractions;
 
 using JetBrains.Annotations;
 
@@ -26,30 +26,25 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
     internal sealed class UpdateCardDefaultCommandHandler : ICommandHandler<UpdateCardDefaultCommand, IActionResult>
     {
         private readonly CustomerService _service;
-        private readonly IUserInfoService _userInfoService;
+        private readonly IUserProfile _userProfile;
 
-        public UpdateCardDefaultCommandHandler(IUserInfoService userInfoService, CustomerService service)
+        public UpdateCardDefaultCommandHandler(IUserProfile userProfile, CustomerService service)
         {
-            _userInfoService = userInfoService;
+            _userProfile = userProfile;
             _service = service;
         }
 
         [ItemCanBeNull]
         public async Task<IActionResult> Handle([NotNull] UpdateCardDefaultCommand command, CancellationToken cancellationToken)
         {
-            var customerId = _userInfoService.CustomerId.SingleOrDefault();
-
-            if (customerId == null)
-            {
-                return new NotFoundObjectResult("Stripe CustomerId not found.");
-            }
+            var customerId = CustomerId.Parse(_userProfile.CustomerId);
 
             var options = new CustomerUpdateOptions
             {
                 DefaultSource = command.CardId.ToString()
             };
 
-            var customer = await _service.UpdateAsync(customerId, options, cancellationToken: cancellationToken);
+            var customer = await _service.UpdateAsync(customerId.ToString(), options, cancellationToken: cancellationToken);
 
             return new OkObjectResult(customer);
         }

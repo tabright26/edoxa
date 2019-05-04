@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Commands.Abstractions.Handlers;
-using eDoxa.Security;
+using eDoxa.Security.Abstractions;
 
 using JetBrains.Annotations;
 
@@ -26,18 +26,18 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
     internal sealed class WithdrawMoneyCommandHandler : ICommandHandler<WithdrawMoneyCommand, IActionResult>
     {
         private readonly IMoneyAccountService _moneyAccountService;
-        private readonly IUserInfoService _userInfoService;
+        private readonly IUserProfile _userProfile;
 
-        public WithdrawMoneyCommandHandler(IUserInfoService userInfoService, IMoneyAccountService moneyAccountService)
+        public WithdrawMoneyCommandHandler(IUserProfile userProfile, IMoneyAccountService moneyAccountService)
         {
-            _userInfoService = userInfoService;
+            _userProfile = userProfile;
             _moneyAccountService = moneyAccountService;
         }
 
         [ItemNotNull]
         public async Task<IActionResult> Handle([NotNull] WithdrawMoneyCommand command, CancellationToken cancellationToken)
         {
-            var userId = _userInfoService.Subject.Select(UserId.FromGuid).SingleOrDefault();
+            var userId = UserId.Parse(_userProfile.Subject);
 
             var moneyTransaction = await _moneyAccountService.TryWithdrawAsync(userId, command.Amount, cancellationToken);
 
