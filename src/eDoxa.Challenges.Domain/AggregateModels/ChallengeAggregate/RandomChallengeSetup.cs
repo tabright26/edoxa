@@ -18,7 +18,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         private static readonly EntriesRandom EntriesRandom = new EntriesRandom();
         private static readonly EntryFeeRandom EntryFeeRandom = new EntryFeeRandom();
 
-        public RandomChallengeSetup(ChallengeInterval interval) : base(
+        public RandomChallengeSetup(PublisherInterval interval) : base(
             NextBestOf(interval),
             NextEntries(interval),
             NextEntryFee(interval),
@@ -29,19 +29,19 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         {
         }
 
-        private static BestOf NextBestOf(ChallengeInterval interval)
+        private static BestOf NextBestOf(PublisherInterval interval)
         {
-            if (interval == ChallengeInterval.Daily)
+            if (interval == PublisherInterval.Daily)
             {
                 return BestOfRandom.Next(new BestOfRange(new BestOf(1), new BestOf(3)));
             }
 
-            if (interval == ChallengeInterval.Weekly)
+            if (interval == PublisherInterval.Weekly)
             {
                 return BestOfRandom.Next(new BestOfRange(new BestOf(3), new BestOf(5)));
             }
 
-            if (interval == ChallengeInterval.Monthly)
+            if (interval == PublisherInterval.Monthly)
             {
                 return BestOfRandom.Next(new BestOfRange(new BestOf(3), new BestOf(BestOf.Max)));
             }
@@ -49,19 +49,19 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             throw new ArgumentException(nameof(interval));
         }
 
-        private static Entries NextEntries(ChallengeInterval interval)
+        private static Entries NextEntries(PublisherInterval interval)
         {
-            if (interval == ChallengeInterval.Daily)
+            if (interval == PublisherInterval.Daily)
             {
                 return EntriesRandom.Next(new EntriesRange(new Entries(30), new Entries(50)));
             }
 
-            if (interval == ChallengeInterval.Weekly)
+            if (interval == PublisherInterval.Weekly)
             {
                 return EntriesRandom.Next(new EntriesRange(new Entries(80), new Entries(150)));
             }
 
-            if (interval == ChallengeInterval.Monthly)
+            if (interval == PublisherInterval.Monthly)
             {
                 return EntriesRandom.Next(new EntriesRange(new Entries(200), new Entries(500)));
             }
@@ -69,19 +69,19 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             throw new ArgumentException(nameof(interval));
         }
 
-        private static EntryFee NextEntryFee(ChallengeInterval interval)
+        private static EntryFee NextEntryFee(PublisherInterval interval)
         {
-            if (interval == ChallengeInterval.Daily)
+            if (interval == PublisherInterval.Daily)
             {
                 return EntryFeeRandom.Next(new EntryFeeRange(new EntryFee(0.25M), new EntryFee(5M)));
             }
 
-            if (interval == ChallengeInterval.Weekly)
+            if (interval == PublisherInterval.Weekly)
             {
                 return EntryFeeRandom.Next(new EntryFeeRange(new EntryFee(2.5M), new EntryFee(10M)));
             }
 
-            if (interval == ChallengeInterval.Monthly)
+            if (interval == PublisherInterval.Monthly)
             {
                 return EntryFeeRandom.Next(new EntryFeeRange(new EntryFee(10M), new EntryFee(25M)));
             }

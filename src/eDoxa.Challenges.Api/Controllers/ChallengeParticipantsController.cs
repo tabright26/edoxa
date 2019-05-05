@@ -55,7 +55,7 @@ namespace eDoxa.Challenges.Api.Controllers
         ///     Register a participant to a challenge.
         /// </summary>
         [HttpPost(Name = nameof(RegisterChallengeParticipantAsync))]
-        public async Task<IActionResult> RegisterChallengeParticipantAsync(ChallengeId challengeId, [FromBody] RegisterChallengeParticipantCommand command)
+        public async Task<IActionResult> RegisterChallengeParticipantAsync(ChallengeId challengeId, [FromBody] RegisterParticipantCommand command)
         {
             command.ChallengeId = challengeId;
 

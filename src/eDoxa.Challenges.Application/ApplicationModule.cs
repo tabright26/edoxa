@@ -1,11 +1,11 @@
-﻿// Filename: ChallengesModule.cs
-// Date Created: 2019-03-21
+﻿// Filename: ApplicationModule.cs
+// Date Created: 2019-05-03
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
 // 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using Autofac;
@@ -40,8 +40,6 @@ namespace eDoxa.Challenges.Application
             builder.RegisterModule<IntegrationEventModule<ApplicationModule, ChallengesDbContext>>();
 
             // Repositories
-            builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerLifetimeScope();
-
             builder.RegisterType<ChallengeRepository>().As<IChallengeRepository>().InstancePerLifetimeScope();
 
             // Queries
@@ -52,15 +50,7 @@ namespace eDoxa.Challenges.Application
             builder.RegisterType<MatchQueries>().As<IMatchQueries>().InstancePerLifetimeScope();
 
             // Services
-            builder.RegisterType<ChallengeDailyPublisherService>().As<IChallengeDailyPublisherService>().InstancePerLifetimeScope();
-
-            builder.RegisterType<ChallengeWeeklyPublisherService>().As<IChallengeWeeklyPublisherService>().InstancePerLifetimeScope();
-
-            builder.RegisterType<ChallengeMonthlyPublisherService>().As<IChallengeMonthlyPublisherService>().InstancePerLifetimeScope();
-
-            builder.RegisterType<ChallengeSynchronizerService>().As<IChallengeSynchronizerService>().InstancePerLifetimeScope();
-
-            builder.RegisterType<ChallengeCloserService>().As<IChallengeCloserService>().InstancePerLifetimeScope();
+            builder.RegisterType<ChallengeService>().As<IChallengeService>().InstancePerLifetimeScope();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿// Filename: AssemblyInfo.cs
+﻿// Filename: CompleteCommand.cs
 // Date Created: 2019-05-03
 // 
 // ================================================
@@ -8,6 +8,11 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Runtime.CompilerServices;
+using eDoxa.Commands.Abstractions;
 
-[assembly: InternalsVisibleTo("eDoxa.Challenges.Application.Tests")]
+namespace eDoxa.Challenges.Application.Commands
+{
+    public sealed class CompleteCommand : Command
+    {
+    }
+}

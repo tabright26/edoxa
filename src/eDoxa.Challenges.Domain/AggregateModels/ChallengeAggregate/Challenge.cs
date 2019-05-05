@@ -136,7 +136,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             return specification.IsSatisfiedBy(this);
         }
 
-        public void Close()
+        public void Complete()
         {
             if (!this.CanClose())
             {
@@ -145,7 +145,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
             _timeline = Timeline.Close();
 
-            this.AddDomainEvent(new ChallengePaidOffDomainEvent(Id, Payout.Payoff(Scoreboard)));
+            this.AddDomainEvent(new PayoutProcessedDomainEvent(Id, Payout.Payoff(Scoreboard)));
         }
 
         private bool CanClose()

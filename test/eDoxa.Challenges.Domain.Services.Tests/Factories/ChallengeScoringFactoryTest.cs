@@ -29,7 +29,7 @@ namespace eDoxa.Challenges.Domain.Services.Tests.Factories
         public void Create_ImplementedType_ShouldNotBeNull(ChallengeType type, Game game)
         {
             // Arrange
-            var factory = ChallengeScoringFactory.Instance;
+            var factory = ScoringFactory.Instance;
 
             // Act
             var strategy = factory.CreateScoringStrategy(new MockChallenge(type, game));
@@ -44,7 +44,7 @@ namespace eDoxa.Challenges.Domain.Services.Tests.Factories
         public void Create_NotImplementedType_ShouldThrowNotImplementedException(ChallengeType type, Game game)
         {
             // Arrange
-            var factory = ChallengeScoringFactory.Instance;
+            var factory = ScoringFactory.Instance;
 
             // Act
             var action = new Action(() => factory.CreateScoringStrategy(new MockChallenge(type, game)));

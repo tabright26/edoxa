@@ -1,4 +1,4 @@
-﻿// Filename: AssemblyInfo.cs
+﻿// Filename: ChallengeCompletedIntegrationEvent.cs
 // Date Created: 2019-05-03
 // 
 // ================================================
@@ -8,6 +8,11 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Runtime.CompilerServices;
+using eDoxa.ServiceBus;
 
-[assembly: InternalsVisibleTo("eDoxa.Challenges.Application.Tests")]
+namespace eDoxa.Challenges.Application.IntegrationEvents
+{
+    public sealed class ChallengeCompletedIntegrationEvent : IntegrationEvent
+    {
+    }
+}

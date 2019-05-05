@@ -150,7 +150,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             var challenge = ChallengeAggregateFactory.CreateChallenge(ChallengeState1.Ended);
 
             // Act
-            challenge.Close();
+            challenge.Complete();
 
             // Assert
             challenge.Timeline.State.Should().HaveFlag(ChallengeState1.Closed);
@@ -163,7 +163,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             var challenge = ChallengeAggregateFactory.CreateChallenge();
 
             // Act
-            var action = new Action(() => challenge.Close());
+            var action = new Action(() => challenge.Complete());
 
             // Assert
             action.Should().Throw<InvalidOperationException>();

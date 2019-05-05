@@ -14,7 +14,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class RandomChallenge : Challenge
     {
-        internal RandomChallenge(Game game, ChallengeName name, ChallengeInterval interval) : base(game, name, new RandomChallengeSetup(interval))
+        internal RandomChallenge(Game game, ChallengeName name, PublisherInterval interval) : base(game, name, new RandomChallengeSetup(interval))
         {
         }
     }

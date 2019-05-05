@@ -91,7 +91,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
         public async Task RegisterChallengeParticipantAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            var command = new RegisterChallengeParticipantCommand();
+            var command = new RegisterParticipantCommand();
 
             _mediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(new OkResult()).Verifiable();
 

@@ -15,7 +15,7 @@ namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends
 {
     public sealed class LeagueOfLegendsChallenge : Challenge
     {
-        public LeagueOfLegendsChallenge(ChallengeName name, ChallengeInterval interval) : base(Game.LeagueOfLegends, name, new RandomChallengeSetup(interval))
+        public LeagueOfLegendsChallenge(ChallengeName name, PublisherInterval interval) : base(Game.LeagueOfLegends, name, new RandomChallengeSetup(interval))
         {
         }
     }
