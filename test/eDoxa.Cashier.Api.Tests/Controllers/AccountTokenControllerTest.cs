@@ -35,15 +35,15 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         private static readonly UserAggregateFactory UserAggregateFactory = UserAggregateFactory.Instance;
         private Mock<IMediator> _mockMediator;
         private Mock<ITokenAccountQueries> _mockTokenAccountQueries;
-        private Mock<IUserProfile> _mockUserProfile;
+        private Mock<IUserInfoService> _mockUserInfoService;
 
         [TestInitialize]
         public void TestInitialize()
         {
             _mockMediator = new Mock<IMediator>();
             _mockTokenAccountQueries = new Mock<ITokenAccountQueries>();
-            _mockUserProfile = new Mock<IUserProfile>();
-            _mockUserProfile.SetupGetProperties();
+            _mockUserInfoService = new Mock<IUserInfoService>();
+            _mockUserInfoService.SetupGetProperties();
         }
 
         [TestMethod]
@@ -56,7 +56,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
 
             _mockMediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(new OkObjectResult(token)).Verifiable();
 
-            var controller = new AccountTokenController(_mockUserProfile.Object, _mockTokenAccountQueries.Object, _mockMediator.Object);
+            var controller = new AccountTokenController(_mockUserInfoService.Object, _mockTokenAccountQueries.Object, _mockMediator.Object);
 
             // Act
             var result = await controller.DepositTokensAsync(command);

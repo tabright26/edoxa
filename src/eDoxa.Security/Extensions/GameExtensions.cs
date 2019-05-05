@@ -1,5 +1,5 @@
-﻿// Filename: SynchronizeCommand.cs
-// Date Created: 2019-05-03
+﻿// Filename: GameExtensions.cs
+// Date Created: 2019-05-05
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,18 +8,15 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Commands.Abstractions;
 using eDoxa.Seedwork.Enumerations;
 
-namespace eDoxa.Challenges.Application.Commands
+namespace eDoxa.Security.Extensions
 {
-    public sealed class SynchronizeCommand : Command
+    public static class GameExtensions
     {
-        public SynchronizeCommand(Game game)
+        public static string GetClaimType(this Game game)
         {
-            Game = game;
+            return $"{CustomClaimTypes.Game}/{game.ToString().ToLowerInvariant()}";
         }
-
-        public Game Game { get; }
     }
 }

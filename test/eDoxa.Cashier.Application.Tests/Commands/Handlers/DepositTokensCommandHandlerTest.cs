@@ -29,14 +29,14 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     public sealed class DepositTokensCommandHandlerTest
     {
         private Mock<ITokenAccountService> _mockTokenAccountService;
-        private Mock<IUserProfile> _mockUserProfile;
+        private Mock<IUserInfoService> _mockUserInfoService;
 
         [TestInitialize]
         public void TestInitialize()
         {
             _mockTokenAccountService = new Mock<ITokenAccountService>();
-            _mockUserProfile = new Mock<IUserProfile>();
-            _mockUserProfile.SetupGetProperties();
+            _mockUserInfoService = new Mock<IUserInfoService>();
+            _mockUserInfoService.SetupGetProperties();
         }
 
         [TestMethod]
@@ -50,7 +50,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
                 .ReturnsAsync(new TokenTransaction(new Token(50000)))
                 .Verifiable();
 
-            var handler = new DepositTokensCommandHandler(_mockUserProfile.Object, _mockTokenAccountService.Object);
+            var handler = new DepositTokensCommandHandler(_mockUserInfoService.Object, _mockTokenAccountService.Object);
 
             // Act
             await handler.Handle(command, default);

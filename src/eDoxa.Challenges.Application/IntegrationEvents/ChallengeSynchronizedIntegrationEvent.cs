@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Seedwork.Domain.Common.Enums;
+using eDoxa.Seedwork.Enumerations;
 using eDoxa.ServiceBus;
 
 namespace eDoxa.Challenges.Application.IntegrationEvents

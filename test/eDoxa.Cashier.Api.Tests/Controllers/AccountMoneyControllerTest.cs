@@ -38,15 +38,15 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         private static readonly UserAggregateFactory UserAggregateFactory = UserAggregateFactory.Instance;
         private Mock<IMediator> _mockMediator;
         private Mock<IMoneyAccountQueries> _mockMoneyAccountQueries;
-        private Mock<IUserProfile> _mockUserProfile;
+        private Mock<IUserInfoService> _mockUserInfoService;
 
         [TestInitialize]
         public void TestInitialize()
         {
             _mockMediator = new Mock<IMediator>();
             _mockMoneyAccountQueries = new Mock<IMoneyAccountQueries>();
-            _mockUserProfile = new Mock<IUserProfile>();
-            _mockUserProfile.SetupGetProperties();
+            _mockUserInfoService = new Mock<IUserInfoService>();
+            _mockUserInfoService.SetupGetProperties();
         }
 
         [TestMethod]
@@ -57,7 +57,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
                 .ReturnsAsync(new Option<MoneyAccountDTO>(new MoneyAccountDTO()))
                 .Verifiable();
 
-            var controller = new AccountMoneyController(_mockUserProfile.Object, _mockMoneyAccountQueries.Object, _mockMediator.Object);
+            var controller = new AccountMoneyController(_mockUserInfoService.Object, _mockMoneyAccountQueries.Object, _mockMediator.Object);
 
             // Act
             var result = await controller.FindMoneyAccountAsync();
@@ -76,7 +76,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Arrange
             _mockMoneyAccountQueries.Setup(queries => queries.FindAccountAsync(It.IsAny<UserId>())).ReturnsAsync(new Option<MoneyAccountDTO>()).Verifiable();
 
-            var controller = new AccountMoneyController(_mockUserProfile.Object, _mockMoneyAccountQueries.Object, _mockMediator.Object);
+            var controller = new AccountMoneyController(_mockUserInfoService.Object, _mockMoneyAccountQueries.Object, _mockMediator.Object);
 
             // Act
             var result = await controller.FindMoneyAccountAsync();
@@ -99,7 +99,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
 
             _mockMediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(new OkObjectResult(money)).Verifiable();
 
-            var controller = new AccountMoneyController(_mockUserProfile.Object, _mockMoneyAccountQueries.Object, _mockMediator.Object);
+            var controller = new AccountMoneyController(_mockUserInfoService.Object, _mockMoneyAccountQueries.Object, _mockMediator.Object);
 
             // Act
             var result = await controller.WithdrawMoneyAsync(command);
@@ -122,7 +122,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
 
             _mockMediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(new OkObjectResult(money)).Verifiable();
 
-            var controller = new AccountMoneyController(_mockUserProfile.Object, _mockMoneyAccountQueries.Object, _mockMediator.Object);
+            var controller = new AccountMoneyController(_mockUserInfoService.Object, _mockMoneyAccountQueries.Object, _mockMediator.Object);
 
             // Act
             var result = await controller.DepositMoneyAsync(command);

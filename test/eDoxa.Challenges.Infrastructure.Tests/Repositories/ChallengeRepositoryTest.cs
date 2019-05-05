@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Factories;
 using eDoxa.Challenges.Infrastructure.Repositories;
-using eDoxa.Seedwork.Domain.Common.Enums;
+using eDoxa.Seedwork.Enumerations;
 using eDoxa.Seedwork.Infrastructure.Factories;
 
 using FluentAssertions;

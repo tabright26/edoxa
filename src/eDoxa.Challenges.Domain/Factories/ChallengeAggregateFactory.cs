@@ -19,8 +19,8 @@ using eDoxa.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Challenges.Domain.AggregateModels.UserAggregate;
 using eDoxa.Functional.Maybe;
-using eDoxa.Seedwork.Domain.Common.Enums;
-using eDoxa.Seedwork.Domain.Factories;
+using eDoxa.Seedwork.Enumerations;
+using eDoxa.Seedwork.Factories;
 
 using Moq;
 

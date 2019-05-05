@@ -12,7 +12,7 @@ using System;
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Seedwork.Domain.Common
+namespace eDoxa.Seedwork
 {
     [JsonObject]
     public class UserData

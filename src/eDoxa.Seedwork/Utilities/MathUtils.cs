@@ -10,7 +10,7 @@
 
 using System;
 
-namespace eDoxa.Seedwork.Domain.Common
+namespace eDoxa.Seedwork.Utilities
 {
     public static class MathUtils
     {

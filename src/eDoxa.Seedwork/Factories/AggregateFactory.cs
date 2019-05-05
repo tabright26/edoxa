@@ -10,9 +10,7 @@
 
 using System;
 
-using eDoxa.Seedwork.Domain.Common;
-
-namespace eDoxa.Seedwork.Domain.Factories
+namespace eDoxa.Seedwork.Factories
 {
     // TODO: Add to appsettings.json
     public abstract class AggregateFactory

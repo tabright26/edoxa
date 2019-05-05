@@ -28,11 +28,11 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         private static readonly MoneyBundles Bundles = new MoneyBundles();
 
         private readonly IMoneyAccountService _moneyAccountService;
-        private readonly IUserProfile _userProfile;
+        private readonly IUserInfoService _userInfoService;
 
-        public DepositMoneyCommandHandler(IUserProfile userProfile, IMoneyAccountService moneyAccountService)
+        public DepositMoneyCommandHandler(IUserInfoService userInfoService, IMoneyAccountService moneyAccountService)
         {
-            _userProfile = userProfile;
+            _userInfoService = userInfoService;
             _moneyAccountService = moneyAccountService;
         }
 
@@ -41,9 +41,9 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         {
             var bundle = Bundles[command.BundleType];
 
-            var userId = UserId.Parse(_userProfile.Subject);
+            var userId = UserId.Parse(_userInfoService.Subject);
 
-            var customerId = CustomerId.Parse(_userProfile.CustomerId);
+            var customerId = CustomerId.Parse(_userInfoService.CustomerId);
 
             var transaction = await _moneyAccountService.TransactionAsync(userId, customerId, bundle, cancellationToken);
 

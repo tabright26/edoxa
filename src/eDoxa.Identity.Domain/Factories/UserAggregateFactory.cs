@@ -10,7 +10,7 @@
 
 using System;
 
-using eDoxa.Seedwork.Domain.Factories;
+using eDoxa.Seedwork.Factories;
 
 namespace eDoxa.Identity.Domain.Factories
 {

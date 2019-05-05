@@ -23,7 +23,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace eDoxa.Security.Services
 {
-    public sealed class CustomProfileService<TUser> : IProfileService
+    internal sealed class CustomProfileService<TUser> : IProfileService
     where TUser : IdentityUser<Guid>
     {
         private readonly IUserClaimsPrincipalFactory<TUser> _userClaimsPrincipalFactory;

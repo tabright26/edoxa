@@ -26,18 +26,18 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
     internal sealed class UpdateCardDefaultCommandHandler : ICommandHandler<UpdateCardDefaultCommand, IActionResult>
     {
         private readonly CustomerService _service;
-        private readonly IUserProfile _userProfile;
+        private readonly IUserInfoService _userInfoService;
 
-        public UpdateCardDefaultCommandHandler(IUserProfile userProfile, CustomerService service)
+        public UpdateCardDefaultCommandHandler(IUserInfoService userInfoService, CustomerService service)
         {
-            _userProfile = userProfile;
+            _userInfoService = userInfoService;
             _service = service;
         }
 
         [ItemCanBeNull]
         public async Task<IActionResult> Handle([NotNull] UpdateCardDefaultCommand command, CancellationToken cancellationToken)
         {
-            var customerId = CustomerId.Parse(_userProfile.CustomerId);
+            var customerId = CustomerId.Parse(_userInfoService.CustomerId);
 
             var options = new CustomerUpdateOptions
             {

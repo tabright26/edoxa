@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using eDoxa.Challenges.Application.Commands;
 using eDoxa.Challenges.Application.IntegrationEvents;
 using eDoxa.Challenges.Application.IntegrationEvents.Handlers;
-using eDoxa.Seedwork.Domain.Common.Enums;
+using eDoxa.Seedwork.Enumerations;
 using eDoxa.ServiceBus.Extensions;
 
 using MediatR;

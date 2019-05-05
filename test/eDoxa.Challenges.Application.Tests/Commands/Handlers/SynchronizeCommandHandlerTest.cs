@@ -15,7 +15,7 @@ using eDoxa.Challenges.Application.Commands;
 using eDoxa.Challenges.Application.Commands.Handlers;
 using eDoxa.Challenges.Domain.Services;
 using eDoxa.Commands.Extensions;
-using eDoxa.Seedwork.Domain.Common.Enums;
+using eDoxa.Seedwork.Enumerations;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

@@ -9,6 +9,7 @@
 // this source code package.
 
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Api.Controllers;
@@ -91,14 +92,14 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
         public async Task RegisterChallengeParticipantAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            var command = new RegisterParticipantCommand();
-
-            _mediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(new OkResult()).Verifiable();
+            _mediator.Setup(mediator => mediator.Send(It.IsAny<RegisterParticipantCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new OkResult())
+                .Verifiable();
 
             var controller = new ChallengeParticipantsController(_queries.Object, _mediator.Object);
 
             // Act
-            var result = await controller.RegisterChallengeParticipantAsync(new ChallengeId(), command);
+            var result = await controller.RegisterChallengeParticipantAsync(new ChallengeId());
 
             // Assert
             result.Should().BeOfType<OkResult>();

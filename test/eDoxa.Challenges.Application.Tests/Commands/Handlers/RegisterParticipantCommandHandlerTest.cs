@@ -36,24 +36,24 @@ namespace eDoxa.Challenges.Application.Tests.Commands.Handlers
     {
         private static readonly ChallengeAggregateFactory ChallengeAggregateFactory = ChallengeAggregateFactory.Instance;
         private Mock<IChallengeRepository> _mockChallengeRepository;
-        private Mock<IUserProfile> _mockUserProfile;
+        private Mock<IUserInfoService> _mockUserInfoService;
+        private Mock<IUserLoginInfoService> _mockUserLoginInfoService;
 
         [TestInitialize]
         public void TestInitialize()
         {
             _mockChallengeRepository = new Mock<IChallengeRepository>();
-            _mockUserProfile = new Mock<IUserProfile>();
-            _mockUserProfile.SetupGetProperties();
+            _mockUserInfoService = new Mock<IUserInfoService>();
+            _mockUserInfoService.SetupGetProperties();
+            _mockUserLoginInfoService = new Mock<IUserLoginInfoService>();
+            _mockUserLoginInfoService.SetupGetProperties();
         }
 
         [TestMethod]
         public async Task HandleAsync_RegisterParticipantCommand_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
-            var command = new RegisterParticipantCommand
-            {
-                LinkedAccount = new LinkedAccount(Guid.NewGuid())
-            };
+            var command = new RegisterParticipantCommand(new ChallengeId());
 
             _mockChallengeRepository.Setup(mock => mock.FindChallengeAsync(It.IsAny<ChallengeId>()))
                 .ReturnsAsync(ChallengeAggregateFactory.CreateChallenge())
@@ -63,7 +63,7 @@ namespace eDoxa.Challenges.Application.Tests.Commands.Handlers
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var handler = new RegisterParticipantCommandHandler(_mockUserProfile.Object, _mockChallengeRepository.Object);
+            var handler = new RegisterParticipantCommandHandler(_mockUserInfoService.Object, _mockUserLoginInfoService.Object, _mockChallengeRepository.Object);
 
             // Act
             var result = await handler.HandleAsync(command);

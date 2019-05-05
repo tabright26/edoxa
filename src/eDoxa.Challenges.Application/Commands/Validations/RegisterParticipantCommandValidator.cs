@@ -19,10 +19,6 @@ namespace eDoxa.Challenges.Application.Commands.Validations
         public RegisterParticipantCommandValidator()
         {
             this.RuleFor(command => command.ChallengeId).NotEmpty();
-
-            this.RuleFor(command => command.LinkedAccount).NotNull();
-
-            this.RuleFor(command => command.LinkedAccount).NotEmpty();
         }
     }
 }

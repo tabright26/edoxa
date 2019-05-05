@@ -22,7 +22,7 @@ using eDoxa.Challenges.Domain.AggregateModels.UserAggregate;
 using eDoxa.Functional.Maybe;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Domain.Common.Enums;
+using eDoxa.Seedwork.Enumerations;
 using eDoxa.Specifications.Factories;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate

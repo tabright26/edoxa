@@ -16,6 +16,7 @@
     <ProjectReference Include="..\eDoxa.Functional\eDoxa.Functional.csproj" />
     <ProjectReference Include="..\eDoxa.Reflection\eDoxa.Reflection.csproj" />
     <ProjectReference Include="..\eDoxa.Security\eDoxa.Security.csproj" />
+    <ProjectReference Include="..\eDoxa.Seedwork\eDoxa.Seedwork.csproj" />
     <ProjectReference Include="..\eDoxa.Versioning\eDoxa.Versioning.csproj" />
   </ItemGroup>
 

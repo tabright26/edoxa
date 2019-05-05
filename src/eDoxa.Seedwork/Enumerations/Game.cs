@@ -10,7 +10,7 @@
 
 using System;
 
-namespace eDoxa.Seedwork.Domain.Common.Enums
+namespace eDoxa.Seedwork.Enumerations
 {
     [Flags]
     public enum Game

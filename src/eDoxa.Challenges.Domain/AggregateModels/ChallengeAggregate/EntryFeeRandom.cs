@@ -10,7 +10,8 @@
 
 using System;
 
-using eDoxa.Seedwork.Domain.Common;
+using eDoxa.Seedwork;
+using eDoxa.Seedwork.Utilities;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {

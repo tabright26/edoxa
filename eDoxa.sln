@@ -179,6 +179,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Identity.Tests", "tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.IdentityServer.Tests", "test\eDoxa.IdentityServer.Tests\eDoxa.IdentityServer.Tests.csproj", "{37374FD2-8BDD-41A2-AF26-8AF4E71E1DA7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Seedwork", "src\eDoxa.Seedwork\eDoxa.Seedwork.csproj", "{06676ABD-7A92-403D-B2FB-34BE6AF39C45}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -465,6 +467,10 @@ Global
 		{37374FD2-8BDD-41A2-AF26-8AF4E71E1DA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37374FD2-8BDD-41A2-AF26-8AF4E71E1DA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37374FD2-8BDD-41A2-AF26-8AF4E71E1DA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06676ABD-7A92-403D-B2FB-34BE6AF39C45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06676ABD-7A92-403D-B2FB-34BE6AF39C45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06676ABD-7A92-403D-B2FB-34BE6AF39C45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06676ABD-7A92-403D-B2FB-34BE6AF39C45}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -552,6 +558,7 @@ Global
 		{8C4B4CAC-5488-43AC-BF30-B4255F45D2C5} = {4A56FF53-2BBF-4B13-8C17-F2BF14273A0C}
 		{84C49647-ED10-4BB9-AE92-CD1E9BF0EB7D} = {7378CCA3-77A9-493F-8235-3FA775D77F38}
 		{37374FD2-8BDD-41A2-AF26-8AF4E71E1DA7} = {3CA87398-12EE-47C8-B7E3-9D26EA6C5864}
+		{06676ABD-7A92-403D-B2FB-34BE6AF39C45} = {1307B4CE-04FF-4315-BC01-0371760D5C26}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8BB3B9BB-6C76-478F-982F-E2E084DBDFAC}

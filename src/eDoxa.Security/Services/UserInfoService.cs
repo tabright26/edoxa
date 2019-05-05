@@ -1,5 +1,5 @@
-﻿// Filename: UserProfile.cs
-// Date Created: 2019-05-03
+﻿// Filename: UserInfoService.cs
+// Date Created: 2019-05-05
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -19,13 +19,13 @@ using IdentityModel;
 
 using Microsoft.AspNetCore.Http;
 
-namespace eDoxa.Security
+namespace eDoxa.Security.Services
 {
-    public sealed class UserProfile : IUserProfile
+    public sealed class UserInfoService : IUserInfoService
     {
         private readonly IEnumerable<Claim> _claims;
 
-        public UserProfile(IHttpContextAccessor accessor)
+        public UserInfoService(IHttpContextAccessor accessor)
         {
             _claims = accessor?.HttpContext?.User?.Claims ??
                       throw new ArgumentNullException(nameof(accessor), "IHttpContextAccessor was injected from an invalid HttpContext.");

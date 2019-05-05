@@ -75,7 +75,7 @@ namespace eDoxa.Cashier.Api
 
             services.AddIdentityServerAuthentication(Configuration, Environment, CashierApi);
 
-            services.AddUserProfile();
+            services.AddUserInfoService();
 
             services.AddStripe();
 

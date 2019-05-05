@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Specifications;
+using eDoxa.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Challenges.Domain.AggregateModels.ParticipantAggregate.Specifications;
 using eDoxa.Challenges.Domain.AggregateModels.UserAggregate;
 using eDoxa.Challenges.Domain.Repositories;
@@ -27,18 +28,20 @@ namespace eDoxa.Challenges.Application.Commands.Handlers
     internal sealed class RegisterParticipantCommandHandler : ICommandHandler<RegisterParticipantCommand, IActionResult>
     {
         private readonly IChallengeRepository _challengeRepository;
-        private readonly IUserProfile _userProfile;
+        private readonly IUserInfoService _userInfoService;
+        private readonly IUserLoginInfoService _userLoginInfoService;
 
-        public RegisterParticipantCommandHandler(IUserProfile userProfile, IChallengeRepository challengeRepository)
+        public RegisterParticipantCommandHandler(IUserInfoService userInfoService, IUserLoginInfoService userLoginInfoService, IChallengeRepository challengeRepository)
         {
-            _userProfile = userProfile;
+            _userInfoService = userInfoService;
+            _userLoginInfoService = userLoginInfoService;
             _challengeRepository = challengeRepository;
         }
 
         [ItemNotNull]
         public async Task<IActionResult> Handle([NotNull] RegisterParticipantCommand command, CancellationToken cancellationToken)
         {
-            var userId = UserId.Parse(_userProfile.Subject);
+            var userId = UserId.Parse(_userInfoService.Subject);
 
             var challenge = await _challengeRepository.FindChallengeAsync(command.ChallengeId);
 
@@ -62,7 +65,17 @@ namespace eDoxa.Challenges.Application.Commands.Handlers
                 return new BadRequestObjectResult("The state of the challenge is not open for registration.");
             }
 
-            challenge.RegisterParticipant(userId, command.LinkedAccount);
+            var login = _userLoginInfoService.GetExternalKey(challenge.Game);
+
+            if (login == null)
+            {
+                // TODO: Change this redirect result to a specific game external login process (Location).
+                return new BadRequestObjectResult($"This user does not have an account for the game: {challenge.Game}.");
+            }
+
+            var linkedAccount = new LinkedAccount(login);
+
+            challenge.RegisterParticipant(userId, linkedAccount);
 
             await _challengeRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 

@@ -1,4 +1,4 @@
-﻿// Filename: IUserProfile.cs
+﻿// Filename: IUserInfoService.cs
 // Date Created: 2019-05-03
 // 
 // ================================================
@@ -12,7 +12,7 @@ using System.Collections.Generic;
 
 namespace eDoxa.Security.Abstractions
 {
-    public interface IUserProfile
+    public interface IUserInfoService
     {
         string Subject { get; }
 

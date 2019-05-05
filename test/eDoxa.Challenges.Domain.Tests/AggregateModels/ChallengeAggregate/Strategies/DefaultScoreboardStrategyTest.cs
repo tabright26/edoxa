@@ -16,7 +16,7 @@ using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Strategies;
 using eDoxa.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Challenges.Domain.AggregateModels.UserAggregate;
 using eDoxa.Challenges.Domain.Factories;
-using eDoxa.Seedwork.Domain.Common.Enums;
+using eDoxa.Seedwork.Enumerations;
 
 using FluentAssertions;
 

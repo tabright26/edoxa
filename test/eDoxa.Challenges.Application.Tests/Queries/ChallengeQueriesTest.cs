@@ -18,7 +18,7 @@ using eDoxa.Challenges.DTO.Factories;
 using eDoxa.Challenges.Infrastructure;
 using eDoxa.Challenges.Infrastructure.Repositories;
 using eDoxa.Challenges.Tests.Asserts;
-using eDoxa.Seedwork.Domain.Common.Enums;
+using eDoxa.Seedwork.Enumerations;
 using eDoxa.Seedwork.Infrastructure.Factories;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;

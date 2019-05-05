@@ -14,9 +14,9 @@ using Moq;
 
 namespace eDoxa.Testing.MSTest.Extensions
 {
-    public static class MockUserProfileExtensions
+    public static class MockUserInfoServiceExtensions
     {
-        public static void SetupGetProperties(this Mock<IUserProfile> mockUserProfile)
+        public static void SetupGetProperties(this Mock<IUserInfoService> mockUserProfile)
         {
             mockUserProfile.SetupGet(mock => mock.Subject).Returns("e4655fe0-affd-4323-b022-bdb2ebde6091");
 

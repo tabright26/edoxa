@@ -32,12 +32,12 @@ namespace eDoxa.Cashier.Api.Controllers
     public class AccountTokenController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly IUserProfile _userProfile;
+        private readonly IUserInfoService _userInfoService;
         private readonly ITokenAccountQueries _queries;
 
-        public AccountTokenController(IUserProfile userProfile, ITokenAccountQueries queries, IMediator mediator)
+        public AccountTokenController(IUserInfoService userInfoService, ITokenAccountQueries queries, IMediator mediator)
         {
-            _userProfile = userProfile;
+            _userInfoService = userInfoService;
             _queries = queries;
             _mediator = mediator;
         }
@@ -48,7 +48,7 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpGet(Name = nameof(FindTokenAccountAsync))]
         public async Task<IActionResult> FindTokenAccountAsync()
         {
-            var userId = UserId.Parse(_userProfile.Subject);
+            var userId = UserId.Parse(_userInfoService.Subject);
 
             var account = await _queries.FindAccountAsync(userId);
 
@@ -74,7 +74,7 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpGet("transactions", Name = nameof(FindTokenTransactionsAsync))]
         public async Task<IActionResult> FindTokenTransactionsAsync()
         {
-            var userId = UserId.Parse(_userProfile.Subject);
+            var userId = UserId.Parse(_userInfoService.Subject);
 
             var transactions = await _queries.FindTransactionsAsync(userId);
 

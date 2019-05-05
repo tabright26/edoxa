@@ -26,18 +26,18 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
     internal sealed class WithdrawMoneyCommandHandler : ICommandHandler<WithdrawMoneyCommand, IActionResult>
     {
         private readonly IMoneyAccountService _moneyAccountService;
-        private readonly IUserProfile _userProfile;
+        private readonly IUserInfoService _userInfoService;
 
-        public WithdrawMoneyCommandHandler(IUserProfile userProfile, IMoneyAccountService moneyAccountService)
+        public WithdrawMoneyCommandHandler(IUserInfoService userInfoService, IMoneyAccountService moneyAccountService)
         {
-            _userProfile = userProfile;
+            _userInfoService = userInfoService;
             _moneyAccountService = moneyAccountService;
         }
 
         [ItemNotNull]
         public async Task<IActionResult> Handle([NotNull] WithdrawMoneyCommand command, CancellationToken cancellationToken)
         {
-            var userId = UserId.Parse(_userProfile.Subject);
+            var userId = UserId.Parse(_userInfoService.Subject);
 
             var moneyTransaction = await _moneyAccountService.TryWithdrawAsync(userId, command.Amount, cancellationToken);
 

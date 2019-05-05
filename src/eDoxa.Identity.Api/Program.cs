@@ -1,11 +1,11 @@
 ﻿// Filename: Program.cs
-// Date Created: 2019-04-13
+// Date Created: 2019-05-03
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
 // 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
@@ -18,6 +18,7 @@ using eDoxa.Identity.Infrastructure;
 using eDoxa.Monitoring.Extensions;
 using eDoxa.Security;
 using eDoxa.Security.Extensions;
+using eDoxa.Seedwork.Enumerations;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.ServiceBus;
 
@@ -83,6 +84,14 @@ namespace eDoxa.Identity.Api
                                     )
                                 ).Wait();
 
+                                userManager.AddClaimAsync(
+                                    user,
+                                    new Claim(
+                                        Game.LeagueOfLegends.GetClaimType(),
+                                        "NzH50JS-LCAu0UEY4EMjuS710F_U_8pLfEpNib9X06dD4w"
+                                    )
+                                ).Wait();
+
                                 var admin = new Role
                                 {
                                     Name = "Admin",
@@ -125,9 +134,7 @@ namespace eDoxa.Identity.Api
                 );
 
                 host.MigrateDbContext<IntegrationEventLogDbContext>(
-                    (context, provider) =>
-                    {
-                    }
+                    (context, provider) => { }
                 );
 
                 Log.Information("Starting {Application} web host...");
@@ -151,11 +158,11 @@ namespace eDoxa.Identity.Api
         private static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             return WebHost.CreateDefaultBuilder<Startup>(args)
-                          .CaptureStartupErrors(false)
-                          .ConfigureLogging()
-                          .UseAzureKeyVault()
-                          .UseApplicationInsights()
-                          .UseSerilog();
+                .CaptureStartupErrors(false)
+                .ConfigureLogging()
+                .UseAzureKeyVault()
+                .UseApplicationInsights()
+                .UseSerilog();
         }
     }
 }

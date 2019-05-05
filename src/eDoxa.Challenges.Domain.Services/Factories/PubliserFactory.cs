@@ -12,7 +12,7 @@ using System;
 
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Services.LeagueOfLegends.Factories;
-using eDoxa.Seedwork.Domain.Common.Enums;
+using eDoxa.Seedwork.Enumerations;
 
 namespace eDoxa.Challenges.Domain.Services.Factories
 {

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.AggregateModels.UserAggregate;
 using eDoxa.Functional.Maybe;
-using eDoxa.Seedwork.Domain.Common.Enums;
+using eDoxa.Seedwork.Enumerations;
 
 namespace eDoxa.Challenges.DTO.Queries
 {

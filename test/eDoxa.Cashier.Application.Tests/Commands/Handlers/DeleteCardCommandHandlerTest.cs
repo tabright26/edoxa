@@ -31,14 +31,14 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     {
         private static readonly UserAggregateFactory UserAggregateFactory = UserAggregateFactory.Instance;
         private Mock<CardService> _mockCardService;
-        private Mock<IUserProfile> _mockUserProfile;
+        private Mock<IUserInfoService> _mockUserInfoService;
 
         [TestInitialize]
         public void TestInitialize()
         {
             _mockCardService = new Mock<CardService>();
-            _mockUserProfile = new Mock<IUserProfile>();
-            _mockUserProfile.SetupGetProperties();
+            _mockUserInfoService = new Mock<IUserInfoService>();
+            _mockUserInfoService.SetupGetProperties();
         }
 
         [TestMethod]
@@ -58,7 +58,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
                 .ReturnsAsync(card)
                 .Verifiable();
 
-            var handler = new DeleteCardCommandHandler(_mockUserProfile.Object, _mockCardService.Object);
+            var handler = new DeleteCardCommandHandler(_mockUserInfoService.Object, _mockCardService.Object);
 
             // Act
             await handler.Handle(new DeleteCardCommand(CardId.Parse(card.Id)), default);

@@ -18,7 +18,7 @@ using eDoxa.Challenges.DTO;
 using eDoxa.Challenges.DTO.Queries;
 using eDoxa.Functional.Maybe;
 using eDoxa.Security.Abstractions;
-using eDoxa.Seedwork.Domain.Common.Enums;
+using eDoxa.Seedwork.Enumerations;
 using eDoxa.Testing.MSTest.Extensions;
 
 using FluentAssertions;
@@ -36,7 +36,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
     public sealed class ChallengeHistoryControllerTest
     {
         private Mock<IMediator> _mediator;
-        private Mock<IUserProfile> _mockUserProfile;
+        private Mock<IUserInfoService> _mockUserInfoService;
         private Mock<IChallengeQueries> _queries;
 
         [TestInitialize]
@@ -44,8 +44,8 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
         {
             _queries = new Mock<IChallengeQueries>();
             _mediator = new Mock<IMediator>();
-            _mockUserProfile = new Mock<IUserProfile>();
-            _mockUserProfile.SetupGetProperties();
+            _mockUserInfoService = new Mock<IUserInfoService>();
+            _mockUserInfoService.SetupGetProperties();
         }
 
         [TestMethod]
@@ -65,7 +65,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
                 .ReturnsAsync(new Option<ChallengeListDTO>(value))
                 .Verifiable();
 
-            var controller = new ChallengeHistoryController(_mockUserProfile.Object, _queries.Object);
+            var controller = new ChallengeHistoryController(_mockUserInfoService.Object, _queries.Object);
 
             // Act
             var result = await controller.FindUserChallengeHistoryAsync();
@@ -87,7 +87,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
                 .ReturnsAsync(new Option<ChallengeListDTO>())
                 .Verifiable();
 
-            var controller = new ChallengeHistoryController(_mockUserProfile.Object, _queries.Object);
+            var controller = new ChallengeHistoryController(_mockUserInfoService.Object, _queries.Object);
 
             // Act
             var result = await controller.FindUserChallengeHistoryAsync();

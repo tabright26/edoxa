@@ -20,7 +20,7 @@ using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Challenges.Domain.Services;
 using eDoxa.Challenges.Domain.Services.Factories;
 using eDoxa.Functional.Extensions;
-using eDoxa.Seedwork.Domain.Common.Enums;
+using eDoxa.Seedwork.Enumerations;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;

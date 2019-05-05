@@ -10,6 +10,8 @@
 
 using System.Collections.Generic;
 
+using eDoxa.Security.Extensions;
+
 using IdentityModel;
 
 using IdentityServer4.Models;
@@ -34,6 +36,19 @@ namespace eDoxa.Security.Resources
                 "permissions",
                 "Your permission(s)",
                 new HashSet<string> {CustomClaimTypes.Permission})
+            {
+            }
+        }
+
+        public sealed class Game : IdentityResource
+        {
+            public Game() : base(
+                "games",
+                "Your game(s)",
+                new HashSet<string>
+                {
+                    Seedwork.Enumerations.Game.LeagueOfLegends.GetClaimType()
+                })
             {
             }
         }

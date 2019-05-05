@@ -14,7 +14,7 @@ using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Security.Services
 {
-    public sealed class CustomCorsPolicyService : DefaultCorsPolicyService
+    internal sealed class CustomCorsPolicyService : DefaultCorsPolicyService
     {
         public CustomCorsPolicyService(ILogger<CustomCorsPolicyService> logger) : base(logger)
         {

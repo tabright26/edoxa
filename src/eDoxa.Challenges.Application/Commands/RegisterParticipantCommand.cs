@@ -11,7 +11,6 @@
 using System.Runtime.Serialization;
 
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Commands.Abstractions;
 
 using Microsoft.AspNetCore.Mvc;
@@ -21,8 +20,11 @@ namespace eDoxa.Challenges.Application.Commands
     [DataContract]
     public sealed class RegisterParticipantCommand : Command<IActionResult>
     {
-        [IgnoreDataMember] public LinkedAccount LinkedAccount { get; set; }
+        public RegisterParticipantCommand(ChallengeId challengeId)
+        {
+            ChallengeId = challengeId;
+        }
 
-        [IgnoreDataMember] public ChallengeId ChallengeId { get; set; }
+        [IgnoreDataMember] public ChallengeId ChallengeId { get; private set; }
     }
 }

@@ -17,7 +17,7 @@ using eDoxa.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Common.Enums;
+using eDoxa.Seedwork.Enumerations;
 
 using JetBrains.Annotations;
 

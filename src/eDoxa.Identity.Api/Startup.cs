@@ -76,7 +76,7 @@ namespace eDoxa.Identity.Api
 
             services.AddIdentityServerAuthentication(Configuration, Environment, IdentityApi);
 
-            services.AddUserProfile();
+            services.AddUserInfoService();
 
             return services.Build<ApplicationModule>();
         }

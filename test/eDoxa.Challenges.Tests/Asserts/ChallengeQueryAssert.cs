@@ -11,7 +11,7 @@
 using System;
 
 using eDoxa.Challenges.DTO;
-using eDoxa.Seedwork.Domain.Common.Enums;
+using eDoxa.Seedwork.Enumerations;
 
 using FluentAssertions;
 

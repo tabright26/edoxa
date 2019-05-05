@@ -12,7 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Seedwork.Domain.Common.Enums;
+using eDoxa.Seedwork.Enumerations;
 
 namespace eDoxa.Challenges.Domain.Services
 {

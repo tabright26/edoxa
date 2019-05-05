@@ -30,14 +30,14 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     public sealed class DepositMoneyCommandHandlerTest
     {
         private Mock<IMoneyAccountService> _mockMoneyAccountService;
-        private Mock<IUserProfile> _mockUserProfile;
+        private Mock<IUserInfoService> _mockUserInfoService;
 
         [TestInitialize]
         public void TestInitialize()
         {
             _mockMoneyAccountService = new Mock<IMoneyAccountService>();
-            _mockUserProfile = new Mock<IUserProfile>();
-            _mockUserProfile.SetupGetProperties();
+            _mockUserInfoService = new Mock<IUserInfoService>();
+            _mockUserInfoService.SetupGetProperties();
         }
 
         [TestMethod]
@@ -51,7 +51,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
                 .ReturnsAsync(new MoneyTransaction(new Money(10)))
                 .Verifiable();
 
-            var handler = new DepositMoneyCommandHandler(_mockUserProfile.Object, _mockMoneyAccountService.Object);
+            var handler = new DepositMoneyCommandHandler(_mockUserInfoService.Object, _mockMoneyAccountService.Object);
 
             // Act
             await handler.HandleAsync(command);
