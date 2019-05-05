@@ -1,9 +1,9 @@
 ﻿// Filename: ParticipantsControllerTest.cs
-// Date Created: 2019-04-21
+// Date Created: 2019-05-03
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -44,7 +44,8 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
         public async Task FindParticipantAsync_ShouldBeOkObjectResult()
         {
             // Arrange        
-            _queries.Setup(queries => queries.FindParticipantAsync(It.IsAny<ParticipantId>())).ReturnsAsync(new Option<ParticipantDTO>(new ParticipantDTO())).Verifiable();
+            _queries.Setup(queries => queries.FindParticipantAsync(It.IsAny<ParticipantId>())).ReturnsAsync(new Option<ParticipantDTO>(new ParticipantDTO()))
+                .Verifiable();
 
             var controller = new ParticipantsController(_queries.Object);
 

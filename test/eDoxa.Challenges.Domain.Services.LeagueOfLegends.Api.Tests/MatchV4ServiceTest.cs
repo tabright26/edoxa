@@ -1,11 +1,11 @@
 ﻿// Filename: MatchV4ServiceTest.cs
-// Date Created: 2019-03-04
+// Date Created: 2019-05-03
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
 // 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
@@ -40,19 +40,16 @@ namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.Api.Tests
             var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
 
             mockHttpMessageHandler.Protected()
-                                  .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
-                                  .ReturnsAsync(
-                                      () => new HttpResponseMessage(HttpStatusCode.OK)
-                                      {
-                                          Content = new StringContent(JsonConvert.SerializeObject(matchReferencesDTO))
-                                      }
-                                  )
-                                  .Callback<HttpRequestMessage, CancellationToken>(
-                                      (request, cancellationToken) =>
-                                      {
-                                          request.Method.Should().Be(HttpMethod.Get);
-                                      }
-                                  );
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
+                .ReturnsAsync(
+                    () => new HttpResponseMessage(HttpStatusCode.OK)
+                    {
+                        Content = new StringContent(JsonConvert.SerializeObject(matchReferencesDTO))
+                    }
+                )
+                .Callback<HttpRequestMessage, CancellationToken>(
+                    (request, cancellationToken) => { request.Method.Should().Be(HttpMethod.Get); }
+                );
 
             var service = new MatchV4Service(new HttpClient(mockHttpMessageHandler.Object), It.IsAny<string>());
 
@@ -79,19 +76,16 @@ namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.Api.Tests
             var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
 
             mockHttpMessageHandler.Protected()
-                                  .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
-                                  .ReturnsAsync(
-                                      () => new HttpResponseMessage(HttpStatusCode.OK)
-                                      {
-                                          Content = new StringContent(JsonConvert.SerializeObject(matchDTO))
-                                      }
-                                  )
-                                  .Callback<HttpRequestMessage, CancellationToken>(
-                                      (request, cancellationToken) =>
-                                      {
-                                          request.Method.Should().Be(HttpMethod.Get);
-                                      }
-                                  );
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
+                .ReturnsAsync(
+                    () => new HttpResponseMessage(HttpStatusCode.OK)
+                    {
+                        Content = new StringContent(JsonConvert.SerializeObject(matchDTO))
+                    }
+                )
+                .Callback<HttpRequestMessage, CancellationToken>(
+                    (request, cancellationToken) => { request.Method.Should().Be(HttpMethod.Get); }
+                );
 
             var service = new MatchV4Service(new HttpClient(mockHttpMessageHandler.Object), It.IsAny<string>());
 

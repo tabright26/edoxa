@@ -1,23 +1,23 @@
 ﻿// Filename: ChallengeQueriesTest.cs
-// Date Created: 2019-04-04
+// Date Created: 2019-05-03
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
 // 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Application.Queries;
-using eDoxa.Challenges.Application.Tests.Asserts;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Factories;
 using eDoxa.Challenges.DTO.Factories;
 using eDoxa.Challenges.Infrastructure;
 using eDoxa.Challenges.Infrastructure.Repositories;
+using eDoxa.Challenges.Tests.Asserts;
 using eDoxa.Seedwork.Domain.Common.Enums;
 using eDoxa.Seedwork.Infrastructure.Factories;
 
@@ -27,7 +27,7 @@ namespace eDoxa.Challenges.Application.Tests.Queries
 {
     [TestClass]
     public sealed class ChallengeQueriesTest
-    {        
+    {
         private static readonly ChallengeAggregateFactory ChallengeAggregateFactory = ChallengeAggregateFactory.Instance;
         private static readonly ChallengesMapperFactory ChallengesMapperFactory = ChallengesMapperFactory.Instance;
 
@@ -56,7 +56,7 @@ namespace eDoxa.Challenges.Application.Tests.Queries
                     var challengeDTO = await queries.FindChallengesAsync(Game.All, ChallengeType.All, ChallengeState1.Opened);
 
                     // Assert
-                    ChallengesAssert.IsMapped(challengeDTO.Single());
+                    ChallengeQueryAssert.IsMapped(challengeDTO.Single());
                 }
             }
         }

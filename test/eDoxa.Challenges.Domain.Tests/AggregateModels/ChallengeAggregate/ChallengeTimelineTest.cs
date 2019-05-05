@@ -1,18 +1,21 @@
 ﻿// Filename: ChallengeTimelineTest.cs
-// Date Created: 2019-04-14
+// Date Created: 2019-05-03
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
+
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Factories;
 using eDoxa.Testing.MSTest.Extensions;
+
 using FluentAssertions;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate

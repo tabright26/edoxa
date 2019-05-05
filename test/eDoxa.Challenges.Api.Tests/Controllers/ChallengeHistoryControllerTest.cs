@@ -1,9 +1,9 @@
-﻿// Filename: UsersControllerTest.cs
-// Date Created: 2019-04-21
+﻿// Filename: ChallengeHistoryControllerTest.cs
+// Date Created: 2019-05-03
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -35,8 +35,8 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
     [TestClass]
     public sealed class ChallengeHistoryControllerTest
     {
-        private Mock<IUserProfile> _mockUserProfile;
         private Mock<IMediator> _mediator;
+        private Mock<IUserProfile> _mockUserProfile;
         private Mock<IChallengeQueries> _queries;
 
         [TestInitialize]
@@ -60,7 +60,8 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
                 }
             };
 
-            _queries.Setup(queries => queries.FindUserChallengeHistoryAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<ChallengeType>(), It.IsAny<ChallengeState1>()))
+            _queries.Setup(queries =>
+                    queries.FindUserChallengeHistoryAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<ChallengeType>(), It.IsAny<ChallengeState1>()))
                 .ReturnsAsync(new Option<ChallengeListDTO>(value))
                 .Verifiable();
 
@@ -81,7 +82,8 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
         public async Task FindUserChallengeHistoryAsync_ShouldBeNoContentResult()
         {
             // Arrange
-            _queries.Setup(queries => queries.FindUserChallengeHistoryAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<ChallengeType>(), It.IsAny<ChallengeState1>()))
+            _queries.Setup(queries =>
+                    queries.FindUserChallengeHistoryAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<ChallengeType>(), It.IsAny<ChallengeState1>()))
                 .ReturnsAsync(new Option<ChallengeListDTO>())
                 .Verifiable();
 

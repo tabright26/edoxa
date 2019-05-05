@@ -12,8 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\eDoxa.Cashier.Application\eDoxa.Cashier.Application.csproj" />
-    <ProjectReference Include="..\eDoxa.Testing.MSTest\eDoxa.Testing.MSTest.csproj" />
+    <ProjectReference Include="..\eDoxa.Cashier.Tests\eDoxa.Cashier.Tests.csproj" />
   </ItemGroup>
 
 </Project>

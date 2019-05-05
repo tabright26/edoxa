@@ -16,9 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\eDoxa.Challenges.Domain.Services.LeagueOfLegends.Api\eDoxa.Challenges.Domain.Services.LeagueOfLegends.Api.csproj" />
     <ProjectReference Include="..\eDoxa.Challenges.Domain.Services.LeagueOfLegends.DTO.Tests\eDoxa.Challenges.Domain.Services.LeagueOfLegends.DTO.Tests.csproj" />
-    <ProjectReference Include="..\eDoxa.Testing.MSTest\eDoxa.Testing.MSTest.csproj" />
   </ItemGroup>
 
 </Project>

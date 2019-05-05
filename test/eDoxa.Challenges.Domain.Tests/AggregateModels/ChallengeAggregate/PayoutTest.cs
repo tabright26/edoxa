@@ -1,9 +1,9 @@
 ﻿// Filename: PayoutTest.cs
-// Date Created: 2019-04-18
+// Date Created: 2019-05-03
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -20,6 +20,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
     public sealed class PayoutTest
     {
         [DataRow(2500, 25D, PayoutRatio.Default, ServiceChargeRatio.Default)]
+
         //[DataRow(2500, 25D, PayoutRatio.Default, ServiceChargeRatio.Min)]
         //[DataRow(2500, 25D, PayoutRatio.Default, ServiceChargeRatio.Max)]
         //[DataRow(2500, 25D, PayoutRatio.Min, ServiceChargeRatio.Default)]

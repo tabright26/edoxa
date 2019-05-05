@@ -1,9 +1,9 @@
-﻿// Filename: CashierAssert.cs
-// Date Created: 2019-04-21
+﻿// Filename: CashierRepositoriesAssert.cs
+// Date Created: 2019-05-04
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -15,9 +15,9 @@ using eDoxa.Cashier.Domain;
 
 using FluentAssertions;
 
-namespace eDoxa.Cashier.Infrastructure.Tests.Asserts
+namespace eDoxa.Cashier.Tests.Asserts
 {
-    internal static class CashierAssert
+    internal static class CashierRepositoryAssert
     {
         private static void IsMapped(IMoneyAccount account)
         {

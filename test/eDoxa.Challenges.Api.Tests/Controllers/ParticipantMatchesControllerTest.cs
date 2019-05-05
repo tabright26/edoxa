@@ -1,9 +1,9 @@
 ﻿// Filename: ParticipantMatchesControllerTest.cs
-// Date Created: 2019-04-21
+// Date Created: 2019-05-03
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -53,7 +53,8 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
                 }
             };
 
-            _queries.Setup(queries => queries.FindParticipantMatchesAsync(It.IsAny<ParticipantId>())).ReturnsAsync(new Option<MatchListDTO>(value)).Verifiable();
+            _queries.Setup(queries => queries.FindParticipantMatchesAsync(It.IsAny<ParticipantId>())).ReturnsAsync(new Option<MatchListDTO>(value))
+                .Verifiable();
 
             var controller = new ParticipantMatchesController(_queries.Object);
 

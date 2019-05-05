@@ -1,9 +1,9 @@
 ﻿// Filename: ChallengeRepositoryTest.cs
-// Date Created: 2019-04-14
+// Date Created: 2019-05-03
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -17,7 +17,9 @@ using eDoxa.Challenges.Domain.Factories;
 using eDoxa.Challenges.Infrastructure.Repositories;
 using eDoxa.Seedwork.Domain.Common.Enums;
 using eDoxa.Seedwork.Infrastructure.Factories;
+
 using FluentAssertions;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
@@ -135,7 +137,9 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
         [DataRow(Game.All, ChallengeType.None, ChallengeState1.All)]
         [DataRow(Game.None, ChallengeType.All, ChallengeState1.All)]
         [DataTestMethod]
-        public async Task FindChallengesAsync_ByNoneFlags_ShouldBeEmpty(Game game, ChallengeType type,
+        public async Task FindChallengesAsync_ByNoneFlags_ShouldBeEmpty(
+            Game game,
+            ChallengeType type,
             ChallengeState1 state)
         {
             using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())

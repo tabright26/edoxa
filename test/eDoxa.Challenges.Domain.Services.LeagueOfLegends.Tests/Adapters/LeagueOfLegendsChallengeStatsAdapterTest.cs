@@ -1,11 +1,11 @@
 ﻿// Filename: LeagueOfLegendsChallengeStatsAdapterTest.cs
-// Date Created: 2019-03-05
+// Date Created: 2019-05-03
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
 // 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System.Linq;
@@ -45,7 +45,7 @@ namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.Tests.Adapters
 
             var timeline = ChallengeAggregateFactory.CreateChallengeTimeline(ChallengeState1.InProgress);
 
-            challenge.GetType().GetField("_timeline", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(challenge, timeline);            
+            challenge.GetType().GetField("_timeline", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(challenge, timeline);
 
             foreach (var (_, match) in matches)
             {

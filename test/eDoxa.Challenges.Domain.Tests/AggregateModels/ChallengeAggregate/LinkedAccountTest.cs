@@ -1,11 +1,11 @@
-﻿// Filename: ParticipantLinkedAccountTest.cs
-// Date Created: 2019-03-05
+﻿// Filename: LinkedAccountTest.cs
+// Date Created: 2019-05-03
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
 // 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
@@ -50,7 +50,7 @@ namespace eDoxa.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         }
 
         [DataRow("!@#$%^&*()")]
-        [DataRow("9i8h7g 6f5e4d3 c2b1a0")]        
+        [DataRow("9i8h7g 6f5e4d3 c2b1a0")]
         [DataRow("  ")]
         [DataRow(null)]
         [DataTestMethod]

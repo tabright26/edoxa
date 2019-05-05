@@ -12,10 +12,8 @@
       <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\eDoxa.Challenges.Domain.Services.LeagueOfLegends\eDoxa.Challenges.Domain.Services.LeagueOfLegends.csproj" />
-    <ProjectReference Include="..\..\src\eDoxa.Challenges.Domain\eDoxa.Challenges.Domain.csproj" />
-    <ProjectReference Include="..\eDoxa.Testing.MSTest\eDoxa.Testing.MSTest.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\eDoxa.Challenges.Tests\eDoxa.Challenges.Tests.csproj" />
+    </ItemGroup>
 
 </Project>
