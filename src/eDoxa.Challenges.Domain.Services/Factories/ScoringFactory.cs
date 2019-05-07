@@ -1,11 +1,11 @@
-﻿// Filename: ChallengeScoringFactory.cs
-// Date Created: 2019-03-21
+﻿// Filename: ScoringFactory.cs
+// Date Created: 2019-05-06
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
 // 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
@@ -21,13 +21,7 @@ namespace eDoxa.Challenges.Domain.Services.Factories
     {
         private static readonly Lazy<ScoringFactory> Lazy = new Lazy<ScoringFactory>(() => new ScoringFactory());
 
-        public static ScoringFactory Instance
-        {
-            get
-            {
-                return Lazy.Value;
-            }
-        }
+        public static ScoringFactory Instance => Lazy.Value;
 
         public IScoringStrategy CreateScoringStrategy(Challenge challenge)
         {
@@ -35,9 +29,7 @@ namespace eDoxa.Challenges.Domain.Services.Factories
             {
                 case Game.LeagueOfLegends:
 
-                    var factory = LeagueOfLegendsChallengeScoringFactory.Instance;
-
-                    return factory.CreateScoring(challenge);
+                    return LeagueOfLegendsChallengeScoringFactory.Instance.CreateScoring(challenge);
 
                 default:
 

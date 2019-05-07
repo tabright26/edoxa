@@ -15,11 +15,11 @@ using JetBrains.Annotations;
 
 namespace eDoxa.Challenges.Domain.Entities
 {
-    public partial class Score
+    public abstract partial class Score
     {
         private readonly decimal _value;
 
-        internal Score(decimal score)
+        protected Score(decimal score)
         {
             _value = Math.Round(score, 2);
         }

@@ -30,11 +30,6 @@ namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
             _value = name.Trim();
         }
 
-        public static implicit operator ChallengeName(string name)
-        {
-            return new ChallengeName(name);
-        }
-
         public override string ToString()
         {
             return _value;

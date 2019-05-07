@@ -1,16 +1,15 @@
-﻿// Filename: ChallengePayoutFactory.cs
-// Date Created: 2019-04-21
+﻿// Filename: PayoutFactory.cs
+// Date Created: 2019-05-07
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
 
-using eDoxa.Challenges.Domain.Entities;
 using eDoxa.Challenges.Domain.Entities.Abstractions;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Entities.Default.Strategies;
@@ -23,17 +22,17 @@ namespace eDoxa.Challenges.Domain.Services.Factories
 
         public static PayoutFactory Instance => Lazy.Value;
 
-        public IPayoutStrategy CreatePayout(ChallengeType type, PayoutEntries payoutEntries, PrizePool prizePool, EntryFee entryFee)
+        public IPayoutStrategy CreatePayout(Challenge challenge)
         {
-            switch (type)
+            switch (challenge.Setup.Type)
             {
                 case ChallengeType.Default:
 
-                    return new DefaultPayoutStrategy(payoutEntries, prizePool, entryFee);
+                    return new DefaultPayoutStrategy();
 
                 default:
 
-                    throw new ArgumentException(nameof(type));
+                    throw new NotImplementedException();
             }
         }
     }

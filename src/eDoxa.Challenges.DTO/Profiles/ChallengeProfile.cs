@@ -37,7 +37,7 @@ namespace eDoxa.Challenges.DTO.Profiles
                         config.Condition(challenge => challenge.Timeline.State >= ChallengeState1.Opened);
                     }
                 )
-                .ForMember(challenge => challenge.Payout, config => config.MapFrom(challenge => PayoutFactory.Instance.CreatePayout(challenge.Setup.Type, challenge.Setup.PayoutEntries, challenge.Setup.PrizePool, challenge.Setup.EntryFee).Payout))
+                .ForMember(challenge => challenge.Payout, config => config.MapFrom(challenge => PayoutFactory.Instance.CreatePayout(challenge).Payout))
                 //.ForMember(challenge => challenge.LiveData, config => config.MapFrom(challenge => challenge.LiveData))
                 .ForMember(challenge => challenge.Participants, config => config.MapFrom(challenge => challenge.Participants.OrderBy(participant => participant.Timestamp)));
         }

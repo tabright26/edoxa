@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeTest.cs
-// Date Created: 2019-05-03
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -51,6 +51,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
             //challenge.Payout.Should().NotBeEmpty();
             //challenge.Scoreboard.Should().BeEmpty();
             challenge.Participants.Should().BeEmpty();
+
             //challenge.LiveData.Entries.Should().Be(new Entries(challenge.Participants.Count, false));
             //challenge.LiveData.PayoutEntries.Should().Be(new PayoutEntries(challenge.LiveData.Entries, challenge.Setup.PayoutRatio));
             //challenge.LiveData.PrizePool.Should().Be(new PrizePool(challenge.LiveData.Entries, challenge.Setup.EntryFee, challenge.Setup.ServiceChargeRatio));

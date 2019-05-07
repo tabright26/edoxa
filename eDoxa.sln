@@ -181,13 +181,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Challenges.Domain.Ent
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Challenges.Domain.Entities.Tests", "test\eDoxa.Challenges.Domain.Entities.Tests\eDoxa.Challenges.Domain.Entities.Tests.csproj", "{310CF8D0-4F71-4C68-8DA0-E2F57EA31103}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Challenges.Domain.Entities.Default", "src\eDoxa.Challenges.Domain.Entities.Default\eDoxa.Challenges.Domain.Entities.Default.csproj", "{8A33BC43-2B39-49CB-9D5B-76672D65FF18}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Challenges.Domain.Entities.Default", "src\eDoxa.Challenges.Domain.Entities.Default\eDoxa.Challenges.Domain.Entities.Default.csproj", "{8A33BC43-2B39-49CB-9D5B-76672D65FF18}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Challenges.Domain.Entities.Custom", "src\eDoxa.Challenges.Domain.Entities.Custom\eDoxa.Challenges.Domain.Entities.Custom.csproj", "{D3790141-7C2D-4DE2-884E-79547D04C892}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Challenges.Domain.Entities.Custom", "src\eDoxa.Challenges.Domain.Entities.Custom\eDoxa.Challenges.Domain.Entities.Custom.csproj", "{D3790141-7C2D-4DE2-884E-79547D04C892}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Challenges.Domain.Entities.Random", "src\eDoxa.Challenges.Domain.Entities.Random\eDoxa.Challenges.Domain.Entities.Random.csproj", "{AB7DA07A-87A7-4B9D-A4B8-42191A7A8BFD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Challenges.Domain.Entities.Random", "src\eDoxa.Challenges.Domain.Entities.Random\eDoxa.Challenges.Domain.Entities.Random.csproj", "{AB7DA07A-87A7-4B9D-A4B8-42191A7A8BFD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Challenges.Domain", "src\eDoxa.Challenges.Domain\eDoxa.Challenges.Domain.csproj", "{7770664C-1014-4D0F-B4E0-F3CF0AD39A1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Challenges.Domain", "src\eDoxa.Challenges.Domain\eDoxa.Challenges.Domain.csproj", "{7770664C-1014-4D0F-B4E0-F3CF0AD39A1B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Challenges.Domain.Entities.Default.Tests", "test\eDoxa.Challenges.Domain.Entities.Default.Tests\eDoxa.Challenges.Domain.Entities.Default.Tests.csproj", "{686A01DC-675A-4437-80A0-5BABF053DFE3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Challenges.Domain.Entities.Custom.Tests", "test\eDoxa.Challenges.Domain.Entities.Custom.Tests\eDoxa.Challenges.Domain.Entities.Custom.Tests.csproj", "{1DC90204-1A72-4F90-82FA-5B6EB890EB96}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Challenges.Domain.Entities.Random.Tests", "test\eDoxa.Challenges.Domain.Entities.Random.Tests\eDoxa.Challenges.Domain.Entities.Random.Tests.csproj", "{5FB50B37-F45D-4BBE-83A3-D4A56FA2ED1D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -495,6 +501,18 @@ Global
 		{7770664C-1014-4D0F-B4E0-F3CF0AD39A1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7770664C-1014-4D0F-B4E0-F3CF0AD39A1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7770664C-1014-4D0F-B4E0-F3CF0AD39A1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{686A01DC-675A-4437-80A0-5BABF053DFE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{686A01DC-675A-4437-80A0-5BABF053DFE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{686A01DC-675A-4437-80A0-5BABF053DFE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{686A01DC-675A-4437-80A0-5BABF053DFE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DC90204-1A72-4F90-82FA-5B6EB890EB96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DC90204-1A72-4F90-82FA-5B6EB890EB96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DC90204-1A72-4F90-82FA-5B6EB890EB96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DC90204-1A72-4F90-82FA-5B6EB890EB96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FB50B37-F45D-4BBE-83A3-D4A56FA2ED1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FB50B37-F45D-4BBE-83A3-D4A56FA2ED1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FB50B37-F45D-4BBE-83A3-D4A56FA2ED1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FB50B37-F45D-4BBE-83A3-D4A56FA2ED1D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -587,6 +605,9 @@ Global
 		{D3790141-7C2D-4DE2-884E-79547D04C892} = {7C414564-DB04-47D4-88B1-7C7B24C7904F}
 		{AB7DA07A-87A7-4B9D-A4B8-42191A7A8BFD} = {7C414564-DB04-47D4-88B1-7C7B24C7904F}
 		{7770664C-1014-4D0F-B4E0-F3CF0AD39A1B} = {7C414564-DB04-47D4-88B1-7C7B24C7904F}
+		{686A01DC-675A-4437-80A0-5BABF053DFE3} = {4A56FF53-2BBF-4B13-8C17-F2BF14273A0C}
+		{1DC90204-1A72-4F90-82FA-5B6EB890EB96} = {4A56FF53-2BBF-4B13-8C17-F2BF14273A0C}
+		{5FB50B37-F45D-4BBE-83A3-D4A56FA2ED1D} = {4A56FF53-2BBF-4B13-8C17-F2BF14273A0C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8BB3B9BB-6C76-478F-982F-E2E084DBDFAC}

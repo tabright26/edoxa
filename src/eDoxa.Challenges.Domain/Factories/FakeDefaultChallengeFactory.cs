@@ -9,9 +9,6 @@
 // this source code package.
 
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Reflection;
 
 using eDoxa.Challenges.Domain.Entities;
@@ -49,7 +46,7 @@ namespace eDoxa.Challenges.Domain.Factories
         {
             setup = setup ?? new DefaultChallengeSetup();
 
-            var challenge = new Challenge(Game.LeagueOfLegends, nameof(Challenge), setup);
+            var challenge = new Challenge(Game.LeagueOfLegends, new ChallengeName(nameof(Challenge)), setup);
 
             var timeline = this.CreateChallengeTimeline(state);
 
@@ -265,14 +262,19 @@ namespace eDoxa.Challenges.Domain.Factories
             };
         }
 
-        public Scoreboard CreateChallengeScoreboard()
+        public Scoreboard CreateScoreboard()
         {
             return new Scoreboard(this.CreateChallenge(ChallengeState1.Ended));
         }
 
-        public PayoutEntries CreatePayoutEntries(int payoutEntries)
-        {
-            return new PayoutEntries(new Entries(payoutEntries * 2, false), new PayoutRatio(0.5F, false));
-        }
+        //public PrizePool CreatePrizePool(int prizePool)
+        //{
+        //    return new PrizePool(new Entries(payoutEntries * 2, false), new PayoutRatio(0.5F, false));
+        //}
+
+        //public PayoutEntries CreatePayoutEntries(int payoutEntries)
+        //{
+        //    return new PayoutEntries(new Entries(payoutEntries * 2, false), new PayoutRatio(0.5F, false));
+        //}
     }
 }

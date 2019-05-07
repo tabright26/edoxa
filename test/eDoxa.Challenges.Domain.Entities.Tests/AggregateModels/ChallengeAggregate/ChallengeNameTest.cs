@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeNameTest.cs
-// Date Created: 2019-05-03
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,9 +11,7 @@
 using System;
 
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.Factories;
-
-using FluentAssertions;
+using eDoxa.Testing.MSTest;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -22,46 +20,22 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
     [TestClass]
     public sealed class ChallengeNameTest
     {
-        [DataRow("Challenge")]
-        [DataRow("Challenge 1")]
-        [DataRow("Challenge (1)")]
-        [DataRow("Challenge one")]
-        [DataRow("Challenge")]
-        [DataTestMethod]
-        public void Value_ValidFormat_ShouldBeValue(string input)
-        {
-            // Act
-            var name = new ChallengeName(input);
-
-            // Assert
-            name.ToString().Should().Be(input);
-        }
-
-        [DataRow(null)]
-        [DataRow("  ")]
-        [DataRow("challenge_name")]
-        [DataRow("!@#$!@*&")]
-        [DataTestMethod]
-        public void Value_InvalidArgument_ShouldThrowArgumentException(string input)
-        {
-            // Act
-            var action = new Action(() => new ChallengeName(input));
-
-            // Assert
-            action.Should().Throw<ArgumentException>();
-        }
-
         [TestMethod]
-        public void Operator_ChallengeName_ShouldBeInput()
+        public void Constructor_Tests()
         {
-            // Arrange
-            const string input = nameof(Challenge);
+            const string message = "ChallengeName validation failed.";
 
-            // Act
-            ChallengeName name = input;
-
-            // Assert
-            name.ToString().Should().Be(input);
+            ConstructorTests<ChallengeName>.For(typeof(string))
+                .WithName("ChallengeName")
+                .Fail(new object[] {null}, typeof(ArgumentException), message)
+                .Fail(new object[] {"  "}, typeof(ArgumentException), message)
+                .Fail(new object[] {"challenge_name"}, typeof(ArgumentException), message)
+                .Fail(new object[] {"!@#$!@*&"}, typeof(ArgumentException), message)
+                .Succeed(new object[] {"Challenge"}, message)
+                .Succeed(new object[] {"Challenge 1"}, message)
+                .Succeed(new object[] {"Challenge (1)"}, message)
+                .Succeed(new object[] {"Challenge one"}, message)
+                .Assert();
         }
     }
 }

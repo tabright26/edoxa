@@ -14,17 +14,6 @@ namespace eDoxa.Challenges.Domain.Entities.Default.Strategies
 {
     public sealed class DefaultPayoutStrategy : IPayoutStrategy
     {
-        private readonly EntryFee _entryFee;
-        private readonly PayoutEntries _payoutEntries;
-        private readonly PrizePool _prizePool;
-
-        public DefaultPayoutStrategy(PayoutEntries payoutEntries, PrizePool prizePool, EntryFee entryFee)
-        {
-            _payoutEntries = payoutEntries;
-            _prizePool = prizePool;
-            _entryFee = entryFee;
-        }
-
         public IPayout Payout => new Payout();
     }
 }

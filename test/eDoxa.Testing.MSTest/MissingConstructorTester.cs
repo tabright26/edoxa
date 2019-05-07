@@ -14,6 +14,11 @@ namespace eDoxa.Testing.MSTest
 {
     public class MissingConstructorTester<T> : Tester<T>
     {
+        public override Tester<T> WithName(string className)
+        {
+            return this;
+        }
+
         public override Tester<T> Fail(object[] args, Type exceptionType, string failMessage)
         {
             return this;

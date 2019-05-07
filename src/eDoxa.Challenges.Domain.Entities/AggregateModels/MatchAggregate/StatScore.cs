@@ -12,7 +12,7 @@ using System;
 
 namespace eDoxa.Challenges.Domain.Entities.AggregateModels.MatchAggregate
 {
-    public class StatScore : Score
+    public sealed class StatScore : Score
     {
         internal StatScore(Stat stat) : base(Convert.ToDecimal(stat.Value) * Convert.ToDecimal(stat.Weighting))
         {
