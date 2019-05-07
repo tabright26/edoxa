@@ -19,13 +19,13 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
     [TestClass]
     public sealed class ParticipantTest
     {
-        private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
+        private static readonly FakeDefaultChallengeFactory FakeDefaultChallengeFactory = FakeDefaultChallengeFactory.Instance;
 
         [TestMethod]
         public void Participant_ShouldNotBeNull()
         {
             // Act
-            var participant = FakeChallengeFactory.CreateParticipant();
+            var participant = FakeDefaultChallengeFactory.CreateParticipant();
 
             // Assert
             participant.Should().NotBeNull();
@@ -35,9 +35,9 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
         public void SnapshotMatch_Matches_ShouldNotBeEmpty()
         {
             // Arrange
-            var participant = FakeChallengeFactory.CreateParticipant();
-            var stats = FakeChallengeFactory.CreateMatchStats();
-            var scoring = FakeChallengeFactory.CreateScoring();
+            var participant = FakeDefaultChallengeFactory.CreateParticipant();
+            var stats = FakeDefaultChallengeFactory.CreateMatchStats();
+            var scoring = FakeDefaultChallengeFactory.CreateScoring();
 
             // Act
             participant.SnapshotMatch(stats, scoring);
@@ -53,7 +53,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
         public void Matches_ShouldHaveCountOf(int matchCount)
         {
             // Arrange
-            var participant = FakeChallengeFactory.CreateParticipantWithMatches(matchCount);
+            var participant = FakeDefaultChallengeFactory.CreateParticipantMatches(matchCount);
 
             // Act
             var matches = participant.Matches;
@@ -69,7 +69,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
         public void AverageScore_MatchCountGreaterThanOrEqualToBestOf_ShouldNotBeNull(int matchCount, int bestOf)
         {
             // Arrange
-            var participant = FakeChallengeFactory.CreateParticipantWithMatches(matchCount, bestOf);
+            var participant = FakeDefaultChallengeFactory.CreateParticipantMatches(matchCount, bestOf);
 
             // Act
             var score = participant.AverageScore;

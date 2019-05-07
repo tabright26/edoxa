@@ -18,7 +18,7 @@ namespace eDoxa.Challenges.Application.Tests.Queries
     [TestClass]
     public sealed class MatchQueriesTest
     {
-        private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
+        private static readonly FakeDefaultChallengeFactory FakeDefaultChallengeFactory = FakeDefaultChallengeFactory.Instance;
         private static readonly ChallengesMapperFactory ChallengesMapperFactory = ChallengesMapperFactory.Instance;
     }
 }

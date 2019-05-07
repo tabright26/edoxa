@@ -22,13 +22,13 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
     [TestClass]
     public sealed class MatchStatsTest
     {
-        private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
+        private static readonly FakeDefaultChallengeFactory FakeDefaultChallengeFactory = FakeDefaultChallengeFactory.Instance;
 
         [TestMethod]
         public void Stats_ShouldBeAssignableToType()
         {
             // Arrange
-            var stats = FakeChallengeFactory.CreateMatchStats();
+            var stats = FakeDefaultChallengeFactory.CreateMatchStats();
 
             // Act
             var type = typeof(Dictionary<StatName, StatValue>);

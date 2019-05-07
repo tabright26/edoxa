@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Domain.Entities.AggregateModels;
@@ -28,7 +29,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
     [TestClass]
     public sealed class ChallengeRepositoryTest
     {
-        private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
+        private static readonly FakeRandomChallengeFactory FakeRandomChallengeFactory = FakeRandomChallengeFactory.Instance;
 
         [TestMethod]
         public async Task Create_Challenge_ShouldNotBeEmpty()
@@ -40,7 +41,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
                     // Arrange
                     var repository = new ChallengeRepository(context);
 
-                    var challenge = FakeChallengeFactory.CreateChallenge();
+                    var challenge = FakeRandomChallengeFactory.CreateRandomChallenges().First();
 
                     // Act
                     repository.Create(challenge);
@@ -66,7 +67,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
                     // Arrange
                     var repository = new ChallengeRepository(context);
 
-                    var challenges = FakeChallengeFactory.CreateRandomChallenges();
+                    var challenges = FakeRandomChallengeFactory.CreateRandomChallenges();
 
                     // Act
                     repository.Create(challenges);
@@ -92,7 +93,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
                     // Arrange
                     var repository = new ChallengeRepository(context);
 
-                    var challenges = FakeChallengeFactory.CreateRandomChallenges();
+                    var challenges = FakeRandomChallengeFactory.CreateRandomChallenges();
 
                     repository.Create(challenges);
 
@@ -149,7 +150,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
                 {
                     var repository = new ChallengeRepository(context);
 
-                    var challenges = FakeChallengeFactory.CreateRandomChallenges();
+                    var challenges = FakeRandomChallengeFactory.CreateRandomChallenges();
 
                     repository.Create(challenges);
 
@@ -185,7 +186,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
                 {
                     var repository = new ChallengeRepository(context);
 
-                    var challenges = FakeChallengeFactory.CreateRandomChallenges(state);
+                    var challenges = FakeRandomChallengeFactory.CreateRandomChallenges(state);
 
                     repository.Create(challenges);
 
@@ -201,7 +202,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
                     var challenges = await repository.FindChallengesAsync(Game.All, ChallengeType.All, state);
 
                     // Assert
-                    challenges.Should().HaveCount(FakeChallengeFactory.DefaultRandomChallengeCount);
+                    challenges.Should().HaveCount(FakeRandomChallengeFactory.DefaultRandomChallengeCount);
                 }
             }
         }
@@ -209,7 +210,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
         [TestMethod]
         public async Task FindChallengeAsync_Persistent_ShouldBeLoaded()
         {
-            var challenge = FakeChallengeFactory.CreateRandomChallenge();
+            var challenge = FakeRandomChallengeFactory.CreateRandomChallenge();
 
             using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
             {

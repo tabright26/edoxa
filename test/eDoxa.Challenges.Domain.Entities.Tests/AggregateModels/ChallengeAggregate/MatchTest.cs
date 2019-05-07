@@ -19,13 +19,13 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
     [TestClass]
     public sealed class MatchTest
     {
-        private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
+        private static readonly FakeDefaultChallengeFactory FakeDefaultChallengeFactory = FakeDefaultChallengeFactory.Instance;
 
         [TestMethod]
         public void Match_ShouldNotBeNull()
         {
             // Act
-            var match = FakeChallengeFactory.CreateMatch();
+            var match = FakeDefaultChallengeFactory.CreateMatch();
 
             // Assert
             match.Should().NotBeNull();
@@ -35,9 +35,9 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
         public void SnapshotStats_Stats_ShouldHaveCountOfScoring()
         {
             // Arrange
-            var scoring = FakeChallengeFactory.CreateScoring();
-            var stats = FakeChallengeFactory.CreateMatchStats();
-            var match = FakeChallengeFactory.CreateMatch();
+            var scoring = FakeDefaultChallengeFactory.CreateScoring();
+            var stats = FakeDefaultChallengeFactory.CreateMatchStats();
+            var match = FakeDefaultChallengeFactory.CreateMatch();
 
             // Act
             match.SnapshotStats(stats, scoring);

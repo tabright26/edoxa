@@ -32,7 +32,7 @@ namespace eDoxa.Challenges.Application.Tests.Commands.Handlers
     [TestClass]
     public sealed class RegisterParticipantCommandHandlerTest
     {
-        private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
+        private static readonly FakeDefaultChallengeFactory FakeDefaultChallengeFactory = FakeDefaultChallengeFactory.Instance;
         private Mock<IChallengeRepository> _mockChallengeRepository;
         private Mock<IUserInfoService> _mockUserInfoService;
         private Mock<IUserLoginInfoService> _mockUserLoginInfoService;
@@ -54,7 +54,7 @@ namespace eDoxa.Challenges.Application.Tests.Commands.Handlers
             var command = new RegisterParticipantCommand(new ChallengeId());
 
             _mockChallengeRepository.Setup(mock => mock.FindChallengeAsync(It.IsAny<ChallengeId>()))
-                .ReturnsAsync(FakeChallengeFactory.CreateChallenge())
+                .ReturnsAsync(FakeDefaultChallengeFactory.CreateChallenge())
                 .Verifiable();
 
             _mockChallengeRepository.Setup(mock => mock.UnitOfWork.CommitAndDispatchDomainEventsAsync(It.IsAny<CancellationToken>()))

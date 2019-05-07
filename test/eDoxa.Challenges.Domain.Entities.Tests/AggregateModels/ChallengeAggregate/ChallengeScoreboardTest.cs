@@ -23,13 +23,13 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
     [TestClass]
     public sealed class ChallengeScoreboardTest
     {
-        private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
+        private static readonly FakeDefaultChallengeFactory FakeDefaultChallengeFactory = FakeDefaultChallengeFactory.Instance;
 
         [TestMethod]
         public void Scoreboard_ShouldBeAssignableToType()
         {
             // Arrange
-            var scoreboard = FakeChallengeFactory.CreateChallengeScoreboard();
+            var scoreboard = FakeDefaultChallengeFactory.CreateChallengeScoreboard();
 
             // Act
             var type = typeof(Dictionary<UserId, Option<Score>>);

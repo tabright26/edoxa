@@ -27,13 +27,13 @@ namespace eDoxa.Challenges.Infrastructure
 {
     public sealed partial class ChallengesDbContext
     {
-        private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
+        private static readonly FakeRandomChallengeFactory FakeRandomChallengeFactory = FakeRandomChallengeFactory.Instance;
 
         public async Task SeedAsync(ILogger logger)
         {
             if (!Challenges.Any())
             {
-                var challenges = FakeChallengeFactory.CreateRandomChallengesWithOtherStates(ChallengeState1.Opened);
+                var challenges = FakeRandomChallengeFactory.CreateRandomChallengesWithOtherStates(ChallengeState1.Opened);
 
                 Challenges.AddRange(challenges);
 

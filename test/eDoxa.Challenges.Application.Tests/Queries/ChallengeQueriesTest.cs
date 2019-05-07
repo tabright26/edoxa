@@ -28,13 +28,13 @@ namespace eDoxa.Challenges.Application.Tests.Queries
     [TestClass]
     public sealed class ChallengeQueriesTest
     {
-        private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
+        private static readonly FakeRandomChallengeFactory FakeRandomChallengeFactory = FakeRandomChallengeFactory.Instance;
         private static readonly ChallengesMapperFactory ChallengesMapperFactory = ChallengesMapperFactory.Instance;
 
         [TestMethod]
         public async Task FindChallengesAsync_ShouldBeMapped()
         {
-            var challenge = FakeChallengeFactory.CreateRandomChallenge();
+            var challenge = FakeRandomChallengeFactory.CreateRandomChallenge();
 
             using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
             {

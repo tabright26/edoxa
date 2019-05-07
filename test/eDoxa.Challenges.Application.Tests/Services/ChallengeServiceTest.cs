@@ -29,7 +29,7 @@ namespace eDoxa.Challenges.Application.Tests.Services
     [TestClass]
     public sealed class ChallengeServiceTest
     {
-        private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
+        private static readonly FakeRandomChallengeFactory FakeRandomChallengeFactory = FakeRandomChallengeFactory.Instance;
         private Mock<IChallengeRepository> _mockChallengeRepository;
         private Mock<ILogger<ChallengeService>> _mockLogger;
 
@@ -45,7 +45,7 @@ namespace eDoxa.Challenges.Application.Tests.Services
         {
             // Arrange
             _mockChallengeRepository.Setup(mock => mock.FindChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeType>(), ChallengeState1.Ended))
-                .ReturnsAsync(FakeChallengeFactory.CreateRandomChallenges(ChallengeState1.Ended))
+                .ReturnsAsync(FakeRandomChallengeFactory.CreateRandomChallenges(ChallengeState1.Ended))
                 .Verifiable();
 
             _mockChallengeRepository.Setup(mock => mock.UnitOfWork.CommitAndDispatchDomainEventsAsync(It.IsAny<CancellationToken>()))

@@ -27,7 +27,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
     [TestClass]
     public sealed class ChallengeTest
     {
-        private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
+        private static readonly FakeDefaultChallengeFactory FakeDefaultChallengeFactory = FakeDefaultChallengeFactory.Instance;
 
         [TestMethod]
         public void Constructor_Initialize_ShouldNotThrowException()
@@ -38,7 +38,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
             var setup = new DefaultChallengeSetup();
 
             // Act
-            var challenge = FakeChallengeFactory.CreateChallenge(game, name, setup);
+            var challenge = new Challenge(game, name, setup);
 
             // Assert
             challenge.Game.Should().Be(game);
@@ -60,11 +60,11 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
         public void Configure1_WhenTimelineStateIsDraft_ShouldBeConfigured()
         {
             // Arrange
-            var challenge = FakeChallengeFactory.CreateChallenge(ChallengeState1.Draft);
+            var challenge = FakeDefaultChallengeFactory.CreateChallenge(ChallengeState1.Draft);
 
             // Act
             challenge.Configure(
-                FakeChallengeFactory.CreateScoringStrategy(),
+                FakeDefaultChallengeFactory.CreateScoringStrategy(),
                 TimelinePublishedAt.Max,
                 TimelineRegistrationPeriod.Default,
                 TimelineExtensionPeriod.Default
@@ -78,10 +78,10 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
         public void Configure2_WhenTimelineStateIsDraft_ShouldBeConfigured()
         {
             // Arrange
-            var challenge = FakeChallengeFactory.CreateChallenge(ChallengeState1.Draft);
+            var challenge = FakeDefaultChallengeFactory.CreateChallenge(ChallengeState1.Draft);
 
             // Act
-            challenge.Configure(FakeChallengeFactory.CreateScoringStrategy(), TimelinePublishedAt.Max);
+            challenge.Configure(FakeDefaultChallengeFactory.CreateScoringStrategy(), TimelinePublishedAt.Max);
 
             // Assert
             challenge.Timeline.State.Should().HaveFlag(ChallengeState1.Configured);
@@ -91,10 +91,10 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
         public void Publish1_WhenTimelineStateIsDraft_ShouldBeOpened()
         {
             // Arrange
-            var challenge = FakeChallengeFactory.CreateChallenge(ChallengeState1.Draft);
+            var challenge = FakeDefaultChallengeFactory.CreateChallenge(ChallengeState1.Draft);
 
             // Act
-            challenge.Publish(FakeChallengeFactory.CreateScoringStrategy(), TimelineRegistrationPeriod.Default, TimelineExtensionPeriod.Default);
+            challenge.Publish(FakeDefaultChallengeFactory.CreateScoringStrategy(), TimelineRegistrationPeriod.Default, TimelineExtensionPeriod.Default);
 
             // Assert
             challenge.Timeline.State.Should().HaveFlag(ChallengeState1.Opened);
@@ -104,10 +104,10 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
         public void Publish2_WhenTimelineStateIsDraft_ShouldBeOpened()
         {
             // Arrange
-            var challenge = FakeChallengeFactory.CreateChallenge(ChallengeState1.Draft);
+            var challenge = FakeDefaultChallengeFactory.CreateChallenge(ChallengeState1.Draft);
 
             // Act
-            challenge.Publish(FakeChallengeFactory.CreateScoringStrategy());
+            challenge.Publish(FakeDefaultChallengeFactory.CreateScoringStrategy());
 
             // Assert
             challenge.Timeline.State.Should().HaveFlag(ChallengeState1.Opened);
@@ -117,7 +117,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
         public void Close_WhenTimelineStateIsEnded_ShouldBeClosed()
         {
             // Arrange
-            var challenge = FakeChallengeFactory.CreateChallenge(ChallengeState1.Ended);
+            var challenge = FakeDefaultChallengeFactory.CreateChallenge(ChallengeState1.Ended);
 
             // Act
             challenge.Complete();
@@ -130,7 +130,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
         public void Close_WithStateAsOpened_ShouldThrowInvalidOperationException()
         {
             // Arrange
-            var challenge = FakeChallengeFactory.CreateChallenge();
+            var challenge = FakeDefaultChallengeFactory.CreateChallenge();
 
             // Act
             var action = new Action(() => challenge.Complete());
@@ -143,7 +143,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
         public void RegisterParticipant_IntoEmptyCollection_ShouldNotBeEmpty()
         {
             // Arrange
-            var challenge = FakeChallengeFactory.CreateChallenge();
+            var challenge = FakeDefaultChallengeFactory.CreateChallenge();
 
             // Act
             challenge.RegisterParticipant(new UserId(), new LinkedAccount(Guid.NewGuid()));
@@ -157,7 +157,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
         {
             // Arrange
             var userId = new UserId();
-            var challenge = FakeChallengeFactory.CreateChallengeWithParticipant(userId);
+            var challenge = FakeDefaultChallengeFactory.CreateChallengeWithParticipant(userId);
 
             // Act
             var action = new Action(() => challenge.RegisterParticipant(userId, new LinkedAccount(Guid.NewGuid())));
@@ -170,7 +170,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
         public void RegisterParticipant_WithEntriesFull_ShouldThrowInvalidOperationException()
         {
             // Arrange
-            var challenge = FakeChallengeFactory.CreateChallengeWithParticipants();
+            var challenge = FakeDefaultChallengeFactory.CreateChallengeWithParticipants();
 
             // Act
             var action = new Action(() => challenge.RegisterParticipant(new UserId(), new LinkedAccount(Guid.NewGuid())));
@@ -183,7 +183,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
         public void RegisterParticipant_TimelineStateNotOpened_ShouldThrowInvalidOperationException()
         {
             // Arrange
-            var challenge = FakeChallengeFactory.CreateChallenge(ChallengeState1.Draft);
+            var challenge = FakeDefaultChallengeFactory.CreateChallenge(ChallengeState1.Draft);
 
             // Act
             var action = new Action(() => challenge.RegisterParticipant(new UserId(), new LinkedAccount(Guid.NewGuid())));
@@ -196,11 +196,11 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
         public void SnapshotParticipantMatch_ParticipantRegistered_ShouldNotThrowArgumentException()
         {
             // Arrange
-            var challenge = FakeChallengeFactory.CreateChallengeWithParticipant(new UserId());
+            var challenge = FakeDefaultChallengeFactory.CreateChallengeWithParticipant(new UserId());
 
             // Act
             var action = new Action(() =>
-                challenge.SnapshotParticipantMatch(challenge.Participants.First().Id, FakeChallengeFactory.CreateMatchStats()));
+                challenge.SnapshotParticipantMatch(challenge.Participants.First().Id, FakeDefaultChallengeFactory.CreateMatchStats()));
 
             // Assert
             action.Should().NotThrow<ArgumentException>();
@@ -210,10 +210,10 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
         public void SnapshotParticipantMatch_ParticipantNotRegistered_ShouldThrowInvalidOperationException()
         {
             // Arrange
-            var challenge = FakeChallengeFactory.CreateChallenge(ChallengeState1.Draft);
+            var challenge = FakeDefaultChallengeFactory.CreateChallenge(ChallengeState1.Draft);
 
             // Act
-            var action = new Action(() => challenge.SnapshotParticipantMatch(new ParticipantId(), FakeChallengeFactory.CreateMatchStats()));
+            var action = new Action(() => challenge.SnapshotParticipantMatch(new ParticipantId(), FakeDefaultChallengeFactory.CreateMatchStats()));
 
             // Assert
             action.Should().Throw<InvalidOperationException>();

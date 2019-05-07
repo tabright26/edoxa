@@ -22,13 +22,13 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
     [TestClass]
     public sealed class ScoringTest
     {
-        private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
+        private static readonly FakeDefaultChallengeFactory FakeDefaultChallengeFactory = FakeDefaultChallengeFactory.Instance;
 
         [TestMethod]
         public void Scoring_ShouldBeAssignableToType()
         {
             // Arrange
-            var scoring = FakeChallengeFactory.CreateScoring();
+            var scoring = FakeDefaultChallengeFactory.CreateScoring();
 
             // Act
             var type = typeof(Dictionary<StatName, StatWeighting>);

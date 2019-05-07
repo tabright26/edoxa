@@ -20,13 +20,13 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
     [TestClass]
     public sealed class StatTest
     {
-        private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
+        private static readonly FakeDefaultChallengeFactory FakeDefaultChallengeFactory = FakeDefaultChallengeFactory.Instance;
 
-        [DataRow(FakeChallengeFactory.Kills, 457000, 0.00015F)]
-        [DataRow(FakeChallengeFactory.Assists, 0.1F, 1)]
-        [DataRow(FakeChallengeFactory.Deaths, 457342424L, 0.77F)]
-        [DataRow(FakeChallengeFactory.TotalDamageDealtToChampions, 0.25D, 100)]
-        [DataRow(FakeChallengeFactory.TotalHeal, 85, -3)]
+        [DataRow(FakeDefaultChallengeFactory.Kills, 457000, 0.00015F)]
+        [DataRow(FakeDefaultChallengeFactory.Assists, 0.1F, 1)]
+        [DataRow(FakeDefaultChallengeFactory.Deaths, 457342424L, 0.77F)]
+        [DataRow(FakeDefaultChallengeFactory.TotalDamageDealtToChampions, 0.25D, 100)]
+        [DataRow(FakeDefaultChallengeFactory.TotalHeal, 85, -3)]
         [DataTestMethod]
         public void Stat_Score_ShouldNotBeNull(string name, double value, float weighting)
         {
@@ -35,7 +35,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
             var statWeighting = new StatWeighting(weighting);
 
             // Act
-            var stat = FakeChallengeFactory.CreateStat(name, statValue, statWeighting);
+            var stat = FakeDefaultChallengeFactory.CreateStat(name, statValue, statWeighting);
 
             // Assert
             stat.Name.Should().Be(name);

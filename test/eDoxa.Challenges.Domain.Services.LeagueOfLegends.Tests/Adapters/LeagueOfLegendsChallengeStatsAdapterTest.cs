@@ -27,7 +27,7 @@ namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.Tests.Adapters
     [TestClass]
     public sealed class LeagueOfLegendsChallengeStatsAdapterTest
     {
-        private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
+        private static readonly FakeDefaultChallengeFactory FakeDefaultChallengeFactory = FakeDefaultChallengeFactory.Instance;
 
         [TestMethod]
         public void SnapshotParticipantMatch_ShouldBeValid()
@@ -39,11 +39,11 @@ namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.Tests.Adapters
 
             var linkedAccount = new LinkedAccount("NzH50JS-LCAu0UEY4EMjuS710F_U_8pLfEpNib9X06dD4w");
 
-            var challenge = FakeChallengeFactory.CreateChallenge();
+            var challenge = FakeDefaultChallengeFactory.CreateChallenge();
 
             challenge.RegisterParticipant(userId, linkedAccount);
 
-            var timeline = FakeChallengeFactory.CreateChallengeTimeline(ChallengeState1.InProgress);
+            var timeline = FakeDefaultChallengeFactory.CreateChallengeTimeline(ChallengeState1.InProgress);
 
             challenge.GetType().GetField("_timeline", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(challenge, timeline);
 

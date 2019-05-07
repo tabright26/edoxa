@@ -21,7 +21,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
     [TestClass]
     public sealed class ChallengeSetupTest
     {
-        private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
+        private static readonly FakeDefaultChallengeFactory FakeDefaultChallengeFactory = FakeDefaultChallengeFactory.Instance;
 
         [TestMethod]
         public void Constructor_Initialize_ShouldNotThrowException()
@@ -34,7 +34,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
             var serviceChargeRatio = ServiceChargeRatio.DefaultValue;
 
             // Act
-            var setup = FakeChallengeFactory.CreateChallengeSetup();
+            var setup = FakeDefaultChallengeFactory.CreateChallengeSetup();
 
             // Assert
             setup.BestOf.Should().Be(bestOf);
