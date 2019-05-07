@@ -16,13 +16,13 @@ namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
 {
     public sealed partial class TimelineExtensionPeriod
     {
-        internal static readonly TimeSpan Min = TimeSpan.FromHours(8);
-        internal static readonly TimeSpan Max = TimeSpan.FromDays(28);
-        internal static readonly TimeSpan Default = TimeSpan.FromDays(8);
+        public static readonly TimeSpan Min = TimeSpan.FromHours(8);
+        public static readonly TimeSpan Max = TimeSpan.FromDays(28);
+        public static readonly TimeSpan Default = TimeSpan.FromDays(8);
 
-        internal static readonly TimelineExtensionPeriod MinValue = new TimelineExtensionPeriod(Min);
-        internal static readonly TimelineExtensionPeriod MaxValue = new TimelineExtensionPeriod(Max);
-        internal static readonly TimelineExtensionPeriod DefaultValue = new TimelineExtensionPeriod(Default);
+        public static readonly TimelineExtensionPeriod MinValue = new TimelineExtensionPeriod(Min);
+        public static readonly TimelineExtensionPeriod MaxValue = new TimelineExtensionPeriod(Max);
+        public static readonly TimelineExtensionPeriod DefaultValue = new TimelineExtensionPeriod(Default);
 
         private readonly TimeSpan _value;
 

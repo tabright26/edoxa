@@ -14,10 +14,10 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using eDoxa.Challenges.Domain.Entities.AggregateModels;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.MatchAggregate;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ParticipantAggregate;
-using eDoxa.Challenges.Domain.Entities.AggregateModels.UserAggregate;
 using eDoxa.Challenges.DTO;
 using eDoxa.Challenges.DTO.Queries;
 using eDoxa.Challenges.Infrastructure;
@@ -73,7 +73,7 @@ namespace eDoxa.Challenges.Application.Queries
                 .OrderBy(challenge => challenge.Game)
                 .ThenBy(challenge => challenge.Setup.Type)
                 .ThenBy(challenge => challenge.Timeline.State)
-                .ThenBy(challenge => challenge.LiveData.Entries)
+                //.ThenBy(challenge => challenge.LiveData.Entries)
                 .ThenBy(challenge => challenge.Timeline.StartedAt)
                 .ToListAsync();
         }

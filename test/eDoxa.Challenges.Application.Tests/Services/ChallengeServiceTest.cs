@@ -13,8 +13,8 @@ using System.Threading.Tasks;
 
 using eDoxa.Challenges.Application.Services;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.Entities.Factories;
-using eDoxa.Challenges.Domain.Entities.Repositories;
+using eDoxa.Challenges.Domain.Factories;
+using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Seedwork.Enumerations;
 using eDoxa.Testing.MSTest.Extensions;
 
@@ -28,7 +28,7 @@ namespace eDoxa.Challenges.Application.Tests.Services
     [TestClass]
     public sealed class ChallengeServiceTest
     {
-        private static readonly ChallengeAggregateFactory ChallengeAggregateFactory = ChallengeAggregateFactory.Instance;
+        private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
         private Mock<IChallengeRepository> _mockChallengeRepository;
         private Mock<ILogger<ChallengeService>> _mockLogger;
 
@@ -44,7 +44,7 @@ namespace eDoxa.Challenges.Application.Tests.Services
         {
             // Arrange
             _mockChallengeRepository.Setup(mock => mock.FindChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeType>(), ChallengeState1.Ended))
-                .ReturnsAsync(ChallengeAggregateFactory.CreateRandomChallenges(ChallengeState1.Ended))
+                .ReturnsAsync(FakeChallengeFactory.CreateRandomChallenges(ChallengeState1.Ended))
                 .Verifiable();
 
             _mockChallengeRepository.Setup(mock => mock.UnitOfWork.CommitAndDispatchDomainEventsAsync(It.IsAny<CancellationToken>()))

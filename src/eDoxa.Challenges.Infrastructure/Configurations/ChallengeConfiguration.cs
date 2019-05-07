@@ -10,6 +10,7 @@
 
 using System;
 
+using eDoxa.Challenges.Domain.Entities.AggregateModels;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Infrastructure.Converters;
 
@@ -119,11 +120,11 @@ namespace eDoxa.Challenges.Infrastructure.Configurations
                 .IsRequired(false)
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 
-            builder.Ignore(challenge => challenge.LiveData);
+            //builder.Ignore(challenge => challenge.LiveData);
 
-            builder.Ignore(challenge => challenge.Scoreboard);
+            //builder.Ignore(challenge => challenge.Scoreboard);
 
-            builder.Ignore(challenge => challenge.Payout);
+            //builder.Ignore(challenge => challenge.Payout);
 
             builder.HasMany(challenge => challenge.Participants)
                 .WithOne(participant => participant.Challenge)

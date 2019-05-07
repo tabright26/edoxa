@@ -11,8 +11,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 
+using eDoxa.Challenges.Domain.Entities.AggregateModels;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.Entities.AggregateModels.UserAggregate;
 using eDoxa.Challenges.DTO.Queries;
 using eDoxa.Security.Abstractions;
 using eDoxa.Seedwork.Enumerations;

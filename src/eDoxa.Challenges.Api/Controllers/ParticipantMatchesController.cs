@@ -11,6 +11,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
+using eDoxa.Challenges.Domain.Entities.AggregateModels;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ParticipantAggregate;
 using eDoxa.Challenges.DTO.Queries;
 

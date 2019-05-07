@@ -39,12 +39,6 @@ namespace eDoxa.Challenges.DTO
         [JsonConverter(typeof(StringEnumConverter))]
         public ChallengeState1 State { get; set; }
 
-        [JsonProperty("liveMode")]
-        public bool LiveMode { get; set; }
-
-        [JsonProperty("generated")]
-        public bool Generated { get; set; }
-
         [JsonProperty("setup")]
         public ChallengeSetupDTO Setup { get; set; }
 
@@ -57,8 +51,8 @@ namespace eDoxa.Challenges.DTO
         [JsonProperty("payout")]
         public ChallengePayoutDTO Payout { get; set; }
 
-        [JsonProperty("liveData")]
-        public ChallengeLiveDataDTO LiveData { get; set; }        
+        //[JsonProperty("liveData")]
+        //public ChallengeLiveDataDTO LiveData { get; set; }        
 
         [JsonProperty("participants")]
         public ParticipantListDTO Participants { get; set; }

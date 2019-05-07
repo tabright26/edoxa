@@ -15,8 +15,8 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate.Factories;
-using eDoxa.Challenges.Domain.Entities.Repositories;
+using eDoxa.Challenges.Domain.Entities.Default.Factories;
+using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Challenges.Domain.Services;
 using eDoxa.Challenges.Domain.Services.Factories;
 using eDoxa.Functional.Extensions;
@@ -31,7 +31,7 @@ namespace eDoxa.Challenges.Application.Services
     {
         private static readonly PubliserFactory PubliserFactory = PubliserFactory.Instance;
         private static readonly ScoringFactory ScoringFactory = ScoringFactory.Instance;
-        private static readonly TimelineFactory TimelineFactory = TimelineFactory.Instance;
+        private static readonly DefaultTimelineFactory DefaultTimelineFactory = DefaultTimelineFactory.Instance;
         private readonly IChallengeRepository _challengeRepository;
 
         private readonly ILogger<ChallengeService> _logger;
@@ -77,7 +77,7 @@ namespace eDoxa.Challenges.Application.Services
 
                     foreach (var challenge in challenges)
                     {
-                        challenge.Publish(ScoringFactory.CreateScoringStrategy(challenge), TimelineFactory.CreateTimelineStrategy(interval));
+                        challenge.Publish(ScoringFactory.CreateScoringStrategy(challenge), DefaultTimelineFactory.CreateTimelineStrategy(interval));
 
                         _challengeRepository.Create(challenge);
                     }

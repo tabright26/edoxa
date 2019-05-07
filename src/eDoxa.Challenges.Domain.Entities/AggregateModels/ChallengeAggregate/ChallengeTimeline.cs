@@ -10,6 +10,7 @@
 
 using System;
 
+using eDoxa.Challenges.Domain.Entities.Abstractions;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
@@ -23,14 +24,14 @@ namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
         private DateTime? _publishedAt;
         private TimeSpan? _registrationPeriod;
 
-        internal ChallengeTimeline(TimeSpan registrationPeriod, TimeSpan extensionPeriod) : this()
+        public ChallengeTimeline(TimeSpan registrationPeriod, TimeSpan extensionPeriod) : this()
         {
             _registrationPeriod = registrationPeriod;
             _extensionPeriod = extensionPeriod;
             _publishedAt = DateTime.UtcNow;
         }
 
-        internal ChallengeTimeline()
+        public ChallengeTimeline()
         {
             _liveMode = true;
             _createdAt = DateTime.UtcNow;

@@ -9,7 +9,7 @@
 // this source code package.
 
 using eDoxa.Challenges.Domain.Entities.AggregateModels.MatchAggregate;
-using eDoxa.Challenges.Domain.Entities.Factories;
+using eDoxa.Challenges.Domain.Factories;
 
 using FluentAssertions;
 
@@ -20,13 +20,13 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
     [TestClass]
     public sealed class StatTest
     {
-        private static readonly ChallengeAggregateFactory ChallengeAggregateFactory = ChallengeAggregateFactory.Instance;
+        private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
 
-        [DataRow(ChallengeAggregateFactory.Kills, 457000, 0.00015F)]
-        [DataRow(ChallengeAggregateFactory.Assists, 0.1F, 1)]
-        [DataRow(ChallengeAggregateFactory.Deaths, 457342424L, 0.77F)]
-        [DataRow(ChallengeAggregateFactory.TotalDamageDealtToChampions, 0.25D, 100)]
-        [DataRow(ChallengeAggregateFactory.TotalHeal, 85, -3)]
+        [DataRow(FakeChallengeFactory.Kills, 457000, 0.00015F)]
+        [DataRow(FakeChallengeFactory.Assists, 0.1F, 1)]
+        [DataRow(FakeChallengeFactory.Deaths, 457342424L, 0.77F)]
+        [DataRow(FakeChallengeFactory.TotalDamageDealtToChampions, 0.25D, 100)]
+        [DataRow(FakeChallengeFactory.TotalHeal, 85, -3)]
         [DataTestMethod]
         public void Stat_Score_ShouldNotBeNull(string name, double value, float weighting)
         {
@@ -35,7 +35,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
             var statWeighting = new StatWeighting(weighting);
 
             // Act
-            var stat = ChallengeAggregateFactory.CreateStat(name, statValue, statWeighting);
+            var stat = FakeChallengeFactory.CreateStat(name, statValue, statWeighting);
 
             // Assert
             stat.Name.Should().Be(name);

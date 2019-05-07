@@ -11,7 +11,8 @@
 using System;
 
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate.Factories;
+using eDoxa.Challenges.Domain.Entities.Default;
+using eDoxa.Challenges.Domain.Services.Factories;
 using eDoxa.Seedwork.Enumerations;
 using eDoxa.Testing.MSTest.Extensions;
 
@@ -29,7 +30,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
         public void Create_ImplementedType_ShouldNotBeNull(ChallengeType type)
         {
             // Arrange
-            var factory = ChallengeScoreboardFactory.Instance;
+            var factory = ScoreboardFactory.Instance;
 
             // Act
             var strategy = factory.CreateScoreboard(new MockChallenge(type));
@@ -44,7 +45,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
         public void Create_NotImplementedType_ShouldThrowArgumentException(ChallengeType type)
         {
             // Arrange
-            var factory = ChallengeScoreboardFactory.Instance;
+            var factory = ScoreboardFactory.Instance;
 
             // Act
             var action = new Action(() => factory.CreateScoreboard(new MockChallenge(type)));

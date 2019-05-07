@@ -11,6 +11,8 @@
 using System;
 using System.Linq;
 
+using eDoxa.Challenges.Domain.Entities.Abstractions;
+
 using JetBrains.Annotations;
 
 namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate

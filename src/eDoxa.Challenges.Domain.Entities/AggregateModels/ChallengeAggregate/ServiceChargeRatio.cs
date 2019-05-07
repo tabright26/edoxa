@@ -17,9 +17,9 @@ namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
 {
     public partial class ServiceChargeRatio
     {
-        internal const float Min = 0.1F;
-        internal const float Max = 0.3F;
-        internal const float Default = 0.2F;
+        public const float Min = 0.1F;
+        public const float Max = 0.3F;
+        public const float Default = 0.2F;
 
         public static readonly ServiceChargeRatio MinValue = new ServiceChargeRatio(Min);
         public static readonly ServiceChargeRatio MaxValue = new ServiceChargeRatio(Max);

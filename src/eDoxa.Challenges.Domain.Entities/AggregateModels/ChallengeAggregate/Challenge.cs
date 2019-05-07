@@ -1,9 +1,9 @@
 ﻿// Filename: Challenge.cs
-// Date Created: 2019-04-21
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -13,11 +13,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
-using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate.Factories;
+using eDoxa.Challenges.Domain.Entities.Abstractions;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate.Specifications;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ParticipantAggregate;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ParticipantAggregate.Specifications;
-using eDoxa.Challenges.Domain.Entities.AggregateModels.UserAggregate;
 using eDoxa.Functional.Maybe;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
@@ -30,16 +29,26 @@ namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
     {
         private Game _game;
         private ChallengeName _name;
+        private HashSet<Participant> _participants;
+        private Option<IScoring> _scoring;
         private ChallengeSetup _setup;
         private ChallengeTimeline _timeline;
-        private Option<IScoring> _scoring;
-        private HashSet<Participant> _participants;
 
-        internal Challenge(Game game, ChallengeName name, ChallengeSetup setup) : this()
+        public Challenge(Game game, ChallengeName name, ChallengeSetup setup) : this()
         {
-            Game = game;
+            if (!Enum.IsDefined(typeof(Game), game))
+            {
+                throw new InvalidEnumArgumentException(nameof(Game), (int) game, typeof(Game));
+            }
+
+            if (game == Game.None || game == Game.All)
+            {
+                throw new ArgumentException(nameof(Game));
+            }
+
+            _game = game;
             _name = name;
-            _setup = setup;            
+            _setup = setup;
         }
 
         private Challenge()
@@ -49,38 +58,21 @@ namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
             _participants = new HashSet<Participant>();
         }
 
-        public Game Game
-        {
-            get => _game;
-            private set
-            {
-                if (!Enum.IsDefined(typeof(Game), value))
-                {
-                    throw new InvalidEnumArgumentException(nameof(Game), (int) value, typeof(Game));
-                }
-
-                if (value == Game.None || value == Game.All)
-                {
-                    throw new ArgumentException(nameof(Game));
-                }
-
-                _game = value;
-            }
-        }
+        public Game Game => _game;
 
         public ChallengeName Name => _name;
 
         public ChallengeSetup Setup => _setup;
 
-        public ChallengeTimeline Timeline => _timeline;        
+        public ChallengeTimeline Timeline => _timeline;
 
-        public ChallengeLiveData LiveData => new ChallengeLiveData(Setup, Participants);
+        //public ChallengeLiveData LiveData => new ChallengeLiveData(Setup, Participants);
 
         public Option<IScoring> Scoring => _scoring;
 
-        public IPayout Payout => ChallengePayoutFactory.Instance.CreatePayout(Setup.Type, Setup.PayoutEntries, Setup.PrizePool, Setup.EntryFee).Payout;
+        //public IPayout Payout => PayoutFactory.Instance.CreatePayout(Setup.Type, Setup.PayoutEntries, Setup.PrizePool, Setup.EntryFee).Payout;
 
-        public IScoreboard Scoreboard => ChallengeScoreboardFactory.Instance.CreateScoreboard(this).Scoreboard;
+        //public IScoreboard Scoreboard => ScoreboardFactory.Instance.CreateScoreboard(this).Scoreboard;
 
         public IReadOnlyCollection<Participant> Participants => _participants;
 

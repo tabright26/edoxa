@@ -11,7 +11,8 @@
 using System;
 
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate.Factories;
+using eDoxa.Challenges.Domain.Entities.Default;
+using eDoxa.Challenges.Domain.Services.Factories;
 using eDoxa.Seedwork.Enumerations;
 using eDoxa.Testing.MSTest.Extensions;
 
@@ -30,7 +31,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
         {
             // Arrange
             var challenge = new MockChallenge(type);
-            var factory = ChallengePayoutFactory.Instance;
+            var factory = PayoutFactory.Instance;
 
             // Act
             var strategy = factory.CreatePayout(challenge.Setup.Type, challenge.Setup.PayoutEntries, challenge.Setup.PrizePool,
@@ -47,7 +48,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
         {
             // Arrange
             var challenge = new MockChallenge(type);
-            var factory = ChallengePayoutFactory.Instance;
+            var factory = PayoutFactory.Instance;
 
             // Act
             var action = new Action(() =>

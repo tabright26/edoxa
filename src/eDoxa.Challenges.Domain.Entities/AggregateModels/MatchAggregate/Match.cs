@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using eDoxa.Challenges.Domain.Entities.Abstractions;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ParticipantAggregate;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
@@ -25,7 +26,7 @@ namespace eDoxa.Challenges.Domain.Entities.AggregateModels.MatchAggregate
         private HashSet<Stat> _stats;
         private DateTime _timestamp;
 
-        internal Match(Participant participant, LinkedMatch linkedMatch) : this()
+        public Match(Participant participant, LinkedMatch linkedMatch) : this()
         {
             _linkedMatch = linkedMatch;
             _participant = participant;

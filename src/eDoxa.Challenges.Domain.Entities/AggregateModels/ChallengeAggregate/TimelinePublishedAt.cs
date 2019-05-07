@@ -16,11 +16,11 @@ namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
 {
     public sealed partial class TimelinePublishedAt
     {
-        internal static readonly DateTime Min = DateTime.UtcNow;
-        internal static readonly DateTime Max = Min.AddMonths(1);
+        public static readonly DateTime Min = DateTime.UtcNow;
+        public static readonly DateTime Max = Min.AddMonths(1);
 
-        internal static readonly TimelinePublishedAt MinValue = new TimelinePublishedAt(Min);
-        internal static readonly TimelinePublishedAt MaxValue = new TimelinePublishedAt(Max);
+        public static readonly TimelinePublishedAt MinValue = new TimelinePublishedAt(Min);
+        public static readonly TimelinePublishedAt MaxValue = new TimelinePublishedAt(Max);
 
         private readonly DateTime _value;
 

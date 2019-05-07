@@ -10,14 +10,15 @@
 
 using System.Collections.Generic;
 
+using eDoxa.Challenges.Domain.Entities.Abstractions;
 using eDoxa.Functional.Extensions;
 
 namespace eDoxa.Challenges.Domain.Entities.AggregateModels.MatchAggregate
 {
-    internal sealed class MatchStats : Dictionary<StatName, StatValue>, IMatchStats
+    public sealed class MatchStats : Dictionary<StatName, StatValue>, IMatchStats
     {
         // TODO: To defend.
-        internal MatchStats(LinkedMatch linkedMatch, object stats)
+        public MatchStats(LinkedMatch linkedMatch, object stats)
         {
             LinkedMatch = linkedMatch;
 

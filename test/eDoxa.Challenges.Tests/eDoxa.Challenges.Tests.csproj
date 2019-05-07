@@ -7,6 +7,9 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\eDoxa.Challenges.Api\eDoxa.Challenges.Api.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Challenges.Application\eDoxa.Challenges.Application.csproj" />
+    <ProjectReference Include="..\..\src\eDoxa.Challenges.Domain.Entities.Custom\eDoxa.Challenges.Domain.Entities.Custom.csproj" />
+    <ProjectReference Include="..\..\src\eDoxa.Challenges.Domain.Entities.Default\eDoxa.Challenges.Domain.Entities.Default.csproj" />
+    <ProjectReference Include="..\..\src\eDoxa.Challenges.Domain.Entities.Random\eDoxa.Challenges.Domain.Entities.Random.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Challenges.Domain.Entities\eDoxa.Challenges.Domain.Entities.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Challenges.Domain.Services.LeagueOfLegends.Api\eDoxa.Challenges.Domain.Services.LeagueOfLegends.Api.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Challenges.Domain.Services.LeagueOfLegends.DTO\eDoxa.Challenges.Domain.Services.LeagueOfLegends.DTO.csproj" />

@@ -11,7 +11,7 @@
 using System;
 
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.Entities.Factories;
+using eDoxa.Challenges.Domain.Factories;
 using eDoxa.Testing.MSTest.Extensions;
 
 using FluentAssertions;
@@ -23,7 +23,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
     [TestClass]
     public sealed class ChallengeSetupTest
     {
-        private static readonly ChallengeAggregateFactory ChallengeAggregateFactory = ChallengeAggregateFactory.Instance;
+        private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
 
         [TestMethod]
         public void Constructor_Initialize_ShouldNotThrowException()
@@ -36,7 +36,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
             var serviceChargeRatio = ServiceChargeRatio.DefaultValue;
 
             // Act
-            var setup = ChallengeAggregateFactory.CreateChallengeSetup();
+            var setup = FakeChallengeFactory.CreateChallengeSetup();
 
             // Assert
             setup.BestOf.Should().Be(bestOf);
@@ -50,7 +50,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
         public void Type_InvalidEnumArgument_ShouldThrowInvalidEnumArgumentException()
         {
             // Arrange
-            var setup = ChallengeAggregateFactory.CreateChallengeSetup();
+            var setup = FakeChallengeFactory.CreateChallengeSetup();
 
             // Act
             var action = new Action(() => setup.SetProperty(nameof(ChallengeSetup.Type), (ChallengeType) 1000));
@@ -65,7 +65,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
         public void Type_InvalidArgument_ShouldThrowArgumentException(ChallengeType type)
         {
             // Arrange
-            var setup = ChallengeAggregateFactory.CreateChallengeSetup();
+            var setup = FakeChallengeFactory.CreateChallengeSetup();
 
             // Act
             var action = new Action(() => setup.SetProperty(nameof(ChallengeSetup.Type), type));

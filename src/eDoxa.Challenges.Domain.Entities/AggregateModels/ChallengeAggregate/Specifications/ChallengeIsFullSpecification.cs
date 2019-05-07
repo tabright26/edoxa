@@ -19,7 +19,7 @@ namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate.Sp
     {
         public override Expression<Func<Challenge, bool>> ToExpression()
         {
-            return challenge => challenge.LiveData.Entries >= challenge.Setup.Entries;
+            return challenge => challenge.Participants.Count >= challenge.Setup.Entries;
         }
     }
 }

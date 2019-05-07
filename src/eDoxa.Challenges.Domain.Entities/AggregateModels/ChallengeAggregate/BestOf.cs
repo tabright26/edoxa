@@ -16,12 +16,12 @@ namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
 {
     public partial class BestOf
     {
-        internal const int Min = 1;
-        internal const int Max = 7;
-        internal const int Default = 3;
+        public const int Min = 1;
+        public const int Max = 7;
+        public const int Default = 3;
 
-        internal static readonly BestOf MinValue = new BestOf(Min);
-        internal static readonly BestOf MaxValue = new BestOf(Max);
+        public static readonly BestOf MinValue = new BestOf(Min);
+        public static readonly BestOf MaxValue = new BestOf(Max);
         public static readonly BestOf DefaultValue = new BestOf(Default);
 
         private readonly int _value;

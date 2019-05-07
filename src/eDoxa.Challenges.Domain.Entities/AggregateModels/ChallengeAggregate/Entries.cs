@@ -16,9 +16,9 @@ namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
 {
     public partial class Entries
     {
-        internal const int Min = 30;
-        internal const int Max = 2500;
-        internal const int Default = 50;
+        public const int Min = 30;
+        public const int Max = 2500;
+        public const int Default = 50;
 
         public static readonly Entries MinValue = new Entries(Min);
         public static readonly Entries MaxValue = new Entries(Max);

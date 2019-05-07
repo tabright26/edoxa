@@ -11,6 +11,8 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using eDoxa.Challenges.Domain.Entities.Abstractions;
+
 namespace eDoxa.Challenges.Domain.Entities.AggregateModels.MatchAggregate
 {
     public sealed class Scoring : Dictionary<StatName, StatWeighting>, IScoring

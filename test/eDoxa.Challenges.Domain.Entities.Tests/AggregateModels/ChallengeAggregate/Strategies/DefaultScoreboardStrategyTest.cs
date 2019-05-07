@@ -11,11 +11,12 @@
 using System;
 using System.Linq;
 
+using eDoxa.Challenges.Domain.Entities.AggregateModels;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate.Strategies;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ParticipantAggregate;
-using eDoxa.Challenges.Domain.Entities.AggregateModels.UserAggregate;
-using eDoxa.Challenges.Domain.Entities.Factories;
+using eDoxa.Challenges.Domain.Entities.Default;
+using eDoxa.Challenges.Domain.Entities.Default.Strategies;
+using eDoxa.Challenges.Domain.Factories;
 using eDoxa.Seedwork.Enumerations;
 
 using FluentAssertions;
@@ -27,7 +28,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
     [TestClass]
     public sealed class DefaultScoreboardStrategyTest
     {
-        private static readonly ChallengeAggregateFactory ChallengeAggregateFactory = ChallengeAggregateFactory.Instance;
+        private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
 
         [TestMethod]
         public void Scoreboard_Default_ShouldBeEmpty()
@@ -74,7 +75,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
                 )
             )
             {
-                this.Publish(ChallengeAggregateFactory.Instance.CreateScoringStrategy());
+                this.Publish(FakeChallengeFactory.Instance.CreateScoringStrategy());
 
                 for (var i = 0; i < Setup.Entries; i++)
                 {
@@ -84,11 +85,11 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
 
                     var participant = Participants.Single(x => x.UserId == userId);
 
-                    var random = new Random();
+                    var random = new System.Random();
 
                     for (var j = 0; j < random.Next(0, Setup.BestOf + 10); j++)
                     {
-                        this.SnapshotParticipantMatch(participant.Id, ChallengeAggregateFactory.CreateMatchStats());
+                        this.SnapshotParticipantMatch(participant.Id, FakeChallengeFactory.CreateMatchStats());
                     }
                 }
             }

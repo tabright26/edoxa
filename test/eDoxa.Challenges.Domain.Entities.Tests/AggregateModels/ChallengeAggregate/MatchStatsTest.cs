@@ -11,7 +11,7 @@
 using System.Collections.Generic;
 
 using eDoxa.Challenges.Domain.Entities.AggregateModels.MatchAggregate;
-using eDoxa.Challenges.Domain.Entities.Factories;
+using eDoxa.Challenges.Domain.Factories;
 
 using FluentAssertions;
 
@@ -22,13 +22,13 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
     [TestClass]
     public sealed class MatchStatsTest
     {
-        private static readonly ChallengeAggregateFactory ChallengeAggregateFactory = ChallengeAggregateFactory.Instance;
+        private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
 
         [TestMethod]
         public void Stats_ShouldBeAssignableToType()
         {
             // Arrange
-            var stats = ChallengeAggregateFactory.CreateMatchStats();
+            var stats = FakeChallengeFactory.CreateMatchStats();
 
             // Act
             var type = typeof(Dictionary<StatName, StatValue>);

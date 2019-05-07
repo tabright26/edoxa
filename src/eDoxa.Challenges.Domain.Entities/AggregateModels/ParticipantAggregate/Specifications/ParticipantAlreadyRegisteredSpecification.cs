@@ -13,7 +13,6 @@ using System.Linq;
 using System.Linq.Expressions;
 
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.Entities.AggregateModels.UserAggregate;
 using eDoxa.Specifications;
 
 namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ParticipantAggregate.Specifications

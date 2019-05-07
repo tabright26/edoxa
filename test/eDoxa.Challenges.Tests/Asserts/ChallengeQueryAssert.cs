@@ -45,7 +45,7 @@ namespace eDoxa.Challenges.Tests.Asserts
 
             challenge.Timeline.Should().NotBeNull();
 
-            challenge.LiveData.Should().NotBeNull();
+            //challenge.LiveData.Should().NotBeNull();
 
             challenge.Scoring.Should().NotBeNull();
 

@@ -15,6 +15,7 @@ using System.Linq;
 using AutoMapper;
 
 using eDoxa.Challenges.Domain.Entities;
+using eDoxa.Challenges.Domain.Entities.Abstractions;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.MatchAggregate;
 using eDoxa.Functional.Maybe;
 

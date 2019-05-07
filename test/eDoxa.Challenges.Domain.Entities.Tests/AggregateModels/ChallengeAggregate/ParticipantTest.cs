@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Challenges.Domain.Entities.Factories;
+using eDoxa.Challenges.Domain.Factories;
 
 using FluentAssertions;
 
@@ -19,13 +19,13 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
     [TestClass]
     public sealed class ParticipantTest
     {
-        private readonly ChallengeAggregateFactory _challengeAggregateFactory = ChallengeAggregateFactory.Instance;
+        private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
 
         [TestMethod]
         public void Participant_ShouldNotBeNull()
         {
             // Act
-            var participant = _challengeAggregateFactory.CreateParticipant();
+            var participant = FakeChallengeFactory.CreateParticipant();
 
             // Assert
             participant.Should().NotBeNull();
@@ -35,9 +35,9 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
         public void SnapshotMatch_Matches_ShouldNotBeEmpty()
         {
             // Arrange
-            var participant = _challengeAggregateFactory.CreateParticipant();
-            var stats = _challengeAggregateFactory.CreateMatchStats();
-            var scoring = _challengeAggregateFactory.CreateScoring();
+            var participant = FakeChallengeFactory.CreateParticipant();
+            var stats = FakeChallengeFactory.CreateMatchStats();
+            var scoring = FakeChallengeFactory.CreateScoring();
 
             // Act
             participant.SnapshotMatch(stats, scoring);
@@ -53,7 +53,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
         public void Matches_ShouldHaveCountOf(int matchCount)
         {
             // Arrange
-            var participant = _challengeAggregateFactory.CreateParticipantWithMatches(matchCount);
+            var participant = FakeChallengeFactory.CreateParticipantWithMatches(matchCount);
 
             // Act
             var matches = participant.Matches;
@@ -69,7 +69,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
         public void AverageScore_MatchCountGreaterThanOrEqualToBestOf_ShouldNotBeNull(int matchCount, int bestOf)
         {
             // Arrange
-            var participant = _challengeAggregateFactory.CreateParticipantWithMatches(matchCount, bestOf);
+            var participant = FakeChallengeFactory.CreateParticipantWithMatches(matchCount, bestOf);
 
             // Act
             var score = participant.AverageScore;

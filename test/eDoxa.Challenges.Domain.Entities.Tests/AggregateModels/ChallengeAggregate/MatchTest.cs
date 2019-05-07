@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Challenges.Domain.Entities.Factories;
+using eDoxa.Challenges.Domain.Factories;
 
 using FluentAssertions;
 
@@ -19,13 +19,13 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
     [TestClass]
     public sealed class MatchTest
     {
-        private readonly ChallengeAggregateFactory _challengeAggregateFactory = ChallengeAggregateFactory.Instance;
+        private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
 
         [TestMethod]
         public void Match_ShouldNotBeNull()
         {
             // Act
-            var match = _challengeAggregateFactory.CreateMatch();
+            var match = FakeChallengeFactory.CreateMatch();
 
             // Assert
             match.Should().NotBeNull();
@@ -35,9 +35,9 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
         public void SnapshotStats_Stats_ShouldHaveCountOfScoring()
         {
             // Arrange
-            var scoring = _challengeAggregateFactory.CreateScoring();
-            var stats = _challengeAggregateFactory.CreateMatchStats();
-            var match = _challengeAggregateFactory.CreateMatch();
+            var scoring = FakeChallengeFactory.CreateScoring();
+            var stats = FakeChallengeFactory.CreateMatchStats();
+            var match = FakeChallengeFactory.CreateMatch();
 
             // Act
             match.SnapshotStats(stats, scoring);

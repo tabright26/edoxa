@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Challenges.Application.Queries;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.Entities.Factories;
+using eDoxa.Challenges.Domain.Factories;
 using eDoxa.Challenges.DTO.Factories;
 using eDoxa.Challenges.Infrastructure;
 using eDoxa.Challenges.Infrastructure.Repositories;
@@ -28,13 +28,13 @@ namespace eDoxa.Challenges.Application.Tests.Queries
     [TestClass]
     public sealed class ChallengeQueriesTest
     {
-        private static readonly ChallengeAggregateFactory ChallengeAggregateFactory = ChallengeAggregateFactory.Instance;
+        private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
         private static readonly ChallengesMapperFactory ChallengesMapperFactory = ChallengesMapperFactory.Instance;
 
         [TestMethod]
         public async Task FindChallengesAsync_ShouldBeMapped()
         {
-            var challenge = ChallengeAggregateFactory.CreateRandomChallenge();
+            var challenge = FakeChallengeFactory.CreateRandomChallenge();
 
             using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
             {

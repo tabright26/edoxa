@@ -19,7 +19,7 @@ namespace eDoxa.Challenges.Domain.Entities.AggregateModels.MatchAggregate
         private StatValue _value;
         private StatWeighting _weighting;
 
-        internal Stat(MatchId matchId, StatName name, StatValue value, StatWeighting weighting)
+        public Stat(MatchId matchId, StatName name, StatValue value, StatWeighting weighting)
         {
             _matchId = matchId;
             _name = name;

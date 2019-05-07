@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengesDbContext.cs
-// Date Created: 2019-05-03
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.MatchAggregate;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ParticipantAggregate;
-using eDoxa.Challenges.Domain.Entities.Factories;
+using eDoxa.Challenges.Domain.Factories;
 using eDoxa.Challenges.Infrastructure.Configurations;
 using eDoxa.Seedwork.Infrastructure;
 
@@ -27,13 +27,13 @@ namespace eDoxa.Challenges.Infrastructure
 {
     public sealed partial class ChallengesDbContext
     {
-        private static readonly ChallengeAggregateFactory ChallengeAggregateFactory = ChallengeAggregateFactory.Instance;
+        private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
 
         public async Task SeedAsync(ILogger logger)
         {
             if (!Challenges.Any())
             {
-                var challenges = ChallengeAggregateFactory.CreateRandomChallengesWithOtherStates(ChallengeState1.Opened);
+                var challenges = FakeChallengeFactory.CreateRandomChallengesWithOtherStates(ChallengeState1.Opened);
 
                 Challenges.AddRange(challenges);
 

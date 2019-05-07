@@ -13,7 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Application.IntegrationEvents;
-using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate.DomainEvent;
+using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate.DomainEvents;
 using eDoxa.Seedwork.Application.DomainEventHandlers;
 using eDoxa.ServiceBus;
 
@@ -33,7 +33,7 @@ namespace eDoxa.Challenges.Application.DomainEventHandlers
         public async Task Handle([NotNull] PayoutProcessedDomainEvent domainEvent, CancellationToken cancellationToken)
         {
             var integrationEvent = new ChallengePayoutProcessedIntegrationEvent(domainEvent.ChallengeId.ToGuid(),
-                domainEvent.Payoff.ToDictionary(userPrize => userPrize.Key.ToGuid(), userPrize => (decimal) userPrize.Value));
+                domainEvent.ParticipantPrizes.ToDictionary(userPrize => userPrize.Key.ToGuid(), userPrize => (decimal) userPrize.Value));
 
             await _integrationEventService.PublishAsync(integrationEvent);
         }

@@ -11,7 +11,7 @@
 using System;
 
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.Entities.Factories;
+using eDoxa.Challenges.Domain.Factories;
 
 using FluentAssertions;
 
@@ -22,7 +22,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
     [TestClass]
     public sealed class ChallengeNameTest
     {
-        private static readonly ChallengeAggregateFactory ChallengeAggregateFactory = ChallengeAggregateFactory.Instance;
+        private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
 
         [DataRow("Challenge")]
         [DataRow("Challenge 1")]
@@ -33,7 +33,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
         public void Value_ValidFormat_ShouldBeValue(string input)
         {
             // Act
-            var name = ChallengeAggregateFactory.CreateChallengeName(input);
+            var name = FakeChallengeFactory.CreateChallengeName(input);
 
             // Assert
             name.ToString().Should().Be(input);
@@ -47,7 +47,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
         public void Value_InvalidArgument_ShouldThrowArgumentException(string input)
         {
             // Act
-            var action = new Action(() => ChallengeAggregateFactory.CreateChallengeName(input));
+            var action = new Action(() => FakeChallengeFactory.CreateChallengeName(input));
 
             // Assert
             action.Should().Throw<ArgumentException>();

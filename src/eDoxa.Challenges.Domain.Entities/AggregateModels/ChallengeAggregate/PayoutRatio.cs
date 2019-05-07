@@ -16,9 +16,9 @@ namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
 {
     public partial class PayoutRatio
     {
-        internal const float Min = 0.25F;
-        internal const float Max = 0.75F;
-        internal const float Default = 0.5F;
+        public const float Min = 0.25F;
+        public const float Max = 0.75F;
+        public const float Default = 0.5F;
 
         public static readonly PayoutRatio MinValue = new PayoutRatio(Min);
         public static readonly PayoutRatio MaxValue = new PayoutRatio(Max);

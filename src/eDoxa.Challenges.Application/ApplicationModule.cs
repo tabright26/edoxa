@@ -12,7 +12,7 @@ using Autofac;
 
 using eDoxa.Challenges.Application.Queries;
 using eDoxa.Challenges.Application.Services;
-using eDoxa.Challenges.Domain.Entities.Repositories;
+using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Challenges.Domain.Services;
 using eDoxa.Challenges.DTO.Queries;
 using eDoxa.Challenges.Infrastructure;

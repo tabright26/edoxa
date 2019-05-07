@@ -17,9 +17,9 @@ namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
 {
     public partial class EntryFee
     {
-        internal const decimal Min = 0.25M;
-        internal const decimal Max = 1500M;
-        internal const decimal Default = 5M;
+        public const decimal Min = 0.25M;
+        public const decimal Max = 1500M;
+        public const decimal Default = 5M;
 
         public static readonly EntryFee MinValue = new EntryFee(Min);
         public static readonly EntryFee MaxValue = new EntryFee(Max);

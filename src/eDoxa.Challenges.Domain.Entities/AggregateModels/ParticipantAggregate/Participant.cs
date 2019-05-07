@@ -11,9 +11,9 @@
 using System;
 using System.Collections.Generic;
 
+using eDoxa.Challenges.Domain.Entities.Abstractions;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.MatchAggregate;
-using eDoxa.Challenges.Domain.Entities.AggregateModels.UserAggregate;
 using eDoxa.Functional.Maybe;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
@@ -28,7 +28,7 @@ namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ParticipantAggregate
         private DateTime _timestamp;
         private UserId _userId;
 
-        internal Participant(Challenge challenge, UserId userId, LinkedAccount linkedAccount) : this()
+        public Participant(Challenge challenge, UserId userId, LinkedAccount linkedAccount) : this()
         {
             _challenge = challenge;
             _userId = userId;

@@ -13,9 +13,10 @@ using System.Threading.Tasks;
 
 using eDoxa.Challenges.Application.Commands;
 using eDoxa.Challenges.Application.Commands.Handlers;
+using eDoxa.Challenges.Domain.Entities.AggregateModels;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.Entities.Factories;
-using eDoxa.Challenges.Domain.Entities.Repositories;
+using eDoxa.Challenges.Domain.Factories;
+using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Commands.Extensions;
 using eDoxa.Security.Abstractions;
 using eDoxa.Testing.MSTest.Extensions;
@@ -32,7 +33,7 @@ namespace eDoxa.Challenges.Application.Tests.Commands.Handlers
     [TestClass]
     public sealed class RegisterParticipantCommandHandlerTest
     {
-        private static readonly ChallengeAggregateFactory ChallengeAggregateFactory = ChallengeAggregateFactory.Instance;
+        private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
         private Mock<IChallengeRepository> _mockChallengeRepository;
         private Mock<IUserInfoService> _mockUserInfoService;
         private Mock<IUserLoginInfoService> _mockUserLoginInfoService;
@@ -54,7 +55,7 @@ namespace eDoxa.Challenges.Application.Tests.Commands.Handlers
             var command = new RegisterParticipantCommand(new ChallengeId());
 
             _mockChallengeRepository.Setup(mock => mock.FindChallengeAsync(It.IsAny<ChallengeId>()))
-                .ReturnsAsync(ChallengeAggregateFactory.CreateChallenge())
+                .ReturnsAsync(FakeChallengeFactory.CreateChallenge())
                 .Verifiable();
 
             _mockChallengeRepository.Setup(mock => mock.UnitOfWork.CommitAndDispatchDomainEventsAsync(It.IsAny<CancellationToken>()))
