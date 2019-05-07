@@ -9,7 +9,6 @@
 // this source code package.
 
 using System;
-using System.Linq;
 using System.Reflection;
 
 using JetBrains.Annotations;

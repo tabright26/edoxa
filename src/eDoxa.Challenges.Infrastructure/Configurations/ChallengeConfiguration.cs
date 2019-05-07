@@ -44,6 +44,8 @@ namespace eDoxa.Challenges.Infrastructure.Configurations
                 challenge => challenge.Setup,
                 challengeSetup =>
                 {
+                    //challengeSetup.PropertyEnumeration();
+
                     challengeSetup.Property(setup => setup.Type)
                         .IsRequired()
                         .HasColumnName(nameof(ChallengeSetup.Type))

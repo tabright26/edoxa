@@ -16,31 +16,20 @@ using System.Reflection;
 namespace eDoxa.Seedwork.Domain.Aggregate
 {
     public abstract partial class Enumeration<TEnumeration>
-    where TEnumeration : Enumeration<TEnumeration>, new()
+    where TEnumeration : Enumeration<TEnumeration>
     {
-        public static readonly TEnumeration None = new TEnumeration
-        {
-            _value = 0,
-            _name = nameof(None)
-        };
-
-        public static readonly TEnumeration All = new TEnumeration
-        {
-            _value = -1,
-            _name = nameof(All)
-        };
-
         private string _name;
         private int _value;
 
-        protected Enumeration(int value, string name) : this()
+        protected Enumeration(int value, string name)
         {
             _value = value;
             _name = name;
         }
 
-        protected Enumeration()
+        public static explicit operator int(Enumeration<TEnumeration> enumeration)
         {
+            return enumeration._value;
         }
 
         public static IEnumerable<int> GetValues()
@@ -83,7 +72,7 @@ namespace eDoxa.Seedwork.Domain.Aggregate
 
         public override bool Equals(object obj)
         {
-            return this.Equals((TEnumeration) obj);
+            return this.Equals(obj as TEnumeration);
         }
 
         public override int GetHashCode()
@@ -96,7 +85,7 @@ namespace eDoxa.Seedwork.Domain.Aggregate
     {
         public int CompareTo(object other)
         {
-            return this.CompareTo((TEnumeration) other);
+            return this.CompareTo(other as TEnumeration);
         }
 
         public int CompareTo(TEnumeration other)

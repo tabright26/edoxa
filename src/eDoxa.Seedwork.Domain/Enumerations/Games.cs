@@ -18,10 +18,6 @@ namespace eDoxa.Seedwork.Domain.Enumerations
         public static readonly Games CSGO = new Games(1 << 1, nameof(CSGO));
         public static readonly Games Fortnite = new Games(1 << 2, nameof(Fortnite));
 
-        public Games()
-        {
-        }
-
         private Games(int value, string name) : base(value, name)
         {
         }
