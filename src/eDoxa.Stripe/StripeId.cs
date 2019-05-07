@@ -67,7 +67,7 @@ namespace eDoxa.Stripe
             return !(left == right);
         }
 
-        public sealed override bool Equals([CanBeNull] object obj)
+        public sealed override bool Equals(object obj)
         {
             return base.Equals(obj);
         }
@@ -128,9 +128,8 @@ namespace eDoxa.Stripe
                 return base.CanConvertTo(context, destinationType);
             }
 
-            [CanBeNull]
-            public override object ConvertFrom([NotNull] ITypeDescriptorContext context, CultureInfo culture,
-                [CanBeNull] object value)
+            public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture,
+                object value)
             {
                 switch (value)
                 {
@@ -142,7 +141,6 @@ namespace eDoxa.Stripe
                 return base.ConvertFrom(context, culture, value);
             }
 
-            [CanBeNull]
             public override object ConvertTo([NotNull] ITypeDescriptorContext context, [NotNull] CultureInfo culture,
                 [CanBeNull] object value, Type destinationType)
             {

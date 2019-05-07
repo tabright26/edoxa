@@ -36,12 +36,12 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
     public sealed partial class TimelineClosedAt : IEquatable<TimelineClosedAt>
     {
-        public bool Equals([CanBeNull] TimelineClosedAt other)
+        public bool Equals(TimelineClosedAt other)
         {
             return _value.Equals(other?._value);
         }
 
-        public override bool Equals([CanBeNull] object obj)
+        public override bool Equals(object obj)
         {
             return this.Equals(obj as TimelineClosedAt);
         }

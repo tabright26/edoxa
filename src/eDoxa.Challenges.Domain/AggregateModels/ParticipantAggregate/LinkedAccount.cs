@@ -58,12 +58,12 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ParticipantAggregate
 
     public partial class LinkedAccount : IEquatable<LinkedAccount>
     {
-        public bool Equals([CanBeNull] LinkedAccount other)
+        public bool Equals(LinkedAccount other)
         {
             return _value.Equals(other?._value);
         }
 
-        public override bool Equals([CanBeNull] object obj)
+        public override bool Equals(object obj)
         {
             return this.Equals(obj as LinkedAccount);
         }

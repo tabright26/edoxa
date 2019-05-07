@@ -55,12 +55,12 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
     public partial class ServiceChargeRatio : IEquatable<ServiceChargeRatio>
     {
-        public bool Equals([CanBeNull] ServiceChargeRatio other)
+        public bool Equals(ServiceChargeRatio other)
         {
             return _value.Equals(other?._value);
         }
 
-        public override bool Equals([CanBeNull] object obj)
+        public override bool Equals(object obj)
         {
             return this.Equals(obj as ServiceChargeRatio);
         }

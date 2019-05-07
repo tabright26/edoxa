@@ -145,7 +145,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
             _timeline = Timeline.Close();
 
-            this.AddDomainEvent(new PayoutProcessedDomainEvent(Id, Payout.Payoff(Scoreboard)));
+            //this.AddDomainEvent(new PayoutProcessedDomainEvent(Id, Payout.Payoff(Scoreboard)));
         }
 
         private bool CanClose()

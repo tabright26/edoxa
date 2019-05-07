@@ -52,12 +52,12 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
     public partial class Prize : IEquatable<Prize>
     {
-        public bool Equals([CanBeNull] Prize other)
+        public bool Equals(Prize other)
         {
             return _value.Equals(other?._value);
         }
 
-        public override bool Equals([CanBeNull] object obj)
+        public override bool Equals(object obj)
         {
             return this.Equals(obj as Prize);
         }

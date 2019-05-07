@@ -73,12 +73,12 @@ namespace eDoxa.Challenges.Domain.AggregateModels.MatchAggregate
 
     public partial class LinkedMatch : IEquatable<LinkedMatch>
     {
-        public bool Equals([CanBeNull] LinkedMatch other)
+        public bool Equals(LinkedMatch other)
         {
             return _value.Equals(other?._value);
         }
 
-        public override bool Equals([CanBeNull] object obj)
+        public override bool Equals(object obj)
         {
             return this.Equals(obj as LinkedMatch);
         }

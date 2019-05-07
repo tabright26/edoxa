@@ -37,12 +37,12 @@ namespace eDoxa.Challenges.Domain.AggregateModels
 
     public partial class Score : IEquatable<Score>
     {
-        public bool Equals([CanBeNull] Score other)
+        public bool Equals(Score other)
         {
             return _value.Equals(other?._value);
         }
 
-        public override bool Equals([CanBeNull] object obj)
+        public override bool Equals(object obj)
         {
             return this.Equals(obj as Score);
         }

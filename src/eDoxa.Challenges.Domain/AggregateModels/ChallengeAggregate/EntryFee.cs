@@ -60,12 +60,12 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
     public partial class EntryFee : IEquatable<EntryFee>
     {
-        public bool Equals([CanBeNull] EntryFee other)
+        public bool Equals(EntryFee other)
         {
             return _value.Equals(other?._value);
         }
 
-        public override bool Equals([CanBeNull] object obj)
+        public override bool Equals(object obj)
         {
             return this.Equals(obj as EntryFee);
         }

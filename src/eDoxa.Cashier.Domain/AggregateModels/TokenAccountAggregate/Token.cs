@@ -49,12 +49,12 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
 
     public sealed partial class Token : IEquatable<Token>
     {
-        public bool Equals([CanBeNull] Token other)
+        public bool Equals(Token other)
         {
             return _value.Equals(other?._value);
         }
 
-        public override bool Equals([CanBeNull] object obj)
+        public override bool Equals(object obj)
         {
             return this.Equals(obj as Token);
         }

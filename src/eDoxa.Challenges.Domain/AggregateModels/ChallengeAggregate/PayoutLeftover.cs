@@ -41,12 +41,12 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
     
     public partial class PayoutLeftover : IEquatable<PayoutLeftover>
     {
-        public bool Equals([CanBeNull] PayoutLeftover other)
+        public bool Equals(PayoutLeftover other)
         {
             return _value.Equals(other?._value);
         }
 
-        public override bool Equals([CanBeNull] object obj)
+        public override bool Equals(object obj)
         {
             return this.Equals(obj as PayoutLeftover);
         }

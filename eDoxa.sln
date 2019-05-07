@@ -171,15 +171,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Reflection", "src\eDo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Reflection.Tests", "test\eDoxa.Reflection.Tests\eDoxa.Reflection.Tests.csproj", "{57CD4C18-291A-4BE0-96BE-103E650FC31D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Cashier.Tests", "test\eDoxa.Cashier.Tests\eDoxa.Cashier.Tests.csproj", "{D7A38CF7-720B-4F4D-BA0B-4F45F5E6B1E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Cashier.Tests", "test\eDoxa.Cashier.Tests\eDoxa.Cashier.Tests.csproj", "{D7A38CF7-720B-4F4D-BA0B-4F45F5E6B1E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Challenges.Tests", "test\eDoxa.Challenges.Tests\eDoxa.Challenges.Tests.csproj", "{8C4B4CAC-5488-43AC-BF30-B4255F45D2C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Challenges.Tests", "test\eDoxa.Challenges.Tests\eDoxa.Challenges.Tests.csproj", "{8C4B4CAC-5488-43AC-BF30-B4255F45D2C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Identity.Tests", "test\eDoxa.Identity.Tests\eDoxa.Identity.Tests.csproj", "{84C49647-ED10-4BB9-AE92-CD1E9BF0EB7D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Identity.Tests", "test\eDoxa.Identity.Tests\eDoxa.Identity.Tests.csproj", "{84C49647-ED10-4BB9-AE92-CD1E9BF0EB7D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.IdentityServer.Tests", "test\eDoxa.IdentityServer.Tests\eDoxa.IdentityServer.Tests.csproj", "{37374FD2-8BDD-41A2-AF26-8AF4E71E1DA7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.IdentityServer.Tests", "test\eDoxa.IdentityServer.Tests\eDoxa.IdentityServer.Tests.csproj", "{37374FD2-8BDD-41A2-AF26-8AF4E71E1DA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Seedwork", "src\eDoxa.Seedwork\eDoxa.Seedwork.csproj", "{06676ABD-7A92-403D-B2FB-34BE6AF39C45}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Seedwork", "src\eDoxa.Seedwork\eDoxa.Seedwork.csproj", "{06676ABD-7A92-403D-B2FB-34BE6AF39C45}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

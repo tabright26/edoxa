@@ -54,12 +54,12 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
     public partial class PayoutRatio : IEquatable<PayoutRatio>
     {
-        public bool Equals([CanBeNull] PayoutRatio other)
+        public bool Equals(PayoutRatio other)
         {
             return _value.Equals(other?._value);
         }
 
-        public override bool Equals([CanBeNull] object obj)
+        public override bool Equals(object obj)
         {
             return this.Equals(obj as PayoutRatio);
         }

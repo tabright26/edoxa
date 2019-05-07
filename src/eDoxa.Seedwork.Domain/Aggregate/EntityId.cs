@@ -75,7 +75,7 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             };
         }
 
-        public sealed override bool Equals([CanBeNull] object obj)
+        public sealed override bool Equals(object obj)
         {
             return base.Equals(obj);
         }
@@ -160,8 +160,7 @@ namespace eDoxa.Seedwork.Domain.Aggregate
                 return base.CanConvertTo(context, destinationType);
             }
 
-            [CanBeNull]
-            public override object ConvertFrom([NotNull] ITypeDescriptorContext context, CultureInfo culture, [CanBeNull] object value)
+            public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
             {
                 switch (value)
                 {
@@ -179,7 +178,6 @@ namespace eDoxa.Seedwork.Domain.Aggregate
                 return base.ConvertFrom(context, culture, value);
             }
 
-            [CanBeNull]
             public override object ConvertTo([NotNull] ITypeDescriptorContext context, [NotNull] CultureInfo culture, [NotNull] object value, Type destinationType)
             {
                 var entityId = value as TEntityId;

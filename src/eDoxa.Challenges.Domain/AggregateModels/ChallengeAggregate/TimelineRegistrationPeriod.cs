@@ -48,12 +48,12 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
     public sealed partial class TimelineRegistrationPeriod : IEquatable<TimelineRegistrationPeriod>
     {
-        public bool Equals([CanBeNull] TimelineRegistrationPeriod other)
+        public bool Equals(TimelineRegistrationPeriod other)
         {
             return _value.Equals(other?._value);
         }
 
-        public override bool Equals([CanBeNull] object obj)
+        public override bool Equals(object obj)
         {
             return this.Equals(obj as TimelineRegistrationPeriod);
         }

@@ -77,16 +77,6 @@ namespace eDoxa.Challenges.Domain.Factories
             return states;
         }
 
-        public BucketSizes CreateBucketSizes(int payoutEntries)
-        {
-            return new BucketSizes(this.CreatePayoutEntries(payoutEntries));
-        }
-
-        public BucketCount CreateBucketCount(int payoutEntries)
-        {
-            return new BucketCount(this.CreatePayoutEntries(payoutEntries));
-        }
-
         public PayoutEntries CreatePayoutEntries(int payoutEntries)
         {
             return new PayoutEntries(new Entries(payoutEntries * 2, false), new PayoutRatio(0.5F, false));

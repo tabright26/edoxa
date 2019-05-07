@@ -1,44 +1,25 @@
-﻿// Filename: PayoutBucket.cs
-// Date Created: 2019-04-20
+﻿// Filename: Bucket.cs
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-
-using eDoxa.Seedwork.Domain.Aggregate;
-
-using JetBrains.Annotations;
-
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public partial class Bucket : ValueObject
+    public sealed class Bucket
     {
-        public Bucket(BucketSize size, Prize prize)
+        public Bucket(Prize prize, int size)
         {
             Size = size;
             Prize = prize;
         }
 
-        public BucketSize Size { get; }
-
         public Prize Prize { get; }
-    }
 
-    public partial class Bucket : IComparable, IComparable<Bucket>
-    {
-        public int CompareTo([CanBeNull] object obj)
-        {
-            return this.CompareTo(obj as Bucket);
-        }
-
-        public int CompareTo([CanBeNull] Bucket other)
-        {
-            return Prize.CompareTo(other?.Prize);
-        }
+        public int Size { get; }
     }
 }

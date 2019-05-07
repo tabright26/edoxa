@@ -31,12 +31,12 @@ namespace eDoxa.Challenges.Domain.AggregateModels.MatchAggregate
 
     public partial class StatValue : IEquatable<StatValue>
     {
-        public bool Equals([CanBeNull] StatValue other)
+        public bool Equals(StatValue other)
         {
             return _value.Equals(other?._value);
         }
 
-        public override bool Equals([CanBeNull] object obj)
+        public override bool Equals(object obj)
         {
             return this.Equals(obj as StatValue);
         }

@@ -36,12 +36,12 @@ namespace eDoxa.Challenges.Domain.AggregateModels.MatchAggregate
 
     public partial class StatWeighting : IEquatable<StatWeighting>
     {
-        public bool Equals([CanBeNull] StatWeighting other)
+        public bool Equals(StatWeighting other)
         {
             return _value.Equals(other?._value);
         }
 
-        public override bool Equals([CanBeNull] object obj)
+        public override bool Equals(object obj)
         {
             return this.Equals(obj as StatWeighting);
         }

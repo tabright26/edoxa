@@ -51,12 +51,12 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
     public partial class PrizePoolRatio : IEquatable<PrizePoolRatio>
     {
-        public bool Equals([CanBeNull] PrizePoolRatio other)
+        public bool Equals(PrizePoolRatio other)
         {
             return _value.Equals(other?._value);
         }
 
-        public override bool Equals([CanBeNull] object obj)
+        public override bool Equals(object obj)
         {
             return this.Equals(obj as PrizePoolRatio);
         }

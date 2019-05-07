@@ -65,7 +65,6 @@ namespace eDoxa.Challenges.Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        [ItemCanBeNull]
         public async Task<Challenge> FindChallengeAsync(ChallengeId challengeId)
         {
             return await _context.Challenges.Include(ExpandParticipantMatchStats).Where(challenge => challenge.Id == challengeId).SingleOrDefaultAsync();

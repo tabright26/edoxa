@@ -55,12 +55,12 @@ namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
 
     public sealed partial class Money : IEquatable<Money>
     {
-        public bool Equals([CanBeNull] Money other)
+        public bool Equals(Money other)
         {
             return _value.Equals(other?._value);
         }
 
-        public override bool Equals([CanBeNull] object obj)
+        public override bool Equals(object obj)
         {
             return this.Equals(obj as Money);
         }

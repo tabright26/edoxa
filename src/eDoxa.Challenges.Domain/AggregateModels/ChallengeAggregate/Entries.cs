@@ -54,12 +54,12 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
     public partial class Entries : IEquatable<Entries>
     {
-        public bool Equals([CanBeNull] Entries other)
+        public bool Equals(Entries other)
         {
             return _value.Equals(other?._value);
         }
 
-        public override bool Equals([CanBeNull] object obj)
+        public override bool Equals(object obj)
         {
             return this.Equals(obj as Entries);
         }
