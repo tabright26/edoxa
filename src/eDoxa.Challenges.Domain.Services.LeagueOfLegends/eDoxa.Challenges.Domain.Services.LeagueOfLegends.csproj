@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\eDoxa.Challenges.Domain.Entities\eDoxa.Challenges.Domain.Entities.csproj" />
     <ProjectReference Include="..\eDoxa.Challenges.Domain.Services.LeagueOfLegends.DTO\eDoxa.Challenges.Domain.Services.LeagueOfLegends.DTO.csproj" />
-    <ProjectReference Include="..\eDoxa.Challenges.Domain\eDoxa.Challenges.Domain.csproj" />
   </ItemGroup>
 
 </Project>

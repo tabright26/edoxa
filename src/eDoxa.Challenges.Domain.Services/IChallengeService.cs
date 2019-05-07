@@ -8,10 +8,10 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Enumerations;
 
 namespace eDoxa.Challenges.Domain.Services

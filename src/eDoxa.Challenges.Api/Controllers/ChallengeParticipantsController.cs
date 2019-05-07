@@ -9,7 +9,6 @@
 // this source code package.
 
 using eDoxa.Challenges.Application.Commands;
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.DTO.Queries;
 using eDoxa.Commands.Extensions;
 using MediatR;
@@ -17,6 +16,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
+
+using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
 
 namespace eDoxa.Challenges.Api.Controllers
 {

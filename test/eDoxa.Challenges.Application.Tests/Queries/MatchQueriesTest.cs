@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Challenges.Domain.Factories;
+using eDoxa.Challenges.Domain.Entities.Factories;
 using eDoxa.Challenges.DTO.Factories;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;

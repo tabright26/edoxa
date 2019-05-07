@@ -11,10 +11,10 @@
 using System.Linq;
 using System.Reflection;
 
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.AggregateModels.ParticipantAggregate;
-using eDoxa.Challenges.Domain.AggregateModels.UserAggregate;
-using eDoxa.Challenges.Domain.Factories;
+using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
+using eDoxa.Challenges.Domain.Entities.AggregateModels.ParticipantAggregate;
+using eDoxa.Challenges.Domain.Entities.AggregateModels.UserAggregate;
+using eDoxa.Challenges.Domain.Entities.Factories;
 using eDoxa.Challenges.Domain.Services.LeagueOfLegends.Adapters;
 using eDoxa.Challenges.Domain.Services.LeagueOfLegends.DTO.Tests;
 

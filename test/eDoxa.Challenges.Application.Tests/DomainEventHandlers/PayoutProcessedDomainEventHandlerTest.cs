@@ -8,20 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Threading.Tasks;
-
-using eDoxa.Challenges.Application.DomainEventHandlers;
-using eDoxa.Challenges.Application.IntegrationEvents;
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.DomainEvent;
-using eDoxa.Challenges.Domain.Factories;
-using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.ServiceBus;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using Moq;
-
 namespace eDoxa.Challenges.Application.Tests.DomainEventHandlers
 {
     //[TestClass]

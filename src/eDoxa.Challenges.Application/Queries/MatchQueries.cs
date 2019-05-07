@@ -14,8 +14,8 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Challenges.Domain.AggregateModels.MatchAggregate;
-using eDoxa.Challenges.Domain.AggregateModels.ParticipantAggregate;
+using eDoxa.Challenges.Domain.Entities.AggregateModels.MatchAggregate;
+using eDoxa.Challenges.Domain.Entities.AggregateModels.ParticipantAggregate;
 using eDoxa.Challenges.DTO;
 using eDoxa.Challenges.DTO.Queries;
 using eDoxa.Challenges.Infrastructure;

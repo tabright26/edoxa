@@ -34,6 +34,7 @@
     <ProjectReference Include="..\eDoxa.Autofac\eDoxa.Autofac.csproj" />
     <ProjectReference Include="..\eDoxa.AutoMapper\eDoxa.AutoMapper.csproj" />
     <ProjectReference Include="..\eDoxa.Challenges.Application\eDoxa.Challenges.Application.csproj" />
+    <ProjectReference Include="..\eDoxa.Challenges.Domain.Entities\eDoxa.Challenges.Domain.Entities.csproj" />
     <ProjectReference Include="..\eDoxa.Monitoring\eDoxa.Monitoring.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
     <ProjectReference Include="..\eDoxa.Swagger\eDoxa.Swagger.csproj" />

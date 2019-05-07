@@ -10,7 +10,6 @@
 
 using System.Collections.Generic;
 using System.Reflection;
-using JetBrains.Annotations;
 
 namespace eDoxa.Seedwork.Domain.Aggregate
 {

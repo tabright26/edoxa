@@ -12,9 +12,9 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Application.Services;
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.Factories;
-using eDoxa.Challenges.Domain.Repositories;
+using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
+using eDoxa.Challenges.Domain.Entities.Factories;
+using eDoxa.Challenges.Domain.Entities.Repositories;
 using eDoxa.Seedwork.Enumerations;
 using eDoxa.Testing.MSTest.Extensions;
 

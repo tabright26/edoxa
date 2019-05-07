@@ -11,7 +11,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Api.Controllers;
-using eDoxa.Challenges.Domain.AggregateModels.MatchAggregate;
+using eDoxa.Challenges.Domain.Entities.AggregateModels.MatchAggregate;
 using eDoxa.Challenges.DTO;
 using eDoxa.Challenges.DTO.Queries;
 using eDoxa.Functional.Maybe;

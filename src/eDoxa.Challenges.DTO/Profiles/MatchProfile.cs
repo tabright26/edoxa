@@ -12,7 +12,7 @@ using System.Linq;
 
 using AutoMapper;
 
-using eDoxa.Challenges.Domain.AggregateModels.MatchAggregate;
+using eDoxa.Challenges.Domain.Entities.AggregateModels.MatchAggregate;
 
 namespace eDoxa.Challenges.DTO.Profiles
 {

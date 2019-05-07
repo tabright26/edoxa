@@ -14,8 +14,8 @@ using System.Linq;
 
 using AutoMapper;
 
-using eDoxa.Challenges.Domain;
-using eDoxa.Challenges.Domain.AggregateModels.MatchAggregate;
+using eDoxa.Challenges.Domain.Entities;
+using eDoxa.Challenges.Domain.Entities.AggregateModels.MatchAggregate;
 using eDoxa.Functional.Maybe;
 
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;

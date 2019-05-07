@@ -13,7 +13,7 @@ using System.Linq;
 
 using AutoMapper;
 
-using eDoxa.Challenges.Domain.AggregateModels.ParticipantAggregate;
+using eDoxa.Challenges.Domain.Entities.AggregateModels.ParticipantAggregate;
 
 namespace eDoxa.Challenges.DTO.Profiles
 {

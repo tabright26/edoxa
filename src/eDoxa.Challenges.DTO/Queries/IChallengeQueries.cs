@@ -10,8 +10,8 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.AggregateModels.UserAggregate;
+using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
+using eDoxa.Challenges.Domain.Entities.AggregateModels.UserAggregate;
 using eDoxa.Functional.Maybe;
 using eDoxa.Seedwork.Enumerations;
 

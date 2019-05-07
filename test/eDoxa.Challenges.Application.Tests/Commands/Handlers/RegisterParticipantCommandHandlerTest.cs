@@ -8,16 +8,14 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Application.Commands;
 using eDoxa.Challenges.Application.Commands.Handlers;
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.AggregateModels.ParticipantAggregate;
-using eDoxa.Challenges.Domain.Factories;
-using eDoxa.Challenges.Domain.Repositories;
+using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
+using eDoxa.Challenges.Domain.Entities.Factories;
+using eDoxa.Challenges.Domain.Entities.Repositories;
 using eDoxa.Commands.Extensions;
 using eDoxa.Security.Abstractions;
 using eDoxa.Testing.MSTest.Extensions;

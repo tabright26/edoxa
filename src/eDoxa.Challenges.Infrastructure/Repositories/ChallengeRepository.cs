@@ -12,14 +12,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.AggregateModels.MatchAggregate;
-using eDoxa.Challenges.Domain.AggregateModels.ParticipantAggregate;
-using eDoxa.Challenges.Domain.Repositories;
+using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
+using eDoxa.Challenges.Domain.Entities.AggregateModels.MatchAggregate;
+using eDoxa.Challenges.Domain.Entities.AggregateModels.ParticipantAggregate;
+using eDoxa.Challenges.Domain.Entities.Repositories;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Enumerations;
-
-using JetBrains.Annotations;
 
 using Microsoft.EntityFrameworkCore;
 

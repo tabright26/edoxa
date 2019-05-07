@@ -7,8 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\eDoxa.Challenges.Domain\eDoxa.Challenges.Domain.csproj" />
     <ProjectReference Include="..\eDoxa.AutoMapper\eDoxa.AutoMapper.csproj" />
+    <ProjectReference Include="..\eDoxa.Challenges.Domain.Entities\eDoxa.Challenges.Domain.Entities.csproj" />
+    <ProjectReference Include="..\eDoxa.Functional\eDoxa.Functional.csproj" />
   </ItemGroup>
 
 </Project>
