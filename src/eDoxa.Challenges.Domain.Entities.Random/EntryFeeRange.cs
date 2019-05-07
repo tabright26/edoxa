@@ -10,9 +10,7 @@
 
 using System;
 
-using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
-
-namespace eDoxa.Challenges.Domain.Entities.Random.Ranges
+namespace eDoxa.Challenges.Domain.Entities.Random
 {
     public sealed class EntryFeeRange
     {

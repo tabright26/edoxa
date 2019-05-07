@@ -8,17 +8,15 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.Entities.Random.Ranges;
 using eDoxa.Seedwork.Utilities;
 
 namespace eDoxa.Challenges.Domain.Entities.Random
 {
-    public sealed class EntriesRandom : IRandom<Entries, EntriesRange>
+    public sealed class EntriesRandom : SetupRandom<Entries, EntriesRange>
     {
         private static readonly System.Random Random = new System.Random();
 
-        public Entries Next(EntriesRange range)
+        public override Entries Next(EntriesRange range)
         {
             // Entries is under 100$
             var multiplier = 10;

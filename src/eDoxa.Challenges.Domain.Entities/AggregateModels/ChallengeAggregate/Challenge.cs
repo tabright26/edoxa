@@ -32,7 +32,7 @@ namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
         private HashSet<Participant> _participants;
         private Option<IScoring> _scoring;
         private ChallengeSetup _setup;
-        private ChallengeTimeline _timeline;
+        private Timeline _timeline;
 
         public Challenge(Game game, ChallengeName name, ChallengeSetup setup) : this()
         {
@@ -53,7 +53,7 @@ namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
 
         private Challenge()
         {
-            _timeline = new ChallengeTimeline();
+            _timeline = new Timeline();
             _scoring = new Option<IScoring>();
             _participants = new HashSet<Participant>();
         }
@@ -64,15 +64,11 @@ namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
 
         public ChallengeSetup Setup => _setup;
 
-        public ChallengeTimeline Timeline => _timeline;
+        public Timeline Timeline => _timeline;
 
-        //public ChallengeLiveData LiveData => new ChallengeLiveData(Setup, Participants);
+        public Scoreboard Scoreboard => new Scoreboard(this);
 
         public Option<IScoring> Scoring => _scoring;
-
-        //public IPayout Payout => PayoutFactory.Instance.CreatePayout(Setup.Type, Setup.PayoutEntries, Setup.PrizePool, Setup.EntryFee).Payout;
-
-        //public IScoreboard Scoreboard => ScoreboardFactory.Instance.CreateScoreboard(this).Scoreboard;
 
         public IReadOnlyCollection<Participant> Participants => _participants;
 
@@ -112,11 +108,11 @@ namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
             _timeline = Timeline.Publish();
         }
 
-        public void Publish(IScoringStrategy scoringStrategy, IChallengeTimelineStrategy challengeTimelineStrategy)
+        public void Publish(IScoringStrategy scoringStrategy, ITimelineStrategy timelineStrategy)
         {
             _scoring = new Option<IScoring>(scoringStrategy.Scoring);
 
-            _timeline = Timeline.Publish(challengeTimelineStrategy.Timeline.RegistrationPeriod.Value, challengeTimelineStrategy.Timeline.ExtensionPeriod.Value);
+            _timeline = Timeline.Publish(timelineStrategy.Timeline.RegistrationPeriod.Value, timelineStrategy.Timeline.ExtensionPeriod.Value);
         }
 
         private bool CanPublish()

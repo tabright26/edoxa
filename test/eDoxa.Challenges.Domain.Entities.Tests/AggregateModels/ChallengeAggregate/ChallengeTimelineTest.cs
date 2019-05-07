@@ -29,7 +29,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
         public void Constructor_Initialize_ShouldNotThrowException()
         {
             // Act
-            var timeline = new ChallengeTimeline();
+            var timeline = new Timeline();
 
             // Assert
             timeline.CreatedAt.Should().BeCloseTo(DateTime.UtcNow, 200);
@@ -56,7 +56,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
                 var timeline = FakeChallengeFactory.CreateChallengeTimeline();
 
                 // Act
-                var action = new Action(() => timeline.SetProperty(nameof(ChallengeTimeline.PublishedAt), publishedAt));
+                var action = new Action(() => timeline.SetProperty(nameof(Timeline.PublishedAt), publishedAt));
 
                 // Assert
                 action.Should().Throw<ArgumentOutOfRangeException>();
@@ -79,7 +79,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
 
                 // Act
                 var action = new Action(() =>
-                    timeline.SetProperty(nameof(ChallengeTimeline.RegistrationPeriod), registrationPeriod));
+                    timeline.SetProperty(nameof(Timeline.RegistrationPeriod), registrationPeriod));
 
                 // Assert
                 action.Should().Throw<ArgumentOutOfRangeException>();
@@ -102,7 +102,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
 
                 // Act
                 var action = new Action(() =>
-                    timeline.SetProperty(nameof(ChallengeTimeline.ExtensionPeriod), extensionPeriod));
+                    timeline.SetProperty(nameof(Timeline.ExtensionPeriod), extensionPeriod));
 
                 // Assert
                 action.Should().Throw<ArgumentOutOfRangeException>();
@@ -118,7 +118,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
 
             // Act
             var action = new Action(() =>
-                timeline.SetProperty(nameof(ChallengeTimeline.ExtensionPeriod), extensionPeriod));
+                timeline.SetProperty(nameof(Timeline.ExtensionPeriod), extensionPeriod));
 
             // Assert
             action.Should().Throw<ArgumentOutOfRangeException>();

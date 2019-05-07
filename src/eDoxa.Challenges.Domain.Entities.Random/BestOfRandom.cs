@@ -8,16 +8,13 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.Entities.Random.Ranges;
-
 namespace eDoxa.Challenges.Domain.Entities.Random
 {
-    public sealed class BestOfRandom : IRandom<BestOf, BestOfRange>
+    public sealed class BestOfRandom : SetupRandom<BestOf, BestOfRange>
     {
         private static readonly System.Random Random = new System.Random();
 
-        public BestOf Next(BestOfRange range)
+        public override BestOf Next(BestOfRange range)
         {
             return new BestOf(Random.Next(range.MinValue, range.MaxValue + 1));
         }

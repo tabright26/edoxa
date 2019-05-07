@@ -9,7 +9,6 @@
 // this source code package.
 
 using eDoxa.Challenges.Domain.Entities.AggregateModels;
-using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ParticipantAggregate;
 
 using JetBrains.Annotations;

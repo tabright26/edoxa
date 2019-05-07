@@ -15,7 +15,7 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
 {
-    public class ChallengeTimeline : ValueObject, IChallengeTimeline
+    public class Timeline : ValueObject, ITimeline
     {
         private DateTime? _closedAt;
         private DateTime _createdAt;
@@ -24,14 +24,14 @@ namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
         private DateTime? _publishedAt;
         private TimeSpan? _registrationPeriod;
 
-        public ChallengeTimeline(TimeSpan registrationPeriod, TimeSpan extensionPeriod) : this()
+        public Timeline(TimeSpan registrationPeriod, TimeSpan extensionPeriod) : this()
         {
             _registrationPeriod = registrationPeriod;
             _extensionPeriod = extensionPeriod;
             _publishedAt = DateTime.UtcNow;
         }
 
-        public ChallengeTimeline()
+        public Timeline()
         {
             _liveMode = true;
             _createdAt = DateTime.UtcNow;
@@ -128,7 +128,7 @@ namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
 
         public ChallengeState1 State => new ChallengeTimelineState(this).Current;
 
-        public ChallengeTimeline Configure(DateTime publishedAt, TimeSpan registrationPeriod, TimeSpan extensionPeriod)
+        public Timeline Configure(DateTime publishedAt, TimeSpan registrationPeriod, TimeSpan extensionPeriod)
         {
             var timeline = this.Configure(publishedAt);
 
@@ -139,9 +139,9 @@ namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
             return timeline;
         }
 
-        public ChallengeTimeline Configure(DateTime publishedAt)
+        public Timeline Configure(DateTime publishedAt)
         {
-            return new ChallengeTimeline
+            return new Timeline
             {
                 _createdAt = CreatedAt,
                 _registrationPeriod = TimelineRegistrationPeriod.Default,
@@ -151,7 +151,7 @@ namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
             };
         }
 
-        public ChallengeTimeline Publish(TimeSpan registrationPeriod, TimeSpan extensionPeriod)
+        public Timeline Publish(TimeSpan registrationPeriod, TimeSpan extensionPeriod)
         {
             var timeline = this.Publish();
 
@@ -162,9 +162,9 @@ namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
             return timeline;
         }
 
-        public ChallengeTimeline Publish()
+        public Timeline Publish()
         {
-            return new ChallengeTimeline
+            return new Timeline
             {
                 _createdAt = CreatedAt,
                 _registrationPeriod = TimelineRegistrationPeriod.Default,
@@ -174,9 +174,9 @@ namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
             };
         }
 
-        public ChallengeTimeline Close()
+        public Timeline Close()
         {
-            return new ChallengeTimeline
+            return new Timeline
             {
                 _createdAt = CreatedAt,
                 _publishedAt = PublishedAt,

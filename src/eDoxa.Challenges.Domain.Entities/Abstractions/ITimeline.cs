@@ -12,7 +12,7 @@ using System;
 
 namespace eDoxa.Challenges.Domain.Entities.Abstractions
 {
-    public interface IChallengeTimeline
+    public interface ITimeline
     {
         TimeSpan? RegistrationPeriod { get; }
 

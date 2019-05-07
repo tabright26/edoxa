@@ -15,8 +15,8 @@ using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
 
 namespace eDoxa.Challenges.Domain.Entities.Default.Strategies
 {
-    public sealed class DefaultTimelineDailyStrategy : IChallengeTimelineStrategy
+    public sealed class DefaultTimelineDailyStrategy : ITimelineStrategy
     {
-        public IChallengeTimeline Timeline => new ChallengeTimeline(TimeSpan.FromHours(6), TimeSpan.FromHours(18));
+        public ITimeline Timeline => new Timeline(TimeSpan.FromHours(6), TimeSpan.FromHours(18));
     }
 }

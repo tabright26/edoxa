@@ -10,17 +10,15 @@
 
 using System;
 
-using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.Entities.Random.Ranges;
 using eDoxa.Seedwork.Utilities;
 
 namespace eDoxa.Challenges.Domain.Entities.Random
 {
-    public sealed class EntryFeeRandom : IRandom<EntryFee, EntryFeeRange>
+    public sealed class EntryFeeRandom : SetupRandom<EntryFee, EntryFeeRange>
     {
         private static readonly System.Random Random = new System.Random();
 
-        public EntryFee Next(EntryFeeRange range)
+        public override EntryFee Next(EntryFeeRange range)
         {
             const int multiplierOfCents = 100;
 

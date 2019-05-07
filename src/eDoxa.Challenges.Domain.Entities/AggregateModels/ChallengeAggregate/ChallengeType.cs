@@ -17,6 +17,8 @@ namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
     {
         None = 0,
         Default = 1 << 0,
+        Random = 1 << 1,
+        Custom = 1 << 2,
         All = ~None
     }
 }

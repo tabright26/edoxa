@@ -11,7 +11,6 @@
 using System;
 
 using eDoxa.Challenges.Domain.Entities.Abstractions;
-using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Entities.Default.Strategies;
 
 namespace eDoxa.Challenges.Domain.Entities.Default.Factories
@@ -22,7 +21,7 @@ namespace eDoxa.Challenges.Domain.Entities.Default.Factories
 
         public static DefaultTimelineFactory Instance => Lazy.Value;
 
-        public IChallengeTimelineStrategy CreateTimelineStrategy(PublisherInterval interval)
+        public ITimelineStrategy CreateTimelineStrategy(PublisherInterval interval)
         {
             if (interval == PublisherInterval.Daily)
             {

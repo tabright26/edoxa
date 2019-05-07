@@ -10,7 +10,6 @@
 
 using System.Linq;
 
-using eDoxa.Challenges.Domain.Entities;
 using eDoxa.Challenges.Domain.Entities.Abstractions;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.MatchAggregate;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ParticipantAggregate;

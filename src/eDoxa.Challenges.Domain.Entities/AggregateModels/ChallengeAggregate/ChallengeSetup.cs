@@ -23,39 +23,28 @@ namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
         private PayoutRatio _payoutRatio;
         private ServiceChargeRatio _serviceChargeRatio;
         private ChallengeType _type;
-        private bool _generated;
 
-        public ChallengeSetup(BestOf bestOf, Entries entries, EntryFee entryFee, PayoutRatio payoutRatio, ServiceChargeRatio serviceChargeRatio, bool generated = false)
+        public ChallengeSetup(BestOf bestOf, Entries entries, EntryFee entryFee, PayoutRatio payoutRatio, ServiceChargeRatio serviceChargeRatio, ChallengeType type)
         {
+            if (!Enum.IsDefined(typeof(ChallengeType), type))
+            {
+                throw new InvalidEnumArgumentException(nameof(Type), (int)type, typeof(ChallengeType));
+            }
+
+            if (type == ChallengeType.None || type == ChallengeType.All)
+            {
+                throw new ArgumentException(nameof(Type));
+            }
+
             _bestOf = bestOf;
             _entries = entries;
             _entryFee = entryFee;
             _payoutRatio = payoutRatio;
-            _serviceChargeRatio = serviceChargeRatio;            
-            _generated = generated;
-            _type = ChallengeType.Default;
+            _serviceChargeRatio = serviceChargeRatio;
+            _type = type;
         }
 
-        public ChallengeType Type
-        {
-            get => _type;
-            private set
-            {
-                if (!Enum.IsDefined(typeof(ChallengeType), value))
-                {
-                    throw new InvalidEnumArgumentException(nameof(Type), (int) value, typeof(ChallengeType));
-                }
-
-                if (value == ChallengeType.None || value == ChallengeType.All)
-                {
-                    throw new ArgumentException(nameof(Type));
-                }
-
-                _type = value;
-            }
-        }
-
-        public bool Generated => _generated;
+        public ChallengeType Type => _type;
 
         public BestOf BestOf => _bestOf;
 

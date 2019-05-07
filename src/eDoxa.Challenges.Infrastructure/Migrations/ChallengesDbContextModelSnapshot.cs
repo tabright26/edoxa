@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 namespace eDoxa.Challenges.Infrastructure.Migrations
 {
     [DbContext(typeof(ChallengesDbContext))]
-    internal class ChallengesDbContextModelSnapshot : ModelSnapshot
+    public class ChallengesDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -18,7 +18,7 @@ namespace eDoxa.Challenges.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Challenge", b =>
+            modelBuilder.Entity("eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate.Challenge", b =>
                 {
                     b.Property<Guid>("Id");
 
@@ -34,7 +34,7 @@ namespace eDoxa.Challenges.Infrastructure.Migrations
                     b.ToTable("Challenges");
                 });
 
-            modelBuilder.Entity("eDoxa.Challenges.Domain.AggregateModels.MatchAggregate.Match", b =>
+            modelBuilder.Entity("eDoxa.Challenges.Domain.Entities.AggregateModels.MatchAggregate.Match", b =>
                 {
                     b.Property<Guid>("Id");
 
@@ -52,7 +52,7 @@ namespace eDoxa.Challenges.Infrastructure.Migrations
                     b.ToTable("Matches");
                 });
 
-            modelBuilder.Entity("eDoxa.Challenges.Domain.AggregateModels.MatchAggregate.Stat", b =>
+            modelBuilder.Entity("eDoxa.Challenges.Domain.Entities.AggregateModels.MatchAggregate.Stat", b =>
                 {
                     b.Property<Guid>("Id");
 
@@ -72,7 +72,7 @@ namespace eDoxa.Challenges.Infrastructure.Migrations
                     b.ToTable("Stats");
                 });
 
-            modelBuilder.Entity("eDoxa.Challenges.Domain.AggregateModels.ParticipantAggregate.Participant", b =>
+            modelBuilder.Entity("eDoxa.Challenges.Domain.Entities.AggregateModels.ParticipantAggregate.Participant", b =>
                 {
                     b.Property<Guid>("Id");
 
@@ -130,38 +130,42 @@ namespace eDoxa.Challenges.Infrastructure.Migrations
                     b.ToTable("Logs","dbo");
                 });
 
-            modelBuilder.Entity("eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Challenge", b =>
+            modelBuilder.Entity("eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate.Challenge", b =>
                 {
-                    b.OwnsOne("eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.ChallengeSetup", "Setup", b1 =>
+                    b.OwnsOne("eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate.ChallengeSetup", "Setup", b1 =>
                         {
                             b1.Property<Guid>("ChallengeId");
 
-                            b1.Property<int>("BestOf");
+                            b1.Property<int>("BestOf")
+                                .HasColumnName("BestOf");
 
-                            b1.Property<int>("Entries");
+                            b1.Property<int>("Entries")
+                                .HasColumnName("Entries");
 
                             b1.Property<decimal>("EntryFee")
+                                .HasColumnName("EntryFee")
                                 .HasColumnType("decimal(4,2)");
 
-                            b1.Property<bool>("Generated");
+                            b1.Property<float>("PayoutRatio")
+                                .HasColumnName("PayoutRatio");
 
-                            b1.Property<float>("PayoutRatio");
+                            b1.Property<float>("ServiceChargeRatio")
+                                .HasColumnName("ServiceChargeRatio");
 
-                            b1.Property<float>("ServiceChargeRatio");
-
-                            b1.Property<int>("Type");
+                            b1.Property<int>("Type")
+                                .HasColumnName("Type");
 
                             b1.HasKey("ChallengeId");
 
-                            b1.ToTable("ChallengeSetups","edoxa");
+                            b1.ToTable("Challenges","edoxa");
 
-                            b1.HasOne("eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Challenge")
+                            b1.HasOne("eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate.Challenge")
                                 .WithOne("Setup")
-                                .HasForeignKey("eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.ChallengeSetup", "ChallengeId")
+                                .HasForeignKey("eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate.ChallengeSetup", "ChallengeId")
                                 .OnDelete(DeleteBehavior.Cascade);
                         });
 
-                    b.OwnsOne("eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.ChallengeTimeline", "Timeline", b1 =>
+                    b.OwnsOne("eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate.Timeline", "Timeline", b1 =>
                         {
                             b1.Property<Guid>("ChallengeId");
 
@@ -179,34 +183,34 @@ namespace eDoxa.Challenges.Infrastructure.Migrations
 
                             b1.HasKey("ChallengeId");
 
-                            b1.ToTable("ChallengeTimelines","edoxa");
+                            b1.ToTable("Timelines","edoxa");
 
-                            b1.HasOne("eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Challenge")
+                            b1.HasOne("eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate.Challenge")
                                 .WithOne("Timeline")
-                                .HasForeignKey("eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.ChallengeTimeline", "ChallengeId")
+                                .HasForeignKey("eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate.Timeline", "ChallengeId")
                                 .OnDelete(DeleteBehavior.Cascade);
                         });
                 });
 
-            modelBuilder.Entity("eDoxa.Challenges.Domain.AggregateModels.MatchAggregate.Match", b =>
+            modelBuilder.Entity("eDoxa.Challenges.Domain.Entities.AggregateModels.MatchAggregate.Match", b =>
                 {
-                    b.HasOne("eDoxa.Challenges.Domain.AggregateModels.ParticipantAggregate.Participant", "Participant")
+                    b.HasOne("eDoxa.Challenges.Domain.Entities.AggregateModels.ParticipantAggregate.Participant", "Participant")
                         .WithMany("Matches")
                         .HasForeignKey("ParticipantId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("eDoxa.Challenges.Domain.AggregateModels.MatchAggregate.Stat", b =>
+            modelBuilder.Entity("eDoxa.Challenges.Domain.Entities.AggregateModels.MatchAggregate.Stat", b =>
                 {
-                    b.HasOne("eDoxa.Challenges.Domain.AggregateModels.MatchAggregate.Match")
+                    b.HasOne("eDoxa.Challenges.Domain.Entities.AggregateModels.MatchAggregate.Match")
                         .WithMany("Stats")
                         .HasForeignKey("MatchId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("eDoxa.Challenges.Domain.AggregateModels.ParticipantAggregate.Participant", b =>
+            modelBuilder.Entity("eDoxa.Challenges.Domain.Entities.AggregateModels.ParticipantAggregate.Participant", b =>
                 {
-                    b.HasOne("eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Challenge", "Challenge")
+                    b.HasOne("eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate.Challenge", "Challenge")
                         .WithMany("Participants")
                         .HasForeignKey("ChallengeId")
                         .OnDelete(DeleteBehavior.Cascade);

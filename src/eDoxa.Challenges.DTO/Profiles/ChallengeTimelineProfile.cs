@@ -18,7 +18,7 @@ namespace eDoxa.Challenges.DTO.Profiles
     {
         public ChallengeTimelineProfile()
         {
-            this.CreateMap<ChallengeTimeline, ChallengeTimelineDTO>()
+            this.CreateMap<Timeline, ChallengeTimelineDTO>()
                 .ForMember(timeline => timeline.CreatedAt, config => config.MapFrom(timeline => timeline.CreatedAt))
                 .ForMember(timeline => timeline.PublishedAt, config => config.MapFrom(timeline => timeline.PublishedAt))
                 .ForMember(timeline => timeline.StartedAt, config => config.MapFrom(timeline => timeline.StartedAt))

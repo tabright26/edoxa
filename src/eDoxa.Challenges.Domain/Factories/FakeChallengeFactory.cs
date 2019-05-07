@@ -221,13 +221,14 @@ namespace eDoxa.Challenges.Domain.Factories
             int entries = Entries.Default,
             decimal entryFee = EntryFee.Default,
             float payoutRatio = PayoutRatio.Default,
-            float serviceChargeRatio = ServiceChargeRatio.Default)
+            float serviceChargeRatio = ServiceChargeRatio.Default,
+            ChallengeType type = ChallengeType.Default)
         {
             return new ChallengeSetup(new BestOf(bestOf), new Entries(entries), new EntryFee(entryFee), new PayoutRatio(payoutRatio),
-                new ServiceChargeRatio(serviceChargeRatio));
+                new ServiceChargeRatio(serviceChargeRatio), type);
         }
 
-        public ChallengeTimeline CreateChallengeTimeline(ChallengeState1 state = ChallengeState1.Draft)
+        public Timeline CreateChallengeTimeline(ChallengeState1 state = ChallengeState1.Draft)
         {
             switch (state)
             {
@@ -255,12 +256,12 @@ namespace eDoxa.Challenges.Domain.Factories
             }
         }
 
-        private static ChallengeTimeline CreateChallengeTimelineAsDraft()
+        private static Timeline CreateChallengeTimelineAsDraft()
         {
-            return new ChallengeTimeline();
+            return new Timeline();
         }
 
-        private static ChallengeTimeline CreateChallengeTimelineAsConfigured()
+        private static Timeline CreateChallengeTimelineAsConfigured()
         {
             var publishedAt = TimelinePublishedAt.Min.AddDays(1);
 
@@ -271,7 +272,7 @@ namespace eDoxa.Challenges.Domain.Factories
             return timeline;
         }
 
-        private static ChallengeTimeline CreateChallengeTimelineAsOpened()
+        private static Timeline CreateChallengeTimelineAsOpened()
         {
             var timeline = CreateChallengeTimelineAsDraft();
 
@@ -280,7 +281,7 @@ namespace eDoxa.Challenges.Domain.Factories
             return timeline;
         }
 
-        private static ChallengeTimeline CreateChallengeTimelineAsInProgress()
+        private static Timeline CreateChallengeTimelineAsInProgress()
         {
             var timeline = CreateChallengeTimelineAsOpened();
 
@@ -291,7 +292,7 @@ namespace eDoxa.Challenges.Domain.Factories
             return timeline;
         }
 
-        private static ChallengeTimeline CreateChallengeTimelineAsEnded()
+        private static Timeline CreateChallengeTimelineAsEnded()
         {
             var timeline = CreateChallengeTimelineAsInProgress();
 
@@ -302,7 +303,7 @@ namespace eDoxa.Challenges.Domain.Factories
             return timeline;
         }
 
-        private static ChallengeTimeline CreateChallengeTimelineAsClosed()
+        private static Timeline CreateChallengeTimelineAsClosed()
         {
             var timeline = CreateChallengeTimelineAsEnded();
 
@@ -310,25 +311,10 @@ namespace eDoxa.Challenges.Domain.Factories
 
             return timeline;
         }
-
-        public IScoreboardStrategy CreateChallengeScoreboardStrategy()
+        public Scoreboard CreateChallengeScoreboard()
         {
-            var mock = new Mock<IScoreboardStrategy>();
-
-            mock.SetupGet(strategy => strategy.Scoreboard).Returns(this.CreateChallengeScoreboard());
-
-            return mock.Object;
+            return new Scoreboard(this.CreateChallenge(ChallengeState1.Ended));
         }
-
-        public IScoreboard CreateChallengeScoreboard()
-        {
-            return new Scoreboard();
-        }
-
-        //public ChallengeLiveData CreateChallengeLiveData(Challenge challenge)
-        //{
-        //    return new ChallengeLiveData(challenge.Setup, challenge.Participants);
-        //}
     }
 
     public sealed partial class FakeChallengeFactory

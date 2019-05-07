@@ -9,7 +9,6 @@
 // this source code package.
 
 using System;
-using System.ComponentModel;
 using System.Linq;
 
 using eDoxa.Challenges.Domain.Entities.AggregateModels;
@@ -18,7 +17,6 @@ using eDoxa.Challenges.Domain.Entities.AggregateModels.ParticipantAggregate;
 using eDoxa.Challenges.Domain.Entities.Default;
 using eDoxa.Challenges.Domain.Factories;
 using eDoxa.Seedwork.Enumerations;
-using eDoxa.Testing.MSTest.Extensions;
 
 using FluentAssertions;
 
@@ -56,34 +54,6 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
             //challenge.LiveData.Entries.Should().Be(new Entries(challenge.Participants.Count, false));
             //challenge.LiveData.PayoutEntries.Should().Be(new PayoutEntries(challenge.LiveData.Entries, challenge.Setup.PayoutRatio));
             //challenge.LiveData.PrizePool.Should().Be(new PrizePool(challenge.LiveData.Entries, challenge.Setup.EntryFee, challenge.Setup.ServiceChargeRatio));
-        }
-
-        [TestMethod]
-        public void Game_InvalidEnumArgument_ShouldThrowInvalidEnumArgumentException()
-        {
-            // Arrange
-            var challenge = FakeChallengeFactory.CreateChallenge(ChallengeState1.Draft);
-
-            // Act
-            var action = new Action(() => challenge.SetProperty(nameof(Challenge.Game), (Game) 1000));
-
-            // Assert
-            action.Should().Throw<InvalidEnumArgumentException>();
-        }
-
-        [DataTestMethod]
-        [DataRow(Game.None)]
-        [DataRow(Game.All)]
-        public void Game_InvalidArgument_ShouldThrowArgumentException(Game game)
-        {
-            // Arrange
-            var challenge = FakeChallengeFactory.CreateChallenge(ChallengeState1.Draft);
-
-            // Act
-            var action = new Action(() => challenge.SetProperty(nameof(Challenge.Game), game));
-
-            // Assert
-            action.Should().Throw<ArgumentException>();
         }
 
         [TestMethod]

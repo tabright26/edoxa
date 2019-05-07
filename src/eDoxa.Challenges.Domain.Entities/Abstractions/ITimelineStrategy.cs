@@ -1,5 +1,5 @@
-﻿// Filename: IChallengeScoreboard.cs
-// Date Created: 2019-04-14
+﻿// Filename: IChallengeTimelineStrategy.cs
+// Date Created: 2019-04-23
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,14 +8,10 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Collections.Generic;
-
-using eDoxa.Challenges.Domain.Entities.AggregateModels;
-using eDoxa.Functional.Maybe;
-
 namespace eDoxa.Challenges.Domain.Entities.Abstractions
 {
-    public interface IScoreboard : IReadOnlyDictionary<UserId, Option<Score>>
+    public interface ITimelineStrategy
     {
+        ITimeline Timeline { get; }
     }
 }

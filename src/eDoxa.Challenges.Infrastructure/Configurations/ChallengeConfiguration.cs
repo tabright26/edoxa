@@ -10,6 +10,7 @@
 
 using System;
 
+using eDoxa.Challenges.Domain.Entities;
 using eDoxa.Challenges.Domain.Entities.AggregateModels;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Infrastructure.Converters;
@@ -43,39 +44,45 @@ namespace eDoxa.Challenges.Infrastructure.Configurations
                 challenge => challenge.Setup,
                 challengeSetup =>
                 {
-                    challengeSetup.Property(setup => setup.Type).IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field);
+                    challengeSetup.Property(setup => setup.Type)
+                        .IsRequired()
+                        .HasColumnName(nameof(ChallengeSetup.Type))
+                        .UsePropertyAccessMode(PropertyAccessMode.Field);
 
                     challengeSetup.Property(setup => setup.Entries)
                         .HasConversion<int>(entries => entries, entries => new Entries(entries, false))
                         .IsRequired()
+                        .HasColumnName(nameof(ChallengeSetup.Entries))
                         .UsePropertyAccessMode(PropertyAccessMode.Field);
 
                     challengeSetup.Property(setup => setup.EntryFee)
                         .HasConversion<decimal>(entryFee => entryFee, entryFee => new EntryFee(entryFee, false))
                         .HasColumnType("decimal(4,2)")
                         .IsRequired()
+                        .HasColumnName(nameof(ChallengeSetup.EntryFee))
                         .UsePropertyAccessMode(PropertyAccessMode.Field);
 
                     challengeSetup.Property(setup => setup.BestOf)
                         .HasConversion<int>(bestOf => bestOf, bestOf => new BestOf(bestOf, false))
-                        .IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field);
+                        .IsRequired()
+                        .HasColumnName(nameof(ChallengeSetup.BestOf))
+                        .UsePropertyAccessMode(PropertyAccessMode.Field);
 
                     challengeSetup.Property(setup => setup.PayoutRatio)
-                        .HasConversion<float>(payoutRatio => payoutRatio, payoutRatio => new PayoutRatio(payoutRatio, false)).IsRequired()
+                        .HasConversion<float>(payoutRatio => payoutRatio, payoutRatio => new PayoutRatio(payoutRatio, false))
+                        .IsRequired()
+                        .HasColumnName(nameof(ChallengeSetup.PayoutRatio))
                         .UsePropertyAccessMode(PropertyAccessMode.Field);
 
                     challengeSetup.Property(setup => setup.ServiceChargeRatio)
                         .HasConversion<float>(serviceChargeRatio => serviceChargeRatio, serviceChargeRatio => new ServiceChargeRatio(serviceChargeRatio, false))
                         .IsRequired()
+                        .HasColumnName(nameof(ChallengeSetup.ServiceChargeRatio))
                         .UsePropertyAccessMode(PropertyAccessMode.Field);
-
-                    challengeSetup.Property(setup => setup.Generated).IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field);
 
                     challengeSetup.Ignore(setup => setup.PayoutEntries);
 
                     challengeSetup.Ignore(setup => setup.PrizePool);
-
-                    challengeSetup.ToTable("ChallengeSetups");
                 }
             );
 
@@ -111,7 +118,7 @@ namespace eDoxa.Challenges.Infrastructure.Configurations
 
                     challengeTimeline.Property(timeline => timeline.ClosedAt).IsRequired(false).UsePropertyAccessMode(PropertyAccessMode.Field);
 
-                    challengeTimeline.ToTable("ChallengeTimelines");
+                    challengeTimeline.ToTable("Timelines");
                 }
             );
 
@@ -120,11 +127,7 @@ namespace eDoxa.Challenges.Infrastructure.Configurations
                 .IsRequired(false)
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 
-            //builder.Ignore(challenge => challenge.LiveData);
-
-            //builder.Ignore(challenge => challenge.Scoreboard);
-
-            //builder.Ignore(challenge => challenge.Payout);
+            builder.Ignore(challenge => challenge.Scoreboard);
 
             builder.HasMany(challenge => challenge.Participants)
                 .WithOne(participant => participant.Challenge)

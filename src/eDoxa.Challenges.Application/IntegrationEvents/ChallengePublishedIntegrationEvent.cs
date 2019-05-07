@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
+using eDoxa.Challenges.Domain.Entities;
 using eDoxa.ServiceBus;
 
 namespace eDoxa.Challenges.Application.IntegrationEvents

@@ -10,7 +10,6 @@
 
 using System;
 
-using eDoxa.Challenges.Domain.Entities;
 using eDoxa.Challenges.Domain.Entities.Abstractions;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Services.LeagueOfLegends.Strategies;
@@ -35,8 +34,15 @@ namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.Factories
             switch (challenge.Setup.Type)
             {
                 case ChallengeType.Default:
+
                     return new LeagueOfLegendsDefaultScoringStrategy();
+
+                case ChallengeType.Random:
+
+                    return new LeagueOfLegendsDefaultScoringStrategy();
+
                 default:
+
                     throw new NotImplementedException();
             }
         }

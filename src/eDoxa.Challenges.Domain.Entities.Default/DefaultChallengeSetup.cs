@@ -19,7 +19,8 @@ namespace eDoxa.Challenges.Domain.Entities.Default
             Entries.DefaultValue,
             EntryFee.DefaultValue,
             PayoutRatio.DefaultValue,
-            ServiceChargeRatio.DefaultValue
+            ServiceChargeRatio.DefaultValue,
+            ChallengeType.Default
         )
         {
         }

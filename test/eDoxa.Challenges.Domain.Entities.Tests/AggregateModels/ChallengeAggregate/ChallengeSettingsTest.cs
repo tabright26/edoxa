@@ -10,9 +10,7 @@
 
 using System;
 
-using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Factories;
-using eDoxa.Testing.MSTest.Extensions;
 
 using FluentAssertions;
 
@@ -44,34 +42,6 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
             setup.EntryFee.Should().Be(entryFee);
             setup.PayoutRatio.Should().Be(payoutRatio);
             setup.ServiceChargeRatio.Should().Be(serviceChargeRatio);
-        }
-
-        [TestMethod]
-        public void Type_InvalidEnumArgument_ShouldThrowInvalidEnumArgumentException()
-        {
-            // Arrange
-            var setup = FakeChallengeFactory.CreateChallengeSetup();
-
-            // Act
-            var action = new Action(() => setup.SetProperty(nameof(ChallengeSetup.Type), (ChallengeType) 1000));
-
-            // Assert
-            action.Should().Throw<ArgumentException>();
-        }
-
-        [DataRow(ChallengeType.None)]
-        [DataRow(ChallengeType.All)]
-        [DataTestMethod]
-        public void Type_InvalidArgument_ShouldThrowArgumentException(ChallengeType type)
-        {
-            // Arrange
-            var setup = FakeChallengeFactory.CreateChallengeSetup();
-
-            // Act
-            var action = new Action(() => setup.SetProperty(nameof(ChallengeSetup.Type), type));
-
-            // Assert
-            action.Should().Throw<ArgumentException>();
         }
 
         [DataRow(Entries.Min - 1)]

@@ -9,7 +9,6 @@
 // this source code package.
 
 using eDoxa.Challenges.Domain.Entities.Abstractions;
-using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
 
 namespace eDoxa.Challenges.Domain.Entities.Default.Strategies
 {

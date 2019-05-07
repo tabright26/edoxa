@@ -10,7 +10,6 @@
 
 using eDoxa.Challenges.Domain.Entities.AggregateModels;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.MatchAggregate;
-using eDoxa.Challenges.Domain.Entities.AggregateModels.ParticipantAggregate;
 
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;

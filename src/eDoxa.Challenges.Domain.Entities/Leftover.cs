@@ -13,22 +13,22 @@ using System.Globalization;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
+namespace eDoxa.Challenges.Domain.Entities
 {
-    public partial class PayoutLeftover
+    public partial class Leftover
     {
         internal const decimal Default = 0;
 
-        internal static readonly PayoutLeftover DefaultValue = new PayoutLeftover(Default);
+        internal static readonly Leftover DefaultValue = new Leftover(Default);
 
         private readonly decimal _value;
 
-        public PayoutLeftover(decimal leftover)
+        public Leftover(decimal leftover)
         {
             _value = leftover;
         }
 
-        public static implicit operator decimal(PayoutLeftover leftover)
+        public static implicit operator decimal(Leftover leftover)
         {
             return leftover._value;
         }
@@ -39,16 +39,16 @@ namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
         }
     }
     
-    public partial class PayoutLeftover : IEquatable<PayoutLeftover>
+    public partial class Leftover : IEquatable<Leftover>
     {
-        public bool Equals(PayoutLeftover other)
+        public bool Equals(Leftover other)
         {
             return _value.Equals(other?._value);
         }
 
         public override bool Equals(object obj)
         {
-            return this.Equals(obj as PayoutLeftover);
+            return this.Equals(obj as Leftover);
         }
 
         public override int GetHashCode()
@@ -57,14 +57,14 @@ namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
         }
     }
 
-    public partial class PayoutLeftover : IComparable, IComparable<PayoutLeftover>
+    public partial class Leftover : IComparable, IComparable<Leftover>
     {
         public int CompareTo([CanBeNull] object obj)
         {
-            return this.CompareTo(obj as PayoutLeftover);
+            return this.CompareTo(obj as Leftover);
         }
 
-        public int CompareTo([CanBeNull] PayoutLeftover other)
+        public int CompareTo([CanBeNull] Leftover other)
         {
             return _value.CompareTo(other?._value);
         }

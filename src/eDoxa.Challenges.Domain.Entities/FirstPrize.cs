@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
+namespace eDoxa.Challenges.Domain.Entities
 {
     public sealed class FirstPrize : Prize
     {

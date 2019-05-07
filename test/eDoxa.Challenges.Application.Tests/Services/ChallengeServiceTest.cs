@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Application.Services;
+using eDoxa.Challenges.Domain.Entities;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Factories;
 using eDoxa.Challenges.Domain.Repositories;

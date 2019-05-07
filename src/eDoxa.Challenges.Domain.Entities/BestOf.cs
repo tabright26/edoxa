@@ -12,7 +12,7 @@ using System;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
+namespace eDoxa.Challenges.Domain.Entities
 {
     public partial class BestOf
     {

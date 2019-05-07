@@ -11,7 +11,6 @@
 using System;
 
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.Entities.Random.Ranges;
 
 namespace eDoxa.Challenges.Domain.Entities.Random
 {
@@ -27,7 +26,7 @@ namespace eDoxa.Challenges.Domain.Entities.Random
             NextEntryFee(interval),
             PayoutRatio.DefaultValue,
             ServiceChargeRatio.DefaultValue,
-            true
+            ChallengeType.Random
         )
         {
         }

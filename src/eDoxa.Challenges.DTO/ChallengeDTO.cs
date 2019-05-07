@@ -1,11 +1,11 @@
 ﻿// Filename: ChallengeDTO.cs
-// Date Created: 2019-04-03
+// Date Created: 2019-05-06
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
 // 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
@@ -21,15 +21,13 @@ namespace eDoxa.Challenges.DTO
     [JsonObject]
     public class ChallengeDTO
     {
-        [JsonProperty("id")]
-        public Guid Id { get; set; }
-
-        [JsonProperty("name")]
-        public string Name { get; set; }
+        [JsonProperty("id")] public Guid Id { get; set; }
 
         [JsonProperty("game")]
         [JsonConverter(typeof(StringEnumConverter))]
         public Game Game { get; set; }
+
+        [JsonProperty("name")] public string Name { get; set; }
 
         [JsonProperty("type")]
         [JsonConverter(typeof(StringEnumConverter))]
@@ -39,22 +37,14 @@ namespace eDoxa.Challenges.DTO
         [JsonConverter(typeof(StringEnumConverter))]
         public ChallengeState1 State { get; set; }
 
-        [JsonProperty("setup")]
-        public ChallengeSetupDTO Setup { get; set; }
+        [JsonProperty("setup")] public ChallengeSetupDTO Setup { get; set; }
 
-        [JsonProperty("timeline")]
-        public ChallengeTimelineDTO Timeline { get; set; }
+        [JsonProperty("timeline")] public ChallengeTimelineDTO Timeline { get; set; }
 
-        [JsonProperty("scoring")]
-        public ChallengeScoringDTO Scoring { get; set; }
+        [JsonProperty("scoring")] public ChallengeScoringDTO Scoring { get; set; }
 
-        [JsonProperty("payout")]
-        public ChallengePayoutDTO Payout { get; set; }
+        [JsonProperty("payout")] public ChallengePayoutDTO Payout { get; set; }
 
-        //[JsonProperty("liveData")]
-        //public ChallengeLiveDataDTO LiveData { get; set; }        
-
-        [JsonProperty("participants")]
-        public ParticipantListDTO Participants { get; set; }
+        [JsonProperty("participants")] public ParticipantListDTO Participants { get; set; }
     }
 }

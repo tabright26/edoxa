@@ -14,9 +14,9 @@ namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
 {
     public sealed class ChallengeTimelineState
     {
-        private readonly ChallengeTimeline _timeline;
+        private readonly Timeline _timeline;
 
-        public ChallengeTimelineState(ChallengeTimeline timeline)
+        public ChallengeTimelineState(Timeline timeline)
         {
             _timeline = timeline;
         }

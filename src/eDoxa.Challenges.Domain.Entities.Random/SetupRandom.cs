@@ -1,17 +1,17 @@
-﻿// Filename: IChallengeTimelineStrategy.cs
-// Date Created: 2019-04-23
+﻿// Filename: IRandom.cs
+// Date Created: 2019-05-07
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-namespace eDoxa.Challenges.Domain.Entities.Abstractions
+namespace eDoxa.Challenges.Domain.Entities.Random
 {
-    public interface IChallengeTimelineStrategy
+    public abstract class SetupRandom<T, TRange>
     {
-        IChallengeTimeline Timeline { get; }
+        public abstract T Next(TRange range);
     }
 }

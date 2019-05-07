@@ -11,7 +11,6 @@
 using System.Runtime.Serialization;
 
 using eDoxa.Challenges.Domain.Entities.AggregateModels;
-using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
 using eDoxa.Commands.Abstractions;
 
 using Microsoft.AspNetCore.Mvc;
