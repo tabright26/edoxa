@@ -13,7 +13,7 @@ using System;
 using eDoxa.Challenges.Domain.Entities.Abstractions;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Services.LeagueOfLegends.Factories;
-using eDoxa.Seedwork.Enumerations;
+using eDoxa.Seedwork.Domain.Enumerations;
 
 namespace eDoxa.Challenges.Domain.Services.Factories
 {
@@ -25,16 +25,12 @@ namespace eDoxa.Challenges.Domain.Services.Factories
 
         public IScoringStrategy CreateScoringStrategy(Challenge challenge)
         {
-            switch (challenge.Game)
+            if (challenge.Game.Equals(Game.LeagueOfLegends))
             {
-                case Game.LeagueOfLegends:
-
-                    return LeagueOfLegendsChallengeScoringFactory.Instance.CreateScoring(challenge);
-
-                default:
-
-                    throw new NotImplementedException();
+                return LeagueOfLegendsChallengeScoringFactory.Instance.CreateScoring(challenge);
             }
+
+            throw new NotImplementedException();
         }
     }
 }

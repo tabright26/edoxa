@@ -18,7 +18,7 @@ using eDoxa.Identity.Infrastructure;
 using eDoxa.Monitoring.Extensions;
 using eDoxa.Security;
 using eDoxa.Security.Extensions;
-using eDoxa.Seedwork.Enumerations;
+using eDoxa.Seedwork.Domain.Enumerations;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.ServiceBus;
 

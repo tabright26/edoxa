@@ -20,7 +20,7 @@ using eDoxa.Challenges.Domain.Entities.AggregateModels.ParticipantAggregate;
 using eDoxa.Challenges.Domain.Entities.Default;
 using eDoxa.Functional.Maybe;
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Enumerations;
+using eDoxa.Seedwork.Domain.Enumerations;
 
 using Moq;
 

@@ -11,6 +11,7 @@
 using System;
 
 using eDoxa.Security;
+using eDoxa.Seedwork.Domain;
 using eDoxa.Versioning;
 
 using Microsoft.AspNetCore.Http;
@@ -19,7 +20,7 @@ using Microsoft.Net.Http.Headers;
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Seedwork.Domain.Aggregate
+namespace eDoxa.Seedwork.Infrastructure.Models
 {
     public class LogEntry : IAggregateRoot
     {

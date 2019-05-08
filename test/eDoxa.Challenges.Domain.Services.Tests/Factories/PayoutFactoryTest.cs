@@ -8,16 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-
-using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.Entities.Default;
-using eDoxa.Challenges.Domain.Services.Factories;
-using eDoxa.Seedwork.Enumerations;
-using eDoxa.Testing.MSTest.Extensions;
-
-using FluentAssertions;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Challenges.Domain.Services.Tests.Factories

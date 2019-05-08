@@ -11,7 +11,8 @@
 using System;
 
 using eDoxa.Challenges.DTO;
-using eDoxa.Seedwork.Enumerations;
+using eDoxa.Seedwork.Domain.Aggregate;
+using eDoxa.Seedwork.Domain.Enumerations;
 
 using FluentAssertions;
 
@@ -35,9 +36,9 @@ namespace eDoxa.Challenges.Tests.Asserts
 
             challenge.Id.Should().NotBeEmpty();
 
-            challenge.Game.Should().NotBe(Game.All);
+            challenge.Game.Should().NotBe(Enumeration.All<Game>());
 
-            challenge.Game.Should().NotBe(Game.None);
+            challenge.Game.Should().NotBe(Enumeration.None<Game>());
 
             challenge.Name.Should().NotBeNullOrWhiteSpace();
 

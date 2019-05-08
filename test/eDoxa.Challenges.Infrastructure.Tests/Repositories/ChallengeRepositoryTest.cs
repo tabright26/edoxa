@@ -18,7 +18,7 @@ using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Factories;
 using eDoxa.Challenges.Infrastructure.Repositories;
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Enumerations;
+using eDoxa.Seedwork.Domain.Enumerations;
 using eDoxa.Seedwork.Infrastructure.Factories;
 
 using FluentAssertions;
@@ -108,7 +108,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
 
                     // Act
                     var challenges =
-                        await repository.FindChallengesAsync(Enumeration.All<ChallengeType>(), Game.All, ChallengeState1.All);
+                        await repository.FindChallengesAsync(Enumeration.All<ChallengeType>(), Enumeration.All<Game>(), ChallengeState1.All);
 
                     // Assert
                     ChallengeRepositoryAssert.IsLoaded(challenges);
@@ -128,7 +128,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
 
                     // Act
                     var challenges =
-                        await repository.FindChallengesAsync(Enumeration.All<ChallengeType>(), Game.All, ChallengeState1.All);
+                        await repository.FindChallengesAsync(Enumeration.All<ChallengeType>(), Enumeration.All<Game>(), ChallengeState1.All);
 
                     // Assert
                     challenges.Should().BeEmpty();
@@ -200,7 +200,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
                     var repository = new ChallengeRepository(context);
 
                     // Act
-                    var challenges = await repository.FindChallengesAsync(Enumeration.All<ChallengeType>(), Game.All, state);
+                    var challenges = await repository.FindChallengesAsync(Enumeration.All<ChallengeType>(), Enumeration.All<Game>(), state);
 
                     // Assert
                     challenges.Should().HaveCount(FakeRandomChallengeFactory.DefaultRandomChallengeCount);
@@ -271,8 +271,8 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
             {
                 challenge.Should().NotBeNull();
                 challenge.Id.ToGuid().Should().NotBeEmpty();
-                challenge.Game.Should().NotBe(Game.All);
-                challenge.Game.Should().NotBe(Game.None);
+                challenge.Game.Should().NotBe(Enumeration.All<Game>());
+                challenge.Game.Should().NotBe(Enumeration.None<Game>());
                 challenge.Name.ToString().Should().NotBeNullOrWhiteSpace();
                 challenge.Setup.Should().NotBeNull();
                 challenge.Timeline.Should().NotBeNull();

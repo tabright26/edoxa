@@ -16,7 +16,7 @@ using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ParticipantAggregate;
 using eDoxa.Challenges.Domain.Entities.Default;
 using eDoxa.Challenges.Domain.Factories;
-using eDoxa.Seedwork.Enumerations;
+using eDoxa.Seedwork.Domain.Enumerations;
 
 using FluentAssertions;
 
@@ -33,7 +33,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
         public void Constructor_Initialize_ShouldNotThrowException()
         {
             // Arrange
-            const Game game = Game.LeagueOfLegends;
+            var game = Game.LeagueOfLegends;
             var name = new ChallengeName(nameof(Challenge));
             var setup = new DefaultChallengeSetup();
 

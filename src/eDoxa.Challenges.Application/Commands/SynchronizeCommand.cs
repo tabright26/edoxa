@@ -9,7 +9,7 @@
 // this source code package.
 
 using eDoxa.Commands.Abstractions;
-using eDoxa.Seedwork.Enumerations;
+using eDoxa.Seedwork.Domain.Enumerations;
 
 namespace eDoxa.Challenges.Application.Commands
 {

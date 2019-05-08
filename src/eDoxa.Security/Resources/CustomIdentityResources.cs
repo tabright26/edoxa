@@ -47,7 +47,7 @@ namespace eDoxa.Security.Resources
                 "Your game(s)",
                 new HashSet<string>
                 {
-                    Seedwork.Enumerations.Game.LeagueOfLegends.GetClaimType()
+                    Seedwork.Domain.Enumerations.Game.LeagueOfLegends.GetClaimType()
                 })
             {
             }

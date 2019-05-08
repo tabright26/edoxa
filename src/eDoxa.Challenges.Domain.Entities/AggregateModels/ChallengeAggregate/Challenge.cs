@@ -20,7 +20,7 @@ using eDoxa.Challenges.Domain.Entities.AggregateModels.ParticipantAggregate.Spec
 using eDoxa.Functional.Maybe;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Enumerations;
+using eDoxa.Seedwork.Domain.Enumerations;
 using eDoxa.Specifications.Factories;
 
 namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
@@ -36,16 +36,6 @@ namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
 
         public Challenge(Game game, ChallengeName name, ChallengeSetup setup) : this()
         {
-            if (!Enum.IsDefined(typeof(Game), game))
-            {
-                throw new InvalidEnumArgumentException(nameof(Game), (int) game, typeof(Game));
-            }
-
-            if (game == Game.None || game == Game.All)
-            {
-                throw new ArgumentException(nameof(Game));
-            }
-
             _game = game;
             _name = name;
             _setup = setup;

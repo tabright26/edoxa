@@ -12,6 +12,7 @@ using System;
 
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
+using eDoxa.Seedwork.Infrastructure.Models;
 
 namespace eDoxa.Commands.Infrastructure.Repositories
 {

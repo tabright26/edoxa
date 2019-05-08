@@ -46,6 +46,8 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             //    service => service.CreateAsync(It.IsAny<CustomerCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
             //    Times.Once
             //);
+
+            await Task.CompletedTask;
         }
     }
 }

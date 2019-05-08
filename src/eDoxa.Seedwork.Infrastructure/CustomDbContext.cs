@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Infrastructure.Extensions;
+using eDoxa.Seedwork.Infrastructure.Models;
 
 using JetBrains.Annotations;
 

@@ -18,7 +18,7 @@ using eDoxa.Challenges.DTO;
 using eDoxa.Challenges.DTO.Queries;
 using eDoxa.Functional.Maybe;
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Enumerations;
+using eDoxa.Seedwork.Domain.Enumerations;
 
 using FluentAssertions;
 
@@ -63,7 +63,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
             var controller = new ChallengesController(_queries.Object);
 
             // Act
-            var result = await controller.FindChallengesAsync(Enumeration.All<ChallengeType>().DisplayName);
+            var result = await controller.FindChallengesAsync(Enumeration.All<ChallengeType>().DisplayName, Enumeration.All<Game>().DisplayName);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -84,7 +84,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
             var controller = new ChallengesController(_queries.Object);
 
             // Act
-            var result = await controller.FindChallengesAsync(Enumeration.All<ChallengeType>().DisplayName);
+            var result = await controller.FindChallengesAsync(Enumeration.All<ChallengeType>().DisplayName, Enumeration.All<Game>().DisplayName);
 
             // Assert
             result.Should().BeOfType<NoContentResult>();

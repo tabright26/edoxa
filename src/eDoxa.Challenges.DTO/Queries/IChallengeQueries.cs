@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using eDoxa.Challenges.Domain.Entities.AggregateModels;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
 using eDoxa.Functional.Maybe;
-using eDoxa.Seedwork.Enumerations;
+using eDoxa.Seedwork.Domain.Enumerations;
 
 namespace eDoxa.Challenges.DTO.Queries
 {
@@ -21,7 +21,7 @@ namespace eDoxa.Challenges.DTO.Queries
     {
         Task<Option<ChallengeListDTO>> FindChallengesAsync(
             ChallengeType type,
-            Game game = Game.All,
+            Game game,
             ChallengeState1 state = ChallengeState1.All);
 
         Task<Option<ChallengeDTO>> FindChallengeAsync(ChallengeId challengeId);
@@ -29,7 +29,7 @@ namespace eDoxa.Challenges.DTO.Queries
         Task<Option<ChallengeListDTO>> FindUserChallengeHistoryAsync(
             UserId userId,
             ChallengeType type,
-            Game game = Game.All,
+            Game game,
             ChallengeState1 state = ChallengeState1.All);
     }
 }

@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using eDoxa.Challenges.Domain.Entities.AggregateModels;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Enumerations;
+using eDoxa.Seedwork.Domain.Enumerations;
 
 using JetBrains.Annotations;
 
@@ -26,7 +26,7 @@ namespace eDoxa.Challenges.Domain.Repositories
 
         Task<IReadOnlyCollection<Challenge>> FindChallengesAsync(
             ChallengeType type,
-            Game game = Game.All,
+            Game game,
             ChallengeState1 state = ChallengeState1.All);
 
         [ItemCanBeNull]

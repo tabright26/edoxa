@@ -9,7 +9,7 @@
 // this source code package.
 
 using eDoxa.Security.Abstractions;
-using eDoxa.Seedwork.Enumerations;
+using eDoxa.Seedwork.Domain.Enumerations;
 
 using Moq;
 

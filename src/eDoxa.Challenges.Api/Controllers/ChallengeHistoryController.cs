@@ -15,7 +15,8 @@ using eDoxa.Challenges.Domain.Entities.AggregateModels;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.DTO.Queries;
 using eDoxa.Security.Abstractions;
-using eDoxa.Seedwork.Enumerations;
+using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Domain.Enumerations;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -42,11 +43,14 @@ namespace eDoxa.Challenges.Api.Controllers
         ///     Find the challenge history of a user.
         /// </summary>
         [HttpGet(Name = nameof(FindUserChallengeHistoryAsync))]
-        public async Task<IActionResult> FindUserChallengeHistoryAsync(ChallengeType type, Game game = Game.All, ChallengeState1 state = ChallengeState1.All)
+        public async Task<IActionResult> FindUserChallengeHistoryAsync(
+            string type,
+            string game,
+            ChallengeState1 state = ChallengeState1.All)
         {
             var userId = UserId.Parse(_userInfoService.Subject);
 
-            var challenges = await _queries.FindUserChallengeHistoryAsync(userId, type, game, state);
+            var challenges = await _queries.FindUserChallengeHistoryAsync(userId, Enumeration.FromAnyDisplayName<ChallengeType>(type), Enumeration.FromAnyDisplayName<Game>(game), state);
 
             return challenges
                 .Select(this.Ok)

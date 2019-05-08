@@ -40,6 +40,8 @@ namespace eDoxa.Identity.Infrastructure
             //{
             //    logger.LogInformation("The users already populated.");
             //}
+
+            await Task.CompletedTask;
         }
     }
 

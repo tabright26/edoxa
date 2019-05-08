@@ -19,7 +19,7 @@ using eDoxa.Challenges.DTO.Queries;
 using eDoxa.Functional.Maybe;
 using eDoxa.Security.Abstractions;
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Enumerations;
+using eDoxa.Seedwork.Domain.Enumerations;
 using eDoxa.Testing.MSTest.Extensions;
 
 using FluentAssertions;
@@ -69,7 +69,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
             var controller = new ChallengeHistoryController(_mockUserInfoService.Object, _queries.Object);
 
             // Act
-            var result = await controller.FindUserChallengeHistoryAsync(Enumeration.All<ChallengeType>());
+            var result = await controller.FindUserChallengeHistoryAsync(Enumeration.All<ChallengeType>().DisplayName, Enumeration.All<Game>().DisplayName);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -91,7 +91,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
             var controller = new ChallengeHistoryController(_mockUserInfoService.Object, _queries.Object);
 
             // Act
-            var result = await controller.FindUserChallengeHistoryAsync(Enumeration.All<ChallengeType>());
+            var result = await controller.FindUserChallengeHistoryAsync(Enumeration.All<ChallengeType>().DisplayName, Enumeration.All<Game>().DisplayName);
 
             // Assert
             result.Should().BeOfType<NoContentResult>();

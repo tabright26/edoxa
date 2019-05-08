@@ -16,7 +16,7 @@ using eDoxa.Challenges.Domain.Entities;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Factories;
 using eDoxa.Challenges.Domain.Repositories;
-using eDoxa.Seedwork.Enumerations;
+using eDoxa.Seedwork.Domain.Enumerations;
 using eDoxa.Testing.MSTest.Extensions;
 
 using Microsoft.Extensions.Logging;

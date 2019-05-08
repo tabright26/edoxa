@@ -13,7 +13,7 @@ using System;
 using eDoxa.Challenges.Domain.Entities;
 using eDoxa.Challenges.Domain.Entities.Abstractions;
 using eDoxa.Challenges.Domain.Services.LeagueOfLegends.Factories;
-using eDoxa.Seedwork.Enumerations;
+using eDoxa.Seedwork.Domain.Enumerations;
 
 namespace eDoxa.Challenges.Domain.Services.Factories
 {
@@ -25,16 +25,12 @@ namespace eDoxa.Challenges.Domain.Services.Factories
 
         public IPublisherStrategy CreatePublisherStrategy(PublisherInterval interval, Game game)
         {
-            switch (game)
+            if (game.Equals(Game.LeagueOfLegends))
             {
-                case Game.LeagueOfLegends:
-
-                    return LeagueOfLegendsChallengePublisherFactory.Instance.CreatePublisher(interval);
-
-                default:
-
-                    throw new NotImplementedException();
+                return LeagueOfLegendsChallengePublisherFactory.Instance.CreatePublisher(interval);
             }
+
+            throw new NotImplementedException();
         }
     }
 }

@@ -23,7 +23,7 @@ using eDoxa.Challenges.DTO.Queries;
 using eDoxa.Challenges.Infrastructure;
 using eDoxa.Functional.Maybe;
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Enumerations;
+using eDoxa.Seedwork.Domain.Enumerations;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -53,7 +53,7 @@ namespace eDoxa.Challenges.Application.Queries
                 .Include(NavigationPropertyPath)
                 .Where(
                     challenge => challenge.Participants.Any(participant => participant.UserId == userId) &&
-                                 (challenge.Game & game) != Game.None &&
+                                 (challenge.Game.Value & game.Value) != Enumeration.None<Game>().Value &&
                                  (challenge.Setup.Type.Value & type.Value) != Enumeration.None<ChallengeType>().Value &&
                                  (challenge.Timeline.State & state) != ChallengeState1.None
                 )
@@ -67,7 +67,7 @@ namespace eDoxa.Challenges.Application.Queries
                 .AsNoTracking()
                 .Include(NavigationPropertyPath)
                 .Where(
-                    challenge => (challenge.Game & game) != Game.None &&
+                    challenge => (challenge.Game.Value & game.Value) != Enumeration.None<Game>().Value &&
                                  (challenge.Setup.Type.Value & type.Value) != 0 &&
                                  (challenge.Timeline.State & state) != ChallengeState1.None
                 )

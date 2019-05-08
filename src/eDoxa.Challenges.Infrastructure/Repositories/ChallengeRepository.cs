@@ -19,7 +19,7 @@ using eDoxa.Challenges.Domain.Entities.AggregateModels.ParticipantAggregate;
 using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Enumerations;
+using eDoxa.Seedwork.Domain.Enumerations;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -63,7 +63,7 @@ namespace eDoxa.Challenges.Infrastructure.Repositories
             return await _context.Challenges.Include(ExpandParticipantMatchStats)
                 .Where(
                     challenge => (challenge.Setup.Type.Value & type.Value) != Enumeration.None<ChallengeType>().Value &&
-                                 (challenge.Game & game) != Game.None &&
+                                 (challenge.Game.Value & game.Value) != Enumeration.None<Game>().Value &&
                                  (challenge.Timeline.State & state) != ChallengeState1.None
                 )
                 .OrderBy(challenge => challenge.Timeline.StartedAt)

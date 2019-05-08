@@ -15,7 +15,7 @@ using System.Security.Claims;
 
 using eDoxa.Security.Abstractions;
 using eDoxa.Security.Extensions;
-using eDoxa.Seedwork.Enumerations;
+using eDoxa.Seedwork.Domain.Enumerations;
 
 using Microsoft.AspNetCore.Http;
 

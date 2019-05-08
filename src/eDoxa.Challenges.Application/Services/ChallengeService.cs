@@ -22,7 +22,7 @@ using eDoxa.Challenges.Domain.Services;
 using eDoxa.Challenges.Domain.Services.Factories;
 using eDoxa.Functional.Extensions;
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Enumerations;
+using eDoxa.Seedwork.Domain.Enumerations;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -44,24 +44,9 @@ namespace eDoxa.Challenges.Application.Services
             _challengeRepository = challengeRepository;
         }
 
-        // TODO: Create a enumerable class for games.
-        private static IEnumerable<Game> Games
-        {
-            get
-            {
-                var games = Enum.GetValues(typeof(Game)).Cast<Game>().ToList();
-
-                games.Remove(Game.None);
-
-                games.Remove(Game.All);
-
-                return games.ToArray();
-            }
-        }
-
         public async Task CompleteAsync(CancellationToken cancellationToken)
         {
-            var challenges = await _challengeRepository.FindChallengesAsync(Enumeration.All<ChallengeType>(), Game.All, ChallengeState1.Ended);
+            var challenges = await _challengeRepository.FindChallengesAsync(Enumeration.All<ChallengeType>(), Enumeration.All<Game>(), ChallengeState1.Ended);
 
             challenges.ForEach(challenge => challenge.Complete());
 
@@ -70,7 +55,7 @@ namespace eDoxa.Challenges.Application.Services
 
         public async Task PublishAsync(PublisherInterval interval, CancellationToken cancellationToken)
         {
-            foreach (var game in Games)
+            foreach (var game in Enumeration.GetAll<Game>())
             {
                 // TODO: Refactor this try catch.
                 try
