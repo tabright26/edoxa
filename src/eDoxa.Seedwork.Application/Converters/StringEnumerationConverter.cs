@@ -21,7 +21,7 @@ namespace eDoxa.Seedwork.Application.Converters
     {
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            if (value is Enumeration enumeration)
+            if (value is IEnumeration enumeration)
             {
                 writer.WriteValue(enumeration.DisplayName);
             }
@@ -74,7 +74,7 @@ namespace eDoxa.Seedwork.Application.Converters
     }
 
     public sealed class StringEnumerationConverter<TEnumeration> : JsonConverter<TEnumeration>
-    where TEnumeration : Enumeration, new()
+    where TEnumeration : Enumeration<TEnumeration>, new()
     {
         public override void WriteJson(JsonWriter writer, TEnumeration value, JsonSerializer serializer)
         {
@@ -103,11 +103,11 @@ namespace eDoxa.Seedwork.Application.Converters
 
                         var displayName = reader.Value.ToString();
 
-                        return displayName != string.Empty ? Enumeration.FromDisplayName<TEnumeration>(displayName) : null;
+                        return displayName != string.Empty ? Enumeration<TEnumeration>.FromDisplayName(displayName) : null;
 
                     case JsonToken.Integer:
 
-                        return Enumeration.FromValue<TEnumeration>((int) reader.Value);
+                        return Enumeration<TEnumeration>.FromValue((int) reader.Value);
 
                     default:
 

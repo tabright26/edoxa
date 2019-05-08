@@ -53,9 +53,9 @@ namespace eDoxa.Challenges.Application.Queries
                 .Include(NavigationPropertyPath)
                 .Where(
                     challenge => challenge.Participants.Any(participant => participant.UserId == userId) &&
-                                 (challenge.Game.Value & game.Value) != Enumeration.None<Game>().Value &&
-                                 (challenge.Setup.Type.Value & type.Value) != Enumeration.None<ChallengeType>().Value &&
-                                 (challenge.Timeline.State.Value & state.Value) != Enumeration.None<ChallengeState>().Value
+                                 (challenge.Game.Value & game.Value) != Game.None.Value &&
+                                 (challenge.Setup.Type.Value & type.Value) != ChallengeType.None.Value &&
+                                 (challenge.Timeline.State.Value & state.Value) != ChallengeState.None.Value
                 )
                 .OrderBy(challenge => challenge.Timeline.StartedAt)
                 .ToListAsync();
@@ -67,9 +67,9 @@ namespace eDoxa.Challenges.Application.Queries
                 .AsNoTracking()
                 .Include(NavigationPropertyPath)
                 .Where(
-                    challenge => (challenge.Game.Value & game.Value) != Enumeration.None<Game>().Value &&
-                                 (challenge.Setup.Type.Value & type.Value) != Enumeration.None<ChallengeType>().Value &&
-                                 (challenge.Timeline.State.Value & state.Value) != Enumeration.None<ChallengeState>().Value
+                    challenge => (challenge.Game.Value & game.Value) != Game.None.Value &&
+                                 (challenge.Setup.Type.Value & type.Value) != ChallengeType.None.Value &&
+                                 (challenge.Timeline.State.Value & state.Value) != ChallengeState.None.Value
                 )
                 .OrderBy(challenge => challenge.Game)
                 .ThenBy(challenge => challenge.Setup.Type)

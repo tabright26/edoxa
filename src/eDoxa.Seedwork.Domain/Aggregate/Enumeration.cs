@@ -15,8 +15,28 @@ using System.Reflection;
 
 namespace eDoxa.Seedwork.Domain.Aggregate
 {
-    public abstract partial class Enumeration
+    public interface IEnumeration
     {
+        int Value { get; }
+
+        string DisplayName { get; }
+    }
+
+    public abstract partial class Enumeration<TEnumeration> : IEnumeration
+    where TEnumeration : Enumeration<TEnumeration>, new()
+    {
+        public static readonly TEnumeration None = new TEnumeration
+        {
+            _value = 0,
+            _displayName = nameof(None)
+        };
+
+        public static readonly TEnumeration All = new TEnumeration
+        {
+            _value = -1,
+            _displayName = nameof(All)
+        };
+
         private string _displayName;
         private int _value;
 
@@ -34,44 +54,22 @@ namespace eDoxa.Seedwork.Domain.Aggregate
 
         public string DisplayName => _displayName;
 
-        public static TEnumeration None<TEnumeration>()
-        where TEnumeration : Enumeration, new()
+        public static TEnumeration FromAnyDisplayName(string displayName)
         {
-            return new TEnumeration
+            if (displayName == None.DisplayName)
             {
-                _value = 0,
-                _displayName = nameof(None)
-            };
-        }
-
-        public static TEnumeration All<TEnumeration>()
-        where TEnumeration : Enumeration, new()
-        {
-            return new TEnumeration
-            {
-                _value = -1,
-                _displayName = nameof(All)
-            };
-        }
-
-        public static TEnumeration FromAnyDisplayName<TEnumeration>(string displayName)
-        where TEnumeration : Enumeration, new()
-        {
-            if (displayName == None<TEnumeration>().DisplayName)
-            {
-                return None<TEnumeration>();
+                return None;
             }
 
-            if (displayName == All<TEnumeration>().DisplayName)
+            if (displayName == All.DisplayName)
             {
-                return All<TEnumeration>();
+                return All;
             }
 
-            return FromDisplayName<TEnumeration>(displayName);
+            return FromDisplayName(displayName);
         }
 
-        public static IEnumerable<TEnumeration> GetAll<TEnumeration>()
-        where TEnumeration : Enumeration, new()
+        public static IEnumerable<TEnumeration> GetAll()
         {
             foreach (var fieldInfo in typeof(TEnumeration).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly))
             {
@@ -82,10 +80,9 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             }
         }
 
-        private static TEnumeration Parse<TEnumeration, TKey>(TKey value, string description, Func<TEnumeration, bool> predicate)
-        where TEnumeration : Enumeration, new()
+        private static TEnumeration Parse<TKey>(TKey value, string description, Func<TEnumeration, bool> predicate)
         {
-            var enumeration = GetAll<TEnumeration>().FirstOrDefault(predicate);
+            var enumeration = GetAll().FirstOrDefault(predicate);
 
             if (enumeration == null)
             {
@@ -95,21 +92,14 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             return enumeration;
         }
 
-        public static int AbsoluteDifference(Enumeration left, Enumeration right)
+        public static TEnumeration FromValue(int value)
         {
-            return Math.Abs(left.Value - right.Value);
+            return Parse<int>(value, "value", enumeration => enumeration.Value == value);
         }
 
-        public static TEnumeration FromValue<TEnumeration>(int value)
-        where TEnumeration : Enumeration, new()
+        public static TEnumeration FromDisplayName(string displayName)
         {
-            return Parse<TEnumeration, int>(value, "value", enumeration => enumeration.Value == value);
-        }
-
-        public static TEnumeration FromDisplayName<TEnumeration>(string displayName)
-        where TEnumeration : Enumeration, new()
-        {
-            return Parse<TEnumeration, string>(displayName, "display name", enumeration => enumeration.DisplayName == displayName);
+            return Parse<string>(displayName, "display name", enumeration => enumeration.DisplayName == displayName);
         }
 
         public override string ToString()
@@ -118,16 +108,16 @@ namespace eDoxa.Seedwork.Domain.Aggregate
         }
     }
 
-    public abstract partial class Enumeration : IEquatable<Enumeration>
+    public abstract partial class Enumeration<TEnumeration> : IEquatable<TEnumeration>
     {
-        public bool Equals(Enumeration other)
+        public bool Equals(TEnumeration other)
         {
             return this.GetType() == other?.GetType() && _value.Equals(other._value);
         }
 
         public override bool Equals(object obj)
         {
-            return this.Equals(obj as Enumeration);
+            return this.Equals(obj as TEnumeration);
         }
 
         public override int GetHashCode()
@@ -136,14 +126,14 @@ namespace eDoxa.Seedwork.Domain.Aggregate
         }
     }
 
-    public abstract partial class Enumeration : IComparable, IComparable<Enumeration>
+    public abstract partial class Enumeration<TEnumeration> : IComparable, IComparable<TEnumeration>
     {
         public int CompareTo(object other)
         {
-            return this.CompareTo(other as Enumeration);
+            return this.CompareTo(other as TEnumeration);
         }
 
-        public int CompareTo(Enumeration other)
+        public int CompareTo(TEnumeration other)
         {
             return _value.CompareTo(other?._value);
         }

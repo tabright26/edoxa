@@ -12,7 +12,7 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
 {
-    public sealed class ChallengeType : Enumeration
+    public sealed class ChallengeType : Enumeration<ChallengeType>
     {
         public static readonly ChallengeType Default = new ChallengeType(1 << 0, nameof(Default));
         public static readonly ChallengeType Random = new ChallengeType(1 << 1, nameof(Random));

@@ -47,7 +47,7 @@ namespace eDoxa.Challenges.Api.Controllers
         {
             var userId = UserId.Parse(_userInfoService.Subject);
 
-            var challenges = await _queries.FindUserChallengeHistoryAsync(userId, Enumeration.FromAnyDisplayName<ChallengeType>(type), Enumeration.FromAnyDisplayName<Game>(game), Enumeration.FromAnyDisplayName<ChallengeState>(state));
+            var challenges = await _queries.FindUserChallengeHistoryAsync(userId, ChallengeType.FromAnyDisplayName(type), Game.FromAnyDisplayName(game), ChallengeState.FromAnyDisplayName(state));
 
             return challenges
                 .Select(this.Ok)

@@ -36,7 +36,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
             var serviceChargeRatio = ServiceChargeRatio.DefaultValue;
 
             // Act
-            var setup = FakeDefaultChallengeFactory.CreateChallengeSetup(Enumeration.All<ChallengeType>());
+            var setup = FakeDefaultChallengeFactory.CreateChallengeSetup(ChallengeType.All);
 
             // Assert
             setup.BestOf.Should().Be(bestOf);

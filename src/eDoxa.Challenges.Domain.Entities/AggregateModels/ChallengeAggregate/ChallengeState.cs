@@ -12,7 +12,7 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
 {
-    public sealed class ChallengeState : Enumeration
+    public sealed class ChallengeState : Enumeration<ChallengeState>
     {
         public static readonly ChallengeState Draft = new ChallengeState(1 << 0, nameof(Draft));
         public static readonly ChallengeState Configured = new ChallengeState(1 << 1, nameof(Configured));

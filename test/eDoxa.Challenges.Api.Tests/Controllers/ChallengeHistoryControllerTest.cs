@@ -69,7 +69,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
             var controller = new ChallengeHistoryController(_mockUserInfoService.Object, _queries.Object);
 
             // Act
-            var result = await controller.FindUserChallengeHistoryAsync(Enumeration.All<ChallengeType>().DisplayName, Enumeration.All<Game>().DisplayName, Enumeration.All<ChallengeState>().DisplayName);
+            var result = await controller.FindUserChallengeHistoryAsync(ChallengeType.All.DisplayName, Game.All.DisplayName, ChallengeState.All.DisplayName);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -91,7 +91,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
             var controller = new ChallengeHistoryController(_mockUserInfoService.Object, _queries.Object);
 
             // Act
-            var result = await controller.FindUserChallengeHistoryAsync(Enumeration.All<ChallengeType>().DisplayName, Enumeration.All<Game>().DisplayName, Enumeration.All<ChallengeState>().DisplayName);
+            var result = await controller.FindUserChallengeHistoryAsync(ChallengeType.All.DisplayName, Game.All.DisplayName, ChallengeState.All.DisplayName);
 
             // Assert
             result.Should().BeOfType<NoContentResult>();

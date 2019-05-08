@@ -12,7 +12,7 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Seedwork.Domain.Enumerations
 {
-    public sealed class Game : Enumeration
+    public sealed class Game : Enumeration<Game>
     {
         public static readonly Game LeagueOfLegends = new Game(1 << 0, nameof(LeagueOfLegends));
         public static readonly Game CSGO = new Game(1 << 1, nameof(CSGO));

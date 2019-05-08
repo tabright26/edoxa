@@ -36,7 +36,7 @@ namespace eDoxa.Challenges.Infrastructure.Configurations
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.Property(challenge => challenge.Game)
-                .HasConversion(type => type.Value, value => Enumeration.FromValue<Game>(value))
+                .HasConversion(type => type.Value, value => Game.FromValue(value))
                 .IsRequired()
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 
@@ -50,7 +50,7 @@ namespace eDoxa.Challenges.Infrastructure.Configurations
                 challengeSetup =>
                 {
                     challengeSetup.Property(setup => setup.Type)
-                        .HasConversion(type => type.Value, value => Enumeration.FromValue<ChallengeType>(value))
+                        .HasConversion(type => type.Value, value => ChallengeType.FromValue(value))
                         .IsRequired()
                         .HasColumnName(nameof(ChallengeSetup.Type))
                         .UsePropertyAccessMode(PropertyAccessMode.Field);

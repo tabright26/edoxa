@@ -108,7 +108,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
 
                     // Act
                     var challenges =
-                        await repository.FindChallengesAsync(Enumeration.All<ChallengeType>(), Enumeration.All<Game>(), Enumeration.All<ChallengeState>());
+                        await repository.FindChallengesAsync(ChallengeType.All, Game.All, ChallengeState.All);
 
                     // Assert
                     ChallengeRepositoryAssert.IsLoaded(challenges);
@@ -128,7 +128,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
 
                     // Act
                     var challenges =
-                        await repository.FindChallengesAsync(Enumeration.All<ChallengeType>(), Enumeration.All<Game>(), Enumeration.All<ChallengeState>());
+                        await repository.FindChallengesAsync(ChallengeType.All, Game.All, ChallengeState.All);
 
                     // Assert
                     challenges.Should().BeEmpty();
@@ -271,8 +271,8 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
             {
                 challenge.Should().NotBeNull();
                 challenge.Id.ToGuid().Should().NotBeEmpty();
-                challenge.Game.Should().NotBe(Enumeration.All<Game>());
-                challenge.Game.Should().NotBe(Enumeration.None<Game>());
+                challenge.Game.Should().NotBe(Game.All);
+                challenge.Game.Should().NotBe(Game.None);
                 challenge.Name.ToString().Should().NotBeNullOrWhiteSpace();
                 challenge.Setup.Should().NotBeNull();
                 challenge.Timeline.Should().NotBeNull();

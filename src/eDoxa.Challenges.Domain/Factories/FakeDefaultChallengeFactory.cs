@@ -200,7 +200,7 @@ namespace eDoxa.Challenges.Domain.Factories
     {
         public Participant CreateParticipant(int? bestOf = null)
         {
-            var setup = this.CreateChallengeSetup(Enumeration.All<ChallengeType>(), bestOf ?? BestOf.DefaultValue);
+            var setup = this.CreateChallengeSetup(ChallengeType.All, bestOf ?? BestOf.DefaultValue);
 
             var challenge = this.CreateChallenge(setup: setup);
 

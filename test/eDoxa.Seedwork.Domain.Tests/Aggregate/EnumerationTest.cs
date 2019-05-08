@@ -22,7 +22,7 @@ namespace eDoxa.Seedwork.Domain.Tests.Aggregate
         [TestMethod]
         public void GetEnums()
         {
-            var enums = Enumeration.GetAll<MockEnumeration>();
+            var enums = MockEnumeration.GetAll();
         }
 
         [TestMethod]
@@ -33,7 +33,7 @@ namespace eDoxa.Seedwork.Domain.Tests.Aggregate
             //var types = EnumerationUtils.GetSuperclassTypes();
         }
 
-        private sealed class MockEnumeration : Enumeration
+        private sealed class MockEnumeration : Enumeration<MockEnumeration>
         {
             public static readonly MockEnumeration Enumeration1 = new MockEnumeration(1 << 0, nameof(Enumeration1));
             public static readonly MockEnumeration Enumeration2 = new MockEnumeration(1 << 1, nameof(Enumeration2));
