@@ -33,36 +33,38 @@ namespace eDoxa.Seedwork.Application.Converters
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            if (reader.TokenType == JsonToken.Null)
-            {
-                return null;
-            }
+            return null;
 
-            try
-            {
-                //switch (reader.TokenType)
-                //{
-                //    case JsonToken.String:
+            //if (reader.TokenType == JsonToken.Null)
+            //{
 
-                //        var displayName = reader.Value.ToString();
+            //}
 
-                //        return displayName != string.Empty ? Enumeration.FromDisplayName<TEnumeration>(displayName) : null;
+            //try
+            //{
+            //    //switch (reader.TokenType)
+            //    //{
+            //    //    case JsonToken.String:
 
-                //    case JsonToken.Integer:
+            //    //        var displayName = reader.Value.ToString();
 
-                //        return Enumeration.FromValue<TEnumeration>((int)reader.Value);
+            //    //        return displayName != string.Empty ? Enumeration.FromDisplayName<TEnumeration>(displayName) : null;
 
-                //    default:
+            //    //    case JsonToken.Integer:
 
-                //        throw new JsonSerializationException($"Unexpected token {reader.TokenType} when parsing enumeration.");
-                //}
-            }
-            catch (Exception exception)
-            {
-                throw new JsonSerializationException($"Error converting value {reader.Value} to type '{objectType}'.", exception);
-            }
+            //    //        return Enumeration.FromValue<TEnumeration>((int)reader.Value);
 
-            throw new JsonSerializationException($"Unexpected token {reader.TokenType} when parsing enumeration.");
+            //    //    default:
+
+            //    //        throw new JsonSerializationException($"Unexpected token {reader.TokenType} when parsing enumeration.");
+            //    //}
+            //}
+            //catch (Exception exception)
+            //{
+            //    throw new JsonSerializationException($"Error converting value {reader.Value} to type '{objectType}'.", exception);
+            //}
+
+            //throw new JsonSerializationException($"Unexpected token {reader.TokenType} when parsing enumeration.");
         }
 
         public override bool CanConvert(Type objectType)

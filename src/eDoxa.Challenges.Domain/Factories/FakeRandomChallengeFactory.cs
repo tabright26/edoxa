@@ -111,13 +111,9 @@ namespace eDoxa.Challenges.Domain.Factories
 
         private static IEnumerable<ChallengeState> OtherStates(ChallengeState state)
         {
-            var states = Enum.GetValues(typeof(ChallengeState)).Cast<ChallengeState>().ToList();
+            var states = Enumeration.GetAll<ChallengeState>().ToList();
 
             states.Remove(state);
-
-            states.Remove(Enumeration.None<ChallengeState>());
-
-            states.Remove(Enumeration.All<ChallengeState>());
 
             return states;
         }

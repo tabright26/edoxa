@@ -32,11 +32,7 @@ namespace eDoxa.Seedwork.Application.Extensions
 
             builder.AddControllersAsServices();
 
-            builder.AddJsonOptions(options =>
-            {
-                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                options.SerializerSettings.Converters.Add(new StringEnumerationConverter());
-            });
+            builder.AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
             builder.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
