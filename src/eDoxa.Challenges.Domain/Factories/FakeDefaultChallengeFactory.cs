@@ -1,4 +1,4 @@
-﻿// Filename: FakeChallengeFactory.cs
+﻿// Filename: FakeDefaultChallengeFactory.cs
 // Date Created: 2019-05-07
 // 
 // ================================================
@@ -30,21 +30,22 @@ namespace eDoxa.Challenges.Domain.Factories
 {
     public sealed partial class FakeDefaultChallengeFactory
     {
-        private static readonly Lazy<FakeDefaultChallengeFactory> Lazy = new Lazy<FakeDefaultChallengeFactory>(() => new FakeDefaultChallengeFactory());
-
-        public static FakeDefaultChallengeFactory Instance => Lazy.Value;
-
         public const string Kills = nameof(Kills);
         public const string Deaths = nameof(Deaths);
         public const string Assists = nameof(Assists);
         public const string TotalDamageDealtToChampions = nameof(TotalDamageDealtToChampions);
         public const string TotalHeal = nameof(TotalHeal);
-        
+        private static readonly Lazy<FakeDefaultChallengeFactory> Lazy = new Lazy<FakeDefaultChallengeFactory>(() => new FakeDefaultChallengeFactory());
+
         private static readonly LinkedMatch AdminLinkedMatch = new LinkedMatch(2973265231);
         private static readonly Random Random = new Random();
 
-        public Challenge CreateChallenge(ChallengeState1 state = ChallengeState1.Opened, ChallengeSetup setup = null)
+        public static FakeDefaultChallengeFactory Instance => Lazy.Value;
+
+        public Challenge CreateChallenge(ChallengeState state = null, ChallengeSetup setup = null)
         {
+            state = state ?? ChallengeState.Opened;
+
             setup = setup ?? new DefaultChallengeSetup();
 
             var challenge = new Challenge(Game.LeagueOfLegends, new ChallengeName(nameof(Challenge)), setup);
@@ -53,7 +54,7 @@ namespace eDoxa.Challenges.Domain.Factories
 
             challenge.GetType().GetField("_timeline", BindingFlags.Instance | BindingFlags.NonPublic)?.SetValue(challenge, timeline);
 
-            if (state >= ChallengeState1.Opened)
+            if (state.Value >= ChallengeState.Opened.Value)
             {
                 var scoring = new Option<IScoring>(this.CreateScoring());
 
@@ -101,38 +102,41 @@ namespace eDoxa.Challenges.Domain.Factories
                 new ServiceChargeRatio(serviceChargeRatio), type);
         }
 
-        public Timeline CreateChallengeTimeline(ChallengeState1 state = ChallengeState1.Draft)
+        public Timeline CreateChallengeTimeline(ChallengeState state = null)
         {
-            switch (state)
+            state = state ?? ChallengeState.Draft;
+            
+            if (state.Equals(ChallengeState.Draft))
             {
-                case ChallengeState1.Draft:
-
-                    return CreateChallengeTimelineAsDraft();
-
-                case ChallengeState1.Configured:
-
-                    return CreateChallengeTimelineAsConfigured();
-
-                case ChallengeState1.Opened:
-
-                    return CreateChallengeTimelineAsOpened();
-
-                case ChallengeState1.InProgress:
-
-                    return CreateChallengeTimelineAsInProgress();
-
-                case ChallengeState1.Ended:
-
-                    return CreateChallengeTimelineAsEnded();
-
-                case ChallengeState1.Closed:
-
-                    return CreateChallengeTimelineAsClosed();
-
-                default:
-
-                    throw new ArgumentOutOfRangeException(nameof(state));
+                return CreateChallengeTimelineAsDraft();
             }
+
+            if (state.Equals(ChallengeState.Configured))
+            {
+                return CreateChallengeTimelineAsConfigured();
+            }
+
+            if (state.Equals(ChallengeState.Opened))
+            {
+                return CreateChallengeTimelineAsOpened();
+            }
+
+            if (state.Equals(ChallengeState.InProgress))
+            {
+                return CreateChallengeTimelineAsInProgress();
+            }
+
+            if (state.Equals(ChallengeState.Ended))
+            {
+                return CreateChallengeTimelineAsEnded();
+            }
+
+            if (state.Equals(ChallengeState.Closed))
+            {
+                return CreateChallengeTimelineAsClosed();
+            }
+
+            throw new ArgumentOutOfRangeException(nameof(state));
         }
 
         private static Timeline CreateChallengeTimelineAsDraft()
@@ -265,7 +269,7 @@ namespace eDoxa.Challenges.Domain.Factories
 
         public Scoreboard CreateScoreboard()
         {
-            return new Scoreboard(this.CreateChallenge(ChallengeState1.Ended));
+            return new Scoreboard(this.CreateChallenge(ChallengeState.Ended));
         }
 
         //public PrizePool CreatePrizePool(int prizePool)

@@ -44,8 +44,8 @@ namespace eDoxa.Challenges.Application.Tests.Services
         public async Task CompleteAsync_ShouldBeCompletedTask()
         {
             // Arrange
-            _mockChallengeRepository.Setup(mock => mock.FindChallengesAsync(It.IsAny<ChallengeType>(), It.IsAny<Game>(), ChallengeState1.Ended))
-                .ReturnsAsync(FakeRandomChallengeFactory.CreateRandomChallenges(ChallengeState1.Ended))
+            _mockChallengeRepository.Setup(mock => mock.FindChallengesAsync(It.IsAny<ChallengeType>(), It.IsAny<Game>(), ChallengeState.Ended))
+                .ReturnsAsync(FakeRandomChallengeFactory.CreateRandomChallenges(ChallengeState.Ended))
                 .Verifiable();
 
             _mockChallengeRepository.Setup(mock => mock.UnitOfWork.CommitAndDispatchDomainEventsAsync(It.IsAny<CancellationToken>()))
@@ -58,7 +58,7 @@ namespace eDoxa.Challenges.Application.Tests.Services
             // Assert
             await service.CompleteAsync(default);
 
-            _mockChallengeRepository.Verify(mock => mock.FindChallengesAsync(It.IsAny<ChallengeType>(), It.IsAny<Game>(), ChallengeState1.Ended), Times.Once);
+            _mockChallengeRepository.Verify(mock => mock.FindChallengesAsync(It.IsAny<ChallengeType>(), It.IsAny<Game>(), ChallengeState.Ended), Times.Once);
 
             _mockChallengeRepository.Verify(mock => mock.UnitOfWork.CommitAndDispatchDomainEventsAsync(It.IsAny<CancellationToken>()), Times.Once);
         }

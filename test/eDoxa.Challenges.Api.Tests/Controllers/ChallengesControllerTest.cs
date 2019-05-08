@@ -56,14 +56,14 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
                 }
             };
 
-            _queries.Setup(queries => queries.FindChallengesAsync(It.IsAny<ChallengeType>(), It.IsAny<Game>(), It.IsAny<ChallengeState1>()))
+            _queries.Setup(queries => queries.FindChallengesAsync(It.IsAny<ChallengeType>(), It.IsAny<Game>(), It.IsAny<ChallengeState>()))
                 .ReturnsAsync(new Option<ChallengeListDTO>(value))
                 .Verifiable();
 
             var controller = new ChallengesController(_queries.Object);
 
             // Act
-            var result = await controller.FindChallengesAsync(Enumeration.All<ChallengeType>().DisplayName, Enumeration.All<Game>().DisplayName);
+            var result = await controller.FindChallengesAsync(Enumeration.All<ChallengeType>().DisplayName, Enumeration.All<Game>().DisplayName, Enumeration.All<ChallengeState>().DisplayName);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -77,14 +77,14 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
         public async Task FindChallengesAsync_ShouldBeNoContentResult()
         {
             // Arrange
-            _queries.Setup(queries => queries.FindChallengesAsync(It.IsAny<ChallengeType>(), It.IsAny<Game>(), It.IsAny<ChallengeState1>()))
+            _queries.Setup(queries => queries.FindChallengesAsync(It.IsAny<ChallengeType>(), It.IsAny<Game>(), It.IsAny<ChallengeState>()))
                 .ReturnsAsync(new Option<ChallengeListDTO>())
                 .Verifiable();
 
             var controller = new ChallengesController(_queries.Object);
 
             // Act
-            var result = await controller.FindChallengesAsync(Enumeration.All<ChallengeType>().DisplayName, Enumeration.All<Game>().DisplayName);
+            var result = await controller.FindChallengesAsync(Enumeration.All<ChallengeType>().DisplayName, Enumeration.All<Game>().DisplayName, Enumeration.All<ChallengeState>().DisplayName);
 
             // Assert
             result.Should().BeOfType<NoContentResult>();

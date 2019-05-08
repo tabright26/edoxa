@@ -39,7 +39,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
             timeline.StartedAt.Should().BeNull();
             timeline.EndedAt.Should().BeNull();
             timeline.ClosedAt.Should().BeNull();
-            timeline.State.Should().HaveFlag(ChallengeState1.Draft);
+            timeline.State.Should().Be(ChallengeState.Draft);
         }
 
         [TestMethod]
@@ -114,7 +114,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
         {
             // Arrange
             var extensionPeriod = TimelineExtensionPeriod.Min;
-            var timeline = FakeDefaultChallengeFactory.CreateChallengeTimeline(ChallengeState1.Configured);
+            var timeline = FakeDefaultChallengeFactory.CreateChallengeTimeline(ChallengeState.Configured);
 
             // Act
             var action = new Action(() =>
@@ -134,72 +134,72 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
             var state = timeline.State;
 
             // Assert
-            state.Should().HaveFlag(ChallengeState1.Draft);
+            state.Should().Be(ChallengeState.Draft);
         }
 
         [TestMethod]
         public void State_IsConfigured_ShouldBeTrue()
         {
             // Arrange
-            var timeline = FakeDefaultChallengeFactory.CreateChallengeTimeline(ChallengeState1.Configured);
+            var timeline = FakeDefaultChallengeFactory.CreateChallengeTimeline(ChallengeState.Configured);
 
             // Act
             var state = timeline.State;
 
             // Assert
-            state.Should().HaveFlag(ChallengeState1.Configured);
+            state.Should().Be(ChallengeState.Configured);
         }
 
         [TestMethod]
         public void State_IsOpened_ShouldBeTrue()
         {
             // Arrange
-            var timeline = FakeDefaultChallengeFactory.CreateChallengeTimeline(ChallengeState1.Opened);
+            var timeline = FakeDefaultChallengeFactory.CreateChallengeTimeline(ChallengeState.Opened);
 
             // Act
             var state = timeline.State;
 
             // Assert
-            state.Should().HaveFlag(ChallengeState1.Opened);
+            state.Should().Be(ChallengeState.Opened);
         }
 
         [TestMethod]
         public void State_IsStarted_ShouldBeTrue()
         {
             // Arrange
-            var timeline = FakeDefaultChallengeFactory.CreateChallengeTimeline(ChallengeState1.InProgress);
+            var timeline = FakeDefaultChallengeFactory.CreateChallengeTimeline(ChallengeState.InProgress);
 
             // Act
             var state = timeline.State;
 
             // Assert
-            state.Should().HaveFlag(ChallengeState1.InProgress);
+            state.Should().Be(ChallengeState.InProgress);
         }
 
         [TestMethod]
         public void State_IsEnded_ShouldBeTrue()
         {
             // Arrange
-            var timeline = FakeDefaultChallengeFactory.CreateChallengeTimeline(ChallengeState1.Ended);
+            var timeline = FakeDefaultChallengeFactory.CreateChallengeTimeline(ChallengeState.Ended);
 
             // Act
             var state = timeline.State;
 
             // Assert
-            state.Should().HaveFlag(ChallengeState1.Ended);
+            state.Should().Be(ChallengeState.Ended);
         }
 
         [TestMethod]
         public void State_IsClosed_ShouldBeTrue()
         {
             // Arrange
-            var timeline = FakeDefaultChallengeFactory.CreateChallengeTimeline(ChallengeState1.Closed);
+            var timeline = FakeDefaultChallengeFactory.CreateChallengeTimeline(ChallengeState.Closed);
 
             // Act
             var state = timeline.State;
 
             // Assert
-            state.Should().HaveFlag(ChallengeState1.Closed);
+            state.Should().Be(ChallengeState.Closed);
         }
     }
 }

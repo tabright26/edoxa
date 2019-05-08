@@ -41,12 +41,9 @@ namespace eDoxa.Challenges.Api.Controllers
         ///     Find the challenges.
         /// </summary>
         [HttpGet(Name = nameof(FindChallengesAsync))]
-        public async Task<IActionResult> FindChallengesAsync(
-            string type,
-            string game,
-            ChallengeState1 state = ChallengeState1.All)
+        public async Task<IActionResult> FindChallengesAsync(string type, string game, string state)
         {
-            var challenges = await _queries.FindChallengesAsync(FromAnyDisplayName<ChallengeType>(type), FromAnyDisplayName<Game>(game), state);
+            var challenges = await _queries.FindChallengesAsync(FromAnyDisplayName<ChallengeType>(type), FromAnyDisplayName<Game>(game), FromAnyDisplayName<ChallengeState>(state));
 
             return challenges
                 .Select(this.Ok)

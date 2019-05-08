@@ -33,7 +33,7 @@ namespace eDoxa.Challenges.Infrastructure
         {
             if (!Challenges.Any())
             {
-                var challenges = FakeRandomChallengeFactory.CreateRandomChallengesWithOtherStates(ChallengeState1.Opened);
+                var challenges = FakeRandomChallengeFactory.CreateRandomChallengesWithOtherStates(ChallengeState.Opened);
 
                 Challenges.AddRange(challenges);
 

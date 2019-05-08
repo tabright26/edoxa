@@ -126,7 +126,7 @@ namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
 
         public DateTime? EndedAt => _publishedAt + _registrationPeriod + _extensionPeriod;
 
-        public ChallengeState1 State => new ChallengeTimelineState(this).Current;
+        public ChallengeState State => new TimelineState(this).Current;
 
         public Timeline Configure(DateTime publishedAt, TimeSpan registrationPeriod, TimeSpan extensionPeriod)
         {

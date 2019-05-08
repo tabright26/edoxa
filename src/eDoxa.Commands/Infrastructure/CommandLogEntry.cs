@@ -11,7 +11,6 @@
 using System;
 
 using eDoxa.Commands.Abstractions;
-using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Infrastructure.Models;
 
 using Microsoft.AspNetCore.Http;

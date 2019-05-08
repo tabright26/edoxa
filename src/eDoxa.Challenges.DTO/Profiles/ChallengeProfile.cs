@@ -34,7 +34,7 @@ namespace eDoxa.Challenges.DTO.Profiles
                     config =>
                     {
                         config.MapFrom(challenge => challenge.Scoring.SingleOrDefault());
-                        config.Condition(challenge => challenge.Timeline.State >= ChallengeState1.Opened);
+                        config.Condition(challenge => challenge.Timeline.State.Value >= ChallengeState.Opened.Value);
                     }
                 )
                 .ForMember(challenge => challenge.Payout, config => config.MapFrom(challenge => PayoutFactory.Instance.CreatePayout(challenge).Payout))

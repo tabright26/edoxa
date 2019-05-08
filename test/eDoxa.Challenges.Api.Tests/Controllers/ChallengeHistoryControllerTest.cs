@@ -62,14 +62,14 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
             };
 
             _queries.Setup(queries =>
-                    queries.FindUserChallengeHistoryAsync(It.IsAny<UserId>(), It.IsAny<ChallengeType>(), It.IsAny<Game>(), It.IsAny<ChallengeState1>()))
+                    queries.FindUserChallengeHistoryAsync(It.IsAny<UserId>(), It.IsAny<ChallengeType>(), It.IsAny<Game>(), It.IsAny<ChallengeState>()))
                 .ReturnsAsync(new Option<ChallengeListDTO>(value))
                 .Verifiable();
 
             var controller = new ChallengeHistoryController(_mockUserInfoService.Object, _queries.Object);
 
             // Act
-            var result = await controller.FindUserChallengeHistoryAsync(Enumeration.All<ChallengeType>().DisplayName, Enumeration.All<Game>().DisplayName);
+            var result = await controller.FindUserChallengeHistoryAsync(Enumeration.All<ChallengeType>().DisplayName, Enumeration.All<Game>().DisplayName, Enumeration.All<ChallengeState>().DisplayName);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -84,14 +84,14 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
         {
             // Arrange
             _queries.Setup(queries =>
-                    queries.FindUserChallengeHistoryAsync(It.IsAny<UserId>(), It.IsAny<ChallengeType>(), It.IsAny<Game>(), It.IsAny<ChallengeState1>()))
+                    queries.FindUserChallengeHistoryAsync(It.IsAny<UserId>(), It.IsAny<ChallengeType>(), It.IsAny<Game>(), It.IsAny<ChallengeState>()))
                 .ReturnsAsync(new Option<ChallengeListDTO>())
                 .Verifiable();
 
             var controller = new ChallengeHistoryController(_mockUserInfoService.Object, _queries.Object);
 
             // Act
-            var result = await controller.FindUserChallengeHistoryAsync(Enumeration.All<ChallengeType>().DisplayName, Enumeration.All<Game>().DisplayName);
+            var result = await controller.FindUserChallengeHistoryAsync(Enumeration.All<ChallengeType>().DisplayName, Enumeration.All<Game>().DisplayName, Enumeration.All<ChallengeState>().DisplayName);
 
             // Assert
             result.Should().BeOfType<NoContentResult>();

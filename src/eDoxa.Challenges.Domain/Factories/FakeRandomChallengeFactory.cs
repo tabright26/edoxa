@@ -17,6 +17,7 @@ using System.Reflection;
 using eDoxa.Challenges.Domain.Entities.AggregateModels;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ParticipantAggregate;
+using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Challenges.Domain.Factories
 {
@@ -30,8 +31,10 @@ namespace eDoxa.Challenges.Domain.Factories
 
         public static FakeRandomChallengeFactory Instance => Lazy.Value;
 
-        public IReadOnlyCollection<Challenge> CreateRandomChallenges(ChallengeState1 state = ChallengeState1.Opened)
+        public IReadOnlyCollection<Challenge> CreateRandomChallenges(ChallengeState state = null)
         {
+            state = state ?? ChallengeState.Opened;
+
             var challenges = new Collection<Challenge>();
 
             for (var row = 0; row < DefaultRandomChallengeCount; row++)
@@ -42,26 +45,28 @@ namespace eDoxa.Challenges.Domain.Factories
             return challenges;
         }
 
-        public Challenge CreateRandomChallenge(ChallengeState1 state = ChallengeState1.Opened)
+        public Challenge CreateRandomChallenge(ChallengeState state = null)
         {
+            state = state ?? ChallengeState.Opened;
+
             return this.CreateRandomChallenges(state).First();
         }
 
-        public IReadOnlyCollection<Challenge> CreateRandomChallengesWithOtherStates(ChallengeState1 state)
+        public IReadOnlyCollection<Challenge> CreateRandomChallengesWithOtherStates(ChallengeState state)
         {
             return this.CreateRandomChallenges(state).Union(this.CreateOtherRandomChallenges(state)).ToList();
         }
 
-        private Challenge CreateRandomChallengeFromState(ChallengeState1 state)
+        private Challenge CreateRandomChallengeFromState(ChallengeState state)
         {
             var challenge = FakeDefaultChallengeFactory.CreateChallenge(state);
 
-            if (state >= ChallengeState1.Opened)
+            if (state.Value >= ChallengeState.Opened.Value)
             {
                 var timeline = challenge.Timeline;
 
                 challenge.GetType().GetField("_timeline", BindingFlags.Instance | BindingFlags.NonPublic)
-                    ?.SetValue(challenge, FakeDefaultChallengeFactory.CreateChallengeTimeline(ChallengeState1.Opened));
+                    ?.SetValue(challenge, FakeDefaultChallengeFactory.CreateChallengeTimeline(ChallengeState.Opened));
 
                 for (var row = 0; row < Random.Next(1, challenge.Setup.Entries + 1); row++)
                 {
@@ -71,7 +76,7 @@ namespace eDoxa.Challenges.Domain.Factories
                 }
 
                 challenge.GetType().GetField("_timeline", BindingFlags.Instance | BindingFlags.NonPublic)
-                    ?.SetValue(challenge, FakeDefaultChallengeFactory.CreateChallengeTimeline(ChallengeState1.InProgress));
+                    ?.SetValue(challenge, FakeDefaultChallengeFactory.CreateChallengeTimeline(ChallengeState.InProgress));
 
                 foreach (var participant in challenge.Participants)
                 {
@@ -89,7 +94,7 @@ namespace eDoxa.Challenges.Domain.Factories
             return challenge;
         }
 
-        private IReadOnlyCollection<Challenge> CreateOtherRandomChallenges(ChallengeState1 state)
+        private IReadOnlyCollection<Challenge> CreateOtherRandomChallenges(ChallengeState state)
         {
             var challenges = new Collection<Challenge>();
 
@@ -104,15 +109,15 @@ namespace eDoxa.Challenges.Domain.Factories
             return challenges;
         }
 
-        private static IEnumerable<ChallengeState1> OtherStates(ChallengeState1 state)
+        private static IEnumerable<ChallengeState> OtherStates(ChallengeState state)
         {
-            var states = Enum.GetValues(typeof(ChallengeState1)).Cast<ChallengeState1>().ToList();
+            var states = Enum.GetValues(typeof(ChallengeState)).Cast<ChallengeState>().ToList();
 
             states.Remove(state);
 
-            states.Remove(ChallengeState1.None);
+            states.Remove(Enumeration.None<ChallengeState>());
 
-            states.Remove(ChallengeState1.All);
+            states.Remove(Enumeration.All<ChallengeState>());
 
             return states;
         }

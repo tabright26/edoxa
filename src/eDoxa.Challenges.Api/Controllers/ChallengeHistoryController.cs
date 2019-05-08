@@ -43,14 +43,11 @@ namespace eDoxa.Challenges.Api.Controllers
         ///     Find the challenge history of a user.
         /// </summary>
         [HttpGet(Name = nameof(FindUserChallengeHistoryAsync))]
-        public async Task<IActionResult> FindUserChallengeHistoryAsync(
-            string type,
-            string game,
-            ChallengeState1 state = ChallengeState1.All)
+        public async Task<IActionResult> FindUserChallengeHistoryAsync(string type, string game, string state)
         {
             var userId = UserId.Parse(_userInfoService.Subject);
 
-            var challenges = await _queries.FindUserChallengeHistoryAsync(userId, Enumeration.FromAnyDisplayName<ChallengeType>(type), Enumeration.FromAnyDisplayName<Game>(game), state);
+            var challenges = await _queries.FindUserChallengeHistoryAsync(userId, Enumeration.FromAnyDisplayName<ChallengeType>(type), Enumeration.FromAnyDisplayName<Game>(game), Enumeration.FromAnyDisplayName<ChallengeState>(state));
 
             return challenges
                 .Select(this.Ok)

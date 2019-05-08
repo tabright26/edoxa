@@ -14,7 +14,6 @@ using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Domain.Enumerations;
 
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace eDoxa.Challenges.DTO
 {
@@ -24,16 +23,18 @@ namespace eDoxa.Challenges.DTO
         [JsonProperty("id")] public Guid Id { get; set; }
 
         [JsonProperty("game")]
+        //[JsonConverter(typeof(StringEnumerationConverter))]
         public Game Game { get; set; }
 
         [JsonProperty("name")] public string Name { get; set; }
-
+        
         [JsonProperty("type")]
+        //[JsonConverter(typeof(StringEnumerationConverter))]
         public ChallengeType Type { get; set; }
 
         [JsonProperty("state")]
-        [JsonConverter(typeof(StringEnumConverter))]
-        public ChallengeState1 State { get; set; }
+        //[JsonConverter(typeof(StringEnumerationConverter))]
+        public ChallengeState State { get; set; }
 
         [JsonProperty("setup")] public ChallengeSetupDTO Setup { get; set; }
 

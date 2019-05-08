@@ -12,21 +12,21 @@ using System;
 
 namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
 {
-    public sealed class ChallengeTimelineState
+    public sealed class TimelineState
     {
         private readonly Timeline _timeline;
 
-        public ChallengeTimelineState(Timeline timeline)
+        public TimelineState(Timeline timeline)
         {
             _timeline = timeline;
         }
 
-        public ChallengeState1 Current =>
-            this.IsClosed() ? ChallengeState1.Closed :
-            this.IsEnded() ? ChallengeState1.Ended :
-            this.IsInProgress() ? ChallengeState1.InProgress :
-            this.IsOpened() ? ChallengeState1.Opened :
-            this.IsConfigured() ? ChallengeState1.Configured : ChallengeState1.Draft;
+        public ChallengeState Current =>
+            this.IsClosed() ? ChallengeState.Closed :
+            this.IsEnded() ? ChallengeState.Ended :
+            this.IsInProgress() ? ChallengeState.InProgress :
+            this.IsOpened() ? ChallengeState.Opened :
+            this.IsConfigured() ? ChallengeState.Configured : ChallengeState.Draft;
 
         private bool IsDraft()
         {

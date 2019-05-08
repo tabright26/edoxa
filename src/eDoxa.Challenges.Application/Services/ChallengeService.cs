@@ -9,7 +9,6 @@
 // this source code package.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -46,7 +45,7 @@ namespace eDoxa.Challenges.Application.Services
 
         public async Task CompleteAsync(CancellationToken cancellationToken)
         {
-            var challenges = await _challengeRepository.FindChallengesAsync(Enumeration.All<ChallengeType>(), Enumeration.All<Game>(), ChallengeState1.Ended);
+            var challenges = await _challengeRepository.FindChallengesAsync(Enumeration.All<ChallengeType>(), Enumeration.All<Game>(), ChallengeState.Ended);
 
             challenges.ForEach(challenge => challenge.Complete());
 

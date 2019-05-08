@@ -19,7 +19,7 @@ namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate.Sp
     {
         public override Expression<Func<Challenge, bool>> ToExpression()
         {
-            return challenge => challenge.Timeline.State >= ChallengeState1.InProgress;
+            return challenge => challenge.Timeline.State.Value >= ChallengeState.InProgress.Value;
         }
     }
 }

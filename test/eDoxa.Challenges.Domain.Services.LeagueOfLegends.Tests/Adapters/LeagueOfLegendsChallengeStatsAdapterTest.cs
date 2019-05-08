@@ -43,7 +43,7 @@ namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.Tests.Adapters
 
             challenge.RegisterParticipant(userId, linkedAccount);
 
-            var timeline = FakeDefaultChallengeFactory.CreateChallengeTimeline(ChallengeState1.InProgress);
+            var timeline = FakeDefaultChallengeFactory.CreateChallengeTimeline(ChallengeState.InProgress);
 
             challenge.GetType().GetField("_timeline", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(challenge, timeline);
 
