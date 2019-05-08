@@ -54,6 +54,22 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             };
         }
 
+        public static TEnumeration FromAnyDisplayName<TEnumeration>(string displayName)
+        where TEnumeration : Enumeration, new()
+        {
+            if (displayName == None<TEnumeration>().DisplayName)
+            {
+                return None<TEnumeration>();
+            }
+
+            if (displayName == All<TEnumeration>().DisplayName)
+            {
+                return All<TEnumeration>();
+            }
+
+            return FromDisplayName<TEnumeration>(displayName);
+        }
+
         public static IEnumerable<TEnumeration> GetAll<TEnumeration>()
         where TEnumeration : Enumeration, new()
         {

@@ -14,12 +14,11 @@ using System.Threading.Tasks;
 using eDoxa.Challenges.Domain.Entities.AggregateModels;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.DTO.Queries;
+using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Enumerations;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
-using static eDoxa.Seedwork.Application.Extensions.Enumeration;
 
 namespace eDoxa.Challenges.Api.Controllers
 {
@@ -43,7 +42,7 @@ namespace eDoxa.Challenges.Api.Controllers
         [HttpGet(Name = nameof(FindChallengesAsync))]
         public async Task<IActionResult> FindChallengesAsync(string type, string game, string state)
         {
-            var challenges = await _queries.FindChallengesAsync(FromAnyDisplayName<ChallengeType>(type), FromAnyDisplayName<Game>(game), FromAnyDisplayName<ChallengeState>(state));
+            var challenges = await _queries.FindChallengesAsync(Enumeration.FromAnyDisplayName<ChallengeType>(type), Enumeration.FromAnyDisplayName<Game>(game), Enumeration.FromAnyDisplayName<ChallengeState>(state));
 
             return challenges
                 .Select(this.Ok)
