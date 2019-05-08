@@ -1,9 +1,9 @@
 ﻿// Filename: StripeId.cs
-// Date Created: 2019-04-14
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -13,8 +13,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Reflection;
+
 using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Stripe.Validators;
+
 using JetBrains.Annotations;
 
 namespace eDoxa.Stripe
@@ -110,50 +112,42 @@ namespace eDoxa.Stripe
         {
             public override bool CanConvertFrom([NotNull] ITypeDescriptorContext context, Type sourceType)
             {
-                if (sourceType == typeof(string))
-                {
-                    return true;
-                }
-
-                return base.CanConvertFrom(context, sourceType);
+                return sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
             }
 
             public override bool CanConvertTo([NotNull] ITypeDescriptorContext context, Type destinationType)
             {
-                if (destinationType == typeof(string))
-                {
-                    return true;
-                }
-
-                return base.CanConvertTo(context, destinationType);
+                return destinationType == typeof(string) || base.CanConvertTo(context, destinationType);
             }
 
-            public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture,
-                object value)
+            public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
             {
                 switch (value)
                 {
-                    case string input:
+                    case string stripeId when !string.IsNullOrWhiteSpace(stripeId):
+                    {
+                        return Parse(stripeId);
+                    }
 
-                        return Parse(input);
+                    default:
+                    {
+                        return base.ConvertFrom(context, culture, value);
+                    }
                 }
-
-                return base.ConvertFrom(context, culture, value);
             }
 
-            public override object ConvertTo([NotNull] ITypeDescriptorContext context, [NotNull] CultureInfo culture,
-                [CanBeNull] object value, Type destinationType)
+            public override object ConvertTo(
+                [NotNull] ITypeDescriptorContext context,
+                [NotNull] CultureInfo culture,
+                [CanBeNull] object value,
+                Type destinationType)
             {
-                var stripeId = value as TStripeId;
-
-                if (stripeId == null)
+                if (value is TStripeId stripeId)
                 {
-                    return null;
-                }
-
-                if (destinationType == typeof(string))
-                {
-                    return stripeId.ToString();
+                    if (destinationType == typeof(string))
+                    {
+                        return stripeId.ToString();
+                    }
                 }
 
                 return base.ConvertTo(context, culture, value, destinationType);

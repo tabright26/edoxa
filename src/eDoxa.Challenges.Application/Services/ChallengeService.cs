@@ -45,7 +45,7 @@ namespace eDoxa.Challenges.Application.Services
 
         public async Task CompleteAsync(CancellationToken cancellationToken)
         {
-            var challenges = await _challengeRepository.FindChallengesAsync(Enumeration.All<ChallengeType>(), Enumeration.All<Game>(), ChallengeState.Ended);
+            var challenges = await _challengeRepository.FindChallengesAsync(ChallengeType.All, Game.All, ChallengeState.Ended);
 
             challenges.ForEach(challenge => challenge.Complete());
 
@@ -54,7 +54,7 @@ namespace eDoxa.Challenges.Application.Services
 
         public async Task PublishAsync(PublisherInterval interval, CancellationToken cancellationToken)
         {
-            foreach (var game in Enumeration.GetAll<Game>())
+            foreach (var game in Game.GetAll())
             {
                 // TODO: Refactor this try catch.
                 try

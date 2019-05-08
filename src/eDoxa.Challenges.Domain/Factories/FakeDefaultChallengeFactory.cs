@@ -19,7 +19,6 @@ using eDoxa.Challenges.Domain.Entities.AggregateModels.MatchAggregate;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ParticipantAggregate;
 using eDoxa.Challenges.Domain.Entities.Default;
 using eDoxa.Functional.Maybe;
-using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Enumerations;
 
 using Moq;
@@ -105,7 +104,7 @@ namespace eDoxa.Challenges.Domain.Factories
         public Timeline CreateChallengeTimeline(ChallengeState state = null)
         {
             state = state ?? ChallengeState.Draft;
-            
+
             if (state.Equals(ChallengeState.Draft))
             {
                 return CreateChallengeTimelineAsDraft();
@@ -200,7 +199,7 @@ namespace eDoxa.Challenges.Domain.Factories
     {
         public Participant CreateParticipant(int? bestOf = null)
         {
-            var setup = this.CreateChallengeSetup(Enumeration.All<ChallengeType>(), bestOf ?? BestOf.DefaultValue);
+            var setup = this.CreateChallengeSetup(ChallengeType.All, bestOf ?? BestOf.DefaultValue);
 
             var challenge = this.CreateChallenge(setup: setup);
 

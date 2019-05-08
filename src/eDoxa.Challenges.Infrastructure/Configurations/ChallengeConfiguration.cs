@@ -1,9 +1,9 @@
 ﻿// Filename: ChallengeConfiguration.cs
-// Date Created: 2019-04-21
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -14,7 +14,6 @@ using eDoxa.Challenges.Domain.Entities;
 using eDoxa.Challenges.Domain.Entities.AggregateModels;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Infrastructure.Converters;
-using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Enumerations;
 
 using JetBrains.Annotations;
@@ -36,7 +35,7 @@ namespace eDoxa.Challenges.Infrastructure.Configurations
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.Property(challenge => challenge.Game)
-                .HasConversion(type => type.Value, value => Enumeration.FromValue<Game>(value))
+                .HasConversion(type => type.Value, value => Game.FromValue(value))
                 .IsRequired()
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 
@@ -50,7 +49,7 @@ namespace eDoxa.Challenges.Infrastructure.Configurations
                 challengeSetup =>
                 {
                     challengeSetup.Property(setup => setup.Type)
-                        .HasConversion(type => type.Value, value => Enumeration.FromValue<ChallengeType>(value))
+                        .HasConversion(type => type.Value, value => ChallengeType.FromValue(value))
                         .IsRequired()
                         .HasColumnName(nameof(ChallengeSetup.Type))
                         .UsePropertyAccessMode(PropertyAccessMode.Field);

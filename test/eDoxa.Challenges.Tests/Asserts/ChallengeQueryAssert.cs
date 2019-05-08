@@ -1,5 +1,5 @@
-﻿// Filename: ChallengeQueriesAssert.cs
-// Date Created: 2019-05-04
+﻿// Filename: ChallengeQueryAssert.cs
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,7 +11,6 @@
 using System;
 
 using eDoxa.Challenges.DTO;
-using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Enumerations;
 
 using FluentAssertions;
@@ -36,9 +35,9 @@ namespace eDoxa.Challenges.Tests.Asserts
 
             challenge.Id.Should().NotBeEmpty();
 
-            challenge.Game.Should().NotBe(Enumeration.All<Game>());
+            challenge.Game.Should().NotBe(Game.All);
 
-            challenge.Game.Should().NotBe(Enumeration.None<Game>());
+            challenge.Game.Should().NotBe(Game.None);
 
             challenge.Name.Should().NotBeNullOrWhiteSpace();
 

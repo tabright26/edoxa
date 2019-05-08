@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeRepositoryTest.cs
-// Date Created: 2019-05-03
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -17,7 +17,6 @@ using eDoxa.Challenges.Domain.Entities.AggregateModels;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Factories;
 using eDoxa.Challenges.Infrastructure.Repositories;
-using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Enumerations;
 using eDoxa.Seedwork.Infrastructure.Factories;
 
@@ -108,7 +107,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
 
                     // Act
                     var challenges =
-                        await repository.FindChallengesAsync(Enumeration.All<ChallengeType>(), Enumeration.All<Game>(), Enumeration.All<ChallengeState>());
+                        await repository.FindChallengesAsync(ChallengeType.All, Game.All, ChallengeState.All);
 
                     // Assert
                     ChallengeRepositoryAssert.IsLoaded(challenges);
@@ -128,7 +127,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
 
                     // Act
                     var challenges =
-                        await repository.FindChallengesAsync(Enumeration.All<ChallengeType>(), Enumeration.All<Game>(), Enumeration.All<ChallengeState>());
+                        await repository.FindChallengesAsync(ChallengeType.All, Game.All, ChallengeState.All);
 
                     // Assert
                     challenges.Should().BeEmpty();
@@ -271,13 +270,15 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
             {
                 challenge.Should().NotBeNull();
                 challenge.Id.ToGuid().Should().NotBeEmpty();
-                challenge.Game.Should().NotBe(Enumeration.All<Game>());
-                challenge.Game.Should().NotBe(Enumeration.None<Game>());
+                challenge.Game.Should().NotBe(Game.All);
+                challenge.Game.Should().NotBe(Game.None);
                 challenge.Name.ToString().Should().NotBeNullOrWhiteSpace();
                 challenge.Setup.Should().NotBeNull();
                 challenge.Timeline.Should().NotBeNull();
+
                 //challenge.LiveData.Should().NotBeNull();
                 challenge.Scoring.Should().NotBeNull();
+
                 //challenge.Payout.Should().NotBeNull();
                 //challenge.Scoreboard.Should().NotBeNull();
                 challenge.Participants.Should().NotBeNullOrEmpty();

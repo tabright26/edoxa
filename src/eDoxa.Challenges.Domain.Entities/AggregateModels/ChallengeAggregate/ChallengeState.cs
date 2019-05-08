@@ -8,11 +8,14 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.ComponentModel;
+
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
 {
-    public sealed class ChallengeState : Enumeration
+    [TypeConverter(typeof(EnumerationConverter))]
+    public sealed class ChallengeState : Enumeration<ChallengeState>
     {
         public static readonly ChallengeState Draft = new ChallengeState(1 << 0, nameof(Draft));
         public static readonly ChallengeState Configured = new ChallengeState(1 << 1, nameof(Configured));
@@ -21,11 +24,7 @@ namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
         public static readonly ChallengeState Ended = new ChallengeState(1 << 4, nameof(Ended));
         public static readonly ChallengeState Closed = new ChallengeState(1 << 5, nameof(Closed));
 
-        private ChallengeState(int value, string displayName) : base(value, displayName)
-        {
-        }
-
-        public ChallengeState()
+        private ChallengeState(int value, string name) : base(value, name)
         {
         }
     }
