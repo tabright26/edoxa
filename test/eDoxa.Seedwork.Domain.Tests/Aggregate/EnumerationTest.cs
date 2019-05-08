@@ -9,6 +9,8 @@
 // this source code package.
 
 using eDoxa.Seedwork.Domain.Aggregate;
+using eDoxa.Seedwork.Domain.Enumerations;
+using eDoxa.Seedwork.Domain.Utilities;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -21,6 +23,14 @@ namespace eDoxa.Seedwork.Domain.Tests.Aggregate
         public void GetEnums()
         {
             var enums = Enumeration.GetAll<MockEnumeration>();
+        }
+
+        [TestMethod]
+        public void GetAllEnums()
+        {
+            var isDefined = EnumerationUtils.IsDefined(Game.LeagueOfLegends);
+
+            //var types = EnumerationUtils.GetSuperclassTypes();
         }
 
         private sealed class MockEnumeration : Enumeration
@@ -37,7 +47,6 @@ namespace eDoxa.Seedwork.Domain.Tests.Aggregate
 
             public MockEnumeration()
             {
-                
             }
         }
     }

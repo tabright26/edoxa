@@ -8,6 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Seedwork.Application.Converters;
 using eDoxa.Seedwork.Application.Filters;
 
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +32,11 @@ namespace eDoxa.Seedwork.Application.Extensions
 
             builder.AddControllersAsServices();
 
-            builder.AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+            builder.AddJsonOptions(options =>
+            {
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                options.SerializerSettings.Converters.Add(new StringEnumerationConverter());
+            });
 
             builder.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
