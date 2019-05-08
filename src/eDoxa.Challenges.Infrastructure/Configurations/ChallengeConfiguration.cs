@@ -14,6 +14,7 @@ using eDoxa.Challenges.Domain.Entities;
 using eDoxa.Challenges.Domain.Entities.AggregateModels;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Infrastructure.Converters;
+using eDoxa.Seedwork.Domain.Aggregate;
 
 using JetBrains.Annotations;
 
@@ -44,9 +45,8 @@ namespace eDoxa.Challenges.Infrastructure.Configurations
                 challenge => challenge.Setup,
                 challengeSetup =>
                 {
-                    //challengeSetup.PropertyEnumeration();
-
                     challengeSetup.Property(setup => setup.Type)
+                        .HasConversion(type => type.Value, value => Enumeration.FromValue<ChallengeType>(value))
                         .IsRequired()
                         .HasColumnName(nameof(ChallengeSetup.Type))
                         .UsePropertyAccessMode(PropertyAccessMode.Field);

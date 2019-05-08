@@ -31,20 +31,19 @@ namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.Factories
 
         public IScoringStrategy CreateScoring(Challenge challenge)
         {
-            switch (challenge.Setup.Type)
+            var type = challenge.Setup.Type;
+
+            if (type.Equals(ChallengeType.Default))
             {
-                case ChallengeType.Default:
-
-                    return new LeagueOfLegendsDefaultScoringStrategy();
-
-                case ChallengeType.Random:
-
-                    return new LeagueOfLegendsDefaultScoringStrategy();
-
-                default:
-
-                    throw new NotImplementedException();
+                return new LeagueOfLegendsDefaultScoringStrategy();
             }
+
+            if (type.Equals(ChallengeType.Random))
+            {
+                return new LeagueOfLegendsDefaultScoringStrategy();
+            }
+
+            throw new NotImplementedException();
         }
     }
 }

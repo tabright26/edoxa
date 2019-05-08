@@ -24,16 +24,14 @@ namespace eDoxa.Challenges.Domain.Services.Factories
 
         public IPayoutStrategy CreatePayout(Challenge challenge)
         {
-            switch (challenge.Setup.Type)
+            var type = challenge.Setup.Type;
+
+            if (type.Equals(ChallengeType.Default))
             {
-                case ChallengeType.Default:
-
-                    return new DefaultPayoutStrategy();
-
-                default:
-
-                    throw new NotImplementedException();
+                return new DefaultPayoutStrategy();
             }
+
+            throw new NotImplementedException();
         }
     }
 }

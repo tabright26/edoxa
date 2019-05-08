@@ -1,9 +1,9 @@
-﻿// Filename: UsersController.cs
-// Date Created: 2019-04-21
+﻿// Filename: ChallengeHistoryController.cs
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -29,8 +29,8 @@ namespace eDoxa.Challenges.Api.Controllers
     [Route("api/challenges/history")]
     public class ChallengeHistoryController : ControllerBase
     {
-        private readonly IUserInfoService _userInfoService;
         private readonly IChallengeQueries _queries;
+        private readonly IUserInfoService _userInfoService;
 
         public ChallengeHistoryController(IUserInfoService userInfoService, IChallengeQueries queries)
         {
@@ -42,11 +42,11 @@ namespace eDoxa.Challenges.Api.Controllers
         ///     Find the challenge history of a user.
         /// </summary>
         [HttpGet(Name = nameof(FindUserChallengeHistoryAsync))]
-        public async Task<IActionResult> FindUserChallengeHistoryAsync(Game game = Game.All, ChallengeType type = ChallengeType.All, ChallengeState1 state = ChallengeState1.All)
+        public async Task<IActionResult> FindUserChallengeHistoryAsync(ChallengeType type, Game game = Game.All, ChallengeState1 state = ChallengeState1.All)
         {
             var userId = UserId.Parse(_userInfoService.Subject);
 
-            var challenges = await _queries.FindUserChallengeHistoryAsync(userId, game, type, state);
+            var challenges = await _queries.FindUserChallengeHistoryAsync(userId, type, game, state);
 
             return challenges
                 .Select(this.Ok)

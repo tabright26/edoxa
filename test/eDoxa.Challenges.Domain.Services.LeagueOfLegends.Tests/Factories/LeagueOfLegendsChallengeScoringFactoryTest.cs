@@ -25,41 +25,41 @@ namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.Tests.Factories
     [TestClass]
     public sealed class LeagueOfLegendsChallengeScoringFactoryTest
     {
-        [DataRow(ChallengeType.Default)]
-        [DataTestMethod]
-        public void Create_ImplementedType_ShouldNotBeNull(ChallengeType type)
-        {
-            // Arrange
-            var factory = LeagueOfLegendsChallengeScoringFactory.Instance;
+        //[DataRow(ChallengeType.Default)]
+        //[DataTestMethod]
+        //public void Create_ImplementedType_ShouldNotBeNull(ChallengeType type)
+        //{
+        //    // Arrange
+        //    var factory = LeagueOfLegendsChallengeScoringFactory.Instance;
 
-            // Act
-            var strategy = factory.CreateScoring(new MockChallenge(type));
+        //    // Act
+        //    var strategy = factory.CreateScoring(new MockChallenge(type));
 
-            // Assert
-            strategy.Scoring.Should().NotBeNull();
-        }
+        //    // Assert
+        //    strategy.Scoring.Should().NotBeNull();
+        //}
 
-        [DataRow(ChallengeType.None)]
-        [DataRow(ChallengeType.All)]
-        [DataTestMethod]
-        public void Create_NotImplementedType_ShouldThrowNotImplementedException(ChallengeType type)
-        {
-            // Arrange
-            var factory = LeagueOfLegendsChallengeScoringFactory.Instance;
+        //[DataRow(ChallengeType.None)]
+        //[DataRow(ChallengeType.All)]
+        //[DataTestMethod]
+        //public void Create_NotImplementedType_ShouldThrowNotImplementedException(ChallengeType type)
+        //{
+        //    // Arrange
+        //    var factory = LeagueOfLegendsChallengeScoringFactory.Instance;
 
-            // Act
-            var action = new Action(() => factory.CreateScoring(new MockChallenge(type)));
+        //    // Act
+        //    var action = new Action(() => factory.CreateScoring(new MockChallenge(type)));
 
-            // Assert
-            action.Should().Throw<NotImplementedException>();
-        }
+        //    // Assert
+        //    action.Should().Throw<NotImplementedException>();
+        //}
 
-        private sealed class MockChallenge : Challenge
-        {
-            public MockChallenge(ChallengeType type) : base(Game.LeagueOfLegends, new ChallengeName(nameof(Challenge)), new DefaultChallengeSetup())
-            {
-                Setup.SetPrivateField("_type", type);
-            }
-        }
+        //private sealed class MockChallenge : Challenge
+        //{
+        //    public MockChallenge(ChallengeType type) : base(Game.LeagueOfLegends, new ChallengeName(nameof(Challenge)), new DefaultChallengeSetup())
+        //    {
+        //        Setup.SetPrivateField("_type", type);
+        //    }
+        //}
     }
 }

@@ -18,6 +18,7 @@ using eDoxa.Challenges.DTO;
 using eDoxa.Challenges.DTO.Queries;
 using eDoxa.Functional.Maybe;
 using eDoxa.Security.Abstractions;
+using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Enumerations;
 using eDoxa.Testing.MSTest.Extensions;
 
@@ -61,14 +62,14 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
             };
 
             _queries.Setup(queries =>
-                    queries.FindUserChallengeHistoryAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<ChallengeType>(), It.IsAny<ChallengeState1>()))
+                    queries.FindUserChallengeHistoryAsync(It.IsAny<UserId>(), It.IsAny<ChallengeType>(), It.IsAny<Game>(), It.IsAny<ChallengeState1>()))
                 .ReturnsAsync(new Option<ChallengeListDTO>(value))
                 .Verifiable();
 
             var controller = new ChallengeHistoryController(_mockUserInfoService.Object, _queries.Object);
 
             // Act
-            var result = await controller.FindUserChallengeHistoryAsync();
+            var result = await controller.FindUserChallengeHistoryAsync(Enumeration.All<ChallengeType>());
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -83,14 +84,14 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
         {
             // Arrange
             _queries.Setup(queries =>
-                    queries.FindUserChallengeHistoryAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<ChallengeType>(), It.IsAny<ChallengeState1>()))
+                    queries.FindUserChallengeHistoryAsync(It.IsAny<UserId>(), It.IsAny<ChallengeType>(), It.IsAny<Game>(), It.IsAny<ChallengeState1>()))
                 .ReturnsAsync(new Option<ChallengeListDTO>())
                 .Verifiable();
 
             var controller = new ChallengeHistoryController(_mockUserInfoService.Object, _queries.Object);
 
             // Act
-            var result = await controller.FindUserChallengeHistoryAsync();
+            var result = await controller.FindUserChallengeHistoryAsync(Enumeration.All<ChallengeType>());
 
             // Assert
             result.Should().BeOfType<NoContentResult>();

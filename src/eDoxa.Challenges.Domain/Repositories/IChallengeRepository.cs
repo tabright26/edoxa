@@ -25,8 +25,8 @@ namespace eDoxa.Challenges.Domain.Repositories
         void Create(Challenge challenge);
 
         Task<IReadOnlyCollection<Challenge>> FindChallengesAsync(
+            ChallengeType type,
             Game game = Game.All,
-            ChallengeType type = ChallengeType.All,
             ChallengeState1 state = ChallengeState1.All);
 
         [ItemCanBeNull]

@@ -18,6 +18,7 @@ using eDoxa.Challenges.DTO.Factories;
 using eDoxa.Challenges.Infrastructure;
 using eDoxa.Challenges.Infrastructure.Repositories;
 using eDoxa.Challenges.Tests.Asserts;
+using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Enumerations;
 using eDoxa.Seedwork.Infrastructure.Factories;
 
@@ -53,7 +54,7 @@ namespace eDoxa.Challenges.Application.Tests.Queries
                     var queries = new ChallengeQueries(context, ChallengesMapperFactory.CreateMapper());
 
                     // Act
-                    var challengeDTO = await queries.FindChallengesAsync(Game.All, ChallengeType.All, ChallengeState1.Opened);
+                    var challengeDTO = await queries.FindChallengesAsync(Enumeration.All<ChallengeType>(), Game.All, ChallengeState1.Opened);
 
                     // Assert
                     ChallengeQueryAssert.IsMapped(challengeDTO.Single());

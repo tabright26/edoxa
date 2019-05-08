@@ -18,24 +18,12 @@ namespace eDoxa.Seedwork.Domain.Tests.Aggregate
     public sealed class EnumerationTest
     {
         [TestMethod]
-        public void GetValues()
-        {
-            var values = MockEnumeration.GetValues();
-        }
-
-        [TestMethod]
-        public void GetNames()
-        {
-            var names = MockEnumeration.GetNames();
-        }
-
-        [TestMethod]
         public void GetEnums()
         {
-            var enums = MockEnumeration.GetEnums();
+            var enums = Enumeration.GetAll<MockEnumeration>();
         }
 
-        private sealed class MockEnumeration : Enumeration<MockEnumeration>
+        private sealed class MockEnumeration : Enumeration
         {
             public static readonly MockEnumeration Enumeration1 = new MockEnumeration(1 << 0, nameof(Enumeration1));
             public static readonly MockEnumeration Enumeration2 = new MockEnumeration(1 << 1, nameof(Enumeration2));
@@ -43,8 +31,13 @@ namespace eDoxa.Seedwork.Domain.Tests.Aggregate
             public static readonly MockEnumeration Enumeration8 = new MockEnumeration(1 << 3, nameof(Enumeration8));
             public static readonly MockEnumeration Enumeration16 = new MockEnumeration(1 << 4, nameof(Enumeration16));
 
-            private MockEnumeration(int value, string name) : base(value, name)
+            private MockEnumeration(int value, string displayName) : base(value, displayName)
             {
+            }
+
+            public MockEnumeration()
+            {
+                
             }
         }
     }

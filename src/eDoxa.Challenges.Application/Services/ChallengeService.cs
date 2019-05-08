@@ -21,6 +21,7 @@ using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Challenges.Domain.Services;
 using eDoxa.Challenges.Domain.Services.Factories;
 using eDoxa.Functional.Extensions;
+using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Enumerations;
 
 using Microsoft.EntityFrameworkCore;
@@ -60,7 +61,7 @@ namespace eDoxa.Challenges.Application.Services
 
         public async Task CompleteAsync(CancellationToken cancellationToken)
         {
-            var challenges = await _challengeRepository.FindChallengesAsync(Game.All, ChallengeType.All, ChallengeState1.Ended);
+            var challenges = await _challengeRepository.FindChallengesAsync(Enumeration.All<ChallengeType>(), Game.All, ChallengeState1.Ended);
 
             challenges.ForEach(challenge => challenge.Complete());
 
@@ -102,6 +103,7 @@ namespace eDoxa.Challenges.Application.Services
 
         public async Task SynchronizeAsync(Game game, CancellationToken cancellationToken)
         {
+            await Task.CompletedTask;
         }
     }
 }

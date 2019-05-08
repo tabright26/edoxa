@@ -30,7 +30,6 @@ namespace eDoxa.Challenges.DTO
         [JsonProperty("name")] public string Name { get; set; }
 
         [JsonProperty("type")]
-        [JsonConverter(typeof(StringEnumConverter))]
         public ChallengeType Type { get; set; }
 
         [JsonProperty("state")]

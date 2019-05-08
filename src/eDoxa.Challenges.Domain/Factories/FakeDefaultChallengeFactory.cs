@@ -19,6 +19,7 @@ using eDoxa.Challenges.Domain.Entities.AggregateModels.MatchAggregate;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ParticipantAggregate;
 using eDoxa.Challenges.Domain.Entities.Default;
 using eDoxa.Functional.Maybe;
+using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Enumerations;
 
 using Moq;
@@ -89,12 +90,12 @@ namespace eDoxa.Challenges.Domain.Factories
     public sealed partial class FakeDefaultChallengeFactory
     {
         public ChallengeSetup CreateChallengeSetup(
+            ChallengeType type,
             int bestOf = BestOf.Default,
             int entries = Entries.Default,
             decimal entryFee = EntryFee.Default,
             float payoutRatio = PayoutRatio.Default,
-            float serviceChargeRatio = ServiceChargeRatio.Default,
-            ChallengeType type = ChallengeType.Default)
+            float serviceChargeRatio = ServiceChargeRatio.Default)
         {
             return new ChallengeSetup(new BestOf(bestOf), new Entries(entries), new EntryFee(entryFee), new PayoutRatio(payoutRatio),
                 new ServiceChargeRatio(serviceChargeRatio), type);
@@ -195,7 +196,7 @@ namespace eDoxa.Challenges.Domain.Factories
     {
         public Participant CreateParticipant(int? bestOf = null)
         {
-            var setup = this.CreateChallengeSetup(bestOf ?? BestOf.DefaultValue);
+            var setup = this.CreateChallengeSetup(Enumeration.All<ChallengeType>(), bestOf ?? BestOf.DefaultValue);
 
             var challenge = this.CreateChallenge(setup: setup);
 

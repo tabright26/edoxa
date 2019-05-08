@@ -10,7 +10,9 @@
 
 using System;
 
+using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Factories;
+using eDoxa.Seedwork.Domain.Aggregate;
 
 using FluentAssertions;
 
@@ -34,7 +36,7 @@ namespace eDoxa.Challenges.Domain.Entities.Tests.AggregateModels.ChallengeAggreg
             var serviceChargeRatio = ServiceChargeRatio.DefaultValue;
 
             // Act
-            var setup = FakeDefaultChallengeFactory.CreateChallengeSetup();
+            var setup = FakeDefaultChallengeFactory.CreateChallengeSetup(Enumeration.All<ChallengeType>());
 
             // Assert
             setup.BestOf.Should().Be(bestOf);

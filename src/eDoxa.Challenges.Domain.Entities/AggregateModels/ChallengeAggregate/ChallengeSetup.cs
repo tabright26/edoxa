@@ -26,16 +26,6 @@ namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
 
         public ChallengeSetup(BestOf bestOf, Entries entries, EntryFee entryFee, PayoutRatio payoutRatio, ServiceChargeRatio serviceChargeRatio, ChallengeType type)
         {
-            if (!Enum.IsDefined(typeof(ChallengeType), type))
-            {
-                throw new InvalidEnumArgumentException(nameof(Type), (int)type, typeof(ChallengeType));
-            }
-
-            if (type == ChallengeType.None || type == ChallengeType.All)
-            {
-                throw new ArgumentException(nameof(Type));
-            }
-
             _bestOf = bestOf;
             _entries = entries;
             _entryFee = entryFee;
