@@ -16,10 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\eDoxa.Challenges.Domain.Services.LeagueOfLegends\eDoxa.Challenges.Domain.Services.LeagueOfLegends.csproj" />
-    <ProjectReference Include="..\..\src\eDoxa.Challenges.Domain.Services\eDoxa.Challenges.Domain.Services.csproj" />
     <ProjectReference Include="..\eDoxa.Challenges.Domain.Services.LeagueOfLegends.DTO.Tests\eDoxa.Challenges.Domain.Services.LeagueOfLegends.DTO.Tests.csproj" />
-    <ProjectReference Include="..\eDoxa.Testing.MSTest\eDoxa.Testing.MSTest.csproj" />
   </ItemGroup>
 
 </Project>

@@ -25,7 +25,6 @@ namespace eDoxa.Specifications
             _to = to;
         }
 
-        [CanBeNull]
         public override Expression Visit([NotNull] Expression node)
         {
             return node == _from ? _to : base.Visit(node);

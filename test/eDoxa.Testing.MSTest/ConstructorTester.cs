@@ -25,6 +25,15 @@ namespace eDoxa.Testing.MSTest
             _info = info;
         }
 
+        public override Tester<T> WithName(string className)
+        {
+            TestCase<T> testCase = new NameTestCase<T>(_info, className);
+
+            _testCases.Add(testCase);
+
+            return this;
+        }
+
         public override Tester<T> Fail(object[] args, Type exceptionType, string failMessage)
         {
             TestCase<T> testCase = new FailTestCase<T>(_info, args, exceptionType, failMessage);

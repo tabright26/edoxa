@@ -45,9 +45,14 @@ namespace eDoxa.Security.Extensions
             }
         }
 
-        public static void AddUserProfile(this IServiceCollection services)
+        public static void AddUserInfoService(this IServiceCollection services)
         {
-            services.AddSingleton<IUserProfile, UserProfile>();
+            services.AddSingleton<IUserInfoService, UserInfoService>();
+        }
+
+        public static void AddUserLoginInfoService(this IServiceCollection services)
+        {
+            services.AddSingleton<IUserLoginInfoService, UserLoginInfoService>();
         }
 
         public static void AddCookiePolicy(this IServiceCollection services)

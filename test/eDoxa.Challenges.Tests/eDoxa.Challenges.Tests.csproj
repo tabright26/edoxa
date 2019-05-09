@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\eDoxa.Challenges.Api\eDoxa.Challenges.Api.csproj" />
+    <ProjectReference Include="..\..\src\eDoxa.Challenges.Application\eDoxa.Challenges.Application.csproj" />
+    <ProjectReference Include="..\..\src\eDoxa.Challenges.Domain.Entities.Custom\eDoxa.Challenges.Domain.Entities.Custom.csproj" />
+    <ProjectReference Include="..\..\src\eDoxa.Challenges.Domain.Entities.Default\eDoxa.Challenges.Domain.Entities.Default.csproj" />
+    <ProjectReference Include="..\..\src\eDoxa.Challenges.Domain.Entities.Random\eDoxa.Challenges.Domain.Entities.Random.csproj" />
+    <ProjectReference Include="..\..\src\eDoxa.Challenges.Domain.Entities\eDoxa.Challenges.Domain.Entities.csproj" />
+    <ProjectReference Include="..\..\src\eDoxa.Challenges.Domain.Services.LeagueOfLegends.Api\eDoxa.Challenges.Domain.Services.LeagueOfLegends.Api.csproj" />
+    <ProjectReference Include="..\..\src\eDoxa.Challenges.Domain.Services.LeagueOfLegends.DTO\eDoxa.Challenges.Domain.Services.LeagueOfLegends.DTO.csproj" />
+    <ProjectReference Include="..\..\src\eDoxa.Challenges.Domain.Services.LeagueOfLegends\eDoxa.Challenges.Domain.Services.LeagueOfLegends.csproj" />
+    <ProjectReference Include="..\..\src\eDoxa.Challenges.Domain.Services\eDoxa.Challenges.Domain.Services.csproj" />
+    <ProjectReference Include="..\..\src\eDoxa.Challenges.DTO\eDoxa.Challenges.DTO.csproj" />
+    <ProjectReference Include="..\..\src\eDoxa.Challenges.Infrastructure\eDoxa.Challenges.Infrastructure.csproj" />
+    <ProjectReference Include="..\eDoxa.Testing.MSTest\eDoxa.Testing.MSTest.csproj" />
+  </ItemGroup>
+
+</Project>

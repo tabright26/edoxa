@@ -74,7 +74,9 @@ namespace eDoxa.Challenges.Api
 
             services.AddIdentityServerAuthentication(Configuration, Environment, ChallengeApi);
 
-            services.AddUserProfile();
+            services.AddUserInfoService();
+
+            services.AddUserLoginInfoService();
 
             return services.Build<ApplicationModule>();
         }

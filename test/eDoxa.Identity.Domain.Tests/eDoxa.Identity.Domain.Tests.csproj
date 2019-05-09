@@ -13,8 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\eDoxa.Identity.Domain\eDoxa.Identity.Domain.csproj" />
-    <ProjectReference Include="..\eDoxa.Testing.MSTest\eDoxa.Testing.MSTest.csproj" />
+    <ProjectReference Include="..\eDoxa.Identity.Tests\eDoxa.Identity.Tests.csproj" />
   </ItemGroup>
 
 </Project>

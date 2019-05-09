@@ -1,11 +1,11 @@
-﻿// Filename: WithdrawalCommandHandlerTest.cs
-// Date Created: 2019-04-09
+﻿// Filename: WithdrawMoneyCommandHandlerTest.cs
+// Date Created: 2019-05-03
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
 // 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System.Threading;
@@ -34,14 +34,14 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     {
         private static readonly UserAggregateFactory UserAggregateFactory = UserAggregateFactory.Instance;
         private Mock<IMoneyAccountService> _mockMoneyAccountService;
-        private Mock<IUserProfile> _mockUserProfile;
+        private Mock<IUserInfoService> _mockUserInfoService;
 
         [TestInitialize]
         public void TestInitialize()
         {
             _mockMoneyAccountService = new Mock<IMoneyAccountService>();
-            _mockUserProfile = new Mock<IUserProfile>();
-            _mockUserProfile.SetupGetProperties();
+            _mockUserInfoService = new Mock<IUserInfoService>();
+            _mockUserInfoService.SetupGetProperties();
         }
 
         [TestMethod]
@@ -56,7 +56,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
                 .ReturnsAsync(new Option<IMoneyTransaction>(new MoneyTransaction(-new Money(100))))
                 .Verifiable();
 
-            var handler = new WithdrawMoneyCommandHandler(_mockUserProfile.Object, _mockMoneyAccountService.Object);
+            var handler = new WithdrawMoneyCommandHandler(_mockUserInfoService.Object, _mockMoneyAccountService.Object);
 
             // Act
             await handler.HandleAsync(command);

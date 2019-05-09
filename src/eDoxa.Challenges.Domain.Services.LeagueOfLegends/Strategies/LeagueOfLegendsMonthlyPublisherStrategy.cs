@@ -10,7 +10,9 @@
 
 using System.Collections.Generic;
 
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Challenges.Domain.Entities;
+using eDoxa.Challenges.Domain.Entities.Abstractions;
+using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
 
 namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.Strategies
 {
@@ -20,9 +22,9 @@ namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.Strategies
         {
             get
             {
-                yield return new LeagueOfLegendsChallenge("Monthly 1", ChallengeInterval.Monthly);
-                yield return new LeagueOfLegendsChallenge("Monthly 2", ChallengeInterval.Monthly);
-                yield return new LeagueOfLegendsChallenge("Monthly 3", ChallengeInterval.Monthly);
+                yield return new LeagueOfLegendsChallenge(new ChallengeName("Monthly 1"), PublisherInterval.Monthly);
+                yield return new LeagueOfLegendsChallenge(new ChallengeName("Monthly 2"), PublisherInterval.Monthly);
+                yield return new LeagueOfLegendsChallenge(new ChallengeName("Monthly 3"), PublisherInterval.Monthly);
             }
         }
     }

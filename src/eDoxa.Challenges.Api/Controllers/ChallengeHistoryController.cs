@@ -1,9 +1,9 @@
-﻿// Filename: UsersController.cs
-// Date Created: 2019-04-21
+﻿// Filename: ChallengeHistoryController.cs
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -11,11 +11,11 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.AggregateModels.UserAggregate;
+using eDoxa.Challenges.Domain.Entities.AggregateModels;
+using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.DTO.Queries;
 using eDoxa.Security.Abstractions;
-using eDoxa.Seedwork.Domain.Common.Enums;
+using eDoxa.Seedwork.Domain.Enumerations;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -29,12 +29,12 @@ namespace eDoxa.Challenges.Api.Controllers
     [Route("api/challenges/history")]
     public class ChallengeHistoryController : ControllerBase
     {
-        private readonly IUserProfile _userProfile;
         private readonly IChallengeQueries _queries;
+        private readonly IUserInfoService _userInfoService;
 
-        public ChallengeHistoryController(IUserProfile userProfile, IChallengeQueries queries)
+        public ChallengeHistoryController(IUserInfoService userInfoService, IChallengeQueries queries)
         {
-            _userProfile = userProfile;
+            _userInfoService = userInfoService;
             _queries = queries;
         }
 
@@ -42,9 +42,15 @@ namespace eDoxa.Challenges.Api.Controllers
         ///     Find the challenge history of a user.
         /// </summary>
         [HttpGet(Name = nameof(FindUserChallengeHistoryAsync))]
-        public async Task<IActionResult> FindUserChallengeHistoryAsync(Game game = Game.All, ChallengeType type = ChallengeType.All, ChallengeState1 state = ChallengeState1.All)
+        public async Task<IActionResult> FindUserChallengeHistoryAsync(Game game, ChallengeType type, ChallengeState state)
         {
-            var userId = UserId.Parse(_userProfile.Subject);
+            var userId = UserId.Parse(_userInfoService.Subject);
+
+            game = game ?? Game.All;
+
+            type = type ?? ChallengeType.All;
+
+            state = state ?? ChallengeState.All;
 
             var challenges = await _queries.FindUserChallengeHistoryAsync(userId, game, type, state);
 

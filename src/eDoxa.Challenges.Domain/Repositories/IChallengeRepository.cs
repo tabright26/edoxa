@@ -11,9 +11,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Challenges.Domain.Entities.AggregateModels;
+using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Common.Enums;
+using eDoxa.Seedwork.Domain.Enumerations;
 
 using JetBrains.Annotations;
 
@@ -24,9 +25,9 @@ namespace eDoxa.Challenges.Domain.Repositories
         void Create(Challenge challenge);
 
         Task<IReadOnlyCollection<Challenge>> FindChallengesAsync(
-            Game game = Game.All,
-            ChallengeType type = ChallengeType.All,
-            ChallengeState1 state = ChallengeState1.All);
+            ChallengeType type,
+            Game game,
+            ChallengeState state);
 
         [ItemCanBeNull]
         Task<Challenge> FindChallengeAsync(ChallengeId challengeId);

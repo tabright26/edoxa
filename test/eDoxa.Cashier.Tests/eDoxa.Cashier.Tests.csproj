@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\eDoxa.Cashier.API\eDoxa.Cashier.Api.csproj" />
+    <ProjectReference Include="..\..\src\eDoxa.Cashier.Application\eDoxa.Cashier.Application.csproj" />
+    <ProjectReference Include="..\..\src\eDoxa.Cashier.Domain.Services\eDoxa.Cashier.Domain.Services.csproj" />
+    <ProjectReference Include="..\..\src\eDoxa.Cashier.Domain\eDoxa.Cashier.Domain.csproj" />
+    <ProjectReference Include="..\..\src\eDoxa.Cashier.DTO\eDoxa.Cashier.DTO.csproj" />
+    <ProjectReference Include="..\..\src\eDoxa.Cashier.Infrastructure\eDoxa.Cashier.Infrastructure.csproj" />
+    <ProjectReference Include="..\eDoxa.Testing.MSTest\eDoxa.Testing.MSTest.csproj" />
+  </ItemGroup>
+
+</Project>

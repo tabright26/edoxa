@@ -22,14 +22,12 @@ namespace eDoxa.Challenges.Api.Extensions
         public static void UseIntegrationEventSubscriptions(this IApplicationBuilder application)
         {
             var service = application.ApplicationServices.GetRequiredService<IEventBusService>();
+            
+            service.Subscribe<ChallengePublishedIntegrationEvent, ChallengePublishedIntegrationEventHandler>();
 
-            service.Subscribe<UserCreatedIntegrationEvent, UserCreatedIntegrationEventHandler>();
+            service.Subscribe<ChallengeSynchronizedIntegrationEvent, ChallengeSynchronizedIntegrationEventHandler>();
 
-            service.Subscribe<ChallengesPublishedIntegrationEvent, ChallengesPublishedIntegrationEventHandler>();
-
-            service.Subscribe<ChallengesSynchronizedIntegrationEvent, ChallengesSynchronizedIntegrationEventHandler>();
-
-            service.Subscribe<ChallengesClosedIntegrationEvent, ChallengesClosedIntegrationEventHandler>();
+            service.Subscribe<ChallengeCompletedIntegrationEvent, ChallengeCompletedIntegrationEventHandler>();
         }
     }
 }

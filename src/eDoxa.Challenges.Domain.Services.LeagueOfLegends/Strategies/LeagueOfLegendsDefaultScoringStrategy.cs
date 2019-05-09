@@ -8,7 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Challenges.Domain.AggregateModels.MatchAggregate;
+using eDoxa.Challenges.Domain.Entities.Abstractions;
+using eDoxa.Challenges.Domain.Entities.AggregateModels.MatchAggregate;
 using eDoxa.Challenges.Domain.Services.LeagueOfLegends.DTO;
 
 namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.Strategies

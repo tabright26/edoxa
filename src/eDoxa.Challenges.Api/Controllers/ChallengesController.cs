@@ -1,9 +1,9 @@
 ﻿// Filename: ChallengesController.cs
-// Date Created: 2019-04-21
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -11,9 +11,10 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Challenges.Domain.Entities.AggregateModels;
+using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.DTO.Queries;
-using eDoxa.Seedwork.Domain.Common.Enums;
+using eDoxa.Seedwork.Domain.Enumerations;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -38,11 +39,14 @@ namespace eDoxa.Challenges.Api.Controllers
         ///     Find the challenges.
         /// </summary>
         [HttpGet(Name = nameof(FindChallengesAsync))]
-        public async Task<IActionResult> FindChallengesAsync(
-            Game game = Game.All,
-            ChallengeType type = ChallengeType.All,
-            ChallengeState1 state = ChallengeState1.All)
+        public async Task<IActionResult> FindChallengesAsync(Game game, ChallengeType type, ChallengeState state)
         {
+            game = game ?? Game.All;
+
+            type = type ?? ChallengeType.All;
+
+            state = state ?? ChallengeState.All;
+
             var challenges = await _queries.FindChallengesAsync(game, type, state);
 
             return challenges

@@ -33,11 +33,11 @@ namespace eDoxa.Cashier.Api.Controllers
     {
         private readonly ICardQueries _cardQueries;
         private readonly IMediator _mediator;
-        private readonly IUserProfile _userProfile;
+        private readonly IUserInfoService _userInfoService;
 
-        public CardsController(IUserProfile userProfile, ICardQueries cardQueries, IMediator mediator)
+        public CardsController(IUserInfoService userInfoService, ICardQueries cardQueries, IMediator mediator)
         {
-            _userProfile = userProfile;
+            _userInfoService = userInfoService;
             _cardQueries = cardQueries;
             _mediator = mediator;
         }
@@ -48,7 +48,7 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpGet(Name = nameof(FindUserCardsAsync))]
         public async Task<IActionResult> FindUserCardsAsync()
         {
-            var customerId = _userProfile.CustomerId;
+            var customerId = _userInfoService.CustomerId;
 
             var cards = await _cardQueries.FindUserCardsAsync(CustomerId.Parse(customerId));
 
@@ -74,7 +74,7 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpGet("{cardId}", Name = nameof(FindUserCardAsync))]
         public async Task<IActionResult> FindUserCardAsync(CardId cardId)
         {
-            var customerId = _userProfile.CustomerId;
+            var customerId = _userInfoService.CustomerId;
 
             var card = await _cardQueries.FindUserCardAsync(CustomerId.Parse(customerId), cardId);
 

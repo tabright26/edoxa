@@ -1,5 +1,5 @@
 ﻿// Filename: CardsControllerTest.cs
-// Date Created: 2019-04-30
+// Date Created: 2019-05-03
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -41,15 +41,15 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         private static readonly UserAggregateFactory UserAggregateFactory = UserAggregateFactory.Instance;
         private Mock<ICardQueries> _mockCardQueries;
         private Mock<IMediator> _mockMediator;
-        private Mock<IUserProfile> _mockUserProfile;
+        private Mock<IUserInfoService> _mockUserInfoService;
 
         [TestInitialize]
         public void TestInitialize()
         {
             _mockCardQueries = new Mock<ICardQueries>();
             _mockMediator = new Mock<IMediator>();
-            _mockUserProfile = new Mock<IUserProfile>();
-            _mockUserProfile.SetupGetProperties();
+            _mockUserInfoService = new Mock<IUserInfoService>();
+            _mockUserInfoService.SetupGetProperties();
         }
 
         [TestMethod]
@@ -64,7 +64,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
                 }
             })).Verifiable();
 
-            var controller = new CardsController(_mockUserProfile.Object, _mockCardQueries.Object, _mockMediator.Object);
+            var controller = new CardsController(_mockUserInfoService.Object, _mockCardQueries.Object, _mockMediator.Object);
 
             // Act
             var result = await controller.FindUserCardsAsync();
@@ -83,7 +83,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Arrange
             _mockCardQueries.Setup(queries => queries.FindUserCardsAsync(It.IsAny<CustomerId>())).ReturnsAsync(new Option<CardListDTO>()).Verifiable();
 
-            var controller = new CardsController(_mockUserProfile.Object, _mockCardQueries.Object, _mockMediator.Object);
+            var controller = new CardsController(_mockUserInfoService.Object, _mockCardQueries.Object, _mockMediator.Object);
 
             // Act
             var result = await controller.FindUserCardsAsync();
@@ -107,7 +107,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             _mockMediator.Setup(mediator => mediator.Send(It.IsAny<CreateCardCommand>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new OkObjectResult(new Card())).Verifiable();
 
-            var controller = new CardsController(_mockUserProfile.Object, _mockCardQueries.Object, _mockMediator.Object);
+            var controller = new CardsController(_mockUserInfoService.Object, _mockCardQueries.Object, _mockMediator.Object);
 
             // Act
             var result = await controller.CreateCardAsync(command);
@@ -130,7 +130,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
                 .ReturnsAsync(new Option<CardDTO>(new CardDTO()))
                 .Verifiable();
 
-            var controller = new CardsController(_mockUserProfile.Object, _mockCardQueries.Object, _mockMediator.Object);
+            var controller = new CardsController(_mockUserInfoService.Object, _mockCardQueries.Object, _mockMediator.Object);
 
             // Act
             var result = await controller.FindUserCardAsync(cardId);
@@ -152,7 +152,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             _mockMediator.Setup(mediator => mediator.Send(It.IsAny<DeleteCardCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(new OkResult())
                 .Verifiable();
 
-            var controller = new CardsController(_mockUserProfile.Object, _mockCardQueries.Object, _mockMediator.Object);
+            var controller = new CardsController(_mockUserInfoService.Object, _mockCardQueries.Object, _mockMediator.Object);
 
             // Act
             var result = await controller.DeleteCardAsync(cardId);
@@ -175,7 +175,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
                 .ReturnsAsync(new OkObjectResult(new Customer()))
                 .Verifiable();
 
-            var controller = new CardsController(_mockUserProfile.Object, _mockCardQueries.Object, _mockMediator.Object);
+            var controller = new CardsController(_mockUserInfoService.Object, _mockCardQueries.Object, _mockMediator.Object);
 
             // Act
             var result = await controller.UpdateDefaultCardAsync(cardId);

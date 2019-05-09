@@ -10,8 +10,9 @@
 
 using System.Linq;
 
-using eDoxa.Challenges.Domain.AggregateModels.MatchAggregate;
-using eDoxa.Challenges.Domain.AggregateModels.ParticipantAggregate;
+using eDoxa.Challenges.Domain.Entities.Abstractions;
+using eDoxa.Challenges.Domain.Entities.AggregateModels.MatchAggregate;
+using eDoxa.Challenges.Domain.Entities.AggregateModels.ParticipantAggregate;
 using eDoxa.Challenges.Domain.Services.LeagueOfLegends.DTO;
 
 namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.Adapters

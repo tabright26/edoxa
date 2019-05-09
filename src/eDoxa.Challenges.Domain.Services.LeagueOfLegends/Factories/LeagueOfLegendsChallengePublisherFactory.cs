@@ -10,7 +10,8 @@
 
 using System;
 
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Challenges.Domain.Entities;
+using eDoxa.Challenges.Domain.Entities.Abstractions;
 using eDoxa.Challenges.Domain.Services.LeagueOfLegends.Strategies;
 
 namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.Factories
@@ -22,19 +23,19 @@ namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.Factories
 
         public static LeagueOfLegendsChallengePublisherFactory Instance => Lazy.Value;
 
-        public IPublisherStrategy CreatePublisher(ChallengeInterval interval)
+        public IPublisherStrategy CreatePublisher(PublisherInterval interval)
         {
-            if (interval == ChallengeInterval.Daily)
+            if (interval == PublisherInterval.Daily)
             {
                 return new LeagueOfLegendsDailyPublisherStrategy();
             }
 
-            if (interval == ChallengeInterval.Weekly)
+            if (interval == PublisherInterval.Weekly)
             {
                 return new LeagueOfLegendsWeeklyPublisherStrategy();
             }
 
-            if (interval == ChallengeInterval.Monthly)
+            if (interval == PublisherInterval.Monthly)
             {
                 return new LeagueOfLegendsMonthlyPublisherStrategy();
             }

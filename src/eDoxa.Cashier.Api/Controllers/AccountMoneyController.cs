@@ -32,12 +32,12 @@ namespace eDoxa.Cashier.Api.Controllers
     public sealed class AccountMoneyController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly IUserProfile _userProfile;
+        private readonly IUserInfoService _userInfoService;
         private readonly IMoneyAccountQueries _queries;
 
-        public AccountMoneyController(IUserProfile userProfile, IMoneyAccountQueries queries, IMediator mediator)
+        public AccountMoneyController(IUserInfoService userInfoService, IMoneyAccountQueries queries, IMediator mediator)
         {
-            _userProfile = userProfile;
+            _userInfoService = userInfoService;
             _queries = queries;
             _mediator = mediator;
         }
@@ -48,7 +48,7 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpGet(Name = nameof(FindMoneyAccountAsync))]
         public async Task<IActionResult> FindMoneyAccountAsync()
         {
-            var userId = UserId.Parse(_userProfile.Subject);
+            var userId = UserId.Parse(_userInfoService.Subject);
 
             var account = await _queries.FindAccountAsync(userId);
 
@@ -83,7 +83,7 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpGet("transactions", Name = nameof(FindMoneyTransactionsAsync))]
         public async Task<IActionResult> FindMoneyTransactionsAsync()
         {
-            var userId = UserId.Parse(_userProfile.Subject);
+            var userId = UserId.Parse(_userInfoService.Subject);
 
             var transactions = await _queries.FindTransactionsAsync(userId);
 

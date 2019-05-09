@@ -26,7 +26,7 @@ namespace eDoxa.Identity.Infrastructure
     {
         private static readonly UserAggregateFactory UserAggregateFactory = UserAggregateFactory.Instance;
 
-        public async Task SeedAsync(ILogger logger)
+        public Task SeedAsync(ILogger logger)
         {
             //if (!Users.Any())
             //{
@@ -40,6 +40,8 @@ namespace eDoxa.Identity.Infrastructure
             //{
             //    logger.LogInformation("The users already populated.");
             //}
+
+            return Task.CompletedTask;
         }
     }
 

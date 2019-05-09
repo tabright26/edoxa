@@ -27,20 +27,20 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
     {
         private static readonly TokenBundles Bundles = new TokenBundles();
         private readonly ITokenAccountService _tokenAccountService;
-        private readonly IUserProfile _userProfile;
+        private readonly IUserInfoService _userInfoService;
 
-        public DepositTokensCommandHandler(IUserProfile userProfile, ITokenAccountService tokenAccountService)
+        public DepositTokensCommandHandler(IUserInfoService userInfoService, ITokenAccountService tokenAccountService)
         {
-            _userProfile = userProfile;
+            _userInfoService = userInfoService;
             _tokenAccountService = tokenAccountService;
         }
 
         [ItemNotNull]
         public async Task<IActionResult> Handle([NotNull] DepositTokensCommand command, CancellationToken cancellationToken)
         {
-            var userId = UserId.Parse(_userProfile.Subject);
+            var userId = UserId.Parse(_userInfoService.Subject);
 
-            var customerId = CustomerId.Parse(_userProfile.CustomerId);
+            var customerId = CustomerId.Parse(_userInfoService.CustomerId);
 
             var bundle = Bundles[command.BundleType];
 

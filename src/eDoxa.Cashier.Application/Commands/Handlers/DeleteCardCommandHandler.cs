@@ -26,18 +26,18 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
     internal sealed class DeleteCardCommandHandler : ICommandHandler<DeleteCardCommand, IActionResult>
     {
         private readonly CardService _cardService;
-        private readonly IUserProfile _userProfile;
+        private readonly IUserInfoService _userInfoService;
 
-        public DeleteCardCommandHandler(IUserProfile userProfile, CardService cardService)
+        public DeleteCardCommandHandler(IUserInfoService userInfoService, CardService cardService)
         {
-            _userProfile = userProfile;
+            _userInfoService = userInfoService;
             _cardService = cardService;
         }
 
         [ItemNotNull]
         public async Task<IActionResult> Handle([NotNull] DeleteCardCommand command, CancellationToken cancellationToken)
         {
-            var customerId = CustomerId.Parse(_userProfile.CustomerId);
+            var customerId = CustomerId.Parse(_userInfoService.CustomerId);
 
             await _cardService.DeleteAsync(customerId.ToString(), command.CardId.ToString(), cancellationToken: cancellationToken);
 

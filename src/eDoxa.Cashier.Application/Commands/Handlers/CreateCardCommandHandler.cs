@@ -27,11 +27,11 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
     {
         private readonly CustomerService _customerService;
         private readonly CardService _service;
-        private readonly IUserProfile _userProfile;
+        private readonly IUserInfoService _userInfoService;
 
-        public CreateCardCommandHandler(IUserProfile userProfile, CustomerService customerService, CardService cardService)
+        public CreateCardCommandHandler(IUserInfoService userInfoService, CustomerService customerService, CardService cardService)
         {
-            _userProfile = userProfile;
+            _userInfoService = userInfoService;
             _customerService = customerService;
             _service = cardService;
         }
@@ -39,7 +39,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         [ItemNotNull]
         public async Task<IActionResult> Handle([NotNull] CreateCardCommand command, CancellationToken cancellationToken)
         {
-            var customerId = CustomerId.Parse(_userProfile.CustomerId);
+            var customerId = CustomerId.Parse(_userInfoService.CustomerId);
 
             var card = await _service.CreateAsync(
                 customerId.ToString(),

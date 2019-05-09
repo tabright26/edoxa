@@ -1,9 +1,9 @@
 ﻿// Filename: ChallengesControllerTest.cs
-// Date Created: 2019-04-21
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -12,11 +12,12 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Api.Controllers;
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Challenges.Domain.Entities.AggregateModels;
+using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.DTO;
 using eDoxa.Challenges.DTO.Queries;
 using eDoxa.Functional.Maybe;
-using eDoxa.Seedwork.Domain.Common.Enums;
+using eDoxa.Seedwork.Domain.Enumerations;
 
 using FluentAssertions;
 
@@ -54,14 +55,14 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
                 }
             };
 
-            _queries.Setup(queries => queries.FindChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeType>(), It.IsAny<ChallengeState1>()))
+            _queries.Setup(queries => queries.FindChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeType>(), It.IsAny<ChallengeState>()))
                 .ReturnsAsync(new Option<ChallengeListDTO>(value))
                 .Verifiable();
 
             var controller = new ChallengesController(_queries.Object);
 
             // Act
-            var result = await controller.FindChallengesAsync();
+            var result = await controller.FindChallengesAsync(Game.All, ChallengeType.All, ChallengeState.All);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -75,14 +76,14 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
         public async Task FindChallengesAsync_ShouldBeNoContentResult()
         {
             // Arrange
-            _queries.Setup(queries => queries.FindChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeType>(), It.IsAny<ChallengeState1>()))
+            _queries.Setup(queries => queries.FindChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeType>(), It.IsAny<ChallengeState>()))
                 .ReturnsAsync(new Option<ChallengeListDTO>())
                 .Verifiable();
 
             var controller = new ChallengesController(_queries.Object);
 
             // Act
-            var result = await controller.FindChallengesAsync();
+            var result = await controller.FindChallengesAsync(Game.All, ChallengeType.All, ChallengeState.All);
 
             // Assert
             result.Should().BeOfType<NoContentResult>();

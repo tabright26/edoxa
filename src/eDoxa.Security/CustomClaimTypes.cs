@@ -15,5 +15,6 @@ namespace eDoxa.Security
         public const string SecurityStamp = "security_stamp";
         public const string Permission = "permission";
         public const string CustomerId = "customer_id";
+        public const string Game = "game";
     }
 }

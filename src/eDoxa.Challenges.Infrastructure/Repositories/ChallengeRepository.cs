@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeRepository.cs
-// Date Created: 2019-04-30
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,14 +12,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.AggregateModels.MatchAggregate;
-using eDoxa.Challenges.Domain.AggregateModels.ParticipantAggregate;
+using eDoxa.Challenges.Domain.Entities.AggregateModels;
+using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
+using eDoxa.Challenges.Domain.Entities.AggregateModels.MatchAggregate;
+using eDoxa.Challenges.Domain.Entities.AggregateModels.ParticipantAggregate;
 using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Common.Enums;
-
-using JetBrains.Annotations;
+using eDoxa.Seedwork.Domain.Enumerations;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -53,22 +52,17 @@ namespace eDoxa.Challenges.Infrastructure.Repositories
             _context.Challenges.Add(challenge);
         }
 
-        public async Task<IReadOnlyCollection<Challenge>> FindChallengesAsync(Game game, ChallengeType type, ChallengeState1 state)
-        {
-            return await _context.Challenges.Include(ExpandParticipantMatchStats)
-                .Where(
-                    challenge => (challenge.Game & game) != Game.None &&
-                                 (challenge.Setup.Type & type) != ChallengeType.None &&
-                                 (challenge.Timeline.State & state) != ChallengeState1.None
-                )
-                .OrderBy(challenge => challenge.Timeline.StartedAt)
-                .ToListAsync();
-        }
-
-        [ItemCanBeNull]
         public async Task<Challenge> FindChallengeAsync(ChallengeId challengeId)
         {
             return await _context.Challenges.Include(ExpandParticipantMatchStats).Where(challenge => challenge.Id == challengeId).SingleOrDefaultAsync();
+        }
+
+        public async Task<IReadOnlyCollection<Challenge>> FindChallengesAsync(ChallengeType type, Game game, ChallengeState state)
+        {
+            return await _context.Challenges.Include(ExpandParticipantMatchStats)
+                .Where(challenge => challenge.Setup.Type.HasFlag(type) && challenge.Game.HasFlag(game) && challenge.Timeline.State.HasFlag(state))
+                .OrderBy(challenge => challenge.Timeline.StartedAt)
+                .ToListAsync();
         }
     }
 }

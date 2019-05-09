@@ -9,7 +9,6 @@
 // this source code package.
 
 using eDoxa.Challenges.Application.Commands;
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.DTO.Queries;
 using eDoxa.Commands.Extensions;
 using MediatR;
@@ -17,6 +16,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
+
+using eDoxa.Challenges.Domain.Entities.AggregateModels;
 
 namespace eDoxa.Challenges.Api.Controllers
 {
@@ -55,13 +56,9 @@ namespace eDoxa.Challenges.Api.Controllers
         ///     Register a participant to a challenge.
         /// </summary>
         [HttpPost(Name = nameof(RegisterChallengeParticipantAsync))]
-        public async Task<IActionResult> RegisterChallengeParticipantAsync(ChallengeId challengeId, [FromBody] RegisterChallengeParticipantCommand command)
+        public async Task<IActionResult> RegisterChallengeParticipantAsync(ChallengeId challengeId)
         {
-            command.ChallengeId = challengeId;
-
-            command.LinkedAccount = "2133321233"; // TODO: Create LinkedAccount service.
-
-            return await _mediator.SendCommandAsync(command);
+            return await _mediator.SendCommandAsync(new RegisterParticipantCommand(challengeId));
         }
     }
 }

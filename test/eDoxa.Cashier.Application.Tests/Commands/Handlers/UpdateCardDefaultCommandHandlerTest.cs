@@ -1,5 +1,5 @@
-﻿// Filename: UpdateDefaultCardCommandHandlerTest.cs
-// Date Created: 2019-04-30
+﻿// Filename: UpdateCardDefaultCommandHandlerTest.cs
+// Date Created: 2019-05-03
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -34,14 +34,14 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     {
         private static readonly UserAggregateFactory UserAggregateFactory = UserAggregateFactory.Instance;
         private Mock<CustomerService> _mockCustomerService;
-        private Mock<IUserProfile> _mockUserProfile;
+        private Mock<IUserInfoService> _mockUserInfoService;
 
         [TestInitialize]
         public void TestInitialize()
         {
             _mockCustomerService = new Mock<CustomerService>();
-            _mockUserProfile = new Mock<IUserProfile>();
-            _mockUserProfile.SetupGetProperties();
+            _mockUserInfoService = new Mock<IUserInfoService>();
+            _mockUserInfoService.SetupGetProperties();
         }
 
         [TestMethod]
@@ -63,7 +63,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
                 .ReturnsAsync(customer)
                 .Verifiable();
 
-            var handler = new UpdateCardDefaultCommandHandler(_mockUserProfile.Object, _mockCustomerService.Object);
+            var handler = new UpdateCardDefaultCommandHandler(_mockUserInfoService.Object, _mockCustomerService.Object);
 
             // Act
             var response = await handler.HandleAsync(new UpdateCardDefaultCommand(cardId));

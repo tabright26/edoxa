@@ -1,23 +1,27 @@
 ﻿// Filename: ChallengeRepositoryTest.cs
-// Date Created: 2019-04-14
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Challenges.Domain.Entities.AggregateModels;
+using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Factories;
 using eDoxa.Challenges.Infrastructure.Repositories;
-using eDoxa.Seedwork.Domain.Common.Enums;
+using eDoxa.Seedwork.Domain.Enumerations;
 using eDoxa.Seedwork.Infrastructure.Factories;
+
 using FluentAssertions;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
@@ -25,7 +29,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
     [TestClass]
     public sealed class ChallengeRepositoryTest
     {
-        private readonly ChallengeAggregateFactory _challengeAggregateFactory = ChallengeAggregateFactory.Instance;
+        private static readonly FakeRandomChallengeFactory FakeRandomChallengeFactory = FakeRandomChallengeFactory.Instance;
 
         [TestMethod]
         public async Task Create_Challenge_ShouldNotBeEmpty()
@@ -37,7 +41,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
                     // Arrange
                     var repository = new ChallengeRepository(context);
 
-                    var challenge = _challengeAggregateFactory.CreateChallenge();
+                    var challenge = FakeRandomChallengeFactory.CreateRandomChallenges().First();
 
                     // Act
                     repository.Create(challenge);
@@ -63,7 +67,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
                     // Arrange
                     var repository = new ChallengeRepository(context);
 
-                    var challenges = _challengeAggregateFactory.CreateRandomChallenges();
+                    var challenges = FakeRandomChallengeFactory.CreateRandomChallenges();
 
                     // Act
                     repository.Create(challenges);
@@ -89,7 +93,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
                     // Arrange
                     var repository = new ChallengeRepository(context);
 
-                    var challenges = _challengeAggregateFactory.CreateRandomChallenges();
+                    var challenges = FakeRandomChallengeFactory.CreateRandomChallenges();
 
                     repository.Create(challenges);
 
@@ -103,7 +107,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
 
                     // Act
                     var challenges =
-                        await repository.FindChallengesAsync(Game.All, ChallengeType.All, ChallengeState1.All);
+                        await repository.FindChallengesAsync(ChallengeType.All, Game.All, ChallengeState.All);
 
                     // Assert
                     ChallengeRepositoryAssert.IsLoaded(challenges);
@@ -123,7 +127,7 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
 
                     // Act
                     var challenges =
-                        await repository.FindChallengesAsync(Game.All, ChallengeType.All, ChallengeState1.All);
+                        await repository.FindChallengesAsync(ChallengeType.All, Game.All, ChallengeState.All);
 
                     // Assert
                     challenges.Should().BeEmpty();
@@ -131,80 +135,82 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
             }
         }
 
-        [DataRow(Game.All, ChallengeType.All, ChallengeState1.None)]
-        [DataRow(Game.All, ChallengeType.None, ChallengeState1.All)]
-        [DataRow(Game.None, ChallengeType.All, ChallengeState1.All)]
-        [DataTestMethod]
-        public async Task FindChallengesAsync_ByNoneFlags_ShouldBeEmpty(Game game, ChallengeType type,
-            ChallengeState1 state)
-        {
-            using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
-            {
-                using (var context = factory.CreateContext())
-                {
-                    var repository = new ChallengeRepository(context);
+        //[DataRow(Game.All, Enumeration.All<ChallengeType>(), ChallengeState1.None)]
+        //[DataRow(Game.All, ChallengeType.None, ChallengeState1.All)]
+        //[DataRow(Game.None, ChallengeType.All, ChallengeState1.All)]
+        //[DataTestMethod]
+        //public async Task FindChallengesAsync_ByNoneFlags_ShouldBeEmpty(
+        //    Game game,
+        //    ChallengeType type,
+        //    ChallengeState1 state)
+        //{
+        //    using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
+        //    {
+        //        using (var context = factory.CreateContext())
+        //        {
+        //            var repository = new ChallengeRepository(context);
 
-                    var challenges = _challengeAggregateFactory.CreateRandomChallenges();
+        //            var challenges = FakeRandomChallengeFactory.CreateRandomChallenges();
 
-                    repository.Create(challenges);
+        //            repository.Create(challenges);
 
-                    await repository.UnitOfWork.CommitAsync();
-                }
+        //            await repository.UnitOfWork.CommitAsync();
+        //        }
 
-                using (var context = factory.CreateContext())
-                {
-                    // Arrange
-                    var repository = new ChallengeRepository(context);
+        //        using (var context = factory.CreateContext())
+        //        {
+        //            // Arrange
+        //            var repository = new ChallengeRepository(context);
 
-                    // Act
-                    var challenges = await repository.FindChallengesAsync(game, type, state);
+        //            // Act
+        //            var challenges = await repository.FindChallengesAsync(game, type, state);
 
-                    // Assert
-                    challenges.Should().BeEmpty();
-                }
-            }
-        }
+        //            // Assert
+        //            challenges.Should().BeEmpty();
+        //        }
+        //    }
+        //}
 
-        [DataRow(ChallengeState1.Draft)]
-        [DataRow(ChallengeState1.Configured)]
-        [DataRow(ChallengeState1.Opened)]
-        [DataRow(ChallengeState1.InProgress)]
-        [DataRow(ChallengeState1.Ended)]
-        [DataRow(ChallengeState1.Closed)]
-        [DataTestMethod]
-        public async Task FindChallengesAsync_ByState_ShouldHaveCountOfFive(ChallengeState1 state)
-        {
-            using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
-            {
-                using (var context = factory.CreateContext())
-                {
-                    var repository = new ChallengeRepository(context);
+        //[DataRow(ChallengeState.Draft)]
+        //[DataRow(ChallengeState.Configured)]
+        //[DataRow(ChallengeState.Opened)]
+        //[DataRow(ChallengeState.InProgress)]
+        //[DataRow(ChallengeState.Ended)]
+        //[DataRow(ChallengeState.Closed)]
+        //[DataTestMethod]
+        //public async Task FindChallengesAsync_ByState_ShouldHaveCountOfFive(ChallengeState state)
+        //{
+        //    using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
+        //    {
+        //        using (var context = factory.CreateContext())
+        //        {
+        //            var repository = new ChallengeRepository(context);
 
-                    var challenges = _challengeAggregateFactory.CreateRandomChallenges(state);
+        //            var challenges = FakeRandomChallengeFactory.CreateRandomChallenges(state);
 
-                    repository.Create(challenges);
+        //            repository.Create(challenges);
 
-                    await repository.UnitOfWork.CommitAsync();
-                }
+        //            await repository.UnitOfWork.CommitAsync();
+        //        }
 
-                using (var context = factory.CreateContext())
-                {
-                    // Arrange
-                    var repository = new ChallengeRepository(context);
+        //        using (var context = factory.CreateContext())
+        //        {
+        //            // Arrange
+        //            var repository = new ChallengeRepository(context);
 
-                    // Act
-                    var challenges = await repository.FindChallengesAsync(Game.All, ChallengeType.All, state);
+        //            // Act
+        //            var challenges = await repository.FindChallengesAsync(Enumeration.All<ChallengeType>(), Enumeration.All<Game>(), state);
 
-                    // Assert
-                    challenges.Should().HaveCount(ChallengeAggregateFactory.DefaultRandomChallengeCount);
-                }
-            }
-        }
+        //            // Assert
+        //            challenges.Should().HaveCount(FakeRandomChallengeFactory.DefaultRandomChallengeCount);
+        //        }
+        //    }
+        //}
 
         [TestMethod]
         public async Task FindChallengeAsync_Persistent_ShouldBeLoaded()
         {
-            var challenge = _challengeAggregateFactory.CreateRandomChallenge();
+            var challenge = FakeRandomChallengeFactory.CreateRandomChallenge();
 
             using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
             {
@@ -269,10 +275,12 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
                 challenge.Name.ToString().Should().NotBeNullOrWhiteSpace();
                 challenge.Setup.Should().NotBeNull();
                 challenge.Timeline.Should().NotBeNull();
-                challenge.LiveData.Should().NotBeNull();
+
+                //challenge.LiveData.Should().NotBeNull();
                 challenge.Scoring.Should().NotBeNull();
-                challenge.Payout.Should().NotBeNull();
-                challenge.Scoreboard.Should().NotBeNull();
+
+                //challenge.Payout.Should().NotBeNull();
+                //challenge.Scoreboard.Should().NotBeNull();
                 challenge.Participants.Should().NotBeNullOrEmpty();
 
                 foreach (var participant in challenge.Participants)

@@ -1,11 +1,11 @@
 ﻿// Filename: LeagueOfLegendsDTO.cs
-// Date Created: 2019-03-04
+// Date Created: 2019-05-03
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
 // 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
@@ -20,21 +20,9 @@ namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.DTO.Tests
     {
         private static readonly string BaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
 
-        public static string Matches
-        {
-            get
-            {
-                return File.ReadAllText(BaseDirectory + @"\Matches.json");
-            }
-        }
+        public static string Matches => File.ReadAllText(BaseDirectory + @"\Matches.json");
 
-        public static string MatchReferences
-        {
-            get
-            {
-                return File.ReadAllText(BaseDirectory + @"\MatchReferences.json");
-            }
-        }
+        public static string MatchReferences => File.ReadAllText(BaseDirectory + @"\MatchReferences.json");
 
         public static LeagueOfLegendsMatchDTO DeserializeMatch(long gameId)
         {

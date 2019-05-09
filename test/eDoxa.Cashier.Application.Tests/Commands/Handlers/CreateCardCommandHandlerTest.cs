@@ -1,5 +1,5 @@
 ﻿// Filename: CreateCardCommandHandlerTest.cs
-// Date Created: 2019-04-30
+// Date Created: 2019-05-03
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -34,15 +34,15 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         private static readonly UserAggregateFactory UserAggregateFactory = UserAggregateFactory.Instance;
         private Mock<CardService> _mockCardService;
         private Mock<CustomerService> _mockCustomerService;
-        private Mock<IUserProfile> _mockUserProfile;
+        private Mock<IUserInfoService> _mockUserInfoService;
 
         [TestInitialize]
         public void TestInitialize()
         {
             _mockCardService = new Mock<CardService>();
             _mockCustomerService = new Mock<CustomerService>();
-            _mockUserProfile = new Mock<IUserProfile>();
-            _mockUserProfile.SetupGetProperties();
+            _mockUserInfoService = new Mock<IUserInfoService>();
+            _mockUserInfoService.SetupGetProperties();
         }
 
         [TestMethod]
@@ -75,7 +75,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
                 .ReturnsAsync(card)
                 .Verifiable();
 
-            var handler = new CreateCardCommandHandler(_mockUserProfile.Object, _mockCustomerService.Object, _mockCardService.Object);
+            var handler = new CreateCardCommandHandler(_mockUserInfoService.Object, _mockCustomerService.Object, _mockCardService.Object);
 
             // Act
             var response = await handler.Handle(new CreateCardCommand(card.Id, true), default);

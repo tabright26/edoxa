@@ -8,14 +8,16 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Seedwork.Domain.Common.Enums;
+using eDoxa.Challenges.Domain.Entities;
+using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
+using eDoxa.Challenges.Domain.Entities.Random;
+using eDoxa.Seedwork.Domain.Enumerations;
 
 namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends
 {
     public sealed class LeagueOfLegendsChallenge : Challenge
     {
-        public LeagueOfLegendsChallenge(ChallengeName name, ChallengeInterval interval) : base(Game.LeagueOfLegends, name, new RandomChallengeSetup(interval))
+        public LeagueOfLegendsChallenge(ChallengeName name, PublisherInterval interval) : base(Game.LeagueOfLegends, name, new RandomChallengeSetup(interval))
         {
         }
     }

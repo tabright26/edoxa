@@ -1,19 +1,20 @@
 ﻿// Filename: ChallengeParticipantsControllerTest.cs
-// Date Created: 2019-04-21
+// Date Created: 2019-05-03
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Api.Controllers;
 using eDoxa.Challenges.Application.Commands;
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Challenges.Domain.Entities.AggregateModels;
 using eDoxa.Challenges.DTO;
 using eDoxa.Challenges.DTO.Queries;
 using eDoxa.Functional.Maybe;
@@ -91,14 +92,14 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
         public async Task RegisterChallengeParticipantAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            var command = new RegisterChallengeParticipantCommand();
-
-            _mediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(new OkResult()).Verifiable();
+            _mediator.Setup(mediator => mediator.Send(It.IsAny<RegisterParticipantCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new OkResult())
+                .Verifiable();
 
             var controller = new ChallengeParticipantsController(_queries.Object, _mediator.Object);
 
             // Act
-            var result = await controller.RegisterChallengeParticipantAsync(new ChallengeId(), command);
+            var result = await controller.RegisterChallengeParticipantAsync(new ChallengeId());
 
             // Assert
             result.Should().BeOfType<OkResult>();

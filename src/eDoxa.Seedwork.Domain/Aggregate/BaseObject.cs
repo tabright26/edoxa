@@ -13,8 +13,6 @@ using System.Reflection;
 
 using eDoxa.Reflection;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Seedwork.Domain.Aggregate
 {
     public abstract class BaseObject
