@@ -1,9 +1,9 @@
 ﻿// Filename: IChallengeQueries.cs
-// Date Created: 2019-04-21
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -19,10 +19,10 @@ namespace eDoxa.Challenges.DTO.Queries
 {
     public interface IChallengeQueries
     {
-        Task<Option<ChallengeListDTO>> FindChallengesAsync(ChallengeType type, Game game, ChallengeState state);
+        Task<Option<ChallengeListDTO>> FindChallengesAsync(Game game, ChallengeType type, ChallengeState state);
 
         Task<Option<ChallengeDTO>> FindChallengeAsync(ChallengeId challengeId);
 
-        Task<Option<ChallengeListDTO>> FindUserChallengeHistoryAsync(UserId userId, ChallengeType type, Game game, ChallengeState state);
+        Task<Option<ChallengeListDTO>> FindUserChallengeHistoryAsync(UserId userId, Game game, ChallengeType type, ChallengeState state);
     }
 }

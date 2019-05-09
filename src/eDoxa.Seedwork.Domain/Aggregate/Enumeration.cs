@@ -10,6 +10,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
@@ -19,6 +21,12 @@ namespace eDoxa.Seedwork.Domain.Aggregate
 {
     public static class Enumeration
     {
+        public static Type[] GetTypes()
+        {
+            return AppDomain.CurrentDomain.GetAssemblies().SelectMany(assembly => assembly.GetTypes())
+                .Where(type => type.IsClass && !type.IsAbstract && typeof(IEnumeration).IsAssignableFrom(type)).ToArray();
+        }
+
         public static Array GetValues(Type enumerationType)
         {
             return GetAll(enumerationType).Select(enumeration => enumeration.Value).ToArray();
@@ -35,7 +43,7 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             return (TEnumerable) FromValue(value, typeof(TEnumerable));
         }
 
-        public static IEnumeration FromValue(int value, Type enumerationType)
+        private static IEnumeration FromValue(int value, Type enumerationType)
         {
             try
             {
@@ -57,7 +65,7 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             return (TEnumerable) FromName(name, typeof(TEnumerable));
         }
 
-        public static IEnumeration FromName(string name, Type enumerationType)
+        private static IEnumeration FromName(string name, Type enumerationType)
         {
             try
             {
@@ -82,6 +90,20 @@ namespace eDoxa.Seedwork.Domain.Aggregate
         private static IEnumerable<IEnumeration> GetAll(Type enumerationType)
         {
             return enumerationType.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
+                .Select(field => field.GetValue(null))
+                .Where(obj => obj is IEnumeration)
+                .Cast<IEnumeration>();
+        }
+
+        public static IEnumerable<TEnumeration> GetFlags<TEnumeration>()
+        where TEnumeration : IEnumeration
+        {
+            return GetFlags(typeof(TEnumeration)).Cast<TEnumeration>();
+        }
+
+        public static IEnumerable<IEnumeration> GetFlags(Type enumerationType)
+        {
+            return enumerationType.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)
                 .Select(field => field.GetValue(null))
                 .Where(obj => obj is IEnumeration)
                 .Cast<IEnumeration>();
@@ -115,14 +137,9 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             return enumeration._value;
         }
 
-        public static TEnumeration GetFlag(int value)
+        public static IEnumerable<TEnumeration> GetFlags()
         {
-            return value == (int) None ? None : value == (int) All ? All : FromValue(value);
-        }
-
-        public static TEnumeration GetFlag(string name)
-        {
-            return name == None.ToString() ? None : name == All.ToString() ? All : FromName(name);
+            return Enumeration.GetFlags<TEnumeration>();
         }
 
         public static IEnumerable<TEnumeration> GetAll()
@@ -140,6 +157,16 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             return Enumeration.FromName<TEnumeration>(name);
         }
 
+        private static TEnumeration GetFlag(int value)
+        {
+            return value == (int) None ? None : value == (int) All ? All : FromValue(value);
+        }
+
+        private static TEnumeration GetFlag(string name)
+        {
+            return name == None.ToString() ? None : name == All.ToString() ? All : FromName(name);
+        }
+
         public override string ToString()
         {
             return _name;
@@ -147,7 +174,7 @@ namespace eDoxa.Seedwork.Domain.Aggregate
 
         public bool HasFlag(TEnumeration enumeration)
         {
-            return (Value & enumeration.Value) != None.Value;
+            return (_value & enumeration._value) != None._value;
         }
     }
 
@@ -179,6 +206,61 @@ namespace eDoxa.Seedwork.Domain.Aggregate
         public int CompareTo(TEnumeration other)
         {
             return _value.CompareTo(other?._value);
+        }
+    }
+
+    public abstract partial class Enumeration<TEnumeration>
+    {
+        protected sealed class EnumerationConverter : TypeConverter
+        {
+            public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+            {
+                return sourceType == typeof(int) || sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
+            }
+
+            public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+            {
+                return destinationType == typeof(int) || destinationType == typeof(string) || base.CanConvertTo(context, destinationType);
+            }
+
+            public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+            {
+                switch (value)
+                {
+                    case int val:
+                    {
+                        return GetFlag(val);
+                    }
+
+                    case string name when !string.IsNullOrWhiteSpace(name):
+                    {
+                        return GetFlag(name);
+                    }
+
+                    default:
+                    {
+                        return base.ConvertFrom(context, culture, value);
+                    }
+                }
+            }
+
+            public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+            {
+                if (value is TEnumeration enumeration)
+                {
+                    if (destinationType == typeof(int))
+                    {
+                        return enumeration.Value;
+                    }
+
+                    if (destinationType == typeof(string))
+                    {
+                        return enumeration.Name;
+                    }
+                }
+
+                return base.ConvertTo(context, culture, value, destinationType);
+            }
         }
     }
 }

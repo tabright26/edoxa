@@ -8,10 +8,13 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.ComponentModel;
+
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
 {
+    [TypeConverter(typeof(EnumerationConverter))]
     public sealed class ChallengeType : Enumeration<ChallengeType>
     {
         public static readonly ChallengeType Default = new ChallengeType(1 << 0, nameof(Default));

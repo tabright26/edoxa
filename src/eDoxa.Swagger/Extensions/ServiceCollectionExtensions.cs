@@ -1,9 +1,9 @@
 ﻿// Filename: ServiceCollectionExtensions.cs
-// Date Created: 2019-04-14
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -11,8 +11,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
+using eDoxa.Functional.Extensions;
+using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Swagger.Filters;
 
 using IdentityServer4.Models;
@@ -31,7 +34,8 @@ namespace eDoxa.Swagger.Extensions
         public static void AddSwagger(
             this IServiceCollection services,
             IConfiguration configuration,
-            IHostingEnvironment environment, ApiResource apiResource)
+            IHostingEnvironment environment,
+            ApiResource apiResource)
         {
             if (!environment.IsDevelopment())
             {
@@ -45,6 +49,13 @@ namespace eDoxa.Swagger.Extensions
             services.AddSwaggerGen(
                 swaggerGenOptions =>
                 {
+                    // TODO: Must be isolated in class.
+                    Enumeration.GetTypes().ForEach(type => swaggerGenOptions.MapType(type, () => new Schema
+                    {
+                        Type = "string",
+                        Enum = Enumeration.GetFlags(type).Cast<object>().ToList()
+                    }));
+
                     swaggerGenOptions.DescribeAllEnumsAsStrings();
 
                     var provider = services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();

@@ -8,10 +8,13 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.ComponentModel;
+
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Seedwork.Domain.Enumerations
 {
+    [TypeConverter(typeof(EnumerationConverter))]
     public sealed class Game : Enumeration<Game>
     {
         public static readonly Game LeagueOfLegends = new Game(1 << 0, nameof(LeagueOfLegends));

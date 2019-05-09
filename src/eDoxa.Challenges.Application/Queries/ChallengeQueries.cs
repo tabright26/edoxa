@@ -81,7 +81,7 @@ namespace eDoxa.Challenges.Application.Queries
 
     public sealed partial class ChallengeQueries : IChallengeQueries
     {
-        public async Task<Option<ChallengeListDTO>> FindChallengesAsync(ChallengeType type, Game game, ChallengeState state)
+        public async Task<Option<ChallengeListDTO>> FindChallengesAsync(Game game, ChallengeType type, ChallengeState state)
         {
             var challenges = await this.FindChallengesAsNoTrackingAsync(type, game, state);
 
@@ -99,7 +99,7 @@ namespace eDoxa.Challenges.Application.Queries
             return mapper != null ? new Option<ChallengeDTO>(mapper) : new Option<ChallengeDTO>();
         }
 
-        public async Task<Option<ChallengeListDTO>> FindUserChallengeHistoryAsync(UserId userId, ChallengeType type, Game game, ChallengeState state)
+        public async Task<Option<ChallengeListDTO>> FindUserChallengeHistoryAsync(UserId userId, Game game, ChallengeType type, ChallengeState state)
         {
             var challenges = await this.FindUserChallengeHistoryAsNoTrackingAsync(userId, type, game, state);
 
