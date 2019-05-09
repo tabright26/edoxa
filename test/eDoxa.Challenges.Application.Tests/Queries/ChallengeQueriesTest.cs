@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeQueriesTest.cs
-// Date Created: 2019-05-03
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -18,7 +18,6 @@ using eDoxa.Challenges.DTO.Factories;
 using eDoxa.Challenges.Infrastructure;
 using eDoxa.Challenges.Infrastructure.Repositories;
 using eDoxa.Challenges.Tests.Asserts;
-using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Enumerations;
 using eDoxa.Seedwork.Infrastructure.Factories;
 

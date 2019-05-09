@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeQueries.cs
-// Date Created: 2019-05-03
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -22,7 +22,6 @@ using eDoxa.Challenges.DTO;
 using eDoxa.Challenges.DTO.Queries;
 using eDoxa.Challenges.Infrastructure;
 using eDoxa.Functional.Maybe;
-using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Enumerations;
 
 using Microsoft.EntityFrameworkCore;
@@ -51,12 +50,8 @@ namespace eDoxa.Challenges.Application.Queries
             return await _context.Challenges
                 .AsNoTracking()
                 .Include(NavigationPropertyPath)
-                .Where(
-                    challenge => challenge.Participants.Any(participant => participant.UserId == userId) &&
-                                 (challenge.Game.Value & game.Value) != Game.None.Value &&
-                                 (challenge.Setup.Type.Value & type.Value) != ChallengeType.None.Value &&
-                                 (challenge.Timeline.State.Value & state.Value) != ChallengeState.None.Value
-                )
+                .Where(challenge => challenge.Participants.Any(participant => participant.UserId == userId) && challenge.Game.HasFlag(game) &&
+                                    challenge.Setup.Type.HasFlag(type) && challenge.Timeline.State.HasFlag(state))
                 .OrderBy(challenge => challenge.Timeline.StartedAt)
                 .ToListAsync();
         }
@@ -66,11 +61,7 @@ namespace eDoxa.Challenges.Application.Queries
             return await _context.Challenges
                 .AsNoTracking()
                 .Include(NavigationPropertyPath)
-                .Where(
-                    challenge => (challenge.Game.Value & game.Value) != Game.None.Value &&
-                                 (challenge.Setup.Type.Value & type.Value) != ChallengeType.None.Value &&
-                                 (challenge.Timeline.State.Value & state.Value) != ChallengeState.None.Value
-                )
+                .Where(challenge => challenge.Game.HasFlag(game) && challenge.Setup.Type.HasFlag(type) && challenge.Timeline.State.HasFlag(state))
                 .OrderBy(challenge => challenge.Game)
                 .ThenBy(challenge => challenge.Setup.Type)
                 .ThenBy(challenge => challenge.Timeline.State)

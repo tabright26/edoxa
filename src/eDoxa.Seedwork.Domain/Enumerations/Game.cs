@@ -1,4 +1,4 @@
-﻿// Filename: Games.cs
+﻿// Filename: Game.cs
 // Date Created: 2019-05-06
 // 
 // ================================================
@@ -18,11 +18,7 @@ namespace eDoxa.Seedwork.Domain.Enumerations
         public static readonly Game CSGO = new Game(1 << 1, nameof(CSGO));
         public static readonly Game Fortnite = new Game(1 << 2, nameof(Fortnite));
 
-        private Game(int value, string displayName) : base(value, displayName)
-        {
-        }
-
-        public Game()
+        private Game(int value, string name) : base(value, name)
         {
         }
     }

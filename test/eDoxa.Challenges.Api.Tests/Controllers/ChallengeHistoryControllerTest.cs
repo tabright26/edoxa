@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeHistoryControllerTest.cs
-// Date Created: 2019-05-03
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -18,7 +18,6 @@ using eDoxa.Challenges.DTO;
 using eDoxa.Challenges.DTO.Queries;
 using eDoxa.Functional.Maybe;
 using eDoxa.Security.Abstractions;
-using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Enumerations;
 using eDoxa.Testing.MSTest.Extensions;
 
@@ -69,7 +68,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
             var controller = new ChallengeHistoryController(_mockUserInfoService.Object, _queries.Object);
 
             // Act
-            var result = await controller.FindUserChallengeHistoryAsync(ChallengeType.All.DisplayName, Game.All.DisplayName, ChallengeState.All.DisplayName);
+            var result = await controller.FindUserChallengeHistoryAsync(ChallengeType.All.Name, Game.All.Name, ChallengeState.All.Name);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -91,7 +90,7 @@ namespace eDoxa.Challenges.Api.Tests.Controllers
             var controller = new ChallengeHistoryController(_mockUserInfoService.Object, _queries.Object);
 
             // Act
-            var result = await controller.FindUserChallengeHistoryAsync(ChallengeType.All.DisplayName, Game.All.DisplayName, ChallengeState.All.DisplayName);
+            var result = await controller.FindUserChallengeHistoryAsync(ChallengeType.All.Name, Game.All.Name, ChallengeState.All.Name);
 
             // Assert
             result.Should().BeOfType<NoContentResult>();

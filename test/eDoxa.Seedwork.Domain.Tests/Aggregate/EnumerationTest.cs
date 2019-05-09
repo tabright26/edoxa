@@ -10,7 +10,6 @@
 
 using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Enumerations;
-using eDoxa.Seedwork.Domain.Utilities;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -22,13 +21,24 @@ namespace eDoxa.Seedwork.Domain.Tests.Aggregate
         [TestMethod]
         public void GetEnums()
         {
-            var enums = MockEnumeration.GetAll();
+        }
+
+        [TestMethod]
+        public void GetNames()
+        {
+            var enums = Enumeration.GetNames(typeof(Game));
+        }
+
+        [TestMethod]
+        public void GetValue()
+        {
+            var enums = Enumeration.GetValues(typeof(Game));
         }
 
         [TestMethod]
         public void GetAllEnums()
         {
-            var isDefined = EnumerationUtils.IsDefined(Game.LeagueOfLegends);
+            var t = MockEnumeration.All;
 
             //var types = EnumerationUtils.GetSuperclassTypes();
         }
@@ -41,11 +51,7 @@ namespace eDoxa.Seedwork.Domain.Tests.Aggregate
             public static readonly MockEnumeration Enumeration8 = new MockEnumeration(1 << 3, nameof(Enumeration8));
             public static readonly MockEnumeration Enumeration16 = new MockEnumeration(1 << 4, nameof(Enumeration16));
 
-            private MockEnumeration(int value, string displayName) : base(value, displayName)
-            {
-            }
-
-            public MockEnumeration()
+            private MockEnumeration(int value, string name) : base(value, name)
             {
             }
         }

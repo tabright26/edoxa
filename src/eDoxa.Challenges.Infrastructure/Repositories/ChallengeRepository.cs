@@ -18,7 +18,6 @@ using eDoxa.Challenges.Domain.Entities.AggregateModels.MatchAggregate;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ParticipantAggregate;
 using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Enumerations;
 
 using Microsoft.EntityFrameworkCore;
@@ -61,11 +60,7 @@ namespace eDoxa.Challenges.Infrastructure.Repositories
         public async Task<IReadOnlyCollection<Challenge>> FindChallengesAsync(ChallengeType type, Game game, ChallengeState state)
         {
             return await _context.Challenges.Include(ExpandParticipantMatchStats)
-                .Where(
-                    challenge => (challenge.Setup.Type.Value & type.Value) != ChallengeType.None.Value &&
-                                 (challenge.Game.Value & game.Value) != Game.None.Value &&
-                                 (challenge.Timeline.State.Value & state.Value) != ChallengeState.None.Value
-                )
+                .Where(challenge => challenge.Setup.Type.HasFlag(type) && challenge.Game.HasFlag(game) && challenge.Timeline.State.HasFlag(state))
                 .OrderBy(challenge => challenge.Timeline.StartedAt)
                 .ToListAsync();
         }

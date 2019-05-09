@@ -21,11 +21,7 @@ namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
         public static readonly ChallengeState Ended = new ChallengeState(1 << 4, nameof(Ended));
         public static readonly ChallengeState Closed = new ChallengeState(1 << 5, nameof(Closed));
 
-        private ChallengeState(int value, string displayName) : base(value, displayName)
-        {
-        }
-
-        public ChallengeState()
+        private ChallengeState(int value, string name) : base(value, name)
         {
         }
     }

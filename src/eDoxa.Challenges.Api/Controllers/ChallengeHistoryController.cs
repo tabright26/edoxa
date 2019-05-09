@@ -15,7 +15,6 @@ using eDoxa.Challenges.Domain.Entities.AggregateModels;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.DTO.Queries;
 using eDoxa.Security.Abstractions;
-using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Enumerations;
 
 using Microsoft.AspNetCore.Authorization;
@@ -47,7 +46,8 @@ namespace eDoxa.Challenges.Api.Controllers
         {
             var userId = UserId.Parse(_userInfoService.Subject);
 
-            var challenges = await _queries.FindUserChallengeHistoryAsync(userId, ChallengeType.FromAnyDisplayName(type), Game.FromAnyDisplayName(game), ChallengeState.FromAnyDisplayName(state));
+            var challenges =
+                await _queries.FindUserChallengeHistoryAsync(userId, ChallengeType.GetFlag(type), Game.GetFlag(game), ChallengeState.GetFlag(state));
 
             return challenges
                 .Select(this.Ok)

@@ -1,5 +1,5 @@
-﻿// Filename: ChallengeQueriesAssert.cs
-// Date Created: 2019-05-04
+﻿// Filename: ChallengeQueryAssert.cs
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,7 +11,6 @@
 using System;
 
 using eDoxa.Challenges.DTO;
-using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Enumerations;
 
 using FluentAssertions;

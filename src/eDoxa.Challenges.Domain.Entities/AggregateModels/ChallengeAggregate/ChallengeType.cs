@@ -1,4 +1,4 @@
-﻿// Filename: ChallengeTypes.cs
+﻿// Filename: ChallengeType.cs
 // Date Created: 2019-05-07
 // 
 // ================================================
@@ -18,13 +18,8 @@ namespace eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate
         public static readonly ChallengeType Random = new ChallengeType(1 << 1, nameof(Random));
         public static readonly ChallengeType Custom = new ChallengeType(1 << 2, nameof(Custom));
 
-        private ChallengeType(int value, string displayName) : base(value, displayName)
+        private ChallengeType(int value, string name) : base(value, name)
         {
-        }
-
-        public ChallengeType()
-        {
-            
         }
     }
 }

@@ -10,8 +10,9 @@
 
 using System;
 
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Domain.Utilities;
+using eDoxa.Seedwork.Domain.Extensions;
 
 using Newtonsoft.Json;
 
@@ -23,7 +24,7 @@ namespace eDoxa.Seedwork.Application.Converters
         {
             if (value is IEnumeration enumeration)
             {
-                writer.WriteValue(enumeration.DisplayName);
+                writer.WriteValue(enumeration.ToString());
             }
             else
             {
@@ -33,81 +34,21 @@ namespace eDoxa.Seedwork.Application.Converters
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            return null;
-
-            //if (reader.TokenType == JsonToken.Null)
-            //{
-
-            //}
-
-            //try
-            //{
-            //    //switch (reader.TokenType)
-            //    //{
-            //    //    case JsonToken.String:
-
-            //    //        var displayName = reader.Value.ToString();
-
-            //    //        return displayName != string.Empty ? Enumeration.FromDisplayName<TEnumeration>(displayName) : null;
-
-            //    //    case JsonToken.Integer:
-
-            //    //        return Enumeration.FromValue<TEnumeration>((int)reader.Value);
-
-            //    //    default:
-
-            //    //        throw new JsonSerializationException($"Unexpected token {reader.TokenType} when parsing enumeration.");
-            //    //}
-            //}
-            //catch (Exception exception)
-            //{
-            //    throw new JsonSerializationException($"Error converting value {reader.Value} to type '{objectType}'.", exception);
-            //}
-
-            //throw new JsonSerializationException($"Unexpected token {reader.TokenType} when parsing enumeration.");
-        }
-
-        public override bool CanConvert(Type objectType)
-        {
-            return EnumerationUtils.IsDefined(objectType);
-        }
-    }
-
-    public sealed class StringEnumerationConverter<TEnumeration> : JsonConverter<TEnumeration>
-    where TEnumeration : Enumeration<TEnumeration>, new()
-    {
-        public override void WriteJson(JsonWriter writer, TEnumeration value, JsonSerializer serializer)
-        {
-            if (value == null)
-            {
-                writer.WriteNull();
-            }
-            else
-            {
-                writer.WriteValue(value.DisplayName);
-            }
-        }
-
-        public override TEnumeration ReadJson(JsonReader reader, Type objectType, TEnumeration existingValue, bool hasExistingValue, JsonSerializer serializer)
-        {
-            if (reader.TokenType == JsonToken.Null)
-            {
-                return null;
-            }
-
             try
             {
                 switch (reader.TokenType)
                 {
+                    case JsonToken.Null:
+
+                        return null;
+
                     case JsonToken.String:
 
-                        var displayName = reader.Value.ToString();
-
-                        return displayName != string.Empty ? Enumeration<TEnumeration>.FromDisplayName(displayName) : null;
+                        return Enumeration.FromName(reader.Value.ToString(), objectType);
 
                     case JsonToken.Integer:
 
-                        return Enumeration<TEnumeration>.FromValue((int) reader.Value);
+                        return Enumeration.FromValue((int) reader.Value, objectType);
 
                     default:
 
@@ -118,6 +59,11 @@ namespace eDoxa.Seedwork.Application.Converters
             {
                 throw new JsonSerializationException($"Error converting value {reader.Value} to type '{objectType}'.", exception);
             }
+        }
+
+        public override bool CanConvert(Type objectType)
+        {
+            return objectType.IsEnumeration();
         }
     }
 }

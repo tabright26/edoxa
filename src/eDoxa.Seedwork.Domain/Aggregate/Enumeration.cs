@@ -13,98 +13,141 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
+using eDoxa.Seedwork.Domain.Exceptions;
+
 namespace eDoxa.Seedwork.Domain.Aggregate
 {
-    public interface IEnumeration
+    public static class Enumeration
     {
-        int Value { get; }
+        public static Array GetValues(Type enumerationType)
+        {
+            return GetAll(enumerationType).Select(enumeration => enumeration.Value).ToArray();
+        }
 
-        string DisplayName { get; }
+        public static string[] GetNames(Type enumerationType)
+        {
+            return GetAll(enumerationType).Select(enumeration => enumeration.Name).ToArray();
+        }
+
+        public static TEnumerable FromValue<TEnumerable>(int value)
+        where TEnumerable : IEnumeration
+        {
+            return (TEnumerable) FromValue(value, typeof(TEnumerable));
+        }
+
+        public static IEnumeration FromValue(int value, Type enumerationType)
+        {
+            try
+            {
+                return GetAll(enumerationType).Single(enumeration => enumeration.Value == value);
+            }
+            catch (ArgumentNullException exception)
+            {
+                throw new EnumerationException(enumerationType, value, exception);
+            }
+            catch (InvalidOperationException exception)
+            {
+                throw new EnumerationException(enumerationType, value, exception);
+            }
+        }
+
+        public static TEnumerable FromName<TEnumerable>(string name)
+        where TEnumerable : IEnumeration
+        {
+            return (TEnumerable) FromName(name, typeof(TEnumerable));
+        }
+
+        public static IEnumeration FromName(string name, Type enumerationType)
+        {
+            try
+            {
+                return GetAll(enumerationType).Single(enumeration => enumeration.Name == name);
+            }
+            catch (ArgumentNullException exception)
+            {
+                throw new EnumerationException(enumerationType, name, exception);
+            }
+            catch (InvalidOperationException exception)
+            {
+                throw new EnumerationException(enumerationType, name, exception);
+            }
+        }
+
+        public static IEnumerable<TEnumeration> GetAll<TEnumeration>()
+        where TEnumeration : IEnumeration
+        {
+            return GetAll(typeof(TEnumeration)).Cast<TEnumeration>();
+        }
+
+        private static IEnumerable<IEnumeration> GetAll(Type enumerationType)
+        {
+            return enumerationType.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
+                .Select(field => field.GetValue(null))
+                .Where(obj => obj is IEnumeration)
+                .Cast<IEnumeration>();
+        }
     }
 
     public abstract partial class Enumeration<TEnumeration> : IEnumeration
-    where TEnumeration : Enumeration<TEnumeration>, new()
+    where TEnumeration : Enumeration<TEnumeration>
     {
-        public static readonly TEnumeration None = new TEnumeration
-        {
-            _value = 0,
-            _displayName = nameof(None)
-        };
+        public static readonly TEnumeration None = (TEnumeration) Activator.CreateInstance(typeof(TEnumeration), BindingFlags.Instance | BindingFlags.NonPublic,
+            null, new object[] {0, nameof(None)}, null);
 
-        public static readonly TEnumeration All = new TEnumeration
-        {
-            _value = -1,
-            _displayName = nameof(All)
-        };
+        public static readonly TEnumeration All = (TEnumeration) Activator.CreateInstance(typeof(TEnumeration), BindingFlags.Instance | BindingFlags.NonPublic,
+            null, new object[] {-1, nameof(All)}, null);
 
-        private string _displayName;
+        private string _name;
         private int _value;
 
-        protected Enumeration(int value, string displayName) : this()
+        protected Enumeration(int value, string name)
         {
             _value = value;
-            _displayName = displayName;
-        }
-
-        protected Enumeration()
-        {
+            _name = name;
         }
 
         public int Value => _value;
 
-        public string DisplayName => _displayName;
+        public string Name => _name;
 
-        public static TEnumeration FromAnyDisplayName(string displayName)
+        public static explicit operator int(Enumeration<TEnumeration> enumeration)
         {
-            if (displayName == None.DisplayName)
-            {
-                return None;
-            }
+            return enumeration._value;
+        }
 
-            if (displayName == All.DisplayName)
-            {
-                return All;
-            }
+        public static TEnumeration GetFlag(int value)
+        {
+            return value == (int) None ? None : value == (int) All ? All : FromValue(value);
+        }
 
-            return FromDisplayName(displayName);
+        public static TEnumeration GetFlag(string name)
+        {
+            return name == None.ToString() ? None : name == All.ToString() ? All : FromName(name);
         }
 
         public static IEnumerable<TEnumeration> GetAll()
         {
-            foreach (var fieldInfo in typeof(TEnumeration).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly))
-            {
-                if (fieldInfo.GetValue(new TEnumeration()) is TEnumeration enumeration)
-                {
-                    yield return enumeration;
-                }
-            }
-        }
-
-        private static TEnumeration Parse<TKey>(TKey value, string description, Func<TEnumeration, bool> predicate)
-        {
-            var enumeration = GetAll().FirstOrDefault(predicate);
-
-            if (enumeration == null)
-            {
-                throw new ApplicationException($"'{value}' is not a valid {description} in {typeof(TEnumeration)}");
-            }
-
-            return enumeration;
+            return Enumeration.GetAll<TEnumeration>();
         }
 
         public static TEnumeration FromValue(int value)
         {
-            return Parse<int>(value, "value", enumeration => enumeration.Value == value);
+            return Enumeration.FromValue<TEnumeration>(value);
         }
 
-        public static TEnumeration FromDisplayName(string displayName)
+        public static TEnumeration FromName(string name)
         {
-            return Parse<string>(displayName, "display name", enumeration => enumeration.DisplayName == displayName);
+            return Enumeration.FromName<TEnumeration>(name);
         }
 
         public override string ToString()
         {
-            return _displayName;
+            return _name;
+        }
+
+        public bool HasFlag(TEnumeration enumeration)
+        {
+            return (Value & enumeration.Value) != None.Value;
         }
     }
 

@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeRepositoryTest.cs
-// Date Created: 2019-05-03
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -17,7 +17,6 @@ using eDoxa.Challenges.Domain.Entities.AggregateModels;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Factories;
 using eDoxa.Challenges.Infrastructure.Repositories;
-using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Enumerations;
 using eDoxa.Seedwork.Infrastructure.Factories;
 
@@ -276,8 +275,10 @@ namespace eDoxa.Challenges.Infrastructure.Tests.Repositories
                 challenge.Name.ToString().Should().NotBeNullOrWhiteSpace();
                 challenge.Setup.Should().NotBeNull();
                 challenge.Timeline.Should().NotBeNull();
+
                 //challenge.LiveData.Should().NotBeNull();
                 challenge.Scoring.Should().NotBeNull();
+
                 //challenge.Payout.Should().NotBeNull();
                 //challenge.Scoreboard.Should().NotBeNull();
                 challenge.Participants.Should().NotBeNullOrEmpty();

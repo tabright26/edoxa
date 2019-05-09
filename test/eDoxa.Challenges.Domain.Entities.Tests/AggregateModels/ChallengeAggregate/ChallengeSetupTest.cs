@@ -12,7 +12,6 @@ using System;
 
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Factories;
-using eDoxa.Seedwork.Domain.Aggregate;
 
 using FluentAssertions;
 
