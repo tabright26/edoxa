@@ -1,5 +1,5 @@
 ﻿// Filename: CardsController.cs
-// Date Created: 2019-04-30
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,8 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Application.Commands;
-using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.Services.Stripe;
+using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Commands.Extensions;
 using eDoxa.Security.Abstractions;

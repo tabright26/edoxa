@@ -1,9 +1,9 @@
-﻿// Filename: IAccountService.cs
-// Date Created: 2019-04-15
+﻿// Filename: IMoneyAccountService.cs
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
-using eDoxa.Cashier.Domain.Services.Stripe;
+using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Functional.Maybe;
 
 namespace eDoxa.Cashier.Domain.Services
@@ -23,6 +23,6 @@ namespace eDoxa.Cashier.Domain.Services
     {
         Task<IMoneyTransaction> TransactionAsync(UserId userId, CustomerId customerId, MoneyBundle bundle, CancellationToken cancellationToken = default);
 
-        Task<Option<IMoneyTransaction>> TryWithdrawAsync(UserId userId, decimal amount, CancellationToken cancellationToken = default);
+        Task<Option<IMoneyTransaction>> TryWithdrawalAsync(UserId userId, decimal amount, CancellationToken cancellationToken = default);
     }
 }

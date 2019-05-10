@@ -1,9 +1,9 @@
-﻿// Filename: UserTokenAccountController.cs
-// Date Created: 2019-04-28
+﻿// Filename: TokenController.cs
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Commands.Extensions;
 using eDoxa.Security.Abstractions;
@@ -28,14 +29,14 @@ namespace eDoxa.Cashier.Api.Controllers
     [ApiController]
     [ApiVersion("1.0")]
     [Produces("application/json")]
-    [Route("api/account/token")]
-    public class AccountTokenController : ControllerBase
+    [Route("api/token")]
+    public class TokenController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly IUserInfoService _userInfoService;
         private readonly ITokenAccountQueries _queries;
+        private readonly IUserInfoService _userInfoService;
 
-        public AccountTokenController(IUserInfoService userInfoService, ITokenAccountQueries queries, IMediator mediator)
+        public TokenController(IUserInfoService userInfoService, ITokenAccountQueries queries, IMediator mediator)
         {
             _userInfoService = userInfoService;
             _queries = queries;
@@ -43,7 +44,7 @@ namespace eDoxa.Cashier.Api.Controllers
         }
 
         /// <summary>
-        ///     Find a user's token account.
+        ///     Find user's token.
         /// </summary>
         [HttpGet(Name = nameof(FindTokenAccountAsync))]
         public async Task<IActionResult> FindTokenAccountAsync()
@@ -60,7 +61,16 @@ namespace eDoxa.Cashier.Api.Controllers
         }
 
         /// <summary>
-        ///     Buy tokens on a user's account.
+        ///     Find token bundles.
+        /// </summary>
+        [HttpGet("bundles", Name = nameof(FindTokenBundlesAsync))]
+        public IActionResult FindTokenBundlesAsync()
+        {
+            return this.Ok(TokenBundleType.GetAll());
+        }
+
+        /// <summary>
+        ///     Buy tokens.
         /// </summary>
         [HttpPost("deposit", Name = nameof(DepositTokensAsync))]
         public async Task<IActionResult> DepositTokensAsync([FromBody] DepositTokensCommand command)
@@ -69,7 +79,7 @@ namespace eDoxa.Cashier.Api.Controllers
         }
 
         /// <summary>
-        ///     Find a user's token transactions.
+        ///     Find token transactions.
         /// </summary>
         [HttpGet("transactions", Name = nameof(FindTokenTransactionsAsync))]
         public async Task<IActionResult> FindTokenTransactionsAsync()

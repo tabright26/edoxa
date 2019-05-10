@@ -13,8 +13,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
-using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.Services.Stripe;
+using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Cashier.Tests.Factories;
 using eDoxa.Security.Abstractions;
 using eDoxa.Testing.MSTest.Extensions;

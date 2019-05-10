@@ -1,9 +1,9 @@
 ﻿// Filename: CardQueries.cs
-// Date Created: 2019-04-21
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -13,8 +13,7 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.Services.Stripe;
+using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Functional.Maybe;

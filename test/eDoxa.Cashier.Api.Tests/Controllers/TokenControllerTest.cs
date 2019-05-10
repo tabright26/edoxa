@@ -1,5 +1,5 @@
-﻿// Filename: AccountTokenControllerTest.cs
-// Date Created: 2019-05-03
+﻿// Filename: TokenControllerTest.cs
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -30,7 +30,7 @@ using Moq;
 namespace eDoxa.Cashier.Api.Tests.Controllers
 {
     [TestClass]
-    public sealed class AccountTokenControllerTest
+    public sealed class TokenControllerTest
     {
         private static readonly FakeCashierFactory FakeCashierFactory = FakeCashierFactory.Instance;
         private Mock<IMediator> _mockMediator;
@@ -56,7 +56,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
 
             _mockMediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(new OkObjectResult(token)).Verifiable();
 
-            var controller = new AccountTokenController(_mockUserInfoService.Object, _mockTokenAccountQueries.Object, _mockMediator.Object);
+            var controller = new TokenController(_mockUserInfoService.Object, _mockTokenAccountQueries.Object, _mockMediator.Object);
 
             // Act
             var result = await controller.DepositTokensAsync(command);

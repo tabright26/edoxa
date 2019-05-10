@@ -18,7 +18,7 @@ using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Cashier.Domain.Services;
-using eDoxa.Cashier.Domain.Services.Stripe;
+using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Commands.Extensions;
 using eDoxa.Security.Abstractions;
 using eDoxa.Testing.MSTest.Extensions;
@@ -53,7 +53,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
 
             _mockMoneyAccountService.Setup(service =>
                     service.TransactionAsync(It.IsAny<UserId>(), It.IsAny<CustomerId>(), It.IsAny<MoneyBundle>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new MoneyTransaction(new Money(10)))
+                .ReturnsAsync(new DepositMoneyTransaction(new Money(10)))
                 .Verifiable();
 
             var handler = new DepositMoneyCommandHandler(_mockUserInfoService.Object, _mockMoneyAccountService.Object, _mockMapper.Object);

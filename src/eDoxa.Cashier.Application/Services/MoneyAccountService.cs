@@ -1,5 +1,5 @@
 ﻿// Filename: MoneyAccountService.cs
-// Date Created: 2019-04-30
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,42 +8,30 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Domain;
 using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services;
-using eDoxa.Cashier.Domain.Services.Stripe;
-using eDoxa.Cashier.Domain.Services.Stripe.Validators;
+using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
+using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Functional.Maybe;
-
-using Stripe;
 
 namespace eDoxa.Cashier.Application.Services
 {
     public sealed class MoneyAccountService : IMoneyAccountService
     {
-        private readonly CustomerService _customerService;
-        private readonly InvoiceItemService _invoiceItemService;
-        private readonly InvoiceService _invoiceService;
-
         private readonly IMoneyAccountRepository _moneyAccountRepository;
+        private readonly IStripeService _stripeService;
 
-        public MoneyAccountService(
-            IMoneyAccountRepository moneyAccountRepository,
-            CustomerService customerService,
-            InvoiceService invoiceService,
-            InvoiceItemService invoiceItemService)
+        public MoneyAccountService(IMoneyAccountRepository moneyAccountRepository, IStripeService stripeService)
         {
             _moneyAccountRepository = moneyAccountRepository;
-            _customerService = customerService;
-            _customerService.ExpandDefaultSource = true;
-            _invoiceService = invoiceService;
-            _invoiceItemService = invoiceItemService;
+            _stripeService = stripeService;
         }
 
         public async Task<IMoneyTransaction> TransactionAsync(
@@ -52,55 +40,43 @@ namespace eDoxa.Cashier.Application.Services
             MoneyBundle bundle,
             CancellationToken cancellationToken = default)
         {
-            var customer = await _customerService.GetAsync(customerId.ToString(), cancellationToken: cancellationToken);
-
-            var validator = new CustomerDefaultSourceValidator();
-
-            validator.Validate(customer);
-
-            await _invoiceItemService.CreateAsync(InvoiceItemCreateOptions(customerId, bundle), cancellationToken: cancellationToken);
-
-            await _invoiceService.CreateAsync(InvoiceCreateOptions(customer), cancellationToken: cancellationToken);
-
             var account = await _moneyAccountRepository.FindUserAccountAsync(userId);
 
             var transaction = account.Deposit(bundle.Amount);
 
             await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
-            return transaction;
-        }
+            try
+            {
+                await _stripeService.CreateInvoiceAsync(customerId, bundle, transaction, cancellationToken);
+            }
+            catch (Exception)
+            {
+                transaction.Fail();
 
-        public async Task<Option<IMoneyTransaction>> TryWithdrawAsync(UserId userId, decimal amount, CancellationToken cancellationToken = default)
-        {
-            var account = await _moneyAccountRepository.FindUserAccountAsync(userId);
+                await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
-            var money = new Money(amount);
+                return transaction;
+            }
 
-            var transaction = account.TryWithdraw(money);
+            transaction.Pay();
 
             await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
             return transaction;
         }
 
-        private static InvoiceItemCreateOptions InvoiceItemCreateOptions(CustomerId customerId, MoneyBundle bundle)
+        public async Task<Option<IMoneyTransaction>> TryWithdrawalAsync(UserId userId, decimal amount, CancellationToken cancellationToken = default)
         {
-            return new InvoiceItemCreateOptions
-            {
-                CustomerId = customerId.ToString(),
-                Description = "eDoxa",
-                Amount = bundle.Price.AsCents(),
-                Currency = "usd"
-            };
-        }
+            var account = await _moneyAccountRepository.FindUserAccountAsync(userId);
 
-        private static InvoiceCreateOptions InvoiceCreateOptions(Customer customer)
-        {
-            return new InvoiceCreateOptions
-            {
-                CustomerId = customer.Id, TaxPercent = 15M, AutoAdvance = true, DefaultSource = customer.DefaultSource.Id
-            };
+            var money = new Money(amount);
+
+            var transaction = account.TryWithdrawal(money);
+
+            await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+
+            return transaction;
         }
     }
 }

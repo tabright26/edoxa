@@ -16,7 +16,7 @@ using AutoMapper;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
 using eDoxa.Cashier.Domain.Services;
-using eDoxa.Cashier.Domain.Services.Stripe;
+using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Cashier.DTO;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Security.Abstractions;

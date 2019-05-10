@@ -1,12 +1,14 @@
 ﻿// Filename: ServiceCollectionExtensions.cs
-// Date Created: 2019-04-15
+// Date Created: 2019-05-06
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
 // 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
+
+using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -25,6 +27,8 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Extensions
             services.AddTransient<InvoiceService>();
 
             services.AddTransient<InvoiceItemService>();
+
+            services.AddTransient<IStripeService, StripeService>();
         }
     }
 }

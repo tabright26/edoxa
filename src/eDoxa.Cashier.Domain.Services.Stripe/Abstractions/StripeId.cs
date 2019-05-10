@@ -1,5 +1,5 @@
 ﻿// Filename: StripeId.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-05-10
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -19,7 +19,7 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Cashier.Domain.Services.Stripe
+namespace eDoxa.Cashier.Domain.Services.Stripe.Abstractions
 {
     public abstract partial class StripeId<TStripeId> : BaseObject
     where TStripeId : StripeId<TStripeId>, new()

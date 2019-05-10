@@ -10,6 +10,8 @@
 
 using System.ComponentModel;
 
+using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Cashier.Domain.Services.Stripe.Tests

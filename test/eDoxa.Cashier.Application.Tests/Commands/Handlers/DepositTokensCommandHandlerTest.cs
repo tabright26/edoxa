@@ -18,7 +18,7 @@ using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
 using eDoxa.Cashier.Domain.Services;
-using eDoxa.Cashier.Domain.Services.Stripe;
+using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Security.Abstractions;
 using eDoxa.Testing.MSTest.Extensions;
 
@@ -52,7 +52,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
 
             _mockTokenAccountService.Setup(service =>
                     service.TransactionAsync(It.IsAny<UserId>(), It.IsAny<CustomerId>(), It.IsAny<TokenBundle>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new TokenTransaction(new Token(50000)))
+                .ReturnsAsync(new DepositTokenTransaction(new Token(50000)))
                 .Verifiable();
 
             var handler = new DepositTokensCommandHandler(_mockUserInfoService.Object, _mockTokenAccountService.Object, _mockMapper.Object);

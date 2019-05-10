@@ -1,5 +1,5 @@
 ﻿// Filename: IMoneyTransaction.cs
-// Date Created: 2019-04-30
+// Date Created: 2019-05-09
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,13 +10,11 @@
 
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
-using eDoxa.Functional.Maybe;
 using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Cashier.Domain.Abstractions
 {
     public interface IMoneyTransaction : ITransaction<Money>, IEntity<TransactionId>
     {
-        Option<MoneyTransaction> TryPayoff(Money amount);
     }
 }

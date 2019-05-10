@@ -1,5 +1,5 @@
 ﻿// Filename: Money.cs
-// Date Created: 2019-05-02
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -46,7 +46,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
 
         public override string ToString()
         {
-            return Convert.ToDecimal(this).ToString("C");
+            return Convert.ToDecimal(this).ToString("$##.###");
         }
 
         public int AsCents()

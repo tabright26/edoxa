@@ -8,12 +8,9 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Linq;
-
 using eDoxa.Cashier.Domain;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
-using eDoxa.Functional.Maybe;
 
 using JetBrains.Annotations;
 
@@ -46,12 +43,9 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
                 .IsRequired()
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 
-            builder.Property(transaction => transaction.Pending)
+            builder.Property(transaction => transaction.Description)
+                .HasConversion(description => description.ToString(), description => new TransactionDescription(description, false))
                 .IsRequired()
-                .UsePropertyAccessMode(PropertyAccessMode.Field);
-
-            builder.Property(transaction => transaction.ServiceId)
-                .IsRequired(false)
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.Property(transaction => transaction.Type)
@@ -59,12 +53,12 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
                 .IsRequired()
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 
-            builder.Property(transaction => transaction.Description)
-                .HasConversion(
-                    transactionDescriptions => transactionDescriptions.Select(description => description.ToString()).SingleOrDefault(),
-                    description => description != null
-                        ? new Option<TransactionDescription>(new TransactionDescription(description))
-                        : new Option<TransactionDescription>())
+            builder.Property(transaction => transaction.Status)
+                .HasConversion(type => type.Value, value => TransactionStatus.FromValue(value))
+                .IsRequired()
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
+
+            builder.Property(transaction => transaction.ServiceId)
                 .IsRequired(false)
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 

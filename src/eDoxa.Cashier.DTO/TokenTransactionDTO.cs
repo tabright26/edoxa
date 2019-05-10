@@ -28,8 +28,10 @@ namespace eDoxa.Cashier.DTO
 
         [JsonProperty("amount")] public long Amount { get; set; }
 
+        [JsonProperty("description")] public string Description { get; set; }
+
         [JsonProperty("type")] public TransactionType Type { get; set; }
 
-        [JsonProperty("description")] public string Description { get; set; }
+        [JsonProperty("status")] public TransactionStatus Status { get; set; }
     }
 }

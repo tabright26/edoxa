@@ -12,8 +12,7 @@ using System;
 
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
-using eDoxa.Cashier.Domain.Services.Stripe;
-using eDoxa.Seedwork.Factories;
+using eDoxa.Cashier.Domain.Services.Stripe.Models;
 
 using Stripe;
 

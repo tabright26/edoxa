@@ -37,61 +37,71 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
 
         public UserId UserId => _userId;
 
+        public Token Balance =>
+            new Token(Transactions.Where(transaction => transaction.Status.Equals(TransactionStatus.Paid)).Sum(transaction => transaction.Amount));
+
+        public Token Pending =>
+            new Token(Transactions.Where(transaction => transaction.Status.Equals(TransactionStatus.Pending)).Sum(transaction => transaction.Amount));
+
         public IReadOnlyCollection<TokenTransaction> Transactions => _transactions;
-
-        public Token Balance => new Token(Transactions.Sum(transaction => transaction.Amount));
-
-        public Token Pending => new Token(Transactions.Where(transaction => transaction.Pending).Sum(transaction => transaction.Amount));
 
         public ITokenTransaction Deposit(Token amount)
         {
-            var transaction = new TokenTransaction(amount);
+            var transaction = new DepositTokenTransaction(amount);
 
-            _transactions.Add(transaction);
+            if (_transactions.Add(transaction))
+            {
+                Log.Information(transaction.ToString());
+            }
 
             return transaction;
         }
 
-        public Option<ITokenTransaction> TryRegister(Token amount, ServiceId serviceId)
+        public Option<ITokenTransaction> TryRegister(Token amount)
         {
             if (Balance < amount)
             {
                 return new Option<ITokenTransaction>();
             }
 
-            var transaction = new TokenPendingTransaction(-amount, serviceId);
+            var transaction = new ServiceTokenTransaction(amount);
 
             if (!_transactions.Add(transaction))
             {
                 return new Option<ITokenTransaction>();
             }
 
-            Log.Information($"{Id} register to {serviceId} amount {amount} - balance {Balance}");
+            Log.Information(transaction.ToString());
 
             return new Option<ITokenTransaction>(transaction);
         }
 
-        public Option<ITokenTransaction> TryPayoff(Token amount, ServiceId serviceId)
+        public Option<ITokenTransaction> TryPayout(Token amount)
         {
-            return Transactions.Where(transaction => transaction.Pending && transaction.ServiceId == serviceId.ToString())
-                .Select(transaction => this.TryPayoff(amount, transaction))
-                .DefaultIfEmpty(new Option<ITokenTransaction>())
-                .Single();
+            var transaction = new PrizeTokenTransaction(amount);
+
+            if (!_transactions.Add(transaction))
+            {
+                return new Option<ITokenTransaction>();
+            }
+
+            Log.Information(transaction.ToString());
+
+            return new Option<ITokenTransaction>(transaction);
         }
 
-        private Option<ITokenTransaction> TryPayoff(Token amount, ITokenTransaction transaction)
+        public Option<ITokenTransaction> TryReward(Token amount)
         {
-            return transaction.TryPayoff(amount).Select(payoff =>
+            var transaction = new RewardTokenTransaction(amount);
+
+            if (!_transactions.Add(transaction))
             {
-                if (!_transactions.Add(payoff))
-                {
-                    return new Option<ITokenTransaction>();
-                }
+                return new Option<ITokenTransaction>();
+            }
 
-                Log.Information($"{Id} deposit amount {amount} - balance {Balance}");
+            Log.Information(transaction.ToString());
 
-                return new Option<ITokenTransaction>(payoff);
-            }).Single();
+            return new Option<ITokenTransaction>(transaction);
         }
     }
 }

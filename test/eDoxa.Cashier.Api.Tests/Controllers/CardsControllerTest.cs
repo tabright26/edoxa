@@ -1,5 +1,5 @@
 ﻿// Filename: CardsControllerTest.cs
-// Date Created: 2019-05-03
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -14,8 +14,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Controllers;
 using eDoxa.Cashier.Application.Commands;
-using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.Services.Stripe;
+using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Cashier.Tests.Factories;

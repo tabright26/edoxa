@@ -37,11 +37,12 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
 
                     b.Property<decimal>("Amount");
 
-                    b.Property<string>("Description");
-
-                    b.Property<bool>("Pending");
+                    b.Property<string>("Description")
+                        .IsRequired();
 
                     b.Property<string>("ServiceId");
+
+                    b.Property<int>("Status");
 
                     b.Property<DateTime>("Timestamp");
 
@@ -73,11 +74,12 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
 
                     b.Property<long>("Amount");
 
-                    b.Property<string>("Description");
-
-                    b.Property<bool>("Pending");
+                    b.Property<string>("Description")
+                        .IsRequired();
 
                     b.Property<string>("ServiceId");
+
+                    b.Property<int>("Status");
 
                     b.Property<DateTime>("Timestamp");
 

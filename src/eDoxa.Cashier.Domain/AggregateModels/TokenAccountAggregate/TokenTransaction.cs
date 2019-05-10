@@ -9,25 +9,13 @@
 // this source code package.
 
 using eDoxa.Cashier.Domain.Abstractions;
-using eDoxa.Functional.Maybe;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
 {
     public class TokenTransaction : Transaction<Token>, ITokenTransaction
     {
-        public TokenTransaction(Token amount) : base(amount)
+        protected TokenTransaction(Token amount, TransactionDescription description, TransactionType type) : base(amount, description, type)
         {
-        }
-
-        protected TokenTransaction(Token amount, ServiceId serviceId) : base(amount, serviceId.ToString())
-        {
-        }
-
-        public Option<TokenTransaction> TryPayoff(Token amount)
-        {
-            this.Complete();
-
-            return -Amount < amount ? new Option<TokenTransaction>(new TokenTransaction(amount)) : new Option<TokenTransaction>();
         }
     }
 }

@@ -1,9 +1,9 @@
-﻿// Filename: UserMoneyAccountController.cs
-// Date Created: 2019-04-28
+﻿// Filename: MoneyController.cs
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Commands.Extensions;
 using eDoxa.Security.Abstractions;
@@ -28,14 +29,14 @@ namespace eDoxa.Cashier.Api.Controllers
     [ApiController]
     [ApiVersion("1.0")]
     [Produces("application/json")]
-    [Route("api/account/money")]
-    public sealed class AccountMoneyController : ControllerBase
+    [Route("api/money")]
+    public sealed class MoneyController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly IUserInfoService _userInfoService;
         private readonly IMoneyAccountQueries _queries;
+        private readonly IUserInfoService _userInfoService;
 
-        public AccountMoneyController(IUserInfoService userInfoService, IMoneyAccountQueries queries, IMediator mediator)
+        public MoneyController(IUserInfoService userInfoService, IMoneyAccountQueries queries, IMediator mediator)
         {
             _userInfoService = userInfoService;
             _queries = queries;
@@ -43,7 +44,7 @@ namespace eDoxa.Cashier.Api.Controllers
         }
 
         /// <summary>
-        ///     Find a user's money account.
+        ///     Find user's money.
         /// </summary>
         [HttpGet(Name = nameof(FindMoneyAccountAsync))]
         public async Task<IActionResult> FindMoneyAccountAsync()
@@ -60,7 +61,16 @@ namespace eDoxa.Cashier.Api.Controllers
         }
 
         /// <summary>
-        ///     Deposit money on a user's account.
+        ///     Find money bundles.
+        /// </summary>
+        [HttpGet("bundles", Name = nameof(FindMoneyBundlesAsync))]
+        public IActionResult FindMoneyBundlesAsync()
+        {
+            return this.Ok(MoneyBundleType.GetAll());
+        }
+
+        /// <summary>
+        ///     Deposit money.
         /// </summary>
         [HttpPost("deposit", Name = nameof(DepositMoneyAsync))]
         public async Task<IActionResult> DepositMoneyAsync([FromBody] DepositMoneyCommand command)
@@ -69,16 +79,16 @@ namespace eDoxa.Cashier.Api.Controllers
         }
 
         /// <summary>
-        ///     Withdraw money from a user's account.
+        ///     Withdrawal money.
         /// </summary>
-        [HttpPost("withdraw", Name = nameof(WithdrawMoneyAsync))]
-        public async Task<IActionResult> WithdrawMoneyAsync([FromBody] WithdrawMoneyCommand command)
+        [HttpPost("withdrawal", Name = nameof(WithdrawalMoneyAsync))]
+        public async Task<IActionResult> WithdrawalMoneyAsync([FromBody] WithdrawalMoneyCommand command)
         {
             return await _mediator.SendCommandAsync(command);
         }
 
         /// <summary>
-        ///     Find a user's money transactions.
+        ///     Find money transactions.
         /// </summary>
         [HttpGet("transactions", Name = nameof(FindMoneyTransactionsAsync))]
         public async Task<IActionResult> FindMoneyTransactionsAsync()

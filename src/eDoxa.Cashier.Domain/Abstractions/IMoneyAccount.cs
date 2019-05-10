@@ -1,5 +1,5 @@
 ﻿// Filename: IMoneyAccount.cs
-// Date Created: 2019-04-30
+// Date Created: 2019-05-09
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -21,6 +21,6 @@ namespace eDoxa.Cashier.Domain.Abstractions
     {
         IReadOnlyCollection<MoneyTransaction> Transactions { get; }
 
-        Option<IMoneyTransaction> TryWithdraw(Money amount);
+        Option<IMoneyTransaction> TryWithdrawal(Money amount);
     }
 }

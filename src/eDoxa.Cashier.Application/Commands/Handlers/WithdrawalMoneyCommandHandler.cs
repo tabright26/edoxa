@@ -1,4 +1,4 @@
-﻿// Filename: WithdrawMoneyCommandHandler.cs
+﻿// Filename: WithdrawalMoneyCommandHandler.cs
 // Date Created: 2019-05-06
 // 
 // ================================================
@@ -26,13 +26,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
-    internal sealed class WithdrawMoneyCommandHandler : ICommandHandler<WithdrawMoneyCommand, IActionResult>
+    internal sealed class WithdrawalMoneyCommandHandler : ICommandHandler<WithdrawalMoneyCommand, IActionResult>
     {
         private readonly IMapper _mapper;
         private readonly IMoneyAccountService _moneyAccountService;
         private readonly IUserInfoService _userInfoService;
 
-        public WithdrawMoneyCommandHandler(IUserInfoService userInfoService, IMoneyAccountService moneyAccountService, IMapper mapper)
+        public WithdrawalMoneyCommandHandler(IUserInfoService userInfoService, IMoneyAccountService moneyAccountService, IMapper mapper)
         {
             _userInfoService = userInfoService;
             _moneyAccountService = moneyAccountService;
@@ -40,11 +40,11 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         }
 
         [ItemNotNull]
-        public async Task<IActionResult> Handle([NotNull] WithdrawMoneyCommand command, CancellationToken cancellationToken)
+        public async Task<IActionResult> Handle([NotNull] WithdrawalMoneyCommand command, CancellationToken cancellationToken)
         {
             var userId = UserId.Parse(_userInfoService.Subject);
 
-            var moneyTransaction = await _moneyAccountService.TryWithdrawAsync(userId, command.Amount, cancellationToken);
+            var moneyTransaction = await _moneyAccountService.TryWithdrawalAsync(userId, command.Amount, cancellationToken);
 
             return moneyTransaction
                 .Select(transaction => new OkObjectResult(_mapper.Map<MoneyTransactionDTO>(transaction)))

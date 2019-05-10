@@ -15,7 +15,6 @@ using AutoMapper;
 
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
-using eDoxa.Cashier.Domain;
 using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
@@ -33,7 +32,7 @@ using Moq;
 namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
 {
     [TestClass]
-    public sealed class WithdrawMoneyCommandHandlerTest
+    public sealed class WithdrawalMoneyCommandHandlerTest
     {
         private static readonly FakeCashierFactory FakeCashierFactory = FakeCashierFactory.Instance;
         private Mock<IMapper> _mockMapper;
@@ -55,13 +54,13 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             // Arrange
             var money = FakeCashierFactory.CreateMoney();
 
-            var command = new WithdrawMoneyCommand(money);
+            var command = new WithdrawalMoneyCommand(money);
 
-            _mockMoneyAccountService.Setup(x => x.TryWithdrawAsync(It.IsAny<UserId>(), It.IsAny<decimal>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new Option<IMoneyTransaction>(new MoneyTransaction(-new Money(100))))
+            _mockMoneyAccountService.Setup(x => x.TryWithdrawalAsync(It.IsAny<UserId>(), It.IsAny<decimal>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new Option<IMoneyTransaction>(new WithdrawalMoneyTransaction(new Money(100))))
                 .Verifiable();
 
-            var handler = new WithdrawMoneyCommandHandler(_mockUserInfoService.Object, _mockMoneyAccountService.Object, _mockMapper.Object);
+            var handler = new WithdrawalMoneyCommandHandler(_mockUserInfoService.Object, _mockMoneyAccountService.Object, _mockMapper.Object);
 
             // Act
             await handler.HandleAsync(command);

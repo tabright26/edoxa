@@ -37,83 +37,76 @@ namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
 
         public UserId UserId => _userId;
 
+        public Money Balance =>
+            new Money(Transactions.Where(transaction => transaction.Status.Equals(TransactionStatus.Paid)).Sum(transaction => transaction.Amount));
+
+        public Money Pending =>
+            new Money(Transactions.Where(transaction => transaction.Status.Equals(TransactionStatus.Pending)).Sum(transaction => transaction.Amount));
+
         public IReadOnlyCollection<MoneyTransaction> Transactions => _transactions;
-
-        public Money Balance => new Money(Transactions.Sum(transaction => transaction.Amount));
-
-        public Money Pending => new Money(Transactions.Where(transaction => transaction.Pending).Sum(transaction => -transaction.Amount));
 
         public IMoneyTransaction Deposit(Money amount)
         {
-            var transaction = new MoneyTransaction(amount);
+            var transaction = new DepositMoneyTransaction(amount);
 
             if (_transactions.Add(transaction))
             {
-                Log.Information($"{UserId} deposit amount {amount} - balance {Balance}");
+                Log.Information(transaction.ToString());
             }
 
             return transaction;
         }
 
-        public Option<IMoneyTransaction> TryRegister(Money amount, ServiceId serviceId)
+        public Option<IMoneyTransaction> TryWithdrawal(Money amount)
         {
             if (Balance < amount)
             {
                 return new Option<IMoneyTransaction>();
             }
 
-            var transaction = new MoneyPendingTransaction(-amount, serviceId);
+            var transaction = new WithdrawalMoneyTransaction(amount);
 
             if (!_transactions.Add(transaction))
             {
                 return new Option<IMoneyTransaction>();
             }
 
-            Log.Information($"{UserId} register to {serviceId} amount {amount} - balance {Balance}");
+            Log.Information(transaction.ToString());
 
             return new Option<IMoneyTransaction>(transaction);
         }
 
-        public Option<IMoneyTransaction> TryPayoff(Money amount, ServiceId serviceId)
-        {
-            return Transactions.Where(transaction => transaction.Pending && transaction.ServiceId == serviceId.ToString())
-                .Select(transaction => this.TryPayoff(amount, transaction))
-                .DefaultIfEmpty(new Option<IMoneyTransaction>())
-                .Single();
-        }
-
-        public Option<IMoneyTransaction> TryWithdraw(Money amount)
+        public Option<IMoneyTransaction> TryRegister(Money amount)
         {
             if (Balance < amount)
             {
                 return new Option<IMoneyTransaction>();
             }
 
-            var transaction = new MoneyTransaction(-amount);
+            var transaction = new ServiceMoneyTransaction(-amount);
 
             if (!_transactions.Add(transaction))
             {
                 return new Option<IMoneyTransaction>();
             }
 
-            Log.Information($"{UserId} withdrew amount {amount} - balance {Balance}");
+            Log.Information(transaction.ToString());
 
             return new Option<IMoneyTransaction>(transaction);
         }
 
-        private Option<IMoneyTransaction> TryPayoff(Money amount, IMoneyTransaction transaction)
+        public Option<IMoneyTransaction> TryPayout(Money amount)
         {
-            return transaction.TryPayoff(amount).Select(payoff =>
+            var transaction = new PrizeMoneyTransaction(amount);
+
+            if (!_transactions.Add(transaction))
             {
-                if (!_transactions.Add(payoff))
-                {
-                    return new Option<IMoneyTransaction>();
-                }
+                return new Option<IMoneyTransaction>();
+            }
 
-                Log.Information($"{UserId} deposit amount {amount} - balance {Balance}");
+            Log.Information(transaction.ToString());
 
-                return new Option<IMoneyTransaction>(payoff);
-            }).Single();
+            return new Option<IMoneyTransaction>(transaction);
         }
     }
 }

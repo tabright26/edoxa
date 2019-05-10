@@ -1,5 +1,5 @@
 ﻿// Filename: Transaction.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-05-09
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,7 +11,6 @@
 using System;
 
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Functional.Maybe;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Cashier.Domain.Abstractions
@@ -20,48 +19,51 @@ namespace eDoxa.Cashier.Domain.Abstractions
     where TCurrency : ICurrency
     {
         private TCurrency _amount;
-        private Option<TransactionDescription> _description;
-        private bool _pending;
+        private TransactionDescription _description;
         private string _serviceId;
+        private TransactionStatus _status;
         private DateTime _timestamp;
         private TransactionType _type;
 
-        protected Transaction(TCurrency amount, string serviceId) : this()
+        protected Transaction(TCurrency amount, TransactionDescription description, TransactionType type) : this()
         {
             _amount = amount;
-            _serviceId = serviceId;
-            _pending = true;
-        }
-
-        protected Transaction(TCurrency amount) : this()
-        {
-            _amount = amount;
+            _description = description;
+            _type = type;
             _serviceId = null;
-            _pending = false;
         }
 
         private Transaction()
         {
-            _type = TransactionType.Service;
-            _description = new Option<TransactionDescription>();
             _timestamp = DateTime.UtcNow;
+            _status = TransactionStatus.Pending;
         }
 
         public DateTime Timestamp => _timestamp;
 
         public TCurrency Amount => _amount;
 
-        public string ServiceId => _serviceId;
-
-        public bool Pending => _pending;
+        public TransactionDescription Description => _description;
 
         public TransactionType Type => _type;
 
-        public Option<TransactionDescription> Description => _description;
+        public TransactionStatus Status => _status;
 
-        protected void Complete()
+        public string ServiceId => _serviceId;
+
+        public void Pay()
         {
-            _pending = false;
+            _status = TransactionStatus.Paid;
+        }
+
+        public void Cancel()
+        {
+            _status = TransactionStatus.Canceled;
+        }
+
+        public void Fail()
+        {
+            _status = TransactionStatus.Failed;
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿// Filename: ITokenAccount.cs
-// Date Created: 2019-04-30
+// Date Created: 2019-05-09
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,6 +12,7 @@ using System.Collections.Generic;
 
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
+using eDoxa.Functional.Maybe;
 using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Cashier.Domain.Abstractions
@@ -19,5 +20,7 @@ namespace eDoxa.Cashier.Domain.Abstractions
     public interface ITokenAccount : IAccount<Token, ITokenTransaction>, IEntity<AccountId>
     {
         IReadOnlyCollection<TokenTransaction> Transactions { get; }
+
+        Option<ITokenTransaction> TryReward(Token amount);
     }
 }

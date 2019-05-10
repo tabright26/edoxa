@@ -8,8 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Linq;
-
 using AutoMapper;
 
 using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
@@ -24,9 +22,9 @@ namespace eDoxa.Cashier.DTO.Profiles
                 .ForMember(transaction => transaction.Id, config => config.MapFrom(transaction => transaction.Id.ToGuid()))
                 .ForMember(transaction => transaction.Timestamp, config => config.MapFrom(transaction => transaction.Timestamp))
                 .ForMember(transaction => transaction.Amount, config => config.MapFrom<long>(transaction => transaction.Amount))
+                .ForMember(transaction => transaction.Description, config => config.MapFrom(transaction => transaction.Description))
                 .ForMember(transaction => transaction.Type, config => config.MapFrom(transaction => transaction.Type))
-                .ForMember(transaction => transaction.Description,
-                    config => config.MapFrom(transaction => transaction.Description.Select(description => description.ToString()).SingleOrDefault()));
+                .ForMember(transaction => transaction.Status, config => config.MapFrom(transaction => transaction.Status));
         }
     }
 }
