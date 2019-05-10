@@ -11,6 +11,7 @@
 using System.Runtime.Serialization;
 
 using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.Services.Stripe;
 using eDoxa.Commands.Abstractions;
 
 namespace eDoxa.Cashier.Application.Commands

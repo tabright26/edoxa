@@ -11,12 +11,13 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Domain;
+using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services;
-using eDoxa.Stripe.Validators;
+using eDoxa.Cashier.Domain.Services.Stripe;
+using eDoxa.Cashier.Domain.Services.Stripe.Validators;
 
 using Stripe;
 

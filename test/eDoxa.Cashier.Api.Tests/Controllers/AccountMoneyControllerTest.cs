@@ -14,9 +14,9 @@ using eDoxa.Cashier.Api.Controllers;
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
-using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
+using eDoxa.Cashier.Tests.Factories;
 using eDoxa.Functional.Maybe;
 using eDoxa.Security.Abstractions;
 using eDoxa.Testing.MSTest.Extensions;
@@ -35,7 +35,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
     [TestClass]
     public sealed class AccountMoneyControllerTest
     {
-        private static readonly UserAggregateFactory UserAggregateFactory = UserAggregateFactory.Instance;
+        private static readonly FakeCashierFactory FakeCashierFactory = FakeCashierFactory.Instance;
         private Mock<IMediator> _mockMediator;
         private Mock<IMoneyAccountQueries> _mockMoneyAccountQueries;
         private Mock<IUserInfoService> _mockUserInfoService;
@@ -93,7 +93,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         public async Task WithdrawalAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            var money = UserAggregateFactory.CreateMoney();
+            var money = FakeCashierFactory.CreateMoney();
 
             var command = new WithdrawMoneyCommand(money);
 
@@ -116,7 +116,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         public async Task AddFundsAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            var money = UserAggregateFactory.CreateMoney();
+            var money = FakeCashierFactory.CreateMoney();
 
             var command = new DepositMoneyCommand(MoneyBundleType.Ten);
 

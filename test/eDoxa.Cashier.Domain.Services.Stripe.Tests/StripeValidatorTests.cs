@@ -10,13 +10,13 @@
 
 using System;
 
-using eDoxa.Stripe.Validators;
+using eDoxa.Cashier.Domain.Services.Stripe.Validators;
 
 using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Stripe.Tests
+namespace eDoxa.Cashier.Domain.Services.Stripe.Tests
 {
     [TestClass]
     public sealed class StripeValidatorTests

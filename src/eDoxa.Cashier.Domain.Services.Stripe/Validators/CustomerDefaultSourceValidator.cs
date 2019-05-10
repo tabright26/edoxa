@@ -12,7 +12,7 @@ using System;
 
 using Stripe;
 
-namespace eDoxa.Stripe.Validators
+namespace eDoxa.Cashier.Domain.Services.Stripe.Validators
 {
     public sealed class CustomerDefaultSourceValidator
     {

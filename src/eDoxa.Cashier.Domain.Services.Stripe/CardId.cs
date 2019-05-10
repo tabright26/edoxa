@@ -10,9 +10,7 @@
 
 using System.ComponentModel;
 
-using eDoxa.Stripe;
-
-namespace eDoxa.Cashier.Domain.AggregateModels
+namespace eDoxa.Cashier.Domain.Services.Stripe
 {
     [TypeConverter(typeof(StripeIdTypeConverter))]
     public sealed class CardId : StripeId<CardId>

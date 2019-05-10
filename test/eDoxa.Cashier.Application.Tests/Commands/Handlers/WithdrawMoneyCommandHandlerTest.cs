@@ -16,10 +16,11 @@ using AutoMapper;
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain;
+using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
-using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.Domain.Services;
+using eDoxa.Cashier.Tests.Factories;
 using eDoxa.Commands.Extensions;
 using eDoxa.Functional.Maybe;
 using eDoxa.Security.Abstractions;
@@ -34,7 +35,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     [TestClass]
     public sealed class WithdrawMoneyCommandHandlerTest
     {
-        private static readonly UserAggregateFactory UserAggregateFactory = UserAggregateFactory.Instance;
+        private static readonly FakeCashierFactory FakeCashierFactory = FakeCashierFactory.Instance;
         private Mock<IMapper> _mockMapper;
         private Mock<IMoneyAccountService> _mockMoneyAccountService;
         private Mock<IUserInfoService> _mockUserInfoService;
@@ -52,7 +53,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         public async Task Handle_FindAsync_ShouldBeInvokedExactlyOneTime()
         {
             // Arrange
-            var money = UserAggregateFactory.CreateMoney();
+            var money = FakeCashierFactory.CreateMoney();
 
             var command = new WithdrawMoneyCommand(money);
 

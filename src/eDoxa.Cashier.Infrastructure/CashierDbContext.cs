@@ -11,9 +11,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
-using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.Infrastructure.Configurations;
 using eDoxa.Seedwork.Infrastructure;
 
@@ -26,13 +26,12 @@ namespace eDoxa.Cashier.Infrastructure
 {
     public sealed partial class CashierDbContext
     {
-        private readonly UserAggregateFactory _userAggregateFactory = UserAggregateFactory.Instance;
-
         public async Task SeedAsync(ILogger logger)
         {
             if (!MoneyAccounts.Any())
             {
-                MoneyAccounts.Add(new MoneyAccount(_userAggregateFactory.CreateAdminId()));
+                // TODO: Add to appsetting.json
+                MoneyAccounts.Add(new MoneyAccount(UserId.Parse("e4655fe0-affd-4323-b022-bdb2ebde6091")));
 
                 await this.SaveChangesAsync();
 
@@ -45,7 +44,8 @@ namespace eDoxa.Cashier.Infrastructure
 
             if (!TokenAccounts.Any())
             {
-                TokenAccounts.Add(new TokenAccount(_userAggregateFactory.CreateAdminId()));
+                // TODO: Add to appsetting.json
+                TokenAccounts.Add(new TokenAccount(UserId.Parse("e4655fe0-affd-4323-b022-bdb2ebde6091")));
 
                 await this.SaveChangesAsync();
 

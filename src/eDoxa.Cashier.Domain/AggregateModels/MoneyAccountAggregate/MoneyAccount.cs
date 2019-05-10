@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Functional.Maybe;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;

@@ -10,10 +10,11 @@
 
 using System;
 
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Functional.Maybe;
 using eDoxa.Seedwork.Domain.Aggregate;
 
-namespace eDoxa.Cashier.Domain.AggregateModels
+namespace eDoxa.Cashier.Domain.Abstractions
 {
     public abstract class Transaction<TCurrency> : Entity<TransactionId>, ITransaction<TCurrency>
     where TCurrency : ICurrency

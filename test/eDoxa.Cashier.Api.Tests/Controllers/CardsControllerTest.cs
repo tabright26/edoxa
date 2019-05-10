@@ -15,9 +15,10 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Api.Controllers;
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.Factories;
+using eDoxa.Cashier.Domain.Services.Stripe;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
+using eDoxa.Cashier.Tests.Factories;
 using eDoxa.Functional.Maybe;
 using eDoxa.Security.Abstractions;
 using eDoxa.Testing.MSTest.Extensions;
@@ -38,7 +39,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
     [TestClass]
     public sealed class CardsControllerTest
     {
-        private static readonly UserAggregateFactory UserAggregateFactory = UserAggregateFactory.Instance;
+        private static readonly FakeCashierFactory FakeCashierFactory = FakeCashierFactory.Instance;
         private Mock<ICardQueries> _mockCardQueries;
         private Mock<IMediator> _mockMediator;
         private Mock<IUserInfoService> _mockUserInfoService;
@@ -100,7 +101,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         public async Task CreateCardAsync_ShouldBeCreatedResult()
         {
             // Arrange
-            var cardId = UserAggregateFactory.CreateCardId();
+            var cardId = FakeCashierFactory.CreateCardId();
 
             var command = new CreateCardCommand(cardId.ToString());
 
@@ -124,7 +125,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         public async Task FindUserCardAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            var cardId = UserAggregateFactory.CreateCardId();
+            var cardId = FakeCashierFactory.CreateCardId();
 
             _mockCardQueries.Setup(queries => queries.FindUserCardAsync(It.IsAny<CustomerId>(), It.IsAny<CardId>()))
                 .ReturnsAsync(new Option<CardDTO>(new CardDTO()))
@@ -147,7 +148,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         public async Task DeleteCardAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            var cardId = UserAggregateFactory.CreateCardId();
+            var cardId = FakeCashierFactory.CreateCardId();
 
             _mockMediator.Setup(mediator => mediator.Send(It.IsAny<DeleteCardCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(new OkResult())
                 .Verifiable();
@@ -169,7 +170,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         public async Task UpdateDefaultCardAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            var cardId = UserAggregateFactory.CreateCardId();
+            var cardId = FakeCashierFactory.CreateCardId();
 
             _mockMediator.Setup(mediator => mediator.Send(It.IsAny<UpdateCardDefaultCommand>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new OkObjectResult(new Customer()))

@@ -11,7 +11,7 @@
 using System;
 using System.Linq;
 
-namespace eDoxa.Stripe.Validators
+namespace eDoxa.Cashier.Domain.Services.Stripe.Validators
 {
     public sealed class StripeIdValidator
     {

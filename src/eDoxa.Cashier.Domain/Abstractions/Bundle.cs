@@ -10,7 +10,7 @@
 
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 
-namespace eDoxa.Cashier.Domain.AggregateModels
+namespace eDoxa.Cashier.Domain.Abstractions
 {
     public abstract class Bundle<TCurrency>
     where TCurrency : ICurrency

@@ -16,6 +16,7 @@ using eDoxa.Autofac.Extensions;
 using eDoxa.AutoMapper.Extensions;
 using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Application;
+using eDoxa.Cashier.Domain.Services.Stripe.Extensions;
 using eDoxa.Cashier.DTO.Factories;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Monitoring.Extensions;
@@ -24,7 +25,6 @@ using eDoxa.Security.Resources;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.ServiceBus.Extensions;
-using eDoxa.Stripe.Extensions;
 using eDoxa.Swagger.Extensions;
 using eDoxa.Versioning.Extensions;
 

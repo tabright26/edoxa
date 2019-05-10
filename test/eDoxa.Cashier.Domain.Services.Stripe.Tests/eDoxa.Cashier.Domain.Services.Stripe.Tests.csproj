@@ -4,6 +4,10 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
 
     <IsPackable>false</IsPackable>
+
+    <AssemblyName>eDoxa.Cashier.Domain.Services.Stripe.Tests</AssemblyName>
+
+    <RootNamespace>eDoxa.Cashier.Domain.Services.Stripe.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,8 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\eDoxa.Stripe\eDoxa.Stripe.csproj" />
-    <ProjectReference Include="..\eDoxa.Testing.MSTest\eDoxa.Testing.MSTest.csproj" />
+    <ProjectReference Include="..\eDoxa.Cashier.Tests\eDoxa.Cashier.Tests.csproj" />
   </ItemGroup>
 
 </Project>

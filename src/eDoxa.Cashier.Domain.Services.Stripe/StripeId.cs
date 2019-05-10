@@ -14,12 +14,12 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Reflection;
 
+using eDoxa.Cashier.Domain.Services.Stripe.Validators;
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Stripe.Validators;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Stripe
+namespace eDoxa.Cashier.Domain.Services.Stripe
 {
     public abstract partial class StripeId<TStripeId> : BaseObject
     where TStripeId : StripeId<TStripeId>, new()

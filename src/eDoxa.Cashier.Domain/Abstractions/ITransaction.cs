@@ -12,7 +12,7 @@ using System;
 
 using eDoxa.Functional.Maybe;
 
-namespace eDoxa.Cashier.Domain
+namespace eDoxa.Cashier.Domain.Abstractions
 {
     public interface ITransaction<out TCurrency>
     where TCurrency : ICurrency

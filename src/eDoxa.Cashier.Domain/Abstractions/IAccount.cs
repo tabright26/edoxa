@@ -11,7 +11,7 @@
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Functional.Maybe;
 
-namespace eDoxa.Cashier.Domain
+namespace eDoxa.Cashier.Domain.Abstractions
 {
     public interface IAccount<TCurrency, TTransaction>
     where TCurrency : ICurrency

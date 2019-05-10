@@ -15,7 +15,7 @@ using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Functional.Maybe;
 using eDoxa.Seedwork.Domain;
 
-namespace eDoxa.Cashier.Domain
+namespace eDoxa.Cashier.Domain.Abstractions
 {
     public interface IMoneyAccount : IAccount<Money, IMoneyTransaction>, IEntity<AccountId>
     {

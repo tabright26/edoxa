@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.Services.Stripe;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Commands.Extensions;
 using eDoxa.Security.Abstractions;

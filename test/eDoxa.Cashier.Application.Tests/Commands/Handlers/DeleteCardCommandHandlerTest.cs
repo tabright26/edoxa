@@ -14,7 +14,8 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.Factories;
+using eDoxa.Cashier.Domain.Services.Stripe;
+using eDoxa.Cashier.Tests.Factories;
 using eDoxa.Security.Abstractions;
 using eDoxa.Testing.MSTest.Extensions;
 
@@ -29,7 +30,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     [TestClass]
     public sealed class DeleteCardCommandHandlerTest
     {
-        private static readonly UserAggregateFactory UserAggregateFactory = UserAggregateFactory.Instance;
+        private static readonly FakeCashierFactory FakeCashierFactory = FakeCashierFactory.Instance;
         private Mock<CardService> _mockCardService;
         private Mock<IUserInfoService> _mockUserInfoService;
 
@@ -45,7 +46,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         public async Task HandleAsync_FindAsNoTrackingAsync_ShouldBeInvokedExactlyOneTime()
         {
             // Arrange
-            var card = UserAggregateFactory.CreateCard();
+            var card = FakeCashierFactory.CreateCard();
 
             _mockCardService.Setup(
                     service => service.DeleteAsync(

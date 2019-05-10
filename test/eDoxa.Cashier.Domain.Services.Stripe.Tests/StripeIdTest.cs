@@ -8,14 +8,11 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.ComponentModel;
-
-using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Stripe.Tests
+namespace eDoxa.Cashier.Domain.Services.Stripe.Tests
 {
     [TestClass]
     public sealed class StripeIdTest

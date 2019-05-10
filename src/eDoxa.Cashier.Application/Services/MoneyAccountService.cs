@@ -12,12 +12,14 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain;
+using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services;
+using eDoxa.Cashier.Domain.Services.Stripe;
+using eDoxa.Cashier.Domain.Services.Stripe.Validators;
 using eDoxa.Functional.Maybe;
-using eDoxa.Stripe.Validators;
 
 using Stripe;
 

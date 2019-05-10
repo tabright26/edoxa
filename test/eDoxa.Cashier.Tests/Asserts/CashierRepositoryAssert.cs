@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 
 using eDoxa.Cashier.Domain;
+using eDoxa.Cashier.Domain.Abstractions;
 
 using FluentAssertions;
 

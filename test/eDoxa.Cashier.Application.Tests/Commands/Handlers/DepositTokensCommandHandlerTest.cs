@@ -18,6 +18,7 @@ using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
 using eDoxa.Cashier.Domain.Services;
+using eDoxa.Cashier.Domain.Services.Stripe;
 using eDoxa.Security.Abstractions;
 using eDoxa.Testing.MSTest.Extensions;
 

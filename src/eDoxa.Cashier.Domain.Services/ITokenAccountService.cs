@@ -11,8 +11,10 @@
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
+using eDoxa.Cashier.Domain.Services.Stripe;
 
 namespace eDoxa.Cashier.Domain.Services
 {

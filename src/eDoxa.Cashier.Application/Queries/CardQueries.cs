@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.Services.Stripe;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Functional.Maybe;

@@ -8,6 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Cashier.Domain.Abstractions;
+
 namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
 {
     public sealed class MoneyBundle : Bundle<Money>

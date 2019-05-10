@@ -12,23 +12,24 @@ using System;
 
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
+using eDoxa.Cashier.Domain.Services.Stripe;
 using eDoxa.Seedwork.Factories;
 
 using Stripe;
 
 using Token = eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate.Token;
 
-namespace eDoxa.Cashier.Domain.Factories
+namespace eDoxa.Cashier.Tests.Factories
 {
-    public sealed partial class UserAggregateFactory : AggregateFactory
+    public sealed partial class FakeCashierFactory
     {
-        private static readonly Lazy<UserAggregateFactory> Lazy =
-            new Lazy<UserAggregateFactory>(() => new UserAggregateFactory());
+        private static readonly Lazy<FakeCashierFactory> Lazy =
+            new Lazy<FakeCashierFactory>(() => new FakeCashierFactory());
 
-        public static UserAggregateFactory Instance => Lazy.Value;
+        public static FakeCashierFactory Instance => Lazy.Value;
     }
 
-    public sealed partial class UserAggregateFactory
+    public sealed partial class FakeCashierFactory
     {
         public UserId CreateUserId()
         {
@@ -46,13 +47,8 @@ namespace eDoxa.Cashier.Domain.Factories
         }
     }
 
-    public sealed partial class UserAggregateFactory
+    public sealed partial class FakeCashierFactory
     {
-        public UserId CreateAdminId()
-        {
-            return UserId.FromGuid(AdminData.Id);
-        }
-
         public Money CreateMoney()
         {
             return Money.Zero;

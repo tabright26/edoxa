@@ -10,19 +10,21 @@
 
 using System;
 
+using eDoxa.Cashier.Domain.Abstractions;
+
 using JetBrains.Annotations;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
 {
     public sealed partial class Token : ICurrency
     {
-        internal static readonly Token Zero = new Token(0);
-        internal static readonly Token FiftyThousand = new Token(50000);
-        internal static readonly Token OneHundredThousand = new Token(100000);
-        internal static readonly Token TwoHundredFiftyThousand = new Token(250000);
-        internal static readonly Token FiveHundredThousand = new Token(500000);
-        internal static readonly Token OneMillion = new Token(1000000);
-        internal static readonly Token FiveMillions = new Token(5000000);
+        public static readonly Token Zero = new Token(0);
+        public static readonly Token FiftyThousand = new Token(50000);
+        public static readonly Token OneHundredThousand = new Token(100000);
+        public static readonly Token TwoHundredFiftyThousand = new Token(250000);
+        public static readonly Token FiveHundredThousand = new Token(500000);
+        public static readonly Token OneMillion = new Token(1000000);
+        public static readonly Token FiveMillions = new Token(5000000);
 
         private readonly long _value;
 

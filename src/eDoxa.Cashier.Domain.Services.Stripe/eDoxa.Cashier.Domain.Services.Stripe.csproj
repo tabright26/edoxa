@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>eDoxa.Cashier.Domain.Services.Stripe</AssemblyName>
+    <RootNamespace>eDoxa.Cashier.Domain.Services.Stripe</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

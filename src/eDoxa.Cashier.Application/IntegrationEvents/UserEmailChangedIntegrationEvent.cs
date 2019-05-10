@@ -9,6 +9,7 @@
 // this source code package.
 
 using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.Services.Stripe;
 using eDoxa.ServiceBus;
 
 namespace eDoxa.Cashier.Application.IntegrationEvents

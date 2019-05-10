@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
-using eDoxa.Cashier.Domain.Factories;
+using eDoxa.Cashier.Tests.Factories;
 using eDoxa.Security.Abstractions;
 using eDoxa.Testing.MSTest.Extensions;
 
@@ -31,7 +31,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     [TestClass]
     public sealed class CreateCardCommandHandlerTest
     {
-        private static readonly UserAggregateFactory UserAggregateFactory = UserAggregateFactory.Instance;
+        private static readonly FakeCashierFactory FakeCashierFactory = FakeCashierFactory.Instance;
         private Mock<CardService> _mockCardService;
         private Mock<CustomerService> _mockCustomerService;
         private Mock<IUserInfoService> _mockUserInfoService;
@@ -49,9 +49,9 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         public async Task Handle_FindAsNoTrackingAsync_ShouldBeInvokedExactlyOneTime()
         {
             // Arrange
-            var customer = UserAggregateFactory.CreateCustomer();
+            var customer = FakeCashierFactory.CreateCustomer();
 
-            var card = UserAggregateFactory.CreateCard();
+            var card = FakeCashierFactory.CreateCard();
 
             _mockCustomerService.Setup(
                     service => service.UpdateAsync(

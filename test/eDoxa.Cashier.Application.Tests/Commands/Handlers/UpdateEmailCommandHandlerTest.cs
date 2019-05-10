@@ -14,7 +14,8 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.Factories;
+using eDoxa.Cashier.Domain.Services.Stripe;
+using eDoxa.Cashier.Tests.Factories;
 using eDoxa.Commands.Extensions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -28,13 +29,13 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     [TestClass]
     public sealed class UpdateEmailCommandHandlerTest
     {
-        private readonly UserAggregateFactory _userAggregateFactory = UserAggregateFactory.Instance;
+        private readonly FakeCashierFactory _fakeCashierFactory = FakeCashierFactory.Instance;
 
         [TestMethod]
         public async Task HandleAsync_FindAsNoTrackingAsync_ShouldBeInvokedExactlyOneTime()
         {
             // Arrange
-            var customer = _userAggregateFactory.CreateCustomer();
+            var customer = _fakeCashierFactory.CreateCustomer();
 
             var mockCustomerService = new Mock<CustomerService>();
 

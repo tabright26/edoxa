@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.Services.Stripe;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Security.Abstractions;
 

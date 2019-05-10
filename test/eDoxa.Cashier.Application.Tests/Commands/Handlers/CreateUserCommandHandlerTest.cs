@@ -10,7 +10,7 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Domain.Factories;
+using eDoxa.Cashier.Tests.Factories;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -19,7 +19,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     [TestClass]
     public sealed class CreateUserCommandHandlerTest
     {
-        private readonly UserAggregateFactory _userAggregateFactory = UserAggregateFactory.Instance;
+        private readonly FakeCashierFactory _fakeCashierFactory = FakeCashierFactory.Instance;
 
         [TestMethod]
         public async Task HandleAsync_Create_ShouldBeInvokedExactlyOneTime()

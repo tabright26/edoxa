@@ -13,8 +13,8 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Api.Controllers;
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
-using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.DTO.Queries;
+using eDoxa.Cashier.Tests.Factories;
 using eDoxa.Security.Abstractions;
 using eDoxa.Testing.MSTest.Extensions;
 
@@ -32,7 +32,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
     [TestClass]
     public sealed class AccountTokenControllerTest
     {
-        private static readonly UserAggregateFactory UserAggregateFactory = UserAggregateFactory.Instance;
+        private static readonly FakeCashierFactory FakeCashierFactory = FakeCashierFactory.Instance;
         private Mock<IMediator> _mockMediator;
         private Mock<ITokenAccountQueries> _mockTokenAccountQueries;
         private Mock<IUserInfoService> _mockUserInfoService;
@@ -50,7 +50,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         public async Task DepositTokensAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
-            var token = UserAggregateFactory.CreateToken();
+            var token = FakeCashierFactory.CreateToken();
 
             var command = new DepositTokensCommand(TokenBundleType.FiftyThousand);
 

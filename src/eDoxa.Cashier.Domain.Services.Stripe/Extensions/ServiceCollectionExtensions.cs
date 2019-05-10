@@ -12,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Stripe;
 
-namespace eDoxa.Stripe.Extensions
+namespace eDoxa.Cashier.Domain.Services.Stripe.Extensions
 {
     public static class ServiceCollectionExtensions
     {

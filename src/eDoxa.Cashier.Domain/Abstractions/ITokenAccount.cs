@@ -1,4 +1,4 @@
-﻿// Filename: ITokenTransaction.cs
+﻿// Filename: ITokenAccount.cs
 // Date Created: 2019-04-30
 // 
 // ================================================
@@ -8,15 +8,16 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Collections.Generic;
+
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
-using eDoxa.Functional.Maybe;
 using eDoxa.Seedwork.Domain;
 
-namespace eDoxa.Cashier.Domain
+namespace eDoxa.Cashier.Domain.Abstractions
 {
-    public interface ITokenTransaction : ITransaction<Token>, IEntity<TransactionId>
+    public interface ITokenAccount : IAccount<Token, ITokenTransaction>, IEntity<AccountId>
     {
-        Option<TokenTransaction> TryPayoff(Token amount);
+        IReadOnlyCollection<TokenTransaction> Transactions { get; }
     }
 }

@@ -10,20 +10,22 @@
 
 using System;
 
+using eDoxa.Cashier.Domain.Abstractions;
+
 using JetBrains.Annotations;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
 {
     public sealed partial class Money : ICurrency
     {
-        internal static readonly Money Zero = new Money(0);
-        internal static readonly Money Five = new Money(5);
-        internal static readonly Money Ten = new Money(10);
-        internal static readonly Money Twenty = new Money(20);
-        internal static readonly Money TwentyFive = new Money(25);
-        internal static readonly Money Fifty = new Money(50);
-        internal static readonly Money OneHundred = new Money(100);
-        internal static readonly Money FiveHundred = new Money(500);
+        public static readonly Money Zero = new Money(0);
+        public static readonly Money Five = new Money(5);
+        public static readonly Money Ten = new Money(10);
+        public static readonly Money Twenty = new Money(20);
+        public static readonly Money TwentyFive = new Money(25);
+        public static readonly Money Fifty = new Money(50);
+        public static readonly Money OneHundred = new Money(100);
+        public static readonly Money FiveHundred = new Money(500);
 
         private readonly decimal _value;
 
