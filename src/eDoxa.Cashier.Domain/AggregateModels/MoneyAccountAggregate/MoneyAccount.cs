@@ -1,5 +1,5 @@
 ﻿// Filename: MoneyAccount.cs
-// Date Created: 2019-05-02
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -54,28 +54,28 @@ namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
             return transaction;
         }
 
-        public Option<IMoneyTransaction> TryRegister(Money amount, ActivityId activityId)
+        public Option<IMoneyTransaction> TryRegister(Money amount, ServiceId serviceId)
         {
             if (Balance < amount)
             {
                 return new Option<IMoneyTransaction>();
             }
 
-            var transaction = new MoneyPendingTransaction(-amount, activityId);
+            var transaction = new MoneyPendingTransaction(-amount, serviceId);
 
             if (!_transactions.Add(transaction))
             {
                 return new Option<IMoneyTransaction>();
             }
 
-            Log.Information($"{UserId} register to {activityId} amount {amount} - balance {Balance}");
+            Log.Information($"{UserId} register to {serviceId} amount {amount} - balance {Balance}");
 
             return new Option<IMoneyTransaction>(transaction);
         }
 
-        public Option<IMoneyTransaction> TryPayoff(Money amount, ActivityId activityId)
+        public Option<IMoneyTransaction> TryPayoff(Money amount, ServiceId serviceId)
         {
-            return Transactions.Where(transaction => transaction.Pending && transaction.LinkedId == activityId.ToString())
+            return Transactions.Where(transaction => transaction.Pending && transaction.ServiceId == serviceId.ToString())
                 .Select(transaction => this.TryPayoff(amount, transaction))
                 .DefaultIfEmpty(new Option<IMoneyTransaction>())
                 .Single();

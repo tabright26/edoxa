@@ -1,15 +1,19 @@
 ﻿// Filename: TokenTransactionConfiguration.cs
-// Date Created: 2019-04-25
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Linq;
+
+using eDoxa.Cashier.Domain;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
+using eDoxa.Functional.Maybe;
 
 using JetBrains.Annotations;
 
@@ -46,7 +50,21 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
                 .IsRequired()
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 
-            builder.Property(transaction => transaction.LinkedId)
+            builder.Property(transaction => transaction.ServiceId)
+                .IsRequired(false)
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
+
+            builder.Property(transaction => transaction.Type)
+                .HasConversion(type => type.Value, value => TransactionType.FromValue(value))
+                .IsRequired()
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
+
+            builder.Property(transaction => transaction.Description)
+                .HasConversion(
+                    transactionDescriptions => transactionDescriptions.Select(description => description.ToString()).SingleOrDefault(),
+                    description => description != null
+                        ? new Option<TransactionDescription>(new TransactionDescription(description))
+                        : new Option<TransactionDescription>())
                 .IsRequired(false)
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 

@@ -1,5 +1,5 @@
 ﻿// Filename: Transaction.cs
-// Date Created: 2019-05-02
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,6 +10,7 @@
 
 using System;
 
+using eDoxa.Functional.Maybe;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Cashier.Domain.AggregateModels
@@ -18,26 +19,30 @@ namespace eDoxa.Cashier.Domain.AggregateModels
     where TCurrency : ICurrency
     {
         private TCurrency _amount;
-        private string _linkedId;
+        private Option<TransactionDescription> _description;
         private bool _pending;
+        private string _serviceId;
         private DateTime _timestamp;
+        private TransactionType _type;
 
-        protected Transaction(TCurrency amount, string linkedId) : this()
+        protected Transaction(TCurrency amount, string serviceId) : this()
         {
             _amount = amount;
-            _linkedId = linkedId;
+            _serviceId = serviceId;
             _pending = true;
         }
 
         protected Transaction(TCurrency amount) : this()
         {
             _amount = amount;
-            _linkedId = null;
+            _serviceId = null;
             _pending = false;
         }
 
         private Transaction()
         {
+            _type = TransactionType.Service;
+            _description = new Option<TransactionDescription>();
             _timestamp = DateTime.UtcNow;
         }
 
@@ -45,9 +50,13 @@ namespace eDoxa.Cashier.Domain.AggregateModels
 
         public TCurrency Amount => _amount;
 
-        public string LinkedId => _linkedId;
+        public string ServiceId => _serviceId;
 
         public bool Pending => _pending;
+
+        public TransactionType Type => _type;
+
+        public Option<TransactionDescription> Description => _description;
 
         protected void Complete()
         {

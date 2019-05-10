@@ -1,5 +1,5 @@
 ﻿// Filename: IAccount.cs
-// Date Created: 2019-04-30
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -23,8 +23,8 @@ namespace eDoxa.Cashier.Domain
 
         TTransaction Deposit(TCurrency amount);
 
-        Option<TTransaction> TryRegister(TCurrency amount, ActivityId activityId);
+        Option<TTransaction> TryRegister(TCurrency amount, ServiceId serviceId);
 
-        Option<TTransaction> TryPayoff(TCurrency amount, ActivityId activityId);
+        Option<TTransaction> TryPayoff(TCurrency amount, ServiceId serviceId);
     }
 }

@@ -1,5 +1,5 @@
 ﻿// Filename: TokenAccount.cs
-// Date Created: 2019-05-02
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -51,28 +51,28 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
             return transaction;
         }
 
-        public Option<ITokenTransaction> TryRegister(Token amount, ActivityId activityId)
+        public Option<ITokenTransaction> TryRegister(Token amount, ServiceId serviceId)
         {
             if (Balance < amount)
             {
                 return new Option<ITokenTransaction>();
             }
 
-            var transaction = new TokenPendingTransaction(-amount, activityId);
+            var transaction = new TokenPendingTransaction(-amount, serviceId);
 
             if (!_transactions.Add(transaction))
             {
                 return new Option<ITokenTransaction>();
             }
 
-            Log.Information($"{Id} register to {activityId} amount {amount} - balance {Balance}");
+            Log.Information($"{Id} register to {serviceId} amount {amount} - balance {Balance}");
 
             return new Option<ITokenTransaction>(transaction);
         }
 
-        public Option<ITokenTransaction> TryPayoff(Token amount, ActivityId activityId)
+        public Option<ITokenTransaction> TryPayoff(Token amount, ServiceId serviceId)
         {
-            return Transactions.Where(transaction => transaction.Pending && transaction.LinkedId == activityId.ToString())
+            return Transactions.Where(transaction => transaction.Pending && transaction.ServiceId == serviceId.ToString())
                 .Select(transaction => this.TryPayoff(amount, transaction))
                 .DefaultIfEmpty(new Option<ITokenTransaction>())
                 .Single();

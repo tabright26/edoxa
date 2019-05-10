@@ -1,5 +1,5 @@
 ﻿// Filename: DepositTokensCommandHandlerTest.cs
-// Date Created: 2019-05-03
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,6 +10,8 @@
 
 using System.Threading;
 using System.Threading.Tasks;
+
+using AutoMapper;
 
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
@@ -28,12 +30,14 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     [TestClass]
     public sealed class DepositTokensCommandHandlerTest
     {
+        private Mock<IMapper> _mockMapper;
         private Mock<ITokenAccountService> _mockTokenAccountService;
         private Mock<IUserInfoService> _mockUserInfoService;
 
         [TestInitialize]
         public void TestInitialize()
         {
+            _mockMapper = new Mock<IMapper>();
             _mockTokenAccountService = new Mock<ITokenAccountService>();
             _mockUserInfoService = new Mock<IUserInfoService>();
             _mockUserInfoService.SetupGetProperties();
@@ -50,7 +54,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
                 .ReturnsAsync(new TokenTransaction(new Token(50000)))
                 .Verifiable();
 
-            var handler = new DepositTokensCommandHandler(_mockUserInfoService.Object, _mockTokenAccountService.Object);
+            var handler = new DepositTokensCommandHandler(_mockUserInfoService.Object, _mockTokenAccountService.Object, _mockMapper.Object);
 
             // Act
             await handler.Handle(command, default);

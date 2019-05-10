@@ -1,12 +1,14 @@
 ﻿// Filename: TokenTransactionProfile.cs
-// Date Created: 2019-04-26
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
+
+using System.Linq;
 
 using AutoMapper;
 
@@ -21,7 +23,10 @@ namespace eDoxa.Cashier.DTO.Profiles
             this.CreateMap<TokenTransaction, TokenTransactionDTO>()
                 .ForMember(transaction => transaction.Id, config => config.MapFrom(transaction => transaction.Id.ToGuid()))
                 .ForMember(transaction => transaction.Timestamp, config => config.MapFrom(transaction => transaction.Timestamp))
-                .ForMember(transaction => transaction.Amount, config => config.MapFrom<long>(transaction => transaction.Amount));
+                .ForMember(transaction => transaction.Amount, config => config.MapFrom<long>(transaction => transaction.Amount))
+                .ForMember(transaction => transaction.Type, config => config.MapFrom(transaction => transaction.Type))
+                .ForMember(transaction => transaction.Description,
+                    config => config.MapFrom(transaction => transaction.Description.Select(description => description.ToString()).SingleOrDefault()));
         }
     }
 }

@@ -10,8 +10,8 @@ using eDoxa.Cashier.Infrastructure;
 namespace eDoxa.Cashier.Infrastructure.Migrations
 {
     [DbContext(typeof(CashierDbContext))]
-    [Migration("20190503020847_IntialCreate")]
-    partial class IntialCreate
+    [Migration("20190509225102_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -41,11 +41,15 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
 
                     b.Property<decimal>("Amount");
 
-                    b.Property<string>("LinkedId");
+                    b.Property<string>("Description");
 
                     b.Property<bool>("Pending");
 
+                    b.Property<string>("ServiceId");
+
                     b.Property<DateTime>("Timestamp");
+
+                    b.Property<int>("Type");
 
                     b.HasKey("Id");
 
@@ -73,11 +77,15 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
 
                     b.Property<long>("Amount");
 
-                    b.Property<string>("LinkedId");
+                    b.Property<string>("Description");
 
                     b.Property<bool>("Pending");
 
+                    b.Property<string>("ServiceId");
+
                     b.Property<DateTime>("Timestamp");
+
+                    b.Property<int>("Type");
 
                     b.HasKey("Id");
 
@@ -86,7 +94,7 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                     b.ToTable("TokenTransactions");
                 });
 
-            modelBuilder.Entity("eDoxa.Seedwork.Domain.Aggregate.LogEntry", b =>
+            modelBuilder.Entity("eDoxa.Seedwork.Infrastructure.Models.LogEntry", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();

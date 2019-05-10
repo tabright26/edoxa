@@ -1,5 +1,5 @@
 ﻿// Filename: ITransaction.cs
-// Date Created: 2019-04-30
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,6 +10,8 @@
 
 using System;
 
+using eDoxa.Functional.Maybe;
+
 namespace eDoxa.Cashier.Domain
 {
     public interface ITransaction<out TCurrency>
@@ -17,10 +19,14 @@ namespace eDoxa.Cashier.Domain
     {
         TCurrency Amount { get; }
 
-        string LinkedId { get; }
+        string ServiceId { get; }
 
         bool Pending { get; }
 
         DateTime Timestamp { get; }
+
+        TransactionType Type { get; }
+
+        Option<TransactionDescription> Description { get; }
     }
 }

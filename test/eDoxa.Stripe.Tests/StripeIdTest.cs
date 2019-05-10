@@ -159,18 +159,18 @@ namespace eDoxa.Stripe.Tests
         //    destination.Should().BeOfType(type);
         //}
 
-        [TestMethod]
-        public void ConvertTo_InvalidValueType_ShouldBeNull()
-        {
-            // Arrange
-            var converter = TypeDescriptor.GetConverter(typeof(MockStripeId));
+        //[TestMethod]
+        //public void ConvertTo_InvalidValueType_ShouldBeNull()
+        //{
+        //    // Arrange
+        //    var converter = TypeDescriptor.GetConverter(typeof(MockStripeId));
 
-            // Act
-            var destination = converter.ConvertTo(Guid.NewGuid(), typeof(Guid));
+        //    // Act
+        //    var destination = converter.ConvertTo(Guid.NewGuid(), typeof(Guid));
 
-            // Assert
-            destination.Should().BeNull();
-        }
+        //    // Assert
+        //    destination.Should().BeNull();
+        //}
 
         //[DataRow(typeof(int))]
         //[DataRow(typeof(long))]

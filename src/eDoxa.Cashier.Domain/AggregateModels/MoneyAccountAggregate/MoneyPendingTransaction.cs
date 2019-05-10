@@ -1,5 +1,5 @@
 ﻿// Filename: MoneyPendingTransaction.cs
-// Date Created: 2019-05-02
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,7 +12,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
 {
     public sealed class MoneyPendingTransaction : MoneyTransaction
     {
-        public MoneyPendingTransaction(Money amount, ActivityId activityId) : base(amount, activityId)
+        public MoneyPendingTransaction(Money amount, ServiceId serviceId) : base(amount, serviceId)
         {
         }
     }

@@ -1,5 +1,5 @@
 ﻿// Filename: TokenPendingTransaction.cs
-// Date Created: 2019-05-02
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,7 +12,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
 {
     public sealed class TokenPendingTransaction : TokenTransaction
     {
-        public TokenPendingTransaction(Token amount, ActivityId linkedId) : base(amount, linkedId)
+        public TokenPendingTransaction(Token amount, ServiceId linkedId) : base(amount, linkedId)
         {
         }
     }

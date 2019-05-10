@@ -1,5 +1,5 @@
 ﻿// Filename: DepositMoneyCommandHandlerTest.cs
-// Date Created: 2019-05-03
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,6 +10,8 @@
 
 using System.Threading;
 using System.Threading.Tasks;
+
+using AutoMapper;
 
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
@@ -29,12 +31,14 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     [TestClass]
     public sealed class DepositMoneyCommandHandlerTest
     {
+        private Mock<IMapper> _mockMapper;
         private Mock<IMoneyAccountService> _mockMoneyAccountService;
         private Mock<IUserInfoService> _mockUserInfoService;
 
         [TestInitialize]
         public void TestInitialize()
         {
+            _mockMapper = new Mock<IMapper>();
             _mockMoneyAccountService = new Mock<IMoneyAccountService>();
             _mockUserInfoService = new Mock<IUserInfoService>();
             _mockUserInfoService.SetupGetProperties();
@@ -51,7 +55,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
                 .ReturnsAsync(new MoneyTransaction(new Money(10)))
                 .Verifiable();
 
-            var handler = new DepositMoneyCommandHandler(_mockUserInfoService.Object, _mockMoneyAccountService.Object);
+            var handler = new DepositMoneyCommandHandler(_mockUserInfoService.Object, _mockMoneyAccountService.Object, _mockMapper.Object);
 
             // Act
             await handler.HandleAsync(command);

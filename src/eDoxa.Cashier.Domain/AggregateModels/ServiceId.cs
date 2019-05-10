@@ -1,5 +1,5 @@
-﻿// Filename: ActivityId.cs
-// Date Created: 2019-04-30
+﻿// Filename: ServiceId.cs
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -15,7 +15,7 @@ using eDoxa.Seedwork.Domain.Aggregate;
 namespace eDoxa.Cashier.Domain.AggregateModels
 {
     [TypeConverter(typeof(EntityIdTypeConverter))]
-    public sealed class ActivityId : EntityId<ActivityId>
+    public sealed class ServiceId : EntityId<ServiceId>
     {
     }
 }
