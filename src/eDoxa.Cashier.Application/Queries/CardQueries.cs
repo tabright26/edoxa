@@ -16,7 +16,7 @@ using AutoMapper;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
-using eDoxa.Functional.Maybe;
+using eDoxa.Functional;
 
 using Stripe;
 

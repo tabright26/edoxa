@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Functional.Maybe;
+using eDoxa.Functional;
 
 namespace eDoxa.Cashier.Domain.Abstractions
 {

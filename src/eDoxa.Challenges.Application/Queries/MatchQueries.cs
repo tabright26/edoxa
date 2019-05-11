@@ -19,7 +19,7 @@ using eDoxa.Challenges.Domain.Entities.AggregateModels.MatchAggregate;
 using eDoxa.Challenges.DTO;
 using eDoxa.Challenges.DTO.Queries;
 using eDoxa.Challenges.Infrastructure;
-using eDoxa.Functional.Maybe;
+using eDoxa.Functional;
 
 using Microsoft.EntityFrameworkCore;
 

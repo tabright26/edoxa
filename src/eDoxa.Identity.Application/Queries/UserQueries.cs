@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Functional.Maybe;
+using eDoxa.Functional;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.DTO;
 using eDoxa.Identity.DTO.Queries;

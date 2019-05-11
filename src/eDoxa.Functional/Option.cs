@@ -11,7 +11,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace eDoxa.Functional.Maybe
+namespace eDoxa.Functional
 {
     public sealed class Option<T> : IEnumerable<T>
     {

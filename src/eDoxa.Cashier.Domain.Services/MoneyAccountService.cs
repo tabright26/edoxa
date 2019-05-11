@@ -1,5 +1,5 @@
 ﻿// Filename: MoneyAccountService.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-05-11
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -16,13 +16,13 @@ using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.Domain.Services;
+using eDoxa.Cashier.Domain.Services.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
+using eDoxa.Functional;
 using eDoxa.Functional.Extensions;
-using eDoxa.Functional.Maybe;
 
-namespace eDoxa.Cashier.Application.Services
+namespace eDoxa.Cashier.Domain.Services
 {
     public sealed class MoneyAccountService : IMoneyAccountService
     {

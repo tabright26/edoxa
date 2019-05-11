@@ -11,9 +11,9 @@
 using Autofac;
 
 using eDoxa.Cashier.Application.Queries;
-using eDoxa.Cashier.Application.Services;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services;
+using eDoxa.Cashier.Domain.Services.Abstractions;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.Infrastructure.Repositories;

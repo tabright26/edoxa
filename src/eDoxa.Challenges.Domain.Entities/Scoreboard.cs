@@ -13,8 +13,8 @@ using System.Linq;
 
 using eDoxa.Challenges.Domain.Entities.AggregateModels;
 using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
+using eDoxa.Functional;
 using eDoxa.Functional.Extensions;
-using eDoxa.Functional.Maybe;
 
 namespace eDoxa.Challenges.Domain.Entities
 {

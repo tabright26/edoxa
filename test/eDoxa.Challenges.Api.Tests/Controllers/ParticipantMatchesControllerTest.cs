@@ -15,7 +15,7 @@ using eDoxa.Challenges.Api.Controllers;
 using eDoxa.Challenges.Domain.Entities.AggregateModels;
 using eDoxa.Challenges.DTO;
 using eDoxa.Challenges.DTO.Queries;
-using eDoxa.Functional.Maybe;
+using eDoxa.Functional;
 
 using FluentAssertions;
 

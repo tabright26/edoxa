@@ -1,5 +1,5 @@
 ﻿// Filename: ITokenAccountService.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-05-11
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -16,7 +16,7 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
 
-namespace eDoxa.Cashier.Domain.Services
+namespace eDoxa.Cashier.Domain.Services.Abstractions
 {
     public interface ITokenAccountService
     {

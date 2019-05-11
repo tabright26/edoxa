@@ -1,5 +1,5 @@
 ﻿// Filename: TokenAccountService.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-05-11
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -16,13 +16,13 @@ using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.Domain.Services;
+using eDoxa.Cashier.Domain.Services.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
 
-namespace eDoxa.Cashier.Application.Services
+namespace eDoxa.Cashier.Domain.Services
 {
-    internal sealed class TokenAccountService : ITokenAccountService
+    public sealed class TokenAccountService : ITokenAccountService
     {
         private readonly IStripeService _stripeService;
         private readonly ITokenAccountRepository _tokenAccountRepository;
@@ -33,7 +33,11 @@ namespace eDoxa.Cashier.Application.Services
             _stripeService = stripeService;
         }
 
-        public async Task<ITokenTransaction> DepositAsync(UserId userId, CustomerId customerId, TokenBundle bundle, CancellationToken cancellationToken = default)
+        public async Task<ITokenTransaction> DepositAsync(
+            UserId userId,
+            CustomerId customerId,
+            TokenBundle bundle,
+            CancellationToken cancellationToken = default)
         {
             var account = await _tokenAccountRepository.FindUserAccountAsync(userId);
 

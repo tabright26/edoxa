@@ -10,8 +10,6 @@
 
 using System.Collections.Generic;
 
-using eDoxa.Functional.Maybe;
-
 namespace eDoxa.Functional.Extensions
 {
     public static class DictionaryExtensions

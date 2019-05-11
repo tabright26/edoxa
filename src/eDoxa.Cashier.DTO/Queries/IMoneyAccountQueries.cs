@@ -11,7 +11,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Functional.Maybe;
+using eDoxa.Functional;
 
 namespace eDoxa.Cashier.DTO.Queries
 {

@@ -10,7 +10,7 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Functional.Maybe;
+using eDoxa.Functional;
 
 namespace eDoxa.Identity.DTO.Queries
 {

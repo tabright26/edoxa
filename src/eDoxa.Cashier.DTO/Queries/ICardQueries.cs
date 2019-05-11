@@ -11,7 +11,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
-using eDoxa.Functional.Maybe;
+using eDoxa.Functional;
 
 namespace eDoxa.Cashier.DTO.Queries
 {
