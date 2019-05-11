@@ -18,7 +18,7 @@ namespace eDoxa.Cashier.Application.Commands.Validations
     {
         public DeleteCardCommandValidator()
         {
-            this.RuleFor(command => command.CardId).NotEmpty();
+            this.RuleFor(command => command.CardId).NotNull();
         }
     }
 }

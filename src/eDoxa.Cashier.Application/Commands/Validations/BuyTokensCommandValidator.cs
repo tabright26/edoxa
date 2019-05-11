@@ -8,8 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
 using eDoxa.Commands.Abstractions.Validations;
-using eDoxa.Seedwork.Domain.Aggregate;
 
 using FluentValidation;
 
@@ -17,9 +17,11 @@ namespace eDoxa.Cashier.Application.Commands.Validations
 {
     internal sealed class BuyTokensCommandValidator : CommandValidator<BuyTokensCommand>
     {
+        private static readonly TokenBundles Bundles = new TokenBundles();
+
         public BuyTokensCommandValidator()
         {
-            this.RuleFor(command => command.BundleType).Must(bundle => Enumeration.IsDefined(bundle.GetType(), bundle.Name));
+            this.RuleFor(command => command.BundleType).Must(Bundles.IsValid);
         }
     }
 }

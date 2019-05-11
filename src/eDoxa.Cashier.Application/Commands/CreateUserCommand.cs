@@ -8,14 +8,11 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Runtime.Serialization;
-
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Commands.Abstractions;
 
 namespace eDoxa.Cashier.Application.Commands
 {
-    [DataContract]
     public sealed class CreateUserCommand : Command
     {
         public CreateUserCommand(UserId userId, string email)
@@ -24,8 +21,8 @@ namespace eDoxa.Cashier.Application.Commands
             Email = email;
         }
 
-        [DataMember(Name = "userId")] public UserId UserId { get; private set; }
+        public UserId UserId { get; private set; }
 
-        [DataMember(Name = "email")] public string Email { get; private set; }
+        public string Email { get; private set; }
     }
 }

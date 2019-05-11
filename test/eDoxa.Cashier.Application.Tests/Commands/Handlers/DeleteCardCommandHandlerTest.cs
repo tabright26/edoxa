@@ -72,7 +72,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             var handler = new DeleteCardCommandHandler(_mockUserInfoService.Object, _mockStripeService.Object);
 
             // Act
-            await handler.HandleAsync(new DeleteCardCommand(CardId.Parse(card.Id)));
+            await handler.HandleAsync(new DeleteCardCommand(new CardId(card.Id)));
 
             //_mockCardService.Verify(
             //    service => service.DeleteAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),

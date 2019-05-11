@@ -41,9 +41,9 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         {
             var userId = UserId.Parse(_userInfoService.Subject);
 
-            var customerId = CustomerId.Parse(_userInfoService.CustomerId);
+            var customerId = new CustomerId(_userInfoService.CustomerId);
 
-            var bankAccountId = BankAccountId.Parse(_userInfoService.BankAccountId);
+            var bankAccountId = new BankAccountId(_userInfoService.BankAccountId);
 
             await _stripeService.DeleteBankAccountAsync(customerId, bankAccountId, cancellationToken);
 

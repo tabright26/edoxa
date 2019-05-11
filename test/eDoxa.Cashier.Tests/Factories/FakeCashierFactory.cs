@@ -33,17 +33,17 @@ namespace eDoxa.Cashier.Tests.Factories
     {
         public BankAccountId CreateBankAccountId()
         {
-            return BankAccountId.Parse("ba_gePgEwe23HkAt");
+            return new BankAccountId("ba_gePgEwe23HkAt");
         }
 
         public CardId CreateCardId()
         {
-            return CardId.Parse("card_gePgEwe23HkAt");
+            return new CardId("card_gePgEwe23HkAt");
         }
 
         public CustomerId CreateCustomerId()
         {
-            return CustomerId.Parse("cus_TrgePgEEYXHkAt");
+            return new CustomerId("cus_TrgePgEEYXHkAt");
         }
 
         public UserId CreateUserId()

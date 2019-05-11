@@ -1,5 +1,5 @@
-﻿// Filename: BankAccountIdTest.cs
-// Date Created: 2019-05-10
+﻿// Filename: AddFundsCommandValidatorTest.cs
+// Date Created: 2019-05-11
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,21 +8,21 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Cashier.Domain.Services.Stripe.Models;
+using eDoxa.Cashier.Application.Commands.Validations;
 using eDoxa.Testing.MSTest;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Cashier.Domain.Services.Stripe.Tests.Models
+namespace eDoxa.Cashier.Application.Tests.Commands.Validations
 {
     [TestClass]
-    public sealed class BankAccountIdTest
+    public sealed class AddFundsCommandValidatorTest
     {
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<BankAccountId>.For(typeof(string))
-                .WithName("BankAccountId")
+            ConstructorTests<AddFundsCommandValidator>.For()
+                .WithName("AddFundsCommandValidator")
                 .Assert();
         }
     }

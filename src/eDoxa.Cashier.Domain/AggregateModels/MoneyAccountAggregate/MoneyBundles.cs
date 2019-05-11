@@ -28,5 +28,10 @@ namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
         public MoneyBundles() : base(Bundles)
         {
         }
+
+        public bool IsValid(MoneyBundleType bundleType)
+        {
+            return this.ContainsKey(bundleType);
+        }
     }
 }

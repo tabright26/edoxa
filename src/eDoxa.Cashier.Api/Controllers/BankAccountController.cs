@@ -45,7 +45,7 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> FindBankAccount()
         {
-            var customerId = CustomerId.Parse(_userInfoService.CustomerId);
+            var customerId = new CustomerId(_userInfoService.CustomerId);
 
             var bankAccountId = _userInfoService.BankAccountId;
 

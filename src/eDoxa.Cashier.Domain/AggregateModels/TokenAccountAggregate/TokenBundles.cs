@@ -31,5 +31,10 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
         public TokenBundles() : base(Bundles)
         {
         }
+
+        public bool IsValid(TokenBundleType bundleType)
+        {
+            return this.ContainsKey(bundleType);
+        }
     }
 }

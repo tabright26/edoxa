@@ -50,7 +50,7 @@ namespace eDoxa.Cashier.Api.Controllers
         {
             var customerId = _userInfoService.CustomerId;
 
-            var cards = await _cardQueries.FindUserCardsAsync(CustomerId.Parse(customerId));
+            var cards = await _cardQueries.FindUserCardsAsync(new CustomerId(customerId));
 
             return cards
                 .Select(this.Ok)
@@ -76,7 +76,7 @@ namespace eDoxa.Cashier.Api.Controllers
         {
             var customerId = _userInfoService.CustomerId;
 
-            var card = await _cardQueries.FindUserCardAsync(CustomerId.Parse(customerId), cardId);
+            var card = await _cardQueries.FindUserCardAsync(new CustomerId(customerId), cardId);
 
             return card
                 .Select(this.Ok)

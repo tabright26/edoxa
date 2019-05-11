@@ -24,7 +24,7 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Tests.Models
             [TestMethod]
             public void Constructor_Tests()
             {
-                ConstructorTests<CardId>.For()
+                ConstructorTests<CardId>.For(typeof(string))
                     .WithName("CardId")
                     .Assert();
             }

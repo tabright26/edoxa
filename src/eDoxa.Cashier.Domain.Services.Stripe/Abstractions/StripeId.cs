@@ -9,113 +9,113 @@
 // this source code package.
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
-using System.Reflection;
-
-using eDoxa.Cashier.Domain.Services.Stripe.Validations;
-using eDoxa.Seedwork.Domain.Aggregate;
-
-using JetBrains.Annotations;
+using System.Linq;
 
 namespace eDoxa.Cashier.Domain.Services.Stripe.Abstractions
 {
-    public abstract partial class StripeId<TStripeId> : BaseObject
-    where TStripeId : StripeId<TStripeId>, new()
+    public static class StripeId
     {
-        private readonly string _prefix;
-
-        private string _value;
-
-        protected StripeId(string prefix)
+        public static bool IsValid(string stripeId, string prefix)
         {
-            _prefix = prefix;
-        }
-
-        protected string Value
-        {
-            get => _value;
-            private set
+            if (string.IsNullOrWhiteSpace(stripeId))
             {
-                if (string.IsNullOrWhiteSpace(value))
-                {
-                    throw new ArgumentException(value, nameof(value));
-                }
-
-                var validator = new StripeIdValidator();
-
-                validator.Validate(value, _prefix);
-
-                _value = value;
+                return false;
             }
+
+            var substrings = GetSubstrings(stripeId);
+
+            return IsValid(substrings) && GetPrefix(substrings) == prefix && GetSuffix(substrings).All(char.IsLetterOrDigit);
+
+            //throw new FormatException("The substrings of identity are in an incorrect format.");
+            //throw new FormatException($"The identity prefix ({prefix}) is ​​an incorrect format.");
+            //throw new FormatException($"The identity suffix ({suffix}) is ​​an incorrect format.");
         }
 
-        public static TStripeId Parse(string input)
+        private static bool IsValid(string[] substrings)
         {
-            return new TStripeId
+            return substrings.Length == 2;
+        }
+
+        private static string GetPrefix(string[] substrings)
+        {
+            return substrings[0];
+        }
+
+        private static string GetSuffix(string[] substrings)
+        {
+            return substrings[1];
+        }
+
+        private static string[] GetSubstrings(string stripeId)
+        {
+            return stripeId.Split('_');
+        }
+    }
+
+    public abstract partial class StripeId<TStripeId>
+    where TStripeId : StripeId<TStripeId>
+    {
+        private readonly string _value;
+
+        protected StripeId(string stripeId, string prefix)
+        {
+            if (!StripeId.IsValid(stripeId, prefix))
             {
-                Value = input
-            };
-        }
+                throw new ArgumentException(nameof(stripeId));
+            }
 
-        public static bool operator ==(StripeId<TStripeId> left, StripeId<TStripeId> right)
-        {
-            return EqualityComparer<StripeId<TStripeId>>.Default.Equals(left, right);
-        }
-
-        public static bool operator !=(StripeId<TStripeId> left, StripeId<TStripeId> right)
-        {
-            return !(left == right);
-        }
-
-        public sealed override bool Equals(object obj)
-        {
-            return base.Equals(obj);
-        }
-
-        public sealed override int GetHashCode()
-        {
-            return base.GetHashCode();
+            _value = stripeId;
         }
 
         public sealed override string ToString()
         {
-            return Value;
+            return _value;
+        }
+    }
+
+    public abstract partial class StripeId<TStripeId> : IEquatable<TStripeId>
+    {
+        public bool Equals(TStripeId other)
+        {
+            return _value.Equals(other?._value);
         }
 
-        protected sealed override PropertyInfo[] TypeSignatureProperties()
+        public sealed override bool Equals(object obj)
         {
-            return new[]
-            {
-                this.GetType().GetProperty(nameof(Value), BindingFlags.NonPublic | BindingFlags.Instance)
-            };
+            return this.Equals(obj as TStripeId);
+        }
+
+        public sealed override int GetHashCode()
+        {
+            return _value.GetHashCode();
         }
     }
 
     public abstract partial class StripeId<TStripeId> : IComparable, IComparable<TStripeId>
     {
-        public int CompareTo([CanBeNull] object obj)
+        public int CompareTo(object obj)
         {
             return this.CompareTo(obj as TStripeId);
         }
 
-        public int CompareTo([CanBeNull] TStripeId other)
+        public int CompareTo(TStripeId other)
         {
-            return string.Compare(Value, other?.Value, StringComparison.Ordinal);
+            return string.Compare(_value, other?._value, StringComparison.Ordinal);
         }
     }
 
     public abstract partial class StripeId<TStripeId>
     {
-        protected sealed class StripeIdTypeConverter : TypeConverter
+        protected sealed class StripeIdConverter : TypeConverter
         {
-            public override bool CanConvertFrom([NotNull] ITypeDescriptorContext context, Type sourceType)
+            public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
             {
                 return sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
             }
 
-            public override bool CanConvertTo([NotNull] ITypeDescriptorContext context, Type destinationType)
+            public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
             {
                 return destinationType == typeof(string) || base.CanConvertTo(context, destinationType);
             }
@@ -124,9 +124,14 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Abstractions
             {
                 switch (value)
                 {
-                    case string stripeId when !string.IsNullOrWhiteSpace(stripeId):
+                    case string stripeId when string.IsNullOrWhiteSpace(stripeId):
                     {
-                        return Parse(stripeId);
+                        return null;
+                    }
+
+                    case string stripeId:
+                    {
+                        return (TStripeId) Activator.CreateInstance(typeof(TStripeId), stripeId);
                     }
 
                     default:
@@ -136,11 +141,7 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Abstractions
                 }
             }
 
-            public override object ConvertTo(
-                [NotNull] ITypeDescriptorContext context,
-                [NotNull] CultureInfo culture,
-                [CanBeNull] object value,
-                Type destinationType)
+            public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
             {
                 if (value is TStripeId stripeId)
                 {

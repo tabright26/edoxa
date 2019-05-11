@@ -41,7 +41,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         {
             var userId = UserId.Parse(_userInfoService.Subject);
 
-            var customerId = CustomerId.Parse(_userInfoService.CustomerId);
+            var customerId = new CustomerId(_userInfoService.CustomerId);
 
             var bankAccountId = await _stripeService.CreateBankAccountAsync(customerId, command.SourceToken, cancellationToken);
 

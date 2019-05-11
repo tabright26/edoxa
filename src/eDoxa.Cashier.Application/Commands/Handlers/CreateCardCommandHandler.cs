@@ -36,7 +36,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         [ItemNotNull]
         public async Task<IActionResult> Handle([NotNull] CreateCardCommand command, CancellationToken cancellationToken)
         {
-            var customerId = CustomerId.Parse(_userInfoService.CustomerId);
+            var customerId = new CustomerId(_userInfoService.CustomerId);
 
             await _stripeService.CreateCardAsync(customerId, command.SourceToken, command.DefaultSource, cancellationToken);
 

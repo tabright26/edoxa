@@ -49,7 +49,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 
             var userId = UserId.Parse(_userInfoService.Subject);
 
-            var customerId = CustomerId.Parse(_userInfoService.CustomerId);
+            var customerId = new CustomerId(_userInfoService.CustomerId);
 
             var moneyTransaction = await _moneyAccountService.TryWithdrawalAsync(userId, customerId, bundle, cancellationToken);
 

@@ -36,7 +36,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         [ItemCanBeNull]
         public async Task<IActionResult> Handle([NotNull] UpdateCardDefaultCommand command, CancellationToken cancellationToken)
         {
-            var customerId = CustomerId.Parse(_userInfoService.CustomerId);
+            var customerId = new CustomerId(_userInfoService.CustomerId);
 
             await _stripeService.UpdateCustomerDefaultSourceAsync(customerId, command.CardId, cancellationToken);
 

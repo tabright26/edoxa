@@ -8,6 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,7 +17,6 @@ using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
-using eDoxa.Cashier.Domain.Services.Stripe.Validations;
 
 using Stripe;
 
@@ -55,7 +55,7 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
                 SourceToken = sourceToken
             }, cancellationToken: cancellationToken);
 
-            return BankAccountId.Parse(bankAccount.Id);
+            return new BankAccountId(bankAccount.Id);
         }
 
         public async Task DeleteBankAccountAsync(CustomerId customerId, BankAccountId bankAccountId, CancellationToken cancellationToken = default)
@@ -103,7 +103,7 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
                 }
             }, cancellationToken: cancellationToken);
 
-            return CustomerId.Parse(customer.Id);
+            return new CustomerId(customer.Id);
         }
 
         public async Task UpdateCustomerEmailAsync(CustomerId customerId, string email, CancellationToken cancellationToken = default)
@@ -126,9 +126,15 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
         {
             var customer = await _customerService.GetAsync(customerId.ToString(), cancellationToken: cancellationToken);
 
-            var validator = new CustomerDefaultSourceValidator();
+            if (customer.DefaultSource == null)
+            {
+                throw new InvalidOperationException("The customer default source payment is invalid. This customer doesn't have any default payment source.");
+            }
 
-            validator.Validate(customer);
+            if (customer.DefaultSource.Object != "card")
+            {
+                throw new InvalidOperationException("The customer default source payment is invalid. Only credit card are accepted.");
+            }
 
             await _invoiceItemService.CreateAsync(new InvoiceItemCreateOptions
             {
@@ -159,9 +165,15 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
         {
             var customer = await _customerService.GetAsync(customerId.ToString(), cancellationToken: cancellationToken);
 
-            var validator = new CustomerDefaultSourceValidator();
+            if (customer.DefaultSource == null)
+            {
+                throw new InvalidOperationException("The customer default source payment is invalid. This customer doesn't have any default payment source.");
+            }
 
-            validator.Validate(customer);
+            if (customer.DefaultSource.Object != "card")
+            {
+                throw new InvalidOperationException("The customer default source payment is invalid. Only credit card are accepted.");
+            }
 
             await _payoutService.CreateAsync(new PayoutCreateOptions
             {

@@ -10,9 +10,15 @@
 
 using eDoxa.Commands.Abstractions.Validations;
 
+using FluentValidation;
+
 namespace eDoxa.Cashier.Application.Commands.Validations
 {
     internal sealed class CreateBankAccountCommandValidator : CommandValidator<CreateBankAccountCommand>
     {
+        public CreateBankAccountCommandValidator()
+        {
+            this.RuleFor(command => command.SourceToken).Must(sourceToken => !string.IsNullOrWhiteSpace(sourceToken));
+        }
     }
 }

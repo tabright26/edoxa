@@ -14,13 +14,18 @@ using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 
 namespace eDoxa.Cashier.Domain.Services.Stripe.Models
 {
-    [TypeConverter(typeof(StripeIdTypeConverter))]
+    [TypeConverter(typeof(StripeIdConverter))]
     public sealed class BankAccountId : StripeId<BankAccountId>
     {
         private const string Prefix = "ba";
 
-        public BankAccountId() : base(Prefix)
+        public BankAccountId(string bankAccountId) : base(bankAccountId, Prefix)
         {
+        }
+
+        public static bool IsValid(string bankAccountId)
+        {
+            return StripeId.IsValid(bankAccountId, Prefix);
         }
     }
 }
