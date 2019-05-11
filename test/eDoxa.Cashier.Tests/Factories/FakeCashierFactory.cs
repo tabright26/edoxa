@@ -10,6 +10,7 @@
 
 using System;
 
+using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
@@ -30,9 +31,14 @@ namespace eDoxa.Cashier.Tests.Factories
 
     public sealed partial class FakeCashierFactory
     {
-        public UserId CreateUserId()
+        public BankAccountId CreateBankAccountId()
         {
-            return UserId.FromGuid(Guid.NewGuid());
+            return BankAccountId.Parse("ba_gePgEwe23HkAt");
+        }
+
+        public CardId CreateCardId()
+        {
+            return CardId.Parse("card_gePgEwe23HkAt");
         }
 
         public CustomerId CreateCustomerId()
@@ -40,22 +46,39 @@ namespace eDoxa.Cashier.Tests.Factories
             return CustomerId.Parse("cus_TrgePgEEYXHkAt");
         }
 
-        public CardId CreateCardId()
+        public UserId CreateUserId()
         {
-            return CardId.Parse("card_gePgEwe23HkAt");
+            return UserId.FromGuid(Guid.NewGuid());
         }
-    }
 
-    public sealed partial class FakeCashierFactory
-    {
+        public IBundle CreateBundle()
+        {
+            return new MoneyBundle(this.CreateMoney());
+        }
+
+        public ITransaction CreateTransaction()
+        {
+            return new DepositMoneyTransaction(this.CreateMoney());
+        }
+
+        public string CreateSourceToken()
+        {
+            return "qwe23rwr2r12rqwe123qwsda241qweasd";
+        }
+
         public Money CreateMoney()
         {
-            return Money.Zero;
+            return Money.OneHundred;
         }
 
         public Token CreateToken()
         {
-            return Token.Zero;
+            return Token.OneHundredThousand;
+        }
+
+        public BankAccount CreateBankAccount()
+        {
+            return new BankAccount();
         }
 
         public Card CreateCard()
@@ -67,6 +90,7 @@ namespace eDoxa.Cashier.Tests.Factories
             return new Card
             {
                 Id = this.CreateCardId().ToString(),
+                Object = "card",
                 CustomerId = customer.Id,
                 AddressCity = address.City,
                 AddressCountry = address.Country,
@@ -95,8 +119,28 @@ namespace eDoxa.Cashier.Tests.Factories
                         PostalCode = "J3L 3Y8",
                         State = "QC"
                     }
+                },
+                DefaultSourceId = this.CreateCardId().ToString(),
+                DefaultSource = new Card
+                {
+                    Object = "card"
                 }
             };
+        }
+
+        public Payout CreatePayout()
+        {
+            return new Payout();
+        }
+
+        public Invoice CreateInvoice()
+        {
+            return new Invoice();
+        }
+
+        public InvoiceItem CreateInvoiceItem()
+        {
+            return new InvoiceItem();
         }
     }
 }
