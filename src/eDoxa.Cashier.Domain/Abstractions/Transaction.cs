@@ -65,5 +65,10 @@ namespace eDoxa.Cashier.Domain.Abstractions
         {
             _status = TransactionStatus.Failed;
         }
+
+        public void Complete()
+        {
+            _status = TransactionStatus.Completed;
+        }
     }
 }

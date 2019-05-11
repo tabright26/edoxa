@@ -52,7 +52,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Arrange
             var token = FakeCashierFactory.CreateToken();
 
-            var command = new DepositTokensCommand(TokenBundleType.FiftyThousand);
+            var command = new BuyTokensCommand(TokenBundleType.FiftyThousand);
 
             _mockMediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(new OkObjectResult(token)).Verifiable();
 

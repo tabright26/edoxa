@@ -25,6 +25,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
         public static readonly Money TwentyFive = new Money(25);
         public static readonly Money Fifty = new Money(50);
         public static readonly Money OneHundred = new Money(100);
+        public static readonly Money TwoHundred = new Money(200);
         public static readonly Money FiveHundred = new Money(500);
 
         private readonly decimal _value;

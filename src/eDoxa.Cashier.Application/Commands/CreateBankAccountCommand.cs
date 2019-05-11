@@ -1,5 +1,5 @@
-﻿// Filename: WithdrawalMoneyCommand.cs
-// Date Created: 2019-05-06
+﻿// Filename: CreateBankAccountCommand.cs
+// Date Created: 2019-05-10
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -17,13 +17,13 @@ using Microsoft.AspNetCore.Mvc;
 namespace eDoxa.Cashier.Application.Commands
 {
     [DataContract]
-    public sealed class WithdrawalMoneyCommand : Command<IActionResult>
+    public sealed class CreateBankAccountCommand : Command<IActionResult>
     {
-        public WithdrawalMoneyCommand(decimal amount)
+        public CreateBankAccountCommand(string sourceToken)
         {
-            Amount = amount;
+            SourceToken = sourceToken;
         }
 
-        [DataMember(Name = "amount")] public decimal Amount { get; private set; }
+        [DataMember(Name = "sourceToken")] public string SourceToken { get; private set; }
     }
 }

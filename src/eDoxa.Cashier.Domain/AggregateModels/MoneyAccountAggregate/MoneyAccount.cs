@@ -38,10 +38,15 @@ namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
         public UserId UserId => _userId;
 
         public Money Balance =>
-            new Money(Transactions.Where(transaction => transaction.Status.Equals(TransactionStatus.Paid)).Sum(transaction => transaction.Amount));
+            new Money(Transactions
+                .Where(transaction => transaction.Status.Equals(TransactionStatus.Paid) || 
+                                      transaction.Status.Equals(TransactionStatus.Completed))
+                .Sum(transaction => transaction.Amount));
 
         public Money Pending =>
-            new Money(Transactions.Where(transaction => transaction.Status.Equals(TransactionStatus.Pending)).Sum(transaction => transaction.Amount));
+            new Money(Transactions
+                .Where(transaction => transaction.Status.Equals(TransactionStatus.Pending))
+                .Sum(transaction => transaction.Amount));
 
         public IReadOnlyCollection<MoneyTransaction> Transactions => _transactions;
 

@@ -60,20 +60,31 @@ namespace eDoxa.Cashier.Api.Controllers
                 .Single();
         }
 
-        /// <summary>
-        ///     Find money bundles.
-        /// </summary>
-        [HttpGet("bundles", Name = nameof(FindMoneyBundlesAsync))]
-        public IActionResult FindMoneyBundlesAsync()
-        {
-            return this.Ok(MoneyBundleType.GetAll());
-        }
+
 
         /// <summary>
         ///     Deposit money.
         /// </summary>
         [HttpPost("deposit", Name = nameof(DepositMoneyAsync))]
-        public async Task<IActionResult> DepositMoneyAsync([FromBody] DepositMoneyCommand command)
+        public async Task<IActionResult> DepositMoneyAsync([FromBody] AddFundsCommand command)
+        {
+            return await _mediator.SendCommandAsync(command);
+        }
+
+        /// <summary>
+        ///     Find money bundles.
+        /// </summary>
+        [HttpGet("deposit/bundles", Name = nameof(FindMoneyBundles))]
+        public IActionResult FindMoneyBundles()
+        {
+            return this.Ok(MoneyBundleType.GetAll());
+        }
+
+        /// <summary>
+        ///     Withdrawal money.
+        /// </summary>
+        [HttpPost("withdrawal", Name = nameof(WithdrawalMoneyAsync))]
+        public async Task<IActionResult> WithdrawalMoneyAsync([FromBody] WithdrawalFundsCommand command)
         {
             return await _mediator.SendCommandAsync(command);
         }
@@ -81,10 +92,10 @@ namespace eDoxa.Cashier.Api.Controllers
         /// <summary>
         ///     Withdrawal money.
         /// </summary>
-        [HttpPost("withdrawal", Name = nameof(WithdrawalMoneyAsync))]
-        public async Task<IActionResult> WithdrawalMoneyAsync([FromBody] WithdrawalMoneyCommand command)
+        [HttpGet("withdrawal/bundles", Name = nameof(FindWithdrawalMoneyBundles))]
+        public IActionResult FindWithdrawalMoneyBundles()
         {
-            return await _mediator.SendCommandAsync(command);
+            return this.Ok(WithdrawalMoneyBundleType.GetAll());
         }
 
         /// <summary>

@@ -21,6 +21,7 @@ namespace eDoxa.Cashier.Domain
         public static readonly TransactionStatus Paid = new TransactionStatus(1 << 1, nameof(Paid));
         public static readonly TransactionStatus Canceled = new TransactionStatus(1 << 2, nameof(Canceled));
         public static readonly TransactionStatus Failed = new TransactionStatus(1 << 3, nameof(Failed));
+        public static readonly TransactionStatus Completed = new TransactionStatus(1 << 4, nameof(Completed));
 
         private TransactionStatus(int value, string name) : base(value, name)
         {

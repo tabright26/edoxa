@@ -33,11 +33,7 @@ namespace eDoxa.Cashier.Application.Services
             _stripeService = stripeService;
         }
 
-        public async Task<ITokenTransaction> TransactionAsync(
-            UserId userId,
-            CustomerId customerId,
-            TokenBundle bundle,
-            CancellationToken cancellationToken = default)
+        public async Task<ITokenTransaction> DepositAsync(UserId userId, CustomerId customerId, TokenBundle bundle, CancellationToken cancellationToken = default)
         {
             var account = await _tokenAccountRepository.FindUserAccountAsync(userId);
 

@@ -10,9 +10,17 @@
 
 using System;
 
+using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Seedwork.Domain;
+
 namespace eDoxa.Cashier.Domain.Abstractions
 {
-    public interface ITransaction<out TCurrency>
+    public interface ITransaction : IEntity<TransactionId>
+    {
+        TransactionDescription Description { get; }
+    }
+
+    public interface ITransaction<out TCurrency> : ITransaction
     where TCurrency : ICurrency
     {
         string ServiceId { get; }
@@ -20,9 +28,7 @@ namespace eDoxa.Cashier.Domain.Abstractions
         DateTime Timestamp { get; }
 
         TCurrency Amount { get; }
-
-        TransactionDescription Description { get; }
-
+        
         TransactionType Type { get; }
 
         TransactionStatus Status { get; }
@@ -32,5 +38,7 @@ namespace eDoxa.Cashier.Domain.Abstractions
         void Cancel();
 
         void Fail();
+
+        void Complete();
     }
 }

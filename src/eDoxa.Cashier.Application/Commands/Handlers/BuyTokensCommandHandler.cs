@@ -1,4 +1,4 @@
-﻿// Filename: DepositTokensCommandHandler.cs
+﻿// Filename: BuyTokensCommandHandler.cs
 // Date Created: 2019-05-06
 // 
 // ================================================
@@ -27,14 +27,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
-    internal sealed class DepositTokensCommandHandler : ICommandHandler<DepositTokensCommand, IActionResult>
+    internal sealed class BuyTokensCommandHandler : ICommandHandler<BuyTokensCommand, IActionResult>
     {
         private static readonly TokenBundles Bundles = new TokenBundles();
         private readonly IMapper _mapper;
         private readonly ITokenAccountService _tokenAccountService;
         private readonly IUserInfoService _userInfoService;
 
-        public DepositTokensCommandHandler(IUserInfoService userInfoService, ITokenAccountService tokenAccountService, IMapper mapper)
+        public BuyTokensCommandHandler(IUserInfoService userInfoService, ITokenAccountService tokenAccountService, IMapper mapper)
         {
             _userInfoService = userInfoService;
             _tokenAccountService = tokenAccountService;
@@ -42,7 +42,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         }
 
         [ItemNotNull]
-        public async Task<IActionResult> Handle([NotNull] DepositTokensCommand command, CancellationToken cancellationToken)
+        public async Task<IActionResult> Handle([NotNull] BuyTokensCommand command, CancellationToken cancellationToken)
         {
             var userId = UserId.Parse(_userInfoService.Subject);
 
@@ -50,7 +50,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 
             var bundle = Bundles[command.BundleType];
 
-            var transaction = await _tokenAccountService.TransactionAsync(userId, customerId, bundle, cancellationToken);
+            var transaction = await _tokenAccountService.DepositAsync(userId, customerId, bundle, cancellationToken);
 
             return new OkObjectResult(_mapper.Map<TokenTransactionDTO>(transaction));
         }

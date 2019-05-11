@@ -1,4 +1,4 @@
-﻿// Filename: WithdrawMoneyCommandHandlerTest.cs
+﻿// Filename: WithdrawalFundsCommandHandlerTest.cs
 // Date Created: 2019-05-06
 // 
 // ================================================
@@ -19,10 +19,11 @@ using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Cashier.Domain.Services;
-using eDoxa.Cashier.Tests.Factories;
+using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Commands.Extensions;
 using eDoxa.Functional.Maybe;
 using eDoxa.Security.Abstractions;
+using eDoxa.Testing.MSTest;
 using eDoxa.Testing.MSTest.Extensions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -32,9 +33,8 @@ using Moq;
 namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
 {
     [TestClass]
-    public sealed class WithdrawalMoneyCommandHandlerTest
+    public sealed class WithdrawalFundsCommandHandlerTest
     {
-        private static readonly FakeCashierFactory FakeCashierFactory = FakeCashierFactory.Instance;
         private Mock<IMapper> _mockMapper;
         private Mock<IMoneyAccountService> _mockMoneyAccountService;
         private Mock<IUserInfoService> _mockUserInfoService;
@@ -49,24 +49,33 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         }
 
         [TestMethod]
-        public async Task Handle_FindAsync_ShouldBeInvokedExactlyOneTime()
+        public void Constructor_Tests()
+        {
+            ConstructorTests<WithdrawalFundsCommandHandler>.For(typeof(IUserInfoService), typeof(IMoneyAccountService), typeof(IMapper))
+                .WithName("WithdrawalFundsCommandHandler")
+                .Assert();
+        }
+
+        [TestMethod]
+        public async Task HandleAsync_WithdrawalFundsCommand_ShouldBeInvokedExactlyOneTime()
         {
             // Arrange
-            var money = FakeCashierFactory.CreateMoney();
+            var command = new WithdrawalFundsCommand(WithdrawalMoneyBundleType.Fifty);
 
-            var command = new WithdrawalMoneyCommand(money);
-
-            _mockMoneyAccountService.Setup(x => x.TryWithdrawalAsync(It.IsAny<UserId>(), It.IsAny<decimal>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new Option<IMoneyTransaction>(new WithdrawalMoneyTransaction(new Money(100))))
+            _mockMoneyAccountService.Setup(mock =>
+                    mock.TryWithdrawalAsync(It.IsAny<UserId>(), It.IsAny<CustomerId>(), It.IsAny<MoneyBundle>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new Option<IMoneyTransaction>(new WithdrawalMoneyTransaction(new Money(50))))
                 .Verifiable();
 
-            var handler = new WithdrawalMoneyCommandHandler(_mockUserInfoService.Object, _mockMoneyAccountService.Object, _mockMapper.Object);
+            var handler = new WithdrawalFundsCommandHandler(_mockUserInfoService.Object, _mockMoneyAccountService.Object, _mockMapper.Object);
 
             // Act
             await handler.HandleAsync(command);
 
             // Assert
-            _mockMoneyAccountService.Verify();
+            _mockMoneyAccountService.Verify(
+                mock => mock.TryWithdrawalAsync(It.IsAny<UserId>(), It.IsAny<CustomerId>(), It.IsAny<MoneyBundle>(), It.IsAny<CancellationToken>()),
+                Times.Once);
         }
     }
 }

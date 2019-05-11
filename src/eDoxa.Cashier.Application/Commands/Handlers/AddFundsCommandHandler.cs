@@ -1,4 +1,4 @@
-﻿// Filename: DepositMoneyCommandHandler.cs
+﻿// Filename: AddFundsCommandHandler.cs
 // Date Created: 2019-05-06
 // 
 // ================================================
@@ -27,15 +27,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
-    internal sealed class DepositMoneyCommandHandler : ICommandHandler<DepositMoneyCommand, IActionResult>
+    internal sealed class AddFundsCommandHandler : ICommandHandler<AddFundsCommand, IActionResult>
     {
         private static readonly MoneyBundles Bundles = new MoneyBundles();
         private readonly IMapper _mapper;
-
         private readonly IMoneyAccountService _moneyAccountService;
         private readonly IUserInfoService _userInfoService;
 
-        public DepositMoneyCommandHandler(IUserInfoService userInfoService, IMoneyAccountService moneyAccountService, IMapper mapper)
+        public AddFundsCommandHandler(IUserInfoService userInfoService, IMoneyAccountService moneyAccountService, IMapper mapper)
         {
             _userInfoService = userInfoService;
             _moneyAccountService = moneyAccountService;
@@ -43,7 +42,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         }
 
         [ItemNotNull]
-        public async Task<IActionResult> Handle([NotNull] DepositMoneyCommand command, CancellationToken cancellationToken)
+        public async Task<IActionResult> Handle([NotNull] AddFundsCommand command, CancellationToken cancellationToken)
         {
             var bundle = Bundles[command.BundleType];
 
@@ -51,7 +50,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 
             var customerId = CustomerId.Parse(_userInfoService.CustomerId);
 
-            var transaction = await _moneyAccountService.TransactionAsync(userId, customerId, bundle, cancellationToken);
+            var transaction = await _moneyAccountService.DepositAsync(userId, customerId, bundle, cancellationToken);
 
             return new OkObjectResult(_mapper.Map<MoneyTransactionDTO>(transaction));
         }

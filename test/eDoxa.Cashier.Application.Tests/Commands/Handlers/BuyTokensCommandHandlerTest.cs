@@ -1,4 +1,4 @@
-﻿// Filename: DepositTokensCommandHandlerTest.cs
+﻿// Filename: BuyTokensCommandHandlerTest.cs
 // Date Created: 2019-05-06
 // 
 // ================================================
@@ -19,7 +19,9 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
+using eDoxa.Commands.Extensions;
 using eDoxa.Security.Abstractions;
+using eDoxa.Testing.MSTest;
 using eDoxa.Testing.MSTest.Extensions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -29,7 +31,7 @@ using Moq;
 namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
 {
     [TestClass]
-    public sealed class DepositTokensCommandHandlerTest
+    public sealed class BuyTokensCommandHandlerTest
     {
         private Mock<IMapper> _mockMapper;
         private Mock<ITokenAccountService> _mockTokenAccountService;
@@ -45,24 +47,32 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         }
 
         [TestMethod]
-        public async Task Handle_FindAsync_ShouldBeInvokedExactlyOneTime()
+        public void Constructor_Tests()
+        {
+            ConstructorTests<BuyTokensCommandHandler>.For(typeof(IUserInfoService), typeof(ITokenAccountService), typeof(IMapper))
+                .WithName("BuyTokensCommandHandler")
+                .Assert();
+        }
+
+        [TestMethod]
+        public async Task HandleAsync_BuyTokensCommand_ShouldBeInvokedExactlyOneTime()
         {
             // Arrange
-            var command = new DepositTokensCommand(TokenBundleType.FiftyThousand);
+            var command = new BuyTokensCommand(TokenBundleType.FiftyThousand);
 
-            _mockTokenAccountService.Setup(service =>
-                    service.TransactionAsync(It.IsAny<UserId>(), It.IsAny<CustomerId>(), It.IsAny<TokenBundle>(), It.IsAny<CancellationToken>()))
+            _mockTokenAccountService.Setup(mock =>
+                    mock.DepositAsync(It.IsAny<UserId>(), It.IsAny<CustomerId>(), It.IsAny<TokenBundle>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new DepositTokenTransaction(new Token(50000)))
                 .Verifiable();
 
-            var handler = new DepositTokensCommandHandler(_mockUserInfoService.Object, _mockTokenAccountService.Object, _mockMapper.Object);
+            var handler = new BuyTokensCommandHandler(_mockUserInfoService.Object, _mockTokenAccountService.Object, _mockMapper.Object);
 
             // Act
-            await handler.Handle(command, default);
+            await handler.HandleAsync(command);
 
             // Assert
             _mockTokenAccountService.Verify(
-                service => service.TransactionAsync(It.IsAny<UserId>(), It.IsAny<CustomerId>(), It.IsAny<TokenBundle>(), It.IsAny<CancellationToken>()),
+                mock => mock.DepositAsync(It.IsAny<UserId>(), It.IsAny<CustomerId>(), It.IsAny<TokenBundle>(), It.IsAny<CancellationToken>()),
                 Times.Once
             );
         }

@@ -108,6 +108,24 @@ namespace eDoxa.Seedwork.Domain.Aggregate
                 .Where(obj => obj is IEnumeration)
                 .Cast<IEnumeration>();
         }
+
+        public static bool IsDefined(Type enumerationType, object obj)
+        {
+            switch (obj)
+            {
+                case int value:
+
+                    return GetValues(enumerationType).Cast<int>().Any(x => x == value);
+
+                case string name:
+
+                    return GetNames(enumerationType).Any(x => x == name);
+
+                default:
+
+                    return false;
+            }
+        }
     }
 
     public abstract partial class Enumeration<TEnumeration> : IEnumeration

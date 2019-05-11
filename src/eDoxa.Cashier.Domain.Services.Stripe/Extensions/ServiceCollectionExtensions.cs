@@ -28,6 +28,14 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Extensions
 
             services.AddTransient<InvoiceItemService>();
 
+            services.AddTransient<PayoutService>();
+
+            services.AddTransient<ChargeService>();
+
+            services.AddTransient<AccountService>();
+
+            services.AddTransient<BankAccountService>();
+
             services.AddTransient<IStripeService, StripeService>();
         }
     }

@@ -95,7 +95,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Arrange
             var money = FakeCashierFactory.CreateMoney();
 
-            var command = new WithdrawalMoneyCommand(money);
+            var command = new WithdrawalFundsCommand(WithdrawalMoneyBundleType.Fifty);
 
             _mockMediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(new OkObjectResult(money)).Verifiable();
 
@@ -118,7 +118,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Arrange
             var money = FakeCashierFactory.CreateMoney();
 
-            var command = new DepositMoneyCommand(MoneyBundleType.Ten);
+            var command = new AddFundsCommand(MoneyBundleType.Ten);
 
             _mockMediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(new OkObjectResult(money)).Verifiable();
 

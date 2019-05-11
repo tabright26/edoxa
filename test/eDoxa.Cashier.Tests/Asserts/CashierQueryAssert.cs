@@ -1,5 +1,5 @@
-﻿// Filename: CashierQueriesAssert.cs
-// Date Created: 2019-05-04
+﻿// Filename: CashierQueryAssert.cs
+// Date Created: 2019-05-09
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.

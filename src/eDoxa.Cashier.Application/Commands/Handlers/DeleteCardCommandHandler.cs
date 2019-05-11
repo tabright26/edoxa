@@ -11,6 +11,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Security.Abstractions;
@@ -19,19 +20,17 @@ using JetBrains.Annotations;
 
 using Microsoft.AspNetCore.Mvc;
 
-using Stripe;
-
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
     internal sealed class DeleteCardCommandHandler : ICommandHandler<DeleteCardCommand, IActionResult>
     {
-        private readonly CardService _cardService;
+        private readonly IStripeService _stripeService;
         private readonly IUserInfoService _userInfoService;
 
-        public DeleteCardCommandHandler(IUserInfoService userInfoService, CardService cardService)
+        public DeleteCardCommandHandler(IUserInfoService userInfoService, IStripeService stripeService)
         {
             _userInfoService = userInfoService;
-            _cardService = cardService;
+            _stripeService = stripeService;
         }
 
         [ItemNotNull]
@@ -39,7 +38,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         {
             var customerId = CustomerId.Parse(_userInfoService.CustomerId);
 
-            await _cardService.DeleteAsync(customerId.ToString(), command.CardId.ToString(), cancellationToken: cancellationToken);
+            await _stripeService.DeleteCardAsync(customerId, command.CardId, cancellationToken);
 
             return new OkResult();
         }

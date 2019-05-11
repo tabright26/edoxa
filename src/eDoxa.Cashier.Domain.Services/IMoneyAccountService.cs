@@ -21,8 +21,8 @@ namespace eDoxa.Cashier.Domain.Services
 {
     public interface IMoneyAccountService
     {
-        Task<IMoneyTransaction> TransactionAsync(UserId userId, CustomerId customerId, MoneyBundle bundle, CancellationToken cancellationToken = default);
+        Task<IMoneyTransaction> DepositAsync(UserId userId, CustomerId customerId, MoneyBundle bundle, CancellationToken cancellationToken = default);
 
-        Task<Option<IMoneyTransaction>> TryWithdrawalAsync(UserId userId, decimal amount, CancellationToken cancellationToken = default);
+        Task<Option<IMoneyTransaction>> TryWithdrawalAsync(UserId userId, CustomerId customerId, MoneyBundle bundle, CancellationToken cancellationToken = default);
     }
 }

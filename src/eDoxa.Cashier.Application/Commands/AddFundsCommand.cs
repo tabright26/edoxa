@@ -1,9 +1,9 @@
-﻿// Filename: DepositMoneyCommand.cs
-// Date Created: 2019-04-26
+﻿// Filename: AddFundsCommand.cs
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -18,13 +18,13 @@ using Microsoft.AspNetCore.Mvc;
 namespace eDoxa.Cashier.Application.Commands
 {
     [DataContract]
-    public sealed class DepositMoneyCommand : Command<IActionResult>
+    public sealed class AddFundsCommand : Command<IActionResult>
     {
-        public DepositMoneyCommand(MoneyBundleType bundleType)
+        public AddFundsCommand(MoneyBundleType bundleType)
         {
             BundleType = bundleType;
         }
-        
+
         [DataMember(Name = "bundleType")] public MoneyBundleType BundleType { get; private set; }
     }
 }

@@ -38,10 +38,14 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
         public UserId UserId => _userId;
 
         public Token Balance =>
-            new Token(Transactions.Where(transaction => transaction.Status.Equals(TransactionStatus.Paid)).Sum(transaction => transaction.Amount));
+            new Token(Transactions
+                .Where(transaction => transaction.Status.Equals(TransactionStatus.Paid))
+                .Sum(transaction => transaction.Amount));
 
         public Token Pending =>
-            new Token(Transactions.Where(transaction => transaction.Status.Equals(TransactionStatus.Pending)).Sum(transaction => transaction.Amount));
+            new Token(Transactions
+                .Where(transaction => transaction.Status.Equals(TransactionStatus.Pending))
+                .Sum(transaction => transaction.Amount));
 
         public IReadOnlyCollection<TokenTransaction> Transactions => _transactions;
 

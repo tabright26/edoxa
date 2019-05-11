@@ -1,4 +1,4 @@
-﻿// Filename: DepositMoneyCommandHandlerTest.cs
+﻿// Filename: AddFundsCommandHandlerTest.cs
 // Date Created: 2019-05-06
 // 
 // ================================================
@@ -21,6 +21,7 @@ using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Commands.Extensions;
 using eDoxa.Security.Abstractions;
+using eDoxa.Testing.MSTest;
 using eDoxa.Testing.MSTest.Extensions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -30,7 +31,7 @@ using Moq;
 namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
 {
     [TestClass]
-    public sealed class DepositMoneyCommandHandlerTest
+    public sealed class AddFundsCommandHandlerTest
     {
         private Mock<IMapper> _mockMapper;
         private Mock<IMoneyAccountService> _mockMoneyAccountService;
@@ -46,24 +47,32 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         }
 
         [TestMethod]
-        public async Task Handle_FindAsync_ShouldBeInvokedExactlyOneTime()
+        public void Constructor_Tests()
+        {
+            ConstructorTests<AddFundsCommandHandler>.For(typeof(IUserInfoService), typeof(IMoneyAccountService), typeof(IMapper))
+                .WithName("AddFundsCommandHandler")
+                .Assert();
+        }
+
+        [TestMethod]
+        public async Task HandleAsync_AddFundsCommand_ShouldBeInvokedExactlyOneTime()
         {
             // Arrange
-            var command = new DepositMoneyCommand(MoneyBundleType.Ten);
+            var command = new AddFundsCommand(MoneyBundleType.Ten);
 
-            _mockMoneyAccountService.Setup(service =>
-                    service.TransactionAsync(It.IsAny<UserId>(), It.IsAny<CustomerId>(), It.IsAny<MoneyBundle>(), It.IsAny<CancellationToken>()))
+            _mockMoneyAccountService.Setup(mock =>
+                    mock.DepositAsync(It.IsAny<UserId>(), It.IsAny<CustomerId>(), It.IsAny<MoneyBundle>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new DepositMoneyTransaction(new Money(10)))
                 .Verifiable();
 
-            var handler = new DepositMoneyCommandHandler(_mockUserInfoService.Object, _mockMoneyAccountService.Object, _mockMapper.Object);
+            var handler = new AddFundsCommandHandler(_mockUserInfoService.Object, _mockMoneyAccountService.Object, _mockMapper.Object);
 
             // Act
             await handler.HandleAsync(command);
 
             // Assert
             _mockMoneyAccountService.Verify(
-                service => service.TransactionAsync(It.IsAny<UserId>(), It.IsAny<CustomerId>(), It.IsAny<MoneyBundle>(), It.IsAny<CancellationToken>()),
+                mock => mock.DepositAsync(It.IsAny<UserId>(), It.IsAny<CustomerId>(), It.IsAny<MoneyBundle>(), It.IsAny<CancellationToken>()),
                 Times.Once);
         }
     }

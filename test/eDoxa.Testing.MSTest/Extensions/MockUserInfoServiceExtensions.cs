@@ -16,33 +16,33 @@ namespace eDoxa.Testing.MSTest.Extensions
 {
     public static class MockUserInfoServiceExtensions
     {
-        public static void SetupGetProperties(this Mock<IUserInfoService> mockUserProfile)
+        public static void SetupGetProperties(this Mock<IUserInfoService> mockUserInfoService)
         {
-            mockUserProfile.SetupGet(mock => mock.Subject).Returns("e4655fe0-affd-4323-b022-bdb2ebde6091");
+            mockUserInfoService.SetupGet(mock => mock.Subject).Returns("e4655fe0-affd-4323-b022-bdb2ebde6091");
 
-            mockUserProfile.SetupGet(mock => mock.PreferredUserName).Returns("Administrator");
+            mockUserInfoService.SetupGet(mock => mock.PreferredUserName).Returns("Administrator");
 
-            mockUserProfile.SetupGet(mock => mock.GivenName).Returns("Francis");
+            mockUserInfoService.SetupGet(mock => mock.GivenName).Returns("Francis");
 
-            mockUserProfile.SetupGet(mock => mock.FamilyName).Returns("Quenneville");
+            mockUserInfoService.SetupGet(mock => mock.FamilyName).Returns("Quenneville");
 
-            mockUserProfile.SetupGet(mock => mock.Name).Returns("Francis Quenneville");
+            mockUserInfoService.SetupGet(mock => mock.Name).Returns("Francis Quenneville");
 
-            mockUserProfile.SetupGet(mock => mock.BirthDate).Returns("1995-05-06");
+            mockUserInfoService.SetupGet(mock => mock.BirthDate).Returns("1995-05-06");
 
-            mockUserProfile.SetupGet(mock => mock.Email).Returns("admin@edoxa.gg");
+            mockUserInfoService.SetupGet(mock => mock.Email).Returns("admin@edoxa.gg");
 
-            mockUserProfile.SetupGet(mock => mock.EmailVerified).Returns("true");
+            mockUserInfoService.SetupGet(mock => mock.EmailVerified).Returns("true");
 
-            mockUserProfile.SetupGet(mock => mock.PhoneNumber).Returns("5147580313");
+            mockUserInfoService.SetupGet(mock => mock.PhoneNumber).Returns("5147580313");
 
-            mockUserProfile.SetupGet(mock => mock.PhoneNumberVerified).Returns("true");
+            mockUserInfoService.SetupGet(mock => mock.PhoneNumberVerified).Returns("true");
 
-            mockUserProfile.SetupGet(mock => mock.Address).Returns((string) null);
+            mockUserInfoService.SetupGet(mock => mock.Address).Returns((string) null);
 
-            mockUserProfile.SetupGet(mock => mock.CustomerId).Returns("cus_we234rTi24o");
+            mockUserInfoService.SetupGet(mock => mock.CustomerId).Returns("cus_we234rTi24o");
 
-            mockUserProfile.SetupGet(mock => mock.Roles).Returns(new[]
+            mockUserInfoService.SetupGet(mock => mock.Roles).Returns(new[]
             {
                 "Role1",
                 "Role2",
@@ -51,7 +51,7 @@ namespace eDoxa.Testing.MSTest.Extensions
                 "Role5"
             });
 
-            mockUserProfile.SetupGet(mock => mock.Permissions).Returns(new[]
+            mockUserInfoService.SetupGet(mock => mock.Permissions).Returns(new[]
             {
                 "permission1",
                 "permission2",

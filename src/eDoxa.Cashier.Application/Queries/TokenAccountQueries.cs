@@ -60,7 +60,7 @@ namespace eDoxa.Cashier.Application.Queries
         {
             var account = await this.FindAccountAsNoTrackingAsync(userId);
 
-            var list = _mapper.Map<TokenTransactionListDTO>(account.Transactions);
+            var list = _mapper.Map<TokenTransactionListDTO>(account.Transactions.OrderBy(transaction => transaction.Timestamp));
 
             return list.Any() ? new Option<TokenTransactionListDTO>(list) : new Option<TokenTransactionListDTO>();
         }

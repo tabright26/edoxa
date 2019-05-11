@@ -12,16 +12,29 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.Abstractions;
-using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
-using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
 
 namespace eDoxa.Cashier.Domain.Services.Stripe.Abstractions
 {
     public interface IStripeService
     {
-        Task CreateInvoiceAsync(CustomerId customerId, MoneyBundle bundle, IMoneyTransaction transaction, CancellationToken cancellationToken = default);
+        Task CreateBankAccountAsync(CustomerId customerId, string sourceToken, CancellationToken cancellationToken = default);
 
-        Task CreateInvoiceAsync(CustomerId customerId, TokenBundle bundle, ITokenTransaction transaction, CancellationToken cancellationToken = default);
+        Task DeleteBankAccountAsync(CustomerId customerId, BankAccountId bankAccountId, CancellationToken cancellationToken = default);
+
+        Task CreateCardAsync(CustomerId customerId, string sourceToken, bool defaultSource, CancellationToken cancellationToken = default);
+
+        Task DeleteCardAsync(CustomerId customerId, CardId cardId, CancellationToken cancellationToken = default);
+
+        Task CreateCustomerAsync(UserId userId, string email, CancellationToken cancellationToken = default);
+
+        Task UpdateCustomerEmailAsync(CustomerId customerId, string email, CancellationToken cancellationToken = default);
+
+        Task UpdateCustomerDefaultSourceAsync(CustomerId customerId, CardId cardId, CancellationToken cancellationToken = default);
+
+        Task CreateInvoiceAsync(CustomerId customerId, IBundle bundle, ITransaction transaction, CancellationToken cancellationToken = default);
+
+        Task CreatePayoutAsync(CustomerId customerId, IBundle bundle, ITransaction transaction, CancellationToken cancellationToken = default);
     }
 }

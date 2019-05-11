@@ -1,5 +1,5 @@
 ﻿// Filename: CreateCardCommandHandlerTest.cs
-// Date Created: 2019-05-03
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,8 +13,13 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
+using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
+using eDoxa.Cashier.Domain.Services.Stripe.Models;
+using eDoxa.Cashier.Tests.Extensions;
 using eDoxa.Cashier.Tests.Factories;
+using eDoxa.Commands.Extensions;
 using eDoxa.Security.Abstractions;
+using eDoxa.Testing.MSTest;
 using eDoxa.Testing.MSTest.Extensions;
 
 using FluentAssertions;
@@ -24,75 +29,81 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
 
-using Stripe;
-
 namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
 {
     [TestClass]
     public sealed class CreateCardCommandHandlerTest
     {
         private static readonly FakeCashierFactory FakeCashierFactory = FakeCashierFactory.Instance;
-        private Mock<CardService> _mockCardService;
-        private Mock<CustomerService> _mockCustomerService;
+        private Mock<IStripeService> _mockStripeService;
         private Mock<IUserInfoService> _mockUserInfoService;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            _mockCardService = new Mock<CardService>();
-            _mockCustomerService = new Mock<CustomerService>();
+            _mockStripeService = new Mock<IStripeService>();
+            _mockStripeService.SetupMethods();
             _mockUserInfoService = new Mock<IUserInfoService>();
             _mockUserInfoService.SetupGetProperties();
         }
 
         [TestMethod]
-        public async Task Handle_FindAsNoTrackingAsync_ShouldBeInvokedExactlyOneTime()
+        public void Constructor_Tests()
+        {
+            ConstructorTests<CreateCardCommandHandler>.For(typeof(IUserInfoService), typeof(IStripeService))
+                .WithName("CreateCardCommandHandler")
+                .Assert();
+        }
+
+        [TestMethod]
+        public async Task HandleAsync_CreateCardCommand_ShouldBeInvokedExactlyOneTime()
         {
             // Arrange
-            var customer = FakeCashierFactory.CreateCustomer();
-
             var card = FakeCashierFactory.CreateCard();
 
-            _mockCustomerService.Setup(
-                    service => service.UpdateAsync(
-                        It.IsAny<string>(),
-                        It.IsAny<CustomerUpdateOptions>(),
-                        It.IsAny<RequestOptions>(),
-                        It.IsAny<CancellationToken>()
-                    )
-                )
-                .ReturnsAsync(customer)
-                .Verifiable();
+            //_mockCustomerService.Setup(
+            //        service => service.UpdateAsync(
+            //            It.IsAny<string>(),
+            //            It.IsAny<CustomerUpdateOptions>(),
+            //            It.IsAny<RequestOptions>(),
+            //            It.IsAny<CancellationToken>()
+            //        )
+            //    )
+            //    .ReturnsAsync(customer)
+            //    .Verifiable();
 
-            _mockCardService.Setup(
-                    service => service.CreateAsync(
-                        It.IsAny<string>(),
-                        It.IsAny<CardCreateOptions>(),
-                        It.IsAny<RequestOptions>(),
-                        It.IsAny<CancellationToken>()
-                    )
-                )
-                .ReturnsAsync(card)
-                .Verifiable();
+            //_mockCardService.Setup(
+            //        service => service.CreateAsync(
+            //            It.IsAny<string>(),
+            //            It.IsAny<CardCreateOptions>(),
+            //            It.IsAny<RequestOptions>(),
+            //            It.IsAny<CancellationToken>()
+            //        )
+            //    )
+            //    .ReturnsAsync(card)
+            //    .Verifiable();
 
-            var handler = new CreateCardCommandHandler(_mockUserInfoService.Object, _mockCustomerService.Object, _mockCardService.Object);
+            var handler = new CreateCardCommandHandler(_mockUserInfoService.Object, _mockStripeService.Object);
 
             // Act
-            var response = await handler.Handle(new CreateCardCommand(card.Id, true), default);
+            var response = await handler.HandleAsync(new CreateCardCommand(card.Id, true));
 
             // Assert
-            response.Should().BeEquivalentTo(new OkObjectResult(card));
+            response.Should().BeEquivalentTo(new OkResult());
 
-            _mockCustomerService.Verify(
-                service =>
-                    service.UpdateAsync(It.IsAny<string>(), It.IsAny<CustomerUpdateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
-                Times.Once
-            );
+            _mockStripeService.Verify(mock => mock.CreateCardAsync(It.IsAny<CustomerId>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()),
+                Times.Once);
 
-            _mockCardService.Verify(
-                service => service.CreateAsync(It.IsAny<string>(), It.IsAny<CardCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
-                Times.Once
-            );
+            //_mockCustomerService.Verify(
+            //    service =>
+            //        service.UpdateAsync(It.IsAny<string>(), It.IsAny<CustomerUpdateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
+            //    Times.Once
+            //);
+
+            //_mockCardService.Verify(
+            //    service => service.CreateAsync(It.IsAny<string>(), It.IsAny<CardCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
+            //    Times.Once
+            //);
         }
     }
 }

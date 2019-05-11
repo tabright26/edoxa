@@ -1,4 +1,4 @@
-﻿// Filename: WithdrawalMoneyCommandValidator.cs
+﻿// Filename: BuyTokensCommandValidator.cs
 // Date Created: 2019-05-06
 // 
 // ================================================
@@ -9,10 +9,17 @@
 // this source code package.
 
 using eDoxa.Commands.Abstractions.Validations;
+using eDoxa.Seedwork.Domain.Aggregate;
+
+using FluentValidation;
 
 namespace eDoxa.Cashier.Application.Commands.Validations
 {
-    internal sealed class WithdrawalMoneyCommandValidator : CommandValidator<WithdrawalMoneyCommand>
+    internal sealed class BuyTokensCommandValidator : CommandValidator<BuyTokensCommand>
     {
+        public BuyTokensCommandValidator()
+        {
+            this.RuleFor(command => command.BundleType).Must(bundle => Enumeration.IsDefined(bundle.GetType(), bundle.Name));
+        }
     }
 }

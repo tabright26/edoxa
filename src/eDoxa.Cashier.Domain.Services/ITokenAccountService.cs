@@ -20,6 +20,6 @@ namespace eDoxa.Cashier.Domain.Services
 {
     public interface ITokenAccountService
     {
-        Task<ITokenTransaction> TransactionAsync(UserId userId, CustomerId customerId, TokenBundle bundle, CancellationToken cancellationToken = default);
+        Task<ITokenTransaction> DepositAsync(UserId userId, CustomerId customerId, TokenBundle bundle, CancellationToken cancellationToken = default);
     }
 }

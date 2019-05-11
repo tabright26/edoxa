@@ -61,21 +61,21 @@ namespace eDoxa.Cashier.Api.Controllers
         }
 
         /// <summary>
-        ///     Find token bundles.
-        /// </summary>
-        [HttpGet("bundles", Name = nameof(FindTokenBundlesAsync))]
-        public IActionResult FindTokenBundlesAsync()
-        {
-            return this.Ok(TokenBundleType.GetAll());
-        }
-
-        /// <summary>
         ///     Buy tokens.
         /// </summary>
         [HttpPost("deposit", Name = nameof(DepositTokensAsync))]
-        public async Task<IActionResult> DepositTokensAsync([FromBody] DepositTokensCommand command)
+        public async Task<IActionResult> DepositTokensAsync([FromBody] BuyTokensCommand command)
         {
             return await _mediator.SendCommandAsync(command);
+        }
+
+        /// <summary>
+        ///     Find token bundles.
+        /// </summary>
+        [HttpGet("deposit/bundles", Name = nameof(FindTokenBundlesAsync))]
+        public IActionResult FindTokenBundlesAsync()
+        {
+            return this.Ok(TokenBundleType.GetAll());
         }
 
         /// <summary>

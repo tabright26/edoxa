@@ -14,7 +14,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Reflection;
 
-using eDoxa.Cashier.Domain.Services.Stripe.Validators;
+using eDoxa.Cashier.Domain.Services.Stripe.Validations;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 using JetBrains.Annotations;

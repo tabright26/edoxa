@@ -12,7 +12,7 @@ using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 
 namespace eDoxa.Cashier.Domain.Abstractions
 {
-    public abstract class Bundle<TCurrency>
+    public abstract class Bundle<TCurrency> : IBundle
     where TCurrency : ICurrency
     {
         protected Bundle(Money price, TCurrency amount)
@@ -21,8 +21,8 @@ namespace eDoxa.Cashier.Domain.Abstractions
             Amount = amount;
         }
 
-        public TCurrency Amount { get; }
-
         public Money Price { get; }
+
+        public TCurrency Amount { get; }
     }
 }

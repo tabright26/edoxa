@@ -1,25 +1,25 @@
 // Filename: StripeValidatorTests.cs
-// Date Created: 2019-04-09
+// Date Created: 2019-05-10
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
 // 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
 
-using eDoxa.Cashier.Domain.Services.Stripe.Validators;
+using eDoxa.Cashier.Domain.Services.Stripe.Validations;
 
 using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Cashier.Domain.Services.Stripe.Tests
+namespace eDoxa.Cashier.Domain.Services.Stripe.Tests.Validations
 {
     [TestClass]
-    public sealed class StripeValidatorTests
+    public sealed class StripeValidatorTest
     {
         [DataRow("cus_23Eri2ee23")]
         [DataRow("cus_er34ri2ee23")]
@@ -45,7 +45,7 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Tests
             var validator = new StripeIdValidator();
 
             // Act
-             var action = new Action(() => validator.Validate(stripeId, "cus"));
+            var action = new Action(() => validator.Validate(stripeId, "cus"));
 
             // Assert
             action.Should().Throw<FormatException>();

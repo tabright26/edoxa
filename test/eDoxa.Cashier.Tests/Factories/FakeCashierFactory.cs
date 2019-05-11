@@ -1,5 +1,5 @@
-﻿// Filename: UserAggregateFactory.cs
-// Date Created: 2019-04-30
+﻿// Filename: FakeCashierFactory.cs
+// Date Created: 2019-05-09
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.

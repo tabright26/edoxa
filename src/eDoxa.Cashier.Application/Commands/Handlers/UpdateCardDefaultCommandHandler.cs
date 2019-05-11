@@ -11,6 +11,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Security.Abstractions;
@@ -19,19 +20,17 @@ using JetBrains.Annotations;
 
 using Microsoft.AspNetCore.Mvc;
 
-using Stripe;
-
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
     internal sealed class UpdateCardDefaultCommandHandler : ICommandHandler<UpdateCardDefaultCommand, IActionResult>
     {
-        private readonly CustomerService _service;
+        private readonly IStripeService _stripeService;
         private readonly IUserInfoService _userInfoService;
 
-        public UpdateCardDefaultCommandHandler(IUserInfoService userInfoService, CustomerService service)
+        public UpdateCardDefaultCommandHandler(IUserInfoService userInfoService, IStripeService stripeService)
         {
             _userInfoService = userInfoService;
-            _service = service;
+            _stripeService = stripeService;
         }
 
         [ItemCanBeNull]
@@ -39,14 +38,9 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         {
             var customerId = CustomerId.Parse(_userInfoService.CustomerId);
 
-            var options = new CustomerUpdateOptions
-            {
-                DefaultSource = command.CardId.ToString()
-            };
+            await _stripeService.UpdateCustomerDefaultSourceAsync(customerId, command.CardId, cancellationToken);
 
-            var customer = await _service.UpdateAsync(customerId.ToString(), options, cancellationToken: cancellationToken);
-
-            return new OkObjectResult(customer);
+            return new OkResult();
         }
     }
 }

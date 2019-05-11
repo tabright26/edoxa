@@ -19,6 +19,7 @@ using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
+using eDoxa.Functional.Extensions;
 using eDoxa.Functional.Maybe;
 
 namespace eDoxa.Cashier.Application.Services
@@ -34,7 +35,7 @@ namespace eDoxa.Cashier.Application.Services
             _stripeService = stripeService;
         }
 
-        public async Task<IMoneyTransaction> TransactionAsync(
+        public async Task<IMoneyTransaction> DepositAsync(
             UserId userId,
             CustomerId customerId,
             MoneyBundle bundle,
@@ -42,41 +43,62 @@ namespace eDoxa.Cashier.Application.Services
         {
             var account = await _moneyAccountRepository.FindUserAccountAsync(userId);
 
-            var transaction = account.Deposit(bundle.Amount);
+            var moneyTransaction = account.Deposit(bundle.Amount);
 
             await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
             try
             {
-                await _stripeService.CreateInvoiceAsync(customerId, bundle, transaction, cancellationToken);
+                await _stripeService.CreateInvoiceAsync(customerId, bundle, moneyTransaction, cancellationToken);
             }
             catch (Exception)
             {
-                transaction.Fail();
+                moneyTransaction.Fail();
 
                 await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
-                return transaction;
+                return moneyTransaction;
             }
 
-            transaction.Pay();
+            moneyTransaction.Pay();
 
             await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
-            return transaction;
+            return moneyTransaction;
         }
 
-        public async Task<Option<IMoneyTransaction>> TryWithdrawalAsync(UserId userId, decimal amount, CancellationToken cancellationToken = default)
+        public async Task<Option<IMoneyTransaction>> TryWithdrawalAsync(
+            UserId userId,
+            CustomerId customerId,
+            MoneyBundle bundle,
+            CancellationToken cancellationToken = default)
         {
             var account = await _moneyAccountRepository.FindUserAccountAsync(userId);
 
-            var money = new Money(amount);
+            var moneyTransaction = account.TryWithdrawal(bundle.Amount);
 
-            var transaction = account.TryWithdrawal(money);
+            try
+            {
+                moneyTransaction.ForEach(async transaction => await _stripeService.CreatePayoutAsync(customerId, bundle, transaction, cancellationToken));
+            }
+            catch (Exception)
+            {
+                moneyTransaction.ForEach(async transaction =>
+                {
+                    transaction.Fail();
 
-            await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+                    await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+                });
+            }
 
-            return transaction;
+            moneyTransaction.ForEach(async transaction =>
+            {
+                transaction.Complete();
+
+                await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+            });
+
+            return moneyTransaction;
         }
     }
 }

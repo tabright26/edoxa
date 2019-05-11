@@ -1,11 +1,11 @@
 ﻿// Filename: StripeIdTest.cs
-// Date Created: 2019-04-09
+// Date Created: 2019-05-10
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
 // 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System.ComponentModel;
@@ -14,7 +14,7 @@ using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Cashier.Domain.Services.Stripe.Tests
+namespace eDoxa.Cashier.Domain.Services.Stripe.Tests.Abstractions
 {
     [TestClass]
     public sealed class StripeIdTest
@@ -188,7 +188,6 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Tests
 
         private static MockStripeId CreateStripeId()
         {
-
             return MockStripeId.Parse("mock_er23RER123w");
         }
 
