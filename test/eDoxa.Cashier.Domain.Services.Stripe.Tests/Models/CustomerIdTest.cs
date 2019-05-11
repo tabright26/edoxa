@@ -24,7 +24,7 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Tests.Models
             [TestMethod]
             public void Constructor_Tests()
             {
-                ConstructorTests<CustomerId>.For(typeof(string))
+                ConstructorTests<CustomerId>.For()
                     .WithName("CustomerId")
                     .Assert();
             }

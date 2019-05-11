@@ -18,6 +18,7 @@ using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Tests.Extensions;
 using eDoxa.Cashier.Tests.Factories;
 using eDoxa.Commands.Extensions;
+using eDoxa.ServiceBus;
 using eDoxa.Testing.MSTest;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -30,11 +31,13 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     public sealed class CreateUserCommandHandlerTest
     {
         private static readonly FakeCashierFactory FakeCashierFactory = FakeCashierFactory.Instance;
+        private Mock<IIntegrationEventService> _mockIntegrationEventService;
         private Mock<IStripeService> _mockStripeService;
 
         [TestInitialize]
         public void TestInitialize()
         {
+            _mockIntegrationEventService = new Mock<IIntegrationEventService>();
             _mockStripeService = new Mock<IStripeService>();
             _mockStripeService.SetupMethods();
         }
@@ -42,7 +45,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<CreateUserCommandHandler>.For(typeof(IStripeService))
+            ConstructorTests<CreateUserCommandHandler>.For(typeof(IStripeService), typeof(IIntegrationEventService))
                 .WithName("CreateUserCommandHandler")
                 .Assert();
         }
@@ -60,7 +63,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             //    .ReturnsAsync(customer)
             //    .Verifiable();
 
-            var handler = new CreateUserCommandHandler(_mockStripeService.Object);
+            var handler = new CreateUserCommandHandler(_mockStripeService.Object, _mockIntegrationEventService.Object);
 
             // Act
             await handler.HandleAsync(new CreateUserCommand(userId, customer.Email));

@@ -1,16 +1,17 @@
 ﻿// Filename: UserCreatedIntegrationEventHandler.cs
-// Date Created: 2019-04-09
+// Date Created: 2019-05-06
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
 // 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Application.Commands;
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.ServiceBus;
 
 using MediatR;
@@ -28,7 +29,7 @@ namespace eDoxa.Cashier.Application.IntegrationEvents.Handlers
 
         public async Task Handle(UserCreatedIntegrationEvent integrationEvent)
         {
-            await _mediator.Send(new CreateUserCommand(integrationEvent.UserId, integrationEvent.Email));
+            await _mediator.Send(new CreateUserCommand(UserId.FromGuid(integrationEvent.UserId), integrationEvent.Email));
         }
     }
 }

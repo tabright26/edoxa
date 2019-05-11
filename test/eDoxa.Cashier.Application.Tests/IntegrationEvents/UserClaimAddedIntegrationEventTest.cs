@@ -1,5 +1,5 @@
-﻿// Filename: UpdateEmailCommandTest.cs
-// Date Created: 2019-05-10
+﻿// Filename: UserClaimAddedIntegrationEventTest.cs
+// Date Created: 2019-05-11
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,22 +8,23 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Cashier.Application.Commands;
-using eDoxa.Cashier.Domain.Services.Stripe.Models;
+using System;
+
+using eDoxa.Cashier.Application.IntegrationEvents;
 using eDoxa.Testing.MSTest;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Cashier.Application.Tests.Commands
+namespace eDoxa.Cashier.Application.Tests.IntegrationEvents
 {
     [TestClass]
-    public sealed class UpdateEmailCommandTest
+    public sealed class UserClaimAddedIntegrationEventTest
     {
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<UpdateEmailCommand>.For(typeof(CustomerId), typeof(string))
-                .WithName("UpdateEmailCommand")
+            ConstructorTests<UserClaimAddedIntegrationEvent>.For(typeof(Guid), typeof(string), typeof(string))
+                .WithName("UserClaimAddedIntegrationEvent")
                 .Assert();
         }
     }

@@ -19,7 +19,7 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Abstractions
 {
     public interface IStripeService
     {
-        Task CreateBankAccountAsync(CustomerId customerId, string sourceToken, CancellationToken cancellationToken = default);
+        Task<BankAccountId> CreateBankAccountAsync(CustomerId customerId, string sourceToken, CancellationToken cancellationToken = default);
 
         Task DeleteBankAccountAsync(CustomerId customerId, BankAccountId bankAccountId, CancellationToken cancellationToken = default);
 
@@ -27,7 +27,7 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Abstractions
 
         Task DeleteCardAsync(CustomerId customerId, CardId cardId, CancellationToken cancellationToken = default);
 
-        Task CreateCustomerAsync(UserId userId, string email, CancellationToken cancellationToken = default);
+        Task<CustomerId> CreateCustomerAsync(UserId userId, string email, CancellationToken cancellationToken = default);
 
         Task UpdateCustomerEmailAsync(CustomerId customerId, string email, CancellationToken cancellationToken = default);
 

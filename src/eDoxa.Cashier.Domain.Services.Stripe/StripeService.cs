@@ -48,12 +48,14 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
             _payoutService = payoutService;
         }
 
-        public async Task CreateBankAccountAsync(CustomerId customerId, string sourceToken, CancellationToken cancellationToken = default)
+        public async Task<BankAccountId> CreateBankAccountAsync(CustomerId customerId, string sourceToken, CancellationToken cancellationToken = default)
         {
-            await _bankAccountService.CreateAsync(customerId.ToString(), new BankAccountCreateOptions
+            var bankAccount = await _bankAccountService.CreateAsync(customerId.ToString(), new BankAccountCreateOptions
             {
                 SourceToken = sourceToken
             }, cancellationToken: cancellationToken);
+
+            return BankAccountId.Parse(bankAccount.Id);
         }
 
         public async Task DeleteBankAccountAsync(CustomerId customerId, BankAccountId bankAccountId, CancellationToken cancellationToken = default)
@@ -90,9 +92,9 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
             await _cardService.DeleteAsync(customerId.ToString(), cardId.ToString(), cancellationToken: cancellationToken);
         }
 
-        public async Task CreateCustomerAsync(UserId userId, string email, CancellationToken cancellationToken = default)
+        public async Task<CustomerId> CreateCustomerAsync(UserId userId, string email, CancellationToken cancellationToken = default)
         {
-            await _customerService.CreateAsync(new CustomerCreateOptions
+            var customer = await _customerService.CreateAsync(new CustomerCreateOptions
             {
                 Email = email,
                 Metadata = new Dictionary<string, string>
@@ -100,6 +102,8 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
                     [nameof(UserId)] = userId.ToString()
                 }
             }, cancellationToken: cancellationToken);
+
+            return CustomerId.Parse(customer.Id);
         }
 
         public async Task UpdateCustomerEmailAsync(CustomerId customerId, string email, CancellationToken cancellationToken = default)

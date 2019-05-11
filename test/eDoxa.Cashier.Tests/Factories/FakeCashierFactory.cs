@@ -78,7 +78,11 @@ namespace eDoxa.Cashier.Tests.Factories
 
         public BankAccount CreateBankAccount()
         {
-            return new BankAccount();
+            return new BankAccount
+            {
+                Id = this.CreateBankAccountId().ToString(),
+                Object = "bank_account"
+            };
         }
 
         public Card CreateCard()
