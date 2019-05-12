@@ -26,29 +26,22 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 {
     internal sealed class CreateBankAccountCommandHandler : ICommandHandler<CreateBankAccountCommand, IActionResult>
     {
-        private readonly IIntegrationEventService _integrationEventService;
         private readonly IStripeService _stripeService;
         private readonly IUserInfoService _userInfoService;
 
-        public CreateBankAccountCommandHandler(IUserInfoService userInfoService, IStripeService stripeService, IIntegrationEventService integrationEventService)
+        public CreateBankAccountCommandHandler(IUserInfoService userInfoService, IStripeService stripeService)
         {
             _userInfoService = userInfoService;
             _stripeService = stripeService;
-            _integrationEventService = integrationEventService;
         }
 
         public async Task<IActionResult> Handle(CreateBankAccountCommand command, CancellationToken cancellationToken)
         {
-            var userId = UserId.Parse(_userInfoService.Subject);
-
             var customerId = new CustomerId(_userInfoService.CustomerId);
 
-            var bankAccountId = await _stripeService.CreateBankAccountAsync(customerId, command.SourceToken, cancellationToken);
+            var either = await _stripeService.CreateBankAccountAsync(customerId, command.SourceToken, cancellationToken);
 
-            await _integrationEventService.PublishAsync(new UserClaimAddedIntegrationEvent(userId.ToGuid(), CustomClaimTypes.BankAccountId,
-                bankAccountId.ToString()));
-
-            return new OkResult();
+            return either.Match<IActionResult>(result => new BadRequestObjectResult(result), bankAccount => new OkObjectResult(bankAccount));
         }
     }
 }

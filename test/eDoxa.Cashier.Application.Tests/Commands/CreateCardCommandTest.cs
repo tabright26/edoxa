@@ -8,6 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Runtime.Serialization;
+
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Testing.MSTest;
 
@@ -23,6 +25,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands
         {
             ConstructorTests<CreateCardCommand>.For(typeof(string), typeof(bool))
                 .WithName("CreateCardCommand")
+                .WithAttributes(typeof(DataContractAttribute))
                 .Assert();
         }
     }

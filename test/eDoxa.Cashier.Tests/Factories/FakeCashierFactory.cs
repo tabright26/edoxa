@@ -9,6 +9,7 @@
 // this source code package.
 
 using System;
+using System.Collections.Generic;
 
 using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
@@ -82,6 +83,21 @@ namespace eDoxa.Cashier.Tests.Factories
             {
                 Id = this.CreateBankAccountId().ToString(),
                 Object = "bank_account"
+            };
+        }
+
+        public StripeList<BankAccount> CreateBankAccounts()
+        {
+            return new StripeList<BankAccount>
+            {
+                Data = new List<BankAccount>
+                {
+                    new BankAccount
+                    {
+                        Id = this.CreateBankAccountId().ToString(),
+                        Object = "bank_account"
+                    }
+                }
             };
         }
 

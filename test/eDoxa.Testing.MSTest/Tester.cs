@@ -14,7 +14,9 @@ namespace eDoxa.Testing.MSTest
 {
     public abstract class Tester<T>
     {
-        public abstract Tester<T> WithName(string className);
+        public abstract Tester<T> WithName(string name);
+
+        public abstract Tester<T> WithAttributes(params Type[] attributeTypes);
 
         public abstract Tester<T> Fail(object[] args, Type exceptionType, string failMessage);
 

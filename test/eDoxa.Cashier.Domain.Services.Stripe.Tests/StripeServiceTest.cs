@@ -64,6 +64,10 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Tests
         public async Task DeleteBankAccountAsync()
         {
             // Arrange
+            _mockBankAccountService.Setup(mock => mock.ListAsync(It.IsAny<string>(), It.IsAny<BankAccountListOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(FakeCashierFactory.CreateBankAccounts)
+                .Verifiable();
+
             _mockBankAccountService.Setup(mock => mock.DeleteAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(FakeCashierFactory.CreateBankAccount)
                 .Verifiable();
@@ -71,9 +75,11 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Tests
             var service = this.StripeService();
 
             // Act
-            await service.DeleteBankAccountAsync(FakeCashierFactory.CreateCustomerId(), FakeCashierFactory.CreateBankAccountId());
+            await service.DeleteBankAccountAsync(FakeCashierFactory.CreateCustomerId());
 
             // Assert
+            _mockBankAccountService.Verify(mock => mock.ListAsync(It.IsAny<string>(), It.IsAny<BankAccountListOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()), Times.Once);
+
             _mockBankAccountService.Verify(mock => mock.DeleteAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()), Times.Once);
         }
 

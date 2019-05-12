@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,7 +20,8 @@ using eDoxa.Cashier.Domain.Services.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Functional;
-using eDoxa.Functional.Extensions;
+
+using FluentValidation.Results;
 
 namespace eDoxa.Cashier.Domain.Services
 {
@@ -35,7 +36,7 @@ namespace eDoxa.Cashier.Domain.Services
             _stripeService = stripeService;
         }
 
-        public async Task<IMoneyTransaction> DepositAsync(
+        public async Task<Either<ValidationResult, IMoneyTransaction>> DepositAsync(
             UserId userId,
             CustomerId customerId,
             MoneyBundle bundle,
@@ -47,27 +48,28 @@ namespace eDoxa.Cashier.Domain.Services
 
             await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
-            try
-            {
-                await _stripeService.CreateInvoiceAsync(customerId, bundle, moneyTransaction, cancellationToken);
-            }
-            catch (Exception)
-            {
-                moneyTransaction.Fail();
+            var either = _stripeService.CreateInvoiceAsync(customerId, bundle, moneyTransaction, cancellationToken).Result;
 
-                await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+            return either.Match(
+                result =>
+                {
+                    moneyTransaction.Fail();
 
-                return moneyTransaction;
-            }
+                    _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken).Wait(cancellationToken);
 
-            moneyTransaction.Pay();
+                    return result;
+                },
+                payout =>
+                {
+                    moneyTransaction.Pay();
 
-            await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+                    _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken).Wait(cancellationToken);
 
-            return moneyTransaction;
+                    return new Either<ValidationResult, IMoneyTransaction>(moneyTransaction);
+                });
         }
 
-        public async Task<Option<IMoneyTransaction>> TryWithdrawalAsync(
+        public async Task<Either<ValidationResult, IMoneyTransaction>> TryWithdrawalAsync(
             UserId userId,
             CustomerId customerId,
             MoneyBundle bundle,
@@ -77,28 +79,72 @@ namespace eDoxa.Cashier.Domain.Services
 
             var moneyTransaction = account.TryWithdrawal(bundle.Amount);
 
-            try
+            return moneyTransaction.Select(transaction =>
             {
-                moneyTransaction.ForEach(async transaction => await _stripeService.CreatePayoutAsync(customerId, bundle, transaction, cancellationToken));
-            }
-            catch (Exception)
-            {
-                moneyTransaction.ForEach(async transaction =>
-                {
-                    transaction.Fail();
+                var either = _stripeService.CreatePayoutAsync(customerId, bundle, transaction, cancellationToken).Result;
 
-                    await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
-                });
-            }
+                return either.Match(
+                    result =>
+                    {
+                        transaction.Fail();
 
-            moneyTransaction.ForEach(async transaction =>
-            {
-                transaction.Complete();
+                        _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken).Wait(cancellationToken);
 
-                await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
-            });
+                        return result;
+                    },
+                    payout =>
+                    {
+                        transaction.Complete();
 
-            return moneyTransaction;
+                        _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken).Wait(cancellationToken);
+
+                        return new Either<ValidationResult, IMoneyTransaction>(transaction);
+                    });
+            }).DefaultIfEmpty(new Either<ValidationResult, IMoneyTransaction>(new ValidationResult())).Single();
+
+            //return moneyTransaction.Select(async transaction =>
+            //{
+            //    var either = await _stripeService.CreatePayoutAsync(customerId, bundle, transaction, cancellationToken);
+
+            //    return either.Match<Either<ValidationResult, IMoneyTransaction>>(async result =>
+            //    {
+            //        transaction.Fail();
+
+            //        await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+
+            //        return result;
+            //    }, async payout =>
+            //    {
+            //        transaction.Complete();
+
+            //        await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+
+            //        return new Either<ValidationResult, IMoneyTransaction>(transaction);
+            //    });
+            //}).DefaultIfEmpty(new ValidationResult()).Single();
+
+            //try
+            //{
+            //    moneyTransaction.ForEach(async transaction => );
+            //}
+            //catch (Exception)
+            //{
+            //    moneyTransaction.ForEach(async transaction =>
+            //    {
+            //        transaction.Fail();
+
+            //        await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+            //    });
+            //}
+
+            //moneyTransaction.ForEach(async transaction =>
+            //{
+            //    transaction.Complete();
+
+            //    await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+            //});
+
+            //return moneyTransaction;
         }
     }
 }

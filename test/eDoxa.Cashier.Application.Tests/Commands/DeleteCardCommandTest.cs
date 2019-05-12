@@ -8,6 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Runtime.Serialization;
+
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Testing.MSTest;
@@ -24,6 +26,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands
         {
             ConstructorTests<DeleteCardCommand>.For(typeof(CardId))
                 .WithName("DeleteCardCommand")
+                .WithAttributes(typeof(DataContractAttribute))
                 .Assert();
         }
     }

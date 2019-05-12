@@ -17,6 +17,8 @@ using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Security;
 using eDoxa.ServiceBus;
 
+using FluentValidation;
+
 using JetBrains.Annotations;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
@@ -34,10 +36,12 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 
         protected override async Task Handle([NotNull] CreateUserCommand command, CancellationToken cancellationToken)
         {
-            var customerId = await _stripeService.CreateCustomerAsync(command.UserId, command.Email, cancellationToken);
+            var either = await _stripeService.CreateCustomerAsync(command.UserId, command.Email, cancellationToken);
 
-            await _integrationEventService.PublishAsync(new UserClaimAddedIntegrationEvent(command.UserId.ToGuid(), CustomClaimTypes.CustomerId,
-                customerId.ToString()));
+            await either.Match(
+                result => throw new ValidationException(result.Errors), 
+                async customer => await _integrationEventService.PublishAsync(new UserClaimAddedIntegrationEvent(command.UserId.ToGuid(), CustomClaimTypes.CustomerId, customer.Id.ToString()))
+            );
         }
     }
 }

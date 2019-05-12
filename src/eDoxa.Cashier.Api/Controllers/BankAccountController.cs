@@ -8,10 +8,12 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
+using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Commands.Extensions;
 using eDoxa.Security.Abstractions;
 
@@ -29,39 +31,31 @@ namespace eDoxa.Cashier.Api.Controllers
     [ApiVersion("1.0")]
     [Produces("application/json")]
     [Route("api/bank-account")]
-    public class BankAccountController : ControllerBase
+    public sealed class BankAccountController : ControllerBase
     {
-        private readonly BankAccountService _accountService;
         private readonly IMediator _mediator;
+        private readonly IBankAccountQueries _bankAccountQueries;
         private readonly IUserInfoService _userInfoService;
 
-        public BankAccountController(IMediator mediator, BankAccountService accountService, IUserInfoService userInfoService)
+        public BankAccountController(IMediator mediator, IBankAccountQueries bankAccountQueries, IUserInfoService userInfoService)
         {
             _mediator = mediator;
-            _accountService = accountService;
+            _bankAccountQueries = bankAccountQueries;
             _userInfoService = userInfoService;
         }
 
         [HttpGet]
         public async Task<IActionResult> FindBankAccount()
         {
-            var customerId = new CustomerId(_userInfoService.CustomerId);
+            var customerId = _userInfoService.CustomerId;
 
-            var bankAccountId = _userInfoService.BankAccountId;
+            var bankAccount = await _bankAccountQueries.FindUserBankAccountAsync(new CustomerId(customerId));
 
-            if (bankAccountId == null)
-            {
-                return this.NotFound();
-            }
-
-            var bankAccount = await _accountService.GetAsync(customerId.ToString(), bankAccountId);
-
-            if (bankAccount == null)
-            {
-                return this.NotFound();
-            }
-
-            return this.Ok(bankAccount);
+            return bankAccount
+                .Select(this.Ok)
+                .Cast<IActionResult>()
+                .DefaultIfEmpty(this.NotFound("User don't have a bank account."))
+                .Single();
         }
 
         [HttpPost]
@@ -69,11 +63,17 @@ namespace eDoxa.Cashier.Api.Controllers
         {
             return await _mediator.SendCommandAsync(command);
         }
-
+        
         [HttpDelete]
         public async Task<IActionResult> DeleteBankAccount()
         {
             return await _mediator.SendCommandAsync(new DeleteBankAccountCommand());
+        }
+
+        [HttpPatch("verify")]
+        public async Task<IActionResult> VerifyBankAccount([FromBody] VerifyBankAccountCommand command)
+        {
+            return await _mediator.SendCommandAsync(command);
         }
     }
 }

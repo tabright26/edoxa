@@ -8,9 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,6 +17,9 @@ using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
+using eDoxa.Functional;
+
+using FluentValidation.Results;
 
 using Stripe;
 
@@ -49,146 +51,285 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
             _payoutService = payoutService;
         }
 
-        public async Task<BankAccountId> CreateBankAccountAsync(CustomerId customerId, string sourceToken, CancellationToken cancellationToken = default)
+        public async Task<Either<ValidationResult, BankAccount>> CreateBankAccountAsync(
+            CustomerId customerId,
+            string sourceToken,
+            CancellationToken cancellationToken = default)
         {
-            var bankAccount = await _bankAccountService.CreateAsync(customerId.ToString(), new BankAccountCreateOptions
+            var failures = new List<ValidationFailure>();
+
+            try
             {
-                SourceToken = sourceToken
-            }, cancellationToken: cancellationToken);
-
-            return new BankAccountId(bankAccount.Id);
-        }
-
-        public async Task DeleteBankAccountAsync(CustomerId customerId, BankAccountId bankAccountId, CancellationToken cancellationToken = default)
-        {
-            await _bankAccountService.DeleteAsync(customerId.ToString(), bankAccountId.ToString(), cancellationToken: cancellationToken);
-        }
-
-        public async Task CreateCardAsync(CustomerId customerId, string sourceToken, bool defaultSource, CancellationToken cancellationToken = default)
-        {
-            var card = await _cardService.CreateAsync(
-                customerId.ToString(),
-                new CardCreateOptions
+                return await _bankAccountService.CreateAsync(customerId.ToString(), new BankAccountCreateOptions
                 {
                     SourceToken = sourceToken
-                },
-                cancellationToken: cancellationToken
-            );
-
-            if (defaultSource)
+                }, cancellationToken: cancellationToken);
+            }
+            catch (StripeException exception)
             {
-                await _customerService.UpdateAsync(
+                failures.Add(new ValidationFailure(string.Empty, exception.Message));
+
+                return new ValidationResult(failures);
+            }
+        }
+
+        public async Task<Either<ValidationResult, BankAccount>> DeleteBankAccountAsync(CustomerId customerId, CancellationToken cancellationToken = default)
+        {
+            var failures = new List<ValidationFailure>();
+
+            try
+            {
+                var bankAccounts = await _bankAccountService.ListAsync(customerId.ToString(), cancellationToken: cancellationToken);
+
+                var bankAccount = bankAccounts.FirstOrDefault();
+
+                if (bankAccount == null)
+                {
+                    failures.Add(new ValidationFailure(string.Empty, "Account already deleted."));
+
+                    return new ValidationResult(failures);
+                }
+
+                return await _bankAccountService.DeleteAsync(customerId.ToString(), bankAccount.Id, cancellationToken: cancellationToken);
+            }
+            catch (StripeException exception)
+            {
+                failures.Add(new ValidationFailure(string.Empty, exception.Message));
+
+                return new ValidationResult(failures);
+            }
+        }
+
+        public async Task<Either<ValidationResult, Card>> CreateCardAsync(
+            CustomerId customerId,
+            string sourceToken,
+            bool defaultSource,
+            CancellationToken cancellationToken = default)
+        {
+            var failures = new List<ValidationFailure>();
+
+            try
+            {
+                var card = await _cardService.CreateAsync(
                     customerId.ToString(),
-                    new CustomerUpdateOptions
+                    new CardCreateOptions
                     {
-                        DefaultSource = card.Id
+                        SourceToken = sourceToken
                     },
                     cancellationToken: cancellationToken
                 );
-            }
-        }
 
-        public async Task DeleteCardAsync(CustomerId customerId, CardId cardId, CancellationToken cancellationToken = default)
-        {
-            await _cardService.DeleteAsync(customerId.ToString(), cardId.ToString(), cancellationToken: cancellationToken);
-        }
-
-        public async Task<CustomerId> CreateCustomerAsync(UserId userId, string email, CancellationToken cancellationToken = default)
-        {
-            var customer = await _customerService.CreateAsync(new CustomerCreateOptions
-            {
-                Email = email,
-                Metadata = new Dictionary<string, string>
+                if (defaultSource)
                 {
-                    [nameof(UserId)] = userId.ToString()
+                    await _customerService.UpdateAsync(
+                        customerId.ToString(),
+                        new CustomerUpdateOptions
+                        {
+                            DefaultSource = card.Id
+                        },
+                        cancellationToken: cancellationToken
+                    );
                 }
-            }, cancellationToken: cancellationToken);
 
-            return new CustomerId(customer.Id);
-        }
-
-        public async Task UpdateCustomerEmailAsync(CustomerId customerId, string email, CancellationToken cancellationToken = default)
-        {
-            await _customerService.UpdateAsync(customerId.ToString(), new CustomerUpdateOptions
-            {
-                Email = email
-            }, cancellationToken: cancellationToken);
-        }
-
-        public async Task UpdateCustomerDefaultSourceAsync(CustomerId customerId, CardId cardId, CancellationToken cancellationToken = default)
-        {
-            await _customerService.UpdateAsync(customerId.ToString(), new CustomerUpdateOptions
-            {
-                DefaultSource = cardId.ToString()
-            }, cancellationToken: cancellationToken);
-        }
-
-        public async Task CreateInvoiceAsync(CustomerId customerId, IBundle bundle, ITransaction transaction, CancellationToken cancellationToken = default)
-        {
-            var customer = await _customerService.GetAsync(customerId.ToString(), cancellationToken: cancellationToken);
-
-            if (customer.DefaultSource == null)
-            {
-                throw new InvalidOperationException("The customer default source payment is invalid. This customer doesn't have any default payment source.");
+                return card;
             }
-
-            if (customer.DefaultSource.Object != "card")
+            catch (StripeException exception)
             {
-                throw new InvalidOperationException("The customer default source payment is invalid. Only credit card are accepted.");
+                failures.Add(new ValidationFailure(string.Empty, exception.Message));
+
+                return new ValidationResult(failures);
             }
+        }
 
-            await _invoiceItemService.CreateAsync(new InvoiceItemCreateOptions
+        public async Task<Either<ValidationResult, Card>> DeleteCardAsync(CustomerId customerId, CardId cardId, CancellationToken cancellationToken = default)
+        {
+            var failures = new List<ValidationFailure>();
+
+            try
             {
-                CustomerId = customerId.ToString(),
-                Description = transaction.Description.ToString(),
-                Amount = bundle.Price.AsCents(),
-                Currency = "usd",
-                Metadata = new Dictionary<string, string>
+                return await _cardService.DeleteAsync(customerId.ToString(), cardId.ToString(), cancellationToken: cancellationToken);
+            }
+            catch (StripeException exception)
+            {
+                failures.Add(new ValidationFailure(string.Empty, exception.Message));
+
+                return new ValidationResult(failures);
+            }
+        }
+
+        public async Task<Either<ValidationResult, Customer>> CreateCustomerAsync(UserId userId, string email, CancellationToken cancellationToken = default)
+        {
+            var failures = new List<ValidationFailure>();
+
+            try
+            {
+                return await _customerService.CreateAsync(new CustomerCreateOptions
                 {
-                    [nameof(TransactionId)] = transaction.Id.ToString()
-                }
-            }, cancellationToken: cancellationToken);
-
-            await _invoiceService.CreateAsync(new InvoiceCreateOptions
+                    Email = email,
+                    Metadata = new Dictionary<string, string>
+                    {
+                        [nameof(UserId)] = userId.ToString()
+                    }
+                }, cancellationToken: cancellationToken);
+            }
+            catch (StripeException exception)
             {
-                CustomerId = customer.Id,
-                TaxPercent = 15M,
-                AutoAdvance = true,
-                DefaultSource = customer.DefaultSource.Id,
-                Metadata = new Dictionary<string, string>
-                {
-                    [nameof(TransactionId)] = transaction.Id.ToString()
-                }
-            }, cancellationToken: cancellationToken);
+                failures.Add(new ValidationFailure(string.Empty, exception.Message));
+
+                return new ValidationResult(failures);
+            }
         }
 
-        public async Task CreatePayoutAsync(CustomerId customerId, IBundle bundle, ITransaction transaction, CancellationToken cancellationToken = default)
+        public async Task<Either<ValidationResult, Customer>> UpdateCustomerEmailAsync(
+            CustomerId customerId,
+            string email,
+            CancellationToken cancellationToken = default)
         {
-            var customer = await _customerService.GetAsync(customerId.ToString(), cancellationToken: cancellationToken);
+            var failures = new List<ValidationFailure>();
 
-            if (customer.DefaultSource == null)
+            try
             {
-                throw new InvalidOperationException("The customer default source payment is invalid. This customer doesn't have any default payment source.");
-            }
-
-            if (customer.DefaultSource.Object != "card")
-            {
-                throw new InvalidOperationException("The customer default source payment is invalid. Only credit card are accepted.");
-            }
-
-            await _payoutService.CreateAsync(new PayoutCreateOptions
-            {
-                Amount = bundle.Price.AsCents(),
-                Destination = customer.DefaultSourceId,
-                Currency = "usd",
-                StatementDescriptor = "eDoxa",
-                SourceType = "card",
-                Method = "standard",
-                Metadata = new Dictionary<string, string>
+                return await _customerService.UpdateAsync(customerId.ToString(), new CustomerUpdateOptions
                 {
-                    [nameof(TransactionId)] = transaction.Id.ToString()
+                    Email = email
+                }, cancellationToken: cancellationToken);
+            }
+            catch (StripeException exception)
+            {
+                failures.Add(new ValidationFailure(string.Empty, exception.Message));
+
+                return new ValidationResult(failures);
+            }
+        }
+
+        public async Task<Either<ValidationResult, Customer>> UpdateCustomerDefaultSourceAsync(
+            CustomerId customerId,
+            CardId cardId,
+            CancellationToken cancellationToken = default)
+        {
+            var failures = new List<ValidationFailure>();
+
+            try
+            {
+                return await _customerService.UpdateAsync(customerId.ToString(), new CustomerUpdateOptions
+                {
+                    DefaultSource = cardId.ToString()
+                }, cancellationToken: cancellationToken);
+            }
+            catch (StripeException exception)
+            {
+                failures.Add(new ValidationFailure(string.Empty, exception.Message));
+
+                return new ValidationResult(failures);
+            }
+        }
+
+        public async Task<Either<ValidationResult, Invoice>> CreateInvoiceAsync(
+            CustomerId customerId,
+            IBundle bundle,
+            ITransaction transaction,
+            CancellationToken cancellationToken = default)
+        {
+            var failures = new List<ValidationFailure>();
+
+            try
+            {
+                var customer = await _customerService.GetAsync(customerId.ToString(), cancellationToken: cancellationToken);
+
+                if (customer.DefaultSource == null)
+                {
+                    failures.Add(new ValidationFailure(string.Empty,
+                        "The customer default source payment is invalid. This customer doesn't have any default payment source."));
+
+                    return new ValidationResult(failures);
                 }
-            }, cancellationToken: cancellationToken);
+
+                if (customer.DefaultSource.Object != "card")
+                {
+                    failures.Add(new ValidationFailure(string.Empty, "The customer default source payment is invalid. Only credit card are accepted."));
+
+                    return new ValidationResult(failures);
+                }
+
+                await _invoiceItemService.CreateAsync(new InvoiceItemCreateOptions
+                {
+                    CustomerId = customerId.ToString(),
+                    Description = transaction.Description.ToString(),
+                    Amount = bundle.Price.AsCents(),
+                    Currency = "usd",
+                    Metadata = new Dictionary<string, string>
+                    {
+                        [nameof(TransactionId)] = transaction.Id.ToString()
+                    }
+                }, cancellationToken: cancellationToken);
+
+                return await _invoiceService.CreateAsync(new InvoiceCreateOptions
+                {
+                    CustomerId = customer.Id,
+                    TaxPercent = 15M,
+                    AutoAdvance = true,
+                    DefaultSource = customer.DefaultSource.Id,
+                    Metadata = new Dictionary<string, string>
+                    {
+                        [nameof(TransactionId)] = transaction.Id.ToString()
+                    }
+                }, cancellationToken: cancellationToken);
+            }
+            catch (StripeException exception)
+            {
+                failures.Add(new ValidationFailure(string.Empty, exception.Message));
+
+                return new ValidationResult(failures);
+            }
+        }
+
+        public async Task<Either<ValidationResult, Payout>> CreatePayoutAsync(
+            CustomerId customerId,
+            IBundle bundle,
+            ITransaction transaction,
+            CancellationToken cancellationToken = default)
+        {
+            var failures = new List<ValidationFailure>();
+
+            try
+            {
+                var customer = await _customerService.GetAsync(customerId.ToString(), cancellationToken: cancellationToken);
+
+                if (customer.DefaultSource == null)
+                {
+                    failures.Add(new ValidationFailure(string.Empty,
+                        "The customer default source payment is invalid. This customer doesn't have any default payment source."));
+
+                    return new ValidationResult(failures);
+                }
+
+                if (customer.DefaultSource?.Object != "card")
+                {
+                    failures.Add(new ValidationFailure(string.Empty, "The customer default source payment is invalid. Only credit card are accepted."));
+
+                    return new ValidationResult(failures);
+                }
+
+                return await _payoutService.CreateAsync(new PayoutCreateOptions
+                {
+                    Amount = bundle.Price.AsCents(),
+                    Destination = customer.DefaultSourceId,
+                    Currency = "usd",
+                    StatementDescriptor = "eDoxa",
+                    SourceType = "card",
+                    Method = "standard",
+                    Metadata = new Dictionary<string, string>
+                    {
+                        [nameof(TransactionId)] = transaction.Id.ToString()
+                    }
+                }, cancellationToken: cancellationToken);
+            }
+            catch (StripeException exception)
+            {
+                failures.Add(new ValidationFailure(string.Empty, exception.Message));
+
+                return new ValidationResult(failures);
+            }
         }
     }
 }

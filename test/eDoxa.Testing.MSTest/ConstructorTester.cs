@@ -25,9 +25,18 @@ namespace eDoxa.Testing.MSTest
             _info = info;
         }
 
-        public override Tester<T> WithName(string className)
+        public override Tester<T> WithName(string name)
         {
-            TestCase<T> testCase = new NameTestCase<T>(_info, className);
+            TestCase<T> testCase = new NameTestCase<T>(_info, name);
+
+            _testCases.Add(testCase);
+
+            return this;
+        }
+
+        public override Tester<T> WithAttributes(params Type[] attributeTypes)
+        {
+            TestCase<T> testCase = new WithAttributesTestCase<T>(_info, attributeTypes);
 
             _testCases.Add(testCase);
 

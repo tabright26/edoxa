@@ -17,13 +17,15 @@ using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Functional;
 
+using FluentValidation.Results;
+
 namespace eDoxa.Cashier.Domain.Services.Abstractions
 {
     public interface IMoneyAccountService
     {
-        Task<IMoneyTransaction> DepositAsync(UserId userId, CustomerId customerId, MoneyBundle bundle, CancellationToken cancellationToken = default);
+        Task<Either<ValidationResult, IMoneyTransaction>> DepositAsync(UserId userId, CustomerId customerId, MoneyBundle bundle, CancellationToken cancellationToken = default);
 
-        Task<Option<IMoneyTransaction>> TryWithdrawalAsync(
+        Task<Either<ValidationResult, IMoneyTransaction>> TryWithdrawalAsync(
             UserId userId,
             CustomerId customerId,
             MoneyBundle bundle,

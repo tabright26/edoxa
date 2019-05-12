@@ -18,7 +18,6 @@ using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
-using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.Domain.Services.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Commands.Extensions;
@@ -63,9 +62,8 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             // Arrange
             var command = new WithdrawalFundsCommand(WithdrawalMoneyBundleType.Fifty);
 
-            _mockMoneyAccountService.Setup(mock =>
-                    mock.TryWithdrawalAsync(It.IsAny<UserId>(), It.IsAny<CustomerId>(), It.IsAny<MoneyBundle>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new Option<IMoneyTransaction>(new WithdrawalMoneyTransaction(new Money(50))))
+            _mockMoneyAccountService.Setup(mock => mock.TryWithdrawalAsync(It.IsAny<UserId>(), It.IsAny<CustomerId>(), It.IsAny<MoneyBundle>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new WithdrawalMoneyTransaction(new Money(50)))
                 .Verifiable();
 
             var handler = new WithdrawalFundsCommandHandler(_mockUserInfoService.Object, _mockMoneyAccountService.Object, _mockMapper.Object);

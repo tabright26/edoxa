@@ -26,31 +26,22 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 {
     internal sealed class DeleteBankAccountCommandHandler : ICommandHandler<DeleteBankAccountCommand, IActionResult>
     {
-        private readonly IIntegrationEventService _integrationEventService;
         private readonly IStripeService _stripeService;
         private readonly IUserInfoService _userInfoService;
 
-        public DeleteBankAccountCommandHandler(IUserInfoService userInfoService, IStripeService stripeService, IIntegrationEventService integrationEventService)
+        public DeleteBankAccountCommandHandler(IUserInfoService userInfoService, IStripeService stripeService)
         {
             _userInfoService = userInfoService;
             _stripeService = stripeService;
-            _integrationEventService = integrationEventService;
         }
 
         public async Task<IActionResult> Handle(DeleteBankAccountCommand request, CancellationToken cancellationToken)
         {
-            var userId = UserId.Parse(_userInfoService.Subject);
-
             var customerId = new CustomerId(_userInfoService.CustomerId);
 
-            var bankAccountId = new BankAccountId(_userInfoService.BankAccountId);
+            var either = await _stripeService.DeleteBankAccountAsync(customerId, cancellationToken);
 
-            await _stripeService.DeleteBankAccountAsync(customerId, bankAccountId, cancellationToken);
-
-            await _integrationEventService.PublishAsync(new UserClaimRemovedIntegrationEvent(userId.ToGuid(), CustomClaimTypes.BankAccountId,
-                bankAccountId.ToString()));
-
-            return new OkResult();
+            return either.Match<IActionResult>(result => new BadRequestObjectResult(result), bankAccount => new OkObjectResult(bankAccount));
         }
     }
 }

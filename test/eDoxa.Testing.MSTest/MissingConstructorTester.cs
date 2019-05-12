@@ -14,7 +14,12 @@ namespace eDoxa.Testing.MSTest
 {
     public class MissingConstructorTester<T> : Tester<T>
     {
-        public override Tester<T> WithName(string className)
+        public override Tester<T> WithName(string name)
+        {
+            return this;
+        }
+
+        public override Tester<T> WithAttributes(params Type[] attributeTypes)
         {
             return this;
         }

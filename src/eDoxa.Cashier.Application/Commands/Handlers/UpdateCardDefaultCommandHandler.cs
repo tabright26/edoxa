@@ -38,9 +38,9 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         {
             var customerId = new CustomerId(_userInfoService.CustomerId);
 
-            await _stripeService.UpdateCustomerDefaultSourceAsync(customerId, command.CardId, cancellationToken);
+            var either = await _stripeService.UpdateCustomerDefaultSourceAsync(customerId, command.CardId, cancellationToken);
 
-            return new OkResult();
+            return either.Match<IActionResult>(result => new BadRequestObjectResult(result), customer => new OkObjectResult(customer));
         }
     }
 }

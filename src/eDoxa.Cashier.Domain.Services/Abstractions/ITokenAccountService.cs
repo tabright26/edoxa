@@ -15,11 +15,14 @@ using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
+using eDoxa.Functional;
+
+using FluentValidation.Results;
 
 namespace eDoxa.Cashier.Domain.Services.Abstractions
 {
     public interface ITokenAccountService
     {
-        Task<ITokenTransaction> DepositAsync(UserId userId, CustomerId customerId, TokenBundle bundle, CancellationToken cancellationToken = default);
+        Task<Either<ValidationResult, ITokenTransaction>> DepositAsync(UserId userId, CustomerId customerId, TokenBundle bundle, CancellationToken cancellationToken = default);
     }
 }

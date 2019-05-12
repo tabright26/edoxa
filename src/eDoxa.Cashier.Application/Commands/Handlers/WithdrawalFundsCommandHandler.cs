@@ -16,7 +16,6 @@ using AutoMapper;
 
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
-using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.Domain.Services.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Cashier.DTO;
@@ -52,13 +51,12 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 
             var customerId = new CustomerId(_userInfoService.CustomerId);
 
-            var moneyTransaction = await _moneyAccountService.TryWithdrawalAsync(userId, customerId, bundle, cancellationToken);
+            var either = await _moneyAccountService.TryWithdrawalAsync(userId, customerId, bundle, cancellationToken);
 
-            return moneyTransaction
-                .Select(transaction => new OkObjectResult(_mapper.Map<MoneyTransactionDTO>(transaction)))
-                .Cast<IActionResult>()
-                .DefaultIfEmpty(new BadRequestObjectResult("The withdrawal of money has failed."))
-                .Single();
+            return either.Match<IActionResult>(
+                result => new BadRequestObjectResult(result),
+                transaction => new OkObjectResult(_mapper.Map<MoneyTransactionDTO>(transaction))
+            );
         }
     }
 }

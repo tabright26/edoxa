@@ -24,6 +24,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands
         {
             ConstructorTests<CreateUserCommand>.For(typeof(UserId), typeof(string))
                 .WithName("CreateUserCommand")
+                .WithAttributes()
                 .Assert();
         }
     }

@@ -1,4 +1,4 @@
-﻿// Filename: UserClaimRemovedIntegrationEventTest.cs
+﻿// Filename: TokenAccountServiceTest.cs
 // Date Created: 2019-05-11
 // 
 // ================================================
@@ -8,23 +8,22 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-
-using eDoxa.Cashier.Application.IntegrationEvents;
+using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Testing.MSTest;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Cashier.Application.Tests.IntegrationEvents
+namespace eDoxa.Cashier.Domain.Services.Tests
 {
     [TestClass]
-    public sealed class UserClaimRemovedIntegrationEventTest
+    public sealed class TokenAccountServiceTest
     {
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<UserClaimRemovedIntegrationEvent>.For(typeof(Guid), typeof(string), typeof(string))
-                .WithName("UserClaimRemovedIntegrationEvent")
+            ConstructorTests<TokenAccountService>.For(typeof(ITokenAccountRepository), typeof(IStripeService))
+                .WithName("TokenAccountService")
                 .Assert();
         }
     }

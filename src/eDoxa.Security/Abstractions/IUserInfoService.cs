@@ -36,8 +36,6 @@ namespace eDoxa.Security.Abstractions
 
         string Address { get; }
 
-        string BankAccountId { get; }
-
         string CustomerId { get; }
 
         IEnumerable<string> Roles { get; }

@@ -24,7 +24,6 @@ namespace eDoxa.Security.Services
     public sealed class UserInfoService : IUserInfoService
     {
         private readonly IEnumerable<Claim> _claims;
-        private string _bankAccountId;
 
         public UserInfoService(IHttpContextAccessor accessor)
         {
@@ -53,8 +52,6 @@ namespace eDoxa.Security.Services
         public string PhoneNumberVerified => this.TryGetClaim(JwtClaimTypes.PhoneNumberVerified);
 
         public string Address => this.TryGetClaim(JwtClaimTypes.Address);
-
-        public string BankAccountId => this.TryGetClaim(CustomClaimTypes.BankAccountId);
 
         public string CustomerId => this.TryGetClaim(CustomClaimTypes.CustomerId);
 

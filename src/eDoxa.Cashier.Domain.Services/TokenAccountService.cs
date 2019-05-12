@@ -19,6 +19,9 @@ using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
+using eDoxa.Functional;
+
+using FluentValidation.Results;
 
 namespace eDoxa.Cashier.Domain.Services
 {
@@ -33,11 +36,7 @@ namespace eDoxa.Cashier.Domain.Services
             _stripeService = stripeService;
         }
 
-        public async Task<ITokenTransaction> DepositAsync(
-            UserId userId,
-            CustomerId customerId,
-            TokenBundle bundle,
-            CancellationToken cancellationToken = default)
+        public async Task<Either<ValidationResult, ITokenTransaction>> DepositAsync(UserId userId, CustomerId customerId, TokenBundle bundle, CancellationToken cancellationToken = default)
         {
             var account = await _tokenAccountRepository.FindUserAccountAsync(userId);
 
@@ -45,24 +44,25 @@ namespace eDoxa.Cashier.Domain.Services
 
             await _tokenAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
-            try
-            {
-                await _stripeService.CreateInvoiceAsync(customerId, bundle, transaction, cancellationToken);
-            }
-            catch (Exception)
-            {
-                transaction.Fail();
+            var either = await _stripeService.CreateInvoiceAsync(customerId, bundle, transaction, cancellationToken);
 
-                await _tokenAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+            return either.Match(
+                result =>
+                {
+                    transaction.Fail();
 
-                return transaction;
-            }
+                    _tokenAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken).Wait(cancellationToken);
 
-            transaction.Pay();
+                    return result;
+                },
+                payout =>
+                {
+                    transaction.Pay();
 
-            await _tokenAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+                    _tokenAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken).Wait(cancellationToken);
 
-            return transaction;
+                    return new Either<ValidationResult, ITokenTransaction>(transaction);
+                });
         }
     }
 }

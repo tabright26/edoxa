@@ -24,7 +24,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<CreateBankAccountCommandHandler>.For(typeof(IUserInfoService), typeof(IStripeService), typeof(IIntegrationEventService))
+            ConstructorTests<CreateBankAccountCommandHandler>.For(typeof(IUserInfoService), typeof(IStripeService))
                 .WithName("CreateBankAccountCommandHandler")
                 .Assert();
         }

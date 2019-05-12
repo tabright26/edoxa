@@ -15,7 +15,6 @@ using AutoMapper;
 
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
-using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.Domain.Services.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Cashier.DTO;
@@ -51,9 +50,12 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 
             var bundle = Bundles[command.BundleType];
 
-            var transaction = await _tokenAccountService.DepositAsync(userId, customerId, bundle, cancellationToken);
+            var either = await _tokenAccountService.DepositAsync(userId, customerId, bundle, cancellationToken);
 
-            return new OkObjectResult(_mapper.Map<TokenTransactionDTO>(transaction));
+            return either.Match<IActionResult>(
+                result => new BadRequestObjectResult(result),
+                transaction => new OkObjectResult(_mapper.Map<TokenTransactionDTO>(transaction))
+            );
         }
     }
 }

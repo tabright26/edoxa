@@ -9,7 +9,6 @@
 // this source code package.
 
 using eDoxa.Cashier.Application.Commands.Validations;
-using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Testing.MSTest;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
