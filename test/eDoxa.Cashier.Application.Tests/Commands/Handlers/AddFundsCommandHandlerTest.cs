@@ -11,8 +11,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using AutoMapper;
-
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.AggregateModels;
@@ -59,7 +57,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             var command = new AddFundsCommand(MoneyBundleType.Ten);
 
             _mockMoneyAccountService.Setup(mock =>
-                    mock.DepositAsync(It.IsAny<UserId>(), It.IsAny<CustomerId>(), It.IsAny<MoneyBundle>(), It.IsAny<CancellationToken>()))
+                    mock.DepositAsync(It.IsAny<UserId>(), It.IsAny<CustomerId>(), It.IsAny<MoneyBundle>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new DepositMoneyTransaction(new Money(10)))
                 .Verifiable();
 
@@ -70,7 +68,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
 
             // Assert
             _mockMoneyAccountService.Verify(
-                mock => mock.DepositAsync(It.IsAny<UserId>(), It.IsAny<CustomerId>(), It.IsAny<MoneyBundle>(), It.IsAny<CancellationToken>()),
+                mock => mock.DepositAsync(It.IsAny<UserId>(), It.IsAny<CustomerId>(), It.IsAny<MoneyBundle>(), It.IsAny<string>(), It.IsAny<CancellationToken>()),
                 Times.Once);
         }
     }

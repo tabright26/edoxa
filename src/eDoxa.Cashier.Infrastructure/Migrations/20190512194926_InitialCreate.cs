@@ -1,15 +1,4 @@
-﻿// Filename: 20190510042135_InitialCreate.cs
-// Date Created: 2019-05-10
-// 
-// ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
-
-using System;
-
+﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace eDoxa.Cashier.Infrastructure.Migrations
@@ -19,18 +8,18 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
-                "edoxa");
+                name: "edoxa");
 
             migrationBuilder.EnsureSchema(
-                "dbo");
+                name: "dbo");
 
             migrationBuilder.CreateTable(
-                "Logs",
+                name: "Logs",
                 schema: "dbo",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(),
-                    Date = table.Column<DateTime>(),
+                    Id = table.Column<Guid>(nullable: false),
+                    Date = table.Column<DateTime>(nullable: false),
                     Version = table.Column<string>(nullable: true),
                     Origin = table.Column<string>(nullable: true),
                     Method = table.Column<string>(nullable: true),
@@ -43,49 +32,60 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                     ResponseType = table.Column<string>(nullable: true),
                     IdempotencyKey = table.Column<Guid>(nullable: true)
                 },
-                constraints: table => { table.PrimaryKey("PK_Logs", x => x.Id); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Logs", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
-                "MoneyAccounts",
+                name: "MoneyAccounts",
                 schema: "edoxa",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(),
-                    UserId = table.Column<Guid>()
+                    Id = table.Column<Guid>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false),
+                    LastDeposit = table.Column<DateTime>(nullable: true),
+                    LastWithdrawal = table.Column<DateTime>(nullable: true)
                 },
-                constraints: table => { table.PrimaryKey("PK_MoneyAccounts", x => x.Id); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MoneyAccounts", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
-                "TokenAccounts",
+                name: "TokenAccounts",
                 schema: "edoxa",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(),
-                    UserId = table.Column<Guid>()
+                    Id = table.Column<Guid>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false),
+                    LastDeposit = table.Column<DateTime>(nullable: true)
                 },
-                constraints: table => { table.PrimaryKey("PK_TokenAccounts", x => x.Id); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TokenAccounts", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
-                "MoneyTransactions",
+                name: "MoneyTransactions",
                 schema: "edoxa",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(),
-                    Timestamp = table.Column<DateTime>(),
-                    Amount = table.Column<decimal>(),
-                    Description = table.Column<string>(),
-                    Type = table.Column<int>(),
-                    Status = table.Column<int>(),
+                    Id = table.Column<Guid>(nullable: false),
+                    Timestamp = table.Column<DateTime>(nullable: false),
+                    Amount = table.Column<decimal>(nullable: false),
+                    Description = table.Column<string>(nullable: false),
+                    Type = table.Column<int>(nullable: false),
+                    Status = table.Column<int>(nullable: false),
                     ServiceId = table.Column<string>(nullable: true),
-                    AccountId = table.Column<Guid>()
+                    AccountId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MoneyTransactions", x => x.Id);
-
                     table.ForeignKey(
-                        "FK_MoneyTransactions_MoneyAccounts_AccountId",
-                        x => x.AccountId,
+                        name: "FK_MoneyTransactions_MoneyAccounts_AccountId",
+                        column: x => x.AccountId,
                         principalSchema: "edoxa",
                         principalTable: "MoneyAccounts",
                         principalColumn: "Id",
@@ -93,26 +93,25 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                "TokenTransactions",
+                name: "TokenTransactions",
                 schema: "edoxa",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(),
-                    Timestamp = table.Column<DateTime>(),
-                    Amount = table.Column<long>(),
-                    Description = table.Column<string>(),
-                    Type = table.Column<int>(),
-                    Status = table.Column<int>(),
+                    Id = table.Column<Guid>(nullable: false),
+                    Timestamp = table.Column<DateTime>(nullable: false),
+                    Amount = table.Column<long>(nullable: false),
+                    Description = table.Column<string>(nullable: false),
+                    Type = table.Column<int>(nullable: false),
+                    Status = table.Column<int>(nullable: false),
                     ServiceId = table.Column<string>(nullable: true),
-                    AccountId = table.Column<Guid>()
+                    AccountId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TokenTransactions", x => x.Id);
-
                     table.ForeignKey(
-                        "FK_TokenTransactions_TokenAccounts_AccountId",
-                        x => x.AccountId,
+                        name: "FK_TokenTransactions_TokenAccounts_AccountId",
+                        column: x => x.AccountId,
                         principalSchema: "edoxa",
                         principalTable: "TokenAccounts",
                         principalColumn: "Id",
@@ -120,7 +119,7 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                "IX_Logs_IdempotencyKey",
+                name: "IX_Logs_IdempotencyKey",
                 schema: "dbo",
                 table: "Logs",
                 column: "IdempotencyKey",
@@ -128,13 +127,13 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                 filter: "[IdempotencyKey] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                "IX_MoneyTransactions_AccountId",
+                name: "IX_MoneyTransactions_AccountId",
                 schema: "edoxa",
                 table: "MoneyTransactions",
                 column: "AccountId");
 
             migrationBuilder.CreateIndex(
-                "IX_TokenTransactions_AccountId",
+                name: "IX_TokenTransactions_AccountId",
                 schema: "edoxa",
                 table: "TokenTransactions",
                 column: "AccountId");
@@ -143,24 +142,24 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                "Logs",
-                "dbo");
+                name: "Logs",
+                schema: "dbo");
 
             migrationBuilder.DropTable(
-                "MoneyTransactions",
-                "edoxa");
+                name: "MoneyTransactions",
+                schema: "edoxa");
 
             migrationBuilder.DropTable(
-                "TokenTransactions",
-                "edoxa");
+                name: "TokenTransactions",
+                schema: "edoxa");
 
             migrationBuilder.DropTable(
-                "MoneyAccounts",
-                "edoxa");
+                name: "MoneyAccounts",
+                schema: "edoxa");
 
             migrationBuilder.DropTable(
-                "TokenAccounts",
-                "edoxa");
+                name: "TokenAccounts",
+                schema: "edoxa");
         }
     }
 }

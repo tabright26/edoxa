@@ -8,6 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
+
 using eDoxa.Functional;
 
 namespace eDoxa.Cashier.Domain.Abstractions
@@ -19,6 +21,8 @@ namespace eDoxa.Cashier.Domain.Abstractions
         TCurrency Balance { get; }
 
         TCurrency Pending { get; }
+
+        DateTime? LastDeposit { get; }
 
         TTransaction Deposit(TCurrency amount);
 

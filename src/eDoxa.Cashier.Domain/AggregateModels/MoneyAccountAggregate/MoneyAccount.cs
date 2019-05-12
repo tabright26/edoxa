@@ -8,20 +8,23 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 using eDoxa.Cashier.Domain.Abstractions;
+using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate.Specifications;
 using eDoxa.Functional;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
-
-using Serilog;
+using eDoxa.Specifications.Factories;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
 {
     public class MoneyAccount : Entity<AccountId>, IMoneyAccount, IAggregateRoot
     {
+        private DateTime? _lastDeposit;
+        private DateTime? _lastWithdrawal;
         private HashSet<MoneyTransaction> _transactions;
         private UserId _userId;
 
@@ -32,6 +35,8 @@ namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
 
         private MoneyAccount()
         {
+            _lastDeposit = null;
+            _lastWithdrawal = null;
             _transactions = new HashSet<MoneyTransaction>();
         }
 
@@ -39,7 +44,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
 
         public Money Balance =>
             new Money(Transactions
-                .Where(transaction => transaction.Status.Equals(TransactionStatus.Paid) || 
+                .Where(transaction => transaction.Status.Equals(TransactionStatus.Paid) ||
                                       transaction.Status.Equals(TransactionStatus.Succeeded))
                 .Sum(transaction => transaction.Amount));
 
@@ -47,6 +52,10 @@ namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
             new Money(Transactions
                 .Where(transaction => transaction.Status.Equals(TransactionStatus.Pending))
                 .Sum(transaction => transaction.Amount));
+
+        public DateTime? LastDeposit => _lastDeposit;
+
+        public DateTime? LastWithdrawal => _lastWithdrawal;
 
         public IReadOnlyCollection<MoneyTransaction> Transactions => _transactions;
 
@@ -56,7 +65,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
 
             if (_transactions.Add(transaction))
             {
-                Log.Information(transaction.ToString());
+                this.Deposit();
             }
 
             return transaction;
@@ -64,19 +73,17 @@ namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
 
         public Option<IMoneyTransaction> TryWithdrawal(Money amount)
         {
-            if (Balance < amount)
+            if (!this.CanWithdrawal(amount))
             {
                 return new Option<IMoneyTransaction>();
             }
 
             var transaction = new WithdrawalMoneyTransaction(amount);
 
-            if (!_transactions.Add(transaction))
+            if (_transactions.Add(transaction))
             {
-                return new Option<IMoneyTransaction>();
+                this.Withdrawal();
             }
-
-            Log.Information(transaction.ToString());
 
             return new Option<IMoneyTransaction>(transaction);
         }
@@ -90,28 +97,33 @@ namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
 
             var transaction = new ServiceMoneyTransaction(-amount);
 
-            if (!_transactions.Add(transaction))
-            {
-                return new Option<IMoneyTransaction>();
-            }
-
-            Log.Information(transaction.ToString());
-
-            return new Option<IMoneyTransaction>(transaction);
+            return _transactions.Add(transaction) ? new Option<IMoneyTransaction>(transaction) : new Option<IMoneyTransaction>();
         }
 
         public Option<IMoneyTransaction> TryPayout(Money amount)
         {
             var transaction = new PrizeMoneyTransaction(amount);
 
-            if (!_transactions.Add(transaction))
-            {
-                return new Option<IMoneyTransaction>();
-            }
+            return _transactions.Add(transaction) ? new Option<IMoneyTransaction>(transaction) : new Option<IMoneyTransaction>();
+        }
 
-            Log.Information(transaction.ToString());
+        private void Deposit()
+        {
+            _lastDeposit = DateTime.UtcNow;
+        }
 
-            return new Option<IMoneyTransaction>(transaction);
+        private void Withdrawal()
+        {
+            _lastWithdrawal = DateTime.UtcNow;
+        }
+
+        private bool CanWithdrawal(Money money)
+        {
+            var specification = SpecificationFactory.Instance.CreateSpecification<MoneyAccount>()
+                .And(new InsufficientFundsSpecification(money).Not())
+                .And(new WeeklyWithdrawalValidSpecification());
+
+            return specification.IsSatisfiedBy(this);
         }
     }
 }

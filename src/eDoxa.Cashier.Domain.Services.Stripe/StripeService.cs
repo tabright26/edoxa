@@ -21,6 +21,8 @@ using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Cashier.Domain.Services.Stripe.Validations;
 using eDoxa.Functional;
 
+using Microsoft.Extensions.Configuration;
+
 using Stripe;
 
 namespace eDoxa.Cashier.Domain.Services.Stripe
@@ -33,7 +35,7 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
         private readonly CustomerService _customerService;
         private readonly InvoiceItemService _invoiceItemService;
         private readonly InvoiceService _invoiceService;
-        private readonly PayoutService _payoutService;
+        private readonly IConfiguration _configuration;
 
         public StripeService(
             BankAccountService bankAccountService,
@@ -41,7 +43,7 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
             CustomerService customerService,
             InvoiceService invoiceService,
             InvoiceItemService invoiceItemService,
-            PayoutService payoutService)
+            IConfiguration configuration)
         {
             _bankAccountService = bankAccountService;
             _cardService = cardService;
@@ -49,7 +51,7 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
             _customerService.ExpandDefaultSource = true;
             _invoiceService = invoiceService;
             _invoiceItemService = invoiceItemService;
-            _payoutService = payoutService;
+            _configuration = configuration;
         }
 
         public async Task<Either<ValidationResult, BankAccount>> CreateBankAccountAsync(
@@ -147,6 +149,7 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
                 return await _customerService.CreateAsync(new CustomerCreateOptions
                 {
                     Email = email,
+                    TaxIdData = _configuration.GetSection("taxIds").Get<List<CustomerTaxIdDataOptions>>(),
                     Metadata = new Dictionary<string, string>
                     {
                         [nameof(UserId)] = userId.ToString()
@@ -179,6 +182,7 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
 
         public async Task<Either<ValidationResult, Invoice>> CreateInvoiceAsync(
             CustomerId customerId,
+            string email,
             IBundle bundle,
             ITransaction transaction,
             CancellationToken cancellationToken = default)
@@ -207,7 +211,6 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
                 return await _invoiceService.CreateAsync(new InvoiceCreateOptions
                 {
                     CustomerId = customer.Id,
-                    TaxPercent = 15M,
                     AutoAdvance = true,
                     DefaultSource = customer.DefaultSource.Id,
                     Metadata = new Dictionary<string, string>
@@ -221,40 +224,38 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
                 return new ValidationResult(exception.Message);
             }
         }
+        
+        //public async Task<Either<ValidationResult, Payout>> CreatePayoutAsync(CustomerId customerId, IBundle bundle, ITransaction transaction, CancellationToken cancellationToken = default)
+        //{
+        //    try
+        //    {
+        //        var bankAccounts = await _bankAccountService.ListAsync(customerId.ToString(), new BankAccountListOptions(), cancellationToken: cancellationToken);
 
-        public async Task<Either<ValidationResult, Payout>> CreatePayoutAsync(
-            CustomerId customerId,
-            IBundle bundle,
-            ITransaction transaction,
-            CancellationToken cancellationToken = default)
-        {
-            try
-            {
-                var customer = await _customerService.GetAsync(customerId.ToString(), cancellationToken: cancellationToken);
+        //        var bankAccount = bankAccounts.FirstOrDefault(account => !account.Deleted ?? true);
 
-                if (!StripeValidator.Validate(customer, out var result))
-                {
-                    return result;
-                }
+        //        if (bankAccount == null)
+        //        {
+        //            return new ValidationResult("There is no bank account associated with this customer.");
+        //        }
 
-                return await _payoutService.CreateAsync(new PayoutCreateOptions
-                {
-                    Amount = bundle.Price.AsCents(),
-                    Destination = customer.DefaultSourceId,
-                    Currency = "usd",
-                    StatementDescriptor = "eDoxa",
-                    SourceType = "card",
-                    Method = "standard",
-                    Metadata = new Dictionary<string, string>
-                    {
-                        [nameof(TransactionId)] = transaction.Id.ToString()
-                    }
-                }, cancellationToken: cancellationToken);
-            }
-            catch (StripeException exception)
-            {
-                return new ValidationResult(exception.Message);
-            }
-        }
+        //        return await _payoutService.CreateAsync(new PayoutCreateOptions
+        //        {
+        //            SourceType = "bank_account",
+        //            Destination = bankAccount.Id,
+        //            Amount = bundle.Price.AsCents(),
+        //            Currency = "usd",
+        //            StatementDescriptor = "eDoxa",
+        //            Method = "standard",
+        //            Metadata = new Dictionary<string, string>
+        //            {
+        //                [nameof(TransactionId)] = transaction.Id.ToString()
+        //            }
+        //        }, cancellationToken: cancellationToken);
+        //    }
+        //    catch (StripeException exception)
+        //    {
+        //        return new ValidationResult(exception.Message);
+        //    }
+        //}
     }
 }

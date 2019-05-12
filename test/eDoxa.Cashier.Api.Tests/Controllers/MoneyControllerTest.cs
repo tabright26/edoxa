@@ -89,28 +89,28 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             _mockMediator.VerifyNoOtherCalls();
         }
 
-        [TestMethod]
-        public async Task WithdrawalAsync_ShouldBeOkObjectResult()
-        {
-            // Arrange
-            var money = FakeCashierFactory.CreateMoney();
+        //[TestMethod]
+        //public async Task WithdrawalAsync_ShouldBeOkObjectResult()
+        //{
+        //    // Arrange
+        //    var money = FakeCashierFactory.CreateMoney();
 
-            var command = new WithdrawalFundsCommand(WithdrawalMoneyBundleType.Fifty);
+        //    var command = new WithdrawalFundsCommand(WithdrawalMoneyBundleType.Fifty);
 
-            _mockMediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(new OkObjectResult(money)).Verifiable();
+        //    _mockMediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(new OkObjectResult(money)).Verifiable();
 
-            var controller = new MoneyController(_mockUserInfoService.Object, _mockMoneyAccountQueries.Object, _mockMediator.Object);
+        //    var controller = new MoneyController(_mockUserInfoService.Object, _mockMoneyAccountQueries.Object, _mockMediator.Object);
 
-            // Act
-            var result = await controller.WithdrawalMoneyAsync(command);
+        //    // Act
+        //    var result = await controller.WithdrawalMoneyAsync(command);
 
-            // Assert
-            result.Should().BeOfType<OkObjectResult>();
+        //    // Assert
+        //    result.Should().BeOfType<OkObjectResult>();
 
-            _mockMoneyAccountQueries.Verify();
+        //    _mockMoneyAccountQueries.Verify();
 
-            _mockMediator.Verify();
-        }
+        //    _mockMediator.Verify();
+        //}
 
         [TestMethod]
         public async Task AddFundsAsync_ShouldBeOkObjectResult()

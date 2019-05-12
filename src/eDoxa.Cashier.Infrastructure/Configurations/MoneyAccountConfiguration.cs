@@ -38,6 +38,14 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
 
             builder.Ignore(account => account.Pending);
 
+            builder.Property(account => account.LastDeposit)
+                .IsRequired(false)
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
+
+            builder.Property(account => account.LastWithdrawal)
+                .IsRequired(false)
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
+
             builder.HasMany(account => account.Transactions)
                 .WithOne()
                 .HasForeignKey(nameof(AccountId))

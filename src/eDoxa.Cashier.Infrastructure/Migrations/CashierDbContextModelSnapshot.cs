@@ -22,6 +22,10 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id");
 
+                    b.Property<DateTime?>("LastDeposit");
+
+                    b.Property<DateTime?>("LastWithdrawal");
+
                     b.Property<Guid>("UserId");
 
                     b.HasKey("Id");
@@ -58,6 +62,8 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
             modelBuilder.Entity("eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate.TokenAccount", b =>
                 {
                     b.Property<Guid>("Id");
+
+                    b.Property<DateTime?>("LastDeposit");
 
                     b.Property<Guid>("UserId");
 

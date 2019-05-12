@@ -8,6 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -22,6 +23,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
 {
     public class TokenAccount : Entity<AccountId>, ITokenAccount, IAggregateRoot
     {
+        private DateTime? _lastDeposit;
         private HashSet<TokenTransaction> _transactions;
         private UserId _userId;
 
@@ -47,6 +49,8 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
                 .Where(transaction => transaction.Status.Equals(TransactionStatus.Pending))
                 .Sum(transaction => transaction.Amount));
 
+        public DateTime? LastDeposit => _lastDeposit;
+
         public IReadOnlyCollection<TokenTransaction> Transactions => _transactions;
 
         public ITokenTransaction Deposit(Token amount)
@@ -55,7 +59,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
 
             if (_transactions.Add(transaction))
             {
-                Log.Information(transaction.ToString());
+                this.Deposit();
             }
 
             return transaction;
@@ -106,6 +110,11 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
             Log.Information(transaction.ToString());
 
             return new Option<ITokenTransaction>(transaction);
+        }
+
+        private void Deposit()
+        {
+            _lastDeposit = DateTime.UtcNow;
         }
     }
 }

@@ -47,14 +47,15 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Abstractions
 
         Task<Either<ValidationResult, Invoice>> CreateInvoiceAsync(
             CustomerId customerId,
+            string email,
             IBundle bundle,
             ITransaction transaction,
             CancellationToken cancellationToken = default);
 
-        Task<Either<ValidationResult, Payout>> CreatePayoutAsync(
-            CustomerId customerId,
-            IBundle bundle,
-            ITransaction transaction,
-            CancellationToken cancellationToken = default);
+        //Task<Either<ValidationResult, Payout>> CreatePayoutAsync(
+        //    CustomerId customerId,
+        //    IBundle bundle,
+        //    ITransaction transaction,
+        //    CancellationToken cancellationToken = default);
     }
 }

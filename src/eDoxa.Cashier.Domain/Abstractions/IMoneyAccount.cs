@@ -8,6 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Collections.Generic;
 
 using eDoxa.Cashier.Domain.AggregateModels;
@@ -19,6 +20,8 @@ namespace eDoxa.Cashier.Domain.Abstractions
 {
     public interface IMoneyAccount : IAccount<Money, IMoneyTransaction>, IEntity<AccountId>
     {
+        DateTime? LastWithdrawal { get; }
+
         IReadOnlyCollection<MoneyTransaction> Transactions { get; }
 
         Option<IMoneyTransaction> TryWithdrawal(Money amount);

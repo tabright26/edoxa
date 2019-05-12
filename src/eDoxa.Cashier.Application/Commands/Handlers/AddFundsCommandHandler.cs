@@ -45,7 +45,9 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 
             var customerId = new CustomerId(_userInfoService.CustomerId);
 
-            var either = await _moneyAccountService.DepositAsync(userId, customerId, bundle, cancellationToken);
+            var email = _userInfoService.Email;
+
+            var either = await _moneyAccountService.DepositAsync(userId, customerId, bundle, email, cancellationToken);
 
             return either.Match<IActionResult>(
                 result => new BadRequestObjectResult(result.ErrorMessage),

@@ -34,7 +34,7 @@ namespace eDoxa.Cashier.Domain.Services
             _stripeService = stripeService;
         }
 
-        public async Task<Either<ValidationResult, ITokenTransaction>> DepositAsync(UserId userId, CustomerId customerId, TokenBundle bundle, CancellationToken cancellationToken = default)
+        public async Task<Either<ValidationResult, ITokenTransaction>> DepositAsync(UserId userId, CustomerId customerId, TokenBundle bundle, string email, CancellationToken cancellationToken = default)
         {
             var account = await _tokenAccountRepository.FindUserAccountAsync(userId);
 
@@ -42,7 +42,7 @@ namespace eDoxa.Cashier.Domain.Services
 
             await _tokenAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
-            var either = await _stripeService.CreateInvoiceAsync(customerId, bundle, transaction, cancellationToken);
+            var either = await _stripeService.CreateInvoiceAsync(customerId, email, bundle, transaction, cancellationToken);
 
             return either.Match(
                 result =>

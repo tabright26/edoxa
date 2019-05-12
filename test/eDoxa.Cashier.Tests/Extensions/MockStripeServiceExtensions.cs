@@ -51,12 +51,12 @@ namespace eDoxa.Cashier.Tests.Extensions
                 .ReturnsAsync(FakeCashierFactory.CreateCustomer());
 
             mockStripeService
-                .Setup(mock => mock.CreateInvoiceAsync(It.IsAny<CustomerId>(), It.IsAny<IBundle>(), It.IsAny<ITransaction>(), It.IsAny<CancellationToken>()))
+                .Setup(mock => mock.CreateInvoiceAsync(It.IsAny<CustomerId>(), It.IsAny<string>(), It.IsAny<IBundle>(), It.IsAny<ITransaction>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(FakeCashierFactory.CreateInvoice());
 
-            mockStripeService
-                .Setup(mock => mock.CreatePayoutAsync(It.IsAny<CustomerId>(), It.IsAny<IBundle>(), It.IsAny<ITransaction>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(FakeCashierFactory.CreatePayout());
+            //mockStripeService
+            //    .Setup(mock => mock.CreatePayoutAsync(It.IsAny<CustomerId>(), It.IsAny<IBundle>(), It.IsAny<ITransaction>(), It.IsAny<CancellationToken>()))
+            //    .ReturnsAsync(FakeCashierFactory.CreatePayout());
         }
     }
 }

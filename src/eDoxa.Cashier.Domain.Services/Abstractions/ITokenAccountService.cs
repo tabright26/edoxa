@@ -22,6 +22,6 @@ namespace eDoxa.Cashier.Domain.Services.Abstractions
 {
     public interface ITokenAccountService
     {
-        Task<Either<ValidationResult, ITokenTransaction>> DepositAsync(UserId userId, CustomerId customerId, TokenBundle bundle, CancellationToken cancellationToken = default);
+        Task<Either<ValidationResult, ITokenTransaction>> DepositAsync(UserId userId, CustomerId customerId, TokenBundle bundle, string email, CancellationToken cancellationToken = default);
     }
 }

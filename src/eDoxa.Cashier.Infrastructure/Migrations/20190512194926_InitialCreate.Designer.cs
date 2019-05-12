@@ -10,7 +10,7 @@ using eDoxa.Cashier.Infrastructure;
 namespace eDoxa.Cashier.Infrastructure.Migrations
 {
     [DbContext(typeof(CashierDbContext))]
-    [Migration("20190510042135_InitialCreate")]
+    [Migration("20190512194926_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,6 +25,10 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
             modelBuilder.Entity("eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate.MoneyAccount", b =>
                 {
                     b.Property<Guid>("Id");
+
+                    b.Property<DateTime?>("LastDeposit");
+
+                    b.Property<DateTime?>("LastWithdrawal");
 
                     b.Property<Guid>("UserId");
 
@@ -62,6 +66,8 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
             modelBuilder.Entity("eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate.TokenAccount", b =>
                 {
                     b.Property<Guid>("Id");
+
+                    b.Property<DateTime?>("LastDeposit");
 
                     b.Property<Guid>("UserId");
 
