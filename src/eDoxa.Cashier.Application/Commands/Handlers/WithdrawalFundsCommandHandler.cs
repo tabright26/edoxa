@@ -8,17 +8,13 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-
-using AutoMapper;
 
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Cashier.Domain.Services.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
-using eDoxa.Cashier.DTO;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Security.Abstractions;
 
@@ -31,15 +27,13 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
     internal sealed class WithdrawalFundsCommandHandler : ICommandHandler<WithdrawalFundsCommand, IActionResult>
     {
         private static readonly WithdrawalMoneyBundles Bundles = new WithdrawalMoneyBundles();
-        private readonly IMapper _mapper;
         private readonly IMoneyAccountService _moneyAccountService;
         private readonly IUserInfoService _userInfoService;
 
-        public WithdrawalFundsCommandHandler(IUserInfoService userInfoService, IMoneyAccountService moneyAccountService, IMapper mapper)
+        public WithdrawalFundsCommandHandler(IUserInfoService userInfoService, IMoneyAccountService moneyAccountService)
         {
             _userInfoService = userInfoService;
             _moneyAccountService = moneyAccountService;
-            _mapper = mapper;
         }
 
         [ItemNotNull]
@@ -54,8 +48,8 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
             var either = await _moneyAccountService.TryWithdrawalAsync(userId, customerId, bundle, cancellationToken);
 
             return either.Match<IActionResult>(
-                result => new BadRequestObjectResult(result),
-                transaction => new OkObjectResult(_mapper.Map<MoneyTransactionDTO>(transaction))
+                result => new BadRequestObjectResult(result.ErrorMessage),
+                transaction => new OkObjectResult(transaction.Status)
             );
         }
     }

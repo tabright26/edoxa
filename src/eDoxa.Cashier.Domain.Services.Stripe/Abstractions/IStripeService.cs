@@ -8,6 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.ComponentModel.DataAnnotations;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -15,8 +16,6 @@ using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Functional;
-
-using FluentValidation.Results;
 
 using Stripe;
 
@@ -40,8 +39,6 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Abstractions
         Task<Either<ValidationResult, Card>> DeleteCardAsync(CustomerId customerId, CardId cardId, CancellationToken cancellationToken = default);
 
         Task<Either<ValidationResult, Customer>> CreateCustomerAsync(UserId userId, string email, CancellationToken cancellationToken = default);
-
-        Task<Either<ValidationResult, Customer>> UpdateCustomerEmailAsync(CustomerId customerId, string email, CancellationToken cancellationToken = default);
 
         Task<Either<ValidationResult, Customer>> UpdateCustomerDefaultSourceAsync(
             CustomerId customerId,

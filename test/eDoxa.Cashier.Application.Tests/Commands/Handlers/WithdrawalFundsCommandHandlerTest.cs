@@ -15,13 +15,11 @@ using AutoMapper;
 
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
-using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Cashier.Domain.Services.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Commands.Extensions;
-using eDoxa.Functional;
 using eDoxa.Security.Abstractions;
 using eDoxa.Testing.MSTest;
 using eDoxa.Testing.MSTest.Extensions;
@@ -35,14 +33,12 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     [TestClass]
     public sealed class WithdrawalFundsCommandHandlerTest
     {
-        private Mock<IMapper> _mockMapper;
         private Mock<IMoneyAccountService> _mockMoneyAccountService;
         private Mock<IUserInfoService> _mockUserInfoService;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            _mockMapper = new Mock<IMapper>();
             _mockMoneyAccountService = new Mock<IMoneyAccountService>();
             _mockUserInfoService = new Mock<IUserInfoService>();
             _mockUserInfoService.SetupGetProperties();
@@ -51,7 +47,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<WithdrawalFundsCommandHandler>.For(typeof(IUserInfoService), typeof(IMoneyAccountService), typeof(IMapper))
+            ConstructorTests<WithdrawalFundsCommandHandler>.For(typeof(IUserInfoService), typeof(IMoneyAccountService))
                 .WithName("WithdrawalFundsCommandHandler")
                 .Assert();
         }
@@ -66,7 +62,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
                 .ReturnsAsync(new WithdrawalMoneyTransaction(new Money(50)))
                 .Verifiable();
 
-            var handler = new WithdrawalFundsCommandHandler(_mockUserInfoService.Object, _mockMoneyAccountService.Object, _mockMapper.Object);
+            var handler = new WithdrawalFundsCommandHandler(_mockUserInfoService.Object, _mockMoneyAccountService.Object);
 
             // Act
             await handler.HandleAsync(command);

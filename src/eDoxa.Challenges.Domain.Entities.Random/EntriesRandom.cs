@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Seedwork.Utilities;
+using System;
 
 namespace eDoxa.Challenges.Domain.Entities.Random
 {
@@ -35,7 +35,7 @@ namespace eDoxa.Challenges.Domain.Entities.Random
 
             var entries = Random.Next(range.MinValue, range.MaxValue + 1);
 
-            entries = MathUtils.RoundMultiplier(entries, multiplier);
+            entries = (int)Math.Round((decimal) entries / multiplier);
 
             return new Entries(entries * multiplier);
         }

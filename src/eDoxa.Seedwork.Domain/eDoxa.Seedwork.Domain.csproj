@@ -15,7 +15,6 @@
   <ItemGroup>
     <ProjectReference Include="..\eDoxa.Functional\eDoxa.Functional.csproj" />
     <ProjectReference Include="..\eDoxa.Reflection\eDoxa.Reflection.csproj" />
-    <ProjectReference Include="..\eDoxa.Seedwork\eDoxa.Seedwork.csproj" />
   </ItemGroup>
 
 </Project>

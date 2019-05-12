@@ -40,7 +40,10 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 
             var either = await _stripeService.CreateCardAsync(customerId, command.SourceToken, command.DefaultSource, cancellationToken);
 
-            return either.Match<IActionResult>(result => new BadRequestObjectResult(result), card => new OkObjectResult(card));
+            return either.Match<IActionResult>(
+                result => new BadRequestObjectResult(result.ErrorMessage),
+                card => new OkObjectResult("The card has been added.")
+            );
         }
     }
 }

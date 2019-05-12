@@ -8,8 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Runtime.Serialization;
-
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Testing.MSTest;
 

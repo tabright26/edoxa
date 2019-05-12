@@ -22,8 +22,6 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using Stripe;
-
 namespace eDoxa.Cashier.Api.Controllers
 {
     [Authorize]

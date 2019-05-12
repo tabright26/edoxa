@@ -11,14 +11,10 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Application.IntegrationEvents;
-using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Commands.Abstractions.Handlers;
-using eDoxa.Security;
 using eDoxa.Security.Abstractions;
-using eDoxa.ServiceBus;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -41,7 +37,10 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 
             var either = await _stripeService.DeleteBankAccountAsync(customerId, cancellationToken);
 
-            return either.Match<IActionResult>(result => new BadRequestObjectResult(result), bankAccount => new OkObjectResult(bankAccount));
+            return either.Match<IActionResult>(
+                result => new BadRequestObjectResult(result.ErrorMessage),
+                bankAccount => new OkObjectResult("The bank account has been removed.")
+            );
         }
     }
 }

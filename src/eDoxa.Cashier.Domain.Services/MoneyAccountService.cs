@@ -8,6 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,8 +21,6 @@ using eDoxa.Cashier.Domain.Services.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Functional;
-
-using FluentValidation.Results;
 
 namespace eDoxa.Cashier.Domain.Services
 {
@@ -100,7 +99,7 @@ namespace eDoxa.Cashier.Domain.Services
 
                         return new Either<ValidationResult, IMoneyTransaction>(transaction);
                     });
-            }).DefaultIfEmpty(new Either<ValidationResult, IMoneyTransaction>(new ValidationResult())).Single();
+            }).DefaultIfEmpty(new Either<ValidationResult, IMoneyTransaction>(new ValidationResult("Temp"))).Single();
 
             //return moneyTransaction.Select(async transaction =>
             //{

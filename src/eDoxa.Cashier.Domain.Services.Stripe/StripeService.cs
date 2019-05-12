@@ -9,6 +9,7 @@
 // this source code package.
 
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,9 +18,8 @@ using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
+using eDoxa.Cashier.Domain.Services.Stripe.Validations;
 using eDoxa.Functional;
-
-using FluentValidation.Results;
 
 using Stripe;
 
@@ -27,6 +27,7 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
 {
     public sealed class StripeService : IStripeService
     {
+        private static readonly StripeValidator StripeValidator = new StripeValidator();
         private readonly BankAccountService _bankAccountService;
         private readonly CardService _cardService;
         private readonly CustomerService _customerService;
@@ -56,8 +57,6 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
             string sourceToken,
             CancellationToken cancellationToken = default)
         {
-            var failures = new List<ValidationFailure>();
-
             try
             {
                 return await _bankAccountService.CreateAsync(customerId.ToString(), new BankAccountCreateOptions
@@ -67,16 +66,12 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
             }
             catch (StripeException exception)
             {
-                failures.Add(new ValidationFailure(string.Empty, exception.Message));
-
-                return new ValidationResult(failures);
+                return new ValidationResult(exception.Message);
             }
         }
 
         public async Task<Either<ValidationResult, BankAccount>> DeleteBankAccountAsync(CustomerId customerId, CancellationToken cancellationToken = default)
         {
-            var failures = new List<ValidationFailure>();
-
             try
             {
                 var bankAccounts = await _bankAccountService.ListAsync(customerId.ToString(), cancellationToken: cancellationToken);
@@ -85,18 +80,14 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
 
                 if (bankAccount == null)
                 {
-                    failures.Add(new ValidationFailure(string.Empty, "Account already deleted."));
-
-                    return new ValidationResult(failures);
+                    return new ValidationResult("Account already deleted.");
                 }
 
                 return await _bankAccountService.DeleteAsync(customerId.ToString(), bankAccount.Id, cancellationToken: cancellationToken);
             }
             catch (StripeException exception)
             {
-                failures.Add(new ValidationFailure(string.Empty, exception.Message));
-
-                return new ValidationResult(failures);
+                return new ValidationResult(exception.Message);
             }
         }
 
@@ -106,8 +97,6 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
             bool defaultSource,
             CancellationToken cancellationToken = default)
         {
-            var failures = new List<ValidationFailure>();
-
             try
             {
                 var card = await _cardService.CreateAsync(
@@ -135,32 +124,24 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
             }
             catch (StripeException exception)
             {
-                failures.Add(new ValidationFailure(string.Empty, exception.Message));
-
-                return new ValidationResult(failures);
+                return new ValidationResult(exception.Message);
             }
         }
 
         public async Task<Either<ValidationResult, Card>> DeleteCardAsync(CustomerId customerId, CardId cardId, CancellationToken cancellationToken = default)
         {
-            var failures = new List<ValidationFailure>();
-
             try
             {
                 return await _cardService.DeleteAsync(customerId.ToString(), cardId.ToString(), cancellationToken: cancellationToken);
             }
             catch (StripeException exception)
             {
-                failures.Add(new ValidationFailure(string.Empty, exception.Message));
-
-                return new ValidationResult(failures);
+                return new ValidationResult(exception.Message);
             }
         }
 
         public async Task<Either<ValidationResult, Customer>> CreateCustomerAsync(UserId userId, string email, CancellationToken cancellationToken = default)
         {
-            var failures = new List<ValidationFailure>();
-
             try
             {
                 return await _customerService.CreateAsync(new CustomerCreateOptions
@@ -174,31 +155,7 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
             }
             catch (StripeException exception)
             {
-                failures.Add(new ValidationFailure(string.Empty, exception.Message));
-
-                return new ValidationResult(failures);
-            }
-        }
-
-        public async Task<Either<ValidationResult, Customer>> UpdateCustomerEmailAsync(
-            CustomerId customerId,
-            string email,
-            CancellationToken cancellationToken = default)
-        {
-            var failures = new List<ValidationFailure>();
-
-            try
-            {
-                return await _customerService.UpdateAsync(customerId.ToString(), new CustomerUpdateOptions
-                {
-                    Email = email
-                }, cancellationToken: cancellationToken);
-            }
-            catch (StripeException exception)
-            {
-                failures.Add(new ValidationFailure(string.Empty, exception.Message));
-
-                return new ValidationResult(failures);
+                return new ValidationResult(exception.Message);
             }
         }
 
@@ -207,8 +164,6 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
             CardId cardId,
             CancellationToken cancellationToken = default)
         {
-            var failures = new List<ValidationFailure>();
-
             try
             {
                 return await _customerService.UpdateAsync(customerId.ToString(), new CustomerUpdateOptions
@@ -218,9 +173,7 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
             }
             catch (StripeException exception)
             {
-                failures.Add(new ValidationFailure(string.Empty, exception.Message));
-
-                return new ValidationResult(failures);
+                return new ValidationResult(exception.Message);
             }
         }
 
@@ -230,25 +183,13 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
             ITransaction transaction,
             CancellationToken cancellationToken = default)
         {
-            var failures = new List<ValidationFailure>();
-
             try
             {
                 var customer = await _customerService.GetAsync(customerId.ToString(), cancellationToken: cancellationToken);
 
-                if (customer.DefaultSource == null)
+                if (!StripeValidator.Validate(customer, out var result))
                 {
-                    failures.Add(new ValidationFailure(string.Empty,
-                        "The customer default source payment is invalid. This customer doesn't have any default payment source."));
-
-                    return new ValidationResult(failures);
-                }
-
-                if (customer.DefaultSource.Object != "card")
-                {
-                    failures.Add(new ValidationFailure(string.Empty, "The customer default source payment is invalid. Only credit card are accepted."));
-
-                    return new ValidationResult(failures);
+                    return result;
                 }
 
                 await _invoiceItemService.CreateAsync(new InvoiceItemCreateOptions
@@ -277,9 +218,7 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
             }
             catch (StripeException exception)
             {
-                failures.Add(new ValidationFailure(string.Empty, exception.Message));
-
-                return new ValidationResult(failures);
+                return new ValidationResult(exception.Message);
             }
         }
 
@@ -289,25 +228,13 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
             ITransaction transaction,
             CancellationToken cancellationToken = default)
         {
-            var failures = new List<ValidationFailure>();
-
             try
             {
                 var customer = await _customerService.GetAsync(customerId.ToString(), cancellationToken: cancellationToken);
 
-                if (customer.DefaultSource == null)
+                if (!StripeValidator.Validate(customer, out var result))
                 {
-                    failures.Add(new ValidationFailure(string.Empty,
-                        "The customer default source payment is invalid. This customer doesn't have any default payment source."));
-
-                    return new ValidationResult(failures);
-                }
-
-                if (customer.DefaultSource?.Object != "card")
-                {
-                    failures.Add(new ValidationFailure(string.Empty, "The customer default source payment is invalid. Only credit card are accepted."));
-
-                    return new ValidationResult(failures);
+                    return result;
                 }
 
                 return await _payoutService.CreateAsync(new PayoutCreateOptions
@@ -326,9 +253,7 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
             }
             catch (StripeException exception)
             {
-                failures.Add(new ValidationFailure(string.Empty, exception.Message));
-
-                return new ValidationResult(failures);
+                return new ValidationResult(exception.Message);
             }
         }
     }

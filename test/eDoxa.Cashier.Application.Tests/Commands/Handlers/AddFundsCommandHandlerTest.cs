@@ -33,14 +33,12 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     [TestClass]
     public sealed class AddFundsCommandHandlerTest
     {
-        private Mock<IMapper> _mockMapper;
         private Mock<IMoneyAccountService> _mockMoneyAccountService;
         private Mock<IUserInfoService> _mockUserInfoService;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            _mockMapper = new Mock<IMapper>();
             _mockMoneyAccountService = new Mock<IMoneyAccountService>();
             _mockUserInfoService = new Mock<IUserInfoService>();
             _mockUserInfoService.SetupGetProperties();
@@ -49,7 +47,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<AddFundsCommandHandler>.For(typeof(IUserInfoService), typeof(IMoneyAccountService), typeof(IMapper))
+            ConstructorTests<AddFundsCommandHandler>.For(typeof(IUserInfoService), typeof(IMoneyAccountService))
                 .WithName("AddFundsCommandHandler")
                 .Assert();
         }
@@ -65,7 +63,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
                 .ReturnsAsync(new DepositMoneyTransaction(new Money(10)))
                 .Verifiable();
 
-            var handler = new AddFundsCommandHandler(_mockUserInfoService.Object, _mockMoneyAccountService.Object, _mockMapper.Object);
+            var handler = new AddFundsCommandHandler(_mockUserInfoService.Object, _mockMoneyAccountService.Object);
 
             // Act
             await handler.HandleAsync(command);

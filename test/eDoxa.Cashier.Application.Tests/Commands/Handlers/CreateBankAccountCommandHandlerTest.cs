@@ -11,7 +11,6 @@
 using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Security.Abstractions;
-using eDoxa.ServiceBus;
 using eDoxa.Testing.MSTest;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;

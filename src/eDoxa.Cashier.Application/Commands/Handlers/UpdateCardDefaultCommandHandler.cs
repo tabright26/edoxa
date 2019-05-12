@@ -40,7 +40,10 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 
             var either = await _stripeService.UpdateCustomerDefaultSourceAsync(customerId, command.CardId, cancellationToken);
 
-            return either.Match<IActionResult>(result => new BadRequestObjectResult(result), customer => new OkObjectResult(customer));
+            return either.Match<IActionResult>(
+                result => new BadRequestObjectResult(result.ErrorMessage),
+                customer => new OkObjectResult("The card has been updated as default.")
+            );
         }
     }
 }

@@ -39,8 +39,14 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
             var either = await _stripeService.CreateCustomerAsync(command.UserId, command.Email, cancellationToken);
 
             await either.Match(
-                result => throw new ValidationException(result.Errors), 
-                async customer => await _integrationEventService.PublishAsync(new UserClaimAddedIntegrationEvent(command.UserId.ToGuid(), CustomClaimTypes.CustomerId, customer.Id.ToString()))
+                result => throw new ValidationException(result.ErrorMessage),
+                async customer => await _integrationEventService.PublishAsync(
+                    new UserClaimAddedIntegrationEvent(
+                        command.UserId.ToGuid(),
+                        CustomClaimTypes.CustomerId,
+                        customer.Id.ToString()
+                    )
+                )
             );
         }
     }

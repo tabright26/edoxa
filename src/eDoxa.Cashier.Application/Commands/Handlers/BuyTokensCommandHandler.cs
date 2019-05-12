@@ -11,13 +11,10 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using AutoMapper;
-
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
 using eDoxa.Cashier.Domain.Services.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
-using eDoxa.Cashier.DTO;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Security.Abstractions;
 
@@ -30,15 +27,13 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
     internal sealed class BuyTokensCommandHandler : ICommandHandler<BuyTokensCommand, IActionResult>
     {
         private static readonly TokenBundles Bundles = new TokenBundles();
-        private readonly IMapper _mapper;
         private readonly ITokenAccountService _tokenAccountService;
         private readonly IUserInfoService _userInfoService;
 
-        public BuyTokensCommandHandler(IUserInfoService userInfoService, ITokenAccountService tokenAccountService, IMapper mapper)
+        public BuyTokensCommandHandler(IUserInfoService userInfoService, ITokenAccountService tokenAccountService)
         {
             _userInfoService = userInfoService;
             _tokenAccountService = tokenAccountService;
-            _mapper = mapper;
         }
 
         [ItemNotNull]
@@ -53,8 +48,8 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
             var either = await _tokenAccountService.DepositAsync(userId, customerId, bundle, cancellationToken);
 
             return either.Match<IActionResult>(
-                result => new BadRequestObjectResult(result),
-                transaction => new OkObjectResult(_mapper.Map<TokenTransactionDTO>(transaction))
+                result => new BadRequestObjectResult(result.ErrorMessage),
+                transaction => new OkObjectResult(transaction.Status)
             );
         }
     }

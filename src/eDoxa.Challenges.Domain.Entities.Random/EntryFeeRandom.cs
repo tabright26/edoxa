@@ -10,8 +10,6 @@
 
 using System;
 
-using eDoxa.Seedwork.Utilities;
-
 namespace eDoxa.Challenges.Domain.Entities.Random
 {
     public sealed class EntryFeeRandom : SetupRandom<EntryFee, EntryFeeRange>
@@ -31,7 +29,7 @@ namespace eDoxa.Challenges.Domain.Entities.Random
             // Entry fee is under 5$.
             if (entryFee < 5 * multiplierOfCents)
             {
-                entryFee = MathUtils.RoundMultiplier(entryFee, multiplierOfCents);
+                entryFee = (int)Math.Round((decimal)entryFee / multiplierOfCents);
 
                 if (entryFee == 0)
                 {
@@ -68,7 +66,7 @@ namespace eDoxa.Challenges.Domain.Entities.Random
                 multiplier = 500 * multiplierOfCents;
             }
 
-            entryFee = MathUtils.RoundMultiplier(entryFee, multiplier);
+            entryFee = (int)Math.Round((decimal)entryFee / multiplier);
 
             return new EntryFee(entryFee * (multiplier / multiplierOfCents));
         }

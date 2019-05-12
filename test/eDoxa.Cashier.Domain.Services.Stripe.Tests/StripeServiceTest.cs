@@ -141,23 +141,6 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Tests
         }
 
         [TestMethod]
-        public async Task UpdateCustomerEmailAsync()
-        {
-            // Arrange
-            _mockCustomerService.Setup(mock => mock.UpdateAsync(It.IsAny<string>(), It.IsAny<CustomerUpdateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(FakeCashierFactory.CreateCustomer)
-                .Verifiable();
-
-            var service = this.StripeService();
-
-            // Act
-            await service.UpdateCustomerEmailAsync(FakeCashierFactory.CreateCustomerId(), FakeCashierFactory.CreateCustomer().Email);
-
-            // Assert
-            _mockCustomerService.Verify(mock => mock.UpdateAsync(It.IsAny<string>(), It.IsAny<CustomerUpdateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()), Times.Once);
-        }
-
-        [TestMethod]
         public async Task UpdateCustomerDefaultSourceAsync()
         {
             // Arrange

@@ -9,7 +9,6 @@
 // this source code package.
 
 using System;
-using System.Threading.Tasks;
 
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Monitoring.Extensions;

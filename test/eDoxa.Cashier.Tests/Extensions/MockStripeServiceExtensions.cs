@@ -47,10 +47,6 @@ namespace eDoxa.Cashier.Tests.Extensions
                 .ReturnsAsync(FakeCashierFactory.CreateCustomer());
 
             mockStripeService
-                .Setup(mock => mock.UpdateCustomerEmailAsync(It.IsAny<CustomerId>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(FakeCashierFactory.CreateCustomer());
-
-            mockStripeService
                 .Setup(mock => mock.UpdateCustomerDefaultSourceAsync(It.IsAny<CustomerId>(), It.IsAny<CardId>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(FakeCashierFactory.CreateCustomer());
 
