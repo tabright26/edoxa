@@ -9,6 +9,7 @@
 // this source code package.
 
 using System;
+using System.Threading.Tasks;
 
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Monitoring.Extensions;
@@ -18,6 +19,7 @@ using eDoxa.ServiceBus;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -46,9 +48,9 @@ namespace eDoxa.Cashier.Api
                         {
                             var factory = provider.GetService<ILoggerFactory>();
 
-                            var task = context.SeedAsync(factory.CreateLogger<CashierDbContext>());
+                            var configuration = provider.GetService<IConfiguration>();
 
-                            task.Wait();
+                            context.SeedAsync(factory.CreateLogger<CashierDbContext>(), configuration).Wait();
                         }
                     }
                 );

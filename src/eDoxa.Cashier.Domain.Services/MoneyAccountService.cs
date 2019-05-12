@@ -94,7 +94,7 @@ namespace eDoxa.Cashier.Domain.Services
                     },
                     payout =>
                     {
-                        transaction.Complete();
+                        transaction.Success();
 
                         _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken).Wait(cancellationToken);
 

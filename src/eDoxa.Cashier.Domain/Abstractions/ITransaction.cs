@@ -28,7 +28,7 @@ namespace eDoxa.Cashier.Domain.Abstractions
         DateTime Timestamp { get; }
 
         TCurrency Amount { get; }
-        
+
         TransactionType Type { get; }
 
         TransactionStatus Status { get; }
@@ -38,7 +38,5 @@ namespace eDoxa.Cashier.Domain.Abstractions
         void Cancel();
 
         void Fail();
-
-        void Complete();
     }
 }

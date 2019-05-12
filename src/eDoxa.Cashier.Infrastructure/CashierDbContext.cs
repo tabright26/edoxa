@@ -8,6 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,40 +22,31 @@ using eDoxa.Seedwork.Infrastructure;
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Cashier.Infrastructure
 {
     public sealed partial class CashierDbContext
     {
-        public async Task SeedAsync(ILogger logger)
+        public async Task SeedAsync(ILogger logger, IConfiguration configuration)
         {
-            if (!MoneyAccounts.Any())
+            if (!MoneyAccounts.Any() || !TokenAccounts.Any())
             {
-                // TODO: Add to appsetting.json
-                MoneyAccounts.Add(new MoneyAccount(UserId.Parse("e4655fe0-affd-4323-b022-bdb2ebde6091")));
+                configuration.GetSection("Users").Get<List<string>>().ForEach(userId =>
+                {
+                    MoneyAccounts.Add(new MoneyAccount(UserId.Parse(userId)));
 
-                await this.SaveChangesAsync();
+                    TokenAccounts.Add(new TokenAccount(UserId.Parse(userId)));
+                });
 
-                logger.LogInformation("The money accounts being populated.");
+                await this.CommitAsync();
+
+                logger.LogInformation("The accounts being populated.");
             }
             else
             {
-                logger.LogInformation("The money accounts already populated.");
-            }
-
-            if (!TokenAccounts.Any())
-            {
-                // TODO: Add to appsetting.json
-                TokenAccounts.Add(new TokenAccount(UserId.Parse("e4655fe0-affd-4323-b022-bdb2ebde6091")));
-
-                await this.SaveChangesAsync();
-
-                logger.LogInformation("The token accounts being populated.");
-            }
-            else
-            {
-                logger.LogInformation("The token accounts already populated.");
+                logger.LogInformation("The accounts already populated.");
             }
         }
     }

@@ -40,7 +40,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
         public Money Balance =>
             new Money(Transactions
                 .Where(transaction => transaction.Status.Equals(TransactionStatus.Paid) || 
-                                      transaction.Status.Equals(TransactionStatus.Completed))
+                                      transaction.Status.Equals(TransactionStatus.Succeeded))
                 .Sum(transaction => transaction.Amount));
 
         public Money Pending =>

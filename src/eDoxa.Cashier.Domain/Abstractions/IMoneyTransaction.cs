@@ -16,5 +16,6 @@ namespace eDoxa.Cashier.Domain.Abstractions
 {
     public interface IMoneyTransaction : ITransaction<Money>, IEntity<TransactionId>
     {
+        void Success();
     }
 }
