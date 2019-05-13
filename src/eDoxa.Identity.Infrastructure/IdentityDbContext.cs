@@ -1,47 +1,66 @@
 ﻿// Filename: IdentityDbContext.cs
-// Date Created: 2019-04-14
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
-using System.Threading.Tasks;
+using System.Collections.Generic;
+
+using eDoxa.Functional.Extensions;
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
-using eDoxa.Identity.Domain.Factories;
 using eDoxa.Identity.Infrastructure.Configurations;
 
 using JetBrains.Annotations;
+
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Identity.Infrastructure
 {
     public sealed partial class IdentityDbContext
     {
-        private static readonly UserAggregateFactory UserAggregateFactory = UserAggregateFactory.Instance;
-
-        public Task SeedAsync(ILogger logger)
+        public void Seed(ILogger logger, IConfiguration configuration)
         {
-            //if (!Users.Any())
-            //{
-            //    Users.AddRange(UserAggregateFactory.CreateAdmin(), UserAggregateFactory.CreateFrancis(), UserAggregateFactory.CreateRoy(), UserAggregateFactory.CreateRyan());
+            if (!Roles.Any())
+            {
+                var roles = configuration.GetSection("Roles").Get<HashSet<Role>>();
 
-            //    await this.SaveChangesAsync();
+                Roles.AddRange(roles);
 
-            //    logger.LogInformation("The users being populated.");
-            //}
-            //else
-            //{
-            //    logger.LogInformation("The users already populated.");
-            //}
+                this.SaveChanges();
 
-            return Task.CompletedTask;
+                logger.LogInformation("The roles being populated.");
+            }
+            else
+            {
+                logger.LogInformation("The roles already populated.");
+            }
+
+            if (!Users.Any())
+            {
+                var users = configuration.GetSection("Users").Get<HashSet<User>>();
+
+                users.ForEach(user => user.HashPassword("Pass@word1"));
+
+                Users.AddRange(users);
+
+                this.SaveChanges();
+
+                logger.LogInformation("The users being populated.");
+            }
+            else
+            {
+                logger.LogInformation("The users already populated.");
+            }
         }
     }
 

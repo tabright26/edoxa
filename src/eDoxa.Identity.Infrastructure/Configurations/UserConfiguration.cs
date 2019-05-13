@@ -22,6 +22,38 @@ namespace eDoxa.Identity.Infrastructure.Configurations
         public void Configure([NotNull] EntityTypeBuilder<User> builder)
         {
             builder.ToTable(nameof(IdentityDbContext.Users));
+
+            builder.HasMany(user => user.Roles)
+                .WithOne()
+                .HasForeignKey(role => role.UserId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(user => user.Claims)
+                .WithOne()
+                .HasForeignKey(role => role.UserId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(user => user.Logins)
+                .WithOne()
+                .HasForeignKey(role => role.UserId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(user => user.Tokens)
+                .WithOne()
+                .HasForeignKey(role => role.UserId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
+
+            //builder.Metadata.FindNavigation(nameof(User.Roles)).SetPropertyAccessMode(PropertyAccessMode.Field);
+
+            //builder.Metadata.FindNavigation(nameof(User.Claims)).SetPropertyAccessMode(PropertyAccessMode.Field);
+
+            //builder.Metadata.FindNavigation(nameof(User.Logins)).SetPropertyAccessMode(PropertyAccessMode.Field);
+
+            //builder.Metadata.FindNavigation(nameof(User.Tokens)).SetPropertyAccessMode(PropertyAccessMode.Field);
         }
     }
 }

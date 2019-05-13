@@ -9,6 +9,7 @@
 // this source code package.
 
 using System;
+using System.Collections.Generic;
 
 using Microsoft.AspNetCore.Identity;
 
@@ -18,11 +19,14 @@ namespace eDoxa.Identity.Domain.AggregateModels.RoleAggregate
     {
         public Role(string roleName) : base(roleName)
         {
+            Claims = new HashSet<RoleClaim>();
         }
 
         public Role()
         {
-            
+            Claims = new HashSet<RoleClaim>();
         }
+
+        public ICollection<RoleClaim> Claims { get; set; }
     }
 }

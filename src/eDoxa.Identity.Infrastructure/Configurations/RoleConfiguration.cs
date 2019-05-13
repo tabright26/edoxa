@@ -22,6 +22,14 @@ namespace eDoxa.Identity.Infrastructure.Configurations
         public void Configure([NotNull] EntityTypeBuilder<Role> builder)
         {
             builder.ToTable(nameof(IdentityDbContext.Roles));
+
+            builder.HasMany(user => user.Claims)
+                .WithOne()
+                .HasForeignKey(role => role.RoleId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
+
+            //builder.Metadata.FindNavigation(nameof(Role.Claims)).SetPropertyAccessMode(PropertyAccessMode.Field);
         }
     }
 }

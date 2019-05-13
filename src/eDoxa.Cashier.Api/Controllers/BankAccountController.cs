@@ -8,13 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Linq;
-using System.Threading.Tasks;
-
-using eDoxa.Cashier.Application.Commands;
-using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Cashier.DTO.Queries;
-using eDoxa.Commands.Extensions;
 using eDoxa.Security.Abstractions;
 
 using MediatR;

@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20190513170436_Test.cs" />
+    <Compile Remove="Migrations\20190513170436_Test.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\eDoxa.Identity.Domain\eDoxa.Identity.Domain.csproj" />
     <ProjectReference Include="..\eDoxa.Security\eDoxa.Security.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Infrastructure\eDoxa.Seedwork.Infrastructure.csproj" />
