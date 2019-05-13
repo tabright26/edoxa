@@ -224,38 +224,5 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
                 return new ValidationResult(exception.Message);
             }
         }
-        
-        //public async Task<Either<ValidationResult, Payout>> CreatePayoutAsync(CustomerId customerId, IBundle bundle, ITransaction transaction, CancellationToken cancellationToken = default)
-        //{
-        //    try
-        //    {
-        //        var bankAccounts = await _bankAccountService.ListAsync(customerId.ToString(), new BankAccountListOptions(), cancellationToken: cancellationToken);
-
-        //        var bankAccount = bankAccounts.FirstOrDefault(account => !account.Deleted ?? true);
-
-        //        if (bankAccount == null)
-        //        {
-        //            return new ValidationResult("There is no bank account associated with this customer.");
-        //        }
-
-        //        return await _payoutService.CreateAsync(new PayoutCreateOptions
-        //        {
-        //            SourceType = "bank_account",
-        //            Destination = bankAccount.Id,
-        //            Amount = bundle.Price.AsCents(),
-        //            Currency = "usd",
-        //            StatementDescriptor = "eDoxa",
-        //            Method = "standard",
-        //            Metadata = new Dictionary<string, string>
-        //            {
-        //                [nameof(TransactionId)] = transaction.Id.ToString()
-        //            }
-        //        }, cancellationToken: cancellationToken);
-        //    }
-        //    catch (StripeException exception)
-        //    {
-        //        return new ValidationResult(exception.Message);
-        //    }
-        //}
     }
 }

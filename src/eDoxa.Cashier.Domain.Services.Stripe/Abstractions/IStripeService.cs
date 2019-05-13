@@ -51,11 +51,5 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Abstractions
             IBundle bundle,
             ITransaction transaction,
             CancellationToken cancellationToken = default);
-
-        //Task<Either<ValidationResult, Payout>> CreatePayoutAsync(
-        //    CustomerId customerId,
-        //    IBundle bundle,
-        //    ITransaction transaction,
-        //    CancellationToken cancellationToken = default);
     }
 }

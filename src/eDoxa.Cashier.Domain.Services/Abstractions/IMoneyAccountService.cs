@@ -24,10 +24,10 @@ namespace eDoxa.Cashier.Domain.Services.Abstractions
     {
         Task<Either<ValidationResult, IMoneyTransaction>> DepositAsync(UserId userId, CustomerId customerId, MoneyBundle bundle, string email, CancellationToken cancellationToken = default);
 
-        //Task<Either<ValidationResult, IMoneyTransaction>> TryWithdrawalAsync(
-        //    UserId userId,
-        //    CustomerId customerId,
-        //    MoneyBundle bundle,
-        //    CancellationToken cancellationToken = default);
+        Task<Either<ValidationResult, IMoneyTransaction>> TryWithdrawalAsync(
+            UserId userId,
+            CustomerId customerId,
+            MoneyBundle bundle,
+            CancellationToken cancellationToken = default);
     }
 }

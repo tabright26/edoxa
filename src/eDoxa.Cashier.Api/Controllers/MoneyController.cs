@@ -80,14 +80,14 @@ namespace eDoxa.Cashier.Api.Controllers
             return this.Ok(MoneyBundleType.GetAll());
         }
 
-        ///// <summary>
-        /////     Withdrawal money.
-        ///// </summary>
-        //[HttpPost("withdrawal", Name = nameof(WithdrawalMoneyAsync))]
-        //public async Task<IActionResult> WithdrawalMoneyAsync([FromBody] WithdrawalFundsCommand command)
-        //{
-        //    return await _mediator.SendCommandAsync(command);
-        //}
+        /// <summary>
+        ///     Withdrawal money.
+        /// </summary>
+        [HttpPost("withdrawal", Name = nameof(WithdrawalMoneyAsync))]
+        public async Task<IActionResult> WithdrawalMoneyAsync([FromBody] WithdrawalFundsCommand command)
+        {
+            return await _mediator.SendCommandAsync(command);
+        }
 
         /// <summary>
         ///     Withdrawal money.

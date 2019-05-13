@@ -20,7 +20,7 @@ namespace eDoxa.Cashier.DTO.Profiles
         {
             this.CreateMap<TokenAccount, TokenAccountDTO>()
                 .ForMember(account => account.Balance, config => config.MapFrom<long>(account => account.Balance))
-                .ForMember(account => account.Pending, config => config.MapFrom<long>(account => account.Pending));
+                .ForMember(account => account.Pending, config => config.Ignore());
         }
     }
 }
