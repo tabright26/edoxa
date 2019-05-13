@@ -42,36 +42,36 @@ namespace eDoxa.Cashier.Api.Controllers
             _userInfoService = userInfoService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> FindBankAccount()
-        {
-            var customerId = _userInfoService.CustomerId;
+        //[HttpGet]
+        //public async Task<IActionResult> FindBankAccount()
+        //{
+        //    var customerId = _userInfoService.CustomerId;
 
-            var bankAccount = await _bankAccountQueries.FindUserBankAccountAsync(new CustomerId(customerId));
+        //    var bankAccount = await _bankAccountQueries.FindUserBankAccountAsync(new CustomerId(customerId));
 
-            return bankAccount
-                .Select(this.Ok)
-                .Cast<IActionResult>()
-                .DefaultIfEmpty(this.NotFound("User don't have a bank account."))
-                .Single();
-        }
+        //    return bankAccount
+        //        .Select(this.Ok)
+        //        .Cast<IActionResult>()
+        //        .DefaultIfEmpty(this.NotFound("User don't have a bank account."))
+        //        .Single();
+        //}
 
-        [HttpPost]
-        public async Task<IActionResult> CreateBankAccount([FromBody] CreateBankAccountCommand command)
-        {
-            return await _mediator.SendCommandAsync(command);
-        }
+        //[HttpPost]
+        //public async Task<IActionResult> CreateBankAccount([FromBody] CreateBankAccountCommand command)
+        //{
+        //    return await _mediator.SendCommandAsync(command);
+        //}
         
-        [HttpDelete]
-        public async Task<IActionResult> DeleteBankAccount()
-        {
-            return await _mediator.SendCommandAsync(new DeleteBankAccountCommand());
-        }
+        //[HttpDelete]
+        //public async Task<IActionResult> DeleteBankAccount()
+        //{
+        //    return await _mediator.SendCommandAsync(new DeleteBankAccountCommand());
+        //}
 
-        [HttpPatch("verify")]
-        public async Task<IActionResult> VerifyBankAccount([FromBody] VerifyBankAccountCommand command)
-        {
-            return await _mediator.SendCommandAsync(command);
-        }
+        //[HttpPatch("verify")]
+        //public async Task<IActionResult> VerifyBankAccount([FromBody] VerifyBankAccountCommand command)
+        //{
+        //    return await _mediator.SendCommandAsync(command);
+        //}
     }
 }
