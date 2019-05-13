@@ -1,5 +1,5 @@
 ﻿// Filename: MoneyAccountService.cs
-// Date Created: 2019-05-11
+// Date Created: 2019-05-13
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -35,6 +35,13 @@ namespace eDoxa.Cashier.Domain.Services
             _stripeService = stripeService;
         }
 
+        public async Task CreateAccount(UserId userId)
+        {
+            _moneyAccountRepository.Create(new MoneyAccount(userId));
+
+            await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync();
+        }
+
         public async Task<Either<ValidationResult, IMoneyTransaction>> DepositAsync(
             UserId userId,
             CustomerId customerId,
@@ -48,7 +55,7 @@ namespace eDoxa.Cashier.Domain.Services
 
             await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
-            var either = _stripeService.CreateInvoiceAsync(customerId, email, bundle, moneyTransaction, cancellationToken).Result;
+            var either = await _stripeService.CreateInvoiceAsync(customerId, email, bundle, moneyTransaction, cancellationToken);
 
             return either.Match(
                 result =>

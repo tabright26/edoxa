@@ -14,4 +14,10 @@
     <ProjectReference Include="..\eDoxa.Seedwork.Domain\eDoxa.Seedwork.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="IdentityModel">
+      <HintPath>..\..\..\..\..\.nuget\packages\identitymodel\3.10.6\lib\netstandard2.0\IdentityModel.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

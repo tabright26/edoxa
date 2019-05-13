@@ -1,5 +1,5 @@
 ﻿// Filename: UserCreatedIntegrationEventTest.cs
-// Date Created: 2019-05-11
+// Date Created: 2019-05-13
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -23,7 +23,7 @@ namespace eDoxa.Cashier.Application.Tests.IntegrationEvents
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<UserCreatedIntegrationEvent>.For(typeof(Guid), typeof(string))
+            ConstructorTests<UserCreatedIntegrationEvent>.For(typeof(Guid), typeof(string), typeof(string), typeof(string))
                 .WithName("UserCreatedIntegrationEvent")
                 .Assert();
         }

@@ -1,5 +1,5 @@
 ﻿// Filename: TokenAccountRepository.cs
-// Date Created: 2019-05-02
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -34,6 +34,11 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
 
     public sealed partial class TokenAccountRepository : ITokenAccountRepository
     {
+        public void Create(TokenAccount account)
+        {
+            _context.TokenAccounts.Add(account);
+        }
+
         public async Task<TokenAccount> FindUserAccountAsync(UserId userId)
         {
             return await _context.TokenAccounts

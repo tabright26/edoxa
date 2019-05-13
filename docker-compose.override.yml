@@ -30,6 +30,12 @@ services:
       - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
       - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
       - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
+      - AzureServiceBus__Enable=${ASB_ENABLE:-false}
+      - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq}
+      - ServiceBus__UserName=${ASB_USERNAME:-admin}
+      - ServiceBus__Password=${ASB_PASSWORD:-4t8SaVXVMy0rT2kM}
+      - ServiceBus__RetryCount=${ASB_RETRYCOUNT:-5}
+      - ServiceBus__Subscription=IdentityServer
       - AzureKubernetesService__Enable=${AKS_ENABLE:-false}
       - Authority=${URL:-http://localhost}:5000
       - Identity__Url=${URL:-http://localhost}:5001

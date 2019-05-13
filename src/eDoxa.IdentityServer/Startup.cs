@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-04-30
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,6 +8,9 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
+
+using eDoxa.Autofac.Extensions;
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Infrastructure;
@@ -15,6 +18,7 @@ using eDoxa.IdentityServer.Extensions;
 using eDoxa.Monitoring.Extensions;
 using eDoxa.Security.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
+using eDoxa.ServiceBus.Extensions;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,12 +40,12 @@ namespace eDoxa.IdentityServer
 
         private IHostingEnvironment Environment { get; }
 
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddHealthChecks(Configuration);
 
             services.AddCookiePolicy();
-            
+
             services.AddEntityFrameworkSqlServer();
 
             services.AddDbContext<IdentityDbContext>(Configuration);
@@ -53,6 +57,10 @@ namespace eDoxa.IdentityServer
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddIdentityServer<User>(Configuration, Environment);
+
+            services.AddServiceBus(Configuration);
+
+            return services.Build();
         }
 
         public void Configure(IApplicationBuilder application)
@@ -62,7 +70,6 @@ namespace eDoxa.IdentityServer
             if (Environment.IsDevelopment())
             {
                 application.UseDeveloperExceptionPage();
-                application.UseDatabaseErrorPage();
             }
             else
             {

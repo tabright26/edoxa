@@ -1,5 +1,5 @@
 ﻿// Filename: ITokenAccountService.cs
-// Date Created: 2019-05-11
+// Date Created: 2019-05-13
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -22,6 +22,13 @@ namespace eDoxa.Cashier.Domain.Services.Abstractions
 {
     public interface ITokenAccountService
     {
-        Task<Either<ValidationResult, ITokenTransaction>> DepositAsync(UserId userId, CustomerId customerId, TokenBundle bundle, string email, CancellationToken cancellationToken = default);
+        Task<Either<ValidationResult, ITokenTransaction>> DepositAsync(
+            UserId userId,
+            CustomerId customerId,
+            TokenBundle bundle,
+            string email,
+            CancellationToken cancellationToken = default);
+
+        Task CreateAccount(UserId userId);
     }
 }

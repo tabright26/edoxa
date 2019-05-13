@@ -1,5 +1,5 @@
 ﻿// Filename: TokenAccountService.cs
-// Date Created: 2019-05-11
+// Date Created: 2019-05-13
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -34,7 +34,19 @@ namespace eDoxa.Cashier.Domain.Services
             _stripeService = stripeService;
         }
 
-        public async Task<Either<ValidationResult, ITokenTransaction>> DepositAsync(UserId userId, CustomerId customerId, TokenBundle bundle, string email, CancellationToken cancellationToken = default)
+        public async Task CreateAccount(UserId userId)
+        {
+            _tokenAccountRepository.Create(new TokenAccount(userId));
+
+            await _tokenAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync();
+        }
+
+        public async Task<Either<ValidationResult, ITokenTransaction>> DepositAsync(
+            UserId userId,
+            CustomerId customerId,
+            TokenBundle bundle,
+            string email,
+            CancellationToken cancellationToken = default)
         {
             var account = await _tokenAccountRepository.FindUserAccountAsync(userId);
 

@@ -11,12 +11,24 @@
 using System;
 using System.Collections.Generic;
 
+using eDoxa.Functional.Extensions;
+
 using Microsoft.AspNetCore.Identity;
 
 namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
 {
     public sealed class User : IdentityUser<Guid>
     {
+        public User(string username, string email, PersonalName personalName, BirthDate birthDate) : this()
+        {
+            Email = email;
+            NormalizedEmail = email.ToUpperInvariant();
+            UserName = username;
+            NormalizedUserName = username.ToUpperInvariant();
+            personalName.ToClaims().ForEach(claim => Claims.Add(claim));
+            Claims.Add(birthDate.ToClaim());
+        }
+
         public User()
         {
             Roles = new HashSet<UserRole>();

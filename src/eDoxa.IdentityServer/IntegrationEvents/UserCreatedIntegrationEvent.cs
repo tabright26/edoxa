@@ -1,5 +1,5 @@
 ﻿// Filename: UserCreatedIntegrationEvent.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-05-13
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,9 +12,9 @@ using System;
 
 using eDoxa.ServiceBus;
 
-namespace eDoxa.Cashier.Application.IntegrationEvents
+namespace eDoxa.IdentityServer.IntegrationEvents
 {
-    public sealed class UserCreatedIntegrationEvent : IntegrationEvent
+    public class UserCreatedIntegrationEvent : IntegrationEvent
     {
         public UserCreatedIntegrationEvent(Guid userId, string email, string firstName, string lastName)
         {
@@ -24,12 +24,12 @@ namespace eDoxa.Cashier.Application.IntegrationEvents
             LastName = lastName;
         }
 
-        public Guid UserId { get; private set; }
+        public Guid UserId { get; }
 
-        public string Email { get; private set; }
+        public string Email { get; }
 
-        public string FirstName { get; private set; }
+        public string FirstName { get; }
 
-        public string LastName { get; private set; }
+        public string LastName { get; }
     }
 }

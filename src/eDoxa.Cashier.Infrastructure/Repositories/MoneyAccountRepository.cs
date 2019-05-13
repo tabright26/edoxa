@@ -1,5 +1,5 @@
 ﻿// Filename: MoneyAccountRepository.cs
-// Date Created: 2019-05-02
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -34,6 +34,11 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
 
     public sealed partial class MoneyAccountRepository : IMoneyAccountRepository
     {
+        public void Create(MoneyAccount account)
+        {
+            _context.MoneyAccounts.Add(account);
+        }
+
         public async Task<MoneyAccount> FindUserAccountAsync(UserId userId)
         {
             return await _context.MoneyAccounts

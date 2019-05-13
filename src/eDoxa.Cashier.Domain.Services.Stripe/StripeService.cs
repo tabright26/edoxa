@@ -1,5 +1,5 @@
 ﻿// Filename: StripeService.cs
-// Date Created: 2019-05-10
+// Date Created: 2019-05-13
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -33,10 +33,10 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
         private static readonly StripeValidator StripeValidator = new StripeValidator();
         private readonly BankAccountService _bankAccountService;
         private readonly CardService _cardService;
+        private readonly IConfiguration _configuration;
         private readonly CustomerService _customerService;
         private readonly InvoiceItemService _invoiceItemService;
         private readonly InvoiceService _invoiceService;
-        private readonly IConfiguration _configuration;
 
         public StripeService(
             BankAccountService bankAccountService,
@@ -171,7 +171,6 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
                 return await _customerService.CreateAsync(new CustomerCreateOptions
                 {
                     Email = email,
-                    TaxIdData = _configuration.GetSection("TaxIds").Get<List<CustomerTaxIdDataOptions>>(),
                     Metadata = new Dictionary<string, string>
                     {
                         [nameof(UserId)] = userId.ToString()
@@ -197,17 +196,6 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
             {
                 return new ValidationResult(exception.Message);
             }
-        }
-
-        private async Task<Customer> UpdateDefaultSourceAsync(
-            CustomerId customerId,
-            CardId cardId,
-            CancellationToken cancellationToken = default)
-        {
-            return await _customerService.UpdateAsync(customerId.ToString(), new CustomerUpdateOptions
-            {
-                DefaultSource = cardId.ToString()
-            }, cancellationToken: cancellationToken);
         }
 
         public async Task<Either<ValidationResult, Invoice>> CreateInvoiceAsync(
@@ -245,7 +233,22 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
             }
         }
 
-        private async Task CreateInvoiceItemAsync(CustomerId customerId, IBundle bundle, ITransaction transaction, CancellationToken cancellationToken = default)
+        private async Task<Customer> UpdateDefaultSourceAsync(
+            CustomerId customerId,
+            CardId cardId,
+            CancellationToken cancellationToken = default)
+        {
+            return await _customerService.UpdateAsync(customerId.ToString(), new CustomerUpdateOptions
+            {
+                DefaultSource = cardId.ToString()
+            }, cancellationToken: cancellationToken);
+        }
+
+        private async Task CreateInvoiceItemAsync(
+            CustomerId customerId,
+            IBundle bundle,
+            ITransaction transaction,
+            CancellationToken cancellationToken = default)
         {
             await _invoiceItemService.CreateAsync(new InvoiceItemCreateOptions
             {
@@ -253,6 +256,7 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
                 Description = transaction.Description.ToString(),
                 Amount = bundle.Price.AsCents(),
                 Currency = "usd",
+                TaxRates = _configuration.GetSection("TaxRateIds").Get<List<string>>(),
                 Metadata = new Dictionary<string, string>
                 {
                     [nameof(TransactionId)] = transaction.Id.ToString()

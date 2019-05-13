@@ -1,5 +1,5 @@
 ﻿// Filename: IMoneyAccountService.cs
-// Date Created: 2019-05-11
+// Date Created: 2019-05-13
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -22,7 +22,14 @@ namespace eDoxa.Cashier.Domain.Services.Abstractions
 {
     public interface IMoneyAccountService
     {
-        Task<Either<ValidationResult, IMoneyTransaction>> DepositAsync(UserId userId, CustomerId customerId, MoneyBundle bundle, string email, CancellationToken cancellationToken = default);
+        Task CreateAccount(UserId userId);
+
+        Task<Either<ValidationResult, IMoneyTransaction>> DepositAsync(
+            UserId userId,
+            CustomerId customerId,
+            MoneyBundle bundle,
+            string email,
+            CancellationToken cancellationToken = default);
 
         Task<Either<ValidationResult, IMoneyTransaction>> TryWithdrawalAsync(
             UserId userId,

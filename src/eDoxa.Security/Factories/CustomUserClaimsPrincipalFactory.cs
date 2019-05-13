@@ -1,5 +1,5 @@
 ﻿// Filename: CustomUserClaimsPrincipalFactory.cs
-// Date Created: 2019-05-03
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,11 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-
-using IdentityModel;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -37,16 +34,16 @@ namespace eDoxa.Security.Factories
         {
             var identity = await base.GenerateClaimsAsync(user);
 
-            var claims = await UserManager.GetClaimsAsync(user);
+            //var claims = await UserManager.GetClaimsAsync(user);
 
-            var givenName = claims.SingleOrDefault(claim => claim.Type == JwtClaimTypes.GivenName)?.Value;
+            //var givenName = claims.SingleOrDefault(claim => claim.Type == JwtClaimTypes.GivenName)?.Value;
 
-            var familyName = claims.SingleOrDefault(claim => claim.Type == JwtClaimTypes.FamilyName)?.Value;
+            //var familyName = claims.SingleOrDefault(claim => claim.Type == JwtClaimTypes.FamilyName)?.Value;
 
-            if (givenName != null && familyName != null)
-            {
-                identity.AddClaim(new Claim(JwtClaimTypes.Name, $"{givenName} {familyName}"));
-            }
+            //if (givenName != null && familyName != null)
+            //{
+            //    identity.AddClaim(new Claim(JwtClaimTypes.Name, $"{givenName} {familyName}"));
+            //}
 
             return identity;
         }

@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.Services.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Tests.Extensions;
 using eDoxa.Cashier.Tests.Factories;
@@ -32,11 +33,15 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     {
         private static readonly FakeCashierFactory FakeCashierFactory = FakeCashierFactory.Instance;
         private Mock<IIntegrationEventService> _mockIntegrationEventService;
+        private Mock<IMoneyAccountService> _mockMoneyAccountService;
         private Mock<IStripeService> _mockStripeService;
+        private Mock<ITokenAccountService> _mockTokenAccountService;
 
         [TestInitialize]
         public void TestInitialize()
         {
+            _mockMoneyAccountService = new Mock<IMoneyAccountService>();
+            _mockTokenAccountService = new Mock<ITokenAccountService>();
             _mockIntegrationEventService = new Mock<IIntegrationEventService>();
             _mockStripeService = new Mock<IStripeService>();
             _mockStripeService.SetupMethods();
@@ -45,7 +50,8 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<CreateUserCommandHandler>.For(typeof(IStripeService), typeof(IIntegrationEventService))
+            ConstructorTests<CreateUserCommandHandler>.For(typeof(IStripeService), typeof(IIntegrationEventService), typeof(IMoneyAccountService),
+                    typeof(ITokenAccountService))
                 .WithName("CreateUserCommandHandler")
                 .Assert();
         }
@@ -63,7 +69,8 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             //    .ReturnsAsync(customer)
             //    .Verifiable();
 
-            var handler = new CreateUserCommandHandler(_mockStripeService.Object, _mockIntegrationEventService.Object);
+            var handler = new CreateUserCommandHandler(_mockStripeService.Object, _mockIntegrationEventService.Object, _mockMoneyAccountService.Object,
+                _mockTokenAccountService.Object);
 
             // Act
             await handler.HandleAsync(new CreateUserCommand(userId, customer.Email));
