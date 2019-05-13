@@ -20,3 +20,18 @@
 # Builds
 
 [![Build Status](https://edoxa.visualstudio.com/eDoxa/_apis/build/status/eDoxa-CI?branchName=master)](https://edoxa.visualstudio.com/eDoxa/_build/latest?definitionId=5&branchName=master)
+
+## Docker
+
+| Service       | Host       | Port |
+| :------------ | ---------- | ---: |
+| idsrv         | {localurl} | 5000 |
+| identity.api  | {localurl} | 5001 |
+| cashier.api   | {localurl} | 5002 |
+| challenge.api | {localurl} | 5003 |
+| web.spa       | localhost  | 5300 |
+| web.status    | {localurl} | 5500 |
+
+## Identity Server
+
+Discovery document: {localurl}:5000/.well-known/openid-configuration
