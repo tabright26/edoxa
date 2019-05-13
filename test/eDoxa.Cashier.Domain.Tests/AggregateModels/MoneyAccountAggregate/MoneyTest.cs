@@ -14,7 +14,7 @@ using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Cashier.Domain.Tests.AggregateModels.UserAggregate
+namespace eDoxa.Cashier.Domain.Tests.AggregateModels.MoneyAccountAggregate
 {
     [TestClass]
     public sealed class MoneyTest

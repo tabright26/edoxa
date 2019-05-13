@@ -39,11 +39,11 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         [ItemNotNull]
         public async Task<IActionResult> Handle([NotNull] AddFundsCommand command, CancellationToken cancellationToken)
         {
-            var bundle = Bundles[command.BundleType];
-
             var userId = UserId.Parse(_userInfoService.Subject);
 
             var customerId = new CustomerId(_userInfoService.CustomerId);
+
+            var bundle = Bundles[command.BundleType];
 
             var email = _userInfoService.Email;
 

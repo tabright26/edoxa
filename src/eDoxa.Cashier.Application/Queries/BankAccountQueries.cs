@@ -13,33 +13,33 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Functional;
 
-using Stripe;
-
 namespace eDoxa.Cashier.Application.Queries
 {
     public sealed class BankAccountQueries : IBankAccountQueries
     {
-        private readonly BankAccountService _bankAccountService;
+        private readonly IStripeService _stripeService;
         private readonly IMapper _mapper;
 
-        public BankAccountQueries(BankAccountService bankAccountService, IMapper mapper)
+        public BankAccountQueries(IStripeService stripeService, IMapper mapper)
         {
-            _bankAccountService = bankAccountService;
+            _stripeService = stripeService;
             _mapper = mapper;
         }
 
         public async Task<Option<BankAccountDTO>> FindUserBankAccountAsync(CustomerId customerId)
         {
-            var bankAccounts = await _bankAccountService.ListAsync(customerId.ToString(), new BankAccountListOptions());
-             
-            var bankAccount = bankAccounts.FirstOrDefault(x => !x.Deleted ?? true);
+            var option = await _stripeService.GetUserBankAccountAsync(customerId);
 
-            return bankAccount != null ? new Option<BankAccountDTO>(_mapper.Map<BankAccountDTO>(bankAccount)) : new Option<BankAccountDTO>();
+            return option
+                .Select(bankAccount => new Option<BankAccountDTO>(_mapper.Map<BankAccountDTO>(bankAccount)))
+                .DefaultIfEmpty(new Option<BankAccountDTO>())
+                .Single();
         }
     }
 }

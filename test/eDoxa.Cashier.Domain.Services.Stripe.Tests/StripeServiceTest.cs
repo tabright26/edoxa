@@ -8,6 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -44,9 +45,32 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Tests
         }
 
         [TestMethod]
+        public async Task GetUserBankAccountAsync()
+        {
+            // Arrange
+            _mockBankAccountService.Setup(mock => mock.ListAsync(It.IsAny<string>(), It.IsAny<BankAccountListOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(FakeCashierFactory.CreateBankAccounts)
+                .Verifiable();
+
+            var service = this.StripeService();
+
+            // Act
+            await service.GetUserBankAccountAsync(FakeCashierFactory.CreateCustomerId());
+
+            // Assert
+            _mockBankAccountService.Verify(
+                mock => mock.ListAsync(It.IsAny<string>(), It.IsAny<BankAccountListOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
+                Times.Once);
+        }
+
+        [TestMethod]
         public async Task CreateBankAccountAsync()
         {
             // Arrange
+            _mockBankAccountService.Setup(mock => mock.ListAsync(It.IsAny<string>(), It.IsAny<BankAccountListOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new StripeList<BankAccount> { Data = new List<BankAccount>() })
+                .Verifiable();
+
             _mockBankAccountService.Setup(mock =>
                     mock.CreateAsync(It.IsAny<string>(), It.IsAny<BankAccountCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(FakeCashierFactory.CreateBankAccount)
@@ -58,6 +82,10 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Tests
             await service.CreateBankAccountAsync(FakeCashierFactory.CreateCustomerId(), FakeCashierFactory.CreateSourceToken());
 
             // Assert
+            _mockBankAccountService.Verify(
+                mock => mock.ListAsync(It.IsAny<string>(), It.IsAny<BankAccountListOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
+                Times.Once);
+
             _mockBankAccountService.Verify(
                 mock => mock.CreateAsync(It.IsAny<string>(), It.IsAny<BankAccountCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
                 Times.Once);
@@ -89,6 +117,44 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Tests
 
             _mockBankAccountService.Verify(
                 mock => mock.DeleteAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()), Times.Once);
+        }
+
+        [TestMethod]
+        public async Task ListCardsAsync()
+        {
+            // Arrange
+            _mockCardService.Setup(mock => mock.ListAsync(It.IsAny<string>(), It.IsAny<CardListOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(FakeCashierFactory.CreateCards())
+                .Verifiable();
+
+            var service = this.StripeService();
+
+            // Act
+            await service.ListCardsAsync(FakeCashierFactory.CreateCustomerId());
+
+            // Assert
+            _mockCardService.Verify(
+                mock => mock.ListAsync(It.IsAny<string>(), It.IsAny<CardListOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
+                Times.Once);
+        }
+
+        [TestMethod]
+        public async Task GetCardAsync()
+        {
+            // Arrange
+            _mockCardService.Setup(mock => mock.GetAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(FakeCashierFactory.CreateCard)
+                .Verifiable();
+
+            var service = this.StripeService();
+
+            // Act
+            await service.GetCardAsync(FakeCashierFactory.CreateCustomerId(), FakeCashierFactory.CreateCardId());
+
+            // Assert
+            _mockCardService.Verify(
+                mock => mock.GetAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
+                Times.Once);
         }
 
         [TestMethod]

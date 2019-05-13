@@ -23,12 +23,18 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Abstractions
 {
     public interface IStripeService
     {
+        Task<Option<BankAccount>> GetUserBankAccountAsync(CustomerId customerId);
+
         Task<Either<ValidationResult, BankAccount>> CreateBankAccountAsync(
             CustomerId customerId,
             string sourceToken,
             CancellationToken cancellationToken = default);
 
         Task<Either<ValidationResult, BankAccount>> DeleteBankAccountAsync(CustomerId customerId, CancellationToken cancellationToken = default);
+
+        Task<Option<StripeList<Card>>> ListCardsAsync(CustomerId customerId);
+
+        Task<Option<Card>> GetCardAsync(CustomerId customerId, CardId cardId);
 
         Task<Either<ValidationResult, Card>> CreateCardAsync(
             CustomerId customerId,

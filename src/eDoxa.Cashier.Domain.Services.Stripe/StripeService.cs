@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
+using eDoxa.Cashier.Domain.Services.Stripe.Extensions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Cashier.Domain.Services.Stripe.Validations;
 using eDoxa.Functional;
@@ -54,6 +55,15 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
             _configuration = configuration;
         }
 
+        public async Task<Option<BankAccount>> GetUserBankAccountAsync(CustomerId customerId)
+        {
+            var bankAccounts = await _bankAccountService.ListAsync(customerId.ToString(), new BankAccountListOptions());
+
+            var bankAccount = bankAccounts.FirstOrDefault(x => !x.Deleted ?? true);
+
+            return bankAccount != null ? new Option<BankAccount>(bankAccount) : new Option<BankAccount>();
+        }
+
         public async Task<Either<ValidationResult, BankAccount>> CreateBankAccountAsync(
             CustomerId customerId,
             string sourceToken,
@@ -61,6 +71,13 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
         {
             try
             {
+                var bankAccount = await this.GetUserBankAccountAsync(customerId);
+
+                if (bankAccount.SingleOrDefault() != null)
+                {
+                    return new ValidationResult("A bank account is already associated with this customer.");
+                }
+
                 return await _bankAccountService.CreateAsync(customerId.ToString(), new BankAccountCreateOptions
                 {
                     SourceToken = sourceToken
@@ -76,13 +93,11 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
         {
             try
             {
-                var bankAccounts = await _bankAccountService.ListAsync(customerId.ToString(), cancellationToken: cancellationToken);
-
-                var bankAccount = bankAccounts.FirstOrDefault();
+                var bankAccount = (await this.GetUserBankAccountAsync(customerId)).SingleOrDefault();
 
                 if (bankAccount == null)
                 {
-                    return new ValidationResult("Account already deleted.");
+                    return new ValidationResult("No bank account is associated with this customer.");
                 }
 
                 return await _bankAccountService.DeleteAsync(customerId.ToString(), bankAccount.Id, cancellationToken: cancellationToken);
@@ -91,6 +106,20 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
             {
                 return new ValidationResult(exception.Message);
             }
+        }
+
+        public async Task<Option<StripeList<Card>>> ListCardsAsync(CustomerId customerId)
+        {
+            var list = await _cardService.ListAsync(customerId.ToString());
+
+            return list.Any() ? new Option<StripeList<Card>>(list.Where(card => !card.Deleted ?? true).ToStripeList()) : new Option<StripeList<Card>>();
+        }
+
+        public async Task<Option<Card>> GetCardAsync(CustomerId customerId, CardId cardId)
+        {
+            var card = await _cardService.GetAsync(customerId.ToString(), cardId.ToString());
+
+            return card != null ? new Option<Card>(card) : new Option<Card>();
         }
 
         public async Task<Either<ValidationResult, Card>> CreateCardAsync(
@@ -112,14 +141,7 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
 
                 if (defaultSource)
                 {
-                    await _customerService.UpdateAsync(
-                        customerId.ToString(),
-                        new CustomerUpdateOptions
-                        {
-                            DefaultSource = card.Id
-                        },
-                        cancellationToken: cancellationToken
-                    );
+                    await this.UpdateDefaultSourceAsync(customerId, new CardId(card.Id), cancellationToken);
                 }
 
                 return card;
@@ -149,7 +171,7 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
                 return await _customerService.CreateAsync(new CustomerCreateOptions
                 {
                     Email = email,
-                    TaxIdData = _configuration.GetSection("taxIds").Get<List<CustomerTaxIdDataOptions>>(),
+                    TaxIdData = _configuration.GetSection("TaxIds").Get<List<CustomerTaxIdDataOptions>>(),
                     Metadata = new Dictionary<string, string>
                     {
                         [nameof(UserId)] = userId.ToString()
@@ -169,15 +191,23 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
         {
             try
             {
-                return await _customerService.UpdateAsync(customerId.ToString(), new CustomerUpdateOptions
-                {
-                    DefaultSource = cardId.ToString()
-                }, cancellationToken: cancellationToken);
+                return await this.UpdateDefaultSourceAsync(customerId, cardId, cancellationToken);
             }
             catch (StripeException exception)
             {
                 return new ValidationResult(exception.Message);
             }
+        }
+
+        private async Task<Customer> UpdateDefaultSourceAsync(
+            CustomerId customerId,
+            CardId cardId,
+            CancellationToken cancellationToken = default)
+        {
+            return await _customerService.UpdateAsync(customerId.ToString(), new CustomerUpdateOptions
+            {
+                DefaultSource = cardId.ToString()
+            }, cancellationToken: cancellationToken);
         }
 
         public async Task<Either<ValidationResult, Invoice>> CreateInvoiceAsync(
@@ -196,17 +226,7 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
                     return result;
                 }
 
-                await _invoiceItemService.CreateAsync(new InvoiceItemCreateOptions
-                {
-                    CustomerId = customerId.ToString(),
-                    Description = transaction.Description.ToString(),
-                    Amount = bundle.Price.AsCents(),
-                    Currency = "usd",
-                    Metadata = new Dictionary<string, string>
-                    {
-                        [nameof(TransactionId)] = transaction.Id.ToString()
-                    }
-                }, cancellationToken: cancellationToken);
+                await this.CreateInvoiceItemAsync(customerId, bundle, transaction, cancellationToken);
 
                 return await _invoiceService.CreateAsync(new InvoiceCreateOptions
                 {
@@ -223,6 +243,21 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
             {
                 return new ValidationResult(exception.Message);
             }
+        }
+
+        private async Task CreateInvoiceItemAsync(CustomerId customerId, IBundle bundle, ITransaction transaction, CancellationToken cancellationToken = default)
+        {
+            await _invoiceItemService.CreateAsync(new InvoiceItemCreateOptions
+            {
+                CustomerId = customerId.ToString(),
+                Description = transaction.Description.ToString(),
+                Amount = bundle.Price.AsCents(),
+                Currency = "usd",
+                Metadata = new Dictionary<string, string>
+                {
+                    [nameof(TransactionId)] = transaction.Id.ToString()
+                }
+            }, cancellationToken: cancellationToken);
         }
     }
 }

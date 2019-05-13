@@ -147,12 +147,7 @@ namespace eDoxa.Cashier.Tests.Factories
                 }
             };
         }
-
-        public Payout CreatePayout()
-        {
-            return new Payout();
-        }
-
+        
         public Invoice CreateInvoice()
         {
             return new Invoice();
@@ -161,6 +156,17 @@ namespace eDoxa.Cashier.Tests.Factories
         public InvoiceItem CreateInvoiceItem()
         {
             return new InvoiceItem();
+        }
+
+        public StripeList<Card> CreateCards()
+        {
+            return new StripeList<Card>
+            {
+                Data = new List<Card>
+                {
+                    this.CreateCard()
+                }
+            };
         }
     }
 }

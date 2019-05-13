@@ -16,4 +16,8 @@
     <ProjectReference Include="..\eDoxa.Cashier.Tests\eDoxa.Cashier.Tests.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="AggregateModels\MoneyAccountAggregate\Specifications\" />
+  </ItemGroup>
+
 </Project>

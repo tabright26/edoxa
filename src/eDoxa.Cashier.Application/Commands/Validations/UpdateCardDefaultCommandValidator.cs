@@ -18,7 +18,7 @@ namespace eDoxa.Cashier.Application.Commands.Validations
     {
         public UpdateCardDefaultCommandValidator()
         {
-            this.RuleFor(command => command.CardId).NotNull();
+            this.RuleFor(command => command.CardId).NotNull().WithMessage("The provided CardId can not be null.");
         }
     }
 }

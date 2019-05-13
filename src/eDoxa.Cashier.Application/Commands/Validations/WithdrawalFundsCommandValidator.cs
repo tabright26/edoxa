@@ -21,7 +21,7 @@ namespace eDoxa.Cashier.Application.Commands.Validations
 
         public WithdrawalFundsCommandValidator()
         {
-            this.RuleFor(command => command.BundleType).Must(Bundles.IsValid);
+            this.RuleFor(command => command.BundleType).Must(Bundles.IsValid).WithMessage("The bundle type provided doesn't exists.");
         }
     }
 }

@@ -13,23 +13,22 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Functional;
 
-using Stripe;
-
 namespace eDoxa.Cashier.Application.Queries
 {
     public sealed partial class CardQueries
     {
-        private readonly CardService _cardService;
+        private readonly IStripeService _stripeService;
         private readonly IMapper _mapper;
-
-        public CardQueries(CardService cardService, IMapper mapper)
+        
+        public CardQueries(IStripeService stripeService, IMapper mapper)
         {
-            _cardService = cardService;
+            _stripeService = stripeService;
             _mapper = mapper;
         }
     }
@@ -38,20 +37,22 @@ namespace eDoxa.Cashier.Application.Queries
     {
         public async Task<Option<CardListDTO>> FindUserCardsAsync(CustomerId customerId)
         {
-            var cards = await _cardService.ListAsync(customerId.ToString());
+            var option = await _stripeService.ListCardsAsync(customerId);
 
-            var list = _mapper.Map<CardListDTO>(cards);
-
-            return list.Any() ? new Option<CardListDTO>(list) : new Option<CardListDTO>();
+            return option
+                .Select(cards => new Option<CardListDTO>(_mapper.Map<CardListDTO>(cards)))
+                .DefaultIfEmpty(new Option<CardListDTO>())
+                .Single();
         }
 
         public async Task<Option<CardDTO>> FindUserCardAsync(CustomerId customerId, CardId cardId)
         {
-            var card = await _cardService.GetAsync(customerId.ToString(), cardId.ToString());
+            var option = await _stripeService.GetCardAsync(customerId, cardId);
 
-            var mapper = _mapper.Map<CardDTO>(card);
-
-            return mapper != null ? new Option<CardDTO>(mapper) : new Option<CardDTO>();
+            return option
+                .Select(card => new Option<CardDTO>(_mapper.Map<CardDTO>(card)))
+                .DefaultIfEmpty(new Option<CardDTO>())
+                .Single();
         }
     }
 }
