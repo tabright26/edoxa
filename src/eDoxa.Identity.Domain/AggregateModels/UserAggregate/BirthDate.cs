@@ -9,6 +9,7 @@
 // this source code package.
 
 using System;
+using System.Collections.Generic;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
@@ -52,6 +53,30 @@ namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
                 ClaimType = JwtClaimTypes.BirthDate,
                 ClaimValue = this.ToString()
             };
+        }
+
+        public static IEnumerable<int> Years()
+        {
+            for (var index = 1925; index <= DateTime.Now.Year - 13; index++)
+            {
+                yield return index;
+            }
+        }
+
+        public static IEnumerable<int> Months()
+        {
+            for (var index = 1; index <= 12; index++)
+            {
+                yield return index;
+            }
+        }
+
+        public static IEnumerable<int> Days()
+        {
+            for (var index = 1; index <= 31; index++)
+            {
+                yield return index;
+            }
         }
     }
 }

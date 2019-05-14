@@ -8,7 +8,10 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
+using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
@@ -21,6 +24,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 
 namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
@@ -52,6 +56,14 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
 
         public string ReturnUrl { get; set; }
 
+        public IEnumerable<SelectListItem> Years { get; set; } = BirthDate.Years().Select(year => new SelectListItem(year.ToString(), year.ToString()))
+            .OrderByDescending(item => item.Value);
+
+        public IEnumerable<SelectListItem> Months { get; set; } =
+            BirthDate.Months().Select(month => new SelectListItem(DateTimeFormatInfo.CurrentInfo.GetMonthName(month), month.ToString()));
+
+        public IEnumerable<SelectListItem> Days { get; set; } = BirthDate.Days().Select(day => new SelectListItem(day.ToString(), day.ToString()));
+
         public void OnGet(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
@@ -64,9 +76,7 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var personalName = new PersonalName(Input.FirstName, Input.LastName);
-
-                // TODO: Add BirthDate inputs.
-                var birthDate = new BirthDate(1995, 05, 06);
+                var birthDate = new BirthDate(Input.Year, Input.Month, Input.Day);
                 var user = new User(Input.UserName, Input.Email, personalName, birthDate);
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
@@ -131,6 +141,18 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            // TODO: Must be a valid date.
+            [Required] public int Year { get; set; }
+
+            // TODO: Must be a valid date.
+            [Required] public int Month { get; set; }
+
+            // TODO: Must be a valid date.
+            [Required] public int Day { get; set; }
+
+            [RegularExpression("(True|true)", ErrorMessage = "You must accept the terms of service.")]
+            public bool TermsOfService { get; set; }
         }
     }
 }
