@@ -1,52 +1,52 @@
 ﻿[
-    {
-        "lane": "JUNGLE",
-        "gameId": 2974102736,
-        "champion": 102,
-        "platformId": "NA1",
-        "timestamp": 1549744282791,
-        "queue": 440,
-        "role": "NONE",
-        "season": 13
-    },
-    {
-        "lane": "MID",
-        "gameId": 2974074080,
-        "champion": 6,
-        "platformId": "NA1",
-        "timestamp": 1549741831585,
-        "queue": 440,
-        "role": "SOLO",
-        "season": 13
-    },
-    {
-        "lane": "MID",
-        "gameId": 2974045372,
-        "champion": 142,
-        "platformId": "NA1",
-        "timestamp": 1549739292135,
-        "queue": 440,
-        "role": "SOLO",
-        "season": 13
-    },
-    {
-        "lane": "MID",
-        "gameId": 2973293180,
-        "champion": 142,
-        "platformId": "NA1",
-        "timestamp": 1549680499648,
-        "queue": 440,
-        "role": "SOLO",
-        "season": 13
-    },
-    {
-        "lane": "NONE",
-        "gameId": 2973265231,
-        "champion": 203,
-        "platformId": "NA1",
-        "timestamp": 1549678850571,
-        "queue": 440,
-        "role": "DUO_SUPPORT",
-        "season": 13
-    }
+  {
+    "lane": "JUNGLE",
+    "gameId": 2974102736,
+    "champion": 102,
+    "platformId": "NA1",
+    "timestamp": 1549744282791,
+    "queue": 440,
+    "role": "NONE",
+    "season": 13
+  },
+  {
+    "lane": "MID",
+    "gameId": 2974074080,
+    "champion": 6,
+    "platformId": "NA1",
+    "timestamp": 1549741831585,
+    "queue": 440,
+    "role": "SOLO",
+    "season": 13
+  },
+  {
+    "lane": "MID",
+    "gameId": 2974045372,
+    "champion": 142,
+    "platformId": "NA1",
+    "timestamp": 1549739292135,
+    "queue": 440,
+    "role": "SOLO",
+    "season": 13
+  },
+  {
+    "lane": "MID",
+    "gameId": 2973293180,
+    "champion": 142,
+    "platformId": "NA1",
+    "timestamp": 1549680499648,
+    "queue": 440,
+    "role": "SOLO",
+    "season": 13
+  },
+  {
+    "lane": "NONE",
+    "gameId": 2973265231,
+    "champion": 203,
+    "platformId": "NA1",
+    "timestamp": 1549678850571,
+    "queue": 440,
+    "role": "DUO_SUPPORT",
+    "season": 13
+  }
 ]
