@@ -21,7 +21,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<VerifyBankAccountCommand>.For()
+            ConstructorTests<VerifyAccountCommand>.For()
                 .WithName("VerifyBankAccountCommand")
                 .Assert();
         }

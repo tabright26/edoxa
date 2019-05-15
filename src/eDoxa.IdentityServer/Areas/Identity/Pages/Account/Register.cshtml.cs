@@ -84,7 +84,17 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    _eventBusService.Publish(new UserCreatedIntegrationEvent(user.Id, user.Email, personalName.FirstName, personalName.LastName));
+                    _eventBusService.Publish(
+                        new UserCreatedIntegrationEvent(
+                            user.Id,
+                            user.Email,
+                            personalName.FirstName,
+                            personalName.LastName,
+                            birthDate.Year,
+                            birthDate.Month,
+                            birthDate.Day
+                        )
+                    );
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 

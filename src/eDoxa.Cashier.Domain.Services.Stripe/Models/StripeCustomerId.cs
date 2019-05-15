@@ -15,11 +15,11 @@ using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 namespace eDoxa.Cashier.Domain.Services.Stripe.Models
 {
     [TypeConverter(typeof(StripeIdConverter))]
-    public sealed class CustomerId : StripeId<CustomerId>
+    public sealed class StripeCustomerId : StripeId<StripeCustomerId>
     {
         private const string Prefix = "cus";
 
-        public CustomerId(string customerId) : base(customerId, Prefix)
+        public StripeCustomerId(string customerId) : base(customerId, Prefix)
         {
         }
 

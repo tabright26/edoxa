@@ -9,24 +9,35 @@
 // this source code package.
 
 using System;
+using System.Collections.Generic;
 
 using eDoxa.ServiceBus;
 
+using Newtonsoft.Json;
+
 namespace eDoxa.Cashier.Application.IntegrationEvents
 {
-    public class UserClaimAddedIntegrationEvent : IntegrationEvent
+    public sealed class UserClaimAddedIntegrationEvent : IntegrationEvent
     {
+        [JsonConstructor]
+        public UserClaimAddedIntegrationEvent(Guid userId, IDictionary<string, string> claims)
+        {
+            UserId = userId;
+            Claims = claims;
+        }
+
         public UserClaimAddedIntegrationEvent(Guid userId, string type, string value)
         {
             UserId = userId;
-            Type = type;
-            Value = value;
+
+            Claims = new Dictionary<string, string>
+            {
+                [type] = value
+            };
         }
 
         public Guid UserId { get; private set; }
 
-        public string Type { get; private set; }
-
-        public string Value { get; private set; }
+        public IDictionary<string, string> Claims { get; private set; }
     }
 }

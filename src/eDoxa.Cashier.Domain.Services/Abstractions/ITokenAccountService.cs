@@ -24,7 +24,7 @@ namespace eDoxa.Cashier.Domain.Services.Abstractions
     {
         Task<Either<ValidationResult, ITokenTransaction>> DepositAsync(
             UserId userId,
-            CustomerId customerId,
+            StripeCustomerId customerId,
             TokenBundle bundle,
             string email,
             CancellationToken cancellationToken = default);

@@ -18,7 +18,7 @@ namespace eDoxa.Cashier.Application.Commands.Validations
     {
         public DeleteCardCommandValidator()
         {
-            this.RuleFor(command => command.CardId).NotNull().WithMessage("The provided CardId can not be null.");
+            this.RuleFor(command => command.StripeCardId).NotNull().WithMessage("The provided CardId can not be null.");
         }
     }
 }

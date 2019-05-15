@@ -60,8 +60,6 @@ namespace eDoxa.Cashier.Api.Controllers
                 .Single();
         }
 
-
-
         /// <summary>
         ///     Deposit money.
         /// </summary>
@@ -80,24 +78,6 @@ namespace eDoxa.Cashier.Api.Controllers
             return this.Ok(MoneyBundleType.GetAll());
         }
 
-        ///// <summary>
-        /////     Withdrawal money.
-        ///// </summary>
-        //[HttpPost("withdrawal", Name = nameof(WithdrawalMoneyAsync))]
-        //public async Task<IActionResult> WithdrawalMoneyAsync([FromBody] WithdrawalFundsCommand command)
-        //{
-        //    return await _mediator.SendCommandAsync(command);
-        //}
-
-        ///// <summary>
-        /////     Withdrawal money.
-        ///// </summary>
-        //[HttpGet("withdrawal/bundles", Name = nameof(FindWithdrawalMoneyBundles))]
-        //public IActionResult FindWithdrawalMoneyBundles()
-        //{
-        //    return this.Ok(WithdrawalMoneyBundleType.GetAll());
-        //}
-
         /// <summary>
         ///     Find money transactions.
         /// </summary>
@@ -113,6 +93,24 @@ namespace eDoxa.Cashier.Api.Controllers
                 .Cast<IActionResult>()
                 .DefaultIfEmpty(this.NoContent())
                 .Single();
+        }
+
+        /// <summary>
+        ///     Withdrawal money.
+        /// </summary>
+        [HttpPost("withdrawal", Name = nameof(WithdrawalMoneyAsync))]
+        public async Task<IActionResult> WithdrawalMoneyAsync([FromBody] WithdrawalFundsCommand command)
+        {
+            return await _mediator.SendCommandAsync(command);
+        }
+
+        /// <summary>
+        ///     Withdrawal money.
+        /// </summary>
+        [HttpGet("withdrawal/bundles", Name = nameof(FindWithdrawalMoneyBundles))]
+        public IActionResult FindWithdrawalMoneyBundles()
+        {
+            return this.Ok(WithdrawalMoneyBundleType.GetAll());
         }
     }
 }

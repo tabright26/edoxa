@@ -20,11 +20,11 @@ namespace eDoxa.Cashier.Application.Commands
     [DataContract]
     public sealed class DeleteCardCommand : Command<IActionResult>
     {
-        public DeleteCardCommand(CardId cardId)
+        public DeleteCardCommand(StripeCardId cardId)
         {
-            CardId = cardId;
+            StripeCardId = cardId;
         }
 
-        [IgnoreDataMember] public CardId CardId { get; private set; }
+        [IgnoreDataMember] public StripeCardId StripeCardId { get; private set; }
     }
 }

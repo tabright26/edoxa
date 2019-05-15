@@ -32,19 +32,19 @@ namespace eDoxa.Cashier.Tests.Factories
 
     public sealed partial class FakeCashierFactory
     {
-        public BankAccountId CreateBankAccountId()
+        public StripeBankAccountId CreateBankAccountId()
         {
-            return new BankAccountId("ba_gePgEwe23HkAt");
+            return new StripeBankAccountId("ba_gePgEwe23HkAt");
         }
 
-        public CardId CreateCardId()
+        public StripeCardId CreateCardId()
         {
-            return new CardId("card_gePgEwe23HkAt");
+            return new StripeCardId("card_gePgEwe23HkAt");
         }
 
-        public CustomerId CreateCustomerId()
+        public StripeCustomerId CreateCustomerId()
         {
-            return new CustomerId("cus_TrgePgEEYXHkAt");
+            return new StripeCustomerId("cus_TrgePgEEYXHkAt");
         }
 
         public UserId CreateUserId()

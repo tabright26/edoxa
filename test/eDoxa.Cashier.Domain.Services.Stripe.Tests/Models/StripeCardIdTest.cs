@@ -1,5 +1,5 @@
-﻿// Filename: BankAccountIdTest.cs
-// Date Created: 2019-05-10
+﻿// Filename: StripeCardIdTest.cs
+// Date Created: 2019-05-13
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -16,13 +16,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace eDoxa.Cashier.Domain.Services.Stripe.Tests.Models
 {
     [TestClass]
-    public sealed class BankAccountIdTest
+    public sealed class StripeCardIdTest
     {
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<BankAccountId>.For(typeof(string))
-                .WithName("BankAccountId")
+            ConstructorTests<StripeCardId>.For(typeof(string))
+                .WithName("StripeCardId")
                 .Assert();
         }
     }

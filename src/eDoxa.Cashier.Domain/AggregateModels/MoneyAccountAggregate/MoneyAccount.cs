@@ -121,7 +121,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
         {
             var specification = SpecificationFactory.Instance.CreateSpecification<MoneyAccount>()
                 .And(new InsufficientFundsSpecification(money).Not())
-                .And(new WeeklyWithdrawalValidSpecification());
+                .And(new WeeklyWithdrawalUnavailableSpecification().Not());
 
             return specification.IsSatisfiedBy(this);
         }

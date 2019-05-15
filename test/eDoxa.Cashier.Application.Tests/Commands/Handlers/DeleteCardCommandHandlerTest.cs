@@ -72,7 +72,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             var handler = new DeleteCardCommandHandler(_mockUserInfoService.Object, _mockStripeService.Object);
 
             // Act
-            await handler.HandleAsync(new DeleteCardCommand(new CardId(card.Id)));
+            await handler.HandleAsync(new DeleteCardCommand(new StripeCardId(card.Id)));
 
             //_mockCardService.Verify(
             //    service => service.DeleteAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
@@ -80,7 +80,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             //);
 
             // Assert
-            _mockStripeService.Verify(mock => mock.DeleteCardAsync(It.IsAny<CustomerId>(), It.IsAny<CardId>(), It.IsAny<CancellationToken>()), Times.Once);
+            _mockStripeService.Verify(mock => mock.DeleteCardAsync(It.IsAny<StripeCustomerId>(), It.IsAny<StripeCardId>(), It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }

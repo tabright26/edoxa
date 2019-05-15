@@ -11,10 +11,14 @@
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Application.IntegrationEvents;
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Commands.Abstractions.Handlers;
+using eDoxa.Security;
 using eDoxa.Security.Abstractions;
+using eDoxa.ServiceBus;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,24 +27,29 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
     internal sealed class DeleteBankAccountCommandHandler : ICommandHandler<DeleteBankAccountCommand, IActionResult>
     {
         private readonly IStripeService _stripeService;
+        private readonly IIntegrationEventService _integrationEventService;
         private readonly IUserInfoService _userInfoService;
 
-        public DeleteBankAccountCommandHandler(IUserInfoService userInfoService, IStripeService stripeService)
+        public DeleteBankAccountCommandHandler(IUserInfoService userInfoService, IStripeService stripeService, IIntegrationEventService integrationEventService)
         {
             _userInfoService = userInfoService;
             _stripeService = stripeService;
+            _integrationEventService = integrationEventService;
         }
 
         public async Task<IActionResult> Handle(DeleteBankAccountCommand request, CancellationToken cancellationToken)
         {
-            var customerId = new CustomerId(_userInfoService.CustomerId);
+            var userId = UserId.Parse(_userInfoService.Subject);
 
-            var either = await _stripeService.DeleteBankAccountAsync(customerId, cancellationToken);
+            var accountId = new StripeAccountId(_userInfoService.StripeAccountId);
 
-            return either.Match<IActionResult>(
-                result => new BadRequestObjectResult(result.ErrorMessage),
-                bankAccount => new OkObjectResult("The bank account has been removed.")
-            );
+            var bankAccountId = new StripeBankAccountId(_userInfoService.StripeBankAccountId);
+
+            await _stripeService.DeleteBankAccountAsync(accountId, bankAccountId, cancellationToken);
+
+            await _integrationEventService.PublishAsync(new UserClaimAddedIntegrationEvent(userId.ToGuid(), CustomClaimTypes.StripeBankAccountId, bankAccountId.ToString()));
+
+            return new OkObjectResult("The bank account has been removed.");
         }
     }
 }

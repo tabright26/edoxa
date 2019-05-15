@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -44,24 +44,24 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 
         protected override async Task Handle([NotNull] CreateUserCommand command, CancellationToken cancellationToken)
         {
-            var either = await _stripeService.CreateCustomerAsync(command.UserId, command.Email, cancellationToken);
+            await _moneyAccountService.CreateAccount(command.UserId);
 
-            await either.Match(
-                result => throw new InvalidOperationException(result.ErrorMessage),
-                async customer =>
-                {
-                    await _moneyAccountService.CreateAccount(command.UserId);
+            await _tokenAccountService.CreateAccount(command.UserId);
 
-                    await _tokenAccountService.CreateAccount(command.UserId);
+            var accountId = await _stripeService.CreateAccountAsync(command.UserId, command.Email, command.FirstName, command.LastName, command.Year, command.Month, command.Day, cancellationToken);
 
-                    await _integrationEventService.PublishAsync(
-                        new UserClaimAddedIntegrationEvent(
-                            command.UserId.ToGuid(),
-                            CustomClaimTypes.CustomerId,
-                            customer.Id.ToString()
-                        )
-                    );
-                });
+            var customerId = await _stripeService.CreateCustomerAsync(accountId, command.UserId, command.Email, cancellationToken);
+
+            await _integrationEventService.PublishAsync(
+                new UserClaimAddedIntegrationEvent(
+                    command.UserId.ToGuid(),
+                    new Dictionary<string, string>
+                    {
+                        [CustomClaimTypes.StripeAccountId] = accountId.ToString(),
+                        [CustomClaimTypes.StripeCustomerId] = customerId.ToString(),
+                    }
+                )
+            );
         }
     }
 }

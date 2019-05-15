@@ -15,7 +15,7 @@ using eDoxa.Specifications;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate.Specifications
 {
-    public sealed class WeeklyWithdrawalValidSpecification : Specification<MoneyAccount>
+    public sealed class WeeklyWithdrawalUnavailableSpecification : Specification<MoneyAccount>
     {
         public override Expression<Func<MoneyAccount, bool>> ToExpression()
         {

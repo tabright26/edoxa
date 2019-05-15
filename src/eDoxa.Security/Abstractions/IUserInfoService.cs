@@ -36,7 +36,11 @@ namespace eDoxa.Security.Abstractions
 
         string Address { get; }
 
-        string CustomerId { get; }
+        string StripeAccountId { get; }
+
+        string StripeBankAccountId { get; }
+
+        string StripeCustomerId { get; }
 
         IEnumerable<string> Roles { get; }
 

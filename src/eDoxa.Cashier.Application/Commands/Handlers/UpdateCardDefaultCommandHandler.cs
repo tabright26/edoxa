@@ -36,9 +36,9 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         [ItemCanBeNull]
         public async Task<IActionResult> Handle([NotNull] UpdateCardDefaultCommand command, CancellationToken cancellationToken)
         {
-            var customerId = new CustomerId(_userInfoService.CustomerId);
+            var customerId = new StripeCustomerId(_userInfoService.StripeCustomerId);
 
-            var either = await _stripeService.UpdateCustomerDefaultSourceAsync(customerId, command.CardId, cancellationToken);
+            var either = await _stripeService.UpdateCustomerDefaultSourceAsync(customerId, command.StripeCardId, cancellationToken);
 
             return either.Match<IActionResult>(
                 result => new BadRequestObjectResult(result.ErrorMessage),

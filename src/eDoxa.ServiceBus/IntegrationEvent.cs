@@ -10,9 +10,12 @@
 
 using System;
 
+using Newtonsoft.Json;
+
 namespace eDoxa.ServiceBus
 {
     //TODO: Add a property for the name of an event to publish the integration event in an adapter format for Javascript. (Version v.3)
+    [JsonObject]
     public abstract class IntegrationEvent
     {
         protected IntegrationEvent()

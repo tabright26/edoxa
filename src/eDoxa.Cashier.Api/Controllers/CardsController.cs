@@ -48,9 +48,9 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpGet(Name = nameof(FindUserCardsAsync))]
         public async Task<IActionResult> FindUserCardsAsync()
         {
-            var customerId = _userInfoService.CustomerId;
+            var customerId = _userInfoService.StripeCustomerId;
 
-            var cards = await _cardQueries.FindUserCardsAsync(new CustomerId(customerId));
+            var cards = await _cardQueries.FindUserCardsAsync(new StripeCustomerId(customerId));
 
             return cards
                 .Select(this.Ok)
@@ -72,11 +72,11 @@ namespace eDoxa.Cashier.Api.Controllers
         ///     Find the user's credit card.
         /// </summary>
         [HttpGet("{cardId}", Name = nameof(FindUserCardAsync))]
-        public async Task<IActionResult> FindUserCardAsync(CardId cardId)
+        public async Task<IActionResult> FindUserCardAsync(StripeCardId cardId)
         {
-            var customerId = _userInfoService.CustomerId;
+            var customerId = _userInfoService.StripeCustomerId;
 
-            var card = await _cardQueries.FindUserCardAsync(new CustomerId(customerId), cardId);
+            var card = await _cardQueries.FindUserCardAsync(new StripeCustomerId(customerId), cardId);
 
             return card
                 .Select(this.Ok)
@@ -89,7 +89,7 @@ namespace eDoxa.Cashier.Api.Controllers
         ///     Detach a credit card from a user.
         /// </summary>
         [HttpDelete("{cardId}", Name = nameof(DeleteCardAsync))]
-        public async Task<IActionResult> DeleteCardAsync(CardId cardId)
+        public async Task<IActionResult> DeleteCardAsync(StripeCardId cardId)
         {
             return await _mediator.SendCommandAsync(new DeleteCardCommand(cardId));
         }
@@ -98,7 +98,7 @@ namespace eDoxa.Cashier.Api.Controllers
         ///     Update the default user credit card.
         /// </summary>
         [HttpPatch("{cardId}/default", Name = nameof(UpdateDefaultCardAsync))]
-        public async Task<IActionResult> UpdateDefaultCardAsync(CardId cardId)
+        public async Task<IActionResult> UpdateDefaultCardAsync(StripeCardId cardId)
         {
             return await _mediator.SendCommandAsync(new UpdateCardDefaultCommand(cardId));
         }

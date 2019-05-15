@@ -17,8 +17,8 @@ namespace eDoxa.Cashier.DTO.Queries
 {
     public interface ICardQueries
     {
-        Task<Option<CardListDTO>> FindUserCardsAsync(CustomerId customerId);
+        Task<Option<CardListDTO>> FindUserCardsAsync(StripeCustomerId customerId);
 
-        Task<Option<CardDTO>> FindUserCardAsync(CustomerId customerId, CardId cardId);
+        Task<Option<CardDTO>> FindUserCardAsync(StripeCustomerId customerId, StripeCardId cardId);
     }
 }

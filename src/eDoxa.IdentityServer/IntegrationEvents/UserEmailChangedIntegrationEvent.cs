@@ -1,4 +1,4 @@
-﻿// Filename: UserPhoneNumberChangedIntegrationEvent.cs
+﻿// Filename: UserEmailChangedIntegrationEvent.cs
 // Date Created: 2019-03-04
 // 
 // ============================================================
@@ -12,17 +12,17 @@ using System;
 
 using eDoxa.ServiceBus;
 
-namespace eDoxa.Identity.Application.IntegrationEvents
+namespace eDoxa.IdentityServer.IntegrationEvents
 {
-    public class UserPhoneNumberChangedIntegrationEvent : IntegrationEvent
+    public class UserEmailChangedIntegrationEvent : IntegrationEvent
     {
-        public UserPhoneNumberChangedIntegrationEvent(Guid userId, string phoneNumber)
+        public UserEmailChangedIntegrationEvent(Guid userId, string email)
         {
             UserId = userId;
-            PhoneNumber = phoneNumber;
+            Email = email;
         }
 
         public Guid UserId { get; private set; }
-        public string PhoneNumber { get; private set; }
+        public string Email { get; private set; }
     }
 }

@@ -1,5 +1,5 @@
 ﻿// Filename: CreateBankAccountCommandHandler.cs
-// Date Created: 2019-05-10
+// Date Created: 2019-05-14
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,10 +11,14 @@
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Application.IntegrationEvents;
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Commands.Abstractions.Handlers;
+using eDoxa.Security;
 using eDoxa.Security.Abstractions;
+using eDoxa.ServiceBus;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,25 +26,28 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 {
     internal sealed class CreateBankAccountCommandHandler : ICommandHandler<CreateBankAccountCommand, IActionResult>
     {
+        private readonly IIntegrationEventService _integrationEventService;
         private readonly IStripeService _stripeService;
         private readonly IUserInfoService _userInfoService;
 
-        public CreateBankAccountCommandHandler(IUserInfoService userInfoService, IStripeService stripeService)
+        public CreateBankAccountCommandHandler(IUserInfoService userInfoService, IStripeService stripeService, IIntegrationEventService integrationEventService)
         {
             _userInfoService = userInfoService;
             _stripeService = stripeService;
+            _integrationEventService = integrationEventService;
         }
 
         public async Task<IActionResult> Handle(CreateBankAccountCommand command, CancellationToken cancellationToken)
         {
-            var customerId = new CustomerId(_userInfoService.CustomerId);
+            var userId = UserId.Parse(_userInfoService.Subject);
 
-            var either = await _stripeService.CreateBankAccountAsync(customerId, command.SourceToken, cancellationToken);
+            var accountId = new StripeAccountId(_userInfoService.StripeAccountId);
 
-            return either.Match<IActionResult>(
-                result => new BadRequestObjectResult(result.ErrorMessage),
-                bankAccount => new OkObjectResult("The bank account has been added.")
-            );
+            var bankAccountId = await _stripeService.CreateBankAccountAsync(accountId, command.ExternalAccountTokenId, cancellationToken);
+
+            await _integrationEventService.PublishAsync(new UserClaimAddedIntegrationEvent(userId.ToGuid(), CustomClaimTypes.StripeBankAccountId, bankAccountId.ToString()));
+
+            return new OkObjectResult("The bank account has been added.");
         }
     }
 }

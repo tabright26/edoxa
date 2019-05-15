@@ -80,7 +80,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             // Assert
             result.Should().BeEquivalentTo(new OkResult());
 
-            _mockStripeService.Verify(mock => mock.UpdateCustomerDefaultSourceAsync(It.IsAny<CustomerId>(), It.IsAny<CardId>(), It.IsAny<CancellationToken>()),
+            _mockStripeService.Verify(mock => mock.UpdateCustomerDefaultSourceAsync(It.IsAny<StripeCustomerId>(), It.IsAny<StripeCardId>(), It.IsAny<CancellationToken>()),
                 Times.Once);
 
             //_mockCustomerService.Verify(

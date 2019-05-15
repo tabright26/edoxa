@@ -1,5 +1,5 @@
-﻿// Filename: BankAccountQueriesTest.cs
-// Date Created: 2019-05-12
+﻿// Filename: StripeBankAccountIdTest.cs
+// Date Created: 2019-05-13
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,24 +8,21 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using AutoMapper;
-
-using eDoxa.Cashier.Application.Queries;
-using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
+using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Testing.MSTest;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Cashier.Application.Tests.Queries
+namespace eDoxa.Cashier.Domain.Services.Stripe.Tests.Models
 {
     [TestClass]
-    public sealed class BankAccountQueriesTest
+    public sealed class StripeBankAccountIdTest
     {
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<BankAccountQueries>.For(typeof(IStripeService), typeof(IMapper))
-                .WithName("BankAccountQueries")
+            ConstructorTests<StripeBankAccountId>.For(typeof(string))
+                .WithName("StripeBankAccountId")
                 .Assert();
         }
     }

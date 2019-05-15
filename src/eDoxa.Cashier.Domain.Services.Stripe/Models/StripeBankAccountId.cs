@@ -15,11 +15,11 @@ using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 namespace eDoxa.Cashier.Domain.Services.Stripe.Models
 {
     [TypeConverter(typeof(StripeIdConverter))]
-    public sealed class BankAccountId : StripeId<BankAccountId>
+    public sealed class StripeBankAccountId : StripeId<StripeBankAccountId>
     {
         private const string Prefix = "ba";
 
-        public BankAccountId(string bankAccountId) : base(bankAccountId, Prefix)
+        public StripeBankAccountId(string bankAccountId) : base(bankAccountId, Prefix)
         {
         }
 

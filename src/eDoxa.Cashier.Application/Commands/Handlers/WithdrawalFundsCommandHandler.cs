@@ -39,13 +39,13 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         [ItemNotNull]
         public async Task<IActionResult> Handle([NotNull] WithdrawalFundsCommand command, CancellationToken cancellationToken)
         {
+            var customerId = new StripeAccountId(_userInfoService.StripeAccountId);
+
             var userId = UserId.Parse(_userInfoService.Subject);
-
-            var customerId = new CustomerId(_userInfoService.CustomerId);
-
+            
             var bundle = Bundles[command.BundleType];
 
-            var either = await _moneyAccountService.TryWithdrawalAsync(userId, customerId, bundle, cancellationToken);
+            var either = await _moneyAccountService.TryWithdrawalAsync(customerId, userId, bundle, cancellationToken);
 
             return either.Match<IActionResult>(
                 result => new BadRequestObjectResult(result.ErrorMessage),

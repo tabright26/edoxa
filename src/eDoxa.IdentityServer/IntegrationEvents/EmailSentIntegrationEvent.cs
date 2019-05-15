@@ -1,4 +1,4 @@
-﻿// Filename: UserEmailChangedIntegrationEvent.cs
+﻿// Filename: EmailSentIntegrationEvent.cs
 // Date Created: 2019-03-04
 // 
 // ============================================================
@@ -8,21 +8,23 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-
 using eDoxa.ServiceBus;
 
-namespace eDoxa.Identity.Application.IntegrationEvents
+namespace eDoxa.IdentityServer.IntegrationEvents
 {
-    public class UserEmailChangedIntegrationEvent : IntegrationEvent
+    public class EmailSentIntegrationEvent : IntegrationEvent
     {
-        public UserEmailChangedIntegrationEvent(Guid userId, string email)
+        public EmailSentIntegrationEvent(string email, string subject, string htmlMessage)
         {
-            UserId = userId;
             Email = email;
+            Subject = subject;
+            HtmlMessage = htmlMessage;
         }
 
-        public Guid UserId { get; private set; }
         public string Email { get; private set; }
+
+        public string Subject { get; private set; }
+
+        public string HtmlMessage { get; private set; }
     }
 }

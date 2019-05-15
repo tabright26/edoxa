@@ -1,4 +1,4 @@
-﻿// Filename: UserCreatedIntegrationEvent.cs
+﻿// Filename: UserClaimRemovedIntegrationEvent.cs
 // Date Created: 2019-03-04
 // 
 // ============================================================
@@ -12,17 +12,21 @@ using System;
 
 using eDoxa.ServiceBus;
 
-namespace eDoxa.Identity.Application.IntegrationEvents
+namespace eDoxa.Cashier.Application.IntegrationEvents
 {
-    public sealed class UserCreatedIntegrationEvent : IntegrationEvent
+    public class UserClaimRemovedIntegrationEvent : IntegrationEvent
     {
-        public UserCreatedIntegrationEvent(Guid userId, string email)
+        public UserClaimRemovedIntegrationEvent(Guid userId, string type, string value)
         {
             UserId = userId;
-            Email = email;
+            Type = type;
+            Value = value;
         }
 
         public Guid UserId { get; private set; }
-        public string Email { get; private set; }
+
+        public string Type { get; private set; }
+
+        public string Value { get; private set; }
     }
 }

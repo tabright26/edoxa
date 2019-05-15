@@ -41,7 +41,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         {
             var userId = UserId.Parse(_userInfoService.Subject);
 
-            var customerId = new CustomerId(_userInfoService.CustomerId);
+            var customerId = new StripeCustomerId(_userInfoService.StripeCustomerId);
 
             var bundle = Bundles[command.BundleType];
 

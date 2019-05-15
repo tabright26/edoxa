@@ -24,7 +24,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<DeleteCardCommand>.For(typeof(CardId))
+            ConstructorTests<DeleteCardCommand>.For(typeof(StripeCardId))
                 .WithName("DeleteCardCommand")
                 .WithAttributes(typeof(DataContractAttribute))
                 .Assert();

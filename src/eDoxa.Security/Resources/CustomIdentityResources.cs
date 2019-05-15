@@ -1,5 +1,5 @@
 ﻿// Filename: CustomIdentityResources.cs
-// Date Created: 2019-05-03
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -58,7 +58,12 @@ namespace eDoxa.Security.Resources
             public Stripe() : base(
                 "stripe",
                 "Your Stripe account",
-                new HashSet<string> {CustomClaimTypes.CustomerId})
+                new HashSet<string>
+                {
+                    CustomClaimTypes.StripeAccountId,
+                    CustomClaimTypes.StripeBankAccountId,
+                    CustomClaimTypes.StripeCustomerId
+                })
             {
             }
         }

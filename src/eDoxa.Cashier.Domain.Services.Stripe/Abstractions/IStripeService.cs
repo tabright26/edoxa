@@ -23,39 +23,55 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Abstractions
 {
     public interface IStripeService
     {
-        Task<Option<BankAccount>> GetUserBankAccountAsync(CustomerId customerId);
-
-        Task<Either<ValidationResult, BankAccount>> CreateBankAccountAsync(
-            CustomerId customerId,
-            string sourceToken,
+        Task<StripeAccountId> CreateAccountAsync(
+            UserId userId,
+            string email,
+            string firstName,
+            string lastName,
+            int year,
+            int month,
+            int day,
             CancellationToken cancellationToken = default);
 
-        Task<Either<ValidationResult, BankAccount>> DeleteBankAccountAsync(CustomerId customerId, CancellationToken cancellationToken = default);
+        Task VerifyAccountAsync(
+            StripeAccountId accountId,
+            string line1,
+            string line2,
+            string city,
+            string state,
+            string postalCode,
+            CancellationToken cancellationToken = default);
 
-        Task<Option<StripeList<Card>>> ListCardsAsync(CustomerId customerId);
+        Task<StripeBankAccountId> CreateBankAccountAsync(StripeAccountId accountId, string externalAccountTokenId, CancellationToken cancellationToken = default);
 
-        Task<Option<Card>> GetCardAsync(CustomerId customerId, CardId cardId);
+        Task DeleteBankAccountAsync(StripeAccountId accountId, StripeBankAccountId bankAccountId, CancellationToken cancellationToken = default);
+
+        Task<Option<StripeList<Card>>> ListCardsAsync(StripeCustomerId customerId);
+
+        Task<Option<Card>> GetCardAsync(StripeCustomerId customerId, StripeCardId cardId);
 
         Task<Either<ValidationResult, Card>> CreateCardAsync(
-            CustomerId customerId,
+            StripeCustomerId customerId,
             string sourceToken,
             bool defaultSource,
             CancellationToken cancellationToken = default);
 
-        Task<Either<ValidationResult, Card>> DeleteCardAsync(CustomerId customerId, CardId cardId, CancellationToken cancellationToken = default);
+        Task<Either<ValidationResult, Card>> DeleteCardAsync(StripeCustomerId customerId, StripeCardId cardId, CancellationToken cancellationToken = default);
 
-        Task<Either<ValidationResult, Customer>> CreateCustomerAsync(UserId userId, string email, CancellationToken cancellationToken = default);
+        Task<StripeCustomerId> CreateCustomerAsync(StripeAccountId accountId, UserId userId, string email, CancellationToken cancellationToken = default);
 
         Task<Either<ValidationResult, Customer>> UpdateCustomerDefaultSourceAsync(
-            CustomerId customerId,
-            CardId cardId,
+            StripeCustomerId customerId,
+            StripeCardId cardId,
             CancellationToken cancellationToken = default);
 
         Task<Either<ValidationResult, Invoice>> CreateInvoiceAsync(
-            CustomerId customerId,
+            StripeCustomerId customerId,
             string email,
             IBundle bundle,
             ITransaction transaction,
             CancellationToken cancellationToken = default);
+
+        Task CreateTransfer(StripeAccountId accountId, IBundle bundle, ITransaction transaction, CancellationToken cancellationToken = default);
     }
 }

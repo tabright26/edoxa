@@ -14,7 +14,11 @@ namespace eDoxa.Security
     {
         public const string SecurityStamp = "security_stamp";
         public const string Permission = "permission";
-        public const string CustomerId = "customer_id";
         public const string Game = "game";
+
+        // Stripe claim types.
+        public const string StripeAccountId = "stripe:account_id";
+        public const string StripeBankAccountId = "stripe:bank_account_id";
+        public const string StripeCustomerId = "stripe:customer_id";
     }
 }

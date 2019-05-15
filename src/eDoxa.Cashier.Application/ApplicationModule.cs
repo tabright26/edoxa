@@ -50,8 +50,6 @@ namespace eDoxa.Cashier.Application
             builder.RegisterType<TokenAccountService>().As<ITokenAccountService>().InstancePerLifetimeScope();
 
             // Queries
-            builder.RegisterType<BankAccountQueries>().As<IBankAccountQueries>().InstancePerLifetimeScope();
-
             builder.RegisterType<CardQueries>().As<ICardQueries>().InstancePerLifetimeScope();
 
             builder.RegisterType<MoneyAccountQueries>().As<IMoneyAccountQueries>().InstancePerLifetimeScope();

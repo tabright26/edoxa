@@ -20,21 +20,19 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Extensions
     {
         public static void AddStripe(this IServiceCollection services)
         {
+            services.AddTransient<AccountService>();
+
             services.AddTransient<CardService>();
 
             services.AddTransient<CustomerService>();
+            
+            services.AddTransient<ExternalAccountService>();
 
             services.AddTransient<InvoiceService>();
 
             services.AddTransient<InvoiceItemService>();
 
-            services.AddTransient<PayoutService>();
-
-            services.AddTransient<ChargeService>();
-
-            services.AddTransient<AccountService>();
-
-            services.AddTransient<BankAccountService>();
+            services.AddTransient<TransferService>();
 
             services.AddTransient<IStripeService, StripeService>();
         }

@@ -1,5 +1,5 @@
 ﻿// Filename: CreateBankAccountCommand.cs
-// Date Created: 2019-05-10
+// Date Created: 2019-05-14
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -19,11 +19,12 @@ namespace eDoxa.Cashier.Application.Commands
     [DataContract]
     public sealed class CreateBankAccountCommand : Command<IActionResult>
     {
-        public CreateBankAccountCommand(string sourceToken)
+        public CreateBankAccountCommand(string externalAccountTokenId)
         {
-            SourceToken = sourceToken;
+            ExternalAccountTokenId = externalAccountTokenId;
         }
 
-        [DataMember(Name = "sourceToken")] public string SourceToken { get; private set; }
+        [DataMember(Name = "externalAccountTokenId")]
+        public string ExternalAccountTokenId { get; private set; }
     }
 }

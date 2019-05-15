@@ -147,7 +147,17 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
                     {
                         _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
 
-                        _eventBusService.Publish(new UserCreatedIntegrationEvent(user.Id, user.Email, personalName.FirstName, personalName.LastName));
+                        _eventBusService.Publish(
+                            new UserCreatedIntegrationEvent(
+                                user.Id,
+                                user.Email,
+                                personalName.FirstName,
+                                personalName.LastName,
+                                birthDate.Year,
+                                birthDate.Month,
+                                birthDate.Day
+                            )
+                        );
 
                         await _signInManager.SignInAsync(user, false);
 

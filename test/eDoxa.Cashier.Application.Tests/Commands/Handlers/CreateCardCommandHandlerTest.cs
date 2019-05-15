@@ -91,7 +91,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             // Assert
             response.Should().BeEquivalentTo(new OkResult());
 
-            _mockStripeService.Verify(mock => mock.CreateCardAsync(It.IsAny<CustomerId>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()),
+            _mockStripeService.Verify(mock => mock.CreateCardAsync(It.IsAny<StripeCustomerId>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()),
                 Times.Once);
 
             //_mockCustomerService.Verify(

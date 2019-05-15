@@ -16,7 +16,7 @@ namespace eDoxa.Security.Extensions
     {
         public static string GetClaimType(this Game game)
         {
-            return $"{CustomClaimTypes.Game}/{game.ToString().ToLowerInvariant()}";
+            return $"{CustomClaimTypes.Game}:{game.ToString().ToLowerInvariant()}";
         }
     }
 }
