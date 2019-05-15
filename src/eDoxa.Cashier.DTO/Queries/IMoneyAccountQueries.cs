@@ -17,8 +17,8 @@ namespace eDoxa.Cashier.DTO.Queries
 {
     public interface IMoneyAccountQueries
     {
-        Task<Option<MoneyAccountDTO>> FindAccountAsync(UserId userId);
+        Task<Option<MoneyAccountDTO>> GetMoneyAccountAsync(UserId userId);
 
-        Task<Option<MoneyTransactionListDTO>> FindTransactionsAsync(UserId userId);
+        Task<Option<MoneyTransactionListDTO>> GetMoneyTransactionsAsync(UserId userId);
     }
 }

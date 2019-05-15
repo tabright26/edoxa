@@ -24,8 +24,8 @@ namespace eDoxa.Cashier.Api.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost("verify", Name = nameof(VerifyAccount))]
-        public async Task<IActionResult> VerifyAccount([FromBody] VerifyAccountCommand command)
+        [HttpPost("verify", Name = nameof(VerifyAccountAsync))]
+        public async Task<IActionResult> VerifyAccountAsync([FromBody] VerifyAccountCommand command)
         {
             return await _mediator.SendCommandAsync(command);
         }

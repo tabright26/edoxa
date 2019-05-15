@@ -23,7 +23,7 @@ namespace eDoxa.Cashier.Application.Tests.IntegrationEvents
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<UserCreatedIntegrationEvent>.For(typeof(Guid), typeof(string), typeof(string), typeof(string))
+            ConstructorTests<UserCreatedIntegrationEvent>.For(typeof(Guid), typeof(string), typeof(string), typeof(string), typeof(int), typeof(int), typeof(int))
                 .WithName("UserCreatedIntegrationEvent")
                 .Assert();
         }

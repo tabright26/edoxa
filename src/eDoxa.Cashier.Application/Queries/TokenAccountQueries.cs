@@ -47,7 +47,7 @@ namespace eDoxa.Cashier.Application.Queries
 
     public sealed partial class TokenAccountQueries : ITokenAccountQueries
     {
-        public async Task<Option<TokenAccountDTO>> FindAccountAsync(UserId userId)
+        public async Task<Option<TokenAccountDTO>> GetTokenAccountAsync(UserId userId)
         {
             var account = await this.FindAccountAsNoTrackingAsync(userId);
 
@@ -56,7 +56,7 @@ namespace eDoxa.Cashier.Application.Queries
             return mapper != null ? new Option<TokenAccountDTO>(mapper) : new Option<TokenAccountDTO>();
         }
 
-        public async Task<Option<TokenTransactionListDTO>> FindTransactionsAsync(UserId userId)
+        public async Task<Option<TokenTransactionListDTO>> GetTokenTransactionsAsync(UserId userId)
         {
             var account = await this.FindAccountAsNoTrackingAsync(userId);
 

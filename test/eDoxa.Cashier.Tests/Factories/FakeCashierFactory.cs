@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 
 using eDoxa.Cashier.Domain.Abstractions;
-using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
 
@@ -32,6 +31,11 @@ namespace eDoxa.Cashier.Tests.Factories
 
     public sealed partial class FakeCashierFactory
     {
+        public StripeAccountId CreateAccountId()
+        {
+            return new StripeAccountId("acct_123gEwe23HkAt");
+        }
+
         public StripeBankAccountId CreateBankAccountId()
         {
             return new StripeBankAccountId("ba_gePgEwe23HkAt");
@@ -45,11 +49,6 @@ namespace eDoxa.Cashier.Tests.Factories
         public StripeCustomerId CreateCustomerId()
         {
             return new StripeCustomerId("cus_TrgePgEEYXHkAt");
-        }
-
-        public UserId CreateUserId()
-        {
-            return UserId.FromGuid(Guid.NewGuid());
         }
 
         public IBundle CreateBundle()
@@ -75,30 +74,6 @@ namespace eDoxa.Cashier.Tests.Factories
         public Token CreateToken()
         {
             return Token.OneHundredThousand;
-        }
-
-        public BankAccount CreateBankAccount()
-        {
-            return new BankAccount
-            {
-                Id = this.CreateBankAccountId().ToString(),
-                Object = "bank_account"
-            };
-        }
-
-        public StripeList<BankAccount> CreateBankAccounts()
-        {
-            return new StripeList<BankAccount>
-            {
-                Data = new List<BankAccount>
-                {
-                    new BankAccount
-                    {
-                        Id = this.CreateBankAccountId().ToString(),
-                        Object = "bank_account"
-                    }
-                }
-            };
         }
 
         public Card CreateCard()

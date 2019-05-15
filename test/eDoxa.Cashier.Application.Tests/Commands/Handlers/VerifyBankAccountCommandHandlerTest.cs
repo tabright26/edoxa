@@ -9,6 +9,8 @@
 // this source code package.
 
 using eDoxa.Cashier.Application.Commands.Handlers;
+using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
+using eDoxa.Security.Abstractions;
 using eDoxa.Testing.MSTest;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -21,7 +23,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<VerifyAccountCommandHandler>.For()
+            ConstructorTests<VerifyAccountCommandHandler>.For(typeof(IStripeService), typeof(IUserInfoService))
                 .WithName("VerifyAccountCommandHandler")
                 .Assert();
         }

@@ -114,7 +114,7 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Tests
             var service = this.StripeService();
 
             // Act
-            await service.ListCardsAsync(FakeCashierFactory.CreateCustomerId());
+            await service.GetCardsAsync(FakeCashierFactory.CreateCustomerId());
 
             // Assert
             _mockCardService.Verify(
@@ -150,23 +150,14 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Tests
                 .ReturnsAsync(FakeCashierFactory.CreateCard)
                 .Verifiable();
 
-            _mockCustomerService.Setup(mock =>
-                    mock.UpdateAsync(It.IsAny<string>(), It.IsAny<CustomerUpdateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(FakeCashierFactory.CreateCustomer)
-                .Verifiable();
-
             var service = this.StripeService();
 
             // Act
-            await service.CreateCardAsync(FakeCashierFactory.CreateCustomerId(), FakeCashierFactory.CreateSourceToken(), true);
+            await service.CreateCardAsync(FakeCashierFactory.CreateCustomerId(), FakeCashierFactory.CreateSourceToken());
 
             // Assert
             _mockCardService.Verify(
                 mock => mock.CreateAsync(It.IsAny<string>(), It.IsAny<CardCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
-                Times.Once);
-
-            _mockCustomerService.Verify(
-                mock => mock.UpdateAsync(It.IsAny<string>(), It.IsAny<CustomerUpdateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
                 Times.Once);
         }
 
@@ -217,7 +208,7 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Tests
             var service = this.StripeService();
 
             // Act
-            await service.UpdateCustomerDefaultSourceAsync(FakeCashierFactory.CreateCustomerId(), FakeCashierFactory.CreateCardId());
+            await service.UpdateCardDefaultAsync(FakeCashierFactory.CreateCustomerId(), FakeCashierFactory.CreateCardId());
 
             // Assert
             _mockCustomerService.Verify(
@@ -229,10 +220,6 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Tests
         public async Task CreateInvoiceAsync()
         {
             // Arrange
-            _mockCustomerService.Setup(mock => mock.GetAsync(It.IsAny<string>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(FakeCashierFactory.CreateCustomer)
-                .Verifiable();
-
             _mockInvoiceItemService.Setup(mock =>
                     mock.CreateAsync(It.IsAny<InvoiceItemCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(FakeCashierFactory.CreateInvoiceItem)
@@ -245,12 +232,9 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Tests
             var service = this.StripeService();
 
             // Act
-            await service.CreateInvoiceAsync(FakeCashierFactory.CreateCustomerId(), "test@edoxa.gg", FakeCashierFactory.CreateBundle(),
-                FakeCashierFactory.CreateTransaction());
+            await service.CreateInvoiceAsync(FakeCashierFactory.CreateCustomerId(), FakeCashierFactory.CreateBundle(), FakeCashierFactory.CreateTransaction());
 
             // Assert
-            _mockCustomerService.Verify(mock => mock.GetAsync(It.IsAny<string>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()), Times.Once);
-
             _mockInvoiceItemService.Verify(
                 mock => mock.CreateAsync(It.IsAny<InvoiceItemCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()), Times.Once);
 
@@ -289,15 +273,7 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Tests
                 .AddEnvironmentVariables()
                 .Build();
 
-            return new StripeService(
-                _mockAccountService.Object,
-                _mockCardService.Object,
-                _mockCustomerService.Object,
-                _externalAccountService.Object,
-                _mockInvoiceService.Object,
-                _mockInvoiceItemService.Object,
-                _mockTransferService.Object,
-                configuration);
+            return new StripeService(configuration, _mockAccountService.Object, _mockCardService.Object, _mockCustomerService.Object, _externalAccountService.Object, _mockInvoiceService.Object, _mockInvoiceItemService.Object, _mockTransferService.Object);
         }
     }
 }

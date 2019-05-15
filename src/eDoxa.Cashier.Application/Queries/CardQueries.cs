@@ -35,9 +35,9 @@ namespace eDoxa.Cashier.Application.Queries
 
     public sealed partial class CardQueries : ICardQueries
     {
-        public async Task<Option<CardListDTO>> FindUserCardsAsync(StripeCustomerId customerId)
+        public async Task<Option<CardListDTO>> GetCardsAsync(StripeCustomerId customerId)
         {
-            var option = await _stripeService.ListCardsAsync(customerId);
+            var option = await _stripeService.GetCardsAsync(customerId);
 
             return option
                 .Select(cards => new Option<CardListDTO>(_mapper.Map<CardListDTO>(cards)))
@@ -45,7 +45,7 @@ namespace eDoxa.Cashier.Application.Queries
                 .Single();
         }
 
-        public async Task<Option<CardDTO>> FindUserCardAsync(StripeCustomerId customerId, StripeCardId cardId)
+        public async Task<Option<CardDTO>> GetCardAsync(StripeCustomerId customerId, StripeCardId cardId)
         {
             var option = await _stripeService.GetCardAsync(customerId, cardId);
 

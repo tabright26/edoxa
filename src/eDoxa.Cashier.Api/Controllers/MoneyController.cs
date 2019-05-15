@@ -33,25 +33,25 @@ namespace eDoxa.Cashier.Api.Controllers
     public sealed class MoneyController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly IMoneyAccountQueries _queries;
+        private readonly IMoneyAccountQueries _moneyAccountQueries;
         private readonly IUserInfoService _userInfoService;
 
-        public MoneyController(IUserInfoService userInfoService, IMoneyAccountQueries queries, IMediator mediator)
+        public MoneyController(IUserInfoService userInfoService, IMoneyAccountQueries moneyAccountQueries, IMediator mediator)
         {
             _userInfoService = userInfoService;
-            _queries = queries;
+            _moneyAccountQueries = moneyAccountQueries;
             _mediator = mediator;
         }
 
         /// <summary>
-        ///     Find user's money.
+        ///     Get money account.
         /// </summary>
-        [HttpGet(Name = nameof(FindMoneyAccountAsync))]
-        public async Task<IActionResult> FindMoneyAccountAsync()
+        [HttpGet(Name = nameof(GetMoneyAccountAsync))]
+        public async Task<IActionResult> GetMoneyAccountAsync()
         {
             var userId = UserId.Parse(_userInfoService.Subject);
 
-            var account = await _queries.FindAccountAsync(userId);
+            var account = await _moneyAccountQueries.GetMoneyAccountAsync(userId);
 
             return account
                 .Select(this.Ok)
@@ -63,30 +63,30 @@ namespace eDoxa.Cashier.Api.Controllers
         /// <summary>
         ///     Deposit money.
         /// </summary>
-        [HttpPost("deposit", Name = nameof(DepositMoneyAsync))]
-        public async Task<IActionResult> DepositMoneyAsync([FromBody] AddFundsCommand command)
+        [HttpPost("deposit", Name = nameof(AddFundsAsync))]
+        public async Task<IActionResult> AddFundsAsync([FromBody] AddFundsCommand command)
         {
             return await _mediator.SendCommandAsync(command);
         }
 
         /// <summary>
-        ///     Find money bundles.
+        ///     Get money deposit bundles.
         /// </summary>
-        [HttpGet("deposit/bundles", Name = nameof(FindMoneyBundles))]
-        public IActionResult FindMoneyBundles()
+        [HttpGet("deposit/bundles", Name = nameof(GetMoneyBundles))]
+        public IActionResult GetMoneyBundles()
         {
             return this.Ok(MoneyBundleType.GetAll());
         }
 
         /// <summary>
-        ///     Find money transactions.
+        ///     Get money transactions.
         /// </summary>
-        [HttpGet("transactions", Name = nameof(FindMoneyTransactionsAsync))]
-        public async Task<IActionResult> FindMoneyTransactionsAsync()
+        [HttpGet("transactions", Name = nameof(GetMoneyTransactionsAsync))]
+        public async Task<IActionResult> GetMoneyTransactionsAsync()
         {
             var userId = UserId.Parse(_userInfoService.Subject);
 
-            var transactions = await _queries.FindTransactionsAsync(userId);
+            var transactions = await _moneyAccountQueries.GetMoneyTransactionsAsync(userId);
 
             return transactions
                 .Select(this.Ok)
@@ -98,17 +98,17 @@ namespace eDoxa.Cashier.Api.Controllers
         /// <summary>
         ///     Withdrawal money.
         /// </summary>
-        [HttpPost("withdrawal", Name = nameof(WithdrawalMoneyAsync))]
-        public async Task<IActionResult> WithdrawalMoneyAsync([FromBody] WithdrawalFundsCommand command)
+        [HttpPost("withdrawal", Name = nameof(WithdrawalFundsAsync))]
+        public async Task<IActionResult> WithdrawalFundsAsync([FromBody] WithdrawalFundsCommand command)
         {
             return await _mediator.SendCommandAsync(command);
         }
 
         /// <summary>
-        ///     Withdrawal money.
+        ///     Get money withdrawal bundles.
         /// </summary>
-        [HttpGet("withdrawal/bundles", Name = nameof(FindWithdrawalMoneyBundles))]
-        public IActionResult FindWithdrawalMoneyBundles()
+        [HttpGet("withdrawal/bundles", Name = nameof(GetWithdrawalMoneyBundles))]
+        public IActionResult GetWithdrawalMoneyBundles()
         {
             return this.Ok(WithdrawalMoneyBundleType.GetAll());
         }

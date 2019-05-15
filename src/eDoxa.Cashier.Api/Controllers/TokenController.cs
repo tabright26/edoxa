@@ -33,25 +33,25 @@ namespace eDoxa.Cashier.Api.Controllers
     public class TokenController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly ITokenAccountQueries _queries;
+        private readonly ITokenAccountQueries _tokenAccountQueries;
         private readonly IUserInfoService _userInfoService;
 
-        public TokenController(IUserInfoService userInfoService, ITokenAccountQueries queries, IMediator mediator)
+        public TokenController(IUserInfoService userInfoService, ITokenAccountQueries tokenAccountQueries, IMediator mediator)
         {
             _userInfoService = userInfoService;
-            _queries = queries;
+            _tokenAccountQueries = tokenAccountQueries;
             _mediator = mediator;
         }
 
         /// <summary>
-        ///     Find user's token.
+        ///     Get token account.
         /// </summary>
-        [HttpGet(Name = nameof(FindTokenAccountAsync))]
-        public async Task<IActionResult> FindTokenAccountAsync()
+        [HttpGet(Name = nameof(GetTokenAccountAsync))]
+        public async Task<IActionResult> GetTokenAccountAsync()
         {
             var userId = UserId.Parse(_userInfoService.Subject);
 
-            var account = await _queries.FindAccountAsync(userId);
+            var account = await _tokenAccountQueries.GetTokenAccountAsync(userId);
 
             return account
                 .Select(this.Ok)
@@ -63,30 +63,30 @@ namespace eDoxa.Cashier.Api.Controllers
         /// <summary>
         ///     Buy tokens.
         /// </summary>
-        [HttpPost("deposit", Name = nameof(DepositTokensAsync))]
-        public async Task<IActionResult> DepositTokensAsync([FromBody] BuyTokensCommand command)
+        [HttpPost("deposit", Name = nameof(BuyTokensAsync))]
+        public async Task<IActionResult> BuyTokensAsync([FromBody] BuyTokensCommand command)
         {
             return await _mediator.SendCommandAsync(command);
         }
 
         /// <summary>
-        ///     Find token bundles.
+        ///     Get token bundles.
         /// </summary>
-        [HttpGet("deposit/bundles", Name = nameof(FindTokenBundlesAsync))]
-        public IActionResult FindTokenBundlesAsync()
+        [HttpGet("deposit/bundles", Name = nameof(GetTokenBundlesAsync))]
+        public IActionResult GetTokenBundlesAsync()
         {
             return this.Ok(TokenBundleType.GetAll());
         }
 
         /// <summary>
-        ///     Find token transactions.
+        ///     Get token transactions.
         /// </summary>
-        [HttpGet("transactions", Name = nameof(FindTokenTransactionsAsync))]
-        public async Task<IActionResult> FindTokenTransactionsAsync()
+        [HttpGet("transactions", Name = nameof(GetTokenTransactionsAsync))]
+        public async Task<IActionResult> GetTokenTransactionsAsync()
         {
             var userId = UserId.Parse(_userInfoService.Subject);
 
-            var transactions = await _queries.FindTransactionsAsync(userId);
+            var transactions = await _tokenAccountQueries.GetTokenTransactionsAsync(userId);
 
             return transactions
                 .Select(this.Ok)

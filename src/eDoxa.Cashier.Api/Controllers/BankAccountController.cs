@@ -34,14 +34,14 @@ namespace eDoxa.Cashier.Api.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateBankAccount([FromBody] CreateBankAccountCommand command)
+        [HttpPost(Name = nameof(CreateBankAccountAsync))]
+        public async Task<IActionResult> CreateBankAccountAsync([FromBody] CreateBankAccountCommand command)
         {
             return await _mediator.SendCommandAsync(command);
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> DeleteBankAccount()
+        [HttpDelete(Name = nameof(DeleteBankAccountAsync))]
+        public async Task<IActionResult> DeleteBankAccountAsync()
         {
             return await _mediator.SendCommandAsync(new DeleteBankAccountCommand());
         }

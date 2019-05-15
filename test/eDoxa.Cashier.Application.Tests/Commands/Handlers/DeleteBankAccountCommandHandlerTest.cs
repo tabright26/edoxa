@@ -11,6 +11,7 @@
 using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Security.Abstractions;
+using eDoxa.ServiceBus;
 using eDoxa.Testing.MSTest;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -23,7 +24,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<DeleteBankAccountCommandHandler>.For(typeof(IUserInfoService), typeof(IStripeService))
+            ConstructorTests<DeleteBankAccountCommandHandler>.For(typeof(IUserInfoService), typeof(IStripeService), typeof(IIntegrationEventService))
                 .WithName("DeleteBankAccountCommandHandler")
                 .Assert();
         }

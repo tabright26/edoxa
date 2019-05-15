@@ -47,7 +47,7 @@ namespace eDoxa.Cashier.Application.Queries
 
     public sealed partial class MoneyAccountQueries : IMoneyAccountQueries
     {
-        public async Task<Option<MoneyAccountDTO>> FindAccountAsync(UserId userId)
+        public async Task<Option<MoneyAccountDTO>> GetMoneyAccountAsync(UserId userId)
         {
             var account = await this.FindAccountAsNoTrackingAsync(userId);
 
@@ -56,7 +56,7 @@ namespace eDoxa.Cashier.Application.Queries
             return mapper != null ? new Option<MoneyAccountDTO>(mapper) : new Option<MoneyAccountDTO>();
         }
 
-        public async Task<Option<MoneyTransactionListDTO>> FindTransactionsAsync(UserId userId)
+        public async Task<Option<MoneyTransactionListDTO>> GetMoneyTransactionsAsync(UserId userId)
         {
             var account = await this.FindAccountAsNoTrackingAsync(userId);
 

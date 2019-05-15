@@ -22,7 +22,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<CreateUserCommand>.For(typeof(UserId), typeof(string))
+            ConstructorTests<CreateUserCommand>.For(typeof(UserId), typeof(string), typeof(string), typeof(string), typeof(int), typeof(int), typeof(int))
                 .WithName("CreateUserCommand")
                 .WithAttributes()
                 .Assert();

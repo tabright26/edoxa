@@ -38,12 +38,9 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         {
             var customerId = new StripeCustomerId(_userInfoService.StripeCustomerId);
 
-            var either = await _stripeService.CreateCardAsync(customerId, command.SourceToken, command.DefaultSource, cancellationToken);
+            await _stripeService.CreateCardAsync(customerId, command.SourceToken, cancellationToken);
 
-            return either.Match<IActionResult>(
-                result => new BadRequestObjectResult(result.ErrorMessage),
-                card => new OkObjectResult("The card has been added.")
-            );
+            return new OkObjectResult("The card has been added.");
         }
     }
 }

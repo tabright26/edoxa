@@ -40,7 +40,11 @@ namespace eDoxa.Testing.MSTest.Extensions
 
             mockUserInfoService.SetupGet(mock => mock.Address).Returns((string) null);
 
-            mockUserInfoService.SetupGet(mock => mock.StripeCustomerId).Returns("cus_we234rTi24o");
+            mockUserInfoService.SetupGet(mock => mock.StripeAccountId).Returns("acct_we23weqi24o");
+
+            mockUserInfoService.SetupGet(mock => mock.StripeBankAccountId).Returns("ba_we12334rTi24o");
+
+            mockUserInfoService.SetupGet(mock => mock.StripeCustomerId).Returns("cus_we234qwei14o");
 
             mockUserInfoService.SetupGet(mock => mock.Roles).Returns(new[]
             {

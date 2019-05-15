@@ -57,25 +57,26 @@ namespace eDoxa.Cashier.Domain.Services
 
             await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
-            var either = await _stripeService.CreateInvoiceAsync(customerId, email, bundle, moneyTransaction, cancellationToken);
+            try
+            {
+                await _stripeService.CreateInvoiceAsync(customerId, bundle, moneyTransaction, cancellationToken);
 
-            return either.Match(
-                result =>
-                {
-                    moneyTransaction.Fail();
+                moneyTransaction.Pay();
 
-                    _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken).Wait(cancellationToken);
+                await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+            }
+            catch (Exception exception)
+            {
+                moneyTransaction.Fail();
 
-                    return result;
-                },
-                payout =>
-                {
-                    moneyTransaction.Pay();
+                await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
-                    _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken).Wait(cancellationToken);
+                ExceptionDispatchInfo.Capture(exception).Throw();
 
-                    return new Either<ValidationResult, IMoneyTransaction>(moneyTransaction);
-                });
+                throw;
+            }
+
+            return new Either<ValidationResult, IMoneyTransaction>(moneyTransaction);
         }
 
         public async Task<Either<ValidationResult, IMoneyTransaction>> TryWithdrawalAsync(

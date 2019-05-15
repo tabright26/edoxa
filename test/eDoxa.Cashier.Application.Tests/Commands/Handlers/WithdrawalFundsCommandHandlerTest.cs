@@ -57,7 +57,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             var command = new WithdrawalFundsCommand(WithdrawalMoneyBundleType.Fifty);
 
             _mockMoneyAccountService.Setup(mock => mock.TryWithdrawalAsync(It.IsAny<StripeAccountId>(), It.IsAny<UserId>(), It.IsAny<MoneyBundle>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new WithdrawalMoneyTransaction(new Money(50)))
+                .ReturnsAsync(new WithdrawalMoneyTransaction(Money.Fifty))
                 .Verifiable();
 
             var handler = new WithdrawalFundsCommandHandler(_mockUserInfoService.Object, _mockMoneyAccountService.Object);

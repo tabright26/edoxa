@@ -59,7 +59,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             var controller = new TokenController(_mockUserInfoService.Object, _mockTokenAccountQueries.Object, _mockMediator.Object);
 
             // Act
-            var result = await controller.DepositTokensAsync(command);
+            var result = await controller.BuyTokensAsync(command);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();

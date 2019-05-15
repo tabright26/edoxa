@@ -53,14 +53,14 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         public async Task FindUserAccountAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            _mockMoneyAccountQueries.Setup(queries => queries.FindAccountAsync(It.IsAny<UserId>()))
+            _mockMoneyAccountQueries.Setup(queries => queries.GetMoneyAccountAsync(It.IsAny<UserId>()))
                 .ReturnsAsync(new Option<MoneyAccountDTO>(new MoneyAccountDTO()))
                 .Verifiable();
 
             var controller = new MoneyController(_mockUserInfoService.Object, _mockMoneyAccountQueries.Object, _mockMediator.Object);
 
             // Act
-            var result = await controller.FindMoneyAccountAsync();
+            var result = await controller.GetMoneyAccountAsync();
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -74,12 +74,12 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         public async Task FindUserAccountAsync_ShouldBeNotFoundObjectResult()
         {
             // Arrange
-            _mockMoneyAccountQueries.Setup(queries => queries.FindAccountAsync(It.IsAny<UserId>())).ReturnsAsync(new Option<MoneyAccountDTO>()).Verifiable();
+            _mockMoneyAccountQueries.Setup(queries => queries.GetMoneyAccountAsync(It.IsAny<UserId>())).ReturnsAsync(new Option<MoneyAccountDTO>()).Verifiable();
 
             var controller = new MoneyController(_mockUserInfoService.Object, _mockMoneyAccountQueries.Object, _mockMediator.Object);
 
             // Act
-            var result = await controller.FindMoneyAccountAsync();
+            var result = await controller.GetMoneyAccountAsync();
 
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
@@ -125,7 +125,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             var controller = new MoneyController(_mockUserInfoService.Object, _mockMoneyAccountQueries.Object, _mockMediator.Object);
 
             // Act
-            var result = await controller.DepositMoneyAsync(command);
+            var result = await controller.AddFundsAsync(command);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();

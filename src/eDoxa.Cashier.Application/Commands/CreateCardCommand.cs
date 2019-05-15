@@ -19,15 +19,12 @@ namespace eDoxa.Cashier.Application.Commands
     [DataContract]
     public sealed class CreateCardCommand : Command<IActionResult>
     {
-        public CreateCardCommand(string sourceToken, bool defaultSource = false)
+        public CreateCardCommand(string sourceToken)
         {
             SourceToken = sourceToken;
-            DefaultSource = defaultSource;
         }
 
-        [DataMember(Name = "sourceToken")] public string SourceToken { get; private set; }
-
-        [DataMember(Name = "defaultSource", IsRequired = false)]
-        public bool DefaultSource { get; private set; }
+        [DataMember(Name = "sourceToken")]
+        public string SourceToken { get; private set; }
     }
 }

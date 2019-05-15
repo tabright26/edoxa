@@ -16,13 +16,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace eDoxa.Cashier.Application.Tests.Commands.Validations
 {
     [TestClass]
-    public sealed class VerifyBankAccountCommandValidatorTest
+    public sealed class VerifyAccountCommandValidatorTest
     {
         [TestMethod]
         public void Constructor_Tests()
         {
             ConstructorTests<VerifyAccountCommandValidator>.For()
-                .WithName("VerifyBankAccountCommandValidator")
+                .WithName("VerifyAccountCommandValidator")
                 .Assert();
         }
     }

@@ -86,12 +86,12 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             var handler = new CreateCardCommandHandler(_mockUserInfoService.Object, _mockStripeService.Object);
 
             // Act
-            var response = await handler.HandleAsync(new CreateCardCommand(card.Id, true));
+            var response = await handler.HandleAsync(new CreateCardCommand(card.Id));
 
             // Assert
             response.Should().BeEquivalentTo(new OkResult());
 
-            _mockStripeService.Verify(mock => mock.CreateCardAsync(It.IsAny<StripeCustomerId>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()),
+            _mockStripeService.Verify(mock => mock.CreateCardAsync(It.IsAny<StripeCustomerId>(), It.IsAny<string>(), It.IsAny<CancellationToken>()),
                 Times.Once);
 
             //_mockCustomerService.Verify(

@@ -34,6 +34,8 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+using Stripe;
+
 namespace eDoxa.Cashier.Api
 {
     public sealed class Startup
@@ -45,6 +47,7 @@ namespace eDoxa.Cashier.Api
             Configuration = configuration;
             Environment = environment;
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            StripeConfiguration.SetApiKey(configuration["StripeConfiguration:ApiKey"]);
         }
 
         private IHostingEnvironment Environment { get; }
@@ -99,8 +102,6 @@ namespace eDoxa.Cashier.Api
             application.UseMvc();
 
             application.UseIntegrationEventSubscriptions();
-
-            application.UseStripe(Configuration);
         }
     }
 }

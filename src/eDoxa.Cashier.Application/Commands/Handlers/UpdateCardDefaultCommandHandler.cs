@@ -38,12 +38,9 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         {
             var customerId = new StripeCustomerId(_userInfoService.StripeCustomerId);
 
-            var either = await _stripeService.UpdateCustomerDefaultSourceAsync(customerId, command.StripeCardId, cancellationToken);
+            await _stripeService.UpdateCardDefaultAsync(customerId, command.StripeCardId, cancellationToken);
 
-            return either.Match<IActionResult>(
-                result => new BadRequestObjectResult(result.ErrorMessage),
-                customer => new OkObjectResult("The card has been updated as default.")
-            );
+            return new OkObjectResult("The card has been updated as default.");
         }
     }
 }

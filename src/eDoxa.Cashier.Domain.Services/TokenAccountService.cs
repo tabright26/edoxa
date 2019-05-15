@@ -8,7 +8,9 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -54,25 +56,26 @@ namespace eDoxa.Cashier.Domain.Services
 
             await _tokenAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
-            var either = await _stripeService.CreateInvoiceAsync(customerId, email, bundle, transaction, cancellationToken);
+            try
+            {
+                await _stripeService.CreateInvoiceAsync(customerId, bundle, transaction, cancellationToken);
 
-            return either.Match(
-                result =>
-                {
-                    transaction.Fail();
+                transaction.Pay();
 
-                    _tokenAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken).Wait(cancellationToken);
+                await _tokenAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+            }
+            catch (Exception exception)
+            {
+                transaction.Fail();
 
-                    return result;
-                },
-                payout =>
-                {
-                    transaction.Pay();
+                await _tokenAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
-                    _tokenAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken).Wait(cancellationToken);
+                ExceptionDispatchInfo.Capture(exception).Throw();
 
-                    return new Either<ValidationResult, ITokenTransaction>(transaction);
-                });
+                throw;
+            }
+
+            return new Either<ValidationResult, ITokenTransaction>(transaction);
         }
     }
 }

@@ -17,8 +17,8 @@ namespace eDoxa.Cashier.DTO.Queries
 {
     public interface ITokenAccountQueries
     {
-        Task<Option<TokenAccountDTO>> FindAccountAsync(UserId userId);
+        Task<Option<TokenAccountDTO>> GetTokenAccountAsync(UserId userId);
 
-        Task<Option<TokenTransactionListDTO>> FindTransactionsAsync(UserId userId);
+        Task<Option<TokenTransactionListDTO>> GetTokenTransactionsAsync(UserId userId);
     }
 }

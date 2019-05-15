@@ -1,5 +1,5 @@
 ﻿// Filename: MockStripeServiceExtensions.cs
-// Date Created: 2019-05-10
+// Date Created: 2019-05-13
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,11 +12,15 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.Abstractions;
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Cashier.Tests.Factories;
+using eDoxa.Functional;
 
 using Moq;
+
+using Stripe;
 
 namespace eDoxa.Cashier.Tests.Extensions
 {
@@ -27,6 +31,15 @@ namespace eDoxa.Cashier.Tests.Extensions
         public static void SetupMethods(this Mock<IStripeService> mockStripeService)
         {
             mockStripeService
+                .Setup(mock => mock.CreateAccountAsync(It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(),
+                    It.IsAny<int>(), It.IsAny<int>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(FakeCashierFactory.CreateAccountId);
+
+            mockStripeService
+                .Setup(mock => mock.VerifyAccountAsync(It.IsAny<StripeAccountId>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask);
+
+            mockStripeService
                 .Setup(mock => mock.CreateBankAccountAsync(It.IsAny<StripeAccountId>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(FakeCashierFactory.CreateBankAccountId);
 
@@ -35,28 +48,36 @@ namespace eDoxa.Cashier.Tests.Extensions
                 .Returns(Task.CompletedTask);
 
             mockStripeService
-                .Setup(mock => mock.CreateCardAsync(It.IsAny<StripeCustomerId>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(FakeCashierFactory.CreateCard());
+                .Setup(mock => mock.GetCardsAsync(It.IsAny<StripeCustomerId>()))
+                .ReturnsAsync(FakeCashierFactory.CreateCards);
+
+            mockStripeService
+                .Setup(mock => mock.GetCardAsync(It.IsAny<StripeCustomerId>(), It.IsAny<StripeCardId>()))
+                .ReturnsAsync(new Option<Card>(FakeCashierFactory.CreateCard()));
+
+            mockStripeService
+                .Setup(mock => mock.CreateCardAsync(It.IsAny<StripeCustomerId>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask);
 
             mockStripeService
                 .Setup(mock => mock.DeleteCardAsync(It.IsAny<StripeCustomerId>(), It.IsAny<StripeCardId>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(FakeCashierFactory.CreateCard());
-
-            //mockStripeService
-            //    .Setup(mock => mock.CreateCustomerAsync(It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
-            //    .ReturnsAsync(FakeCashierFactory.CreateCustomer());
+                .Returns(Task.CompletedTask);
 
             mockStripeService
-                .Setup(mock => mock.UpdateCustomerDefaultSourceAsync(It.IsAny<StripeCustomerId>(), It.IsAny<StripeCardId>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(FakeCashierFactory.CreateCustomer());
+                .Setup(mock => mock.CreateCustomerAsync(It.IsAny<StripeAccountId>(), It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(FakeCashierFactory.CreateCustomerId());
 
             mockStripeService
-                .Setup(mock => mock.CreateInvoiceAsync(It.IsAny<StripeCustomerId>(), It.IsAny<string>(), It.IsAny<IBundle>(), It.IsAny<ITransaction>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(FakeCashierFactory.CreateInvoice());
+                .Setup(mock => mock.UpdateCardDefaultAsync(It.IsAny<StripeCustomerId>(), It.IsAny<StripeCardId>(), It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask);
 
-            //mockStripeService
-            //    .Setup(mock => mock.CreatePayoutAsync(It.IsAny<CustomerId>(), It.IsAny<IBundle>(), It.IsAny<ITransaction>(), It.IsAny<CancellationToken>()))
-            //    .ReturnsAsync(FakeCashierFactory.CreatePayout());
+            mockStripeService
+                .Setup(mock => mock.CreateInvoiceAsync(It.IsAny<StripeCustomerId>(), It.IsAny<IBundle>(), It.IsAny<ITransaction>(), It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask);
+
+            mockStripeService
+                .Setup(mock => mock.CreateTransfer(It.IsAny<StripeAccountId>(), It.IsAny<IBundle>(), It.IsAny<ITransaction>(), It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask);
         }
     }
 }
