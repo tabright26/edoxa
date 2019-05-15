@@ -1,5 +1,5 @@
-﻿// Filename: CustomerId.cs
-// Date Created: 2019-05-10
+﻿// Filename: StripeCustomerId.cs
+// Date Created: 2019-05-13
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -21,11 +21,6 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Models
 
         public StripeCustomerId(string customerId) : base(customerId, Prefix)
         {
-        }
-
-        public static bool IsValid(string customerId)
-        {
-            return StripeId.IsValid(customerId, Prefix);
         }
     }
 }

@@ -22,10 +22,5 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Models
         public StripeAccountId(string accountId) : base(accountId, Prefix)
         {
         }
-
-        public static bool IsValid(string accountId)
-        {
-            return StripeId.IsValid(accountId, Prefix);
-        }
     }
 }

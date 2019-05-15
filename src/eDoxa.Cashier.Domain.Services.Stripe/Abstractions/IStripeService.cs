@@ -39,12 +39,12 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Abstractions
 
         Task DeleteCardAsync(StripeCustomerId customerId, StripeCardId cardId, CancellationToken cancellationToken = default);
 
-        Task<StripeCustomerId> CreateCustomerAsync(StripeAccountId accountId, UserId userId, string email, CancellationToken cancellationToken = default);
+        Task<StripeCustomerId> CreateCustomerAsync(UserId userId, StripeAccountId accountId, string email, CancellationToken cancellationToken = default);
 
         Task UpdateCardDefaultAsync(StripeCustomerId customerId, StripeCardId cardId, CancellationToken cancellationToken = default);
 
         Task CreateInvoiceAsync(StripeCustomerId customerId, IBundle bundle, ITransaction transaction, CancellationToken cancellationToken = default);
 
-        Task CreateTransfer(StripeAccountId accountId, IBundle bundle, ITransaction transaction, CancellationToken cancellationToken = default);
+        Task CreateTransferAsync(StripeAccountId accountId, IBundle bundle, ITransaction transaction, CancellationToken cancellationToken = default);
     }
 }

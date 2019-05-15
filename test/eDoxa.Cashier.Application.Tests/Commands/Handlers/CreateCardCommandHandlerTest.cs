@@ -34,7 +34,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     [TestClass]
     public sealed class CreateCardCommandHandlerTest
     {
-        private static readonly FakeCashierFactory FakeCashierFactory = FakeCashierFactory.Instance;
+        private static readonly FakeStripeFactory FakeStripeFactory = FakeStripeFactory.Instance;
         private Mock<IStripeService> _mockStripeService;
         private Mock<IUserInfoService> _mockUserInfoService;
 
@@ -59,29 +59,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         public async Task HandleAsync_CreateCardCommand_ShouldBeInvokedExactlyOneTime()
         {
             // Arrange
-            var card = FakeCashierFactory.CreateCard();
-
-            //_mockCustomerService.Setup(
-            //        service => service.UpdateAsync(
-            //            It.IsAny<string>(),
-            //            It.IsAny<CustomerUpdateOptions>(),
-            //            It.IsAny<RequestOptions>(),
-            //            It.IsAny<CancellationToken>()
-            //        )
-            //    )
-            //    .ReturnsAsync(customer)
-            //    .Verifiable();
-
-            //_mockCardService.Setup(
-            //        service => service.CreateAsync(
-            //            It.IsAny<string>(),
-            //            It.IsAny<CardCreateOptions>(),
-            //            It.IsAny<RequestOptions>(),
-            //            It.IsAny<CancellationToken>()
-            //        )
-            //    )
-            //    .ReturnsAsync(card)
-            //    .Verifiable();
+            var card = FakeStripeFactory.CreateCard();
 
             var handler = new CreateCardCommandHandler(_mockUserInfoService.Object, _mockStripeService.Object);
 
@@ -93,17 +71,6 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
 
             _mockStripeService.Verify(mock => mock.CreateCardAsync(It.IsAny<StripeCustomerId>(), It.IsAny<string>(), It.IsAny<CancellationToken>()),
                 Times.Once);
-
-            //_mockCustomerService.Verify(
-            //    service =>
-            //        service.UpdateAsync(It.IsAny<string>(), It.IsAny<CustomerUpdateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
-            //    Times.Once
-            //);
-
-            //_mockCardService.Verify(
-            //    service => service.CreateAsync(It.IsAny<string>(), It.IsAny<CardCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
-            //    Times.Once
-            //);
         }
     }
 }

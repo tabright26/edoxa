@@ -97,7 +97,7 @@ namespace eDoxa.Cashier.Domain.Services
             {
                 try
                 {
-                    _stripeService.CreateTransfer(accountId, bundle, transaction, cancellationToken).Wait(cancellationToken);
+                    _stripeService.CreateTransferAsync(accountId, bundle, transaction, cancellationToken).Wait(cancellationToken);
 
                     transaction.Success();
 

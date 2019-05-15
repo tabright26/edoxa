@@ -38,7 +38,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
     [TestClass]
     public sealed class CardsControllerTest
     {
-        private static readonly FakeCashierFactory FakeCashierFactory = FakeCashierFactory.Instance;
+        private static readonly FakeStripeFactory FakeStripeFactory = FakeStripeFactory.Instance;
         private Mock<ICardQueries> _mockCardQueries;
         private Mock<IMediator> _mockMediator;
         private Mock<IUserInfoService> _mockUserInfoService;
@@ -100,7 +100,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         public async Task CreateCardAsync_ShouldBeCreatedResult()
         {
             // Arrange
-            var cardId = FakeCashierFactory.CreateCardId();
+            var cardId = FakeStripeFactory.CreateCardId();
 
             var command = new CreateCardCommand(cardId.ToString());
 
@@ -124,7 +124,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         public async Task FindUserCardAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            var cardId = FakeCashierFactory.CreateCardId();
+            var cardId = FakeStripeFactory.CreateCardId();
 
             _mockCardQueries.Setup(queries => queries.GetCardAsync(It.IsAny<StripeCustomerId>(), It.IsAny<StripeCardId>()))
                 .ReturnsAsync(new Option<CardDTO>(new CardDTO()))
@@ -147,7 +147,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         public async Task DeleteCardAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            var cardId = FakeCashierFactory.CreateCardId();
+            var cardId = FakeStripeFactory.CreateCardId();
 
             _mockMediator.Setup(mediator => mediator.Send(It.IsAny<DeleteCardCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(new OkResult())
                 .Verifiable();
@@ -169,7 +169,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         public async Task UpdateDefaultCardAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            var cardId = FakeCashierFactory.CreateCardId();
+            var cardId = FakeStripeFactory.CreateCardId();
 
             _mockMediator.Setup(mediator => mediator.Send(It.IsAny<UpdateCardDefaultCommand>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new OkObjectResult(new Customer()))

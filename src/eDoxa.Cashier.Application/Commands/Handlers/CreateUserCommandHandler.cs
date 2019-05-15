@@ -50,7 +50,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 
             var accountId = await _stripeService.CreateAccountAsync(command.UserId, command.Email, command.FirstName, command.LastName, command.Year, command.Month, command.Day, cancellationToken);
 
-            var customerId = await _stripeService.CreateCustomerAsync(accountId, command.UserId, command.Email, cancellationToken);
+            var customerId = await _stripeService.CreateCustomerAsync(command.UserId, accountId, command.Email, cancellationToken);
 
             await _integrationEventService.PublishAsync(
                 new UserClaimAddedIntegrationEvent(
@@ -58,7 +58,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
                     new Dictionary<string, string>
                     {
                         [CustomClaimTypes.StripeAccountId] = accountId.ToString(),
-                        [CustomClaimTypes.StripeCustomerId] = customerId.ToString(),
+                        [CustomClaimTypes.StripeCustomerId] = customerId.ToString()
                     }
                 )
             );

@@ -34,7 +34,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     [TestClass]
     public sealed class UpdateCardDefaultCommandHandlerTest
     {
-        private static readonly FakeCashierFactory FakeCashierFactory = FakeCashierFactory.Instance;
+        private static readonly FakeStripeFactory FakeStripeFactory = FakeStripeFactory.Instance;
         private Mock<IStripeService> _mockStripeService;
         private Mock<IUserInfoService> _mockUserInfoService;
 
@@ -59,18 +59,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         public async Task HandleAsync_UpdateCardDefaultCommand_ShouldBeInvokedExactlyOneTime()
         {
             // Arrange
-            var cardId = FakeCashierFactory.CreateCardId();
-
-            //_mockCustomerService.Setup(
-            //        service => service.UpdateAsync(
-            //            It.IsAny<string>(),
-            //            It.IsAny<CustomerUpdateOptions>(),
-            //            It.IsAny<RequestOptions>(),
-            //            It.IsAny<CancellationToken>()
-            //        )
-            //    )
-            //    .ReturnsAsync(customer)
-            //    .Verifiable();
+            var cardId = FakeStripeFactory.CreateCardId();
 
             var handler = new UpdateCardDefaultCommandHandler(_mockUserInfoService.Object, _mockStripeService.Object);
 
@@ -80,14 +69,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             // Assert
             result.Should().BeEquivalentTo(new OkResult());
 
-            _mockStripeService.Verify(mock => mock.UpdateCardDefaultAsync(It.IsAny<StripeCustomerId>(), It.IsAny<StripeCardId>(), It.IsAny<CancellationToken>()),
-                Times.Once);
-
-            //_mockCustomerService.Verify(
-            //    service =>
-            //        service.UpdateAsync(It.IsAny<string>(), It.IsAny<CustomerUpdateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
-            //    Times.Once
-            //);
+            _mockStripeService.Verify(mock => mock.UpdateCardDefaultAsync(It.IsAny<StripeCustomerId>(), It.IsAny<StripeCardId>(), It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }

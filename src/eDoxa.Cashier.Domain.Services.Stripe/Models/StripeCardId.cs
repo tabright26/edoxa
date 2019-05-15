@@ -1,5 +1,5 @@
-﻿// Filename: CardId.cs
-// Date Created: 2019-05-10
+﻿// Filename: StripeCardId.cs
+// Date Created: 2019-05-13
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -21,11 +21,6 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Models
 
         public StripeCardId(string cardId) : base(cardId, Prefix)
         {
-        }
-
-        public static bool IsValid(string cardId)
-        {
-            return StripeId.IsValid(cardId, Prefix);
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿// Filename: StripeId.cs
-// Date Created: 2019-05-10
+// Date Created: 2019-05-13
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,48 +12,12 @@ using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
+
+using eDoxa.Cashier.Domain.Services.Stripe.Exceptions;
 
 namespace eDoxa.Cashier.Domain.Services.Stripe.Abstractions
 {
-    public static class StripeId
-    {
-        public static bool IsValid(string stripeId, string prefix)
-        {
-            if (string.IsNullOrWhiteSpace(stripeId))
-            {
-                return false;
-            }
-
-            var substrings = GetSubstrings(stripeId);
-
-            return IsValid(substrings) && GetPrefix(substrings) == prefix && GetSuffix(substrings).All(char.IsLetterOrDigit);
-
-            //throw new FormatException("The substrings of identity are in an incorrect format.");
-            //throw new FormatException($"The identity prefix ({prefix}) is ​​an incorrect format.");
-            //throw new FormatException($"The identity suffix ({suffix}) is ​​an incorrect format.");
-        }
-
-        private static bool IsValid(string[] substrings)
-        {
-            return substrings.Length == 2;
-        }
-
-        private static string GetPrefix(string[] substrings)
-        {
-            return substrings[0];
-        }
-
-        private static string GetSuffix(string[] substrings)
-        {
-            return substrings[1];
-        }
-
-        private static string[] GetSubstrings(string stripeId)
-        {
-            return stripeId.Split('_');
-        }
-    }
-
     public abstract partial class StripeId<TStripeId>
     where TStripeId : StripeId<TStripeId>
     {
@@ -61,12 +25,39 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Abstractions
 
         protected StripeId(string stripeId, string prefix)
         {
-            if (!StripeId.IsValid(stripeId, prefix))
+            if (!IsValid(stripeId, prefix))
             {
-                throw new ArgumentException(nameof(stripeId));
+                throw new StripeIdException(stripeId, this.GetType());
             }
 
             _value = stripeId;
+        }
+
+        private static bool IsValid(string stripeId, string prefix)
+        {
+            if (string.IsNullOrWhiteSpace(stripeId))
+            {
+                return false;
+            }
+
+            var substrings = GetSubstrings();
+
+            return substrings.Length == 2 && GetPrefix() == prefix && GetSuffix().All(char.IsLetterOrDigit);
+
+            string GetPrefix()
+            {
+                return substrings[0];
+            }
+
+            string GetSuffix()
+            {
+                return substrings[1];
+            }
+
+            string[] GetSubstrings()
+            {
+                return stripeId.Split('_');
+            }
         }
 
         public sealed override string ToString()
@@ -124,14 +115,16 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Abstractions
             {
                 switch (value)
                 {
-                    case string stripeId when string.IsNullOrWhiteSpace(stripeId):
-                    {
-                        return null;
-                    }
-
                     case string stripeId:
                     {
-                        return (TStripeId) Activator.CreateInstance(typeof(TStripeId), stripeId);
+                        try
+                        {
+                            return (TStripeId) Activator.CreateInstance(typeof(TStripeId), stripeId);
+                        }
+                        catch (TargetInvocationException exception) when (exception.InnerException?.GetType() == typeof(StripeIdException))
+                        {
+                            throw exception.InnerException;
+                        }
                     }
 
                     default:

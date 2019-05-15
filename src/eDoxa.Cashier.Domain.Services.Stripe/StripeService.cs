@@ -162,7 +162,7 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
             await _cardService.DeleteAsync(customerId.ToString(), cardId.ToString(), cancellationToken: cancellationToken);
         }
 
-        public async Task<StripeCustomerId> CreateCustomerAsync(StripeAccountId accountId, UserId userId, string email, CancellationToken cancellationToken = default)
+        public async Task<StripeCustomerId> CreateCustomerAsync(UserId userId, StripeAccountId accountId, string email, CancellationToken cancellationToken = default)
         {
             var options = new CustomerCreateOptions
             {
@@ -196,7 +196,7 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
             await this.CreateInvoiceAsync(customerId, transaction, cancellationToken);
         }
 
-        public async Task CreateTransfer(StripeAccountId accountId, IBundle bundle, ITransaction transaction, CancellationToken cancellationToken = default)
+        public async Task CreateTransferAsync(StripeAccountId accountId, IBundle bundle, ITransaction transaction, CancellationToken cancellationToken = default)
         {
             var options = new TransferCreateOptions
             {

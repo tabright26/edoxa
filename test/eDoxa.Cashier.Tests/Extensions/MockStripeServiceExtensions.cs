@@ -26,22 +26,23 @@ namespace eDoxa.Cashier.Tests.Extensions
 {
     public static class MockStripeServiceExtensions
     {
-        private static readonly FakeCashierFactory FakeCashierFactory = FakeCashierFactory.Instance;
+        private static readonly FakeStripeFactory FakeStripeFactory = FakeStripeFactory.Instance;
 
         public static void SetupMethods(this Mock<IStripeService> mockStripeService)
         {
             mockStripeService
                 .Setup(mock => mock.CreateAccountAsync(It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(),
                     It.IsAny<int>(), It.IsAny<int>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(FakeCashierFactory.CreateAccountId);
+                .ReturnsAsync(FakeStripeFactory.CreateAccountId);
 
             mockStripeService
-                .Setup(mock => mock.VerifyAccountAsync(It.IsAny<StripeAccountId>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .Setup(mock => mock.VerifyAccountAsync(It.IsAny<StripeAccountId>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
+                    It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask);
 
             mockStripeService
                 .Setup(mock => mock.CreateBankAccountAsync(It.IsAny<StripeAccountId>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(FakeCashierFactory.CreateBankAccountId);
+                .ReturnsAsync(FakeStripeFactory.CreateBankAccountId);
 
             mockStripeService
                 .Setup(mock => mock.DeleteBankAccountAsync(It.IsAny<StripeAccountId>(), It.IsAny<StripeBankAccountId>(), It.IsAny<CancellationToken>()))
@@ -49,11 +50,11 @@ namespace eDoxa.Cashier.Tests.Extensions
 
             mockStripeService
                 .Setup(mock => mock.GetCardsAsync(It.IsAny<StripeCustomerId>()))
-                .ReturnsAsync(FakeCashierFactory.CreateCards);
+                .ReturnsAsync(FakeStripeFactory.CreateCards);
 
             mockStripeService
                 .Setup(mock => mock.GetCardAsync(It.IsAny<StripeCustomerId>(), It.IsAny<StripeCardId>()))
-                .ReturnsAsync(new Option<Card>(FakeCashierFactory.CreateCard()));
+                .ReturnsAsync(new Option<Card>(FakeStripeFactory.CreateCard()));
 
             mockStripeService
                 .Setup(mock => mock.CreateCardAsync(It.IsAny<StripeCustomerId>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
@@ -64,19 +65,21 @@ namespace eDoxa.Cashier.Tests.Extensions
                 .Returns(Task.CompletedTask);
 
             mockStripeService
-                .Setup(mock => mock.CreateCustomerAsync(It.IsAny<StripeAccountId>(), It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(FakeCashierFactory.CreateCustomerId());
+                .Setup(mock => mock.CreateCustomerAsync(It.IsAny<UserId>(), It.IsAny<StripeAccountId>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(FakeStripeFactory.CreateCustomerId());
 
             mockStripeService
                 .Setup(mock => mock.UpdateCardDefaultAsync(It.IsAny<StripeCustomerId>(), It.IsAny<StripeCardId>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask);
 
             mockStripeService
-                .Setup(mock => mock.CreateInvoiceAsync(It.IsAny<StripeCustomerId>(), It.IsAny<IBundle>(), It.IsAny<ITransaction>(), It.IsAny<CancellationToken>()))
+                .Setup(mock => mock.CreateInvoiceAsync(It.IsAny<StripeCustomerId>(), It.IsAny<IBundle>(), It.IsAny<ITransaction>(),
+                    It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask);
 
             mockStripeService
-                .Setup(mock => mock.CreateTransfer(It.IsAny<StripeAccountId>(), It.IsAny<IBundle>(), It.IsAny<ITransaction>(), It.IsAny<CancellationToken>()))
+                .Setup(mock => mock.CreateTransferAsync(It.IsAny<StripeAccountId>(), It.IsAny<IBundle>(), It.IsAny<ITransaction>(),
+                    It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask);
         }
     }

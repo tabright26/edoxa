@@ -1,5 +1,5 @@
-﻿// Filename: BankAccountId.cs
-// Date Created: 2019-05-10
+﻿// Filename: StripeBankAccountId.cs
+// Date Created: 2019-05-13
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -21,11 +21,6 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Models
 
         public StripeBankAccountId(string bankAccountId) : base(bankAccountId, Prefix)
         {
-        }
-
-        public static bool IsValid(string bankAccountId)
-        {
-            return StripeId.IsValid(bankAccountId, Prefix);
         }
     }
 }
