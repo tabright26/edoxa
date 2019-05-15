@@ -8,9 +8,12 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
+
 using eDoxa.Seedwork.Application.Filters;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 
 using Newtonsoft.Json;
@@ -19,13 +22,18 @@ namespace eDoxa.Seedwork.Application.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddMvcFilters(this IServiceCollection services)
+        public static void AddMvcFilters(this IServiceCollection services, Action<FilterCollection> action = null)
         {
             var builder = services.AddMvc(options =>
             {
+                action?.Invoke(options.Filters);
+
                 options.Filters.Add<ValidationExceptionFilter>();
+
                 options.Filters.Add<IdempotencyExceptionFilter>();
+
                 options.Filters.Add<DbUpdateExceptionFilter>();
+
                 options.Filters.Add<DbUpdateConcurrencyException>();
             });
 

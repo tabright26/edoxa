@@ -18,11 +18,12 @@ namespace eDoxa.Cashier.Application.Commands.Validations
     {
         public VerifyAccountCommandValidator()
         {
-            this.RuleFor(command => command.Line1).NotNull();
-            this.RuleFor(command => command.City).NotNull();
-            this.RuleFor(command => command.State).NotNull();
-            this.RuleFor(command => command.PostalCode).NotNull();
-            this.RuleFor(command => command.TermsOfService).Must(termsOfService => termsOfService);
+            this.RuleFor(command => command.Line1).Must(line1 => !string.IsNullOrWhiteSpace(line1)).WithMessage("The Line1 is invalid.");
+            this.RuleFor(command => command.Line2).Must(line2 => line2 == null || !string.IsNullOrWhiteSpace(line2)).WithMessage("The Line2 is invalid.");
+            this.RuleFor(command => command.City).Must(city => !string.IsNullOrWhiteSpace(city)).WithMessage("The City is invalid.");
+            this.RuleFor(command => command.State).Must(state => !string.IsNullOrWhiteSpace(state)).WithMessage("The State is invalid.");
+            this.RuleFor(command => command.PostalCode).Must(postalCode => !string.IsNullOrWhiteSpace(postalCode)).WithMessage("The PostalCode is invalid.");
+            this.RuleFor(command => command.TermsOfService).Must(termsOfService => termsOfService).WithMessage("You must agree to Stripe's Terms of Service.");
         }
     }
 }

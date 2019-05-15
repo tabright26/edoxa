@@ -43,6 +43,11 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 
             var accountId = new StripeAccountId(_userInfoService.StripeAccountId);
 
+            if (_userInfoService.StripeBankAccountId == null)
+            {
+                return new BadRequestObjectResult("No bank account is associated with this account.");
+            }
+
             var bankAccountId = new StripeBankAccountId(_userInfoService.StripeBankAccountId);
 
             await _stripeService.DeleteBankAccountAsync(accountId, bankAccountId, cancellationToken);

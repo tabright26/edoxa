@@ -43,6 +43,11 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 
             var accountId = new StripeAccountId(_userInfoService.StripeAccountId);
 
+            if (_userInfoService.StripeBankAccountId != null)
+            {
+                return  new BadRequestObjectResult("A bank account is already associated with this account.");
+            }
+
             var bankAccountId = await _stripeService.CreateBankAccountAsync(accountId, command.ExternalAccountTokenId, cancellationToken);
 
             await _integrationEventService.PublishAsync(new UserClaimAddedIntegrationEvent(userId.ToGuid(), CustomClaimTypes.StripeBankAccountId, bankAccountId.ToString()));

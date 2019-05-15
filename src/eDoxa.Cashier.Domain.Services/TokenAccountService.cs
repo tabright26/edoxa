@@ -8,7 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.ExceptionServices;
 using System.Threading;
@@ -22,6 +21,8 @@ using eDoxa.Cashier.Domain.Services.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Functional;
+
+using Stripe;
 
 namespace eDoxa.Cashier.Domain.Services
 {
@@ -64,7 +65,7 @@ namespace eDoxa.Cashier.Domain.Services
 
                 await _tokenAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
             }
-            catch (Exception exception)
+            catch (StripeException exception)
             {
                 transaction.Fail();
 

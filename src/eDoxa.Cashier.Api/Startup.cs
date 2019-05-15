@@ -17,6 +17,7 @@ using eDoxa.AutoMapper.Extensions;
 using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Application;
 using eDoxa.Cashier.Domain.Services.Stripe.Extensions;
+using eDoxa.Cashier.Domain.Services.Stripe.Filters;
 using eDoxa.Cashier.DTO.Factories;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Monitoring.Extensions;
@@ -68,7 +69,7 @@ namespace eDoxa.Cashier.Api
 
             services.AddAutoMapper(CashierMapperFactory.Instance);
 
-            services.AddMvcFilters();
+            services.AddMvcFilters(filters => filters.Add<StripeExceptionFilter>());
 
             services.AddSwagger(Configuration, Environment, CashierApi);
 

@@ -24,17 +24,8 @@ namespace eDoxa.Cashier.Domain.Services.Abstractions
     {
         Task CreateAccount(UserId userId);
 
-        Task<Either<ValidationResult, IMoneyTransaction>> DepositAsync(
-            UserId userId,
-            StripeCustomerId customerId,
-            MoneyBundle bundle,
-            string email,
-            CancellationToken cancellationToken = default);
+        Task<Either<ValidationResult, IMoneyTransaction>> DepositAsync(StripeCustomerId customerId, UserId userId, MoneyBundle bundle, CancellationToken cancellationToken = default);
 
-        Task<Either<ValidationResult, IMoneyTransaction>> TryWithdrawalAsync(
-            StripeAccountId accountId,
-            UserId userId,
-            MoneyBundle bundle,
-            CancellationToken cancellationToken = default);
+        Task<Either<ValidationResult, IMoneyTransaction>> TryWithdrawalAsync(StripeAccountId accountId, UserId userId, MoneyBundle bundle, CancellationToken cancellationToken = default);
     }
 }

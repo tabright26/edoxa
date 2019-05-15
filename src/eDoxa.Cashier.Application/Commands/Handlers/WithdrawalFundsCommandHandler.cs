@@ -45,6 +45,11 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
             
             var bundle = Bundles[command.BundleType];
 
+            if (_userInfoService.StripeBankAccountId == null)
+            {
+                return new BadRequestObjectResult("No bank account is associated with this account.");
+            }
+
             var either = await _moneyAccountService.TryWithdrawalAsync(customerId, userId, bundle, cancellationToken);
 
             return either.Match<IActionResult>(

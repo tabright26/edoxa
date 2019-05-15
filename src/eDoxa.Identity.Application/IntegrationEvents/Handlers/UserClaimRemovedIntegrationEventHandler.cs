@@ -31,9 +31,12 @@ namespace eDoxa.Identity.Application.IntegrationEvents.Handlers
         {
             var user = await _userManager.FindByIdAsync(integrationEvent.UserId.ToString());
 
-            var claim = new Claim(integrationEvent.Type, integrationEvent.Value);
+            foreach (var (type, value) in integrationEvent.Claims)
+            {
+                var claim = new Claim(type, value);
 
-            await _userManager.RemoveClaimAsync(user, claim);
+                await _userManager.RemoveClaimAsync(user, claim);
+            }
         }
     }
 }

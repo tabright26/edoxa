@@ -57,7 +57,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             var command = new AddFundsCommand(MoneyBundleType.Ten);
 
             _mockMoneyAccountService.Setup(mock =>
-                    mock.DepositAsync(It.IsAny<UserId>(), It.IsAny<StripeCustomerId>(), It.IsAny<MoneyBundle>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                    mock.DepositAsync(It.IsAny<StripeCustomerId>(), It.IsAny<UserId>(), It.IsAny<MoneyBundle>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new DepositMoneyTransaction(new Money(10)))
                 .Verifiable();
 
@@ -68,7 +68,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
 
             // Assert
             _mockMoneyAccountService.Verify(
-                mock => mock.DepositAsync(It.IsAny<UserId>(), It.IsAny<StripeCustomerId>(), It.IsAny<MoneyBundle>(), It.IsAny<string>(), It.IsAny<CancellationToken>()),
+                mock => mock.DepositAsync(It.IsAny<StripeCustomerId>(), It.IsAny<UserId>(), It.IsAny<MoneyBundle>(), It.IsAny<CancellationToken>()),
                 Times.Once);
         }
     }

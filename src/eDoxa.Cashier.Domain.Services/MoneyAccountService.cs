@@ -18,11 +18,14 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate.Specifications;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Functional;
+
+using Stripe;
 
 namespace eDoxa.Cashier.Domain.Services
 {
@@ -44,12 +47,7 @@ namespace eDoxa.Cashier.Domain.Services
             await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync();
         }
 
-        public async Task<Either<ValidationResult, IMoneyTransaction>> DepositAsync(
-            UserId userId,
-            StripeCustomerId customerId,
-            MoneyBundle bundle,
-            string email,
-            CancellationToken cancellationToken = default)
+        public async Task<Either<ValidationResult, IMoneyTransaction>> DepositAsync(StripeCustomerId customerId, UserId userId,  MoneyBundle bundle, CancellationToken cancellationToken = default)
         {
             var account = await _moneyAccountRepository.FindUserAccountAsync(userId);
 
@@ -79,35 +77,39 @@ namespace eDoxa.Cashier.Domain.Services
             return new Either<ValidationResult, IMoneyTransaction>(moneyTransaction);
         }
 
-        public async Task<Either<ValidationResult, IMoneyTransaction>> TryWithdrawalAsync(
-            StripeAccountId accountId,
-            UserId userId,
-            MoneyBundle bundle,
-            CancellationToken cancellationToken = default)
+        public async Task<Either<ValidationResult, IMoneyTransaction>> TryWithdrawalAsync(StripeAccountId accountId, UserId userId, MoneyBundle bundle, CancellationToken cancellationToken = default)
         {
             var account = await _moneyAccountRepository.FindUserAccountAsync(userId);
 
-            // TODO: InsufficientFundsSpecification (Validation)
+            if (new InsufficientFundsSpecification(bundle.Amount).IsSatisfiedBy(account))
+            {
+                return new ValidationResult("Insufficient funds.");
+            }
 
-            // TODO: WeeklyWithdrawalSpecification (Validation)
+            if (new WeeklyWithdrawalUnavailableSpecification().IsSatisfiedBy(account))
+            {
+                return new ValidationResult($"Withdrawal unavailable until {account.LastWithdrawal?.AddDays(7)}");
+            }
 
             var moneyTransaction = account.TryWithdrawal(bundle.Amount);
 
-            return moneyTransaction.Select(transaction =>
+            return await moneyTransaction.Select(Selector).DefaultIfEmpty(Task.FromResult<Either<ValidationResult, IMoneyTransaction>>(new ValidationResult("Failed to withdrawal funds."))).Single();
+
+            async Task<Either<ValidationResult, IMoneyTransaction>> Selector(IMoneyTransaction transaction)
             {
                 try
                 {
-                    _stripeService.CreateTransferAsync(accountId, bundle, transaction, cancellationToken).Wait(cancellationToken);
+                    await _stripeService.CreateTransferAsync(accountId, bundle, transaction, cancellationToken);
 
                     transaction.Success();
 
-                    _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken).Wait(cancellationToken);
+                    await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
                 }
-                catch (Exception exception)
+                catch (StripeException exception)
                 {
                     transaction.Fail();
 
-                    _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken).Wait(cancellationToken);
+                    await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
                     ExceptionDispatchInfo.Capture(exception).Throw();
 
@@ -115,7 +117,7 @@ namespace eDoxa.Cashier.Domain.Services
                 }
 
                 return new Either<ValidationResult, IMoneyTransaction>(transaction);
-            }).DefaultIfEmpty(new ValidationResult("Failed to withdraw funds.")).Single();
+            }
         }
     }
 }

@@ -45,9 +45,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 
             var bundle = Bundles[command.BundleType];
 
-            var email = _userInfoService.Email;
-
-            var either = await _moneyAccountService.DepositAsync(userId, customerId, bundle, email, cancellationToken);
+            var either = await _moneyAccountService.DepositAsync(customerId, userId, bundle, cancellationToken);
 
             return either.Match<IActionResult>(
                 result => new BadRequestObjectResult(result.ErrorMessage),
