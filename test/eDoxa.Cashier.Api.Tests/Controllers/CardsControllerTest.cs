@@ -20,12 +20,14 @@ using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Cashier.Tests.Factories;
 using eDoxa.Functional;
 using eDoxa.Security.Abstractions;
+using eDoxa.Testing.MSTest;
 using eDoxa.Testing.MSTest.Extensions;
 
 using FluentAssertions;
 
 using MediatR;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -53,7 +55,17 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         }
 
         [TestMethod]
-        public async Task FindUserCardsAsync_ShouldBeOkObjectResult()
+        public void Constructor_Tests()
+        {
+            ConstructorTests<CardsController>.For(typeof(IUserInfoService), typeof(ICardQueries), typeof(IMediator))
+                .WithName("CardsController")
+                .WithAttributes(typeof(AuthorizeAttribute), typeof(ApiControllerAttribute), typeof(ApiVersionAttribute), typeof(ProducesAttribute),
+                    typeof(RouteAttribute))
+                .Assert();
+        }
+
+        [TestMethod]
+        public async Task GetCardsAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
             _mockCardQueries.Setup(queries => queries.GetCardsAsync(It.IsAny<StripeCustomerId>())).ReturnsAsync(new Option<CardListDTO>(new CardListDTO
@@ -78,7 +90,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         }
 
         [TestMethod]
-        public async Task FindUserCardsAsync_ShouldBeNoContentObjectResult()
+        public async Task GetCardsAsync_ShouldBeOfTypeNoContentResult()
         {
             // Arrange
             _mockCardQueries.Setup(queries => queries.GetCardsAsync(It.IsAny<StripeCustomerId>())).ReturnsAsync(new Option<CardListDTO>()).Verifiable();
@@ -97,7 +109,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         }
 
         [TestMethod]
-        public async Task CreateCardAsync_ShouldBeCreatedResult()
+        public async Task CreateCardAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
             var cardId = FakeStripeFactory.CreateCardId();
@@ -121,7 +133,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         }
 
         [TestMethod]
-        public async Task FindUserCardAsync_ShouldBeOkObjectResult()
+        public async Task GetCardAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
             var cardId = FakeStripeFactory.CreateCardId();
@@ -144,7 +156,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         }
 
         [TestMethod]
-        public async Task DeleteCardAsync_ShouldBeOkObjectResult()
+        public async Task DeleteCardAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
             var cardId = FakeStripeFactory.CreateCardId();
@@ -166,7 +178,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         }
 
         [TestMethod]
-        public async Task UpdateDefaultCardAsync_ShouldBeOkObjectResult()
+        public async Task UpdateCardDefaultAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
             var cardId = FakeStripeFactory.CreateCardId();

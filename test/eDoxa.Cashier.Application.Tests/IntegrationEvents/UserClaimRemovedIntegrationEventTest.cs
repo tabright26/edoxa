@@ -1,5 +1,5 @@
-﻿// Filename: UserClaimAddedIntegrationEventTest.cs
-// Date Created: 2019-05-13
+﻿// Filename: UserClaimRemovedIntegrationEventTest.cs
+// Date Created: 2019-05-15
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -19,17 +19,17 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace eDoxa.Cashier.Application.Tests.IntegrationEvents
 {
     [TestClass]
-    public sealed class UserClaimAddedIntegrationEventTest
+    public sealed class UserClaimRemovedIntegrationEventTest
     {
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<UserClaimAddedIntegrationEvent>.For(typeof(Guid), typeof(string), typeof(string))
-                .WithName("UserClaimAddedIntegrationEvent")
+            ConstructorTests<UserClaimRemovedIntegrationEvent>.For(typeof(Guid), typeof(string), typeof(string))
+                .WithName("UserClaimRemovedIntegrationEvent")
                 .Assert();
 
-            ConstructorTests<UserClaimAddedIntegrationEvent>.For(typeof(Guid), typeof(IDictionary<string, string>))
-                .WithName("UserClaimAddedIntegrationEvent")
+            ConstructorTests<UserClaimRemovedIntegrationEvent>.For(typeof(Guid), typeof(IDictionary<string, string>))
+                .WithName("UserClaimRemovedIntegrationEvent")
                 .Assert();
         }
     }

@@ -37,12 +37,11 @@ namespace eDoxa.Cashier.Application.Queries
     {
         public async Task<Option<CardListDTO>> GetCardsAsync(StripeCustomerId customerId)
         {
-            var option = await _stripeService.GetCardsAsync(customerId);
+            var cards = await _stripeService.GetCardsAsync(customerId);
 
-            return option
-                .Select(cards => new Option<CardListDTO>(_mapper.Map<CardListDTO>(cards)))
-                .DefaultIfEmpty(new Option<CardListDTO>())
-                .Single();
+            var list = _mapper.Map<CardListDTO>(cards);
+
+            return list.Any() ? new Option<CardListDTO>(list) : new Option<CardListDTO>();
         }
 
         public async Task<Option<CardDTO>> GetCardAsync(StripeCustomerId customerId, StripeCardId cardId)

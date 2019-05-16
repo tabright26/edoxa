@@ -13,7 +13,6 @@ using System;
 using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
-using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
 
 namespace eDoxa.Cashier.Tests.Factories
 {
@@ -36,16 +35,6 @@ namespace eDoxa.Cashier.Tests.Factories
         public ITransaction CreateTransaction()
         {
             return new DepositMoneyTransaction(Money.OneHundred);
-        }
-
-        public Money CreateMoney()
-        {
-            return Money.OneHundred;
-        }
-
-        public Token CreateToken()
-        {
-            return Token.OneHundredThousand;
         }
     }
 }
