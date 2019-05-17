@@ -1,9 +1,9 @@
 ﻿// Filename: CustomOperationFilter.cs
-// Date Created: 2019-04-21
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -28,28 +28,7 @@ namespace eDoxa.Swagger.Filters
     {
         public void Apply([NotNull] Operation operation, [NotNull] OperationFilterContext context)
         {
-            ApplyGroupNameOperation(operation, context);
-
             ApplySecurityOperation(operation, context);
-        }
-
-        private static void ApplyGroupNameOperation(Operation operation, OperationFilterContext context)
-        {
-            var relativePath = context.ApiDescription.RelativePath;
-
-            var urlSegments = relativePath.Split('/');
-
-            var urlSegment = urlSegments[1];
-
-            if (urlSegment != context.ApiDescription.GroupName)
-            {
-                var groupName = urlSegment[0].ToString().ToUpper() + urlSegment.Substring(1);
-
-                operation.Tags = new List<string>
-                {
-                    groupName
-                };
-            }
         }
 
         private static void ApplySecurityOperation(Operation operation, OperationFilterContext context)

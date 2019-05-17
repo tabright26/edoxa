@@ -35,6 +35,8 @@ namespace eDoxa.Identity.Api.Extensions
 
             service.Subscribe<UserClaimRemovedIntegrationEvent, UserClaimRemovedIntegrationEventHandler>();
 
+            service.Subscribe<UserClaimReplacedIntegrationEvent, UserClaimReplacedIntegrationEventHandler>();
+
             service.Subscribe<UserRoleAddedIntegrationEvent, UserRoleAddedIntegrationEventHandler>();
 
             service.Subscribe<UserRoleRemovedIntegrationEvent, UserRoleRemovedIntegrationEventHandler>();

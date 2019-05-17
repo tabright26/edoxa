@@ -1,5 +1,5 @@
 ﻿// Filename: DeleteBankAccountCommand.cs
-// Date Created: 2019-05-10
+// Date Created: 2019-05-14
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,12 +9,11 @@
 // this source code package.
 
 using eDoxa.Commands.Abstractions;
-
-using Microsoft.AspNetCore.Mvc;
+using eDoxa.Functional;
 
 namespace eDoxa.Cashier.Application.Commands
 {
-    public sealed class DeleteBankAccountCommand : Command<IActionResult>
+    public sealed class DeleteBankAccountCommand : Command<Either>
     {
     }
 }

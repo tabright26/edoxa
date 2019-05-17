@@ -14,18 +14,11 @@ using eDoxa.Commands.Abstractions;
 
 using MediatR;
 
-using Microsoft.AspNetCore.Mvc;
-
 namespace eDoxa.Commands.Extensions
 {
     public static class MediatorExtensions
     {
-        public static async Task<IActionResult> SendCommandAsync(this IMediator mediator, ICommand<IActionResult> command)
-        {
-            return await mediator.Send(command);
-        }
-
-        public static async Task<Unit> SendCommandAsync(this IMediator mediator, ICommand<Unit> command)
+        public static async Task<T> SendCommandAsync<T>(this IMediator mediator, ICommand<T> command)
         {
             return await mediator.Send(command);
         }

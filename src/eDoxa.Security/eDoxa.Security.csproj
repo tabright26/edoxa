@@ -31,6 +31,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\eDoxa.Functional\eDoxa.Functional.csproj" />
+    <ProjectReference Include="..\eDoxa.Identity.Domain\eDoxa.Identity.Domain.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Domain\eDoxa.Seedwork.Domain.csproj" />
   </ItemGroup>
 

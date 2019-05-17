@@ -1,11 +1,11 @@
 ﻿// Filename: Program.cs
-// Date Created: 2019-04-09
+// Date Created: 2019-05-06
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
 // 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
@@ -55,9 +55,7 @@ namespace eDoxa.Cashier.Api
                 );
 
                 host.MigrateDbContext<IntegrationEventLogDbContext>(
-                    (context, provider) =>
-                    {
-                    }
+                    (context, provider) => { }
                 );
 
                 Log.Information("Starting {Application} web host...");
@@ -81,11 +79,11 @@ namespace eDoxa.Cashier.Api
         private static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             return WebHost.CreateDefaultBuilder<Startup>(args)
-                          .CaptureStartupErrors(false)
-                          .ConfigureLogging()
-                          .UseAzureKeyVault()
-                          .UseApplicationInsights()
-                          .UseSerilog();
+                .CaptureStartupErrors(false)
+                .ConfigureLogging()
+                .UseAzureKeyVault()
+                .UseApplicationInsights()
+                .UseSerilog();
         }
     }
 }

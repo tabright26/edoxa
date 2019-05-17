@@ -8,11 +8,9 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.ComponentModel.DataAnnotations;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
@@ -22,11 +20,10 @@ namespace eDoxa.Cashier.Domain.Services.Abstractions
 {
     public interface ITokenAccountService
     {
-        Task<Either<ValidationResult, ITokenTransaction>> DepositAsync(
+        Task<Either<TransactionStatus>> DepositAsync(
             UserId userId,
             StripeCustomerId customerId,
             TokenBundle bundle,
-            string email,
             CancellationToken cancellationToken = default);
 
         Task CreateAccount(UserId userId);

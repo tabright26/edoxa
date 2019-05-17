@@ -1,0 +1,89 @@
+﻿// Filename: MoneyControllerTest.cs
+// Date Created: 2019-05-13
+// 
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+// 
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
+// this source code package.
+
+using System.Threading.Tasks;
+
+using eDoxa.Cashier.Api.Controllers;
+using eDoxa.Cashier.Application.Commands;
+using eDoxa.Cashier.Domain;
+using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
+using eDoxa.Testing.MSTest;
+
+using FluentAssertions;
+
+using MediatR;
+
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using Moq;
+
+namespace eDoxa.Cashier.Api.Tests.Controllers
+{
+    [TestClass]
+    public sealed class AccountMoneyControllerTest
+    {
+        private Mock<IMediator> _mockMediator;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            _mockMediator = new Mock<IMediator>();
+        }
+
+        [TestMethod]
+        public void Constructor_Tests()
+        {
+            ConstructorTests<AccountMoneyController>.For(typeof(IMediator))
+                .WithName("AccountMoneyController")
+                .WithAttributes(typeof(AuthorizeAttribute), typeof(ApiControllerAttribute), typeof(ApiVersionAttribute), typeof(ProducesAttribute), typeof(RouteAttribute), typeof(ApiExplorerSettingsAttribute))
+                .Assert();
+        }
+
+        [TestMethod]
+        public async Task DepositMoneyAsync_ShouldBeOfTypeOkObjectResult()
+        {
+            // Arrange
+            var command = new DepositMoneyCommand(MoneyDepositBundleType.Ten);
+
+            _mockMediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(TransactionStatus.Paid).Verifiable();
+
+            var controller = new AccountMoneyController(_mockMediator.Object);
+
+            // Act
+            var result = await controller.DepositMoneyAsync(command);
+
+            // Assert
+            result.Should().BeOfType<OkObjectResult>();
+
+            _mockMediator.Verify();
+        }
+
+        [TestMethod]
+        public async Task WithdrawalMoneyAsync_ShouldBeOfTypeOkObjectResult()
+        {
+            // Arrange
+            var command = new WithdrawMoneyCommand(MoneyWithdrawalBundleType.Fifty);
+
+            _mockMediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(TransactionStatus.Succeeded).Verifiable();
+
+            var controller = new AccountMoneyController(_mockMediator.Object);
+
+            // Act
+            var result = await controller.WithdrawalMoneyAsync(command);
+
+            // Assert
+            result.Should().BeOfType<OkObjectResult>();
+
+            _mockMediator.Verify();
+        }
+    }
+}

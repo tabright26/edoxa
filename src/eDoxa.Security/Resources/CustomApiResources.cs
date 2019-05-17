@@ -33,12 +33,9 @@ namespace eDoxa.Security.Resources
                 "edoxa.cashier.api",
                 "eDoxa Cashier API",
                 new IdentityResources.Profile().UserClaims.Union(
-                    new IdentityResources.Email().UserClaims.Union(
-                        new IdentityResources.Phone().UserClaims.Union(
-                            new IdentityResources.Address().UserClaims.Union(
-                                new CustomIdentityResources.Role().UserClaims.Union(
-                                    new CustomIdentityResources.Permission().UserClaims.Union(
-                                        new CustomIdentityResources.Stripe().UserClaims)))))))
+                    new CustomIdentityResources.Role().UserClaims.Union(
+                        new CustomIdentityResources.Permission().UserClaims.Union(
+                            new CustomIdentityResources.Stripe().UserClaims))))
             {
             }
         }

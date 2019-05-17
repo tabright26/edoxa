@@ -44,7 +44,7 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.Property(transaction => transaction.Description)
-                .HasConversion(description => description.ToString(), description => new TransactionDescription(description, false))
+                .HasConversion(description => description.ToString(), description => new TransactionDescription(description))
                 .IsRequired()
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 

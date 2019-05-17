@@ -29,14 +29,11 @@ namespace eDoxa.Cashier.DTO.Factories
     {
         protected override IEnumerable<Profile> CreateProfiles()
         {
-            yield return new CardProfile();
-            yield return new CardListProfile();
-            yield return new MoneyAccountProfile();
-            yield return new MoneyTransactionProfile();
-            yield return new MoneyTransactionListProfile();
-            yield return new TokenAccountProfile();
-            yield return new TokenTransactionProfile();
-            yield return new TokenTransactionListProfile();
+            yield return new AccountProfile();
+            yield return new StripeCardProfile();
+            yield return new StripeCardListProfile();
+            yield return new TransactionProfile();
+            yield return new TransactionListProfile();
         }
     }
 }

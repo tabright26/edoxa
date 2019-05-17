@@ -11,6 +11,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Application.Abstractions;
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
@@ -18,9 +19,7 @@ using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Cashier.Tests.Extensions;
 using eDoxa.Cashier.Tests.Factories;
 using eDoxa.Commands.Extensions;
-using eDoxa.Security.Abstractions;
 using eDoxa.Testing.MSTest;
-using eDoxa.Testing.MSTest.Extensions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -33,21 +32,21 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     {
         private static readonly FakeStripeFactory FakeStripeFactory = FakeStripeFactory.Instance;
         private Mock<IStripeService> _mockStripeService;
-        private Mock<IUserInfoService> _mockUserInfoService;
+        private Mock<ICashierSecurity> _mockCashierSecurity;
 
         [TestInitialize]
         public void TestInitialize()
         {
             _mockStripeService = new Mock<IStripeService>();
             _mockStripeService.SetupMethods();
-            _mockUserInfoService = new Mock<IUserInfoService>();
-            _mockUserInfoService.SetupGetProperties();
+            _mockCashierSecurity = new Mock<ICashierSecurity>();
+            _mockCashierSecurity.SetupGetProperties();
         }
 
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<DeleteCardCommandHandler>.For(typeof(IUserInfoService), typeof(IStripeService))
+            ConstructorTests<DeleteCardCommandHandler>.For(typeof(ICashierSecurity), typeof(IStripeService))
                 .WithName("DeleteCardCommandHandler")
                 .Assert();
         }
@@ -58,7 +57,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             // Arrange
             var card = FakeStripeFactory.CreateCard();
 
-            var handler = new DeleteCardCommandHandler(_mockUserInfoService.Object, _mockStripeService.Object);
+            var handler = new DeleteCardCommandHandler(_mockCashierSecurity.Object, _mockStripeService.Object);
 
             // Act
             await handler.HandleAsync(new DeleteCardCommand(new StripeCardId(card.Id)));

@@ -11,6 +11,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Application.Abstractions;
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
@@ -18,13 +19,11 @@ using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Cashier.Tests.Extensions;
 using eDoxa.Cashier.Tests.Factories;
 using eDoxa.Commands.Extensions;
-using eDoxa.Security.Abstractions;
+using eDoxa.Functional;
 using eDoxa.Testing.MSTest;
-using eDoxa.Testing.MSTest.Extensions;
 
 using FluentAssertions;
 
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
@@ -36,21 +35,21 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     {
         private static readonly FakeStripeFactory FakeStripeFactory = FakeStripeFactory.Instance;
         private Mock<IStripeService> _mockStripeService;
-        private Mock<IUserInfoService> _mockUserInfoService;
+        private Mock<ICashierSecurity> _mockCashierSecurity;
 
         [TestInitialize]
         public void TestInitialize()
         {
             _mockStripeService = new Mock<IStripeService>();
             _mockStripeService.SetupMethods();
-            _mockUserInfoService = new Mock<IUserInfoService>();
-            _mockUserInfoService.SetupGetProperties();
+            _mockCashierSecurity = new Mock<ICashierSecurity>();
+            _mockCashierSecurity.SetupGetProperties();
         }
 
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<CreateCardCommandHandler>.For(typeof(IUserInfoService), typeof(IStripeService))
+            ConstructorTests<CreateCardCommandHandler>.For(typeof(ICashierSecurity), typeof(IStripeService))
                 .WithName("CreateCardCommandHandler")
                 .Assert();
         }
@@ -61,13 +60,13 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             // Arrange
             var card = FakeStripeFactory.CreateCard();
 
-            var handler = new CreateCardCommandHandler(_mockUserInfoService.Object, _mockStripeService.Object);
+            var handler = new CreateCardCommandHandler(_mockCashierSecurity.Object, _mockStripeService.Object);
 
             // Act
             var response = await handler.HandleAsync(new CreateCardCommand(card.Id));
 
             // Assert
-            response.Should().BeEquivalentTo(new OkResult());
+            response.Should().BeOfType<Either>();
 
             _mockStripeService.Verify(mock => mock.CreateCardAsync(It.IsAny<StripeCustomerId>(), It.IsAny<string>(), It.IsAny<CancellationToken>()),
                 Times.Once);

@@ -1,5 +1,5 @@
 ﻿// Filename: CreateBankAccountCommandValidator.cs
-// Date Created: 2019-05-10
+// Date Created: 2019-05-14
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -18,7 +18,8 @@ namespace eDoxa.Cashier.Application.Commands.Validations
     {
         public CreateBankAccountCommandValidator()
         {
-            this.RuleFor(command => command.ExternalAccountTokenId).Must(sourceToken => !string.IsNullOrWhiteSpace(sourceToken)).WithMessage("The external account token id is invalid.");
+            this.RuleFor(command => command.ExternalAccountTokenId).Must(sourceToken => !string.IsNullOrWhiteSpace(sourceToken))
+                .WithMessage("The external account token id is invalid.");
         }
     }
 }

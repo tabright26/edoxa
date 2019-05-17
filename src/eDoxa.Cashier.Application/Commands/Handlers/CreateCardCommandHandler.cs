@@ -11,36 +11,34 @@
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Application.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
-using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Commands.Abstractions.Handlers;
-using eDoxa.Security.Abstractions;
+using eDoxa.Functional;
 
 using JetBrains.Annotations;
 
-using Microsoft.AspNetCore.Mvc;
-
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
-    internal sealed class CreateCardCommandHandler : ICommandHandler<CreateCardCommand, IActionResult>
+    internal sealed class CreateCardCommandHandler : ICommandHandler<CreateCardCommand, Either>
     {
         private readonly IStripeService _stripeService;
-        private readonly IUserInfoService _userInfoService;
+        private readonly ICashierSecurity _cashierSecurity;
 
-        public CreateCardCommandHandler(IUserInfoService userInfoService, IStripeService stripeService)
+        public CreateCardCommandHandler(ICashierSecurity cashierSecurity, IStripeService stripeService)
         {
-            _userInfoService = userInfoService;
+            _cashierSecurity = cashierSecurity;
             _stripeService = stripeService;
         }
 
         [ItemNotNull]
-        public async Task<IActionResult> Handle([NotNull] CreateCardCommand command, CancellationToken cancellationToken)
+        public async Task<Either> Handle([NotNull] CreateCardCommand command, CancellationToken cancellationToken)
         {
-            var customerId = new StripeCustomerId(_userInfoService.StripeCustomerId);
+            var customerId = _cashierSecurity.StripeCustomerId;
 
             await _stripeService.CreateCardAsync(customerId, command.SourceToken, cancellationToken);
 
-            return new OkObjectResult("The card has been added.");
+            return new Success("The card has been added.");
         }
     }
 }

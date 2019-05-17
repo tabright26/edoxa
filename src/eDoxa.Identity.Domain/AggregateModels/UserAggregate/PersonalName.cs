@@ -9,6 +9,8 @@
 // this source code package.
 
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
@@ -25,6 +27,12 @@ namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
         {
             _firstName = firstName;
             _lastName = lastName;
+        }
+
+        public PersonalName(IList<Claim> claims)
+        {
+            _firstName = claims.Single(claim => claim.Type == JwtClaimTypes.GivenName).Value;
+            _lastName = claims.Single(claim => claim.Type == JwtClaimTypes.FamilyName).Value;
         }
 
         public string FirstName => _firstName;
@@ -48,12 +56,6 @@ namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
             {
                 ClaimType = JwtClaimTypes.FamilyName,
                 ClaimValue = LastName
-            };
-
-            yield return new UserClaim
-            {
-                ClaimType = JwtClaimTypes.Name,
-                ClaimValue = this.ToString()
             };
         }
     }

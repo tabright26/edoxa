@@ -11,48 +11,45 @@
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Application.Abstractions;
 using eDoxa.Cashier.Application.IntegrationEvents;
-using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
-using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Commands.Abstractions.Handlers;
+using eDoxa.Functional;
 using eDoxa.Security;
-using eDoxa.Security.Abstractions;
 using eDoxa.ServiceBus;
-
-using Microsoft.AspNetCore.Mvc;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
-    internal sealed class CreateBankAccountCommandHandler : ICommandHandler<CreateBankAccountCommand, IActionResult>
+    internal sealed class CreateBankAccountCommandHandler : ICommandHandler<CreateBankAccountCommand, Either>
     {
         private readonly IIntegrationEventService _integrationEventService;
         private readonly IStripeService _stripeService;
-        private readonly IUserInfoService _userInfoService;
+        private readonly ICashierSecurity _cashierSecurity;
 
-        public CreateBankAccountCommandHandler(IUserInfoService userInfoService, IStripeService stripeService, IIntegrationEventService integrationEventService)
+        public CreateBankAccountCommandHandler(ICashierSecurity cashierSecurity, IStripeService stripeService, IIntegrationEventService integrationEventService)
         {
-            _userInfoService = userInfoService;
+            _cashierSecurity = cashierSecurity;
             _stripeService = stripeService;
             _integrationEventService = integrationEventService;
         }
 
-        public async Task<IActionResult> Handle(CreateBankAccountCommand command, CancellationToken cancellationToken)
+        public async Task<Either> Handle(CreateBankAccountCommand command, CancellationToken cancellationToken)
         {
-            var userId = UserId.Parse(_userInfoService.Subject);
-
-            var accountId = new StripeAccountId(_userInfoService.StripeAccountId);
-
-            if (_userInfoService.StripeBankAccountId != null)
+            if (_cashierSecurity.HasStripeBankAccount())
             {
-                return  new BadRequestObjectResult("A bank account is already associated with this account.");
+                return new Failure("A bank account is already associated with this account.");
             }
+
+            var userId = _cashierSecurity.UserId;
+
+            var accountId = _cashierSecurity.StripeAccountId;
 
             var bankAccountId = await _stripeService.CreateBankAccountAsync(accountId, command.ExternalAccountTokenId, cancellationToken);
 
             await _integrationEventService.PublishAsync(new UserClaimAddedIntegrationEvent(userId.ToGuid(), CustomClaimTypes.StripeBankAccountId, bankAccountId.ToString()));
 
-            return new OkObjectResult("The bank account has been added.");
+            return new Success("The bank account has been added.");
         }
     }
 }

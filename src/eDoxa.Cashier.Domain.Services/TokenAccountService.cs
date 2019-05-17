@@ -8,12 +8,10 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.ComponentModel.DataAnnotations;
 using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
@@ -44,11 +42,10 @@ namespace eDoxa.Cashier.Domain.Services
             await _tokenAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync();
         }
 
-        public async Task<Either<ValidationResult, ITokenTransaction>> DepositAsync(
+        public async Task<Either<TransactionStatus>> DepositAsync(
             UserId userId,
             StripeCustomerId customerId,
             TokenBundle bundle,
-            string email,
             CancellationToken cancellationToken = default)
         {
             var account = await _tokenAccountRepository.FindUserAccountAsync(userId);
@@ -76,7 +73,7 @@ namespace eDoxa.Cashier.Domain.Services
                 throw;
             }
 
-            return new Either<ValidationResult, ITokenTransaction>(transaction);
+            return transaction.Status;
         }
     }
 }

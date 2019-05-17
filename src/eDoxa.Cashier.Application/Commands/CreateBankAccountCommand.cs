@@ -11,13 +11,12 @@
 using System.Runtime.Serialization;
 
 using eDoxa.Commands.Abstractions;
-
-using Microsoft.AspNetCore.Mvc;
+using eDoxa.Functional;
 
 namespace eDoxa.Cashier.Application.Commands
 {
     [DataContract]
-    public sealed class CreateBankAccountCommand : Command<IActionResult>
+    public sealed class CreateBankAccountCommand : Command<Either>
     {
         public CreateBankAccountCommand(string externalAccountTokenId)
         {

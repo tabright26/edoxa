@@ -61,7 +61,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
 
         public IMoneyTransaction Deposit(Money amount)
         {
-            var transaction = new DepositMoneyTransaction(amount);
+            var transaction = new MoneyDepositTransaction(amount);
 
             if (_transactions.Add(transaction))
             {
@@ -78,7 +78,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
                 return new Option<IMoneyTransaction>();
             }
 
-            var transaction = new WithdrawalMoneyTransaction(amount);
+            var transaction = new MoneyWithdrawalTransaction(amount);
 
             if (_transactions.Add(transaction))
             {
@@ -95,14 +95,14 @@ namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
                 return new Option<IMoneyTransaction>();
             }
 
-            var transaction = new ServiceMoneyTransaction(-amount);
+            var transaction = new MoneyServiceTransaction(-amount);
 
             return _transactions.Add(transaction) ? new Option<IMoneyTransaction>(transaction) : new Option<IMoneyTransaction>();
         }
 
         public Option<IMoneyTransaction> TryPayout(Money amount)
         {
-            var transaction = new PrizeMoneyTransaction(amount);
+            var transaction = new MoneyPrizeTransaction(amount);
 
             return _transactions.Add(transaction) ? new Option<IMoneyTransaction>(transaction) : new Option<IMoneyTransaction>();
         }

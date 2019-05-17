@@ -1,5 +1,5 @@
 ﻿// Filename: ApplicationModule.cs
-// Date Created: 2019-04-30
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,7 +10,9 @@
 
 using Autofac;
 
+using eDoxa.Cashier.Application.Abstractions;
 using eDoxa.Cashier.Application.Queries;
+using eDoxa.Cashier.Application.Security;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.Domain.Services.Abstractions;
@@ -50,11 +52,14 @@ namespace eDoxa.Cashier.Application
             builder.RegisterType<TokenAccountService>().As<ITokenAccountService>().InstancePerLifetimeScope();
 
             // Queries
-            builder.RegisterType<CardQueries>().As<ICardQueries>().InstancePerLifetimeScope();
+            builder.RegisterType<StripeCardQueries>().As<IStripeCardQueries>().InstancePerLifetimeScope();
 
-            builder.RegisterType<MoneyAccountQueries>().As<IMoneyAccountQueries>().InstancePerLifetimeScope();
+            builder.RegisterType<AccountQueries>().As<IAccountQueries>().InstancePerLifetimeScope();
 
-            builder.RegisterType<TokenAccountQueries>().As<ITokenAccountQueries>().InstancePerLifetimeScope();
+            builder.RegisterType<TransactionQueries>().As<ITransactionQueries>().InstancePerLifetimeScope();
+
+            // Security
+            builder.RegisterType<CashierSecurity>().As<ICashierSecurity>().SingleInstance();
         }
     }
 }

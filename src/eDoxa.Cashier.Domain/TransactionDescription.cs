@@ -10,16 +10,12 @@
 
 namespace eDoxa.Cashier.Domain
 {
-    public class TransactionDescription
+    public sealed class TransactionDescription
     {
         private string _value;
 
-        public TransactionDescription(string description, bool validate = true)
+        public TransactionDescription(string description)
         {
-            if (validate)
-            {
-            }
-
             _value = description;
         }
 

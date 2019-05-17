@@ -11,7 +11,7 @@
 using System;
 using System.Threading.Tasks;
 
-using eDoxa.AutoMapper;
+using eDoxa.Seedwork.Application.Models;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -42,11 +42,11 @@ namespace eDoxa.Seedwork.Application.Middlewares
             {
                 _logger.LogError(new EventId(exception.HResult), exception, exception.Message);
 
-                var error = new ErrorDTO();
+                var error = new Error();
 
                 if (_environment.IsDevelopment())
                 {
-                    error = new ErrorDTO(exception);
+                    error = new Error(exception);
                 }
 
                 context.Response.ContentType = "application/json";

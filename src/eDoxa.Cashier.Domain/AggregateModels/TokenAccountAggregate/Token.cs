@@ -38,6 +38,11 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
             return token._value;
         }
 
+        public static implicit operator decimal(Token token)
+        {
+            return token._value;
+        }
+
         public static Token operator -(Token token)
         {
             return new Token(-token._value);

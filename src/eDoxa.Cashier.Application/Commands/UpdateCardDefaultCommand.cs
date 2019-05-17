@@ -12,13 +12,12 @@ using System.Runtime.Serialization;
 
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Commands.Abstractions;
-
-using Microsoft.AspNetCore.Mvc;
+using eDoxa.Functional;
 
 namespace eDoxa.Cashier.Application.Commands
 {
     [DataContract]
-    public sealed class UpdateCardDefaultCommand : Command<IActionResult>
+    public sealed class UpdateCardDefaultCommand : Command<Either>
     {
         public UpdateCardDefaultCommand(StripeCardId cardId)
         {

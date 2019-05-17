@@ -8,9 +8,9 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Cashier.Application.Abstractions;
 using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
-using eDoxa.Security.Abstractions;
 using eDoxa.ServiceBus;
 using eDoxa.Testing.MSTest;
 
@@ -24,7 +24,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<CreateBankAccountCommandHandler>.For(typeof(IUserInfoService), typeof(IStripeService), typeof(IIntegrationEventService))
+            ConstructorTests<CreateBankAccountCommandHandler>.For(typeof(ICashierSecurity), typeof(IStripeService), typeof(IIntegrationEventService))
                 .WithName("CreateBankAccountCommandHandler")
                 .Assert();
         }

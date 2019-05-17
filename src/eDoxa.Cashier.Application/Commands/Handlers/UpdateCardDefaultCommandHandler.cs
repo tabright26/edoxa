@@ -11,36 +11,34 @@
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Application.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
-using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Commands.Abstractions.Handlers;
-using eDoxa.Security.Abstractions;
+using eDoxa.Functional;
 
 using JetBrains.Annotations;
 
-using Microsoft.AspNetCore.Mvc;
-
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
-    internal sealed class UpdateCardDefaultCommandHandler : ICommandHandler<UpdateCardDefaultCommand, IActionResult>
+    internal sealed class UpdateCardDefaultCommandHandler : ICommandHandler<UpdateCardDefaultCommand, Either>
     {
         private readonly IStripeService _stripeService;
-        private readonly IUserInfoService _userInfoService;
+        private readonly ICashierSecurity _cashierSecurity;
 
-        public UpdateCardDefaultCommandHandler(IUserInfoService userInfoService, IStripeService stripeService)
+        public UpdateCardDefaultCommandHandler(ICashierSecurity cashierSecurity, IStripeService stripeService)
         {
-            _userInfoService = userInfoService;
+            _cashierSecurity = cashierSecurity;
             _stripeService = stripeService;
         }
 
         [ItemCanBeNull]
-        public async Task<IActionResult> Handle([NotNull] UpdateCardDefaultCommand command, CancellationToken cancellationToken)
+        public async Task<Either> Handle([NotNull] UpdateCardDefaultCommand command, CancellationToken cancellationToken)
         {
-            var customerId = new StripeCustomerId(_userInfoService.StripeCustomerId);
+            var customerId = _cashierSecurity.StripeCustomerId;
 
             await _stripeService.UpdateCardDefaultAsync(customerId, command.StripeCardId, cancellationToken);
 
-            return new OkObjectResult("The card has been updated as default.");
+            return new Success("The card has been updated as default.");
         }
     }
 }

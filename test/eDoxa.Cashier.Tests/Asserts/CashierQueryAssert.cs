@@ -18,7 +18,7 @@ namespace eDoxa.Cashier.Tests.Asserts
 {
     internal static class CashierQueryAssert
     {
-        public static void IsMapped([CanBeNull] MoneyAccountDTO account)
+        public static void IsMapped([CanBeNull] AccountDTO account)
         {
             account.Should().NotBeNull();
 

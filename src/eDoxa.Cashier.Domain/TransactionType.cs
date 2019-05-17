@@ -20,8 +20,8 @@ namespace eDoxa.Cashier.Domain
         public static readonly TransactionType Deposit = new TransactionType(1 << 0, nameof(Deposit));
         public static readonly TransactionType Withdrawal = new TransactionType(1 << 1, nameof(Withdrawal));
         public static readonly TransactionType Reward = new TransactionType(1 << 2, nameof(Reward));
-        public static readonly TransactionType Service = new TransactionType(1 << 3, nameof(Service));
-        public static readonly TransactionType Prize = new TransactionType(1 << 4, nameof(Prize));
+        public static readonly TransactionType Prize = new TransactionType(1 << 3, nameof(Prize));
+        public static readonly TransactionType Service = new TransactionType(1 << 4, nameof(Service));
 
         private TransactionType(int value, string name) : base(value, name)
         {

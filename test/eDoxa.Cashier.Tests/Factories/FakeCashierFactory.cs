@@ -34,7 +34,7 @@ namespace eDoxa.Cashier.Tests.Factories
 
         public ITransaction CreateTransaction()
         {
-            return new DepositMoneyTransaction(Money.OneHundred);
+            return new MoneyDepositTransaction(Money.OneHundred);
         }
     }
 }

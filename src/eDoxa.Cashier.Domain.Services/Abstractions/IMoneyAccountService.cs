@@ -8,11 +8,9 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.ComponentModel.DataAnnotations;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
@@ -24,8 +22,8 @@ namespace eDoxa.Cashier.Domain.Services.Abstractions
     {
         Task CreateAccount(UserId userId);
 
-        Task<Either<ValidationResult, IMoneyTransaction>> DepositAsync(StripeCustomerId customerId, UserId userId, MoneyBundle bundle, CancellationToken cancellationToken = default);
+        Task<Either<TransactionStatus>> DepositAsync(StripeCustomerId customerId, UserId userId, MoneyBundle bundle, CancellationToken cancellationToken = default);
 
-        Task<Either<ValidationResult, IMoneyTransaction>> TryWithdrawalAsync(StripeAccountId accountId, UserId userId, MoneyBundle bundle, CancellationToken cancellationToken = default);
+        Task<Either<TransactionStatus>> TryWithdrawalAsync(StripeAccountId accountId, UserId userId, MoneyBundle bundle, CancellationToken cancellationToken = default);
     }
 }

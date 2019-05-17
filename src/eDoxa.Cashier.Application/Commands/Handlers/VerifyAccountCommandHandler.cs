@@ -1,5 +1,5 @@
-﻿// Filename: VerifyBankAccountCommandHandler.cs
-// Date Created: 2019-05-11
+﻿// Filename: VerifyAccountCommandHandler.cs
+// Date Created: 2019-05-13
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,38 +11,37 @@
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Application.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
-using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Commands.Abstractions.Handlers;
-using eDoxa.Security.Abstractions;
-
-using Microsoft.AspNetCore.Mvc;
+using eDoxa.Functional;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
-    internal sealed class VerifyAccountCommandHandler : ICommandHandler<VerifyAccountCommand, IActionResult>
+    internal sealed class VerifyAccountCommandHandler : ICommandHandler<VerifyAccountCommand, Either>
     {
         private readonly IStripeService _stripeService;
-        private readonly IUserInfoService _userInfoService;
+        private readonly ICashierSecurity _cashierSecurity;
 
-        public VerifyAccountCommandHandler(IStripeService stripeService, IUserInfoService userInfoService)
+        public VerifyAccountCommandHandler(IStripeService stripeService, ICashierSecurity cashierSecurity)
         {
             _stripeService = stripeService;
-            _userInfoService = userInfoService;
+            _cashierSecurity = cashierSecurity;
         }
 
-        public async Task<IActionResult> Handle(VerifyAccountCommand command, CancellationToken cancellationToken)
+        public async Task<Either> Handle(VerifyAccountCommand command, CancellationToken cancellationToken)
         {
-            var accountId = new StripeAccountId(_userInfoService.StripeAccountId);
+            var accountId = _cashierSecurity.StripeAccountId;
 
             if (!command.TermsOfService)
             {
-                return new BadRequestObjectResult("You must agree to the Stripe terms of service to verify the account.");
+                return new Failure("You must agree to the Stripe terms of service to verify the account.");
             }
 
-            await _stripeService.VerifyAccountAsync(accountId, command.Line1, command.Line2, command.City, command.State, command.PostalCode, cancellationToken);
+            await _stripeService.VerifyAccountAsync(accountId, command.Line1, command.Line2, command.City, command.State, command.PostalCode,
+                cancellationToken);
 
-            return new OkObjectResult("Stripe account verified.");
+            return new Success("Stripe account verified.");
         }
     }
 }

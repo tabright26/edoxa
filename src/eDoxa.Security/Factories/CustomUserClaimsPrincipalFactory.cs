@@ -11,6 +11,10 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 
+using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
+
+using IdentityModel;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 
@@ -34,16 +38,11 @@ namespace eDoxa.Security.Factories
         {
             var identity = await base.GenerateClaimsAsync(user);
 
-            //var claims = await UserManager.GetClaimsAsync(user);
+            var claims = await UserManager.GetClaimsAsync(user);
 
-            //var givenName = claims.SingleOrDefault(claim => claim.Type == JwtClaimTypes.GivenName)?.Value;
+            var name = new PersonalName(claims);
 
-            //var familyName = claims.SingleOrDefault(claim => claim.Type == JwtClaimTypes.FamilyName)?.Value;
-
-            //if (givenName != null && familyName != null)
-            //{
-            //    identity.AddClaim(new Claim(JwtClaimTypes.Name, $"{givenName} {familyName}"));
-            //}
+            identity.AddClaim(new Claim(JwtClaimTypes.Name, name.ToString()));
 
             return identity;
         }

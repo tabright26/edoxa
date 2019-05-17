@@ -14,14 +14,14 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-using eDoxa.Functional.Extensions;
-using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Swagger.Filters;
 
 using IdentityServer4.Models;
 
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -47,22 +47,15 @@ namespace eDoxa.Swagger.Extensions
             var assembly = Assembly.GetCallingAssembly();
 
             services.AddSwaggerGen(
-                swaggerGenOptions =>
+                options =>
                 {
-                    // TODO: Must be isolated in class.
-                    Enumeration.GetTypes().ForEach(type => swaggerGenOptions.MapType(type, () => new Schema
-                    {
-                        Type = "string",
-                        Enum = Enumeration.GetFlags(type).Cast<object>().ToList()
-                    }));
-
-                    swaggerGenOptions.DescribeAllEnumsAsStrings();
+                    options.DescribeAllEnumerationsAsStrings();
 
                     var provider = services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
 
                     foreach (var description in provider.ApiVersionDescriptions)
                     {
-                        swaggerGenOptions.SwaggerDoc(
+                        options.SwaggerDoc(
                             description.GroupName,
                             new Info
                             {
@@ -82,9 +75,9 @@ namespace eDoxa.Swagger.Extensions
                         );
                     }
 
-                    swaggerGenOptions.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{assembly.GetName().Name}.xml"));
+                    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{assembly.GetName().Name}.xml"));
 
-                    swaggerGenOptions.AddSecurityDefinition(
+                    options.AddSecurityDefinition(
                         "oauth2",
                         new OAuth2Scheme
                         {
@@ -99,9 +92,29 @@ namespace eDoxa.Swagger.Extensions
                         }
                     );
 
-                    swaggerGenOptions.DocumentFilter<CustomDocumentFilter>();
+                    options.OperationFilter<CustomOperationFilter>();
 
-                    swaggerGenOptions.OperationFilter<CustomOperationFilter>();
+                    options.TagActionsBy(apiDescription =>
+                    {
+                        if (apiDescription.ActionDescriptor is ControllerActionDescriptor descriptor)
+                        {
+                            var tags = descriptor.ControllerTypeInfo
+                                .GetCustomAttributes<ApiExplorerSettingsAttribute>()
+                                .Where(attribute => !attribute.IgnoreApi)
+                                .Select(attribute => attribute.GroupName)
+                                .ToList();
+
+                            if (tags.Any())
+                            {
+                                return tags;
+                            }
+                        }
+
+                        throw new Exception($"Each controller must have the attribute: {nameof(ApiExplorerSettingsAttribute)}." +
+                                            (apiDescription.ActionDescriptor is ControllerActionDescriptor controller
+                                                ? $" The attribute is missing for the controller: {controller.ControllerName}."
+                                                : string.Empty));
+                    });
                 }
             );
         }

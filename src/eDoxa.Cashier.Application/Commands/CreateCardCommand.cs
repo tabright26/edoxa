@@ -11,20 +11,18 @@
 using System.Runtime.Serialization;
 
 using eDoxa.Commands.Abstractions;
-
-using Microsoft.AspNetCore.Mvc;
+using eDoxa.Functional;
 
 namespace eDoxa.Cashier.Application.Commands
 {
     [DataContract]
-    public sealed class CreateCardCommand : Command<IActionResult>
+    public sealed class CreateCardCommand : Command<Either>
     {
         public CreateCardCommand(string sourceToken)
         {
             SourceToken = sourceToken;
         }
 
-        [DataMember(Name = "sourceToken")]
-        public string SourceToken { get; private set; }
+        [DataMember(Name = "sourceToken")] public string SourceToken { get; private set; }
     }
 }

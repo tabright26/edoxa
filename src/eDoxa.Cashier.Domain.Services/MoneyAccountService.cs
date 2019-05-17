@@ -9,7 +9,6 @@
 // this source code package.
 
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.ExceptionServices;
 using System.Threading;
@@ -47,7 +46,7 @@ namespace eDoxa.Cashier.Domain.Services
             await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync();
         }
 
-        public async Task<Either<ValidationResult, IMoneyTransaction>> DepositAsync(StripeCustomerId customerId, UserId userId,  MoneyBundle bundle, CancellationToken cancellationToken = default)
+        public async Task<Either<TransactionStatus>> DepositAsync(StripeCustomerId customerId, UserId userId,  MoneyBundle bundle, CancellationToken cancellationToken = default)
         {
             var account = await _moneyAccountRepository.FindUserAccountAsync(userId);
 
@@ -74,28 +73,28 @@ namespace eDoxa.Cashier.Domain.Services
                 throw;
             }
 
-            return new Either<ValidationResult, IMoneyTransaction>(moneyTransaction);
+            return new Either<TransactionStatus>(moneyTransaction.Status);
         }
 
-        public async Task<Either<ValidationResult, IMoneyTransaction>> TryWithdrawalAsync(StripeAccountId accountId, UserId userId, MoneyBundle bundle, CancellationToken cancellationToken = default)
+        public async Task<Either<TransactionStatus>> TryWithdrawalAsync(StripeAccountId accountId, UserId userId, MoneyBundle bundle, CancellationToken cancellationToken = default)
         {
             var account = await _moneyAccountRepository.FindUserAccountAsync(userId);
 
             if (new InsufficientFundsSpecification(bundle.Amount).IsSatisfiedBy(account))
             {
-                return new ValidationResult("Insufficient funds.");
+                return new Failure("Insufficient funds.");
             }
 
             if (new WeeklyWithdrawalUnavailableSpecification().IsSatisfiedBy(account))
             {
-                return new ValidationResult($"Withdrawal unavailable until {account.LastWithdrawal?.AddDays(7)}");
+                return new Failure($"Withdrawal unavailable until {account.LastWithdrawal?.AddDays(7)}");
             }
 
             var moneyTransaction = account.TryWithdrawal(bundle.Amount);
 
-            return await moneyTransaction.Select(Selector).DefaultIfEmpty(Task.FromResult<Either<ValidationResult, IMoneyTransaction>>(new ValidationResult("Failed to withdrawal funds."))).Single();
+            return await moneyTransaction.Select(Selector).DefaultIfEmpty(Task.FromResult<Either<TransactionStatus>>(new Failure("Failed to withdrawal funds."))).Single();
 
-            async Task<Either<ValidationResult, IMoneyTransaction>> Selector(IMoneyTransaction transaction)
+            async Task<Either<TransactionStatus>> Selector(IMoneyTransaction transaction)
             {
                 try
                 {
@@ -116,7 +115,7 @@ namespace eDoxa.Cashier.Domain.Services
                     throw;
                 }
 
-                return new Either<ValidationResult, IMoneyTransaction>(transaction);
+                return new Either<TransactionStatus>(transaction.Status);
             }
         }
     }

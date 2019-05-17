@@ -55,7 +55,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
 
         public ITokenTransaction Deposit(Token amount)
         {
-            var transaction = new DepositTokenTransaction(amount);
+            var transaction = new TokenDepositTransaction(amount);
 
             if (_transactions.Add(transaction))
             {
@@ -72,7 +72,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
                 return new Option<ITokenTransaction>();
             }
 
-            var transaction = new ServiceTokenTransaction(amount);
+            var transaction = new TokenServiceTransaction(amount);
 
             if (!_transactions.Add(transaction))
             {
@@ -86,7 +86,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
 
         public Option<ITokenTransaction> TryPayout(Token amount)
         {
-            var transaction = new PrizeTokenTransaction(amount);
+            var transaction = new TokenPrizeTransaction(amount);
 
             if (!_transactions.Add(transaction))
             {
@@ -100,7 +100,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
 
         public Option<ITokenTransaction> TryReward(Token amount)
         {
-            var transaction = new RewardTokenTransaction(amount);
+            var transaction = new TokenRewardTransaction(amount);
 
             if (!_transactions.Add(transaction))
             {
