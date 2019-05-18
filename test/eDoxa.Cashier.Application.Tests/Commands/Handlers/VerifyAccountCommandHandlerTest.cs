@@ -11,11 +11,11 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Application.Abstractions;
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
+using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Cashier.Tests.Extensions;
 using eDoxa.Cashier.Tests.Factories;
 using eDoxa.Commands.Extensions;
@@ -34,21 +34,21 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     public sealed class VerifyAccountCommandHandlerTest
     {
         private static readonly FakeStripeFactory FakeStripeFactory = FakeStripeFactory.Instance;
-        private Mock<ICashierSecurity> _mockCashierSecurity;
+        private Mock<ICashierHttpContext> _mockCashierHttpContext;
         private Mock<IStripeService> _mockStripeService;
 
         [TestInitialize]
         public void TestInitialize()
         {
             _mockStripeService = new Mock<IStripeService>();
-            _mockCashierSecurity = new Mock<ICashierSecurity>();
-            _mockCashierSecurity.SetupGetProperties();
+            _mockCashierHttpContext = new Mock<ICashierHttpContext>();
+            _mockCashierHttpContext.SetupGetProperties();
         }
 
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<VerifyAccountCommandHandler>.For(typeof(IStripeService), typeof(ICashierSecurity))
+            ConstructorTests<VerifyAccountCommandHandler>.For(typeof(IStripeService), typeof(ICashierHttpContext))
                 .WithName("VerifyAccountCommandHandler")
                 .Assert();
         }
@@ -66,7 +66,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var handler = new VerifyAccountCommandHandler(_mockStripeService.Object, _mockCashierSecurity.Object);
+            var handler = new VerifyAccountCommandHandler(_mockStripeService.Object, _mockCashierHttpContext.Object);
 
             // Act
             var result = await handler.HandleAsync(command);

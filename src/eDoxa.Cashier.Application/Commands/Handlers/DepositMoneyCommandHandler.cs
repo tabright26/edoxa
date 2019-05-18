@@ -11,10 +11,10 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Application.Abstractions;
 using eDoxa.Cashier.Domain;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Cashier.Domain.Services.Abstractions;
+using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Functional;
 
@@ -25,21 +25,21 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
     internal sealed class DepositMoneyCommandHandler : ICommandHandler<DepositMoneyCommand, Either<TransactionStatus>>
     {
         private static readonly MoneyDepositBundles Bundles = new MoneyDepositBundles();
-        private readonly ICashierSecurity _cashierSecurity;
+        private readonly ICashierHttpContext _cashierHttpContext;
         private readonly IMoneyAccountService _moneyAccountService;
 
-        public DepositMoneyCommandHandler(ICashierSecurity cashierSecurity, IMoneyAccountService moneyAccountService)
+        public DepositMoneyCommandHandler(ICashierHttpContext cashierHttpContext, IMoneyAccountService moneyAccountService)
         {
-            _cashierSecurity = cashierSecurity;
+            _cashierHttpContext = cashierHttpContext;
             _moneyAccountService = moneyAccountService;
         }
 
         [ItemNotNull]
         public async Task<Either<TransactionStatus>> Handle([NotNull] DepositMoneyCommand command, CancellationToken cancellationToken)
         {
-            var userId = _cashierSecurity.UserId;
+            var userId = _cashierHttpContext.UserId;
 
-            var customerId = _cashierSecurity.StripeCustomerId;
+            var customerId = _cashierHttpContext.StripeCustomerId;
 
             var bundle = Bundles[command.BundleType];
 

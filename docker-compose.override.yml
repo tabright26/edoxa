@@ -42,6 +42,7 @@ services:
       - Cashier__Url=${URL:-http://localhost}:5002
       - Challenge__Url=${URL:-http://localhost}:5003
       - WebSpa__Url=${URL:-http://localhost}:5300
+      - IdentityServer__Url=http://idsrv
     ports:
       - "5000:80"
 

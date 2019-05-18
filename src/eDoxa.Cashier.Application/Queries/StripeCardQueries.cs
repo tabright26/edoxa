@@ -13,25 +13,25 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Cashier.Application.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
+using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Functional;
 
 namespace eDoxa.Cashier.Application.Queries
 {
     public sealed partial class StripeCardQueries
     {
+        private readonly ICashierHttpContext _httpContext;
         private readonly IMapper _mapper;
-        private readonly ICashierSecurity _security;
         private readonly IStripeService _service;
 
-        public StripeCardQueries(IStripeService service, ICashierSecurity security, IMapper mapper)
+        public StripeCardQueries(IStripeService service, ICashierHttpContext httpContext, IMapper mapper)
         {
             _service = service;
-            _security = security;
+            _httpContext = httpContext;
             _mapper = mapper;
         }
     }
@@ -40,7 +40,7 @@ namespace eDoxa.Cashier.Application.Queries
     {
         public async Task<StripeCardListDTO> GetCardsAsync()
         {
-            var customerId = _security.StripeCustomerId;
+            var customerId = _httpContext.StripeCustomerId;
 
             var cards = await _service.GetCardsAsync(customerId);
 
@@ -49,7 +49,7 @@ namespace eDoxa.Cashier.Application.Queries
 
         public async Task<Option<StripeCardDTO>> GetCardAsync(StripeCardId cardId)
         {
-            var customerId = _security.StripeCustomerId;
+            var customerId = _httpContext.StripeCustomerId;
 
             var option = await _service.GetCardAsync(customerId, cardId);
 

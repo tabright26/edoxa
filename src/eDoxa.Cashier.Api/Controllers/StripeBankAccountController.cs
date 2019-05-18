@@ -11,6 +11,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Application.Commands;
+using eDoxa.Cashier.Domain.Services.Stripe.Filters.Attributes;
 using eDoxa.Commands.Extensions;
 
 using MediatR;
@@ -38,6 +39,7 @@ namespace eDoxa.Cashier.Api.Controllers
         /// <summary>
         ///     Create the Stripe bank account.
         /// </summary>
+        [CreateBankAccountResourceFilter]
         [HttpPost(Name = nameof(CreateBankAccountAsync))]
         public async Task<IActionResult> CreateBankAccountAsync([FromBody] CreateBankAccountCommand command)
         {
@@ -52,6 +54,7 @@ namespace eDoxa.Cashier.Api.Controllers
         /// <summary>
         ///     Delete the Stripe bank account.
         /// </summary>
+        [DeleteBankAccountResourceFilter]
         [HttpDelete(Name = nameof(DeleteBankAccountAsync))]
         public async Task<IActionResult> DeleteBankAccountAsync()
         {

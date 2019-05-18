@@ -11,11 +11,11 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Application.Abstractions;
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
+using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Cashier.Tests.Extensions;
 using eDoxa.Cashier.Tests.Factories;
 using eDoxa.Commands.Extensions;
@@ -34,8 +34,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     [TestClass]
     public sealed class DeleteBankAccountCommandHandlerTest
     {
-        private static readonly FakeStripeFactory FakeStripeFactory = FakeStripeFactory.Instance;
-        private Mock<ICashierSecurity> _mockCashierSecurity;
+        private Mock<ICashierHttpContext> _mockCashierHttpContext;
         private Mock<IIntegrationEventService> _mockIntegrationEventService;
         private Mock<IStripeService> _mockStripeService;
 
@@ -44,15 +43,15 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         {
             _mockStripeService = new Mock<IStripeService>();
             _mockStripeService.SetupMethods();
-            _mockCashierSecurity = new Mock<ICashierSecurity>();
-            _mockCashierSecurity.SetupGetProperties();
+            _mockCashierHttpContext = new Mock<ICashierHttpContext>();
+            _mockCashierHttpContext.SetupGetProperties();
             _mockIntegrationEventService = new Mock<IIntegrationEventService>();
         }
 
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<DeleteBankAccountCommandHandler>.For(typeof(ICashierSecurity), typeof(IStripeService), typeof(IIntegrationEventService))
+            ConstructorTests<DeleteBankAccountCommandHandler>.For(typeof(ICashierHttpContext), typeof(IStripeService), typeof(IIntegrationEventService))
                 .WithName("DeleteBankAccountCommandHandler")
                 .Assert();
         }
@@ -61,9 +60,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         public async Task HandleAsync_DeleteBankAccountCommand_ShouldBeOfTypeEither()
         {
             // Arrange
-            _mockCashierSecurity.Setup(mock => mock.HasStripeBankAccount()).Returns(true);
-
-            var handler = new DeleteBankAccountCommandHandler(_mockCashierSecurity.Object, _mockStripeService.Object, _mockIntegrationEventService.Object);
+            var handler = new DeleteBankAccountCommandHandler(_mockCashierHttpContext.Object, _mockStripeService.Object, _mockIntegrationEventService.Object);
 
             // Act
             var result = await handler.HandleAsync(new DeleteBankAccountCommand());

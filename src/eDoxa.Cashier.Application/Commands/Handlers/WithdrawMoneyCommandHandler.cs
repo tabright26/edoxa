@@ -11,10 +11,10 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Application.Abstractions;
 using eDoxa.Cashier.Domain;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Cashier.Domain.Services.Abstractions;
+using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Functional;
 
@@ -25,26 +25,21 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
     internal sealed class WithdrawMoneyCommandHandler : ICommandHandler<WithdrawMoneyCommand, Either<TransactionStatus>>
     {
         private static readonly MoneyWithdrawalBundles Bundles = new MoneyWithdrawalBundles();
-        private readonly ICashierSecurity _cashierSecurity;
+        private readonly ICashierHttpContext _cashierHttpContext;
         private readonly IMoneyAccountService _moneyAccountService;
 
-        public WithdrawMoneyCommandHandler(ICashierSecurity cashierSecurity, IMoneyAccountService moneyAccountService)
+        public WithdrawMoneyCommandHandler(ICashierHttpContext cashierHttpContext, IMoneyAccountService moneyAccountService)
         {
-            _cashierSecurity = cashierSecurity;
+            _cashierHttpContext = cashierHttpContext;
             _moneyAccountService = moneyAccountService;
         }
 
         [ItemNotNull]
         public async Task<Either<TransactionStatus>> Handle([NotNull] WithdrawMoneyCommand command, CancellationToken cancellationToken)
         {
-            if (!_cashierSecurity.HasStripeBankAccount())
-            {
-                return new Failure("A bank account is required to withdrawal.");
-            }
+            var customerId = _cashierHttpContext.StripeAccountId;
 
-            var customerId = _cashierSecurity.StripeAccountId;
-
-            var userId = _cashierSecurity.UserId;
+            var userId = _cashierHttpContext.UserId;
 
             var bundle = Bundles[command.BundleType];
 

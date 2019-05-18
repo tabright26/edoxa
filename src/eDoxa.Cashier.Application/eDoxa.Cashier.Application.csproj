@@ -10,6 +10,7 @@
     <ProjectReference Include="..\eDoxa.Cashier.Domain\eDoxa.Cashier.Domain.csproj" />
     <ProjectReference Include="..\eDoxa.Cashier.DTO\eDoxa.Cashier.DTO.csproj" />
     <ProjectReference Include="..\eDoxa.Cashier.Infrastructure\eDoxa.Cashier.Infrastructure.csproj" />
+    <ProjectReference Include="..\eDoxa.Cashier.Security\eDoxa.Cashier.Security.csproj" />
     <ProjectReference Include="..\eDoxa.Commands\eDoxa.Commands.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
   </ItemGroup>

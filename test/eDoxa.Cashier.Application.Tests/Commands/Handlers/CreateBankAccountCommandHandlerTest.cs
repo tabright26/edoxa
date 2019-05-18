@@ -11,11 +11,11 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Application.Abstractions;
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
+using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Cashier.Tests.Extensions;
 using eDoxa.Cashier.Tests.Factories;
 using eDoxa.Commands.Extensions;
@@ -35,7 +35,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     public sealed class CreateBankAccountCommandHandlerTest
     {
         private static readonly FakeStripeFactory FakeStripeFactory = FakeStripeFactory.Instance;
-        private Mock<ICashierSecurity> _mockCashierSecurity;
+        private Mock<ICashierHttpContext> _mockCashierHttpContext;
         private Mock<IIntegrationEventService> _mockIntegrationEventService;
         private Mock<IStripeService> _mockStripeService;
 
@@ -44,15 +44,15 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         {
             _mockStripeService = new Mock<IStripeService>();
             _mockStripeService.SetupMethods();
-            _mockCashierSecurity = new Mock<ICashierSecurity>();
-            _mockCashierSecurity.SetupGetProperties();
+            _mockCashierHttpContext = new Mock<ICashierHttpContext>();
+            _mockCashierHttpContext.SetupGetProperties();
             _mockIntegrationEventService = new Mock<IIntegrationEventService>();
         }
 
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<CreateBankAccountCommandHandler>.For(typeof(ICashierSecurity), typeof(IStripeService), typeof(IIntegrationEventService))
+            ConstructorTests<CreateBankAccountCommandHandler>.For(typeof(ICashierHttpContext), typeof(IStripeService), typeof(IIntegrationEventService))
                 .WithName("CreateBankAccountCommandHandler")
                 .Assert();
         }
@@ -63,9 +63,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             // Arrange
             var sourceToken = FakeStripeFactory.CreateSourceToken();
 
-            _mockCashierSecurity.Setup(mock => mock.HasStripeBankAccount()).Returns(false);
-
-            var handler = new CreateBankAccountCommandHandler(_mockCashierSecurity.Object, _mockStripeService.Object, _mockIntegrationEventService.Object);
+            var handler = new CreateBankAccountCommandHandler(_mockCashierHttpContext.Object, _mockStripeService.Object, _mockIntegrationEventService.Object);
 
             // Act
             var result = await handler.HandleAsync(new CreateBankAccountCommand(sourceToken));

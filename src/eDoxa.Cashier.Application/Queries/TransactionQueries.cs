@@ -13,31 +13,31 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Cashier.Application.Abstractions;
 using eDoxa.Cashier.Domain;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Cashier.Infrastructure;
+using eDoxa.Cashier.Security.Abstractions;
 
 namespace eDoxa.Cashier.Application.Queries
 {
     public sealed partial class TransactionQueries
     {
         private readonly CashierDbContext _context;
+        private readonly ICashierHttpContext _httpContext;
         private readonly IMapper _mapper;
-        private readonly ICashierSecurity _security;
 
-        public TransactionQueries(CashierDbContext context, ICashierSecurity security, IMapper mapper)
+        public TransactionQueries(CashierDbContext context, ICashierHttpContext httpContext, IMapper mapper)
         {
             _context = context;
-            _security = security;
+            _httpContext = httpContext;
             _mapper = mapper;
         }
 
         private async Task<TransactionListDTO> GetMoneyTransactionsAsync(UserId userId)
         {
-            var queries = new AccountQueries(_context, _security, _mapper);
+            var queries = new AccountQueries(_context, _httpContext, _mapper);
 
             var account = await queries.GetMoneyAccountAsNoTrackingAsync(userId);
 
@@ -46,7 +46,7 @@ namespace eDoxa.Cashier.Application.Queries
 
         private async Task<TransactionListDTO> GetTokenTransactionsAsync(UserId userId)
         {
-            var queries = new AccountQueries(_context, _security, _mapper);
+            var queries = new AccountQueries(_context, _httpContext, _mapper);
 
             var account = await queries.GetTokenAccountAsNoTrackingAsync(userId);
 
@@ -58,7 +58,7 @@ namespace eDoxa.Cashier.Application.Queries
     {
         public async Task<TransactionListDTO> GetTransactionsAsync(AccountCurrency accountCurrency)
         {
-            var userId = _security.UserId;
+            var userId = _httpContext.UserId;
 
             var transactions = new TransactionListDTO();
 

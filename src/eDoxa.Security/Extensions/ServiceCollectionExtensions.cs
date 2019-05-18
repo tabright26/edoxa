@@ -129,7 +129,7 @@ namespace eDoxa.Security.Extensions
         {
             var builder = services.AddIdentityServer(options =>
                 {
-                    options.IssuerUri = "null";
+                    options.IssuerUri = configuration.GetValue<string>("IdentityServer:Url");
 
                     options.Authentication.CookieLifetime = TimeSpan.FromHours(2);
 
@@ -169,6 +169,7 @@ namespace eDoxa.Security.Extensions
                         options.ApiName = apiResource.Name;
                         options.Authority = authority;
                         options.RequireHttpsMetadata = environment.IsProduction();
+                        options.ApiSecret = "secret";
                     }
                 );
         }

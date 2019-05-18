@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Cashier.Application.Abstractions;
 using eDoxa.Cashier.Application.Queries;
 using eDoxa.Cashier.Domain;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
@@ -20,6 +19,7 @@ using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
 using eDoxa.Cashier.DTO.Factories;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.Infrastructure.Repositories;
+using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Cashier.Tests.Asserts;
 using eDoxa.Cashier.Tests.Factories;
 using eDoxa.Seedwork.Infrastructure.Factories;
@@ -36,18 +36,18 @@ namespace eDoxa.Cashier.Application.Tests.Queries
     {
         private static readonly FakeCashierFactory FakeCashierFactory = FakeCashierFactory.Instance;
         private static readonly CashierMapperFactory CashierMapperFactory = CashierMapperFactory.Instance;
-        private Mock<ICashierSecurity> _mockCashierSecurity;
+        private Mock<ICashierHttpContext> _mockCashierHttpContext;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            _mockCashierSecurity = new Mock<ICashierSecurity>();
+            _mockCashierHttpContext = new Mock<ICashierHttpContext>();
         }
 
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<TransactionQueries>.For(typeof(CashierDbContext), typeof(ICashierSecurity), typeof(IMapper))
+            ConstructorTests<TransactionQueries>.For(typeof(CashierDbContext), typeof(ICashierHttpContext), typeof(IMapper))
                 .WithName("TransactionQueries")
                 .Assert();
         }
@@ -57,7 +57,7 @@ namespace eDoxa.Cashier.Application.Tests.Queries
         {
             var userId = FakeCashierFactory.CreateUserId();
 
-            _mockCashierSecurity.SetupGet(mock => mock.UserId).Returns(userId).Verifiable();
+            _mockCashierHttpContext.SetupGet(mock => mock.UserId).Returns(userId).Verifiable();
 
             using (var factory = new InMemoryDbContextFactory<CashierDbContext>())
             {
@@ -81,7 +81,7 @@ namespace eDoxa.Cashier.Application.Tests.Queries
                 using (var context = factory.CreateContext())
                 {
                     // Arrange
-                    var queries = new TransactionQueries(context, _mockCashierSecurity.Object, CashierMapperFactory.CreateMapper());
+                    var queries = new TransactionQueries(context, _mockCashierHttpContext.Object, CashierMapperFactory.CreateMapper());
 
                     // Act
                     var transactions = await queries.GetTransactionsAsync(AccountCurrency.Money);
@@ -97,7 +97,7 @@ namespace eDoxa.Cashier.Application.Tests.Queries
         {
             var userId = FakeCashierFactory.CreateUserId();
 
-            _mockCashierSecurity.SetupGet(mock => mock.UserId).Returns(userId).Verifiable();
+            _mockCashierHttpContext.SetupGet(mock => mock.UserId).Returns(userId).Verifiable();
 
             using (var factory = new InMemoryDbContextFactory<CashierDbContext>())
             {
@@ -121,7 +121,7 @@ namespace eDoxa.Cashier.Application.Tests.Queries
                 using (var context = factory.CreateContext())
                 {
                     // Arrange
-                    var queries = new TransactionQueries(context, _mockCashierSecurity.Object, CashierMapperFactory.CreateMapper());
+                    var queries = new TransactionQueries(context, _mockCashierHttpContext.Object, CashierMapperFactory.CreateMapper());
 
                     // Act
                     var transactions = await queries.GetTransactionsAsync(AccountCurrency.Token);

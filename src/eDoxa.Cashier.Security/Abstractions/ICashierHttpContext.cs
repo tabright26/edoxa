@@ -8,14 +8,12 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Collections.Generic;
-
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
 
-namespace eDoxa.Cashier.Application.Abstractions
+namespace eDoxa.Cashier.Security.Abstractions
 {
-    public interface ICashierSecurity
+    public interface ICashierHttpContext
     {
         UserId UserId { get; }
 
@@ -24,11 +22,5 @@ namespace eDoxa.Cashier.Application.Abstractions
         StripeBankAccountId StripeBankAccountId { get; }
 
         StripeCustomerId StripeCustomerId { get; }
-
-        IEnumerable<string> Roles { get; }
-
-        IEnumerable<string> Permissions { get; }
-
-        bool HasStripeBankAccount();
     }
 }

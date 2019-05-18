@@ -12,7 +12,11 @@ using System;
 
 namespace eDoxa.Security.Execeptions
 {
-    public sealed class MissingClaimException : Exception
+    public sealed class ClaimException : Exception
     {
+        public ClaimException(string claimType)
+        {
+            
+        }
     }
 }

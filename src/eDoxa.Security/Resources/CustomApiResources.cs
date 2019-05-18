@@ -8,6 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Collections.Generic;
 using System.Linq;
 
 using IdentityServer4.Models;
@@ -24,6 +25,10 @@ namespace eDoxa.Security.Resources
                 new CustomIdentityResources.Role().UserClaims.Union(
                     new CustomIdentityResources.Permission().UserClaims))
             {
+                ApiSecrets = new HashSet<Secret>
+                {
+                    new Secret("secret".Sha256())
+                };
             }
         }
 
@@ -37,6 +42,10 @@ namespace eDoxa.Security.Resources
                         new CustomIdentityResources.Permission().UserClaims.Union(
                             new CustomIdentityResources.Stripe().UserClaims))))
             {
+                ApiSecrets = new HashSet<Secret>
+                {
+                    new Secret("secret".Sha256())
+                };
             }
         }
 
@@ -50,6 +59,10 @@ namespace eDoxa.Security.Resources
                         new CustomIdentityResources.Permission().UserClaims.Union(
                             new CustomIdentityResources.Game().UserClaims))))
             {
+                ApiSecrets = new HashSet<Secret>
+                {
+                    new Secret("secret".Sha256())
+                };
             }
         }
     }

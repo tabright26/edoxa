@@ -8,12 +8,15 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Application.Abstractions;
 using eDoxa.Cashier.Application.IntegrationEvents;
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
+using eDoxa.Cashier.Domain.Services.Stripe.Models;
+using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Functional;
 using eDoxa.Security;
@@ -23,36 +26,46 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 {
     internal sealed class DeleteBankAccountCommandHandler : ICommandHandler<DeleteBankAccountCommand, Either>
     {
-        private readonly ICashierSecurity _cashierSecurity;
+        private readonly ICashierHttpContext _cashierHttpContext;
         private readonly IIntegrationEventService _integrationEventService;
         private readonly IStripeService _stripeService;
 
-        public DeleteBankAccountCommandHandler(ICashierSecurity cashierSecurity, IStripeService stripeService, IIntegrationEventService integrationEventService)
+        public DeleteBankAccountCommandHandler(
+            ICashierHttpContext cashierHttpContext,
+            IStripeService stripeService,
+            IIntegrationEventService integrationEventService)
         {
-            _cashierSecurity = cashierSecurity;
+            _cashierHttpContext = cashierHttpContext;
             _stripeService = stripeService;
             _integrationEventService = integrationEventService;
         }
 
         public async Task<Either> Handle(DeleteBankAccountCommand request, CancellationToken cancellationToken)
         {
-            if (!_cashierSecurity.HasStripeBankAccount())
-            {
-                return new Failure("No bank account is associated with this account.");
-            }
+            var userId = _cashierHttpContext.UserId;
 
-            var userId = _cashierSecurity.UserId;
+            var accountId = _cashierHttpContext.StripeAccountId;
 
-            var accountId = _cashierSecurity.StripeAccountId;
-
-            var bankAccountId = _cashierSecurity.StripeBankAccountId;
+            var bankAccountId = _cashierHttpContext.StripeBankAccountId;
 
             await _stripeService.DeleteBankAccountAsync(accountId, bankAccountId, cancellationToken);
 
-            await _integrationEventService.PublishAsync(new UserClaimAddedIntegrationEvent(userId.ToGuid(), CustomClaimTypes.StripeBankAccountId,
-                bankAccountId.ToString()));
+            await this.PropagateClaimAsync(userId, bankAccountId);
 
             return new Success("The bank account has been removed.");
+        }
+
+        private async Task PropagateClaimAsync(UserId userId, StripeBankAccountId bankAccountId)
+        {
+            await _integrationEventService.PublishAsync(
+                new UserClaimRemovedIntegrationEvent(
+                    userId.ToGuid(),
+                    new Dictionary<string, string>
+                    {
+                        [CustomClaimTypes.StripeBankAccountId] = bankAccountId.ToString()
+                    }
+                )
+            );
         }
     }
 }

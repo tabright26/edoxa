@@ -11,8 +11,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Application.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
+using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Functional;
 
@@ -22,19 +22,19 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 {
     internal sealed class DeleteCardCommandHandler : ICommandHandler<DeleteCardCommand, Either>
     {
-        private readonly ICashierSecurity _cashierSecurity;
+        private readonly ICashierHttpContext _cashierHttpContext;
         private readonly IStripeService _stripeService;
 
-        public DeleteCardCommandHandler(ICashierSecurity cashierSecurity, IStripeService stripeService)
+        public DeleteCardCommandHandler(ICashierHttpContext cashierHttpContext, IStripeService stripeService)
         {
-            _cashierSecurity = cashierSecurity;
+            _cashierHttpContext = cashierHttpContext;
             _stripeService = stripeService;
         }
 
         [ItemNotNull]
         public async Task<Either> Handle([NotNull] DeleteCardCommand command, CancellationToken cancellationToken)
         {
-            var customerId = _cashierSecurity.StripeCustomerId;
+            var customerId = _cashierHttpContext.StripeCustomerId;
 
             await _stripeService.DeleteCardAsync(customerId, command.StripeCardId, cancellationToken);
 

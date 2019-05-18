@@ -13,8 +13,10 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Application.IntegrationEvents;
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Services.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
+using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Security;
 using eDoxa.ServiceBus;
@@ -53,9 +55,14 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 
             var customerId = await _stripeService.CreateCustomerAsync(command.UserId, accountId, command.Email, cancellationToken);
 
+            await this.PropagateClaimAsync(command.UserId, accountId, customerId);
+        }
+
+        private async Task PropagateClaimAsync(UserId userId, StripeAccountId accountId, StripeCustomerId customerId)
+        {
             await _integrationEventService.PublishAsync(
                 new UserClaimAddedIntegrationEvent(
-                    command.UserId.ToGuid(),
+                    userId.ToGuid(),
                     new Dictionary<string, string>
                     {
                         [CustomClaimTypes.StripeAccountId] = accountId.ToString(),

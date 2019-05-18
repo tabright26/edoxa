@@ -11,7 +11,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Application.Abstractions;
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain;
@@ -19,6 +18,7 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
 using eDoxa.Cashier.Domain.Services.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
+using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Cashier.Tests.Extensions;
 using eDoxa.Commands.Extensions;
 using eDoxa.Functional;
@@ -35,21 +35,21 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     [TestClass]
     public sealed class DepositTokenHandlerTest
     {
-        private Mock<ICashierSecurity> _mockCashierSecurity;
+        private Mock<ICashierHttpContext> _mockCashierHttpContext;
         private Mock<ITokenAccountService> _mockTokenAccountService;
 
         [TestInitialize]
         public void TestInitialize()
         {
             _mockTokenAccountService = new Mock<ITokenAccountService>();
-            _mockCashierSecurity = new Mock<ICashierSecurity>();
-            _mockCashierSecurity.SetupGetProperties();
+            _mockCashierHttpContext = new Mock<ICashierHttpContext>();
+            _mockCashierHttpContext.SetupGetProperties();
         }
 
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<DepositTokenCommandHandler>.For(typeof(ICashierSecurity), typeof(ITokenAccountService))
+            ConstructorTests<DepositTokenCommandHandler>.For(typeof(ICashierHttpContext), typeof(ITokenAccountService))
                 .WithName("DepositTokenCommandHandler")
                 .Assert();
         }
@@ -65,7 +65,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
                 .ReturnsAsync(TransactionStatus.Paid)
                 .Verifiable();
 
-            var handler = new DepositTokenCommandHandler(_mockCashierSecurity.Object, _mockTokenAccountService.Object);
+            var handler = new DepositTokenCommandHandler(_mockCashierHttpContext.Object, _mockTokenAccountService.Object);
 
             // Act
             var result = await handler.HandleAsync(command);

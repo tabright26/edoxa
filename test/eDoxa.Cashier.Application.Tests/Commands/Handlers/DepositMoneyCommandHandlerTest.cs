@@ -11,7 +11,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Application.Abstractions;
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain;
@@ -19,6 +18,7 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Cashier.Domain.Services.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
+using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Cashier.Tests.Extensions;
 using eDoxa.Commands.Extensions;
 using eDoxa.Functional;
@@ -35,21 +35,21 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     [TestClass]
     public sealed class DepositMoneyCommandHandlerTest
     {
-        private Mock<ICashierSecurity> _mockCashierSecurity;
+        private Mock<ICashierHttpContext> _mockCashierHttpContext;
         private Mock<IMoneyAccountService> _mockMoneyAccountService;
 
         [TestInitialize]
         public void TestInitialize()
         {
             _mockMoneyAccountService = new Mock<IMoneyAccountService>();
-            _mockCashierSecurity = new Mock<ICashierSecurity>();
-            _mockCashierSecurity.SetupGetProperties();
+            _mockCashierHttpContext = new Mock<ICashierHttpContext>();
+            _mockCashierHttpContext.SetupGetProperties();
         }
 
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<DepositMoneyCommandHandler>.For(typeof(ICashierSecurity), typeof(IMoneyAccountService))
+            ConstructorTests<DepositMoneyCommandHandler>.For(typeof(ICashierHttpContext), typeof(IMoneyAccountService))
                 .WithName("DepositMoneyCommandHandler")
                 .Assert();
         }
@@ -65,7 +65,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
                 .ReturnsAsync(TransactionStatus.Paid)
                 .Verifiable();
 
-            var handler = new DepositMoneyCommandHandler(_mockCashierSecurity.Object, _mockMoneyAccountService.Object);
+            var handler = new DepositMoneyCommandHandler(_mockCashierHttpContext.Object, _mockMoneyAccountService.Object);
 
             // Act
             var result = await handler.HandleAsync(command);

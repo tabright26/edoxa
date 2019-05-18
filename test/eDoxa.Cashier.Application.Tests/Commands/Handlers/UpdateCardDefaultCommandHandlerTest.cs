@@ -11,11 +11,11 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Application.Abstractions;
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
+using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Cashier.Tests.Extensions;
 using eDoxa.Cashier.Tests.Factories;
 using eDoxa.Commands.Extensions;
@@ -34,7 +34,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     public sealed class UpdateCardDefaultCommandHandlerTest
     {
         private static readonly FakeStripeFactory FakeStripeFactory = FakeStripeFactory.Instance;
-        private Mock<ICashierSecurity> _mockCashierSecurity;
+        private Mock<ICashierHttpContext> _mockCashierHttpContext;
         private Mock<IStripeService> _mockStripeService;
 
         [TestInitialize]
@@ -42,14 +42,14 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         {
             _mockStripeService = new Mock<IStripeService>();
             _mockStripeService.SetupMethods();
-            _mockCashierSecurity = new Mock<ICashierSecurity>();
-            _mockCashierSecurity.SetupGetProperties();
+            _mockCashierHttpContext = new Mock<ICashierHttpContext>();
+            _mockCashierHttpContext.SetupGetProperties();
         }
 
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<UpdateCardDefaultCommandHandler>.For(typeof(ICashierSecurity), typeof(IStripeService))
+            ConstructorTests<UpdateCardDefaultCommandHandler>.For(typeof(ICashierHttpContext), typeof(IStripeService))
                 .WithName("UpdateCardDefaultCommandHandler")
                 .Assert();
         }
@@ -60,7 +60,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             // Arrange
             var cardId = FakeStripeFactory.CreateCardId();
 
-            var handler = new UpdateCardDefaultCommandHandler(_mockCashierSecurity.Object, _mockStripeService.Object);
+            var handler = new UpdateCardDefaultCommandHandler(_mockCashierHttpContext.Object, _mockStripeService.Object);
 
             // Act
             var result = await handler.HandleAsync(new UpdateCardDefaultCommand(cardId));

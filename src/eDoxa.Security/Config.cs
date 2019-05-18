@@ -72,6 +72,7 @@ namespace eDoxa.Security
                     "http://localhost:5300/callback",
                     "http://127.0.0.1:5300/callback"
                 },
+                AccessTokenType = AccessTokenType.Reference,
                 RequireConsent = false,
                 AllowAccessTokensViaBrowser = true,
                 AllowedGrantTypes = GrantTypes.Implicit,

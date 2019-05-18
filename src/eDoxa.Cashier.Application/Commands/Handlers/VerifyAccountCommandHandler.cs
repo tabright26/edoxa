@@ -11,8 +11,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Application.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
+using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Functional;
 
@@ -20,18 +20,18 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 {
     internal sealed class VerifyAccountCommandHandler : ICommandHandler<VerifyAccountCommand, Either>
     {
-        private readonly ICashierSecurity _cashierSecurity;
+        private readonly ICashierHttpContext _cashierHttpContext;
         private readonly IStripeService _stripeService;
 
-        public VerifyAccountCommandHandler(IStripeService stripeService, ICashierSecurity cashierSecurity)
+        public VerifyAccountCommandHandler(IStripeService stripeService, ICashierHttpContext cashierHttpContext)
         {
             _stripeService = stripeService;
-            _cashierSecurity = cashierSecurity;
+            _cashierHttpContext = cashierHttpContext;
         }
 
         public async Task<Either> Handle(VerifyAccountCommand command, CancellationToken cancellationToken)
         {
-            var accountId = _cashierSecurity.StripeAccountId;
+            var accountId = _cashierHttpContext.StripeAccountId;
 
             if (!command.TermsOfService)
             {

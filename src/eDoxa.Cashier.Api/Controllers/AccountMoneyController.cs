@@ -11,6 +11,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Application.Commands;
+using eDoxa.Cashier.Domain.Services.Stripe.Filters.Attributes;
 using eDoxa.Commands.Extensions;
 
 using MediatR;
@@ -52,6 +53,7 @@ namespace eDoxa.Cashier.Api.Controllers
         /// <summary>
         ///     Withdraw money from the account.
         /// </summary>
+        [WithdrawMoneyResourceFilter]
         [HttpPost("withdraw", Name = nameof(WithdrawMoneyAsync))]
         public async Task<IActionResult> WithdrawMoneyAsync([FromBody] WithdrawMoneyCommand command)
         {

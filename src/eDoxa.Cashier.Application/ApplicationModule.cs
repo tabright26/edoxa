@@ -10,15 +10,15 @@
 
 using Autofac;
 
-using eDoxa.Cashier.Application.Abstractions;
 using eDoxa.Cashier.Application.Queries;
-using eDoxa.Cashier.Application.Security;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.Domain.Services.Abstractions;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.Infrastructure.Repositories;
+using eDoxa.Cashier.Security;
+using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Commands;
 using eDoxa.Seedwork.Application;
 using eDoxa.ServiceBus;
@@ -59,7 +59,7 @@ namespace eDoxa.Cashier.Application
             builder.RegisterType<TransactionQueries>().As<ITransactionQueries>().InstancePerLifetimeScope();
 
             // Security
-            builder.RegisterType<CashierSecurity>().As<ICashierSecurity>().SingleInstance();
+            builder.RegisterType<CashierHttpContext>().As<ICashierHttpContext>().SingleInstance();
         }
     }
 }

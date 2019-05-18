@@ -36,6 +36,7 @@ namespace eDoxa.Security.Extensions
                 {
                     apiResource.Name
                 },
+                AccessTokenType = AccessTokenType.Reference,
                 ClientId = apiResource.SwaggerClientId(),
                 ClientName = apiResource.SwaggerClientName(),
                 RequireConsent = false,
