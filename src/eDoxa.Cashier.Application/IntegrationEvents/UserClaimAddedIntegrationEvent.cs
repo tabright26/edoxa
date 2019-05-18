@@ -13,13 +13,10 @@ using System.Collections.Generic;
 
 using eDoxa.ServiceBus;
 
-using Newtonsoft.Json;
-
 namespace eDoxa.Cashier.Application.IntegrationEvents
 {
     public sealed class UserClaimAddedIntegrationEvent : IntegrationEvent
     {
-        [JsonConstructor]
         public UserClaimAddedIntegrationEvent(Guid userId, IDictionary<string, string> claims)
         {
             UserId = userId;

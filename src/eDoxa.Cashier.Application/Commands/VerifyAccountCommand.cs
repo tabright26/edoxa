@@ -18,9 +18,10 @@ namespace eDoxa.Cashier.Application.Commands
     [DataContract]
     public sealed class VerifyAccountCommand : Command<Either>
     {
-        public VerifyAccountCommand(string line1, string city, string state, string postalCode, bool termsOfService)
+        public VerifyAccountCommand(string line1, string line2, string city, string state, string postalCode, bool termsOfService)
         {
             Line1 = line1;
+            Line2 = line2;
             City = city;
             State = state;
             PostalCode = postalCode;

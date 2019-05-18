@@ -1,4 +1,4 @@
-﻿// Filename: WithdrawalMoneyCommandHandler.cs
+﻿// Filename: WithdrawMoneyCommandHandler.cs
 // Date Created: 2019-05-13
 // 
 // ================================================
@@ -25,8 +25,8 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
     internal sealed class WithdrawMoneyCommandHandler : ICommandHandler<WithdrawMoneyCommand, Either<TransactionStatus>>
     {
         private static readonly MoneyWithdrawalBundles Bundles = new MoneyWithdrawalBundles();
-        private readonly IMoneyAccountService _moneyAccountService;
         private readonly ICashierSecurity _cashierSecurity;
+        private readonly IMoneyAccountService _moneyAccountService;
 
         public WithdrawMoneyCommandHandler(ICashierSecurity cashierSecurity, IMoneyAccountService moneyAccountService)
         {

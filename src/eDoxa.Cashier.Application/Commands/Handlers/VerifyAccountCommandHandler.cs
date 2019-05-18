@@ -20,8 +20,8 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 {
     internal sealed class VerifyAccountCommandHandler : ICommandHandler<VerifyAccountCommand, Either>
     {
-        private readonly IStripeService _stripeService;
         private readonly ICashierSecurity _cashierSecurity;
+        private readonly IStripeService _stripeService;
 
         public VerifyAccountCommandHandler(IStripeService stripeService, ICashierSecurity cashierSecurity)
         {

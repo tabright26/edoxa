@@ -1,4 +1,4 @@
-﻿// Filename: WithdrawalMoneyCommandHandlerTest.cs
+﻿// Filename: WithdrawMoneyCommandHandlerTest.cs
 // Date Created: 2019-05-13
 // 
 // ================================================
@@ -21,7 +21,10 @@ using eDoxa.Cashier.Domain.Services.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Cashier.Tests.Extensions;
 using eDoxa.Commands.Extensions;
+using eDoxa.Functional;
 using eDoxa.Testing.MSTest;
+
+using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -32,8 +35,8 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     [TestClass]
     public sealed class WithdrawMoneyCommandHandlerTest
     {
-        private Mock<IMoneyAccountService> _mockMoneyAccountService;
         private Mock<ICashierSecurity> _mockCashierSecurity;
+        private Mock<IMoneyAccountService> _mockMoneyAccountService;
 
         [TestInitialize]
         public void TestInitialize()
@@ -52,10 +55,12 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         }
 
         [TestMethod]
-        public async Task HandleAsync_WithdrawalFundsCommand_ShouldBeInvokedExactlyOneTime()
+        public async Task HandleAsync_WithdrawMoneyCommand_ShouldBeOfTypeEither()
         {
             // Arrange
             var command = new WithdrawMoneyCommand(MoneyWithdrawalBundleType.Fifty);
+
+            _mockCashierSecurity.Setup(mock => mock.HasStripeBankAccount()).Returns(true);
 
             _mockMoneyAccountService.Setup(mock =>
                     mock.TryWithdrawalAsync(It.IsAny<StripeAccountId>(), It.IsAny<UserId>(), It.IsAny<MoneyBundle>(), It.IsAny<CancellationToken>()))
@@ -65,9 +70,11 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             var handler = new WithdrawMoneyCommandHandler(_mockCashierSecurity.Object, _mockMoneyAccountService.Object);
 
             // Act
-            await handler.HandleAsync(command);
+            var result = await handler.HandleAsync(command);
 
             // Assert
+            result.Should().BeOfType<Either<TransactionStatus>>();
+
             _mockMoneyAccountService.Verify(
                 mock => mock.TryWithdrawalAsync(It.IsAny<StripeAccountId>(), It.IsAny<UserId>(), It.IsAny<MoneyBundle>(), It.IsAny<CancellationToken>()),
                 Times.Once);

@@ -22,8 +22,8 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 {
     internal sealed class DeleteCardCommandHandler : ICommandHandler<DeleteCardCommand, Either>
     {
-        private readonly IStripeService _stripeService;
         private readonly ICashierSecurity _cashierSecurity;
+        private readonly IStripeService _stripeService;
 
         public DeleteCardCommandHandler(ICashierSecurity cashierSecurity, IStripeService stripeService)
         {

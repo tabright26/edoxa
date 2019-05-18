@@ -25,9 +25,9 @@ namespace eDoxa.Cashier.Application.Queries
     public sealed partial class TransactionQueries
     {
         private readonly CashierDbContext _context;
-        private readonly ICashierSecurity _security;
         private readonly IMapper _mapper;
-        
+        private readonly ICashierSecurity _security;
+
         public TransactionQueries(CashierDbContext context, ICashierSecurity security, IMapper mapper)
         {
             _context = context;

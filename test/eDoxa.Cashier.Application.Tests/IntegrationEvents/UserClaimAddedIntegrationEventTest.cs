@@ -24,11 +24,11 @@ namespace eDoxa.Cashier.Application.Tests.IntegrationEvents
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<UserClaimAddedIntegrationEvent>.For(typeof(Guid), typeof(string), typeof(string))
+            ConstructorTests<UserClaimAddedIntegrationEvent>.For(typeof(Guid), typeof(IDictionary<string, string>))
                 .WithName("UserClaimAddedIntegrationEvent")
                 .Assert();
 
-            ConstructorTests<UserClaimAddedIntegrationEvent>.For(typeof(Guid), typeof(IDictionary<string, string>))
+            ConstructorTests<UserClaimAddedIntegrationEvent>.For(typeof(Guid), typeof(string), typeof(string))
                 .WithName("UserClaimAddedIntegrationEvent")
                 .Assert();
         }

@@ -23,9 +23,9 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 {
     internal sealed class DeleteBankAccountCommandHandler : ICommandHandler<DeleteBankAccountCommand, Either>
     {
+        private readonly ICashierSecurity _cashierSecurity;
         private readonly IIntegrationEventService _integrationEventService;
         private readonly IStripeService _stripeService;
-        private readonly ICashierSecurity _cashierSecurity;
 
         public DeleteBankAccountCommandHandler(ICashierSecurity cashierSecurity, IStripeService stripeService, IIntegrationEventService integrationEventService)
         {

@@ -60,17 +60,7 @@ namespace eDoxa.Swagger.Extensions
                             new Info
                             {
                                 Title = apiResource.DisplayName,
-                                Version = description.GroupName,
-                                Description = description.IsDeprecated ? "This API version has been deprecated." : null,
-                                Contact = new Contact
-                                {
-                                    Name = "Francis Quenneville", Email = "francis@edoxa.gg"
-                                },
-                                License = new License
-                                {
-                                    Name = "MIT", Url = "https://opensource.org/licenses/MIT"
-                                },
-                                TermsOfService = "None"
+                                Version = description.ApiVersion.ToString()
                             }
                         );
                     }
@@ -94,9 +84,11 @@ namespace eDoxa.Swagger.Extensions
 
                     options.OperationFilter<CustomOperationFilter>();
 
-                    options.TagActionsBy(apiDescription =>
+                    options.DocumentFilter<CustomDocumentFilter>();
+
+                    options.TagActionsBy(description =>
                     {
-                        if (apiDescription.ActionDescriptor is ControllerActionDescriptor descriptor)
+                        if (description.ActionDescriptor is ControllerActionDescriptor descriptor)
                         {
                             var tags = descriptor.ControllerTypeInfo
                                 .GetCustomAttributes<ApiExplorerSettingsAttribute>()
@@ -108,12 +100,12 @@ namespace eDoxa.Swagger.Extensions
                             {
                                 return tags;
                             }
+
+                            throw new Exception(
+                                $"Each controller must have the attribute: {nameof(ApiExplorerSettingsAttribute)}. The attribute is missing for the controller: {descriptor.ControllerName}.");
                         }
 
-                        throw new Exception($"Each controller must have the attribute: {nameof(ApiExplorerSettingsAttribute)}." +
-                                            (apiDescription.ActionDescriptor is ControllerActionDescriptor controller
-                                                ? $" The attribute is missing for the controller: {controller.ControllerName}."
-                                                : string.Empty));
+                        return Array.Empty<string>();
                     });
                 }
             );

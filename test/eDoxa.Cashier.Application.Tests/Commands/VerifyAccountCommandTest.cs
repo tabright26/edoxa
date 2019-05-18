@@ -1,5 +1,5 @@
-﻿// Filename: VerifyBankAccountCommandTest.cs
-// Date Created: 2019-05-11
+﻿// Filename: VerifyAccountCommandTest.cs
+// Date Created: 2019-05-13
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -21,7 +21,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<VerifyAccountCommand>.For(typeof(string), typeof(string), typeof(string), typeof(string), typeof(bool))
+            ConstructorTests<VerifyAccountCommand>.For(typeof(string), typeof(string), typeof(string), typeof(string), typeof(string), typeof(bool))
                 .WithName("VerifyAccountCommand")
                 .Assert();
         }

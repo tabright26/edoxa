@@ -1,4 +1,4 @@
-﻿// Filename: AccountControllerTest.cs
+﻿// Filename: StripeAccountControllerTest.cs
 // Date Created: 2019-05-15
 // 
 // ================================================
@@ -46,7 +46,8 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         {
             ConstructorTests<StripeAccountController>.For(typeof(IMediator))
                 .WithName("StripeAccountController")
-                .WithAttributes(typeof(AuthorizeAttribute), typeof(ApiControllerAttribute), typeof(ApiVersionAttribute), typeof(ProducesAttribute), typeof(RouteAttribute), typeof(ApiExplorerSettingsAttribute))
+                .WithAttributes(typeof(AuthorizeAttribute), typeof(ApiControllerAttribute), typeof(ApiVersionAttribute), typeof(ProducesAttribute),
+                    typeof(RouteAttribute), typeof(ApiExplorerSettingsAttribute))
                 .Assert();
         }
 
@@ -54,23 +55,44 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         public async Task VerifyAccountAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
-            var account = FakeStripeFactory.CreateAccount();
+            var address = FakeStripeFactory.CreateAddress();
 
-            var command = new VerifyAccountCommand(account.Individual.Address.Line1, account.Individual.Address.City, account.Individual.Address.State,
-                account.Individual.Address.PostalCode, true);
-
-            _mockMediator.Setup(mediator => mediator.Send(It.IsAny<VerifyAccountCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new Success(string.Empty)).Verifiable();
+            _mockMediator.Setup(mock => mock.Send(It.IsAny<VerifyAccountCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(Success.Empty)
+                .Verifiable();
 
             var controller = new StripeAccountController(_mockMediator.Object);
 
             // Act
-            var result = await controller.VerifyAccountAsync(command);
+            var result = await controller.VerifyAccountAsync(new VerifyAccountCommand(address.Line1, address.Line2, address.City, address.State,
+                address.PostalCode, true));
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            _mockMediator.Verify(mediator => mediator.Send(It.IsAny<VerifyAccountCommand>(), It.IsAny<CancellationToken>()), Times.Once);
+            _mockMediator.Verify(mock => mock.Send(It.IsAny<VerifyAccountCommand>(), It.IsAny<CancellationToken>()), Times.Once);
+        }
+
+        [TestMethod]
+        public async Task VerifyAccountAsync_ShouldBeOfTypeBadRequestObjectResult()
+        {
+            // Arrange
+            var address = FakeStripeFactory.CreateAddress();
+
+            _mockMediator.Setup(mock => mock.Send(It.IsAny<VerifyAccountCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(Failure.Empty)
+                .Verifiable();
+
+            var controller = new StripeAccountController(_mockMediator.Object);
+
+            // Act
+            var result = await controller.VerifyAccountAsync(new VerifyAccountCommand(address.Line1, address.Line2, address.City, address.State,
+                address.PostalCode, true));
+
+            // Assert
+            result.Should().BeOfType<BadRequestObjectResult>();
+
+            _mockMediator.Verify(mock => mock.Send(It.IsAny<VerifyAccountCommand>(), It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }

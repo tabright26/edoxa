@@ -77,16 +77,14 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            _mockCardQueries.Verify();
-
-            _mockMediator.VerifyNoOtherCalls();
+            _mockCardQueries.Verify(queries => queries.GetCardsAsync(), Times.Once);
         }
 
         [TestMethod]
         public async Task GetCardsAsync_ShouldBeOfTypeNoContentResult()
         {
             // Arrange
-            _mockCardQueries.Setup(queries => queries.GetCardsAsync()).ReturnsAsync(new StripeCardListDTO()).Verifiable();
+            _mockCardQueries.Setup(mock => mock.GetCardsAsync()).ReturnsAsync(new StripeCardListDTO()).Verifiable();
 
             var controller = new StripeCardsController(_mockCardQueries.Object, _mockMediator.Object);
 
@@ -96,33 +94,49 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Assert
             result.Should().BeOfType<NoContentResult>();
 
-            _mockCardQueries.Verify();
-
-            _mockMediator.VerifyNoOtherCalls();
+            _mockCardQueries.Verify(mock => mock.GetCardsAsync(), Times.Once);
         }
 
         [TestMethod]
         public async Task CreateCardAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
-            var cardId = FakeStripeFactory.CreateCardId();
+            var sourceToken = FakeStripeFactory.CreateSourceToken();
 
-            var command = new CreateCardCommand(cardId.ToString());
-
-            _mockMediator.Setup(mediator => mediator.Send(It.IsAny<CreateCardCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new Success(string.Empty)).Verifiable();
+            _mockMediator.Setup(mock => mock.Send(It.IsAny<CreateCardCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(Success.Empty)
+                .Verifiable();
 
             var controller = new StripeCardsController(_mockCardQueries.Object, _mockMediator.Object);
 
             // Act
-            var result = await controller.CreateCardAsync(command);
+            var result = await controller.CreateCardAsync(new CreateCardCommand(sourceToken));
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            _mockCardQueries.VerifyNoOtherCalls();
+            _mockMediator.Verify(mock => mock.Send(It.IsAny<CreateCardCommand>(), It.IsAny<CancellationToken>()), Times.Once);
+        }
 
-            _mockMediator.Verify();
+        [TestMethod]
+        public async Task CreateCardAsync_ShouldBeOfTypeBadRequestObjectResult()
+        {
+            // Arrange
+            var sourceToken = FakeStripeFactory.CreateSourceToken();
+
+            _mockMediator.Setup(mock => mock.Send(It.IsAny<CreateCardCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(Failure.Empty)
+                .Verifiable();
+
+            var controller = new StripeCardsController(_mockCardQueries.Object, _mockMediator.Object);
+
+            // Act
+            var result = await controller.CreateCardAsync(new CreateCardCommand(sourceToken));
+
+            // Assert
+            result.Should().BeOfType<BadRequestObjectResult>();
+
+            _mockMediator.Verify(mock => mock.Send(It.IsAny<CreateCardCommand>(), It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [TestMethod]
@@ -131,7 +145,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Arrange
             var cardId = FakeStripeFactory.CreateCardId();
 
-            _mockCardQueries.Setup(queries => queries.GetCardAsync(It.IsAny<StripeCardId>()))
+            _mockCardQueries.Setup(mock => mock.GetCardAsync(It.IsAny<StripeCardId>()))
                 .ReturnsAsync(new Option<StripeCardDTO>(new StripeCardDTO()))
                 .Verifiable();
 
@@ -143,9 +157,28 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            _mockCardQueries.Verify();
+            _mockCardQueries.Verify(mock => mock.GetCardAsync(It.IsAny<StripeCardId>()), Times.Once);
+        }
 
-            _mockMediator.VerifyNoOtherCalls();
+        [TestMethod]
+        public async Task GetCardAsync_ShouldBeOfTypeNotFoundObjectResult()
+        {
+            // Arrange
+            var cardId = FakeStripeFactory.CreateCardId();
+
+            _mockCardQueries.Setup(mock => mock.GetCardAsync(It.IsAny<StripeCardId>()))
+                .ReturnsAsync(new Option<StripeCardDTO>())
+                .Verifiable();
+
+            var controller = new StripeCardsController(_mockCardQueries.Object, _mockMediator.Object);
+
+            // Act
+            var result = await controller.GetCardAsync(cardId);
+
+            // Assert
+            result.Should().BeOfType<NotFoundObjectResult>();
+
+            _mockCardQueries.Verify(mock => mock.GetCardAsync(It.IsAny<StripeCardId>()), Times.Once);
         }
 
         [TestMethod]
@@ -154,7 +187,8 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Arrange
             var cardId = FakeStripeFactory.CreateCardId();
 
-            _mockMediator.Setup(mediator => mediator.Send(It.IsAny<DeleteCardCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Success(string.Empty))
+            _mockMediator.Setup(mock => mock.Send(It.IsAny<DeleteCardCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(Success.Empty)
                 .Verifiable();
 
             var controller = new StripeCardsController(_mockCardQueries.Object, _mockMediator.Object);
@@ -165,9 +199,28 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            _mockCardQueries.VerifyNoOtherCalls();
+            _mockMediator.Verify(mock => mock.Send(It.IsAny<DeleteCardCommand>(), It.IsAny<CancellationToken>()), Times.Once);
+        }
 
-            _mockMediator.Verify();
+        [TestMethod]
+        public async Task DeleteCardAsync_ShouldBeOfTypeBadRequestObjectResult()
+        {
+            // Arrange
+            var cardId = FakeStripeFactory.CreateCardId();
+
+            _mockMediator.Setup(mock => mock.Send(It.IsAny<DeleteCardCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(Failure.Empty)
+                .Verifiable();
+
+            var controller = new StripeCardsController(_mockCardQueries.Object, _mockMediator.Object);
+
+            // Act
+            var result = await controller.DeleteCardAsync(cardId);
+
+            // Assert
+            result.Should().BeOfType<BadRequestObjectResult>();
+
+            _mockMediator.Verify(mock => mock.Send(It.IsAny<DeleteCardCommand>(), It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [TestMethod]
@@ -177,7 +230,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             var cardId = FakeStripeFactory.CreateCardId();
 
             _mockMediator.Setup(mediator => mediator.Send(It.IsAny<UpdateCardDefaultCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new Success(string.Empty))
+                .ReturnsAsync(Success.Empty)
                 .Verifiable();
 
             var controller = new StripeCardsController(_mockCardQueries.Object, _mockMediator.Object);
@@ -188,9 +241,28 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            _mockCardQueries.VerifyNoOtherCalls();
+            _mockMediator.Verify(mediator => mediator.Send(It.IsAny<UpdateCardDefaultCommand>(), It.IsAny<CancellationToken>()), Times.Once);
+        }
 
-            _mockMediator.Verify();
+        [TestMethod]
+        public async Task UpdateCardDefaultAsync_ShouldBeOfTypeBadRequestObjectResult()
+        {
+            // Arrange
+            var cardId = FakeStripeFactory.CreateCardId();
+
+            _mockMediator.Setup(mediator => mediator.Send(It.IsAny<UpdateCardDefaultCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(Failure.Empty)
+                .Verifiable();
+
+            var controller = new StripeCardsController(_mockCardQueries.Object, _mockMediator.Object);
+
+            // Act
+            var result = await controller.UpdateCardDefaultAsync(cardId);
+
+            // Assert
+            result.Should().BeOfType<BadRequestObjectResult>();
+
+            _mockMediator.Verify(mediator => mediator.Send(It.IsAny<UpdateCardDefaultCommand>(), It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿// Filename: WithdrawalMoneyCommandValidatorTest.cs
+﻿// Filename: WithdrawMoneyCommandValidatorTest.cs
 // Date Created: 2019-05-13
 // 
 // ================================================

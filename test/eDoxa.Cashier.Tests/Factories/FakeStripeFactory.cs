@@ -56,32 +56,42 @@ namespace eDoxa.Cashier.Tests.Factories
             return new Account
             {
                 Id = this.CreateAccountId().ToString(),
-                Individual = new Person
-                {
-                    FirstName = "Firstname",
-                    LastName = "Lastname",
-                    Email = "test@edoxa.gg",
-                    Dob = new Dob
-                    {
-                        Day = 1,
-                        Month = 1,
-                        Year = 2000
-                    },
-                    Address = new Address
-                    {
-                        Line1 = "1000 Street",
-                        Line2 = null,
-                        City = "Montreal",
-                        State = "QC",
-                        PostalCode = "H5T I2E",
-                        Country = StripeConstants.Country
-                    }
-                },
+                Individual = this.CreatePerson(),
                 Email = email,
                 Country = StripeConstants.Country,
                 DefaultCurrency = StripeConstants.Currency,
                 BusinessType = StripeConstants.BusinessType,
                 Type = StripeConstants.AccountType
+            };
+        }
+
+        public Person CreatePerson()
+        {
+            return new Person
+            {
+                FirstName = "Firstname",
+                LastName = "Lastname",
+                Email = "test@edoxa.gg",
+                Dob = new Dob
+                {
+                    Day = 1,
+                    Month = 1,
+                    Year = 2000
+                },
+                Address = this.CreateAddress()
+            };
+        }
+
+        public Address CreateAddress()
+        {
+            return new Address
+            {
+                Line1 = "1000 Street",
+                Line2 = null,
+                City = "Montreal",
+                State = "QC",
+                PostalCode = "H5T I2E",
+                Country = StripeConstants.Country
             };
         }
 
@@ -134,15 +144,7 @@ namespace eDoxa.Cashier.Tests.Factories
                 Shipping = new Shipping
                 {
                     Phone = "0000000000",
-                    Address = new Address
-                    {
-                        Line1 = "1000 Street",
-                        Line2 = null,
-                        City = "Montreal",
-                        State = "QC",
-                        PostalCode = "H5T I2E",
-                        Country = StripeConstants.Country
-                    }
+                    Address = this.CreateAddress()
                 }
             };
         }

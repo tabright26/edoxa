@@ -1,4 +1,4 @@
-﻿// Filename: CashierSercurity.cs
+﻿// Filename: CashierSecurity.cs
 // Date Created: 2019-05-16
 // 
 // ================================================
@@ -31,16 +31,19 @@ namespace eDoxa.Cashier.Application.Security
 
         public CashierSecurity(IHttpContextAccessor accessor)
         {
-            _claims = accessor?.HttpContext?.User?.Claims ?? throw new ArgumentNullException(nameof(accessor), "IHttpContextAccessor was injected from an invalid HttpContext.");
+            _claims = accessor?.HttpContext?.User?.Claims ??
+                      throw new ArgumentNullException(nameof(accessor), "IHttpContextAccessor was injected from an invalid HttpContext.");
         }
 
         public UserId UserId => UserId.Parse(this.TryGetClaim(JwtClaimTypes.Subject) ?? throw new MissingClaimException());
 
         public StripeAccountId StripeAccountId => new StripeAccountId(this.TryGetClaim(CustomClaimTypes.StripeAccountId) ?? throw new MissingClaimException());
 
-        public StripeBankAccountId StripeBankAccountId => new StripeBankAccountId(this.TryGetClaim(CustomClaimTypes.StripeBankAccountId) ?? throw new MissingClaimException());
+        public StripeBankAccountId StripeBankAccountId =>
+            new StripeBankAccountId(this.TryGetClaim(CustomClaimTypes.StripeBankAccountId) ?? throw new MissingClaimException());
 
-        public StripeCustomerId StripeCustomerId => new StripeCustomerId(this.TryGetClaim(CustomClaimTypes.StripeCustomerId) ?? throw new MissingClaimException());
+        public StripeCustomerId StripeCustomerId =>
+            new StripeCustomerId(this.TryGetClaim(CustomClaimTypes.StripeCustomerId) ?? throw new MissingClaimException());
 
         public IEnumerable<string> Roles => this.TryGetClaims(JwtClaimTypes.Role);
 

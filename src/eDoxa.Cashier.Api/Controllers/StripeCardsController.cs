@@ -31,8 +31,8 @@ namespace eDoxa.Cashier.Api.Controllers
     [ApiExplorerSettings(GroupName = "Stripe")]
     public sealed class StripeCardsController : ControllerBase
     {
-        private readonly IStripeCardQueries _stripeCardQueries;
         private readonly IMediator _mediator;
+        private readonly IStripeCardQueries _stripeCardQueries;
 
         public StripeCardsController(IStripeCardQueries stripeCardQueries, IMediator mediator)
         {

@@ -8,23 +8,49 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Cashier.Domain;
 using eDoxa.Cashier.DTO;
 
 using FluentAssertions;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Cashier.Tests.Asserts
 {
-    internal static class CashierQueryAssert
+    public static class CashierQueryAssert
     {
-        public static void IsMapped([CanBeNull] AccountDTO account)
+        public static void IsMapped(AccountDTO account)
         {
             account.Should().NotBeNull();
 
-            account?.Balance.Should().BeGreaterOrEqualTo(decimal.Zero);
+            account.Currency.Should().BeInRange(AccountCurrency.Money, AccountCurrency.Token);
 
-            account?.Pending.Should().BeGreaterOrEqualTo(decimal.Zero);
+            account.Balance.Should().BeGreaterOrEqualTo(decimal.Zero);
+
+            account.Pending.Should().BeGreaterOrEqualTo(decimal.Zero);
+        }
+
+        public static void IsMapped(TransactionListDTO transactions)
+        {
+            transactions.Should().NotBeNull();
+
+            foreach (var transaction in transactions)
+            {
+                IsMapped(transaction);
+            }
+        }
+
+        public static void IsMapped(TransactionDTO transaction)
+        {
+            transaction.Should().NotBeNull();
+
+            transaction.Id.Should().NotBeEmpty();
+
+            transaction.Amount.Should().BeGreaterOrEqualTo(decimal.Zero);
+
+            transaction.Type.Should().BeInRange(TransactionType.Deposit, TransactionType.Service);
+
+            transaction.Currency.Should().BeInRange(AccountCurrency.Money, AccountCurrency.Token);
+
+            transaction.Description.Should().NotBeNullOrEmpty();
         }
     }
 }

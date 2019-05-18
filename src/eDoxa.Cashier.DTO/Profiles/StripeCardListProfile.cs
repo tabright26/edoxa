@@ -8,6 +8,9 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Collections.Generic;
+using System.Linq;
+
 using AutoMapper;
 
 using Stripe;
@@ -18,7 +21,7 @@ namespace eDoxa.Cashier.DTO.Profiles
     {
         public StripeCardListProfile()
         {
-            this.CreateMap<StripeList<Card>, StripeCardListDTO>().ForMember(list => list.Items, config => config.MapFrom(list => list.Data));
+            this.CreateMap<IEnumerable<Card>, StripeCardListDTO>().ForMember(list => list.Items, config => config.MapFrom(list => list.ToList()));
         }
     }
 }

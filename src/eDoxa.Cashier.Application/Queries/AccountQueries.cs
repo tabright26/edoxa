@@ -1,4 +1,4 @@
-﻿// Filename: MoneyAccountQueries.cs
+﻿// Filename: AccountQueries.cs
 // Date Created: 2019-05-06
 // 
 // ================================================
@@ -30,9 +30,9 @@ namespace eDoxa.Cashier.Application.Queries
     public sealed partial class AccountQueries
     {
         private readonly CashierDbContext _context;
-        private readonly ICashierSecurity _security;
         private readonly IMapper _mapper;
-        
+        private readonly ICashierSecurity _security;
+
         public AccountQueries(CashierDbContext context, ICashierSecurity security, IMapper mapper)
         {
             _context = context;
@@ -80,7 +80,7 @@ namespace eDoxa.Cashier.Application.Queries
 
                 mapper = _mapper.Map<AccountDTO>(account);
             }
-            
+
             return mapper != null ? new Option<AccountDTO>(mapper) : new Option<AccountDTO>();
         }
     }

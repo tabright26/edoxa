@@ -23,9 +23,9 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 {
     internal sealed class CreateBankAccountCommandHandler : ICommandHandler<CreateBankAccountCommand, Either>
     {
+        private readonly ICashierSecurity _cashierSecurity;
         private readonly IIntegrationEventService _integrationEventService;
         private readonly IStripeService _stripeService;
-        private readonly ICashierSecurity _cashierSecurity;
 
         public CreateBankAccountCommandHandler(ICashierSecurity cashierSecurity, IStripeService stripeService, IIntegrationEventService integrationEventService)
         {
@@ -47,7 +47,8 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 
             var bankAccountId = await _stripeService.CreateBankAccountAsync(accountId, command.ExternalAccountTokenId, cancellationToken);
 
-            await _integrationEventService.PublishAsync(new UserClaimAddedIntegrationEvent(userId.ToGuid(), CustomClaimTypes.StripeBankAccountId, bankAccountId.ToString()));
+            await _integrationEventService.PublishAsync(new UserClaimAddedIntegrationEvent(userId.ToGuid(), CustomClaimTypes.StripeBankAccountId,
+                bankAccountId.ToString()));
 
             return new Success("The bank account has been added.");
         }

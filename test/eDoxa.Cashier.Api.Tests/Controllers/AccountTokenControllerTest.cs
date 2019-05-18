@@ -1,4 +1,4 @@
-﻿// Filename: TokenControllerTest.cs
+﻿// Filename: AccountTokenControllerTest.cs
 // Date Created: 2019-05-13
 // 
 // ================================================
@@ -8,12 +8,14 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Controllers;
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Domain;
 using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
+using eDoxa.Functional;
 using eDoxa.Testing.MSTest;
 
 using FluentAssertions;
@@ -44,7 +46,8 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         {
             ConstructorTests<AccountTokenController>.For(typeof(IMediator))
                 .WithName("AccountTokenController")
-                .WithAttributes(typeof(AuthorizeAttribute), typeof(ApiControllerAttribute), typeof(ApiVersionAttribute), typeof(ProducesAttribute), typeof(RouteAttribute), typeof(ApiExplorerSettingsAttribute)) 
+                .WithAttributes(typeof(AuthorizeAttribute), typeof(ApiControllerAttribute), typeof(ApiVersionAttribute), typeof(ProducesAttribute),
+                    typeof(RouteAttribute), typeof(ApiExplorerSettingsAttribute))
                 .Assert();
         }
 
@@ -52,19 +55,38 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         public async Task DepositTokenAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
-            var command = new DepositTokenCommand(TokenDepositBundleType.FiftyThousand);
-
-            _mockMediator.Setup(mediator => mediator.Send(command, default)).ReturnsAsync(TransactionStatus.Paid).Verifiable();
+            _mockMediator.Setup(mock => mock.Send(It.IsAny<DepositTokenCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(TransactionStatus.Paid)
+                .Verifiable();
 
             var controller = new AccountTokenController(_mockMediator.Object);
 
             // Act
-            var result = await controller.DepositTokenAsync(command);
+            var result = await controller.DepositTokenAsync(new DepositTokenCommand(TokenDepositBundleType.FiftyThousand));
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            _mockMediator.Verify();
+            _mockMediator.Verify(mock => mock.Send(It.IsAny<DepositTokenCommand>(), It.IsAny<CancellationToken>()), Times.Once);
+        }
+
+        [TestMethod]
+        public async Task DepositTokenAsync_ShouldBeOfTypeBadRequestObjectResult()
+        {
+            // Arrange
+            _mockMediator.Setup(mock => mock.Send(It.IsAny<DepositTokenCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(Failure.Empty)
+                .Verifiable();
+
+            var controller = new AccountTokenController(_mockMediator.Object);
+
+            // Act
+            var result = await controller.DepositTokenAsync(new DepositTokenCommand(TokenDepositBundleType.FiftyThousand));
+
+            // Assert
+            result.Should().BeOfType<BadRequestObjectResult>();
+
+            _mockMediator.Verify(mock => mock.Send(It.IsAny<DepositTokenCommand>(), It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }

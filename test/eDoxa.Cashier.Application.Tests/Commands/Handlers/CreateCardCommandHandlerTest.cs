@@ -34,8 +34,8 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     public sealed class CreateCardCommandHandlerTest
     {
         private static readonly FakeStripeFactory FakeStripeFactory = FakeStripeFactory.Instance;
-        private Mock<IStripeService> _mockStripeService;
         private Mock<ICashierSecurity> _mockCashierSecurity;
+        private Mock<IStripeService> _mockStripeService;
 
         [TestInitialize]
         public void TestInitialize()
@@ -55,7 +55,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         }
 
         [TestMethod]
-        public async Task HandleAsync_CreateCardCommand_ShouldBeInvokedExactlyOneTime()
+        public async Task HandleAsync_CreateCardCommand_ShouldBeOfTypeEither()
         {
             // Arrange
             var card = FakeStripeFactory.CreateCard();
@@ -63,10 +63,10 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             var handler = new CreateCardCommandHandler(_mockCashierSecurity.Object, _mockStripeService.Object);
 
             // Act
-            var response = await handler.HandleAsync(new CreateCardCommand(card.Id));
+            var result = await handler.HandleAsync(new CreateCardCommand(card.Id));
 
             // Assert
-            response.Should().BeOfType<Either>();
+            result.Should().BeOfType<Either>();
 
             _mockStripeService.Verify(mock => mock.CreateCardAsync(It.IsAny<StripeCustomerId>(), It.IsAny<string>(), It.IsAny<CancellationToken>()),
                 Times.Once);

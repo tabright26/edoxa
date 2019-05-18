@@ -12,6 +12,8 @@ namespace eDoxa.Functional
 {
     public class Failure
     {
+        public static readonly Failure Empty = new Failure(string.Empty);
+
         public Failure(string message)
         {
             Message = message;

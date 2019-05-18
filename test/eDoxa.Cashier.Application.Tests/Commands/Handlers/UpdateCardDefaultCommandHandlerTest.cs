@@ -34,8 +34,8 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     public sealed class UpdateCardDefaultCommandHandlerTest
     {
         private static readonly FakeStripeFactory FakeStripeFactory = FakeStripeFactory.Instance;
-        private Mock<IStripeService> _mockStripeService;
         private Mock<ICashierSecurity> _mockCashierSecurity;
+        private Mock<IStripeService> _mockStripeService;
 
         [TestInitialize]
         public void TestInitialize()
@@ -55,7 +55,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         }
 
         [TestMethod]
-        public async Task HandleAsync_UpdateCardDefaultCommand_ShouldBeInvokedExactlyOneTime()
+        public async Task HandleAsync_UpdateCardDefaultCommand_ShouldBeOfTypeEither()
         {
             // Arrange
             var cardId = FakeStripeFactory.CreateCardId();
@@ -68,7 +68,8 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             // Assert
             result.Should().BeOfType<Either>();
 
-            _mockStripeService.Verify(mock => mock.UpdateCardDefaultAsync(It.IsAny<StripeCustomerId>(), It.IsAny<StripeCardId>(), It.IsAny<CancellationToken>()), Times.Once);
+            _mockStripeService.Verify(
+                mock => mock.UpdateCardDefaultAsync(It.IsAny<StripeCustomerId>(), It.IsAny<StripeCardId>(), It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }

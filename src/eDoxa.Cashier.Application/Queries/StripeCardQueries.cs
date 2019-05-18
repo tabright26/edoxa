@@ -1,4 +1,4 @@
-﻿// Filename: CardQueries.cs
+﻿// Filename: StripeCardQueries.cs
 // Date Created: 2019-05-06
 // 
 // ================================================
@@ -24,10 +24,10 @@ namespace eDoxa.Cashier.Application.Queries
 {
     public sealed partial class StripeCardQueries
     {
-        private readonly IStripeService _service;
-        private readonly ICashierSecurity _security;
         private readonly IMapper _mapper;
-        
+        private readonly ICashierSecurity _security;
+        private readonly IStripeService _service;
+
         public StripeCardQueries(IStripeService service, ICashierSecurity security, IMapper mapper)
         {
             _service = service;

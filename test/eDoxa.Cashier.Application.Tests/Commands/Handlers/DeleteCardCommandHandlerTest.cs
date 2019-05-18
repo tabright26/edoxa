@@ -19,7 +19,10 @@ using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Cashier.Tests.Extensions;
 using eDoxa.Cashier.Tests.Factories;
 using eDoxa.Commands.Extensions;
+using eDoxa.Functional;
 using eDoxa.Testing.MSTest;
+
+using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -31,8 +34,8 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     public sealed class DeleteCardCommandHandlerTest
     {
         private static readonly FakeStripeFactory FakeStripeFactory = FakeStripeFactory.Instance;
-        private Mock<IStripeService> _mockStripeService;
         private Mock<ICashierSecurity> _mockCashierSecurity;
+        private Mock<IStripeService> _mockStripeService;
 
         [TestInitialize]
         public void TestInitialize()
@@ -52,7 +55,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         }
 
         [TestMethod]
-        public async Task HandleAsync_DeleteCardCommand_ShouldBeInvokedExactlyOneTime()
+        public async Task HandleAsync_DeleteCardCommand_ShouldBeOfTypeEither()
         {
             // Arrange
             var card = FakeStripeFactory.CreateCard();
@@ -60,9 +63,11 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             var handler = new DeleteCardCommandHandler(_mockCashierSecurity.Object, _mockStripeService.Object);
 
             // Act
-            await handler.HandleAsync(new DeleteCardCommand(new StripeCardId(card.Id)));
+            var result = await handler.HandleAsync(new DeleteCardCommand(new StripeCardId(card.Id)));
 
             // Assert
+            result.Should().BeOfType<Either>();
+
             _mockStripeService.Verify(mock => mock.DeleteCardAsync(It.IsAny<StripeCustomerId>(), It.IsAny<StripeCardId>(), It.IsAny<CancellationToken>()),
                 Times.Once);
         }

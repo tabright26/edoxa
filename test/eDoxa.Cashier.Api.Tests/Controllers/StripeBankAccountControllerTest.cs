@@ -1,4 +1,4 @@
-﻿// Filename: BankAccountControllerTest.cs
+﻿// Filename: StripeBankAccountControllerTest.cs
 // Date Created: 2019-05-15
 // 
 // ================================================
@@ -46,7 +46,8 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         {
             ConstructorTests<StripeBankAccountController>.For(typeof(IMediator))
                 .WithName("StripeBankAccountController")
-                .WithAttributes(typeof(AuthorizeAttribute), typeof(ApiControllerAttribute), typeof(ApiVersionAttribute), typeof(ProducesAttribute), typeof(RouteAttribute), typeof(ApiExplorerSettingsAttribute))
+                .WithAttributes(typeof(AuthorizeAttribute), typeof(ApiControllerAttribute), typeof(ApiVersionAttribute), typeof(ProducesAttribute),
+                    typeof(RouteAttribute), typeof(ApiExplorerSettingsAttribute))
                 .Assert();
         }
 
@@ -56,8 +57,9 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Arrange
             var sourceToken = FakeStripeFactory.CreateSourceToken();
 
-            _mockMediator.Setup(mediator => mediator.Send(It.IsAny<CreateBankAccountCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new Success(string.Empty)).Verifiable();
+            _mockMediator.Setup(mock => mock.Send(It.IsAny<CreateBankAccountCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(Success.Empty)
+                .Verifiable();
 
             var controller = new StripeBankAccountController(_mockMediator.Object);
 
@@ -67,15 +69,37 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            _mockMediator.Verify(mediator => mediator.Send(It.IsAny<CreateBankAccountCommand>(), It.IsAny<CancellationToken>()), Times.Once);
+            _mockMediator.Verify(mock => mock.Send(It.IsAny<CreateBankAccountCommand>(), It.IsAny<CancellationToken>()), Times.Once);
+        }
+
+        [TestMethod]
+        public async Task CreateBankAccountAsync_ShouldBeOfTypeBadRequestObjectResult()
+        {
+            // Arrange
+            var sourceToken = FakeStripeFactory.CreateSourceToken();
+
+            _mockMediator.Setup(mock => mock.Send(It.IsAny<CreateBankAccountCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(Failure.Empty)
+                .Verifiable();
+
+            var controller = new StripeBankAccountController(_mockMediator.Object);
+
+            // Act
+            var result = await controller.CreateBankAccountAsync(new CreateBankAccountCommand(sourceToken));
+
+            // Assert
+            result.Should().BeOfType<BadRequestObjectResult>();
+
+            _mockMediator.Verify(mock => mock.Send(It.IsAny<CreateBankAccountCommand>(), It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [TestMethod]
         public async Task DeleteBankAccountAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
-            _mockMediator.Setup(mediator => mediator.Send(It.IsAny<DeleteBankAccountCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new Success(string.Empty)).Verifiable();
+            _mockMediator.Setup(mock => mock.Send(It.IsAny<DeleteBankAccountCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(Success.Empty)
+                .Verifiable();
 
             var controller = new StripeBankAccountController(_mockMediator.Object);
 
@@ -85,7 +109,26 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            _mockMediator.Verify(mediator => mediator.Send(It.IsAny<DeleteBankAccountCommand>(), It.IsAny<CancellationToken>()), Times.Once);
+            _mockMediator.Verify(mock => mock.Send(It.IsAny<DeleteBankAccountCommand>(), It.IsAny<CancellationToken>()), Times.Once);
+        }
+
+        [TestMethod]
+        public async Task DeleteBankAccountAsync_ShouldBeOfTypeBadRequestObjectResult()
+        {
+            // Arrange
+            _mockMediator.Setup(mock => mock.Send(It.IsAny<DeleteBankAccountCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(Failure.Empty)
+                .Verifiable();
+
+            var controller = new StripeBankAccountController(_mockMediator.Object);
+
+            // Act
+            var result = await controller.DeleteBankAccountAsync();
+
+            // Assert
+            result.Should().BeOfType<BadRequestObjectResult>();
+
+            _mockMediator.Verify(mock => mock.Send(It.IsAny<DeleteBankAccountCommand>(), It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }

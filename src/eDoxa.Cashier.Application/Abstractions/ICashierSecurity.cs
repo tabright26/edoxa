@@ -1,4 +1,4 @@
-﻿// Filename: ICashierSercurity.cs
+﻿// Filename: ICashierSecurity.cs
 // Date Created: 2019-05-16
 // 
 // ================================================

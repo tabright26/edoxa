@@ -1,4 +1,4 @@
-﻿// Filename: WithdrawalMoneyCommandTest.cs
+﻿// Filename: WithdrawMoneyCommandTest.cs
 // Date Created: 2019-05-13
 // 
 // ================================================

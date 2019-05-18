@@ -21,7 +21,10 @@ using eDoxa.Cashier.Domain.Services.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Cashier.Tests.Extensions;
 using eDoxa.Commands.Extensions;
+using eDoxa.Functional;
 using eDoxa.Testing.MSTest;
+
+using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -32,8 +35,8 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     [TestClass]
     public sealed class DepositTokenHandlerTest
     {
-        private Mock<ITokenAccountService> _mockTokenAccountService;
         private Mock<ICashierSecurity> _mockCashierSecurity;
+        private Mock<ITokenAccountService> _mockTokenAccountService;
 
         [TestInitialize]
         public void TestInitialize()
@@ -52,7 +55,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         }
 
         [TestMethod]
-        public async Task HandleAsync_BuyTokensCommand_ShouldBeInvokedExactlyOneTime()
+        public async Task HandleAsync_DepositTokenCommand_ShouldBeOfTypeEither()
         {
             // Arrange
             var command = new DepositTokenCommand(TokenDepositBundleType.FiftyThousand);
@@ -65,13 +68,14 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             var handler = new DepositTokenCommandHandler(_mockCashierSecurity.Object, _mockTokenAccountService.Object);
 
             // Act
-            await handler.HandleAsync(command);
+            var result = await handler.HandleAsync(command);
 
             // Assert
+            result.Should().BeOfType<Either<TransactionStatus>>();
+
             _mockTokenAccountService.Verify(
                 mock => mock.DepositAsync(It.IsAny<UserId>(), It.IsAny<StripeCustomerId>(), It.IsAny<TokenBundle>(), It.IsAny<CancellationToken>()),
-                Times.Once
-            );
+                Times.Once);
         }
     }
 }

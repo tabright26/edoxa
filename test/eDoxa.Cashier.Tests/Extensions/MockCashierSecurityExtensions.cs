@@ -45,8 +45,6 @@ namespace eDoxa.Cashier.Tests.Extensions
                 "permission4",
                 "permission5"
             });
-
-            mockUserInfoService.Setup(mock => mock.HasStripeBankAccount()).Returns(true);
         }
     }
 }

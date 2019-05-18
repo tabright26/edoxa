@@ -12,6 +12,8 @@ namespace eDoxa.Functional
 {
     public class Success
     {
+        public static readonly Success Empty = new Success(string.Empty);
+
         public Success(string message)
         {
             Message = message;

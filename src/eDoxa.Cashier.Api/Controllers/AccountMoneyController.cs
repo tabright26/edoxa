@@ -52,8 +52,8 @@ namespace eDoxa.Cashier.Api.Controllers
         /// <summary>
         ///     Withdraw money from the account.
         /// </summary>
-        [HttpPost("withdrawal", Name = nameof(WithdrawalMoneyAsync))]
-        public async Task<IActionResult> WithdrawalMoneyAsync([FromBody] WithdrawMoneyCommand command)
+        [HttpPost("withdraw", Name = nameof(WithdrawMoneyAsync))]
+        public async Task<IActionResult> WithdrawMoneyAsync([FromBody] WithdrawMoneyCommand command)
         {
             var either = await _mediator.SendCommandAsync(command);
 

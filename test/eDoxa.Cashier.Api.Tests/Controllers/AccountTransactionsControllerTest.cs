@@ -8,9 +8,16 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
 using eDoxa.Cashier.Api.Controllers;
+using eDoxa.Cashier.Domain;
+using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Testing.MSTest;
+
+using FluentAssertions;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -39,6 +46,50 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
                 .WithAttributes(typeof(AuthorizeAttribute), typeof(ApiControllerAttribute), typeof(ApiVersionAttribute), typeof(ProducesAttribute),
                     typeof(RouteAttribute), typeof(ApiExplorerSettingsAttribute))
                 .Assert();
+        }
+
+        [TestMethod]
+        public async Task DepositTokenAsync_ShouldBeOfTypeOkObjectResult()
+        {
+            // Arrange
+            _mockTransactionQueries.Setup(mock => mock.GetTransactionsAsync(It.IsAny<AccountCurrency>()))
+                .ReturnsAsync(new TransactionListDTO
+                {
+                    Items = new List<TransactionDTO>
+                    {
+                        new TransactionDTO()
+                    }
+                })
+                .Verifiable();
+
+            var controller = new AccountTransactionsController(_mockTransactionQueries.Object);
+
+            // Act
+            var result = await controller.GetTransactionsAsync(AccountCurrency.All);
+
+            // Assert
+            result.Should().BeOfType<OkObjectResult>();
+
+            _mockTransactionQueries.Verify(mock => mock.GetTransactionsAsync(It.IsAny<AccountCurrency>()), Times.Once);
+        }
+
+        [TestMethod]
+        public async Task DepositTokenAsync_ShouldBeOfTypeNoContentResult()
+        {
+            // Arrange
+            _mockTransactionQueries.Setup(mock => mock.GetTransactionsAsync(It.IsAny<AccountCurrency>()))
+                .ReturnsAsync(new TransactionListDTO())
+                .Verifiable();
+
+            var controller = new AccountTransactionsController(_mockTransactionQueries.Object);
+
+            // Act
+            var result = await controller.GetTransactionsAsync(AccountCurrency.All);
+
+            // Assert
+            result.Should().BeOfType<NoContentResult>();
+
+            _mockTransactionQueries.Verify(mock => mock.GetTransactionsAsync(It.IsAny<AccountCurrency>()), Times.Once);
         }
     }
 }

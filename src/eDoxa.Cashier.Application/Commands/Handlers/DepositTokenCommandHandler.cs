@@ -25,8 +25,8 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
     internal sealed class DepositTokenCommandHandler : ICommandHandler<DepositTokenCommand, Either<TransactionStatus>>
     {
         private static readonly TokenDepositBundles Bundles = new TokenDepositBundles();
-        private readonly ITokenAccountService _tokenAccountService;
         private readonly ICashierSecurity _cashierSecurity;
+        private readonly ITokenAccountService _tokenAccountService;
 
         public DepositTokenCommandHandler(ICashierSecurity cashierSecurity, ITokenAccountService tokenAccountService)
         {
