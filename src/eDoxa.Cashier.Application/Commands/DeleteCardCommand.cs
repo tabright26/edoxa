@@ -12,12 +12,14 @@ using System.Runtime.Serialization;
 
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Commands.Abstractions;
+using eDoxa.Commands.Result;
 using eDoxa.Functional;
+using eDoxa.Seedwork.Domain.Validations;
 
 namespace eDoxa.Cashier.Application.Commands
 {
     [DataContract]
-    public sealed class DeleteCardCommand : Command<Either>
+    public sealed class DeleteCardCommand : Command<Either<ValidationError, CommandResult>>
     {
         public DeleteCardCommand(StripeCardId cardId)
         {

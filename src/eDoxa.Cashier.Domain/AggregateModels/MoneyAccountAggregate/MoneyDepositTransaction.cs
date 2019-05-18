@@ -1,5 +1,5 @@
-﻿// Filename: DepositMoneyTransaction.cs
-// Date Created: 2019-05-09
+﻿// Filename: MoneyDepositTransaction.cs
+// Date Created: 2019-05-13
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,7 +12,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
 {
     public sealed class MoneyDepositTransaction : MoneyTransaction
     {
-        public MoneyDepositTransaction(Money amount) : base(amount, new TransactionDescription($"Money deposit ({amount})"), TransactionType.Deposit)
+        public MoneyDepositTransaction(Money amount) : base(amount, new TransactionDescription(nameof(MoneyDepositTransaction)), TransactionType.Deposit)
         {
         }
     }

@@ -1,5 +1,5 @@
 ﻿// Filename: ITransaction.cs
-// Date Created: 2019-05-09
+// Date Created: 2019-05-13
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -17,26 +17,24 @@ namespace eDoxa.Cashier.Domain.Abstractions
 {
     public interface ITransaction : IEntity<TransactionId>
     {
-        TransactionDescription Description { get; }
-    }
-
-    public interface ITransaction<out TCurrency> : ITransaction
-    where TCurrency : ICurrency
-    {
-        string ServiceId { get; }
-
         DateTime Timestamp { get; }
-
-        TCurrency Amount { get; }
 
         TransactionType Type { get; }
 
         TransactionStatus Status { get; }
 
-        void Pay();
+        TransactionDescription Description { get; }
 
-        void Cancel();
+        TransactionFailure Failure { get; }
 
-        void Fail();
+        void Complete();
+
+        void Fail(string message);
+    }
+
+    public interface ITransaction<out TCurrency> : ITransaction
+    where TCurrency : ICurrency
+    {
+        TCurrency Amount { get; }
     }
 }

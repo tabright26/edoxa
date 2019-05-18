@@ -17,13 +17,15 @@ using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Commands.Abstractions.Handlers;
+using eDoxa.Commands.Result;
 using eDoxa.Functional;
 using eDoxa.Security;
+using eDoxa.Seedwork.Domain.Validations;
 using eDoxa.ServiceBus;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
-    internal sealed class CreateBankAccountCommandHandler : ICommandHandler<CreateBankAccountCommand, Either>
+    internal sealed class CreateBankAccountCommandHandler : ICommandHandler<CreateBankAccountCommand, Either<ValidationError, CommandResult>>
     {
         private readonly ICashierHttpContext _cashierHttpContext;
         private readonly IIntegrationEventService _integrationEventService;
@@ -39,14 +41,13 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
             _integrationEventService = integrationEventService;
         }
 
-        public async Task<Either> Handle(CreateBankAccountCommand command, CancellationToken cancellationToken)
+        public async Task<Either<ValidationError, CommandResult>> Handle(CreateBankAccountCommand command, CancellationToken cancellationToken)
         {
-            var bankAccountId =
-                await _stripeService.CreateBankAccountAsync(_cashierHttpContext.StripeAccountId, command.ExternalAccountTokenId, cancellationToken);
+            var bankAccountId = await _stripeService.CreateBankAccountAsync(_cashierHttpContext.StripeAccountId, command.ExternalAccountTokenId, cancellationToken);
 
             await this.PropagateClaimAsync(bankAccountId);
 
-            return new Success("The bank account has been added.");
+            return new CommandResult("The bank account has been added.");
         }
 
         private async Task PropagateClaimAsync(StripeBankAccountId bankAccountId)

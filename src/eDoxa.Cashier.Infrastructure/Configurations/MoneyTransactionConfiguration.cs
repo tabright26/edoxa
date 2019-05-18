@@ -43,11 +43,6 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
                 .IsRequired()
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 
-            builder.Property(transaction => transaction.Description)
-                .HasConversion(description => description.ToString(), description => new TransactionDescription(description))
-                .IsRequired()
-                .UsePropertyAccessMode(PropertyAccessMode.Field);
-
             builder.Property(transaction => transaction.Type)
                 .HasConversion(type => type.Value, value => TransactionType.FromValue(value))
                 .IsRequired()
@@ -58,7 +53,13 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
                 .IsRequired()
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 
-            builder.Property(transaction => transaction.ServiceId)
+            builder.Property(transaction => transaction.Description)
+                .HasConversion(description => description.ToString(), description => new TransactionDescription(description))
+                .IsRequired()
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
+
+            builder.Property(transaction => transaction.Failure)
+                .HasConversion(failure => failure != null ? failure.ToString() : null, message => message != null ? new TransactionFailure(message) : null)
                 .IsRequired(false)
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 

@@ -1,5 +1,5 @@
-﻿// Filename: Failure.cs
-// Date Created: 2019-05-16
+﻿// Filename: TransactionFailure.cs
+// Date Created: 2019-05-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,22 +8,20 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-namespace eDoxa.Functional
+namespace eDoxa.Cashier.Domain
 {
-    public class Failure
+    public sealed class TransactionFailure
     {
-        public static readonly Failure Empty = new Failure(string.Empty);
+        private string _value;
 
-        public Failure(string message)
+        public TransactionFailure(string message)
         {
-            Message = message;
+            _value = message;
         }
-
-        public string Message { get; }
 
         public override string ToString()
         {
-            return Message;
+            return _value;
         }
     }
 }

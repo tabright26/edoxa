@@ -10,7 +10,7 @@ using eDoxa.Cashier.Infrastructure;
 namespace eDoxa.Cashier.Infrastructure.Migrations
 {
     [DbContext(typeof(CashierDbContext))]
-    [Migration("20190512194926_InitialCreate")]
+    [Migration("20190518221430_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,7 +28,7 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
 
                     b.Property<DateTime?>("LastDeposit");
 
-                    b.Property<DateTime?>("LastWithdrawal");
+                    b.Property<DateTime?>("LastWithdraw");
 
                     b.Property<Guid>("UserId");
 
@@ -48,7 +48,7 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .IsRequired();
 
-                    b.Property<string>("ServiceId");
+                    b.Property<string>("Failure");
 
                     b.Property<int>("Status");
 
@@ -87,7 +87,7 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .IsRequired();
 
-                    b.Property<string>("ServiceId");
+                    b.Property<string>("Failure");
 
                     b.Property<int>("Status");
 

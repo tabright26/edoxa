@@ -1,4 +1,4 @@
-﻿// Filename: MoneyBundleType.cs
+﻿// Filename: MoneyDepositBundleType.cs
 // Date Created: 2019-05-06
 // 
 // ================================================

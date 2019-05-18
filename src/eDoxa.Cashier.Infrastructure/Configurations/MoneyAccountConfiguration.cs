@@ -1,9 +1,9 @@
 ﻿// Filename: MoneyAccountConfiguration.cs
-// Date Created: 2019-04-24
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -42,7 +42,7 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
                 .IsRequired(false)
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 
-            builder.Property(account => account.LastWithdrawal)
+            builder.Property(account => account.LastWithdraw)
                 .IsRequired(false)
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 

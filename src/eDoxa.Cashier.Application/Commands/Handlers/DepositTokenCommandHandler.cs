@@ -17,12 +17,13 @@ using eDoxa.Cashier.Domain.Services.Abstractions;
 using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Functional;
+using eDoxa.Seedwork.Domain.Validations;
 
 using JetBrains.Annotations;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
-    internal sealed class DepositTokenCommandHandler : ICommandHandler<DepositTokenCommand, Either<TransactionStatus>>
+    internal sealed class DepositTokenCommandHandler : ICommandHandler<DepositTokenCommand, Either<ValidationError, TransactionStatus>>
     {
         private static readonly TokenDepositBundles Bundles = new TokenDepositBundles();
         private readonly ICashierHttpContext _cashierHttpContext;
@@ -35,15 +36,9 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         }
 
         [ItemNotNull]
-        public async Task<Either<TransactionStatus>> Handle([NotNull] DepositTokenCommand command, CancellationToken cancellationToken)
+        public async Task<Either<ValidationError, TransactionStatus>> Handle([NotNull] DepositTokenCommand command, CancellationToken cancellationToken)
         {
-            var userId = _cashierHttpContext.UserId;
-
-            var customerId = _cashierHttpContext.StripeCustomerId;
-
-            var bundle = Bundles[command.BundleType];
-
-            return await _tokenAccountService.DepositAsync(userId, customerId, bundle, cancellationToken);
+            return await _tokenAccountService.DepositAsync(_cashierHttpContext.UserId, Bundles[command.BundleType], _cashierHttpContext.StripeCustomerId, cancellationToken);
         }
     }
 }

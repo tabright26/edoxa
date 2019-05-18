@@ -14,7 +14,8 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Api.Controllers;
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Tests.Factories;
-using eDoxa.Functional;
+using eDoxa.Commands.Result;
+using eDoxa.Seedwork.Domain.Validations;
 using eDoxa.Testing.MSTest;
 
 using FluentAssertions;
@@ -58,7 +59,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             var address = FakeStripeFactory.CreateAddress();
 
             _mockMediator.Setup(mock => mock.Send(It.IsAny<VerifyAccountCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Success.Empty)
+                .ReturnsAsync(CommandResult.Succeeded)
                 .Verifiable();
 
             var controller = new StripeAccountController(_mockMediator.Object);
@@ -80,7 +81,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             var address = FakeStripeFactory.CreateAddress();
 
             _mockMediator.Setup(mock => mock.Send(It.IsAny<VerifyAccountCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Failure.Empty)
+                .ReturnsAsync(ValidationError.Empty)
                 .Verifiable();
 
             var controller = new StripeAccountController(_mockMediator.Object);

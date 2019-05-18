@@ -1,5 +1,5 @@
-﻿// Filename: RewardTokenTransaction.cs
-// Date Created: 2019-05-09
+﻿// Filename: TokenRewardTransaction.cs
+// Date Created: 2019-05-13
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,9 +10,9 @@
 
 namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
 {
-    public class TokenRewardTransaction : TokenTransaction
+    public sealed class TokenRewardTransaction : TokenTransaction
     {
-        public TokenRewardTransaction(Token amount) : base(amount, new TransactionDescription(""), TransactionType.Reward)
+        public TokenRewardTransaction(Token amount) : base(amount, new TransactionDescription(nameof(TokenRewardTransaction)), TransactionType.Reward)
         {
         }
     }

@@ -1,4 +1,4 @@
-﻿// Filename: AccountType.cs
+﻿// Filename: AccountCurrency.cs
 // Date Created: 2019-05-15
 // 
 // ================================================

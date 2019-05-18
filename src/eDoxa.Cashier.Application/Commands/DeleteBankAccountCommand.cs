@@ -9,11 +9,13 @@
 // this source code package.
 
 using eDoxa.Commands.Abstractions;
+using eDoxa.Commands.Result;
 using eDoxa.Functional;
+using eDoxa.Seedwork.Domain.Validations;
 
 namespace eDoxa.Cashier.Application.Commands
 {
-    public sealed class DeleteBankAccountCommand : Command<Either>
+    public sealed class DeleteBankAccountCommand : Command<Either<ValidationError, CommandResult>>
     {
     }
 }

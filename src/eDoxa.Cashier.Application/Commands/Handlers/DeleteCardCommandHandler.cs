@@ -14,13 +14,15 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Commands.Abstractions.Handlers;
+using eDoxa.Commands.Result;
 using eDoxa.Functional;
+using eDoxa.Seedwork.Domain.Validations;
 
 using JetBrains.Annotations;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
-    internal sealed class DeleteCardCommandHandler : ICommandHandler<DeleteCardCommand, Either>
+    internal sealed class DeleteCardCommandHandler : ICommandHandler<DeleteCardCommand, Either<ValidationError, CommandResult>>
     {
         private readonly ICashierHttpContext _cashierHttpContext;
         private readonly IStripeService _stripeService;
@@ -32,13 +34,11 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         }
 
         [ItemNotNull]
-        public async Task<Either> Handle([NotNull] DeleteCardCommand command, CancellationToken cancellationToken)
+        public async Task<Either<ValidationError, CommandResult>> Handle([NotNull] DeleteCardCommand command, CancellationToken cancellationToken)
         {
-            var customerId = _cashierHttpContext.StripeCustomerId;
+            await _stripeService.DeleteCardAsync(_cashierHttpContext.StripeCustomerId, command.StripeCardId, cancellationToken);
 
-            await _stripeService.DeleteCardAsync(customerId, command.StripeCardId, cancellationToken);
-
-            return new Success("The card has been removed.");
+            return new CommandResult("The card has been removed.");
         }
     }
 }

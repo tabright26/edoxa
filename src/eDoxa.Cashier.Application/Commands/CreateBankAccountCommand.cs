@@ -11,12 +11,14 @@
 using System.Runtime.Serialization;
 
 using eDoxa.Commands.Abstractions;
+using eDoxa.Commands.Result;
 using eDoxa.Functional;
+using eDoxa.Seedwork.Domain.Validations;
 
 namespace eDoxa.Cashier.Application.Commands
 {
     [DataContract]
-    public sealed class CreateBankAccountCommand : Command<Either>
+    public sealed class CreateBankAccountCommand : Command<Either<ValidationError, CommandResult>>
     {
         public CreateBankAccountCommand(string externalAccountTokenId)
         {

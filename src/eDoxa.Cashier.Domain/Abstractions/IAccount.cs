@@ -1,5 +1,5 @@
 ﻿// Filename: IAccount.cs
-// Date Created: 2019-05-09
+// Date Created: 2019-05-13
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,8 +9,6 @@
 // this source code package.
 
 using System;
-
-using eDoxa.Functional;
 
 namespace eDoxa.Cashier.Domain.Abstractions
 {
@@ -26,8 +24,12 @@ namespace eDoxa.Cashier.Domain.Abstractions
 
         TTransaction Deposit(TCurrency amount);
 
-        Option<TTransaction> TryRegister(TCurrency amount);
+        TTransaction Charge(TCurrency amount);
 
-        Option<TTransaction> TryPayout(TCurrency amount);
+        TTransaction Payout(TCurrency amount);
+
+        TTransaction CompleteTransaction(TTransaction transaction);
+
+        TTransaction FailureTransaction(TTransaction transaction, string message);
     }
 }

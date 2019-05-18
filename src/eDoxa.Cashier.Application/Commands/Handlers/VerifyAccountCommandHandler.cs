@@ -14,11 +14,13 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Commands.Abstractions.Handlers;
+using eDoxa.Commands.Result;
 using eDoxa.Functional;
+using eDoxa.Seedwork.Domain.Validations;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
-    internal sealed class VerifyAccountCommandHandler : ICommandHandler<VerifyAccountCommand, Either>
+    internal sealed class VerifyAccountCommandHandler : ICommandHandler<VerifyAccountCommand, Either<ValidationError, CommandResult>>
     {
         private readonly ICashierHttpContext _cashierHttpContext;
         private readonly IStripeService _stripeService;
@@ -29,19 +31,11 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
             _cashierHttpContext = cashierHttpContext;
         }
 
-        public async Task<Either> Handle(VerifyAccountCommand command, CancellationToken cancellationToken)
+        public async Task<Either<ValidationError, CommandResult>> Handle(VerifyAccountCommand command, CancellationToken cancellationToken)
         {
-            var accountId = _cashierHttpContext.StripeAccountId;
+            await _stripeService.VerifyAccountAsync(_cashierHttpContext.StripeAccountId, command.Line1, command.Line2, command.City, command.State, command.PostalCode, cancellationToken);
 
-            if (!command.TermsOfService)
-            {
-                return new Failure("You must agree to the Stripe terms of service to verify the account.");
-            }
-
-            await _stripeService.VerifyAccountAsync(accountId, command.Line1, command.Line2, command.City, command.State, command.PostalCode,
-                cancellationToken);
-
-            return new Success("Stripe account verified.");
+            return new CommandResult("Stripe account verified.");
         }
     }
 }

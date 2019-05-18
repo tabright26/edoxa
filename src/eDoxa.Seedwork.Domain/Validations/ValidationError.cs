@@ -1,4 +1,4 @@
-﻿// Filename: Success.cs
+﻿// Filename: Failure.cs
 // Date Created: 2019-05-16
 // 
 // ================================================
@@ -8,22 +8,22 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-namespace eDoxa.Functional
+namespace eDoxa.Seedwork.Domain.Validations
 {
-    public class Success
+    public sealed class ValidationError
     {
-        public static readonly Success Empty = new Success(string.Empty);
+        public static readonly ValidationError Empty = new ValidationError(string.Empty);
 
-        public Success(string message)
+        private readonly string _message;
+
+        public ValidationError(string message)
         {
-            Message = message;
+            _message = message;
         }
-
-        public string Message { get; }
 
         public override string ToString()
         {
-            return Message;
+            return _message;
         }
     }
 }

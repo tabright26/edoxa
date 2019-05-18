@@ -18,7 +18,9 @@ using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Cashier.Tests.Factories;
+using eDoxa.Commands.Result;
 using eDoxa.Functional;
+using eDoxa.Seedwork.Domain.Validations;
 using eDoxa.Testing.MSTest;
 
 using FluentAssertions;
@@ -104,7 +106,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             var sourceToken = FakeStripeFactory.CreateSourceToken();
 
             _mockMediator.Setup(mock => mock.Send(It.IsAny<CreateCardCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Success.Empty)
+                .ReturnsAsync(CommandResult.Succeeded)
                 .Verifiable();
 
             var controller = new StripeCardsController(_mockCardQueries.Object, _mockMediator.Object);
@@ -125,7 +127,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             var sourceToken = FakeStripeFactory.CreateSourceToken();
 
             _mockMediator.Setup(mock => mock.Send(It.IsAny<CreateCardCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Failure.Empty)
+                .ReturnsAsync(ValidationError.Empty)
                 .Verifiable();
 
             var controller = new StripeCardsController(_mockCardQueries.Object, _mockMediator.Object);
@@ -188,7 +190,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             var cardId = FakeStripeFactory.CreateCardId();
 
             _mockMediator.Setup(mock => mock.Send(It.IsAny<DeleteCardCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Success.Empty)
+                .ReturnsAsync(CommandResult.Succeeded)
                 .Verifiable();
 
             var controller = new StripeCardsController(_mockCardQueries.Object, _mockMediator.Object);
@@ -209,7 +211,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             var cardId = FakeStripeFactory.CreateCardId();
 
             _mockMediator.Setup(mock => mock.Send(It.IsAny<DeleteCardCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Failure.Empty)
+                .ReturnsAsync(ValidationError.Empty)
                 .Verifiable();
 
             var controller = new StripeCardsController(_mockCardQueries.Object, _mockMediator.Object);
@@ -230,7 +232,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             var cardId = FakeStripeFactory.CreateCardId();
 
             _mockMediator.Setup(mediator => mediator.Send(It.IsAny<UpdateCardDefaultCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Success.Empty)
+                .ReturnsAsync(CommandResult.Succeeded)
                 .Verifiable();
 
             var controller = new StripeCardsController(_mockCardQueries.Object, _mockMediator.Object);
@@ -251,7 +253,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             var cardId = FakeStripeFactory.CreateCardId();
 
             _mockMediator.Setup(mediator => mediator.Send(It.IsAny<UpdateCardDefaultCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Failure.Empty)
+                .ReturnsAsync(ValidationError.Empty)
                 .Verifiable();
 
             var controller = new StripeCardsController(_mockCardQueries.Object, _mockMediator.Object);

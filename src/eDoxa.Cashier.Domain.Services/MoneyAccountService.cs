@@ -9,22 +9,17 @@
 // this source code package.
 
 using System;
-using System.Linq;
-using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
-using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate.Specifications;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Functional;
-
-using Stripe;
+using eDoxa.Seedwork.Domain.Validations;
 
 namespace eDoxa.Cashier.Domain.Services
 {
@@ -46,76 +41,83 @@ namespace eDoxa.Cashier.Domain.Services
             await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync();
         }
 
-        public async Task<Either<TransactionStatus>> DepositAsync(StripeCustomerId customerId, UserId userId,  MoneyBundle bundle, CancellationToken cancellationToken = default)
+        public async Task<Either<ValidationError, TransactionStatus>> DepositAsync(
+            UserId userId,
+            MoneyBundle bundle,
+            StripeCustomerId customerId,
+            CancellationToken cancellationToken = default)
         {
             var account = await _moneyAccountRepository.FindUserAccountAsync(userId);
 
-            var moneyTransaction = account.Deposit(bundle.Amount);
+            var result = account.CanDeposit();
+
+            if (result.Failure)
+            {
+                return result.ValidationError;
+            }
+
+            var transaction = account.Deposit(bundle.Amount);
 
             await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
             try
             {
-                await _stripeService.CreateInvoiceAsync(customerId, bundle, moneyTransaction, cancellationToken);
+                await _stripeService.CreateInvoiceAsync(customerId, bundle, transaction, cancellationToken);
 
-                moneyTransaction.Pay();
+                transaction = account.CompleteTransaction(transaction);
 
                 await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+
+                return transaction.Status;
             }
             catch (Exception exception)
             {
-                moneyTransaction.Fail();
+                transaction = account.FailureTransaction(transaction, exception.Message);
 
                 await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
-                ExceptionDispatchInfo.Capture(exception).Throw();
-
-                throw;
+                return new ValidationError(transaction.Failure.ToString());
             }
-
-            return new Either<TransactionStatus>(moneyTransaction.Status);
         }
 
-        public async Task<Either<TransactionStatus>> TryWithdrawalAsync(StripeAccountId accountId, UserId userId, MoneyBundle bundle, CancellationToken cancellationToken = default)
+        public async Task<Either<ValidationError, TransactionStatus>> WithdrawAsync(
+            UserId userId,
+            MoneyBundle bundle,
+            StripeAccountId accountId,
+            CancellationToken cancellationToken = default)
         {
             var account = await _moneyAccountRepository.FindUserAccountAsync(userId);
 
-            if (new InsufficientFundsSpecification(bundle.Amount).IsSatisfiedBy(account))
+            var money = bundle.Amount;
+
+            var result = account.CanWithdraw(money);
+
+            if (result.Failure)
             {
-                return new Failure("Insufficient funds.");
+                return result.ValidationError;
             }
 
-            if (new WeeklyWithdrawalUnavailableSpecification().IsSatisfiedBy(account))
+            var transaction = account.Withdraw(money);
+
+            await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+
+            try
             {
-                return new Failure($"Withdrawal unavailable until {account.LastWithdrawal?.AddDays(7)}");
+                await _stripeService.CreateTransferAsync(accountId, bundle, transaction, cancellationToken);
+
+                transaction = account.CompleteTransaction(transaction);
+
+                await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+
+                return transaction.Status;
             }
-
-            var moneyTransaction = account.TryWithdrawal(bundle.Amount);
-
-            return await moneyTransaction.Select(Selector).DefaultIfEmpty(Task.FromResult<Either<TransactionStatus>>(new Failure("Failed to withdrawal funds."))).Single();
-
-            async Task<Either<TransactionStatus>> Selector(IMoneyTransaction transaction)
+            catch (Exception exception)
             {
-                try
-                {
-                    await _stripeService.CreateTransferAsync(accountId, bundle, transaction, cancellationToken);
+                transaction = account.FailureTransaction(transaction, exception.Message);
 
-                    transaction.Success();
+                await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
-                    await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
-                }
-                catch (StripeException exception)
-                {
-                    transaction.Fail();
-
-                    await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
-
-                    ExceptionDispatchInfo.Capture(exception).Throw();
-
-                    throw;
-                }
-
-                return new Either<TransactionStatus>(transaction.Status);
+                return new ValidationError(transaction.Failure.ToString());
             }
         }
     }

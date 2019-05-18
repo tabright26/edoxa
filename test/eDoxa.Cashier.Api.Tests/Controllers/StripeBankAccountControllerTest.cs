@@ -14,7 +14,8 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Api.Controllers;
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Tests.Factories;
-using eDoxa.Functional;
+using eDoxa.Commands.Result;
+using eDoxa.Seedwork.Domain.Validations;
 using eDoxa.Testing.MSTest;
 
 using FluentAssertions;
@@ -58,7 +59,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             var sourceToken = FakeStripeFactory.CreateSourceToken();
 
             _mockMediator.Setup(mock => mock.Send(It.IsAny<CreateBankAccountCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Success.Empty)
+                .ReturnsAsync(CommandResult.Succeeded)
                 .Verifiable();
 
             var controller = new StripeBankAccountController(_mockMediator.Object);
@@ -79,7 +80,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             var sourceToken = FakeStripeFactory.CreateSourceToken();
 
             _mockMediator.Setup(mock => mock.Send(It.IsAny<CreateBankAccountCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Failure.Empty)
+                .ReturnsAsync(ValidationError.Empty)
                 .Verifiable();
 
             var controller = new StripeBankAccountController(_mockMediator.Object);
@@ -98,7 +99,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         {
             // Arrange
             _mockMediator.Setup(mock => mock.Send(It.IsAny<DeleteBankAccountCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Success.Empty)
+                .ReturnsAsync(CommandResult.Succeeded)
                 .Verifiable();
 
             var controller = new StripeBankAccountController(_mockMediator.Object);
@@ -117,7 +118,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         {
             // Arrange
             _mockMediator.Setup(mock => mock.Send(It.IsAny<DeleteBankAccountCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Failure.Empty)
+                .ReturnsAsync(ValidationError.Empty)
                 .Verifiable();
 
             var controller = new StripeBankAccountController(_mockMediator.Object);

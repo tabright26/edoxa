@@ -1,5 +1,5 @@
-﻿// Filename: WeeklyWithdrawalValidSpecification.cs
-// Date Created: 2019-05-12
+﻿// Filename: WeeklyMoneyWithdrawUnavailableSpecification.cs
+// Date Created: 2019-05-13
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -15,11 +15,11 @@ using eDoxa.Specifications;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate.Specifications
 {
-    public sealed class WeeklyWithdrawalUnavailableSpecification : Specification<MoneyAccount>
+    public sealed class WeeklyMoneyWithdrawUnavailableSpecification : Specification<MoneyAccount>
     {
         public override Expression<Func<MoneyAccount, bool>> ToExpression()
         {
-            return account => account.LastWithdrawal.HasValue && account.LastWithdrawal.Value.AddDays(7) >= DateTime.UtcNow;
+            return account => account.LastWithdraw.HasValue && account.LastWithdraw.Value.AddDays(7) >= DateTime.UtcNow;
         }
     }
 }

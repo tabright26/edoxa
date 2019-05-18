@@ -25,7 +25,7 @@ namespace eDoxa.Functional.Tests
         [TestMethod]
         public void Match_ShouldBeOfTypeBadRequestObjectResult()
         {
-            var either = new Either<ValidationResult, string>(new ValidationResult(new List<ValidationFailure>
+            var either = new Either<FluentValidation.Results.ValidationResult, string>(new FluentValidation.Results.ValidationResult(new List<ValidationFailure>
             {
                 new ValidationFailure("right", "invalid result")
             }));
@@ -38,7 +38,7 @@ namespace eDoxa.Functional.Tests
         [TestMethod]
         public void Match_ShouldBeOfTypeOkObjectResult()
         {
-            var either = new Either<ValidationResult, string>("Valid right result.");
+            var either = new Either<FluentValidation.Results.ValidationResult, string>("Valid right result.");
 
             var result = either.Match<IActionResult>(
                 validationResult => new BadRequestObjectResult(validationResult),

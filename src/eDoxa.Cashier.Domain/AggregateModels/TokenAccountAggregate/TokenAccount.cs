@@ -13,11 +13,10 @@ using System.Collections.Generic;
 using System.Linq;
 
 using eDoxa.Cashier.Domain.Abstractions;
-using eDoxa.Functional;
+using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate.Specifications;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
-
-using Serilog;
+using eDoxa.Seedwork.Domain.Validations;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
 {
@@ -41,7 +40,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
 
         public Token Balance =>
             new Token(Transactions
-                .Where(transaction => transaction.Status.Equals(TransactionStatus.Paid))
+                .Where(transaction => transaction.Status.Equals(TransactionStatus.Completed))
                 .Sum(transaction => transaction.Amount));
 
         public Token Pending =>
@@ -55,66 +54,91 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
 
         public ITokenTransaction Deposit(Token amount)
         {
+            if (!this.CanDeposit())
+            {
+                throw new InvalidOperationException();
+            }
+            
             var transaction = new TokenDepositTransaction(amount);
 
-            if (_transactions.Add(transaction))
+            _transactions.Add(transaction);
+
+            return transaction;
+        }
+
+        public ValidationResult CanDeposit()
+        {
+            var result = new ValidationResult();
+
+            if (new DailyTokenDepositUnavailableSpecification().IsSatisfiedBy(this))
             {
-                this.Deposit();
+                result.AddError($"Deposit unavailable until {LastDeposit?.AddDays(1)}");
+            }
+
+            return result;
+        }
+
+        public ITokenTransaction Reward(Token amount)
+        {
+            var transaction = new TokenRewardTransaction(amount);
+
+            _transactions.Add(transaction);
+
+            return transaction;
+        }
+
+        public ITokenTransaction Charge(Token amount)
+        {
+            if (!this.CanCharge(amount))
+            {
+                throw new InvalidOperationException();
+            }
+
+            var transaction = new TokenChargeTransaction(amount);
+
+            _transactions.Add(transaction);
+
+            return transaction;
+        }
+
+        public ValidationResult CanCharge(Token token)
+        {
+            var result = new ValidationResult();
+
+            if (new InsufficientTokenSpecification(token).IsSatisfiedBy(this))
+            {
+                result.AddError("Insufficient tokens.");
+            }
+
+            return result;
+        }
+
+        public ITokenTransaction Payout(Token amount)
+        {
+            var transaction = new TokenPayoutTransaction(amount);
+
+            _transactions.Add(transaction);
+
+            return transaction;
+        }
+
+        public ITokenTransaction CompleteTransaction(ITokenTransaction transaction)
+        {
+            transaction.Complete();
+
+            if (transaction.Type.Equals(TransactionType.Deposit))
+            {
+                _lastDeposit = DateTime.UtcNow;
             }
 
             return transaction;
         }
 
-        public Option<ITokenTransaction> TryRegister(Token amount)
+        public ITokenTransaction FailureTransaction(ITokenTransaction transaction, string message)
         {
-            if (Balance < amount)
-            {
-                return new Option<ITokenTransaction>();
-            }
+            transaction.Fail(message);
 
-            var transaction = new TokenServiceTransaction(amount);
-
-            if (!_transactions.Add(transaction))
-            {
-                return new Option<ITokenTransaction>();
-            }
-
-            Log.Information(transaction.ToString());
-
-            return new Option<ITokenTransaction>(transaction);
-        }
-
-        public Option<ITokenTransaction> TryPayout(Token amount)
-        {
-            var transaction = new TokenPrizeTransaction(amount);
-
-            if (!_transactions.Add(transaction))
-            {
-                return new Option<ITokenTransaction>();
-            }
-
-            Log.Information(transaction.ToString());
-
-            return new Option<ITokenTransaction>(transaction);
-        }
-
-        public Option<ITokenTransaction> TryReward(Token amount)
-        {
-            var transaction = new TokenRewardTransaction(amount);
-
-            if (!_transactions.Add(transaction))
-            {
-                return new Option<ITokenTransaction>();
-            }
-
-            Log.Information(transaction.ToString());
-
-            return new Option<ITokenTransaction>(transaction);
-        }
-
-        private void Deposit()
-        {
-            _lastDeposit = DateTime.UtcNow;
+            return transaction;
         }
     }
 }

@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Runtime.ExceptionServices;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,8 +19,7 @@ using eDoxa.Cashier.Domain.Services.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Functional;
-
-using Stripe;
+using eDoxa.Seedwork.Domain.Validations;
 
 namespace eDoxa.Cashier.Domain.Services
 {
@@ -42,13 +41,20 @@ namespace eDoxa.Cashier.Domain.Services
             await _tokenAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync();
         }
 
-        public async Task<Either<TransactionStatus>> DepositAsync(
+        public async Task<Either<ValidationError, TransactionStatus>> DepositAsync(
             UserId userId,
-            StripeCustomerId customerId,
             TokenBundle bundle,
+            StripeCustomerId customerId,
             CancellationToken cancellationToken = default)
         {
             var account = await _tokenAccountRepository.FindUserAccountAsync(userId);
+
+            var result = account.CanDeposit();
+
+            if (result.Failure)
+            {
+                return result.ValidationError;
+            }
 
             var transaction = account.Deposit(bundle.Amount);
 
@@ -58,22 +64,20 @@ namespace eDoxa.Cashier.Domain.Services
             {
                 await _stripeService.CreateInvoiceAsync(customerId, bundle, transaction, cancellationToken);
 
-                transaction.Pay();
+                transaction = account.CompleteTransaction(transaction);
 
                 await _tokenAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+
+                return transaction.Status;
             }
-            catch (StripeException exception)
+            catch (Exception exception)
             {
-                transaction.Fail();
+                transaction = account.FailureTransaction(transaction, exception.Message);
 
                 await _tokenAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
-                ExceptionDispatchInfo.Capture(exception).Throw();
-
-                throw;
+                return new ValidationError(transaction.Failure.ToString());
             }
-
-            return transaction.Status;
         }
     }
 }

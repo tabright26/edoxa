@@ -15,7 +15,7 @@ using eDoxa.Cashier.Api.Controllers;
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Domain;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
-using eDoxa.Functional;
+using eDoxa.Seedwork.Domain.Validations;
 using eDoxa.Testing.MSTest;
 
 using FluentAssertions;
@@ -56,7 +56,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         {
             // Arrange
             _mockMediator.Setup(mediator => mediator.Send(It.IsAny<DepositMoneyCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(TransactionStatus.Paid)
+                .ReturnsAsync(TransactionStatus.Completed)
                 .Verifiable();
 
             var controller = new AccountMoneyController(_mockMediator.Object);
@@ -75,7 +75,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         {
             // Arrange
             _mockMediator.Setup(mediator => mediator.Send(It.IsAny<DepositMoneyCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Failure.Empty)
+                .ReturnsAsync(ValidationError.Empty)
                 .Verifiable();
 
             var controller = new AccountMoneyController(_mockMediator.Object);
@@ -94,13 +94,13 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         {
             // Arrange
             _mockMediator.Setup(mediator => mediator.Send(It.IsAny<WithdrawMoneyCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(TransactionStatus.Succeeded)
+                .ReturnsAsync(TransactionStatus.Completed)
                 .Verifiable();
 
             var controller = new AccountMoneyController(_mockMediator.Object);
 
             // Act
-            var result = await controller.WithdrawMoneyAsync(new WithdrawMoneyCommand(MoneyWithdrawalBundleType.Fifty));
+            var result = await controller.WithdrawMoneyAsync(new WithdrawMoneyCommand(MoneyWithdrawBundleType.Fifty));
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -113,13 +113,13 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         {
             // Arrange
             _mockMediator.Setup(mediator => mediator.Send(It.IsAny<WithdrawMoneyCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Failure.Empty)
+                .ReturnsAsync(ValidationError.Empty)
                 .Verifiable();
 
             var controller = new AccountMoneyController(_mockMediator.Object);
 
             // Act
-            var result = await controller.WithdrawMoneyAsync(new WithdrawMoneyCommand(MoneyWithdrawalBundleType.Fifty));
+            var result = await controller.WithdrawMoneyAsync(new WithdrawMoneyCommand(MoneyWithdrawBundleType.Fifty));
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();

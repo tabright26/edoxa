@@ -19,7 +19,9 @@ using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Cashier.Tests.Extensions;
 using eDoxa.Cashier.Tests.Factories;
 using eDoxa.Commands.Extensions;
+using eDoxa.Commands.Result;
 using eDoxa.Functional;
+using eDoxa.Seedwork.Domain.Validations;
 using eDoxa.ServiceBus;
 using eDoxa.Testing.MSTest;
 
@@ -69,7 +71,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             var result = await handler.HandleAsync(new CreateBankAccountCommand(sourceToken));
 
             // Assert
-            result.Should().BeOfType<Either>();
+            result.Should().BeOfType<Either<ValidationError, CommandResult>>();
 
             _mockStripeService.Verify(mock => mock.CreateBankAccountAsync(It.IsAny<StripeAccountId>(), It.IsAny<string>(), It.IsAny<CancellationToken>()),
                 Times.Once);

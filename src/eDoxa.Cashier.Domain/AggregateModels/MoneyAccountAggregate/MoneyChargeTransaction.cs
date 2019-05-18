@@ -1,5 +1,5 @@
-﻿// Filename: PrizeMoneyTransaction.cs
-// Date Created: 2019-05-09
+﻿// Filename: MoneyChargeTransaction.cs
+// Date Created: 2019-05-13
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,9 +10,9 @@
 
 namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
 {
-    public class MoneyPrizeTransaction : MoneyTransaction
+    public sealed class MoneyChargeTransaction : MoneyTransaction
     {
-        public MoneyPrizeTransaction(Money amount) : base(amount, new TransactionDescription(""), TransactionType.Prize)
+        public MoneyChargeTransaction(Money amount) : base(amount, new TransactionDescription(nameof(MoneyChargeTransaction)), TransactionType.Charge)
         {
         }
     }

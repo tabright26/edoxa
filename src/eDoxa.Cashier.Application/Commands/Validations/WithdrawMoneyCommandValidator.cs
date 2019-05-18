@@ -17,7 +17,7 @@ namespace eDoxa.Cashier.Application.Commands.Validations
 {
     internal sealed class WithdrawMoneyCommandValidator : CommandValidator<WithdrawMoneyCommand>
     {
-        private static readonly MoneyWithdrawalBundles Bundles = new MoneyWithdrawalBundles();
+        private static readonly MoneyWithdrawBundles Bundles = new MoneyWithdrawBundles();
 
         public WithdrawMoneyCommandValidator()
         {

@@ -15,6 +15,7 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Functional;
+using eDoxa.Seedwork.Domain.Validations;
 
 namespace eDoxa.Cashier.Domain.Services.Abstractions
 {
@@ -22,8 +23,16 @@ namespace eDoxa.Cashier.Domain.Services.Abstractions
     {
         Task CreateAccount(UserId userId);
 
-        Task<Either<TransactionStatus>> DepositAsync(StripeCustomerId customerId, UserId userId, MoneyBundle bundle, CancellationToken cancellationToken = default);
+        Task<Either<ValidationError, TransactionStatus>> DepositAsync(
+            UserId userId,
+            MoneyBundle bundle,
+            StripeCustomerId customerId,
+            CancellationToken cancellationToken = default);
 
-        Task<Either<TransactionStatus>> TryWithdrawalAsync(StripeAccountId accountId, UserId userId, MoneyBundle bundle, CancellationToken cancellationToken = default);
+        Task<Either<ValidationError, TransactionStatus>> WithdrawAsync(
+            UserId userId,
+            MoneyBundle bundle,
+            StripeAccountId accountId,
+            CancellationToken cancellationToken = default);
     }
 }

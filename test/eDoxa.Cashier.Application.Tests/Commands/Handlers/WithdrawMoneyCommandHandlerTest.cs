@@ -22,6 +22,7 @@ using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Cashier.Tests.Extensions;
 using eDoxa.Commands.Extensions;
 using eDoxa.Functional;
+using eDoxa.Seedwork.Domain.Validations;
 using eDoxa.Testing.MSTest;
 
 using FluentAssertions;
@@ -58,11 +59,11 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         public async Task HandleAsync_WithdrawMoneyCommand_ShouldBeOfTypeEither()
         {
             // Arrange
-            var command = new WithdrawMoneyCommand(MoneyWithdrawalBundleType.Fifty);
+            var command = new WithdrawMoneyCommand(MoneyWithdrawBundleType.Fifty);
 
             _mockMoneyAccountService.Setup(mock =>
-                    mock.TryWithdrawalAsync(It.IsAny<StripeAccountId>(), It.IsAny<UserId>(), It.IsAny<MoneyBundle>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(TransactionStatus.Succeeded)
+                    mock.WithdrawAsync(It.IsAny<UserId>(), It.IsAny<MoneyBundle>(), It.IsAny<StripeAccountId>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(TransactionStatus.Completed)
                 .Verifiable();
 
             var handler = new WithdrawMoneyCommandHandler(_mockCashierHttpContext.Object, _mockMoneyAccountService.Object);
@@ -71,10 +72,10 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             var result = await handler.HandleAsync(command);
 
             // Assert
-            result.Should().BeOfType<Either<TransactionStatus>>();
+            result.Should().BeOfType<Either<ValidationError, TransactionStatus>>();
 
             _mockMoneyAccountService.Verify(
-                mock => mock.TryWithdrawalAsync(It.IsAny<StripeAccountId>(), It.IsAny<UserId>(), It.IsAny<MoneyBundle>(), It.IsAny<CancellationToken>()),
+                mock => mock.WithdrawAsync(It.IsAny<UserId>(), It.IsAny<MoneyBundle>(), It.IsAny<StripeAccountId>(), It.IsAny<CancellationToken>()),
                 Times.Once);
         }
     }

@@ -1,5 +1,5 @@
-﻿// Filename: WithdrawalMoneyTransaction.cs
-// Date Created: 2019-05-09
+﻿// Filename: MoneyPayoutTransaction.cs
+// Date Created: 2019-05-13
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,9 +10,9 @@
 
 namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
 {
-    public class MoneyWithdrawalTransaction : MoneyTransaction
+    public sealed class MoneyPayoutTransaction : MoneyTransaction
     {
-        public MoneyWithdrawalTransaction(Money amount) : base(-amount, new TransactionDescription($"Money withdrawal ({amount})"), TransactionType.Withdrawal)
+        public MoneyPayoutTransaction(Money amount) : base(amount, new TransactionDescription(nameof(MoneyPayoutTransaction)), TransactionType.Payout)
         {
         }
     }

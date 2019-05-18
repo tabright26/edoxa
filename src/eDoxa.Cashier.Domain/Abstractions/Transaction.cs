@@ -1,5 +1,5 @@
 ﻿// Filename: Transaction.cs
-// Date Created: 2019-05-09
+// Date Created: 2019-05-13
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -20,7 +20,7 @@ namespace eDoxa.Cashier.Domain.Abstractions
     {
         private TCurrency _amount;
         private TransactionDescription _description;
-        private string _serviceId;
+        private TransactionFailure _failure;
         private TransactionStatus _status;
         private DateTime _timestamp;
         private TransactionType _type;
@@ -30,13 +30,13 @@ namespace eDoxa.Cashier.Domain.Abstractions
             _amount = amount;
             _description = description;
             _type = type;
-            _serviceId = null;
         }
 
         private Transaction()
         {
             _timestamp = DateTime.UtcNow;
             _status = TransactionStatus.Pending;
+            _failure = null;
         }
 
         public DateTime Timestamp => _timestamp;
@@ -45,30 +45,22 @@ namespace eDoxa.Cashier.Domain.Abstractions
 
         public TransactionDescription Description => _description;
 
+        public TransactionFailure Failure => _failure;
+
         public TransactionType Type => _type;
 
         public TransactionStatus Status => _status;
 
-        public string ServiceId => _serviceId;
-
-        public void Pay()
+        public void Complete()
         {
-            _status = TransactionStatus.Paid;
+            _status = TransactionStatus.Completed;
         }
 
-        public void Cancel()
-        {
-            _status = TransactionStatus.Canceled;
-        }
-
-        public void Fail()
+        public void Fail(string message)
         {
             _status = TransactionStatus.Failed;
-        }
 
-        public void Success()
-        {
-            _status = TransactionStatus.Succeeded;
+            _failure = new TransactionFailure(message);
         }
     }
 }

@@ -46,7 +46,9 @@ namespace eDoxa.Cashier.Security
 
         private string TryGetClaim(string claimType)
         {
-            return _httpContext.User.Claims.SingleOrDefault(claim => claim.Type == claimType)?.Value;
+            var t = _httpContext.User.Claims.SingleOrDefault(claim => claim.Type == claimType)?.Value;
+
+            return t;
         }
     }
 }

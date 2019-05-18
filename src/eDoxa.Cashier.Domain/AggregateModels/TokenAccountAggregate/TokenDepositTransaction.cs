@@ -1,5 +1,5 @@
-﻿// Filename: DepositTokenTransaction.cs
-// Date Created: 2019-05-09
+﻿// Filename: TokenDepositTransaction.cs
+// Date Created: 2019-05-13
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,7 +12,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
 {
     public sealed class TokenDepositTransaction : TokenTransaction
     {
-        public TokenDepositTransaction(Token amount) : base(amount, new TransactionDescription($"Token deposit ({amount})"), TransactionType.Deposit)
+        public TokenDepositTransaction(Token amount) : base(amount, new TransactionDescription(nameof(TokenDepositTransaction)), TransactionType.Deposit)
         {
         }
     }

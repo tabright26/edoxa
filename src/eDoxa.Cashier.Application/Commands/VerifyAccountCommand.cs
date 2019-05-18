@@ -11,12 +11,14 @@
 using System.Runtime.Serialization;
 
 using eDoxa.Commands.Abstractions;
+using eDoxa.Commands.Result;
 using eDoxa.Functional;
+using eDoxa.Seedwork.Domain.Validations;
 
 namespace eDoxa.Cashier.Application.Commands
 {
     [DataContract]
-    public sealed class VerifyAccountCommand : Command<Either>
+    public sealed class VerifyAccountCommand : Command<Either<ValidationError, CommandResult>>
     {
         public VerifyAccountCommand(string line1, string line2, string city, string state, string postalCode, bool termsOfService)
         {

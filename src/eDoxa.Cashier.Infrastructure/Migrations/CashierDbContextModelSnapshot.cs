@@ -24,7 +24,7 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
 
                     b.Property<DateTime?>("LastDeposit");
 
-                    b.Property<DateTime?>("LastWithdrawal");
+                    b.Property<DateTime?>("LastWithdraw");
 
                     b.Property<Guid>("UserId");
 
@@ -44,7 +44,7 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .IsRequired();
 
-                    b.Property<string>("ServiceId");
+                    b.Property<string>("Failure");
 
                     b.Property<int>("Status");
 
@@ -83,7 +83,7 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .IsRequired();
 
-                    b.Property<string>("ServiceId");
+                    b.Property<string>("Failure");
 
                     b.Property<int>("Status");
 

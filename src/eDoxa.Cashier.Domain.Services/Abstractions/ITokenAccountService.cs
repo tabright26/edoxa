@@ -15,17 +15,18 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Functional;
+using eDoxa.Seedwork.Domain.Validations;
 
 namespace eDoxa.Cashier.Domain.Services.Abstractions
 {
     public interface ITokenAccountService
     {
-        Task<Either<TransactionStatus>> DepositAsync(
-            UserId userId,
-            StripeCustomerId customerId,
-            TokenBundle bundle,
-            CancellationToken cancellationToken = default);
-
         Task CreateAccount(UserId userId);
+
+        Task<Either<ValidationError, TransactionStatus>> DepositAsync(
+            UserId userId,
+            TokenBundle bundle,
+            StripeCustomerId customerId,
+            CancellationToken cancellationToken = default);
     }
 }

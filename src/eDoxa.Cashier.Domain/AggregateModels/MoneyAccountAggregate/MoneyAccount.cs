@@ -14,17 +14,16 @@ using System.Linq;
 
 using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate.Specifications;
-using eDoxa.Functional;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Specifications.Factories;
+using eDoxa.Seedwork.Domain.Validations;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
 {
     public class MoneyAccount : Entity<AccountId>, IMoneyAccount, IAggregateRoot
     {
         private DateTime? _lastDeposit;
-        private DateTime? _lastWithdrawal;
+        private DateTime? _lastWithdraw;
         private HashSet<MoneyTransaction> _transactions;
         private UserId _userId;
 
@@ -36,7 +35,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
         private MoneyAccount()
         {
             _lastDeposit = null;
-            _lastWithdrawal = null;
+            _lastWithdraw = null;
             _transactions = new HashSet<MoneyTransaction>();
         }
 
@@ -44,8 +43,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
 
         public Money Balance =>
             new Money(Transactions
-                .Where(transaction => transaction.Status.Equals(TransactionStatus.Paid) ||
-                                      transaction.Status.Equals(TransactionStatus.Succeeded))
+                .Where(transaction => transaction.Status.Equals(TransactionStatus.Completed))
                 .Sum(transaction => transaction.Amount));
 
         public Money Pending =>
@@ -55,75 +53,124 @@ namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
 
         public DateTime? LastDeposit => _lastDeposit;
 
-        public DateTime? LastWithdrawal => _lastWithdrawal;
+        public DateTime? LastWithdraw => _lastWithdraw;
 
         public IReadOnlyCollection<MoneyTransaction> Transactions => _transactions;
 
         public IMoneyTransaction Deposit(Money amount)
         {
+            if (!this.CanDeposit())
+            {
+                throw new InvalidOperationException();
+            }
+
             var transaction = new MoneyDepositTransaction(amount);
 
-            if (_transactions.Add(transaction))
+            _transactions.Add(transaction);
+
+            return transaction;
+        }
+
+        public ValidationResult CanDeposit()
+        {
+            var result = new ValidationResult();
+
+            if (new DailyMoneyDepositUnavailableSpecification().IsSatisfiedBy(this))
             {
-                this.Deposit();
+                result.AddError($"Deposit unavailable until {LastDeposit?.AddDays(1)}");
+            }
+
+            return result;
+        }
+
+        public IMoneyTransaction Charge(Money amount)
+        {
+            if (!this.CanCharge(amount))
+            {
+                throw new InvalidOperationException();
+            }
+
+            var transaction = new MoneyChargeTransaction(-amount);
+
+            _transactions.Add(transaction);
+
+            return transaction;
+        }
+
+        public ValidationResult CanCharge(Money money)
+        {
+            var result = new ValidationResult();
+
+            if (new InsufficientMoneySpecification(money).IsSatisfiedBy(this))
+            {
+                result.AddError("Insufficient funds.");
+            }
+
+            return result;
+        }
+
+        public IMoneyTransaction Payout(Money amount)
+        {
+            var transaction = new MoneyPayoutTransaction(amount);
+
+            _transactions.Add(transaction);
+
+            return transaction;
+        }
+
+        public IMoneyTransaction Withdraw(Money amount)
+        {
+            if (!this.CanWithdraw(amount))
+            {
+                throw new InvalidOperationException();
+            }
+
+            var transaction = new MoneyWithdrawTransaction(amount);
+
+            _transactions.Add(transaction);
+
+            return transaction;
+        }
+
+        public ValidationResult CanWithdraw(Money money)
+        {
+            var result = new ValidationResult();
+
+            if (new InsufficientMoneySpecification(money).IsSatisfiedBy(this))
+            {
+                result.AddError("Insufficient funds.");
+            }
+
+            if (new WeeklyMoneyWithdrawUnavailableSpecification().IsSatisfiedBy(this))
+            {
+                result.AddError($"Withdrawal unavailable until {LastWithdraw?.AddDays(7)}");
+            }
+
+            return result;
+        }
+
+        public IMoneyTransaction CompleteTransaction(IMoneyTransaction transaction)
+        {
+            transaction.Complete();
+
+            if (transaction.Type.Equals(TransactionType.Deposit))
+            {
+                _lastDeposit = DateTime.UtcNow;
+            }
+
+            if (transaction.Type.Equals(TransactionType.Withdraw))
+            {
+                _lastWithdraw = DateTime.UtcNow;
             }
 
             return transaction;
         }
 
-        public Option<IMoneyTransaction> TryWithdrawal(Money amount)
+        public IMoneyTransaction FailureTransaction(IMoneyTransaction transaction, string message)
         {
-            if (!this.CanWithdrawal(amount))
-            {
-                return new Option<IMoneyTransaction>();
-            }
+            transaction.Fail(message);
 
-            var transaction = new MoneyWithdrawalTransaction(amount);
-
-            if (_transactions.Add(transaction))
-            {
-                this.Withdrawal();
-            }
-
-            return new Option<IMoneyTransaction>(transaction);
-        }
-
-        public Option<IMoneyTransaction> TryRegister(Money amount)
-        {
-            if (Balance < amount)
-            {
-                return new Option<IMoneyTransaction>();
-            }
-
-            var transaction = new MoneyServiceTransaction(-amount);
-
-            return _transactions.Add(transaction) ? new Option<IMoneyTransaction>(transaction) : new Option<IMoneyTransaction>();
-        }
-
-        public Option<IMoneyTransaction> TryPayout(Money amount)
-        {
-            var transaction = new MoneyPrizeTransaction(amount);
-
-            return _transactions.Add(transaction) ? new Option<IMoneyTransaction>(transaction) : new Option<IMoneyTransaction>();
-        }
-
-        private void Deposit()
-        {
-            _lastDeposit = DateTime.UtcNow;
-        }
-
-        private void Withdrawal()
-        {
-            _lastWithdrawal = DateTime.UtcNow;
-        }
-
-        private bool CanWithdrawal(Money money)
-        {
-            var specification = SpecificationFactory.Instance.CreateSpecification<MoneyAccount>()
-                .And(new InsufficientFundsSpecification(money).Not())
-                .And(new WeeklyWithdrawalUnavailableSpecification().Not());
-
-            return specification.IsSatisfiedBy(this);
+            return transaction;
         }
     }
 }

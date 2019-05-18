@@ -14,17 +14,18 @@ using eDoxa.Cashier.Domain;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Commands.Abstractions;
 using eDoxa.Functional;
+using eDoxa.Seedwork.Domain.Validations;
 
 namespace eDoxa.Cashier.Application.Commands
 {
     [DataContract]
-    public sealed class WithdrawMoneyCommand : Command<Either<TransactionStatus>>
+    public sealed class WithdrawMoneyCommand : Command<Either<ValidationError, TransactionStatus>>
     {
-        public WithdrawMoneyCommand(MoneyWithdrawalBundleType bundleType)
+        public WithdrawMoneyCommand(MoneyWithdrawBundleType bundleType)
         {
             BundleType = bundleType;
         }
 
-        [DataMember(Name = "bundleType")] public MoneyWithdrawalBundleType BundleType { get; private set; }
+        [DataMember(Name = "bundleType")] public MoneyWithdrawBundleType BundleType { get; private set; }
     }
 }

@@ -12,48 +12,6 @@ using System;
 
 namespace eDoxa.Functional
 {
-    public class Either : Either<Failure, Success>
-    {
-        public Either(Failure left) : base(left)
-        {
-        }
-
-        public Either(Success right) : base(right)
-        {
-        }
-
-        public static implicit operator Either(Failure left)
-        {
-            return new Either(left);
-        }
-
-        public static implicit operator Either(Success right)
-        {
-            return new Either(right);
-        }
-    }
-
-    public class Either<TRight> : Either<Failure, TRight>
-    {
-        public Either(Failure left) : base(left)
-        {
-        }
-
-        public Either(TRight right) : base(right)
-        {
-        }
-
-        public static implicit operator Either<TRight>(Failure left)
-        {
-            return new Either<TRight>(left);
-        }
-
-        public static implicit operator Either<TRight>(TRight right)
-        {
-            return new Either<TRight>(right);
-        }
-    }
-
     public class Either<TLeft, TRight>
     {
         private readonly bool _isLeft;

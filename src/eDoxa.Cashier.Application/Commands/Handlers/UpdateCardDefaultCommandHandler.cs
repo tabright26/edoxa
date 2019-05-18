@@ -14,13 +14,15 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Commands.Abstractions.Handlers;
+using eDoxa.Commands.Result;
 using eDoxa.Functional;
+using eDoxa.Seedwork.Domain.Validations;
 
 using JetBrains.Annotations;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
-    internal sealed class UpdateCardDefaultCommandHandler : ICommandHandler<UpdateCardDefaultCommand, Either>
+    internal sealed class UpdateCardDefaultCommandHandler : ICommandHandler<UpdateCardDefaultCommand, Either<ValidationError, CommandResult>>
     {
         private readonly ICashierHttpContext _cashierHttpContext;
         private readonly IStripeService _stripeService;
@@ -32,13 +34,11 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         }
 
         [ItemCanBeNull]
-        public async Task<Either> Handle([NotNull] UpdateCardDefaultCommand command, CancellationToken cancellationToken)
+        public async Task<Either<ValidationError, CommandResult>> Handle([NotNull] UpdateCardDefaultCommand command, CancellationToken cancellationToken)
         {
-            var customerId = _cashierHttpContext.StripeCustomerId;
+            await _stripeService.UpdateCardDefaultAsync(_cashierHttpContext.StripeCustomerId, command.StripeCardId, cancellationToken);
 
-            await _stripeService.UpdateCardDefaultAsync(customerId, command.StripeCardId, cancellationToken);
-
-            return new Success("The card has been updated as default.");
+            return new CommandResult("The card has been updated as default.");
         }
     }
 }

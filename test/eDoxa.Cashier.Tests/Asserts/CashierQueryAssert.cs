@@ -46,7 +46,7 @@ namespace eDoxa.Cashier.Tests.Asserts
 
             transaction.Amount.Should().BeGreaterOrEqualTo(decimal.Zero);
 
-            transaction.Type.Should().BeInRange(TransactionType.Deposit, TransactionType.Service);
+            transaction.Type.Should().BeInRange(TransactionType.Deposit, TransactionType.Charge);
 
             transaction.Currency.Should().BeInRange(AccountCurrency.Money, AccountCurrency.Token);
 

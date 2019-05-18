@@ -1,5 +1,5 @@
-﻿// Filename: InsufficientFundsSpecification.cs
-// Date Created: 2019-05-12
+﻿// Filename: DailyMoneyDepositUnavailableSpecification.cs
+// Date Created: 2019-05-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -15,18 +15,11 @@ using eDoxa.Specifications;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate.Specifications
 {
-    public sealed class InsufficientFundsSpecification : Specification<MoneyAccount>
+    public sealed class DailyMoneyDepositUnavailableSpecification : Specification<MoneyAccount>
     {
-        private readonly Money _money;
-
-        public InsufficientFundsSpecification(Money money)
-        {
-            _money = money;
-        }
-
         public override Expression<Func<MoneyAccount, bool>> ToExpression()
         {
-            return account => account.Balance < _money;
+            return account => account.LastDeposit.HasValue && account.LastDeposit.Value.AddDays(1) >= DateTime.UtcNow;
         }
     }
 }

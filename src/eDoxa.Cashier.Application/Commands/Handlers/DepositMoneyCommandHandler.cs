@@ -17,12 +17,13 @@ using eDoxa.Cashier.Domain.Services.Abstractions;
 using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Functional;
+using eDoxa.Seedwork.Domain.Validations;
 
 using JetBrains.Annotations;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
-    internal sealed class DepositMoneyCommandHandler : ICommandHandler<DepositMoneyCommand, Either<TransactionStatus>>
+    internal sealed class DepositMoneyCommandHandler : ICommandHandler<DepositMoneyCommand, Either<ValidationError, TransactionStatus>>
     {
         private static readonly MoneyDepositBundles Bundles = new MoneyDepositBundles();
         private readonly ICashierHttpContext _cashierHttpContext;
@@ -35,15 +36,9 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         }
 
         [ItemNotNull]
-        public async Task<Either<TransactionStatus>> Handle([NotNull] DepositMoneyCommand command, CancellationToken cancellationToken)
+        public async Task<Either<ValidationError, TransactionStatus>> Handle([NotNull] DepositMoneyCommand command, CancellationToken cancellationToken)
         {
-            var userId = _cashierHttpContext.UserId;
-
-            var customerId = _cashierHttpContext.StripeCustomerId;
-
-            var bundle = Bundles[command.BundleType];
-
-            return await _moneyAccountService.DepositAsync(customerId, userId, bundle, cancellationToken);
+            return await _moneyAccountService.DepositAsync(_cashierHttpContext.UserId, Bundles[command.BundleType], _cashierHttpContext.StripeCustomerId, cancellationToken);
         }
     }
 }

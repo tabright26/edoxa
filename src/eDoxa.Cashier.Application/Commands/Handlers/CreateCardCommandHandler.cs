@@ -14,13 +14,15 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Commands.Abstractions.Handlers;
+using eDoxa.Commands.Result;
 using eDoxa.Functional;
+using eDoxa.Seedwork.Domain.Validations;
 
 using JetBrains.Annotations;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
-    internal sealed class CreateCardCommandHandler : ICommandHandler<CreateCardCommand, Either>
+    internal sealed class CreateCardCommandHandler : ICommandHandler<CreateCardCommand, Either<ValidationError, CommandResult>>
     {
         private readonly ICashierHttpContext _cashierHttpContext;
         private readonly IStripeService _stripeService;
@@ -32,13 +34,11 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         }
 
         [ItemNotNull]
-        public async Task<Either> Handle([NotNull] CreateCardCommand command, CancellationToken cancellationToken)
+        public async Task<Either<ValidationError, CommandResult>> Handle([NotNull] CreateCardCommand command, CancellationToken cancellationToken)
         {
-            var customerId = _cashierHttpContext.StripeCustomerId;
+            await _stripeService.CreateCardAsync(_cashierHttpContext.StripeCustomerId, command.SourceToken, cancellationToken);
 
-            await _stripeService.CreateCardAsync(customerId, command.SourceToken, cancellationToken);
-
-            return new Success("The card has been added.");
+            return new CommandResult("The card has been added.");
         }
     }
 }

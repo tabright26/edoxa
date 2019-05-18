@@ -1,5 +1,5 @@
 ﻿// Filename: IMoneyAccount.cs
-// Date Created: 2019-05-09
+// Date Created: 2019-05-13
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,17 +13,16 @@ using System.Collections.Generic;
 
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
-using eDoxa.Functional;
 using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Cashier.Domain.Abstractions
 {
     public interface IMoneyAccount : IAccount<Money, IMoneyTransaction>, IEntity<AccountId>
     {
-        DateTime? LastWithdrawal { get; }
+        DateTime? LastWithdraw { get; }
 
         IReadOnlyCollection<MoneyTransaction> Transactions { get; }
 
-        Option<IMoneyTransaction> TryWithdrawal(Money amount);
+        IMoneyTransaction Withdraw(Money amount);
     }
 }

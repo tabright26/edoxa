@@ -17,14 +17,15 @@ using eDoxa.Cashier.Domain.Services.Abstractions;
 using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Functional;
+using eDoxa.Seedwork.Domain.Validations;
 
 using JetBrains.Annotations;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
-    internal sealed class WithdrawMoneyCommandHandler : ICommandHandler<WithdrawMoneyCommand, Either<TransactionStatus>>
+    internal sealed class WithdrawMoneyCommandHandler : ICommandHandler<WithdrawMoneyCommand, Either<ValidationError, TransactionStatus>>
     {
-        private static readonly MoneyWithdrawalBundles Bundles = new MoneyWithdrawalBundles();
+        private static readonly MoneyWithdrawBundles Bundles = new MoneyWithdrawBundles();
         private readonly ICashierHttpContext _cashierHttpContext;
         private readonly IMoneyAccountService _moneyAccountService;
 
@@ -35,15 +36,9 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         }
 
         [ItemNotNull]
-        public async Task<Either<TransactionStatus>> Handle([NotNull] WithdrawMoneyCommand command, CancellationToken cancellationToken)
+        public async Task<Either<ValidationError, TransactionStatus>> Handle([NotNull] WithdrawMoneyCommand command, CancellationToken cancellationToken)
         {
-            var customerId = _cashierHttpContext.StripeAccountId;
-
-            var userId = _cashierHttpContext.UserId;
-
-            var bundle = Bundles[command.BundleType];
-
-            return await _moneyAccountService.TryWithdrawalAsync(customerId, userId, bundle, cancellationToken);
+            return await _moneyAccountService.WithdrawAsync(_cashierHttpContext.UserId, Bundles[command.BundleType], _cashierHttpContext.StripeAccountId, cancellationToken);
         }
     }
 }
