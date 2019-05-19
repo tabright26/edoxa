@@ -25,9 +25,9 @@ namespace eDoxa.Cashier.Application.Tests.Commands
         public void Constructor_Tests()
         {
             ConstructorTests<WithdrawMoneyCommand>.For(typeof(MoneyWithdrawBundleType))
-                .WithName("WithdrawMoneyCommand")
-                .WithAttributes(typeof(DataContractAttribute))
-                .Assert();
+                                                  .WithName("WithdrawMoneyCommand")
+                                                  .WithAttributes(typeof(DataContractAttribute))
+                                                  .Assert();
         }
     }
 }

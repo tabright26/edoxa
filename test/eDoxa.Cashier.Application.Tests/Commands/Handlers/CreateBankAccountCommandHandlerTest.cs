@@ -55,8 +55,8 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         public void Constructor_Tests()
         {
             ConstructorTests<CreateBankAccountCommandHandler>.For(typeof(ICashierHttpContext), typeof(IStripeService), typeof(IIntegrationEventService))
-                .WithName("CreateBankAccountCommandHandler")
-                .Assert();
+                                                             .WithName("CreateBankAccountCommandHandler")
+                                                             .Assert();
         }
 
         [TestMethod]
@@ -73,8 +73,10 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             // Assert
             result.Should().BeOfType<Either<ValidationError, CommandResult>>();
 
-            _mockStripeService.Verify(mock => mock.CreateBankAccountAsync(It.IsAny<StripeAccountId>(), It.IsAny<string>(), It.IsAny<CancellationToken>()),
-                Times.Once);
+            _mockStripeService.Verify(
+                mock => mock.CreateBankAccountAsync(It.IsAny<StripeAccountId>(), It.IsAny<string>(), It.IsAny<CancellationToken>()),
+                Times.Once
+            );
         }
     }
 }

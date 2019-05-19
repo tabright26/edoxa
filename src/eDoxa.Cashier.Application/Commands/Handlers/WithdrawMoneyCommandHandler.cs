@@ -38,7 +38,12 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         [ItemNotNull]
         public async Task<Either<ValidationError, TransactionStatus>> Handle([NotNull] WithdrawMoneyCommand command, CancellationToken cancellationToken)
         {
-            return await _moneyAccountService.WithdrawAsync(_cashierHttpContext.UserId, Bundles[command.BundleType], _cashierHttpContext.StripeAccountId, cancellationToken);
+            return await _moneyAccountService.WithdrawAsync(
+                _cashierHttpContext.UserId,
+                Bundles[command.BundleType],
+                _cashierHttpContext.StripeAccountId,
+                cancellationToken
+            );
         }
     }
 }

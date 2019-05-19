@@ -1,4 +1,4 @@
-﻿// Filename: IMoneyAccountQueries.cs
+﻿// Filename: IAccountQueries.cs
 // Date Created: 2019-05-06
 // 
 // ================================================

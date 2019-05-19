@@ -21,9 +21,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Validations
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<VerifyAccountCommandValidator>.For()
-                .WithName("VerifyAccountCommandValidator")
-                .Assert();
+            ConstructorTests<VerifyAccountCommandValidator>.For().WithName("VerifyAccountCommandValidator").Assert();
         }
     }
 }

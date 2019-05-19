@@ -18,7 +18,8 @@ namespace eDoxa.Cashier.Application.Commands.Validations
     {
         public CreateBankAccountCommandValidator()
         {
-            this.RuleFor(command => command.ExternalAccountTokenId).Must(sourceToken => !string.IsNullOrWhiteSpace(sourceToken))
+            this.RuleFor(command => command.ExternalAccountTokenId)
+                .Must(sourceToken => !string.IsNullOrWhiteSpace(sourceToken))
                 .WithMessage("The external account token id is invalid.");
         }
     }

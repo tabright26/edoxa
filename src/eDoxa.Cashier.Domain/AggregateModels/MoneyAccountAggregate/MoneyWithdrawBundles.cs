@@ -15,13 +15,12 @@ namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
 {
     public sealed class MoneyWithdrawBundles : ReadOnlyDictionary<MoneyWithdrawBundleType, MoneyBundle>
     {
-        private static readonly Dictionary<MoneyWithdrawBundleType, MoneyBundle> Bundles =
-            new Dictionary<MoneyWithdrawBundleType, MoneyBundle>
-            {
-                [MoneyWithdrawBundleType.Fifty] = new MoneyBundle(Money.Fifty),
-                [MoneyWithdrawBundleType.OneHundred] = new MoneyBundle(Money.OneHundred),
-                [MoneyWithdrawBundleType.TwoHundred] = new MoneyBundle(Money.TwoHundred)
-            };
+        private static readonly Dictionary<MoneyWithdrawBundleType, MoneyBundle> Bundles = new Dictionary<MoneyWithdrawBundleType, MoneyBundle>
+        {
+            [MoneyWithdrawBundleType.Fifty] = new MoneyBundle(Money.Fifty),
+            [MoneyWithdrawBundleType.OneHundred] = new MoneyBundle(Money.OneHundred),
+            [MoneyWithdrawBundleType.TwoHundred] = new MoneyBundle(Money.TwoHundred)
+        };
 
         public MoneyWithdrawBundles() : base(Bundles)
         {

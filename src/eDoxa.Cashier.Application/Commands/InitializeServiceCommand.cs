@@ -15,7 +15,15 @@ namespace eDoxa.Cashier.Application.Commands
 {
     public sealed class InitializeServiceCommand : Command
     {
-        public InitializeServiceCommand(UserId userId, string email, string firstName, string lastName, int year, int month, int day)
+        public InitializeServiceCommand(
+            UserId userId,
+            string email,
+            string firstName,
+            string lastName,
+            int year,
+            int month,
+            int day
+        )
         {
             UserId = userId;
             Email = email;

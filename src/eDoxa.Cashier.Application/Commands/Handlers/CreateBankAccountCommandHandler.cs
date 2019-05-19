@@ -23,6 +23,8 @@ using eDoxa.Security;
 using eDoxa.Seedwork.Domain.Validations;
 using eDoxa.ServiceBus;
 
+using JetBrains.Annotations;
+
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
     internal sealed class CreateBankAccountCommandHandler : ICommandHandler<CreateBankAccountCommand, Either<ValidationError, CommandResult>>
@@ -34,16 +36,22 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         public CreateBankAccountCommandHandler(
             ICashierHttpContext cashierHttpContext,
             IStripeService stripeService,
-            IIntegrationEventService integrationEventService)
+            IIntegrationEventService integrationEventService
+        )
         {
             _cashierHttpContext = cashierHttpContext;
             _stripeService = stripeService;
             _integrationEventService = integrationEventService;
         }
 
-        public async Task<Either<ValidationError, CommandResult>> Handle(CreateBankAccountCommand command, CancellationToken cancellationToken)
+        [ItemNotNull]
+        public async Task<Either<ValidationError, CommandResult>> Handle([NotNull] CreateBankAccountCommand command, CancellationToken cancellationToken)
         {
-            var bankAccountId = await _stripeService.CreateBankAccountAsync(_cashierHttpContext.StripeAccountId, command.ExternalAccountTokenId, cancellationToken);
+            var bankAccountId = await _stripeService.CreateBankAccountAsync(
+                _cashierHttpContext.StripeAccountId,
+                command.ExternalAccountTokenId,
+                cancellationToken
+            );
 
             await this.PropagateClaimAsync(bankAccountId);
 

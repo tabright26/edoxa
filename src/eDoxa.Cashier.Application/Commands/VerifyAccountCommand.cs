@@ -20,7 +20,14 @@ namespace eDoxa.Cashier.Application.Commands
     [DataContract]
     public sealed class VerifyAccountCommand : Command<Either<ValidationError, CommandResult>>
     {
-        public VerifyAccountCommand(string line1, string line2, string city, string state, string postalCode, bool termsOfService)
+        public VerifyAccountCommand(
+            string line1,
+            string line2,
+            string city,
+            string state,
+            string postalCode,
+            bool termsOfService
+        )
         {
             Line1 = line1;
             Line2 = line2;
@@ -30,17 +37,22 @@ namespace eDoxa.Cashier.Application.Commands
             TermsOfService = termsOfService;
         }
 
-        [DataMember(Name = "line1")] public string Line1 { get; private set; }
+        [DataMember(Name = "line1")]
+        public string Line1 { get; private set; }
 
         [DataMember(Name = "line2", IsRequired = false)]
         public string Line2 { get; private set; }
 
-        [DataMember(Name = "city")] public string City { get; private set; }
+        [DataMember(Name = "city")]
+        public string City { get; private set; }
 
-        [DataMember(Name = "state")] public string State { get; private set; }
+        [DataMember(Name = "state")]
+        public string State { get; private set; }
 
-        [DataMember(Name = "postalCode")] public string PostalCode { get; private set; }
+        [DataMember(Name = "postalCode")]
+        public string PostalCode { get; private set; }
 
-        [DataMember(Name = "termsOfService")] public bool TermsOfService { get; private set; }
+        [DataMember(Name = "termsOfService")]
+        public bool TermsOfService { get; private set; }
     }
 }

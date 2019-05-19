@@ -1,4 +1,4 @@
-﻿// Filename: CardListDTO.cs
+﻿// Filename: StripeCardListDTO.cs
 // Date Created: 2019-05-06
 // 
 // ================================================

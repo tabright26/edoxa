@@ -51,8 +51,8 @@ namespace eDoxa.Cashier.Application.Tests.Queries
         public void Constructor_Tests()
         {
             ConstructorTests<StripeCardQueries>.For(typeof(IStripeService), typeof(ICashierHttpContext), typeof(IMapper))
-                .WithName("StripeCardQueries")
-                .Assert();
+                                               .WithName("StripeCardQueries")
+                                               .Assert();
         }
 
         [TestMethod]
@@ -60,11 +60,25 @@ namespace eDoxa.Cashier.Application.Tests.Queries
         {
             // Arrange
             _mockStripeService.Setup(mock => mock.GetCardsAsync(It.IsAny<StripeCustomerId>()))
-                .ReturnsAsync(new List<Card> {new Card()})
-                .Verifiable();
+                              .ReturnsAsync(
+                                  new List<Card>
+                                  {
+                                      new Card()
+                                  }
+                              )
+                              .Verifiable();
 
             _mockMapper.Setup(mock => mock.Map<StripeCardListDTO>(It.IsAny<IEnumerable<Card>>()))
-                .Returns(new StripeCardListDTO {Items = new List<StripeCardDTO> {new StripeCardDTO()}}).Verifiable();
+                       .Returns(
+                           new StripeCardListDTO
+                           {
+                               Items = new List<StripeCardDTO>
+                               {
+                                   new StripeCardDTO()
+                               }
+                           }
+                       )
+                       .Verifiable();
 
             var queries = new StripeCardQueries(_mockStripeService.Object, _mockCashierHttpContext.Object, _mockMapper.Object);
 
@@ -83,9 +97,7 @@ namespace eDoxa.Cashier.Application.Tests.Queries
         public async Task GetCardsAsync_ShouldBeEmpty()
         {
             // Arrange
-            _mockStripeService.Setup(mock => mock.GetCardsAsync(It.IsAny<StripeCustomerId>()))
-                .ReturnsAsync(new List<Card>())
-                .Verifiable();
+            _mockStripeService.Setup(mock => mock.GetCardsAsync(It.IsAny<StripeCustomerId>())).ReturnsAsync(new List<Card>()).Verifiable();
 
             _mockMapper.Setup(mock => mock.Map<StripeCardListDTO>(It.IsAny<IEnumerable<Card>>())).Returns(new StripeCardListDTO()).Verifiable();
 

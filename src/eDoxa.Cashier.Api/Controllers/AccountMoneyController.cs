@@ -44,10 +44,7 @@ namespace eDoxa.Cashier.Api.Controllers
         {
             var either = await _mediator.SendCommandAsync(command);
 
-            return either.Match<IActionResult>(
-                error => this.BadRequest(error.ToString()),
-                this.Ok
-            );
+            return either.Match<IActionResult>(error => this.BadRequest(error.ToString()), this.Ok);
         }
 
         /// <summary>
@@ -59,10 +56,7 @@ namespace eDoxa.Cashier.Api.Controllers
         {
             var either = await _mediator.SendCommandAsync(command);
 
-            return either.Match<IActionResult>(
-                error => this.BadRequest(error.ToString()),
-                this.Ok
-            );
+            return either.Match<IActionResult>(error => this.BadRequest(error.ToString()), this.Ok);
         }
     }
 }

@@ -46,10 +46,16 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         public void Constructor_Tests()
         {
             ConstructorTests<StripeAccountController>.For(typeof(IMediator))
-                .WithName("StripeAccountController")
-                .WithAttributes(typeof(AuthorizeAttribute), typeof(ApiControllerAttribute), typeof(ApiVersionAttribute), typeof(ProducesAttribute),
-                    typeof(RouteAttribute), typeof(ApiExplorerSettingsAttribute))
-                .Assert();
+                                                     .WithName("StripeAccountController")
+                                                     .WithAttributes(
+                                                         typeof(AuthorizeAttribute),
+                                                         typeof(ApiControllerAttribute),
+                                                         typeof(ApiVersionAttribute),
+                                                         typeof(ProducesAttribute),
+                                                         typeof(RouteAttribute),
+                                                         typeof(ApiExplorerSettingsAttribute)
+                                                     )
+                                                     .Assert();
         }
 
         [TestMethod]
@@ -59,14 +65,22 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             var address = FakeStripeFactory.CreateAddress();
 
             _mockMediator.Setup(mock => mock.Send(It.IsAny<VerifyAccountCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(CommandResult.Succeeded)
-                .Verifiable();
+                         .ReturnsAsync(CommandResult.Succeeded)
+                         .Verifiable();
 
             var controller = new StripeAccountController(_mockMediator.Object);
 
             // Act
-            var result = await controller.VerifyAccountAsync(new VerifyAccountCommand(address.Line1, address.Line2, address.City, address.State,
-                address.PostalCode, true));
+            var result = await controller.VerifyAccountAsync(
+                new VerifyAccountCommand(
+                    address.Line1,
+                    address.Line2,
+                    address.City,
+                    address.State,
+                    address.PostalCode,
+                    true
+                )
+            );
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -81,14 +95,22 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             var address = FakeStripeFactory.CreateAddress();
 
             _mockMediator.Setup(mock => mock.Send(It.IsAny<VerifyAccountCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(ValidationError.Empty)
-                .Verifiable();
+                         .ReturnsAsync(ValidationError.Empty)
+                         .Verifiable();
 
             var controller = new StripeAccountController(_mockMediator.Object);
 
             // Act
-            var result = await controller.VerifyAccountAsync(new VerifyAccountCommand(address.Line1, address.Line2, address.City, address.State,
-                address.PostalCode, true));
+            var result = await controller.VerifyAccountAsync(
+                new VerifyAccountCommand(
+                    address.Line1,
+                    address.Line2,
+                    address.City,
+                    address.State,
+                    address.PostalCode,
+                    true
+                )
+            );
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();

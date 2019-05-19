@@ -26,42 +26,40 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
             builder.ToTable(nameof(CashierDbContext.MoneyTransactions));
 
             builder.Property(transaction => transaction.Id)
-                .HasConversion(transactionId => transactionId.ToGuid(), transactionId => TransactionId.FromGuid(transactionId))
-                .IsRequired()
-                .UsePropertyAccessMode(PropertyAccessMode.Field);
+                   .HasConversion(transactionId => transactionId.ToGuid(), transactionId => TransactionId.FromGuid(transactionId))
+                   .IsRequired()
+                   .UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.Property<AccountId>(nameof(AccountId))
-                .HasConversion(accountId => accountId.ToGuid(), accountId => AccountId.FromGuid(accountId))
-                .IsRequired();
+                   .HasConversion(accountId => accountId.ToGuid(), accountId => AccountId.FromGuid(accountId))
+                   .IsRequired();
 
-            builder.Property(transaction => transaction.Timestamp)
-                .IsRequired()
-                .UsePropertyAccessMode(PropertyAccessMode.Field);
+            builder.Property(transaction => transaction.Timestamp).IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.Property(transaction => transaction.Amount)
-                .HasConversion<decimal>(money => money, money => new Money(money))
-                .IsRequired()
-                .UsePropertyAccessMode(PropertyAccessMode.Field);
+                   .HasConversion<decimal>(money => money, money => new Money(money))
+                   .IsRequired()
+                   .UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.Property(transaction => transaction.Type)
-                .HasConversion(type => type.Value, value => TransactionType.FromValue(value))
-                .IsRequired()
-                .UsePropertyAccessMode(PropertyAccessMode.Field);
+                   .HasConversion(type => type.Value, value => TransactionType.FromValue(value))
+                   .IsRequired()
+                   .UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.Property(transaction => transaction.Status)
-                .HasConversion(type => type.Value, value => TransactionStatus.FromValue(value))
-                .IsRequired()
-                .UsePropertyAccessMode(PropertyAccessMode.Field);
+                   .HasConversion(type => type.Value, value => TransactionStatus.FromValue(value))
+                   .IsRequired()
+                   .UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.Property(transaction => transaction.Description)
-                .HasConversion(description => description.ToString(), description => new TransactionDescription(description))
-                .IsRequired()
-                .UsePropertyAccessMode(PropertyAccessMode.Field);
+                   .HasConversion(description => description.ToString(), description => new TransactionDescription(description))
+                   .IsRequired()
+                   .UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.Property(transaction => transaction.Failure)
-                .HasConversion(failure => failure != null ? failure.ToString() : null, message => message != null ? new TransactionFailure(message) : null)
-                .IsRequired(false)
-                .UsePropertyAccessMode(PropertyAccessMode.Field);
+                   .HasConversion(failure => failure != null ? failure.ToString() : null, message => message != null ? new TransactionFailure(message) : null)
+                   .IsRequired(false)
+                   .UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.HasKey(transaction => transaction.Id);
         }

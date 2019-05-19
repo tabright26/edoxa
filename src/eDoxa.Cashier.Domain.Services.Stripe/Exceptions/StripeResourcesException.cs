@@ -1,4 +1,4 @@
-﻿// Filename: StripeException.cs
+﻿// Filename: StripeResourcesException.cs
 // Date Created: 2019-05-17
 // 
 // ================================================

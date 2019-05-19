@@ -45,10 +45,16 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         public void Constructor_Tests()
         {
             ConstructorTests<AccountTokenController>.For(typeof(IMediator))
-                .WithName("AccountTokenController")
-                .WithAttributes(typeof(AuthorizeAttribute), typeof(ApiControllerAttribute), typeof(ApiVersionAttribute), typeof(ProducesAttribute),
-                    typeof(RouteAttribute), typeof(ApiExplorerSettingsAttribute))
-                .Assert();
+                                                    .WithName("AccountTokenController")
+                                                    .WithAttributes(
+                                                        typeof(AuthorizeAttribute),
+                                                        typeof(ApiControllerAttribute),
+                                                        typeof(ApiVersionAttribute),
+                                                        typeof(ProducesAttribute),
+                                                        typeof(RouteAttribute),
+                                                        typeof(ApiExplorerSettingsAttribute)
+                                                    )
+                                                    .Assert();
         }
 
         [TestMethod]
@@ -56,8 +62,8 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         {
             // Arrange
             _mockMediator.Setup(mock => mock.Send(It.IsAny<DepositTokenCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(TransactionStatus.Completed)
-                .Verifiable();
+                         .ReturnsAsync(TransactionStatus.Completed)
+                         .Verifiable();
 
             var controller = new AccountTokenController(_mockMediator.Object);
 
@@ -75,8 +81,8 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         {
             // Arrange
             _mockMediator.Setup(mock => mock.Send(It.IsAny<DepositTokenCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(ValidationError.Empty)
-                .Verifiable();
+                         .ReturnsAsync(ValidationError.Empty)
+                         .Verifiable();
 
             var controller = new AccountTokenController(_mockMediator.Object);
 

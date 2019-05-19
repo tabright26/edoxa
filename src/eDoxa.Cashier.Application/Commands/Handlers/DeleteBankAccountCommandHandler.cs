@@ -23,6 +23,8 @@ using eDoxa.Security;
 using eDoxa.Seedwork.Domain.Validations;
 using eDoxa.ServiceBus;
 
+using JetBrains.Annotations;
+
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
     internal sealed class DeleteBankAccountCommandHandler : ICommandHandler<DeleteBankAccountCommand, Either<ValidationError, CommandResult>>
@@ -34,14 +36,16 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         public DeleteBankAccountCommandHandler(
             ICashierHttpContext cashierHttpContext,
             IStripeService stripeService,
-            IIntegrationEventService integrationEventService)
+            IIntegrationEventService integrationEventService
+        )
         {
             _cashierHttpContext = cashierHttpContext;
             _stripeService = stripeService;
             _integrationEventService = integrationEventService;
         }
 
-        public async Task<Either<ValidationError, CommandResult>> Handle(DeleteBankAccountCommand request, CancellationToken cancellationToken)
+        [ItemNotNull]
+        public async Task<Either<ValidationError, CommandResult>> Handle([NotNull] DeleteBankAccountCommand request, CancellationToken cancellationToken)
         {
             var bankAccountId = _cashierHttpContext.StripeBankAccountId;
 

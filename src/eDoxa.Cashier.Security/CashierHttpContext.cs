@@ -19,6 +19,8 @@ using eDoxa.Security.Execeptions;
 
 using IdentityModel;
 
+using JetBrains.Annotations;
+
 using Microsoft.AspNetCore.Http;
 
 namespace eDoxa.Cashier.Security
@@ -44,6 +46,7 @@ namespace eDoxa.Cashier.Security
         public StripeCustomerId StripeCustomerId =>
             new StripeCustomerId(this.TryGetClaim(CustomClaimTypes.StripeCustomerId) ?? throw new ClaimException(CustomClaimTypes.StripeCustomerId));
 
+        [CanBeNull]
         private string TryGetClaim(string claimType)
         {
             var t = _httpContext.User.Claims.SingleOrDefault(claim => claim.Type == claimType)?.Value;

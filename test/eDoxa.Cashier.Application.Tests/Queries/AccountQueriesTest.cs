@@ -48,9 +48,7 @@ namespace eDoxa.Cashier.Application.Tests.Queries
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<AccountQueries>.For(typeof(CashierDbContext), typeof(ICashierHttpContext), typeof(IMapper))
-                .WithName("AccountQueries")
-                .Assert();
+            ConstructorTests<AccountQueries>.For(typeof(CashierDbContext), typeof(ICashierHttpContext), typeof(IMapper)).WithName("AccountQueries").Assert();
         }
 
         [TestMethod]

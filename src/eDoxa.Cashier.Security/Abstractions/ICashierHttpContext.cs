@@ -1,5 +1,5 @@
-﻿// Filename: ICashierSecurity.cs
-// Date Created: 2019-05-16
+﻿// Filename: ICashierHttpContext.cs
+// Date Created: 2019-05-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.

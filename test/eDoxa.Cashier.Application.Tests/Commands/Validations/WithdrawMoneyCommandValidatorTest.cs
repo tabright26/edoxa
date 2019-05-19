@@ -21,9 +21,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Validations
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<WithdrawMoneyCommandValidator>.For()
-                .WithName("WithdrawMoneyCommandValidator")
-                .Assert();
+            ConstructorTests<WithdrawMoneyCommandValidator>.For().WithName("WithdrawMoneyCommandValidator").Assert();
         }
     }
 }

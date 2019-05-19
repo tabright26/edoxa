@@ -21,9 +21,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Validations
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<DepositTokenCommandValidator>.For()
-                .WithName("DepositTokenCommandValidator")
-                .Assert();
+            ConstructorTests<DepositTokenCommandValidator>.For().WithName("DepositTokenCommandValidator").Assert();
         }
     }
 }

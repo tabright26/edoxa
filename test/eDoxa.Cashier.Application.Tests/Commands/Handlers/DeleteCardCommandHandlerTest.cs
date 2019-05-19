@@ -51,9 +51,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<DeleteCardCommandHandler>.For(typeof(ICashierHttpContext), typeof(IStripeService))
-                .WithName("DeleteCardCommandHandler")
-                .Assert();
+            ConstructorTests<DeleteCardCommandHandler>.For(typeof(ICashierHttpContext), typeof(IStripeService)).WithName("DeleteCardCommandHandler").Assert();
         }
 
         [TestMethod]
@@ -70,8 +68,10 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             // Assert
             result.Should().BeOfType<Either<ValidationError, CommandResult>>();
 
-            _mockStripeService.Verify(mock => mock.DeleteCardAsync(It.IsAny<StripeCustomerId>(), It.IsAny<StripeCardId>(), It.IsAny<CancellationToken>()),
-                Times.Once);
+            _mockStripeService.Verify(
+                mock => mock.DeleteCardAsync(It.IsAny<StripeCustomerId>(), It.IsAny<StripeCardId>(), It.IsAny<CancellationToken>()),
+                Times.Once
+            );
         }
     }
 }

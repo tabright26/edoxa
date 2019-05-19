@@ -22,11 +22,18 @@ namespace eDoxa.Cashier.Application.Tests.Commands
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<InitializeServiceCommand>
-                .For(typeof(UserId), typeof(string), typeof(string), typeof(string), typeof(int), typeof(int), typeof(int))
-                .WithName("InitializeServiceCommand")
-                .WithAttributes()
-                .Assert();
+            ConstructorTests<InitializeServiceCommand>.For(
+                                                          typeof(UserId),
+                                                          typeof(string),
+                                                          typeof(string),
+                                                          typeof(string),
+                                                          typeof(int),
+                                                          typeof(int),
+                                                          typeof(int)
+                                                      )
+                                                      .WithName("InitializeServiceCommand")
+                                                      .WithAttributes()
+                                                      .Assert();
         }
     }
 }

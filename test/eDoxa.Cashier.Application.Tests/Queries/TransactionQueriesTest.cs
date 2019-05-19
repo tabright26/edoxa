@@ -48,8 +48,8 @@ namespace eDoxa.Cashier.Application.Tests.Queries
         public void Constructor_Tests()
         {
             ConstructorTests<TransactionQueries>.For(typeof(CashierDbContext), typeof(ICashierHttpContext), typeof(IMapper))
-                .WithName("TransactionQueries")
-                .Assert();
+                                                .WithName("TransactionQueries")
+                                                .Assert();
         }
 
         [TestMethod]

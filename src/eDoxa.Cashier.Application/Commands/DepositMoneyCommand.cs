@@ -26,6 +26,7 @@ namespace eDoxa.Cashier.Application.Commands
             BundleType = bundleType;
         }
 
-        [DataMember(Name = "bundleType")] public MoneyDepositBundleType BundleType { get; private set; }
+        [DataMember(Name = "bundleType")]
+        public MoneyDepositBundleType BundleType { get; private set; }
     }
 }

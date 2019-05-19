@@ -25,9 +25,9 @@ namespace eDoxa.Cashier.Application.Tests.Commands
         public void Constructor_Tests()
         {
             ConstructorTests<DepositMoneyCommand>.For(typeof(MoneyDepositBundleType))
-                .WithName("DepositMoneyCommand")
-                .WithAttributes(typeof(DataContractAttribute))
-                .Assert();
+                                                 .WithName("DepositMoneyCommand")
+                                                 .WithAttributes(typeof(DataContractAttribute))
+                                                 .Assert();
         }
     }
 }

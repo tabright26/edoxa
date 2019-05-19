@@ -1,4 +1,4 @@
-﻿// Filename: CardListProfile.cs
+﻿// Filename: StripeCardListProfile.cs
 // Date Created: 2019-05-06
 // 
 // ================================================

@@ -29,8 +29,17 @@ namespace eDoxa.Cashier.Application.IntegrationEvents.Handlers
 
         public async Task Handle(UserCreatedIntegrationEvent integrationEvent)
         {
-            await _mediator.Send(new InitializeServiceCommand(UserId.FromGuid(integrationEvent.UserId), integrationEvent.Email, integrationEvent.FirstName,
-                integrationEvent.LastName, integrationEvent.Year, integrationEvent.Month, integrationEvent.Day));
+            await _mediator.Send(
+                new InitializeServiceCommand(
+                    UserId.FromGuid(integrationEvent.UserId),
+                    integrationEvent.Email,
+                    integrationEvent.FirstName,
+                    integrationEvent.LastName,
+                    integrationEvent.Year,
+                    integrationEvent.Month,
+                    integrationEvent.Day
+                )
+            );
         }
     }
 }

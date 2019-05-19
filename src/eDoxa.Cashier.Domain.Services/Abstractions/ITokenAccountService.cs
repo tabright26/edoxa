@@ -27,6 +27,7 @@ namespace eDoxa.Cashier.Domain.Services.Abstractions
             UserId userId,
             TokenBundle bundle,
             StripeCustomerId customerId,
-            CancellationToken cancellationToken = default);
+            CancellationToken cancellationToken = default
+        );
     }
 }

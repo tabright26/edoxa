@@ -21,9 +21,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<DeleteBankAccountCommand>.For()
-                .WithName("DeleteBankAccountCommand")
-                .Assert();
+            ConstructorTests<DeleteBankAccountCommand>.For().WithName("DeleteBankAccountCommand").Assert();
         }
     }
 }

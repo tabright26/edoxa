@@ -41,10 +41,7 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
 
         public async Task<MoneyAccount> FindUserAccountAsync(UserId userId)
         {
-            return await _context.MoneyAccounts
-                .Include(account => account.Transactions)
-                .Where(account => account.UserId == userId)
-                .SingleOrDefaultAsync();
+            return await _context.MoneyAccounts.Include(account => account.Transactions).Where(account => account.UserId == userId).SingleOrDefaultAsync();
         }
     }
 }

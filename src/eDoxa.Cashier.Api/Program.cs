@@ -55,7 +55,9 @@ namespace eDoxa.Cashier.Api
                 );
 
                 host.MigrateDbContext<IntegrationEventLogDbContext>(
-                    (context, provider) => { }
+                    (context, provider) =>
+                    {
+                    }
                 );
 
                 Log.Information("Starting {Application} web host...");
@@ -79,11 +81,11 @@ namespace eDoxa.Cashier.Api
         private static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             return WebHost.CreateDefaultBuilder<Startup>(args)
-                .CaptureStartupErrors(false)
-                .ConfigureLogging()
-                .UseAzureKeyVault()
-                .UseApplicationInsights()
-                .UseSerilog();
+                          .CaptureStartupErrors(false)
+                          .ConfigureLogging()
+                          .UseAzureKeyVault()
+                          .UseApplicationInsights()
+                          .UseSerilog();
         }
     }
 }

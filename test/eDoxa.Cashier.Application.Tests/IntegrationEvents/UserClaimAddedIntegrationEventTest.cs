@@ -25,12 +25,12 @@ namespace eDoxa.Cashier.Application.Tests.IntegrationEvents
         public void Constructor_Tests()
         {
             ConstructorTests<UserClaimAddedIntegrationEvent>.For(typeof(Guid), typeof(IDictionary<string, string>))
-                .WithName("UserClaimAddedIntegrationEvent")
-                .Assert();
+                                                            .WithName("UserClaimAddedIntegrationEvent")
+                                                            .Assert();
 
             ConstructorTests<UserClaimAddedIntegrationEvent>.For(typeof(Guid), typeof(string), typeof(string))
-                .WithName("UserClaimAddedIntegrationEvent")
-                .Assert();
+                                                            .WithName("UserClaimAddedIntegrationEvent")
+                                                            .Assert();
         }
     }
 }

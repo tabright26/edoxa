@@ -23,9 +23,7 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Tests.Exceptions
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<StripeIdException>.For(typeof(string), typeof(Type))
-                .WithName("StripeIdException")
-                .Assert();
+            ConstructorTests<StripeIdException>.For(typeof(string), typeof(Type)).WithName("StripeIdException").Assert();
         }
     }
 }

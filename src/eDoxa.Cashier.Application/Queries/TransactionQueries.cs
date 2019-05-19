@@ -72,10 +72,7 @@ namespace eDoxa.Cashier.Application.Queries
                 transactions.Items.AddRange(await this.GetTokenTransactionsAsync(userId));
             }
 
-            return transactions
-                .OrderBy(transaction => transaction.Currency)
-                .ThenByDescending(transaction => transaction.Timestamp)
-                .ToList();
+            return transactions.OrderBy(transaction => transaction.Currency).ThenByDescending(transaction => transaction.Timestamp).ToList();
         }
     }
 }

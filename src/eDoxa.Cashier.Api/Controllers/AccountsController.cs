@@ -42,11 +42,7 @@ namespace eDoxa.Cashier.Api.Controllers
         {
             var account = await _accountQueries.GetAccountAsync(currency);
 
-            return account
-                .Select(this.Ok)
-                .Cast<IActionResult>()
-                .DefaultIfEmpty(this.NotFound("User money account not found."))
-                .Single();
+            return account.Select(this.Ok).Cast<IActionResult>().DefaultIfEmpty(this.NotFound("User money account not found.")).Single();
         }
     }
 }

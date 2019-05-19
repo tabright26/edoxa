@@ -55,18 +55,27 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Tests
             var account = FakeStripeFactory.CreateAccount();
 
             _mockAccountService.Setup(mock => mock.CreateAsync(It.IsAny<AccountCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(account)
-                .Verifiable();
+                               .ReturnsAsync(account)
+                               .Verifiable();
 
             var service = this.StripeService();
 
             // Act
-            await service.CreateAccountAsync(FakeCashierFactory.CreateUserId(), account.Individual.Email, account.Individual.FirstName,
-                account.Individual.LastName, 1, 1, 2000);
+            await service.CreateAccountAsync(
+                FakeCashierFactory.CreateUserId(),
+                account.Individual.Email,
+                account.Individual.FirstName,
+                account.Individual.LastName,
+                1,
+                1,
+                2000
+            );
 
             // Assert
-            _mockAccountService.Verify(mock => mock.CreateAsync(It.IsAny<AccountCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
-                Times.Once);
+            _mockAccountService.Verify(
+                mock => mock.CreateAsync(It.IsAny<AccountCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
+                Times.Once
+            );
         }
 
         [TestMethod]
@@ -75,29 +84,45 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Tests
             // Arrange
             var account = FakeStripeFactory.CreateAccount();
 
-            _mockAccountService.Setup(mock =>
-                    mock.UpdateAsync(It.IsAny<string>(), It.IsAny<AccountUpdateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
+            _mockAccountService
+                .Setup(
+                    mock => mock.UpdateAsync(It.IsAny<string>(), It.IsAny<AccountUpdateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>())
+                )
                 .ReturnsAsync(account)
                 .Verifiable();
 
             var service = this.StripeService();
 
             // Act
-            await service.VerifyAccountAsync(FakeStripeFactory.CreateAccountId(), account.Individual.Address.Line1, account.Individual.Address.Line2,
-                account.Individual.Address.City, account.Individual.Address.State, account.Individual.Address.PostalCode);
+            await service.VerifyAccountAsync(
+                FakeStripeFactory.CreateAccountId(),
+                account.Individual.Address.Line1,
+                account.Individual.Address.Line2,
+                account.Individual.Address.City,
+                account.Individual.Address.State,
+                account.Individual.Address.PostalCode
+            );
 
             // Assert
             _mockAccountService.Verify(
                 mock => mock.UpdateAsync(It.IsAny<string>(), It.IsAny<AccountUpdateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
-                Times.Once);
+                Times.Once
+            );
         }
 
         [TestMethod]
         public async Task CreateBankAccountAsync()
         {
             // Arrange
-            _mockExternalAccountService.Setup(mock => mock.CreateAsync(It.IsAny<string>(), It.IsAny<ExternalAccountCreateOptions>(), It.IsAny<RequestOptions>(),
-                    It.IsAny<CancellationToken>()))
+            _mockExternalAccountService
+                .Setup(
+                    mock => mock.CreateAsync(
+                        It.IsAny<string>(),
+                        It.IsAny<ExternalAccountCreateOptions>(),
+                        It.IsAny<RequestOptions>(),
+                        It.IsAny<CancellationToken>()
+                    )
+                )
                 .ReturnsAsync(FakeStripeFactory.CreateBankAccount)
                 .Verifiable();
 
@@ -108,8 +133,14 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Tests
 
             // Assert
             _mockExternalAccountService.Verify(
-                mock => mock.CreateAsync(It.IsAny<string>(), It.IsAny<ExternalAccountCreateOptions>(), It.IsAny<RequestOptions>(),
-                    It.IsAny<CancellationToken>()), Times.Once);
+                mock => mock.CreateAsync(
+                    It.IsAny<string>(),
+                    It.IsAny<ExternalAccountCreateOptions>(),
+                    It.IsAny<RequestOptions>(),
+                    It.IsAny<CancellationToken>()
+                ),
+                Times.Once
+            );
         }
 
         [TestMethod]
@@ -117,8 +148,8 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Tests
         {
             // Arrange
 
-            _mockExternalAccountService.Setup(mock =>
-                    mock.DeleteAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
+            _mockExternalAccountService
+                .Setup(mock => mock.DeleteAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(FakeStripeFactory.CreateBankAccount)
                 .Verifiable();
 
@@ -129,15 +160,17 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Tests
 
             // Assert
             _mockExternalAccountService.Verify(
-                mock => mock.DeleteAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()), Times.Once);
+                mock => mock.DeleteAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
+                Times.Once
+            );
         }
 
         [TestMethod]
         public async Task ListCardsAsync()
         {
             // Arrange
-            _mockCardService.Setup(mock =>
-                    mock.ListAsync(It.IsAny<string>(), It.IsAny<CardListOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
+            _mockCardService
+                .Setup(mock => mock.ListAsync(It.IsAny<string>(), It.IsAny<CardListOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(FakeStripeFactory.CreateCards())
                 .Verifiable();
 
@@ -149,15 +182,16 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Tests
             // Assert
             _mockCardService.Verify(
                 mock => mock.ListAsync(It.IsAny<string>(), It.IsAny<CardListOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
-                Times.Once);
+                Times.Once
+            );
         }
 
         [TestMethod]
         public async Task CreateCardAsync()
         {
             // Arrange
-            _mockCardService.Setup(mock =>
-                    mock.CreateAsync(It.IsAny<string>(), It.IsAny<CardCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
+            _mockCardService
+                .Setup(mock => mock.CreateAsync(It.IsAny<string>(), It.IsAny<CardCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(FakeStripeFactory.CreateCard)
                 .Verifiable();
 
@@ -169,7 +203,8 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Tests
             // Assert
             _mockCardService.Verify(
                 mock => mock.CreateAsync(It.IsAny<string>(), It.IsAny<CardCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
-                Times.Once);
+                Times.Once
+            );
         }
 
         [TestMethod]
@@ -177,8 +212,8 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Tests
         {
             // Arrange
             _mockCardService.Setup(mock => mock.DeleteAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(FakeStripeFactory.CreateCard)
-                .Verifiable();
+                            .ReturnsAsync(FakeStripeFactory.CreateCard)
+                            .Verifiable();
 
             var service = this.StripeService();
 
@@ -186,8 +221,10 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Tests
             await service.DeleteCardAsync(FakeStripeFactory.CreateCustomerId(), FakeStripeFactory.CreateCardId());
 
             // Assert
-            _mockCardService.Verify(mock => mock.DeleteAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
-                Times.Once);
+            _mockCardService.Verify(
+                mock => mock.DeleteAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
+                Times.Once
+            );
         }
 
         [TestMethod]
@@ -195,8 +232,8 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Tests
         {
             // Arrange
             _mockCustomerService.Setup(mock => mock.CreateAsync(It.IsAny<CustomerCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(FakeStripeFactory.CreateCustomer)
-                .Verifiable();
+                                .ReturnsAsync(FakeStripeFactory.CreateCustomer)
+                                .Verifiable();
 
             var service = this.StripeService();
 
@@ -204,16 +241,20 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Tests
             await service.CreateCustomerAsync(FakeCashierFactory.CreateUserId(), FakeStripeFactory.CreateAccountId(), FakeStripeFactory.CreateCustomer().Email);
 
             // Assert
-            _mockCustomerService.Verify(mock => mock.CreateAsync(It.IsAny<CustomerCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
-                Times.Once);
+            _mockCustomerService.Verify(
+                mock => mock.CreateAsync(It.IsAny<CustomerCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
+                Times.Once
+            );
         }
 
         [TestMethod]
         public async Task UpdateCardDefaultAsync()
         {
             // Arrange
-            _mockCustomerService.Setup(mock =>
-                    mock.UpdateAsync(It.IsAny<string>(), It.IsAny<CustomerUpdateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
+            _mockCustomerService
+                .Setup(
+                    mock => mock.UpdateAsync(It.IsAny<string>(), It.IsAny<CustomerUpdateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>())
+                )
                 .ReturnsAsync(FakeStripeFactory.CreateCustomer)
                 .Verifiable();
 
@@ -225,21 +266,22 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Tests
             // Assert
             _mockCustomerService.Verify(
                 mock => mock.UpdateAsync(It.IsAny<string>(), It.IsAny<CustomerUpdateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
-                Times.Once);
+                Times.Once
+            );
         }
 
         [TestMethod]
         public async Task CreateInvoiceAsync()
         {
             // Arrange
-            _mockInvoiceItemService.Setup(mock =>
-                    mock.CreateAsync(It.IsAny<InvoiceItemCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
+            _mockInvoiceItemService
+                .Setup(mock => mock.CreateAsync(It.IsAny<InvoiceItemCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(FakeStripeFactory.CreateInvoiceItem)
                 .Verifiable();
 
             _mockInvoiceService.Setup(mock => mock.CreateAsync(It.IsAny<InvoiceCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(FakeStripeFactory.CreateInvoice)
-                .Verifiable();
+                               .ReturnsAsync(FakeStripeFactory.CreateInvoice)
+                               .Verifiable();
 
             var service = this.StripeService();
 
@@ -248,10 +290,14 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Tests
 
             // Assert
             _mockInvoiceItemService.Verify(
-                mock => mock.CreateAsync(It.IsAny<InvoiceItemCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()), Times.Once);
+                mock => mock.CreateAsync(It.IsAny<InvoiceItemCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
+                Times.Once
+            );
 
-            _mockInvoiceService.Verify(mock => mock.CreateAsync(It.IsAny<InvoiceCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
-                Times.Once);
+            _mockInvoiceService.Verify(
+                mock => mock.CreateAsync(It.IsAny<InvoiceCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
+                Times.Once
+            );
         }
 
         [TestMethod]
@@ -259,8 +305,8 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Tests
         {
             // Arrange
             _mockTransferService.Setup(mock => mock.CreateAsync(It.IsAny<TransferCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(FakeStripeFactory.CreateTransfer)
-                .Verifiable();
+                                .ReturnsAsync(FakeStripeFactory.CreateTransfer)
+                                .Verifiable();
 
             var service = this.StripeService();
 
@@ -268,21 +314,30 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Tests
             await service.CreateTransferAsync(FakeStripeFactory.CreateAccountId(), FakeCashierFactory.CreateBundle(), FakeCashierFactory.CreateTransaction());
 
             // Assert
-            _mockTransferService.Verify(mock => mock.CreateAsync(It.IsAny<TransferCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
-                Times.Once);
+            _mockTransferService.Verify(
+                mock => mock.CreateAsync(It.IsAny<TransferCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
+                Times.Once
+            );
         }
 
         private StripeService StripeService()
         {
             // TODO: WARNING! This implementation of the IConfiguration service can cause problems during automated VSTS testing with Docker support.
-            var configuration = new ConfigurationBuilder()
-                .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../../../../../src/eDoxa.Cashier.Api"))
-                .AddJsonFile("appsettings.development.json", false, true)
-                .AddEnvironmentVariables()
-                .Build();
+            var configuration = new ConfigurationBuilder().SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../../../../../src/eDoxa.Cashier.Api"))
+                                                          .AddJsonFile("appsettings.development.json", false, true)
+                                                          .AddEnvironmentVariables()
+                                                          .Build();
 
-            return new StripeService(configuration, _mockAccountService.Object, _mockCardService.Object, _mockCustomerService.Object,
-                _mockExternalAccountService.Object, _mockInvoiceService.Object, _mockInvoiceItemService.Object, _mockTransferService.Object);
+            return new StripeService(
+                configuration,
+                _mockAccountService.Object,
+                _mockCardService.Object,
+                _mockCustomerService.Object,
+                _mockExternalAccountService.Object,
+                _mockInvoiceService.Object,
+                _mockInvoiceItemService.Object,
+                _mockTransferService.Object
+            );
         }
     }
 }

@@ -42,10 +42,16 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         public void Constructor_Tests()
         {
             ConstructorTests<AccountTransactionsController>.For(typeof(ITransactionQueries))
-                .WithName("AccountTransactionsController")
-                .WithAttributes(typeof(AuthorizeAttribute), typeof(ApiControllerAttribute), typeof(ApiVersionAttribute), typeof(ProducesAttribute),
-                    typeof(RouteAttribute), typeof(ApiExplorerSettingsAttribute))
-                .Assert();
+                                                           .WithName("AccountTransactionsController")
+                                                           .WithAttributes(
+                                                               typeof(AuthorizeAttribute),
+                                                               typeof(ApiControllerAttribute),
+                                                               typeof(ApiVersionAttribute),
+                                                               typeof(ProducesAttribute),
+                                                               typeof(RouteAttribute),
+                                                               typeof(ApiExplorerSettingsAttribute)
+                                                           )
+                                                           .Assert();
         }
 
         [TestMethod]
@@ -53,14 +59,16 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         {
             // Arrange
             _mockTransactionQueries.Setup(mock => mock.GetTransactionsAsync(It.IsAny<AccountCurrency>()))
-                .ReturnsAsync(new TransactionListDTO
-                {
-                    Items = new List<TransactionDTO>
-                    {
-                        new TransactionDTO()
-                    }
-                })
-                .Verifiable();
+                                   .ReturnsAsync(
+                                       new TransactionListDTO
+                                       {
+                                           Items = new List<TransactionDTO>
+                                           {
+                                               new TransactionDTO()
+                                           }
+                                       }
+                                   )
+                                   .Verifiable();
 
             var controller = new AccountTransactionsController(_mockTransactionQueries.Object);
 
@@ -77,9 +85,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         public async Task DepositTokenAsync_ShouldBeOfTypeNoContentResult()
         {
             // Arrange
-            _mockTransactionQueries.Setup(mock => mock.GetTransactionsAsync(It.IsAny<AccountCurrency>()))
-                .ReturnsAsync(new TransactionListDTO())
-                .Verifiable();
+            _mockTransactionQueries.Setup(mock => mock.GetTransactionsAsync(It.IsAny<AccountCurrency>())).ReturnsAsync(new TransactionListDTO()).Verifiable();
 
             var controller = new AccountTransactionsController(_mockTransactionQueries.Object);
 

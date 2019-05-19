@@ -23,10 +23,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<CreateCardCommand>.For(typeof(string))
-                .WithName("CreateCardCommand")
-                .WithAttributes(typeof(DataContractAttribute))
-                .Assert();
+            ConstructorTests<CreateCardCommand>.For(typeof(string)).WithName("CreateCardCommand").WithAttributes(typeof(DataContractAttribute)).Assert();
         }
     }
 }

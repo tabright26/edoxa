@@ -21,9 +21,16 @@ namespace eDoxa.Cashier.Application.Tests.Commands
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<VerifyAccountCommand>.For(typeof(string), typeof(string), typeof(string), typeof(string), typeof(string), typeof(bool))
-                .WithName("VerifyAccountCommand")
-                .Assert();
+            ConstructorTests<VerifyAccountCommand>.For(
+                                                      typeof(string),
+                                                      typeof(string),
+                                                      typeof(string),
+                                                      typeof(string),
+                                                      typeof(string),
+                                                      typeof(bool)
+                                                  )
+                                                  .WithName("VerifyAccountCommand")
+                                                  .Assert();
         }
     }
 }

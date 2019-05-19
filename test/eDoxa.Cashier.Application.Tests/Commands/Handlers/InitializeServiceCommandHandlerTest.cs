@@ -52,10 +52,14 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<InitializeServiceCommandHandler>.For(typeof(IStripeService), typeof(IIntegrationEventService), typeof(IMoneyAccountService),
-                    typeof(ITokenAccountService))
-                .WithName("InitializeServiceCommandHandler")
-                .Assert();
+            ConstructorTests<InitializeServiceCommandHandler>.For(
+                                                                 typeof(IStripeService),
+                                                                 typeof(IIntegrationEventService),
+                                                                 typeof(IMoneyAccountService),
+                                                                 typeof(ITokenAccountService)
+                                                             )
+                                                             .WithName("InitializeServiceCommandHandler")
+                                                             .Assert();
         }
 
         [TestMethod]
@@ -66,18 +70,31 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
 
             var person = FakeStripeFactory.CreatePerson();
 
-            var handler = new InitializeServiceCommandHandler(_mockStripeService.Object, _mockIntegrationEventService.Object, _mockMoneyAccountService.Object,
-                _mockTokenAccountService.Object);
+            var handler = new InitializeServiceCommandHandler(
+                _mockStripeService.Object,
+                _mockIntegrationEventService.Object,
+                _mockMoneyAccountService.Object,
+                _mockTokenAccountService.Object
+            );
 
             // Act
-            await handler.HandleAsync(new InitializeServiceCommand(userId, person.Email, person.FirstName, person.LastName,
-                person.Dob.Year.HasValue ? (int) person.Dob.Year.Value : 1970, person.Dob.Month.HasValue ? (int) person.Dob.Month.Value : 1,
-                person.Dob.Day.HasValue ? (int) person.Dob.Day.Value : 1));
+            await handler.HandleAsync(
+                new InitializeServiceCommand(
+                    userId,
+                    person.Email,
+                    person.FirstName,
+                    person.LastName,
+                    person.Dob.Year.HasValue ? (int) person.Dob.Year.Value : 1970,
+                    person.Dob.Month.HasValue ? (int) person.Dob.Month.Value : 1,
+                    person.Dob.Day.HasValue ? (int) person.Dob.Day.Value : 1
+                )
+            );
 
             // Assert
             _mockStripeService.Verify(
                 mock => mock.CreateCustomerAsync(It.IsAny<UserId>(), It.IsAny<StripeAccountId>(), It.IsAny<string>(), It.IsAny<CancellationToken>()),
-                Times.Once);
+                Times.Once
+            );
         }
     }
 }

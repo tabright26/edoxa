@@ -41,10 +41,7 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
 
         public async Task<TokenAccount> FindUserAccountAsync(UserId userId)
         {
-            return await _context.TokenAccounts
-                .Include(account => account.Transactions)
-                .Where(account => account.UserId == userId)
-                .SingleOrDefaultAsync();
+            return await _context.TokenAccounts.Include(account => account.Transactions).Where(account => account.UserId == userId).SingleOrDefaultAsync();
         }
     }
 }

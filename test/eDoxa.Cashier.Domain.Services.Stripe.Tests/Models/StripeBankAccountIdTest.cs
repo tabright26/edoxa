@@ -25,19 +25,94 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Tests.Models
             const string message = "Expected Stripe BankAccountId is invalid.";
 
             ConstructorTests<StripeBankAccountId>.For(typeof(string))
-                .WithName("StripeBankAccountId")
-                .Fail(new object[] {null}, typeof(StripeIdException), message)
-                .Fail(new object[] {"  "}, typeof(StripeIdException), message)
-                .Fail(new object[] {"ba_23Eri2_ee23"}, typeof(StripeIdException), message)
-                .Fail(new object[] {"ba23Eri2ee23"}, typeof(StripeIdException), message)
-                .Fail(new object[] {"23Eri2_ee23"}, typeof(StripeIdException), message)
-                .Fail(new object[] {"test_23Eri2ee23"}, typeof(StripeIdException), message)
-                .Fail(new object[] {"ba_we23we$"}, typeof(StripeIdException), message)
-                .Fail(new object[] {"ba_@$Eri2ee23"}, typeof(StripeIdException), message)
-                .Fail(new object[] {"ba_trEr%2ee23"}, typeof(StripeIdException), message)
-                .Succeed(new object[] {"ba_23Eri2ee23"}, message)
-                .Succeed(new object[] {"ba_er34ri2ee23"}, message)
-                .Assert();
+                                                 .WithName("StripeBankAccountId")
+                                                 .Fail(
+                                                     new object[]
+                                                     {
+                                                         null
+                                                     },
+                                                     typeof(StripeIdException),
+                                                     message
+                                                 )
+                                                 .Fail(
+                                                     new object[]
+                                                     {
+                                                         "  "
+                                                     },
+                                                     typeof(StripeIdException),
+                                                     message
+                                                 )
+                                                 .Fail(
+                                                     new object[]
+                                                     {
+                                                         "ba_23Eri2_ee23"
+                                                     },
+                                                     typeof(StripeIdException),
+                                                     message
+                                                 )
+                                                 .Fail(
+                                                     new object[]
+                                                     {
+                                                         "ba23Eri2ee23"
+                                                     },
+                                                     typeof(StripeIdException),
+                                                     message
+                                                 )
+                                                 .Fail(
+                                                     new object[]
+                                                     {
+                                                         "23Eri2_ee23"
+                                                     },
+                                                     typeof(StripeIdException),
+                                                     message
+                                                 )
+                                                 .Fail(
+                                                     new object[]
+                                                     {
+                                                         "test_23Eri2ee23"
+                                                     },
+                                                     typeof(StripeIdException),
+                                                     message
+                                                 )
+                                                 .Fail(
+                                                     new object[]
+                                                     {
+                                                         "ba_we23we$"
+                                                     },
+                                                     typeof(StripeIdException),
+                                                     message
+                                                 )
+                                                 .Fail(
+                                                     new object[]
+                                                     {
+                                                         "ba_@$Eri2ee23"
+                                                     },
+                                                     typeof(StripeIdException),
+                                                     message
+                                                 )
+                                                 .Fail(
+                                                     new object[]
+                                                     {
+                                                         "ba_trEr%2ee23"
+                                                     },
+                                                     typeof(StripeIdException),
+                                                     message
+                                                 )
+                                                 .Succeed(
+                                                     new object[]
+                                                     {
+                                                         "ba_23Eri2ee23"
+                                                     },
+                                                     message
+                                                 )
+                                                 .Succeed(
+                                                     new object[]
+                                                     {
+                                                         "ba_er34ri2ee23"
+                                                     },
+                                                     message
+                                                 )
+                                                 .Assert();
         }
     }
 }

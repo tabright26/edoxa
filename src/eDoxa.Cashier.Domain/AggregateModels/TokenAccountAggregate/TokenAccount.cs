@@ -39,14 +39,10 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
         public UserId UserId => _userId;
 
         public Token Balance =>
-            new Token(Transactions
-                .Where(transaction => transaction.Status.Equals(TransactionStatus.Completed))
-                .Sum(transaction => transaction.Amount));
+            new Token(Transactions.Where(transaction => transaction.Status.Equals(TransactionStatus.Completed)).Sum(transaction => transaction.Amount));
 
         public Token Pending =>
-            new Token(Transactions
-                .Where(transaction => transaction.Status.Equals(TransactionStatus.Pending))
-                .Sum(transaction => transaction.Amount));
+            new Token(Transactions.Where(transaction => transaction.Status.Equals(TransactionStatus.Pending)).Sum(transaction => transaction.Amount));
 
         public DateTime? LastDeposit => _lastDeposit;
 
@@ -58,24 +54,12 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
             {
                 throw new InvalidOperationException();
             }
-            
+
             var transaction = new TokenDepositTransaction(amount);
 
             _transactions.Add(transaction);
 
             return transaction;
-        }
-
-        public ValidationResult CanDeposit()
-        {
-            var result = new ValidationResult();
-
-            if (new DailyTokenDepositUnavailableSpecification().IsSatisfiedBy(this))
-            {
-                result.AddError($"Deposit unavailable until {LastDeposit?.AddDays(1)}");
-            }
-
-            return result;
         }
 
         public ITokenTransaction Reward(Token amount)
@@ -99,18 +83,6 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
             _transactions.Add(transaction);
 
             return transaction;
-        }
-
-        public ValidationResult CanCharge(Token token)
-        {
-            var result = new ValidationResult();
-
-            if (new InsufficientTokenSpecification(token).IsSatisfiedBy(this))
-            {
-                result.AddError("Insufficient tokens.");
-            }
-
-            return result;
         }
 
         public ITokenTransaction Payout(Token amount)
@@ -139,6 +111,30 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
             transaction.Fail(message);
 
             return transaction;
+        }
+
+        public ValidationResult CanDeposit()
+        {
+            var result = new ValidationResult();
+
+            if (new DailyTokenDepositUnavailableSpecification().IsSatisfiedBy(this))
+            {
+                result.AddError($"Deposit unavailable until {LastDeposit?.AddDays(1)}");
+            }
+
+            return result;
+        }
+
+        public ValidationResult CanCharge(Token token)
+        {
+            var result = new ValidationResult();
+
+            if (new InsufficientTokenSpecification(token).IsSatisfiedBy(this))
+            {
+                result.AddError("Insufficient tokens.");
+            }
+
+            return result;
         }
     }
 }

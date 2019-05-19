@@ -51,8 +51,8 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         public void Constructor_Tests()
         {
             ConstructorTests<WithdrawMoneyCommandHandler>.For(typeof(ICashierHttpContext), typeof(IMoneyAccountService))
-                .WithName("WithdrawMoneyCommandHandler")
-                .Assert();
+                                                         .WithName("WithdrawMoneyCommandHandler")
+                                                         .Assert();
         }
 
         [TestMethod]
@@ -61,8 +61,8 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             // Arrange
             var command = new WithdrawMoneyCommand(MoneyWithdrawBundleType.Fifty);
 
-            _mockMoneyAccountService.Setup(mock =>
-                    mock.WithdrawAsync(It.IsAny<UserId>(), It.IsAny<MoneyBundle>(), It.IsAny<StripeAccountId>(), It.IsAny<CancellationToken>()))
+            _mockMoneyAccountService
+                .Setup(mock => mock.WithdrawAsync(It.IsAny<UserId>(), It.IsAny<MoneyBundle>(), It.IsAny<StripeAccountId>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(TransactionStatus.Completed)
                 .Verifiable();
 
@@ -76,7 +76,8 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
 
             _mockMoneyAccountService.Verify(
                 mock => mock.WithdrawAsync(It.IsAny<UserId>(), It.IsAny<MoneyBundle>(), It.IsAny<StripeAccountId>(), It.IsAny<CancellationToken>()),
-                Times.Once);
+                Times.Once
+            );
         }
     }
 }

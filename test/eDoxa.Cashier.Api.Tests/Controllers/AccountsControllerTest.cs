@@ -42,10 +42,16 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         public void Constructor_Tests()
         {
             ConstructorTests<AccountsController>.For(typeof(IAccountQueries))
-                .WithName("AccountsController")
-                .WithAttributes(typeof(AuthorizeAttribute), typeof(ApiControllerAttribute), typeof(ApiVersionAttribute), typeof(ProducesAttribute),
-                    typeof(RouteAttribute), typeof(ApiExplorerSettingsAttribute))
-                .Assert();
+                                                .WithName("AccountsController")
+                                                .WithAttributes(
+                                                    typeof(AuthorizeAttribute),
+                                                    typeof(ApiControllerAttribute),
+                                                    typeof(ApiVersionAttribute),
+                                                    typeof(ProducesAttribute),
+                                                    typeof(RouteAttribute),
+                                                    typeof(ApiExplorerSettingsAttribute)
+                                                )
+                                                .Assert();
         }
 
         [TestMethod]
@@ -53,8 +59,8 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         {
             // Arrange
             _mockAccountQueries.Setup(mediator => mediator.GetAccountAsync(It.IsAny<AccountCurrency>()))
-                .ReturnsAsync(new Option<AccountDTO>(new AccountDTO()))
-                .Verifiable();
+                               .ReturnsAsync(new Option<AccountDTO>(new AccountDTO()))
+                               .Verifiable();
 
             var controller = new AccountsController(_mockAccountQueries.Object);
 
@@ -71,9 +77,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         public async Task GetAccountAsync_ShouldBeOfTypeNotFoundObjectResult()
         {
             // Arrange
-            _mockAccountQueries.Setup(mediator => mediator.GetAccountAsync(It.IsAny<AccountCurrency>()))
-                .ReturnsAsync(new Option<AccountDTO>())
-                .Verifiable();
+            _mockAccountQueries.Setup(mediator => mediator.GetAccountAsync(It.IsAny<AccountCurrency>())).ReturnsAsync(new Option<AccountDTO>()).Verifiable();
 
             var controller = new AccountsController(_mockAccountQueries.Object);
 

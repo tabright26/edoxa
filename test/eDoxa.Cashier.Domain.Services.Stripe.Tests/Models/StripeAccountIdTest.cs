@@ -25,19 +25,94 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Tests.Models
             const string message = "Expected Stripe AccountId is invalid.";
 
             ConstructorTests<StripeAccountId>.For(typeof(string))
-                .WithName("StripeAccountId")
-                .Fail(new object[] {null}, typeof(StripeIdException), message)
-                .Fail(new object[] {"  "}, typeof(StripeIdException), message)
-                .Fail(new object[] {"acct_23Eri2_ee23"}, typeof(StripeIdException), message)
-                .Fail(new object[] {"acct23Eri2ee23"}, typeof(StripeIdException), message)
-                .Fail(new object[] {"23Eri2_ee23"}, typeof(StripeIdException), message)
-                .Fail(new object[] {"test_23Eri2ee23"}, typeof(StripeIdException), message)
-                .Fail(new object[] {"acct_we23we$"}, typeof(StripeIdException), message)
-                .Fail(new object[] {"acct_@$Eri2ee23"}, typeof(StripeIdException), message)
-                .Fail(new object[] {"acct_trEr%2ee23"}, typeof(StripeIdException), message)
-                .Succeed(new object[] {"acct_23Eri2ee23"}, message)
-                .Succeed(new object[] {"acct_er34ri2ee23"}, message)
-                .Assert();
+                                             .WithName("StripeAccountId")
+                                             .Fail(
+                                                 new object[]
+                                                 {
+                                                     null
+                                                 },
+                                                 typeof(StripeIdException),
+                                                 message
+                                             )
+                                             .Fail(
+                                                 new object[]
+                                                 {
+                                                     "  "
+                                                 },
+                                                 typeof(StripeIdException),
+                                                 message
+                                             )
+                                             .Fail(
+                                                 new object[]
+                                                 {
+                                                     "acct_23Eri2_ee23"
+                                                 },
+                                                 typeof(StripeIdException),
+                                                 message
+                                             )
+                                             .Fail(
+                                                 new object[]
+                                                 {
+                                                     "acct23Eri2ee23"
+                                                 },
+                                                 typeof(StripeIdException),
+                                                 message
+                                             )
+                                             .Fail(
+                                                 new object[]
+                                                 {
+                                                     "23Eri2_ee23"
+                                                 },
+                                                 typeof(StripeIdException),
+                                                 message
+                                             )
+                                             .Fail(
+                                                 new object[]
+                                                 {
+                                                     "test_23Eri2ee23"
+                                                 },
+                                                 typeof(StripeIdException),
+                                                 message
+                                             )
+                                             .Fail(
+                                                 new object[]
+                                                 {
+                                                     "acct_we23we$"
+                                                 },
+                                                 typeof(StripeIdException),
+                                                 message
+                                             )
+                                             .Fail(
+                                                 new object[]
+                                                 {
+                                                     "acct_@$Eri2ee23"
+                                                 },
+                                                 typeof(StripeIdException),
+                                                 message
+                                             )
+                                             .Fail(
+                                                 new object[]
+                                                 {
+                                                     "acct_trEr%2ee23"
+                                                 },
+                                                 typeof(StripeIdException),
+                                                 message
+                                             )
+                                             .Succeed(
+                                                 new object[]
+                                                 {
+                                                     "acct_23Eri2ee23"
+                                                 },
+                                                 message
+                                             )
+                                             .Succeed(
+                                                 new object[]
+                                                 {
+                                                     "acct_er34ri2ee23"
+                                                 },
+                                                 message
+                                             )
+                                             .Assert();
         }
     }
 }

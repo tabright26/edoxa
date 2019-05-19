@@ -21,9 +21,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Validations
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<CreateCardCommandValidator>.For()
-                .WithName("CreateCardCommandValidator")
-                .Assert();
+            ConstructorTests<CreateCardCommandValidator>.For().WithName("CreateCardCommandValidator").Assert();
         }
     }
 }

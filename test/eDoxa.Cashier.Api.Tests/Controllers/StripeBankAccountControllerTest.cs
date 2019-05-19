@@ -46,10 +46,16 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         public void Constructor_Tests()
         {
             ConstructorTests<StripeBankAccountController>.For(typeof(IMediator))
-                .WithName("StripeBankAccountController")
-                .WithAttributes(typeof(AuthorizeAttribute), typeof(ApiControllerAttribute), typeof(ApiVersionAttribute), typeof(ProducesAttribute),
-                    typeof(RouteAttribute), typeof(ApiExplorerSettingsAttribute))
-                .Assert();
+                                                         .WithName("StripeBankAccountController")
+                                                         .WithAttributes(
+                                                             typeof(AuthorizeAttribute),
+                                                             typeof(ApiControllerAttribute),
+                                                             typeof(ApiVersionAttribute),
+                                                             typeof(ProducesAttribute),
+                                                             typeof(RouteAttribute),
+                                                             typeof(ApiExplorerSettingsAttribute)
+                                                         )
+                                                         .Assert();
         }
 
         [TestMethod]
@@ -59,8 +65,8 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             var sourceToken = FakeStripeFactory.CreateSourceToken();
 
             _mockMediator.Setup(mock => mock.Send(It.IsAny<CreateBankAccountCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(CommandResult.Succeeded)
-                .Verifiable();
+                         .ReturnsAsync(CommandResult.Succeeded)
+                         .Verifiable();
 
             var controller = new StripeBankAccountController(_mockMediator.Object);
 
@@ -80,8 +86,8 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             var sourceToken = FakeStripeFactory.CreateSourceToken();
 
             _mockMediator.Setup(mock => mock.Send(It.IsAny<CreateBankAccountCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(ValidationError.Empty)
-                .Verifiable();
+                         .ReturnsAsync(ValidationError.Empty)
+                         .Verifiable();
 
             var controller = new StripeBankAccountController(_mockMediator.Object);
 
@@ -99,8 +105,8 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         {
             // Arrange
             _mockMediator.Setup(mock => mock.Send(It.IsAny<DeleteBankAccountCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(CommandResult.Succeeded)
-                .Verifiable();
+                         .ReturnsAsync(CommandResult.Succeeded)
+                         .Verifiable();
 
             var controller = new StripeBankAccountController(_mockMediator.Object);
 
@@ -118,8 +124,8 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         {
             // Arrange
             _mockMediator.Setup(mock => mock.Send(It.IsAny<DeleteBankAccountCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(ValidationError.Empty)
-                .Verifiable();
+                         .ReturnsAsync(ValidationError.Empty)
+                         .Verifiable();
 
             var controller = new StripeBankAccountController(_mockMediator.Object);
 

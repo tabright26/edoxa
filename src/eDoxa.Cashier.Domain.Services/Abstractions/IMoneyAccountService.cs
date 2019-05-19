@@ -27,12 +27,14 @@ namespace eDoxa.Cashier.Domain.Services.Abstractions
             UserId userId,
             MoneyBundle bundle,
             StripeCustomerId customerId,
-            CancellationToken cancellationToken = default);
+            CancellationToken cancellationToken = default
+        );
 
         Task<Either<ValidationError, TransactionStatus>> WithdrawAsync(
             UserId userId,
             MoneyBundle bundle,
             StripeAccountId accountId,
-            CancellationToken cancellationToken = default);
+            CancellationToken cancellationToken = default
+        );
     }
 }

@@ -51,8 +51,8 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         public void Constructor_Tests()
         {
             ConstructorTests<DepositTokenCommandHandler>.For(typeof(ICashierHttpContext), typeof(ITokenAccountService))
-                .WithName("DepositTokenCommandHandler")
-                .Assert();
+                                                        .WithName("DepositTokenCommandHandler")
+                                                        .Assert();
         }
 
         [TestMethod]
@@ -61,8 +61,8 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             // Arrange
             var command = new DepositTokenCommand(TokenDepositBundleType.FiftyThousand);
 
-            _mockTokenAccountService.Setup(mock =>
-                    mock.DepositAsync(It.IsAny<UserId>(), It.IsAny<TokenBundle>(), It.IsAny<StripeCustomerId>(), It.IsAny<CancellationToken>()))
+            _mockTokenAccountService
+                .Setup(mock => mock.DepositAsync(It.IsAny<UserId>(), It.IsAny<TokenBundle>(), It.IsAny<StripeCustomerId>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(TransactionStatus.Completed)
                 .Verifiable();
 
@@ -76,7 +76,8 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
 
             _mockTokenAccountService.Verify(
                 mock => mock.DepositAsync(It.IsAny<UserId>(), It.IsAny<TokenBundle>(), It.IsAny<StripeCustomerId>(), It.IsAny<CancellationToken>()),
-                Times.Once);
+                Times.Once
+            );
         }
     }
 }

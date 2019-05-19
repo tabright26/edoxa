@@ -25,9 +25,9 @@ namespace eDoxa.Cashier.Application.Tests.Commands
         public void Constructor_Tests()
         {
             ConstructorTests<UpdateCardDefaultCommand>.For(typeof(StripeCardId))
-                .WithName("UpdateCardDefaultCommand")
-                .WithAttributes(typeof(DataContractAttribute))
-                .Assert();
+                                                      .WithName("UpdateCardDefaultCommand")
+                                                      .WithAttributes(typeof(DataContractAttribute))
+                                                      .Assert();
         }
     }
 }

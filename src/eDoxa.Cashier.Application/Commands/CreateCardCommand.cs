@@ -25,6 +25,7 @@ namespace eDoxa.Cashier.Application.Commands
             SourceToken = sourceToken;
         }
 
-        [DataMember(Name = "sourceToken")] public string SourceToken { get; private set; }
+        [DataMember(Name = "sourceToken")]
+        public string SourceToken { get; private set; }
     }
 }

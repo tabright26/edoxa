@@ -17,16 +17,15 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
 {
     public sealed class TokenDepositBundles : ReadOnlyDictionary<TokenDepositBundleType, TokenBundle>
     {
-        private static readonly Dictionary<TokenDepositBundleType, TokenBundle> Bundles =
-            new Dictionary<TokenDepositBundleType, TokenBundle>
-            {
-                [TokenDepositBundleType.FiftyThousand] = new TokenBundle(Money.Five, Token.FiftyThousand),
-                [TokenDepositBundleType.OneHundredThousand] = new TokenBundle(Money.Ten, Token.OneHundredThousand),
-                [TokenDepositBundleType.TwoHundredFiftyThousand] = new TokenBundle(Money.TwentyFive, Token.TwoHundredFiftyThousand),
-                [TokenDepositBundleType.FiveHundredThousand] = new TokenBundle(Money.Fifty, Token.FiveHundredThousand),
-                [TokenDepositBundleType.OneMillion] = new TokenBundle(Money.OneHundred, Token.OneMillion),
-                [TokenDepositBundleType.FiveMillions] = new TokenBundle(Money.FiveHundred, Token.FiveMillions)
-            };
+        private static readonly Dictionary<TokenDepositBundleType, TokenBundle> Bundles = new Dictionary<TokenDepositBundleType, TokenBundle>
+        {
+            [TokenDepositBundleType.FiftyThousand] = new TokenBundle(Money.Five, Token.FiftyThousand),
+            [TokenDepositBundleType.OneHundredThousand] = new TokenBundle(Money.Ten, Token.OneHundredThousand),
+            [TokenDepositBundleType.TwoHundredFiftyThousand] = new TokenBundle(Money.TwentyFive, Token.TwoHundredFiftyThousand),
+            [TokenDepositBundleType.FiveHundredThousand] = new TokenBundle(Money.Fifty, Token.FiveHundredThousand),
+            [TokenDepositBundleType.OneMillion] = new TokenBundle(Money.OneHundred, Token.OneMillion),
+            [TokenDepositBundleType.FiveMillions] = new TokenBundle(Money.FiveHundred, Token.FiveMillions)
+        };
 
         public TokenDepositBundles() : base(Bundles)
         {

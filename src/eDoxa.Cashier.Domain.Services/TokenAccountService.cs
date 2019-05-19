@@ -45,7 +45,8 @@ namespace eDoxa.Cashier.Domain.Services
             UserId userId,
             TokenBundle bundle,
             StripeCustomerId customerId,
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken = default
+        )
         {
             var account = await _tokenAccountRepository.FindUserAccountAsync(userId);
 

@@ -42,14 +42,10 @@ namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
         public UserId UserId => _userId;
 
         public Money Balance =>
-            new Money(Transactions
-                .Where(transaction => transaction.Status.Equals(TransactionStatus.Completed))
-                .Sum(transaction => transaction.Amount));
+            new Money(Transactions.Where(transaction => transaction.Status.Equals(TransactionStatus.Completed)).Sum(transaction => transaction.Amount));
 
         public Money Pending =>
-            new Money(Transactions
-                .Where(transaction => transaction.Status.Equals(TransactionStatus.Pending))
-                .Sum(transaction => transaction.Amount));
+            new Money(Transactions.Where(transaction => transaction.Status.Equals(TransactionStatus.Pending)).Sum(transaction => transaction.Amount));
 
         public DateTime? LastDeposit => _lastDeposit;
 
@@ -71,18 +67,6 @@ namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
             return transaction;
         }
 
-        public ValidationResult CanDeposit()
-        {
-            var result = new ValidationResult();
-
-            if (new DailyMoneyDepositUnavailableSpecification().IsSatisfiedBy(this))
-            {
-                result.AddError($"Deposit unavailable until {LastDeposit?.AddDays(1)}");
-            }
-
-            return result;
-        }
-
         public IMoneyTransaction Charge(Money amount)
         {
             if (!this.CanCharge(amount))
@@ -95,18 +79,6 @@ namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
             _transactions.Add(transaction);
 
             return transaction;
-        }
-
-        public ValidationResult CanCharge(Money money)
-        {
-            var result = new ValidationResult();
-
-            if (new InsufficientMoneySpecification(money).IsSatisfiedBy(this))
-            {
-                result.AddError("Insufficient funds.");
-            }
-
-            return result;
         }
 
         public IMoneyTransaction Payout(Money amount)
@@ -132,23 +104,6 @@ namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
             return transaction;
         }
 
-        public ValidationResult CanWithdraw(Money money)
-        {
-            var result = new ValidationResult();
-
-            if (new InsufficientMoneySpecification(money).IsSatisfiedBy(this))
-            {
-                result.AddError("Insufficient funds.");
-            }
-
-            if (new WeeklyMoneyWithdrawUnavailableSpecification().IsSatisfiedBy(this))
-            {
-                result.AddError($"Withdrawal unavailable until {LastWithdraw?.AddDays(7)}");
-            }
-
-            return result;
-        }
-
         public IMoneyTransaction CompleteTransaction(IMoneyTransaction transaction)
         {
             transaction.Complete();
@@ -171,6 +126,47 @@ namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
             transaction.Fail(message);
 
             return transaction;
+        }
+
+        public ValidationResult CanDeposit()
+        {
+            var result = new ValidationResult();
+
+            if (new DailyMoneyDepositUnavailableSpecification().IsSatisfiedBy(this))
+            {
+                result.AddError($"Deposit unavailable until {LastDeposit?.AddDays(1)}");
+            }
+
+            return result;
+        }
+
+        public ValidationResult CanCharge(Money money)
+        {
+            var result = new ValidationResult();
+
+            if (new InsufficientMoneySpecification(money).IsSatisfiedBy(this))
+            {
+                result.AddError("Insufficient funds.");
+            }
+
+            return result;
+        }
+
+        public ValidationResult CanWithdraw(Money money)
+        {
+            var result = new ValidationResult();
+
+            if (new InsufficientMoneySpecification(money).IsSatisfiedBy(this))
+            {
+                result.AddError("Insufficient funds.");
+            }
+
+            if (new WeeklyMoneyWithdrawUnavailableSpecification().IsSatisfiedBy(this))
+            {
+                result.AddError($"Withdrawal unavailable until {LastWithdraw?.AddDays(7)}");
+            }
+
+            return result;
         }
     }
 }

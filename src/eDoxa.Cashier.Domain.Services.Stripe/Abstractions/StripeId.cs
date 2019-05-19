@@ -16,6 +16,8 @@ using System.Reflection;
 
 using eDoxa.Cashier.Domain.Services.Stripe.Exceptions;
 
+using JetBrains.Annotations;
+
 namespace eDoxa.Cashier.Domain.Services.Stripe.Abstractions
 {
     public abstract partial class StripeId<TStripeId>
@@ -68,12 +70,12 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Abstractions
 
     public abstract partial class StripeId<TStripeId> : IEquatable<TStripeId>
     {
-        public bool Equals(TStripeId other)
+        public bool Equals([CanBeNull] TStripeId other)
         {
             return _value.Equals(other?._value);
         }
 
-        public sealed override bool Equals(object obj)
+        public sealed override bool Equals([CanBeNull] object obj)
         {
             return this.Equals(obj as TStripeId);
         }
@@ -86,12 +88,12 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Abstractions
 
     public abstract partial class StripeId<TStripeId> : IComparable, IComparable<TStripeId>
     {
-        public int CompareTo(object obj)
+        public int CompareTo([CanBeNull] object obj)
         {
             return this.CompareTo(obj as TStripeId);
         }
 
-        public int CompareTo(TStripeId other)
+        public int CompareTo([CanBeNull] TStripeId other)
         {
             return string.Compare(_value, other?._value, StringComparison.Ordinal);
         }
@@ -101,17 +103,18 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Abstractions
     {
         protected sealed class StripeIdConverter : TypeConverter
         {
-            public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+            public override bool CanConvertFrom([NotNull] ITypeDescriptorContext context, Type sourceType)
             {
                 return sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
             }
 
-            public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+            public override bool CanConvertTo([NotNull] ITypeDescriptorContext context, Type destinationType)
             {
                 return destinationType == typeof(string) || base.CanConvertTo(context, destinationType);
             }
 
-            public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+            [CanBeNull]
+            public override object ConvertFrom([NotNull] ITypeDescriptorContext context, [NotNull] CultureInfo culture, [CanBeNull] object value)
             {
                 switch (value)
                 {
@@ -134,7 +137,13 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Abstractions
                 }
             }
 
-            public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+            [CanBeNull]
+            public override object ConvertTo(
+                [NotNull] ITypeDescriptorContext context,
+                [NotNull] CultureInfo culture,
+                [CanBeNull] object value,
+                Type destinationType
+            )
             {
                 if (value is TStripeId stripeId)
                 {

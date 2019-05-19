@@ -69,11 +69,13 @@ namespace eDoxa.Cashier.Api
 
             services.AddAutoMapper(CashierMapperFactory.Instance);
 
-            services.AddMvcFilters(filters =>
-            {
-                filters.Add<StripeResourceFilter>();
-                filters.Add<StripeExceptionFilter>();
-            });
+            services.AddMvcFilters(
+                filters =>
+                {
+                    filters.Add<StripeResourceFilter>();
+                    filters.Add<StripeExceptionFilter>();
+                }
+            );
 
             services.AddSwagger(Configuration, Environment, CashierApi);
 

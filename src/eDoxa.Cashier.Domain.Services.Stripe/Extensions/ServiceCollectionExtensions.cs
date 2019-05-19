@@ -1,5 +1,5 @@
 ﻿// Filename: ServiceCollectionExtensions.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-05-13
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -25,7 +25,7 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Extensions
             services.AddTransient<CardService>();
 
             services.AddTransient<CustomerService>();
-            
+
             services.AddTransient<ExternalAccountService>();
 
             services.AddTransient<InvoiceService>();

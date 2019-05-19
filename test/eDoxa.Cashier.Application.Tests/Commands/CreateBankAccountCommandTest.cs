@@ -24,9 +24,9 @@ namespace eDoxa.Cashier.Application.Tests.Commands
         public void Constructor_Tests()
         {
             ConstructorTests<CreateBankAccountCommand>.For(typeof(string))
-                .WithName("CreateBankAccountCommand")
-                .WithAttributes(typeof(DataContractAttribute))
-                .Assert();
+                                                      .WithName("CreateBankAccountCommand")
+                                                      .WithAttributes(typeof(DataContractAttribute))
+                                                      .Assert();
         }
     }
 }

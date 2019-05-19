@@ -42,20 +42,18 @@ namespace eDoxa.Cashier.Application.Queries
 
         internal async Task<MoneyAccount> GetMoneyAccountAsNoTrackingAsync(UserId userId)
         {
-            return await _context.MoneyAccounts
-                .AsNoTracking()
-                .Include(transaction => transaction.Transactions)
-                .Where(account => account.UserId == userId)
-                .SingleOrDefaultAsync();
+            return await _context.MoneyAccounts.AsNoTracking()
+                                 .Include(transaction => transaction.Transactions)
+                                 .Where(account => account.UserId == userId)
+                                 .SingleOrDefaultAsync();
         }
 
         internal async Task<TokenAccount> GetTokenAccountAsNoTrackingAsync(UserId userId)
         {
-            return await _context.TokenAccounts
-                .AsNoTracking()
-                .Include(transaction => transaction.Transactions)
-                .Where(account => account.UserId == userId)
-                .SingleOrDefaultAsync();
+            return await _context.TokenAccounts.AsNoTracking()
+                                 .Include(transaction => transaction.Transactions)
+                                 .Where(account => account.UserId == userId)
+                                 .SingleOrDefaultAsync();
         }
     }
 

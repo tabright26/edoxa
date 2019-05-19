@@ -21,9 +21,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Validations
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<DeleteCardCommandValidator>.For()
-                .WithName("DeleteCardCommandValidator")
-                .Assert();
+            ConstructorTests<DeleteCardCommandValidator>.For().WithName("DeleteCardCommandValidator").Assert();
         }
     }
 }

@@ -38,7 +38,12 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         [ItemNotNull]
         public async Task<Either<ValidationError, TransactionStatus>> Handle([NotNull] DepositTokenCommand command, CancellationToken cancellationToken)
         {
-            return await _tokenAccountService.DepositAsync(_cashierHttpContext.UserId, Bundles[command.BundleType], _cashierHttpContext.StripeCustomerId, cancellationToken);
+            return await _tokenAccountService.DepositAsync(
+                _cashierHttpContext.UserId,
+                Bundles[command.BundleType],
+                _cashierHttpContext.StripeCustomerId,
+                cancellationToken
+            );
         }
     }
 }

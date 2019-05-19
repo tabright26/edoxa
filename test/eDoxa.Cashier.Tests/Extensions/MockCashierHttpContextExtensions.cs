@@ -1,4 +1,4 @@
-﻿// Filename: MockCashierSecurityExtensions.cs
+﻿// Filename: MockCashierHttpContextExtensions.cs
 // Date Created: 2019-05-16
 // 
 // ================================================

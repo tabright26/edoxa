@@ -45,7 +45,8 @@ namespace eDoxa.Cashier.Domain.Services
             UserId userId,
             MoneyBundle bundle,
             StripeCustomerId customerId,
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken = default
+        )
         {
             var account = await _moneyAccountRepository.FindUserAccountAsync(userId);
 
@@ -91,7 +92,8 @@ namespace eDoxa.Cashier.Domain.Services
             UserId userId,
             MoneyBundle bundle,
             StripeAccountId accountId,
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken = default
+        )
         {
             var account = await _moneyAccountRepository.FindUserAccountAsync(userId);
 

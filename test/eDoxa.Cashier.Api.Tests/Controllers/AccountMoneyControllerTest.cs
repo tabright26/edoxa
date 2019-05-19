@@ -45,10 +45,16 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         public void Constructor_Tests()
         {
             ConstructorTests<AccountMoneyController>.For(typeof(IMediator))
-                .WithName("AccountMoneyController")
-                .WithAttributes(typeof(AuthorizeAttribute), typeof(ApiControllerAttribute), typeof(ApiVersionAttribute), typeof(ProducesAttribute),
-                    typeof(RouteAttribute), typeof(ApiExplorerSettingsAttribute))
-                .Assert();
+                                                    .WithName("AccountMoneyController")
+                                                    .WithAttributes(
+                                                        typeof(AuthorizeAttribute),
+                                                        typeof(ApiControllerAttribute),
+                                                        typeof(ApiVersionAttribute),
+                                                        typeof(ProducesAttribute),
+                                                        typeof(RouteAttribute),
+                                                        typeof(ApiExplorerSettingsAttribute)
+                                                    )
+                                                    .Assert();
         }
 
         [TestMethod]
@@ -56,8 +62,8 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         {
             // Arrange
             _mockMediator.Setup(mediator => mediator.Send(It.IsAny<DepositMoneyCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(TransactionStatus.Completed)
-                .Verifiable();
+                         .ReturnsAsync(TransactionStatus.Completed)
+                         .Verifiable();
 
             var controller = new AccountMoneyController(_mockMediator.Object);
 
@@ -75,8 +81,8 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         {
             // Arrange
             _mockMediator.Setup(mediator => mediator.Send(It.IsAny<DepositMoneyCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(ValidationError.Empty)
-                .Verifiable();
+                         .ReturnsAsync(ValidationError.Empty)
+                         .Verifiable();
 
             var controller = new AccountMoneyController(_mockMediator.Object);
 
@@ -94,8 +100,8 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         {
             // Arrange
             _mockMediator.Setup(mediator => mediator.Send(It.IsAny<WithdrawMoneyCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(TransactionStatus.Completed)
-                .Verifiable();
+                         .ReturnsAsync(TransactionStatus.Completed)
+                         .Verifiable();
 
             var controller = new AccountMoneyController(_mockMediator.Object);
 
@@ -113,8 +119,8 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         {
             // Arrange
             _mockMediator.Setup(mediator => mediator.Send(It.IsAny<WithdrawMoneyCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(ValidationError.Empty)
-                .Verifiable();
+                         .ReturnsAsync(ValidationError.Empty)
+                         .Verifiable();
 
             var controller = new AccountMoneyController(_mockMediator.Object);
 

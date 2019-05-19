@@ -51,8 +51,8 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         public void Constructor_Tests()
         {
             ConstructorTests<VerifyAccountCommandHandler>.For(typeof(IStripeService), typeof(ICashierHttpContext))
-                .WithName("VerifyAccountCommandHandler")
-                .Assert();
+                                                         .WithName("VerifyAccountCommandHandler")
+                                                         .Assert();
         }
 
         [TestMethod]
@@ -61,12 +61,28 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             // Arrange
             var address = FakeStripeFactory.CreateAddress();
 
-            var command = new VerifyAccountCommand(address.Line1, address.Line2, address.City, address.State, address.PostalCode, true);
+            var command = new VerifyAccountCommand(
+                address.Line1,
+                address.Line2,
+                address.City,
+                address.State,
+                address.PostalCode,
+                true
+            );
 
-            _mockStripeService.Setup(mock => mock.VerifyAccountAsync(It.IsAny<StripeAccountId>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
-                    It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.CompletedTask)
-                .Verifiable();
+            _mockStripeService.Setup(
+                                  mock => mock.VerifyAccountAsync(
+                                      It.IsAny<StripeAccountId>(),
+                                      It.IsAny<string>(),
+                                      It.IsAny<string>(),
+                                      It.IsAny<string>(),
+                                      It.IsAny<string>(),
+                                      It.IsAny<string>(),
+                                      It.IsAny<CancellationToken>()
+                                  )
+                              )
+                              .Returns(Task.CompletedTask)
+                              .Verifiable();
 
             var handler = new VerifyAccountCommandHandler(_mockStripeService.Object, _mockCashierHttpContext.Object);
 
@@ -77,8 +93,17 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             result.Should().BeOfType<Either<ValidationError, CommandResult>>();
 
             _mockStripeService.Verify(
-                mock => mock.VerifyAccountAsync(It.IsAny<StripeAccountId>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
-                    It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Once);
+                mock => mock.VerifyAccountAsync(
+                    It.IsAny<StripeAccountId>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<CancellationToken>()
+                ),
+                Times.Once
+            );
         }
     }
 }

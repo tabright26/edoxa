@@ -14,6 +14,8 @@ using System.Linq;
 
 using IdentityModel;
 
+using JetBrains.Annotations;
+
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -24,7 +26,7 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Filters.Attributes
 {
     public sealed class TestUserResourceFilterAttribute : Attribute, IResourceFilter
     {
-        public void OnResourceExecuting(ResourceExecutingContext context)
+        public void OnResourceExecuting([NotNull] ResourceExecutingContext context)
         {
             var environment = context.HttpContext.RequestServices.GetService<IHostingEnvironment>();
 
@@ -35,13 +37,15 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Filters.Attributes
 
             var configuration = context.HttpContext.RequestServices.GetService<IConfiguration>();
 
-            if (configuration.GetSection("Users").Get<List<string>>().Contains(context.HttpContext.User.Claims.First(claim => claim.Type == JwtClaimTypes.Subject).Value))
+            if (configuration.GetSection("Users")
+                             .Get<List<string>>()
+                             .Contains(context.HttpContext.User.Claims.First(claim => claim.Type == JwtClaimTypes.Subject).Value))
             {
                 context.Result = new BadRequestObjectResult("The current test user can not use the Stripe API.");
             }
         }
 
-        public void OnResourceExecuted(ResourceExecutedContext context)
+        public void OnResourceExecuted([NotNull] ResourceExecutedContext context)
         {
         }
     }

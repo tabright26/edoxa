@@ -8,6 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using JetBrains.Annotations;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -17,7 +19,7 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Filters
 {
     public sealed class StripeExceptionFilter : IExceptionFilter
     {
-        public void OnException(ExceptionContext context)
+        public void OnException([NotNull] ExceptionContext context)
         {
             if (context.Exception is StripeException exception)
             {

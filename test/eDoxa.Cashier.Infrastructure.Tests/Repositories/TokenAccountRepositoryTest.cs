@@ -1,5 +1,5 @@
 ﻿// Filename: TokenAccountRepositoryTest.cs
-// Date Created: 2019-05-12
+// Date Created: 2019-05-13
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -21,9 +21,7 @@ namespace eDoxa.Cashier.Infrastructure.Tests.Repositories
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<TokenAccountRepository>.For(typeof(CashierDbContext))
-                .WithName("TokenAccountRepository")
-                .Assert();
+            ConstructorTests<TokenAccountRepository>.For(typeof(CashierDbContext)).WithName("TokenAccountRepository").Assert();
         }
     }
 }

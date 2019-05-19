@@ -1,5 +1,5 @@
 ﻿// Filename: IStripeService.cs
-// Date Created: 2019-05-10
+// Date Created: 2019-05-13
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -22,11 +22,32 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Abstractions
 {
     public interface IStripeService
     {
-        Task<StripeAccountId> CreateAccountAsync(UserId userId, string email, string firstName, string lastName, int year, int month, int day, CancellationToken cancellationToken = default);
+        Task<StripeAccountId> CreateAccountAsync(
+            UserId userId,
+            string email,
+            string firstName,
+            string lastName,
+            int year,
+            int month,
+            int day,
+            CancellationToken cancellationToken = default
+        );
 
-        Task VerifyAccountAsync(StripeAccountId accountId, string line1, string line2, string city, string state, string postalCode, CancellationToken cancellationToken = default);
+        Task VerifyAccountAsync(
+            StripeAccountId accountId,
+            string line1,
+            string line2,
+            string city,
+            string state,
+            string postalCode,
+            CancellationToken cancellationToken = default
+        );
 
-        Task<StripeBankAccountId> CreateBankAccountAsync(StripeAccountId accountId, string externalAccountTokenId, CancellationToken cancellationToken = default);
+        Task<StripeBankAccountId> CreateBankAccountAsync(
+            StripeAccountId accountId,
+            string externalAccountTokenId,
+            CancellationToken cancellationToken = default
+        );
 
         Task DeleteBankAccountAsync(StripeAccountId accountId, StripeBankAccountId bankAccountId, CancellationToken cancellationToken = default);
 

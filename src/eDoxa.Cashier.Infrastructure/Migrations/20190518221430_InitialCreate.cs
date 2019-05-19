@@ -18,11 +18,9 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.EnsureSchema(
-                "edoxa");
+            migrationBuilder.EnsureSchema("edoxa");
 
-            migrationBuilder.EnsureSchema(
-                "dbo");
+            migrationBuilder.EnsureSchema("dbo");
 
             migrationBuilder.CreateTable(
                 "Logs",
@@ -43,7 +41,11 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                     ResponseType = table.Column<string>(nullable: true),
                     IdempotencyKey = table.Column<Guid>(nullable: true)
                 },
-                constraints: table => { table.PrimaryKey("PK_Logs", x => x.Id); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Logs", x => x.Id);
+                }
+            );
 
             migrationBuilder.CreateTable(
                 "MoneyAccounts",
@@ -55,7 +57,11 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                     LastDeposit = table.Column<DateTime>(nullable: true),
                     LastWithdraw = table.Column<DateTime>(nullable: true)
                 },
-                constraints: table => { table.PrimaryKey("PK_MoneyAccounts", x => x.Id); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MoneyAccounts", x => x.Id);
+                }
+            );
 
             migrationBuilder.CreateTable(
                 "TokenAccounts",
@@ -66,7 +72,11 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                     UserId = table.Column<Guid>(),
                     LastDeposit = table.Column<DateTime>(nullable: true)
                 },
-                constraints: table => { table.PrimaryKey("PK_TokenAccounts", x => x.Id); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TokenAccounts", x => x.Id);
+                }
+            );
 
             migrationBuilder.CreateTable(
                 "MoneyTransactions",
@@ -92,8 +102,10 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                         principalSchema: "edoxa",
                         principalTable: "MoneyAccounts",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 "TokenTransactions",
@@ -119,8 +131,10 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                         principalSchema: "edoxa",
                         principalTable: "TokenAccounts",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateIndex(
                 "IX_Logs_IdempotencyKey",
@@ -128,42 +142,25 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                 table: "Logs",
                 column: "IdempotencyKey",
                 unique: true,
-                filter: "[IdempotencyKey] IS NOT NULL");
+                filter: "[IdempotencyKey] IS NOT NULL"
+            );
 
-            migrationBuilder.CreateIndex(
-                "IX_MoneyTransactions_AccountId",
-                schema: "edoxa",
-                table: "MoneyTransactions",
-                column: "AccountId");
+            migrationBuilder.CreateIndex("IX_MoneyTransactions_AccountId", schema: "edoxa", table: "MoneyTransactions", column: "AccountId");
 
-            migrationBuilder.CreateIndex(
-                "IX_TokenTransactions_AccountId",
-                schema: "edoxa",
-                table: "TokenTransactions",
-                column: "AccountId");
+            migrationBuilder.CreateIndex("IX_TokenTransactions_AccountId", schema: "edoxa", table: "TokenTransactions", column: "AccountId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                "Logs",
-                "dbo");
+            migrationBuilder.DropTable("Logs", "dbo");
 
-            migrationBuilder.DropTable(
-                "MoneyTransactions",
-                "edoxa");
+            migrationBuilder.DropTable("MoneyTransactions", "edoxa");
 
-            migrationBuilder.DropTable(
-                "TokenTransactions",
-                "edoxa");
+            migrationBuilder.DropTable("TokenTransactions", "edoxa");
 
-            migrationBuilder.DropTable(
-                "MoneyAccounts",
-                "edoxa");
+            migrationBuilder.DropTable("MoneyAccounts", "edoxa");
 
-            migrationBuilder.DropTable(
-                "TokenAccounts",
-                "edoxa");
+            migrationBuilder.DropTable("TokenAccounts", "edoxa");
         }
     }
 }

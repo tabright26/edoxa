@@ -36,7 +36,8 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
             IStripeService stripeService,
             IIntegrationEventService integrationEventService,
             IMoneyAccountService moneyAccountService,
-            ITokenAccountService tokenAccountService)
+            ITokenAccountService tokenAccountService
+        )
         {
             _stripeService = stripeService;
             _integrationEventService = integrationEventService;
@@ -50,8 +51,16 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 
             await _tokenAccountService.CreateAccount(command.UserId);
 
-            var accountId = await _stripeService.CreateAccountAsync(command.UserId, command.Email, command.FirstName, command.LastName, command.Year,
-                command.Month, command.Day, cancellationToken);
+            var accountId = await _stripeService.CreateAccountAsync(
+                command.UserId,
+                command.Email,
+                command.FirstName,
+                command.LastName,
+                command.Year,
+                command.Month,
+                command.Day,
+                cancellationToken
+            );
 
             var customerId = await _stripeService.CreateCustomerAsync(command.UserId, accountId, command.Email, cancellationToken);
 

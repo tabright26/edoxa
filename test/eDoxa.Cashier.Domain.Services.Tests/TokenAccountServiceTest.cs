@@ -1,5 +1,5 @@
 ﻿// Filename: TokenAccountServiceTest.cs
-// Date Created: 2019-05-11
+// Date Created: 2019-05-13
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -22,9 +22,7 @@ namespace eDoxa.Cashier.Domain.Services.Tests
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<TokenAccountService>.For(typeof(ITokenAccountRepository), typeof(IStripeService))
-                .WithName("TokenAccountService")
-                .Assert();
+            ConstructorTests<TokenAccountService>.For(typeof(ITokenAccountRepository), typeof(IStripeService)).WithName("TokenAccountService").Assert();
         }
     }
 }

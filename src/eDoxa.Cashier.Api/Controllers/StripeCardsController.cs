@@ -49,11 +49,7 @@ namespace eDoxa.Cashier.Api.Controllers
         {
             var cards = await _stripeCardQueries.GetCardsAsync();
 
-            return cards
-                .Select(this.Ok)
-                .Cast<IActionResult>()
-                .DefaultIfEmpty(this.NoContent())
-                .Single();
+            return cards.Select(this.Ok).Cast<IActionResult>().DefaultIfEmpty(this.NoContent()).Single();
         }
 
         /// <summary>
@@ -65,10 +61,7 @@ namespace eDoxa.Cashier.Api.Controllers
         {
             var either = await _mediator.SendCommandAsync(command);
 
-            return either.Match<IActionResult>(
-                error => this.BadRequest(error.ToString()),
-                success => this.Ok(success.ToString())
-            );
+            return either.Match<IActionResult>(error => this.BadRequest(error.ToString()), success => this.Ok(success.ToString()));
         }
 
         /// <summary>
@@ -80,10 +73,7 @@ namespace eDoxa.Cashier.Api.Controllers
         {
             var either = await _mediator.SendCommandAsync(new DeleteCardCommand(cardId));
 
-            return either.Match<IActionResult>(
-                error => this.BadRequest(error.ToString()),
-                success => this.Ok(success.ToString())
-            );
+            return either.Match<IActionResult>(error => this.BadRequest(error.ToString()), success => this.Ok(success.ToString()));
         }
 
         /// <summary>
@@ -95,10 +85,7 @@ namespace eDoxa.Cashier.Api.Controllers
         {
             var either = await _mediator.SendCommandAsync(new UpdateCardDefaultCommand(cardId));
 
-            return either.Match<IActionResult>(
-                error => this.BadRequest(error.ToString()),
-                success => this.Ok(success.ToString())
-            );
+            return either.Match<IActionResult>(error => this.BadRequest(error.ToString()), success => this.Ok(success.ToString()));
         }
     }
 }

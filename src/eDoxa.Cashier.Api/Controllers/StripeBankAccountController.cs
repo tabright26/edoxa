@@ -46,10 +46,7 @@ namespace eDoxa.Cashier.Api.Controllers
         {
             var either = await _mediator.SendCommandAsync(command);
 
-            return either.Match<IActionResult>(
-                error => this.BadRequest(error.ToString()),
-                success => this.Ok(success.ToString())
-            );
+            return either.Match<IActionResult>(error => this.BadRequest(error.ToString()), success => this.Ok(success.ToString()));
         }
 
         /// <summary>
@@ -62,10 +59,7 @@ namespace eDoxa.Cashier.Api.Controllers
         {
             var either = await _mediator.SendCommandAsync(new DeleteBankAccountCommand());
 
-            return either.Match<IActionResult>(
-                error => this.BadRequest(error.ToString()),
-                success => this.Ok(success.ToString())
-            );
+            return either.Match<IActionResult>(error => this.BadRequest(error.ToString()), success => this.Ok(success.ToString()));
         }
     }
 }

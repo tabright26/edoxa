@@ -1,9 +1,9 @@
 ﻿// Filename: CashierDbContext.cs
-// Date Created: 2019-04-21
+// Date Created: 2019-05-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -32,12 +32,16 @@ namespace eDoxa.Cashier.Infrastructure
         {
             if (!MoneyAccounts.Any() || !TokenAccounts.Any())
             {
-                configuration.GetSection("Users").Get<List<string>>().ForEach(userId =>
-                {
-                    MoneyAccounts.Add(new MoneyAccount(UserId.Parse(userId)));
+                configuration.GetSection("Users")
+                             .Get<List<string>>()
+                             .ForEach(
+                                 userId =>
+                                 {
+                                     MoneyAccounts.Add(new MoneyAccount(UserId.Parse(userId)));
 
-                    TokenAccounts.Add(new TokenAccount(UserId.Parse(userId)));
-                });
+                                     TokenAccounts.Add(new TokenAccount(UserId.Parse(userId)));
+                                 }
+                             );
 
                 await this.CommitAsync();
 

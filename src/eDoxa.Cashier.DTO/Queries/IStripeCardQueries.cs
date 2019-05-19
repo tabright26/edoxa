@@ -1,4 +1,4 @@
-﻿// Filename: ICardQueries.cs
+﻿// Filename: IStripeCardQueries.cs
 // Date Created: 2019-05-06
 // 
 // ================================================

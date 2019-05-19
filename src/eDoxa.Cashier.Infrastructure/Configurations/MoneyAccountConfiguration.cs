@@ -25,32 +25,24 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
             builder.ToTable(nameof(CashierDbContext.MoneyAccounts));
 
             builder.Property(account => account.Id)
-                .HasConversion(accountId => accountId.ToGuid(), accountId => AccountId.FromGuid(accountId))
-                .IsRequired()
-                .UsePropertyAccessMode(PropertyAccessMode.Field);
+                   .HasConversion(accountId => accountId.ToGuid(), accountId => AccountId.FromGuid(accountId))
+                   .IsRequired()
+                   .UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.Property(account => account.UserId)
-                .HasConversion(userId => userId.ToGuid(), userId => UserId.FromGuid(userId))
-                .IsRequired()
-                .UsePropertyAccessMode(PropertyAccessMode.Field);
+                   .HasConversion(userId => userId.ToGuid(), userId => UserId.FromGuid(userId))
+                   .IsRequired()
+                   .UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.Ignore(account => account.Balance);
 
             builder.Ignore(account => account.Pending);
 
-            builder.Property(account => account.LastDeposit)
-                .IsRequired(false)
-                .UsePropertyAccessMode(PropertyAccessMode.Field);
+            builder.Property(account => account.LastDeposit).IsRequired(false).UsePropertyAccessMode(PropertyAccessMode.Field);
 
-            builder.Property(account => account.LastWithdraw)
-                .IsRequired(false)
-                .UsePropertyAccessMode(PropertyAccessMode.Field);
+            builder.Property(account => account.LastWithdraw).IsRequired(false).UsePropertyAccessMode(PropertyAccessMode.Field);
 
-            builder.HasMany(account => account.Transactions)
-                .WithOne()
-                .HasForeignKey(nameof(AccountId))
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(account => account.Transactions).WithOne().HasForeignKey(nameof(AccountId)).IsRequired().OnDelete(DeleteBehavior.Cascade);
 
             builder.HasKey(account => account.Id);
 
