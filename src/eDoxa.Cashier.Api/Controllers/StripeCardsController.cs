@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Application.Commands;
+using eDoxa.Cashier.Domain.Services.Stripe.Filters.Attributes;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Commands.Extensions;
@@ -58,6 +59,7 @@ namespace eDoxa.Cashier.Api.Controllers
         /// <summary>
         ///     Create a Stripe card.
         /// </summary>
+        [TestUserResourceFilter]
         [HttpPost(Name = nameof(CreateCardAsync))]
         public async Task<IActionResult> CreateCardAsync([FromBody] CreateCardCommand command)
         {
@@ -70,23 +72,9 @@ namespace eDoxa.Cashier.Api.Controllers
         }
 
         /// <summary>
-        ///     Get a Stripe card.
-        /// </summary>
-        [HttpGet("{cardId}", Name = nameof(GetCardAsync))]
-        public async Task<IActionResult> GetCardAsync(StripeCardId cardId)
-        {
-            var card = await _stripeCardQueries.GetCardAsync(cardId);
-
-            return card
-                .Select(this.Ok)
-                .Cast<IActionResult>()
-                .DefaultIfEmpty(this.NotFound("User credit card not found."))
-                .Single();
-        }
-
-        /// <summary>
         ///     Delete a Stripe card.
         /// </summary>
+        [TestUserResourceFilter]
         [HttpDelete("{cardId}", Name = nameof(DeleteCardAsync))]
         public async Task<IActionResult> DeleteCardAsync(StripeCardId cardId)
         {
@@ -101,6 +89,7 @@ namespace eDoxa.Cashier.Api.Controllers
         /// <summary>
         ///     Update the Stripe card default.
         /// </summary>
+        [TestUserResourceFilter]
         [HttpPatch("{cardId}/default", Name = nameof(UpdateCardDefaultAsync))]
         public async Task<IActionResult> UpdateCardDefaultAsync(StripeCardId cardId)
         {

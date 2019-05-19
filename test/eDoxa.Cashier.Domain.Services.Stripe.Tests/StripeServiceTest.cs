@@ -153,25 +153,6 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Tests
         }
 
         [TestMethod]
-        public async Task GetCardAsync()
-        {
-            // Arrange
-            _mockCardService.Setup(mock => mock.GetAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(FakeStripeFactory.CreateCard)
-                .Verifiable();
-
-            var service = this.StripeService();
-
-            // Act
-            await service.GetCardAsync(FakeStripeFactory.CreateCustomerId(), FakeStripeFactory.CreateCardId());
-
-            // Assert
-            _mockCardService.Verify(
-                mock => mock.GetAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
-                Times.Once);
-        }
-
-        [TestMethod]
         public async Task CreateCardAsync()
         {
             // Arrange

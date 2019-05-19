@@ -18,7 +18,6 @@ using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
-using eDoxa.Functional;
 using eDoxa.Security;
 
 using Microsoft.Extensions.Configuration;
@@ -140,13 +139,6 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
             return list.Where(card => !card.Deleted ?? true).ToList();
         }
 
-        public async Task<Option<Card>> GetCardAsync(StripeCustomerId customerId, StripeCardId cardId)
-        {
-            var card = await _cardService.GetAsync(customerId.ToString(), cardId.ToString());
-
-            return card != null ? new Option<Card>(card) : new Option<Card>();
-        }
-
         public async Task CreateCardAsync(StripeCustomerId customerId, string sourceToken, CancellationToken cancellationToken = default)
         {
             var options = new CardCreateOptions
@@ -160,6 +152,11 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
         public async Task DeleteCardAsync(StripeCustomerId customerId, StripeCardId cardId, CancellationToken cancellationToken = default)
         {
             await _cardService.DeleteAsync(customerId.ToString(), cardId.ToString(), cancellationToken: cancellationToken);
+        }
+
+        public async Task<Customer> GetCustomerAsync(StripeCustomerId customerId, CancellationToken cancellationToken = default)
+        {
+            return await _customerService.GetAsync(customerId.ToString(), cancellationToken: cancellationToken);
         }
 
         public async Task<StripeCustomerId> CreateCustomerAsync(UserId userId, StripeAccountId accountId, string email, CancellationToken cancellationToken = default)

@@ -11,6 +11,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Application.Commands;
+using eDoxa.Cashier.Domain.Services.Stripe.Filters.Attributes;
 using eDoxa.Commands.Extensions;
 
 using MediatR;
@@ -38,6 +39,7 @@ namespace eDoxa.Cashier.Api.Controllers
         /// <summary>
         ///     Verify the Stripe account
         /// </summary>
+        [TestUserResourceFilter]
         [HttpPatch("verify", Name = nameof(VerifyAccountAsync))]
         public async Task<IActionResult> VerifyAccountAsync([FromBody] VerifyAccountCommand command)
         {

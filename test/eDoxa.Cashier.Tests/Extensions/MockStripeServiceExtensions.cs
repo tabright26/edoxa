@@ -16,11 +16,8 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Cashier.Tests.Factories;
-using eDoxa.Functional;
 
 using Moq;
-
-using Stripe;
 
 namespace eDoxa.Cashier.Tests.Extensions
 {
@@ -51,10 +48,6 @@ namespace eDoxa.Cashier.Tests.Extensions
             mockStripeService
                 .Setup(mock => mock.GetCardsAsync(It.IsAny<StripeCustomerId>()))
                 .ReturnsAsync(FakeStripeFactory.CreateCards);
-
-            mockStripeService
-                .Setup(mock => mock.GetCardAsync(It.IsAny<StripeCustomerId>(), It.IsAny<StripeCardId>()))
-                .ReturnsAsync(new Option<Card>(FakeStripeFactory.CreateCard()));
 
             mockStripeService
                 .Setup(mock => mock.CreateCardAsync(It.IsAny<StripeCustomerId>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))

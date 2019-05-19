@@ -10,15 +10,10 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Domain.Services.Stripe.Models;
-using eDoxa.Functional;
-
 namespace eDoxa.Cashier.DTO.Queries
 {
     public interface IStripeCardQueries
     {
         Task<StripeCardListDTO> GetCardsAsync();
-
-        Task<Option<StripeCardDTO>> GetCardAsync(StripeCardId cardId);
     }
 }

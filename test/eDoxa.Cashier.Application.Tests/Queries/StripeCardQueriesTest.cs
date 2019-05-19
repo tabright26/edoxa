@@ -19,7 +19,6 @@ using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Cashier.Tests.Factories;
-using eDoxa.Functional;
 using eDoxa.Testing.MSTest;
 
 using FluentAssertions;
@@ -101,48 +100,6 @@ namespace eDoxa.Cashier.Application.Tests.Queries
             _mockStripeService.Verify(mock => mock.GetCardsAsync(It.IsAny<StripeCustomerId>()), Times.Once);
 
             _mockMapper.Verify(mock => mock.Map<StripeCardListDTO>(It.IsAny<IEnumerable<Card>>()), Times.Once);
-        }
-
-        [TestMethod]
-        public async Task GetCardAsync_ShouldNotBeEmpty()
-        {
-            // Arrange
-            var cardId = FakeStripeFactory.CreateCardId();
-
-            _mockStripeService.Setup(mock => mock.GetCardAsync(It.IsAny<StripeCustomerId>(), It.IsAny<StripeCardId>()))
-                .ReturnsAsync(new Option<Card>(new Card()))
-                .Verifiable();
-
-            var queries = new StripeCardQueries(_mockStripeService.Object, _mockCashierHttpContext.Object, _mockMapper.Object);
-
-            // Act
-            var result = await queries.GetCardAsync(cardId);
-
-            result.Should().NotBeEmpty();
-
-            // Assert
-            _mockStripeService.Verify(mock => mock.GetCardAsync(It.IsAny<StripeCustomerId>(), It.IsAny<StripeCardId>()), Times.Once);
-        }
-
-        [TestMethod]
-        public async Task GetCardAsync_ShouldBeEmpty()
-        {
-            // Arrange
-            var cardId = FakeStripeFactory.CreateCardId();
-
-            _mockStripeService.Setup(mock => mock.GetCardAsync(It.IsAny<StripeCustomerId>(), It.IsAny<StripeCardId>()))
-                .ReturnsAsync(new Option<Card>())
-                .Verifiable();
-
-            var queries = new StripeCardQueries(_mockStripeService.Object, _mockCashierHttpContext.Object, _mockMapper.Object);
-
-            // Act
-            var result = await queries.GetCardAsync(cardId);
-
-            result.Should().BeEmpty();
-
-            // Assert
-            _mockStripeService.Verify(mock => mock.GetCardAsync(It.IsAny<StripeCustomerId>(), It.IsAny<StripeCardId>()), Times.Once);
         }
     }
 }

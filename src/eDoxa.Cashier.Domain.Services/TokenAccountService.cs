@@ -56,6 +56,13 @@ namespace eDoxa.Cashier.Domain.Services
                 return result.ValidationError;
             }
 
+            var customer = await _stripeService.GetCustomerAsync(customerId, cancellationToken);
+
+            if (customer.DefaultSource == null)
+            {
+                return new ValidationError("There are no credit cards associated with this account.");
+            }
+
             var transaction = account.Deposit(bundle.Amount);
 
             await _tokenAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);

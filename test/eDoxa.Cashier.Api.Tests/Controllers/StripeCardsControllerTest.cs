@@ -14,12 +14,10 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Controllers;
 using eDoxa.Cashier.Application.Commands;
-using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Cashier.Tests.Factories;
 using eDoxa.Commands.Result;
-using eDoxa.Functional;
 using eDoxa.Seedwork.Domain.Validations;
 using eDoxa.Testing.MSTest;
 
@@ -139,48 +137,6 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             result.Should().BeOfType<BadRequestObjectResult>();
 
             _mockMediator.Verify(mock => mock.Send(It.IsAny<CreateCardCommand>(), It.IsAny<CancellationToken>()), Times.Once);
-        }
-
-        [TestMethod]
-        public async Task GetCardAsync_ShouldBeOfTypeOkObjectResult()
-        {
-            // Arrange
-            var cardId = FakeStripeFactory.CreateCardId();
-
-            _mockCardQueries.Setup(mock => mock.GetCardAsync(It.IsAny<StripeCardId>()))
-                .ReturnsAsync(new Option<StripeCardDTO>(new StripeCardDTO()))
-                .Verifiable();
-
-            var controller = new StripeCardsController(_mockCardQueries.Object, _mockMediator.Object);
-
-            // Act
-            var result = await controller.GetCardAsync(cardId);
-
-            // Assert
-            result.Should().BeOfType<OkObjectResult>();
-
-            _mockCardQueries.Verify(mock => mock.GetCardAsync(It.IsAny<StripeCardId>()), Times.Once);
-        }
-
-        [TestMethod]
-        public async Task GetCardAsync_ShouldBeOfTypeNotFoundObjectResult()
-        {
-            // Arrange
-            var cardId = FakeStripeFactory.CreateCardId();
-
-            _mockCardQueries.Setup(mock => mock.GetCardAsync(It.IsAny<StripeCardId>()))
-                .ReturnsAsync(new Option<StripeCardDTO>())
-                .Verifiable();
-
-            var controller = new StripeCardsController(_mockCardQueries.Object, _mockMediator.Object);
-
-            // Act
-            var result = await controller.GetCardAsync(cardId);
-
-            // Assert
-            result.Should().BeOfType<NotFoundObjectResult>();
-
-            _mockCardQueries.Verify(mock => mock.GetCardAsync(It.IsAny<StripeCardId>()), Times.Once);
         }
 
         [TestMethod]

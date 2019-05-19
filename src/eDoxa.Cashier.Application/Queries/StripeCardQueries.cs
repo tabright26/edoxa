@@ -8,17 +8,14 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Linq;
 using System.Threading.Tasks;
 
 using AutoMapper;
 
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
-using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Cashier.Security.Abstractions;
-using eDoxa.Functional;
 
 namespace eDoxa.Cashier.Application.Queries
 {
@@ -45,18 +42,6 @@ namespace eDoxa.Cashier.Application.Queries
             var cards = await _service.GetCardsAsync(customerId);
 
             return _mapper.Map<StripeCardListDTO>(cards);
-        }
-
-        public async Task<Option<StripeCardDTO>> GetCardAsync(StripeCardId cardId)
-        {
-            var customerId = _httpContext.StripeCustomerId;
-
-            var option = await _service.GetCardAsync(customerId, cardId);
-
-            return option
-                .Select(card => new Option<StripeCardDTO>(_mapper.Map<StripeCardDTO>(card)))
-                .DefaultIfEmpty(new Option<StripeCardDTO>())
-                .Single();
         }
     }
 }

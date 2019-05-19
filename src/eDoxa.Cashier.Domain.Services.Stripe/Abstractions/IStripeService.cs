@@ -15,7 +15,6 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Services.Stripe.Models;
-using eDoxa.Functional;
 
 using Stripe;
 
@@ -33,11 +32,11 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Abstractions
 
         Task<IEnumerable<Card>> GetCardsAsync(StripeCustomerId customerId);
 
-        Task<Option<Card>> GetCardAsync(StripeCustomerId customerId, StripeCardId cardId);
-
         Task CreateCardAsync(StripeCustomerId customerId, string sourceToken, CancellationToken cancellationToken = default);
 
         Task DeleteCardAsync(StripeCustomerId customerId, StripeCardId cardId, CancellationToken cancellationToken = default);
+
+        Task<Customer> GetCustomerAsync(StripeCustomerId customerId, CancellationToken cancellationToken = default);
 
         Task<StripeCustomerId> CreateCustomerAsync(UserId userId, StripeAccountId accountId, string email, CancellationToken cancellationToken = default);
 
