@@ -11,7 +11,6 @@
 using System;
 
 using eDoxa.Security.Abstractions;
-using eDoxa.Security.Factories;
 using eDoxa.Security.Services;
 
 using IdentityServer4.AccessTokenValidation;
@@ -74,10 +73,11 @@ namespace eDoxa.Security.Extensions
             );
         }
 
-        public static void AddIdentity<TUser, TRole, TContext>(this IServiceCollection services, IHostingEnvironment environment)
+        public static void AddIdentity<TUser, TRole, TContext, TFactory>(this IServiceCollection services, IHostingEnvironment environment)
         where TUser : class
         where TRole : class
         where TContext : DbContext
+        where TFactory : UserClaimsPrincipalFactory<TUser, TRole>
         {
             services.AddIdentity<TUser, TRole>(options =>
                 {
@@ -108,7 +108,7 @@ namespace eDoxa.Security.Extensions
                         options.SignIn.RequireConfirmedPhoneNumber = true;
                     }
                 })
-                .AddClaimsPrincipalFactory<CustomUserClaimsPrincipalFactory<TUser, TRole>>()
+                .AddClaimsPrincipalFactory<TFactory>()
                 .AddEntityFrameworkStores<TContext>()
                 .AddDefaultTokenProviders()
                 .AddDefaultUI(UIFramework.Bootstrap4);

@@ -11,22 +11,23 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 
+using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 
 using IdentityModel;
 
+using JetBrains.Annotations;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 
-namespace eDoxa.Security.Factories
+namespace eDoxa.IdentityServer.Factories
 {
-    public sealed class CustomUserClaimsPrincipalFactory<TUser, TRole> : UserClaimsPrincipalFactory<TUser, TRole>
-    where TUser : class
-    where TRole : class
+    public sealed class CustomUserClaimsPrincipalFactory : UserClaimsPrincipalFactory<User, Role>
     {
         public CustomUserClaimsPrincipalFactory(
-            UserManager<TUser> userManager,
-            RoleManager<TRole> roleManager,
+            UserManager<User> userManager,
+            RoleManager<Role> roleManager,
             IOptions<IdentityOptions> options) : base(
             userManager,
             roleManager,
@@ -34,7 +35,8 @@ namespace eDoxa.Security.Factories
         {
         }
 
-        protected override async Task<ClaimsIdentity> GenerateClaimsAsync(TUser user)
+        [ItemNotNull]
+        protected override async Task<ClaimsIdentity> GenerateClaimsAsync([NotNull] User user)
         {
             var identity = await base.GenerateClaimsAsync(user);
 
