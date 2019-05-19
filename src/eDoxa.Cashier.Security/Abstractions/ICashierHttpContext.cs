@@ -9,7 +9,6 @@
 // this source code package.
 
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.Services.Stripe.Models;
 
 namespace eDoxa.Cashier.Security.Abstractions
 {

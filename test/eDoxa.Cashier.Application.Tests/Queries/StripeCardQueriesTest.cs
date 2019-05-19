@@ -14,8 +14,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using eDoxa.Cashier.Application.Queries;
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
-using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Cashier.Tests.Factories;

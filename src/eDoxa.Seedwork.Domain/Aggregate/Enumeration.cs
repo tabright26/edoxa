@@ -17,6 +17,8 @@ using System.Reflection;
 
 using eDoxa.Seedwork.Domain.Exceptions;
 
+using JetBrains.Annotations;
+
 namespace eDoxa.Seedwork.Domain.Aggregate
 {
     public static class Enumeration
@@ -198,12 +200,12 @@ namespace eDoxa.Seedwork.Domain.Aggregate
 
     public abstract partial class Enumeration<TEnumeration> : IComparable, IComparable<TEnumeration>
     {
-        public int CompareTo(object other)
+        public int CompareTo([CanBeNull] object other)
         {
             return this.CompareTo(other as TEnumeration);
         }
 
-        public int CompareTo(TEnumeration other)
+        public int CompareTo([CanBeNull] TEnumeration other)
         {
             return _value.CompareTo(other?._value);
         }
@@ -213,17 +215,18 @@ namespace eDoxa.Seedwork.Domain.Aggregate
     {
         protected sealed class EnumerationConverter : TypeConverter
         {
-            public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+            public override bool CanConvertFrom([CanBeNull] ITypeDescriptorContext context, Type sourceType)
             {
                 return sourceType == typeof(int) || sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
             }
 
-            public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+            public override bool CanConvertTo([CanBeNull] ITypeDescriptorContext context, Type destinationType)
             {
                 return destinationType == typeof(int) || destinationType == typeof(string) || base.CanConvertTo(context, destinationType);
             }
 
-            public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+            [CanBeNull]
+            public override object ConvertFrom([CanBeNull] ITypeDescriptorContext context, CultureInfo culture, [CanBeNull] object value)
             {
                 switch (value)
                 {
@@ -244,7 +247,8 @@ namespace eDoxa.Seedwork.Domain.Aggregate
                 }
             }
 
-            public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+            [CanBeNull]
+            public override object ConvertTo([CanBeNull] ITypeDescriptorContext context, [NotNull] CultureInfo culture, [CanBeNull] object value, Type destinationType)
             {
                 if (value is TEnumeration enumeration)
                 {

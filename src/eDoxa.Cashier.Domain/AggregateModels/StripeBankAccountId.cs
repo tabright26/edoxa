@@ -10,9 +10,9 @@
 
 using System.ComponentModel;
 
-using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
+using eDoxa.Cashier.Domain.Abstractions;
 
-namespace eDoxa.Cashier.Domain.Services.Stripe.Models
+namespace eDoxa.Cashier.Domain.AggregateModels
 {
     [TypeConverter(typeof(StripeIdConverter))]
     public sealed class StripeBankAccountId : StripeId<StripeBankAccountId>

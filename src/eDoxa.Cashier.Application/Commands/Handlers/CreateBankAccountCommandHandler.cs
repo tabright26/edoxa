@@ -13,8 +13,8 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Application.IntegrationEvents;
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
-using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Commands.Result;

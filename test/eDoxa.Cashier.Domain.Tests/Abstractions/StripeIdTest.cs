@@ -11,15 +11,15 @@
 using System;
 using System.ComponentModel;
 
-using eDoxa.Cashier.Domain.Services.Stripe.Exceptions;
-using eDoxa.Cashier.Domain.Services.Stripe.Models;
+using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.Exceptions;
 using eDoxa.Cashier.Tests.Factories;
 
 using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Cashier.Domain.Services.Stripe.Tests.Abstractions
+namespace eDoxa.Cashier.Domain.Tests.Abstractions
 {
     [TestClass]
     public sealed class StripeIdTest

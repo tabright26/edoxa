@@ -11,8 +11,8 @@
 using System;
 using System.Collections.Generic;
 
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Services.Stripe;
-using eDoxa.Cashier.Domain.Services.Stripe.Models;
 
 using Stripe;
 

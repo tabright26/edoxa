@@ -12,7 +12,6 @@ using System;
 using System.Linq;
 
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Security;
 using eDoxa.Security.Execeptions;

@@ -8,13 +8,13 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Cashier.Domain.Services.Stripe.Exceptions;
-using eDoxa.Cashier.Domain.Services.Stripe.Models;
+using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.Exceptions;
 using eDoxa.Testing.MSTest;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Cashier.Domain.Services.Stripe.Tests.Models
+namespace eDoxa.Cashier.Domain.Tests.AggregateModels
 {
     [TestClass]
     public sealed class StripeBankAccountIdTest

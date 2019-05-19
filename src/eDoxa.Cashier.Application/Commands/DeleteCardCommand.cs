@@ -10,7 +10,7 @@
 
 using System.Runtime.Serialization;
 
-using eDoxa.Cashier.Domain.Services.Stripe.Models;
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Commands.Abstractions;
 using eDoxa.Commands.Result;
 using eDoxa.Functional;

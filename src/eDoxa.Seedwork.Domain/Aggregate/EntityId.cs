@@ -119,16 +119,17 @@ namespace eDoxa.Seedwork.Domain.Aggregate
     {
         protected sealed class EntityIdTypeConverter : TypeConverter
         {
-            public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+            public override bool CanConvertFrom([CanBeNull] ITypeDescriptorContext context, Type sourceType)
             {
                 return sourceType == typeof(Guid) || sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
             }
 
-            public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+            public override bool CanConvertTo([CanBeNull] ITypeDescriptorContext context, Type destinationType)
             {
                 return destinationType == typeof(Guid) || destinationType == typeof(string) || base.CanConvertTo(context, destinationType);
             }
 
+            [CanBeNull]
             public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
             {
                 switch (value)
@@ -150,7 +151,8 @@ namespace eDoxa.Seedwork.Domain.Aggregate
                 }
             }
 
-            public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+            [CanBeNull]
+            public override object ConvertTo([CanBeNull] ITypeDescriptorContext context, [NotNull] CultureInfo culture, [CanBeNull] object value, Type destinationType)
             {
                 if (value is TEntityId entityId)
                 {

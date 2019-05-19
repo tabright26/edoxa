@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
-using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Functional;
 using eDoxa.Seedwork.Domain.Validations;
 

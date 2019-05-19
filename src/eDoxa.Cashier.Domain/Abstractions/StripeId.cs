@@ -14,11 +14,11 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
-using eDoxa.Cashier.Domain.Services.Stripe.Exceptions;
+using eDoxa.Cashier.Domain.Exceptions;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Cashier.Domain.Services.Stripe.Abstractions
+namespace eDoxa.Cashier.Domain.Abstractions
 {
     public abstract partial class StripeId<TStripeId>
     where TStripeId : StripeId<TStripeId>

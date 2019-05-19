@@ -12,8 +12,8 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Application.Commands;
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Services.Stripe.Filters.Attributes;
-using eDoxa.Cashier.Domain.Services.Stripe.Models;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Commands.Extensions;
 

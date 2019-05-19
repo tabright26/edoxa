@@ -10,12 +10,12 @@
 
 using System;
 
-using eDoxa.Cashier.Domain.Services.Stripe.Exceptions;
+using eDoxa.Cashier.Domain.Exceptions;
 using eDoxa.Testing.MSTest;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Cashier.Domain.Services.Stripe.Tests.Exceptions
+namespace eDoxa.Cashier.Domain.Tests.Exceptions
 {
     [TestClass]
     public sealed class StripeIdExceptionTest

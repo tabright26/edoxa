@@ -1,4 +1,4 @@
-﻿// Filename: StripeCardId.cs
+﻿// Filename: StripeCustomerId.cs
 // Date Created: 2019-05-13
 // 
 // ================================================
@@ -10,16 +10,16 @@
 
 using System.ComponentModel;
 
-using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
+using eDoxa.Cashier.Domain.Abstractions;
 
-namespace eDoxa.Cashier.Domain.Services.Stripe.Models
+namespace eDoxa.Cashier.Domain.AggregateModels
 {
     [TypeConverter(typeof(StripeIdConverter))]
-    public sealed class StripeCardId : StripeId<StripeCardId>
+    public sealed class StripeCustomerId : StripeId<StripeCustomerId>
     {
-        private const string Prefix = "card";
+        private const string Prefix = "cus";
 
-        public StripeCardId(string cardId) : base(cardId, Prefix)
+        public StripeCustomerId(string customerId) : base(customerId, Prefix)
         {
         }
     }

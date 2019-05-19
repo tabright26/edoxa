@@ -10,9 +10,9 @@
 
 using System;
 
-namespace eDoxa.Cashier.Domain.Services.Stripe.Exceptions
+namespace eDoxa.Cashier.Domain.Exceptions
 {
-    internal class StripeIdException : Exception
+    public class StripeIdException : Exception
     {
         public StripeIdException(string stripeId, Type type) : base($"The '{stripeId}' is not a valid StripeId of type: {type.FullName}.")
         {
