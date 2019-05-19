@@ -324,7 +324,7 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Tests
         {
             // TODO: WARNING! This implementation of the IConfiguration service can cause problems during automated VSTS testing with Docker support.
             var configuration = new ConfigurationBuilder().SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../../../../../src/eDoxa.Cashier.Api"))
-                                                          .AddJsonFile("appsettings.development.json", false, true)
+                                                          .AddJsonFile("appsettings.Development.json", false, true)
                                                           .AddEnvironmentVariables()
                                                           .Build();
 
