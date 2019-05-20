@@ -14,7 +14,7 @@ using System.IO;
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.DTO.Tests
+namespace eDoxa.Arena.Services.LeagueOfLegends.DTO.Tests
 {
     public static class LeagueOfLegendsDTO
     {

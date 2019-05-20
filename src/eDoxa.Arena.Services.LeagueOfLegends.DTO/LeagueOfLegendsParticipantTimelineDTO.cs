@@ -12,7 +12,7 @@ using System.Collections.Generic;
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.DTO
+namespace eDoxa.Arena.Services.LeagueOfLegends.DTO
 {
     public class LeagueOfLegendsParticipantTimelineDTO
     {

@@ -10,7 +10,7 @@
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.DTO
+namespace eDoxa.Arena.Services.LeagueOfLegends.DTO
 {
     [JsonObject]
     public class LeagueOfLegendsTeamStatsDTO

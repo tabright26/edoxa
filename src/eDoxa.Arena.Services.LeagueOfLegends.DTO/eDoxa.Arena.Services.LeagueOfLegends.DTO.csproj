@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>eDoxa.Challenges.Domain.Services.LeagueOfLegends.DTO</AssemblyName>
-    <RootNamespace>eDoxa.Challenges.Domain.Services.LeagueOfLegends.DTO</RootNamespace>
+    <AssemblyName>eDoxa.Arena.Services.LeagueOfLegends.DTO</AssemblyName>
+    <RootNamespace>eDoxa.Arena.Services.LeagueOfLegends.DTO</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

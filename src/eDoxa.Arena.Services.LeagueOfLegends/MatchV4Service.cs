@@ -13,7 +13,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 
-using eDoxa.Challenges.Domain.Services.LeagueOfLegends.DTO;
+using eDoxa.Arena.Services.LeagueOfLegends.DTO;
 
 using Newtonsoft.Json;
 

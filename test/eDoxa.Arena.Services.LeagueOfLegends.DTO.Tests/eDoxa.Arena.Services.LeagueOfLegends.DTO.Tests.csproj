@@ -5,9 +5,9 @@
 
     <IsPackable>false</IsPackable>
 
-    <AssemblyName>eDoxa.Challenges.Domain.Services.LeagueOfLegends.DTO.Tests</AssemblyName>
+    <AssemblyName>eDoxa.Arena.Services.LeagueOfLegends.DTO.Tests</AssemblyName>
 
-    <RootNamespace>eDoxa.Challenges.Domain.Services.LeagueOfLegends.DTO.Tests</RootNamespace>
+    <RootNamespace>eDoxa.Arena.Services.LeagueOfLegends.DTO.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\eDoxa.Arena.Services.LeagueOfLegends.DTO\eDoxa.Arena.Services.LeagueOfLegends.DTO.csproj" />
     <ProjectReference Include="..\eDoxa.Challenges.Tests\eDoxa.Challenges.Tests.csproj" />
   </ItemGroup>
 

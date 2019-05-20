@@ -15,7 +15,8 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Domain.Services.LeagueOfLegends.DTO.Tests;
+using eDoxa.Arena.Services.LeagueOfLegends.DTO.Tests;
+using eDoxa.Challenges.Domain.Services.LeagueOfLegends.Api;
 
 using FluentAssertions;
 
@@ -26,7 +27,7 @@ using Moq.Protected;
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.Api.Tests
+namespace eDoxa.Arena.Services.LeagueOfLegends.Tests
 {
     [TestClass]
     public sealed class MatchV4ServiceTest
