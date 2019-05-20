@@ -14,6 +14,8 @@ using System.Linq;
 
 using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate.Specifications;
+using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.UserAggregate.Specifications;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Validations;
@@ -25,11 +27,11 @@ namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
         private DateTime? _lastDeposit;
         private DateTime? _lastWithdraw;
         private HashSet<MoneyTransaction> _transactions;
-        private UserId _userId;
+        private User _user;
 
-        public MoneyAccount(UserId userId) : this()
+        public MoneyAccount(User user) : this()
         {
-            _userId = userId;
+            _user = user;
         }
 
         private MoneyAccount()
@@ -39,7 +41,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
             _transactions = new HashSet<MoneyTransaction>();
         }
 
-        public UserId UserId => _userId;
+        public User User => _user;
 
         public Money Balance =>
             new Money(Transactions.Where(transaction => transaction.Status.Equals(TransactionStatus.Completed)).Sum(transaction => transaction.Amount));
@@ -155,6 +157,11 @@ namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
         public ValidationResult CanWithdraw(Money money)
         {
             var result = new ValidationResult();
+
+            if (new HasBankAccountSpecification().Not().IsSatisfiedBy(User))
+            {
+                result.AddError("A bank account is required to withdrawal.");
+            }
 
             if (new InsufficientMoneySpecification(money).IsSatisfiedBy(this))
             {

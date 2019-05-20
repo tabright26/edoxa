@@ -9,7 +9,6 @@
 // this source code package.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 using IdentityModel;
@@ -19,12 +18,11 @@ using JetBrains.Annotations;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.Cashier.Domain.Services.Stripe.Filters.Attributes
 {
-    public sealed class TestUserResourceFilterAttribute : Attribute, IResourceFilter
+    public sealed class StripeResourceFilterAttribute : Attribute, IResourceFilter
     {
         public void OnResourceExecuting([NotNull] ResourceExecutingContext context)
         {
@@ -35,11 +33,7 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Filters.Attributes
                 return;
             }
 
-            var configuration = context.HttpContext.RequestServices.GetService<IConfiguration>();
-
-            if (configuration.GetSection("Users")
-                             .Get<List<string>>()
-                             .Contains(context.HttpContext.User.Claims.First(claim => claim.Type == JwtClaimTypes.Subject).Value))
+            if (context.HttpContext.User.Claims.First(claim => claim.Type == JwtClaimTypes.Subject).Value == "e4655fe0-affd-4323-b022-bdb2ebde6091")
             {
                 context.Result = new BadRequestObjectResult("The current test user can not use the Stripe API.");
             }

@@ -1,5 +1,5 @@
 ﻿// Filename: CreateCardCommandHandlerTest.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-05-19
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Cashier.Tests.Extensions;
@@ -35,9 +36,11 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     [TestClass]
     public sealed class CreateCardCommandHandlerTest
     {
+        private static readonly FakeCashierFactory FakeCashierFactory = FakeCashierFactory.Instance;
         private static readonly FakeStripeFactory FakeStripeFactory = FakeStripeFactory.Instance;
         private Mock<ICashierHttpContext> _mockCashierHttpContext;
         private Mock<IStripeService> _mockStripeService;
+        private Mock<IUserRepository> _mockUserRepository;
 
         [TestInitialize]
         public void TestInitialize()
@@ -46,12 +49,14 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             _mockStripeService.SetupMethods();
             _mockCashierHttpContext = new Mock<ICashierHttpContext>();
             _mockCashierHttpContext.SetupGetProperties();
+            _mockUserRepository = new Mock<IUserRepository>();
         }
 
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<CreateCardCommandHandler>.For(typeof(ICashierHttpContext), typeof(IStripeService)).WithName("CreateCardCommandHandler").Assert();
+            ConstructorTests<CreateCardCommandHandler>.For(typeof(ICashierHttpContext), typeof(IStripeService), typeof(IUserRepository))
+                                                      .WithName("CreateCardCommandHandler").Assert();
         }
 
         [TestMethod]
@@ -60,7 +65,11 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             // Arrange
             var card = FakeStripeFactory.CreateCard();
 
-            var handler = new CreateCardCommandHandler(_mockCashierHttpContext.Object, _mockStripeService.Object);
+            var user = FakeCashierFactory.CreateUser();
+
+            _mockUserRepository.Setup(mock => mock.FindUserAsNoTrackingAsync(It.IsAny<UserId>())).ReturnsAsync(user).Verifiable();
+
+            var handler = new CreateCardCommandHandler(_mockCashierHttpContext.Object, _mockStripeService.Object, _mockUserRepository.Object);
 
             // Act
             var result = await handler.HandleAsync(new CreateCardCommand(card.Id));

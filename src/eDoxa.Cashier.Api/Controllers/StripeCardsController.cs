@@ -55,7 +55,7 @@ namespace eDoxa.Cashier.Api.Controllers
         /// <summary>
         ///     Create a Stripe card.
         /// </summary>
-        [TestUserResourceFilter]
+        [StripeResourceFilter]
         [HttpPost(Name = nameof(CreateCardAsync))]
         public async Task<IActionResult> CreateCardAsync([FromBody] CreateCardCommand command)
         {
@@ -67,7 +67,7 @@ namespace eDoxa.Cashier.Api.Controllers
         /// <summary>
         ///     Delete a Stripe card.
         /// </summary>
-        [TestUserResourceFilter]
+        [StripeResourceFilter]
         [HttpDelete("{cardId}", Name = nameof(DeleteCardAsync))]
         public async Task<IActionResult> DeleteCardAsync(StripeCardId cardId)
         {
@@ -79,7 +79,7 @@ namespace eDoxa.Cashier.Api.Controllers
         /// <summary>
         ///     Update the Stripe card default.
         /// </summary>
-        [TestUserResourceFilter]
+        [StripeResourceFilter]
         [HttpPatch("{cardId}/default", Name = nameof(UpdateCardDefaultAsync))]
         public async Task<IActionResult> UpdateCardDefaultAsync(StripeCardId cardId)
         {

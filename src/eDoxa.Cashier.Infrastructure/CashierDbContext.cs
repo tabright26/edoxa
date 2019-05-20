@@ -1,5 +1,5 @@
 ﻿// Filename: CashierDbContext.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-05-19
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,48 +8,46 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.Infrastructure.Configurations;
 using eDoxa.Seedwork.Infrastructure;
 
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Cashier.Infrastructure
 {
     public sealed partial class CashierDbContext
     {
-        public async Task SeedAsync(ILogger logger, IConfiguration configuration)
+        public async Task SeedAsync(ILogger logger)
         {
-            if (!MoneyAccounts.Any() || !TokenAccounts.Any())
+            if (!Users.Any())
             {
-                configuration.GetSection("Users")
-                             .Get<List<string>>()
-                             .ForEach(
-                                 userId =>
-                                 {
-                                     MoneyAccounts.Add(new MoneyAccount(UserId.Parse(userId)));
+                var user = new User(
+                    UserId.Parse("e4655fe0-affd-4323-b022-bdb2ebde6091"),
+                    new StripeAccountId("acct_1EbASfAPhMnJQouG"),
+                    new StripeCustomerId("cus_F5L8mRzm6YN5ma")
+                );
 
-                                     TokenAccounts.Add(new TokenAccount(UserId.Parse(userId)));
-                                 }
-                             );
+                user.AddBankAccount(new StripeBankAccountId("ba_1EbB3sAPhMnJQouGHsvc0NFn"));
+
+                Users.Add(user);
 
                 await this.CommitAsync();
 
-                logger.LogInformation("The accounts being populated.");
+                logger.LogInformation("The user's being populated.");
             }
             else
             {
-                logger.LogInformation("The accounts already populated.");
+                logger.LogInformation("The user's already populated.");
             }
         }
     }
@@ -64,6 +62,8 @@ namespace eDoxa.Cashier.Infrastructure
         {
         }
 
+        public DbSet<User> Users => this.Set<User>();
+
         public DbSet<MoneyAccount> MoneyAccounts => this.Set<MoneyAccount>();
 
         public DbSet<MoneyTransaction> MoneyTransactions => this.Set<MoneyTransaction>();
@@ -77,6 +77,8 @@ namespace eDoxa.Cashier.Infrastructure
             base.OnModelCreating(builder);
 
             builder.HasDefaultSchema(nameof(eDoxa).ToLower());
+
+            builder.ApplyConfiguration(new UserConfiguration());
 
             builder.ApplyConfiguration(new MoneyAccountConfiguration());
 

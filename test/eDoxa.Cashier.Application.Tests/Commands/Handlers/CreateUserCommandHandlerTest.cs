@@ -1,5 +1,5 @@
-﻿// Filename: InitializeServiceCommandHandlerTest.cs
-// Date Created: 2019-05-06
+﻿// Filename: CreateUserCommandHandlerTest.cs
+// Date Created: 2019-05-19
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -14,12 +14,11 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.Services.Abstractions;
+using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Tests.Extensions;
 using eDoxa.Cashier.Tests.Factories;
 using eDoxa.Commands.Extensions;
-using eDoxa.ServiceBus;
 using eDoxa.Testing.MSTest;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -29,36 +28,27 @@ using Moq;
 namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
 {
     [TestClass]
-    public sealed class InitializeServiceCommandHandlerTest
+    public sealed class CreateUserCommandHandlerTest
     {
         private static readonly FakeStripeFactory FakeStripeFactory = FakeStripeFactory.Instance;
         private static readonly FakeCashierFactory FakeCashierFactory = FakeCashierFactory.Instance;
-        private Mock<IIntegrationEventService> _mockIntegrationEventService;
-        private Mock<IMoneyAccountService> _mockMoneyAccountService;
         private Mock<IStripeService> _mockStripeService;
-        private Mock<ITokenAccountService> _mockTokenAccountService;
+        private Mock<IUserRepository> _mockUserRepository;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            _mockMoneyAccountService = new Mock<IMoneyAccountService>();
-            _mockTokenAccountService = new Mock<ITokenAccountService>();
-            _mockIntegrationEventService = new Mock<IIntegrationEventService>();
             _mockStripeService = new Mock<IStripeService>();
             _mockStripeService.SetupMethods();
+            _mockUserRepository = new Mock<IUserRepository>();
         }
 
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<InitializeServiceCommandHandler>.For(
-                                                                 typeof(IStripeService),
-                                                                 typeof(IIntegrationEventService),
-                                                                 typeof(IMoneyAccountService),
-                                                                 typeof(ITokenAccountService)
-                                                             )
-                                                             .WithName("InitializeServiceCommandHandler")
-                                                             .Assert();
+            ConstructorTests<CreateUserCommandHandler>.For(typeof(IStripeService), typeof(IUserRepository))
+                                                      .WithName("CreateUserCommandHandler")
+                                                      .Assert();
         }
 
         [TestMethod]
@@ -69,16 +59,15 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
 
             var person = FakeStripeFactory.CreatePerson();
 
-            var handler = new InitializeServiceCommandHandler(
-                _mockStripeService.Object,
-                _mockIntegrationEventService.Object,
-                _mockMoneyAccountService.Object,
-                _mockTokenAccountService.Object
-            );
+            _mockUserRepository.Setup(mock => mock.Create(It.IsAny<UserId>(), It.IsAny<StripeAccountId>(), It.IsAny<StripeCustomerId>())).Verifiable();
+
+            _mockUserRepository.Setup(mock => mock.UnitOfWork.CommitAndDispatchDomainEventsAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask).Verifiable();
+
+            var handler = new CreateUserCommandHandler(_mockStripeService.Object, _mockUserRepository.Object);
 
             // Act
             await handler.HandleAsync(
-                new InitializeServiceCommand(
+                new CreateUserCommand(
                     userId,
                     person.Email,
                     person.FirstName,

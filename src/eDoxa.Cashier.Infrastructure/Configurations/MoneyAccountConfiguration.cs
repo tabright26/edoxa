@@ -29,7 +29,7 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
                    .IsRequired()
                    .UsePropertyAccessMode(PropertyAccessMode.Field);
 
-            builder.Property(account => account.UserId)
+            builder.Property<UserId>(nameof(UserId))
                    .HasConversion(userId => userId.ToGuid(), userId => UserId.FromGuid(userId))
                    .IsRequired()
                    .UsePropertyAccessMode(PropertyAccessMode.Field);

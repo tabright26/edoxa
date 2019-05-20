@@ -20,8 +20,6 @@ namespace eDoxa.Cashier.Domain.Services.Abstractions
 {
     public interface IMoneyAccountService
     {
-        Task CreateAccount(UserId userId);
-
         Task<Either<ValidationError, TransactionStatus>> DepositAsync(
             UserId userId,
             MoneyBundle bundle,

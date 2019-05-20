@@ -1,5 +1,5 @@
 ﻿// Filename: VerifyAccountCommandHandlerTest.cs
-// Date Created: 2019-05-13
+// Date Created: 2019-05-19
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Cashier.Tests.Extensions;
@@ -35,9 +36,11 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     [TestClass]
     public sealed class VerifyAccountCommandHandlerTest
     {
+        private static readonly FakeCashierFactory FakeCashierFactory = FakeCashierFactory.Instance;
         private static readonly FakeStripeFactory FakeStripeFactory = FakeStripeFactory.Instance;
         private Mock<ICashierHttpContext> _mockCashierHttpContext;
         private Mock<IStripeService> _mockStripeService;
+        private Mock<IUserRepository> _mockUserRepository;
 
         [TestInitialize]
         public void TestInitialize()
@@ -45,12 +48,13 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             _mockStripeService = new Mock<IStripeService>();
             _mockCashierHttpContext = new Mock<ICashierHttpContext>();
             _mockCashierHttpContext.SetupGetProperties();
+            _mockUserRepository = new Mock<IUserRepository>();
         }
 
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<VerifyAccountCommandHandler>.For(typeof(IStripeService), typeof(ICashierHttpContext))
+            ConstructorTests<VerifyAccountCommandHandler>.For(typeof(IStripeService), typeof(ICashierHttpContext), typeof(IUserRepository))
                                                          .WithName("VerifyAccountCommandHandler")
                                                          .Assert();
         }
@@ -70,6 +74,10 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
                 true
             );
 
+            var user = FakeCashierFactory.CreateUser();
+
+            _mockUserRepository.Setup(mock => mock.FindUserAsNoTrackingAsync(It.IsAny<UserId>())).ReturnsAsync(user).Verifiable();
+
             _mockStripeService.Setup(
                                   mock => mock.VerifyAccountAsync(
                                       It.IsAny<StripeAccountId>(),
@@ -84,7 +92,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
                               .Returns(Task.CompletedTask)
                               .Verifiable();
 
-            var handler = new VerifyAccountCommandHandler(_mockStripeService.Object, _mockCashierHttpContext.Object);
+            var handler = new VerifyAccountCommandHandler(_mockStripeService.Object, _mockCashierHttpContext.Object, _mockUserRepository.Object);
 
             // Act
             var result = await handler.HandleAsync(command);

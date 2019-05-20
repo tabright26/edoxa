@@ -33,13 +33,6 @@ namespace eDoxa.Cashier.Domain.Services
             _stripeService = stripeService;
         }
 
-        public async Task CreateAccount(UserId userId)
-        {
-            _tokenAccountRepository.Create(new TokenAccount(userId));
-
-            await _tokenAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync();
-        }
-
         public async Task<Either<ValidationError, TransactionStatus>> DepositAsync(
             UserId userId,
             TokenBundle bundle,

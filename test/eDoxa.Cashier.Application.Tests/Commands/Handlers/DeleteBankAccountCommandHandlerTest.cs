@@ -1,5 +1,5 @@
 ﻿// Filename: DeleteBankAccountCommandHandlerTest.cs
-// Date Created: 2019-05-13
+// Date Created: 2019-05-19
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -14,14 +14,15 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Cashier.Tests.Extensions;
+using eDoxa.Cashier.Tests.Factories;
 using eDoxa.Commands.Extensions;
 using eDoxa.Commands.Result;
 using eDoxa.Functional;
 using eDoxa.Seedwork.Domain.Validations;
-using eDoxa.ServiceBus;
 using eDoxa.Testing.MSTest;
 
 using FluentAssertions;
@@ -35,9 +36,10 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     [TestClass]
     public sealed class DeleteBankAccountCommandHandlerTest
     {
+        private static readonly FakeCashierFactory FakeCashierFactory = FakeCashierFactory.Instance;
         private Mock<ICashierHttpContext> _mockCashierHttpContext;
-        private Mock<IIntegrationEventService> _mockIntegrationEventService;
         private Mock<IStripeService> _mockStripeService;
+        private Mock<IUserRepository> _mockUserRepository;
 
         [TestInitialize]
         public void TestInitialize()
@@ -46,13 +48,13 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             _mockStripeService.SetupMethods();
             _mockCashierHttpContext = new Mock<ICashierHttpContext>();
             _mockCashierHttpContext.SetupGetProperties();
-            _mockIntegrationEventService = new Mock<IIntegrationEventService>();
+            _mockUserRepository = new Mock<IUserRepository>();
         }
 
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<DeleteBankAccountCommandHandler>.For(typeof(ICashierHttpContext), typeof(IStripeService), typeof(IIntegrationEventService))
+            ConstructorTests<DeleteBankAccountCommandHandler>.For(typeof(ICashierHttpContext), typeof(IStripeService), typeof(IUserRepository))
                                                              .WithName("DeleteBankAccountCommandHandler")
                                                              .Assert();
         }
@@ -61,7 +63,15 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         public async Task HandleAsync_DeleteBankAccountCommand_ShouldBeOfTypeEither()
         {
             // Arrange
-            var handler = new DeleteBankAccountCommandHandler(_mockCashierHttpContext.Object, _mockStripeService.Object, _mockIntegrationEventService.Object);
+            var user = FakeCashierFactory.CreateUser();
+
+            user.AddBankAccount(new StripeBankAccountId("ba_aqweq1231qwe123"));
+
+            _mockUserRepository.Setup(mock => mock.FindUserAsync(It.IsAny<UserId>())).ReturnsAsync(user).Verifiable();
+
+            _mockUserRepository.Setup(mock => mock.UnitOfWork.CommitAndDispatchDomainEventsAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask).Verifiable();
+
+            var handler = new DeleteBankAccountCommandHandler(_mockCashierHttpContext.Object, _mockStripeService.Object, _mockUserRepository.Object);
 
             // Act
             var result = await handler.HandleAsync(new DeleteBankAccountCommand());

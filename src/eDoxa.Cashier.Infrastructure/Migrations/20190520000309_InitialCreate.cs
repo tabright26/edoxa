@@ -1,5 +1,5 @@
-﻿// Filename: 20190518221430_InitialCreate.cs
-// Date Created: 2019-05-18
+﻿// Filename: 20190520000309_InitialCreate.cs
+// Date Created: 2019-05-19
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -48,6 +48,22 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
             );
 
             migrationBuilder.CreateTable(
+                "Users",
+                schema: "edoxa",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(),
+                    AccountId = table.Column<string>(),
+                    CustomerId = table.Column<string>(),
+                    BankAccountId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                }
+            );
+
+            migrationBuilder.CreateTable(
                 "MoneyAccounts",
                 schema: "edoxa",
                 columns: table => new
@@ -60,6 +76,15 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MoneyAccounts", x => x.Id);
+
+                    table.ForeignKey(
+                        "FK_MoneyAccounts_Users_UserId",
+                        x => x.UserId,
+                        principalSchema: "edoxa",
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade
+                    );
                 }
             );
 
@@ -75,6 +100,15 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TokenAccounts", x => x.Id);
+
+                    table.ForeignKey(
+                        "FK_TokenAccounts_Users_UserId",
+                        x => x.UserId,
+                        principalSchema: "edoxa",
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade
+                    );
                 }
             );
 
@@ -145,7 +179,23 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                 filter: "[IdempotencyKey] IS NOT NULL"
             );
 
+            migrationBuilder.CreateIndex(
+                "IX_MoneyAccounts_UserId",
+                schema: "edoxa",
+                table: "MoneyAccounts",
+                column: "UserId",
+                unique: true
+            );
+
             migrationBuilder.CreateIndex("IX_MoneyTransactions_AccountId", schema: "edoxa", table: "MoneyTransactions", column: "AccountId");
+
+            migrationBuilder.CreateIndex(
+                "IX_TokenAccounts_UserId",
+                schema: "edoxa",
+                table: "TokenAccounts",
+                column: "UserId",
+                unique: true
+            );
 
             migrationBuilder.CreateIndex("IX_TokenTransactions_AccountId", schema: "edoxa", table: "TokenTransactions", column: "AccountId");
         }
@@ -161,6 +211,8 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
             migrationBuilder.DropTable("MoneyAccounts", "edoxa");
 
             migrationBuilder.DropTable("TokenAccounts", "edoxa");
+
+            migrationBuilder.DropTable("Users", "edoxa");
         }
     }
 }

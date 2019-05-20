@@ -63,7 +63,7 @@ namespace eDoxa.Cashier.Application.Tests.IntegrationEvents.Handlers
                 Day = person.Dob.Day.HasValue ? (int) person.Dob.Day.Value : 1
             };
 
-            _mockMediator.Setup(mock => mock.Send(It.IsAny<InitializeServiceCommand>(), It.IsAny<CancellationToken>())).Returns(Unit.Task).Verifiable();
+            _mockMediator.Setup(mock => mock.Send(It.IsAny<CreateUserCommand>(), It.IsAny<CancellationToken>())).Returns(Unit.Task).Verifiable();
 
             var handler = new UserCreatedIntegrationEventHandler(_mockMediator.Object);
 
@@ -71,7 +71,7 @@ namespace eDoxa.Cashier.Application.Tests.IntegrationEvents.Handlers
             await handler.Handle(integrationEvent);
 
             // Assert
-            _mockMediator.Verify(mock => mock.Send(It.IsAny<InitializeServiceCommand>(), It.IsAny<CancellationToken>()), Times.Once);
+            _mockMediator.Verify(mock => mock.Send(It.IsAny<CreateUserCommand>(), It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }

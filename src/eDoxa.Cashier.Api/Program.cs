@@ -18,7 +18,6 @@ using eDoxa.ServiceBus;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -45,11 +44,9 @@ namespace eDoxa.Cashier.Api
 
                         if (environment.IsDevelopment())
                         {
-                            var factory = provider.GetService<ILoggerFactory>();
+                            var loggerFactory = provider.GetService<ILoggerFactory>();
 
-                            var configuration = provider.GetService<IConfiguration>();
-
-                            context.SeedAsync(factory.CreateLogger<CashierDbContext>(), configuration).Wait();
+                            context.SeedAsync(loggerFactory.CreateLogger<CashierDbContext>()).Wait();
                         }
                     }
                 );

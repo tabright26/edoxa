@@ -39,8 +39,7 @@ namespace eDoxa.Cashier.Api.Controllers
         /// <summary>
         ///     Create the Stripe bank account.
         /// </summary>
-        [TestUserResourceFilter]
-        [CreateBankAccountResourceFilter]
+        [StripeResourceFilter]
         [HttpPost(Name = nameof(CreateBankAccountAsync))]
         public async Task<IActionResult> CreateBankAccountAsync([FromBody] CreateBankAccountCommand command)
         {
@@ -52,8 +51,7 @@ namespace eDoxa.Cashier.Api.Controllers
         /// <summary>
         ///     Delete the Stripe bank account.
         /// </summary>
-        [TestUserResourceFilter]
-        [DeleteBankAccountResourceFilter]
+        [StripeResourceFilter]
         [HttpDelete(Name = nameof(DeleteBankAccountAsync))]
         public async Task<IActionResult> DeleteBankAccountAsync()
         {

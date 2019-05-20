@@ -8,22 +8,13 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Linq;
-using System.Threading.Tasks;
-
 using AutoMapper;
 
 using eDoxa.Cashier.Application.Queries;
-using eDoxa.Cashier.Domain;
-using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
-using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
 using eDoxa.Cashier.DTO.Factories;
 using eDoxa.Cashier.Infrastructure;
-using eDoxa.Cashier.Infrastructure.Repositories;
 using eDoxa.Cashier.Security.Abstractions;
-using eDoxa.Cashier.Tests.Asserts;
 using eDoxa.Cashier.Tests.Factories;
-using eDoxa.Seedwork.Infrastructure.Factories;
 using eDoxa.Testing.MSTest;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -51,68 +42,68 @@ namespace eDoxa.Cashier.Application.Tests.Queries
             ConstructorTests<AccountQueries>.For(typeof(CashierDbContext), typeof(ICashierHttpContext), typeof(IMapper)).WithName("AccountQueries").Assert();
         }
 
-        [TestMethod]
-        public async Task GetAccountAsync_AccountCurrencyMoney_ShouldBeMapped()
-        {
-            var userId = FakeCashierFactory.CreateUserId();
+        //[TestMethod]
+        //public async Task GetAccountAsync_AccountCurrencyMoney_ShouldBeMapped()
+        //{
+        //    var userId = FakeCashierFactory.CreateUserId();
 
-            _mockCashierHttpContext.SetupGet(mock => mock.UserId).Returns(userId).Verifiable();
+        //    _mockCashierHttpContext.SetupGet(mock => mock.UserId).Returns(userId).Verifiable();
 
-            using (var factory = new InMemoryDbContextFactory<CashierDbContext>())
-            {
-                using (var context = factory.CreateContext())
-                {
-                    var repository = new MoneyAccountRepository(context);
+        //    using (var factory = new InMemoryDbContextFactory<CashierDbContext>())
+        //    {
+        //        using (var context = factory.CreateContext())
+        //        {
+        //            var repository = new MoneyAccountRepository(context);
 
-                    repository.Create(new MoneyAccount(userId));
+        //            repository.Create(new MoneyAccount(userId));
 
-                    await repository.UnitOfWork.CommitAsync();
-                }
+        //            await repository.UnitOfWork.CommitAsync();
+        //        }
 
-                using (var context = factory.CreateContext())
-                {
-                    // Arrange
-                    var queries = new AccountQueries(context, _mockCashierHttpContext.Object, CashierMapperFactory.CreateMapper());
+        //        using (var context = factory.CreateContext())
+        //        {
+        //            // Arrange
+        //            var queries = new AccountQueries(context, _mockCashierHttpContext.Object, CashierMapperFactory.CreateMapper());
 
-                    // Act
-                    var account = await queries.GetAccountAsync(AccountCurrency.Money);
+        //            // Act
+        //            var account = await queries.GetAccountAsync(AccountCurrency.Money);
 
-                    // Assert
-                    CashierQueryAssert.IsMapped(account.Single());
-                }
-            }
-        }
+        //            // Assert
+        //            CashierQueryAssert.IsMapped(account.Single());
+        //        }
+        //    }
+        //}
 
-        [TestMethod]
-        public async Task GetAccountAsync_AccountCurrencyToken_ShouldBeMapped()
-        {
-            var userId = FakeCashierFactory.CreateUserId();
+        //[TestMethod]
+        //public async Task GetAccountAsync_AccountCurrencyToken_ShouldBeMapped()
+        //{
+        //    var userId = FakeCashierFactory.CreateUserId();
 
-            _mockCashierHttpContext.SetupGet(mock => mock.UserId).Returns(userId).Verifiable();
+        //    _mockCashierHttpContext.SetupGet(mock => mock.UserId).Returns(userId).Verifiable();
 
-            using (var factory = new InMemoryDbContextFactory<CashierDbContext>())
-            {
-                using (var context = factory.CreateContext())
-                {
-                    var repository = new TokenAccountRepository(context);
+        //    using (var factory = new InMemoryDbContextFactory<CashierDbContext>())
+        //    {
+        //        using (var context = factory.CreateContext())
+        //        {
+        //            var repository = new TokenAccountRepository(context);
 
-                    repository.Create(new TokenAccount(userId));
+        //            repository.Create(new TokenAccount(userId));
 
-                    await repository.UnitOfWork.CommitAsync();
-                }
+        //            await repository.UnitOfWork.CommitAsync();
+        //        }
 
-                using (var context = factory.CreateContext())
-                {
-                    // Arrange
-                    var queries = new AccountQueries(context, _mockCashierHttpContext.Object, CashierMapperFactory.CreateMapper());
+        //        using (var context = factory.CreateContext())
+        //        {
+        //            // Arrange
+        //            var queries = new AccountQueries(context, _mockCashierHttpContext.Object, CashierMapperFactory.CreateMapper());
 
-                    // Act
-                    var account = await queries.GetAccountAsync(AccountCurrency.Token);
+        //            // Act
+        //            var account = await queries.GetAccountAsync(AccountCurrency.Token);
 
-                    // Assert
-                    CashierQueryAssert.IsMapped(account.Single());
-                }
-            }
-        }
+        //            // Assert
+        //            CashierQueryAssert.IsMapped(account.Single());
+        //        }
+        //    }
+        //}
     }
 }

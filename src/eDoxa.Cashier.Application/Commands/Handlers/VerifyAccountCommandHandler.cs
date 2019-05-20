@@ -1,5 +1,5 @@
 ﻿// Filename: VerifyAccountCommandHandler.cs
-// Date Created: 2019-05-13
+// Date Created: 2019-05-19
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,6 +11,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Commands.Abstractions.Handlers;
@@ -26,18 +27,22 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
     {
         private readonly ICashierHttpContext _cashierHttpContext;
         private readonly IStripeService _stripeService;
+        private readonly IUserRepository _userRepository;
 
-        public VerifyAccountCommandHandler(IStripeService stripeService, ICashierHttpContext cashierHttpContext)
+        public VerifyAccountCommandHandler(IStripeService stripeService, ICashierHttpContext cashierHttpContext, IUserRepository userRepository)
         {
             _stripeService = stripeService;
             _cashierHttpContext = cashierHttpContext;
+            _userRepository = userRepository;
         }
 
         [ItemNotNull]
         public async Task<Either<ValidationError, CommandResult>> Handle([NotNull] VerifyAccountCommand command, CancellationToken cancellationToken)
         {
+            var user = await _userRepository.FindUserAsNoTrackingAsync(_cashierHttpContext.UserId);
+
             await _stripeService.VerifyAccountAsync(
-                _cashierHttpContext.StripeAccountId,
+                user.AccountId,
                 command.Line1,
                 command.Line2,
                 command.City,

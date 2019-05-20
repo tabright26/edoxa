@@ -1,5 +1,5 @@
 ﻿// Filename: WithdrawMoneyCommandHandlerTest.cs
-// Date Created: 2019-05-13
+// Date Created: 2019-05-19
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -16,9 +16,11 @@ using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
+using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services.Abstractions;
 using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Cashier.Tests.Extensions;
+using eDoxa.Cashier.Tests.Factories;
 using eDoxa.Commands.Extensions;
 using eDoxa.Functional;
 using eDoxa.Seedwork.Domain.Validations;
@@ -35,8 +37,10 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     [TestClass]
     public sealed class WithdrawMoneyCommandHandlerTest
     {
+        private static readonly FakeCashierFactory FakeCashierFactory = FakeCashierFactory.Instance;
         private Mock<ICashierHttpContext> _mockCashierHttpContext;
         private Mock<IMoneyAccountService> _mockMoneyAccountService;
+        private Mock<IUserRepository> _mockUserRepository;
 
         [TestInitialize]
         public void TestInitialize()
@@ -44,12 +48,13 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             _mockMoneyAccountService = new Mock<IMoneyAccountService>();
             _mockCashierHttpContext = new Mock<ICashierHttpContext>();
             _mockCashierHttpContext.SetupGetProperties();
+            _mockUserRepository = new Mock<IUserRepository>();
         }
 
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<WithdrawMoneyCommandHandler>.For(typeof(ICashierHttpContext), typeof(IMoneyAccountService))
+            ConstructorTests<WithdrawMoneyCommandHandler>.For(typeof(ICashierHttpContext), typeof(IMoneyAccountService), typeof(IUserRepository))
                                                          .WithName("WithdrawMoneyCommandHandler")
                                                          .Assert();
         }
@@ -60,12 +65,16 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             // Arrange
             var command = new WithdrawMoneyCommand(MoneyWithdrawBundleType.Fifty);
 
+            var user = FakeCashierFactory.CreateUser();
+
+            _mockUserRepository.Setup(mock => mock.FindUserAsNoTrackingAsync(It.IsAny<UserId>())).ReturnsAsync(user).Verifiable();
+
             _mockMoneyAccountService
                 .Setup(mock => mock.WithdrawAsync(It.IsAny<UserId>(), It.IsAny<MoneyBundle>(), It.IsAny<StripeAccountId>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(TransactionStatus.Completed)
                 .Verifiable();
 
-            var handler = new WithdrawMoneyCommandHandler(_mockCashierHttpContext.Object, _mockMoneyAccountService.Object);
+            var handler = new WithdrawMoneyCommandHandler(_mockCashierHttpContext.Object, _mockMoneyAccountService.Object, _mockUserRepository.Object);
 
             // Act
             var result = await handler.HandleAsync(command);

@@ -14,6 +14,7 @@ using System.Linq;
 
 using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate.Specifications;
+using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Validations;
@@ -24,11 +25,11 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
     {
         private DateTime? _lastDeposit;
         private HashSet<TokenTransaction> _transactions;
-        private UserId _userId;
+        private User _user;
 
-        public TokenAccount(UserId userId) : this()
+        public TokenAccount(User user) : this()
         {
-            _userId = userId;
+            _user = user;
         }
 
         private TokenAccount()
@@ -36,7 +37,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
             _transactions = new HashSet<TokenTransaction>();
         }
 
-        public UserId UserId => _userId;
+        public User User => _user;
 
         public Token Balance =>
             new Token(Transactions.Where(transaction => transaction.Status.Equals(TransactionStatus.Completed)).Sum(transaction => transaction.Amount));

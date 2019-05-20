@@ -13,6 +13,7 @@ using System;
 using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 
 namespace eDoxa.Cashier.Tests.Factories
 {
@@ -25,6 +26,11 @@ namespace eDoxa.Cashier.Tests.Factories
         public UserId CreateUserId()
         {
             return new UserId();
+        }
+
+        public User CreateUser()
+        {
+            return new User(this.CreateUserId(), new StripeAccountId("acct_qweqwe1231qwe"), new StripeCustomerId("cus_qweqwe1231qwe"));
         }
 
         public IBundle CreateBundle()

@@ -10,6 +10,8 @@
 
 using System;
 
+using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
+using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Infrastructure;
 using eDoxa.Monitoring.Extensions;
 using eDoxa.Security.Extensions;
@@ -18,7 +20,7 @@ using eDoxa.ServiceBus;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -47,9 +49,11 @@ namespace eDoxa.Identity.Api
                         {
                             var loggerFactory = provider.GetService<ILoggerFactory>();
 
-                            var configuration = provider.GetService<IConfiguration>();
+                            var userManager = provider.GetService<UserManager<User>>();
 
-                            context.Seed(loggerFactory.CreateLogger<IdentityDbContext>(), configuration);
+                            var roleManager = provider.GetService<RoleManager<Role>>();
+
+                            context.Seed(loggerFactory.CreateLogger<IdentityDbContext>(), userManager, roleManager).Wait();
                         }
                     }
                 );

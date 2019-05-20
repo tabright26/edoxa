@@ -15,11 +15,5 @@ namespace eDoxa.Cashier.Security.Abstractions
     public interface ICashierHttpContext
     {
         UserId UserId { get; }
-
-        StripeAccountId StripeAccountId { get; }
-
-        StripeBankAccountId StripeBankAccountId { get; }
-
-        StripeCustomerId StripeCustomerId { get; }
     }
 }

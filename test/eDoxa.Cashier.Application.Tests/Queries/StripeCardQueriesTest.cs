@@ -15,6 +15,7 @@ using AutoMapper;
 
 using eDoxa.Cashier.Application.Queries;
 using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.Security.Abstractions;
@@ -34,10 +35,11 @@ namespace eDoxa.Cashier.Application.Tests.Queries
     [TestClass]
     public sealed class StripeCardQueriesTest
     {
-        private static readonly FakeStripeFactory FakeStripeFactory = FakeStripeFactory.Instance;
+        private static readonly FakeCashierFactory FakeCashierFactory = FakeCashierFactory.Instance;
         private Mock<ICashierHttpContext> _mockCashierHttpContext;
         private Mock<IMapper> _mockMapper;
         private Mock<IStripeService> _mockStripeService;
+        private Mock<IUserRepository> _mockUserRepository;
 
         [TestInitialize]
         public void TestInitialize()
@@ -45,12 +47,13 @@ namespace eDoxa.Cashier.Application.Tests.Queries
             _mockStripeService = new Mock<IStripeService>();
             _mockCashierHttpContext = new Mock<ICashierHttpContext>();
             _mockMapper = new Mock<IMapper>();
+            _mockUserRepository = new Mock<IUserRepository>();
         }
 
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<StripeCardQueries>.For(typeof(IStripeService), typeof(ICashierHttpContext), typeof(IMapper))
+            ConstructorTests<StripeCardQueries>.For(typeof(IStripeService), typeof(ICashierHttpContext), typeof(IMapper), typeof(IUserRepository))
                                                .WithName("StripeCardQueries")
                                                .Assert();
         }
@@ -59,6 +62,10 @@ namespace eDoxa.Cashier.Application.Tests.Queries
         public async Task GetCardsAsync_ShouldNotBeEmpty()
         {
             // Arrange
+            var user = FakeCashierFactory.CreateUser();
+
+            _mockUserRepository.Setup(mock => mock.FindUserAsNoTrackingAsync(It.IsAny<UserId>())).ReturnsAsync(user).Verifiable();
+
             _mockStripeService.Setup(mock => mock.GetCardsAsync(It.IsAny<StripeCustomerId>()))
                               .ReturnsAsync(
                                   new List<Card>
@@ -80,7 +87,7 @@ namespace eDoxa.Cashier.Application.Tests.Queries
                        )
                        .Verifiable();
 
-            var queries = new StripeCardQueries(_mockStripeService.Object, _mockCashierHttpContext.Object, _mockMapper.Object);
+            var queries = new StripeCardQueries(_mockStripeService.Object, _mockCashierHttpContext.Object, _mockMapper.Object, _mockUserRepository.Object);
 
             // Act
             var result = await queries.GetCardsAsync();
@@ -97,11 +104,15 @@ namespace eDoxa.Cashier.Application.Tests.Queries
         public async Task GetCardsAsync_ShouldBeEmpty()
         {
             // Arrange
+            var user = FakeCashierFactory.CreateUser();
+
+            _mockUserRepository.Setup(mock => mock.FindUserAsNoTrackingAsync(It.IsAny<UserId>())).ReturnsAsync(user).Verifiable();
+
             _mockStripeService.Setup(mock => mock.GetCardsAsync(It.IsAny<StripeCustomerId>())).ReturnsAsync(new List<Card>()).Verifiable();
 
             _mockMapper.Setup(mock => mock.Map<StripeCardListDTO>(It.IsAny<IEnumerable<Card>>())).Returns(new StripeCardListDTO()).Verifiable();
 
-            var queries = new StripeCardQueries(_mockStripeService.Object, _mockCashierHttpContext.Object, _mockMapper.Object);
+            var queries = new StripeCardQueries(_mockStripeService.Object, _mockCashierHttpContext.Object, _mockMapper.Object, _mockUserRepository.Object);
 
             // Act
             var result = await queries.GetCardsAsync();

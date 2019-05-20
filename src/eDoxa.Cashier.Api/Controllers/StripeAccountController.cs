@@ -39,7 +39,7 @@ namespace eDoxa.Cashier.Api.Controllers
         /// <summary>
         ///     Verify the Stripe account
         /// </summary>
-        [TestUserResourceFilter]
+        [StripeResourceFilter]
         [HttpPatch("verify", Name = nameof(VerifyAccountAsync))]
         public async Task<IActionResult> VerifyAccountAsync([FromBody] VerifyAccountCommand command)
         {

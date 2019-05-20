@@ -1,5 +1,5 @@
-﻿// Filename: IMoneyAccountRepository.cs
-// Date Created: 2019-05-06
+﻿// Filename: IUserRepository.cs
+// Date Created: 2019-05-19
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,13 +11,17 @@
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Cashier.Domain.Repositories
 {
-    public interface IMoneyAccountRepository : IRepository<MoneyAccount>
+    public interface IUserRepository : IRepository<User>
     {
-        Task<MoneyAccount> FindUserAccountAsync(UserId userId);
+        void Create(UserId userId, StripeAccountId accountId, StripeCustomerId customerId);
+
+        Task<User> FindUserAsync(UserId userId);
+
+        Task<User> FindUserAsNoTrackingAsync(UserId userId);
     }
 }

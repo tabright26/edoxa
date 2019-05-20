@@ -42,6 +42,8 @@ namespace eDoxa.Cashier.Application
             builder.RegisterModule<IntegrationEventModule<ApplicationModule, CashierDbContext>>();
 
             // Repositories
+            builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerLifetimeScope();
+
             builder.RegisterType<MoneyAccountRepository>().As<IMoneyAccountRepository>().InstancePerLifetimeScope();
 
             builder.RegisterType<TokenAccountRepository>().As<ITokenAccountRepository>().InstancePerLifetimeScope();

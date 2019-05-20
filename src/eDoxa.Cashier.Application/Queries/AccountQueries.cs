@@ -44,7 +44,7 @@ namespace eDoxa.Cashier.Application.Queries
         {
             return await _context.MoneyAccounts.AsNoTracking()
                                  .Include(transaction => transaction.Transactions)
-                                 .Where(account => account.UserId == userId)
+                                 .Where(account => account.User.Id == userId)
                                  .SingleOrDefaultAsync();
         }
 
@@ -52,7 +52,7 @@ namespace eDoxa.Cashier.Application.Queries
         {
             return await _context.TokenAccounts.AsNoTracking()
                                  .Include(transaction => transaction.Transactions)
-                                 .Where(account => account.UserId == userId)
+                                 .Where(account => account.User.Id == userId)
                                  .SingleOrDefaultAsync();
         }
     }

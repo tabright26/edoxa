@@ -1,5 +1,5 @@
 ﻿// Filename: IdentityDbContext.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-05-19
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,50 +10,69 @@
 
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
-using eDoxa.Functional.Extensions;
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Infrastructure.Configurations;
+using eDoxa.Security;
 
 using JetBrains.Annotations;
 
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Identity.Infrastructure
 {
     public sealed partial class IdentityDbContext
     {
-        public void Seed(ILogger logger, IConfiguration configuration)
+        public async Task Seed(ILogger logger, UserManager<User> userManager, RoleManager<Role> roleManager)
         {
-            if (!Roles.Any())
+            var adminRole = new Role("Administrator");
+
+            if (!await roleManager.RoleExistsAsync(adminRole.Name))
             {
-                var roles = configuration.GetSection("Roles").Get<HashSet<Role>>();
+                await roleManager.CreateAsync(adminRole);
 
-                Roles.AddRange(roles);
-
-                this.SaveChanges();
-
-                logger.LogInformation("The roles being populated.");
+                await roleManager.AddClaimAsync(adminRole, new Claim(CustomClaimTypes.Permission, "*"));
             }
-            else
+
+            var challengerRole = new Role("Challenger");
+
+            if (!await roleManager.RoleExistsAsync(challengerRole.Name))
             {
-                logger.LogInformation("The roles already populated.");
+                await roleManager.CreateAsync(challengerRole);
+
+                await roleManager.AddClaimAsync(challengerRole, new Claim(CustomClaimTypes.Permission, "challenge.read"));
+
+                await roleManager.AddClaimAsync(challengerRole, new Claim(CustomClaimTypes.Permission, "challenge.register"));
             }
 
             if (!Users.Any())
             {
-                var users = configuration.GetSection("Users").Get<HashSet<User>>();
+                var admin = new User("Administrator", "admin@edoxa.gg", new PersonalName("eDoxa", "Admin"), new BirthDate(1970, 1, 1))
+                {
+                    Id = Guid.Parse("e4655fe0-affd-4323-b022-bdb2ebde6091"),
+                    EmailConfirmed = true,
+                    PhoneNumber = "0000000000",
+                    PhoneNumberConfirmed = true,
+                    LockoutEnabled = false
+                };
 
-                users.ForEach(user => user.HashPassword("Pass@word1"));
+                await userManager.CreateAsync(admin, "Pass@word1");
 
-                Users.AddRange(users);
-
-                this.SaveChanges();
+                await userManager.AddToRolesAsync(
+                    admin,
+                    new List<string>
+                    {
+                        adminRole.Name,
+                        challengerRole.Name
+                    }
+                );
 
                 logger.LogInformation("The users being populated.");
             }

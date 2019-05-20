@@ -1,5 +1,5 @@
 ﻿// Filename: DepositMoneyCommandHandler.cs
-// Date Created: 2019-05-13
+// Date Created: 2019-05-19
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
+using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services.Abstractions;
 using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Commands.Abstractions.Handlers;
@@ -28,22 +29,21 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         private static readonly MoneyDepositBundles Bundles = new MoneyDepositBundles();
         private readonly ICashierHttpContext _cashierHttpContext;
         private readonly IMoneyAccountService _moneyAccountService;
+        private readonly IUserRepository _userRepository;
 
-        public DepositMoneyCommandHandler(ICashierHttpContext cashierHttpContext, IMoneyAccountService moneyAccountService)
+        public DepositMoneyCommandHandler(ICashierHttpContext cashierHttpContext, IMoneyAccountService moneyAccountService, IUserRepository userRepository)
         {
             _cashierHttpContext = cashierHttpContext;
             _moneyAccountService = moneyAccountService;
+            _userRepository = userRepository;
         }
 
         [ItemNotNull]
         public async Task<Either<ValidationError, TransactionStatus>> Handle([NotNull] DepositMoneyCommand command, CancellationToken cancellationToken)
         {
-            return await _moneyAccountService.DepositAsync(
-                _cashierHttpContext.UserId,
-                Bundles[command.BundleType],
-                _cashierHttpContext.StripeCustomerId,
-                cancellationToken
-            );
+            var user = await _userRepository.FindUserAsNoTrackingAsync(_cashierHttpContext.UserId);
+
+            return await _moneyAccountService.DepositAsync(_cashierHttpContext.UserId, Bundles[command.BundleType], user.CustomerId, cancellationToken);
         }
     }
 }

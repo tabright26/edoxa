@@ -13,9 +13,9 @@ using eDoxa.Commands.Abstractions;
 
 namespace eDoxa.Cashier.Application.Commands
 {
-    public sealed class InitializeServiceCommand : Command
+    public sealed class CreateUserCommand : Command
     {
-        public InitializeServiceCommand(
+        public CreateUserCommand(
             UserId userId,
             string email,
             string firstName,

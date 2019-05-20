@@ -322,9 +322,8 @@ namespace eDoxa.Cashier.Domain.Services.Stripe.Tests
 
         private StripeService StripeService()
         {
-            // TODO: WARNING! This implementation of the IConfiguration service can cause problems during automated VSTS testing with Docker support.
             var configuration = new ConfigurationBuilder().SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../../../../../src/eDoxa.Cashier.Api"))
-                                                          .AddJsonFile("appsettings.Development.json", false, true)
+                                                          .AddJsonFile("appsettings.json", false, true)
                                                           .AddEnvironmentVariables()
                                                           .Build();
 

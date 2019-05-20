@@ -10,7 +10,7 @@ using eDoxa.Cashier.Infrastructure;
 namespace eDoxa.Cashier.Infrastructure.Migrations
 {
     [DbContext(typeof(CashierDbContext))]
-    [Migration("20190518221430_InitialCreate")]
+    [Migration("20190520000309_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,6 +33,9 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                     b.Property<Guid>("UserId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("MoneyAccounts");
                 });
@@ -73,6 +76,9 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
                     b.ToTable("TokenAccounts");
                 });
 
@@ -100,6 +106,23 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                     b.HasIndex("AccountId");
 
                     b.ToTable("TokenTransactions");
+                });
+
+            modelBuilder.Entity("eDoxa.Cashier.Domain.AggregateModels.UserAggregate.User", b =>
+                {
+                    b.Property<Guid>("Id");
+
+                    b.Property<string>("AccountId")
+                        .IsRequired();
+
+                    b.Property<string>("BankAccountId");
+
+                    b.Property<string>("CustomerId")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("eDoxa.Seedwork.Infrastructure.Models.LogEntry", b =>
@@ -140,11 +163,27 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                     b.ToTable("Logs","dbo");
                 });
 
+            modelBuilder.Entity("eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate.MoneyAccount", b =>
+                {
+                    b.HasOne("eDoxa.Cashier.Domain.AggregateModels.UserAggregate.User", "User")
+                        .WithOne("MoneyAccount")
+                        .HasForeignKey("eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate.MoneyAccount", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate.MoneyTransaction", b =>
                 {
                     b.HasOne("eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate.MoneyAccount")
                         .WithMany("Transactions")
                         .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate.TokenAccount", b =>
+                {
+                    b.HasOne("eDoxa.Cashier.Domain.AggregateModels.UserAggregate.User", "User")
+                        .WithOne("TokenAccount")
+                        .HasForeignKey("eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate.TokenAccount", "UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

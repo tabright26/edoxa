@@ -13,11 +13,7 @@ namespace eDoxa.Cashier.Domain.Services.Stripe
     internal sealed class StripeErrorTypes
     {
         internal const string CardError = "card_error";
-        internal const string ApiConnectionError = "api_connection_error";
-        internal const string ApiError = "api_error";
-        internal const string AuthenticationError = "authentication_error";
         internal const string InvalidRequestError = "invalid_request_error";
-        internal const string RateLimitError = "rate_limit_error";
         internal const string ValidationError = "validation_error";
     }
 }

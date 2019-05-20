@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
@@ -23,13 +24,15 @@ namespace eDoxa.Cashier.Application.Queries
     {
         private readonly ICashierHttpContext _httpContext;
         private readonly IMapper _mapper;
+        private readonly IUserRepository _userRepository;
         private readonly IStripeService _service;
 
-        public StripeCardQueries(IStripeService service, ICashierHttpContext httpContext, IMapper mapper)
+        public StripeCardQueries(IStripeService service, ICashierHttpContext httpContext, IMapper mapper, IUserRepository userRepository)
         {
             _service = service;
             _httpContext = httpContext;
             _mapper = mapper;
+            _userRepository = userRepository;
         }
     }
 
@@ -37,9 +40,9 @@ namespace eDoxa.Cashier.Application.Queries
     {
         public async Task<StripeCardListDTO> GetCardsAsync()
         {
-            var customerId = _httpContext.StripeCustomerId;
+            var user = await _userRepository.FindUserAsNoTrackingAsync(_httpContext.UserId);
 
-            var cards = await _service.GetCardsAsync(customerId);
+            var cards = await _service.GetCardsAsync(user.CustomerId);
 
             return _mapper.Map<StripeCardListDTO>(cards);
         }
