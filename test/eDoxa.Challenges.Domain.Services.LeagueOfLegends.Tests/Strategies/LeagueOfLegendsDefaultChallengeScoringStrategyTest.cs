@@ -9,7 +9,7 @@
 // this source code package.
 
 using eDoxa.Arena.Services.LeagueOfLegends.DTO;
-using eDoxa.Challenges.Domain.Entities.AggregateModels.MatchAggregate;
+using eDoxa.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Challenges.Domain.Services.LeagueOfLegends.Strategies;
 
 using FluentAssertions;

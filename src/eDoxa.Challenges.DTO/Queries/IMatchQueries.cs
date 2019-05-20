@@ -10,7 +10,7 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Domain.Entities.AggregateModels;
+using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Functional;
 
 namespace eDoxa.Challenges.DTO.Queries

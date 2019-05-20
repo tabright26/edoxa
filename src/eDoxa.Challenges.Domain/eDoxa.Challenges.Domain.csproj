@@ -5,10 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\eDoxa.Challenges.Domain.Entities.Custom\eDoxa.Challenges.Domain.Entities.Custom.csproj" />
-    <ProjectReference Include="..\eDoxa.Challenges.Domain.Entities.Default\eDoxa.Challenges.Domain.Entities.Default.csproj" />
-    <ProjectReference Include="..\eDoxa.Challenges.Domain.Entities.Random\eDoxa.Challenges.Domain.Entities.Random.csproj" />
-    <ProjectReference Include="..\eDoxa.Challenges.Domain.Entities\eDoxa.Challenges.Domain.Entities.csproj" />
+    <PackageReference Include="Moq" Version="4.10.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\eDoxa.Seedwork.Domain\eDoxa.Seedwork.Domain.csproj" />
+    <ProjectReference Include="..\eDoxa.Specifications\eDoxa.Specifications.csproj" />
   </ItemGroup>
 
 </Project>

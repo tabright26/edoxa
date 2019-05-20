@@ -11,8 +11,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Domain.Entities.AggregateModels;
-using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
+using eDoxa.Challenges.Domain.AggregateModels;
+using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.DTO.Queries;
 using eDoxa.Seedwork.Domain.Enumerations;
 
@@ -26,6 +26,7 @@ namespace eDoxa.Challenges.Api.Controllers
     [ApiVersion("1.0")]
     [Produces("application/json")]
     [Route("api/challenges")]
+    [ApiExplorerSettings(GroupName = "Challenges")]
     public class ChallengesController : ControllerBase
     {
         private readonly IChallengeQueries _queries;

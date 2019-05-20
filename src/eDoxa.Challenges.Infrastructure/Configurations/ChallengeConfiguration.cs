@@ -10,9 +10,9 @@
 
 using System;
 
-using eDoxa.Challenges.Domain.Entities;
-using eDoxa.Challenges.Domain.Entities.AggregateModels;
-using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
+using eDoxa.Challenges.Domain;
+using eDoxa.Challenges.Domain.AggregateModels;
+using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Infrastructure.Converters;
 using eDoxa.Seedwork.Domain.Enumerations;
 

@@ -8,10 +8,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\eDoxa.Arena.Services.LeagueOfLegends.DTO\eDoxa.Arena.Services.LeagueOfLegends.DTO.csproj" />
-        <ProjectReference Include="..\eDoxa.Challenges.Domain.Entities.Custom\eDoxa.Challenges.Domain.Entities.Custom.csproj" />
-        <ProjectReference Include="..\eDoxa.Challenges.Domain.Entities.Default\eDoxa.Challenges.Domain.Entities.Default.csproj" />
-        <ProjectReference Include="..\eDoxa.Challenges.Domain.Entities.Random\eDoxa.Challenges.Domain.Entities.Random.csproj" />
-        <ProjectReference Include="..\eDoxa.Challenges.Domain.Entities\eDoxa.Challenges.Domain.Entities.csproj" />
+        <ProjectReference Include="..\eDoxa.Challenges.Domain\eDoxa.Challenges.Domain.csproj" />
     </ItemGroup>
 
 </Project>

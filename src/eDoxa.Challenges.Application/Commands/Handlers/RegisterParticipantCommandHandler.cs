@@ -11,10 +11,10 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Domain.Entities.AggregateModels;
-using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate.Specifications;
-using eDoxa.Challenges.Domain.Entities.AggregateModels.ParticipantAggregate;
-using eDoxa.Challenges.Domain.Entities.AggregateModels.ParticipantAggregate.Specifications;
+using eDoxa.Challenges.Domain.AggregateModels;
+using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Specifications;
+using eDoxa.Challenges.Domain.AggregateModels.ParticipantAggregate;
+using eDoxa.Challenges.Domain.AggregateModels.ParticipantAggregate.Specifications;
 using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Security.Abstractions;

@@ -11,19 +11,18 @@
 using System;
 using System.Reflection;
 
-using eDoxa.Challenges.Domain.Entities;
-using eDoxa.Challenges.Domain.Entities.Abstractions;
-using eDoxa.Challenges.Domain.Entities.AggregateModels;
-using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.Entities.AggregateModels.MatchAggregate;
-using eDoxa.Challenges.Domain.Entities.AggregateModels.ParticipantAggregate;
-using eDoxa.Challenges.Domain.Entities.Default;
+using eDoxa.Challenges.Domain.Abstractions;
+using eDoxa.Challenges.Domain.AggregateModels;
+using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Challenges.Domain.AggregateModels.MatchAggregate;
+using eDoxa.Challenges.Domain.AggregateModels.ParticipantAggregate;
+using eDoxa.Challenges.Domain.Services;
 using eDoxa.Functional;
 using eDoxa.Seedwork.Domain.Enumerations;
 
 using Moq;
 
-using Match = eDoxa.Challenges.Domain.Entities.AggregateModels.MatchAggregate.Match;
+using Match = eDoxa.Challenges.Domain.AggregateModels.MatchAggregate.Match;
 
 namespace eDoxa.Challenges.Domain.Factories
 {

@@ -14,9 +14,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 
-using eDoxa.Challenges.Domain.Entities.AggregateModels;
-using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.Entities.AggregateModels.ParticipantAggregate;
+using eDoxa.Challenges.Domain.AggregateModels;
+using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Challenges.Domain.AggregateModels.ParticipantAggregate;
 
 namespace eDoxa.Challenges.Domain.Factories
 {

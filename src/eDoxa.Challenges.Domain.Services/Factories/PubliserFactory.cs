@@ -10,8 +10,7 @@
 
 using System;
 
-using eDoxa.Challenges.Domain.Entities;
-using eDoxa.Challenges.Domain.Entities.Abstractions;
+using eDoxa.Challenges.Domain.Abstractions;
 using eDoxa.Challenges.Domain.Services.LeagueOfLegends.Factories;
 using eDoxa.Seedwork.Domain.Enumerations;
 

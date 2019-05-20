@@ -12,9 +12,9 @@ using System.Linq;
 using System.Reflection;
 
 using eDoxa.Arena.Services.LeagueOfLegends.DTO.Tests;
-using eDoxa.Challenges.Domain.Entities.AggregateModels;
-using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.Entities.AggregateModels.ParticipantAggregate;
+using eDoxa.Challenges.Domain.AggregateModels;
+using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Challenges.Domain.Factories;
 using eDoxa.Challenges.Domain.Services.LeagueOfLegends.Adapters;
 

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Challenges.Application.Commands;
 using eDoxa.Challenges.Application.Commands.Handlers;
-using eDoxa.Challenges.Domain.Entities;
+using eDoxa.Challenges.Domain;
 using eDoxa.Challenges.Domain.Services;
 using eDoxa.Commands.Extensions;
 

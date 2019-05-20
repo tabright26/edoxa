@@ -13,9 +13,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Domain.Entities;
-using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.Entities.Default.Factories;
+using eDoxa.Challenges.Domain;
+using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Challenges.Domain.Services;
 using eDoxa.Challenges.Domain.Services.Factories;

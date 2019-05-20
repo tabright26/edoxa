@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using eDoxa.Challenges.Application.Commands;
 using eDoxa.Challenges.Application.IntegrationEvents;
 using eDoxa.Challenges.Application.IntegrationEvents.Handlers;
-using eDoxa.Challenges.Domain.Entities;
+using eDoxa.Challenges.Domain;
 using eDoxa.ServiceBus.Extensions;
 
 using MediatR;

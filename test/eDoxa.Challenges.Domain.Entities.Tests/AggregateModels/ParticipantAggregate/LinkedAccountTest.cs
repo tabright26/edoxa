@@ -10,7 +10,7 @@
 
 using System;
 
-using eDoxa.Challenges.Domain.Entities.AggregateModels.ParticipantAggregate;
+using eDoxa.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Testing.MSTest;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;

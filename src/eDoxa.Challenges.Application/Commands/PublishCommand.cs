@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Challenges.Domain.Entities;
+using eDoxa.Challenges.Domain;
 using eDoxa.Commands.Abstractions;
 
 namespace eDoxa.Challenges.Application.Commands

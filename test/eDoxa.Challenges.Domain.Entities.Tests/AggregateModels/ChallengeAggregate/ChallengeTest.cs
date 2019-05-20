@@ -11,11 +11,11 @@
 using System;
 using System.Linq;
 
-using eDoxa.Challenges.Domain.Entities.AggregateModels;
-using eDoxa.Challenges.Domain.Entities.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.Entities.AggregateModels.ParticipantAggregate;
-using eDoxa.Challenges.Domain.Entities.Default;
+using eDoxa.Challenges.Domain.AggregateModels;
+using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Challenges.Domain.Factories;
+using eDoxa.Challenges.Domain.Services;
 using eDoxa.Seedwork.Domain.Enumerations;
 
 using FluentAssertions;

@@ -10,7 +10,7 @@
 
 using System.Collections.Generic;
 
-using eDoxa.Challenges.Domain.Entities.AggregateModels;
+using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.Factories;
 using eDoxa.Functional;
 

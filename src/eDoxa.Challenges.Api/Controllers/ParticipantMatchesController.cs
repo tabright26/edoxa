@@ -11,7 +11,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Domain.Entities.AggregateModels;
+using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.DTO.Queries;
 
 using Microsoft.AspNetCore.Authorization;
@@ -24,6 +24,7 @@ namespace eDoxa.Challenges.Api.Controllers
     [ApiVersion("1.0")]
     [Produces("application/json")]
     [Route("api/participants/{participantId}/matches")]
+    [ApiExplorerSettings(GroupName = "Participants")]
     public class ParticipantMatchesController : ControllerBase
     {
         private readonly IMatchQueries _queries;
