@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AssemblyName>eDoxa.Arena.Challenges.Application</AssemblyName>
+    <RootNamespace>eDoxa.Arena.Challenges.Application</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\eDoxa.Autofac\eDoxa.Autofac.csproj" />
+    <ProjectReference Include="..\eDoxa.Arena.Challenges.Domain.Services\eDoxa.Arena.Challenges.Domain.Services.csproj" />
+    <ProjectReference Include="..\eDoxa.Arena.Challenges.DTO\eDoxa.Arena.Challenges.DTO.csproj" />
+    <ProjectReference Include="..\eDoxa.Arena.Challenges.Infrastructure\eDoxa.Arena.Challenges.Infrastructure.csproj" />
+    <ProjectReference Include="..\eDoxa.Commands\eDoxa.Commands.csproj" />
+    <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -10,10 +10,13 @@
 
 using eDoxa.Seedwork.Domain.Enumerations;
 
+using JetBrains.Annotations;
+
 namespace eDoxa.Security.Abstractions
 {
     public interface IUserLoginInfoService
     {
+        [CanBeNull]
         string GetExternalKey(Game game);
     }
 }

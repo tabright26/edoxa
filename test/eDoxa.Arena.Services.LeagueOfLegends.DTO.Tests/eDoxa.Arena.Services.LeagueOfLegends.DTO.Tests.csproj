@@ -26,7 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\eDoxa.Arena.Services.LeagueOfLegends.DTO\eDoxa.Arena.Services.LeagueOfLegends.DTO.csproj" />
-    <ProjectReference Include="..\eDoxa.Challenges.Tests\eDoxa.Challenges.Tests.csproj" />
+    <ProjectReference Include="..\eDoxa.Testing.MSTest\eDoxa.Testing.MSTest.csproj" />
   </ItemGroup>
 
 </Project>

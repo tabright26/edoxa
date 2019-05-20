@@ -44,7 +44,7 @@ services:
     image: $ACR_REGISTRY/challenge.api:$ACR_TAG
     build:
       context: .
-      dockerfile: src/eDoxa.Challenges.Api/Dockerfile
+      dockerfile: src/eDoxa.Arena.Challenges.Api/Dockerfile
     depends_on:
       - mssql
       - rabbitmq 

@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AssemblyName>eDoxa.Arena.Challenges.Infrastructure</AssemblyName>
+    <RootNamespace>eDoxa.Arena.Challenges.Infrastructure</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\eDoxa.AutoMapper\eDoxa.AutoMapper.csproj" />
+    <ProjectReference Include="..\eDoxa.Arena.Challenges.Domain.Services\eDoxa.Arena.Challenges.Domain.Services.csproj" />
+    <ProjectReference Include="..\eDoxa.Arena.Challenges.Domain\eDoxa.Arena.Challenges.Domain.csproj" />
+    <ProjectReference Include="..\eDoxa.Seedwork.Infrastructure\eDoxa.Seedwork.Infrastructure.csproj" />
+    <ProjectReference Include="..\eDoxa.ServiceBus\eDoxa.ServiceBus.csproj" />
+  </ItemGroup>
+
+</Project>
