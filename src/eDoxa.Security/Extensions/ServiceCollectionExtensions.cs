@@ -138,8 +138,8 @@ namespace eDoxa.Security.Extensions
                     options.Events.RaiseFailureEvents = true;
                     options.Events.RaiseSuccessEvents = true;
 
-                    options.UserInteraction.LoginUrl = "/Identity/Account/Login";
-                    options.UserInteraction.LogoutUrl = "/Identity/Account/Logout";
+                    options.UserInteraction.LoginUrl = "/Account/Login";
+                    options.UserInteraction.LogoutUrl = "/Account/Logout";
                 })
                 .AddDeveloperSigningCredential()
                 .AddInMemoryPersistedGrants()

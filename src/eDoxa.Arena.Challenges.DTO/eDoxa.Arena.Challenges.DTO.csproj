@@ -1,17 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>eDoxa.Arena.Challenges.DTO</AssemblyName>
-    <RootNamespace>eDoxa.Arena.Challenges.DTO</RootNamespace>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <AssemblyName>eDoxa.Arena.Challenges.DTO</AssemblyName>
+        <RootNamespace>eDoxa.Arena.Challenges.DTO</RootNamespace>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\eDoxa.AutoMapper\eDoxa.AutoMapper.csproj" />
-    <ProjectReference Include="..\eDoxa.Arena.Challenges.Domain.Services\eDoxa.Arena.Challenges.Domain.Services.csproj" />
-    <ProjectReference Include="..\eDoxa.Arena.Challenges.Domain\eDoxa.Arena.Challenges.Domain.csproj" />
-    <ProjectReference Include="..\eDoxa.Functional\eDoxa.Functional.csproj" />
-    <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\eDoxa.Arena.Challenges.Domain.Services\eDoxa.Arena.Challenges.Domain.Services.csproj" />
+        <ProjectReference Include="..\eDoxa.Arena.Challenges.Domain\eDoxa.Arena.Challenges.Domain.csproj" />
+        <ProjectReference Include="..\eDoxa.AutoMapper\eDoxa.AutoMapper.csproj" />
+        <ProjectReference Include="..\eDoxa.Functional\eDoxa.Functional.csproj" />
+        <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
+    </ItemGroup>
 
 </Project>

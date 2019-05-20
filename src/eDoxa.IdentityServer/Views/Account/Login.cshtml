@@ -1,0 +1,83 @@
+﻿@model eDoxa.IdentityServer.ViewModels.LoginViewModel
+
+<div class="row">
+    @if (Model.EnableLocalLogin)
+    {
+        <div class="col-sm-6 offset-3">
+            <div class="card bg-dark text-white mt-5">
+                <h5 class="card-header">Log in</h5>
+                <div class="card-body pt-2">
+
+                    <form asp-route="Login">
+                        <input type="hidden" asp-for="ReturnUrl"/>
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="Email" class="col-form-label"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Password" class="col-form-label"></label>
+                            <input asp-for="Password" class="form-control" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        @if (Model.AllowRememberLogin)
+                        {
+                            <div class="form-group">
+                                <div class="custom-checkbox custom-control">
+                                    <input asp-for="RememberMe" type="checkbox" class="custom-control-input">
+                                    <label asp-for="RememberMe" class="custom-control-label">Remember me?</label>
+                                    <div class="float-right">
+                                        <a href="/Identity/Account/ForgotPassword" id="forgot-password">Forgot your password?</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <hr class="border-white" />
+                        <div class="form-group">
+                            <button class="btn btn-block btn-primary" name="button" value="login">
+                                <i class="fas fa-sign-in-alt fa-fw"></i>
+                                Log in
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (Model.VisibleExternalProviders.Any())
+    {
+        <div class="col-md-6 col-sm-6 external-providers">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">External Login</h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="list-inline">
+                        @foreach (var provider in Model.VisibleExternalProviders)
+                        {
+                            <li>
+                                <a class="btn btn-default"
+                                   asp-controller="External"
+                                   asp-action="Challenge"
+                                   asp-route-provider="@provider.AuthenticationScheme"
+                                   asp-route-returnUrl="@Model.ReturnUrl">
+                                    @provider.DisplayName
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (!Model.EnableLocalLogin && !Model.VisibleExternalProviders.Any())
+    {
+        <div class="alert alert-warning">
+            <strong>Invalid login request</strong>
+            There are no login schemes configured for this client.
+        </div>
+    }
+</div>

@@ -1,0 +1,21 @@
+﻿@model LogoutViewModel
+
+<div class="col-sm-6 offset-3">
+    <div class="card bg-dark text-white mt-5">
+        <h5 class="card-header">Logout</h5>
+        <div class="card-body">
+            <p>Would you like to logout of eDoxa?</p>
+            <form asp-action="Logout">
+                <input type="hidden" name="logoutId" value="@Model.LogoutId"/>
+                <div class="row">
+                    <div class="col-6">
+                        <button class="btn btn-sm btn-primary btn-block" type="submit">Yes</button>
+                    </div>
+                    <div class="col-6">
+                        <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-sm btn-secondary btn-block">No</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
