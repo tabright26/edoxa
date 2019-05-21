@@ -14,7 +14,7 @@ using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Services.LeagueOfLegends.Strategies;
 using eDoxa.Seedwork.Domain.Enumerations;
 
-namespace eDoxa.Arena.Challenges.Domain.Services.Factories
+namespace eDoxa.Arena.Challenges.Services.Factories
 {
     public sealed class ScoringFactory
     {

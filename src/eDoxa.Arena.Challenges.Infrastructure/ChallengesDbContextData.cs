@@ -14,10 +14,12 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Domain;
+using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
-using eDoxa.Arena.Challenges.Domain.Services.Factories;
+using eDoxa.Arena.Challenges.Services.Factories;
 using eDoxa.Seedwork.Domain.Enumerations;
 using eDoxa.Seedwork.Infrastructure.Abstractions;
 
@@ -29,16 +31,31 @@ namespace eDoxa.Arena.Challenges.Infrastructure
     {
         private readonly ChallengesDbContext _context;
 
-        //private const int DefaultRandomChallengeCount = 5;
-
-        //private static readonly Random Random = new Random();
-
         private readonly IHostingEnvironment _environment;
+
+        private static readonly Random Random = new Random();
 
         public ChallengesDbContextData(IHostingEnvironment environment, ChallengesDbContext context)
         {
             _environment = environment;
             _context = context;
+        }
+
+        public IMatchStats CreateMatchStats(MatchExternalId matchExternalId = null)
+        {
+            matchExternalId = matchExternalId ?? new MatchExternalId(2233345251);
+
+            return new MatchStats(
+                matchExternalId,
+                new
+                {
+                    Kills = Random.Next(0, 40 + 1),
+                    Deaths = Random.Next(0, 15 + 1),
+                    Assists = Random.Next(0, 50 + 1),
+                    TotalDamageDealtToChampions = Random.Next(10000, 500000 + 1),
+                    TotalHeal = Random.Next(10000, 350000 + 1)
+                }
+            );
         }
 
         public async Task SeedAsync()
@@ -61,12 +78,21 @@ namespace eDoxa.Arena.Challenges.Infrastructure
                     {
                         for (var index = 0; index < challenge.Setup.Entries; index++)
                         {
-                            challenge.RegisterParticipant(new UserId(), new ParticipantExternalAccount(Guid.NewGuid()));
-                        }
+                            var userId = new UserId();
 
-                        _context.Challenges.Add(challenge);
+                            challenge.RegisterParticipant(userId, new ParticipantExternalAccount(Guid.NewGuid()));
+
+                            var participantId = challenge.Participants.Single(participant => participant.UserId == userId).Id;
+
+                            for (var i = 0; i < Random.Next(1, challenge.Setup.BestOf + Random.Next(0, challenge.Setup.BestOf + 1) + 1); i++)
+                            {
+                                challenge.SnapshotParticipantMatch(participantId, this.CreateMatchStats());
+                            }
+                        }
                     }
-                    
+
+                    _context.Challenges.AddRange(challenges);
+
                     await _context.CommitAsync();
                 }
             }

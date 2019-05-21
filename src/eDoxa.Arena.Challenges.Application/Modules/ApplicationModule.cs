@@ -1,5 +1,5 @@
 ﻿// Filename: ApplicationModule.cs
-// Date Created: 2019-05-03
+// Date Created: 2019-05-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,18 +12,17 @@ using Autofac;
 
 using eDoxa.Arena.Challenges.Application.Queries;
 using eDoxa.Arena.Challenges.Application.Services;
-using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.DTO.Queries;
 using eDoxa.Arena.Challenges.Infrastructure;
-using eDoxa.Arena.Challenges.Infrastructure.Repositories;
+using eDoxa.Arena.Challenges.Infrastructure.Modules;
 using eDoxa.Commands;
 using eDoxa.Seedwork.Application;
 using eDoxa.ServiceBus;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Arena.Challenges.Application
+namespace eDoxa.Arena.Challenges.Application.Modules
 {
     public sealed class ApplicationModule : Module
     {
@@ -39,8 +38,7 @@ namespace eDoxa.Arena.Challenges.Application
 
             builder.RegisterModule<IntegrationEventModule<ApplicationModule, ChallengesDbContext>>();
 
-            // Repositories
-            builder.RegisterType<ChallengeRepository>().As<IChallengeRepository>().InstancePerLifetimeScope();
+            builder.RegisterModule<InfrastructureModule>();
 
             // Queries
             builder.RegisterType<ChallengeQuery>().As<IChallengeQuery>().InstancePerLifetimeScope();

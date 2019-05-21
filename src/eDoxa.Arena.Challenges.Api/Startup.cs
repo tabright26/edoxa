@@ -13,9 +13,10 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 
 using eDoxa.Arena.Challenges.Api.Extensions;
-using eDoxa.Arena.Challenges.Application;
+using eDoxa.Arena.Challenges.Application.Modules;
 using eDoxa.Arena.Challenges.DTO.Factories;
 using eDoxa.Arena.Challenges.Infrastructure;
+using eDoxa.Arena.Services.Extensions;
 using eDoxa.Autofac.Extensions;
 using eDoxa.AutoMapper.Extensions;
 using eDoxa.Monitoring.Extensions;
@@ -77,6 +78,8 @@ namespace eDoxa.Arena.Challenges.Api
             services.AddUserInfoService();
 
             services.AddUserLoginInfoService();
+
+            services.AddArena();
 
             return services.Build<ApplicationModule>();
         }

@@ -10,13 +10,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Infrastructure.Repositories;
 using eDoxa.Seedwork.Domain.Enumerations;
-using eDoxa.Seedwork.Infrastructure.Factories;
 
 using FluentAssertions;
 
@@ -235,24 +231,24 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Tests.Repositories
         //    }
         //}
 
-        [TestMethod]
-        public async Task FindChallengeAsync_NotPersistent_ShouldBeNull()
-        {
-            using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
-            {
-                using (var context = factory.CreateContext())
-                {
-                    // Arrange
-                    var repository = new ChallengeRepository(context);
+        //[TestMethod]
+        //public async Task FindChallengeAsync_NotPersistent_ShouldBeNull()
+        //{
+        //    using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
+        //    {
+        //        using (var context = factory.CreateContext())
+        //        {
+        //            // Arrange
+        //            var repository = new ChallengeRepository(context);
 
-                    // Act
-                    var challenge = await repository.FindChallengeAsync(new ChallengeId());
+        //            // Act
+        //            var challenge = await repository.FindChallengeAsync(new ChallengeId());
 
-                    // Assert
-                    challenge.Should().BeNull();
-                }
-            }
-        }
+        //            // Assert
+        //            challenge.Should().BeNull();
+        //        }
+        //    }
+        //}
 
         private static class ChallengeRepositoryAssert
         {

@@ -22,7 +22,7 @@ using Newtonsoft.Json;
 
 namespace eDoxa.Arena.Challenges.Infrastructure.Converters
 {
-    public sealed class ScoringConverter : ValueConverter<IScoring, string>
+    internal sealed class ScoringConverter : ValueConverter<IScoring, string>
     {
         private static readonly IMapper Mapper = new Mapper(
             new MapperConfiguration(

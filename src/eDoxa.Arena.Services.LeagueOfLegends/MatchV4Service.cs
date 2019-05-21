@@ -1,11 +1,11 @@
 ﻿// Filename: MatchV4Service.cs
-// Date Created: 2019-03-04
+// Date Created: 2019-05-20
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
 // 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
@@ -14,12 +14,13 @@ using System.Threading.Tasks;
 using System.Web;
 
 using eDoxa.Arena.Services.LeagueOfLegends.DTO;
+using eDoxa.Challenges.Domain.Services.LeagueOfLegends.Api.Abstractions;
 
 using Newtonsoft.Json;
 
 namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.Api
 {
-    public class MatchV4Service
+    internal sealed class MatchV4Service : IMatchV4Service
     {
         private readonly HttpClient _httpClient;
 

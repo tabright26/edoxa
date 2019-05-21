@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeRepository.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-05-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -26,11 +26,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
 {
-    public sealed partial class ChallengeRepository
+    internal sealed partial class ChallengeRepository
     {
-        private static readonly string ExpandParticipants = nameof(Challenge.Participants);
-        private static readonly string ExpandParticipantMatches = $"{ExpandParticipants}.{nameof(Participant.Matches)}";
-        private static readonly string ExpandParticipantMatchStats = $"{ExpandParticipantMatches}.{nameof(Match.Stats)}";
+        private static readonly string NavigationPropertyPath = $"{nameof(Challenge.Participants)}.{nameof(Participant.Matches)}.{nameof(Match.Stats)}";
 
         private readonly ChallengesDbContext _context;
 
@@ -52,19 +50,44 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
         }
     }
 
-    public sealed partial class ChallengeRepository : IChallengeRepository
+    internal sealed partial class ChallengeRepository : IChallengeRepository
     {
         [ItemCanBeNull]
         public async Task<Challenge> FindChallengeAsync(ChallengeId challengeId)
         {
-            return await _context.Challenges.Include(ExpandParticipantMatchStats).Where(challenge => challenge.Id == challengeId).SingleOrDefaultAsync();
+            return await _context.Challenges.Include(NavigationPropertyPath).Where(challenge => challenge.Id == challengeId).SingleOrDefaultAsync();
         }
 
-        public async Task<IReadOnlyCollection<Challenge>> FindChallengesAsync(Game game, ChallengeState state)
+        public async Task<IReadOnlyCollection<Challenge>> FindChallengesAsync(Game game)
         {
-            return await _context.Challenges.Include(ExpandParticipantMatchStats)
-                .Where(challenge => challenge.Game.HasFlag(game))
-                .ToListAsync();
+            var challenges = await _context.Challenges.Include(NavigationPropertyPath).ToListAsync();
+
+            return challenges.Where(challenge => challenge.Game.HasFlag(game)).ToList();
+        }
+
+        public async Task<IReadOnlyCollection<Challenge>> FindUserChallengeHistoryAsNoTrackingAsync(UserId userId, Game game)
+        {
+            var challenges = await _context.Challenges.AsNoTracking()
+                                           .Include(NavigationPropertyPath)
+                                           .Where(challenge => challenge.Participants.Any(participant => participant.UserId == userId))
+                                           .ToListAsync();
+
+            return challenges.Where(challenge => challenge.Game.HasFlag(game)).ToList();
+        }
+
+        public async Task<IReadOnlyCollection<Challenge>> FindChallengesAsNoTrackingAsync(Game game)
+        {
+            var challenges = await _context.Challenges.AsNoTracking().Include(NavigationPropertyPath).ToListAsync();
+
+            return challenges.Where(challenge => challenge.Game.HasFlag(game)).ToList();
+        }
+
+        public async Task<Challenge> FindChallengeAsNoTrackingAsync(ChallengeId challengeId)
+        {
+            return await _context.Challenges.AsNoTracking()
+                                 .Include(NavigationPropertyPath)
+                                 .Where(challenge => challenge.Id == challengeId)
+                                 .SingleOrDefaultAsync();
         }
     }
 }

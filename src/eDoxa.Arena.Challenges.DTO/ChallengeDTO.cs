@@ -37,6 +37,9 @@ namespace eDoxa.Arena.Challenges.DTO
         [JsonProperty("payout")]
         public PayoutDTO Payout { get; set; }
 
+        [JsonProperty("scoreboard")]
+        public ScoreboardDTO Scoreboard { get; set; }
+
         [JsonProperty("participants")]
         public ParticipantListDTO Participants { get; set; }
     }

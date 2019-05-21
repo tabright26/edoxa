@@ -8,6 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using AutoMapper;
@@ -26,6 +28,7 @@ namespace eDoxa.Arena.Challenges.DTO.Profiles
                 .ForMember(challenge => challenge.Name, config => config.MapFrom(challenge => challenge.Name.ToString()))
                 .ForMember(challenge => challenge.Scoring, config => config.MapFrom(challenge => challenge.Scoring))
                 .ForMember(challenge => challenge.Payout, config => config.MapFrom(challenge => challenge.Payout))
+                .ForMember(challenge => challenge.Scoreboard, config => config.MapFrom(challenge => new Dictionary<Guid, decimal?>(challenge.Scoreboard.ToDictionary(x => x.Key.ToGuid(), x => x.Value.Select(y => (decimal) y).Cast<decimal?>().DefaultIfEmpty(null).Single())) ))
                 .ForMember(challenge => challenge.Participants, config => config.MapFrom(challenge => challenge.Participants.OrderBy(participant => participant.Timestamp)));
         }
     }

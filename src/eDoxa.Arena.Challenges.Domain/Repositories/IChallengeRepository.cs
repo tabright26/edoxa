@@ -1,9 +1,9 @@
 ﻿// Filename: IChallengeRepository.cs
-// Date Created: 2019-04-21
+// Date Created: 2019-05-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -22,9 +22,15 @@ namespace eDoxa.Arena.Challenges.Domain.Repositories
 {
     public interface IChallengeRepository : IRepository<Challenge>
     {
-        Task<IReadOnlyCollection<Challenge>> FindChallengesAsync(Game game, ChallengeState state);
+        Task<IReadOnlyCollection<Challenge>> FindChallengesAsync(Game game);
 
         [ItemCanBeNull]
         Task<Challenge> FindChallengeAsync(ChallengeId challengeId);
+
+        Task<IReadOnlyCollection<Challenge>> FindUserChallengeHistoryAsNoTrackingAsync(UserId userId, Game game);
+
+        Task<IReadOnlyCollection<Challenge>> FindChallengesAsNoTrackingAsync(Game game);
+
+        Task<Challenge> FindChallengeAsNoTrackingAsync(ChallengeId challengeId);
     }
 }

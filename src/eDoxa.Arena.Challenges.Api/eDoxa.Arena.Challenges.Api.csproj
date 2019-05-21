@@ -33,6 +33,7 @@
     <ItemGroup>
         <ProjectReference Include="..\eDoxa.Arena.Challenges.Domain\eDoxa.Arena.Challenges.Domain.csproj" />
         <ProjectReference Include="..\eDoxa.Arena.Challenges.DTO\eDoxa.Arena.Challenges.DTO.csproj" />
+        <ProjectReference Include="..\eDoxa.Arena.Services\eDoxa.Arena.Services.csproj" />
         <ProjectReference Include="..\eDoxa.Autofac\eDoxa.Autofac.csproj" />
         <ProjectReference Include="..\eDoxa.AutoMapper\eDoxa.AutoMapper.csproj" />
         <ProjectReference Include="..\eDoxa.Arena.Challenges.Application\eDoxa.Arena.Challenges.Application.csproj" />

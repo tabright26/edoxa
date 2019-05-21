@@ -187,6 +187,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Arena.Challenges.Serv
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Arena.Challenges.Tests", "test\eDoxa.Arena.Challenges.Tests\eDoxa.Arena.Challenges.Tests.csproj", "{D1861811-93B5-42AD-A9CC-1355E8DF86F8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Arena.Services", "src\eDoxa.Arena.Services\eDoxa.Arena.Services.csproj", "{628E517D-0A03-4F06-BDC4-07C7D512D1E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Arena.Challenges.Services", "src\eDoxa.Arena.Challenges.Services\eDoxa.Arena.Challenges.Services.csproj", "{7193DD1B-21E1-4F00-A4B2-247F6318EFFA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -481,6 +485,14 @@ Global
 		{D1861811-93B5-42AD-A9CC-1355E8DF86F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1861811-93B5-42AD-A9CC-1355E8DF86F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D1861811-93B5-42AD-A9CC-1355E8DF86F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{628E517D-0A03-4F06-BDC4-07C7D512D1E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{628E517D-0A03-4F06-BDC4-07C7D512D1E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{628E517D-0A03-4F06-BDC4-07C7D512D1E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{628E517D-0A03-4F06-BDC4-07C7D512D1E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7193DD1B-21E1-4F00-A4B2-247F6318EFFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7193DD1B-21E1-4F00-A4B2-247F6318EFFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7193DD1B-21E1-4F00-A4B2-247F6318EFFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7193DD1B-21E1-4F00-A4B2-247F6318EFFA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -572,6 +584,8 @@ Global
 		{D1F91E04-DD10-4198-99AC-E15DC71D1BAC} = {4A56FF53-2BBF-4B13-8C17-F2BF14273A0C}
 		{03D4F70A-DFFC-44F0-8E8E-83F497DDC03A} = {4A56FF53-2BBF-4B13-8C17-F2BF14273A0C}
 		{D1861811-93B5-42AD-A9CC-1355E8DF86F8} = {4A56FF53-2BBF-4B13-8C17-F2BF14273A0C}
+		{628E517D-0A03-4F06-BDC4-07C7D512D1E0} = {83377ABA-BB9E-4738-82DF-9A8D1DCE75F0}
+		{7193DD1B-21E1-4F00-A4B2-247F6318EFFA} = {7C414564-DB04-47D4-88B1-7C7B24C7904F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8BB3B9BB-6C76-478F-982F-E2E084DBDFAC}

@@ -11,7 +11,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Functional.Extensions;
@@ -30,7 +29,7 @@ namespace eDoxa.Arena.Challenges.Application.Services
 
         public async Task CompleteAsync(CancellationToken cancellationToken)
         {
-            var challenges = await _challengeRepository.FindChallengesAsync(Game.All, ChallengeState.Ended);
+            var challenges = await _challengeRepository.FindChallengesAsync(Game.All);
 
             challenges.ForEach(challenge => challenge.Complete());
 

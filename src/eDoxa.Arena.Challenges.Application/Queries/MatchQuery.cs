@@ -1,5 +1,5 @@
-﻿// Filename: MatchQueries.cs
-// Date Created: 2019-05-03
+﻿// Filename: MatchQuery.cs
+// Date Created: 2019-05-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,61 +8,36 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 using AutoMapper;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
+using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.DTO;
 using eDoxa.Arena.Challenges.DTO.Queries;
-using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Functional;
-
-using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Arena.Challenges.Application.Queries
 {
-    public sealed partial class MatchQuery
+    internal sealed partial class MatchQuery
     {
-        private const string NavigationPropertyPath = nameof(Match.Stats);
-
-        private readonly ChallengesDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IMatchRepository _repository;
 
-        public MatchQuery(ChallengesDbContext context, IMapper mapper)
+        public MatchQuery(IMatchRepository repository, IMapper mapper)
         {
-            _context = context;
+            _repository = repository;
             _mapper = mapper;
-        }
-
-        private async Task<IEnumerable<Match>> FindParticipantMatchesAsNoTrackingAsync(ParticipantId participantId)
-        {
-            return await _context.Matches
-                .AsNoTracking()
-                .Include(NavigationPropertyPath)
-                .Where(match => match.Participant.Id == participantId)
-                .OrderBy(match => match.Timestamp)
-                .ToListAsync();
-        }
-
-        private async Task<Match> FindMatchAsNoTrackingAsync(MatchId matchId)
-        {
-            return await _context.Matches
-                .AsNoTracking()
-                .Include(NavigationPropertyPath)
-                .Where(match => match.Id == matchId)
-                .SingleOrDefaultAsync();
         }
     }
 
-    public sealed partial class MatchQuery : IMatchQuery
+    internal sealed partial class MatchQuery : IMatchQuery
     {
         public async Task<Option<MatchListDTO>> FindParticipantMatchesAsync(ParticipantId participantId)
         {
-            var matches = await this.FindParticipantMatchesAsNoTrackingAsync(participantId);
+            var matches = await _repository.FindParticipantMatchesAsNoTrackingAsync(participantId);
 
             var list = _mapper.Map<MatchListDTO>(matches);
 
@@ -71,7 +46,7 @@ namespace eDoxa.Arena.Challenges.Application.Queries
 
         public async Task<Option<MatchDTO>> FindMatchAsync(MatchId matchId)
         {
-            var match = await this.FindMatchAsNoTrackingAsync(matchId);
+            var match = await _repository.FindMatchAsNoTrackingAsync(matchId);
 
             var mapper = _mapper.Map<MatchDTO>(match);
 
