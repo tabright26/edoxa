@@ -1,5 +1,5 @@
 ﻿// Filename: ScoringFactory.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-05-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,8 +11,7 @@
 using System;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Services.LeagueOfLegends.Factories;
+using eDoxa.Arena.Challenges.Services.LeagueOfLegends.Strategies;
 using eDoxa.Seedwork.Domain.Enumerations;
 
 namespace eDoxa.Arena.Challenges.Domain.Services.Factories
@@ -23,11 +22,11 @@ namespace eDoxa.Arena.Challenges.Domain.Services.Factories
 
         public static ScoringFactory Instance => Lazy.Value;
 
-        public IScoringStrategy CreateScoringStrategy(Challenge challenge)
+        public IScoringStrategy CreateScoringStrategy(Game game)
         {
-            if (challenge.Game.Equals(Game.LeagueOfLegends))
+            if (game.Equals(Game.LeagueOfLegends))
             {
-                return LeagueOfLegendsChallengeScoringFactory.Instance.CreateScoring(challenge);
+                return new LeagueOfLegendsScoringStrategy();
             }
 
             throw new NotImplementedException();

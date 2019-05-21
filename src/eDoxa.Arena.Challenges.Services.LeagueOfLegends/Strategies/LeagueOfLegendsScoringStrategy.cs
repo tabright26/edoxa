@@ -14,7 +14,7 @@ using eDoxa.Arena.Services.LeagueOfLegends.DTO;
 
 namespace eDoxa.Arena.Challenges.Services.LeagueOfLegends.Strategies
 {
-    public sealed class LeagueOfLegendsDefaultScoringStrategy : IScoringStrategy
+    public sealed class LeagueOfLegendsScoringStrategy : IScoringStrategy
     {
         public IScoring Scoring =>
             new Scoring

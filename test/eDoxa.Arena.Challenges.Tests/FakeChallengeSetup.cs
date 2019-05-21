@@ -8,19 +8,19 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Arena.Challenges.Domain;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 
-namespace eDoxa.Arena.Challenges.Domain
+namespace eDoxa.Arena.Challenges.Tests
 {
-    public sealed class DefaultChallengeSetup : ChallengeSetup
+    public sealed class FakeChallengeSetup : ChallengeSetup
     {
-        public DefaultChallengeSetup() : base(
+        public FakeChallengeSetup() : base(
             BestOf.DefaultValue,
             Entries.DefaultValue,
             EntryFee.DefaultValue,
             PayoutRatio.DefaultValue,
-            ServiceChargeRatio.DefaultValue,
-            ChallengeType.Default
+            ServiceChargeRatio.DefaultValue
         )
         {
         }

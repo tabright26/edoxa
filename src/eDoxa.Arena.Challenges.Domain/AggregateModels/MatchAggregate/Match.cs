@@ -21,14 +21,14 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
 {
     public class Match : Entity<MatchId>, IAggregateRoot
     {
-        private LinkedMatch _linkedMatch;
+        private MatchExternalId _matchExternalId;
         private Participant _participant;
         private HashSet<Stat> _stats;
         private DateTime _timestamp;
 
-        public Match(Participant participant, LinkedMatch linkedMatch) : this()
+        public Match(Participant participant, MatchExternalId matchExternalId) : this()
         {
-            _linkedMatch = linkedMatch;
+            _matchExternalId = matchExternalId;
             _participant = participant;
         }
 
@@ -40,7 +40,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
 
         public DateTime Timestamp => _timestamp;
 
-        public LinkedMatch LinkedMatch => _linkedMatch;
+        public MatchExternalId MatchExternalId => _matchExternalId;
 
         public Score TotalScore => new MatchScore(this);
 

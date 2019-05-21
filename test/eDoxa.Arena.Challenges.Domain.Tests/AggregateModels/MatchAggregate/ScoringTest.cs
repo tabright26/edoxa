@@ -11,7 +11,7 @@
 using System.Collections.Generic;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
-using eDoxa.Arena.Challenges.Domain.Factories;
+using eDoxa.Arena.Challenges.Tests.Factories;
 
 using FluentAssertions;
 
@@ -22,13 +22,13 @@ namespace eDoxa.Arena.Challenges.Domain.Tests.AggregateModels.MatchAggregate
     [TestClass]
     public sealed class ScoringTest
     {
-        private static readonly FakeDefaultChallengeFactory FakeDefaultChallengeFactory = FakeDefaultChallengeFactory.Instance;
+        private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
 
         [TestMethod]
         public void Scoring_ShouldBeAssignableToType()
         {
             // Arrange
-            var scoring = FakeDefaultChallengeFactory.CreateScoring();
+            var scoring = FakeChallengeFactory.CreateScoring();
 
             // Act
             var type = typeof(Dictionary<StatName, StatWeighting>);

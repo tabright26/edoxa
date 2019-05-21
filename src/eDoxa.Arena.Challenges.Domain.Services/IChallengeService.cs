@@ -19,8 +19,6 @@ namespace eDoxa.Arena.Challenges.Domain.Services
     {
         Task CompleteAsync(CancellationToken cancellationToken = default);
 
-        Task PublishAsync(PublisherInterval interval, CancellationToken cancellationToken = default);
-
         Task SynchronizeAsync(Game game, CancellationToken cancellationToken = default);
     }
 }

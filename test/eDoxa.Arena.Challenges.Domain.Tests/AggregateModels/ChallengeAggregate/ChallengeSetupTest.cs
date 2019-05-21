@@ -10,8 +10,7 @@
 
 using System;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.Factories;
+using eDoxa.Arena.Challenges.Tests.Factories;
 
 using FluentAssertions;
 
@@ -22,7 +21,7 @@ namespace eDoxa.Arena.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
     [TestClass]
     public sealed class ChallengeSetupTest
     {
-        private static readonly FakeDefaultChallengeFactory FakeDefaultChallengeFactory = FakeDefaultChallengeFactory.Instance;
+        private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
 
         [TestMethod]
         public void Constructor_Initialize_ShouldNotThrowException()
@@ -35,7 +34,7 @@ namespace eDoxa.Arena.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             var serviceChargeRatio = ServiceChargeRatio.DefaultValue;
 
             // Act
-            var setup = FakeDefaultChallengeFactory.CreateChallengeSetup(ChallengeType.All);
+            var setup = FakeChallengeFactory.CreateChallengeSetup();
 
             // Assert
             setup.BestOf.Should().Be(bestOf);

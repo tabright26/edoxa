@@ -35,8 +35,8 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                    .HasConversion(participantId => participantId.ToGuid(), participantId => ParticipantId.FromGuid(participantId))
                    .IsRequired();
 
-            builder.Property(match => match.LinkedMatch)
-                   .HasConversion(linkedMatch => linkedMatch.ToString(), linkedMatch => new LinkedMatch(linkedMatch))
+            builder.Property(match => match.MatchExternalId)
+                   .HasConversion(externalId => externalId.ToString(), externalId => new MatchExternalId(externalId))
                    .IsRequired()
                    .UsePropertyAccessMode(PropertyAccessMode.Field);
 

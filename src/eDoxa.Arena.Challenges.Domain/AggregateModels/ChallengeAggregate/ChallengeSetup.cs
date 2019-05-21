@@ -19,19 +19,15 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         private EntryFee _entryFee;
         private PayoutRatio _payoutRatio;
         private ServiceChargeRatio _serviceChargeRatio;
-        private ChallengeType _type;
 
-        public ChallengeSetup(BestOf bestOf, Entries entries, EntryFee entryFee, PayoutRatio payoutRatio, ServiceChargeRatio serviceChargeRatio, ChallengeType type)
+        public ChallengeSetup(BestOf bestOf, Entries entries, EntryFee entryFee, PayoutRatio payoutRatio, ServiceChargeRatio serviceChargeRatio)
         {
             _bestOf = bestOf;
             _entries = entries;
             _entryFee = entryFee;
             _payoutRatio = payoutRatio;
             _serviceChargeRatio = serviceChargeRatio;
-            _type = type;
         }
-
-        public ChallengeType Type => _type;
 
         public BestOf BestOf => _bestOf;
 

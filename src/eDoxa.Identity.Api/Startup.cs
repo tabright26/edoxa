@@ -58,7 +58,7 @@ namespace eDoxa.Identity.Api
 
             services.AddIntegrationEventDbContext(Configuration, Assembly.GetAssembly(typeof(IdentityDbContext)));
 
-            services.AddDbContext<IdentityDbContext>(Configuration);
+            services.AddDbContext<IdentityDbContext, IdentityDbContextData>(Configuration);
 
             services.AddIdentityCore<User, Role, IdentityDbContext>();
 

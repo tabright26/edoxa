@@ -20,6 +20,8 @@ using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Enumerations;
 
+using JetBrains.Annotations;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
@@ -39,6 +41,11 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
 
         public IUnitOfWork UnitOfWork => _context;
 
+        public void Create(Challenge challenge)
+        {
+            _context.Challenges.Add(challenge);
+        }
+
         public void Create(IEnumerable<Challenge> challenges)
         {
             _context.Challenges.AddRange(challenges);
@@ -47,20 +54,16 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
 
     public sealed partial class ChallengeRepository : IChallengeRepository
     {
-        public void Create(Challenge challenge)
-        {
-            _context.Challenges.Add(challenge);
-        }
-
+        [ItemCanBeNull]
         public async Task<Challenge> FindChallengeAsync(ChallengeId challengeId)
         {
             return await _context.Challenges.Include(ExpandParticipantMatchStats).Where(challenge => challenge.Id == challengeId).SingleOrDefaultAsync();
         }
 
-        public async Task<IReadOnlyCollection<Challenge>> FindChallengesAsync(ChallengeType type, Game game, ChallengeState state)
+        public async Task<IReadOnlyCollection<Challenge>> FindChallengesAsync(Game game, ChallengeState state)
         {
             return await _context.Challenges.Include(ExpandParticipantMatchStats)
-                .Where(challenge => challenge.Setup.Type.HasFlag(type) && challenge.Game.HasFlag(game) && challenge.Timeline.State.HasFlag(state))
+                .Where(challenge => challenge.Game.HasFlag(game) && challenge.Timeline.State.HasFlag(state))
                 .OrderBy(challenge => challenge.Timeline.StartedAt)
                 .ToListAsync();
         }

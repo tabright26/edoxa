@@ -48,12 +48,6 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                 challenge => challenge.Setup,
                 challengeSetup =>
                 {
-                    challengeSetup.Property(setup => setup.Type)
-                        .HasConversion(type => type.Value, value => ChallengeType.FromValue(value))
-                        .IsRequired()
-                        .HasColumnName(nameof(ChallengeSetup.Type))
-                        .UsePropertyAccessMode(PropertyAccessMode.Field);
-
                     challengeSetup.Property(setup => setup.Entries)
                         .HasConversion<int>(entries => entries, entries => new Entries(entries, false))
                         .IsRequired()

@@ -38,8 +38,8 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                    .IsRequired()
                    .UsePropertyAccessMode(PropertyAccessMode.Field);
 
-            builder.Property(participant => participant.LinkedAccount)
-                   .HasConversion(linkedAccount => linkedAccount.ToString(), linkedAccount => new LinkedAccount(linkedAccount))
+            builder.Property(participant => participant.ParticipantExternalAccount)
+                   .HasConversion(externalAccount => externalAccount.ToString(), externalAccount => new ParticipantExternalAccount(externalAccount))
                    .IsRequired()
                    .UsePropertyAccessMode(PropertyAccessMode.Field);
 

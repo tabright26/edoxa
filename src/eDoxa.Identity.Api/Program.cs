@@ -10,8 +10,6 @@
 
 using System;
 
-using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
-using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Infrastructure;
 using eDoxa.Monitoring.Extensions;
 using eDoxa.Security.Extensions;
@@ -20,9 +18,6 @@ using eDoxa.ServiceBus;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 using Serilog;
 
@@ -40,25 +35,9 @@ namespace eDoxa.Identity.Api
 
                 Log.Information("Applying {Application} context migrations...");
 
-                host.MigrateDbContext<IdentityDbContext>(
-                    (context, provider) =>
-                    {
-                        var environment = provider.GetService<IHostingEnvironment>();
+                host.MigrateDbContext<IdentityDbContext>();
 
-                        if (environment.IsDevelopment())
-                        {
-                            var loggerFactory = provider.GetService<ILoggerFactory>();
-
-                            var userManager = provider.GetService<UserManager<User>>();
-
-                            var roleManager = provider.GetService<RoleManager<Role>>();
-
-                            context.Seed(loggerFactory.CreateLogger<IdentityDbContext>(), userManager, roleManager).Wait();
-                        }
-                    }
-                );
-
-                host.MigrateDbContext<IntegrationEventLogDbContext>((context, provider) => { });
+                host.MigrateDbContext<IntegrationEventLogDbContext>();
 
                 Log.Information("Starting {Application} web host...");
 

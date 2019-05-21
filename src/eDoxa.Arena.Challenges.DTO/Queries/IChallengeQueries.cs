@@ -19,10 +19,10 @@ namespace eDoxa.Arena.Challenges.DTO.Queries
 {
     public interface IChallengeQueries
     {
-        Task<Option<ChallengeListDTO>> FindChallengesAsync(Game game, ChallengeType type, ChallengeState state);
+        Task<Option<ChallengeListDTO>> FindChallengesAsync(Game game, ChallengeState state);
 
         Task<Option<ChallengeDTO>> FindChallengeAsync(ChallengeId challengeId);
 
-        Task<Option<ChallengeListDTO>> FindUserChallengeHistoryAsync(UserId userId, Game game, ChallengeType type, ChallengeState state);
+        Task<Option<ChallengeListDTO>> FindUserChallengeHistoryAsync(UserId userId, Game game, ChallengeState state);
     }
 }

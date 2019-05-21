@@ -1,5 +1,5 @@
-﻿// Filename: PayoutProcessedDomainEventHandler.cs
-// Date Created: 2019-05-03
+﻿// Filename: ChallengePayoutDomainEventHandler.cs
+// Date Created: 2019-05-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -21,19 +21,21 @@ using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Application.DomainEventHandlers
 {
-    internal sealed class PayoutProcessedDomainEventHandler : IDomainEventHandler<PayoutProcessedDomainEvent>
+    internal sealed class ChallengePayoutDomainEventHandler : IDomainEventHandler<ChallengePayoutDomainEvent>
     {
         private readonly IIntegrationEventService _integrationEventService;
 
-        public PayoutProcessedDomainEventHandler(IIntegrationEventService integrationEventService)
+        public ChallengePayoutDomainEventHandler(IIntegrationEventService integrationEventService)
         {
             _integrationEventService = integrationEventService;
         }
 
-        public async Task Handle([NotNull] PayoutProcessedDomainEvent domainEvent, CancellationToken cancellationToken)
+        public async Task Handle([NotNull] ChallengePayoutDomainEvent domainEvent, CancellationToken cancellationToken)
         {
-            var integrationEvent = new ChallengePayoutProcessedIntegrationEvent(domainEvent.ChallengeId.ToGuid(),
-                domainEvent.ParticipantPrizes.ToDictionary(userPrize => userPrize.Key.ToGuid(), userPrize => (decimal) userPrize.Value));
+            var integrationEvent = new ChallengePayoutIntegrationEvent(
+                domainEvent.ChallengeId.ToGuid(),
+                domainEvent.ParticipantPrizes.ToDictionary(userPrize => userPrize.Key.ToGuid(), userPrize => (decimal) userPrize.Value)
+            );
 
             await _integrationEventService.PublishAsync(integrationEvent);
         }

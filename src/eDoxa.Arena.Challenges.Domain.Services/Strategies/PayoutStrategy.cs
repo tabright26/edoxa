@@ -1,22 +1,19 @@
-﻿// Filename: DefaultChallengeTimelineMonthlyStrategy.cs
-// Date Created: 2019-04-23
+﻿// Filename: PayoutStrategy.cs
+// Date Created: 2019-05-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-
 using eDoxa.Arena.Challenges.Domain.Abstractions;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.Services.Strategies
 {
-    public sealed class DefaultTimelineMonthlyStrategy : ITimelineStrategy
+    public sealed class PayoutStrategy : IPayoutStrategy
     {
-        public ITimeline Timeline => new Timeline(TimeSpan.FromDays(7), TimeSpan.FromDays(21));
+        public IPayout Payout => new Payout();
     }
 }

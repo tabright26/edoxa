@@ -9,7 +9,7 @@
 // this source code package.
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
-using eDoxa.Arena.Challenges.Domain.Factories;
+using eDoxa.Arena.Challenges.Tests.Factories;
 
 using FluentAssertions;
 
@@ -20,18 +20,18 @@ namespace eDoxa.Arena.Challenges.Domain.Tests.AggregateModels.MatchAggregate
     [TestClass]
     public sealed class StatScoreTest
     {
-        private static readonly FakeDefaultChallengeFactory FakeDefaultChallengeFactory = FakeDefaultChallengeFactory.Instance;
+        private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
 
-        [DataRow(FakeDefaultChallengeFactory.Kills, 457000, 0.00015F, 68.55D)]
-        [DataRow(FakeDefaultChallengeFactory.Assists, 0.1F, 1, 0.1D)]
-        [DataRow(FakeDefaultChallengeFactory.Deaths, 457342424L, 0.77F, 352153666.48D)]
-        [DataRow(FakeDefaultChallengeFactory.TotalDamageDealtToChampions, 0.25D, 100, 25D)]
-        [DataRow(FakeDefaultChallengeFactory.TotalHeal, 85, -3, -255D)]
+        [DataRow(FakeChallengeFactory.Kills, 457000, 0.00015F, 68.55D)]
+        [DataRow(FakeChallengeFactory.Assists, 0.1F, 1, 0.1D)]
+        [DataRow(FakeChallengeFactory.Deaths, 457342424L, 0.77F, 352153666.48D)]
+        [DataRow(FakeChallengeFactory.TotalDamageDealtToChampions, 0.25D, 100, 25D)]
+        [DataRow(FakeChallengeFactory.TotalHeal, 85, -3, -255D)]
         [DataTestMethod]
         public void Constructor_Tests(string name, double value, float weighting, double result)
         {
             // Arrange
-            var stat = FakeDefaultChallengeFactory.CreateStat(name, new StatValue(value), new StatWeighting(weighting));
+            var stat = FakeChallengeFactory.CreateStat(name, new StatValue(value), new StatWeighting(weighting));
 
             // Act
             decimal score = new StatScore(stat);

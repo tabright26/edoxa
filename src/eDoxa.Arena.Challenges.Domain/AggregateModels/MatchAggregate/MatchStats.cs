@@ -18,13 +18,13 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
     public sealed class MatchStats : Dictionary<StatName, StatValue>, IMatchStats
     {
         // TODO: To defend.
-        public MatchStats(LinkedMatch linkedMatch, object stats)
+        public MatchStats(MatchExternalId matchExternalId, object stats)
         {
-            LinkedMatch = linkedMatch;
+            MatchExternalId = matchExternalId;
 
             stats.GetType().GetProperties().ForEach(property => this.Add(new StatName(property), new StatValue(property.GetValue(stats))));
         }
 
-        public LinkedMatch LinkedMatch { get; }
+        public MatchExternalId MatchExternalId { get; }
     }
 }

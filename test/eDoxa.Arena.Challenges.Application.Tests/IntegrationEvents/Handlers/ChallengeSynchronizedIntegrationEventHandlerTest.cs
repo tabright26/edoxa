@@ -40,7 +40,7 @@ namespace eDoxa.Arena.Challenges.Application.Tests.IntegrationEvents.Handlers
         public async Task HandleAsync_ChallengeSynchronizedIntegrationEvent_ShouldBeCompletedTask()
         {
             // Arrange
-            _mockMediator.Setup(mock => mock.Send(It.IsAny<PublishCommand>(), It.IsAny<CancellationToken>()))
+            _mockMediator.Setup(mock => mock.Send(It.IsAny<SynchronizeCommand>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(It.IsAny<Unit>())
                 .Verifiable();
 

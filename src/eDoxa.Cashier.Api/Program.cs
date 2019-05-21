@@ -18,8 +18,6 @@ using eDoxa.ServiceBus;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 using Serilog;
 
@@ -37,25 +35,9 @@ namespace eDoxa.Cashier.Api
 
                 Log.Information("Applying {Application} context migrations...");
 
-                host.MigrateDbContext<CashierDbContext>(
-                    (context, provider) =>
-                    {
-                        var environment = provider.GetService<IHostingEnvironment>();
+                host.MigrateDbContext<CashierDbContext>();
 
-                        if (environment.IsDevelopment())
-                        {
-                            var loggerFactory = provider.GetService<ILoggerFactory>();
-
-                            context.SeedAsync(loggerFactory.CreateLogger<CashierDbContext>()).Wait();
-                        }
-                    }
-                );
-
-                host.MigrateDbContext<IntegrationEventLogDbContext>(
-                    (context, provider) =>
-                    {
-                    }
-                );
+                host.MigrateDbContext<IntegrationEventLogDbContext>();
 
                 Log.Information("Starting {Application} web host...");
 

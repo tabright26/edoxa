@@ -11,6 +11,7 @@
 using System;
 using System.Reflection;
 
+using eDoxa.Arena.Challenges.Domain;
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
@@ -23,27 +24,27 @@ using Moq;
 
 using Match = eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate.Match;
 
-namespace eDoxa.Arena.Challenges.Domain.Factories
+namespace eDoxa.Arena.Challenges.Tests.Factories
 {
-    public sealed partial class FakeDefaultChallengeFactory
+    public sealed partial class FakeChallengeFactory
     {
         public const string Kills = nameof(Kills);
         public const string Deaths = nameof(Deaths);
         public const string Assists = nameof(Assists);
         public const string TotalDamageDealtToChampions = nameof(TotalDamageDealtToChampions);
         public const string TotalHeal = nameof(TotalHeal);
-        private static readonly Lazy<FakeDefaultChallengeFactory> Lazy = new Lazy<FakeDefaultChallengeFactory>(() => new FakeDefaultChallengeFactory());
+        private static readonly Lazy<FakeChallengeFactory> Lazy = new Lazy<FakeChallengeFactory>(() => new FakeChallengeFactory());
 
-        private static readonly LinkedMatch AdminLinkedMatch = new LinkedMatch(2973265231);
+        private static readonly MatchExternalId AdminMatchExternalId = new MatchExternalId(2973265231);
         private static readonly Random Random = new Random();
 
-        public static FakeDefaultChallengeFactory Instance => Lazy.Value;
+        public static FakeChallengeFactory Instance => Lazy.Value;
 
         public Challenge CreateChallenge(ChallengeState state = null, ChallengeSetup setup = null)
         {
             state = state ?? ChallengeState.Opened;
 
-            setup = setup ?? new DefaultChallengeSetup();
+            setup = setup ?? new FakeChallengeSetup();
 
             var challenge = new Challenge(Game.LeagueOfLegends, new ChallengeName(nameof(Challenge)), setup);
 
@@ -65,7 +66,7 @@ namespace eDoxa.Arena.Challenges.Domain.Factories
         {
             var challenge = this.CreateChallenge();
 
-            challenge.RegisterParticipant(userId, new LinkedAccount(Guid.NewGuid()));
+            challenge.RegisterParticipant(userId, new ParticipantExternalAccount(Guid.NewGuid()));
 
             return challenge;
         }
@@ -78,25 +79,23 @@ namespace eDoxa.Arena.Challenges.Domain.Factories
 
             for (var index = 0; index < participantCount; index++)
             {
-                challenge.RegisterParticipant(new UserId(), new LinkedAccount(Guid.NewGuid()));
+                challenge.RegisterParticipant(new UserId(), new ParticipantExternalAccount(Guid.NewGuid()));
             }
 
             return challenge;
         }
     }
 
-    public sealed partial class FakeDefaultChallengeFactory
+    public sealed partial class FakeChallengeFactory
     {
         public ChallengeSetup CreateChallengeSetup(
-            ChallengeType type,
             int bestOf = BestOf.Default,
             int entries = Entries.Default,
             decimal entryFee = EntryFee.Default,
             float payoutRatio = PayoutRatio.Default,
             float serviceChargeRatio = ServiceChargeRatio.Default)
         {
-            return new ChallengeSetup(new BestOf(bestOf), new Entries(entries), new EntryFee(entryFee), new PayoutRatio(payoutRatio),
-                new ServiceChargeRatio(serviceChargeRatio), type);
+            return new ChallengeSetup(new BestOf(bestOf), new Entries(entries), new EntryFee(entryFee), new PayoutRatio(payoutRatio), new ServiceChargeRatio(serviceChargeRatio));
         }
 
         public Timeline CreateChallengeTimeline(ChallengeState state = null)
@@ -193,15 +192,15 @@ namespace eDoxa.Arena.Challenges.Domain.Factories
         }
     }
 
-    public sealed partial class FakeDefaultChallengeFactory
+    public sealed partial class FakeChallengeFactory
     {
         public Participant CreateParticipant(int? bestOf = null)
         {
-            var setup = this.CreateChallengeSetup(ChallengeType.All, bestOf ?? BestOf.DefaultValue);
+            var setup = this.CreateChallengeSetup(bestOf ?? BestOf.DefaultValue);
 
             var challenge = this.CreateChallenge(setup: setup);
 
-            return new Participant(challenge, new UserId(), new LinkedAccount(Guid.NewGuid()));
+            return new Participant(challenge, new UserId(), new ParticipantExternalAccount(Guid.NewGuid()));
         }
 
         public Participant CreateParticipantMatches(int matchCount = 0, int? bestOf = null)
@@ -218,15 +217,15 @@ namespace eDoxa.Arena.Challenges.Domain.Factories
 
         public Match CreateMatch()
         {
-            return new Match(this.CreateParticipant(), new LinkedMatch(AdminLinkedMatch.ToString()));
+            return new Match(this.CreateParticipant(), new MatchExternalId(AdminMatchExternalId.ToString()));
         }
 
-        public IMatchStats CreateMatchStats(LinkedMatch linkedMatch = null)
+        public IMatchStats CreateMatchStats(MatchExternalId matchExternalId = null)
         {
-            linkedMatch = linkedMatch ?? new LinkedMatch(2233345251);
+            matchExternalId = matchExternalId ?? new MatchExternalId(2233345251);
 
             return new MatchStats(
-                linkedMatch,
+                matchExternalId,
                 new
                 {
                     Kills = Random.Next(0, 40 + 1),

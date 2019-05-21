@@ -22,12 +22,7 @@ namespace eDoxa.Arena.Challenges.Domain.Repositories
 {
     public interface IChallengeRepository : IRepository<Challenge>
     {
-        void Create(Challenge challenge);
-
-        Task<IReadOnlyCollection<Challenge>> FindChallengesAsync(
-            ChallengeType type,
-            Game game,
-            ChallengeState state);
+        Task<IReadOnlyCollection<Challenge>> FindChallengesAsync(Game game, ChallengeState state);
 
         [ItemCanBeNull]
         Task<Challenge> FindChallengeAsync(ChallengeId challengeId);

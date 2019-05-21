@@ -11,7 +11,6 @@
 using System;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Services.Strategies;
 
 namespace eDoxa.Arena.Challenges.Domain.Services.Factories
@@ -22,16 +21,9 @@ namespace eDoxa.Arena.Challenges.Domain.Services.Factories
 
         public static PayoutFactory Instance => Lazy.Value;
 
-        public IPayoutStrategy CreatePayout(Challenge challenge)
+        public IPayoutStrategy CreatePayout()
         {
-            var type = challenge.Setup.Type;
-
-            if (type.Equals(ChallengeType.Default))
-            {
-                return new DefaultPayoutStrategy();
-            }
-
-            throw new NotImplementedException();
+            return new PayoutStrategy();
         }
     }
 }

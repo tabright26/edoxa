@@ -59,14 +59,14 @@ namespace eDoxa.Arena.Challenges.Api.Tests.Controllers
                 }
             };
 
-            _queries.Setup(queries => queries.FindUserChallengeHistoryAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<ChallengeType>(), It.IsAny<ChallengeState>()))
+            _queries.Setup(queries => queries.FindUserChallengeHistoryAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<ChallengeState>()))
                 .ReturnsAsync(new Option<ChallengeListDTO>(value))
                 .Verifiable();
 
             var controller = new ChallengeHistoryController(_mockUserInfoService.Object, _queries.Object);
 
             // Act
-            var result = await controller.FindUserChallengeHistoryAsync(Game.All, ChallengeType.All, ChallengeState.All);
+            var result = await controller.FindUserChallengeHistoryAsync(Game.All, ChallengeState.All);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -80,14 +80,14 @@ namespace eDoxa.Arena.Challenges.Api.Tests.Controllers
         public async Task FindUserChallengeHistoryAsync_ShouldBeNoContentResult()
         {
             // Arrange
-            _queries.Setup(queries => queries.FindUserChallengeHistoryAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<ChallengeType>(), It.IsAny<ChallengeState>()))
+            _queries.Setup(queries => queries.FindUserChallengeHistoryAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<ChallengeState>()))
                 .ReturnsAsync(new Option<ChallengeListDTO>())
                 .Verifiable();
 
             var controller = new ChallengeHistoryController(_mockUserInfoService.Object, _queries.Object);
 
             // Act
-            var result = await controller.FindUserChallengeHistoryAsync(Game.All, ChallengeType.All, ChallengeState.All);
+            var result = await controller.FindUserChallengeHistoryAsync(Game.All, ChallengeState.All);
 
             // Assert
             result.Should().BeOfType<NoContentResult>();

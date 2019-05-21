@@ -1,5 +1,5 @@
 ﻿// Filename: ServiceCollectionExtensions.cs
-// Date Created: 2019-04-30
+// Date Created: 2019-05-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,6 +12,7 @@ using System;
 using System.Reflection;
 
 using eDoxa.Security;
+using eDoxa.Seedwork.Infrastructure.Abstractions;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -34,6 +35,15 @@ namespace eDoxa.Seedwork.Infrastructure.Extensions
                     }
                 )
             );
+        }
+
+        public static void AddDbContext<TDbContext, TDbContextData>(this IServiceCollection services, IConfiguration configuration)
+        where TDbContext : DbContext
+        where TDbContextData : class, IDbContextData
+        {
+            services.AddDbContext<TDbContext>(configuration);
+
+            services.AddScoped<IDbContextData, TDbContextData>();
         }
     }
 }

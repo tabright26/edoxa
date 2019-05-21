@@ -11,7 +11,7 @@
 using System;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.Factories;
+using eDoxa.Arena.Challenges.Tests.Factories;
 using eDoxa.Testing.MSTest.Extensions;
 
 using FluentAssertions;
@@ -23,7 +23,7 @@ namespace eDoxa.Arena.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
     [TestClass]
     public sealed class TimelineTest
     {
-        private static readonly FakeDefaultChallengeFactory FakeDefaultChallengeFactory = FakeDefaultChallengeFactory.Instance;
+        private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
 
         [TestMethod]
         public void Constructor_Initialize_ShouldNotThrowException()
@@ -53,7 +53,7 @@ namespace eDoxa.Arena.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             foreach (var publishedAt in rowData)
             {
                 // Arrange
-                var timeline = FakeDefaultChallengeFactory.CreateChallengeTimeline();
+                var timeline = FakeChallengeFactory.CreateChallengeTimeline();
 
                 // Act
                 var action = new Action(() => timeline.SetProperty(nameof(Timeline.PublishedAt), publishedAt));
@@ -75,7 +75,7 @@ namespace eDoxa.Arena.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             foreach (var registrationPeriod in rowData)
             {
                 // Arrange
-                var timeline = FakeDefaultChallengeFactory.CreateChallengeTimeline();
+                var timeline = FakeChallengeFactory.CreateChallengeTimeline();
 
                 // Act
                 var action = new Action(() =>
@@ -98,7 +98,7 @@ namespace eDoxa.Arena.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             foreach (var extensionPeriod in rowData)
             {
                 // Arrange
-                var timeline = FakeDefaultChallengeFactory.CreateChallengeTimeline();
+                var timeline = FakeChallengeFactory.CreateChallengeTimeline();
 
                 // Act
                 var action = new Action(() =>
@@ -114,7 +114,7 @@ namespace eDoxa.Arena.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         {
             // Arrange
             var extensionPeriod = TimelineExtensionPeriod.Min;
-            var timeline = FakeDefaultChallengeFactory.CreateChallengeTimeline(ChallengeState.Configured);
+            var timeline = FakeChallengeFactory.CreateChallengeTimeline(ChallengeState.Configured);
 
             // Act
             var action = new Action(() =>
@@ -128,7 +128,7 @@ namespace eDoxa.Arena.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void State_IsDraft_ShouldBeTrue()
         {
             // Arrange
-            var timeline = FakeDefaultChallengeFactory.CreateChallengeTimeline();
+            var timeline = FakeChallengeFactory.CreateChallengeTimeline();
 
             // Act
             var state = timeline.State;
@@ -141,7 +141,7 @@ namespace eDoxa.Arena.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void State_IsConfigured_ShouldBeTrue()
         {
             // Arrange
-            var timeline = FakeDefaultChallengeFactory.CreateChallengeTimeline(ChallengeState.Configured);
+            var timeline = FakeChallengeFactory.CreateChallengeTimeline(ChallengeState.Configured);
 
             // Act
             var state = timeline.State;
@@ -154,7 +154,7 @@ namespace eDoxa.Arena.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void State_IsOpened_ShouldBeTrue()
         {
             // Arrange
-            var timeline = FakeDefaultChallengeFactory.CreateChallengeTimeline(ChallengeState.Opened);
+            var timeline = FakeChallengeFactory.CreateChallengeTimeline(ChallengeState.Opened);
 
             // Act
             var state = timeline.State;
@@ -167,7 +167,7 @@ namespace eDoxa.Arena.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void State_IsStarted_ShouldBeTrue()
         {
             // Arrange
-            var timeline = FakeDefaultChallengeFactory.CreateChallengeTimeline(ChallengeState.InProgress);
+            var timeline = FakeChallengeFactory.CreateChallengeTimeline(ChallengeState.InProgress);
 
             // Act
             var state = timeline.State;
@@ -180,7 +180,7 @@ namespace eDoxa.Arena.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void State_IsEnded_ShouldBeTrue()
         {
             // Arrange
-            var timeline = FakeDefaultChallengeFactory.CreateChallengeTimeline(ChallengeState.Ended);
+            var timeline = FakeChallengeFactory.CreateChallengeTimeline(ChallengeState.Ended);
 
             // Act
             var state = timeline.State;
@@ -193,7 +193,7 @@ namespace eDoxa.Arena.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         public void State_IsClosed_ShouldBeTrue()
         {
             // Arrange
-            var timeline = FakeDefaultChallengeFactory.CreateChallengeTimeline(ChallengeState.Closed);
+            var timeline = FakeChallengeFactory.CreateChallengeTimeline(ChallengeState.Closed);
 
             // Act
             var state = timeline.State;

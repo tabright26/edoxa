@@ -1,5 +1,5 @@
-﻿// Filename: IRandom.cs
-// Date Created: 2019-05-07
+﻿// Filename: IDbContextData.cs
+// Date Created: 2019-05-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,10 +8,12 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-namespace eDoxa.Arena.Challenges.Domain
+using System.Threading.Tasks;
+
+namespace eDoxa.Seedwork.Infrastructure.Abstractions
 {
-    public abstract class SetupRandom<T, TRange>
+    public interface IDbContextData
     {
-        public abstract T Next(TRange range);
+        Task SeedAsync();
     }
 }

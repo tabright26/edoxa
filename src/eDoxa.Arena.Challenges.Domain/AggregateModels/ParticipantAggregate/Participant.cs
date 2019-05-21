@@ -23,16 +23,16 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate
     public class Participant : Entity<ParticipantId>, IAggregateRoot
     {
         private Challenge _challenge;
-        private LinkedAccount _linkedAccount;
+        private ParticipantExternalAccount _participantExternalAccount;
         private HashSet<Match> _matches;
         private DateTime _timestamp;
         private UserId _userId;
 
-        public Participant(Challenge challenge, UserId userId, LinkedAccount linkedAccount) : this()
+        public Participant(Challenge challenge, UserId userId, ParticipantExternalAccount participantExternalAccount) : this()
         {
             _challenge = challenge;
             _userId = userId;
-            _linkedAccount = linkedAccount;
+            _participantExternalAccount = participantExternalAccount;
         }
 
         private Participant()
@@ -43,7 +43,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate
 
         public DateTime Timestamp => _timestamp;
 
-        public LinkedAccount LinkedAccount => _linkedAccount;
+        public ParticipantExternalAccount ParticipantExternalAccount => _participantExternalAccount;
 
         public UserId UserId => _userId;
 
@@ -55,7 +55,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate
 
         public void SnapshotMatch(IMatchStats stats, IScoring scoring)
         {
-            var match = new Match(this, stats.LinkedMatch);
+            var match = new Match(this, stats.MatchExternalId);
 
             match.SnapshotStats(stats, scoring);
 

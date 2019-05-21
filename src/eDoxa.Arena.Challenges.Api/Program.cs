@@ -18,8 +18,6 @@ using eDoxa.ServiceBus;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 using Serilog;
 
@@ -37,27 +35,9 @@ namespace eDoxa.Arena.Challenges.Api
 
                 Log.Information("Applying {Application} context migrations...");
 
-                host.MigrateDbContext<ChallengesDbContext>(
-                    (context, provider) =>
-                    {
-                        var environment = provider.GetService<IHostingEnvironment>();
+                host.MigrateDbContext<ChallengesDbContext>();
 
-                        if (environment.IsDevelopment())
-                        {
-                            var factory = provider.GetService<ILoggerFactory>();
-
-                            var task = context.SeedAsync(factory.CreateLogger<ChallengesDbContext>());
-
-                            task.Wait();
-                        }
-                    }
-                );
-
-                host.MigrateDbContext<IntegrationEventLogDbContext>(
-                    (context, provider) =>
-                    {
-                    }
-                );
+                host.MigrateDbContext<IntegrationEventLogDbContext>();
 
                 Log.Information("Starting {Application} web host...");
 

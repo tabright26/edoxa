@@ -15,9 +15,9 @@ using eDoxa.ServiceBus;
 
 namespace eDoxa.Arena.Challenges.Application.IntegrationEvents
 {
-    public sealed class ChallengePayoutProcessedIntegrationEvent : IntegrationEvent
+    public sealed class ChallengePayoutIntegrationEvent : IntegrationEvent
     {
-        public ChallengePayoutProcessedIntegrationEvent(Guid challengeId, IReadOnlyDictionary<Guid, decimal> userPrizes)
+        public ChallengePayoutIntegrationEvent(Guid challengeId, IReadOnlyDictionary<Guid, decimal> userPrizes)
         {
             ChallengeId = challengeId;
             UserPrizes = userPrizes;

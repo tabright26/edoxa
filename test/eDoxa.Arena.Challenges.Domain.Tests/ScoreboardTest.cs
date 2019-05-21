@@ -11,7 +11,7 @@
 using System.Collections.Generic;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
-using eDoxa.Arena.Challenges.Domain.Factories;
+using eDoxa.Arena.Challenges.Tests.Factories;
 using eDoxa.Functional;
 
 using FluentAssertions;
@@ -23,13 +23,13 @@ namespace eDoxa.Arena.Challenges.Domain.Tests
     [TestClass]
     public sealed class ScoreboardTest
     {
-        private static readonly FakeDefaultChallengeFactory FakeDefaultChallengeFactory = FakeDefaultChallengeFactory.Instance;
+        private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
 
         [TestMethod]
         public void Scoreboard_ShouldBeAssignableToType()
         {
             // Arrange
-            var scoreboard = FakeDefaultChallengeFactory.CreateScoreboard();
+            var scoreboard = FakeChallengeFactory.CreateScoreboard();
 
             // Act
             var type = typeof(Dictionary<UserId, Option<Score>>);

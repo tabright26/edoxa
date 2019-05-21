@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Arena.Challenges.Domain.Factories;
+using eDoxa.Arena.Challenges.Tests.Factories;
 
 using FluentAssertions;
 
@@ -19,15 +19,15 @@ namespace eDoxa.Arena.Challenges.Domain.Tests.AggregateModels.ParticipantAggrega
     [TestClass]
     public sealed class ParticipantTest
     {
-        private static readonly FakeDefaultChallengeFactory FakeDefaultChallengeFactory = FakeDefaultChallengeFactory.Instance;
+        private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
 
         [TestMethod]
         public void SnapshotMatch_Matches_ShouldNotBeEmpty()
         {
             // Arrange
-            var participant = FakeDefaultChallengeFactory.CreateParticipant();
-            var stats = FakeDefaultChallengeFactory.CreateMatchStats();
-            var scoring = FakeDefaultChallengeFactory.CreateScoring();
+            var participant = FakeChallengeFactory.CreateParticipant();
+            var stats = FakeChallengeFactory.CreateMatchStats();
+            var scoring = FakeChallengeFactory.CreateScoring();
 
             // Act
             participant.SnapshotMatch(stats, scoring);
@@ -43,7 +43,7 @@ namespace eDoxa.Arena.Challenges.Domain.Tests.AggregateModels.ParticipantAggrega
         public void Matches_ShouldHaveCountOf(int matchCount)
         {
             // Arrange
-            var participant = FakeDefaultChallengeFactory.CreateParticipantMatches(matchCount);
+            var participant = FakeChallengeFactory.CreateParticipantMatches(matchCount);
 
             // Act
             var matches = participant.Matches;
@@ -59,7 +59,7 @@ namespace eDoxa.Arena.Challenges.Domain.Tests.AggregateModels.ParticipantAggrega
         public void AverageScore_MatchCountGreaterThanOrEqualToBestOf_ShouldNotBeNull(int matchCount, int bestOf)
         {
             // Arrange
-            var participant = FakeDefaultChallengeFactory.CreateParticipantMatches(matchCount, bestOf);
+            var participant = FakeChallengeFactory.CreateParticipantMatches(matchCount, bestOf);
 
             // Act
             var score = participant.AverageScore;

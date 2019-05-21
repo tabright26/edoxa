@@ -30,7 +30,7 @@ namespace eDoxa.Arena.Challenges.Services.LeagueOfLegends.Tests.Strategies
         public void Scoring_Default_ShouldContain(string key, float value)
         {
             // Act
-            var strategy = new LeagueOfLegendsDefaultScoringStrategy();
+            var strategy = new LeagueOfLegendsScoringStrategy();
 
             // Assert
             strategy.Scoring.As<Scoring>().Should().Contain(key, new StatWeighting(value));

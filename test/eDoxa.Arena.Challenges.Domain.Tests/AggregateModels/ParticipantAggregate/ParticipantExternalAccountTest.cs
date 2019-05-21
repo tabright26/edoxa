@@ -1,4 +1,4 @@
-﻿// Filename: LinkedMatchTest.cs
+﻿// Filename: LinkedAccountTest.cs
 // Date Created: 2019-05-07
 // 
 // ================================================
@@ -10,23 +10,23 @@
 
 using System;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Testing.MSTest;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Arena.Challenges.Domain.Tests.AggregateModels.MatchAggregate
+namespace eDoxa.Arena.Challenges.Domain.Tests.AggregateModels.ParticipantAggregate
 {
     [TestClass]
-    public sealed class LinkedMatchTest
+    public sealed class ParticipantExternalAccountTest
     {
         [TestMethod]
-        public void Constructor_Tests()
+        public void Constructor_TypeOfString_Tests()
         {
-            const string message = "Linked match validation failed.";
+            const string message = "Linked account validation failed.";
 
-            ConstructorTests<LinkedMatch>.For(typeof(string))
-                .WithName("LinkedMatch")
+            ConstructorTests<ParticipantExternalAccount>.For(typeof(string))
+                .WithName("ParticipantExternalAccount")
                 .Fail(new object[] {null}, typeof(ArgumentException), message)
                 .Fail(new object[] {"  "}, typeof(ArgumentException), message)
                 .Fail(new object[] {"9i8h7g 6f5e4d3 c2b1a0"}, typeof(ArgumentException), message)
@@ -42,10 +42,10 @@ namespace eDoxa.Arena.Challenges.Domain.Tests.AggregateModels.MatchAggregate
         [TestMethod]
         public void Constructor_TypeOfGuid_Tests()
         {
-            const string message = "Linked match validation failed.";
+            const string message = "Participant external account validation failed.";
 
-            ConstructorTests<LinkedMatch>.For(typeof(Guid))
-                .WithName("LinkedMatch")
+            ConstructorTests<ParticipantExternalAccount>.For(typeof(Guid))
+                .WithName("ParticipantExternalAccount")
                 .Fail(new object[] {Guid.Empty}, typeof(ArgumentException), message)
                 .Succeed(new object[] {Guid.NewGuid()}, message)
                 .Assert();

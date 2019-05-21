@@ -23,8 +23,6 @@ namespace eDoxa.Arena.Challenges.Api.Extensions
         {
             var service = application.ApplicationServices.GetRequiredService<IEventBusService>();
             
-            service.Subscribe<ChallengePublishedIntegrationEvent, ChallengePublishedIntegrationEventHandler>();
-
             service.Subscribe<ChallengeSynchronizedIntegrationEvent, ChallengeSynchronizedIntegrationEventHandler>();
 
             service.Subscribe<ChallengeCompletedIntegrationEvent, ChallengeCompletedIntegrationEventHandler>();

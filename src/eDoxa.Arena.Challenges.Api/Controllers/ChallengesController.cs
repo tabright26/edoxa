@@ -16,6 +16,8 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.DTO.Queries;
 using eDoxa.Seedwork.Domain.Enumerations;
 
+using JetBrains.Annotations;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,15 +42,13 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         ///     Find the challenges.
         /// </summary>
         [HttpGet(Name = nameof(FindChallengesAsync))]
-        public async Task<IActionResult> FindChallengesAsync(Game game, ChallengeType type, ChallengeState state)
+        public async Task<IActionResult> FindChallengesAsync([CanBeNull] Game game, [CanBeNull] ChallengeState state)
         {
             game = game ?? Game.All;
 
-            type = type ?? ChallengeType.All;
-
             state = state ?? ChallengeState.All;
 
-            var challenges = await _queries.FindChallengesAsync(game, type, state);
+            var challenges = await _queries.FindChallengesAsync(game, state);
 
             return challenges
                 .Select(this.Ok)

@@ -73,7 +73,7 @@ namespace eDoxa.Arena.Challenges.Application.Commands.Handlers
                 return new BadRequestObjectResult($"This user does not have an account for the game: {challenge.Game}.");
             }
 
-            var linkedAccount = new LinkedAccount(login);
+            var linkedAccount = new ParticipantExternalAccount(login);
 
             challenge.RegisterParticipant(userId, linkedAccount);
 

@@ -19,12 +19,12 @@ namespace eDoxa.Arena.Challenges.Services.LeagueOfLegends.Adapters
 {
     public sealed class LeagueOfLegendsMatchStatsAdapter : IMatchStatsAdapter
     {
-        private readonly LinkedAccount _linkedAccount;
+        private readonly ParticipantExternalAccount _participantExternalAccount;
         private readonly LeagueOfLegendsMatchDTO _match;
 
-        public LeagueOfLegendsMatchStatsAdapter(LinkedAccount linkedAccount, LeagueOfLegendsMatchDTO match)
+        public LeagueOfLegendsMatchStatsAdapter(ParticipantExternalAccount participantExternalAccount, LeagueOfLegendsMatchDTO match)
         {
-            _linkedAccount = linkedAccount;
+            _participantExternalAccount = participantExternalAccount;
             _match = match;
         }
 
@@ -32,15 +32,15 @@ namespace eDoxa.Arena.Challenges.Services.LeagueOfLegends.Adapters
         {
             get
             {
-                var linkedMatch = new LinkedMatch(_match.GameId);
+                var externalId = new MatchExternalId(_match.GameId);
 
                 var participantId = _match.ParticipantIdentities
-                                          .Single(participantIdentity => participantIdentity.Player.AccountId == _linkedAccount.ToString())
+                                          .Single(participantIdentity => participantIdentity.Player.AccountId == _participantExternalAccount.ToString())
                                           .ParticipantId;
 
                 var stats = _match.Participants.Single(participant => participant.ParticipantId == participantId).Stats;
 
-                return new MatchStats(linkedMatch, stats);
+                return new MatchStats(externalId, stats);
             }
         }
     }

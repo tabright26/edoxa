@@ -63,7 +63,7 @@ namespace eDoxa.Cashier.Api
 
             services.AddIntegrationEventDbContext(Configuration, Assembly.GetAssembly(typeof(CashierDbContext)));
 
-            services.AddDbContext<CashierDbContext>(Configuration);
+            services.AddDbContext<CashierDbContext, CashierDbContextData>(Configuration);
 
             services.AddVersioning();
 

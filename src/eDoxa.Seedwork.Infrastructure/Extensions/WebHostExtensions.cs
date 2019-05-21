@@ -1,15 +1,17 @@
 ﻿// Filename: WebHostExtensions.cs
-// Date Created: 2019-03-04
+// Date Created: 2019-05-20
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
 // 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
 using System.Data.SqlClient;
+
+using eDoxa.Seedwork.Infrastructure.Abstractions;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -22,11 +24,11 @@ namespace eDoxa.Seedwork.Infrastructure.Extensions
 {
     public static class WebHostExtensions
     {
-        public static void MigrateDbContext<TDbContext>(this IWebHost webHost, Action<TDbContext, IServiceProvider> seeder)
+        public static void MigrateDbContext<TDbContext>(this IWebHost host)
         where TDbContext : DbContext
         {
             // Create service scope.
-            using (var scope = webHost.Services.CreateScope())
+            using (var scope = host.Services.CreateScope())
             {
                 // Gets service provider.
                 var provider = scope.ServiceProvider;
@@ -46,7 +48,9 @@ namespace eDoxa.Seedwork.Infrastructure.Extensions
                                        .WaitAndRetry(
                                            new[]
                                            {
-                                               TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(15)
+                                               TimeSpan.FromSeconds(5),
+                                               TimeSpan.FromSeconds(10),
+                                               TimeSpan.FromSeconds(15)
                                            }
                                        );
 
@@ -57,8 +61,8 @@ namespace eDoxa.Seedwork.Infrastructure.Extensions
                             // Migrated database associated with context.
                             context.Database.Migrate();
 
-                            // Seeded database associated with context.
-                            seeder(context, provider);
+                            // Seed context data to database.
+                            provider.GetService<IDbContextData>()?.SeedAsync().Wait();
                         }
                     );
 

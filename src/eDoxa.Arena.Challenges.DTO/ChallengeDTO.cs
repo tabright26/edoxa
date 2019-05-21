@@ -26,8 +26,6 @@ namespace eDoxa.Arena.Challenges.DTO
 
         [JsonProperty("name")] public string Name { get; set; }
 
-        [JsonProperty("type")] public ChallengeType Type { get; set; }
-
         [JsonProperty("state")] public ChallengeState State { get; set; }
 
         [JsonProperty("setup")] public ChallengeSetupDTO Setup { get; set; }

@@ -132,14 +132,14 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             return specification.IsSatisfiedBy(this);
         }
 
-        public void RegisterParticipant(UserId userId, LinkedAccount linkedAccount)
+        public void RegisterParticipant(UserId userId, ParticipantExternalAccount externalAccount)
         {
             if (!this.CanRegisterParticipant(userId))
             {
                 throw new InvalidOperationException();
             }
 
-            _participants.Add(new Participant(this, userId, linkedAccount));
+            _participants.Add(new Participant(this, userId, externalAccount));
         }
 
         private bool CanRegisterParticipant(UserId userId)

@@ -13,9 +13,9 @@ using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.DomainEvents
 {
-    public sealed class PayoutProcessedDomainEvent : IDomainEvent
+    public sealed class ChallengePayoutDomainEvent : IDomainEvent
     {
-        public PayoutProcessedDomainEvent(ChallengeId challengeId, IParticipantPrizes participantPrizes)
+        public ChallengePayoutDomainEvent(ChallengeId challengeId, IParticipantPrizes participantPrizes)
         {
             ChallengeId = challengeId;
             ParticipantPrizes = participantPrizes;
