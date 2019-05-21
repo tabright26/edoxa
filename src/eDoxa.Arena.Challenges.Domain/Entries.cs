@@ -1,9 +1,9 @@
 ﻿// Filename: Entries.cs
-// Date Created: 2019-04-20
+// Date Created: 2019-05-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -30,9 +30,7 @@ namespace eDoxa.Arena.Challenges.Domain
         {
             if (validate)
             {
-                if (entries < Min ||
-                    entries > Max ||
-                    entries % 10 != 0)
+                if (entries < Min || entries > Max || entries % 10 != 0)
                 {
                     throw new ArgumentException(nameof(entries));
                 }
