@@ -8,68 +8,62 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-// ReSharper disable ImplicitNotNullOverridesUnknownBaseMemberNullability
-// ReSharper disable ImplicitNotNullConflictInHierarchy
-// ReSharper disable PossibleNullReferenceException
-
 using System;
+
+using JetBrains.Annotations;
 
 namespace eDoxa.Seedwork.Domain.Aggregate
 {
-    public abstract class TypeObject<T, TPrimitive> : IComparable, IComparable<T>, IEquatable<T>
+    public abstract partial class TypeObject<TObject, TPrimitive>
+    where TObject : TypeObject<TObject, TPrimitive>
     where TPrimitive : IComparable, IComparable<TPrimitive>, IEquatable<TPrimitive>
-    where T : TypeObject<T, TPrimitive>
     {
         protected readonly TPrimitive Value;
 
-        protected TypeObject(TPrimitive value, bool validate = true)
+        protected TypeObject(TPrimitive value)
         {
-            Value = !validate || this.IsValid() ? value : throw new ArgumentException();
+            Value = value;
         }
 
-        public int CompareTo(object obj)
+        public static implicit operator TPrimitive(TypeObject<TObject, TPrimitive> obj)
         {
-            return this.CompareTo(obj as T);
-        }
-
-        public int CompareTo(T other)
-        {
-            return Value.CompareTo(other.Value);
-        }
-
-        public bool Equals(T other)
-        {
-            return Value.Equals(other.Value);
-        }
-
-        public static bool operator ==(TypeObject<T, TPrimitive> left, TypeObject<T, TPrimitive> right)
-        {
-            return left.Equals(right);
-        }
-
-        public static bool operator !=(TypeObject<T, TPrimitive> left, TypeObject<T, TPrimitive> right)
-        {
-            return !(left == right);
-        }
-
-        public override bool Equals(object obj)
-        {
-            return this.Equals(obj as T);
-        }
-
-        public override int GetHashCode()
-        {
-            return Value.GetHashCode();
+            return obj.Value;
         }
 
         public override string ToString()
         {
             return Value.ToString();
         }
+    }
 
-        protected virtual bool IsValid()
+    public abstract partial class TypeObject<TObject, TPrimitive> : IEquatable<TObject>
+    {
+        public bool Equals([CanBeNull] TObject other)
         {
-            return true;
+            return Value.Equals(other != null ? other.Value : default);
+        }
+
+        public override bool Equals([CanBeNull] object obj)
+        {
+            return this.Equals(obj as TObject);
+        }
+
+        public override int GetHashCode()
+        {
+            return Value.GetHashCode();
+        }
+    }
+
+    public abstract partial class TypeObject<TObject, TPrimitive> : IComparable, IComparable<TObject>
+    {
+        public int CompareTo([CanBeNull] object obj)
+        {
+            return this.CompareTo(obj as TObject);
+        }
+
+        public int CompareTo([CanBeNull] TObject other)
+        {
+            return Value.CompareTo(other != null ? other.Value : default);
         }
     }
 }

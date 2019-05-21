@@ -1,5 +1,5 @@
 ﻿// Filename: Money.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-05-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,12 +11,11 @@
 using System;
 
 using eDoxa.Cashier.Domain.Abstractions;
-
-using JetBrains.Annotations;
+using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
 {
-    public sealed partial class Money : ICurrency
+    public sealed class Money : TypeObject<Money, decimal>, ICurrency
     {
         public static readonly Money Five = new Money(5);
         public static readonly Money Ten = new Money(10);
@@ -27,62 +26,23 @@ namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
         public static readonly Money TwoHundred = new Money(200);
         public static readonly Money FiveHundred = new Money(500);
 
-        private readonly decimal _value;
-
-        public Money(decimal amount)
+        public Money(decimal amount) : base(amount)
         {
-            _value = amount;
-        }
-
-        public static implicit operator decimal(Money money)
-        {
-            return money._value;
         }
 
         public static Money operator -(Money money)
         {
-            return new Money(-money._value);
+            return new Money(-money.Value);
         }
 
         public override string ToString()
         {
-            return Convert.ToDecimal(this).ToString("$##.###");
+            return Value.ToString("$##.###");
         }
 
-        public int AsCents()
+        public long AsCents()
         {
-            return Convert.ToInt32(this * 100);
-        }
-    }
-
-    public sealed partial class Money : IEquatable<Money>
-    {
-        public bool Equals(Money other)
-        {
-            return _value.Equals(other?._value);
-        }
-
-        public override bool Equals(object obj)
-        {
-            return this.Equals(obj as Money);
-        }
-
-        public override int GetHashCode()
-        {
-            return _value.GetHashCode();
-        }
-    }
-
-    public sealed partial class Money : IComparable, IComparable<Money>
-    {
-        public int CompareTo([CanBeNull] object obj)
-        {
-            return this.CompareTo(obj as Money);
-        }
-
-        public int CompareTo([CanBeNull] Money other)
-        {
-            return _value.CompareTo(other?._value);
+            return Convert.ToInt64(Value * 100);
         }
     }
 }

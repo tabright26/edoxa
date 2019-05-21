@@ -28,12 +28,12 @@ namespace eDoxa.Seedwork.Domain.Tests.Aggregate
 
             var order = list.OrderBy(x => x).ToList();
 
-            var t = list.Any(x => x == qw);
+            var t = list.Any(x => x.Equals(qw));
         }
 
         private sealed class MockTypeObject : TypeObject<MockTypeObject, int>
         {
-            public MockTypeObject(int value, bool validate = true) : base(value, validate)
+            public MockTypeObject(int value) : base(value)
             {
             }
 

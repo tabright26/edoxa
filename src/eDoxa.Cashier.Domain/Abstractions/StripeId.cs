@@ -15,29 +15,26 @@ using System.Linq;
 using System.Reflection;
 
 using eDoxa.Cashier.Domain.Exceptions;
+using eDoxa.Seedwork.Domain.Aggregate;
 
 using JetBrains.Annotations;
 
 namespace eDoxa.Cashier.Domain.Abstractions
 {
-    public abstract partial class StripeId<TStripeId>
+    public abstract partial class StripeId<TStripeId> : TypeObject<TStripeId, string>
     where TStripeId : StripeId<TStripeId>
     {
-        private readonly string _value;
-
-        protected StripeId(string stripeId, string prefix)
+        protected StripeId(string stripeId, string prefix) : base(stripeId)
         {
-            if (!IsValid(stripeId, prefix))
+            if (!this.IsValid(prefix))
             {
                 throw new StripeIdException(stripeId, this.GetType());
             }
-
-            _value = stripeId;
         }
 
-        private static bool IsValid(string stripeId, string prefix)
+        private bool IsValid(string prefix)
         {
-            if (string.IsNullOrWhiteSpace(stripeId))
+            if (string.IsNullOrWhiteSpace(Value))
             {
                 return false;
             }
@@ -58,44 +55,8 @@ namespace eDoxa.Cashier.Domain.Abstractions
 
             string[] GetSubstrings()
             {
-                return stripeId.Split('_');
+                return Value.Split('_');
             }
-        }
-
-        public sealed override string ToString()
-        {
-            return _value;
-        }
-    }
-
-    public abstract partial class StripeId<TStripeId> : IEquatable<TStripeId>
-    {
-        public bool Equals([CanBeNull] TStripeId other)
-        {
-            return _value.Equals(other?._value);
-        }
-
-        public sealed override bool Equals([CanBeNull] object obj)
-        {
-            return this.Equals(obj as TStripeId);
-        }
-
-        public sealed override int GetHashCode()
-        {
-            return _value.GetHashCode();
-        }
-    }
-
-    public abstract partial class StripeId<TStripeId> : IComparable, IComparable<TStripeId>
-    {
-        public int CompareTo([CanBeNull] object obj)
-        {
-            return this.CompareTo(obj as TStripeId);
-        }
-
-        public int CompareTo([CanBeNull] TStripeId other)
-        {
-            return string.Compare(_value, other?._value, StringComparison.Ordinal);
         }
     }
 

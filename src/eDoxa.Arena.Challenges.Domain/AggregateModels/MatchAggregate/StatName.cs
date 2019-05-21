@@ -1,73 +1,32 @@
 ﻿// Filename: StatName.cs
-// Date Created: 2019-04-28
+// Date Created: 2019-05-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Reflection;
 
-using JetBrains.Annotations;
+using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
 {
-    public partial class StatName
+    public class StatName : TypeObject<StatName, string>
     {
-        private readonly string _value;
-
-        public StatName(PropertyInfo propertyInfo)
+        public StatName(PropertyInfo propertyInfo) : base(propertyInfo.GetMethod.Name.Substring(4))
         {
-            _value = propertyInfo.GetMethod.Name.Substring(4);
         }
 
-        public StatName(string name)
+        public StatName(string name) : base(name)
         {
-            _value = name;
         }
 
         public static implicit operator StatName(string name)
         {
             return new StatName(name);
-        }
-
-        public override string ToString()
-        {
-            return _value;
-        }
-    }
-
-    public partial class StatName : IEquatable<StatName>
-    {
-        public bool Equals(StatName other)
-        {
-            return _value.Equals(other?._value);
-        }
-
-        public override bool Equals(object obj)
-        {
-            return this.Equals(obj as StatName);
-        }
-
-        public override int GetHashCode()
-        {
-            return _value.GetHashCode();
-        }
-    }
-
-    public partial class StatName : IComparable, IComparable<StatName>
-    {
-        public int CompareTo([CanBeNull] object obj)
-        {
-            return this.CompareTo(obj as StatName);
-        }
-
-        public int CompareTo([CanBeNull] StatName other)
-        {
-            return string.Compare(_value, other?._value, StringComparison.Ordinal);
         }
     }
 }

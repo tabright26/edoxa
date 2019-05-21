@@ -10,11 +10,13 @@
 
 using System;
 
+using eDoxa.Seedwork.Domain.Aggregate;
+
 using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed partial class TimelinePublishedAt
+    public sealed class TimelinePublishedAt : TypeObject<TimelinePublishedAt, DateTime>
     {
         public static readonly DateTime Min = DateTime.UtcNow;
         public static readonly DateTime Max = Min.AddMonths(1);
@@ -22,63 +24,22 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         public static readonly TimelinePublishedAt MinValue = new TimelinePublishedAt(Min);
         public static readonly TimelinePublishedAt MaxValue = new TimelinePublishedAt(Max);
 
-        private readonly DateTime _value;
-
-        public TimelinePublishedAt(DateTime publishedAt, bool validate = true)
+        public TimelinePublishedAt(DateTime publishedAt, bool validate = true) : base(publishedAt)
         {
             publishedAt = publishedAt.ToUniversalTime();
 
             if (validate)
             {
-                if (publishedAt < Min ||
-                    publishedAt > Max)
+                if (publishedAt < Min || publishedAt > Max)
                 {
                     throw new ArgumentException(nameof(publishedAt));
                 }
             }
-
-            _value = publishedAt;
-        }
-
-        public static implicit operator DateTime(TimelinePublishedAt publishedAt)
-        {
-            return publishedAt._value;
         }
 
         public static TimelineStartedAt operator +(TimelinePublishedAt publishedAt, TimelineRegistrationPeriod registrationPeriod)
         {
             return new TimelineStartedAt(publishedAt, registrationPeriod);
-        }
-    }
-
-    public sealed partial class TimelinePublishedAt : IEquatable<TimelinePublishedAt>
-    {
-        public bool Equals(TimelinePublishedAt other)
-        {
-            return _value.Equals(other?._value);
-        }
-
-        public override bool Equals(object obj)
-        {
-            return this.Equals(obj as TimelinePublishedAt);
-        }
-
-        public override int GetHashCode()
-        {
-            return _value.GetHashCode();
-        }
-    }
-
-    public sealed partial class TimelinePublishedAt : IComparable, IComparable<TimelinePublishedAt>
-    {
-        public int CompareTo([CanBeNull] object obj)
-        {
-            return this.CompareTo(obj as TimelinePublishedAt);
-        }
-
-        public int CompareTo([CanBeNull] TimelinePublishedAt other)
-        {
-            return _value.CompareTo(other?._value);
         }
     }
 }

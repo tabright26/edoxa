@@ -10,11 +10,11 @@
 
 using System;
 
-using JetBrains.Annotations;
+using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain
 {
-    public partial class Entries
+    public class Entries : TypeObject<Entries, int>
     {
         public const int Min = 30;
         public const int Max = 2500;
@@ -24,9 +24,7 @@ namespace eDoxa.Arena.Challenges.Domain
         public static readonly Entries MaxValue = new Entries(Max);
         public static readonly Entries DefaultValue = new Entries(Default);
 
-        private readonly int _value;
-
-        public Entries(int entries, bool validate = true)
+        public Entries(int entries, bool validate = true) : base(entries)
         {
             if (validate)
             {
@@ -35,49 +33,6 @@ namespace eDoxa.Arena.Challenges.Domain
                     throw new ArgumentException(nameof(entries));
                 }
             }
-
-            _value = entries;
-        }
-
-        public static implicit operator int(Entries entries)
-        {
-            return entries._value;
-        }
-
-        public override string ToString()
-        {
-            return _value.ToString();
-        }
-    }
-
-    public partial class Entries : IEquatable<Entries>
-    {
-        public bool Equals(Entries other)
-        {
-            return _value.Equals(other?._value);
-        }
-
-        public override bool Equals(object obj)
-        {
-            return this.Equals(obj as Entries);
-        }
-
-        public override int GetHashCode()
-        {
-            return _value.GetHashCode();
-        }
-    }
-
-    public partial class Entries : IComparable, IComparable<Entries>
-    {
-        public int CompareTo([CanBeNull] object obj)
-        {
-            return this.CompareTo(obj as Entries);
-        }
-
-        public int CompareTo([CanBeNull] Entries other)
-        {
-            return _value.CompareTo(other?._value);
         }
     }
 }

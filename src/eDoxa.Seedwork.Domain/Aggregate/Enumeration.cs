@@ -182,12 +182,12 @@ namespace eDoxa.Seedwork.Domain.Aggregate
 
     public abstract partial class Enumeration<TEnumeration> : IEquatable<TEnumeration>
     {
-        public bool Equals(TEnumeration other)
+        public bool Equals([CanBeNull] TEnumeration other)
         {
             return this.GetType() == other?.GetType() && _value.Equals(other._value);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals([CanBeNull] object obj)
         {
             return this.Equals(obj as TEnumeration);
         }
