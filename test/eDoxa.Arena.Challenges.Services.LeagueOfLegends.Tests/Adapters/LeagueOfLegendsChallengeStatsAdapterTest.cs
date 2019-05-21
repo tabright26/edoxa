@@ -9,10 +9,8 @@
 // this source code package.
 
 using System.Linq;
-using System.Reflection;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Challenges.Services.LeagueOfLegends.Adapters;
 using eDoxa.Arena.Challenges.Tests.Factories;
@@ -43,9 +41,9 @@ namespace eDoxa.Arena.Challenges.Services.LeagueOfLegends.Tests.Adapters
 
             challenge.RegisterParticipant(userId, externalAccount);
 
-            var timeline = FakeChallengeFactory.CreateChallengeTimeline(ChallengeState.InProgress);
+            //var timeline = FakeChallengeFactory.CreateChallengeTimeline(ChallengeState.InProgress);
 
-            challenge.GetType().GetField("_timeline", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(challenge, timeline);
+            //challenge.GetType().GetField("_timeline", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(challenge, timeline);
 
             foreach (var (_, match) in matches)
             {

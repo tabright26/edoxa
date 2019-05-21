@@ -8,8 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-
 using eDoxa.Arena.Challenges.Domain;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
@@ -85,46 +83,15 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                 }
             );
 
-            builder.OwnsOne(
-                challenge => challenge.Timeline,
-                challengeTimeline =>
-                {
-                    challengeTimeline.Property(timeline => timeline.LiveMode).IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field);
-
-                    challengeTimeline.Property(timeline => timeline.CreatedAt).IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field);
-
-                    challengeTimeline.Property(timeline => timeline.PublishedAt).IsRequired(false).UsePropertyAccessMode(PropertyAccessMode.Field);
-
-                    challengeTimeline.Property(timeline => timeline.RegistrationPeriod)
-                        .HasConversion(
-                            timeSpan => timeSpan.HasValue ? (long?) timeSpan.Value.Ticks : null,
-                            ticks => ticks.HasValue ? (TimeSpan?) TimeSpan.FromTicks(ticks.Value) : null
-                        )
-                        .IsRequired(false)
-                        .UsePropertyAccessMode(PropertyAccessMode.Field);
-
-                    challengeTimeline.Property(timeline => timeline.ExtensionPeriod)
-                        .HasConversion(
-                            timeSpan => timeSpan.HasValue ? (long?) timeSpan.Value.Ticks : null,
-                            ticks => ticks.HasValue ? (TimeSpan?) TimeSpan.FromTicks(ticks.Value) : null
-                        )
-                        .IsRequired(false)
-                        .UsePropertyAccessMode(PropertyAccessMode.Field);
-
-                    challengeTimeline.Ignore(timeline => timeline.StartedAt);
-
-                    challengeTimeline.Ignore(timeline => timeline.EndedAt);
-
-                    challengeTimeline.Property(timeline => timeline.ClosedAt).IsRequired(false).UsePropertyAccessMode(PropertyAccessMode.Field);
-
-                    challengeTimeline.ToTable("Timelines");
-                }
-            );
-
             builder.Property(challenge => challenge.Scoring)
-                .HasConversion(new ChallengeScoringConverter())
-                .IsRequired(false)
+                .HasConversion(new ScoringConverter())
+                .IsRequired()
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
+
+            builder.Property(challenge => challenge.Payout)
+                   .HasConversion(new PayoutConverter())
+                   .IsRequired()
+                   .UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.Ignore(challenge => challenge.Scoreboard);
 
@@ -135,8 +102,6 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.Metadata.FindNavigation(nameof(Challenge.Setup)).SetPropertyAccessMode(PropertyAccessMode.Field);
-
-            builder.Metadata.FindNavigation(nameof(Challenge.Timeline)).SetPropertyAccessMode(PropertyAccessMode.Field);
 
             builder.Metadata.FindNavigation(nameof(Challenge.Participants)).SetPropertyAccessMode(PropertyAccessMode.Field);
 

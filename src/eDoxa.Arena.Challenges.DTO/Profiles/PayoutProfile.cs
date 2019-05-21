@@ -1,9 +1,9 @@
-﻿// Filename: ChallengePayoutProfile.cs
-// Date Created: 2019-04-14
+﻿// Filename: PayoutProfile.cs
+// Date Created: 2019-05-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -14,12 +14,11 @@ using eDoxa.Arena.Challenges.Domain;
 
 namespace eDoxa.Arena.Challenges.DTO.Profiles
 {
-    internal sealed class ChallengePayoutProfile : Profile
+    internal sealed class PayoutProfile : Profile
     {
-        public ChallengePayoutProfile()
+        public PayoutProfile()
         {
-            this.CreateMap<Payout, ChallengePayoutDTO>()
-                .ForMember(payout => payout.Buckets, config => config.MapFrom(payout => payout.Buckets));
+            this.CreateMap<Payout, PayoutDTO>().ForMember(payout => payout.Buckets, config => config.MapFrom(payout => payout.Buckets));
         }
     }
 }

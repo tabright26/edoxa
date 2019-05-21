@@ -15,9 +15,9 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain
 {
-    public abstract class Prize : TypeObject<Prize, decimal>
+    public class Prize : TypeObject<Prize, decimal>
     {
-        protected Prize(decimal prize) : base(prize)
+        public Prize(decimal prize) : base(prize)
         {
             if (prize < 0)
             {

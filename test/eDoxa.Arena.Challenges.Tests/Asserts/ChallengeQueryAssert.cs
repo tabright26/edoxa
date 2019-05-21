@@ -43,10 +43,6 @@ namespace eDoxa.Arena.Challenges.Tests.Asserts
 
             challenge.Setup.Should().NotBeNull();
 
-            challenge.Timeline.Should().NotBeNull();
-
-            //challenge.LiveData.Should().NotBeNull();
-
             challenge.Scoring.Should().NotBeNull();
 
             challenge.Payout.Should().NotBeNull();

@@ -1,9 +1,9 @@
 ﻿// Filename: ChallengesMapperFactory.cs
-// Date Created: 2019-04-21
+// Date Created: 2019-05-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -30,15 +30,13 @@ namespace eDoxa.Arena.Challenges.DTO.Factories
         protected override IEnumerable<Profile> CreateProfiles()
         {
             yield return new ChallengeListProfile();
+            yield return new ChallengeProfile();
             yield return new MatchListProfile();
             yield return new StatListProfile();
             yield return new ParticipantListProfile();
-            //yield return new ChallengeLiveDataProfile();
-            yield return new ChallengePayoutProfile();
-            yield return new ChallengeProfile();
-            yield return new ChallengeScoringProfile();
+            yield return new PayoutProfile();
+            yield return new ScoringProfile();
             yield return new ChallengeSetupProfile();
-            yield return new ChallengeTimelineProfile();
             yield return new MatchProfile();
             yield return new StatProfile();
             yield return new ParticipantProfile();

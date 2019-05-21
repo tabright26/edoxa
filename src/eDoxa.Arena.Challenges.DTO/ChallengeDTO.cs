@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeDTO.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-05-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,7 +10,6 @@
 
 using System;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Domain.Enumerations;
 
 using Newtonsoft.Json;
@@ -20,22 +19,25 @@ namespace eDoxa.Arena.Challenges.DTO
     [JsonObject]
     public class ChallengeDTO
     {
-        [JsonProperty("id")] public Guid Id { get; set; }
+        [JsonProperty("id")]
+        public Guid Id { get; set; }
 
-        [JsonProperty("game")] public Game Game { get; set; }
+        [JsonProperty("game")]
+        public Game Game { get; set; }
 
-        [JsonProperty("name")] public string Name { get; set; }
+        [JsonProperty("name")]
+        public string Name { get; set; }
 
-        [JsonProperty("state")] public ChallengeState State { get; set; }
+        [JsonProperty("setup")]
+        public ChallengeSetupDTO Setup { get; set; }
 
-        [JsonProperty("setup")] public ChallengeSetupDTO Setup { get; set; }
+        [JsonProperty("scoring")]
+        public ScoringDTO Scoring { get; set; }
 
-        [JsonProperty("timeline")] public ChallengeTimelineDTO Timeline { get; set; }
+        [JsonProperty("payout")]
+        public PayoutDTO Payout { get; set; }
 
-        [JsonProperty("scoring")] public ChallengeScoringDTO Scoring { get; set; }
-
-        [JsonProperty("payout")] public ChallengePayoutDTO Payout { get; set; }
-
-        [JsonProperty("participants")] public ParticipantListDTO Participants { get; set; }
+        [JsonProperty("participants")]
+        public ParticipantListDTO Participants { get; set; }
     }
 }

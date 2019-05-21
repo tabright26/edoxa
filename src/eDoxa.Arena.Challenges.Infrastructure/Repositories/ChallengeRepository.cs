@@ -63,8 +63,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
         public async Task<IReadOnlyCollection<Challenge>> FindChallengesAsync(Game game, ChallengeState state)
         {
             return await _context.Challenges.Include(ExpandParticipantMatchStats)
-                .Where(challenge => challenge.Game.HasFlag(game) && challenge.Timeline.State.HasFlag(state))
-                .OrderBy(challenge => challenge.Timeline.StartedAt)
+                .Where(challenge => challenge.Game.HasFlag(game))
                 .ToListAsync();
         }
     }

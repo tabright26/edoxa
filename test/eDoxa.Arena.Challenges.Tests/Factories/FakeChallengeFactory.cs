@@ -9,7 +9,6 @@
 // this source code package.
 
 using System;
-using System.Reflection;
 
 using eDoxa.Arena.Challenges.Domain;
 using eDoxa.Arena.Challenges.Domain.Abstractions;
@@ -17,7 +16,6 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
-using eDoxa.Functional;
 using eDoxa.Seedwork.Domain.Enumerations;
 
 using Moq;
@@ -46,18 +44,18 @@ namespace eDoxa.Arena.Challenges.Tests.Factories
 
             setup = setup ?? new FakeChallengeSetup();
 
-            var challenge = new Challenge(Game.LeagueOfLegends, new ChallengeName(nameof(Challenge)), setup);
+            var challenge = new Challenge(Game.LeagueOfLegends, new ChallengeName(nameof(Challenge)), setup, new Payout(), this.CreateScoringStrategy());
 
-            var timeline = this.CreateChallengeTimeline(state);
+            //var timeline = this.CreateChallengeTimeline(state);
 
-            challenge.GetType().GetField("_timeline", BindingFlags.Instance | BindingFlags.NonPublic)?.SetValue(challenge, timeline);
+            //challenge.GetType().GetField("_timeline", BindingFlags.Instance | BindingFlags.NonPublic)?.SetValue(challenge, timeline);
 
-            if (state.Value >= ChallengeState.Opened.Value)
-            {
-                var scoring = new Option<IScoring>(this.CreateScoring());
+            //if (state.Value >= ChallengeState.Opened.Value)
+            //{
+            //    var scoring = new Option<IScoring>(this.CreateScoring());
 
-                challenge.GetType().GetField("_scoring", BindingFlags.Instance | BindingFlags.NonPublic)?.SetValue(challenge, scoring);
-            }
+            //    challenge.GetType().GetField("_scoring", BindingFlags.Instance | BindingFlags.NonPublic)?.SetValue(challenge, scoring);
+            //}
 
             return challenge;
         }
@@ -98,98 +96,98 @@ namespace eDoxa.Arena.Challenges.Tests.Factories
             return new ChallengeSetup(new BestOf(bestOf), new Entries(entries), new EntryFee(entryFee), new PayoutRatio(payoutRatio), new ServiceChargeRatio(serviceChargeRatio));
         }
 
-        public Timeline CreateChallengeTimeline(ChallengeState state = null)
-        {
-            state = state ?? ChallengeState.Draft;
+        //public Timeline CreateChallengeTimeline(ChallengeState state = null)
+        //{
+        //    state = state ?? ChallengeState.Draft;
 
-            if (state.Equals(ChallengeState.Draft))
-            {
-                return CreateChallengeTimelineAsDraft();
-            }
+        //    if (state.Equals(ChallengeState.Draft))
+        //    {
+        //        return CreateChallengeTimelineAsDraft();
+        //    }
 
-            if (state.Equals(ChallengeState.Configured))
-            {
-                return CreateChallengeTimelineAsConfigured();
-            }
+        //    if (state.Equals(ChallengeState.Configured))
+        //    {
+        //        return CreateChallengeTimelineAsConfigured();
+        //    }
 
-            if (state.Equals(ChallengeState.Opened))
-            {
-                return CreateChallengeTimelineAsOpened();
-            }
+        //    if (state.Equals(ChallengeState.Opened))
+        //    {
+        //        return CreateChallengeTimelineAsOpened();
+        //    }
 
-            if (state.Equals(ChallengeState.InProgress))
-            {
-                return CreateChallengeTimelineAsInProgress();
-            }
+        //    if (state.Equals(ChallengeState.InProgress))
+        //    {
+        //        return CreateChallengeTimelineAsInProgress();
+        //    }
 
-            if (state.Equals(ChallengeState.Ended))
-            {
-                return CreateChallengeTimelineAsEnded();
-            }
+        //    if (state.Equals(ChallengeState.Ended))
+        //    {
+        //        return CreateChallengeTimelineAsEnded();
+        //    }
 
-            if (state.Equals(ChallengeState.Closed))
-            {
-                return CreateChallengeTimelineAsClosed();
-            }
+        //    if (state.Equals(ChallengeState.Closed))
+        //    {
+        //        return CreateChallengeTimelineAsClosed();
+        //    }
 
-            throw new ArgumentOutOfRangeException(nameof(state));
-        }
+        //    throw new ArgumentOutOfRangeException(nameof(state));
+        //}
 
-        private static Timeline CreateChallengeTimelineAsDraft()
-        {
-            return new Timeline();
-        }
+        //private static Timeline CreateChallengeTimelineAsDraft()
+        //{
+        //    return new Timeline();
+        //}
 
-        private static Timeline CreateChallengeTimelineAsConfigured()
-        {
-            var publishedAt = TimelinePublishedAt.Min.AddDays(1);
+        //private static Timeline CreateChallengeTimelineAsConfigured()
+        //{
+        //    var publishedAt = TimelinePublishedAt.Min.AddDays(1);
 
-            var timeline = CreateChallengeTimelineAsDraft();
+        //    var timeline = CreateChallengeTimelineAsDraft();
 
-            timeline = timeline.Configure(publishedAt, TimelineRegistrationPeriod.Default, TimelineExtensionPeriod.Default);
+        //    timeline = timeline.Configure(publishedAt, TimelineRegistrationPeriod.Default, TimelineExtensionPeriod.Default);
 
-            return timeline;
-        }
+        //    return timeline;
+        //}
 
-        private static Timeline CreateChallengeTimelineAsOpened()
-        {
-            var timeline = CreateChallengeTimelineAsDraft();
+        //private static Timeline CreateChallengeTimelineAsOpened()
+        //{
+        //    var timeline = CreateChallengeTimelineAsDraft();
 
-            timeline = timeline.Publish(TimelineRegistrationPeriod.Default, TimelineExtensionPeriod.Default);
+        //    timeline = timeline.Publish(TimelineRegistrationPeriod.Default, TimelineExtensionPeriod.Default);
 
-            return timeline;
-        }
+        //    return timeline;
+        //}
 
-        private static Timeline CreateChallengeTimelineAsInProgress()
-        {
-            var timeline = CreateChallengeTimelineAsOpened();
+        //private static Timeline CreateChallengeTimelineAsInProgress()
+        //{
+        //    var timeline = CreateChallengeTimelineAsOpened();
 
-            var publishedAt = timeline.PublishedAt - TimelineExtensionPeriod.Default;
+        //    var publishedAt = timeline.PublishedAt - TimelineExtensionPeriod.Default;
 
-            timeline.GetType().GetField("_publishedAt", BindingFlags.NonPublic | BindingFlags.Instance)?.SetValue(timeline, publishedAt);
+        //    timeline.GetType().GetField("_publishedAt", BindingFlags.NonPublic | BindingFlags.Instance)?.SetValue(timeline, publishedAt);
 
-            return timeline;
-        }
+        //    return timeline;
+        //}
 
-        private static Timeline CreateChallengeTimelineAsEnded()
-        {
-            var timeline = CreateChallengeTimelineAsInProgress();
+        //private static Timeline CreateChallengeTimelineAsEnded()
+        //{
+        //    var timeline = CreateChallengeTimelineAsInProgress();
 
-            var publishedAt = timeline.PublishedAt - TimelineRegistrationPeriod.Default;
+        //    var publishedAt = timeline.PublishedAt - TimelineRegistrationPeriod.Default;
 
-            timeline.GetType().GetField("_publishedAt", BindingFlags.NonPublic | BindingFlags.Instance)?.SetValue(timeline, publishedAt);
+        //    timeline.GetType().GetField("_publishedAt", BindingFlags.NonPublic | BindingFlags.Instance)?.SetValue(timeline, publishedAt);
 
-            return timeline;
-        }
+        //    return timeline;
+        //}
 
-        private static Timeline CreateChallengeTimelineAsClosed()
-        {
-            var timeline = CreateChallengeTimelineAsEnded();
+        //private static Timeline CreateChallengeTimelineAsClosed()
+        //{
+        //    var timeline = CreateChallengeTimelineAsEnded();
 
-            timeline = timeline.Close();
+        //    timeline = timeline.Close();
 
-            return timeline;
-        }
+        //    return timeline;
+        //}
     }
 
     public sealed partial class FakeChallengeFactory

@@ -1,4 +1,4 @@
-﻿// Filename: StatListProfile.cs
+﻿// Filename: ScoringProfile.cs
 // Date Created: 2019-05-20
 // 
 // ================================================
@@ -8,8 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Collections.Generic;
-using System.Linq;
+using System;
 
 using AutoMapper;
 
@@ -17,11 +16,13 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 
 namespace eDoxa.Arena.Challenges.DTO.Profiles
 {
-    internal sealed class StatListProfile : Profile
+    internal sealed class ScoringProfile : Profile
     {
-        public StatListProfile()
+        public ScoringProfile()
         {
-            this.CreateMap<IEnumerable<Stat>, StatListDTO>().ForMember(list => list.Items, config => config.MapFrom(stats => stats.ToList()));
+            this.CreateMap<StatName, string>().ConvertUsing(name => name.ToString());
+            this.CreateMap<StatWeighting, float>().ConvertUsing(weighting => Convert.ToSingle(weighting));
+            this.CreateMap<Scoring, ScoringDTO>();
         }
     }
 }

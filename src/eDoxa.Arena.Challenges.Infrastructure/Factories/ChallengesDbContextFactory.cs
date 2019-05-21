@@ -19,7 +19,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Factories
 {
     internal sealed class ChallengesDbContextFactory : DesignTimeDbContextFactory<ChallengesDbContext>
     {
-        protected override string BasePath => Path.Combine(Directory.GetCurrentDirectory(), "../eDoxa.Challenges.Api");
+        protected override string BasePath => Path.Combine(Directory.GetCurrentDirectory(), "../eDoxa.Arena.Challenges.Api");
 
         protected override Assembly MigrationsAssembly => Assembly.GetAssembly(typeof(ChallengesDbContextFactory));
 

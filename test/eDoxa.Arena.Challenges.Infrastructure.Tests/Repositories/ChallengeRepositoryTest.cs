@@ -272,13 +272,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Tests.Repositories
                 challenge.Game.Should().NotBe(Game.None);
                 challenge.Name.ToString().Should().NotBeNullOrWhiteSpace();
                 challenge.Setup.Should().NotBeNull();
-                challenge.Timeline.Should().NotBeNull();
-
-                //challenge.LiveData.Should().NotBeNull();
                 challenge.Scoring.Should().NotBeNull();
-
-                //challenge.Payout.Should().NotBeNull();
-                //challenge.Scoreboard.Should().NotBeNull();
                 challenge.Participants.Should().NotBeNullOrEmpty();
 
                 foreach (var participant in challenge.Participants)

@@ -25,14 +25,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Arena.Challenges.Application.Queries
 {
-    public sealed partial class MatchQueries
+    public sealed partial class MatchQuery
     {
         private const string NavigationPropertyPath = nameof(Match.Stats);
 
         private readonly ChallengesDbContext _context;
         private readonly IMapper _mapper;
 
-        public MatchQueries(ChallengesDbContext context, IMapper mapper)
+        public MatchQuery(ChallengesDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
@@ -58,7 +58,7 @@ namespace eDoxa.Arena.Challenges.Application.Queries
         }
     }
 
-    public sealed partial class MatchQueries : IMatchQueries
+    public sealed partial class MatchQuery : IMatchQuery
     {
         public async Task<Option<MatchListDTO>> FindParticipantMatchesAsync(ParticipantId participantId)
         {

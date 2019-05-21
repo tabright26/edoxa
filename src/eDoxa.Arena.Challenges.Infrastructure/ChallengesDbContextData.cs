@@ -8,8 +8,17 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
+using eDoxa.Arena.Challenges.Domain;
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
+using eDoxa.Arena.Challenges.Domain.Services.Factories;
+using eDoxa.Seedwork.Domain.Enumerations;
 using eDoxa.Seedwork.Infrastructure.Abstractions;
 
 using Microsoft.AspNetCore.Hosting;
@@ -18,20 +27,227 @@ namespace eDoxa.Arena.Challenges.Infrastructure
 {
     public sealed class ChallengesDbContextData : IDbContextData
     {
+        private readonly ChallengesDbContext _context;
+
         //private const int DefaultRandomChallengeCount = 5;
 
         //private static readonly Random Random = new Random();
 
         private readonly IHostingEnvironment _environment;
 
-        public ChallengesDbContextData(IHostingEnvironment environment)
+        public ChallengesDbContextData(IHostingEnvironment environment, ChallengesDbContext context)
         {
             _environment = environment;
+            _context = context;
         }
 
-        public Task SeedAsync()
+        public async Task SeedAsync()
         {
-            return Task.CompletedTask;
+            if (_environment.IsDevelopment())
+            {
+                if (!_context.Challenges.Any())
+                {
+                    var challenges = new List<Challenge>
+                    {
+                        CreateChallengeType1(),
+                        CreateChallengeType2(),
+                        CreateChallengeType3(),
+                        CreateChallengeType4(),
+                        CreateChallengeType5(),
+                        CreateChallengeType6()
+                    };
+
+                    foreach (var challenge in challenges)
+                    {
+                        for (var index = 0; index < challenge.Setup.Entries; index++)
+                        {
+                            challenge.RegisterParticipant(new UserId(), new ParticipantExternalAccount(Guid.NewGuid()));
+                        }
+
+                        _context.Challenges.Add(challenge);
+                    }
+                    
+                    await _context.CommitAsync();
+                }
+            }
+        }
+
+        public static Challenge CreateChallengeType1()
+        {
+            var payout = new Payout();
+
+            payout.AddBucket(new Prize(10M), 1);
+
+            payout.AddBucket(new Prize(7.5M), 1);
+
+            payout.AddBucket(new Prize(2.5M), 1);
+
+            return new Challenge(
+                Game.LeagueOfLegends,
+                new ChallengeName("Type1"),
+                new ChallengeSetup(
+                    new BestOf(1),
+                    new Entries(10),
+                    new EntryFee(2.5M),
+                    new PayoutRatio(0.3F),
+                    new ServiceChargeRatio(0.2F)
+                ),
+                payout,
+                ScoringFactory.Instance.CreateScoringStrategy(Game.LeagueOfLegends)
+            );
+        }
+
+        public static Challenge CreateChallengeType2()
+        {
+            var payout = new Payout();
+
+            payout.AddBucket(new Prize(14M), 1);
+
+            payout.AddBucket(new Prize(8M), 2);
+
+            payout.AddBucket(new Prize(5M), 3);
+
+            payout.AddBucket(new Prize(2.5M), 6);
+
+            return new Challenge(
+                Game.LeagueOfLegends,
+                new ChallengeName("Type2"),
+                new ChallengeSetup(
+                    new BestOf(3),
+                    new Entries(30),
+                    new EntryFee(2.5M),
+                    new PayoutRatio(0.4F),
+                    new ServiceChargeRatio(0.2F)
+                ),
+                payout,
+                ScoringFactory.Instance.CreateScoringStrategy(Game.LeagueOfLegends)
+            );
+        }
+
+        public static Challenge CreateChallengeType3()
+        {
+            var payout = new Payout();
+
+            payout.AddBucket(new Prize(20M), 1);
+
+            payout.AddBucket(new Prize(15M), 1);
+
+            payout.AddBucket(new Prize(10M), 2);
+
+            payout.AddBucket(new Prize(7M), 4);
+
+            payout.AddBucket(new Prize(5M), 7);
+
+            return new Challenge(
+                Game.LeagueOfLegends,
+                new ChallengeName("Type3"),
+                new ChallengeSetup(
+                    new BestOf(3),
+                    new Entries(30),
+                    new EntryFee(5M),
+                    new PayoutRatio(0.5F),
+                    new ServiceChargeRatio(0.2F)
+                ),
+                payout,
+                ScoringFactory.Instance.CreateScoringStrategy(Game.LeagueOfLegends)
+            );
+        }
+
+        public static Challenge CreateChallengeType4()
+        {
+            var payout = new Payout();
+
+            payout.AddBucket(new Prize(40M), 1);
+
+            payout.AddBucket(new Prize(30M), 1);
+
+            payout.AddBucket(new Prize(20M), 2);
+
+            payout.AddBucket(new Prize(14M), 4);
+
+            payout.AddBucket(new Prize(10M), 7);
+
+            var setup = new ChallengeSetup(
+                new BestOf(3),
+                new Entries(30),
+                new EntryFee(10M),
+                new PayoutRatio(0.5F),
+                new ServiceChargeRatio(0.2F)
+            );
+
+            return new Challenge(
+                Game.LeagueOfLegends,
+                new ChallengeName("Type4"),
+                setup,
+                payout,
+                ScoringFactory.Instance.CreateScoringStrategy(Game.LeagueOfLegends)
+            );
+        }
+
+        public static Challenge CreateChallengeType5()
+        {
+            var payout = new Payout();
+
+            payout.AddBucket(new Prize(25M), 1);
+
+            payout.AddBucket(new Prize(20M), 1);
+
+            payout.AddBucket(new Prize(12.5M), 2);
+
+            payout.AddBucket(new Prize(10M), 3);
+
+            payout.AddBucket(new Prize(7M), 5);
+
+            payout.AddBucket(new Prize(5M), 13);
+
+            var setup = new ChallengeSetup(
+                new BestOf(3),
+                new Entries(50),
+                new EntryFee(5M),
+                new PayoutRatio(0.5F),
+                new ServiceChargeRatio(0.2F)
+            );
+
+            return new Challenge(
+                Game.LeagueOfLegends,
+                new ChallengeName("Type5"),
+                setup,
+                payout,
+                ScoringFactory.Instance.CreateScoringStrategy(Game.LeagueOfLegends)
+            );
+        }
+
+        public static Challenge CreateChallengeType6()
+        {
+            var payout = new Payout();
+
+            payout.AddBucket(new Prize(50M), 1);
+
+            payout.AddBucket(new Prize(40M), 1);
+
+            payout.AddBucket(new Prize(25M), 2);
+
+            payout.AddBucket(new Prize(20M), 3);
+
+            payout.AddBucket(new Prize(14M), 5);
+
+            payout.AddBucket(new Prize(10M), 13);
+
+            var setup = new ChallengeSetup(
+                new BestOf(3),
+                new Entries(50),
+                new EntryFee(10M),
+                new PayoutRatio(0.5F),
+                new ServiceChargeRatio(0.2F)
+            );
+
+            return new Challenge(
+                Game.LeagueOfLegends,
+                new ChallengeName("Type6"),
+                setup,
+                payout,
+                ScoringFactory.Instance.CreateScoringStrategy(Game.LeagueOfLegends)
+            );
         }
 
         //public IReadOnlyCollection<Challenge> CreateRandomChallenges(ChallengeState state = null)

@@ -1,9 +1,9 @@
 ﻿// Filename: ChallengeProfile.cs
-// Date Created: 2019-04-21
+// Date Created: 2019-05-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -13,7 +13,6 @@ using System.Linq;
 using AutoMapper;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.Services.Factories;
 
 namespace eDoxa.Arena.Challenges.DTO.Profiles
 {
@@ -24,20 +23,9 @@ namespace eDoxa.Arena.Challenges.DTO.Profiles
             this.CreateMap<Challenge, ChallengeDTO>()
                 .ForMember(challenge => challenge.Id, config => config.MapFrom(challenge => challenge.Id.ToGuid()))
                 .ForMember(challenge => challenge.Game, config => config.MapFrom(challenge => challenge.Game))
-                .ForMember(challenge => challenge.Name, config => config.MapFrom(challenge => challenge.Name.ToString()))               
-                .ForMember(challenge => challenge.State, config => config.MapFrom(challenge => challenge.Timeline.State))
-                //.ForMember(challenge => challenge.LiveMode, config => config.MapFrom(challenge => challenge.Timeline.LiveMode))
-                //.ForMember(challenge => challenge.Generated, config => config.MapFrom(challenge => challenge.Setup.Generated))
-                .ForMember(
-                    challenge => challenge.Scoring,
-                    config =>
-                    {
-                        config.MapFrom(challenge => challenge.Scoring.SingleOrDefault());
-                        config.Condition(challenge => challenge.Timeline.State.Value >= ChallengeState.Opened.Value);
-                    }
-                )
-                .ForMember(challenge => challenge.Payout, config => config.MapFrom(challenge => PayoutFactory.Instance.CreatePayout().Payout))
-                //.ForMember(challenge => challenge.LiveData, config => config.MapFrom(challenge => challenge.LiveData))
+                .ForMember(challenge => challenge.Name, config => config.MapFrom(challenge => challenge.Name.ToString()))
+                .ForMember(challenge => challenge.Scoring, config => config.MapFrom(challenge => challenge.Scoring))
+                .ForMember(challenge => challenge.Payout, config => config.MapFrom(challenge => challenge.Payout))
                 .ForMember(challenge => challenge.Participants, config => config.MapFrom(challenge => challenge.Participants.OrderBy(participant => participant.Timestamp)));
         }
     }

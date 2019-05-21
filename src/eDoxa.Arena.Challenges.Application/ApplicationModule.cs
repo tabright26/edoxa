@@ -43,11 +43,11 @@ namespace eDoxa.Arena.Challenges.Application
             builder.RegisterType<ChallengeRepository>().As<IChallengeRepository>().InstancePerLifetimeScope();
 
             // Queries
-            builder.RegisterType<ChallengeQueries>().As<IChallengeQueries>().InstancePerLifetimeScope();
+            builder.RegisterType<ChallengeQuery>().As<IChallengeQuery>().InstancePerLifetimeScope();
 
-            builder.RegisterType<ParticipantQueries>().As<IParticipantQueries>().InstancePerLifetimeScope();
+            builder.RegisterType<ParticipantQuery>().As<IParticipantQuery>().InstancePerLifetimeScope();
 
-            builder.RegisterType<MatchQueries>().As<IMatchQueries>().InstancePerLifetimeScope();
+            builder.RegisterType<MatchQuery>().As<IMatchQuery>().InstancePerLifetimeScope();
 
             // Services
             builder.RegisterType<ChallengeService>().As<IChallengeService>().InstancePerLifetimeScope();

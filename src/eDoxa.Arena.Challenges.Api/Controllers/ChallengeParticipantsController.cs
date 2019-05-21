@@ -32,11 +32,11 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
     public class ChallengeParticipantsController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly IParticipantQueries _queries;
+        private readonly IParticipantQuery _query;
 
-        public ChallengeParticipantsController(IParticipantQueries queries, IMediator mediator)
+        public ChallengeParticipantsController(IParticipantQuery query, IMediator mediator)
         {
-            _queries = queries;
+            _query = query;
             _mediator = mediator;
         }
 
@@ -46,7 +46,7 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         [HttpGet(Name = nameof(FindChallengeParticipantsAsync))]
         public async Task<IActionResult> FindChallengeParticipantsAsync(ChallengeId challengeId)
         {
-            var participants = await _queries.FindChallengeParticipantsAsync(challengeId);
+            var participants = await _query.FindChallengeParticipantsAsync(challengeId);
 
             return participants
                 .Select(this.Ok)

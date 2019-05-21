@@ -1,5 +1,5 @@
-﻿// Filename: IChallengeQueries.cs
-// Date Created: 2019-05-06
+﻿// Filename: IChallengeQuery.cs
+// Date Created: 2019-05-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,18 +11,17 @@
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Functional;
 using eDoxa.Seedwork.Domain.Enumerations;
 
 namespace eDoxa.Arena.Challenges.DTO.Queries
 {
-    public interface IChallengeQueries
+    public interface IChallengeQuery
     {
-        Task<Option<ChallengeListDTO>> FindChallengesAsync(Game game, ChallengeState state);
+        Task<Option<ChallengeListDTO>> FindChallengesAsync(Game game);
 
         Task<Option<ChallengeDTO>> FindChallengeAsync(ChallengeId challengeId);
 
-        Task<Option<ChallengeListDTO>> FindUserChallengeHistoryAsync(UserId userId, Game game, ChallengeState state);
+        Task<Option<ChallengeListDTO>> FindUserChallengeHistoryAsync(UserId userId, Game game);
     }
 }

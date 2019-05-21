@@ -16,7 +16,6 @@ using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.Specifications;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate.Specifications;
-using eDoxa.Functional;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Enumerations;
@@ -28,22 +27,22 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
     {
         private Game _game;
         private ChallengeName _name;
-        private HashSet<Participant> _participants;
-        private Option<IScoring> _scoring;
         private ChallengeSetup _setup;
-        private Timeline _timeline;
-
-        public Challenge(Game game, ChallengeName name, ChallengeSetup setup) : this()
+        private IPayout _payout;
+        private IScoring _scoring;
+        private HashSet<Participant> _participants;
+        
+        public Challenge(Game game, ChallengeName name, ChallengeSetup setup, IPayout payout, IScoringStrategy strategy) : this()
         {
             _game = game;
             _name = name;
             _setup = setup;
+            _payout = payout;
+            _scoring = strategy.Scoring;
         }
 
         private Challenge()
         {
-            _timeline = new Timeline();
-            _scoring = new Option<IScoring>();
             _participants = new HashSet<Participant>();
         }
 
@@ -53,81 +52,30 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public ChallengeSetup Setup => _setup;
 
-        public Timeline Timeline => _timeline;
-
         public Scoreboard Scoreboard => new Scoreboard(this);
 
-        public Option<IScoring> Scoring => _scoring;
+        public IScoring Scoring => _scoring;
+
+        public IPayout Payout => _payout;
 
         public IReadOnlyCollection<Participant> Participants => _participants;
 
-        public void Configure(IScoringStrategy strategy, DateTime publishedAt, TimeSpan registrationPeriod, TimeSpan extensionPeriod)
-        {
-            _scoring = new Option<IScoring>(strategy.Scoring);
-
-            _timeline = Timeline.Configure(publishedAt, registrationPeriod, extensionPeriod);
-        }
-
-        public void Configure(IScoringStrategy strategy, DateTime publishedAt)
-        {
-            _scoring = new Option<IScoring>(strategy.Scoring);
-
-            _timeline = Timeline.Configure(publishedAt);
-        }
-
-        private bool CanConfigure()
-        {
-            var specification = SpecificationFactory.Instance.CreateSpecification<Challenge>()
-                .And(new ChallengeDraftSpecification());
-
-            return specification.IsSatisfiedBy(this);
-        }
-
-        public void Publish(IScoringStrategy strategy, TimeSpan registrationPeriod, TimeSpan extensionPeriod)
-        {
-            _scoring = new Option<IScoring>(strategy.Scoring);
-
-            _timeline = Timeline.Publish(registrationPeriod, extensionPeriod);
-        }
-
-        public void Publish(IScoringStrategy strategy)
-        {
-            _scoring = new Option<IScoring>(strategy.Scoring);
-
-            _timeline = Timeline.Publish();
-        }
-
-        public void Publish(IScoringStrategy scoringStrategy, ITimelineStrategy timelineStrategy)
-        {
-            _scoring = new Option<IScoring>(scoringStrategy.Scoring);
-
-            _timeline = Timeline.Publish(timelineStrategy.Timeline.RegistrationPeriod.Value, timelineStrategy.Timeline.ExtensionPeriod.Value);
-        }
-
-        private bool CanPublish()
-        {
-            var specification = SpecificationFactory.Instance.CreateSpecification<Challenge>()
-                .And(new ChallengeDraftSpecification());
-
-            return specification.IsSatisfiedBy(this);
-        }
-
         public void Complete()
         {
-            if (!this.CanClose())
+            if (!this.CanComplete())
             {
                 throw new InvalidOperationException();
             }
 
-            _timeline = Timeline.Close();
+            //_timeline = Timeline.Close();
 
             //this.AddDomainEvent(new PayoutProcessedDomainEvent(Id, Payout.Payoff(Scoreboard)));
         }
 
-        private bool CanClose()
+        private bool CanComplete()
         {
             var specification = SpecificationFactory.Instance.CreateSpecification<Challenge>()
-                .And(new ChallengeEndedSpecification());
+         /*       .And(new ChallengeEndedSpecification())*/;
 
             return specification.IsSatisfiedBy(this);
         }
@@ -147,7 +95,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             var specification = SpecificationFactory.Instance.CreateSpecification<Challenge>()
                 .And(new ParticipantAlreadyRegisteredSpecification(userId).Not())
                 .And(new ChallengeIsFullSpecification().Not())
-                .And(new ChallengeOpenedSpecification());
+    /*            .And(new ChallengeOpenedSpecification())*/;
 
             return specification.IsSatisfiedBy(this);
         }
@@ -159,14 +107,14 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
                 throw new InvalidOperationException();
             }
 
-            Participants.Single(participant => participant.Id == participantId).SnapshotMatch(stats, Scoring.Select(scoring => scoring).Single());
+            Participants.Single(participant => participant.Id == participantId).SnapshotMatch(stats, Scoring);
         }
 
         private bool CanSnapshotParticipantMatch(ParticipantId participantId)
         {
             var specification = SpecificationFactory.Instance.CreateSpecification<Challenge>()
                 .And(new ParticipantExistsSpecification(participantId))
-                .And(new ChallengeMininumInProgressSpecification());
+        /*        .And(new ChallengeMininumInProgressSpecification())*/;
 
             return specification.IsSatisfiedBy(this);
         }

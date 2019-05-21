@@ -1,9 +1,9 @@
-﻿// Filename: IParticipantQueries.cs
-// Date Created: 2019-04-21
+﻿// Filename: IMatchQuery.cs
+// Date Created: 2019-05-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -15,10 +15,10 @@ using eDoxa.Functional;
 
 namespace eDoxa.Arena.Challenges.DTO.Queries
 {
-    public interface IParticipantQueries
+    public interface IMatchQuery
     {
-        Task<Option<ParticipantListDTO>> FindChallengeParticipantsAsync(ChallengeId challengeId);
+        Task<Option<MatchListDTO>> FindParticipantMatchesAsync(ParticipantId participantId);
 
-        Task<Option<ParticipantDTO>> FindParticipantAsync(ParticipantId participantId);
+        Task<Option<MatchDTO>> FindMatchAsync(MatchId matchId);
     }
 }

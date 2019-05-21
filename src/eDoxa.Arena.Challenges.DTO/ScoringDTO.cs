@@ -1,4 +1,4 @@
-﻿// Filename: BucketListDTO.cs
+﻿// Filename: ScoringDTO.cs
 // Date Created: 2019-05-20
 // 
 // ================================================
@@ -8,11 +8,14 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.AutoMapper;
+using System.Collections.Generic;
+
+using Newtonsoft.Json;
 
 namespace eDoxa.Arena.Challenges.DTO
 {
-    public class BucketListDTO : ListDTO<BucketDTO>
+    [JsonDictionary]
+    public class ScoringDTO : Dictionary<string, float>
     {
     }
 }

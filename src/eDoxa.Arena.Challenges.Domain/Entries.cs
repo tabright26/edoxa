@@ -16,7 +16,7 @@ namespace eDoxa.Arena.Challenges.Domain
 {
     public class Entries : TypeObject<Entries, int>
     {
-        public const int Min = 30;
+        public const int Min = 10;
         public const int Max = 2500;
         public const int Default = 50;
 

@@ -28,38 +28,35 @@ using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Arena.Challenges.Application.Queries
 {
-    public sealed partial class ChallengeQueries
+    public sealed partial class ChallengeQuery
     {
         private static readonly string NavigationPropertyPath = $"{nameof(Challenge.Participants)}.{nameof(Participant.Matches)}.{nameof(Match.Stats)}";
 
         private readonly ChallengesDbContext _context;
         private readonly IMapper _mapper;
 
-        public ChallengeQueries(ChallengesDbContext context, IMapper mapper)
+        public ChallengeQuery(ChallengesDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
 
-        private async Task<IEnumerable<Challenge>> FindUserChallengeHistoryAsNoTrackingAsync(UserId userId, Game game, ChallengeState state) 
+        private async Task<IEnumerable<Challenge>> FindUserChallengeHistoryAsNoTrackingAsync(UserId userId, Game game) 
         {
             return await _context.Challenges
                 .AsNoTracking()
                 .Include(NavigationPropertyPath)
-                .Where(challenge => challenge.Participants.Any(participant => participant.UserId == userId) && challenge.Game.HasFlag(game) && challenge.Timeline.State.HasFlag(state))
-                .OrderBy(challenge => challenge.Timeline.StartedAt)
+                .Where(challenge => challenge.Participants.Any(participant => participant.UserId == userId) && challenge.Game.HasFlag(game))
                 .ToListAsync();
         }
 
-        private async Task<IEnumerable<Challenge>> FindChallengesAsNoTrackingAsync(Game game, ChallengeState state)
+        private async Task<IEnumerable<Challenge>> FindChallengesAsNoTrackingAsync(Game game)
         {
             return await _context.Challenges
                 .AsNoTracking()
                 .Include(NavigationPropertyPath)
-                .Where(challenge => challenge.Game.HasFlag(game) && challenge.Timeline.State.HasFlag(state))
+                .Where(challenge => challenge.Game.HasFlag(game))
                 .OrderBy(challenge => challenge.Game)
-                .ThenBy(challenge => challenge.Timeline.State)
-                .ThenBy(challenge => challenge.Timeline.StartedAt)
                 .ToListAsync();
         }
 
@@ -73,11 +70,11 @@ namespace eDoxa.Arena.Challenges.Application.Queries
         }
     }
 
-    public sealed partial class ChallengeQueries : IChallengeQueries
+    public sealed partial class ChallengeQuery : IChallengeQuery
     {
-        public async Task<Option<ChallengeListDTO>> FindChallengesAsync(Game game, ChallengeState state)
+        public async Task<Option<ChallengeListDTO>> FindChallengesAsync(Game game)
         {
-            var challenges = await this.FindChallengesAsNoTrackingAsync(game, state);
+            var challenges = await this.FindChallengesAsNoTrackingAsync(game);
 
             var list = _mapper.Map<ChallengeListDTO>(challenges);
 
@@ -93,9 +90,9 @@ namespace eDoxa.Arena.Challenges.Application.Queries
             return mapper != null ? new Option<ChallengeDTO>(mapper) : new Option<ChallengeDTO>();
         }
 
-        public async Task<Option<ChallengeListDTO>> FindUserChallengeHistoryAsync(UserId userId, Game game, ChallengeState state)
+        public async Task<Option<ChallengeListDTO>> FindUserChallengeHistoryAsync(UserId userId, Game game)
         {
-            var challenges = await this.FindUserChallengeHistoryAsNoTrackingAsync(userId, game, state);
+            var challenges = await this.FindUserChallengeHistoryAsNoTrackingAsync(userId, game);
 
             var list = _mapper.Map<ChallengeListDTO>(challenges);
 

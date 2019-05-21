@@ -19,6 +19,11 @@ namespace eDoxa.Arena.Challenges.Domain
     {
         private readonly List<Bucket> _buckets;
 
+        public Payout(List<Bucket> buckets)
+        {
+            _buckets = buckets;
+        }
+
         public Payout()
         {
             _buckets = new List<Bucket>();

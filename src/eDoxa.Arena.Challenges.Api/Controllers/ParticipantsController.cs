@@ -27,11 +27,11 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
     [ApiExplorerSettings(GroupName = "Participants")]
     public class ParticipantsController : ControllerBase
     {
-        private readonly IParticipantQueries _queries;
+        private readonly IParticipantQuery _query;
 
-        public ParticipantsController(IParticipantQueries queries)
+        public ParticipantsController(IParticipantQuery query)
         {
-            _queries = queries;
+            _query = query;
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         [HttpGet("{participantId}", Name = nameof(FindParticipantAsync))]
         public async Task<IActionResult> FindParticipantAsync(ParticipantId participantId)
         {
-            var participant = await _queries.FindParticipantAsync(participantId);
+            var participant = await _query.FindParticipantAsync(participantId);
 
             return participant
                 .Select(this.Ok)

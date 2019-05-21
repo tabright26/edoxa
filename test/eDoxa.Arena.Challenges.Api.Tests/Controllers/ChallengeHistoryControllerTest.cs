@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using eDoxa.Arena.Challenges.Api.Controllers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.DTO;
 using eDoxa.Arena.Challenges.DTO.Queries;
 using eDoxa.Functional;
@@ -36,12 +35,12 @@ namespace eDoxa.Arena.Challenges.Api.Tests.Controllers
     {
         private Mock<IMediator> _mediator;
         private Mock<IUserInfoService> _mockUserInfoService;
-        private Mock<IChallengeQueries> _queries;
+        private Mock<IChallengeQuery> _queries;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            _queries = new Mock<IChallengeQueries>();
+            _queries = new Mock<IChallengeQuery>();
             _mediator = new Mock<IMediator>();
             _mockUserInfoService = new Mock<IUserInfoService>();
             _mockUserInfoService.SetupGetProperties();
@@ -59,14 +58,14 @@ namespace eDoxa.Arena.Challenges.Api.Tests.Controllers
                 }
             };
 
-            _queries.Setup(queries => queries.FindUserChallengeHistoryAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<ChallengeState>()))
+            _queries.Setup(queries => queries.FindUserChallengeHistoryAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
                 .ReturnsAsync(new Option<ChallengeListDTO>(value))
                 .Verifiable();
 
             var controller = new ChallengeHistoryController(_mockUserInfoService.Object, _queries.Object);
 
             // Act
-            var result = await controller.FindUserChallengeHistoryAsync(Game.All, ChallengeState.All);
+            var result = await controller.FindUserChallengeHistoryAsync(Game.All);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -80,14 +79,14 @@ namespace eDoxa.Arena.Challenges.Api.Tests.Controllers
         public async Task FindUserChallengeHistoryAsync_ShouldBeNoContentResult()
         {
             // Arrange
-            _queries.Setup(queries => queries.FindUserChallengeHistoryAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<ChallengeState>()))
+            _queries.Setup(queries => queries.FindUserChallengeHistoryAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
                 .ReturnsAsync(new Option<ChallengeListDTO>())
                 .Verifiable();
 
             var controller = new ChallengeHistoryController(_mockUserInfoService.Object, _queries.Object);
 
             // Act
-            var result = await controller.FindUserChallengeHistoryAsync(Game.All, ChallengeState.All);
+            var result = await controller.FindUserChallengeHistoryAsync(Game.All);
 
             // Assert
             result.Should().BeOfType<NoContentResult>();

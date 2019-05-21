@@ -12,7 +12,6 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.DTO.Queries;
 using eDoxa.Seedwork.Domain.Enumerations;
 
@@ -31,24 +30,22 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
     [ApiExplorerSettings(GroupName = "Challenges")]
     public class ChallengesController : ControllerBase
     {
-        private readonly IChallengeQueries _queries;
+        private readonly IChallengeQuery _query;
 
-        public ChallengesController(IChallengeQueries queries)
+        public ChallengesController(IChallengeQuery query)
         {
-            _queries = queries;
+            _query = query;
         }
 
         /// <summary>
         ///     Find the challenges.
         /// </summary>
         [HttpGet(Name = nameof(FindChallengesAsync))]
-        public async Task<IActionResult> FindChallengesAsync([CanBeNull] Game game, [CanBeNull] ChallengeState state)
+        public async Task<IActionResult> FindChallengesAsync([CanBeNull] Game game)
         {
             game = game ?? Game.All;
 
-            state = state ?? ChallengeState.All;
-
-            var challenges = await _queries.FindChallengesAsync(game, state);
+            var challenges = await _query.FindChallengesAsync(game);
 
             return challenges
                 .Select(this.Ok)
@@ -63,7 +60,7 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         [HttpGet("{challengeId}", Name = nameof(FindChallengeAsync))]
         public async Task<IActionResult> FindChallengeAsync(ChallengeId challengeId)
         {
-            var challenge = await _queries.FindChallengeAsync(challengeId);
+            var challenge = await _query.FindChallengeAsync(challengeId);
 
             return challenge
                 .Select(this.Ok)

@@ -27,11 +27,11 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
     [ApiExplorerSettings(GroupName = "Matches")]
     public class MatchesController : ControllerBase
     {
-        private readonly IMatchQueries _queries;
+        private readonly IMatchQuery _query;
 
-        public MatchesController(IMatchQueries queries)
+        public MatchesController(IMatchQuery query)
         {
-            _queries = queries;
+            _query = query;
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         [HttpGet("{matchId}", Name = nameof(FindMatchAsync))]
         public async Task<IActionResult> FindMatchAsync(MatchId matchId)
         {
-            var match = await _queries.FindMatchAsync(matchId);
+            var match = await _query.FindMatchAsync(matchId);
 
             return match
                 .Select(this.Ok)

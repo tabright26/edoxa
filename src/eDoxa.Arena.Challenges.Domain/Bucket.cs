@@ -8,9 +8,11 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Seedwork.Domain.Aggregate;
+
 namespace eDoxa.Arena.Challenges.Domain
 {
-    public sealed class Bucket
+    public sealed class Bucket : ValueObject
     {
         public Bucket(Prize prize, int size)
         {

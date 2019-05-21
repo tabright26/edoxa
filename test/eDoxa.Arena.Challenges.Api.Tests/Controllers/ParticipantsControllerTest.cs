@@ -31,12 +31,12 @@ namespace eDoxa.Arena.Challenges.Api.Tests.Controllers
     public sealed class ParticipantsControllerTest
     {
         private Mock<IMediator> _mediator;
-        private Mock<IParticipantQueries> _queries;
+        private Mock<IParticipantQuery> _queries;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            _queries = new Mock<IParticipantQueries>();
+            _queries = new Mock<IParticipantQuery>();
             _mediator = new Mock<IMediator>();
         }
 

@@ -60,10 +60,10 @@ namespace eDoxa.Arena.Challenges.Application.Commands.Handlers
                 return new BadRequestObjectResult("Registration of participants is complete.");
             }
 
-            if (new ChallengeOpenedSpecification().Not().IsSatisfiedBy(challenge))
-            {
-                return new BadRequestObjectResult("The state of the challenge is not open for registration.");
-            }
+            //if (new ChallengeOpenedSpecification().Not().IsSatisfiedBy(challenge))
+            //{
+            //    return new BadRequestObjectResult("The state of the challenge is not open for registration.");
+            //}
 
             var login = _userLoginInfoService.GetExternalKey(challenge.Game);
 
