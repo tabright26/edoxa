@@ -32,12 +32,15 @@ namespace eDoxa.Arena.Challenges.Application.DomainEventHandlers
 
         public async Task Handle([NotNull] ChallengePayoutDomainEvent domainEvent, CancellationToken cancellationToken)
         {
-            var integrationEvent = new ChallengePayoutIntegrationEvent(
-                domainEvent.ChallengeId.ToGuid(),
-                domainEvent.ParticipantPrizes.ToDictionary(userPrize => userPrize.Key.ToGuid(), userPrize => (decimal) userPrize.Value)
+            await _integrationEventService.PublishAsync(
+                new ChallengePayoutIntegrationEvent(
+                    domainEvent.ChallengeId.ToGuid(),
+                    domainEvent.ParticipantPrizes.ToDictionary(
+                        userPrize => userPrize.Key.ToGuid(),
+                        userPrize => userPrize.Value != null ? (decimal?) userPrize.Value : null
+                    )
+                )
             );
-
-            await _integrationEventService.PublishAsync(integrationEvent);
         }
     }
 }

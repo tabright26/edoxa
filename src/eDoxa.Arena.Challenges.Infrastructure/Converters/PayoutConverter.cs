@@ -36,8 +36,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Converters
 
                     config.CreateMap<Payout, PayoutDTO>().ForMember(x => x.Buckets, cob => cob.MapFrom(x => x.Buckets));
 
-                    config.CreateMap<PayoutDTO, Payout>()
-                          .ConstructUsing(x => new Payout(x.Buckets.Select(bucket => new Bucket(new Prize(bucket.Prize), bucket.Size)).ToList()));
+                    config.CreateMap<PayoutDTO, Payout>().ConstructUsing(x => new Payout(new Buckets(x.Buckets.Select(bucket => new Bucket(new Prize(bucket.Prize), bucket.Size)))));
                 }
             )
         );

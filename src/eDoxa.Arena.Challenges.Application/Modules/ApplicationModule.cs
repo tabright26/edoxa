@@ -49,6 +49,8 @@ namespace eDoxa.Arena.Challenges.Application.Modules
 
             // Services
             builder.RegisterType<ChallengeService>().As<IChallengeService>().InstancePerLifetimeScope();
+
+            builder.RegisterType<FakeChallengeService>().As<IFakeChallengeService>().InstancePerLifetimeScope();
         }
     }
 }

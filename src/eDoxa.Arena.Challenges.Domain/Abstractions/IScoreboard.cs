@@ -1,21 +1,23 @@
-﻿// Filename: IChallengeTimeline.cs
-// Date Created: 2019-04-23
+﻿// Filename: IScoreboard.cs
+// Date Created: 2019-05-22
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
+using System.Collections.Generic;
+
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
 
 namespace eDoxa.Arena.Challenges.Domain.Abstractions
 {
-    public interface ITimeline
+    public interface IScoreboard : IReadOnlyDictionary<UserId, Score>
     {
-        TimeSpan? RegistrationPeriod { get; }
+        UserId GetUserId(int index);
 
-        TimeSpan? ExtensionPeriod { get; }
+        bool IsValidScore(int index);
     }
 }

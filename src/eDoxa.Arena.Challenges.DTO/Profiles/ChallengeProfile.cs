@@ -24,12 +24,38 @@ namespace eDoxa.Arena.Challenges.DTO.Profiles
         {
             this.CreateMap<Challenge, ChallengeDTO>()
                 .ForMember(challenge => challenge.Id, config => config.MapFrom(challenge => challenge.Id.ToGuid()))
-                .ForMember(challenge => challenge.Game, config => config.MapFrom(challenge => challenge.Game))
                 .ForMember(challenge => challenge.Name, config => config.MapFrom(challenge => challenge.Name.ToString()))
+                .ForMember(challenge => challenge.Game, config => config.MapFrom(challenge => challenge.Game))
+                .ForMember(challenge => challenge.CreatedAt, config => config.MapFrom<DateTime>(challenge => challenge.CreatedAt))
+                .ForMember(
+                    challenge => challenge.StartedAt,
+                    config => config.MapFrom(challenge => challenge.StartedAt != null ? (DateTime?) challenge.StartedAt : null)
+                )
+                .ForMember(
+                    challenge => challenge.EndedAt,
+                    config => config.MapFrom(challenge => challenge.EndedAt != null ? (DateTime?) challenge.EndedAt : null)
+                )
+                .ForMember(
+                    challenge => challenge.CompletedAt,
+                    config => config.MapFrom(challenge => challenge.CompletedAt != null ? (DateTime?) challenge.CompletedAt : null)
+                )
                 .ForMember(challenge => challenge.Scoring, config => config.MapFrom(challenge => challenge.Scoring))
                 .ForMember(challenge => challenge.Payout, config => config.MapFrom(challenge => challenge.Payout))
-                .ForMember(challenge => challenge.Scoreboard, config => config.MapFrom(challenge => new Dictionary<Guid, decimal?>(challenge.Scoreboard.ToDictionary(x => x.Key.ToGuid(), x => x.Value.Select(y => (decimal) y).Cast<decimal?>().DefaultIfEmpty(null).Single())) ))
-                .ForMember(challenge => challenge.Participants, config => config.MapFrom(challenge => challenge.Participants.OrderBy(participant => participant.Timestamp)));
+                .ForMember(
+                    challenge => challenge.Scoreboard,
+                    config => config.MapFrom(
+                        challenge => new Dictionary<Guid, decimal?>(
+                            challenge.Scoreboard.ToDictionary(
+                                x => x.Key.ToGuid(),
+                                x => x.Value != null ? (decimal?) x.Value : null
+                            )
+                        )
+                    )
+                )
+                .ForMember(
+                    challenge => challenge.Participants,
+                    config => config.MapFrom(challenge => challenge.Participants.OrderBy(participant => participant.Timestamp))
+                );
         }
     }
 }

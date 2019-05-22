@@ -17,7 +17,7 @@ namespace eDoxa.Arena.Challenges.Application.IntegrationEvents
 {
     public sealed class ChallengePayoutIntegrationEvent : IntegrationEvent
     {
-        public ChallengePayoutIntegrationEvent(Guid challengeId, IReadOnlyDictionary<Guid, decimal> userPrizes)
+        public ChallengePayoutIntegrationEvent(Guid challengeId, IReadOnlyDictionary<Guid, decimal?> userPrizes)
         {
             ChallengeId = challengeId;
             UserPrizes = userPrizes;
@@ -25,6 +25,6 @@ namespace eDoxa.Arena.Challenges.Application.IntegrationEvents
 
         public Guid ChallengeId { get; private set; }
 
-        public IReadOnlyDictionary<Guid, decimal> UserPrizes { get; private set; }
+        public IReadOnlyDictionary<Guid, decimal?> UserPrizes { get; private set; }
     }
 }

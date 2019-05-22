@@ -17,6 +17,8 @@ namespace eDoxa.Arena.Challenges.Domain
 {
     public class Prize : TypeObject<Prize, decimal>
     {
+        public static readonly Prize None = new Prize(0);
+
         public Prize(decimal prize) : base(prize)
         {
             if (prize < 0)

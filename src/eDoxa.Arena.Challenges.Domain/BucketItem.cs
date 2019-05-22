@@ -1,17 +1,19 @@
-﻿// Filename: IChallengeTimelineStrategy.cs
-// Date Created: 2019-04-23
+﻿// Filename: BucketItem.cs
+// Date Created: 2019-05-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-namespace eDoxa.Arena.Challenges.Domain.Abstractions
+namespace eDoxa.Arena.Challenges.Domain
 {
-    public interface ITimelineStrategy
+    public sealed class BucketItem : Bucket
     {
-        ITimeline Timeline { get; }
+        public BucketItem(Prize prize) : base(prize, 1)
+        {
+        }
     }
 }

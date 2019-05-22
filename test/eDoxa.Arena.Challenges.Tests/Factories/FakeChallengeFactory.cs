@@ -1,5 +1,5 @@
-﻿// Filename: FakeDefaultChallengeFactory.cs
-// Date Created: 2019-05-07
+﻿// Filename: FakeChallengeFactory.cs
+// Date Created: 2019-05-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -44,7 +44,14 @@ namespace eDoxa.Arena.Challenges.Tests.Factories
 
             setup = setup ?? new FakeChallengeSetup();
 
-            var challenge = new Challenge(Game.LeagueOfLegends, new ChallengeName(nameof(Challenge)), setup, new Payout(), this.CreateScoringStrategy());
+            var challenge = new Challenge(
+                Game.LeagueOfLegends,
+                new ChallengeName(nameof(Challenge)),
+                setup,
+                new ChallengeDuration(),
+                new Payout(new Buckets()),
+                this.CreateScoringStrategy()
+            );
 
             //var timeline = this.CreateChallengeTimeline(state);
 
@@ -91,9 +98,16 @@ namespace eDoxa.Arena.Challenges.Tests.Factories
             int entries = Entries.Default,
             decimal entryFee = EntryFee.Default,
             float payoutRatio = PayoutRatio.Default,
-            float serviceChargeRatio = ServiceChargeRatio.Default)
+            float serviceChargeRatio = ServiceChargeRatio.Default
+        )
         {
-            return new ChallengeSetup(new BestOf(bestOf), new Entries(entries), new EntryFee(entryFee), new PayoutRatio(payoutRatio), new ServiceChargeRatio(serviceChargeRatio));
+            return new ChallengeSetup(
+                new BestOf(bestOf),
+                new Entries(entries),
+                new EntryFee(entryFee),
+                new PayoutRatio(payoutRatio),
+                new ServiceChargeRatio(serviceChargeRatio)
+            );
         }
 
         //public Timeline CreateChallengeTimeline(ChallengeState state = null)
@@ -261,7 +275,7 @@ namespace eDoxa.Arena.Challenges.Tests.Factories
             };
         }
 
-        public Scoreboard CreateScoreboard()
+        public IScoreboard CreateScoreboard()
         {
             return new Scoreboard(this.CreateChallenge(ChallengeState.Ended));
         }

@@ -22,6 +22,8 @@ namespace eDoxa.Arena.Challenges.Domain.Repositories
 {
     public interface IChallengeRepository : IRepository<Challenge>
     {
+        void Create(Challenge challenge);
+
         Task<IReadOnlyCollection<Challenge>> FindChallengesAsync(Game game);
 
         [ItemCanBeNull]

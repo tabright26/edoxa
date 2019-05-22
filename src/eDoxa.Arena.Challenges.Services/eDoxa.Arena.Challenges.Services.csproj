@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\eDoxa.Arena.Challenges.Domain.Services\eDoxa.Arena.Challenges.Domain.Services.csproj" />
     <ProjectReference Include="..\eDoxa.Arena.Challenges.Domain\eDoxa.Arena.Challenges.Domain.csproj" />
     <ProjectReference Include="..\eDoxa.Arena.Challenges.Services.LeagueOfLegends\eDoxa.Arena.Challenges.Services.LeagueOfLegends.csproj" />
   </ItemGroup>

@@ -8,6 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
+
 using eDoxa.Arena.Challenges.Domain;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
@@ -41,6 +43,28 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                 .HasConversion(name => name.ToString(), name => new ChallengeName(name))
                 .IsRequired()
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
+
+            builder.Property(challenge => challenge.Duration)
+                   .HasConversion(duration => ((TimeSpan) duration).Ticks, duration => new ChallengeDuration(TimeSpan.FromTicks(duration)))
+                   .IsRequired()
+                   .UsePropertyAccessMode(PropertyAccessMode.Field);
+
+            builder.Property(challenge => challenge.CreatedAt)
+                   .HasConversion<DateTime>(duration => duration, duration => new ChallengeCreatedAt(duration))
+                   .IsRequired()
+                   .UsePropertyAccessMode(PropertyAccessMode.Field);
+
+            builder.Property(challenge => challenge.StartedAt)
+                   .HasConversion<DateTime?>(startedAt => startedAt, startedAt => startedAt.HasValue ? new ChallengeStartedAt(startedAt.Value) : null)
+                   .IsRequired(false)
+                   .UsePropertyAccessMode(PropertyAccessMode.Field);
+
+            builder.Ignore(challenge => challenge.EndedAt);
+
+            builder.Property(challenge => challenge.CompletedAt)
+                   .HasConversion<DateTime?>(startedAt => startedAt, startedAt => startedAt.HasValue ? new ChallengeCompletedAt(startedAt.Value) : null)
+                   .IsRequired(false)
+                   .UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.OwnsOne(
                 challenge => challenge.Setup,

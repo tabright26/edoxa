@@ -13,6 +13,7 @@ using System;
 using eDoxa.Seedwork.Domain.Enumerations;
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace eDoxa.Arena.Challenges.DTO
 {
@@ -22,11 +23,27 @@ namespace eDoxa.Arena.Challenges.DTO
         [JsonProperty("id")]
         public Guid Id { get; set; }
 
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
         [JsonProperty("game")]
         public Game Game { get; set; }
 
-        [JsonProperty("name")]
-        public string Name { get; set; }
+        [JsonProperty("createdAt")]
+        [JsonConverter(typeof(UnixDateTimeConverter))]
+        public DateTime CreatedAt { get; set; }
+
+        [JsonProperty("startedAt")]
+        [JsonConverter(typeof(UnixDateTimeConverter))]
+        public DateTime? StartedAt { get; set; }
+
+        [JsonProperty("endedAt")]
+        [JsonConverter(typeof(UnixDateTimeConverter))]
+        public DateTime? EndedAt { get; set; }
+
+        [JsonProperty("completedAt")]
+        [JsonConverter(typeof(UnixDateTimeConverter))]
+        public DateTime? CompletedAt { get; set; }
 
         [JsonProperty("setup")]
         public ChallengeSetupDTO Setup { get; set; }

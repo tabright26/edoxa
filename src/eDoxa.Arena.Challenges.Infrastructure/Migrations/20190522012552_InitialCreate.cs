@@ -50,6 +50,11 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
                     EntryFee = table.Column<decimal>(type: "decimal(4,2)", nullable: false),
                     PayoutRatio = table.Column<float>(nullable: false),
                     ServiceChargeRatio = table.Column<float>(nullable: false),
+                    Duration = table.Column<long>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    StartedAt = table.Column<DateTime>(nullable: true),
+                    CompletedAt = table.Column<DateTime>(nullable: true),
+                    Payout = table.Column<string>(nullable: false),
                     Scoring = table.Column<string>(nullable: false)
                 },
                 constraints: table =>

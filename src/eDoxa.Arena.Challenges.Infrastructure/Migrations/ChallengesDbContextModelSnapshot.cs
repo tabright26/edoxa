@@ -22,6 +22,12 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id");
 
+                    b.Property<DateTime?>("CompletedAt");
+
+                    b.Property<DateTime>("CreatedAt");
+
+                    b.Property<long>("Duration");
+
                     b.Property<int>("Game");
 
                     b.Property<string>("Name")
@@ -32,6 +38,8 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
 
                     b.Property<string>("Scoring")
                         .IsRequired();
+
+                    b.Property<DateTime?>("StartedAt");
 
                     b.HasKey("Id");
 

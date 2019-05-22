@@ -1,5 +1,5 @@
 ﻿// Filename: Challenge.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-05-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -21,6 +21,8 @@ using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Enumerations;
 using eDoxa.Specifications.Factories;
 
+using JetBrains.Annotations;
+
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public class Challenge : Entity<ChallengeId>, IAggregateRoot
@@ -28,21 +30,36 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         private Game _game;
         private ChallengeName _name;
         private ChallengeSetup _setup;
+        private ChallengeDuration _duration;
+        private ChallengeCreatedAt _createdAt;
+        private ChallengeStartedAt _startedAt;
+        private ChallengeCompletedAt _completedAt;
         private IPayout _payout;
         private IScoring _scoring;
         private HashSet<Participant> _participants;
-        
-        public Challenge(Game game, ChallengeName name, ChallengeSetup setup, IPayout payout, IScoringStrategy strategy) : this()
+
+        public Challenge(
+            Game game,
+            ChallengeName name,
+            ChallengeSetup setup,
+            ChallengeDuration duration,
+            IPayout payout,
+            IScoringStrategy strategy
+        ) : this()
         {
             _game = game;
             _name = name;
             _setup = setup;
+            _duration = duration;
             _payout = payout;
             _scoring = strategy.Scoring;
         }
 
         private Challenge()
         {
+            _createdAt = new ChallengeCreatedAt();
+            _startedAt = null;
+            _completedAt = null;
             _participants = new HashSet<Participant>();
         }
 
@@ -52,11 +69,24 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public ChallengeSetup Setup => _setup;
 
-        public Scoreboard Scoreboard => new Scoreboard(this);
+        public ChallengeDuration Duration => _duration;
+
+        public ChallengeCreatedAt CreatedAt => _createdAt;
+
+        [CanBeNull]
+        public ChallengeStartedAt StartedAt => _startedAt;
+
+        [CanBeNull]
+        public ChallengeEndedAt EndedAt => _startedAt != null ? _startedAt + _duration : null;
+
+        [CanBeNull]
+        public ChallengeCompletedAt CompletedAt => _completedAt;
+
+        public IPayout Payout => _payout;
 
         public IScoring Scoring => _scoring;
 
-        public IPayout Payout => _payout;
+        public IScoreboard Scoreboard => new Scoreboard(this);
 
         public IReadOnlyCollection<Participant> Participants => _participants;
 
@@ -67,7 +97,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
                 throw new InvalidOperationException();
             }
 
-            //_timeline = Timeline.Close();
+            _completedAt = new ChallengeCompletedAt();
 
             //this.AddDomainEvent(new PayoutProcessedDomainEvent(Id, Payout.Payoff(Scoreboard)));
         }
@@ -75,7 +105,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         private bool CanComplete()
         {
             var specification = SpecificationFactory.Instance.CreateSpecification<Challenge>()
-         /*       .And(new ChallengeEndedSpecification())*/;
+                /*       .And(new ChallengeEndedSpecification())*/;
 
             return specification.IsSatisfiedBy(this);
         }
@@ -87,15 +117,20 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
                 throw new InvalidOperationException();
             }
 
+            if (Participants.Count == Setup.Entries - 1)
+            {
+                _startedAt = new ChallengeStartedAt();
+            }
+
             _participants.Add(new Participant(this, userId, externalAccount));
         }
 
         private bool CanRegisterParticipant(UserId userId)
         {
             var specification = SpecificationFactory.Instance.CreateSpecification<Challenge>()
-                .And(new ParticipantAlreadyRegisteredSpecification(userId).Not())
-                .And(new ChallengeIsFullSpecification().Not())
-    /*            .And(new ChallengeOpenedSpecification())*/;
+                                                    .And(new ParticipantAlreadyRegisteredSpecification(userId).Not())
+                                                    .And(new ChallengeIsFullSpecification().Not())
+                /*            .And(new ChallengeOpenedSpecification())*/;
 
             return specification.IsSatisfiedBy(this);
         }
@@ -112,9 +147,8 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         private bool CanSnapshotParticipantMatch(ParticipantId participantId)
         {
-            var specification = SpecificationFactory.Instance.CreateSpecification<Challenge>()
-                .And(new ParticipantExistsSpecification(participantId))
-        /*        .And(new ChallengeMininumInProgressSpecification())*/;
+            var specification = SpecificationFactory.Instance.CreateSpecification<Challenge>().And(new ParticipantExistsSpecification(participantId))
+                /*        .And(new ChallengeMininumInProgressSpecification())*/;
 
             return specification.IsSatisfiedBy(this);
         }
