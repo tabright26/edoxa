@@ -10,28 +10,15 @@
 
 using System;
 using System.Globalization;
-using System.Linq;
 
-using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain
 {
     public class PrizePool : TypeObject<PrizePool, decimal>
     {
-        public PrizePool(Entries entries, EntryFee entryFee, ServiceChargeRatio serviceChargeRatio) : base(
-            Math.Floor(entries * entryFee * (1 - Convert.ToDecimal(serviceChargeRatio)))
-        )
+        public PrizePool(Entries entries, EntryFee entryFee, ServiceChargeRatio serviceChargeRatio) : base(Math.Floor(entries * entryFee * (1 - Convert.ToDecimal(serviceChargeRatio))))
         {
-        }
-
-        public PrizePool(IPayout payout) : base(payout.Buckets.Sum(bucket => bucket.Prize * bucket.Size))
-        {
-        }
-
-        public static FirstPrize operator *(PrizePool prizePool, PrizePoolRatio prizePoolRatio)
-        {
-            return new FirstPrize(prizePool * Convert.ToDecimal(prizePoolRatio));
         }
 
         public override string ToString()

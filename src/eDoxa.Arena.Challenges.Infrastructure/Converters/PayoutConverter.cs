@@ -28,15 +28,15 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Converters
             new MapperConfiguration(
                 config =>
                 {
-                    config.CreateMap<BucketDTO, Bucket>().ConstructUsing(x => new Bucket(new Prize(x.Prize), x.Size));
+                    config.CreateMap<BucketDTO, Bucket>().ConstructUsing(bucket => new Bucket(new Prize(bucket.Prize), new BucketSize(bucket.Size)));
 
                     config.CreateMap<Bucket, BucketDTO>()
                           .ForMember(x => x.Prize, con => con.MapFrom<decimal>(x => x.Prize))
-                          .ForMember(x => x.Size, con => con.MapFrom(x => x.Size));
+                          .ForMember(x => x.Size, con => con.MapFrom<int>(x => x.Size));
 
                     config.CreateMap<Payout, PayoutDTO>().ForMember(x => x.Buckets, cob => cob.MapFrom(x => x.Buckets));
 
-                    config.CreateMap<PayoutDTO, Payout>().ConstructUsing(x => new Payout(new Buckets(x.Buckets.Select(bucket => new Bucket(new Prize(bucket.Prize), bucket.Size)))));
+                    config.CreateMap<PayoutDTO, Payout>().ConstructUsing(x => new Payout(new Buckets(x.Buckets.Select(bucket => new Bucket(new Prize(bucket.Prize), new BucketSize(bucket.Size))))));
                 }
             )
         );

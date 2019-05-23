@@ -1,4 +1,4 @@
-﻿// Filename: PrizeFactor.cs
+﻿// Filename: MoneyPrize.cs
 // Date Created: 2019-05-22
 // 
 // ================================================
@@ -10,10 +10,12 @@
 
 namespace eDoxa.Arena.Challenges.Domain
 {
-    public sealed class PrizeFactor : Prize
+    public sealed class MoneyPrize : Prize
     {
-        public PrizeFactor(Prize prize, EntryFeeType factor) : base(prize * factor.Value)
+        public MoneyPrize(Prize prize, PayoutFactor factor) : base(prize, factor)
         {
         }
+
+        protected override PrizeType Type => PrizeType.Money;
     }
 }

@@ -13,6 +13,8 @@ using System.Globalization;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
+using JetBrains.Annotations;
+
 namespace eDoxa.Arena.Challenges.Domain
 {
     public class Prize : TypeObject<Prize, decimal>
@@ -27,13 +29,27 @@ namespace eDoxa.Arena.Challenges.Domain
             }
         }
 
-        protected Prize(FirstPrize prize) : base(prize)
+        protected Prize(Prize prize, PayoutFactor factor) : base(prize * factor)
         {
+        }
+
+        protected virtual PrizeType Type => PrizeType.None;
+
+        public override bool Equals([CanBeNull] Prize obj)
+        {
+            return Type.Equals(obj?.Type) && base.Equals(obj);
         }
 
         public override string ToString()
         {
             return Value.ToString(CultureInfo.InvariantCulture);
+        }
+
+        public Prize ApplyFactor(PayoutFactor factor)
+        {
+            return factor is MoneyPayoutFactor ? new MoneyPrize(this, factor) :
+                factor is TokenPayoutFactor ? new TokenPrize(this, factor) :
+                new Prize(this, factor);
         }
     }
 }

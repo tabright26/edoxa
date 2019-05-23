@@ -1,5 +1,5 @@
-﻿// Filename: LeftoverTest.cs
-// Date Created: 2019-05-07
+﻿// Filename: AssemblyInfo.cs
+// Date Created: 2019-05-03
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,12 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Runtime.CompilerServices;
 
-namespace eDoxa.Arena.Challenges.Domain.Tests
-{
-    [TestClass]
-    public sealed class LeftoverTest
-    {
-    }
-}
+[assembly: InternalsVisibleTo("eDoxa.Arena.Challenges.Infrastructure")]

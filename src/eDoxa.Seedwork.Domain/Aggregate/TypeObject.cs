@@ -38,7 +38,7 @@ namespace eDoxa.Seedwork.Domain.Aggregate
 
     public abstract partial class TypeObject<TObject, TPrimitive> : IEquatable<TObject>
     {
-        public bool Equals([CanBeNull] TObject other)
+        public virtual bool Equals([CanBeNull] TObject other)
         {
             return Value.Equals(other != null ? other.Value : default);
         }

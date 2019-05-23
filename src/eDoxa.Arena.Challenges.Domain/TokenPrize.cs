@@ -1,4 +1,4 @@
-﻿// Filename: EmptyBucket.cs
+﻿// Filename: TokenPrize.cs
 // Date Created: 2019-05-22
 // 
 // ================================================
@@ -10,10 +10,12 @@
 
 namespace eDoxa.Arena.Challenges.Domain
 {
-    public sealed class DefaultBucket : Bucket
+    public sealed class TokenPrize : Prize
     {
-        public DefaultBucket(Prize prize, int size) : base(prize, size)
+        public TokenPrize(Prize prize, PayoutFactor factor) : base(prize, factor)
         {
         }
+
+        protected override PrizeType Type => PrizeType.Token;
     }
 }

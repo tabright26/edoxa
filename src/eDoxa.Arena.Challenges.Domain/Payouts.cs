@@ -15,125 +15,125 @@ using eDoxa.Arena.Challenges.Domain.Abstractions;
 
 namespace eDoxa.Arena.Challenges.Domain
 {
-    public sealed class Payouts : ReadOnlyDictionary<PayoutEntryType, IPayout>
+    public sealed class Payouts : ReadOnlyDictionary<PayoutEntries, IPayout>
     {
         public Payouts() : base(
-            new Dictionary<PayoutEntryType, IPayout>
+            new Dictionary<PayoutEntries, IPayout>
             {
-                [PayoutEntryType.One] = new Payout(
+                [PayoutEntries.One] = new Payout(
                     new Buckets
                     {
-                        new Bucket(new Prize(4M), 1)
+                        new Bucket(new Prize(4M), new BucketSize(1))
                     }
                 ),
-                [PayoutEntryType.Two] = new Payout(
+                [PayoutEntries.Two] = new Payout(
                     new Buckets
                     {
-                        new Bucket(new Prize(5.5M), 1),
-                        new Bucket(new Prize(2.5M), 1)
+                        new Bucket(new Prize(5.5M), new BucketSize(1)),
+                        new Bucket(new Prize(2.5M), new BucketSize(1))
                     }
                 ),
-                [PayoutEntryType.Three] = new Payout(
+                [PayoutEntries.Three] = new Payout(
                     new Buckets
                     {
-                        new Bucket(new Prize(10M), 1),
-                        new Bucket(new Prize(7.5M), 1),
-                        new Bucket(new Prize(2.5M), 1)
+                        new Bucket(new Prize(10M), new BucketSize(1)),
+                        new Bucket(new Prize(7.5M), new BucketSize(1)),
+                        new Bucket(new Prize(2.5M), new BucketSize(1))
                     }
                 ),
-                [PayoutEntryType.Four] = new Payout(
+                [PayoutEntries.Four] = new Payout(
                     new Buckets
                     {
-                        new Bucket(new Prize(7M), 1),
-                        new Bucket(new Prize(4M), 1),
-                        new Bucket(new Prize(2.5M), 2)
+                        new Bucket(new Prize(7M), new BucketSize(1)),
+                        new Bucket(new Prize(4M), new BucketSize(1)),
+                        new Bucket(new Prize(2.5M), new BucketSize(2))
                     }
                 ),
-                [PayoutEntryType.Five] = new Payout(
+                [PayoutEntries.Five] = new Payout(
                     new Buckets
                     {
-                        new Bucket(new Prize(8M), 1),
-                        new Bucket(new Prize(4.5M), 1),
-                        new Bucket(new Prize(2.5M), 3)
+                        new Bucket(new Prize(8M), new BucketSize(1)),
+                        new Bucket(new Prize(4.5M), new BucketSize(1)),
+                        new Bucket(new Prize(2.5M), new BucketSize(3))
                     }
                 ),
-                [PayoutEntryType.Ten] = new Payout(
+                [PayoutEntries.Ten] = new Payout(
                     new Buckets
                     {
-                        new Bucket(new Prize(9.5M), 1),
-                        new Bucket(new Prize(6M), 1),
-                        new Bucket(new Prize(4M), 3),
-                        new Bucket(new Prize(2.5M), 5)
+                        new Bucket(new Prize(9.5M), new BucketSize(1)),
+                        new Bucket(new Prize(6M), new BucketSize(1)),
+                        new Bucket(new Prize(4M), new BucketSize(3)),
+                        new Bucket(new Prize(2.5M), new BucketSize(5))
                     }
                 ),
-                [PayoutEntryType.Fifteen] = new Payout(
+                [PayoutEntries.Fifteen] = new Payout(
                     new Buckets
                     {
-                        new Bucket(new Prize(20M), 1),
-                        new Bucket(new Prize(15M), 1),
-                        new Bucket(new Prize(10M), 2),
-                        new Bucket(new Prize(7M), 4),
-                        new Bucket(new Prize(5M), 7)
+                        new Bucket(new Prize(20M), new BucketSize(1)),
+                        new Bucket(new Prize(15M), new BucketSize(1)),
+                        new Bucket(new Prize(10M), new BucketSize(2)),
+                        new Bucket(new Prize(7M), new BucketSize(4)),
+                        new Bucket(new Prize(5M), new BucketSize(7))
                     }
                 ),
-                [PayoutEntryType.Twenty] = new Payout(
+                [PayoutEntries.Twenty] = new Payout(
                     new Buckets
                     {
-                        new Bucket(new Prize(12.5M), 1),
-                        new Bucket(new Prize(10M), 1),
-                        new Bucket(new Prize(7M), 2),
-                        new Bucket(new Prize(4M), 4),
-                        new Bucket(new Prize(2.5M), 11)
+                        new Bucket(new Prize(12M), new BucketSize(1)),
+                        new Bucket(new Prize(9M), new BucketSize(1)),
+                        new Bucket(new Prize(7M), new BucketSize(2)),
+                        new Bucket(new Prize(3.5M), new BucketSize(5)),
+                        new Bucket(new Prize(2.5M), new BucketSize(11))
                     }
                 ),
-                [PayoutEntryType.TwentyFive] = new Payout(
+                [PayoutEntries.TwentyFive] = new Payout(
                     new Buckets
                     {
-                        new Bucket(new Prize(12.5M), 1),
-                        new Bucket(new Prize(10M), 1),
-                        new Bucket(new Prize(6.25M), 2),
-                        new Bucket(new Prize(5M), 3),
-                        new Bucket(new Prize(3.5M), 5),
-                        new Bucket(new Prize(2.5M), 13)
+                        new Bucket(new Prize(12.5M), new BucketSize(1)),
+                        new Bucket(new Prize(10M), new BucketSize(1)),
+                        new Bucket(new Prize(6.25M), new BucketSize(2)),
+                        new Bucket(new Prize(5M), new BucketSize(3)),
+                        new Bucket(new Prize(3.5M), new BucketSize(5)),
+                        new Bucket(new Prize(2.5M), new BucketSize(13))
                     }
                 ),
-                [PayoutEntryType.Fifty] = new Payout(
+                [PayoutEntries.Fifty] = new Payout(
                     new Buckets
                     {
-                        new Bucket(new Prize(17M), 1),
-                        new Bucket(new Prize(12M), 1),
-                        new Bucket(new Prize(9.5M), 1),
-                        new Bucket(new Prize(7M), 3),
-                        new Bucket(new Prize(5M), 5),
-                        new Bucket(new Prize(3.5M), 15),
-                        new Bucket(new Prize(2.5M), 25)
+                        new Bucket(new Prize(17M), new BucketSize(1)),
+                        new Bucket(new Prize(12M), new BucketSize(1)),
+                        new Bucket(new Prize(9.5M), new BucketSize(1)),
+                        new Bucket(new Prize(7M), new BucketSize(3)),
+                        new Bucket(new Prize(5M), new BucketSize(5)),
+                        new Bucket(new Prize(3.5M), new BucketSize(15)),
+                        new Bucket(new Prize(2.5M), new BucketSize(25))
                     }
                 ),
-                [PayoutEntryType.SeventyFive] = new Payout(
+                [PayoutEntries.SeventyFive] = new Payout(
                     new Buckets
                     {
-                        new Bucket(new Prize(17.5M), 1),
-                        new Bucket(new Prize(15M), 1),
-                        new Bucket(new Prize(12.5M), 1),
-                        new Bucket(new Prize(10M), 2),
-                        new Bucket(new Prize(7.5M), 4),
-                        new Bucket(new Prize(5M), 8),
-                        new Bucket(new Prize(3.5M), 20),
-                        new Bucket(new Prize(2.5M), 38)
+                        new Bucket(new Prize(17.5M), new BucketSize(1)),
+                        new Bucket(new Prize(15M), new BucketSize(1)),
+                        new Bucket(new Prize(12.5M), new BucketSize(1)),
+                        new Bucket(new Prize(10M), new BucketSize(2)),
+                        new Bucket(new Prize(7.5M), new BucketSize(4)),
+                        new Bucket(new Prize(5M), new BucketSize(8)),
+                        new Bucket(new Prize(3.5M), new BucketSize(20)),
+                        new Bucket(new Prize(2.5M), new BucketSize(38))
                     }
                 ),
-                [PayoutEntryType.OneHundred] = new Payout(
+                [PayoutEntries.OneHundred] = new Payout(
                     new Buckets
                     {
-                        new Bucket(new Prize(20M), 1),
-                        new Bucket(new Prize(15M), 1),
-                        new Bucket(new Prize(12M), 1),
-                        new Bucket(new Prize(9M), 3),
-                        new Bucket(new Prize(7.5M), 5),
-                        new Bucket(new Prize(5.5M), 8),
-                        new Bucket(new Prize(4.5M), 15),
-                        new Bucket(new Prize(3M), 25),
-                        new Bucket(new Prize(2.5M), 41)
+                        new Bucket(new Prize(20M), new BucketSize(1)),
+                        new Bucket(new Prize(15M), new BucketSize(1)),
+                        new Bucket(new Prize(12M), new BucketSize(1)),
+                        new Bucket(new Prize(9M), new BucketSize(3)),
+                        new Bucket(new Prize(7.5M), new BucketSize(5)),
+                        new Bucket(new Prize(5.5M), new BucketSize(8)),
+                        new Bucket(new Prize(4.5M), new BucketSize(15)),
+                        new Bucket(new Prize(3M), new BucketSize(25)),
+                        new Bucket(new Prize(2.5M), new BucketSize(41))
                     }
                 )
             }

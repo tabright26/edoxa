@@ -31,7 +31,7 @@ namespace eDoxa.Arena.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             var entries = Entries.DefaultValue;
             var entryFee = EntryFee.DefaultValue;
             var payoutRatio = PayoutRatio.DefaultValue;
-            var serviceChargeRatio = ServiceChargeRatio.DefaultValue;
+            var serviceChargeRatio = ServiceChargeRatio.Default;
 
             // Act
             var setup = FakeChallengeFactory.CreateChallengeSetup();
@@ -78,19 +78,6 @@ namespace eDoxa.Arena.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         {
             // Act
             var action = new Action(() => new PayoutRatio(payoutRatio));
-
-            // Assert
-            action.Should().Throw<ArgumentException>();
-        }
-
-        [DataTestMethod]
-        [DataRow(ServiceChargeRatio.Min - 0.1F)]
-        [DataRow(ServiceChargeRatio.Max + 0.1F)]
-        [DataRow(ServiceChargeRatio.Default + 0.001F)]
-        public void ServiceCharge_InvalidArgument_ShouldThrowArgumentException(float serviceChargeRatio)
-        {
-            // Act
-            var action = new Action(() => new ServiceChargeRatio(serviceChargeRatio));
 
             // Assert
             action.Should().Throw<ArgumentException>();

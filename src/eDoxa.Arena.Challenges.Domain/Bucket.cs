@@ -15,7 +15,7 @@ namespace eDoxa.Arena.Challenges.Domain
 {
     public class Bucket : ValueObject
     {
-        public Bucket(Prize prize, int size)
+        public Bucket(Prize prize, BucketSize size)
         {
             Size = size;
             Prize = prize;
@@ -23,7 +23,7 @@ namespace eDoxa.Arena.Challenges.Domain
 
         public Prize Prize { get; }
 
-        public int Size { get; }
+        public BucketSize Size { get; }
 
         public IBuckets Items
         {
@@ -40,9 +40,9 @@ namespace eDoxa.Arena.Challenges.Domain
             }
         }
 
-        public Bucket ApplyFactor(EntryFeeType factor)
+        public Bucket ApplyPayoutFactor(PayoutFactor factor)
         {
-            return new Bucket(new PrizeFactor(Prize, factor), Size);
+            return new Bucket(Prize.ApplyFactor(factor), Size);
         }
     }
 }

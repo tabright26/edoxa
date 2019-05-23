@@ -96,7 +96,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                         .UsePropertyAccessMode(PropertyAccessMode.Field);
 
                     challengeSetup.Property(setup => setup.ServiceChargeRatio)
-                        .HasConversion<float>(serviceChargeRatio => serviceChargeRatio, serviceChargeRatio => new ServiceChargeRatio(serviceChargeRatio, false))
+                        .HasConversion<float>(serviceChargeRatio => serviceChargeRatio, serviceChargeRatio => new ServiceChargeRatio(serviceChargeRatio))
                         .IsRequired()
                         .HasColumnName(nameof(ChallengeSetup.ServiceChargeRatio))
                         .UsePropertyAccessMode(PropertyAccessMode.Field);

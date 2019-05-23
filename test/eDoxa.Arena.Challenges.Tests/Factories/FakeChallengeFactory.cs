@@ -93,21 +93,9 @@ namespace eDoxa.Arena.Challenges.Tests.Factories
 
     public sealed partial class FakeChallengeFactory
     {
-        public ChallengeSetup CreateChallengeSetup(
-            int bestOf = BestOf.Default,
-            int entries = Entries.Default,
-            decimal entryFee = EntryFee.Default,
-            float payoutRatio = PayoutRatio.Default,
-            float serviceChargeRatio = ServiceChargeRatio.Default
-        )
+        public ChallengeSetup CreateChallengeSetup(int bestOf = BestOf.Default, int entries = Entries.Default, decimal entryFee = EntryFee.Default)
         {
-            return new ChallengeSetup(
-                new BestOf(bestOf),
-                new Entries(entries),
-                new EntryFee(entryFee),
-                new PayoutRatio(payoutRatio),
-                new ServiceChargeRatio(serviceChargeRatio)
-            );
+            return new ChallengeSetup(new BestOf(bestOf), new Entries(entries), new EntryFee(entryFee));
         }
 
         //public Timeline CreateChallengeTimeline(ChallengeState state = null)

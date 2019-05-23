@@ -22,9 +22,9 @@ namespace eDoxa.Arena.Challenges.Services.Factories
 
         public static PayoutFactory Instance => Lazy.Value;
 
-        public IPayout Create(PayoutEntryType payoutEntryType, EntryFeeType entryFeeType)
+        public IPayout Create(PayoutEntries payoutEntries, PayoutFactor factor)
         {
-            return Payouts[payoutEntryType].ApplyFactor(entryFeeType);
+            return Payouts[payoutEntries].ApplyFactor(factor);
         }
     }
 }

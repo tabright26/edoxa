@@ -12,7 +12,7 @@ namespace eDoxa.Arena.Challenges.Domain
 {
     public sealed class BucketItem : Bucket
     {
-        public BucketItem(Prize prize) : base(prize, 1)
+        public BucketItem(Prize prize) : base(prize, BucketSize.Default)
         {
         }
     }

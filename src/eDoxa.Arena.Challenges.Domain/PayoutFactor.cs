@@ -1,4 +1,4 @@
-﻿// Filename: IBuckets.cs
+﻿// Filename: PayoutFactor.cs
 // Date Created: 2019-05-22
 // 
 // ================================================
@@ -8,14 +8,14 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Collections.Generic;
+using eDoxa.Seedwork.Domain.Aggregate;
 
-namespace eDoxa.Arena.Challenges.Domain.Abstractions
+namespace eDoxa.Arena.Challenges.Domain
 {
-    public interface IBuckets : IReadOnlyList<Bucket>
+    public abstract class PayoutFactor : TypeObject<PayoutFactor, int>
     {
-        Prize GetPrize(int index);
-
-        IBuckets ApplyPayoutFactor(PayoutFactor factor);
+        protected PayoutFactor(int value) : base(value)
+        {
+        }
     }
 }

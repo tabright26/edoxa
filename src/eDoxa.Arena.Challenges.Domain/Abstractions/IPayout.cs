@@ -14,7 +14,7 @@ namespace eDoxa.Arena.Challenges.Domain.Abstractions
     {
         IBuckets Buckets { get; }
 
-        IPayout ApplyFactor(EntryFeeType factor);
+        IPayout ApplyFactor(PayoutFactor factor);
 
         IParticipantPrizes GetParticipantPrizes(IScoreboard scoreboard);
     }

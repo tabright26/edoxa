@@ -30,9 +30,9 @@ namespace eDoxa.Arena.Challenges.Domain
             return this.ElementAtOrDefault(index)?.Prize ?? Prize.None;
         }
 
-        public IBuckets ApplyFactor(EntryFeeType factor)
+        public IBuckets ApplyPayoutFactor(PayoutFactor factor)
         {
-            return new Buckets(this.Select(bucket => bucket.ApplyFactor(factor)));;
+            return new Buckets(this.Select(bucket => bucket.ApplyPayoutFactor(factor)));
         }
     }
 }

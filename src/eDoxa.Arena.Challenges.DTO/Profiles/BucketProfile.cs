@@ -20,7 +20,7 @@ namespace eDoxa.Arena.Challenges.DTO.Profiles
         {
             this.CreateMap<Bucket, BucketDTO>()
                 .ForMember(bucket => bucket.Prize, config => config.MapFrom<decimal>(bucket => bucket.Prize))
-                .ForMember(bucket => bucket.Size, config => config.MapFrom(bucket => bucket.Size));
+                .ForMember(bucket => bucket.Size, config => config.MapFrom<int>(bucket => bucket.Size));
         }
     }
 }

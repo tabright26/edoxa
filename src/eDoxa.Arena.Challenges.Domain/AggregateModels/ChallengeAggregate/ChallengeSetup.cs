@@ -20,13 +20,17 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         private PayoutRatio _payoutRatio;
         private ServiceChargeRatio _serviceChargeRatio;
 
-        public ChallengeSetup(BestOf bestOf, Entries entries, EntryFee entryFee, PayoutRatio payoutRatio, ServiceChargeRatio serviceChargeRatio)
+        public ChallengeSetup(BestOf bestOf, Entries entries, EntryFee entryFee) : this()
         {
             _bestOf = bestOf;
             _entries = entries;
             _entryFee = entryFee;
-            _payoutRatio = payoutRatio;
-            _serviceChargeRatio = serviceChargeRatio;
+        }
+
+        public ChallengeSetup()
+        {
+            _payoutRatio = PayoutRatio.DefaultValue;
+            _serviceChargeRatio = ServiceChargeRatio.Default;
         }
 
         public BestOf BestOf => _bestOf;

@@ -30,9 +30,9 @@ namespace eDoxa.Arena.Challenges.Domain
 
         public IBuckets Buckets => _buckets;
 
-        public IPayout ApplyFactor(EntryFeeType factor)
+        public IPayout ApplyFactor(PayoutFactor factor)
         {
-            return new Payout(_buckets.ApplyFactor(factor));
+            return new Payout(_buckets.ApplyPayoutFactor(factor));
         }
 
         public IParticipantPrizes GetParticipantPrizes(IScoreboard scoreboard)

@@ -18,6 +18,7 @@ namespace eDoxa.Arena.Challenges.Services.Factories
 {
     public sealed class ChallengeFactory
     {
+        private static readonly PayoutFactory PayoutFactory = PayoutFactory.Instance;
         private static readonly Lazy<ChallengeFactory> Lazy = new Lazy<ChallengeFactory>(() => new ChallengeFactory());
 
         public static ChallengeFactory Instance => Lazy.Value;
@@ -30,22 +31,9 @@ namespace eDoxa.Arena.Challenges.Services.Factories
 
             if (type.Equals(ChallengeType.Type1))
             {
-                var setup = new ChallengeSetup(
-                    new BestOf(1),
-                    new Entries(10),
-                    new EntryFee(2.5M),
-                    new PayoutRatio(0.3F),
-                    new ServiceChargeRatio(0.2F)
-                );
+                var setup = new ChallengeSetup(new BestOf(1), new Entries(10), new EntryFee(2.5M));
 
-                var payout = new Payout(
-                    new Buckets
-                    {
-                        new Bucket(new Prize(10M), 1),
-                        new Bucket(new Prize(7.5M), 1),
-                        new Bucket(new Prize(2.5M), 1)
-                    }
-                );
+                var payout = PayoutFactory.Create(PayoutEntries.Five, MoneyPayoutFactor.TwoAndHalf);
 
                 return new Challenge(
                     game,
@@ -59,23 +47,9 @@ namespace eDoxa.Arena.Challenges.Services.Factories
 
             if (type.Equals(ChallengeType.Type2))
             {
-                var setup = new ChallengeSetup(
-                    new BestOf(3),
-                    new Entries(30),
-                    new EntryFee(2.5M),
-                    new PayoutRatio(0.4F),
-                    new ServiceChargeRatio(0.2F)
-                );
+                var setup = new ChallengeSetup(new BestOf(3), new Entries(30), new EntryFee(2.5M));
 
-                var payout = new Payout(
-                    new Buckets
-                    {
-                        new Bucket(new Prize(14M), 1),
-                        new Bucket(new Prize(8M), 2),
-                        new Bucket(new Prize(5M), 3),
-                        new Bucket(new Prize(2.5M), 6)
-                    }
-                );
+                var payout = PayoutFactory.Create(PayoutEntries.Fifteen, MoneyPayoutFactor.TwoAndHalf);
 
                 return new Challenge(
                     game,
@@ -89,24 +63,9 @@ namespace eDoxa.Arena.Challenges.Services.Factories
 
             if (type.Equals(ChallengeType.Type3))
             {
-                var setup = new ChallengeSetup(
-                    new BestOf(3),
-                    new Entries(30),
-                    new EntryFee(5M),
-                    new PayoutRatio(0.5F),
-                    new ServiceChargeRatio(0.2F)
-                );
+                var setup = new ChallengeSetup(new BestOf(3), new Entries(30), new EntryFee(5M));
 
-                var payout = new Payout(
-                    new Buckets
-                    {
-                        new Bucket(new Prize(20M), 1),
-                        new Bucket(new Prize(15M), 1),
-                        new Bucket(new Prize(10M), 2),
-                        new Bucket(new Prize(7M), 4),
-                        new Bucket(new Prize(5M), 7)
-                    }
-                );
+                var payout = PayoutFactory.Create(PayoutEntries.Fifteen, MoneyPayoutFactor.Five);
 
                 return new Challenge(
                     game,
@@ -120,24 +79,9 @@ namespace eDoxa.Arena.Challenges.Services.Factories
 
             if (type.Equals(ChallengeType.Type4))
             {
-                var setup = new ChallengeSetup(
-                    new BestOf(3),
-                    new Entries(30),
-                    new EntryFee(10M),
-                    new PayoutRatio(0.5F),
-                    new ServiceChargeRatio(0.2F)
-                );
+                var setup = new ChallengeSetup(new BestOf(3), new Entries(30), new EntryFee(10M));
 
-                var payout = new Payout(
-                    new Buckets
-                    {
-                        new Bucket(new Prize(40M), 1),
-                        new Bucket(new Prize(30M), 1),
-                        new Bucket(new Prize(20M), 2),
-                        new Bucket(new Prize(14M), 4),
-                        new Bucket(new Prize(10M), 7)
-                    }
-                );
+                var payout = PayoutFactory.Create(PayoutEntries.Fifteen, MoneyPayoutFactor.Ten);
 
                 return new Challenge(
                     game,
@@ -151,25 +95,9 @@ namespace eDoxa.Arena.Challenges.Services.Factories
 
             if (type.Equals(ChallengeType.Type5))
             {
-                var setup = new ChallengeSetup(
-                    new BestOf(3),
-                    new Entries(50),
-                    new EntryFee(5M),
-                    new PayoutRatio(0.5F),
-                    new ServiceChargeRatio(0.2F)
-                );
+                var setup = new ChallengeSetup(new BestOf(3), new Entries(50), new EntryFee(5M));
 
-                var payout = new Payout(
-                    new Buckets
-                    {
-                        new Bucket(new Prize(25M), 1),
-                        new Bucket(new Prize(20M), 1),
-                        new Bucket(new Prize(12.5M), 2),
-                        new Bucket(new Prize(10M), 3),
-                        new Bucket(new Prize(7M), 5),
-                        new Bucket(new Prize(5M), 13)
-                    }
-                );
+                var payout = PayoutFactory.Create(PayoutEntries.TwentyFive, MoneyPayoutFactor.Five);
 
                 return new Challenge(
                     game,
@@ -183,25 +111,9 @@ namespace eDoxa.Arena.Challenges.Services.Factories
 
             if (type.Equals(ChallengeType.Type6))
             {
-                var setup = new ChallengeSetup(
-                    new BestOf(3),
-                    new Entries(50),
-                    new EntryFee(10M),
-                    new PayoutRatio(0.5F),
-                    new ServiceChargeRatio(0.2F)
-                );
+                var setup = new ChallengeSetup(new BestOf(3), new Entries(50), new EntryFee(10M));
 
-                var payout = new Payout(
-                    new Buckets
-                    {
-                        new Bucket(new Prize(50M), 1),
-                        new Bucket(new Prize(40M), 1),
-                        new Bucket(new Prize(25M), 2),
-                        new Bucket(new Prize(20M), 3),
-                        new Bucket(new Prize(14M), 5),
-                        new Bucket(new Prize(10M), 13)
-                    }
-                );
+                var payout = PayoutFactory.Create(PayoutEntries.TwentyFive, MoneyPayoutFactor.Ten);
 
                 return new Challenge(
                     game,
