@@ -90,7 +90,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                         .UsePropertyAccessMode(PropertyAccessMode.Field);
 
                     challengeSetup.Property(setup => setup.PayoutRatio)
-                        .HasConversion<float>(payoutRatio => payoutRatio, payoutRatio => new PayoutRatio(payoutRatio, false))
+                        .HasConversion<float>(payoutRatio => payoutRatio, payoutRatio => new PayoutRatio(payoutRatio))
                         .IsRequired()
                         .HasColumnName(nameof(ChallengeSetup.PayoutRatio))
                         .UsePropertyAccessMode(PropertyAccessMode.Field);

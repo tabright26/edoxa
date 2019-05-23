@@ -11,8 +11,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using AutoMapper;
+
 using eDoxa.Arena.Challenges.Api.Controllers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
+using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.DTO;
 using eDoxa.Arena.Challenges.DTO.Queries;
 using eDoxa.Functional;
@@ -33,13 +36,17 @@ namespace eDoxa.Arena.Challenges.Api.Tests.Controllers
     public sealed class ChallengesControllerTest
     {
         private Mock<IMediator> _mediator;
+        private Mock<IMapper> _mapper;
         private Mock<IChallengeQuery> _queries;
+        private Mock<IFakeChallengeService> _fakeChallengeService;
 
         [TestInitialize]
         public void TestInitialize()
         {
             _queries = new Mock<IChallengeQuery>();
+            _mapper = new Mock<IMapper>();
             _mediator = new Mock<IMediator>();
+            _fakeChallengeService = new Mock<IFakeChallengeService>();
         }
 
         [TestMethod]
@@ -58,7 +65,7 @@ namespace eDoxa.Arena.Challenges.Api.Tests.Controllers
                 .ReturnsAsync(new Option<ChallengeListDTO>(value))
                 .Verifiable();
 
-            var controller = new ChallengesController(_queries.Object);
+            var controller = new ChallengesController(_queries.Object, _fakeChallengeService.Object, _mapper.Object);
 
             // Act
             var result = await controller.FindChallengesAsync(Game.All);
@@ -79,7 +86,7 @@ namespace eDoxa.Arena.Challenges.Api.Tests.Controllers
                 .ReturnsAsync(new Option<ChallengeListDTO>())
                 .Verifiable();
 
-            var controller = new ChallengesController(_queries.Object);
+            var controller = new ChallengesController(_queries.Object, _fakeChallengeService.Object, _mapper.Object);
 
             // Act
             var result = await controller.FindChallengesAsync(Game.All);
@@ -100,7 +107,7 @@ namespace eDoxa.Arena.Challenges.Api.Tests.Controllers
                 .ReturnsAsync(new Option<ChallengeDTO>(new ChallengeDTO()))
                 .Verifiable();
 
-            var controller = new ChallengesController(_queries.Object);
+            var controller = new ChallengesController(_queries.Object, _fakeChallengeService.Object, _mapper.Object);
 
             // Act
             var result = await controller.FindChallengeAsync(It.IsAny<ChallengeId>());
@@ -121,7 +128,7 @@ namespace eDoxa.Arena.Challenges.Api.Tests.Controllers
                 .ReturnsAsync(new Option<ChallengeDTO>())
                 .Verifiable();
 
-            var controller = new ChallengesController(_queries.Object);
+            var controller = new ChallengesController(_queries.Object, _fakeChallengeService.Object, _mapper.Object);
 
             // Act
             var result = await controller.FindChallengeAsync(It.IsAny<ChallengeId>());

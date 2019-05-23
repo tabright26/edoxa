@@ -16,8 +16,6 @@ using eDoxa.Arena.Challenges.DTO.Queries;
 using eDoxa.Security.Abstractions;
 using eDoxa.Seedwork.Domain.Enumerations;
 
-using JetBrains.Annotations;
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -44,11 +42,9 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         ///     Find the challenge history of a user.
         /// </summary>
         [HttpGet(Name = nameof(FindUserChallengeHistoryAsync))]
-        public async Task<IActionResult> FindUserChallengeHistoryAsync([CanBeNull] Game game)
+        public async Task<IActionResult> FindUserChallengeHistoryAsync([FromQuery] Game game)
         {
             var userId = UserId.Parse(_userInfoService.Subject);
-
-            game = game ?? Game.All;
 
             var challenges = await _query.FindUserChallengeHistoryAsync(userId, game);
 

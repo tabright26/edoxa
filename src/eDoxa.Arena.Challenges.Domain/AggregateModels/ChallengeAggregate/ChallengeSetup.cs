@@ -29,7 +29,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public ChallengeSetup()
         {
-            _payoutRatio = PayoutRatio.DefaultValue;
+            _payoutRatio = PayoutRatio.Default;
             _serviceChargeRatio = ServiceChargeRatio.Default;
         }
 

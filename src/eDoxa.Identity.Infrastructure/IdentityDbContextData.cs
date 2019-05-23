@@ -36,7 +36,7 @@ namespace eDoxa.Identity.Infrastructure
         {
             if (_environment.IsDevelopment())
             {
-                var adminRole = new Role("Administrator");
+                var adminRole = new Role(CustomRoles.Administrator);
 
                 if (!await _roleManager.RoleExistsAsync(adminRole.Name))
                 {
@@ -45,7 +45,7 @@ namespace eDoxa.Identity.Infrastructure
                     await _roleManager.AddClaimAsync(adminRole, new Claim(CustomClaimTypes.Permission, "*"));
                 }
 
-                var challengerRole = new Role("Challenger");
+                var challengerRole = new Role("challenger");
 
                 if (!await _roleManager.RoleExistsAsync(challengerRole.Name))
                 {

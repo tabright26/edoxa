@@ -1,5 +1,5 @@
-﻿// Filename: AssemblyInfo.cs
-// Date Created: 2019-05-03
+﻿// Filename: CustomRoles.cs
+// Date Created: 2019-05-23
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,7 +8,10 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Runtime.CompilerServices;
-
-[assembly: InternalsVisibleTo("eDoxa.Arena.Challenges.Infrastructure")]
-[assembly: InternalsVisibleTo("eDoxa.Arena.Challenges.Domain.Tests")]
+namespace eDoxa.Security
+{
+    public static class CustomRoles
+    {
+        public const string Administrator = "administrator";
+    }
+}

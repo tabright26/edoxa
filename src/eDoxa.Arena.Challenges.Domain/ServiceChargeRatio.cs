@@ -8,8 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Globalization;
-
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain
@@ -18,7 +16,7 @@ namespace eDoxa.Arena.Challenges.Domain
     {
         private const float DefaultValue = 0.2F;
 
-        public static readonly ServiceChargeRatio Default = new ServiceChargeRatio(DefaultValue);
+        internal static readonly ServiceChargeRatio Default = new ServiceChargeRatio(DefaultValue);
 
         internal ServiceChargeRatio(float serviceChargeRatio) : base(serviceChargeRatio)
         {
@@ -26,7 +24,7 @@ namespace eDoxa.Arena.Challenges.Domain
 
         public override string ToString()
         {
-            return Value.ToString(CultureInfo.InvariantCulture);
+            return Value.ToString("P2");
         }
     }
 }

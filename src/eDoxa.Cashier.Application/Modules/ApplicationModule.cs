@@ -11,12 +11,11 @@
 using Autofac;
 
 using eDoxa.Cashier.Application.Queries;
-using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.Domain.Services.Abstractions;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Cashier.Infrastructure;
-using eDoxa.Cashier.Infrastructure.Repositories;
+using eDoxa.Cashier.Infrastructure.Modules;
 using eDoxa.Cashier.Security;
 using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Commands;
@@ -25,7 +24,7 @@ using eDoxa.ServiceBus;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Cashier.Application
+namespace eDoxa.Cashier.Application.Modules
 {
     public sealed class ApplicationModule : Module
     {
@@ -41,12 +40,7 @@ namespace eDoxa.Cashier.Application
 
             builder.RegisterModule<IntegrationEventModule<ApplicationModule, CashierDbContext>>();
 
-            // Repositories
-            builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerLifetimeScope();
-
-            builder.RegisterType<MoneyAccountRepository>().As<IMoneyAccountRepository>().InstancePerLifetimeScope();
-
-            builder.RegisterType<TokenAccountRepository>().As<ITokenAccountRepository>().InstancePerLifetimeScope();
+            builder.RegisterModule<InfrastructureModule>();
 
             // Services
             builder.RegisterType<MoneyAccountService>().As<IMoneyAccountService>().InstancePerLifetimeScope();
@@ -61,7 +55,7 @@ namespace eDoxa.Cashier.Application
             builder.RegisterType<TransactionQueries>().As<ITransactionQueries>().InstancePerLifetimeScope();
 
             // Security
-            builder.RegisterType<CashierHttpContext>().As<ICashierHttpContext>().SingleInstance();
+            builder.RegisterType<CashierHttpContext>().As<ICashierHttpContext>().InstancePerLifetimeScope();
         }
     }
 }

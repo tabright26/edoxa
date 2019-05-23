@@ -14,8 +14,6 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Domain;
 using eDoxa.Cashier.DTO.Queries;
 
-using JetBrains.Annotations;
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,13 +38,8 @@ namespace eDoxa.Cashier.Api.Controllers
         ///     Get transactions by account currency.
         /// </summary>
         [HttpGet(Name = nameof(GetTransactionsAsync))]
-        public async Task<IActionResult> GetTransactionsAsync(
-            [FromQuery] [CanBeNull]
-            AccountCurrency currency
-        )
+        public async Task<IActionResult> GetTransactionsAsync([FromQuery] AccountCurrency currency)
         {
-            currency = currency ?? AccountCurrency.All;
-
             var transactions = await _transactionQueries.GetTransactionsAsync(currency);
 
             if (!transactions.Any())

@@ -11,11 +11,16 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
-using eDoxa.Arena.Challenges.DTO.Queries;
-using eDoxa.Seedwork.Domain.Enumerations;
+using AutoMapper;
 
-using JetBrains.Annotations;
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Domain.Services;
+using eDoxa.Arena.Challenges.DTO;
+using eDoxa.Arena.Challenges.DTO.Queries;
+using eDoxa.Arena.Challenges.Services.Builders;
+using eDoxa.Security;
+using eDoxa.Seedwork.Domain.Enumerations;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -31,20 +36,22 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
     public class ChallengesController : ControllerBase
     {
         private readonly IChallengeQuery _query;
+        private readonly IFakeChallengeService _fakeChallengeService;
+        private readonly IMapper _mapper;
 
-        public ChallengesController(IChallengeQuery query)
+        public ChallengesController(IChallengeQuery query, IFakeChallengeService fakeChallengeService, IMapper mapper)
         {
             _query = query;
+            _fakeChallengeService = fakeChallengeService;
+            _mapper = mapper;
         }
 
         /// <summary>
         ///     Find the challenges.
         /// </summary>
         [HttpGet(Name = nameof(FindChallengesAsync))]
-        public async Task<IActionResult> FindChallengesAsync([CanBeNull] Game game)
+        public async Task<IActionResult> FindChallengesAsync([FromQuery] Game game)
         {
-            game = game ?? Game.All;
-
             var challenges = await _query.FindChallengesAsync(game);
 
             return challenges
@@ -52,6 +59,22 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
                 .Cast<IActionResult>()
                 .DefaultIfEmpty(this.NoContent())
                 .Single();
+        }
+
+        /// <summary>
+        ///     Create a challenge - Admin only.
+        /// </summary>
+        [Authorize(Roles = CustomRoles.Administrator)]
+        [HttpPost(Name = nameof(CreateChallenge))]
+        public async Task<IActionResult> CreateChallenge([FromQuery] ChallengeType type, [FromQuery] bool registerParticipants, [FromQuery] bool snapshotParticipantMatches)
+        {
+            var challenge = await _fakeChallengeService.CreateChallenge(
+                new FakeLeagueOfLegendsChallengeBuilder(type),
+                registerParticipants,
+                snapshotParticipantMatches
+            );
+
+            return this.Ok(_mapper.Map<ChallengeDTO>(challenge));
         }
 
         /// <summary>

@@ -158,8 +158,10 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             return _name.ToCamelcase();
         }
 
-        public bool HasEnumeration(TEnumeration enumeration)
+        public bool HasEnumeration([CanBeNull] TEnumeration enumeration)
         {
+            enumeration = enumeration ?? All;
+
             return (_value & enumeration._value) != None._value;
         }
     }

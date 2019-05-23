@@ -15,7 +15,7 @@ using System.Reflection;
 using eDoxa.Autofac.Extensions;
 using eDoxa.AutoMapper.Extensions;
 using eDoxa.Cashier.Api.Extensions;
-using eDoxa.Cashier.Application;
+using eDoxa.Cashier.Application.Modules;
 using eDoxa.Cashier.Domain.Services.Stripe.Extensions;
 using eDoxa.Cashier.Domain.Services.Stripe.Filters;
 using eDoxa.Cashier.DTO.Factories;
