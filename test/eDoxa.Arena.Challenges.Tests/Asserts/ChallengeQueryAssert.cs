@@ -36,9 +36,7 @@ namespace eDoxa.Arena.Challenges.Tests.Asserts
             challenge.Id.Should().NotBeEmpty();
 
             challenge.Game.Should().NotBe(Game.All);
-
-            challenge.Game.Should().NotBe(Game.None);
-
+            
             challenge.Name.Should().NotBeNullOrWhiteSpace();
 
             challenge.Setup.Should().NotBeNull();

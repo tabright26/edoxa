@@ -9,6 +9,7 @@
 // this source code package.
 
 using System;
+using System.Collections.Generic;
 
 using JetBrains.Annotations;
 
@@ -38,12 +39,22 @@ namespace eDoxa.Seedwork.Domain.Aggregate
 
     public abstract partial class TypeObject<TObject, TPrimitive> : IEquatable<TObject>
     {
-        public virtual bool Equals([CanBeNull] TObject other)
+        public static bool operator ==(TypeObject<TObject, TPrimitive> left, TypeObject<TObject, TPrimitive> right)
         {
-            return Value.Equals(other != null ? other.Value : default);
+            return EqualityComparer<TypeObject<TObject, TPrimitive>>.Default.Equals(left, right);
         }
 
-        public override bool Equals([CanBeNull] object obj)
+        public static bool operator !=(TypeObject<TObject, TPrimitive> left, TypeObject<TObject, TPrimitive> right)
+        {
+            return !(left == right);
+        }
+
+        public virtual bool Equals([CanBeNull] TObject other)
+        {
+            return this.GetType() == other?.GetType() && Value.Equals(other.Value);
+        }
+
+        public sealed override bool Equals([CanBeNull] object obj)
         {
             return this.Equals(obj as TObject);
         }

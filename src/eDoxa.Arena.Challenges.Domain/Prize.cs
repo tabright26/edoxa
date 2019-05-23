@@ -33,7 +33,7 @@ namespace eDoxa.Arena.Challenges.Domain
         {
         }
 
-        protected virtual PrizeType Type => PrizeType.None;
+        protected virtual PrizeType Type => PrizeType.All;
 
         public override bool Equals([CanBeNull] Prize obj)
         {

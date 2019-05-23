@@ -62,7 +62,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
         {
             var challenges = await _context.Challenges.Include(NavigationPropertyPath).ToListAsync();
 
-            return challenges.Where(challenge => challenge.Game.HasFlag(game)).ToList();
+            return challenges.Where(challenge => challenge.Game.HasEnumeration(game)).ToList();
         }
 
         public async Task<IReadOnlyCollection<Challenge>> FindUserChallengeHistoryAsNoTrackingAsync(UserId userId, Game game)
@@ -72,14 +72,14 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
                                            .Where(challenge => challenge.Participants.Any(participant => participant.UserId == userId))
                                            .ToListAsync();
 
-            return challenges.Where(challenge => challenge.Game.HasFlag(game)).ToList();
+            return challenges.Where(challenge => challenge.Game.HasEnumeration(game)).ToList();
         }
 
         public async Task<IReadOnlyCollection<Challenge>> FindChallengesAsNoTrackingAsync(Game game)
         {
             var challenges = await _context.Challenges.AsNoTracking().Include(NavigationPropertyPath).ToListAsync();
 
-            return challenges.Where(challenge => challenge.Game.HasFlag(game)).ToList();
+            return challenges.Where(challenge => challenge.Game.HasEnumeration(game)).ToList();
         }
 
         public async Task<Challenge> FindChallengeAsNoTrackingAsync(ChallengeId challengeId)

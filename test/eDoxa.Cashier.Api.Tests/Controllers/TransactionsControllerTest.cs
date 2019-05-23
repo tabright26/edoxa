@@ -1,5 +1,5 @@
-﻿// Filename: AccountTransactionsControllerTest.cs
-// Date Created: 2019-05-16
+﻿// Filename: TransactionsControllerTest.cs
+// Date Created: 2019-05-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -28,7 +28,7 @@ using Moq;
 namespace eDoxa.Cashier.Api.Tests.Controllers
 {
     [TestClass]
-    public sealed class AccountTransactionsControllerTest
+    public sealed class TransactionsControllerTest
     {
         private Mock<ITransactionQueries> _mockTransactionQueries;
 
@@ -41,17 +41,17 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<AccountTransactionsController>.For(typeof(ITransactionQueries))
-                                                           .WithName("AccountTransactionsController")
-                                                           .WithAttributes(
-                                                               typeof(AuthorizeAttribute),
-                                                               typeof(ApiControllerAttribute),
-                                                               typeof(ApiVersionAttribute),
-                                                               typeof(ProducesAttribute),
-                                                               typeof(RouteAttribute),
-                                                               typeof(ApiExplorerSettingsAttribute)
-                                                           )
-                                                           .Assert();
+            ConstructorTests<TransactionsController>.For(typeof(ITransactionQueries))
+                                                    .WithName("TransactionsController")
+                                                    .WithAttributes(
+                                                        typeof(AuthorizeAttribute),
+                                                        typeof(ApiControllerAttribute),
+                                                        typeof(ApiVersionAttribute),
+                                                        typeof(ProducesAttribute),
+                                                        typeof(RouteAttribute),
+                                                        typeof(ApiExplorerSettingsAttribute)
+                                                    )
+                                                    .Assert();
         }
 
         [TestMethod]
@@ -70,7 +70,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
                                    )
                                    .Verifiable();
 
-            var controller = new AccountTransactionsController(_mockTransactionQueries.Object);
+            var controller = new TransactionsController(_mockTransactionQueries.Object);
 
             // Act
             var result = await controller.GetTransactionsAsync(AccountCurrency.All);
@@ -87,7 +87,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Arrange
             _mockTransactionQueries.Setup(mock => mock.GetTransactionsAsync(It.IsAny<AccountCurrency>())).ReturnsAsync(new TransactionListDTO()).Verifiable();
 
-            var controller = new AccountTransactionsController(_mockTransactionQueries.Object);
+            var controller = new TransactionsController(_mockTransactionQueries.Object);
 
             // Act
             var result = await controller.GetTransactionsAsync(AccountCurrency.All);

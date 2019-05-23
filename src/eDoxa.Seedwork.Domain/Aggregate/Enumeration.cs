@@ -1,5 +1,5 @@
 ﻿// Filename: Enumeration.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-05-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -16,6 +16,7 @@ using System.Linq;
 using System.Reflection;
 
 using eDoxa.Seedwork.Domain.Exceptions;
+using eDoxa.Seedwork.Domain.Extensions;
 
 using JetBrains.Annotations;
 
@@ -23,18 +24,20 @@ namespace eDoxa.Seedwork.Domain.Aggregate
 {
     public static class Enumeration
     {
-        public static Type[] GetTypes()
+        public static IEnumerable<Type> GetTypes()
         {
-            return AppDomain.CurrentDomain.GetAssemblies().SelectMany(assembly => assembly.GetTypes())
-                .Where(type => type.IsClass && !type.IsAbstract && typeof(IEnumeration).IsAssignableFrom(type)).ToArray();
+            return AppDomain.CurrentDomain.GetAssemblies()
+                            .SelectMany(assembly => assembly.GetTypes())
+                            .Where(type => type.IsClass && !type.IsAbstract && typeof(IEnumeration).IsAssignableFrom(type))
+                            .ToArray();
         }
 
-        public static Array GetValues(Type enumerationType)
+        public static IEnumerable<int> GetValues(Type enumerationType)
         {
             return GetAll(enumerationType).Select(enumeration => enumeration.Value).ToArray();
         }
 
-        public static string[] GetNames(Type enumerationType)
+        public static IEnumerable<string> GetNames(Type enumerationType)
         {
             return GetAll(enumerationType).Select(enumeration => enumeration.Name).ToArray();
         }
@@ -71,7 +74,7 @@ namespace eDoxa.Seedwork.Domain.Aggregate
         {
             try
             {
-                return GetAll(enumerationType).Single(enumeration => enumeration.Name == name);
+                return GetAll(enumerationType).Single(enumeration => enumeration.Name == name.ToPascalcase());
             }
             catch (ArgumentNullException exception)
             {
@@ -89,37 +92,33 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             return GetAll(typeof(TEnumeration)).Cast<TEnumeration>();
         }
 
-        private static IEnumerable<IEnumeration> GetAll(Type enumerationType)
+        public static IEnumerable<IEnumeration> GetAll(Type enumerationType)
         {
             return enumerationType.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
-                .Select(field => field.GetValue(null))
-                .Where(obj => obj is IEnumeration)
-                .Cast<IEnumeration>();
-        }
-
-        public static IEnumerable<TEnumeration> GetFlags<TEnumeration>()
-        where TEnumeration : IEnumeration
-        {
-            return GetFlags(typeof(TEnumeration)).Cast<TEnumeration>();
-        }
-
-        public static IEnumerable<IEnumeration> GetFlags(Type enumerationType)
-        {
-            return enumerationType.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)
-                .Select(field => field.GetValue(null))
-                .Where(obj => obj is IEnumeration)
-                .Cast<IEnumeration>();
+                                  .Select(field => field.GetValue(null))
+                                  .Where(obj => obj is IEnumeration)
+                                  .Cast<IEnumeration>();
         }
     }
 
     public abstract partial class Enumeration<TEnumeration> : IEnumeration
     where TEnumeration : Enumeration<TEnumeration>
     {
-        public static readonly TEnumeration None = (TEnumeration) Activator.CreateInstance(typeof(TEnumeration), BindingFlags.Instance | BindingFlags.NonPublic,
-            null, new object[] {0, nameof(None)}, null);
+        public static readonly TEnumeration All = (TEnumeration) Activator.CreateInstance(
+            typeof(TEnumeration),
+            BindingFlags.Instance | BindingFlags.NonPublic,
+            null,
+            new object[] {-1, nameof(All)},
+            null
+        );
 
-        public static readonly TEnumeration All = (TEnumeration) Activator.CreateInstance(typeof(TEnumeration), BindingFlags.Instance | BindingFlags.NonPublic,
-            null, new object[] {-1, nameof(All)}, null);
+        private static readonly TEnumeration None = (TEnumeration)Activator.CreateInstance(
+            typeof(TEnumeration),
+            BindingFlags.Instance | BindingFlags.NonPublic,
+            null,
+            new object[] { 0, nameof(None) },
+            null
+        );
 
         private string _name;
         private int _value;
@@ -139,11 +138,6 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             return enumeration._value;
         }
 
-        public static IEnumerable<TEnumeration> GetFlags()
-        {
-            return Enumeration.GetFlags<TEnumeration>();
-        }
-
         public static IEnumerable<TEnumeration> GetAll()
         {
             return Enumeration.GetAll<TEnumeration>();
@@ -159,22 +153,12 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             return Enumeration.FromName<TEnumeration>(name);
         }
 
-        private static TEnumeration GetFlag(int value)
-        {
-            return value == (int) None ? None : value == (int) All ? All : FromValue(value);
-        }
-
-        private static TEnumeration GetFlag(string name)
-        {
-            return name == None.ToString() ? None : name == All.ToString() ? All : FromName(name);
-        }
-
         public override string ToString()
         {
-            return _name;
+            return _name.ToCamelcase();
         }
 
-        public bool HasFlag(TEnumeration enumeration)
+        public bool HasEnumeration(TEnumeration enumeration)
         {
             return (_value & enumeration._value) != None._value;
         }
@@ -182,12 +166,22 @@ namespace eDoxa.Seedwork.Domain.Aggregate
 
     public abstract partial class Enumeration<TEnumeration> : IEquatable<TEnumeration>
     {
+        public static bool operator ==(Enumeration<TEnumeration> left, Enumeration<TEnumeration> right)
+        {
+            return EqualityComparer<Enumeration<TEnumeration>>.Default.Equals(left, right);
+        }
+
+        public static bool operator !=(Enumeration<TEnumeration> left, Enumeration<TEnumeration> right)
+        {
+            return !(left == right);
+        }
+
         public bool Equals([CanBeNull] TEnumeration other)
         {
             return this.GetType() == other?.GetType() && _value.Equals(other._value);
         }
 
-        public override bool Equals([CanBeNull] object obj)
+        public sealed override bool Equals([CanBeNull] object obj)
         {
             return this.Equals(obj as TEnumeration);
         }
@@ -232,12 +226,12 @@ namespace eDoxa.Seedwork.Domain.Aggregate
                 {
                     case int val:
                     {
-                        return GetFlag(val);
+                        return FromValue(val);
                     }
 
                     case string name when !string.IsNullOrWhiteSpace(name):
                     {
-                        return GetFlag(name);
+                        return FromName(name);
                     }
 
                     default:
@@ -248,7 +242,12 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             }
 
             [CanBeNull]
-            public override object ConvertTo([CanBeNull] ITypeDescriptorContext context, [NotNull] CultureInfo culture, [CanBeNull] object value, Type destinationType)
+            public override object ConvertTo(
+                [CanBeNull] ITypeDescriptorContext context,
+                [NotNull] CultureInfo culture,
+                [CanBeNull] object value,
+                Type destinationType
+            )
             {
                 if (value is TEnumeration enumeration)
                 {
@@ -259,7 +258,7 @@ namespace eDoxa.Seedwork.Domain.Aggregate
 
                     if (destinationType == typeof(string))
                     {
-                        return enumeration.Name;
+                        return enumeration.ToString();
                     }
                 }
 
