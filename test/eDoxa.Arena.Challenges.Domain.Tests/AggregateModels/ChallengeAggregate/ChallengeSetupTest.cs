@@ -29,7 +29,7 @@ namespace eDoxa.Arena.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             // Arrange
             var bestOf = BestOf.DefaultValue;
             var entries = Entries.DefaultValue;
-            var entryFee = EntryFee.DefaultValue;
+            var entryFee = MoneyEntryFee.Five;
             var payoutRatio = PayoutRatio.Default;
             var serviceChargeRatio = ServiceChargeRatio.Default;
 
@@ -52,19 +52,6 @@ namespace eDoxa.Arena.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         {
             // Act
             var action = new Action(() => new Entries(entries));
-
-            // Assert
-            action.Should().Throw<ArgumentException>();
-        }
-
-        [DataRow((double) EntryFee.Min - 1)]
-        [DataRow((double) EntryFee.Max + 1)]
-        [DataRow((double) EntryFee.Default - 0.01D)]
-        [DataTestMethod]
-        public void EntryFee_InvalidArgument_ShouldThrowArgumentException(double entryFee)
-        {
-            // Act
-            var action = new Action(() => new EntryFee((decimal) entryFee));
 
             // Assert
             action.Should().Throw<ArgumentException>();

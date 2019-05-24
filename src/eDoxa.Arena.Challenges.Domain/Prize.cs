@@ -13,43 +13,43 @@ using System.Globalization;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Arena.Challenges.Domain
 {
-    public class Prize : TypeObject<Prize, decimal>
+    public class Prize : ValueObject
     {
-        public static readonly Prize None = new Prize(0);
+        public static readonly Prize None = new Prize(0, Currency.Undefined);
 
-        public Prize(decimal prize) : base(prize)
+        private readonly decimal _amount;
+        private readonly Currency _type;
+
+        public Prize(decimal amount, Currency type)
         {
-            if (prize < 0)
+            if (amount < 0)
             {
-                throw new ArgumentException(nameof(prize));
+                throw new ArgumentException(nameof(amount));
             }
+
+            _amount = amount;
+            _type = type;
         }
 
-        protected Prize(Prize prize, PayoutFactor factor) : base(prize * factor)
-        {
-        }
+        public decimal Amount => _amount;
 
-        protected virtual PrizeType Type => PrizeType.All;
+        public Currency Type => _type;
 
-        public override bool Equals([CanBeNull] Prize obj)
+        public static implicit operator decimal(Prize prize)
         {
-            return Type.Equals(obj?.Type) && base.Equals(obj);
+            return prize.Amount;
         }
 
         public override string ToString()
         {
-            return Value.ToString(CultureInfo.InvariantCulture);
+            return Amount.ToString(CultureInfo.InvariantCulture);
         }
 
-        public Prize ApplyFactor(PayoutFactor factor)
+        public Prize ApplyEntryFee(EntryFee entryFee, Currency type)
         {
-            return factor is MoneyPayoutFactor ? new MoneyPrize(this, factor) :
-                factor is TokenPayoutFactor ? new TokenPrize(this, factor) :
-                new Prize(this, factor);
+            return new Prize(entryFee * Amount, type);
         }
     }
 }

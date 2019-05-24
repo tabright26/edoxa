@@ -3,6 +3,8 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using eDoxa.Arena.Challenges.Infrastructure;
 
 namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
 {
@@ -157,6 +159,12 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
                             b1.Property<decimal>("EntryFee")
                                 .HasColumnName("EntryFee")
                                 .HasColumnType("decimal(4,2)");
+
+                            b1.Property<int>("EntryFeeCurrency")
+                                .HasColumnName("EntryFeeCurrency");
+
+                            b1.Property<int>("PayoutCurrency")
+                                .HasColumnName("PayoutCurrency");
 
                             b1.Property<float>("PayoutRatio")
                                 .HasColumnName("PayoutRatio");

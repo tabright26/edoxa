@@ -20,19 +20,28 @@ namespace eDoxa.Arena.Challenges.Domain
     public sealed class Payout : ValueObject, IPayout
     {
         private readonly IBuckets _buckets;
+        private readonly Currency _prizeType;
 
         public Payout(IBuckets buckets)
         {
             _buckets = buckets;
+            _prizeType = Currency.Undefined;
+        }
+
+        private Payout(IBuckets buckets, Currency type) : this(buckets)
+        {
+            _prizeType = type;
         }
 
         private IBuckets BucketItems => new Buckets(_buckets.SelectMany(bucket => bucket.Items).OrderByDescending(bucket => bucket.Prize));
 
+        public Currency PrizeType => _prizeType;
+
         public IBuckets Buckets => _buckets;
 
-        public IPayout ApplyFactor(PayoutFactor factor)
+        public IPayout ApplyEntryFee(EntryFee entryFee, Currency type)
         {
-            return new Payout(_buckets.ApplyPayoutFactor(factor));
+            return new Payout(_buckets.ApplyPayoutFactor(entryFee, type), type);
         }
 
         public IParticipantPrizes GetParticipantPrizes(IScoreboard scoreboard)

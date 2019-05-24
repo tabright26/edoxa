@@ -12,9 +12,11 @@ namespace eDoxa.Arena.Challenges.Domain.Abstractions
 {
     public interface IPayout
     {
+        Currency PrizeType { get; }
+
         IBuckets Buckets { get; }
 
-        IPayout ApplyFactor(PayoutFactor factor);
+        IPayout ApplyEntryFee(EntryFee entryFee, Currency type);
 
         IParticipantPrizes GetParticipantPrizes(IScoreboard scoreboard);
     }

@@ -16,6 +16,6 @@ namespace eDoxa.Arena.Challenges.Domain.Abstractions
     {
         Prize GetPrize(int index);
 
-        IBuckets ApplyPayoutFactor(PayoutFactor factor);
+        IBuckets ApplyPayoutFactor(EntryFee factor, Currency type);
     }
 }

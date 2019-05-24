@@ -93,9 +93,9 @@ namespace eDoxa.Arena.Challenges.Tests.Factories
 
     public sealed partial class FakeChallengeFactory
     {
-        public ChallengeSetup CreateChallengeSetup(int bestOf = BestOf.Default, int entries = Entries.Default, decimal entryFee = EntryFee.Default)
+        public ChallengeSetup CreateChallengeSetup(int bestOf = BestOf.Default, int entries = Entries.Default, decimal entryFee = 5M)
         {
-            return new ChallengeSetup(new BestOf(bestOf), new Entries(entries), new EntryFee(entryFee));
+            return new ChallengeSetup(new BestOf(bestOf), new Entries(entries), new MoneyEntryFee(entryFee), Currency.Money);
         }
 
         //public Timeline CreateChallengeTimeline(ChallengeState state = null)

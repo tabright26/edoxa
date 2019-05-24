@@ -17,23 +17,8 @@ namespace eDoxa.Arena.Challenges.Domain
 {
     public class EntryFee : TypeObject<EntryFee, decimal>
     {
-        public const decimal Min = 0.25M;
-        public const decimal Max = 1500M;
-        public const decimal Default = 5M;
-
-        public static readonly EntryFee MinValue = new EntryFee(Min);
-        public static readonly EntryFee MaxValue = new EntryFee(Max);
-        public static readonly EntryFee DefaultValue = new EntryFee(Default);
-
-        public EntryFee(decimal entryFee, bool validate = true) : base(entryFee)
+        public EntryFee(decimal entryFee) : base(entryFee)
         {
-            if (validate)
-            {
-                if (entryFee < Min || entryFee > Max || entryFee % 0.25M != 0)
-                {
-                    throw new ArgumentException(nameof(entryFee));
-                }
-            }
         }
 
         public override string ToString()

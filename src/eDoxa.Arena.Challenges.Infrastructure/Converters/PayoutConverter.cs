@@ -26,17 +26,29 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Converters
     {
         private static readonly IMapper Mapper = new Mapper(
             new MapperConfiguration(
-                config =>
+                configuration =>
                 {
-                    config.CreateMap<BucketDTO, Bucket>().ConstructUsing(bucket => new Bucket(new Prize(bucket.Prize), new BucketSize(bucket.Size)));
+                    configuration.CreateMap<Bucket, BucketDTO>()
+                                 .ForMember(bucket => bucket.Prize, config => config.MapFrom<decimal>(bucket => bucket.Prize))
+                                 .ForMember(bucket => bucket.Size, config => config.MapFrom<int>(bucket => bucket.Size));
 
-                    config.CreateMap<Bucket, BucketDTO>()
-                          .ForMember(x => x.Prize, con => con.MapFrom<decimal>(x => x.Prize))
-                          .ForMember(x => x.Size, con => con.MapFrom<int>(x => x.Size));
+                    configuration.CreateMap<Payout, PayoutDTO>()
+                                 .ForMember(payout => payout.Currency, config => config.MapFrom(payout => payout.PrizeType.Value))
+                                 .ForMember(payout => payout.Buckets, config => config.MapFrom(payout => payout.Buckets));
 
-                    config.CreateMap<Payout, PayoutDTO>().ForMember(x => x.Buckets, cob => cob.MapFrom(x => x.Buckets));
-
-                    config.CreateMap<PayoutDTO, Payout>().ConstructUsing(x => new Payout(new Buckets(x.Buckets.Select(bucket => new Bucket(new Prize(bucket.Prize), new BucketSize(bucket.Size))))));
+                    configuration.CreateMap<PayoutDTO, Payout>()
+                                 .ConstructUsing(
+                                     payout => new Payout(
+                                         new Buckets(
+                                             payout.Buckets.Select(
+                                                 bucket => new Bucket(
+                                                     new Prize(bucket.Prize, Currency.FromValue(payout.Currency)),
+                                                     new BucketSize(bucket.Size)
+                                                 )
+                                             )
+                                         )
+                                     )
+                                 );
                 }
             )
         );
@@ -51,14 +63,20 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Converters
         [JsonObject]
         private class PayoutDTO
         {
+            [JsonProperty("currency")]
+            public int Currency { get; set; }
+
+            [JsonProperty("buckets")]
             public IList<BucketDTO> Buckets { get; set; }
         }
 
         [JsonObject]
         private class BucketDTO
         {
+            [JsonProperty("prize")]
             public decimal Prize { get; set; }
 
+            [JsonProperty("size")]
             public int Size { get; set; }
         }
     }

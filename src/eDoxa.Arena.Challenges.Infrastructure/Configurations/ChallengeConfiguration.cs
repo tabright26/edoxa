@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeConfiguration.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-05-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -30,19 +30,19 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
             builder.ToTable(nameof(ChallengesDbContext.Challenges));
 
             builder.Property(challenge => challenge.Id)
-                .HasConversion(challengeId => challengeId.ToGuid(), value => ChallengeId.FromGuid(value))
-                .IsRequired()
-                .UsePropertyAccessMode(PropertyAccessMode.Field);
+                   .HasConversion(challengeId => challengeId.ToGuid(), value => ChallengeId.FromGuid(value))
+                   .IsRequired()
+                   .UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.Property(challenge => challenge.Game)
-                .HasConversion(type => type.Value, value => Game.FromValue(value))
-                .IsRequired()
-                .UsePropertyAccessMode(PropertyAccessMode.Field);
+                   .HasConversion(type => type.Value, value => Game.FromValue(value))
+                   .IsRequired()
+                   .UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.Property(challenge => challenge.Name)
-                .HasConversion(name => name.ToString(), name => new ChallengeName(name))
-                .IsRequired()
-                .UsePropertyAccessMode(PropertyAccessMode.Field);
+                   .HasConversion(name => name.ToString(), name => new ChallengeName(name))
+                   .IsRequired()
+                   .UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.Property(challenge => challenge.Duration)
                    .HasConversion(duration => ((TimeSpan) duration).Ticks, duration => new ChallengeDuration(TimeSpan.FromTicks(duration)))
@@ -70,36 +70,51 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                 challenge => challenge.Setup,
                 challengeSetup =>
                 {
+                    challengeSetup.Property(setup => setup.BestOf)
+                                  .HasConversion<int>(bestOf => bestOf, bestOf => new BestOf(bestOf, false))
+                                  .IsRequired()
+                                  .HasColumnName(nameof(ChallengeSetup.BestOf))
+                                  .UsePropertyAccessMode(PropertyAccessMode.Field);
+
                     challengeSetup.Property(setup => setup.Entries)
-                        .HasConversion<int>(entries => entries, entries => new Entries(entries, false))
-                        .IsRequired()
-                        .HasColumnName(nameof(ChallengeSetup.Entries))
-                        .UsePropertyAccessMode(PropertyAccessMode.Field);
+                                  .HasConversion<int>(entries => entries, entries => new Entries(entries, false))
+                                  .IsRequired()
+                                  .HasColumnName(nameof(ChallengeSetup.Entries))
+                                  .UsePropertyAccessMode(PropertyAccessMode.Field);
 
                     challengeSetup.Property(setup => setup.EntryFee)
-                        .HasConversion<decimal>(entryFee => entryFee, entryFee => new EntryFee(entryFee, false))
-                        .HasColumnType("decimal(4,2)")
-                        .IsRequired()
-                        .HasColumnName(nameof(ChallengeSetup.EntryFee))
-                        .UsePropertyAccessMode(PropertyAccessMode.Field);
+                                  .HasConversion<decimal>(entryFee => entryFee, entryFee => new EntryFee(entryFee))
+                                  .HasColumnType("decimal(4,2)")
+                                  .IsRequired()
+                                  .HasColumnName(nameof(ChallengeSetup.EntryFee))
+                                  .UsePropertyAccessMode(PropertyAccessMode.Field);
 
-                    challengeSetup.Property(setup => setup.BestOf)
-                        .HasConversion<int>(bestOf => bestOf, bestOf => new BestOf(bestOf, false))
-                        .IsRequired()
-                        .HasColumnName(nameof(ChallengeSetup.BestOf))
-                        .UsePropertyAccessMode(PropertyAccessMode.Field);
+                    challengeSetup.Property(setup => setup.EntryFeeCurrency)
+                                  .HasConversion(currency => currency.Value, currency => Currency.FromValue(currency))
+                                  .IsRequired()
+                                  .HasColumnName(nameof(ChallengeSetup.EntryFeeCurrency))
+                                  .UsePropertyAccessMode(PropertyAccessMode.Field);
 
                     challengeSetup.Property(setup => setup.PayoutRatio)
-                        .HasConversion<float>(payoutRatio => payoutRatio, payoutRatio => new PayoutRatio(payoutRatio))
-                        .IsRequired()
-                        .HasColumnName(nameof(ChallengeSetup.PayoutRatio))
-                        .UsePropertyAccessMode(PropertyAccessMode.Field);
+                                  .HasConversion<float>(payoutRatio => payoutRatio, payoutRatio => new PayoutRatio(payoutRatio))
+                                  .IsRequired()
+                                  .HasColumnName(nameof(ChallengeSetup.PayoutRatio))
+                                  .UsePropertyAccessMode(PropertyAccessMode.Field);
+
+                    challengeSetup.Property(setup => setup.PayoutCurrency)
+                                  .HasConversion(currency => currency.Value, currency => Currency.FromValue(currency))
+                                  .IsRequired()
+                                  .HasColumnName(nameof(ChallengeSetup.PayoutCurrency))
+                                  .UsePropertyAccessMode(PropertyAccessMode.Field);
 
                     challengeSetup.Property(setup => setup.ServiceChargeRatio)
-                        .HasConversion<float>(serviceChargeRatio => serviceChargeRatio, serviceChargeRatio => new ServiceChargeRatio(serviceChargeRatio))
-                        .IsRequired()
-                        .HasColumnName(nameof(ChallengeSetup.ServiceChargeRatio))
-                        .UsePropertyAccessMode(PropertyAccessMode.Field);
+                                  .HasConversion<float>(
+                                      serviceChargeRatio => serviceChargeRatio,
+                                      serviceChargeRatio => new ServiceChargeRatio(serviceChargeRatio)
+                                  )
+                                  .IsRequired()
+                                  .HasColumnName(nameof(ChallengeSetup.ServiceChargeRatio))
+                                  .UsePropertyAccessMode(PropertyAccessMode.Field);
 
                     challengeSetup.Ignore(setup => setup.PayoutEntries);
 
@@ -107,23 +122,17 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                 }
             );
 
-            builder.Property(challenge => challenge.Scoring)
-                .HasConversion(new ScoringConverter())
-                .IsRequired()
-                .UsePropertyAccessMode(PropertyAccessMode.Field);
+            builder.Property(challenge => challenge.Scoring).HasConversion(new ScoringConverter()).IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field);
 
-            builder.Property(challenge => challenge.Payout)
-                   .HasConversion(new PayoutConverter())
-                   .IsRequired()
-                   .UsePropertyAccessMode(PropertyAccessMode.Field);
+            builder.Property(challenge => challenge.Payout).HasConversion(new PayoutConverter()).IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.Ignore(challenge => challenge.Scoreboard);
 
             builder.HasMany(challenge => challenge.Participants)
-                .WithOne(participant => participant.Challenge)
-                .HasForeignKey(nameof(ChallengeId))
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
+                   .WithOne(participant => participant.Challenge)
+                   .HasForeignKey(nameof(ChallengeId))
+                   .IsRequired()
+                   .OnDelete(DeleteBehavior.Cascade);
 
             builder.Metadata.FindNavigation(nameof(Challenge.Setup)).SetPropertyAccessMode(PropertyAccessMode.Field);
 
