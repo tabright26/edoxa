@@ -12,6 +12,7 @@ using System;
 
 using eDoxa.Arena.Challenges.Domain;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Domain.Factories;
 using eDoxa.Seedwork.Domain.Enumerations;
 
 namespace eDoxa.Arena.Challenges.Services.Factories
@@ -33,14 +34,13 @@ namespace eDoxa.Arena.Challenges.Services.Factories
             {
                 var setup = new ChallengeSetup(new BestOf(1), new Entries(10), MoneyEntryFee.TwoAndHalf, Currency.Money);
 
-                var payout = PayoutFactory.Create(PayoutEntries.Five, MoneyEntryFee.TwoAndHalf, Currency.Money);
+                var payout = PayoutFactory.Create(Currency.Money, PayoutEntries.Five, MoneyEntryFee.TwoAndHalf, Currency.Money);
 
                 return new Challenge(
                     game,
                     name,
                     setup,
                     duration,
-                    payout,
                     strategy
                 );
             }
@@ -49,14 +49,13 @@ namespace eDoxa.Arena.Challenges.Services.Factories
             {
                 var setup = new ChallengeSetup(new BestOf(3), new Entries(30), MoneyEntryFee.TwoAndHalf, Currency.Money);
 
-                var payout = PayoutFactory.Create(PayoutEntries.Fifteen, MoneyEntryFee.TwoAndHalf, Currency.Money);
+                var payout = PayoutFactory.Create(Currency.Money, PayoutEntries.Fifteen, MoneyEntryFee.TwoAndHalf, Currency.Money);
 
                 return new Challenge(
                     game,
                     name,
                     setup,
                     duration,
-                    payout,
                     strategy
                 );
             }
@@ -65,14 +64,13 @@ namespace eDoxa.Arena.Challenges.Services.Factories
             {
                 var setup = new ChallengeSetup(new BestOf(3), new Entries(30), MoneyEntryFee.Five, Currency.Money);
 
-                var payout = PayoutFactory.Create(PayoutEntries.Fifteen, MoneyEntryFee.Five, Currency.Money);
+                var payout = PayoutFactory.Create(Currency.Money, PayoutEntries.Fifteen, MoneyEntryFee.Five, Currency.Money);
 
                 return new Challenge(
                     game,
                     name,
                     setup,
                     duration,
-                    payout,
                     strategy
                 );
             }
@@ -81,14 +79,13 @@ namespace eDoxa.Arena.Challenges.Services.Factories
             {
                 var setup = new ChallengeSetup(new BestOf(3), new Entries(30), MoneyEntryFee.Ten, Currency.Money);
 
-                var payout = PayoutFactory.Create(PayoutEntries.Fifteen, MoneyEntryFee.Ten, Currency.Money);
+                var payout = PayoutFactory.Create(Currency.Money, PayoutEntries.Fifteen, MoneyEntryFee.Ten, Currency.Money);
 
                 return new Challenge(
                     game,
                     name,
                     setup,
                     duration,
-                    payout,
                     strategy
                 );
             }
@@ -97,14 +94,13 @@ namespace eDoxa.Arena.Challenges.Services.Factories
             {
                 var setup = new ChallengeSetup(new BestOf(3), new Entries(50), MoneyEntryFee.Five, Currency.Money);
 
-                var payout = PayoutFactory.Create(PayoutEntries.TwentyFive, MoneyEntryFee.Five, Currency.Money);
+                var payout = PayoutFactory.Create(Currency.Money, PayoutEntries.TwentyFive, MoneyEntryFee.Five, Currency.Money);
 
                 return new Challenge(
                     game,
                     name,
                     setup,
                     duration,
-                    payout,
                     strategy
                 );
             }
@@ -113,14 +109,13 @@ namespace eDoxa.Arena.Challenges.Services.Factories
             {
                 var setup = new ChallengeSetup(new BestOf(3), new Entries(50), MoneyEntryFee.Ten, Currency.Money);
 
-                var payout = PayoutFactory.Create(PayoutEntries.TwentyFive, MoneyEntryFee.Ten, Currency.Money);
+                var payout = PayoutFactory.Create(Currency.Money, PayoutEntries.TwentyFive, MoneyEntryFee.Ten, Currency.Money);
 
                 return new Challenge(
                     game,
                     name,
                     setup,
                     duration,
-                    payout,
                     strategy
                 );
             }

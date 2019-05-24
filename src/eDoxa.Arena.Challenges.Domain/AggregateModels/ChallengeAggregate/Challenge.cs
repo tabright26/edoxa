@@ -16,6 +16,7 @@ using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.Specifications;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate.Specifications;
+using eDoxa.Arena.Challenges.Domain.Factories;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Enumerations;
@@ -34,7 +35,6 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         private ChallengeCreatedAt _createdAt;
         private ChallengeStartedAt _startedAt;
         private ChallengeCompletedAt _completedAt;
-        private IPayout _payout;
         private IScoring _scoring;
         private HashSet<Participant> _participants;
 
@@ -43,7 +43,6 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             ChallengeName name,
             ChallengeSetup setup,
             ChallengeDuration duration,
-            IPayout payout,
             IScoringStrategy strategy
         ) : this()
         {
@@ -51,7 +50,6 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             _name = name;
             _setup = setup;
             _duration = duration;
-            _payout = payout;
             _scoring = strategy.Scoring;
         }
 
@@ -82,9 +80,9 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         [CanBeNull]
         public ChallengeCompletedAt CompletedAt => _completedAt;
 
-        public IPayout Payout => _payout;
-
         public IScoring Scoring => _scoring;
+
+        public IPayout Payout => PayoutFactory.Instance.Create(Setup.PayoutCurrency, Setup.PayoutEntries, Setup.EntryFee, Currency.Money);
 
         public IScoreboard Scoreboard => new Scoreboard(this);
 

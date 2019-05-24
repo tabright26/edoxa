@@ -14,6 +14,7 @@ using System.Linq;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
+using eDoxa.Arena.Challenges.Services;
 using eDoxa.Arena.Challenges.Services.Factories;
 using eDoxa.Arena.Challenges.Tests.Factories;
 using eDoxa.Seedwork.Domain.Enumerations;

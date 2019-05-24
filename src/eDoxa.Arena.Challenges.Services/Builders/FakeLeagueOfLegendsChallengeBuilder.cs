@@ -10,6 +10,7 @@
 
 using System;
 
+using eDoxa.Arena.Challenges.Domain;
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;

@@ -10,10 +10,9 @@
 
 using System;
 
-using eDoxa.Arena.Challenges.Domain;
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 
-namespace eDoxa.Arena.Challenges.Services.Factories
+namespace eDoxa.Arena.Challenges.Domain.Factories
 {
     public sealed class PayoutFactory
     {
@@ -22,9 +21,9 @@ namespace eDoxa.Arena.Challenges.Services.Factories
 
         public static PayoutFactory Instance => Lazy.Value;
 
-        public IPayout Create(PayoutEntries payoutEntries, EntryFee entryFee, Currency type)
+        public IPayout Create(Currency currency, PayoutEntries payoutEntries, EntryFee entryFee, Currency entryFeeCurrency)
         {
-            return Payouts[payoutEntries].ApplyEntryFee(entryFee, type);
+            return Payouts[payoutEntries].ApplyEntryFee(entryFee, currency);
         }
     }
 }

@@ -10,6 +10,7 @@
 
 using System.Linq;
 
+using eDoxa.Arena.Challenges.Domain.Factories;
 using eDoxa.Arena.Challenges.Services.Factories;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -24,7 +25,7 @@ namespace eDoxa.Arena.Challenges.Domain.Services.Tests.Factories
         [TestMethod]
         public void M()
         { 
-            var payout = PayoutFactory.Create(PayoutEntries.Twenty, MoneyEntryFee.TwoAndHalf, Currency.Money);
+            var payout = PayoutFactory.Create(Currency.Money, PayoutEntries.Twenty, MoneyEntryFee.TwoAndHalf, Currency.Money);
 
             var t = payout.Buckets.SelectMany(x => x.Items).Count();
         }

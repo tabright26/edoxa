@@ -124,7 +124,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
 
             builder.Property(challenge => challenge.Scoring).HasConversion(new ScoringConverter()).IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field);
 
-            builder.Property(challenge => challenge.Payout).HasConversion(new PayoutConverter()).IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field);
+            builder.Ignore(challenge => challenge.Payout);
 
             builder.Ignore(challenge => challenge.Scoreboard);
 

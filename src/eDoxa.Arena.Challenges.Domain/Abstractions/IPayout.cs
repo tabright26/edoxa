@@ -12,7 +12,7 @@ namespace eDoxa.Arena.Challenges.Domain.Abstractions
 {
     public interface IPayout
     {
-        Currency PrizeType { get; }
+        Currency Currency { get; }
 
         IBuckets Buckets { get; }
 

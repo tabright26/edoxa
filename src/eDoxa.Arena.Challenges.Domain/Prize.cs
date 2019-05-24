@@ -47,9 +47,9 @@ namespace eDoxa.Arena.Challenges.Domain
             return Amount.ToString(CultureInfo.InvariantCulture);
         }
 
-        public Prize ApplyEntryFee(EntryFee entryFee, Currency type)
+        public Prize ApplyEntryFee(EntryFee entryFee, Currency currency)
         {
-            return new Prize(entryFee * Amount, type);
+            return new Prize(Amount * entryFee, currency);
         }
     }
 }

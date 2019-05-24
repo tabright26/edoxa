@@ -56,7 +56,6 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     StartedAt = table.Column<DateTime>(nullable: true),
                     CompletedAt = table.Column<DateTime>(nullable: true),
-                    Payout = table.Column<string>(nullable: false),
                     Scoring = table.Column<string>(nullable: false)
                 },
                 constraints: table =>

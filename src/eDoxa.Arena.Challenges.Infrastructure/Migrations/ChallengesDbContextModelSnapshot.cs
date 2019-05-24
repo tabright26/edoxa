@@ -35,9 +35,6 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
                     b.Property<string>("Name")
                         .IsRequired();
 
-                    b.Property<string>("Payout")
-                        .IsRequired();
-
                     b.Property<string>("Scoring")
                         .IsRequired();
 

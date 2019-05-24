@@ -49,7 +49,6 @@ namespace eDoxa.Arena.Challenges.Tests.Factories
                 new ChallengeName(nameof(Challenge)),
                 setup,
                 new ChallengeDuration(),
-                new Payout(new Buckets()),
                 this.CreateScoringStrategy()
             );
 

@@ -17,8 +17,8 @@ namespace eDoxa.Arena.Challenges.DTO
     [JsonObject]
     public class PayoutDTO
     {
-        [JsonProperty("prizeType")]
-        public Currency PrizeType { get; set; }
+        [JsonProperty("currency")]
+        public Currency Currency { get; set; }
 
         [JsonProperty("buckets")]
         public BucketListDTO Buckets { get; set; }

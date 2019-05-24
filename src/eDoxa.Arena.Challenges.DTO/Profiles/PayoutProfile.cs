@@ -19,7 +19,7 @@ namespace eDoxa.Arena.Challenges.DTO.Profiles
         public PayoutProfile()
         {
             this.CreateMap<Payout, PayoutDTO>()
-                .ForMember(payout => payout.PrizeType, config => config.MapFrom(payout => payout.PrizeType))
+                .ForMember(payout => payout.Currency, config => config.MapFrom(payout => payout.Currency))
                 .ForMember(payout => payout.Buckets, config => config.MapFrom(payout => payout.Buckets));
         }
     }

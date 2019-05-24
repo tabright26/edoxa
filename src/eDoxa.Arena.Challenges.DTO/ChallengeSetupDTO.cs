@@ -30,7 +30,7 @@ namespace eDoxa.Arena.Challenges.DTO
         public decimal EntryFee { get; set; }
 
         [JsonProperty("currency")]
-        public Currency EntryFeeCurrency { get; set; }
+        public Currency Currency { get; set; }
 
         [JsonProperty("prizePool")]
         public decimal PrizePool { get; set; }
