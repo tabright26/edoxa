@@ -1,5 +1,5 @@
-﻿// Filename: IPayout.cs
-// Date Created: 2019-05-20
+﻿// Filename: IBucketFactors.cs
+// Date Created: 2019-05-23
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,14 +8,12 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Collections.Generic;
+
 namespace eDoxa.Arena.Challenges.Domain.Abstractions
 {
-    public interface IPayout
+    public interface IBucketFactors : IReadOnlyList<BucketFactor>
     {
-        Currency Currency { get; }
-
-        IBuckets Buckets { get; }
-
-        IParticipantPrizes GetParticipantPrizes(IScoreboard scoreboard);
+        IPayout CreatePayout(EntryFee entryFee, Currency currency);
     }
 }

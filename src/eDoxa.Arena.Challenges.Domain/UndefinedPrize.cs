@@ -1,5 +1,5 @@
-﻿// Filename: IBuckets.cs
-// Date Created: 2019-05-22
+﻿// Filename: UndefinedPrize.cs
+// Date Created: 2019-05-23
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,12 +8,12 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Collections.Generic;
-
-namespace eDoxa.Arena.Challenges.Domain.Abstractions
+namespace eDoxa.Arena.Challenges.Domain
 {
-    public interface IBuckets : IReadOnlyList<Bucket>
+    internal sealed class UndefinedPrize : Prize
     {
-        Prize GetPrize(int index);
+        internal UndefinedPrize() : base(0, Currency.Undefined)
+        {
+        }
     }
 }

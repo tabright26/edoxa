@@ -15,12 +15,6 @@ namespace eDoxa.Arena.Challenges.Domain
 {
     public class Bucket : ValueObject
     {
-        public Bucket(PrizeFactor factor, BucketSize size)
-        {
-            Size = size;
-            Prize = factor;
-        }
-
         public Bucket(Prize prize, BucketSize size)
         {
             Size = size;
@@ -44,11 +38,6 @@ namespace eDoxa.Arena.Challenges.Domain
 
                 return buckets;
             }
-        }
-
-        public Bucket ApplyEntryFee(EntryFee entryFee, Currency type)
-        {
-            return new Bucket(Prize.ApplyEntryFee(entryFee, type), Size);
         }
     }
 }

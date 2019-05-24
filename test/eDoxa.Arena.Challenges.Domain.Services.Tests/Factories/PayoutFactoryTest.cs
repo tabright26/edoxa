@@ -11,7 +11,6 @@
 using System.Linq;
 
 using eDoxa.Arena.Challenges.Domain.Factories;
-using eDoxa.Arena.Challenges.Services.Factories;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

@@ -1,5 +1,5 @@
 // Filename: Prize.cs
-// Date Created: 2019-05-20
+// Date Created: 2019-05-23
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -15,14 +15,14 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain
 {
-    public class Prize : ValueObject
+    public abstract class Prize : ValueObject
     {
-        public static readonly Prize None = new Prize(0, Currency.Undefined);
+        public static readonly Prize None = new UndefinedPrize();
 
         private readonly decimal _amount;
-        private readonly Currency _type;
+        private readonly Currency _currency;
 
-        public Prize(decimal amount, Currency type)
+        protected Prize(decimal amount, Currency currency)
         {
             if (amount < 0)
             {
@@ -30,12 +30,12 @@ namespace eDoxa.Arena.Challenges.Domain
             }
 
             _amount = amount;
-            _type = type;
+            _currency = currency;
         }
 
         public decimal Amount => _amount;
 
-        public Currency Type => _type;
+        public Currency Currency => _currency;
 
         public static implicit operator decimal(Prize prize)
         {
@@ -45,11 +45,6 @@ namespace eDoxa.Arena.Challenges.Domain
         public override string ToString()
         {
             return Amount.ToString(CultureInfo.InvariantCulture);
-        }
-
-        public Prize ApplyEntryFee(EntryFee entryFee, Currency currency)
-        {
-            return new Prize(Amount * entryFee, currency);
         }
     }
 }

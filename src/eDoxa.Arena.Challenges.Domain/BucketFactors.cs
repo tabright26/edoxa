@@ -1,5 +1,5 @@
-﻿// Filename: Buckets.cs
-// Date Created: 2019-05-22
+﻿// Filename: BucketFactors.cs
+// Date Created: 2019-05-23
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -15,19 +15,11 @@ using eDoxa.Arena.Challenges.Domain.Abstractions;
 
 namespace eDoxa.Arena.Challenges.Domain
 {
-    public class Buckets : List<Bucket>, IBuckets
+    public sealed class BucketFactors : List<BucketFactor>, IBucketFactors
     {
-        internal Buckets(IEnumerable<Bucket> buckets) : base(buckets)
+        public IPayout CreatePayout(EntryFee entryFee, Currency currency)
         {
-        }
-
-        internal Buckets()
-        {
-        }
-
-        public Prize GetPrize(int index)
-        {
-            return this.ElementAtOrDefault(index)?.Prize ?? Prize.None;
+            return new Payout(new Buckets(this.Select(bucket => bucket.CreateBucket(entryFee, currency))));
         }
     }
 }

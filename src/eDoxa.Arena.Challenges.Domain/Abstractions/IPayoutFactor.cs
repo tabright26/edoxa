@@ -1,5 +1,5 @@
-﻿// Filename: IPayout.cs
-// Date Created: 2019-05-20
+﻿// Filename: IPayoutTemplate.cs
+// Date Created: 2019-05-23
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,12 +10,8 @@
 
 namespace eDoxa.Arena.Challenges.Domain.Abstractions
 {
-    public interface IPayout
+    public interface IPayoutFactor
     {
-        Currency Currency { get; }
-
-        IBuckets Buckets { get; }
-
-        IParticipantPrizes GetParticipantPrizes(IScoreboard scoreboard);
+        IPayout CreatePayout(EntryFee entryFee, Currency currency);
     }
 }
