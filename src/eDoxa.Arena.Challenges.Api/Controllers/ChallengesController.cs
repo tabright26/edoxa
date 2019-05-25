@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengesController.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-05-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,16 +11,11 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using AutoMapper;
-
-using eDoxa.Arena.Challenges.Domain;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.Services;
-using eDoxa.Arena.Challenges.DTO;
 using eDoxa.Arena.Challenges.DTO.Queries;
-using eDoxa.Security;
 using eDoxa.Seedwork.Domain.Enumerations;
+
+using MediatR;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -35,54 +30,24 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
     [ApiExplorerSettings(GroupName = "Challenges")]
     public class ChallengesController : ControllerBase
     {
-        private readonly IChallengeQuery _query;
-        private readonly IFakeChallengeService _fakeChallengeService;
-        private readonly IMapper _mapper;
+        private readonly IChallengeQuery _challengeQuery;
+        private readonly IMediator _mediator;
 
-        public ChallengesController(IChallengeQuery query, IFakeChallengeService fakeChallengeService, IMapper mapper)
+        public ChallengesController(IChallengeQuery challengeQuery, IMediator mediator)
         {
-            _query = query;
-            _fakeChallengeService = fakeChallengeService;
-            _mapper = mapper;
+            _challengeQuery = challengeQuery;
+            _mediator = mediator;
         }
 
         /// <summary>
-        ///     Find the challenges.
+        ///     Get challenges.
         /// </summary>
         [HttpGet(Name = nameof(FindChallengesAsync))]
         public async Task<IActionResult> FindChallengesAsync([FromQuery] Game game)
         {
-            var challenges = await _query.FindChallengesAsync(game);
+            var challenges = await _challengeQuery.FindChallengesAsync(game);
 
-            return challenges
-                .Select(this.Ok)
-                .Cast<IActionResult>()
-                .DefaultIfEmpty(this.NoContent())
-                .Single();
-        }
-
-        /// <summary>
-        ///     Create a challenge - Admin only.
-        /// </summary>
-        [Authorize(Roles = CustomRoles.Administrator)]
-        [HttpPost("money", Name = nameof(CreateMoneyChallenge))]
-        public async Task<IActionResult> CreateMoneyChallenge([FromQuery] string name, [FromQuery] Game game, [FromQuery] BestOf bestOf, [FromQuery] PayoutEntries payoutEntries, [FromQuery] MoneyEntryFee entryFee, [FromQuery] bool equivalentCurrency = true, [FromQuery] bool registerParticipants = false, [FromQuery] bool snapshotParticipantMatches = false)
-        {
-            var challenge = await _fakeChallengeService.CreateChallenge(new ChallengeName(name), game, bestOf, payoutEntries, entryFee, equivalentCurrency, registerParticipants, snapshotParticipantMatches);
-
-            return this.Ok(_mapper.Map<ChallengeDTO>(challenge));
-        }
-
-        /// <summary>
-        ///     Create a challenge - Admin only.
-        /// </summary>
-        [Authorize(Roles = CustomRoles.Administrator)]
-        [HttpPost("token", Name = nameof(CreateTokenChallenge))]
-        public async Task<IActionResult> CreateTokenChallenge([FromQuery] string name, [FromQuery] Game game, [FromQuery] BestOf bestOf, [FromQuery] PayoutEntries payoutEntries, [FromQuery] TokenEntryFee entryFee, [FromQuery] bool equivalentCurrency = true, [FromQuery] bool registerParticipants = false, [FromQuery] bool snapshotParticipantMatches = false)
-        {
-            var challenge = await _fakeChallengeService.CreateChallenge(new ChallengeName(name), game, bestOf, payoutEntries, entryFee, equivalentCurrency, registerParticipants, snapshotParticipantMatches);
-
-            return this.Ok(_mapper.Map<ChallengeDTO>(challenge));
+            return challenges.Select(this.Ok).Cast<IActionResult>().DefaultIfEmpty(this.NoContent()).Single();
         }
 
         /// <summary>
@@ -91,13 +56,9 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         [HttpGet("{challengeId}", Name = nameof(FindChallengeAsync))]
         public async Task<IActionResult> FindChallengeAsync(ChallengeId challengeId)
         {
-            var challenge = await _query.FindChallengeAsync(challengeId);
+            var challenge = await _challengeQuery.FindChallengeAsync(challengeId);
 
-            return challenge
-                .Select(this.Ok)
-                .Cast<IActionResult>()
-                .DefaultIfEmpty(this.NotFound("Challenge not found."))
-                .Single();
+            return challenge.Select(this.Ok).Cast<IActionResult>().DefaultIfEmpty(this.NotFound("Challenge not found.")).Single();
         }
     }
 }
