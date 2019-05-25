@@ -18,17 +18,17 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services.Abstractions;
-using eDoxa.Cashier.Security.Abstractions;
-using eDoxa.Cashier.Tests.Extensions;
 using eDoxa.Cashier.Tests.Factories;
 using eDoxa.Commands.Extensions;
 using eDoxa.Functional;
 using eDoxa.Seedwork.Domain.Entities;
 using eDoxa.Seedwork.Domain.Validations;
 using eDoxa.Testing.MSTest;
+using eDoxa.Testing.MSTest.Extensions;
 
 using FluentAssertions;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
@@ -39,7 +39,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     public sealed class DepositTokenHandlerTest
     {
         private static readonly FakeCashierFactory FakeCashierFactory = FakeCashierFactory.Instance;
-        private Mock<ICashierHttpContext> _mockCashierHttpContext;
+        private Mock<IHttpContextAccessor> _mockHttpContextAccessor;
         private Mock<ITokenAccountService> _mockTokenAccountService;
         private Mock<IUserRepository> _mockUserRepository;
 
@@ -47,15 +47,15 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         public void TestInitialize()
         {
             _mockTokenAccountService = new Mock<ITokenAccountService>();
-            _mockCashierHttpContext = new Mock<ICashierHttpContext>();
-            _mockCashierHttpContext.SetupGetProperties();
+            _mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
+            _mockHttpContextAccessor.SetupClaims();
             _mockUserRepository = new Mock<IUserRepository>();
         }
 
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<DepositTokenCommandHandler>.For(typeof(ICashierHttpContext), typeof(ITokenAccountService), typeof(IUserRepository))
+            ConstructorTests<DepositTokenCommandHandler>.For(typeof(IHttpContextAccessor), typeof(ITokenAccountService), typeof(IUserRepository))
                                                         .WithName("DepositTokenCommandHandler")
                                                         .Assert();
         }
@@ -75,7 +75,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
                 .ReturnsAsync(TransactionStatus.Completed)
                 .Verifiable();
 
-            var handler = new DepositTokenCommandHandler(_mockCashierHttpContext.Object, _mockTokenAccountService.Object, _mockUserRepository.Object);
+            var handler = new DepositTokenCommandHandler(_mockHttpContextAccessor.Object, _mockTokenAccountService.Object, _mockUserRepository.Object);
 
             // Act
             var result = await handler.HandleAsync(command);

@@ -274,7 +274,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Tests.Repositories
                 {
                     participant.Id.ToGuid().Should().NotBeEmpty();
                     participant.Timestamp.Should().BeBefore(DateTime.UtcNow);
-                    participant.ParticipantExternalAccount.ToString().Should().NotBeNullOrWhiteSpace();
+                    participant.ExternalAccount.ToString().Should().NotBeNullOrWhiteSpace();
                     participant.UserId.ToGuid().Should().NotBeEmpty();
                     participant.Challenge.Should().NotBeNull();
                     participant.Matches.Should().NotBeNullOrEmpty();

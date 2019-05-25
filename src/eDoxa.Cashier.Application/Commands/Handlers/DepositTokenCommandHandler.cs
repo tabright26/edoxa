@@ -15,25 +15,27 @@ using eDoxa.Cashier.Domain;
 using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services.Abstractions;
-using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Functional;
+using eDoxa.Security.Extensions;
 using eDoxa.Seedwork.Domain.Validations;
 
 using JetBrains.Annotations;
+
+using Microsoft.AspNetCore.Http;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
     internal sealed class DepositTokenCommandHandler : ICommandHandler<DepositTokenCommand, Either<ValidationError, TransactionStatus>>
     {
         private static readonly TokenDepositBundles Bundles = new TokenDepositBundles();
-        private readonly ICashierHttpContext _cashierHttpContext;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ITokenAccountService _tokenAccountService;
         private readonly IUserRepository _userRepository;
 
-        public DepositTokenCommandHandler(ICashierHttpContext cashierHttpContext, ITokenAccountService tokenAccountService, IUserRepository userRepository)
+        public DepositTokenCommandHandler(IHttpContextAccessor httpContextAccessor, ITokenAccountService tokenAccountService, IUserRepository userRepository)
         {
-            _cashierHttpContext = cashierHttpContext;
+            _httpContextAccessor = httpContextAccessor;
             _tokenAccountService = tokenAccountService;
             _userRepository = userRepository;
         }
@@ -41,9 +43,11 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         [ItemNotNull]
         public async Task<Either<ValidationError, TransactionStatus>> Handle([NotNull] DepositTokenCommand command, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.FindUserAsNoTrackingAsync(_cashierHttpContext.UserId);
+            var userId = _httpContextAccessor.GetUserId();
 
-            return await _tokenAccountService.DepositAsync(_cashierHttpContext.UserId, Bundles[command.BundleType], user.CustomerId, cancellationToken);
+            var user = await _userRepository.FindUserAsNoTrackingAsync(userId);
+
+            return await _tokenAccountService.DepositAsync(user.Id, Bundles[command.BundleType], user.CustomerId, cancellationToken);
         }
     }
 }

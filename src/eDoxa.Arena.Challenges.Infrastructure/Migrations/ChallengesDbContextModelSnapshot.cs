@@ -87,7 +87,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
 
                     b.Property<Guid>("ChallengeId");
 
-                    b.Property<string>("ParticipantExternalAccount")
+                    b.Property<string>("ExternalAccount")
                         .IsRequired();
 
                     b.Property<DateTime>("Timestamp");

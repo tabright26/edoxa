@@ -16,7 +16,6 @@ using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
-using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Cashier.Tests.Extensions;
 using eDoxa.Cashier.Tests.Factories;
 using eDoxa.Commands.Extensions;
@@ -25,9 +24,11 @@ using eDoxa.Functional;
 using eDoxa.Seedwork.Domain.Entities;
 using eDoxa.Seedwork.Domain.Validations;
 using eDoxa.Testing.MSTest;
+using eDoxa.Testing.MSTest.Extensions;
 
 using FluentAssertions;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
@@ -39,7 +40,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
     {
         private static readonly FakeCashierFactory FakeCashierFactory = FakeCashierFactory.Instance;
         private static readonly FakeStripeFactory FakeStripeFactory = FakeStripeFactory.Instance;
-        private Mock<ICashierHttpContext> _mockCashierHttpContext;
+        private Mock<IHttpContextAccessor> _mockHttpContextAccessor;
         private Mock<IStripeService> _mockStripeService;
         private Mock<IUserRepository> _mockUserRepository;
 
@@ -48,15 +49,15 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
         {
             _mockStripeService = new Mock<IStripeService>();
             _mockStripeService.SetupMethods();
-            _mockCashierHttpContext = new Mock<ICashierHttpContext>();
-            _mockCashierHttpContext.SetupGetProperties();
+            _mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
+            _mockHttpContextAccessor.SetupClaims();
             _mockUserRepository = new Mock<IUserRepository>();
         }
 
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<CreateBankAccountCommandHandler>.For(typeof(ICashierHttpContext), typeof(IStripeService), typeof(IUserRepository))
+            ConstructorTests<CreateBankAccountCommandHandler>.For(typeof(IHttpContextAccessor), typeof(IStripeService), typeof(IUserRepository))
                                                              .WithName("CreateBankAccountCommandHandler")
                                                              .Assert();
         }
@@ -73,7 +74,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
 
             _mockUserRepository.Setup(mock => mock.UnitOfWork.CommitAndDispatchDomainEventsAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask).Verifiable();
 
-            var handler = new CreateBankAccountCommandHandler(_mockCashierHttpContext.Object, _mockStripeService.Object, _mockUserRepository.Object);
+            var handler = new CreateBankAccountCommandHandler(_mockHttpContextAccessor.Object, _mockStripeService.Object, _mockUserRepository.Object);
 
             // Act
             var result = await handler.HandleAsync(new CreateBankAccountCommand(sourceToken));

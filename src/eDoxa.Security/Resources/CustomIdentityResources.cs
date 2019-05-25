@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 
 using eDoxa.Security.Extensions;
+using eDoxa.Seedwork.Domain.Enumerations;
 
 using IdentityModel;
 
@@ -40,14 +41,14 @@ namespace eDoxa.Security.Resources
             }
         }
 
-        public sealed class Game : IdentityResource
+        public sealed class ExternalAccount : IdentityResource
         {
-            public Game() : base(
+            public ExternalAccount() : base(
                 "games",
                 "Your game(s)",
                 new HashSet<string>
                 {
-                    Seedwork.Domain.Enumerations.Game.LeagueOfLegends.GetClaimType()
+                    Game.LeagueOfLegends.GetClaimType()
                 })
             {
             }

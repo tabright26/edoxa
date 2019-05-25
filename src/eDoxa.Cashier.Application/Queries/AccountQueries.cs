@@ -19,10 +19,11 @@ using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Cashier.Infrastructure;
-using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Functional;
+using eDoxa.Security.Extensions;
 using eDoxa.Seedwork.Domain.Entities;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Cashier.Application.Queries
@@ -30,13 +31,13 @@ namespace eDoxa.Cashier.Application.Queries
     public sealed partial class AccountQueries
     {
         private readonly CashierDbContext _context;
-        private readonly ICashierHttpContext _httpContext;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IMapper _mapper;
 
-        public AccountQueries(CashierDbContext context, ICashierHttpContext httpContext, IMapper mapper)
+        public AccountQueries(CashierDbContext context, IHttpContextAccessor httpContextAccessor, IMapper mapper)
         {
             _context = context;
-            _httpContext = httpContext;
+            _httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
         }
 
@@ -61,7 +62,7 @@ namespace eDoxa.Cashier.Application.Queries
     {
         public async Task<Option<AccountDTO>> GetAccountAsync(AccountCurrency currency)
         {
-            var userId = _httpContext.UserId;
+            var userId = _httpContextAccessor.GetUserId();
 
             AccountDTO mapper = null;
 

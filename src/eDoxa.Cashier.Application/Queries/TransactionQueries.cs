@@ -17,27 +17,29 @@ using eDoxa.Cashier.Domain;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Cashier.Infrastructure;
-using eDoxa.Cashier.Security.Abstractions;
+using eDoxa.Security.Extensions;
 using eDoxa.Seedwork.Domain.Entities;
+
+using Microsoft.AspNetCore.Http;
 
 namespace eDoxa.Cashier.Application.Queries
 {
     public sealed partial class TransactionQueries
     {
         private readonly CashierDbContext _context;
-        private readonly ICashierHttpContext _httpContext;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IMapper _mapper;
 
-        public TransactionQueries(CashierDbContext context, ICashierHttpContext httpContext, IMapper mapper)
+        public TransactionQueries(CashierDbContext context, IHttpContextAccessor httpContextAccessor, IMapper mapper)
         {
             _context = context;
-            _httpContext = httpContext;
+            _httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
         }
 
         private async Task<TransactionListDTO> GetMoneyTransactionsAsync(UserId userId)
         {
-            var queries = new AccountQueries(_context, _httpContext, _mapper);
+            var queries = new AccountQueries(_context, _httpContextAccessor, _mapper);
 
             var account = await queries.GetMoneyAccountAsNoTrackingAsync(userId);
 
@@ -46,7 +48,7 @@ namespace eDoxa.Cashier.Application.Queries
 
         private async Task<TransactionListDTO> GetTokenTransactionsAsync(UserId userId)
         {
-            var queries = new AccountQueries(_context, _httpContext, _mapper);
+            var queries = new AccountQueries(_context, _httpContextAccessor, _mapper);
 
             var account = await queries.GetTokenAccountAsNoTrackingAsync(userId);
 
@@ -58,7 +60,7 @@ namespace eDoxa.Cashier.Application.Queries
     {
         public async Task<TransactionListDTO> GetTransactionsAsync(AccountCurrency accountCurrency)
         {
-            var userId = _httpContext.UserId;
+            var userId = _httpContextAccessor.GetUserId();
 
             var transactions = new TransactionListDTO();
 

@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
+using eDoxa.Arena.Domain;
 using eDoxa.Arena.Domain.Abstractions;
 using eDoxa.Functional;
 using eDoxa.Seedwork.Domain;
@@ -25,16 +26,16 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate
     public class Participant : Entity<ParticipantId>, IAggregateRoot
     {
         private Challenge _challenge;
-        private ParticipantExternalAccount _participantExternalAccount;
+        private ExternalAccount _externalAccount;
         private HashSet<Match> _matches;
         private DateTime _timestamp;
         private UserId _userId;
 
-        public Participant(Challenge challenge, UserId userId, ParticipantExternalAccount participantExternalAccount) : this()
+        public Participant(Challenge challenge, UserId userId, ExternalAccount externalAccount) : this()
         {
             _challenge = challenge;
             _userId = userId;
-            _participantExternalAccount = participantExternalAccount;
+            _externalAccount = externalAccount;
         }
 
         private Participant()
@@ -45,7 +46,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate
 
         public DateTime Timestamp => _timestamp;
 
-        public ParticipantExternalAccount ParticipantExternalAccount => _participantExternalAccount;
+        public ExternalAccount ExternalAccount => _externalAccount;
 
         public UserId UserId => _userId;
 

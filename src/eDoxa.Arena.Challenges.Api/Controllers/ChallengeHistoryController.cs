@@ -12,8 +12,6 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.DTO.Queries;
-using eDoxa.Security.Abstractions;
-using eDoxa.Seedwork.Domain.Entities;
 using eDoxa.Seedwork.Domain.Enumerations;
 
 using Microsoft.AspNetCore.Authorization;
@@ -29,13 +27,11 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
     [ApiExplorerSettings(GroupName = "Challenges")]
     public class ChallengeHistoryController : ControllerBase
     {
-        private readonly IChallengeQuery _query;
-        private readonly IUserInfoService _userInfoService;
+        private readonly IChallengeQuery _challengeQuery;
 
-        public ChallengeHistoryController(IUserInfoService userInfoService, IChallengeQuery query)
+        public ChallengeHistoryController(IChallengeQuery challengeQuery)
         {
-            _userInfoService = userInfoService;
-            _query = query;
+            _challengeQuery = challengeQuery;
         }
 
         /// <summary>
@@ -44,9 +40,7 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         [HttpGet(Name = nameof(FindUserChallengeHistoryAsync))]
         public async Task<IActionResult> FindUserChallengeHistoryAsync([FromQuery] Game game)
         {
-            var userId = UserId.Parse(_userInfoService.Subject);
-
-            var challenges = await _query.FindUserChallengeHistoryAsync(userId, game);
+            var challenges = await _challengeQuery.FindUserChallengeHistoryAsync(game);
 
             return challenges
                 .Select(this.Ok)

@@ -14,7 +14,6 @@ using eDoxa.Arena.Challenges.Domain;
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.Services.Factories;
 using eDoxa.Arena.Domain;
@@ -47,7 +46,7 @@ namespace eDoxa.Arena.Challenges.Services.Builders
         {
             for (var index = 0; index < _challenge.Setup.Entries; index++)
             {
-                _challenge.RegisterParticipant(new UserId(), new ParticipantExternalAccount(Guid.NewGuid()));
+                _challenge.RegisterParticipant(new UserId(), new ExternalAccount(Guid.NewGuid()));
             }
         }
 

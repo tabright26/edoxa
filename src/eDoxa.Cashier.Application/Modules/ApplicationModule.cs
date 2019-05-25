@@ -16,8 +16,6 @@ using eDoxa.Cashier.Domain.Services.Abstractions;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.Infrastructure.Modules;
-using eDoxa.Cashier.Security;
-using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Commands;
 using eDoxa.Seedwork.Application;
 using eDoxa.ServiceBus;
@@ -53,9 +51,6 @@ namespace eDoxa.Cashier.Application.Modules
             builder.RegisterType<AccountQueries>().As<IAccountQueries>().InstancePerLifetimeScope();
 
             builder.RegisterType<TransactionQueries>().As<ITransactionQueries>().InstancePerLifetimeScope();
-
-            // Security
-            builder.RegisterType<CashierHttpContext>().As<ICashierHttpContext>().InstancePerLifetimeScope();
         }
     }
 }

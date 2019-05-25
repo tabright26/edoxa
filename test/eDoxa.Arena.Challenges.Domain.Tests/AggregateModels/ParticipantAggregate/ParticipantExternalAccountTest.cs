@@ -10,7 +10,7 @@
 
 using System;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
+using eDoxa.Arena.Domain;
 using eDoxa.Testing.MSTest;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -25,8 +25,8 @@ namespace eDoxa.Arena.Challenges.Domain.Tests.AggregateModels.ParticipantAggrega
         {
             const string message = "Linked account validation failed.";
 
-            ConstructorTests<ParticipantExternalAccount>.For(typeof(string))
-                .WithName("ParticipantExternalAccount")
+            ConstructorTests<ExternalAccount>.For(typeof(string))
+                .WithName("ExternalAccount")
                 .Fail(new object[] {null}, typeof(ArgumentException), message)
                 .Fail(new object[] {"  "}, typeof(ArgumentException), message)
                 .Fail(new object[] {"9i8h7g 6f5e4d3 c2b1a0"}, typeof(ArgumentException), message)
@@ -44,8 +44,8 @@ namespace eDoxa.Arena.Challenges.Domain.Tests.AggregateModels.ParticipantAggrega
         {
             const string message = "Participant external account validation failed.";
 
-            ConstructorTests<ParticipantExternalAccount>.For(typeof(Guid))
-                .WithName("ParticipantExternalAccount")
+            ConstructorTests<ExternalAccount>.For(typeof(Guid))
+                .WithName("ExternalAccount")
                 .Fail(new object[] {Guid.Empty}, typeof(ArgumentException), message)
                 .Succeed(new object[] {Guid.NewGuid()}, message)
                 .Assert();

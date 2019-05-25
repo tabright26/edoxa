@@ -117,10 +117,6 @@ namespace eDoxa.Arena.Challenges.Api
 
             services.AddIdentityServerAuthentication(Configuration, Environment, ChallengeApi);
 
-            services.AddUserInfoService();
-
-            services.AddUserLoginInfoService();
-
             services.AddArena();
 
             return services.Build<ApplicationModule>();

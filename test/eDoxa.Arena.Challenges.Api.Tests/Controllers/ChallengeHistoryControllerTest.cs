@@ -14,8 +14,6 @@ using eDoxa.Arena.Challenges.Api.Controllers;
 using eDoxa.Arena.Challenges.DTO;
 using eDoxa.Arena.Challenges.DTO.Queries;
 using eDoxa.Functional;
-using eDoxa.Security.Abstractions;
-using eDoxa.Seedwork.Domain.Entities;
 using eDoxa.Seedwork.Domain.Enumerations;
 using eDoxa.Testing.MSTest.Extensions;
 
@@ -23,6 +21,7 @@ using FluentAssertions;
 
 using MediatR;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -34,7 +33,7 @@ namespace eDoxa.Arena.Challenges.Api.Tests.Controllers
     public sealed class ChallengeHistoryControllerTest
     {
         private Mock<IMediator> _mediator;
-        private Mock<IUserInfoService> _mockUserInfoService;
+        private Mock<IHttpContextAccessor> _mockUserInfoService;
         private Mock<IChallengeQuery> _queries;
 
         [TestInitialize]
@@ -42,8 +41,8 @@ namespace eDoxa.Arena.Challenges.Api.Tests.Controllers
         {
             _queries = new Mock<IChallengeQuery>();
             _mediator = new Mock<IMediator>();
-            _mockUserInfoService = new Mock<IUserInfoService>();
-            _mockUserInfoService.SetupGetProperties();
+            _mockUserInfoService = new Mock<IHttpContextAccessor>();
+            _mockUserInfoService.SetupClaims();
         }
 
         [TestMethod]
@@ -58,11 +57,11 @@ namespace eDoxa.Arena.Challenges.Api.Tests.Controllers
                 }
             };
 
-            _queries.Setup(queries => queries.FindUserChallengeHistoryAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
+            _queries.Setup(queries => queries.FindUserChallengeHistoryAsync(It.IsAny<Game>()))
                 .ReturnsAsync(new Option<ChallengeListDTO>(value))
                 .Verifiable();
 
-            var controller = new ChallengeHistoryController(_mockUserInfoService.Object, _queries.Object);
+            var controller = new ChallengeHistoryController(_queries.Object);
 
             // Act
             var result = await controller.FindUserChallengeHistoryAsync(Game.All);
@@ -79,11 +78,11 @@ namespace eDoxa.Arena.Challenges.Api.Tests.Controllers
         public async Task FindUserChallengeHistoryAsync_ShouldBeNoContentResult()
         {
             // Arrange
-            _queries.Setup(queries => queries.FindUserChallengeHistoryAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
+            _queries.Setup(queries => queries.FindUserChallengeHistoryAsync(It.IsAny<Game>()))
                 .ReturnsAsync(new Option<ChallengeListDTO>())
                 .Verifiable();
 
-            var controller = new ChallengeHistoryController(_mockUserInfoService.Object, _queries.Object);
+            var controller = new ChallengeHistoryController(_queries.Object);
 
             // Act
             var result = await controller.FindUserChallengeHistoryAsync(Game.All);

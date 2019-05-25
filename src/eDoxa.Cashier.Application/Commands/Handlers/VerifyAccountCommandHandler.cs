@@ -13,33 +13,37 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
-using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Commands.Result;
 using eDoxa.Functional;
+using eDoxa.Security.Extensions;
 using eDoxa.Seedwork.Domain.Validations;
 
 using JetBrains.Annotations;
+
+using Microsoft.AspNetCore.Http;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
     internal sealed class VerifyAccountCommandHandler : ICommandHandler<VerifyAccountCommand, Either<ValidationError, CommandResult>>
     {
-        private readonly ICashierHttpContext _cashierHttpContext;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IStripeService _stripeService;
         private readonly IUserRepository _userRepository;
 
-        public VerifyAccountCommandHandler(IStripeService stripeService, ICashierHttpContext cashierHttpContext, IUserRepository userRepository)
+        public VerifyAccountCommandHandler(IStripeService stripeService, IHttpContextAccessor httpContextAccessor, IUserRepository userRepository)
         {
             _stripeService = stripeService;
-            _cashierHttpContext = cashierHttpContext;
+            _httpContextAccessor = httpContextAccessor;
             _userRepository = userRepository;
         }
 
         [ItemNotNull]
         public async Task<Either<ValidationError, CommandResult>> Handle([NotNull] VerifyAccountCommand command, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.FindUserAsNoTrackingAsync(_cashierHttpContext.UserId);
+            var userId = _httpContextAccessor.GetUserId();
+
+            var user = await _userRepository.FindUserAsNoTrackingAsync(userId);
 
             await _stripeService.VerifyAccountAsync(
                 user.AccountId,

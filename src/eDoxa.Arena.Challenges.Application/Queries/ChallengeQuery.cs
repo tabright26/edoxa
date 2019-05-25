@@ -18,8 +18,10 @@ using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.DTO;
 using eDoxa.Arena.Challenges.DTO.Queries;
 using eDoxa.Functional;
-using eDoxa.Seedwork.Domain.Entities;
+using eDoxa.Security.Extensions;
 using eDoxa.Seedwork.Domain.Enumerations;
+
+using Microsoft.AspNetCore.Http;
 
 namespace eDoxa.Arena.Challenges.Application.Queries
 {
@@ -27,10 +29,12 @@ namespace eDoxa.Arena.Challenges.Application.Queries
     {
         private readonly IMapper _mapper;
         private readonly IChallengeRepository _repository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ChallengeQuery(IChallengeRepository repository, IMapper mapper)
+        public ChallengeQuery(IChallengeRepository repository, IHttpContextAccessor httpContextAccessor, IMapper mapper)
         {
             _repository = repository;
+            _httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
         }
     }
@@ -55,8 +59,10 @@ namespace eDoxa.Arena.Challenges.Application.Queries
             return mapper != null ? new Option<ChallengeDTO>(mapper) : new Option<ChallengeDTO>();
         }
 
-        public async Task<Option<ChallengeListDTO>> FindUserChallengeHistoryAsync(UserId userId, Game game)
+        public async Task<Option<ChallengeListDTO>> FindUserChallengeHistoryAsync(Game game)
         {
+            var userId = _httpContextAccessor.GetUserId();
+
             var challenges = await _repository.FindUserChallengeHistoryAsNoTrackingAsync(userId, game);
 
             var list = _mapper.Map<ChallengeListDTO>(challenges);

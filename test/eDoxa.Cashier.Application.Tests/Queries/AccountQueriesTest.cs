@@ -13,10 +13,10 @@ using AutoMapper;
 using eDoxa.Cashier.Application.Queries;
 using eDoxa.Cashier.DTO.Factories;
 using eDoxa.Cashier.Infrastructure;
-using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Cashier.Tests.Factories;
 using eDoxa.Testing.MSTest;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
@@ -28,18 +28,18 @@ namespace eDoxa.Cashier.Application.Tests.Queries
     {
         private static readonly FakeCashierFactory FakeCashierFactory = FakeCashierFactory.Instance;
         private static readonly CashierMapperFactory CashierMapperFactory = CashierMapperFactory.Instance;
-        private Mock<ICashierHttpContext> _mockCashierHttpContext;
+        private Mock<IHttpContextAccessor> _mockHttpContextAccessor;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            _mockCashierHttpContext = new Mock<ICashierHttpContext>();
+            _mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
         }
 
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<AccountQueries>.For(typeof(CashierDbContext), typeof(ICashierHttpContext), typeof(IMapper)).WithName("AccountQueries").Assert();
+            ConstructorTests<AccountQueries>.For(typeof(CashierDbContext), typeof(IHttpContextAccessor), typeof(IMapper)).WithName("AccountQueries").Assert();
         }
 
         //[TestMethod]

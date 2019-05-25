@@ -10,7 +10,6 @@
 
 using System;
 
-using eDoxa.Security.Abstractions;
 using eDoxa.Security.Services;
 
 using IdentityServer4.AccessTokenValidation;
@@ -42,16 +41,6 @@ namespace eDoxa.Security.Extensions
                     )
                     .PersistKeysToRedis(ConnectionMultiplexer.Connect(configuration.GetConnectionString(CustomConnectionStrings.Redis)), "data-protection");
             }
-        }
-
-        public static void AddUserInfoService(this IServiceCollection services)
-        {
-            services.AddSingleton<IUserInfoService, UserInfoService>();
-        }
-
-        public static void AddUserLoginInfoService(this IServiceCollection services)
-        {
-            services.AddSingleton<IUserLoginInfoService, UserLoginInfoService>();
         }
 
         public static void AddCookiePolicy(this IServiceCollection services)

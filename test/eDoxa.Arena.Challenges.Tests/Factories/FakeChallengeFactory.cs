@@ -16,6 +16,7 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
+using eDoxa.Arena.Domain;
 using eDoxa.Arena.Domain.Abstractions;
 using eDoxa.Seedwork.Domain.Entities;
 using eDoxa.Seedwork.Domain.Enumerations;
@@ -72,7 +73,7 @@ namespace eDoxa.Arena.Challenges.Tests.Factories
         {
             var challenge = this.CreateChallenge();
 
-            challenge.RegisterParticipant(userId, new ParticipantExternalAccount(Guid.NewGuid()));
+            challenge.RegisterParticipant(userId, new ExternalAccount(Guid.NewGuid()));
 
             return challenge;
         }
@@ -85,7 +86,7 @@ namespace eDoxa.Arena.Challenges.Tests.Factories
 
             for (var index = 0; index < participantCount; index++)
             {
-                challenge.RegisterParticipant(new UserId(), new ParticipantExternalAccount(Guid.NewGuid()));
+                challenge.RegisterParticipant(new UserId(), new ExternalAccount(Guid.NewGuid()));
             }
 
             return challenge;
@@ -201,7 +202,7 @@ namespace eDoxa.Arena.Challenges.Tests.Factories
 
             var challenge = this.CreateChallenge(setup: setup);
 
-            return new Participant(challenge, new UserId(), new ParticipantExternalAccount(Guid.NewGuid()));
+            return new Participant(challenge, new UserId(), new ExternalAccount(Guid.NewGuid()));
         }
 
         public Participant CreateParticipantMatches(int matchCount = 0, int? bestOf = null)

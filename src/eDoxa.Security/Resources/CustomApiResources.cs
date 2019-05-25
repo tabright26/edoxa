@@ -56,7 +56,7 @@ namespace eDoxa.Security.Resources
                 new IdentityResources.Profile().UserClaims.Union(
                     new CustomIdentityResources.Role().UserClaims.Union(
                         new CustomIdentityResources.Permission().UserClaims.Union(
-                            new CustomIdentityResources.Game().UserClaims))))
+                            new CustomIdentityResources.ExternalAccount().UserClaims))))
             {
                 ApiSecrets = new HashSet<Secret>
                 {

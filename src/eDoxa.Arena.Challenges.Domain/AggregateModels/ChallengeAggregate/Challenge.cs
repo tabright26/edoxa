@@ -111,7 +111,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             return specification.IsSatisfiedBy(this);
         }
 
-        public void RegisterParticipant(UserId userId, ParticipantExternalAccount externalAccount)
+        public void RegisterParticipant(UserId userId, ExternalAccount externalAccount)
         {
             if (!this.CanRegisterParticipant(userId))
             {

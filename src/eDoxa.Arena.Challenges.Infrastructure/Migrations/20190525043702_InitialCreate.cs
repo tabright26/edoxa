@@ -1,5 +1,5 @@
-﻿// Filename: 20190524233951_InitialCreate.cs
-// Date Created: 2019-05-24
+﻿// Filename: 20190525043702_InitialCreate.cs
+// Date Created: 2019-05-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -80,7 +80,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(),
                     Timestamp = table.Column<DateTime>(),
-                    ParticipantExternalAccount = table.Column<string>(),
+                    ExternalAccount = table.Column<string>(),
                     UserId = table.Column<Guid>(),
                     ChallengeId = table.Column<Guid>()
                 },

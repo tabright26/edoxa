@@ -13,25 +13,27 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
-using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Commands.Result;
 using eDoxa.Functional;
+using eDoxa.Security.Extensions;
 using eDoxa.Seedwork.Domain.Validations;
 
 using JetBrains.Annotations;
+
+using Microsoft.AspNetCore.Http;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
     internal sealed class UpdateCardDefaultCommandHandler : ICommandHandler<UpdateCardDefaultCommand, Either<ValidationError, CommandResult>>
     {
-        private readonly ICashierHttpContext _cashierHttpContext;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IStripeService _stripeService;
         private readonly IUserRepository _userRepository;
 
-        public UpdateCardDefaultCommandHandler(ICashierHttpContext cashierHttpContext, IStripeService stripeService, IUserRepository userRepository)
+        public UpdateCardDefaultCommandHandler(IHttpContextAccessor httpContextAccessor, IStripeService stripeService, IUserRepository userRepository)
         {
-            _cashierHttpContext = cashierHttpContext;
+            _httpContextAccessor = httpContextAccessor;
             _stripeService = stripeService;
             _userRepository = userRepository;
         }
@@ -39,7 +41,9 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         [ItemCanBeNull]
         public async Task<Either<ValidationError, CommandResult>> Handle([NotNull] UpdateCardDefaultCommand command, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.FindUserAsNoTrackingAsync(_cashierHttpContext.UserId);
+            var userId = _httpContextAccessor.GetUserId();
+
+            var user = await _userRepository.FindUserAsNoTrackingAsync(userId);
 
             await _stripeService.UpdateCardDefaultAsync(user.CustomerId, command.StripeCardId, cancellationToken);
 

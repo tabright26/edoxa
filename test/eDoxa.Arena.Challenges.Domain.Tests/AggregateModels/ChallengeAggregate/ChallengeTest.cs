@@ -13,8 +13,8 @@ using System.Linq;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Challenges.Tests.Factories;
+using eDoxa.Arena.Domain;
 using eDoxa.Seedwork.Domain.Entities;
 
 using FluentAssertions;
@@ -156,7 +156,7 @@ namespace eDoxa.Arena.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             var challenge = FakeChallengeFactory.CreateChallenge();
 
             // Act
-            challenge.RegisterParticipant(new UserId(), new ParticipantExternalAccount(Guid.NewGuid()));
+            challenge.RegisterParticipant(new UserId(), new ExternalAccount(Guid.NewGuid()));
 
             // Assert
             challenge.Participants.Should().NotBeEmpty();
@@ -170,7 +170,7 @@ namespace eDoxa.Arena.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             var challenge = FakeChallengeFactory.CreateChallengeWithParticipant(userId);
 
             // Act
-            var action = new Action(() => challenge.RegisterParticipant(userId, new ParticipantExternalAccount(Guid.NewGuid())));
+            var action = new Action(() => challenge.RegisterParticipant(userId, new ExternalAccount(Guid.NewGuid())));
 
             // Act => Assert
             action.Should().Throw<InvalidOperationException>();
@@ -183,7 +183,7 @@ namespace eDoxa.Arena.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
             var challenge = FakeChallengeFactory.CreateChallengeWithParticipants();
 
             // Act
-            var action = new Action(() => challenge.RegisterParticipant(new UserId(), new ParticipantExternalAccount(Guid.NewGuid())));
+            var action = new Action(() => challenge.RegisterParticipant(new UserId(), new ExternalAccount(Guid.NewGuid())));
 
             // Assert
             action.Should().Throw<InvalidOperationException>();

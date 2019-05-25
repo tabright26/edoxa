@@ -10,6 +10,7 @@
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
+using eDoxa.Arena.Domain;
 using eDoxa.Seedwork.Domain.Entities;
 
 using JetBrains.Annotations;
@@ -39,8 +40,8 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                    .IsRequired()
                    .UsePropertyAccessMode(PropertyAccessMode.Field);
 
-            builder.Property(participant => participant.ParticipantExternalAccount)
-                   .HasConversion(externalAccount => externalAccount.ToString(), externalAccount => new ParticipantExternalAccount(externalAccount))
+            builder.Property(participant => participant.ExternalAccount)
+                   .HasConversion(externalAccount => externalAccount.ToString(), externalAccount => new ExternalAccount(externalAccount))
                    .IsRequired()
                    .UsePropertyAccessMode(PropertyAccessMode.Field);
 

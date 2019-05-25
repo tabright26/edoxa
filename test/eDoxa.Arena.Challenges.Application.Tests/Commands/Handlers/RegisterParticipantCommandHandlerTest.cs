@@ -17,11 +17,11 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Tests.Factories;
 using eDoxa.Commands.Extensions;
-using eDoxa.Security.Abstractions;
 using eDoxa.Testing.MSTest.Extensions;
 
 using FluentAssertions;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -34,17 +34,14 @@ namespace eDoxa.Arena.Challenges.Application.Tests.Commands.Handlers
     {
         private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
         private Mock<IChallengeRepository> _mockChallengeRepository;
-        private Mock<IUserInfoService> _mockUserInfoService;
-        private Mock<IUserLoginInfoService> _mockUserLoginInfoService;
+        private Mock<IHttpContextAccessor> _mockUserInfoService;
 
         [TestInitialize]
         public void TestInitialize()
         {
             _mockChallengeRepository = new Mock<IChallengeRepository>();
-            _mockUserInfoService = new Mock<IUserInfoService>();
-            _mockUserInfoService.SetupGetProperties();
-            _mockUserLoginInfoService = new Mock<IUserLoginInfoService>();
-            _mockUserLoginInfoService.SetupGetProperties();
+            _mockUserInfoService = new Mock<IHttpContextAccessor>();
+            _mockUserInfoService.SetupClaims();
         }
 
         [TestMethod]
@@ -61,7 +58,7 @@ namespace eDoxa.Arena.Challenges.Application.Tests.Commands.Handlers
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var handler = new RegisterParticipantCommandHandler(_mockUserInfoService.Object, _mockUserLoginInfoService.Object, _mockChallengeRepository.Object);
+            var handler = new RegisterParticipantCommandHandler(_mockUserInfoService.Object, _mockChallengeRepository.Object);
 
             // Act
             var result = await handler.HandleAsync(command);

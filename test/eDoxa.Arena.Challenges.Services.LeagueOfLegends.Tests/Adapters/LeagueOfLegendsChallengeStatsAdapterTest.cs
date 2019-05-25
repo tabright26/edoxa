@@ -10,9 +10,9 @@
 
 using System.Linq;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Challenges.Services.LeagueOfLegends.Adapters;
 using eDoxa.Arena.Challenges.Tests.Factories;
+using eDoxa.Arena.Domain;
 using eDoxa.Arena.Services.LeagueOfLegends.DTO.Tests;
 using eDoxa.Seedwork.Domain.Entities;
 
@@ -35,7 +35,7 @@ namespace eDoxa.Arena.Challenges.Services.LeagueOfLegends.Tests.Adapters
 
             var userId = new UserId();
 
-            var externalAccount = new ParticipantExternalAccount("NzH50JS-LCAu0UEY4EMjuS710F_U_8pLfEpNib9X06dD4w");
+            var externalAccount = new ExternalAccount("NzH50JS-LCAu0UEY4EMjuS710F_U_8pLfEpNib9X06dD4w");
 
             var challenge = FakeChallengeFactory.CreateChallenge();
 
