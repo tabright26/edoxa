@@ -10,10 +10,12 @@
 
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Reflection;
 
 using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Application.Modules;
+using eDoxa.Arena.Challenges.Domain;
 using eDoxa.Arena.Challenges.DTO.Factories;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Services.Extensions;
@@ -23,6 +25,7 @@ using eDoxa.Monitoring.Extensions;
 using eDoxa.Security.Extensions;
 using eDoxa.Security.Resources;
 using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.ServiceBus.Extensions;
 using eDoxa.Swagger.Extensions;
@@ -33,6 +36,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace eDoxa.Arena.Challenges.Api
 {
@@ -67,7 +72,44 @@ namespace eDoxa.Arena.Challenges.Api
 
             services.AddMvcFilters();
 
-            services.AddSwagger(Configuration, Environment, ChallengeApi);
+            services.AddSwagger(Configuration, Environment, ChallengeApi,
+                options =>
+                {
+                    options.MapType<BestOf>(
+                        () => new Schema
+                        {
+                            Type = "integer",
+                            Format = "int32",
+                            Enum = BestOf.GetAll().Cast<object>().ToList()
+                        }
+                    );
+
+                    options.MapType<PayoutEntries>(
+                        () => new Schema
+                        {
+                            Type = "integer",
+                            Format = "int32",
+                            Enum = PayoutEntries.GetAll().Cast<object>().ToList()
+                        }
+                    );
+
+                    options.MapType<MoneyEntryFee>(
+                        () => new Schema
+                        {
+                            Type = "string",
+                            Enum = ValueObject.GetAll<MoneyEntryFee>().Cast<object>().ToList()
+                        }
+                    );
+
+                    options.MapType<TokenEntryFee>(
+                        () => new Schema
+                        {
+                            Type = "string",
+                            Enum = ValueObject.GetAll<TokenEntryFee>().Cast<object>().ToList()
+                        }
+                    );
+                }
+            );
 
             services.AddCorsPolicy();
 

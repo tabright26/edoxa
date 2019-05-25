@@ -9,29 +9,95 @@
 // this source code package.
 
 using System;
+using System.ComponentModel;
+using System.Globalization;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
+using JetBrains.Annotations;
+
 namespace eDoxa.Arena.Challenges.Domain
 {
-    public class BestOf : TypeObject<BestOf, int>
+    [TypeConverter(typeof(BestOfTypeConverter))]
+    public sealed partial class BestOf : TypeObject<BestOf, int>
     {
-        public const int Min = 1;
-        public const int Max = 7;
-        public const int Default = 3;
+        public static readonly BestOf One = new BestOf(1);
+        public static readonly BestOf Three = new BestOf(3);
+        public static readonly BestOf Five = new BestOf(5);
+        public static readonly BestOf Seven = new BestOf(7);
 
-        public static readonly BestOf MinValue = new BestOf(Min);
-        public static readonly BestOf MaxValue = new BestOf(Max);
-        public static readonly BestOf DefaultValue = new BestOf(Default);
-
-        public BestOf(int bestOf, bool validate = true) : base(bestOf)
+        internal BestOf(int bestOf) : base(bestOf)
         {
-            if (validate)
+        }
+
+        private BestOf(string bestOf) : base(Convert.ToInt32(bestOf))
+        {
+        }
+    }
+
+    public sealed partial class BestOf
+    {
+        private sealed class BestOfTypeConverter : TypeConverter
+        {
+            public override bool CanConvertFrom([CanBeNull] ITypeDescriptorContext context, Type sourceType)
             {
-                if (bestOf < Min || bestOf > Max)
+                return sourceType == typeof(int) || sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
+            }
+
+            public override bool CanConvertTo([CanBeNull] ITypeDescriptorContext context, Type destinationType)
+            {
+                return destinationType == typeof(int) || destinationType == typeof(string) || base.CanConvertTo(context, destinationType);
+            }
+
+            [CanBeNull]
+            public override object ConvertFrom([CanBeNull] ITypeDescriptorContext context, CultureInfo culture, [CanBeNull] object value)
+            {
+                switch (value)
                 {
-                    throw new ArgumentException(nameof(bestOf));
+                    case null:
+                    {
+                        return Three;
+                    }
+
+                    case int cast:
+                    {
+                        return new BestOf(cast);
+                    }
+
+                    case string cast:
+                    {
+                        return new BestOf(cast);
+                    }
+
+                    default:
+                    {
+                        return base.ConvertFrom(context, culture, value);
+                    }
                 }
+            }
+
+            [CanBeNull]
+            public override object ConvertTo(
+                [CanBeNull] ITypeDescriptorContext context,
+                [NotNull] CultureInfo culture,
+                [CanBeNull] object value,
+                Type destinationType
+            )
+            {
+                if (value is BestOf bestOf)
+                {
+                    if (destinationType == typeof(int))
+                    {
+                        return bestOf.Value;
+                    }
+
+                    if (destinationType == typeof(string))
+                    {
+                        return bestOf.Value.ToString();
+                    }
+                }
+
+                return base.ConvertTo(context, culture, value, destinationType);
             }
         }
     }

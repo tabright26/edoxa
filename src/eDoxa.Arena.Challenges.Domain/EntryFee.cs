@@ -14,15 +14,29 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain
 {
-    public class EntryFee : TypeObject<EntryFee, decimal>
+    public class EntryFee : ValueObject
     {
-        public EntryFee(decimal entryFee) : base(entryFee)
+        private decimal _amount;
+        private Currency _currency;
+
+        internal EntryFee(decimal amount, Currency currency)
         {
+            _amount = amount;
+            _currency = currency;
+        }
+
+        public decimal Amount => _amount;
+
+        public Currency Currency => _currency;
+
+        public static implicit operator decimal(EntryFee entryFee)
+        {
+            return entryFee.Amount;
         }
 
         public override string ToString()
         {
-            return Value.ToString(CultureInfo.InvariantCulture);
+            return Amount.ToString(CultureInfo.InvariantCulture);
         }
     }
 }

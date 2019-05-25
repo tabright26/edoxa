@@ -24,7 +24,7 @@ namespace eDoxa.Arena.Challenges.Domain.Services.Tests.Factories
         [TestMethod]
         public void M()
         { 
-            var payout = PayoutFactory.Create(Currency.Money, PayoutEntries.Twenty, MoneyEntryFee.TwoAndHalf, Currency.Money);
+            var payout = PayoutFactory.Create(PayoutEntries.Twenty, new MoneyPrize(MoneyEntryFee.TwoAndHalf));
 
             var t = payout.Buckets.SelectMany(x => x.Items).Count();
         }

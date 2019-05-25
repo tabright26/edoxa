@@ -14,7 +14,7 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    [TypeConverter(typeof(EnumerationConverter))]
+    [TypeConverter(typeof(EnumerationTypeConverter))]
     public sealed class ChallengeState : Enumeration<ChallengeState>
     {
         public static readonly ChallengeState Draft = new ChallengeState(1 << 0, nameof(Draft));

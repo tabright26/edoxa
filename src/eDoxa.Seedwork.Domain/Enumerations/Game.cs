@@ -14,7 +14,7 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Seedwork.Domain.Enumerations
 {
-    [TypeConverter(typeof(EnumerationConverter))]
+    [TypeConverter(typeof(EnumerationTypeConverter))]
     public sealed class Game : Enumeration<Game>
     {
         public static readonly Game LeagueOfLegends = new Game(1 << 0, nameof(LeagueOfLegends));

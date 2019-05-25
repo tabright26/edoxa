@@ -15,7 +15,7 @@ namespace eDoxa.Arena.Challenges.Tests
 {
     public sealed class FakeChallengeSetup : ChallengeSetup
     {
-        public FakeChallengeSetup() : base(BestOf.DefaultValue, Entries.DefaultValue, MoneyEntryFee.TwoAndHalf, Currency.Money)
+        public FakeChallengeSetup() : base(BestOf.Three, PayoutEntries.Ten, MoneyEntryFee.TwoAndHalf)
         {
         }
     }

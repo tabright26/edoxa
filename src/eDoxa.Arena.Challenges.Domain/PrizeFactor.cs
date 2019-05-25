@@ -10,31 +10,18 @@
 
 using System;
 
+using eDoxa.Seedwork.Domain.Aggregate;
+
 namespace eDoxa.Arena.Challenges.Domain
 {
-    public sealed class PrizeFactor : Prize
+    public sealed class PrizeFactor : TypeObject<PrizeFactor, decimal>
     {
-        public PrizeFactor(decimal factor) : base(factor, Currency.Undefined)
+        internal PrizeFactor(decimal factor) : base(factor)
         {
             if (factor < 1)
             {
                 throw new ArgumentException(nameof(factor));
             }
-        }
-
-        public Prize GetPrize(EntryFee entryFee, Currency currency)
-        {
-            if (currency == Currency.Money)
-            {
-                return new MoneyPrize(Amount * entryFee);
-            }
-
-            if (currency == Currency.Token)
-            {
-                return new TokenPrize(Amount * entryFee);
-            }
-
-            throw new ArgumentException(nameof(currency));
         }
     }
 }

@@ -92,9 +92,9 @@ namespace eDoxa.Arena.Challenges.Tests.Factories
 
     public sealed partial class FakeChallengeFactory
     {
-        public ChallengeSetup CreateChallengeSetup(int bestOf = BestOf.Default, int entries = Entries.Default, decimal entryFee = 5M)
+        public ChallengeSetup CreateChallengeSetup(int bestOf = 3, int payoutEntries = 25, decimal entryFee = 5M)
         {
-            return new ChallengeSetup(new BestOf(bestOf), new Entries(entries), new MoneyEntryFee(entryFee), Currency.Money);
+            return new ChallengeSetup(new BestOf(bestOf), new PayoutEntries(payoutEntries), new MoneyEntryFee(entryFee));
         }
 
         //public Timeline CreateChallengeTimeline(ChallengeState state = null)
@@ -195,7 +195,7 @@ namespace eDoxa.Arena.Challenges.Tests.Factories
     {
         public Participant CreateParticipant(int? bestOf = null)
         {
-            var setup = this.CreateChallengeSetup(bestOf ?? BestOf.DefaultValue);
+            var setup = this.CreateChallengeSetup(bestOf ?? BestOf.Three);
 
             var challenge = this.CreateChallenge(setup: setup);
 

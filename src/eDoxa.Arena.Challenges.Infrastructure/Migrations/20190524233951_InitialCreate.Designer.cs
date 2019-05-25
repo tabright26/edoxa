@@ -10,7 +10,7 @@ using eDoxa.Arena.Challenges.Infrastructure;
 namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
 {
     [DbContext(typeof(ChallengesDbContext))]
-    [Migration("20190524013815_InitialCreate")]
+    [Migration("20190524233951_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -155,15 +155,12 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
                             b1.Property<int>("Entries")
                                 .HasColumnName("Entries");
 
-                            b1.Property<decimal>("EntryFee")
-                                .HasColumnName("EntryFee")
-                                .HasColumnType("decimal(4,2)");
+                            b1.Property<string>("EntryFee")
+                                .IsRequired()
+                                .HasColumnName("EntryFee");
 
-                            b1.Property<int>("EntryFeeCurrency")
-                                .HasColumnName("EntryFeeCurrency");
-
-                            b1.Property<int>("PayoutCurrency")
-                                .HasColumnName("PayoutCurrency");
+                            b1.Property<bool>("EquivalentCurrency")
+                                .HasColumnName("EquivalentCurrency");
 
                             b1.Property<float>("PayoutRatio")
                                 .HasColumnName("PayoutRatio");

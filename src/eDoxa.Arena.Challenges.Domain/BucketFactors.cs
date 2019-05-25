@@ -17,9 +17,9 @@ namespace eDoxa.Arena.Challenges.Domain
 {
     public sealed class BucketFactors : List<BucketFactor>, IBucketFactors
     {
-        public IPayout CreatePayout(EntryFee entryFee, Currency currency)
+        public IPayout CreatePayout(Prize prize)
         {
-            return new Payout(new Buckets(this.Select(bucket => bucket.CreateBucket(entryFee, currency))));
+            return new Payout(new Buckets(this.Select(bucketFactor => bucketFactor.CreateBucket(prize))));
         }
     }
 }

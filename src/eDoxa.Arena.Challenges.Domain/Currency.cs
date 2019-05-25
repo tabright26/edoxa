@@ -14,7 +14,7 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain
 {
-    [TypeConverter(typeof(EnumerationConverter))]
+    [TypeConverter(typeof(EnumerationTypeConverter))]
     public sealed class Currency : Enumeration<Currency>
     {
         public static readonly Currency Money = new Currency(1, nameof(Money));

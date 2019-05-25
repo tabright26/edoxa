@@ -26,6 +26,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using Swashbuckle.AspNetCore.Swagger;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace eDoxa.Swagger.Extensions
 {
@@ -35,7 +36,8 @@ namespace eDoxa.Swagger.Extensions
             this IServiceCollection services,
             IConfiguration configuration,
             IHostingEnvironment environment,
-            ApiResource apiResource)
+            ApiResource apiResource,
+            Action<SwaggerGenOptions> action = null)
         {
             if (!environment.IsDevelopment())
             {
@@ -49,6 +51,8 @@ namespace eDoxa.Swagger.Extensions
             services.AddSwaggerGen(
                 options =>
                 {
+                    action?.Invoke(options);
+
                     options.DescribeAllEnumerationsAsStrings();
 
                     var provider = services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();

@@ -13,12 +13,12 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using eDoxa.Arena.Challenges.Domain;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.DTO;
 using eDoxa.Arena.Challenges.DTO.Queries;
-using eDoxa.Arena.Challenges.Services.Builders;
 using eDoxa.Security;
 using eDoxa.Seedwork.Domain.Enumerations;
 
@@ -65,14 +65,22 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         ///     Create a challenge - Admin only.
         /// </summary>
         [Authorize(Roles = CustomRoles.Administrator)]
-        [HttpPost(Name = nameof(CreateChallenge))]
-        public async Task<IActionResult> CreateChallenge([FromQuery] ChallengeType type, [FromQuery] bool registerParticipants, [FromQuery] bool snapshotParticipantMatches)
+        [HttpPost("money", Name = nameof(CreateMoneyChallenge))]
+        public async Task<IActionResult> CreateMoneyChallenge([FromQuery] string name, [FromQuery] Game game, [FromQuery] BestOf bestOf, [FromQuery] PayoutEntries payoutEntries, [FromQuery] MoneyEntryFee entryFee, [FromQuery] bool equivalentCurrency = true, [FromQuery] bool registerParticipants = false, [FromQuery] bool snapshotParticipantMatches = false)
         {
-            var challenge = await _fakeChallengeService.CreateChallenge(
-                new FakeLeagueOfLegendsChallengeBuilder(type),
-                registerParticipants,
-                snapshotParticipantMatches
-            );
+            var challenge = await _fakeChallengeService.CreateChallenge(new ChallengeName(name), game, bestOf, payoutEntries, entryFee, equivalentCurrency, registerParticipants, snapshotParticipantMatches);
+
+            return this.Ok(_mapper.Map<ChallengeDTO>(challenge));
+        }
+
+        /// <summary>
+        ///     Create a challenge - Admin only.
+        /// </summary>
+        [Authorize(Roles = CustomRoles.Administrator)]
+        [HttpPost("token", Name = nameof(CreateTokenChallenge))]
+        public async Task<IActionResult> CreateTokenChallenge([FromQuery] string name, [FromQuery] Game game, [FromQuery] BestOf bestOf, [FromQuery] PayoutEntries payoutEntries, [FromQuery] TokenEntryFee entryFee, [FromQuery] bool equivalentCurrency = true, [FromQuery] bool registerParticipants = false, [FromQuery] bool snapshotParticipantMatches = false)
+        {
+            var challenge = await _fakeChallengeService.CreateChallenge(new ChallengeName(name), game, bestOf, payoutEntries, entryFee, equivalentCurrency, registerParticipants, snapshotParticipantMatches);
 
             return this.Ok(_mapper.Map<ChallengeDTO>(challenge));
         }

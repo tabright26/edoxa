@@ -14,7 +14,7 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
 {
-    [TypeConverter(typeof(EnumerationConverter))]
+    [TypeConverter(typeof(EnumerationTypeConverter))]
     public sealed class MoneyDepositBundleType : Enumeration<MoneyDepositBundleType>
     {
         public static readonly MoneyDepositBundleType Ten = new MoneyDepositBundleType(1 << 0, nameof(Ten));

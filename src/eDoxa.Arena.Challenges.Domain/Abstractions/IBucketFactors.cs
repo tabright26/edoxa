@@ -14,6 +14,6 @@ namespace eDoxa.Arena.Challenges.Domain.Abstractions
 {
     public interface IBucketFactors : IReadOnlyList<BucketFactor>
     {
-        IPayout CreatePayout(EntryFee entryFee, Currency currency);
+        IPayout CreatePayout(Prize prize);
     }
 }

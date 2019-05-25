@@ -1,5 +1,5 @@
 ﻿// Filename: AssemblyInfo.cs
-// Date Created: 2019-05-03
+// Date Created: 2019-05-22
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,4 +11,6 @@
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("eDoxa.Arena.Challenges.Infrastructure")]
+
+[assembly: InternalsVisibleTo("eDoxa.Arena.Challenges.Tests")]
 [assembly: InternalsVisibleTo("eDoxa.Arena.Challenges.Domain.Tests")]

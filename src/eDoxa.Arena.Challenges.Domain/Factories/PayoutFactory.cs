@@ -25,16 +25,11 @@ namespace eDoxa.Arena.Challenges.Domain.Factories
     {
         private static readonly PayoutBuckets PayoutBuckets = new PayoutBuckets();
 
-        public IPayout Create(
-            Currency currency,
-            PayoutEntries payoutEntries,
-            EntryFee entryFee,
-            Currency entryFeeCurrency
-        )
+        public IPayout Create(PayoutEntries payoutEntries, Prize lowerPrize)
         {
             if (PayoutBuckets.TryGetValue(payoutEntries, out var bucketFactors))
             {
-                return bucketFactors.CreatePayout(entryFee, currency);
+                return bucketFactors.CreatePayout(lowerPrize);
             }
 
             throw new NotImplementedException();

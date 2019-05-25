@@ -19,8 +19,8 @@ namespace eDoxa.Arena.Challenges.Domain
     {
         public static readonly Prize None = new UndefinedPrize();
 
-        private readonly decimal _amount;
         private readonly Currency _currency;
+        private readonly decimal _amount;
 
         protected Prize(decimal amount, Currency currency)
         {
@@ -33,9 +33,9 @@ namespace eDoxa.Arena.Challenges.Domain
             _currency = currency;
         }
 
-        public decimal Amount => _amount;
-
         public Currency Currency => _currency;
+
+        public decimal Amount => _amount;
 
         public static implicit operator decimal(Prize prize)
         {
@@ -45,6 +45,28 @@ namespace eDoxa.Arena.Challenges.Domain
         public override string ToString()
         {
             return Amount.ToString(CultureInfo.InvariantCulture);
+        }
+
+        public Prize ApplyFactor(PrizeFactor factor)
+        {
+            if (Currency == Currency.Money)
+            {
+                return new MoneyPrize(Amount * factor);
+            }
+
+            if (Currency == Currency.Token)
+            {
+                return new TokenPrize(Amount * factor);
+            }
+
+            throw new ArgumentException(nameof(factor));
+        }
+
+        private sealed class UndefinedPrize : Prize
+        {
+            internal UndefinedPrize() : base(0, Currency.Undefined)
+            {
+            }
         }
     }
 }

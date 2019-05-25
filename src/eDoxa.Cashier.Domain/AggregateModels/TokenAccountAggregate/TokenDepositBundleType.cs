@@ -14,7 +14,7 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
 {
-    [TypeConverter(typeof(EnumerationConverter))]
+    [TypeConverter(typeof(EnumerationTypeConverter))]
     public sealed class TokenDepositBundleType : Enumeration<TokenDepositBundleType>
     {
         public static readonly TokenDepositBundleType FiftyThousand = new TokenDepositBundleType(1 << 0, nameof(FiftyThousand));

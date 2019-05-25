@@ -31,15 +31,24 @@ namespace eDoxa.Seedwork.Domain.Tests.Aggregate
             var t = list.Any(x => x.Equals(qw));
         }
 
+        [TestMethod]
+        public void M1()
+        {
+            var types = MockTypeObject.GetAll();
+        }
+
+
         private sealed class MockTypeObject : TypeObject<MockTypeObject, int>
         {
+            public static readonly MockTypeObject Object1 = new MockTypeObject(1);
+            public static readonly MockTypeObject Object2 = new MockTypeObject(2);
+            public static readonly MockTypeObject Object3 = new MockTypeObject(3);
+            public static readonly MockTypeObject Object4 = new MockTypeObject(4);
+            public static readonly MockTypeObject Object5 = new MockTypeObject(5);
+            public static readonly MockTypeObject Object6 = new MockTypeObject(6);
+
             public MockTypeObject(int value) : base(value)
             {
-            }
-
-            public static implicit operator int(MockTypeObject mockTypeObject)
-            {
-                return mockTypeObject.Value;
             }
         }
     }

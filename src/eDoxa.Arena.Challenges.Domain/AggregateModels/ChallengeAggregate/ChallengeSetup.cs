@@ -8,8 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
@@ -19,18 +17,16 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         private BestOf _bestOf;
         private Entries _entries;
         private EntryFee _entryFee;
-        private Currency _entryFeeCurrency;
         private PayoutRatio _payoutRatio;
-        private Currency _payoutCurrency;
         private ServiceChargeRatio _serviceChargeRatio;
+        private bool _equivalentCurrency;
 
-        public ChallengeSetup(BestOf bestOf, Entries entries, EntryFee entryFee, Currency payoutCurrency) : this()
+        public ChallengeSetup(BestOf bestOf, PayoutEntries payoutEntries, EntryFee entryFee, bool equivalentCurrency = true) : this()
         {
             _bestOf = bestOf;
-            _entries = entries;
+            _entries = new Entries(payoutEntries, _payoutRatio);
             _entryFee = entryFee;
-            _entryFeeCurrency = entryFee is MoneyEntryFee ? Currency.Money : entryFee is TokenEntryFee ? Currency.Token : throw new ArgumentException(nameof(entryFee));
-            _payoutCurrency = payoutCurrency;
+            _equivalentCurrency = equivalentCurrency;
         }
 
         private ChallengeSetup()
@@ -45,13 +41,11 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public EntryFee EntryFee => _entryFee;
 
-        public Currency EntryFeeCurrency => _entryFeeCurrency;
-
         public PayoutRatio PayoutRatio => _payoutRatio;
 
-        public Currency PayoutCurrency => _payoutCurrency;
-
         public ServiceChargeRatio ServiceChargeRatio => _serviceChargeRatio;
+
+        public bool EquivalentCurrency => _equivalentCurrency;
 
         public PayoutEntries PayoutEntries => new PayoutEntries(_entries, _payoutRatio);
 

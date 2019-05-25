@@ -16,23 +16,12 @@ namespace eDoxa.Arena.Challenges.Domain
 {
     public class Entries : TypeObject<Entries, int>
     {
-        public const int Min = 10;
-        public const int Max = 2500;
-        public const int Default = 50;
-
-        public static readonly Entries MinValue = new Entries(Min);
-        public static readonly Entries MaxValue = new Entries(Max);
-        public static readonly Entries DefaultValue = new Entries(Default);
-
-        public Entries(int entries, bool validate = true) : base(entries)
+        public Entries(PayoutEntries payoutEntries, PayoutRatio payoutRatio) : base(Convert.ToInt32(payoutEntries / payoutRatio))
         {
-            if (validate)
-            {
-                if (entries < Min || entries > Max || entries % 10 != 0)
-                {
-                    throw new ArgumentException(nameof(entries));
-                }
-            }
+        }
+
+        internal Entries(int entries) : base(entries)
+        {
         }
     }
 }

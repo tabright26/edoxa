@@ -209,7 +209,7 @@ namespace eDoxa.Seedwork.Domain.Aggregate
 
     public abstract partial class Enumeration<TEnumeration>
     {
-        protected sealed class EnumerationConverter : TypeConverter
+        protected sealed class EnumerationTypeConverter : TypeConverter
         {
             public override bool CanConvertFrom([CanBeNull] ITypeDescriptorContext context, Type sourceType)
             {

@@ -12,15 +12,21 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Seedwork.Domain.Enumerations;
 
 namespace eDoxa.Arena.Challenges.Domain.Services
 {
     public interface IFakeChallengeService
     {
         Task<Challenge> CreateChallenge(
-            IFakeChallengeBuilder builder,
-            bool registerParticipants,
-            bool snapshotParticipantMatches,
+            ChallengeName name,
+            Game game,
+            BestOf bestOf,
+            PayoutEntries payoutEntries,
+            EntryFee entryFee,
+            bool equivalentCurrency = true,
+            bool registerParticipants = false,
+            bool snapshotParticipantMatches = false,
             CancellationToken cancellationToken = default
         );
     }

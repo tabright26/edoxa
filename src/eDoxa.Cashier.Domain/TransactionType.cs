@@ -14,7 +14,7 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Cashier.Domain
 {
-    [TypeConverter(typeof(EnumerationConverter))]
+    [TypeConverter(typeof(EnumerationTypeConverter))]
     public sealed class TransactionType : Enumeration<TransactionType>
     {
         public static readonly TransactionType Deposit = new TransactionType(1 << 0, nameof(Deposit));

@@ -21,9 +21,9 @@ namespace eDoxa.Arena.Challenges.Domain
             _size = size;
         }
 
-        public Bucket CreateBucket(EntryFee entryFee, Currency type)
+        public Bucket CreateBucket(Prize prize)
         {
-            return new Bucket(_factor.GetPrize(entryFee, type), _size);
+            return new Bucket(prize.ApplyFactor(_factor), _size);
         }
     }
 }

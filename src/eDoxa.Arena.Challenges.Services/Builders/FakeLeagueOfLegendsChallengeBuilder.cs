@@ -10,6 +10,7 @@
 
 using System;
 
+using eDoxa.Arena.Challenges.Domain;
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
@@ -25,13 +26,15 @@ namespace eDoxa.Arena.Challenges.Services.Builders
     public sealed class FakeLeagueOfLegendsChallengeBuilder : IFakeChallengeBuilder
     {
         private static readonly Random Random = new Random();
-        private static readonly ChallengeFactory ChallengeFactory = ChallengeFactory.Instance;
+        private static readonly ScoringFactory ScoringFactory = ScoringFactory.Instance;
 
         private readonly Challenge _challenge;
 
-        public FakeLeagueOfLegendsChallengeBuilder(ChallengeType type)
+        public FakeLeagueOfLegendsChallengeBuilder(ChallengeName name, Game game, BestOf bestOf, PayoutEntries payoutEntries, EntryFee entryFee, bool equivalentCurrency = true)
         {
-            _challenge = ChallengeFactory.Create(Game.LeagueOfLegends, type);
+            var setup = new ChallengeSetup(bestOf, payoutEntries, entryFee, equivalentCurrency);
+
+            _challenge = new Challenge(game, name, setup, new ChallengeDuration(), ScoringFactory.CreateScoringStrategy(game));
         }
 
         public Challenge Build()

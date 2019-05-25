@@ -14,7 +14,7 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Cashier.Domain
 {
-    [TypeConverter(typeof(EnumerationConverter))]
+    [TypeConverter(typeof(EnumerationTypeConverter))]
     public sealed class TransactionStatus : Enumeration<TransactionStatus>
     {
         public static readonly TransactionStatus Pending = new TransactionStatus(1 << 0, nameof(Pending));

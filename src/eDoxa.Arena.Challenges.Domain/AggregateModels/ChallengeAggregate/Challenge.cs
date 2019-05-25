@@ -82,7 +82,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public IScoring Scoring => _scoring;
 
-        public IPayout Payout => PayoutFactory.Instance.Create(Setup.PayoutCurrency, Setup.PayoutEntries, Setup.EntryFee, Currency.Money);
+        public IPayout Payout => PayoutFactory.Instance.Create(Setup.PayoutEntries, this.DeterminePayoutPrize());
 
         public IScoreboard Scoreboard => new Scoreboard(this);
 
@@ -149,6 +149,36 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
                 /*        .And(new ChallengeMininumInProgressSpecification())*/;
 
             return specification.IsSatisfiedBy(this);
+        }
+
+        private Prize DeterminePayoutPrize()
+        {
+            if (Setup.EquivalentCurrency)
+            {
+                if (Setup.EntryFee.Currency == Currency.Money)
+                {
+                    return new MoneyPrize(Setup.EntryFee);
+                }
+
+                if (Setup.EntryFee.Currency == Currency.Token)
+                {
+                    return new TokenPrize(Setup.EntryFee);
+                }
+            }
+            else
+            {
+                if (Setup.EntryFee.Currency == Currency.Token)
+                {
+                    return new MoneyPrize(Setup.EntryFee / 1000);
+                }
+
+                if (Setup.EntryFee.Currency == Currency.Money)
+                {
+                    return new TokenPrize(Setup.EntryFee * 1000);
+                }
+            }
+
+            throw new InvalidOperationException();
         }
     }
 }

@@ -39,12 +39,12 @@ namespace eDoxa.Arena.Challenges.Infrastructure
             {
                 if (!_context.Challenges.Any())
                 {
-                    foreach (var challengeType in ChallengeType.GetAll())
-                    {
-                        var builder = new FakeLeagueOfLegendsChallengeBuilder(challengeType);
+                    //foreach (var challengeType in ChallengeType.GetAll())
+                    //{
+                    //    var builder = new FakeLeagueOfLegendsChallengeBuilder(challengeType);
 
-                        await _fakeChallengeService.CreateChallenge(builder, true, true);
-                    }
+                    //    await _fakeChallengeService.CreateChallenge(builder, true, true);
+                    //}
                 }
             }
         }

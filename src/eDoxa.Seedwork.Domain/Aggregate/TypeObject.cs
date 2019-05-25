@@ -10,6 +10,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 using JetBrains.Annotations;
 
@@ -19,26 +21,39 @@ namespace eDoxa.Seedwork.Domain.Aggregate
     where TObject : TypeObject<TObject, TPrimitive>
     where TPrimitive : IComparable, IComparable<TPrimitive>, IEquatable<TPrimitive>
     {
-        protected readonly TPrimitive Value;
-
         protected TypeObject(TPrimitive value)
         {
             Value = value;
         }
 
-        public static implicit operator TPrimitive(TypeObject<TObject, TPrimitive> obj)
+        protected TPrimitive Value { get; }
+
+        public static implicit operator TPrimitive(TypeObject<TObject, TPrimitive> typeObject)
         {
-            return obj.Value;
+            return typeObject.Value;
         }
 
         public override string ToString()
         {
             return Value.ToString();
         }
+
+        public static IEnumerable<TObject> GetAll()
+        {
+            return typeof(TObject).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
+                                  .Select(field => field.GetValue(null))
+                                  .Where(obj => obj is TObject)
+                                  .Cast<TObject>();
+        }
     }
 
     public abstract partial class TypeObject<TObject, TPrimitive> : IEquatable<TObject>
     {
+        public virtual bool Equals([CanBeNull] TObject other)
+        {
+            return this.GetType() == other?.GetType() && Value.Equals(other.Value);
+        }
+
         public static bool operator ==(TypeObject<TObject, TPrimitive> left, TypeObject<TObject, TPrimitive> right)
         {
             return EqualityComparer<TypeObject<TObject, TPrimitive>>.Default.Equals(left, right);
@@ -47,11 +62,6 @@ namespace eDoxa.Seedwork.Domain.Aggregate
         public static bool operator !=(TypeObject<TObject, TPrimitive> left, TypeObject<TObject, TPrimitive> right)
         {
             return !(left == right);
-        }
-
-        public virtual bool Equals([CanBeNull] TObject other)
-        {
-            return this.GetType() == other?.GetType() && Value.Equals(other.Value);
         }
 
         public sealed override bool Equals([CanBeNull] object obj)
