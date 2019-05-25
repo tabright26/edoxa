@@ -23,6 +23,7 @@ using eDoxa.Cashier.Tests.Extensions;
 using eDoxa.Cashier.Tests.Factories;
 using eDoxa.Commands.Extensions;
 using eDoxa.Functional;
+using eDoxa.Seedwork.Domain.Entities;
 using eDoxa.Seedwork.Domain.Validations;
 using eDoxa.Testing.MSTest;
 

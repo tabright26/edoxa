@@ -39,8 +39,7 @@ namespace eDoxa.Security.Resources
                 "eDoxa Cashier API",
                 new IdentityResources.Profile().UserClaims.Union(
                     new CustomIdentityResources.Role().UserClaims.Union(
-                        new CustomIdentityResources.Permission().UserClaims.Union(
-                            new CustomIdentityResources.Stripe().UserClaims))))
+                        new CustomIdentityResources.Permission().UserClaims)))
             {
                 ApiSecrets = new HashSet<Secret>
                 {

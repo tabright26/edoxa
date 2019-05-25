@@ -11,9 +11,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using eDoxa.Arena.Challenges.Domain.Abstractions;
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Domain.Abstractions;
+using eDoxa.Seedwork.Domain.Entities;
 
 namespace eDoxa.Arena.Challenges.Domain
 {
@@ -26,7 +26,7 @@ namespace eDoxa.Arena.Challenges.Domain
         {
         }
 
-        public UserId GetUserId(int index)
+        public UserId UserIdAt(int index)
         {
             return this.ElementAt(index).Key;
         }

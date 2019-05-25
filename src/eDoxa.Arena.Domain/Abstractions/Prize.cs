@@ -12,15 +12,16 @@ using System;
 using System.Globalization;
 
 using eDoxa.Seedwork.Domain.Aggregate;
+using eDoxa.Seedwork.Domain.Enumerations;
 
-namespace eDoxa.Arena.Challenges.Domain
+namespace eDoxa.Arena.Domain.Abstractions
 {
     public abstract class Prize : ValueObject
     {
         public static readonly Prize None = new UndefinedPrize();
 
-        private readonly Currency _currency;
         private readonly decimal _amount;
+        private readonly Currency _currency;
 
         protected Prize(decimal amount, Currency currency)
         {
@@ -33,9 +34,9 @@ namespace eDoxa.Arena.Challenges.Domain
             _currency = currency;
         }
 
-        public Currency Currency => _currency;
-
         public decimal Amount => _amount;
+
+        public Currency Currency => _currency;
 
         public static implicit operator decimal(Prize prize)
         {

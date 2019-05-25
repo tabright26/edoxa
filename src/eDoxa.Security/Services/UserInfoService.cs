@@ -53,12 +53,6 @@ namespace eDoxa.Security.Services
 
         public string Address => this.TryGetClaim(JwtClaimTypes.Address);
 
-        public string StripeAccountId => this.TryGetClaim(CustomClaimTypes.StripeAccountId);
-
-        public string StripeBankAccountId => this.TryGetClaim(CustomClaimTypes.StripeBankAccountId);
-
-        public string StripeCustomerId => this.TryGetClaim(CustomClaimTypes.StripeCustomerId);
-
         public IEnumerable<string> Roles => this.TryGetClaims(JwtClaimTypes.Role);
 
         public IEnumerable<string> Permissions => this.TryGetClaims(CustomClaimTypes.Permission);

@@ -1,5 +1,5 @@
-﻿// Filename: MoneyPrize.cs
-// Date Created: 2019-05-23
+﻿// Filename: BucketItem.cs
+// Date Created: 2019-05-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,11 +8,13 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-namespace eDoxa.Arena.Challenges.Domain
+using eDoxa.Arena.Domain.Abstractions;
+
+namespace eDoxa.Arena.Domain
 {
-    public sealed class MoneyPrize : Prize
+    public sealed class BucketItem : Bucket
     {
-        public MoneyPrize(decimal amount) : base(amount, Currency.Money)
+        public BucketItem(Prize prize) : base(prize, BucketSize.Default)
         {
         }
     }

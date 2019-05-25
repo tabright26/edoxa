@@ -1,19 +1,17 @@
-﻿// Filename: BucketItem.cs
-// Date Created: 2019-05-21
+﻿// Filename: IChallengePayoutStrategy.cs
+// Date Created: 2019-04-14
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
+//  
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-namespace eDoxa.Arena.Challenges.Domain
+namespace eDoxa.Arena.Domain.Abstractions
 {
-    public sealed class BucketItem : Bucket
+    public interface IPayoutStrategy
     {
-        public BucketItem(Prize prize) : base(prize, BucketSize.Default)
-        {
-        }
+        IPayout Payout { get; }
     }
 }

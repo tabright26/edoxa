@@ -11,7 +11,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-using eDoxa.Arena.Challenges.Domain.Abstractions;
+using eDoxa.Arena.Domain;
+using eDoxa.Arena.Domain.Abstractions;
 
 namespace eDoxa.Arena.Challenges.Domain
 {

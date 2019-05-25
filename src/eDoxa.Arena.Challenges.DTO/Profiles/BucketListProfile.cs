@@ -13,7 +13,7 @@ using System.Linq;
 
 using AutoMapper;
 
-using eDoxa.Arena.Challenges.Domain;
+using eDoxa.Arena.Domain;
 
 namespace eDoxa.Arena.Challenges.DTO.Profiles
 {

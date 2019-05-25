@@ -11,13 +11,13 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.Specifications;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate.Specifications;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Security.Abstractions;
+using eDoxa.Seedwork.Domain.Entities;
 
 using JetBrains.Annotations;
 

@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Domain;
 using eDoxa.Seedwork.Domain.Enumerations;
 
 namespace eDoxa.Arena.Challenges.Domain.Services

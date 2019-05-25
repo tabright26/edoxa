@@ -9,7 +9,7 @@
 // this source code package.
 
 using eDoxa.Cashier.Application.Commands;
-using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Seedwork.Domain.Entities;
 using eDoxa.Testing.MSTest;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;

@@ -52,20 +52,5 @@ namespace eDoxa.Security.Resources
             {
             }
         }
-
-        public sealed class Stripe : IdentityResource
-        {
-            public Stripe() : base(
-                "stripe",
-                "Your Stripe account",
-                new HashSet<string>
-                {
-                    CustomClaimTypes.StripeAccountId,
-                    CustomClaimTypes.StripeBankAccountId,
-                    CustomClaimTypes.StripeCustomerId
-                })
-            {
-            }
-        }
     }
 }

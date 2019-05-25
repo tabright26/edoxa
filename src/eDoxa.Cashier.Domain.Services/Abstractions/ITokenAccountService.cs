@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
 using eDoxa.Functional;
+using eDoxa.Seedwork.Domain.Entities;
 using eDoxa.Seedwork.Domain.Validations;
 
 namespace eDoxa.Cashier.Domain.Services.Abstractions

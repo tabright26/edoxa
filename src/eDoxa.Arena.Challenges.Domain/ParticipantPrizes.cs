@@ -10,8 +10,8 @@
 
 using System.Collections.Generic;
 
-using eDoxa.Arena.Challenges.Domain.Abstractions;
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
+using eDoxa.Arena.Domain.Abstractions;
+using eDoxa.Seedwork.Domain.Entities;
 
 namespace eDoxa.Arena.Challenges.Domain
 {

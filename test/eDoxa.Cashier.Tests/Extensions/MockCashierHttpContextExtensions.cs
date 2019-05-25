@@ -8,8 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Security.Abstractions;
+using eDoxa.Seedwork.Domain.Entities;
 
 using Moq;
 

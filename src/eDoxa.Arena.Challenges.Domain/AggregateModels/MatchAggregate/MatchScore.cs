@@ -10,6 +10,8 @@
 
 using System.Linq;
 
+using eDoxa.Arena.Domain.Abstractions;
+
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
 {
     public sealed class MatchScore : Score

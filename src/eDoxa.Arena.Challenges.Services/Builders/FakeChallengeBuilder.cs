@@ -12,25 +12,26 @@ using System;
 
 using eDoxa.Arena.Challenges.Domain;
 using eDoxa.Arena.Challenges.Domain.Abstractions;
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.Services.Factories;
+using eDoxa.Arena.Domain;
 using eDoxa.Functional.Extensions;
+using eDoxa.Seedwork.Domain.Entities;
 using eDoxa.Seedwork.Domain.Enumerations;
 
 namespace eDoxa.Arena.Challenges.Services.Builders
 {
-    public sealed class FakeLeagueOfLegendsChallengeBuilder : IFakeChallengeBuilder
+    public sealed class FakeChallengeBuilder : IFakeChallengeBuilder
     {
         private static readonly Random Random = new Random();
         private static readonly ScoringFactory ScoringFactory = ScoringFactory.Instance;
 
         private readonly Challenge _challenge;
 
-        public FakeLeagueOfLegendsChallengeBuilder(ChallengeName name, Game game, BestOf bestOf, PayoutEntries payoutEntries, EntryFee entryFee, bool equivalentCurrency = true)
+        public FakeChallengeBuilder(ChallengeName name, Game game, BestOf bestOf, PayoutEntries payoutEntries, EntryFee entryFee, bool equivalentCurrency = true)
         {
             var setup = new ChallengeSetup(bestOf, payoutEntries, entryFee, equivalentCurrency);
 

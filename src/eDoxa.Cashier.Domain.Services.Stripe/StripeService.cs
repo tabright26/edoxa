@@ -18,6 +18,7 @@ using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Security;
+using eDoxa.Seedwork.Domain.Entities;
 
 using Microsoft.Extensions.Configuration;
 

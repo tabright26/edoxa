@@ -10,6 +10,7 @@
 
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
+using eDoxa.Seedwork.Domain.Entities;
 
 using JetBrains.Annotations;
 

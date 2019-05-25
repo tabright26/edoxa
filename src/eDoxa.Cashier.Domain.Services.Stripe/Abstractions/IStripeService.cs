@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Seedwork.Domain.Entities;
 
 using Stripe;
 

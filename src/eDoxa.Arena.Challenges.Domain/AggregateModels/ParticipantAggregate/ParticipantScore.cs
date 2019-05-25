@@ -10,6 +10,8 @@
 
 using System.Linq;
 
+using eDoxa.Arena.Domain.Abstractions;
+
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate
 {
     public sealed class ParticipantScore : Score

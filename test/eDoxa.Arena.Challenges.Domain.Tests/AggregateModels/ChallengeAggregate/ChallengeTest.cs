@@ -14,9 +14,8 @@ using System.Linq;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
-using eDoxa.Arena.Challenges.Services.Factories;
 using eDoxa.Arena.Challenges.Tests.Factories;
-using eDoxa.Seedwork.Domain.Enumerations;
+using eDoxa.Seedwork.Domain.Entities;
 
 using FluentAssertions;
 
@@ -28,16 +27,15 @@ namespace eDoxa.Arena.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
     public sealed class ChallengeTest
     {
         private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
-        private static readonly ChallengeFactory ChallengeFactory = ChallengeFactory.Instance;
 
         [TestMethod]
         public void M()
         {
-            var challenge = ChallengeFactory.Create(Game.LeagueOfLegends, ChallengeType.Type5);
+            //var challenge = ChallengeFactory.Create(Game.LeagueOfLegends, ChallengeType.Type5);
 
-            var scoreboard = challenge.Scoreboard;
+            //var scoreboard = challenge.Scoreboard;
 
-            var participantPrizes = challenge.Payout.GetParticipantPrizes(challenge.Scoreboard);
+            //var participantPrizes = challenge.Payout.GetParticipantPrizes(challenge.Scoreboard);
         }
 
         ////[TestMethod]

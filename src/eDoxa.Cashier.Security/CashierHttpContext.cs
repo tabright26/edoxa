@@ -11,9 +11,9 @@
 using System;
 using System.Linq;
 
-using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Security.Execeptions;
+using eDoxa.Seedwork.Domain.Entities;
 
 using IdentityModel;
 

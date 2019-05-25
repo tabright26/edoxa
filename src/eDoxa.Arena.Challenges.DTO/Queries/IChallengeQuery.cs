@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Functional;
+using eDoxa.Seedwork.Domain.Entities;
 using eDoxa.Seedwork.Domain.Enumerations;
 
 namespace eDoxa.Arena.Challenges.DTO.Queries

@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Arena.Challenges.Domain.Abstractions;
+using eDoxa.Arena.Domain.Abstractions;
 using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.DomainEvents

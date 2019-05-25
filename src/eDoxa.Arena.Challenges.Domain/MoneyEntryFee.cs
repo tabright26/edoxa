@@ -12,6 +12,9 @@ using System;
 using System.ComponentModel;
 using System.Globalization;
 
+using eDoxa.Arena.Domain;
+using eDoxa.Seedwork.Domain.Enumerations;
+
 using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Domain
@@ -28,7 +31,7 @@ namespace eDoxa.Arena.Challenges.Domain
         public static readonly MoneyEntryFee SeventyFive = new MoneyEntryFee(75M);
         public static readonly MoneyEntryFee OneHundred = new MoneyEntryFee(100M);
 
-        internal MoneyEntryFee(decimal entryFee) : base(entryFee, Currency.Money)
+        private MoneyEntryFee(decimal entryFee) : base(entryFee, Currency.Money)
         {
         }
 

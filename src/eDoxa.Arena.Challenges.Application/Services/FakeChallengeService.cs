@@ -16,6 +16,7 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.Services.Builders;
+using eDoxa.Arena.Domain;
 using eDoxa.Seedwork.Domain.Enumerations;
 
 namespace eDoxa.Arena.Challenges.Application.Services
@@ -41,7 +42,7 @@ namespace eDoxa.Arena.Challenges.Application.Services
             CancellationToken cancellationToken = default
         )
         {
-            var builder = new FakeLeagueOfLegendsChallengeBuilder(
+            var builder = new FakeChallengeBuilder(
                 name,
                 game,
                 bestOf,

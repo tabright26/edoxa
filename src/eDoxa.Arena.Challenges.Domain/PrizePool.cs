@@ -11,6 +11,7 @@
 using System;
 using System.Globalization;
 
+using eDoxa.Arena.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain

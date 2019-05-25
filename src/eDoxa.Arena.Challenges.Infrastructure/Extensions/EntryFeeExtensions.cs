@@ -10,7 +10,8 @@
 
 using System;
 
-using eDoxa.Arena.Challenges.Domain;
+using eDoxa.Arena.Domain;
+using eDoxa.Seedwork.Domain.Enumerations;
 
 namespace eDoxa.Arena.Challenges.Infrastructure.Extensions
 {

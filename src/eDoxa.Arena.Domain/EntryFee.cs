@@ -11,15 +11,16 @@
 using System.Globalization;
 
 using eDoxa.Seedwork.Domain.Aggregate;
+using eDoxa.Seedwork.Domain.Enumerations;
 
-namespace eDoxa.Arena.Challenges.Domain
+namespace eDoxa.Arena.Domain
 {
     public class EntryFee : ValueObject
     {
         private decimal _amount;
         private Currency _currency;
 
-        internal EntryFee(decimal amount, Currency currency)
+        public EntryFee(decimal amount, Currency currency)
         {
             _amount = amount;
             _currency = currency;

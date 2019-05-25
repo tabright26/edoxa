@@ -17,8 +17,11 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.Specifica
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate.Specifications;
 using eDoxa.Arena.Challenges.Domain.Factories;
+using eDoxa.Arena.Domain;
+using eDoxa.Arena.Domain.Abstractions;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
+using eDoxa.Seedwork.Domain.Entities;
 using eDoxa.Seedwork.Domain.Enumerations;
 using eDoxa.Specifications.Factories;
 

@@ -10,6 +10,7 @@
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
+using eDoxa.Seedwork.Domain.Entities;
 
 using JetBrains.Annotations;
 

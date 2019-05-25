@@ -13,7 +13,7 @@ using System.Globalization;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
-namespace eDoxa.Arena.Challenges.Domain
+namespace eDoxa.Arena.Domain.Abstractions
 {
     public abstract class Score : TypeObject<Score, decimal>
     {

@@ -12,11 +12,11 @@ using System;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
-namespace eDoxa.Arena.Challenges.Domain
+namespace eDoxa.Arena.Domain
 {
     public sealed class PrizeFactor : TypeObject<PrizeFactor, decimal>
     {
-        internal PrizeFactor(decimal factor) : base(factor)
+        public PrizeFactor(decimal factor) : base(factor)
         {
             if (factor < 1)
             {

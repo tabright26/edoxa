@@ -20,6 +20,7 @@ using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Cashier.Tests.Factories;
+using eDoxa.Seedwork.Domain.Entities;
 using eDoxa.Testing.MSTest;
 
 using FluentAssertions;

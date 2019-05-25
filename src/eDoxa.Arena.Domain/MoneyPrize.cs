@@ -1,4 +1,4 @@
-﻿// Filename: IPayoutTemplate.cs
+﻿// Filename: MoneyPrize.cs
 // Date Created: 2019-05-23
 // 
 // ================================================
@@ -8,10 +8,15 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-namespace eDoxa.Arena.Challenges.Domain.Abstractions
+using eDoxa.Arena.Domain.Abstractions;
+using eDoxa.Seedwork.Domain.Enumerations;
+
+namespace eDoxa.Arena.Domain
 {
-    public interface IPayoutFactor
+    public sealed class MoneyPrize : Prize
     {
-        IPayout CreatePayout(EntryFee entryFee, Currency currency);
+        public MoneyPrize(decimal amount) : base(amount, Currency.Money)
+        {
+        }
     }
 }

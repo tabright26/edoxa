@@ -14,11 +14,11 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using eDoxa.Cashier.Domain;
-using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.Security.Abstractions;
+using eDoxa.Seedwork.Domain.Entities;
 
 namespace eDoxa.Cashier.Application.Queries
 {

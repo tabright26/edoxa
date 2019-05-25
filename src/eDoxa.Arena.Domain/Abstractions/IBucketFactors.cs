@@ -10,7 +10,7 @@
 
 using System.Collections.Generic;
 
-namespace eDoxa.Arena.Challenges.Domain.Abstractions
+namespace eDoxa.Arena.Domain.Abstractions
 {
     public interface IBucketFactors : IReadOnlyList<BucketFactor>
     {

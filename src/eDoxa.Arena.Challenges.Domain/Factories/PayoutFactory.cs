@@ -10,7 +10,7 @@
 
 using System;
 
-using eDoxa.Arena.Challenges.Domain.Abstractions;
+using eDoxa.Arena.Domain.Abstractions;
 
 namespace eDoxa.Arena.Challenges.Domain.Factories
 {

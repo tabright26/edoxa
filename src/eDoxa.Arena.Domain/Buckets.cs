@@ -11,21 +11,17 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using eDoxa.Arena.Challenges.Domain.Abstractions;
+using eDoxa.Arena.Domain.Abstractions;
 
-namespace eDoxa.Arena.Challenges.Domain
+namespace eDoxa.Arena.Domain
 {
     public class Buckets : List<Bucket>, IBuckets
     {
-        internal Buckets(IEnumerable<Bucket> buckets) : base(buckets)
+        public Buckets(IEnumerable<Bucket> buckets) : base(buckets)
         {
         }
 
-        internal Buckets()
-        {
-        }
-
-        public Prize GetPrize(int index)
+        public Prize PrizeAtOrDefault(int index)
         {
             return this.ElementAtOrDefault(index)?.Prize ?? Prize.None;
         }

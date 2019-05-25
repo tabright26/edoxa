@@ -8,7 +8,10 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-namespace eDoxa.Arena.Challenges.Domain
+using eDoxa.Arena.Domain.Abstractions;
+using eDoxa.Seedwork.Domain.Enumerations;
+
+namespace eDoxa.Arena.Domain
 {
     public sealed class TokenPrize : Prize
     {

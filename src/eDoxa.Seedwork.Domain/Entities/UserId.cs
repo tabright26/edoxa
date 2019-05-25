@@ -12,7 +12,7 @@ using System.ComponentModel;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
-namespace eDoxa.Arena.Challenges.Domain.AggregateModels
+namespace eDoxa.Seedwork.Domain.Entities
 {
     [TypeConverter(typeof(EntityIdTypeConverter))]
     public sealed class UserId : EntityId<UserId>

@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using eDoxa.Cashier.Domain;
-using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
 using eDoxa.Cashier.DTO;
@@ -22,6 +21,7 @@ using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.Security.Abstractions;
 using eDoxa.Functional;
+using eDoxa.Seedwork.Domain.Entities;
 
 using Microsoft.EntityFrameworkCore;
 

@@ -16,6 +16,8 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
+using eDoxa.Arena.Domain.Abstractions;
+using eDoxa.Seedwork.Domain.Entities;
 using eDoxa.Seedwork.Domain.Enumerations;
 
 using Moq;
@@ -92,9 +94,9 @@ namespace eDoxa.Arena.Challenges.Tests.Factories
 
     public sealed partial class FakeChallengeFactory
     {
-        public ChallengeSetup CreateChallengeSetup(int bestOf = 3, int payoutEntries = 25, decimal entryFee = 5M)
+        public ChallengeSetup CreateChallengeSetup(int bestOf = 3, int payoutEntries = 25)
         {
-            return new ChallengeSetup(new BestOf(bestOf), new PayoutEntries(payoutEntries), new MoneyEntryFee(entryFee));
+            return new ChallengeSetup(new BestOf(bestOf), new PayoutEntries(payoutEntries), MoneyEntryFee.Five);
         }
 
         //public Timeline CreateChallengeTimeline(ChallengeState state = null)

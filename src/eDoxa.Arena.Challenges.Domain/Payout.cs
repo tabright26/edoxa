@@ -10,8 +10,10 @@
 
 using System.Linq;
 
-using eDoxa.Arena.Challenges.Domain.Abstractions;
+using eDoxa.Arena.Domain;
+using eDoxa.Arena.Domain.Abstractions;
 using eDoxa.Seedwork.Domain.Aggregate;
+using eDoxa.Seedwork.Domain.Enumerations;
 
 using JetBrains.Annotations;
 
@@ -38,7 +40,7 @@ namespace eDoxa.Arena.Challenges.Domain
 
             for (var index = 0; index < scoreboard.Count; index++)
             {
-                var userId = scoreboard.GetUserId(index);
+                var userId = scoreboard.UserIdAt(index);
 
                 var prize = this.DetermineParticipantPrize(scoreboard, index);
 
@@ -51,7 +53,7 @@ namespace eDoxa.Arena.Challenges.Domain
         [CanBeNull]
         private Prize DetermineParticipantPrize(IScoreboard scoreboard, int index)
         {
-            return scoreboard.IsValidScore(index) ? BucketItems.GetPrize(index) : null;
+            return scoreboard.IsValidScore(index) ? BucketItems.PrizeAtOrDefault(index) : null;
         }
     }
 }

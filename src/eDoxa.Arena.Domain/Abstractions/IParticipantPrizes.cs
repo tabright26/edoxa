@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
+using eDoxa.Seedwork.Domain.Entities;
 
-namespace eDoxa.Arena.Challenges.Domain.Abstractions
+namespace eDoxa.Arena.Domain.Abstractions
 {
     public interface IParticipantPrizes : IReadOnlyDictionary<UserId, Prize>
     {

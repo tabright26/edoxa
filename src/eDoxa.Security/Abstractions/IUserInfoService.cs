@@ -8,8 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Collections.Generic;
-
 namespace eDoxa.Security.Abstractions
 {
     public interface IUserInfoService
@@ -33,17 +31,5 @@ namespace eDoxa.Security.Abstractions
         string PhoneNumber { get; }
 
         string PhoneNumberVerified { get; }
-
-        string Address { get; }
-
-        string StripeAccountId { get; }
-
-        string StripeBankAccountId { get; }
-
-        string StripeCustomerId { get; }
-
-        IEnumerable<string> Roles { get; }
-
-        IEnumerable<string> Permissions { get; }
     }
 }

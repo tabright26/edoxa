@@ -12,7 +12,7 @@ using System.ComponentModel;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
-namespace eDoxa.Arena.Challenges.Domain
+namespace eDoxa.Seedwork.Domain.Enumerations
 {
     [TypeConverter(typeof(EnumerationTypeConverter))]
     public sealed class Currency : Enumeration<Currency>

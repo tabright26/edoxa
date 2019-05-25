@@ -12,7 +12,7 @@ using System;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
-namespace eDoxa.Arena.Challenges.Domain
+namespace eDoxa.Arena.Domain
 {
     public sealed class BucketSize : TypeObject<BucketSize, int>
     {

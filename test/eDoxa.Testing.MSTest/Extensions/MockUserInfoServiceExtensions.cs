@@ -37,32 +37,6 @@ namespace eDoxa.Testing.MSTest.Extensions
             mockUserInfoService.SetupGet(mock => mock.PhoneNumber).Returns("5147580313");
 
             mockUserInfoService.SetupGet(mock => mock.PhoneNumberVerified).Returns("true");
-
-            mockUserInfoService.SetupGet(mock => mock.Address).Returns((string) null);
-
-            mockUserInfoService.SetupGet(mock => mock.StripeAccountId).Returns("acct_we23weqi24o");
-
-            mockUserInfoService.SetupGet(mock => mock.StripeBankAccountId).Returns("ba_we12334rTi24o");
-
-            mockUserInfoService.SetupGet(mock => mock.StripeCustomerId).Returns("cus_we234qwei14o");
-
-            mockUserInfoService.SetupGet(mock => mock.Roles).Returns(new[]
-            {
-                "Role1",
-                "Role2",
-                "Role3",
-                "Role4",
-                "Role5"
-            });
-
-            mockUserInfoService.SetupGet(mock => mock.Permissions).Returns(new[]
-            {
-                "permission1",
-                "permission2",
-                "permission3",
-                "permission4",
-                "permission5"
-            });
         }
     }
 }

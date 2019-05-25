@@ -1,17 +1,19 @@
-﻿// Filename: IChallengePayoutStrategy.cs
-// Date Created: 2019-04-14
+﻿// Filename: IBuckets.cs
+// Date Created: 2019-05-22
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-namespace eDoxa.Arena.Challenges.Domain.Abstractions
+using System.Collections.Generic;
+
+namespace eDoxa.Arena.Domain.Abstractions
 {
-    public interface IPayoutStrategy
+    public interface IBuckets : IReadOnlyList<Bucket>
     {
-        IPayout Payout { get; }
+        Prize PrizeAtOrDefault(int index);
     }
 }

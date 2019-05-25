@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Arena.Challenges.Domain;
+using eDoxa.Seedwork.Domain.Enumerations;
 
 using Newtonsoft.Json;
 

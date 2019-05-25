@@ -15,6 +15,7 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Entities;
 
 using Microsoft.EntityFrameworkCore;
 

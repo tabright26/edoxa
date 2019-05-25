@@ -14,9 +14,11 @@ using System.Collections.Generic;
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
+using eDoxa.Arena.Domain.Abstractions;
 using eDoxa.Functional;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
+using eDoxa.Seedwork.Domain.Entities;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate
 {

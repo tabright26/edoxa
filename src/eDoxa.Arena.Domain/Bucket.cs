@@ -8,10 +8,12 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Arena.Challenges.Domain.Abstractions;
+using System.Collections.Generic;
+
+using eDoxa.Arena.Domain.Abstractions;
 using eDoxa.Seedwork.Domain.Aggregate;
 
-namespace eDoxa.Arena.Challenges.Domain
+namespace eDoxa.Arena.Domain
 {
     public class Bucket : ValueObject
     {
@@ -29,14 +31,14 @@ namespace eDoxa.Arena.Challenges.Domain
         {
             get
             {
-                var buckets = new Buckets();
+                var buckets = new List<BucketItem>();
 
                 for (var index = 0; index < Size; index++)
                 {
                     buckets.Add(new BucketItem(Prize));
                 }
 
-                return buckets;
+                return new Buckets(buckets);
             }
         }
     }
