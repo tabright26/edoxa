@@ -30,7 +30,6 @@ namespace eDoxa.Arena.Challenges.Application.Commands.Abstractions
             BestOf bestOf,
             PayoutEntries payoutEntries,
             TEntryFee entryFee,
-            bool equivalentCurrency = true,
             bool isFakeChallenge = false
         )
         {
@@ -39,7 +38,6 @@ namespace eDoxa.Arena.Challenges.Application.Commands.Abstractions
             BestOf = bestOf;
             PayoutEntries = payoutEntries;
             EntryFee = entryFee;
-            EquivalentCurrency = equivalentCurrency;
             IsFakeChallenge = isFakeChallenge;
         }
 
@@ -57,9 +55,6 @@ namespace eDoxa.Arena.Challenges.Application.Commands.Abstractions
 
         [DataMember(Name = "entryFee")]
         public TEntryFee EntryFee { get; private set; }
-
-        [DataMember(Name = "equivalentCurrency")]
-        public bool EquivalentCurrency { get; private set; }
 
         [DataMember(Name = "isFakeChallenge", IsRequired = false)]
         public bool IsFakeChallenge { get; private set; }

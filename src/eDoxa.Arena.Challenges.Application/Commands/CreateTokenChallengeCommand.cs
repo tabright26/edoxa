@@ -22,7 +22,6 @@ namespace eDoxa.Arena.Challenges.Application.Commands
             BestOf bestOf,
             PayoutEntries payoutEntries,
             TokenEntryFee entryFee,
-            bool equivalentCurrency = true,
             bool isFakeChallenge = false
         ) : base(
             name,
@@ -30,7 +29,6 @@ namespace eDoxa.Arena.Challenges.Application.Commands
             bestOf,
             payoutEntries,
             entryFee,
-            equivalentCurrency,
             isFakeChallenge
         )
         {

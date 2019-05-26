@@ -39,6 +39,7 @@ namespace eDoxa.Arena.Challenges.DTO.Profiles
                     challenge => challenge.CompletedAt,
                     config => config.MapFrom(challenge => challenge.CompletedAt != null ? (DateTime?) challenge.CompletedAt : null)
                 )
+                .ForMember(challenge => challenge.IsFake, config => config.MapFrom(challenge => challenge.IsFake))
                 .ForMember(challenge => challenge.Scoring, config => config.MapFrom(challenge => challenge.Scoring))
                 .ForMember(challenge => challenge.Payout, config => config.MapFrom(challenge => challenge.Payout))
                 .ForMember(

@@ -22,7 +22,7 @@ namespace eDoxa.Cashier.Domain.Services.Validators
         {
             this.AddRule(new HasBankAccountSpecification().Not(), "A bank account is required to withdrawal.");
 
-            this.AddRule(new InsufficientMoneySpecification(money).Not(), "Insufficient funds.");
+            this.AddRule(new InsufficientMoneySpecification(money), "Insufficient funds.");
 
             this.AddRule(new WeeklyMoneyWithdrawUnavailableSpecification(), $"Withdraw unavailable until {lastWithdrawal?.AddDays(7)}");
         }

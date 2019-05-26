@@ -21,14 +21,15 @@ namespace eDoxa.Arena.Challenges.Services.Decorators
 {
     public sealed class FakeChallengeDecorator : Challenge
     {
-        private static readonly Random Random = new Random();
+        private readonly Random _random = new Random();
 
         public FakeChallengeDecorator(Challenge challenge) : base(
             challenge.Game,
             challenge.Name,
             challenge.Setup,
             challenge.Duration,
-            challenge.Scoring
+            challenge.Scoring,
+            true
         )
         {
             for (var index = 0; index < Setup.Entries; index++)
@@ -39,25 +40,25 @@ namespace eDoxa.Arena.Challenges.Services.Decorators
             Participants.ForEach(
                 participant =>
                 {
-                    for (var index = 0; index < Random.Next(2, Setup.BestOf + 2); index++)
+                    for (var index = 0; index < _random.Next(2, Setup.BestOf + 2); index++)
                     {
-                        this.SnapshotParticipantMatch(participant.Id, FakeMatchStats());
+                        this.SnapshotParticipantMatch(participant.Id, this.FakeMatchStats());
                     }
                 }
             );
         }
 
-        private static IMatchStats FakeMatchStats()
+        private IMatchStats FakeMatchStats()
         {
             return new MatchStats(
                 new MatchExternalId(2233345251),
                 new
                 {
-                    Kills = Random.Next(0, 40 + 1),
-                    Deaths = Random.Next(0, 15 + 1),
-                    Assists = Random.Next(0, 50 + 1),
-                    TotalDamageDealtToChampions = Random.Next(10000, 500000 + 1),
-                    TotalHeal = Random.Next(10000, 350000 + 1)
+                    Kills = _random.Next(0, 40 + 1),
+                    Deaths = _random.Next(0, 15 + 1),
+                    Assists = _random.Next(0, 50 + 1),
+                    TotalDamageDealtToChampions = _random.Next(10000, 500000 + 1),
+                    TotalHeal = _random.Next(10000, 350000 + 1)
                 }
             );
         }

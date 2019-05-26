@@ -45,9 +45,12 @@ namespace eDoxa.Arena.Challenges.DTO
         [JsonConverter(typeof(UnixDateTimeConverter))]
         public DateTime? CompletedAt { get; set; }
 
+        [JsonProperty("isFake")]
+        public bool IsFake { get; set; }
+
         [JsonProperty("setup")]
         public ChallengeSetupDTO Setup { get; set; }
-
+        
         [JsonProperty("scoring")]
         public ScoringDTO Scoring { get; set; }
 

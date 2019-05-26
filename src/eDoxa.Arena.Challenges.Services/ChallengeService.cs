@@ -87,7 +87,7 @@ namespace eDoxa.Arena.Challenges.Services
 
             var validator = new RegisterParticipantValidator(userId, externalAccount);
 
-            if (validator.Validate(challenge, out var result))
+            if (!validator.Validate(challenge, out var result))
             {
                 return result.ValidationError;
             }

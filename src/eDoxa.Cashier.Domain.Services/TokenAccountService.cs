@@ -46,7 +46,7 @@ namespace eDoxa.Cashier.Domain.Services
 
             var validator = new DepositTokenValidator(account.LastDeposit);
 
-            if (validator.Validate(account, out var result))
+            if (!validator.Validate(account, out var result))
             {
                 return result.ValidationError;
             }

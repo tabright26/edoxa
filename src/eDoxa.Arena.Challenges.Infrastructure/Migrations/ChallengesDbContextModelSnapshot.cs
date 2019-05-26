@@ -30,6 +30,8 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
 
                     b.Property<int>("Game");
 
+                    b.Property<bool>("IsFake");
+
                     b.Property<string>("Name")
                         .IsRequired();
 
@@ -154,9 +156,6 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
                             b1.Property<string>("EntryFee")
                                 .IsRequired()
                                 .HasColumnName("EntryFee");
-
-                            b1.Property<bool>("EquivalentCurrency")
-                                .HasColumnName("EquivalentCurrency");
 
                             b1.Property<float>("PayoutRatio")
                                 .HasColumnName("PayoutRatio");

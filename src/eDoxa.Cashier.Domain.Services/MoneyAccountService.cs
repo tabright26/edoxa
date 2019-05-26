@@ -46,7 +46,7 @@ namespace eDoxa.Cashier.Domain.Services
 
             var validator = new DepositMoneyValidator(account.LastDeposit);
 
-            if (validator.Validate(account, out var result))
+            if (!validator.Validate(account, out var result))
             {
                 return result.ValidationError;
             }
@@ -95,7 +95,7 @@ namespace eDoxa.Cashier.Domain.Services
 
             var validator = new WithdrawMoneyValidator(money, account.LastWithdraw);
 
-            if (validator.Validate(account, out var result))
+            if (!validator.Validate(account, out var result))
             {
                 return result.ValidationError;
             }
