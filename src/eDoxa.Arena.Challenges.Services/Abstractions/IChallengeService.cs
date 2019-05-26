@@ -1,5 +1,5 @@
 ﻿// Filename: IChallengeService.cs
-// Date Created: 2019-05-20
+// Date Created: 2019-05-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -32,7 +32,6 @@ namespace eDoxa.Arena.Challenges.Services.Abstractions
             BestOf bestOf,
             EntryFee entryFee,
             PayoutEntries payoutEntries,
-            bool equivalentCurrency = true,
             bool isFakeChallenge = false,
             CancellationToken cancellationToken = default
         );

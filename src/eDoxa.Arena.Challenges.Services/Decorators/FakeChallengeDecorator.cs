@@ -1,4 +1,4 @@
-﻿// Filename: FakeLeagueOfLegendsChallengeBuilder.cs
+﻿// Filename: FakeChallengeDecorator.cs
 // Date Created: 2019-05-22
 // 
 // ================================================
@@ -23,7 +23,13 @@ namespace eDoxa.Arena.Challenges.Services.Decorators
     {
         private static readonly Random Random = new Random();
 
-        public FakeChallengeDecorator(Challenge challenge) : base(challenge.Game, challenge.Name, challenge.Setup, challenge.Duration, challenge.Scoring)
+        public FakeChallengeDecorator(Challenge challenge) : base(
+            challenge.Game,
+            challenge.Name,
+            challenge.Setup,
+            challenge.Duration,
+            challenge.Scoring
+        )
         {
             for (var index = 0; index < Setup.Entries; index++)
             {

@@ -19,26 +19,31 @@ namespace eDoxa.Seedwork.Application.Validators
     public abstract class DomainValidator<TEntity>
     where TEntity : IEntity, IAggregateRoot
     {
-        private readonly IDictionary<string, ISpecification<TEntity>> _specifications = new Dictionary<string, ISpecification<TEntity>>();
+        private readonly ICollection<DomainRule<TEntity>> _rules = new HashSet<DomainRule<TEntity>>();
 
         public bool Validate(TEntity entity, out ValidationResult result)
         {
             result = new ValidationResult();
 
-            foreach (var specification in _specifications)
+            foreach (var rule in _rules)
             {
-                if (specification.Value.IsSatisfiedBy(entity))
+                if (rule.Specification.IsSatisfiedBy(entity))
                 {
-                    result.AddError(specification.Key);
+                    result.AddError(rule.ErrorMessage);
+
+                    if (rule.FailFast)
+                    {
+                        return result;
+                    }
                 }
             }
 
             return result;
         }
 
-        protected void AddRule(ISpecification<TEntity> specification, string errorMessage)
+        protected void AddRule(ISpecification<TEntity> specification, string errorMessage, bool failFast = false)
         {
-            _specifications.Add(errorMessage, specification);
+            _rules.Add(new DomainRule<TEntity>(specification, errorMessage, failFast));
         }
     }
 }

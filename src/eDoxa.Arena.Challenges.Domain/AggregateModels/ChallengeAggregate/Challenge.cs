@@ -14,6 +14,7 @@ using System.Linq;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
+using eDoxa.Arena.Challenges.Domain.DomainEvents;
 using eDoxa.Arena.Challenges.Domain.Factories;
 using eDoxa.Arena.Challenges.Domain.Specifications;
 using eDoxa.Arena.Domain;
@@ -39,13 +40,15 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         private ChallengeCompletedAt _completedAt;
         private IScoring _scoring;
         private HashSet<Participant> _participants;
+        private bool _isFake;
 
         public Challenge(
             Game game,
             ChallengeName name,
             ChallengeSetup setup,
             ChallengeDuration duration,
-            IScoring scoring
+            IScoring scoring,
+            bool isFake = false
         ) : this()
         {
             _game = game;
@@ -53,6 +56,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             _setup = setup;
             _duration = duration;
             _scoring = scoring;
+            _isFake = isFake;
         }
 
         private Challenge()
@@ -82,9 +86,11 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         [CanBeNull]
         public ChallengeCompletedAt CompletedAt => _completedAt;
 
+        public bool IsFake => _isFake;
+
         public IScoring Scoring => _scoring;
 
-        public IPayout Payout => PayoutFactory.Instance.Create(Setup.PayoutEntries, this.DeterminePayoutPrize());
+        public IPayout Payout => PayoutFactory.Instance.Create(Setup.PayoutEntries, Setup.EntryFee);
 
         public IScoreboard Scoreboard => new Scoreboard(this);
 
@@ -99,13 +105,12 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
             _completedAt = new ChallengeCompletedAt();
 
-            //this.AddDomainEvent(new PayoutProcessedDomainEvent(Id, Payout.Payoff(Scoreboard)));
+            this.AddDomainEvent(new ChallengePayoutDomainEvent(Id, Payout.GetParticipantPrizes(Scoreboard)));
         }
 
         private bool CanComplete()
         {
-            var specification = SpecificationFactory.Instance.CreateSpecification<Challenge>()
-                /*       .And(new ChallengeEndedSpecification())*/;
+            var specification = SpecificationFactory.Instance.CreateSpecification<Challenge>();
 
             return specification.IsSatisfiedBy(this);
         }
@@ -132,9 +137,8 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         private bool CanRegisterParticipant(UserId userId)
         {
             var specification = SpecificationFactory.Instance.CreateSpecification<Challenge>()
-                                                    .And(new UserIsRegisteredSpecification(userId).Not())
-                                                    .And(new ChallengeRegisterIsAvailableSpecification().Not())
-                /*            .And(new ChallengeOpenedSpecification())*/;
+                .And(new UserIsRegisteredSpecification(userId).Not())
+                .And(new ChallengeRegisterIsAvailableSpecification().Not());
 
             return specification.IsSatisfiedBy(this);
         }
@@ -151,40 +155,9 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         private bool CanSnapshotParticipantMatch(ParticipantId participantId)
         {
-            var specification = SpecificationFactory.Instance.CreateSpecification<Challenge>().And(new ParticipantIsRegisteredSpecification(participantId))
-                /*        .And(new ChallengeMininumInProgressSpecification())*/;
+            var specification = SpecificationFactory.Instance.CreateSpecification<Challenge>().And(new ParticipantIsRegisteredSpecification(participantId));
 
             return specification.IsSatisfiedBy(this);
-        }
-
-        private Prize DeterminePayoutPrize()
-        {
-            if (Setup.EquivalentCurrency)
-            {
-                if (Setup.EntryFee.Currency == Currency.Money)
-                {
-                    return new MoneyPrize(Setup.EntryFee);
-                }
-
-                if (Setup.EntryFee.Currency == Currency.Token)
-                {
-                    return new TokenPrize(Setup.EntryFee);
-                }
-            }
-            else
-            {
-                if (Setup.EntryFee.Currency == Currency.Token)
-                {
-                    return new MoneyPrize(Setup.EntryFee / 1000);
-                }
-
-                if (Setup.EntryFee.Currency == Currency.Money)
-                {
-                    return new TokenPrize(Setup.EntryFee * 1000);
-                }
-            }
-
-            throw new InvalidOperationException();
         }
     }
 }

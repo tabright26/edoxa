@@ -1,9 +1,9 @@
 ﻿// Filename: ChallengeSetup.cs
-// Date Created: 2019-04-21
+// Date Created: 2019-05-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -20,14 +20,12 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         private EntryFee _entryFee;
         private PayoutRatio _payoutRatio;
         private ServiceChargeRatio _serviceChargeRatio;
-        private bool _equivalentCurrency;
 
-        public ChallengeSetup(BestOf bestOf, PayoutEntries payoutEntries, EntryFee entryFee, bool equivalentCurrency = true) : this()
+        public ChallengeSetup(BestOf bestOf, PayoutEntries payoutEntries, EntryFee entryFee) : this()
         {
             _bestOf = bestOf;
-            _entries = new Entries(payoutEntries, _payoutRatio);
             _entryFee = entryFee;
-            _equivalentCurrency = equivalentCurrency;
+            _entries = new Entries(payoutEntries, _payoutRatio);
         }
 
         private ChallengeSetup()
@@ -45,8 +43,6 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         public PayoutRatio PayoutRatio => _payoutRatio;
 
         public ServiceChargeRatio ServiceChargeRatio => _serviceChargeRatio;
-
-        public bool EquivalentCurrency => _equivalentCurrency;
 
         public PayoutEntries PayoutEntries => new PayoutEntries(_entries, _payoutRatio);
 

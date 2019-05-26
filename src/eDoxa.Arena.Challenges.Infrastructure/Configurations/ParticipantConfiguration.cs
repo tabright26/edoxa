@@ -1,11 +1,11 @@
 ﻿// Filename: ParticipantConfiguration.cs
-// Date Created: 2019-03-20
+// Date Created: 2019-05-20
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
 // 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
@@ -27,33 +27,35 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
             builder.ToTable(nameof(ChallengesDbContext.Participants));
 
             builder.Property(participant => participant.Id)
-                   .HasConversion(participantId => participantId.ToGuid(), value => ParticipantId.FromGuid(value))
-                   .IsRequired()
-                   .UsePropertyAccessMode(PropertyAccessMode.Field);
+                .HasConversion(participantId => participantId.ToGuid(), value => ParticipantId.FromGuid(value))
+                .IsRequired()
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.Property(participant => participant.Timestamp).IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field);
 
-            builder.Property<ChallengeId>(nameof(ChallengeId)).HasConversion(challengeId => challengeId.ToGuid(), value => ChallengeId.FromGuid(value)).IsRequired();
+            builder.Property<ChallengeId>(nameof(ChallengeId))
+                .HasConversion(challengeId => challengeId.ToGuid(), value => ChallengeId.FromGuid(value))
+                .IsRequired();
 
             builder.Property(participant => participant.UserId)
-                   .HasConversion(userId => userId.ToGuid(), value => UserId.FromGuid(value))
-                   .IsRequired()
-                   .UsePropertyAccessMode(PropertyAccessMode.Field);
+                .HasConversion(userId => userId.ToGuid(), value => UserId.FromGuid(value))
+                .IsRequired()
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.Property(participant => participant.ExternalAccount)
-                   .HasConversion(externalAccount => externalAccount.ToString(), externalAccount => new ExternalAccount(externalAccount))
-                   .IsRequired()
-                   .UsePropertyAccessMode(PropertyAccessMode.Field);
+                .HasConversion(externalAccount => externalAccount.ToString(), externalAccount => new ExternalAccount(externalAccount))
+                .IsRequired()
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.Ignore(participant => participant.AverageScore);
 
             builder.HasKey(participant => participant.Id);
 
             builder.HasMany(participant => participant.Matches)
-                   .WithOne(match => match.Participant)
-                   .HasForeignKey(nameof(ParticipantId))
-                   .IsRequired()
-                   .OnDelete(DeleteBehavior.Cascade);
+                .WithOne(match => match.Participant)
+                .HasForeignKey(nameof(ParticipantId))
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Metadata.FindNavigation(nameof(Participant.Matches)).SetPropertyAccessMode(PropertyAccessMode.Field);
         }

@@ -1,11 +1,11 @@
 ﻿// Filename: MatchConfiguration.cs
-// Date Created: 2019-03-20
+// Date Created: 2019-05-20
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
 // 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
@@ -25,20 +25,20 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
             builder.ToTable(nameof(ChallengesDbContext.Matches));
 
             builder.Property(match => match.Id)
-                   .HasConversion(matchId => matchId.ToGuid(), matchId => MatchId.FromGuid(matchId))
-                   .IsRequired()
-                   .UsePropertyAccessMode(PropertyAccessMode.Field);
+                .HasConversion(matchId => matchId.ToGuid(), matchId => MatchId.FromGuid(matchId))
+                .IsRequired()
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.Property(match => match.Timestamp).IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.Property<ParticipantId>(nameof(ParticipantId))
-                   .HasConversion(participantId => participantId.ToGuid(), participantId => ParticipantId.FromGuid(participantId))
-                   .IsRequired();
+                .HasConversion(participantId => participantId.ToGuid(), participantId => ParticipantId.FromGuid(participantId))
+                .IsRequired();
 
             builder.Property(match => match.MatchExternalId)
-                   .HasConversion(externalId => externalId.ToString(), externalId => new MatchExternalId(externalId))
-                   .IsRequired()
-                   .UsePropertyAccessMode(PropertyAccessMode.Field);
+                .HasConversion(externalId => externalId.ToString(), externalId => new MatchExternalId(externalId))
+                .IsRequired()
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.Ignore(match => match.TotalScore);
 

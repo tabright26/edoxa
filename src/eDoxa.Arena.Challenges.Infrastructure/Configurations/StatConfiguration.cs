@@ -1,9 +1,9 @@
 ﻿// Filename: StatConfiguration.cs
-// Date Created: 2019-04-14
+// Date Created: 2019-05-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -36,13 +36,17 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
 
             builder.Property(stat => stat.Name)
                 .HasConversion(name => name.ToString(), name => new StatName(name))
-                .IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field);
+                .IsRequired()
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.Property(stat => stat.Value)
-                .HasConversion<double>(value => value, value => new StatValue(value)).IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field);
+                .HasConversion<double>(value => value, value => new StatValue(value))
+                .IsRequired()
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.Property(stat => stat.Weighting)
-                .HasConversion<float>(weighting => weighting, weighting => new StatWeighting(weighting)).IsRequired()
+                .HasConversion<float>(weighting => weighting, weighting => new StatWeighting(weighting))
+                .IsRequired()
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.Ignore(stat => stat.Score);

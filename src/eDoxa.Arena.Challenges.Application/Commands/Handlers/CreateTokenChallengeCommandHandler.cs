@@ -44,7 +44,6 @@ namespace eDoxa.Arena.Challenges.Application.Commands.Handlers
                 command.BestOf,
                 command.EntryFee,
                 command.PayoutEntries,
-                command.EquivalentCurrency,
                 command.IsFakeChallenge,
                 cancellationToken
             );

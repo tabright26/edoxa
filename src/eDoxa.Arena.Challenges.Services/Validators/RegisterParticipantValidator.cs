@@ -20,11 +20,14 @@ namespace eDoxa.Arena.Challenges.Services.Validators
     {
         public RegisterParticipantValidator(UserId userId, ExternalAccount externalAccount)
         {
-            this.AddRule(new ExternalAccountIsProvidedSpecification(externalAccount).Not(), "This user does not provide an external account for the challenge-specific game.");
+            this.AddRule(
+                new ExternalAccountIsProvidedSpecification(externalAccount).Not(),
+                "This user does not provide an external account for the challenge-specific game."
+            );
 
-            this.AddRule(new UserIsRegisteredSpecification(userId), "The participant is already registered for the challenge.");
+            this.AddRule(new UserIsRegisteredSpecification(userId), "The user already is registered.");
 
-            this.AddRule(new ChallengeRegisterIsAvailableSpecification(), "Registration of participants is complete.");
+            this.AddRule(new ChallengeRegisterIsAvailableSpecification(), "Challenge register is available.");
         }
     }
 }

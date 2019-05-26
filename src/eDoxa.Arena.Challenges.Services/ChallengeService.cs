@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeService.cs
-// Date Created: 2019-05-09
+// Date Created: 2019-05-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -45,7 +45,6 @@ namespace eDoxa.Arena.Challenges.Services
             BestOf bestOf,
             EntryFee entryFee,
             PayoutEntries payoutEntries,
-            bool equivalentCurrency = true,
             bool isFakeChallenge = false,
             CancellationToken cancellationToken = default
         )
@@ -53,7 +52,7 @@ namespace eDoxa.Arena.Challenges.Services
             var challenge = new Challenge(
                 game,
                 name,
-                new ChallengeSetup(bestOf, payoutEntries, entryFee, equivalentCurrency),
+                new ChallengeSetup(bestOf, payoutEntries, entryFee),
                 new ChallengeDuration(),
                 ScoringFactory.Instance.CreateScoringStrategy(game).Scoring
             );
@@ -70,7 +69,12 @@ namespace eDoxa.Arena.Challenges.Services
             return challenge;
         }
 
-        public async Task<Either<ValidationError, Participant>> RegisterParticipantAsync(ChallengeId challengeId, UserId userId, Func<Game, ExternalAccount>  funcExternalAccount, CancellationToken cancellationToken = default)
+        public async Task<Either<ValidationError, Participant>> RegisterParticipantAsync(
+            ChallengeId challengeId,
+            UserId userId,
+            Func<Game, ExternalAccount> funcExternalAccount,
+            CancellationToken cancellationToken = default
+        )
         {
             var challenge = await _challengeRepository.FindChallengeAsync(challengeId);
 
