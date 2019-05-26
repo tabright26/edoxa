@@ -1,5 +1,5 @@
 ﻿// Filename: MoneyAccount.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-05-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -15,10 +15,9 @@ using System.Linq;
 using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate.Specifications;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
-using eDoxa.Cashier.Domain.AggregateModels.UserAggregate.Specifications;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Domain.Validations;
+using eDoxa.Specifications.Factories;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
 {
@@ -130,50 +129,28 @@ namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
             return transaction;
         }
 
-        public ValidationResult CanDeposit()
+        public bool CanDeposit()
         {
-            var result = new ValidationResult();
+            var specification = SpecificationFactory.Instance.CreateSpecification<MoneyAccount>().And(new DailyMoneyDepositUnavailableSpecification().Not());
 
-            if (new DailyMoneyDepositUnavailableSpecification().IsSatisfiedBy(this))
-            {
-                result.AddError($"Deposit unavailable until {LastDeposit?.AddDays(1)}");
-            }
-
-            return result;
+            return specification.IsSatisfiedBy(this);
         }
 
-        public ValidationResult CanCharge(Money money)
+        public bool CanCharge(Money money)
         {
-            var result = new ValidationResult();
+            var specification = SpecificationFactory.Instance.CreateSpecification<MoneyAccount>().And(new InsufficientMoneySpecification(money).Not());
 
-            if (new InsufficientMoneySpecification(money).IsSatisfiedBy(this))
-            {
-                result.AddError("Insufficient funds.");
-            }
-
-            return result;
+            return specification.IsSatisfiedBy(this);
         }
 
-        public ValidationResult CanWithdraw(Money money)
+        public bool CanWithdraw(Money money)
         {
-            var result = new ValidationResult();
+            var specification = SpecificationFactory.Instance.CreateSpecification<MoneyAccount>()
+                .And(new HasBankAccountSpecification())
+                .And(new InsufficientMoneySpecification(money).Not())
+                .And(new WeeklyMoneyWithdrawUnavailableSpecification().Not());
 
-            if (new HasBankAccountSpecification().Not().IsSatisfiedBy(User))
-            {
-                result.AddError("A bank account is required to withdrawal.");
-            }
-
-            if (new InsufficientMoneySpecification(money).IsSatisfiedBy(this))
-            {
-                result.AddError("Insufficient funds.");
-            }
-
-            if (new WeeklyMoneyWithdrawUnavailableSpecification().IsSatisfiedBy(this))
-            {
-                result.AddError($"Withdrawal unavailable until {LastWithdraw?.AddDays(7)}");
-            }
-
-            return result;
+            return specification.IsSatisfiedBy(this);
         }
     }
 }

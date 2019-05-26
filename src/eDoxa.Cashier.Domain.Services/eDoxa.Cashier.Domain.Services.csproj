@@ -7,6 +7,7 @@
   <ItemGroup>
     <ProjectReference Include="..\eDoxa.Cashier.Domain.Services.Stripe\eDoxa.Cashier.Domain.Services.Stripe.csproj" />
     <ProjectReference Include="..\eDoxa.Cashier.Domain\eDoxa.Cashier.Domain.csproj" />
+    <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
   </ItemGroup>
 
 </Project>

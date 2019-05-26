@@ -1,5 +1,5 @@
 ﻿// Filename: MoneyAccountService.cs
-// Date Created: 2019-05-13
+// Date Created: 2019-05-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -17,6 +17,7 @@ using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services.Abstractions;
 using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
+using eDoxa.Cashier.Domain.Services.Validators;
 using eDoxa.Functional;
 using eDoxa.Seedwork.Domain.Entities;
 using eDoxa.Seedwork.Domain.Validations;
@@ -43,9 +44,9 @@ namespace eDoxa.Cashier.Domain.Services
         {
             var account = await _moneyAccountRepository.FindUserAccountAsync(userId);
 
-            var result = account.CanDeposit();
+            var validator = new DepositMoneyValidator(account.LastDeposit);
 
-            if (result.Failure)
+            if (validator.Validate(account, out var result))
             {
                 return result.ValidationError;
             }
@@ -92,9 +93,9 @@ namespace eDoxa.Cashier.Domain.Services
 
             var money = bundle.Amount;
 
-            var result = account.CanWithdraw(money);
+            var validator = new WithdrawMoneyValidator(money, account.LastWithdraw);
 
-            if (result.Failure)
+            if (validator.Validate(account, out var result))
             {
                 return result.ValidationError;
             }

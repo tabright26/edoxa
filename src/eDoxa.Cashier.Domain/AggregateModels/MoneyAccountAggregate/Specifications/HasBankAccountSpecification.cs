@@ -1,5 +1,5 @@
 ﻿// Filename: HasBankAccountSpecification.cs
-// Date Created: 2019-05-20
+// Date Created: 2019-05-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,13 +13,13 @@ using System.Linq.Expressions;
 
 using eDoxa.Specifications;
 
-namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate.Specifications
+namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate.Specifications
 {
-    public sealed class HasBankAccountSpecification : Specification<User>
+    public class HasBankAccountSpecification : Specification<MoneyAccount>
     {
-        public override Expression<Func<User, bool>> ToExpression()
+        public override Expression<Func<MoneyAccount, bool>> ToExpression()
         {
-            return user => user.BankAccountId != null;
+            return account => account.User.BankAccountId != null;
         }
     }
 }

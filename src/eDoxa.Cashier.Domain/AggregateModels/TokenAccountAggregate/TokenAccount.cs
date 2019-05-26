@@ -17,7 +17,7 @@ using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate.Specifications;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Domain.Validations;
+using eDoxa.Specifications.Factories;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
 {
@@ -114,28 +114,20 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
             return transaction;
         }
 
-        public ValidationResult CanDeposit()
+        public bool CanDeposit()
         {
-            var result = new ValidationResult();
+            var specification = SpecificationFactory.Instance.CreateSpecification<TokenAccount>()
+                .And(new DailyTokenDepositUnavailableSpecification().Not());
 
-            if (new DailyTokenDepositUnavailableSpecification().IsSatisfiedBy(this))
-            {
-                result.AddError($"Deposit unavailable until {LastDeposit?.AddDays(1)}");
-            }
-
-            return result;
+            return specification.IsSatisfiedBy(this);
         }
 
-        public ValidationResult CanCharge(Token token)
+        public bool CanCharge(Token token)
         {
-            var result = new ValidationResult();
+            var specification = SpecificationFactory.Instance.CreateSpecification<TokenAccount>()
+                .And(new InsufficientTokenSpecification(token).Not());
 
-            if (new InsufficientTokenSpecification(token).IsSatisfiedBy(this))
-            {
-                result.AddError("Insufficient tokens.");
-            }
-
-            return result;
+            return specification.IsSatisfiedBy(this);
         }
     }
 }
