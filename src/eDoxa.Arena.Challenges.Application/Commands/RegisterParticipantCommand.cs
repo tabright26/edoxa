@@ -12,13 +12,13 @@ using System.Runtime.Serialization;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Commands.Abstractions;
-
-using Microsoft.AspNetCore.Mvc;
+using eDoxa.Functional;
+using eDoxa.Seedwork.Domain.Validations;
 
 namespace eDoxa.Arena.Challenges.Application.Commands
 {
     [DataContract]
-    public sealed class RegisterParticipantCommand : Command<IActionResult>
+    public sealed class RegisterParticipantCommand : Command<Either<ValidationError, string>>
     {
         public RegisterParticipantCommand(ChallengeId challengeId)
         {

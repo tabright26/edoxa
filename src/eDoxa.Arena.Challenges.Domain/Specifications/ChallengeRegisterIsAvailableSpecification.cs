@@ -11,11 +11,12 @@
 using System;
 using System.Linq.Expressions;
 
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Specifications;
 
-namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.Specifications
+namespace eDoxa.Arena.Challenges.Domain.Specifications
 {
-    public sealed class ChallengeIsFullSpecification : Specification<Challenge>
+    public sealed class ChallengeRegisterIsAvailableSpecification : Specification<Challenge>
     {
         public override Expression<Func<Challenge, bool>> ToExpression()
         {

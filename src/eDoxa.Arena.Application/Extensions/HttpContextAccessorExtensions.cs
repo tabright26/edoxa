@@ -8,6 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
+
 using eDoxa.Arena.Domain;
 using eDoxa.Security.Extensions;
 using eDoxa.Seedwork.Domain.Enumerations;
@@ -21,11 +23,14 @@ namespace eDoxa.Arena.Application.Extensions
     public static class HttpContextAccessorExtensions
     {
         [CanBeNull]
-        public static ExternalAccount GetExternalAccount(this IHttpContextAccessor accessor, Game game)
+        public static Func<Game, ExternalAccount> FuncExternalAccount(this IHttpContextAccessor accessor)
         {
-            var externalAccount = accessor.GetClaimOrDefault(game.GetClaimType());
+            return game =>
+            {
+                var externalAccount = accessor.GetClaimOrDefault(game.GetClaimType());
 
-            return externalAccount != null ? new ExternalAccount(externalAccount) : null;
+                return externalAccount != null ? new ExternalAccount(externalAccount) : null;
+            };
         }
     }
 }

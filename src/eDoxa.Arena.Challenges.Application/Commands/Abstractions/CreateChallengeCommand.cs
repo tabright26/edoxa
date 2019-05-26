@@ -31,8 +31,7 @@ namespace eDoxa.Arena.Challenges.Application.Commands.Abstractions
             PayoutEntries payoutEntries,
             TEntryFee entryFee,
             bool equivalentCurrency = true,
-            bool registerParticipants = false,
-            bool snapshotParticipantMatches = false
+            bool isFakeChallenge = false
         )
         {
             Name = name;
@@ -41,8 +40,7 @@ namespace eDoxa.Arena.Challenges.Application.Commands.Abstractions
             PayoutEntries = payoutEntries;
             EntryFee = entryFee;
             EquivalentCurrency = equivalentCurrency;
-            RegisterParticipants = registerParticipants;
-            SnapshotParticipantMatches = snapshotParticipantMatches;
+            IsFakeChallenge = isFakeChallenge;
         }
 
         [DataMember(Name = "name")]
@@ -63,10 +61,7 @@ namespace eDoxa.Arena.Challenges.Application.Commands.Abstractions
         [DataMember(Name = "equivalentCurrency")]
         public bool EquivalentCurrency { get; private set; }
 
-        [DataMember(Name = "registerParticipants", IsRequired = false)]
-        public bool RegisterParticipants { get; private set; }
-
-        [DataMember(Name = "snapshotParticipantMatches", IsRequired = false)]
-        public bool SnapshotParticipantMatches { get; private set; }
+        [DataMember(Name = "isFakeChallenge", IsRequired = false)]
+        public bool IsFakeChallenge { get; private set; }
     }
 }

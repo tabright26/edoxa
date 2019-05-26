@@ -23,8 +23,7 @@ namespace eDoxa.Arena.Challenges.Application.Commands
             PayoutEntries payoutEntries,
             TokenEntryFee entryFee,
             bool equivalentCurrency = true,
-            bool registerParticipants = false,
-            bool snapshotParticipantMatches = false
+            bool isFakeChallenge = false
         ) : base(
             name,
             game,
@@ -32,8 +31,7 @@ namespace eDoxa.Arena.Challenges.Application.Commands
             payoutEntries,
             entryFee,
             equivalentCurrency,
-            registerParticipants,
-            snapshotParticipantMatches
+            isFakeChallenge
         )
         {
         }

@@ -31,12 +31,12 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
     [ApiExplorerSettings(GroupName = "Challenges")]
     public class ChallengeParticipantsController : ControllerBase
     {
+        private readonly IParticipantQuery _participantQuery;
         private readonly IMediator _mediator;
-        private readonly IParticipantQuery _query;
 
-        public ChallengeParticipantsController(IParticipantQuery query, IMediator mediator)
+        public ChallengeParticipantsController(IParticipantQuery participantQuery, IMediator mediator)
         {
-            _query = query;
+            _participantQuery = participantQuery;
             _mediator = mediator;
         }
 
@@ -46,7 +46,7 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         [HttpGet(Name = nameof(FindChallengeParticipantsAsync))]
         public async Task<IActionResult> FindChallengeParticipantsAsync(ChallengeId challengeId)
         {
-            var participants = await _query.FindChallengeParticipantsAsync(challengeId);
+            var participants = await _participantQuery.FindChallengeParticipantsAsync(challengeId);
 
             return participants
                 .Select(this.Ok)
@@ -61,7 +61,9 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         [HttpPost(Name = nameof(RegisterChallengeParticipantAsync))]
         public async Task<IActionResult> RegisterChallengeParticipantAsync(ChallengeId challengeId)
         {
-            return await _mediator.SendCommandAsync(new RegisterParticipantCommand(challengeId));
+            var either = await _mediator.SendCommandAsync(new RegisterParticipantCommand(challengeId));
+
+            return either.Match<IActionResult>(error => this.BadRequest(error.ToString()), this.Ok);
         }
     }
 }

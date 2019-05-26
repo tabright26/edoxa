@@ -11,7 +11,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Domain.Services;
+using eDoxa.Arena.Challenges.Services.Abstractions;
 using eDoxa.Seedwork.Infrastructure.Abstractions;
 
 using Microsoft.AspNetCore.Hosting;
@@ -21,14 +21,14 @@ namespace eDoxa.Arena.Challenges.Infrastructure
     public sealed class ChallengesDbContextData : IDbContextData
     {
         private readonly ChallengesDbContext _context;
-        private readonly IFakeChallengeService _fakeChallengeService;
+        private readonly IChallengeService _challengeService;
         private readonly IHostingEnvironment _environment;
 
-        public ChallengesDbContextData(IHostingEnvironment environment, ChallengesDbContext context, IFakeChallengeService fakeChallengeService)
+        public ChallengesDbContextData(IHostingEnvironment environment, ChallengesDbContext context, IChallengeService challengeService)
         {
             _environment = environment;
             _context = context;
-            _fakeChallengeService = fakeChallengeService;
+            _challengeService = challengeService;
         }
 
         public async Task SeedAsync()

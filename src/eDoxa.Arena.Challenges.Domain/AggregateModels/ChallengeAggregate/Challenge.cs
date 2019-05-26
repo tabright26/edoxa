@@ -13,10 +13,9 @@ using System.Collections.Generic;
 using System.Linq;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.Specifications;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate.Specifications;
 using eDoxa.Arena.Challenges.Domain.Factories;
+using eDoxa.Arena.Challenges.Domain.Specifications;
 using eDoxa.Arena.Domain;
 using eDoxa.Arena.Domain.Abstractions;
 using eDoxa.Seedwork.Domain;
@@ -46,14 +45,14 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             ChallengeName name,
             ChallengeSetup setup,
             ChallengeDuration duration,
-            IScoringStrategy strategy
+            IScoring scoring
         ) : this()
         {
             _game = game;
             _name = name;
             _setup = setup;
             _duration = duration;
-            _scoring = strategy.Scoring;
+            _scoring = scoring;
         }
 
         private Challenge()
@@ -111,7 +110,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             return specification.IsSatisfiedBy(this);
         }
 
-        public void RegisterParticipant(UserId userId, ExternalAccount externalAccount)
+        public Participant RegisterParticipant(UserId userId, ExternalAccount externalAccount)
         {
             if (!this.CanRegisterParticipant(userId))
             {
@@ -123,14 +122,18 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
                 _startedAt = new ChallengeStartedAt();
             }
 
-            _participants.Add(new Participant(this, userId, externalAccount));
+            var participant = new Participant(this, userId, externalAccount);
+
+            _participants.Add(participant);
+
+            return participant;
         }
 
         private bool CanRegisterParticipant(UserId userId)
         {
             var specification = SpecificationFactory.Instance.CreateSpecification<Challenge>()
-                                                    .And(new ParticipantAlreadyRegisteredSpecification(userId).Not())
-                                                    .And(new ChallengeIsFullSpecification().Not())
+                                                    .And(new UserIsRegisteredSpecification(userId).Not())
+                                                    .And(new ChallengeRegisterIsAvailableSpecification().Not())
                 /*            .And(new ChallengeOpenedSpecification())*/;
 
             return specification.IsSatisfiedBy(this);
@@ -148,7 +151,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         private bool CanSnapshotParticipantMatch(ParticipantId participantId)
         {
-            var specification = SpecificationFactory.Instance.CreateSpecification<Challenge>().And(new ParticipantExistsSpecification(participantId))
+            var specification = SpecificationFactory.Instance.CreateSpecification<Challenge>().And(new ParticipantIsRegisteredSpecification(participantId))
                 /*        .And(new ChallengeMininumInProgressSpecification())*/;
 
             return specification.IsSatisfiedBy(this);

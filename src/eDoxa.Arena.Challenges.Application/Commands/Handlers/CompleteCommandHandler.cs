@@ -11,7 +11,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Domain.Services;
+using eDoxa.Arena.Challenges.Services.Abstractions;
 using eDoxa.Commands.Abstractions.Handlers;
 
 using JetBrains.Annotations;
@@ -29,7 +29,7 @@ namespace eDoxa.Arena.Challenges.Application.Commands.Handlers
 
         protected override async Task Handle([NotNull] CompleteCommand command, CancellationToken cancellationToken)
         {
-            await _challengeService.CompleteAsync();
+            await _challengeService.CompleteAsync(cancellationToken);
         }
     }
 }

@@ -13,7 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Application.IntegrationEvents;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.DomainEvents;
+using eDoxa.Arena.Challenges.Domain.DomainEvents;
 using eDoxa.Seedwork.Application.DomainEventHandlers;
 using eDoxa.ServiceBus;
 

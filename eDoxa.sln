@@ -163,8 +163,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Arena.Challenges.Appl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Arena.Challenges.Domain", "src\eDoxa.Arena.Challenges.Domain\eDoxa.Arena.Challenges.Domain.csproj", "{F483D80F-B2DB-4F07-A3FC-720F0E2743FB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Arena.Challenges.Domain.Services", "src\eDoxa.Arena.Challenges.Domain.Services\eDoxa.Arena.Challenges.Domain.Services.csproj", "{5DAB59B5-CAF8-4213-A1F6-D04DD2D6314F}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Arena.Challenges.DTO", "src\eDoxa.Arena.Challenges.DTO\eDoxa.Arena.Challenges.DTO.csproj", "{D80FBC80-323E-4990-86AB-C676E4B09B88}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Arena.Challenges.Infrastructure", "src\eDoxa.Arena.Challenges.Infrastructure\eDoxa.Arena.Challenges.Infrastructure.csproj", "{8E10F0B5-A519-47C8-88F0-39CFBBA8AF49}"
@@ -191,7 +189,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Arena.Challenges.Serv
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Arena.Domain", "src\eDoxa.Arena.Domain\eDoxa.Arena.Domain.csproj", "{FEC346B2-DD83-4529-B66D-23E3A38C55C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Arena.Application", "src\eDoxa.Arena.Application\eDoxa.Arena.Application.csproj", "{1846AFD4-BD51-4588-B91E-5FC6372B1D2B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Arena.Application", "src\eDoxa.Arena.Application\eDoxa.Arena.Application.csproj", "{1846AFD4-BD51-4588-B91E-5FC6372B1D2B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -439,10 +437,6 @@ Global
 		{F483D80F-B2DB-4F07-A3FC-720F0E2743FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F483D80F-B2DB-4F07-A3FC-720F0E2743FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F483D80F-B2DB-4F07-A3FC-720F0E2743FB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5DAB59B5-CAF8-4213-A1F6-D04DD2D6314F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5DAB59B5-CAF8-4213-A1F6-D04DD2D6314F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5DAB59B5-CAF8-4213-A1F6-D04DD2D6314F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5DAB59B5-CAF8-4213-A1F6-D04DD2D6314F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D80FBC80-323E-4990-86AB-C676E4B09B88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D80FBC80-323E-4990-86AB-C676E4B09B88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D80FBC80-323E-4990-86AB-C676E4B09B88}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -578,7 +572,6 @@ Global
 		{7AFADCEF-E449-4FB3-9332-013D25D57D98} = {7C414564-DB04-47D4-88B1-7C7B24C7904F}
 		{CDEBB8BF-C30F-4ABB-B8F4-3CBDB96A4620} = {7C414564-DB04-47D4-88B1-7C7B24C7904F}
 		{F483D80F-B2DB-4F07-A3FC-720F0E2743FB} = {7C414564-DB04-47D4-88B1-7C7B24C7904F}
-		{5DAB59B5-CAF8-4213-A1F6-D04DD2D6314F} = {7C414564-DB04-47D4-88B1-7C7B24C7904F}
 		{D80FBC80-323E-4990-86AB-C676E4B09B88} = {7C414564-DB04-47D4-88B1-7C7B24C7904F}
 		{8E10F0B5-A519-47C8-88F0-39CFBBA8AF49} = {7C414564-DB04-47D4-88B1-7C7B24C7904F}
 		{0CAFEAB6-19E6-42C8-AE3B-90A5CBF76B5F} = {7C414564-DB04-47D4-88B1-7C7B24C7904F}

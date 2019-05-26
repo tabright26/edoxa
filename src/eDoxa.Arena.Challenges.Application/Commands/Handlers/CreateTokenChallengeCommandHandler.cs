@@ -14,8 +14,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.DTO;
+using eDoxa.Arena.Challenges.Services.Abstractions;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Functional;
 using eDoxa.Seedwork.Domain.Validations;
@@ -26,10 +26,10 @@ namespace eDoxa.Arena.Challenges.Application.Commands.Handlers
 {
     internal sealed class CreateTokenChallengeCommandHandler : ICommandHandler<CreateTokenChallengeCommand, Either<ValidationError, ChallengeDTO>>
     {
-        private readonly IFakeChallengeService _challengeService;
+        private readonly IChallengeService _challengeService;
         private readonly IMapper _mapper;
 
-        public CreateTokenChallengeCommandHandler(IFakeChallengeService challengeService, IMapper mapper)
+        public CreateTokenChallengeCommandHandler(IChallengeService challengeService, IMapper mapper)
         {
             _challengeService = challengeService;
             _mapper = mapper;
@@ -38,19 +38,18 @@ namespace eDoxa.Arena.Challenges.Application.Commands.Handlers
         [ItemCanBeNull]
         public async Task<Either<ValidationError, ChallengeDTO>> Handle([NotNull] CreateTokenChallengeCommand command, CancellationToken cancellationToken)
         {
-            var challenge = await _challengeService.CreateChallenge(
+            var either = await _challengeService.CreateChallengeAsync(
                 new ChallengeName(command.Name),
                 command.Game,
                 command.BestOf,
-                command.PayoutEntries,
                 command.EntryFee,
+                command.PayoutEntries,
                 command.EquivalentCurrency,
-                command.RegisterParticipants,
-                command.SnapshotParticipantMatches,
+                command.IsFakeChallenge,
                 cancellationToken
             );
 
-            return _mapper.Map<ChallengeDTO>(challenge);
+            return either.Match<Either<ValidationError, ChallengeDTO>>(error => error, challenge => _mapper.Map<ChallengeDTO>(challenge));
         }
     }
 }

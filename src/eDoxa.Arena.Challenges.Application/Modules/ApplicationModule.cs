@@ -11,11 +11,11 @@
 using Autofac;
 
 using eDoxa.Arena.Challenges.Application.Queries;
-using eDoxa.Arena.Challenges.Application.Services;
-using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.DTO.Queries;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.Infrastructure.Modules;
+using eDoxa.Arena.Challenges.Services;
+using eDoxa.Arena.Challenges.Services.Abstractions;
 using eDoxa.Commands;
 using eDoxa.Seedwork.Application;
 using eDoxa.ServiceBus;
@@ -49,8 +49,6 @@ namespace eDoxa.Arena.Challenges.Application.Modules
 
             // Services
             builder.RegisterType<ChallengeService>().As<IChallengeService>().InstancePerLifetimeScope();
-
-            builder.RegisterType<FakeChallengeService>().As<IFakeChallengeService>().InstancePerLifetimeScope();
         }
     }
 }

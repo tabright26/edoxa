@@ -1,0 +1,51 @@
+﻿// Filename: IChallengeService.cs
+// Date Created: 2019-05-20
+// 
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+// 
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
+// this source code package.
+
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+
+using eDoxa.Arena.Challenges.Domain;
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
+using eDoxa.Arena.Domain;
+using eDoxa.Functional;
+using eDoxa.Seedwork.Domain.Entities;
+using eDoxa.Seedwork.Domain.Enumerations;
+using eDoxa.Seedwork.Domain.Validations;
+
+namespace eDoxa.Arena.Challenges.Services.Abstractions
+{
+    public interface IChallengeService
+    {
+        Task<Either<ValidationError, Challenge>> CreateChallengeAsync(
+            ChallengeName name,
+            Game game,
+            BestOf bestOf,
+            EntryFee entryFee,
+            PayoutEntries payoutEntries,
+            bool equivalentCurrency = true,
+            bool isFakeChallenge = false,
+            CancellationToken cancellationToken = default
+        );
+
+        Task<Either<ValidationError, Participant>> RegisterParticipantAsync(
+            ChallengeId challengeId,
+            UserId userId,
+            Func<Game, ExternalAccount> funcExternalAccount,
+            CancellationToken cancellationToken = default
+        );
+
+        Task CompleteAsync(CancellationToken cancellationToken = default);
+
+        Task SynchronizeAsync(Game game, CancellationToken cancellationToken = default);
+    }
+}

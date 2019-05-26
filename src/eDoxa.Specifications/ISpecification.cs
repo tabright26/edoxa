@@ -16,7 +16,7 @@ using eDoxa.Seedwork.Domain;
 namespace eDoxa.Specifications
 {
     public interface ISpecification<TEntity>
-    where TEntity : IAggregateRoot
+    where TEntity : IEntity, IAggregateRoot
     {
         Expression<Func<TEntity, bool>> ToExpression();
 

@@ -1,4 +1,4 @@
-﻿// Filename: ParticipantExistsSpecification.cs
+﻿// Filename: ParticipantAlreadyRegisteredSpecification.cs
 // Date Created: 2019-04-22
 // 
 // ================================================
@@ -13,22 +13,23 @@ using System.Linq;
 using System.Linq.Expressions;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Seedwork.Domain.Entities;
 using eDoxa.Specifications;
 
-namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate.Specifications
+namespace eDoxa.Arena.Challenges.Domain.Specifications
 {
-    public sealed class ParticipantExistsSpecification : Specification<Challenge>
+    public sealed class UserIsRegisteredSpecification : Specification<Challenge>
     {
-        private readonly ParticipantId _participantId;
+        private readonly UserId _userId;
 
-        public ParticipantExistsSpecification(ParticipantId participantId)
+        public UserIsRegisteredSpecification(UserId userId)
         {
-            _participantId = participantId;
+            _userId = userId;
         }
 
         public override Expression<Func<Challenge, bool>> ToExpression()
         {
-            return challenge => challenge.Participants.Any(participant => participant.Id == _participantId);
+            return challenge => challenge.Participants.Any(participant => participant.UserId == _userId);
         }
     }
 }

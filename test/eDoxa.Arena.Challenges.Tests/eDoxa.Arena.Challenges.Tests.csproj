@@ -10,7 +10,6 @@
     <ProjectReference Include="..\..\src\eDoxa.Arena.Challenges.Api\eDoxa.Arena.Challenges.Api.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Arena.Challenges.Application\eDoxa.Arena.Challenges.Application.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Arena.Challenges.Services.LeagueOfLegends\eDoxa.Arena.Challenges.Services.LeagueOfLegends.csproj" />
-    <ProjectReference Include="..\..\src\eDoxa.Arena.Challenges.Domain.Services\eDoxa.Arena.Challenges.Domain.Services.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Arena.Challenges.Domain\eDoxa.Arena.Challenges.Domain.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Arena.Challenges.DTO\eDoxa.Arena.Challenges.DTO.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Arena.Challenges.Infrastructure\eDoxa.Arena.Challenges.Infrastructure.csproj" />

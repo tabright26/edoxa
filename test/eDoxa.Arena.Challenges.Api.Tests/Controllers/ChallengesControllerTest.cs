@@ -15,9 +15,9 @@ using AutoMapper;
 
 using eDoxa.Arena.Challenges.Api.Controllers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
-using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.DTO;
 using eDoxa.Arena.Challenges.DTO.Queries;
+using eDoxa.Arena.Challenges.Services.Abstractions;
 using eDoxa.Functional;
 using eDoxa.Seedwork.Domain.Enumerations;
 
@@ -38,7 +38,7 @@ namespace eDoxa.Arena.Challenges.Api.Tests.Controllers
         private Mock<IMediator> _mediator;
         private Mock<IMapper> _mapper;
         private Mock<IChallengeQuery> _queries;
-        private Mock<IFakeChallengeService> _fakeChallengeService;
+        private Mock<IChallengeService> _challengeService;
 
         [TestInitialize]
         public void TestInitialize()
@@ -46,7 +46,7 @@ namespace eDoxa.Arena.Challenges.Api.Tests.Controllers
             _queries = new Mock<IChallengeQuery>();
             _mapper = new Mock<IMapper>();
             _mediator = new Mock<IMediator>();
-            _fakeChallengeService = new Mock<IFakeChallengeService>();
+            _challengeService = new Mock<IChallengeService>();
         }
 
         [TestMethod]

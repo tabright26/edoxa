@@ -52,7 +52,7 @@ namespace eDoxa.Arena.Challenges.Tests.Factories
                 new ChallengeName(nameof(Challenge)),
                 setup,
                 new ChallengeDuration(),
-                this.CreateScoringStrategy()
+                this.CreateScoringStrategy().Scoring
             );
 
             //var timeline = this.CreateChallengeTimeline(state);

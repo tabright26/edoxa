@@ -8,10 +8,11 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Domain.Abstractions;
 using eDoxa.Seedwork.Domain;
 
-namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.DomainEvents
+namespace eDoxa.Arena.Challenges.Domain.DomainEvents
 {
     public sealed class ChallengePayoutDomainEvent : IDomainEvent
     {

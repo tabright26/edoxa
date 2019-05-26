@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Application.Commands;
 using eDoxa.Arena.Challenges.Application.Commands.Handlers;
-using eDoxa.Arena.Challenges.Domain.Services;
+using eDoxa.Arena.Challenges.Services.Abstractions;
 using eDoxa.Commands.Extensions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
