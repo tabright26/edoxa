@@ -8,8 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Seedwork.Domain.Enumerations;
-
 using Newtonsoft.Json;
 
 namespace eDoxa.Arena.Challenges.DTO
@@ -17,9 +15,6 @@ namespace eDoxa.Arena.Challenges.DTO
     [JsonObject]
     public class PayoutDTO
     {
-        [JsonProperty("currency")]
-        public Currency Currency { get; set; }
-
         [JsonProperty("buckets")]
         public BucketListDTO Buckets { get; set; }
     }

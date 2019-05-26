@@ -13,31 +13,24 @@ using System.Globalization;
 using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Enumerations;
 
+using JetBrains.Annotations;
+
 namespace eDoxa.Arena.Domain
 {
-    public class EntryFee : ValueObject
+    public class EntryFee : TypeObject<EntryFee, decimal>
     {
-        private decimal _amount;
         private Currency _currency;
 
-        public EntryFee(decimal amount, Currency currency)
+        public EntryFee(decimal amount, Currency currency) : base(amount)
         {
-            _amount = amount;
             _currency = currency;
         }
 
-        public decimal Amount => _amount;
-
         public Currency Currency => _currency;
 
-        public static implicit operator decimal(EntryFee entryFee)
+        public override bool Equals([CanBeNull] EntryFee other)
         {
-            return entryFee.Amount;
-        }
-
-        public override string ToString()
-        {
-            return Amount.ToString(CultureInfo.InvariantCulture);
+            return Currency.Equals(other?.Currency) && base.Equals(other);
         }
     }
 }

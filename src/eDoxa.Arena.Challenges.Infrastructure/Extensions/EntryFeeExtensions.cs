@@ -26,7 +26,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Extensions
 
         internal static string Serialize(this EntryFee entryFee)
         {
-            return $"{entryFee.Amount}:{entryFee.Currency}";
+            return $"{(decimal) entryFee}:{entryFee.Currency}";
         }
     }
 }

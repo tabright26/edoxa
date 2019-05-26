@@ -18,8 +18,6 @@ namespace eDoxa.Seedwork.Domain.Enumerations
     public sealed class Game : Enumeration<Game>
     {
         public static readonly Game LeagueOfLegends = new Game(1 << 0, nameof(LeagueOfLegends));
-        public static readonly Game Csgo = new Game(1 << 1, nameof(Csgo));
-        public static readonly Game Fortnite = new Game(1 << 2, nameof(Fortnite));
 
         private Game(int value, string name) : base(value, name)
         {

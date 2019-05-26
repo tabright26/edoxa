@@ -9,17 +9,12 @@
 // this source code package.
 
 using System;
-using System.ComponentModel;
-using System.Globalization;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Arena.Challenges.Domain
 {
-    [TypeConverter(typeof(PayoutEntriesTypeConverter))]
-    public sealed partial class PayoutEntries : TypeObject<PayoutEntries, int>
+    public sealed class PayoutEntries : TypeObject<PayoutEntries, int>
     {
         public static readonly PayoutEntries One = new PayoutEntries(1);
         public static readonly PayoutEntries Two = new PayoutEntries(2);
@@ -38,79 +33,8 @@ namespace eDoxa.Arena.Challenges.Domain
         {
         }
 
-        internal PayoutEntries(int payoutEntries) : base(payoutEntries)
+        public PayoutEntries(int payoutEntries) : base(payoutEntries)
         {
-        }
-
-        private PayoutEntries(string payoutEntries) : base(Convert.ToInt32(payoutEntries))
-        {
-        }
-    }
-
-    public sealed partial class PayoutEntries
-    {
-        private sealed class PayoutEntriesTypeConverter : TypeConverter
-        {
-            public override bool CanConvertFrom([CanBeNull] ITypeDescriptorContext context, Type sourceType)
-            {
-                return sourceType == typeof(int) || sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
-            }
-
-            public override bool CanConvertTo([CanBeNull] ITypeDescriptorContext context, Type destinationType)
-            {
-                return destinationType == typeof(int) || destinationType == typeof(string) || base.CanConvertTo(context, destinationType);
-            }
-
-            [CanBeNull]
-            public override object ConvertFrom([CanBeNull] ITypeDescriptorContext context, CultureInfo culture, [CanBeNull] object value)
-            {
-                switch (value)
-                {
-                    case null:
-                    {
-                        return Ten;
-                    }
-
-                    case int cast:
-                    {
-                        return new PayoutEntries(cast);
-                    }
-
-                    case string cast:
-                    {
-                        return new PayoutEntries(cast);
-                    }
-
-                    default:
-                    {
-                        return base.ConvertFrom(context, culture, value);
-                    }
-                }
-            }
-
-            [CanBeNull]
-            public override object ConvertTo(
-                [CanBeNull] ITypeDescriptorContext context,
-                [NotNull] CultureInfo culture,
-                [CanBeNull] object value,
-                Type destinationType
-            )
-            {
-                if (value is PayoutEntries payoutEntries)
-                {
-                    if (destinationType == typeof(int))
-                    {
-                        return payoutEntries.Value;
-                    }
-
-                    if (destinationType == typeof(string))
-                    {
-                        return payoutEntries.Value.ToString();
-                    }
-                }
-
-                return base.ConvertTo(context, culture, value, destinationType);
-            }
         }
     }
 }

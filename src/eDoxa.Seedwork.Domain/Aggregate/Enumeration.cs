@@ -15,7 +15,6 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
-using eDoxa.Seedwork.Domain.Exceptions;
 using eDoxa.Seedwork.Domain.Extensions;
 
 using JetBrains.Annotations;
@@ -27,9 +26,9 @@ namespace eDoxa.Seedwork.Domain.Aggregate
         public static IEnumerable<Type> GetTypes()
         {
             return AppDomain.CurrentDomain.GetAssemblies()
-                            .SelectMany(assembly => assembly.GetTypes())
-                            .Where(type => type.IsClass && !type.IsAbstract && typeof(IEnumeration).IsAssignableFrom(type))
-                            .ToArray();
+                .SelectMany(assembly => assembly.GetTypes())
+                .Where(type => type.IsClass && !type.IsAbstract && typeof(IEnumeration).IsAssignableFrom(type))
+                .ToArray();
         }
 
         public static IEnumerable<int> GetValues(Type enumerationType)
@@ -37,53 +36,41 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             return GetAll(enumerationType).Select(enumeration => enumeration.Value).ToArray();
         }
 
+        public static IEnumerable<string> GetNames<TEnumerable>()
+        where TEnumerable : IEnumeration
+        {
+            return GetNames(typeof(TEnumerable));
+        }
+
         public static IEnumerable<string> GetNames(Type enumerationType)
         {
             return GetAll(enumerationType).Select(enumeration => enumeration.Name).ToArray();
         }
 
+        [CanBeNull]
         public static TEnumerable FromValue<TEnumerable>(int value)
         where TEnumerable : IEnumeration
         {
             return (TEnumerable) FromValue(value, typeof(TEnumerable));
         }
 
+        [CanBeNull]
         private static IEnumeration FromValue(int value, Type enumerationType)
         {
-            try
-            {
-                return GetAll(enumerationType).Single(enumeration => enumeration.Value == value);
-            }
-            catch (ArgumentNullException exception)
-            {
-                throw new EnumerationException(enumerationType, value, exception);
-            }
-            catch (InvalidOperationException exception)
-            {
-                throw new EnumerationException(enumerationType, value, exception);
-            }
+            return GetAll(enumerationType).SingleOrDefault(enumeration => enumeration.Value == value);
         }
 
+        [CanBeNull]
         public static TEnumerable FromName<TEnumerable>(string name)
         where TEnumerable : IEnumeration
         {
             return (TEnumerable) FromName(name, typeof(TEnumerable));
         }
 
+        [CanBeNull]
         private static IEnumeration FromName(string name, Type enumerationType)
         {
-            try
-            {
-                return GetAll(enumerationType).Single(enumeration => enumeration.Name == name.ToPascalcase());
-            }
-            catch (ArgumentNullException exception)
-            {
-                throw new EnumerationException(enumerationType, name, exception);
-            }
-            catch (InvalidOperationException exception)
-            {
-                throw new EnumerationException(enumerationType, name, exception);
-            }
+            return GetAll(enumerationType).SingleOrDefault(enumeration => enumeration.Name == name.ToPascalcase());
         }
 
         public static IEnumerable<TEnumeration> GetAll<TEnumeration>()
@@ -95,9 +82,21 @@ namespace eDoxa.Seedwork.Domain.Aggregate
         public static IEnumerable<IEnumeration> GetAll(Type enumerationType)
         {
             return enumerationType.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
-                                  .Select(field => field.GetValue(null))
-                                  .Where(obj => obj is IEnumeration)
-                                  .Cast<IEnumeration>();
+                .Select(field => field.GetValue(null))
+                .Where(obj => obj is IEnumeration)
+                .Cast<IEnumeration>();
+        }
+
+        public static string DisplayNames<TEnumeration>()
+        where TEnumeration : IEnumeration
+        {
+            return $"[ {string.Join(", ", GetAll<TEnumeration>().Select(enumeration => enumeration.ToString()))} ]";
+        }
+
+        public static bool IsInEnumeration<TEnumeration>(TEnumeration enumeration)
+        where TEnumeration : IEnumeration
+        {
+            return GetAll<TEnumeration>().Any(x => x.Equals(enumeration));
         }
     }
 
@@ -112,11 +111,11 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             null
         );
 
-        private static readonly TEnumeration None = (TEnumeration)Activator.CreateInstance(
+        private static readonly TEnumeration None = (TEnumeration) Activator.CreateInstance(
             typeof(TEnumeration),
             BindingFlags.Instance | BindingFlags.NonPublic,
             null,
-            new object[] { 0, nameof(None) },
+            new object[] {0, nameof(None)},
             null
         );
 
@@ -138,16 +137,13 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             return enumeration._value;
         }
 
-        public static IEnumerable<TEnumeration> GetAll()
-        {
-            return Enumeration.GetAll<TEnumeration>();
-        }
-
+        [CanBeNull]
         public static TEnumeration FromValue(int value)
         {
             return Enumeration.FromValue<TEnumeration>(value);
         }
 
+        [CanBeNull]
         public static TEnumeration FromName(string name)
         {
             return Enumeration.FromName<TEnumeration>(name);
@@ -158,7 +154,7 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             return _name.ToCamelcase();
         }
 
-        public bool HasEnumeration([CanBeNull] TEnumeration enumeration)
+        public bool Filter([CanBeNull] TEnumeration enumeration)
         {
             enumeration = enumeration ?? All;
 
@@ -168,6 +164,11 @@ namespace eDoxa.Seedwork.Domain.Aggregate
 
     public abstract partial class Enumeration<TEnumeration> : IEquatable<TEnumeration>
     {
+        public bool Equals([CanBeNull] TEnumeration other)
+        {
+            return this.GetType() == other?.GetType() && _value.Equals(other._value);
+        }
+
         public static bool operator ==(Enumeration<TEnumeration> left, Enumeration<TEnumeration> right)
         {
             return EqualityComparer<Enumeration<TEnumeration>>.Default.Equals(left, right);
@@ -176,11 +177,6 @@ namespace eDoxa.Seedwork.Domain.Aggregate
         public static bool operator !=(Enumeration<TEnumeration> left, Enumeration<TEnumeration> right)
         {
             return !(left == right);
-        }
-
-        public bool Equals([CanBeNull] TEnumeration other)
-        {
-            return this.GetType() == other?.GetType() && _value.Equals(other._value);
         }
 
         public sealed override bool Equals([CanBeNull] object obj)
@@ -226,14 +222,19 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             {
                 switch (value)
                 {
-                    case int val:
+                    case null:
                     {
-                        return FromValue(val);
+                        return All;
                     }
 
-                    case string name when !string.IsNullOrWhiteSpace(name):
+                    case int val:
                     {
-                        return FromName(name);
+                        return FromValue(val) ?? None;
+                    }
+
+                    case string name:
+                    {
+                        return FromName(name) ?? None;
                     }
 
                     default:

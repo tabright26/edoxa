@@ -12,7 +12,6 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Domain;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
@@ -27,12 +26,14 @@ namespace eDoxa.Arena.Challenges.Services.Abstractions
     public interface IChallengeService
     {
         Task<Either<ValidationError, Challenge>> CreateChallengeAsync(
-            ChallengeName name,
+            string name,
             Game game,
-            BestOf bestOf,
-            EntryFee entryFee,
-            PayoutEntries payoutEntries,
-            bool isFakeChallenge = false,
+            int duration,
+            int bestOf,
+            int payoutEntries,
+            decimal entryFee,
+            Currency currency,
+            bool isFake = false,
             CancellationToken cancellationToken = default
         );
 

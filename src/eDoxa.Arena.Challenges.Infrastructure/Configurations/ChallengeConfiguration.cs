@@ -46,7 +46,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.Property(challenge => challenge.Duration)
-                .HasConversion(duration => ((TimeSpan) duration).Ticks, duration => new ChallengeDuration(TimeSpan.FromTicks(duration)))
+                .HasConversion(duration => ((TimeSpan) duration).Ticks, duration => new ChallengeDuration(duration))
                 .IsRequired()
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 

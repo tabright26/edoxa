@@ -11,8 +11,11 @@
 using System.Linq;
 using System.Threading.Tasks;
 
+using eDoxa.Arena.Challenges.Application.Commands;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.DTO.Queries;
+using eDoxa.Commands.Extensions;
+using eDoxa.Security;
 using eDoxa.Seedwork.Domain.Enumerations;
 
 using MediatR;
@@ -48,6 +51,18 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
             var challenges = await _challengeQuery.FindChallengesAsync(game);
 
             return challenges.Select(this.Ok).Cast<IActionResult>().DefaultIfEmpty(this.NoContent()).Single();
+        }
+
+        /// <summary>
+        ///     Create a challenge - Administrator only.
+        /// </summary>
+        [Authorize(Roles = CustomRoles.Administrator)]
+        [HttpPost(Name = nameof(CreateChallenge))]
+        public async Task<IActionResult> CreateChallenge([FromBody] CreateChallengeCommand command)
+        {
+            var either = await _mediator.SendCommandAsync(command);
+
+            return either.Match<IActionResult>(error => this.BadRequest(error.ToString()), this.Ok);
         }
 
         /// <summary>

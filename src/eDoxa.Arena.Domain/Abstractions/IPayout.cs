@@ -8,14 +8,10 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Seedwork.Domain.Enumerations;
-
 namespace eDoxa.Arena.Domain.Abstractions
 {
     public interface IPayout
     {
-        Currency Currency { get; }
-
         IBuckets Buckets { get; }
 
         IParticipantPrizes GetParticipantPrizes(IScoreboard scoreboard);

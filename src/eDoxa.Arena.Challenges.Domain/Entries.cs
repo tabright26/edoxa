@@ -20,7 +20,7 @@ namespace eDoxa.Arena.Challenges.Domain
         {
         }
 
-        internal Entries(int entries) : base(entries)
+        public Entries(int entries) : base(entries)
         {
         }
     }

@@ -13,12 +13,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
+using eDoxa.Reflection;
+
 using JetBrains.Annotations;
 
 namespace eDoxa.Seedwork.Domain.Aggregate
 {
-    public abstract partial class TypeObject<TObject, TPrimitive>
-    where TObject : TypeObject<TObject, TPrimitive>
+    public abstract partial class TypeObject<TTypeObject, TPrimitive>
+    where TTypeObject : TypeObject<TTypeObject, TPrimitive>
     where TPrimitive : IComparable, IComparable<TPrimitive>, IEquatable<TPrimitive>
     {
         protected TypeObject(TPrimitive value)
@@ -28,7 +30,7 @@ namespace eDoxa.Seedwork.Domain.Aggregate
 
         protected TPrimitive Value { get; }
 
-        public static implicit operator TPrimitive(TypeObject<TObject, TPrimitive> typeObject)
+        public static implicit operator TPrimitive(TypeObject<TTypeObject, TPrimitive> typeObject)
         {
             return typeObject.Value;
         }
@@ -38,35 +40,64 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             return Value.ToString();
         }
 
-        public static IEnumerable<TObject> GetAll()
+        public static bool HasValue(TPrimitive value)
         {
-            return typeof(TObject).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
-                                  .Select(field => field.GetValue(null))
-                                  .Where(obj => obj is TObject)
-                                  .Cast<TObject>();
+            return GetValues().Any(primitive => primitive.Equals(value));
+        }
+
+        public static bool HasValue<T>(TPrimitive value)
+        where T : TTypeObject
+        {
+            return GetValues<T>().Any(primitive => primitive.Equals(value));
+        }
+
+        public static IEnumerable<TPrimitive> GetValues()
+        {
+            return StaticUtils.GetDeclaredFields<TTypeObject>()
+                .Select(typeObject => typeObject.Value)
+                .ToList();
+        }
+
+        public static IEnumerable<TPrimitive> GetValues<T>()
+        where T : TTypeObject
+        {
+            return StaticUtils.GetDeclaredFields<T>()
+                .Select(typeObject => typeObject.Value)
+                .ToList();
+        }
+        
+        public static string DisplayNames()
+        {
+            return $"[ {string.Join(", ", GetValues())} ]";
+        }
+
+        public static string DisplayNames<T>()
+        where T : TTypeObject
+        {
+            return $"[ {string.Join(", ", GetValues<T>())} ]";
         }
     }
 
-    public abstract partial class TypeObject<TObject, TPrimitive> : IEquatable<TObject>
+    public abstract partial class TypeObject<TTypeObject, TPrimitive> : IEquatable<TTypeObject>
     {
-        public virtual bool Equals([CanBeNull] TObject other)
+        public virtual bool Equals([CanBeNull] TTypeObject other)
         {
             return this.GetType() == other?.GetType() && Value.Equals(other.Value);
         }
 
-        public static bool operator ==(TypeObject<TObject, TPrimitive> left, TypeObject<TObject, TPrimitive> right)
+        public static bool operator ==(TypeObject<TTypeObject, TPrimitive> left, TypeObject<TTypeObject, TPrimitive> right)
         {
-            return EqualityComparer<TypeObject<TObject, TPrimitive>>.Default.Equals(left, right);
+            return EqualityComparer<TypeObject<TTypeObject, TPrimitive>>.Default.Equals(left, right);
         }
 
-        public static bool operator !=(TypeObject<TObject, TPrimitive> left, TypeObject<TObject, TPrimitive> right)
+        public static bool operator !=(TypeObject<TTypeObject, TPrimitive> left, TypeObject<TTypeObject, TPrimitive> right)
         {
             return !(left == right);
         }
 
         public sealed override bool Equals([CanBeNull] object obj)
         {
-            return this.Equals(obj as TObject);
+            return this.Equals(obj as TTypeObject);
         }
 
         public override int GetHashCode()
@@ -75,14 +106,14 @@ namespace eDoxa.Seedwork.Domain.Aggregate
         }
     }
 
-    public abstract partial class TypeObject<TObject, TPrimitive> : IComparable, IComparable<TObject>
+    public abstract partial class TypeObject<TTypeObject, TPrimitive> : IComparable, IComparable<TTypeObject>
     {
         public int CompareTo([CanBeNull] object obj)
         {
-            return this.CompareTo(obj as TObject);
+            return this.CompareTo(obj as TTypeObject);
         }
 
-        public int CompareTo([CanBeNull] TObject other)
+        public int CompareTo([CanBeNull] TTypeObject other)
         {
             return Value.CompareTo(other != null ? other.Value : default);
         }

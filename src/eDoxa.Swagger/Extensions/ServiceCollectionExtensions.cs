@@ -1,5 +1,5 @@
 ﻿// Filename: ServiceCollectionExtensions.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-05-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -26,7 +26,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using Swashbuckle.AspNetCore.Swagger;
-using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace eDoxa.Swagger.Extensions
 {
@@ -36,8 +35,8 @@ namespace eDoxa.Swagger.Extensions
             this IServiceCollection services,
             IConfiguration configuration,
             IHostingEnvironment environment,
-            ApiResource apiResource,
-            Action<SwaggerGenOptions> action = null)
+            ApiResource apiResource
+        )
         {
             if (!environment.IsDevelopment())
             {
@@ -51,8 +50,6 @@ namespace eDoxa.Swagger.Extensions
             services.AddSwaggerGen(
                 options =>
                 {
-                    action?.Invoke(options);
-
                     options.DescribeAllEnumerationsAsStrings();
 
                     var provider = services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
@@ -90,27 +87,29 @@ namespace eDoxa.Swagger.Extensions
 
                     options.DocumentFilter<CustomDocumentFilter>();
 
-                    options.TagActionsBy(description =>
-                    {
-                        if (description.ActionDescriptor is ControllerActionDescriptor descriptor)
+                    options.TagActionsBy(
+                        description =>
                         {
-                            var tags = descriptor.ControllerTypeInfo
-                                .GetCustomAttributes<ApiExplorerSettingsAttribute>()
-                                .Where(attribute => !attribute.IgnoreApi)
-                                .Select(attribute => attribute.GroupName)
-                                .ToList();
-
-                            if (tags.Any())
+                            if (description.ActionDescriptor is ControllerActionDescriptor descriptor)
                             {
-                                return tags;
+                                var tags = descriptor.ControllerTypeInfo.GetCustomAttributes<ApiExplorerSettingsAttribute>()
+                                    .Where(attribute => !attribute.IgnoreApi)
+                                    .Select(attribute => attribute.GroupName)
+                                    .ToList();
+
+                                if (tags.Any())
+                                {
+                                    return tags;
+                                }
+
+                                throw new Exception(
+                                    $"Each controller must have the attribute: {nameof(ApiExplorerSettingsAttribute)}. The attribute is missing for the controller: {descriptor.ControllerName}."
+                                );
                             }
 
-                            throw new Exception(
-                                $"Each controller must have the attribute: {nameof(ApiExplorerSettingsAttribute)}. The attribute is missing for the controller: {descriptor.ControllerName}.");
+                            return Array.Empty<string>();
                         }
-
-                        return Array.Empty<string>();
-                    });
+                    );
                 }
             );
         }

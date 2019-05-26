@@ -72,44 +72,7 @@ namespace eDoxa.Arena.Challenges.Api
 
             services.AddMvcFilters();
 
-            services.AddSwagger(Configuration, Environment, ChallengeApi,
-                options =>
-                {
-                    options.MapType<BestOf>(
-                        () => new Schema
-                        {
-                            Type = "integer",
-                            Format = "int32",
-                            Enum = BestOf.GetAll().Cast<object>().ToList()
-                        }
-                    );
-
-                    options.MapType<PayoutEntries>(
-                        () => new Schema
-                        {
-                            Type = "integer",
-                            Format = "int32",
-                            Enum = PayoutEntries.GetAll().Cast<object>().ToList()
-                        }
-                    );
-
-                    options.MapType<MoneyEntryFee>(
-                        () => new Schema
-                        {
-                            Type = "string",
-                            Enum = ValueObject.GetAll<MoneyEntryFee>().Cast<object>().ToList()
-                        }
-                    );
-
-                    options.MapType<TokenEntryFee>(
-                        () => new Schema
-                        {
-                            Type = "string",
-                            Enum = ValueObject.GetAll<TokenEntryFee>().Cast<object>().ToList()
-                        }
-                    );
-                }
-            );
+            services.AddSwagger(Configuration, Environment, ChallengeApi);
 
             services.AddCorsPolicy();
 

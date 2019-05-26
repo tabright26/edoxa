@@ -39,36 +39,6 @@ namespace eDoxa.Arena.Challenges.Services
             _challengeRepository = challengeRepository;
         }
 
-        public async Task<Either<ValidationError, Challenge>> CreateChallengeAsync(
-            ChallengeName name,
-            Game game,
-            BestOf bestOf,
-            EntryFee entryFee,
-            PayoutEntries payoutEntries,
-            bool isFakeChallenge = false,
-            CancellationToken cancellationToken = default
-        )
-        {
-            var challenge = new Challenge(
-                game,
-                name,
-                new ChallengeSetup(bestOf, payoutEntries, entryFee),
-                new ChallengeDuration(),
-                ScoringFactory.Instance.CreateScoringStrategy(game).Scoring
-            );
-
-            if (isFakeChallenge)
-            {
-                challenge = new FakeChallengeDecorator(challenge);
-            }
-
-            _challengeRepository.Create(challenge);
-
-            await _challengeRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
-
-            return challenge;
-        }
-
         public async Task<Either<ValidationError, Participant>> RegisterParticipantAsync(
             ChallengeId challengeId,
             UserId userId,
@@ -111,6 +81,38 @@ namespace eDoxa.Arena.Challenges.Services
         public Task SynchronizeAsync(Game game, CancellationToken cancellationToken = default)
         {
             return Task.CompletedTask;
+        }
+
+        public async Task<Either<ValidationError, Challenge>> CreateChallengeAsync(
+            string name,
+            Game game,
+            int duration,
+            int bestOf,
+            int payoutEntries,
+            decimal entryFee,
+            Currency currency,
+            bool isFake = false,
+            CancellationToken cancellationToken = default
+        )
+        {
+            var challenge = new Challenge(
+                game,
+                new ChallengeName(name),
+                new ChallengeSetup(new BestOf(bestOf), new PayoutEntries(payoutEntries), new EntryFee(entryFee, currency)),
+                new ChallengeDuration(duration),
+                ScoringFactory.Instance.CreateScoringStrategy(game).Scoring
+            );
+
+            if (isFake)
+            {
+                challenge = new FakeChallengeDecorator(challenge);
+            }
+
+            _challengeRepository.Create(challenge);
+
+            await _challengeRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+
+            return challenge;
         }
     }
 }

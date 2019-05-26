@@ -13,7 +13,6 @@ using System.Linq;
 using eDoxa.Arena.Domain;
 using eDoxa.Arena.Domain.Abstractions;
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Domain.Enumerations;
 
 using JetBrains.Annotations;
 
@@ -29,8 +28,6 @@ namespace eDoxa.Arena.Challenges.Domain
         }
 
         private IBuckets BucketItems => new Buckets(_buckets.SelectMany(bucket => bucket.Items).OrderByDescending(bucket => bucket.Prize));
-
-        public Currency Currency => _buckets.First().Prize.Currency;
 
         public IBuckets Buckets => _buckets;
 

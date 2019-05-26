@@ -34,9 +34,8 @@ namespace eDoxa.Seedwork.Domain.Tests.Aggregate
         [TestMethod]
         public void M1()
         {
-            var types = MockTypeObject.GetAll();
+            var types = MockTypeObject.GetValues();
         }
-
 
         private sealed class MockTypeObject : TypeObject<MockTypeObject, int>
         {

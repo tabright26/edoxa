@@ -1,4 +1,4 @@
-﻿// Filename: CreateMoneyChallengeCommandHandler.cs
+﻿// Filename: CreateChallengeCommandHandler.cs
 // Date Created: 2019-05-25
 // 
 // ================================================
@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.DTO;
 using eDoxa.Arena.Challenges.Services.Abstractions;
 using eDoxa.Commands.Abstractions.Handlers;
@@ -24,27 +23,29 @@ using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Application.Commands.Handlers
 {
-    internal sealed class CreateMoneyChallengeCommandHandler : ICommandHandler<CreateMoneyChallengeCommand, Either<ValidationError, ChallengeDTO>>
+    internal sealed class CreateChallengeCommandHandler : ICommandHandler<CreateChallengeCommand, Either<ValidationError, ChallengeDTO>>
     {
         private readonly IChallengeService _challengeService;
         private readonly IMapper _mapper;
 
-        public CreateMoneyChallengeCommandHandler(IChallengeService challengeService, IMapper mapper)
+        public CreateChallengeCommandHandler(IChallengeService challengeService, IMapper mapper)
         {
             _challengeService = challengeService;
             _mapper = mapper;
         }
 
         [ItemCanBeNull]
-        public async Task<Either<ValidationError, ChallengeDTO>> Handle([NotNull] CreateMoneyChallengeCommand command, CancellationToken cancellationToken)
+        public async Task<Either<ValidationError, ChallengeDTO>> Handle([NotNull] CreateChallengeCommand command, CancellationToken cancellationToken)
         {
             var either = await _challengeService.CreateChallengeAsync(
-                new ChallengeName(command.Name),
+                command.Name,
                 command.Game,
+                command.Duration,
                 command.BestOf,
-                command.EntryFee,
                 command.PayoutEntries,
-                command.IsFakeChallenge,
+                command.EntryFee.Amount,
+                command.EntryFee.Currency,
+                command.IsFake,
                 cancellationToken
             );
 

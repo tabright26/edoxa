@@ -31,6 +31,10 @@ namespace eDoxa.Arena.Challenges.Domain.Tests.AggregateModels.ChallengeAggregate
         [TestMethod]
         public void M()
         {
+            var test = MoneyEntryFee.GetValues();
+
+
+
             //var challenge = ChallengeFactory.Create(Game.LeagueOfLegends, ChallengeType.Type5);
 
             //var scoreboard = challenge.Scoreboard;

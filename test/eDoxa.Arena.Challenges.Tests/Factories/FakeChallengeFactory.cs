@@ -51,7 +51,7 @@ namespace eDoxa.Arena.Challenges.Tests.Factories
                 Game.LeagueOfLegends,
                 new ChallengeName(nameof(Challenge)),
                 setup,
-                new ChallengeDuration(),
+                ChallengeDuration.OneDay,
                 this.CreateScoringStrategy().Scoring
             );
 
