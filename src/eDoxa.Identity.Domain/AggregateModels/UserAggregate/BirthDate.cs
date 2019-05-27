@@ -78,5 +78,12 @@ namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
                 yield return index;
             }
         }
+
+        protected override IEnumerable<object> GetAtomicValues()
+        {
+            yield return Year;
+            yield return Month;
+            yield return Day;
+        }
     }
 }

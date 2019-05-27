@@ -14,18 +14,20 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Domain
 {
-    public sealed class BucketSize : TypeObject<BucketSize, int>
+    public sealed class BucketSize : TypedObject<BucketSize, int>
     {
         private const int DefaultValue = 1;
 
         public static readonly BucketSize Default = new BucketSize(DefaultValue);
 
-        public BucketSize(int size) : base(size)
+        public BucketSize(int size)
         {
             if (size < 1)
             {
                 throw new ArgumentException(nameof(size));
             }
+
+            Value = size;
         }
     }
 }

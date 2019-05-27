@@ -14,14 +14,16 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed class ChallengeCreatedAt : TypeObject<ChallengeCreatedAt, DateTime>
+    public sealed class ChallengeCreatedAt : TypedObject<ChallengeCreatedAt, DateTime>
     {
-        public ChallengeCreatedAt() : base(DateTime.UtcNow)
+        public ChallengeCreatedAt()
         {
+            Value = DateTime.UtcNow;
         }
 
-        public ChallengeCreatedAt(DateTime createdAt) : base(createdAt)
+        public ChallengeCreatedAt(DateTime createdAt)
         {
+            Value = createdAt;
         }
     }
 }

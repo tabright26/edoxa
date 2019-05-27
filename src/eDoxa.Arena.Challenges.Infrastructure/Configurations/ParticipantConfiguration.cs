@@ -11,7 +11,7 @@
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Domain;
-using eDoxa.Seedwork.Domain.Entities;
+using eDoxa.Seedwork.Infrastructure.Extensions;
 
 using JetBrains.Annotations;
 
@@ -26,8 +26,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
         {
             builder.ToTable(nameof(ChallengesDbContext.Participants));
 
-            builder.Property(participant => participant.Id)
-                .HasConversion(participantId => participantId.ToGuid(), value => ParticipantId.FromGuid(value))
+            builder.EntityId(participant => participant.Id)
                 .IsRequired()
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 
@@ -37,8 +36,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                 .HasConversion(challengeId => challengeId.ToGuid(), value => ChallengeId.FromGuid(value))
                 .IsRequired();
 
-            builder.Property(participant => participant.UserId)
-                .HasConversion(userId => userId.ToGuid(), value => UserId.FromGuid(value))
+            builder.EntityId(participant => participant.UserId)
                 .IsRequired()
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 

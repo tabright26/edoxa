@@ -15,10 +15,11 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Domain.Abstractions
 {
-    public abstract class Score : TypeObject<Score, decimal>
+    public abstract class Score : TypedObject<Score, decimal>
     {
-        protected Score(decimal score) : base(Math.Round(score, 2))
+        protected Score(decimal score)
         {
+            Value = Math.Round(score, 2);
         }
 
         public override string ToString()

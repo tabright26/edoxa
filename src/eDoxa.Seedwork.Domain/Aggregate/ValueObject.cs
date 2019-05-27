@@ -10,46 +10,61 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 using JetBrains.Annotations;
 
 namespace eDoxa.Seedwork.Domain.Aggregate
 {
-    public abstract class ValueObject : BaseObject
+    public abstract class ValueObject
     {
-        public static bool operator ==(ValueObject left, ValueObject right)
+        protected static bool EqualOperator([CanBeNull] ValueObject left, [CanBeNull] ValueObject right)
         {
-            return EqualityComparer<ValueObject>.Default.Equals(left, right);
+            return !(left is null ^ right is null) && (left is null || left.Equals(right));
         }
 
-        public static bool operator !=(ValueObject left, ValueObject right)
+        protected static bool NotEqualOperator([CanBeNull] ValueObject left, [CanBeNull] ValueObject right)
         {
-            return !(left == right);
+            return !EqualOperator(left, right);
         }
 
-        public static IEnumerable<TValueObject> GetAll<TValueObject>()
-        where TValueObject : ValueObject
-        {
-            return typeof(TValueObject).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
-                                       .Select(field => field.GetValue(null))
-                                       .Where(obj => obj is TValueObject)
-                                       .Cast<TValueObject>();
-        }
+        protected abstract IEnumerable<object> GetAtomicValues();
 
         public sealed override bool Equals([CanBeNull] object obj)
         {
-            return base.Equals(obj);
+            if (obj == null || obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
+            var other = (ValueObject) obj;
+
+            using (var thisValues = this.GetAtomicValues().GetEnumerator())
+            {
+                using (var otherValues = other.GetAtomicValues().GetEnumerator())
+                {
+                    while (thisValues.MoveNext() && otherValues.MoveNext())
+                    {
+                        if (thisValues.Current is null ^ otherValues.Current is null)
+                        {
+                            return false;
+                        }
+
+                        if (thisValues.Current != null && !thisValues.Current.Equals(otherValues.Current))
+                        {
+                            return false;
+                        }
+                    }
+
+                    return !thisValues.MoveNext() && !otherValues.MoveNext();
+                }
+            }
         }
 
         public sealed override int GetHashCode()
         {
-            return base.GetHashCode();
+            return this.GetAtomicValues().Select(x => x != null ? x.GetHashCode() : 0).Aggregate((x, y) => x ^ y);
         }
 
-        protected sealed override PropertyInfo[] TypeSignatureProperties()
-        {
-            return this.GetType().GetProperties();
-        }
+        public abstract override string ToString();
     }
 }

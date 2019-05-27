@@ -12,14 +12,15 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain
 {
-    public class PayoutRatio : TypeObject<PayoutRatio, float>
+    public class PayoutRatio : TypedObject<PayoutRatio, float>
     {
         private const float DefaultValue = 0.5F;
 
         internal static readonly PayoutRatio Default = new PayoutRatio(DefaultValue);
 
-        internal PayoutRatio(float payoutRatio) : base(payoutRatio)
+        internal PayoutRatio(float payoutRatio)
         {
+            Value = payoutRatio;
         }
 
         public override string ToString()

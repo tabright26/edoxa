@@ -10,12 +10,10 @@
 
 using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Reflection;
 
 using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Application.Modules;
-using eDoxa.Arena.Challenges.Domain;
 using eDoxa.Arena.Challenges.DTO.Factories;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Services.Extensions;
@@ -25,7 +23,6 @@ using eDoxa.Monitoring.Extensions;
 using eDoxa.Security.Extensions;
 using eDoxa.Security.Resources;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.ServiceBus.Extensions;
 using eDoxa.Swagger.Extensions;
@@ -36,8 +33,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
-using Swashbuckle.AspNetCore.Swagger;
 
 namespace eDoxa.Arena.Challenges.Api
 {

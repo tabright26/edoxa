@@ -10,7 +10,7 @@
 
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
-using eDoxa.Seedwork.Domain.Entities;
+using eDoxa.Seedwork.Infrastructure.Extensions;
 
 using JetBrains.Annotations;
 
@@ -25,8 +25,7 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
         {
             builder.ToTable(nameof(CashierDbContext.Users));
 
-            builder.Property(user => user.Id)
-                   .HasConversion(userId => userId.ToGuid(), accountId => UserId.FromGuid(accountId))
+            builder.EntityId(user => user.Id)
                    .IsRequired()
                    .UsePropertyAccessMode(PropertyAccessMode.Field);
 

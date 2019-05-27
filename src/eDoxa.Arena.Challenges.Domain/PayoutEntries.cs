@@ -14,7 +14,7 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain
 {
-    public sealed class PayoutEntries : TypeObject<PayoutEntries, int>
+    public sealed class PayoutEntries : TypedObject<PayoutEntries, int>
     {
         public static readonly PayoutEntries One = new PayoutEntries(1);
         public static readonly PayoutEntries Two = new PayoutEntries(2);
@@ -29,12 +29,14 @@ namespace eDoxa.Arena.Challenges.Domain
         public static readonly PayoutEntries SeventyFive = new PayoutEntries(75);
         public static readonly PayoutEntries OneHundred = new PayoutEntries(100);
 
-        public PayoutEntries(Entries entries, PayoutRatio payoutRatio) : base(Convert.ToInt32(Math.Floor(entries * payoutRatio)))
+        public PayoutEntries(Entries entries, PayoutRatio payoutRatio)
         {
+            Value = Convert.ToInt32(Math.Floor(entries * payoutRatio));
         }
 
-        public PayoutEntries(int payoutEntries) : base(payoutEntries)
+        public PayoutEntries(int payoutEntries)
         {
+            Value = payoutEntries;
         }
     }
 }

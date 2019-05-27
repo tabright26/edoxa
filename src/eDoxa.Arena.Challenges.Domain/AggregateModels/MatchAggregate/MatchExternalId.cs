@@ -15,30 +15,36 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
 {
-    public sealed class MatchExternalId : TypeObject<MatchExternalId, string>
+    public sealed class MatchExternalId : TypedObject<MatchExternalId, string>
     {
-        public MatchExternalId(string externalId) : base(externalId)
+        public MatchExternalId(string externalId)
         {
             if (string.IsNullOrWhiteSpace(externalId) || !externalId.All(c => char.IsLetterOrDigit(c) || c == '-' || c == '_'))
             {
                 throw new ArgumentException(nameof(externalId));
             }
+
+            Value = externalId;
         }
 
-        public MatchExternalId(long externalId) : base(externalId.ToString())
+        public MatchExternalId(long externalId)
         {
             if (externalId < 0)
             {
                 throw new ArgumentException(nameof(externalId));
             }
+
+            Value = externalId.ToString();
         }
 
-        public MatchExternalId(Guid externalId) : base(externalId.ToString())
+        public MatchExternalId(Guid externalId)
         {
             if (externalId == Guid.Empty)
             {
                 throw new ArgumentException(nameof(externalId));
             }
+
+            Value = externalId.ToString();
         }
 
         public static implicit operator MatchExternalId(string externalId)

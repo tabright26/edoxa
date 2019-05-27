@@ -27,7 +27,7 @@ namespace eDoxa.Arena.Challenges.Application.Commands.Validations
                 .NotEmpty()
                 .WithMessage($"The {nameof(CreateChallengeCommand.Name)} property is required.");
 
-            this.RuleFor(command => command.Game).IsInEnumeration(nameof(CreateChallengeCommand.Game));
+            this.RuleForEnumeration(command => command.Game);
 
             this.RuleFor(command => command.Duration)
                 .Must(ChallengeDuration.HasValue)
@@ -45,7 +45,7 @@ namespace eDoxa.Arena.Challenges.Application.Commands.Validations
                     $"The {nameof(CreateChallengeCommand.PayoutEntries)} property is invalid. These are valid input values: {PayoutEntries.DisplayNames()}."
                 );
 
-            this.RuleFor(command => command.EntryFee.Currency).IsInEnumeration($"{nameof(CreateChallengeCommand.EntryFee)}.{nameof(CreateChallengeCommand.EntryFee.Currency)}");
+            this.RuleForEnumeration(command => command.EntryFee.Currency);
 
             this.RuleFor(command => command.EntryFee)
                 .Must(entryFee => EntryFeeHasValue(entryFee.Amount, entryFee.Currency))

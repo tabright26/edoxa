@@ -13,7 +13,7 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
 {
-    public sealed class Token : TypeObject<Token, long>, ICurrency
+    public sealed class Token : TypedObject<Token, long>, ICurrency
     {
         public static readonly Token FiftyThousand = new Token(50000);
         public static readonly Token OneHundredThousand = new Token(100000);
@@ -22,8 +22,9 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
         public static readonly Token OneMillion = new Token(1000000);
         public static readonly Token FiveMillions = new Token(5000000);
 
-        public Token(long amount) : base(amount)
+        public Token(long amount)
         {
+            Value = amount;
         }
 
         public static implicit operator decimal(Token token)

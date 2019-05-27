@@ -181,24 +181,6 @@ namespace eDoxa.Seedwork.Domain.Tests.Aggregate
         }
 
         [TestMethod]
-        public void Equals_IsTransient_ShouldBeFalse()
-        {
-            // Arrange            
-            var entity1 = new MockEntity();
-
-            var entityId = new MockEntityId();
-            var entity2 = new MockEntity();
-            entityId.SetPrivateField("_value", Guid.Empty);
-            entity2.SetEntityIdProperty(entityId);
-
-            // Act
-            var condition = entity1.Equals(entity2);
-
-            // Assert
-            condition.Should().BeFalse();
-        }
-
-        [TestMethod]
         public void GetHashCode_SameEntityId_ShouldBeEquals()
         {
             // Arrange
@@ -271,22 +253,6 @@ namespace eDoxa.Seedwork.Domain.Tests.Aggregate
 
             // Assert
             condition.Should().BeFalse();
-        }
-
-        [TestMethod]
-        public void IsTransient_DefaultEntityId_ShouldBeTrue()
-        {
-            // Arrange            
-            var entityId = new MockEntityId();
-            entityId.SetPrivateField("_value", Guid.Empty);
-            var entity = new MockEntity();
-            entity.SetEntityIdProperty(entityId);
-
-            // Act
-            var condition = entity.IsTransient();
-
-            // Assert
-            condition.Should().BeTrue();
         }
 
         [TestMethod]

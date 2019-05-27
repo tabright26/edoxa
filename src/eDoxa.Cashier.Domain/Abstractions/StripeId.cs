@@ -21,20 +21,22 @@ using JetBrains.Annotations;
 
 namespace eDoxa.Cashier.Domain.Abstractions
 {
-    public abstract partial class StripeId<TStripeId> : TypeObject<TStripeId, string>
+    public abstract partial class StripeId<TStripeId> : TypedObject<TStripeId, string>
     where TStripeId : StripeId<TStripeId>
     {
-        protected StripeId(string stripeId, string prefix) : base(stripeId)
+        protected StripeId(string stripeId, string prefix)
         {
-            if (!this.IsValid(prefix))
+            if (!IsValid(stripeId, prefix))
             {
                 throw new StripeIdException(stripeId, this.GetType());
             }
+
+            Value = stripeId;
         }
 
-        private bool IsValid(string prefix)
+        private static bool IsValid(string stripeId, string prefix)
         {
-            if (string.IsNullOrWhiteSpace(Value))
+            if (string.IsNullOrWhiteSpace(stripeId))
             {
                 return false;
             }
@@ -55,7 +57,7 @@ namespace eDoxa.Cashier.Domain.Abstractions
 
             string[] GetSubstrings()
             {
-                return Value.Split('_');
+                return stripeId.Split('_');
             }
         }
     }

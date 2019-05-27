@@ -14,14 +14,16 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain
 {
-    public class Entries : TypeObject<Entries, int>
+    public class Entries : TypedObject<Entries, int>
     {
-        public Entries(PayoutEntries payoutEntries, PayoutRatio payoutRatio) : base(Convert.ToInt32(payoutEntries / payoutRatio))
+        public Entries(PayoutEntries payoutEntries, PayoutRatio payoutRatio)
         {
+            Value = Convert.ToInt32(payoutEntries / payoutRatio);
         }
 
-        public Entries(int entries) : base(entries)
+        public Entries(int entries)
         {
+            Value = entries;
         }
     }
 }

@@ -58,5 +58,11 @@ namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
                 ClaimValue = LastName
             };
         }
+
+        protected override IEnumerable<object> GetAtomicValues()
+        {
+            yield return FirstName;
+            yield return LastName;
+        }
     }
 }

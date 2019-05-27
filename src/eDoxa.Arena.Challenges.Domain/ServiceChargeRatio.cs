@@ -12,14 +12,15 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain
 {
-    public class ServiceChargeRatio : TypeObject<ServiceChargeRatio, float>
+    public class ServiceChargeRatio : TypedObject<ServiceChargeRatio, float>
     {
         private const float DefaultValue = 0.2F;
 
         internal static readonly ServiceChargeRatio Default = new ServiceChargeRatio(DefaultValue);
 
-        internal ServiceChargeRatio(float serviceChargeRatio) : base(serviceChargeRatio)
+        internal ServiceChargeRatio(float serviceChargeRatio)
         {
+            Value = serviceChargeRatio;
         }
 
         public override string ToString()

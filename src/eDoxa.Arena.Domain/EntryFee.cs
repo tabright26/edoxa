@@ -8,8 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Globalization;
-
 using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Enumerations;
 
@@ -17,12 +15,13 @@ using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Domain
 {
-    public class EntryFee : TypeObject<EntryFee, decimal>
+    public class EntryFee : TypedObject<EntryFee, decimal>
     {
         private Currency _currency;
 
-        public EntryFee(decimal amount, Currency currency) : base(amount)
+        public EntryFee(decimal amount, Currency currency)
         {
+            Value = amount;
             _currency = currency;
         }
 

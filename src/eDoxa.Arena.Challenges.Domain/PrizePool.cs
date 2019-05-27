@@ -16,10 +16,11 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain
 {
-    public class PrizePool : TypeObject<PrizePool, decimal>
+    public class PrizePool : TypedObject<PrizePool, decimal>
     {
-        public PrizePool(Entries entries, EntryFee entryFee, ServiceChargeRatio serviceChargeRatio) : base(Math.Floor(entries * entryFee * (1 - Convert.ToDecimal(serviceChargeRatio))))
+        public PrizePool(Entries entries, EntryFee entryFee, ServiceChargeRatio serviceChargeRatio)
         {
+            Value = Math.Floor(entries * entryFee * (1 - Convert.ToDecimal(serviceChargeRatio)));
         }
 
         public override string ToString()

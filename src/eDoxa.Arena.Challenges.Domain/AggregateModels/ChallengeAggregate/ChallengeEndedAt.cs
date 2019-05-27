@@ -14,10 +14,11 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed class ChallengeEndedAt : TypeObject<ChallengeEndedAt, DateTime>
+    public sealed class ChallengeEndedAt : TypedObject<ChallengeEndedAt, DateTime>
     {
-        public ChallengeEndedAt(DateTime value) : base(value)
+        public ChallengeEndedAt(DateTime value)
         {
+            Value = value;
         }
     }
 }

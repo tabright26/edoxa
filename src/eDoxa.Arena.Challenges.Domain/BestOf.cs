@@ -12,15 +12,16 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain
 {
-    public sealed class BestOf : TypeObject<BestOf, int>
+    public sealed class BestOf : TypedObject<BestOf, int>
     {
         public static readonly BestOf One = new BestOf(1);
         public static readonly BestOf Three = new BestOf(3);
         public static readonly BestOf Five = new BestOf(5);
         public static readonly BestOf Seven = new BestOf(7);
 
-        public BestOf(int bestOf) : base(bestOf)
+        public BestOf(int bestOf)
         {
+            Value = bestOf;
         }
     }
 }

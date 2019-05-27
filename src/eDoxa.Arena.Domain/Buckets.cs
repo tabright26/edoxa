@@ -23,7 +23,7 @@ namespace eDoxa.Arena.Domain
 
         public Prize PrizeAtOrDefault(int index)
         {
-            return this.ElementAtOrDefault(index)?.Prize ?? Prize.None;
+            return this.ElementAtOrDefault(index)?.Prize ?? new MoneyPrize(0);
         }
     }
 }

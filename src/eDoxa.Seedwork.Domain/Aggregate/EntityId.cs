@@ -1,5 +1,5 @@
 ﻿// Filename: EntityId.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-05-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,47 +9,24 @@
 // this source code package.
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
-using System.Reflection;
 
 using JetBrains.Annotations;
 
 namespace eDoxa.Seedwork.Domain.Aggregate
 {
-    public abstract partial class EntityId<TEntityId> : BaseObject
+    public abstract partial class EntityId<TEntityId> : TypedObject<TEntityId, Guid>
     where TEntityId : EntityId<TEntityId>, new()
     {
-        private Guid _value;
+        public static readonly TEntityId Empty = new TEntityId
+        {
+            Value = Guid.Empty
+        };
 
         protected EntityId()
         {
-            _value = Guid.NewGuid();
-        }
-
-        protected Guid Value
-        {
-            get => _value;
-            private set
-            {
-                if (value == Guid.Empty)
-                {
-                    throw new ArgumentException(nameof(Value));
-                }
-
-                _value = value;
-            }
-        }
-
-        public static bool operator ==(EntityId<TEntityId> left, EntityId<TEntityId> right)
-        {
-            return EqualityComparer<EntityId<TEntityId>>.Default.Equals(left, right);
-        }
-
-        public static bool operator !=(EntityId<TEntityId> left, EntityId<TEntityId> right)
-        {
-            return !(left == right);
+            Value = Guid.NewGuid();
         }
 
         public static TEntityId FromGuid(Guid value)
@@ -60,27 +37,9 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             };
         }
 
-        public static TEntityId Parse(string value)
+        public static TEntityId Parse(string entityId)
         {
-            return new TEntityId
-            {
-                Value = Guid.Parse(value)
-            };
-        }
-
-        public sealed override bool Equals(object obj)
-        {
-            return base.Equals(obj);
-        }
-
-        public sealed override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
-
-        public sealed override string ToString()
-        {
-            return Value.ToString();
+            return Guid.TryParse(entityId, out var result) ? FromGuid(result) : Empty;
         }
 
         public Guid ToGuid()
@@ -90,28 +49,7 @@ namespace eDoxa.Seedwork.Domain.Aggregate
 
         public bool IsTransient()
         {
-            return Value == default;
-        }
-
-        protected sealed override PropertyInfo[] TypeSignatureProperties()
-        {
-            return new[]
-            {
-                this.GetType().GetProperty(nameof(Value), BindingFlags.NonPublic | BindingFlags.Instance)
-            };
-        }
-    }
-
-    public abstract partial class EntityId<TEntityId> : IComparable, IComparable<TEntityId>
-    {
-        public int CompareTo([CanBeNull] object obj)
-        {
-            return this.CompareTo(obj as TEntityId);
-        }
-
-        public int CompareTo([CanBeNull] TEntityId other)
-        {
-            return Value.CompareTo(other?.Value);
+            return Value == Empty.Value;
         }
     }
 
@@ -121,25 +59,25 @@ namespace eDoxa.Seedwork.Domain.Aggregate
         {
             public override bool CanConvertFrom([CanBeNull] ITypeDescriptorContext context, Type sourceType)
             {
-                return sourceType == typeof(Guid) || sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
+                return sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
             }
 
             public override bool CanConvertTo([CanBeNull] ITypeDescriptorContext context, Type destinationType)
             {
-                return destinationType == typeof(Guid) || destinationType == typeof(string) || base.CanConvertTo(context, destinationType);
+                return destinationType == typeof(string) || base.CanConvertTo(context, destinationType);
             }
 
             [CanBeNull]
-            public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+            public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, [CanBeNull] object value)
             {
                 switch (value)
                 {
-                    case Guid entityId:
+                    case null:
                     {
-                        return FromGuid(entityId);
+                        return Empty;
                     }
 
-                    case string entityId when !string.IsNullOrWhiteSpace(entityId):
+                    case string entityId:
                     {
                         return Parse(entityId);
                     }
@@ -152,15 +90,15 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             }
 
             [CanBeNull]
-            public override object ConvertTo([CanBeNull] ITypeDescriptorContext context, [NotNull] CultureInfo culture, [CanBeNull] object value, Type destinationType)
+            public override object ConvertTo(
+                [CanBeNull] ITypeDescriptorContext context,
+                [NotNull] CultureInfo culture,
+                [CanBeNull] object value,
+                Type destinationType
+            )
             {
                 if (value is TEntityId entityId)
                 {
-                    if (destinationType == typeof(Guid))
-                    {
-                        return entityId.ToGuid();
-                    }
-
                     if (destinationType == typeof(string))
                     {
                         return entityId.ToString();

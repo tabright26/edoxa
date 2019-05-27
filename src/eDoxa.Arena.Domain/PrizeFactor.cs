@@ -14,14 +14,16 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Domain
 {
-    public sealed class PrizeFactor : TypeObject<PrizeFactor, decimal>
+    public sealed class PrizeFactor : TypedObject<PrizeFactor, decimal>
     {
-        public PrizeFactor(decimal factor) : base(factor)
+        public PrizeFactor(decimal factor)
         {
             if (factor < 1)
             {
                 throw new ArgumentException(nameof(factor));
             }
+
+            Value = factor;
         }
     }
 }

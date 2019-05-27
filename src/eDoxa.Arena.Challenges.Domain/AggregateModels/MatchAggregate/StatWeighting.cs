@@ -12,10 +12,11 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
 {
-    public class StatWeighting : TypeObject<StatWeighting, float>
+    public class StatWeighting : TypedObject<StatWeighting, float>
     {
-        public StatWeighting(float weighting) : base(weighting)
+        public StatWeighting(float weighting)
         {
+            Value = weighting;
         }
 
         public override string ToString()

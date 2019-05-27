@@ -13,17 +13,17 @@ namespace eDoxa.Seedwork.Domain.Tests.Aggregate
         [TestMethod]
         public void M()
         {
-            var qw = new MockTypeObject(15);
+            var qw = new MockTypedObject(15);
 
-            var list = new List<MockTypeObject>
+            var list = new List<MockTypedObject>
             {
                 qw,
-                new MockTypeObject(60),
-                new MockTypeObject(1),
-                new MockTypeObject(2),
-                new MockTypeObject(5),
-                new MockTypeObject(100),
-                new MockTypeObject(50)
+                new MockTypedObject(60),
+                new MockTypedObject(1),
+                new MockTypedObject(2),
+                new MockTypedObject(5),
+                new MockTypedObject(100),
+                new MockTypedObject(50)
             };
 
             var order = list.OrderBy(x => x).ToList();
@@ -34,20 +34,21 @@ namespace eDoxa.Seedwork.Domain.Tests.Aggregate
         [TestMethod]
         public void M1()
         {
-            var types = MockTypeObject.GetValues();
+            var types = MockTypedObject.GetValues();
         }
 
-        private sealed class MockTypeObject : TypeObject<MockTypeObject, int>
+        private sealed class MockTypedObject : TypedObject<MockTypedObject, int>
         {
-            public static readonly MockTypeObject Object1 = new MockTypeObject(1);
-            public static readonly MockTypeObject Object2 = new MockTypeObject(2);
-            public static readonly MockTypeObject Object3 = new MockTypeObject(3);
-            public static readonly MockTypeObject Object4 = new MockTypeObject(4);
-            public static readonly MockTypeObject Object5 = new MockTypeObject(5);
-            public static readonly MockTypeObject Object6 = new MockTypeObject(6);
+            public static readonly MockTypedObject Object1 = new MockTypedObject(1);
+            public static readonly MockTypedObject Object2 = new MockTypedObject(2);
+            public static readonly MockTypedObject Object3 = new MockTypedObject(3);
+            public static readonly MockTypedObject Object4 = new MockTypedObject(4);
+            public static readonly MockTypedObject Object5 = new MockTypedObject(5);
+            public static readonly MockTypedObject Object6 = new MockTypedObject(6);
 
-            public MockTypeObject(int value) : base(value)
+            public MockTypedObject(int value)
             {
+                Value = value;
             }
         }
     }

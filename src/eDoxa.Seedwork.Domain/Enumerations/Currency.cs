@@ -19,7 +19,6 @@ namespace eDoxa.Seedwork.Domain.Enumerations
     {
         public static readonly Currency Money = new Currency(1, nameof(Money));
         public static readonly Currency Token = new Currency(2, nameof(Token));
-        public static readonly Currency Undefined = new Currency(3, nameof(Undefined));
 
         private Currency(int value, string name) : base(value, name)
         {

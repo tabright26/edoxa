@@ -15,14 +15,16 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed class ChallengeName : TypeObject<ChallengeName, string>
+    public sealed class ChallengeName : TypedObject<ChallengeName, string>
     {
-        public ChallengeName(string name) : base(name)
+        public ChallengeName(string name)
         {
             if (string.IsNullOrWhiteSpace(name) || !name.All(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || c == '(' || c == ')'))
             {
                 throw new ArgumentException(nameof(name));
             }
+
+            Value = name;
         }
     }
 }

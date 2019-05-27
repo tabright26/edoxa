@@ -16,7 +16,7 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed class ChallengeDuration : TypeObject<ChallengeDuration, TimeSpan>
+    public sealed class ChallengeDuration : TypedObject<ChallengeDuration, TimeSpan>
     {
         public static readonly ChallengeDuration OneDay = new ChallengeDuration(1);
         public static readonly ChallengeDuration TwoDays = new ChallengeDuration(2);
@@ -26,12 +26,14 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         public static readonly ChallengeDuration SixDays = new ChallengeDuration(6);
         public static readonly ChallengeDuration SevenDays = new ChallengeDuration(7);
 
-        public ChallengeDuration(int days) : base(TimeSpan.FromDays(days))
+        public ChallengeDuration(int days)
         {
+            Value = TimeSpan.FromDays(days);
         }
 
-        public ChallengeDuration(long ticks) : base(TimeSpan.FromTicks(ticks))
+        public ChallengeDuration(long ticks)
         {
+            Value = TimeSpan.FromTicks(ticks);
         }
 
         public static bool HasValue(int value)
@@ -46,7 +48,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         private new static IEnumerable<int> GetValues()
         {
-            return TypeObject<ChallengeDuration, TimeSpan>.GetValues().Select(timeSpan => timeSpan.Days).ToArray();
+            return TypedObject<ChallengeDuration, TimeSpan>.GetValues().Select(timeSpan => timeSpan.Days).ToArray();
         }
     }
 }

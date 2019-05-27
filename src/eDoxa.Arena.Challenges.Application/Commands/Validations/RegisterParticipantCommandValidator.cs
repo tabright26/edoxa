@@ -9,8 +9,7 @@
 // this source code package.
 
 using eDoxa.Commands.Abstractions.Validations;
-
-using FluentValidation;
+using eDoxa.Seedwork.Application.Extensions;
 
 namespace eDoxa.Arena.Challenges.Application.Commands.Validations
 {
@@ -18,7 +17,7 @@ namespace eDoxa.Arena.Challenges.Application.Commands.Validations
     {
         public RegisterParticipantCommandValidator()
         {
-            this.RuleFor(command => command.ChallengeId).NotEmpty();
+            this.RuleForEntityId(command => command.ChallengeId);
         }
     }
 }

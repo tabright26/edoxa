@@ -14,14 +14,16 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
 {
-    public class StatName : TypeObject<StatName, string>
+    public class StatName : TypedObject<StatName, string>
     {
-        public StatName(PropertyInfo propertyInfo) : base(propertyInfo.GetMethod.Name.Substring(4))
+        public StatName(PropertyInfo propertyInfo)
         {
+            Value = propertyInfo.GetMethod.Name.Substring(4);
         }
 
-        public StatName(string name) : base(name)
+        public StatName(string name)
         {
+            Value = name;
         }
 
         public static implicit operator StatName(string name)

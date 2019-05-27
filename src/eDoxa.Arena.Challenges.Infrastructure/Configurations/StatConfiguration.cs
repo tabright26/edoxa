@@ -8,8 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
+using eDoxa.Seedwork.Infrastructure.Extensions;
 
 using JetBrains.Annotations;
 
@@ -24,13 +24,11 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
         {
             builder.ToTable(nameof(ChallengesDbContext.Stats));
 
-            builder.Property(stat => stat.Id)
-                .HasConversion(matchId => matchId.ToGuid(), value => StatId.FromGuid(value))
+            builder.EntityId(stat => stat.Id)
                 .IsRequired()
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 
-            builder.Property(stat => stat.MatchId)
-                .HasConversion(matchId => matchId.ToGuid(), value => MatchId.FromGuid(value))
+            builder.EntityId(stat => stat.MatchId)
                 .IsRequired()
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 

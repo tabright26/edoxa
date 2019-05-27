@@ -8,6 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Collections.Generic;
+
 using eDoxa.Arena.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
 
@@ -47,5 +49,21 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         public PayoutEntries PayoutEntries => new PayoutEntries(_entries, _payoutRatio);
 
         public PrizePool PrizePool => new PrizePool(_entries, _entryFee, _serviceChargeRatio);
+
+        protected override IEnumerable<object> GetAtomicValues()
+        {
+            yield return BestOf;
+            yield return Entries;
+            yield return EntryFee;
+            yield return PayoutRatio;
+            yield return ServiceChargeRatio;
+            yield return PayoutEntries;
+            yield return PrizePool;
+        }
+
+        public override string ToString()
+        {
+            return string.Join(", ", this.GetAtomicValues());
+        }
     }
 }

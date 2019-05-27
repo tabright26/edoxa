@@ -15,7 +15,7 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
 {
-    public sealed class Money : TypeObject<Money, decimal>, ICurrency
+    public sealed class Money : TypedObject<Money, decimal>, ICurrency
     {
         public static readonly Money Five = new Money(5);
         public static readonly Money Ten = new Money(10);
@@ -26,8 +26,9 @@ namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
         public static readonly Money TwoHundred = new Money(200);
         public static readonly Money FiveHundred = new Money(500);
 
-        public Money(decimal amount) : base(amount)
+        public Money(decimal amount)
         {
+            Value = amount;
         }
 
         public static Money operator -(Money money)

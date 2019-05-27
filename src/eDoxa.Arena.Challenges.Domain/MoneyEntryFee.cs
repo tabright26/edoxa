@@ -8,12 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-
 using eDoxa.Arena.Domain;
-using eDoxa.Reflection;
 using eDoxa.Seedwork.Domain.Enumerations;
 
 namespace eDoxa.Arena.Challenges.Domain

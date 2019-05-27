@@ -11,6 +11,7 @@
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Seedwork.Domain.Entities;
+using eDoxa.Seedwork.Infrastructure.Extensions;
 
 using JetBrains.Annotations;
 
@@ -25,8 +26,7 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
         {
             builder.ToTable(nameof(CashierDbContext.MoneyAccounts));
 
-            builder.Property(account => account.Id)
-                   .HasConversion(accountId => accountId.ToGuid(), accountId => AccountId.FromGuid(accountId))
+            builder.EntityId(account => account.Id)
                    .IsRequired()
                    .UsePropertyAccessMode(PropertyAccessMode.Field);
 

@@ -14,10 +14,11 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
 {
-    public class StatValue : TypeObject<StatValue, double>
+    public class StatValue : TypedObject<StatValue, double>
     {
-        public StatValue(object value) : base(Convert.ToDouble(value))
+        public StatValue(object value)
         {
+            Value = Convert.ToDouble(value);
         }
     }
 }

@@ -9,6 +9,7 @@
 // this source code package.
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 
 using eDoxa.Seedwork.Domain.Aggregate;
@@ -18,8 +19,6 @@ namespace eDoxa.Arena.Domain.Abstractions
 {
     public abstract class Prize : ValueObject
     {
-        public static readonly Prize None = new UndefinedPrize();
-
         private readonly decimal _amount;
         private readonly Currency _currency;
 
@@ -43,6 +42,12 @@ namespace eDoxa.Arena.Domain.Abstractions
             return prize.Amount;
         }
 
+        protected override IEnumerable<object> GetAtomicValues()
+        {
+            yield return Amount;
+            yield return Currency;
+        }
+
         public override string ToString()
         {
             return Amount.ToString(CultureInfo.InvariantCulture);
@@ -61,13 +66,6 @@ namespace eDoxa.Arena.Domain.Abstractions
             }
 
             throw new ArgumentException(nameof(factor));
-        }
-
-        private sealed class UndefinedPrize : Prize
-        {
-            internal UndefinedPrize() : base(0, Currency.Undefined)
-            {
-            }
         }
     }
 }

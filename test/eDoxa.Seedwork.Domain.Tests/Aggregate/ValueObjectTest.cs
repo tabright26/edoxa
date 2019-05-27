@@ -8,6 +8,9 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
+using System.Collections.Generic;
+
 using eDoxa.Seedwork.Domain.Aggregate;
 
 using FluentAssertions;
@@ -19,27 +22,6 @@ namespace eDoxa.Seedwork.Domain.Tests.Aggregate
     [TestClass]
     public sealed class ValueObjectTest
     {
-        [TestMethod]
-        public void OperatorEquals_SameProperty_ShouldBeTrue()
-        {
-            // Arrange
-            var valueObject1 = new MockValueObjectWithProperty
-            {
-                Property = "Property"
-            };
-
-            var valueObject2 = new MockValueObjectWithProperty
-            {
-                Property = "Property"
-            };
-
-            // Act
-            var condition = valueObject1 == valueObject2;
-
-            // Assert
-            condition.Should().BeTrue();
-        }
-
         [TestMethod]
         public void OperatorEquals_DifferentProperty_ShouldBeFalse()
         {
@@ -80,27 +62,6 @@ namespace eDoxa.Seedwork.Domain.Tests.Aggregate
 
             // Assert
             condition.Should().BeTrue();
-        }
-
-        [TestMethod]
-        public void OperatorNotEquals_SameProperty_ShouldBeFalse()
-        {
-            // Arrange
-            var valueObject1 = new MockValueObjectWithProperty
-            {
-                Property = "Property"
-            };
-
-            var valueObject2 = new MockValueObjectWithProperty
-            {
-                Property = "Property"
-            };
-
-            // Act
-            var condition = valueObject1 != valueObject2;
-
-            // Assert
-            condition.Should().BeFalse();
         }
 
         [TestMethod]
@@ -174,21 +135,6 @@ namespace eDoxa.Seedwork.Domain.Tests.Aggregate
         }
 
         [TestMethod]
-        public void GetHashCode_WithoutProperty_ShouldNotBeEquals()
-        {
-            // Arrange
-            var valueObject1 = new MockValueObject();
-            var valueObject2 = new MockValueObject();
-
-            // Act
-            var hashCode1 = valueObject1.GetHashCode();
-            var hashCode2 = valueObject2.GetHashCode();
-
-            // Assert
-            hashCode1.Should().NotBe(hashCode2);
-        }
-
-        [TestMethod]
         public void GetHashCode_SameProperty_ShouldBeEquals()
         {
             // Arrange
@@ -234,11 +180,25 @@ namespace eDoxa.Seedwork.Domain.Tests.Aggregate
 
         private class MockValueObject : ValueObject
         {
+            protected override IEnumerable<object> GetAtomicValues()
+            {
+                return Array.Empty<object>();
+            }
+
+            public override string ToString()
+            {
+                return string.Empty;
+            }
         }
 
         private sealed class MockValueObjectWithProperty : MockValueObject
         {
             public string Property { get; set; }
+
+            protected override IEnumerable<object> GetAtomicValues()
+            {
+                yield return Property;
+            }
         }
 
         private sealed class MockValueObjectWithProperties : MockValueObject
@@ -246,6 +206,12 @@ namespace eDoxa.Seedwork.Domain.Tests.Aggregate
             public string Property1 { get; set; }
 
             public string Property2 { get; set; }
+
+            protected override IEnumerable<object> GetAtomicValues()
+            {
+                yield return Property1;
+                yield return Property2;
+            }
         }
     }
 }
