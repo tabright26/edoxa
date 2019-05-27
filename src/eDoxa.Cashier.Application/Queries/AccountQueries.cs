@@ -8,74 +8,55 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Linq;
 using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Cashier.Domain;
-using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
-using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
+using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
-using eDoxa.Cashier.Infrastructure;
 using eDoxa.Functional;
 using eDoxa.Security.Extensions;
-using eDoxa.Seedwork.Domain.Entities;
+using eDoxa.Seedwork.Domain.Enumerations;
 
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Cashier.Application.Queries
 {
     public sealed partial class AccountQueries
     {
-        private readonly CashierDbContext _context;
+        private readonly IMoneyAccountRepository _moneyAccountRepository;
+        private readonly ITokenAccountRepository _tokenAccountRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IMapper _mapper;
 
-        public AccountQueries(CashierDbContext context, IHttpContextAccessor httpContextAccessor, IMapper mapper)
+        public AccountQueries(IMoneyAccountRepository moneyAccountRepository, ITokenAccountRepository tokenAccountRepository, IHttpContextAccessor httpContextAccessor, IMapper mapper)
         {
-            _context = context;
+            _moneyAccountRepository = moneyAccountRepository;
+            _tokenAccountRepository = tokenAccountRepository;
             _httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
-        }
-
-        internal async Task<MoneyAccount> GetMoneyAccountAsNoTrackingAsync(UserId userId)
-        {
-            return await _context.MoneyAccounts.AsNoTracking()
-                                 .Include(transaction => transaction.Transactions)
-                                 .Where(account => account.User.Id == userId)
-                                 .SingleOrDefaultAsync();
-        }
-
-        internal async Task<TokenAccount> GetTokenAccountAsNoTrackingAsync(UserId userId)
-        {
-            return await _context.TokenAccounts.AsNoTracking()
-                                 .Include(transaction => transaction.Transactions)
-                                 .Where(account => account.User.Id == userId)
-                                 .SingleOrDefaultAsync();
         }
     }
 
     public sealed partial class AccountQueries : IAccountQueries
     {
-        public async Task<Option<AccountDTO>> GetAccountAsync(AccountCurrency currency)
+        public async Task<Option<AccountDTO>> GetAccountAsync(Currency currency)
         {
             var userId = _httpContextAccessor.GetUserId();
 
             AccountDTO mapper = null;
 
-            if (currency.Equals(AccountCurrency.Money))
+            if (currency == Currency.Money)
             {
-                var account = await this.GetMoneyAccountAsNoTrackingAsync(userId);
+                var account = await _moneyAccountRepository.GetMoneyAccountAsNoTrackingAsync(userId);
 
                 mapper = _mapper.Map<AccountDTO>(account);
             }
 
-            if (currency.Equals(AccountCurrency.Token))
+            if (currency == Currency.Token)
             {
-                var account = await this.GetTokenAccountAsNoTrackingAsync(userId);
+                var account = await _tokenAccountRepository.GetTokenAccountAsNoTrackingAsync(userId);
 
                 mapper = _mapper.Map<AccountDTO>(account);
             }

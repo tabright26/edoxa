@@ -25,11 +25,9 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
         {
             builder.ToTable(nameof(ChallengesDbContext.Matches));
 
-            builder.EntityId(match => match.Id)
-                .IsRequired()
-                .UsePropertyAccessMode(PropertyAccessMode.Field);
+            builder.EntityId(match => match.Id).IsRequired();
 
-            builder.Property(match => match.Timestamp).IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field);
+            builder.Property(match => match.Timestamp).IsRequired();
 
             builder.Property<ParticipantId>(nameof(ParticipantId))
                 .HasConversion(participantId => participantId.ToGuid(), participantId => ParticipantId.FromGuid(participantId))
@@ -37,8 +35,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
 
             builder.Property(match => match.MatchExternalId)
                 .HasConversion(externalId => externalId.ToString(), externalId => new MatchExternalId(externalId))
-                .IsRequired()
-                .UsePropertyAccessMode(PropertyAccessMode.Field);
+                .IsRequired();
 
             builder.Ignore(match => match.TotalScore);
 

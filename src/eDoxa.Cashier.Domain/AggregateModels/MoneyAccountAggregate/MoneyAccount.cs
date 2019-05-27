@@ -23,24 +23,21 @@ namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
 {
     public class MoneyAccount : Entity<AccountId>, IMoneyAccount, IAggregateRoot
     {
-        private DateTime? _lastDeposit;
-        private DateTime? _lastWithdraw;
         private HashSet<MoneyTransaction> _transactions;
-        private User _user;
 
         public MoneyAccount(User user) : this()
         {
-            _user = user;
+            User = user;
         }
 
         private MoneyAccount()
         {
-            _lastDeposit = null;
-            _lastWithdraw = null;
+            LastDeposit = null;
+            LastWithdraw = null;
             _transactions = new HashSet<MoneyTransaction>();
         }
 
-        public User User => _user;
+        public User User { get; private set; }
 
         public Money Balance =>
             new Money(Transactions.Where(transaction => transaction.Status.Equals(TransactionStatus.Completed)).Sum(transaction => transaction.Amount));
@@ -48,9 +45,9 @@ namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
         public Money Pending =>
             new Money(Transactions.Where(transaction => transaction.Status.Equals(TransactionStatus.Pending)).Sum(transaction => transaction.Amount));
 
-        public DateTime? LastDeposit => _lastDeposit;
+        public DateTime? LastDeposit { get; private set; }
 
-        public DateTime? LastWithdraw => _lastWithdraw;
+        public DateTime? LastWithdraw { get; private set; }
 
         public IReadOnlyCollection<MoneyTransaction> Transactions => _transactions;
 
@@ -111,12 +108,12 @@ namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
 
             if (transaction.Type.Equals(TransactionType.Deposit))
             {
-                _lastDeposit = DateTime.UtcNow;
+                LastDeposit = DateTime.UtcNow;
             }
 
             if (transaction.Type.Equals(TransactionType.Withdraw))
             {
-                _lastWithdraw = DateTime.UtcNow;
+                LastWithdraw = DateTime.UtcNow;
             }
 
             return transaction;

@@ -1,5 +1,5 @@
 ﻿// Filename: MoneyAccountConfiguration.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-05-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -26,22 +26,17 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
         {
             builder.ToTable(nameof(CashierDbContext.MoneyAccounts));
 
-            builder.EntityId(account => account.Id)
-                   .IsRequired()
-                   .UsePropertyAccessMode(PropertyAccessMode.Field);
+            builder.EntityId(account => account.Id).IsRequired();
 
-            builder.Property<UserId>(nameof(UserId))
-                   .HasConversion(userId => userId.ToGuid(), userId => UserId.FromGuid(userId))
-                   .IsRequired()
-                   .UsePropertyAccessMode(PropertyAccessMode.Field);
+            builder.Property<UserId>(nameof(UserId)).HasConversion(userId => userId.ToGuid(), userId => UserId.FromGuid(userId)).IsRequired();
 
             builder.Ignore(account => account.Balance);
 
             builder.Ignore(account => account.Pending);
 
-            builder.Property(account => account.LastDeposit).IsRequired(false).UsePropertyAccessMode(PropertyAccessMode.Field);
+            builder.Property(account => account.LastDeposit).IsRequired(false);
 
-            builder.Property(account => account.LastWithdraw).IsRequired(false).UsePropertyAccessMode(PropertyAccessMode.Field);
+            builder.Property(account => account.LastWithdraw).IsRequired(false);
 
             builder.HasMany(account => account.Transactions).WithOne().HasForeignKey(nameof(AccountId)).IsRequired().OnDelete(DeleteBehavior.Cascade);
 

@@ -1,5 +1,5 @@
 ﻿// Filename: Transaction.cs
-// Date Created: 2019-05-13
+// Date Created: 2019-05-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -18,49 +18,42 @@ namespace eDoxa.Cashier.Domain.Abstractions
     public abstract class Transaction<TCurrency> : Entity<TransactionId>, ITransaction<TCurrency>
     where TCurrency : ICurrency
     {
-        private TCurrency _amount;
-        private TransactionDescription _description;
-        private TransactionFailure _failure;
-        private TransactionStatus _status;
-        private DateTime _timestamp;
-        private TransactionType _type;
-
         protected Transaction(TCurrency amount, TransactionDescription description, TransactionType type) : this()
         {
-            _amount = amount;
-            _description = description;
-            _type = type;
+            Amount = amount;
+            Description = description;
+            Type = type;
         }
 
         private Transaction()
         {
-            _timestamp = DateTime.UtcNow;
-            _status = TransactionStatus.Pending;
-            _failure = null;
+            Timestamp = DateTime.UtcNow;
+            Status = TransactionStatus.Pending;
+            Failure = null;
         }
 
-        public DateTime Timestamp => _timestamp;
+        public DateTime Timestamp { get; private set; }
 
-        public TCurrency Amount => _amount;
+        public TCurrency Amount { get; private set; }
 
-        public TransactionDescription Description => _description;
+        public TransactionDescription Description { get; private set; }
 
-        public TransactionFailure Failure => _failure;
+        public TransactionFailure Failure { get; private set; }
 
-        public TransactionType Type => _type;
+        public TransactionType Type { get; private set; }
 
-        public TransactionStatus Status => _status;
+        public TransactionStatus Status { get; private set; }
 
         public void Complete()
         {
-            _status = TransactionStatus.Completed;
+            Status = TransactionStatus.Completed;
         }
 
         public void Fail(string message)
         {
-            _status = TransactionStatus.Failed;
+            Status = TransactionStatus.Failed;
 
-            _failure = new TransactionFailure(message);
+            Failure = new TransactionFailure(message);
         }
     }
 }

@@ -11,6 +11,7 @@
 using System;
 
 using eDoxa.Cashier.Domain;
+using eDoxa.Seedwork.Domain.Enumerations;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -28,7 +29,7 @@ namespace eDoxa.Cashier.DTO
         public DateTime Timestamp { get; set; }
 
         [JsonProperty("currency")]
-        public AccountCurrency Currency { get; set; }
+        public Currency Currency { get; set; }
 
         [JsonProperty("amount")]
         public decimal Amount { get; set; }

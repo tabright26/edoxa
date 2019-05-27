@@ -10,9 +10,9 @@
 
 using AutoMapper;
 
-using eDoxa.Cashier.Domain;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
+using eDoxa.Seedwork.Domain.Enumerations;
 
 namespace eDoxa.Cashier.DTO.Profiles
 {
@@ -23,12 +23,12 @@ namespace eDoxa.Cashier.DTO.Profiles
             this.CreateMap<MoneyAccount, AccountDTO>()
                 .ForMember(account => account.Balance, config => config.MapFrom<decimal>(account => account.Balance))
                 .ForMember(account => account.Pending, config => config.MapFrom<decimal>(account => account.Pending))
-                .ForMember(account => account.Currency, config => config.MapFrom(_ => AccountCurrency.Money));
+                .ForMember(account => account.Currency, config => config.MapFrom(_ => Currency.Money));
 
             this.CreateMap<TokenAccount, AccountDTO>()
                 .ForMember(account => account.Balance, config => config.MapFrom<decimal>(account => account.Balance))
                 .ForMember(account => account.Pending, config => config.MapFrom<decimal>(account => account.Pending))
-                .ForMember(account => account.Currency, config => config.MapFrom(_ => AccountCurrency.Token));
+                .ForMember(account => account.Currency, config => config.MapFrom(_ => Currency.Token));
         }
     }
 }

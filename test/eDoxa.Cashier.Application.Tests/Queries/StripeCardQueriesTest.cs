@@ -67,7 +67,7 @@ namespace eDoxa.Cashier.Application.Tests.Queries
             // Arrange
             var user = FakeCashierFactory.CreateUser();
 
-            _mockUserRepository.Setup(mock => mock.FindUserAsNoTrackingAsync(It.IsAny<UserId>())).ReturnsAsync(user).Verifiable();
+            _mockUserRepository.Setup(mock => mock.GetUserAsNoTrackingAsync(It.IsAny<UserId>())).ReturnsAsync(user).Verifiable();
 
             _mockStripeService.Setup(mock => mock.GetCardsAsync(It.IsAny<StripeCustomerId>()))
                               .ReturnsAsync(
@@ -109,7 +109,7 @@ namespace eDoxa.Cashier.Application.Tests.Queries
             // Arrange
             var user = FakeCashierFactory.CreateUser();
 
-            _mockUserRepository.Setup(mock => mock.FindUserAsNoTrackingAsync(It.IsAny<UserId>())).ReturnsAsync(user).Verifiable();
+            _mockUserRepository.Setup(mock => mock.GetUserAsNoTrackingAsync(It.IsAny<UserId>())).ReturnsAsync(user).Verifiable();
 
             _mockStripeService.Setup(mock => mock.GetCardsAsync(It.IsAny<StripeCustomerId>())).ReturnsAsync(new List<Card>()).Verifiable();
 

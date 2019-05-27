@@ -45,7 +45,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         {
             var userId = _httpContextAccessor.GetUserId();
 
-            var user = await _userRepository.FindUserAsNoTrackingAsync(userId);
+            var user = await _userRepository.GetUserAsNoTrackingAsync(userId);
 
             return await _tokenAccountService.DepositAsync(user.Id, Bundles[command.BundleType], user.CustomerId, cancellationToken);
         }

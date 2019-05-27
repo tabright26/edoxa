@@ -42,7 +42,7 @@ namespace eDoxa.Cashier.Domain.Services
             CancellationToken cancellationToken = default
         )
         {
-            var account = await _moneyAccountRepository.FindUserAccountAsync(userId);
+            var account = await _moneyAccountRepository.GetUserAccountAsync(userId);
 
             var validator = new DepositMoneyValidator(account.LastDeposit);
 
@@ -89,7 +89,7 @@ namespace eDoxa.Cashier.Domain.Services
             CancellationToken cancellationToken = default
         )
         {
-            var account = await _moneyAccountRepository.FindUserAccountAsync(userId);
+            var account = await _moneyAccountRepository.GetUserAccountAsync(userId);
 
             var money = bundle.Amount;
 

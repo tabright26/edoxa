@@ -18,6 +18,8 @@ namespace eDoxa.Cashier.Domain.Repositories
 {
     public interface IMoneyAccountRepository : IRepository<MoneyAccount>
     {
-        Task<MoneyAccount> FindUserAccountAsync(UserId userId);
+        Task<MoneyAccount> GetUserAccountAsync(UserId userId);
+
+        Task<MoneyAccount> GetMoneyAccountAsNoTrackingAsync(UserId userId);
     }
 }

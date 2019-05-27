@@ -10,13 +10,13 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Domain;
 using eDoxa.Functional;
+using eDoxa.Seedwork.Domain.Enumerations;
 
 namespace eDoxa.Cashier.DTO.Queries
 {
     public interface IAccountQueries
     {
-        Task<Option<AccountDTO>> GetAccountAsync(AccountCurrency currency);
+        Task<Option<AccountDTO>> GetAccountAsync(Currency currency);
     }
 }

@@ -43,7 +43,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         {
             var userId = _httpContextAccessor.GetUserId(); 
 
-            var user = await _userRepository.FindUserAsync(userId);
+            var user = await _userRepository.GetUserAsync(userId);
 
             var result = user.CanAddBankAccount();
 

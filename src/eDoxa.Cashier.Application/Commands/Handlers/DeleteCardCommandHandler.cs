@@ -43,7 +43,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         {
             var userId = _httpContextAccessor.GetUserId();
 
-            var user = await _userRepository.FindUserAsNoTrackingAsync(userId);
+            var user = await _userRepository.GetUserAsNoTrackingAsync(userId);
 
             await _stripeService.DeleteCardAsync(user.CustomerId, command.StripeCardId, cancellationToken);
 

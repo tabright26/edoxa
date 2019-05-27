@@ -25,32 +25,28 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate
 {
     public class Participant : Entity<ParticipantId>, IAggregateRoot
     {
-        private Challenge _challenge;
-        private ExternalAccount _externalAccount;
         private HashSet<Match> _matches;
-        private DateTime _timestamp;
-        private UserId _userId;
 
         public Participant(Challenge challenge, UserId userId, ExternalAccount externalAccount) : this()
         {
-            _challenge = challenge;
-            _userId = userId;
-            _externalAccount = externalAccount;
+            Challenge = challenge;
+            UserId = userId;
+            ExternalAccount = externalAccount;
         }
 
         private Participant()
         {
-            _timestamp = DateTime.UtcNow;
+            Timestamp = DateTime.UtcNow;
             _matches = new HashSet<Match>();
         }
 
-        public DateTime Timestamp => _timestamp;
+        public DateTime Timestamp { get; private set; }
 
-        public ExternalAccount ExternalAccount => _externalAccount;
+        public ExternalAccount ExternalAccount { get; private set; }
 
-        public UserId UserId => _userId;
+        public UserId UserId { get; private set; }
 
-        public Challenge Challenge => _challenge;
+        public Challenge Challenge { get; private set; }
 
         public Option<Score> AverageScore => Matches.Count >= Challenge.Setup.BestOf ? new Option<Score>(new ParticipantScore(this)) : new Option<Score>();
 

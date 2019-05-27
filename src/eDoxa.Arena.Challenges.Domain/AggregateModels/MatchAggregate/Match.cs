@@ -22,30 +22,27 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
 {
     public class Match : Entity<MatchId>, IAggregateRoot
     {
-        private MatchExternalId _matchExternalId;
-        private Participant _participant;
         private HashSet<Stat> _stats;
-        private DateTime _timestamp;
 
         public Match(Participant participant, MatchExternalId matchExternalId) : this()
         {
-            _matchExternalId = matchExternalId;
-            _participant = participant;
+            MatchExternalId = matchExternalId;
+            Participant = participant;
         }
 
         private Match()
         {
-            _timestamp = DateTime.UtcNow;
+            Timestamp = DateTime.UtcNow;
             _stats = new HashSet<Stat>();
         }
 
-        public DateTime Timestamp => _timestamp;
+        public DateTime Timestamp { get; private set; }
 
-        public MatchExternalId MatchExternalId => _matchExternalId;
+        public MatchExternalId MatchExternalId { get; private set; }
 
         public Score TotalScore => new MatchScore(this);
 
-        public Participant Participant => _participant;
+        public Participant Participant { get; private set; }
 
         public IReadOnlyCollection<Stat> Stats => _stats;
 

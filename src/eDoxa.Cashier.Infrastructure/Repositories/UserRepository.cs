@@ -40,12 +40,12 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
             _dbContext.Add(new User(userId, accountId, customerId));
         }
 
-        public async Task<User> FindUserAsync(UserId userId)
+        public async Task<User> GetUserAsync(UserId userId)
         {
             return await _dbContext.Users.Where(user => user.Id == userId).SingleAsync();
         }
 
-        public async Task<User> FindUserAsNoTrackingAsync(UserId userId)
+        public async Task<User> GetUserAsNoTrackingAsync(UserId userId)
         {
             return await _dbContext.Users.AsNoTracking().Where(user => user.Id == userId).SingleAsync();
         }

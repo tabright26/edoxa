@@ -11,8 +11,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Domain;
 using eDoxa.Cashier.DTO.Queries;
+using eDoxa.Seedwork.Domain.Enumerations;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -38,7 +38,7 @@ namespace eDoxa.Cashier.Api.Controllers
         ///     Get account by currency.
         /// </summary>
         [HttpGet("{currency}", Name = nameof(GetAccountAsync))]
-        public async Task<IActionResult> GetAccountAsync(AccountCurrency currency)
+        public async Task<IActionResult> GetAccountAsync(Currency currency)
         {
             var account = await _accountQueries.GetAccountAsync(currency);
 

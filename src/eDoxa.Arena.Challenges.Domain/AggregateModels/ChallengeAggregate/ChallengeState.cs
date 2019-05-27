@@ -23,7 +23,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         public static readonly ChallengeState Opened = new ChallengeState(1 << 2, nameof(Opened));
         public static readonly ChallengeState InProgress = new ChallengeState(1 << 3, nameof(InProgress));
         public static readonly ChallengeState Ended = new ChallengeState(1 << 4, nameof(Ended));
-        public static readonly ChallengeState Closed = new ChallengeState(1 << 5, nameof(Closed));
+        public static readonly ChallengeState Completed = new ChallengeState(1 << 5, nameof(Completed));
 
         private ChallengeState(int value, string name) : base(value, name)
         {

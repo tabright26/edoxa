@@ -11,6 +11,7 @@
 using AutoMapper;
 
 using eDoxa.Cashier.Application.Queries;
+using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.DTO.Factories;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.Tests.Factories;
@@ -39,7 +40,7 @@ namespace eDoxa.Cashier.Application.Tests.Queries
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<AccountQueries>.For(typeof(CashierDbContext), typeof(IHttpContextAccessor), typeof(IMapper)).WithName("AccountQueries").Assert();
+            ConstructorTests<AccountQueries>.For(typeof(IMoneyAccountRepository), typeof(ITokenAccountRepository), typeof(IHttpContextAccessor), typeof(IMapper)).WithName("AccountQueries").Assert();
         }
 
         //[TestMethod]

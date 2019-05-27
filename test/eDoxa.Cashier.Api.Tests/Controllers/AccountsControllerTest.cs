@@ -11,10 +11,10 @@
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Controllers;
-using eDoxa.Cashier.Domain;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Functional;
+using eDoxa.Seedwork.Domain.Enumerations;
 using eDoxa.Testing.MSTest;
 
 using FluentAssertions;
@@ -58,7 +58,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         public async Task GetAccountAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
-            _mockAccountQueries.Setup(mediator => mediator.GetAccountAsync(It.IsAny<AccountCurrency>()))
+            _mockAccountQueries.Setup(mediator => mediator.GetAccountAsync(It.IsAny<Currency>()))
                                .ReturnsAsync(new Option<AccountDTO>(new AccountDTO()))
                                .Verifiable();
 
@@ -70,14 +70,14 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            _mockAccountQueries.Verify(mediator => mediator.GetAccountAsync(It.IsAny<AccountCurrency>()), Times.Once);
+            _mockAccountQueries.Verify(mediator => mediator.GetAccountAsync(It.IsAny<Currency>()), Times.Once);
         }
 
         [TestMethod]
         public async Task GetAccountAsync_ShouldBeOfTypeNotFoundObjectResult()
         {
             // Arrange
-            _mockAccountQueries.Setup(mediator => mediator.GetAccountAsync(It.IsAny<AccountCurrency>())).ReturnsAsync(new Option<AccountDTO>()).Verifiable();
+            _mockAccountQueries.Setup(mediator => mediator.GetAccountAsync(It.IsAny<Currency>())).ReturnsAsync(new Option<AccountDTO>()).Verifiable();
 
             var controller = new AccountsController(_mockAccountQueries.Object);
 
@@ -87,7 +87,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
 
-            _mockAccountQueries.Verify(mediator => mediator.GetAccountAsync(It.IsAny<AccountCurrency>()), Times.Once);
+            _mockAccountQueries.Verify(mediator => mediator.GetAccountAsync(It.IsAny<Currency>()), Times.Once);
         }
     }
 }

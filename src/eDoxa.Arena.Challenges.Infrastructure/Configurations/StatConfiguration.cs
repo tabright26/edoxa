@@ -24,28 +24,15 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
         {
             builder.ToTable(nameof(ChallengesDbContext.Stats));
 
-            builder.EntityId(stat => stat.Id)
-                .IsRequired()
-                .UsePropertyAccessMode(PropertyAccessMode.Field);
+            builder.EntityId(stat => stat.Id).IsRequired();
 
-            builder.EntityId(stat => stat.MatchId)
-                .IsRequired()
-                .UsePropertyAccessMode(PropertyAccessMode.Field);
+            builder.EntityId(stat => stat.MatchId).IsRequired();
 
-            builder.Property(stat => stat.Name)
-                .HasConversion(name => name.ToString(), name => new StatName(name))
-                .IsRequired()
-                .UsePropertyAccessMode(PropertyAccessMode.Field);
+            builder.Property(stat => stat.Name).HasConversion(name => name.ToString(), name => new StatName(name)).IsRequired();
 
-            builder.Property(stat => stat.Value)
-                .HasConversion<double>(value => value, value => new StatValue(value))
-                .IsRequired()
-                .UsePropertyAccessMode(PropertyAccessMode.Field);
+            builder.Property(stat => stat.Value).HasConversion<double>(value => value, value => new StatValue(value)).IsRequired();
 
-            builder.Property(stat => stat.Weighting)
-                .HasConversion<float>(weighting => weighting, weighting => new StatWeighting(weighting))
-                .IsRequired()
-                .UsePropertyAccessMode(PropertyAccessMode.Field);
+            builder.Property(stat => stat.Weighting).HasConversion<float>(weighting => weighting, weighting => new StatWeighting(weighting)).IsRequired();
 
             builder.Ignore(stat => stat.Score);
 

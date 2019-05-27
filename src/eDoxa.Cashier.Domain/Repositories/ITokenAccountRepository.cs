@@ -18,6 +18,8 @@ namespace eDoxa.Cashier.Domain.Repositories
 {
     public interface ITokenAccountRepository : IRepository<TokenAccount>
     {
-        Task<TokenAccount> FindUserAccountAsync(UserId userId);
+        Task<TokenAccount> GetUserAccountAsync(UserId userId);
+
+        Task<TokenAccount> GetTokenAccountAsNoTrackingAsync(UserId userId);
     }
 }

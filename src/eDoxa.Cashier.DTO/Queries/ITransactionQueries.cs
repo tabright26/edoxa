@@ -10,12 +10,14 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Domain;
+using eDoxa.Seedwork.Domain.Enumerations;
+
+using JetBrains.Annotations;
 
 namespace eDoxa.Cashier.DTO.Queries
 {
     public interface ITransactionQueries
     {
-        Task<TransactionListDTO> GetTransactionsAsync(AccountCurrency accountCurrency);
+        Task<TransactionListDTO> GetTransactionsAsync([CanBeNull] Currency currency);
     }
 }

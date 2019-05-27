@@ -44,7 +44,7 @@ namespace eDoxa.Cashier.Application.Queries
         {
             var userId = _httpContextAccessor.GetUserId();
 
-            var user = await _userRepository.FindUserAsNoTrackingAsync(userId);
+            var user = await _userRepository.GetUserAsNoTrackingAsync(userId);
 
             var cards = await _service.GetCardsAsync(user.CustomerId);
 

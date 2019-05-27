@@ -21,8 +21,8 @@ namespace eDoxa.Cashier.Domain.Repositories
     {
         void Create(UserId userId, StripeAccountId accountId, StripeCustomerId customerId);
 
-        Task<User> FindUserAsync(UserId userId);
+        Task<User> GetUserAsync(UserId userId);
 
-        Task<User> FindUserAsNoTrackingAsync(UserId userId);
+        Task<User> GetUserAsNoTrackingAsync(UserId userId);
     }
 }

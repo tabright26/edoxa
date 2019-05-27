@@ -17,38 +17,32 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public class ChallengeSetup : ValueObject
     {
-        private BestOf _bestOf;
-        private Entries _entries;
-        private EntryFee _entryFee;
-        private PayoutRatio _payoutRatio;
-        private ServiceChargeRatio _serviceChargeRatio;
-
         public ChallengeSetup(BestOf bestOf, PayoutEntries payoutEntries, EntryFee entryFee) : this()
         {
-            _bestOf = bestOf;
-            _entryFee = entryFee;
-            _entries = new Entries(payoutEntries, _payoutRatio);
+            BestOf = bestOf;
+            EntryFee = entryFee;
+            Entries = new Entries(payoutEntries, PayoutRatio);
         }
 
         private ChallengeSetup()
         {
-            _payoutRatio = PayoutRatio.Default;
-            _serviceChargeRatio = ServiceChargeRatio.Default;
+            PayoutRatio = PayoutRatio.Default;
+            ServiceChargeRatio = ServiceChargeRatio.Default;
         }
 
-        public BestOf BestOf => _bestOf;
+        public BestOf BestOf { get; private set; }
 
-        public Entries Entries => _entries;
+        public Entries Entries { get; private set; }
 
-        public EntryFee EntryFee => _entryFee;
+        public EntryFee EntryFee { get; private set; }
 
-        public PayoutRatio PayoutRatio => _payoutRatio;
+        public PayoutRatio PayoutRatio { get; private set; }
 
-        public ServiceChargeRatio ServiceChargeRatio => _serviceChargeRatio;
+        public ServiceChargeRatio ServiceChargeRatio { get; private set; }
 
-        public PayoutEntries PayoutEntries => new PayoutEntries(_entries, _payoutRatio);
+        public PayoutEntries PayoutEntries => new PayoutEntries(Entries, PayoutRatio);
 
-        public PrizePool PrizePool => new PrizePool(_entries, _entryFee, _serviceChargeRatio);
+        public PrizePool PrizePool => new PrizePool(Entries, EntryFee, ServiceChargeRatio);
 
         protected override IEnumerable<object> GetAtomicValues()
         {

@@ -26,24 +26,17 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
         {
             builder.ToTable(nameof(ChallengesDbContext.Participants));
 
-            builder.EntityId(participant => participant.Id)
-                .IsRequired()
-                .UsePropertyAccessMode(PropertyAccessMode.Field);
+            builder.EntityId(participant => participant.Id).IsRequired();
 
-            builder.Property(participant => participant.Timestamp).IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field);
+            builder.Property(participant => participant.Timestamp).IsRequired();
 
             builder.Property<ChallengeId>(nameof(ChallengeId))
                 .HasConversion(challengeId => challengeId.ToGuid(), value => ChallengeId.FromGuid(value))
                 .IsRequired();
 
-            builder.EntityId(participant => participant.UserId)
-                .IsRequired()
-                .UsePropertyAccessMode(PropertyAccessMode.Field);
+            builder.EntityId(participant => participant.UserId).IsRequired();
 
-            builder.Property(participant => participant.ExternalAccount)
-                .HasConversion(externalAccount => externalAccount.ToString(), externalAccount => new ExternalAccount(externalAccount))
-                .IsRequired()
-                .UsePropertyAccessMode(PropertyAccessMode.Field);
+            builder.Property(participant => participant.ExternalAccount).HasConversion(externalAccount => externalAccount.ToString(), externalAccount => new ExternalAccount(externalAccount)).IsRequired();
 
             builder.Ignore(participant => participant.AverageScore);
 

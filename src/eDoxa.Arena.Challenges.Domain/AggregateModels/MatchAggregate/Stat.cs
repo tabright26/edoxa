@@ -15,26 +15,21 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
 {
     public class Stat : Entity<StatId>
     {
-        private MatchId _matchId;
-        private StatName _name;
-        private StatValue _value;
-        private StatWeighting _weighting;
-
         public Stat(MatchId matchId, StatName name, StatValue value, StatWeighting weighting)
         {
-            _matchId = matchId;
-            _name = name;
-            _value = value;
-            _weighting = weighting;
+            MatchId = matchId;
+            Name = name;
+            Value = value;
+            Weighting = weighting;
         }
 
-        public MatchId MatchId => _matchId;
+        public MatchId MatchId { get; private set; }
 
-        public StatName Name => _name;
+        public StatName Name { get; private set; }
 
-        public StatValue Value => _value;
+        public StatValue Value { get; private set; }
 
-        public StatWeighting Weighting => _weighting;
+        public StatWeighting Weighting { get; private set; }
 
         public Score Score => new StatScore(this);
     }

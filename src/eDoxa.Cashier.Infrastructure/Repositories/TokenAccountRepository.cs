@@ -34,12 +34,20 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
 
     public sealed partial class TokenAccountRepository : ITokenAccountRepository
     {
-        public async Task<TokenAccount> FindUserAccountAsync(UserId userId)
+        public async Task<TokenAccount> GetUserAccountAsync(UserId userId)
         {
             return await _context.TokenAccounts.Include(account => account.User)
                                  .Include(account => account.Transactions)
                                  .Where(account => account.User.Id == userId)
                                  .SingleOrDefaultAsync();
+        }
+
+        public async Task<TokenAccount> GetTokenAccountAsNoTrackingAsync(UserId userId)
+        {
+            return await _context.TokenAccounts.AsNoTracking()
+                .Include(transaction => transaction.Transactions)
+                .Where(account => account.User.Id == userId)
+                .SingleOrDefaultAsync();
         }
     }
 }

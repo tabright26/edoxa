@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Cashier.Domain;
+using eDoxa.Seedwork.Domain.Enumerations;
 
 using Newtonsoft.Json;
 
@@ -18,7 +18,7 @@ namespace eDoxa.Cashier.DTO
     public class AccountDTO
     {
         [JsonProperty("currency")]
-        public AccountCurrency Currency { get; set; }
+        public Currency Currency { get; set; }
 
         [JsonProperty("balance")]
         public decimal Balance { get; set; }

@@ -42,7 +42,7 @@ namespace eDoxa.Cashier.Domain.Services
             CancellationToken cancellationToken = default
         )
         {
-            var account = await _tokenAccountRepository.FindUserAccountAsync(userId);
+            var account = await _tokenAccountRepository.GetUserAccountAsync(userId);
 
             var validator = new DepositTokenValidator(account.LastDeposit);
 

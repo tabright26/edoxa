@@ -77,7 +77,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
 
             var user = FakeCashierFactory.CreateUser();
 
-            _mockUserRepository.Setup(mock => mock.FindUserAsNoTrackingAsync(It.IsAny<UserId>())).ReturnsAsync(user).Verifiable();
+            _mockUserRepository.Setup(mock => mock.GetUserAsNoTrackingAsync(It.IsAny<UserId>())).ReturnsAsync(user).Verifiable();
 
             _mockStripeService.Setup(
                                   mock => mock.VerifyAccountAsync(

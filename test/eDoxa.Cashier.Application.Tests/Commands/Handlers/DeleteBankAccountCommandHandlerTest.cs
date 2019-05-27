@@ -69,7 +69,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
 
             user.AddBankAccount(new StripeBankAccountId("ba_aqweq1231qwe123"));
 
-            _mockUserRepository.Setup(mock => mock.FindUserAsync(It.IsAny<UserId>())).ReturnsAsync(user).Verifiable();
+            _mockUserRepository.Setup(mock => mock.GetUserAsync(It.IsAny<UserId>())).ReturnsAsync(user).Verifiable();
 
             _mockUserRepository.Setup(mock => mock.UnitOfWork.CommitAndDispatchDomainEventsAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask).Verifiable();
 

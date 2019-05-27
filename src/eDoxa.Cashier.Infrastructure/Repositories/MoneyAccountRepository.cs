@@ -34,12 +34,20 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
 
     public sealed partial class MoneyAccountRepository : IMoneyAccountRepository
     {
-        public async Task<MoneyAccount> FindUserAccountAsync(UserId userId)
+        public async Task<MoneyAccount> GetUserAccountAsync(UserId userId)
         {
             return await _context.MoneyAccounts.Include(account => account.User)
                                  .Include(account => account.Transactions)
                                  .Where(account => account.User.Id == userId)
                                  .SingleOrDefaultAsync();
+        }
+
+        public async Task<MoneyAccount> GetMoneyAccountAsNoTrackingAsync(UserId userId)
+        {
+            return await _context.MoneyAccounts.AsNoTracking()
+                .Include(transaction => transaction.Transactions)
+                .Where(account => account.User.Id == userId)
+                .SingleOrDefaultAsync();
         }
     }
 }

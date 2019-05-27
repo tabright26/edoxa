@@ -31,16 +31,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public class Challenge : Entity<ChallengeId>, IAggregateRoot
     {
-        private Game _game;
-        private ChallengeName _name;
-        private ChallengeSetup _setup;
-        private ChallengeDuration _duration;
-        private ChallengeCreatedAt _createdAt;
-        private ChallengeStartedAt _startedAt;
-        private ChallengeCompletedAt _completedAt;
-        private IScoring _scoring;
         private HashSet<Participant> _participants;
-        private bool _isFake;
 
         public Challenge(
             Game game,
@@ -51,44 +42,44 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             bool isFake = false
         ) : this()
         {
-            _game = game;
-            _name = name;
-            _setup = setup;
-            _duration = duration;
-            _scoring = scoring;
-            _isFake = isFake;
+            Game = game;
+            Name = name;
+            Setup = setup;
+            Duration = duration;
+            Scoring = scoring;
+            IsFake = isFake;
         }
 
         private Challenge()
         {
-            _createdAt = new ChallengeCreatedAt();
-            _startedAt = null;
-            _completedAt = null;
+            CreatedAt = new ChallengeCreatedAt();
+            StartedAt = null;
+            CompletedAt = null;
             _participants = new HashSet<Participant>();
         }
 
-        public Game Game => _game;
+        public Game Game { get; private set; }
 
-        public ChallengeName Name => _name;
+        public ChallengeName Name { get; private set; }
 
-        public ChallengeSetup Setup => _setup;
+        public ChallengeSetup Setup { get; private set; }
 
-        public ChallengeDuration Duration => _duration;
+        public ChallengeDuration Duration { get; private set; }
 
-        public ChallengeCreatedAt CreatedAt => _createdAt;
-
-        [CanBeNull]
-        public ChallengeStartedAt StartedAt => _startedAt;
+        public ChallengeCreatedAt CreatedAt { get; private set; }
 
         [CanBeNull]
-        public ChallengeEndedAt EndedAt => _startedAt != null ? _startedAt + _duration : null;
+        public ChallengeStartedAt StartedAt { get; private set; }
 
         [CanBeNull]
-        public ChallengeCompletedAt CompletedAt => _completedAt;
+        public ChallengeEndedAt EndedAt => StartedAt != null ? StartedAt + Duration : null;
 
-        public bool IsFake => _isFake;
+        [CanBeNull]
+        public ChallengeCompletedAt CompletedAt { get; private set; }
 
-        public IScoring Scoring => _scoring;
+        public bool IsFake { get; private set; }
+
+        public IScoring Scoring { get; private set; }
 
         public IPayout Payout => PayoutFactory.Instance.Create(Setup.PayoutEntries, Setup.EntryFee);
 
@@ -103,7 +94,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
                 throw new InvalidOperationException();
             }
 
-            _completedAt = new ChallengeCompletedAt();
+            CompletedAt = new ChallengeCompletedAt();
 
             this.AddDomainEvent(new ChallengePayoutDomainEvent(Id, Payout.GetParticipantPrizes(Scoreboard)));
         }
@@ -124,7 +115,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
             if (Participants.Count == Setup.Entries - 1)
             {
-                _startedAt = new ChallengeStartedAt();
+                StartedAt = new ChallengeStartedAt();
             }
 
             var participant = new Participant(this, userId, externalAccount);
