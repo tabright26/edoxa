@@ -64,7 +64,7 @@ namespace eDoxa.Arena.Challenges.Api.Tests.Controllers
             var controller = new ChallengeHistoryController(_queries.Object);
 
             // Act
-            var result = await controller.FindUserChallengeHistoryAsync(Game.All);
+            var result = await controller.FindUserChallengeHistoryAsync(null);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -85,7 +85,7 @@ namespace eDoxa.Arena.Challenges.Api.Tests.Controllers
             var controller = new ChallengeHistoryController(_queries.Object);
 
             // Act
-            var result = await controller.FindUserChallengeHistoryAsync(Game.All);
+            var result = await controller.FindUserChallengeHistoryAsync(null);
 
             // Assert
             result.Should().BeOfType<NoContentResult>();

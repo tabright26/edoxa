@@ -45,14 +45,12 @@ namespace eDoxa.Arena.Challenges.Application.Commands.Validations
                     $"The {nameof(CreateChallengeCommand.PayoutEntries)} property is invalid. These are valid input values: {PayoutEntries.DisplayNames()}."
                 );
 
-            this.RuleForEnumeration(command => command.EntryFee.Currency);
-
-            this.RuleFor(command => command.EntryFee)
-                .Must(entryFee => EntryFeeHasValue(entryFee.Amount, entryFee.Currency))
-                .WithMessage(
-                    command =>
-                        $"The {nameof(CreateChallengeCommand.EntryFee)} property is invalid. These are valid input values: {EntryFeeDisplayNames(command.EntryFee.Currency)}."
-                );
+            this.RuleForEnumeration(command => command.EntryFee.Currency).DependentRules(() =>
+            {
+                this.RuleFor(command => command.EntryFee)
+                    .Must(entryFee => EntryFeeHasValue(entryFee.Amount, entryFee.Currency))
+                    .WithMessage(command => $"The {nameof(CreateChallengeCommand.EntryFee)} property is invalid. These are valid input values: {EntryFeeDisplayNames(command.EntryFee.Currency)}.");
+            });
 
             this.RuleFor(command => command.IsFake)
                 .Must(isFake => !environment.IsProduction() || !isFake)

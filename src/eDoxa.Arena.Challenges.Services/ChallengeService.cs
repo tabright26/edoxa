@@ -71,7 +71,7 @@ namespace eDoxa.Arena.Challenges.Services
 
         public async Task CompleteAsync(CancellationToken cancellationToken)
         {
-            var challenges = await _challengeRepository.FindChallengesAsync(Game.All);
+            var challenges = await _challengeRepository.FindChallengesAsync(null);
 
             challenges.ForEach(challenge => challenge.Complete());
 

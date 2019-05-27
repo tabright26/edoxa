@@ -9,7 +9,6 @@
 // this source code package.
 
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Domain.Enumerations;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -18,32 +17,7 @@ namespace eDoxa.Seedwork.Domain.Tests.Aggregate
     [TestClass]
     public sealed class EnumerationTest
     {
-        [TestMethod]
-        public void GetEnums()
-        {
-        }
-
-        [TestMethod]
-        public void GetNames()
-        {
-            var enums = Enumeration.GetNames(typeof(Game));
-        }
-
-        [TestMethod]
-        public void GetValue()
-        {
-            var enums = Enumeration.GetValues(typeof(Game));
-        }
-
-        [TestMethod]
-        public void GetAllEnums()
-        {
-            var t = MockEnumeration.All;
-
-            //var types = EnumerationUtils.GetSuperclassTypes();
-        }
-
-        private sealed class MockEnumeration : Enumeration<MockEnumeration>
+        private sealed class MockEnumeration : Enumeration
         {
             public static readonly MockEnumeration Enumeration1 = new MockEnumeration(1 << 0, nameof(Enumeration1));
             public static readonly MockEnumeration Enumeration2 = new MockEnumeration(1 << 1, nameof(Enumeration2));

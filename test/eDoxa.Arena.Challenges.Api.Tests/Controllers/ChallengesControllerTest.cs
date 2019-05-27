@@ -66,7 +66,7 @@ namespace eDoxa.Arena.Challenges.Api.Tests.Controllers
             var controller = new ChallengesController(_queries.Object, _mediator.Object);
 
             // Act
-            var result = await controller.FindChallengesAsync(Game.All);
+            var result = await controller.FindChallengesAsync(null);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -85,7 +85,7 @@ namespace eDoxa.Arena.Challenges.Api.Tests.Controllers
             var controller = new ChallengesController(_queries.Object, _mediator.Object);
 
             // Act
-            var result = await controller.FindChallengesAsync(Game.All);
+            var result = await controller.FindChallengesAsync(null);
 
             // Assert
             result.Should().BeOfType<NoContentResult>();

@@ -64,12 +64,12 @@ namespace eDoxa.Cashier.Application.Queries
 
             var transactions = new TransactionListDTO();
 
-            if (accountCurrency.Equals(AccountCurrency.Money) || accountCurrency.Equals(AccountCurrency.All))
+            if (accountCurrency.Equals(AccountCurrency.Money) || accountCurrency.Equals(null))
             {
                 transactions.Items.AddRange(await this.GetMoneyTransactionsAsync(userId));
             }
 
-            if (accountCurrency.Equals(AccountCurrency.Token) || accountCurrency.Equals(AccountCurrency.All))
+            if (accountCurrency.Equals(AccountCurrency.Token) || accountCurrency.Equals(null))
             {
                 transactions.Items.AddRange(await this.GetTokenTransactionsAsync(userId));
             }

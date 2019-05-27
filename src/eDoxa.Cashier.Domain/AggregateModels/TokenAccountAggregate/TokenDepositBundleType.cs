@@ -11,11 +11,12 @@
 using System.ComponentModel;
 
 using eDoxa.Seedwork.Domain.Aggregate;
+using eDoxa.Seedwork.Domain.TypeConverters;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
 {
-    [TypeConverter(typeof(EnumerationTypeConverter))]
-    public sealed class TokenDepositBundleType : Enumeration<TokenDepositBundleType>
+    [TypeConverter(typeof(EnumerationTypeConverter<TokenDepositBundleType>))]
+    public sealed class TokenDepositBundleType : Enumeration
     {
         public static readonly TokenDepositBundleType FiftyThousand = new TokenDepositBundleType(1 << 0, nameof(FiftyThousand));
         public static readonly TokenDepositBundleType OneHundredThousand = new TokenDepositBundleType(1 << 1, nameof(OneHundredThousand));

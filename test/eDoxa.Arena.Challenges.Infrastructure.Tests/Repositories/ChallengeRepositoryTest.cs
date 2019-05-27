@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Seedwork.Domain.Enumerations;
 
 using FluentAssertions;
 
@@ -264,7 +263,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Tests.Repositories
             {
                 challenge.Should().NotBeNull();
                 challenge.Id.ToGuid().Should().NotBeEmpty();
-                challenge.Game.Should().NotBe(Game.All);
+                challenge.Game.Should().NotBe(null);
                 challenge.Name.ToString().Should().NotBeNullOrWhiteSpace();
                 challenge.Setup.Should().NotBeNull();
                 challenge.Scoring.Should().NotBeNull();

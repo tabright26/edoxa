@@ -27,7 +27,7 @@ namespace eDoxa.Swagger.Extensions
             Enumeration.GetTypes().ForEach(type => options.MapType(type, () => new Schema
             {
                 Type = "string",
-                Enum = Enumeration.GetAll(type).Cast<object>().ToList()
+                Enum = Enumeration.GetAll(type).Select(enumeration => enumeration.ToString()).Cast<object>().ToList()
             }));
         }
     }

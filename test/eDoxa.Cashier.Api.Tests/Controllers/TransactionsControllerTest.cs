@@ -73,7 +73,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             var controller = new TransactionsController(_mockTransactionQueries.Object);
 
             // Act
-            var result = await controller.GetTransactionsAsync(AccountCurrency.All);
+            var result = await controller.GetTransactionsAsync(null);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -90,7 +90,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             var controller = new TransactionsController(_mockTransactionQueries.Object);
 
             // Act
-            var result = await controller.GetTransactionsAsync(AccountCurrency.All);
+            var result = await controller.GetTransactionsAsync(null);
 
             // Assert
             result.Should().BeOfType<NoContentResult>();

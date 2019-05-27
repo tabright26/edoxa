@@ -11,11 +11,12 @@
 using System.ComponentModel;
 
 using eDoxa.Seedwork.Domain.Aggregate;
+using eDoxa.Seedwork.Domain.TypeConverters;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    [TypeConverter(typeof(EnumerationTypeConverter))]
-    public sealed class ChallengeState : Enumeration<ChallengeState>
+    [TypeConverter(typeof(EnumerationTypeConverter<ChallengeState>))]
+    public sealed class ChallengeState : Enumeration
     {
         public static readonly ChallengeState Draft = new ChallengeState(1 << 0, nameof(Draft));
         public static readonly ChallengeState Configured = new ChallengeState(1 << 1, nameof(Configured));

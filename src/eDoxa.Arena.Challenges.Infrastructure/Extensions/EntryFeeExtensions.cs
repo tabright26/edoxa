@@ -11,6 +11,7 @@
 using System;
 
 using eDoxa.Arena.Domain;
+using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Enumerations;
 
 namespace eDoxa.Arena.Challenges.Infrastructure.Extensions
@@ -21,7 +22,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Extensions
         {
             var substrings = entryFee.Split(':');
 
-            return new EntryFee(Convert.ToDecimal(substrings[0]), Currency.FromName(substrings[1]));
+            return new EntryFee(Convert.ToDecimal(substrings[0]), Enumeration.FromName<Currency>(substrings[1]));
         }
 
         internal static string Serialize(this EntryFee entryFee)

@@ -17,14 +17,14 @@ namespace eDoxa.Seedwork.Domain.Aggregate
 {
     public abstract class ValueObject
     {
-        protected static bool EqualOperator([CanBeNull] ValueObject left, [CanBeNull] ValueObject right)
+        public static bool operator ==([CanBeNull] ValueObject left, [CanBeNull] ValueObject right)
         {
             return !(left is null ^ right is null) && (left is null || left.Equals(right));
         }
 
-        protected static bool NotEqualOperator([CanBeNull] ValueObject left, [CanBeNull] ValueObject right)
+        public static bool operator !=([CanBeNull] ValueObject left, [CanBeNull] ValueObject right)
         {
-            return !EqualOperator(left, right);
+            return !(left == right);
         }
 
         protected abstract IEnumerable<object> GetAtomicValues();

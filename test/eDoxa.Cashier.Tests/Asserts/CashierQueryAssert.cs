@@ -8,7 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Cashier.Domain;
 using eDoxa.Cashier.DTO;
 
 using FluentAssertions;
@@ -21,7 +20,7 @@ namespace eDoxa.Cashier.Tests.Asserts
         {
             account.Should().NotBeNull();
 
-            account.Currency.Should().BeInRange(AccountCurrency.Money, AccountCurrency.Token);
+            account.Currency.Should().NotBeNull();
 
             account.Balance.Should().BeGreaterOrEqualTo(decimal.Zero);
 
@@ -46,9 +45,9 @@ namespace eDoxa.Cashier.Tests.Asserts
 
             transaction.Amount.Should().BeGreaterOrEqualTo(decimal.Zero);
 
-            transaction.Type.Should().BeInRange(TransactionType.Deposit, TransactionType.Charge);
+            transaction.Type.Should().NotBeNull();
 
-            transaction.Currency.Should().BeInRange(AccountCurrency.Money, AccountCurrency.Token);
+            transaction.Currency.Should().NotBeNull();
 
             transaction.Description.Should().NotBeNullOrEmpty();
         }

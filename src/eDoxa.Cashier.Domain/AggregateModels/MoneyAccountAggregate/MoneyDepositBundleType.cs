@@ -11,11 +11,12 @@
 using System.ComponentModel;
 
 using eDoxa.Seedwork.Domain.Aggregate;
+using eDoxa.Seedwork.Domain.TypeConverters;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
 {
-    [TypeConverter(typeof(EnumerationTypeConverter))]
-    public sealed class MoneyDepositBundleType : Enumeration<MoneyDepositBundleType>
+    [TypeConverter(typeof(EnumerationTypeConverter<MoneyDepositBundleType>))]
+    public sealed class MoneyDepositBundleType : Enumeration
     {
         public static readonly MoneyDepositBundleType Ten = new MoneyDepositBundleType(1 << 0, nameof(Ten));
         public static readonly MoneyDepositBundleType Twenty = new MoneyDepositBundleType(1 << 1, nameof(Twenty));

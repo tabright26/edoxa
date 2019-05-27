@@ -11,11 +11,12 @@
 using System.ComponentModel;
 
 using eDoxa.Seedwork.Domain.Aggregate;
+using eDoxa.Seedwork.Domain.TypeConverters;
 
 namespace eDoxa.Cashier.Domain
 {
-    [TypeConverter(typeof(EnumerationTypeConverter))]
-    public sealed class TransactionType : Enumeration<TransactionType>
+    [TypeConverter(typeof(EnumerationTypeConverter<TransactionType>))]
+    public sealed class TransactionType : Enumeration
     {
         public static readonly TransactionType Deposit = new TransactionType(1 << 0, nameof(Deposit));
         public static readonly TransactionType Reward = new TransactionType(1 << 1, nameof(Reward));

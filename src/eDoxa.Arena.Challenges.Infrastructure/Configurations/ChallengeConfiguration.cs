@@ -15,7 +15,6 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure.Converters;
 using eDoxa.Arena.Challenges.Infrastructure.Extensions;
-using eDoxa.Seedwork.Domain.Enumerations;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 
 using JetBrains.Annotations;
@@ -35,8 +34,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                 .IsRequired()
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 
-            builder.Property(challenge => challenge.Game)
-                .HasConversion(type => type.Value, value => Game.FromValue(value))
+            builder.Enumeration(challenge => challenge.Game)
                 .IsRequired()
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 

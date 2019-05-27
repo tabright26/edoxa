@@ -65,7 +65,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             var controller = new AccountsController(_mockAccountQueries.Object);
 
             // Act
-            var result = await controller.GetAccountAsync(AccountCurrency.All);
+            var result = await controller.GetAccountAsync(null);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -82,7 +82,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             var controller = new AccountsController(_mockAccountQueries.Object);
 
             // Act
-            var result = await controller.GetAccountAsync(AccountCurrency.All);
+            var result = await controller.GetAccountAsync(null);
 
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
