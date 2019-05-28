@@ -26,30 +26,16 @@ namespace eDoxa.Arena.Challenges.DTO.Profiles
                 .ForMember(challenge => challenge.Id, config => config.MapFrom(challenge => challenge.Id.ToGuid()))
                 .ForMember(challenge => challenge.Name, config => config.MapFrom(challenge => challenge.Name.ToString()))
                 .ForMember(challenge => challenge.Game, config => config.MapFrom(challenge => challenge.Game))
-                .ForMember(challenge => challenge.CreatedAt, config => config.MapFrom<DateTime>(challenge => challenge.CreatedAt))
-                .ForMember(
-                    challenge => challenge.StartedAt,
-                    config => config.MapFrom(challenge => challenge.StartedAt != null ? (DateTime?) challenge.StartedAt : null)
-                )
-                .ForMember(
-                    challenge => challenge.EndedAt,
-                    config => config.MapFrom(challenge => challenge.EndedAt != null ? (DateTime?) challenge.EndedAt : null)
-                )
-                .ForMember(
-                    challenge => challenge.CompletedAt,
-                    config => config.MapFrom(challenge => challenge.CompletedAt != null ? (DateTime?) challenge.CompletedAt : null)
-                )
-                .ForMember(challenge => challenge.IsFake, config => config.MapFrom(challenge => challenge.IsFake))
+                .ForMember(challenge => challenge.CreatedAt, config => config.MapFrom(challenge => challenge.CreatedAt))
+                .ForMember(challenge => challenge.State, config => config.MapFrom(challenge => challenge.State))
+                .ForMember(challenge => challenge.TestMode, config => config.MapFrom(challenge => challenge.TestMode))
                 .ForMember(challenge => challenge.Scoring, config => config.MapFrom(challenge => challenge.Scoring))
                 .ForMember(challenge => challenge.Payout, config => config.MapFrom(challenge => challenge.Payout))
                 .ForMember(
                     challenge => challenge.Scoreboard,
                     config => config.MapFrom(
                         challenge => new Dictionary<Guid, decimal?>(
-                            challenge.Scoreboard.ToDictionary(
-                                x => x.Key.ToGuid(),
-                                x => x.Value != null ? (decimal?) x.Value : null
-                            )
+                            challenge.Scoreboard.ToDictionary(pair => pair.Key.ToGuid(), pair => pair.Value != null ? (decimal?) pair.Value : null)
                         )
                     )
                 )

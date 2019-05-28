@@ -8,8 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Seedwork.Domain.Enumerations;
-
 using Newtonsoft.Json;
 
 namespace eDoxa.Arena.Challenges.DTO
@@ -27,10 +25,7 @@ namespace eDoxa.Arena.Challenges.DTO
         public int PayoutEntries { get; set; }
 
         [JsonProperty("entryFee")]
-        public decimal EntryFee { get; set; }
-
-        [JsonProperty("currency")]
-        public Currency Currency { get; set; }
+        public EntryFeeDTO EntryFee { get; set; }
 
         [JsonProperty("prizePool")]
         public decimal PrizePool { get; set; }

@@ -1,5 +1,5 @@
-﻿// Filename: CompleteCommandHandler.cs
-// Date Created: 2019-05-03
+﻿// Filename: SynchronizeChallengeCommandHandler.cs
+// Date Created: 2019-05-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -18,18 +18,18 @@ using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Application.Commands.Handlers
 {
-    internal sealed class CompleteCommandHandler : AsyncCommandHandler<CompleteCommand>
+    internal sealed class SynchronizeChallengeCommandHandler : AsyncCommandHandler<SynchronizeChallengeCommand>
     {
         private readonly IChallengeService _challengeService;
 
-        public CompleteCommandHandler(IChallengeService challengeService)
+        public SynchronizeChallengeCommandHandler(IChallengeService challengeService)
         {
             _challengeService = challengeService;
         }
 
-        protected override async Task Handle([NotNull] CompleteCommand command, CancellationToken cancellationToken)
+        protected override async Task Handle([NotNull] SynchronizeChallengeCommand command, CancellationToken cancellationToken)
         {
-            await _challengeService.CompleteAsync(cancellationToken);
+            await _challengeService.SynchronizeAsync(command.ChallengeId, cancellationToken);
         }
     }
 }

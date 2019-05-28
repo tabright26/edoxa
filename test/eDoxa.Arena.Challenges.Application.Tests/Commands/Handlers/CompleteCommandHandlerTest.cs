@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Application.Commands;
 using eDoxa.Arena.Challenges.Application.Commands.Handlers;
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Services.Abstractions;
 using eDoxa.Commands.Extensions;
 
@@ -37,17 +38,17 @@ namespace eDoxa.Arena.Challenges.Application.Tests.Commands.Handlers
         public async Task HandleAsync_CompleteCommand_ShouldBeCompletedTask()
         {
             // Arrange
-            _mockChallengeService.Setup(mock => mock.CompleteAsync(It.IsAny<CancellationToken>()))
+            _mockChallengeService.Setup(mock => mock.CompleteAsync(It.IsAny<ChallengeId>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var handler = new CompleteCommandHandler(_mockChallengeService.Object);
+            var handler = new CloseChallengeCommandHandler(_mockChallengeService.Object);
 
             // Act
-            await handler.HandleAsync(new CompleteCommand());
+            await handler.HandleAsync(new CloseChallengeCommand(new ChallengeId()));
 
             // Assert
-            _mockChallengeService.Verify(mock => mock.CompleteAsync(It.IsAny<CancellationToken>()), Times.Once);
+            _mockChallengeService.Verify(mock => mock.CompleteAsync(It.IsAny<ChallengeId>(), It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }

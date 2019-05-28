@@ -8,28 +8,35 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Collections.Generic;
+using System.Globalization;
+
 using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Enumerations;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Arena.Domain
 {
-    public class EntryFee : TypedObject<EntryFee, decimal>
+    public class EntryFee : ValueObject
     {
-        private Currency _currency;
-
         public EntryFee(decimal amount, Currency currency)
         {
-            Value = amount;
-            _currency = currency;
+            Amount = amount;
+            Currency = currency;
         }
 
-        public Currency Currency => _currency;
+        public decimal Amount { get; private set; }
 
-        public override bool Equals([CanBeNull] EntryFee other)
+        public Currency Currency { get; private set; }
+
+        protected override IEnumerable<object> GetAtomicValues()
         {
-            return Currency.Equals(other?.Currency) && base.Equals(other);
+            yield return Amount;
+            yield return Currency;
+        }
+
+        public override string ToString()
+        {
+            return Amount.ToString(CultureInfo.InvariantCulture);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿// Filename: ChallengeValidator.cs
+﻿// Filename: CreateChallengeValidator.cs
 // Date Created: 2019-05-25
 // 
 // ================================================
@@ -13,7 +13,7 @@ using eDoxa.Seedwork.Application.Validators;
 
 namespace eDoxa.Arena.Challenges.Services.Validators
 {
-    public sealed class ChallengeValidator : DomainValidator<Challenge>
+    public sealed class CreateChallengeValidator : DomainValidator<Challenge>
     {
     }
 }

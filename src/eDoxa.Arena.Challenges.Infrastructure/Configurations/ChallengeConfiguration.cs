@@ -14,7 +14,8 @@ using eDoxa.Arena.Challenges.Domain;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure.Converters;
-using eDoxa.Arena.Challenges.Infrastructure.Extensions;
+using eDoxa.Seedwork.Domain.Aggregate;
+using eDoxa.Seedwork.Domain.Enumerations;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 
 using JetBrains.Annotations;
@@ -36,54 +37,50 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
 
             builder.Property(challenge => challenge.Name).HasConversion(name => name.ToString(), name => new ChallengeName(name)).IsRequired();
 
-            builder.Property(challenge => challenge.Duration)
-                .HasConversion(duration => ((TimeSpan) duration).Ticks, duration => new ChallengeDuration(duration))
-                .IsRequired();
+            builder.Property(challenge => challenge.CreatedAt).IsRequired();
 
-            builder.Property(challenge => challenge.CreatedAt)
-                .HasConversion<DateTime>(duration => duration, duration => new ChallengeCreatedAt(duration))
-                .IsRequired();
+            builder.OwnsOne(
+                challenge => challenge.Timeline,
+                challengeTimeline =>
+                {
+                    challengeTimeline.Property(challenge => challenge.Duration)
+                        .HasConversion(duration => ((TimeSpan) duration).Ticks, duration => new ChallengeDuration(duration))
+                        .IsRequired();
 
-            builder.Property(challenge => challenge.StartedAt)
-                .HasConversion<DateTime?>(startedAt => startedAt, startedAt => startedAt.HasValue ? new ChallengeStartedAt(startedAt.Value) : null)
-                .IsRequired(false);
+                    challengeTimeline.Property(challenge => challenge.StartedAt).IsRequired(false);
 
-            builder.Ignore(challenge => challenge.EndedAt);
+                    challengeTimeline.Property(challenge => challenge.ClosedAt).IsRequired(false);
 
-            builder.Property(challenge => challenge.CompletedAt)
-                .HasConversion<DateTime?>(startedAt => startedAt, startedAt => startedAt.HasValue ? new ChallengeCompletedAt(startedAt.Value) : null)
-                .IsRequired(false);
+                    challengeTimeline.Ignore(challenge => challenge.EndedAt);
+                }
+            );
 
-            builder.Property(challenge => challenge.IsFake).IsRequired();
+            builder.Ignore(challenge => challenge.State);
+
+            builder.Property(challenge => challenge.TestMode).IsRequired();
 
             builder.OwnsOne(
                 challenge => challenge.Setup,
                 challengeSetup =>
                 {
-                    challengeSetup.Property(setup => setup.BestOf)
-                        .HasConversion<int>(bestOf => bestOf, bestOf => new BestOf(bestOf))
-                        .IsRequired()
-                        .HasColumnName(nameof(ChallengeSetup.BestOf));
+                    challengeSetup.Property(setup => setup.BestOf).HasConversion<int>(bestOf => bestOf, bestOf => new BestOf(bestOf)).IsRequired();
 
-                    challengeSetup.Property(setup => setup.Entries)
-                        .HasConversion<int>(entries => entries, entries => new Entries(entries))
-                        .IsRequired()
-                        .HasColumnName(nameof(ChallengeSetup.Entries));
+                    challengeSetup.Property(setup => setup.Entries).HasConversion<int>(entries => entries, entries => new Entries(entries)).IsRequired();
 
                     challengeSetup.Property(setup => setup.PayoutRatio)
                         .HasConversion<float>(payoutRatio => payoutRatio, payoutRatio => new PayoutRatio(payoutRatio))
-                        .IsRequired()
-                        .HasColumnName(nameof(ChallengeSetup.PayoutRatio));
+                        .IsRequired();
 
                     challengeSetup.Property(setup => setup.ServiceChargeRatio)
                         .HasConversion<float>(serviceChargeRatio => serviceChargeRatio, serviceChargeRatio => new ServiceChargeRatio(serviceChargeRatio))
-                        .IsRequired()
-                        .HasColumnName(nameof(ChallengeSetup.ServiceChargeRatio));
+                        .IsRequired();
 
-                    challengeSetup.Property(setup => setup.EntryFee)
-                        .HasConversion(entryFee => entryFee.Serialize(), entryFee => EntryFeeExtensions.Deserialize(entryFee))
-                        .IsRequired()
-                        .HasColumnName(nameof(ChallengeSetup.EntryFee));
+                    challengeSetup.OwnsOne(challenge => challenge.EntryFee).Property(entryFee => entryFee.Amount).IsRequired();
+
+                    challengeSetup.OwnsOne(challenge => challenge.EntryFee)
+                        .Property(entryFee => entryFee.Currency)
+                        .HasConversion(entityId => entityId.Value, entityId => Enumeration.FromValue<Currency>(entityId))
+                        .IsRequired();
 
                     challengeSetup.Ignore(setup => setup.PayoutEntries);
 

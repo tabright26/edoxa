@@ -88,7 +88,7 @@ namespace eDoxa.Seedwork.Domain.Aggregate
 
         public override string ToString()
         {
-            return Name?.First().ToString().ToLower() + Name?.Substring(1);
+            return Name;
         }
 
         public override bool Equals([CanBeNull] object obj)

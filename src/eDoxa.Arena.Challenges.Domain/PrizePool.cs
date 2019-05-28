@@ -20,7 +20,7 @@ namespace eDoxa.Arena.Challenges.Domain
     {
         public PrizePool(Entries entries, EntryFee entryFee, ServiceChargeRatio serviceChargeRatio)
         {
-            Value = Math.Floor(entries * entryFee * (1 - Convert.ToDecimal(serviceChargeRatio)));
+            Value = Math.Floor(entries * entryFee.Amount * (1 - Convert.ToDecimal(serviceChargeRatio)));
         }
 
         public override string ToString()

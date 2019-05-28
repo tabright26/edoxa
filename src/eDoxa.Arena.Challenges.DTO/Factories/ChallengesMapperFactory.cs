@@ -42,6 +42,8 @@ namespace eDoxa.Arena.Challenges.DTO.Factories
             yield return new ParticipantProfile();
             yield return new BucketProfile();
             yield return new BucketListProfile();
+            yield return new ChallengeTimelineProfile();
+            yield return new EntryFeeProfile();
         }
     }
 }

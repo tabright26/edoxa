@@ -25,8 +25,6 @@ using eDoxa.Seedwork.Domain.Entities;
 using eDoxa.Seedwork.Domain.Enumerations;
 using eDoxa.Specifications.Factories;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public class Challenge : Entity<ChallengeId>, IAggregateRoot
@@ -37,24 +35,22 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             Game game,
             ChallengeName name,
             ChallengeSetup setup,
-            ChallengeDuration duration,
+            ChallengeTimeline timeline,
             IScoring scoring,
-            bool isFake = false
+            bool testMode = false
         ) : this()
         {
             Game = game;
             Name = name;
             Setup = setup;
-            Duration = duration;
+            Timeline = timeline;
             Scoring = scoring;
-            IsFake = isFake;
+            TestMode = testMode;
         }
 
         private Challenge()
         {
-            CreatedAt = new ChallengeCreatedAt();
-            StartedAt = null;
-            CompletedAt = null;
+            CreatedAt = DateTime.UtcNow;
             _participants = new HashSet<Participant>();
         }
 
@@ -64,37 +60,30 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public ChallengeSetup Setup { get; private set; }
 
-        public ChallengeDuration Duration { get; private set; }
+        public ChallengeTimeline Timeline { get; protected set; }
 
-        public ChallengeCreatedAt CreatedAt { get; private set; }
+        public DateTime CreatedAt { get; private set; }
 
-        [CanBeNull]
-        public ChallengeStartedAt StartedAt { get; private set; }
-
-        [CanBeNull]
-        public ChallengeEndedAt EndedAt => StartedAt != null ? StartedAt + Duration : null;
-
-        [CanBeNull]
-        public ChallengeCompletedAt CompletedAt { get; private set; }
-
-        public bool IsFake { get; private set; }
+        public bool TestMode { get; private set; }
 
         public IScoring Scoring { get; private set; }
 
         public IPayout Payout => PayoutFactory.Instance.Create(Setup.PayoutEntries, Setup.EntryFee);
 
+        public ChallengeState State => ChallengeState.GetState(Timeline);
+
         public IScoreboard Scoreboard => new Scoreboard(this);
 
         public IReadOnlyCollection<Participant> Participants => _participants;
 
-        public void Complete()
+        public void Close()
         {
             if (!this.CanComplete())
             {
                 throw new InvalidOperationException();
             }
 
-            CompletedAt = new ChallengeCompletedAt();
+            Timeline = Timeline.Close();
 
             this.AddDomainEvent(new ChallengePayoutDomainEvent(Id, Payout.GetParticipantPrizes(Scoreboard)));
         }
@@ -115,7 +104,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
             if (Participants.Count == Setup.Entries - 1)
             {
-                StartedAt = new ChallengeStartedAt();
+                Timeline = Timeline.Start();
             }
 
             var participant = new Participant(this, userId, externalAccount);

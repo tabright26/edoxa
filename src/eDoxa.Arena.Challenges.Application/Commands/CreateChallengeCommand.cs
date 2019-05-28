@@ -10,6 +10,7 @@
 
 using System.Runtime.Serialization;
 
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.DTO;
 using eDoxa.Commands.Abstractions;
 using eDoxa.Functional;
@@ -29,7 +30,7 @@ namespace eDoxa.Arena.Challenges.Application.Commands
             int payoutEntries,
             decimal amount,
             Currency currency,
-            bool isFake = false
+            ChallengeState testModeState = null
         )
         {
             Name = name;
@@ -44,7 +45,7 @@ namespace eDoxa.Arena.Challenges.Application.Commands
                 Currency = currency
             };
 
-            IsFake = isFake;
+            TestModeState = testModeState;
         }
 
         [DataMember(Name = "name")]
@@ -64,17 +65,8 @@ namespace eDoxa.Arena.Challenges.Application.Commands
 
         [DataMember(Name = "entryFee")]
         public EntryFeeDTO EntryFee { get; private set; }
-
-        [DataMember(Name = "isFake", IsRequired = false)]
-        public bool IsFake { get; private set; }
-    }
-
-    public class EntryFeeDTO
-    {
-        [DataMember(Name = "amount")]
-        public decimal Amount { get; set; }
-
-        [DataMember(Name = "currency")]
-        public Currency Currency { get; set; }
+        
+        [DataMember(Name = "testModeState", IsRequired = false)]
+        public ChallengeState TestModeState { get; set; }
     }
 }

@@ -11,8 +11,11 @@
 using System.Linq;
 using System.Threading.Tasks;
 
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.DTO.Queries;
 using eDoxa.Seedwork.Domain.Enumerations;
+
+using JetBrains.Annotations;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -38,9 +41,9 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         ///     Find the challenge history of a user.
         /// </summary>
         [HttpGet(Name = nameof(FindUserChallengeHistoryAsync))]
-        public async Task<IActionResult> FindUserChallengeHistoryAsync([FromQuery] Game game)
+        public async Task<IActionResult> FindUserChallengeHistoryAsync([CanBeNull] Game game, [CanBeNull] ChallengeState state)
         {
-            var challenges = await _challengeQuery.FindUserChallengeHistoryAsync(game);
+            var challenges = await _challengeQuery.FindUserChallengeHistoryAsync(game, state);
 
             return challenges
                 .Select(this.Ok)

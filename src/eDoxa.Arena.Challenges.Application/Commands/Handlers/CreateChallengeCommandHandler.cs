@@ -15,6 +15,7 @@ using AutoMapper;
 
 using eDoxa.Arena.Challenges.DTO;
 using eDoxa.Arena.Challenges.Services.Abstractions;
+using eDoxa.Arena.Domain;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Functional;
 using eDoxa.Seedwork.Domain.Validations;
@@ -43,9 +44,8 @@ namespace eDoxa.Arena.Challenges.Application.Commands.Handlers
                 command.Duration,
                 command.BestOf,
                 command.PayoutEntries,
-                command.EntryFee.Amount,
-                command.EntryFee.Currency,
-                command.IsFake,
+                _mapper.Map<EntryFee>(command.EntryFee),
+                command.TestModeState,
                 cancellationToken
             );
 

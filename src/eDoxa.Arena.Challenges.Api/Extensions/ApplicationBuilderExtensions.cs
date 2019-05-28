@@ -8,8 +8,6 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Arena.Challenges.Application.IntegrationEvents;
-using eDoxa.Arena.Challenges.Application.IntegrationEvents.Handlers;
 using eDoxa.ServiceBus;
 
 using Microsoft.AspNetCore.Builder;
@@ -22,10 +20,6 @@ namespace eDoxa.Arena.Challenges.Api.Extensions
         public static void UseIntegrationEventSubscriptions(this IApplicationBuilder application)
         {
             var service = application.ApplicationServices.GetRequiredService<IEventBusService>();
-            
-            service.Subscribe<ChallengeSynchronizedIntegrationEvent, ChallengeSynchronizedIntegrationEventHandler>();
-
-            service.Subscribe<ChallengeCompletedIntegrationEvent, ChallengeCompletedIntegrationEventHandler>();
         }
     }
 }

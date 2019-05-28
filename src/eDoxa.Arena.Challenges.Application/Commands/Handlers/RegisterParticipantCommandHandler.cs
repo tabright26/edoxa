@@ -40,7 +40,12 @@ namespace eDoxa.Arena.Challenges.Application.Commands.Handlers
         {
             var userId = _httpContextAccessor.GetUserId();
 
-            var either = await _challengeService.RegisterParticipantAsync(command.ChallengeId, userId, _httpContextAccessor.FuncExternalAccount(), cancellationToken);
+            var either = await _challengeService.RegisterParticipantAsync(
+                command.ChallengeId,
+                userId,
+                _httpContextAccessor.FuncExternalAccount(),
+                cancellationToken
+            );
 
             return either.Match<Either<ValidationError, string>>(x => x, x => "The participant has registered successfully.");
         }

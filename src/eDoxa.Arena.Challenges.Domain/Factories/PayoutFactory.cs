@@ -41,12 +41,12 @@ namespace eDoxa.Arena.Challenges.Domain.Factories
         {
             if (entryFee.Currency == Currency.Money)
             {
-                return new MoneyPrize(entryFee);
+                return new MoneyPrize(entryFee.Amount);
             }
 
             if (entryFee.Currency == Currency.Token)
             {
-                return new TokenPrize(entryFee);
+                return new TokenPrize(entryFee.Amount);
             }
 
             throw new InvalidOperationException();

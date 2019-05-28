@@ -11,17 +11,20 @@
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Functional;
 using eDoxa.Seedwork.Domain.Enumerations;
+
+using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.DTO.Queries
 {
     public interface IChallengeQuery
     {
-        Task<Option<ChallengeListDTO>> FindChallengesAsync(Game game);
+        Task<Option<ChallengeListDTO>> GetChallengesAsync([CanBeNull] Game game = null, [CanBeNull] ChallengeState state = null);
 
-        Task<Option<ChallengeDTO>> FindChallengeAsync(ChallengeId challengeId);
+        Task<Option<ChallengeDTO>> GetChallengeAsync(ChallengeId challengeId);
 
-        Task<Option<ChallengeListDTO>> FindUserChallengeHistoryAsync(Game game);
+        Task<Option<ChallengeListDTO>> FindUserChallengeHistoryAsync([CanBeNull] Game game = null, [CanBeNull] ChallengeState state = null);
     }
 }

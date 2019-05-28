@@ -31,9 +31,8 @@ namespace eDoxa.Arena.Challenges.Services.Abstractions
             int duration,
             int bestOf,
             int payoutEntries,
-            decimal entryFee,
-            Currency currency,
-            bool isFake = false,
+            EntryFee entryFee,
+            ChallengeState testModeState = null,
             CancellationToken cancellationToken = default
         );
 
@@ -44,8 +43,8 @@ namespace eDoxa.Arena.Challenges.Services.Abstractions
             CancellationToken cancellationToken = default
         );
 
-        Task CompleteAsync(CancellationToken cancellationToken = default);
+        Task CompleteAsync(ChallengeId challengeId, CancellationToken cancellationToken = default);
 
-        Task SynchronizeAsync(Game game, CancellationToken cancellationToken = default);
+        Task SynchronizeAsync(ChallengeId challengeId, CancellationToken cancellationToken = default);
     }
 }

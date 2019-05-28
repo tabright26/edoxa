@@ -17,7 +17,6 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Domain;
-using eDoxa.Arena.Domain.Abstractions;
 using eDoxa.Seedwork.Domain.Entities;
 using eDoxa.Seedwork.Domain.Enumerations;
 
@@ -43,15 +42,13 @@ namespace eDoxa.Arena.Challenges.Tests.Factories
 
         public Challenge CreateChallenge(ChallengeState state = null, ChallengeSetup setup = null)
         {
-            state = state ?? ChallengeState.Opened;
-
             setup = setup ?? new FakeChallengeSetup();
 
             var challenge = new Challenge(
                 Game.LeagueOfLegends,
                 new ChallengeName(nameof(Challenge)),
                 setup,
-                ChallengeDuration.OneDay,
+                new ChallengeTimeline(ChallengeDuration.OneDay),
                 this.CreateScoringStrategy().Scoring
             );
 
@@ -263,11 +260,6 @@ namespace eDoxa.Arena.Challenges.Tests.Factories
                 [TotalDamageDealtToChampions] = new StatWeighting(0.00015F),
                 [TotalHeal] = new StatWeighting(0.0008F)
             };
-        }
-
-        public IScoreboard CreateScoreboard()
-        {
-            return new Scoreboard(this.CreateChallenge(ChallengeState.Ended));
         }
 
         //public PrizePool CreatePrizePool(int prizePool)

@@ -1,4 +1,4 @@
-﻿// Filename: RegisterParticipantCommand.cs
+﻿// Filename: CompleteChallengeCommand.cs
 // Date Created: 2019-05-20
 // 
 // ================================================
@@ -12,19 +12,18 @@ using System.Runtime.Serialization;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Commands.Abstractions;
-using eDoxa.Functional;
-using eDoxa.Seedwork.Domain.Validations;
 
 namespace eDoxa.Arena.Challenges.Application.Commands
 {
     [DataContract]
-    public sealed class RegisterParticipantCommand : Command<Either<ValidationError, string>>
+    public sealed class CloseChallengeCommand : Command
     {
-        public RegisterParticipantCommand(ChallengeId challengeId)
+        public CloseChallengeCommand(ChallengeId challengeId)
         {
             ChallengeId = challengeId;
         }
 
-        [IgnoreDataMember] public ChallengeId ChallengeId { get; private set; }
+        [IgnoreDataMember]
+        public ChallengeId ChallengeId { get; private set; }
     }
 }

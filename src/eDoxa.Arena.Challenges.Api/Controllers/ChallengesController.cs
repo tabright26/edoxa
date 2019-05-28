@@ -13,10 +13,13 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Application.Commands;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.DTO.Queries;
 using eDoxa.Commands.Extensions;
 using eDoxa.Security;
 using eDoxa.Seedwork.Domain.Enumerations;
+
+using JetBrains.Annotations;
 
 using MediatR;
 
@@ -45,10 +48,10 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         /// <summary>
         ///     Get challenges.
         /// </summary>
-        [HttpGet(Name = nameof(FindChallengesAsync))]
-        public async Task<IActionResult> FindChallengesAsync([FromQuery] Game game)
+        [HttpGet(Name = nameof(GetChallengesAsync))]
+        public async Task<IActionResult> GetChallengesAsync([CanBeNull] Game game, [CanBeNull] ChallengeState state)
         {
-            var challenges = await _challengeQuery.FindChallengesAsync(game);
+            var challenges = await _challengeQuery.GetChallengesAsync(game, state);
 
             return challenges.Select(this.Ok).Cast<IActionResult>().DefaultIfEmpty(this.NoContent()).Single();
         }
@@ -68,12 +71,36 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         /// <summary>
         ///     Find a challenge.
         /// </summary>
-        [HttpGet("{challengeId}", Name = nameof(FindChallengeAsync))]
-        public async Task<IActionResult> FindChallengeAsync(ChallengeId challengeId)
+        [HttpGet("{challengeId}", Name = nameof(GetChallengeAsync))]
+        public async Task<IActionResult> GetChallengeAsync(ChallengeId challengeId)
         {
-            var challenge = await _challengeQuery.FindChallengeAsync(challengeId);
+            var challenge = await _challengeQuery.GetChallengeAsync(challengeId);
 
             return challenge.Select(this.Ok).Cast<IActionResult>().DefaultIfEmpty(this.NotFound("Challenge not found.")).Single();
+        }
+
+        /// <summary>
+        ///     Complete a challenge - Administrator only.
+        /// </summary>
+        [Authorize(Roles = CustomRoles.Administrator)]
+        [HttpPost("{challengeId}/close", Name = nameof(CloseChallengeAsync))]
+        public async Task<IActionResult> CloseChallengeAsync(ChallengeId challengeId)
+        {
+            await _mediator.SendCommandAsync(new CloseChallengeCommand(challengeId));
+
+            return this.Ok();
+        }
+
+        /// <summary>
+        ///     Synchronize a challenge - Administrator only.
+        /// </summary>
+        [Authorize(Roles = CustomRoles.Administrator)]
+        [HttpPost("{challengeId}/synchronize", Name = nameof(SynchronizeChallengeAsync))]
+        public async Task<IActionResult> SynchronizeChallengeAsync(ChallengeId challengeId)
+        {
+            await _mediator.SendCommandAsync(new SynchronizeChallengeCommand(challengeId));
+
+            return this.Ok();
         }
     }
 }

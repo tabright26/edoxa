@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using eDoxa.Arena.Challenges.Api.Controllers;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.DTO;
 using eDoxa.Arena.Challenges.DTO.Queries;
 using eDoxa.Functional;
@@ -57,14 +58,14 @@ namespace eDoxa.Arena.Challenges.Api.Tests.Controllers
                 }
             };
 
-            _queries.Setup(queries => queries.FindUserChallengeHistoryAsync(It.IsAny<Game>()))
+            _queries.Setup(queries => queries.FindUserChallengeHistoryAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()))
                 .ReturnsAsync(new Option<ChallengeListDTO>(value))
                 .Verifiable();
 
             var controller = new ChallengeHistoryController(_queries.Object);
 
             // Act
-            var result = await controller.FindUserChallengeHistoryAsync(null);
+            var result = await controller.FindUserChallengeHistoryAsync(null, null);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -78,14 +79,14 @@ namespace eDoxa.Arena.Challenges.Api.Tests.Controllers
         public async Task FindUserChallengeHistoryAsync_ShouldBeNoContentResult()
         {
             // Arrange
-            _queries.Setup(queries => queries.FindUserChallengeHistoryAsync(It.IsAny<Game>()))
+            _queries.Setup(queries => queries.FindUserChallengeHistoryAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()))
                 .ReturnsAsync(new Option<ChallengeListDTO>())
                 .Verifiable();
 
             var controller = new ChallengeHistoryController(_queries.Object);
 
             // Act
-            var result = await controller.FindUserChallengeHistoryAsync(null);
+            var result = await controller.FindUserChallengeHistoryAsync(null, null);
 
             // Assert
             result.Should().BeOfType<NoContentResult>();

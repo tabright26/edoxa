@@ -13,7 +13,6 @@ using AutoMapper;
 using eDoxa.Cashier.Application.Queries;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.DTO.Factories;
-using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.Tests.Factories;
 using eDoxa.Testing.MSTest;
 

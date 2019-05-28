@@ -22,15 +22,9 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id");
 
-                    b.Property<DateTime?>("CompletedAt");
-
                     b.Property<DateTime>("CreatedAt");
 
-                    b.Property<long>("Duration");
-
                     b.Property<int>("Game");
-
-                    b.Property<bool>("IsFake");
 
                     b.Property<string>("Name")
                         .IsRequired();
@@ -38,7 +32,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
                     b.Property<string>("Scoring")
                         .IsRequired();
 
-                    b.Property<DateTime?>("StartedAt");
+                    b.Property<bool>("TestMode");
 
                     b.HasKey("Id");
 
@@ -147,21 +141,13 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
                         {
                             b1.Property<Guid>("ChallengeId");
 
-                            b1.Property<int>("BestOf")
-                                .HasColumnName("BestOf");
+                            b1.Property<int>("BestOf");
 
-                            b1.Property<int>("Entries")
-                                .HasColumnName("Entries");
+                            b1.Property<int>("Entries");
 
-                            b1.Property<string>("EntryFee")
-                                .IsRequired()
-                                .HasColumnName("EntryFee");
+                            b1.Property<float>("PayoutRatio");
 
-                            b1.Property<float>("PayoutRatio")
-                                .HasColumnName("PayoutRatio");
-
-                            b1.Property<float>("ServiceChargeRatio")
-                                .HasColumnName("ServiceChargeRatio");
+                            b1.Property<float>("ServiceChargeRatio");
 
                             b1.HasKey("ChallengeId");
 
@@ -170,6 +156,44 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
                             b1.HasOne("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.Challenge")
                                 .WithOne("Setup")
                                 .HasForeignKey("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ChallengeSetup", "ChallengeId")
+                                .OnDelete(DeleteBehavior.Cascade);
+
+                            b1.OwnsOne("eDoxa.Arena.Domain.EntryFee", "EntryFee", b2 =>
+                                {
+                                    b2.Property<Guid>("ChallengeSetupChallengeId");
+
+                                    b2.Property<decimal>("Amount");
+
+                                    b2.Property<int>("Currency");
+
+                                    b2.HasKey("ChallengeSetupChallengeId");
+
+                                    b2.ToTable("Challenges","edoxa");
+
+                                    b2.HasOne("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ChallengeSetup")
+                                        .WithOne("EntryFee")
+                                        .HasForeignKey("eDoxa.Arena.Domain.EntryFee", "ChallengeSetupChallengeId")
+                                        .OnDelete(DeleteBehavior.Cascade);
+                                });
+                        });
+
+                    b.OwnsOne("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ChallengeTimeline", "Timeline", b1 =>
+                        {
+                            b1.Property<Guid>("ChallengeId");
+
+                            b1.Property<DateTime?>("ClosedAt");
+
+                            b1.Property<long>("Duration");
+
+                            b1.Property<DateTime?>("StartedAt");
+
+                            b1.HasKey("ChallengeId");
+
+                            b1.ToTable("Challenges","edoxa");
+
+                            b1.HasOne("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.Challenge")
+                                .WithOne("Timeline")
+                                .HasForeignKey("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ChallengeTimeline", "ChallengeId")
                                 .OnDelete(DeleteBehavior.Cascade);
                         });
                 });

@@ -13,9 +13,9 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Application.Commands;
 using eDoxa.Arena.Challenges.Application.Commands.Handlers;
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Services.Abstractions;
 using eDoxa.Commands.Extensions;
-using eDoxa.Seedwork.Domain.Enumerations;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -38,17 +38,17 @@ namespace eDoxa.Arena.Challenges.Application.Tests.Commands.Handlers
         public async Task HandleAsync_SynchronizeCommand_ShouldBeCompletedTask()
         {
             // Arrange
-            _mockChallengeService.Setup(mock => mock.SynchronizeAsync(It.IsAny<Game>(), It.IsAny<CancellationToken>()))
+            _mockChallengeService.Setup(mock => mock.SynchronizeAsync(It.IsAny<ChallengeId>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var handler = new SynchronizeCommandHandler(_mockChallengeService.Object);
+            var handler = new SynchronizeChallengeCommandHandler(_mockChallengeService.Object);
 
             // Act
-            await handler.HandleAsync(new SynchronizeCommand(Game.LeagueOfLegends));
+            await handler.HandleAsync(new SynchronizeChallengeCommand(new ChallengeId()));
 
             // Assert
-            _mockChallengeService.Verify(mock => mock.SynchronizeAsync(It.IsAny<Game>(), It.IsAny<CancellationToken>()), Times.Once);
+            _mockChallengeService.Verify(mock => mock.SynchronizeAsync(It.IsAny<ChallengeId>(), It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }

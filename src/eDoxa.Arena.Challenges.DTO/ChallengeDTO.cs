@@ -10,6 +10,7 @@
 
 using System;
 
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Domain.Enumerations;
 
 using Newtonsoft.Json;
@@ -33,24 +34,18 @@ namespace eDoxa.Arena.Challenges.DTO
         [JsonConverter(typeof(UnixDateTimeConverter))]
         public DateTime CreatedAt { get; set; }
 
-        [JsonProperty("startedAt")]
-        [JsonConverter(typeof(UnixDateTimeConverter))]
-        public DateTime? StartedAt { get; set; }
+        [JsonProperty("testMode")]
+        public bool TestMode { get; set; }
 
-        [JsonProperty("endedAt")]
-        [JsonConverter(typeof(UnixDateTimeConverter))]
-        public DateTime? EndedAt { get; set; }
-
-        [JsonProperty("completedAt")]
-        [JsonConverter(typeof(UnixDateTimeConverter))]
-        public DateTime? CompletedAt { get; set; }
-
-        [JsonProperty("isFake")]
-        public bool IsFake { get; set; }
+        [JsonProperty("state")]
+        public ChallengeState State { get; set; }
 
         [JsonProperty("setup")]
         public ChallengeSetupDTO Setup { get; set; }
-        
+
+        [JsonProperty("timeline")]
+        public ChallengeTimelineDTO Timeline { get; set; }
+
         [JsonProperty("scoring")]
         public ScoringDTO Scoring { get; set; }
 

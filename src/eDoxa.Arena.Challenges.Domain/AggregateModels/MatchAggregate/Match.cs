@@ -46,7 +46,6 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
 
         public IReadOnlyCollection<Stat> Stats => _stats;
 
-        // TODO: To defend.
         public void SnapshotStats(IMatchStats stats, IScoring scoring)
         {
             for (var index = 0; index < scoring.Count; index++)
