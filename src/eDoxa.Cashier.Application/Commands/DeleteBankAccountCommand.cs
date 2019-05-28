@@ -11,11 +11,12 @@
 using eDoxa.Commands.Abstractions;
 using eDoxa.Commands.Result;
 using eDoxa.Functional;
-using eDoxa.Seedwork.Domain.Validations;
+
+using FluentValidation.Results;
 
 namespace eDoxa.Cashier.Application.Commands
 {
-    public sealed class DeleteBankAccountCommand : Command<Either<ValidationError, CommandResult>>
+    public sealed class DeleteBankAccountCommand : Command<Either<ValidationResult, CommandResult>>
     {
     }
 }

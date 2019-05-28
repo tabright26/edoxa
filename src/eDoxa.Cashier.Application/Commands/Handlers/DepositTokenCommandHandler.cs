@@ -14,11 +14,12 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Domain;
 using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.Domain.Services.Abstractions;
+using eDoxa.Cashier.Services.Abstractions;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Functional;
 using eDoxa.Security.Extensions;
-using eDoxa.Seedwork.Domain.Validations;
+
+using FluentValidation.Results;
 
 using JetBrains.Annotations;
 
@@ -26,7 +27,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
-    internal sealed class DepositTokenCommandHandler : ICommandHandler<DepositTokenCommand, Either<ValidationError, TransactionStatus>>
+    internal sealed class DepositTokenCommandHandler : ICommandHandler<DepositTokenCommand, Either<ValidationResult, TransactionStatus>>
     {
         private static readonly TokenDepositBundles Bundles = new TokenDepositBundles();
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -41,7 +42,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         }
 
         [ItemNotNull]
-        public async Task<Either<ValidationError, TransactionStatus>> Handle([NotNull] DepositTokenCommand command, CancellationToken cancellationToken)
+        public async Task<Either<ValidationResult, TransactionStatus>> Handle([NotNull] DepositTokenCommand command, CancellationToken cancellationToken)
         {
             var userId = _httpContextAccessor.GetUserId();
 

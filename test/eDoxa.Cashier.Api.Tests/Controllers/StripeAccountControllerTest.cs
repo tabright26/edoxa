@@ -15,10 +15,11 @@ using eDoxa.Cashier.Api.Controllers;
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Tests.Factories;
 using eDoxa.Commands.Result;
-using eDoxa.Seedwork.Domain.Validations;
 using eDoxa.Testing.MSTest;
 
 using FluentAssertions;
+
+using FluentValidation.Results;
 
 using MediatR;
 
@@ -95,7 +96,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             var address = FakeStripeFactory.CreateAddress();
 
             _mockMediator.Setup(mock => mock.Send(It.IsAny<VerifyAccountCommand>(), It.IsAny<CancellationToken>()))
-                         .ReturnsAsync(ValidationError.Empty)
+                         .ReturnsAsync(new ValidationResult())
                          .Verifiable();
 
             var controller = new StripeAccountController(_mockMediator.Object);

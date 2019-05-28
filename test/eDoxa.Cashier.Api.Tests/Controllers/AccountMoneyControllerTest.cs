@@ -15,10 +15,11 @@ using eDoxa.Cashier.Api.Controllers;
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Domain;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
-using eDoxa.Seedwork.Domain.Validations;
 using eDoxa.Testing.MSTest;
 
 using FluentAssertions;
+
+using FluentValidation.Results;
 
 using MediatR;
 
@@ -81,7 +82,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         {
             // Arrange
             _mockMediator.Setup(mediator => mediator.Send(It.IsAny<DepositMoneyCommand>(), It.IsAny<CancellationToken>()))
-                         .ReturnsAsync(ValidationError.Empty)
+                         .ReturnsAsync(new ValidationResult())
                          .Verifiable();
 
             var controller = new AccountMoneyController(_mockMediator.Object);
@@ -119,7 +120,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         {
             // Arrange
             _mockMediator.Setup(mediator => mediator.Send(It.IsAny<WithdrawMoneyCommand>(), It.IsAny<CancellationToken>()))
-                         .ReturnsAsync(ValidationError.Empty)
+                         .ReturnsAsync(new ValidationResult())
                          .Verifiable();
 
             var controller = new AccountMoneyController(_mockMediator.Object);

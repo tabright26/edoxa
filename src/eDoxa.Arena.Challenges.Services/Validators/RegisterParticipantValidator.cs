@@ -11,23 +11,27 @@
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Specifications;
 using eDoxa.Arena.Domain;
-using eDoxa.Seedwork.Application.Validators;
 using eDoxa.Seedwork.Domain.Entities;
+
+using FluentValidation;
+
+using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Services.Validators
 {
-    public sealed class RegisterParticipantValidator : DomainValidator<Challenge>
+    public sealed class RegisterParticipantValidator : AbstractValidator<Challenge>
     {
-        public RegisterParticipantValidator(UserId userId, ExternalAccount externalAccount)
+        public RegisterParticipantValidator(UserId userId, [CanBeNull] ExternalAccount externalAccount)
         {
-            this.AddRule(
-                new ExternalAccountIsProvidedSpecification(externalAccount).Not(),
-                "This user does not provide an external account for the challenge-specific game."
-            );
+            this.RuleFor(challenge => challenge)
+                .Must(new ExternalAccountIsProvidedSpecification(externalAccount).Not().IsSatisfiedBy)
+                .WithMessage("This user does not provide an external account for the challenge-specific game.");
 
-            this.AddRule(new UserIsRegisteredSpecification(userId), "The user already is registered.");
+            this.RuleFor(challenge => challenge).Must(new UserIsRegisteredSpecification(userId).IsSatisfiedBy).WithMessage("The user already is registered.");
 
-            this.AddRule(new ChallengeRegisterIsAvailableSpecification(), "Challenge register is available.");
+            this.RuleFor(challenge => challenge)
+                .Must(new ChallengeRegisterIsAvailableSpecification().IsSatisfiedBy)
+                .WithMessage("Challenge register is available.");
         }
     }
 }

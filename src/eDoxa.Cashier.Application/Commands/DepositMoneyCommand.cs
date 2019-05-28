@@ -14,12 +14,13 @@ using eDoxa.Cashier.Domain;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Commands.Abstractions;
 using eDoxa.Functional;
-using eDoxa.Seedwork.Domain.Validations;
+
+using FluentValidation.Results;
 
 namespace eDoxa.Cashier.Application.Commands
 {
     [DataContract]
-    public sealed class DepositMoneyCommand : Command<Either<ValidationError, TransactionStatus>>
+    public sealed class DepositMoneyCommand : Command<Either<ValidationResult, TransactionStatus>>
     {
         public DepositMoneyCommand(MoneyDepositBundleType bundleType)
         {

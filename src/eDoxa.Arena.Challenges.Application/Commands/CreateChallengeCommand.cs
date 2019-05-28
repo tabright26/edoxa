@@ -15,12 +15,13 @@ using eDoxa.Arena.Challenges.DTO;
 using eDoxa.Commands.Abstractions;
 using eDoxa.Functional;
 using eDoxa.Seedwork.Domain.Enumerations;
-using eDoxa.Seedwork.Domain.Validations;
+
+using FluentValidation.Results;
 
 namespace eDoxa.Arena.Challenges.Application.Commands
 {
     [DataContract]
-    public class CreateChallengeCommand : Command<Either<ValidationError, ChallengeDTO>>
+    public class CreateChallengeCommand : Command<Either<ValidationResult, ChallengeDTO>>
     {
         public CreateChallengeCommand(
             string name,

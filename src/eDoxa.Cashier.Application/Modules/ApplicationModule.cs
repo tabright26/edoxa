@@ -11,11 +11,11 @@
 using Autofac;
 
 using eDoxa.Cashier.Application.Queries;
-using eDoxa.Cashier.Domain.Services;
-using eDoxa.Cashier.Domain.Services.Abstractions;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.Infrastructure.Modules;
+using eDoxa.Cashier.Services;
+using eDoxa.Cashier.Services.Abstractions;
 using eDoxa.Commands;
 using eDoxa.Seedwork.Application;
 using eDoxa.ServiceBus;

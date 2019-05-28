@@ -17,16 +17,17 @@ using eDoxa.Cashier.Domain;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.Domain.Services.Abstractions;
+using eDoxa.Cashier.Services.Abstractions;
 using eDoxa.Cashier.Tests.Factories;
 using eDoxa.Commands.Extensions;
 using eDoxa.Functional;
 using eDoxa.Seedwork.Domain.Entities;
-using eDoxa.Seedwork.Domain.Validations;
 using eDoxa.Testing.MSTest;
 using eDoxa.Testing.MSTest.Extensions;
 
 using FluentAssertions;
+
+using FluentValidation.Results;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -81,7 +82,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             var result = await handler.HandleAsync(command);
 
             // Assert
-            result.Should().BeOfType<Either<ValidationError, TransactionStatus>>();
+            result.Should().BeOfType<Either<ValidationResult, TransactionStatus>>();
 
             _mockMoneyAccountService.Verify(
                 mock => mock.DepositAsync(It.IsAny<UserId>(), It.IsAny<MoneyBundle>(), It.IsAny<StripeCustomerId>(), It.IsAny<CancellationToken>()),

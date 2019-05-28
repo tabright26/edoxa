@@ -13,11 +13,10 @@ using System.Collections.Generic;
 using System.Linq;
 
 using eDoxa.Cashier.Domain.Abstractions;
-using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate.Specifications;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
+using eDoxa.Cashier.Domain.Validators;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Specifications.Factories;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
 {
@@ -128,26 +127,17 @@ namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
 
         public bool CanDeposit()
         {
-            var specification = SpecificationFactory.Instance.CreateSpecification<MoneyAccount>().And(new DailyMoneyDepositUnavailableSpecification().Not());
-
-            return specification.IsSatisfiedBy(this);
+            return new DepositMoneyValidator().Validate(this).IsValid;
         }
 
         public bool CanCharge(Money money)
         {
-            var specification = SpecificationFactory.Instance.CreateSpecification<MoneyAccount>().And(new InsufficientMoneySpecification(money).Not());
-
-            return specification.IsSatisfiedBy(this);
+            return new ChargeMoneyValidator(money).Validate(this).IsValid;
         }
 
         public bool CanWithdraw(Money money)
         {
-            var specification = SpecificationFactory.Instance.CreateSpecification<MoneyAccount>()
-                .And(new HasBankAccountSpecification())
-                .And(new InsufficientMoneySpecification(money).Not())
-                .And(new WeeklyMoneyWithdrawUnavailableSpecification().Not());
-
-            return specification.IsSatisfiedBy(this);
+            return new WithdrawMoneyValidator(money).Validate(this).IsValid;
         }
     }
 }

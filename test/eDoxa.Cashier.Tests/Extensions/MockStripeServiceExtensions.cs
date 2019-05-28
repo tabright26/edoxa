@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
+using eDoxa.Cashier.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Tests.Factories;
 using eDoxa.Seedwork.Domain.Entities;
 

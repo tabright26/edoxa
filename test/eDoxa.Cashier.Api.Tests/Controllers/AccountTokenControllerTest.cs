@@ -15,10 +15,11 @@ using eDoxa.Cashier.Api.Controllers;
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Domain;
 using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
-using eDoxa.Seedwork.Domain.Validations;
 using eDoxa.Testing.MSTest;
 
 using FluentAssertions;
+
+using FluentValidation.Results;
 
 using MediatR;
 
@@ -81,7 +82,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         {
             // Arrange
             _mockMediator.Setup(mock => mock.Send(It.IsAny<DepositTokenCommand>(), It.IsAny<CancellationToken>()))
-                         .ReturnsAsync(ValidationError.Empty)
+                         .ReturnsAsync(new ValidationResult())
                          .Verifiable();
 
             var controller = new AccountTokenController(_mockMediator.Object);

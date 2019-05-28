@@ -1,5 +1,5 @@
 ﻿// Filename: User.cs
-// Date Created: 2019-05-19
+// Date Created: 2019-05-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,11 +12,10 @@ using System;
 
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
-using eDoxa.Cashier.Domain.AggregateModels.UserAggregate.Specifications;
+using eDoxa.Cashier.Domain.Validators;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Entities;
-using eDoxa.Seedwork.Domain.Validations;
 
 using JetBrains.Annotations;
 
@@ -74,28 +73,14 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
             _bankAccountId = null;
         }
 
-        public ValidationResult CanAddBankAccount()
+        public bool CanAddBankAccount()
         {
-            var result = new ValidationResult();
-
-            if (new HasBankAccountSpecification().IsSatisfiedBy(this))
-            {
-                result.AddError("A bank account is already associated with this account.");
-            }
-
-            return result;
+            return new AddBankAccountValidator().Validate(this).IsValid;
         }
 
-        public ValidationResult CanRemoveBankAccount()
+        public bool CanRemoveBankAccount()
         {
-            var result = new ValidationResult();
-
-            if (new HasBankAccountSpecification().Not().IsSatisfiedBy(this))
-            {
-                result.AddError("No bank account is associated with this account.");
-            }
-
-            return result;
+            return new RemoveBankAccountValidator().Validate(this).IsValid;
         }
     }
 }

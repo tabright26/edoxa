@@ -9,11 +9,13 @@
 // this source code package.
 
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
 using FluentValidation;
+using FluentValidation.Results;
 
 namespace eDoxa.Seedwork.Application.Extensions
 {
@@ -73,6 +75,16 @@ namespace eDoxa.Seedwork.Application.Extensions
                 .WithMessage(
                     $"The enumeration {typeof(TEnumeration).Name} is invalid. These are valid enumeration names: [{string.Join(", ", Domain.Aggregate.Enumeration.GetAll<TEnumeration>())}]."
                 );
+        }
+
+        public static ValidationResult ToResult(this ValidationFailure validationFailure)
+        {
+            return new ValidationResult(
+                new List<ValidationFailure>
+                {
+                    validationFailure
+                }
+            );
         }
     }
 }

@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Stripe.net" Version="26.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\eDoxa.Cashier.Domain\eDoxa.Cashier.Domain.csproj" />
+    <ProjectReference Include="..\eDoxa.Functional\eDoxa.Functional.csproj" />
+    <ProjectReference Include="..\eDoxa.Security\eDoxa.Security.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="IdentityModel">
+      <HintPath>..\..\..\..\..\.nuget\packages\identitymodel\3.10.6\lib\netstandard2.0\IdentityModel.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

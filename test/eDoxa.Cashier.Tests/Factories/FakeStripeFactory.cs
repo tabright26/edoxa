@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.Services.Stripe;
+using eDoxa.Cashier.Services.Stripe;
 
 using Stripe;
 

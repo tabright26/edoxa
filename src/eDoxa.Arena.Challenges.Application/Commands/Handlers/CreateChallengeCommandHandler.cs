@@ -18,13 +18,14 @@ using eDoxa.Arena.Challenges.Services.Abstractions;
 using eDoxa.Arena.Domain;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Functional;
-using eDoxa.Seedwork.Domain.Validations;
+
+using FluentValidation.Results;
 
 using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Application.Commands.Handlers
 {
-    internal sealed class CreateChallengeCommandHandler : ICommandHandler<CreateChallengeCommand, Either<ValidationError, ChallengeDTO>>
+    internal sealed class CreateChallengeCommandHandler : ICommandHandler<CreateChallengeCommand, Either<ValidationResult, ChallengeDTO>>
     {
         private readonly IChallengeService _challengeService;
         private readonly IMapper _mapper;
@@ -36,7 +37,7 @@ namespace eDoxa.Arena.Challenges.Application.Commands.Handlers
         }
 
         [ItemCanBeNull]
-        public async Task<Either<ValidationError, ChallengeDTO>> Handle([NotNull] CreateChallengeCommand command, CancellationToken cancellationToken)
+        public async Task<Either<ValidationResult, ChallengeDTO>> Handle([NotNull] CreateChallengeCommand command, CancellationToken cancellationToken)
         {
             var either = await _challengeService.CreateChallengeAsync(
                 command.Name,
@@ -49,7 +50,7 @@ namespace eDoxa.Arena.Challenges.Application.Commands.Handlers
                 cancellationToken
             );
 
-            return either.Match<Either<ValidationError, ChallengeDTO>>(error => error, challenge => _mapper.Map<ChallengeDTO>(challenge));
+            return either.Match<Either<ValidationResult, ChallengeDTO>>(error => error, challenge => _mapper.Map<ChallengeDTO>(challenge));
         }
     }
 }

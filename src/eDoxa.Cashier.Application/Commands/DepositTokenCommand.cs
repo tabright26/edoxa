@@ -14,12 +14,13 @@ using eDoxa.Cashier.Domain;
 using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
 using eDoxa.Commands.Abstractions;
 using eDoxa.Functional;
-using eDoxa.Seedwork.Domain.Validations;
+
+using FluentValidation.Results;
 
 namespace eDoxa.Cashier.Application.Commands
 {
     [DataContract]
-    public sealed class DepositTokenCommand : Command<Either<ValidationError, TransactionStatus>>
+    public sealed class DepositTokenCommand : Command<Either<ValidationResult, TransactionStatus>>
     {
         public DepositTokenCommand(TokenDepositBundleType bundleType)
         {

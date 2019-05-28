@@ -12,12 +12,14 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
+using eDoxa.Cashier.Domain.Validators;
+using eDoxa.Cashier.Services.Stripe.Abstractions;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Commands.Result;
 using eDoxa.Functional;
 using eDoxa.Security.Extensions;
-using eDoxa.Seedwork.Domain.Validations;
+
+using FluentValidation.Results;
 
 using JetBrains.Annotations;
 
@@ -25,7 +27,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
-    internal sealed class CreateBankAccountCommandHandler : ICommandHandler<CreateBankAccountCommand, Either<ValidationError, CommandResult>>
+    internal sealed class CreateBankAccountCommandHandler : ICommandHandler<CreateBankAccountCommand, Either<ValidationResult, CommandResult>>
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IStripeService _stripeService;
@@ -39,17 +41,19 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         }
 
         [ItemNotNull]
-        public async Task<Either<ValidationError, CommandResult>> Handle([NotNull] CreateBankAccountCommand command, CancellationToken cancellationToken)
+        public async Task<Either<ValidationResult, CommandResult>> Handle([NotNull] CreateBankAccountCommand command, CancellationToken cancellationToken)
         {
             var userId = _httpContextAccessor.GetUserId(); 
 
             var user = await _userRepository.GetUserAsync(userId);
 
-            var result = user.CanAddBankAccount();
+            var validator = new AddBankAccountValidator();
 
-            if (result.Failure)
+            var result = validator.Validate(user);
+
+            if (!result.IsValid)
             {
-                return result.ValidationError;
+                return result;
             }
 
             var bankAccountId = await _stripeService.CreateBankAccountAsync(user.AccountId, command.ExternalAccountTokenId, cancellationToken);

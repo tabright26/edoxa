@@ -24,9 +24,11 @@ using eDoxa.Arena.Challenges.Services.Validators;
 using eDoxa.Arena.Domain;
 using eDoxa.Functional;
 using eDoxa.Functional.Extensions;
+using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Entities;
 using eDoxa.Seedwork.Domain.Enumerations;
-using eDoxa.Seedwork.Domain.Validations;
+
+using FluentValidation.Results;
 
 namespace eDoxa.Arena.Challenges.Services
 {
@@ -39,7 +41,7 @@ namespace eDoxa.Arena.Challenges.Services
             _challengeRepository = challengeRepository;
         }
 
-        public async Task<Either<ValidationError, Participant>> RegisterParticipantAsync(
+        public async Task<Either<ValidationResult, Participant>> RegisterParticipantAsync(
             ChallengeId challengeId,
             UserId userId,
             Func<Game, ExternalAccount> funcExternalAccount,
@@ -50,16 +52,18 @@ namespace eDoxa.Arena.Challenges.Services
 
             if (challenge == null)
             {
-                return new ValidationError("Challenge not found.");
+                return new ValidationFailure(null, "Challenge not found.").ToResult();
             }
 
             var externalAccount = funcExternalAccount(challenge.Game);
 
             var validator = new RegisterParticipantValidator(userId, externalAccount);
 
-            if (!validator.Validate(challenge, out var result))
+            var result = validator.Validate(challenge);
+
+            if (!result.IsValid)
             {
-                return result.ValidationError;
+                return result;
             }
 
             var participant = challenge.RegisterParticipant(userId, externalAccount);
@@ -83,7 +87,7 @@ namespace eDoxa.Arena.Challenges.Services
             return Task.CompletedTask;
         }
 
-        public async Task<Either<ValidationError, Challenge>> CreateChallengeAsync(
+        public async Task<Either<ValidationResult, Challenge>> CreateChallengeAsync(
             string name,
             Game game,
             int duration,

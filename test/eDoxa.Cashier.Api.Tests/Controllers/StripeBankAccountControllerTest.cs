@@ -15,10 +15,11 @@ using eDoxa.Cashier.Api.Controllers;
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Tests.Factories;
 using eDoxa.Commands.Result;
-using eDoxa.Seedwork.Domain.Validations;
 using eDoxa.Testing.MSTest;
 
 using FluentAssertions;
+
+using FluentValidation.Results;
 
 using MediatR;
 
@@ -86,7 +87,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
             var sourceToken = FakeStripeFactory.CreateSourceToken();
 
             _mockMediator.Setup(mock => mock.Send(It.IsAny<CreateBankAccountCommand>(), It.IsAny<CancellationToken>()))
-                         .ReturnsAsync(ValidationError.Empty)
+                        .ReturnsAsync(new ValidationResult())
                          .Verifiable();
 
             var controller = new StripeBankAccountController(_mockMediator.Object);
@@ -124,7 +125,7 @@ namespace eDoxa.Cashier.Api.Tests.Controllers
         {
             // Arrange
             _mockMediator.Setup(mock => mock.Send(It.IsAny<DeleteBankAccountCommand>(), It.IsAny<CancellationToken>()))
-                         .ReturnsAsync(ValidationError.Empty)
+                         .ReturnsAsync(new ValidationResult())
                          .Verifiable();
 
             var controller = new StripeBankAccountController(_mockMediator.Object);

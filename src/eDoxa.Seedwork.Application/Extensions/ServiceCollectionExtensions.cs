@@ -12,6 +12,8 @@ using System;
 
 using eDoxa.Seedwork.Application.Filters;
 
+using FluentValidation.AspNetCore;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,6 +37,11 @@ namespace eDoxa.Seedwork.Application.Extensions
                 options.Filters.Add<DbUpdateExceptionFilter>();
 
                 options.Filters.Add<DbUpdateConcurrencyException>();
+            });
+
+            builder.AddFluentValidation(config =>
+            {
+                config.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
             });
 
             builder.AddControllersAsServices();

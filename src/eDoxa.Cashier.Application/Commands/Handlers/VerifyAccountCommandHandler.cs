@@ -12,12 +12,13 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
+using eDoxa.Cashier.Services.Stripe.Abstractions;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Commands.Result;
 using eDoxa.Functional;
 using eDoxa.Security.Extensions;
-using eDoxa.Seedwork.Domain.Validations;
+
+using FluentValidation.Results;
 
 using JetBrains.Annotations;
 
@@ -25,7 +26,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
-    internal sealed class VerifyAccountCommandHandler : ICommandHandler<VerifyAccountCommand, Either<ValidationError, CommandResult>>
+    internal sealed class VerifyAccountCommandHandler : ICommandHandler<VerifyAccountCommand, Either<ValidationResult, CommandResult>>
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IStripeService _stripeService;
@@ -39,7 +40,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         }
 
         [ItemNotNull]
-        public async Task<Either<ValidationError, CommandResult>> Handle([NotNull] VerifyAccountCommand command, CancellationToken cancellationToken)
+        public async Task<Either<ValidationResult, CommandResult>> Handle([NotNull] VerifyAccountCommand command, CancellationToken cancellationToken)
         {
             var userId = _httpContextAccessor.GetUserId();
 

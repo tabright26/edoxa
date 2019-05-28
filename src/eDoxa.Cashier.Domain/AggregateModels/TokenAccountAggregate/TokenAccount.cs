@@ -13,11 +13,10 @@ using System.Collections.Generic;
 using System.Linq;
 
 using eDoxa.Cashier.Domain.Abstractions;
-using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate.Specifications;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
+using eDoxa.Cashier.Domain.Validators;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Specifications.Factories;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
 {
@@ -99,7 +98,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
         {
             transaction.Complete();
 
-            if (transaction.Type.Equals(TransactionType.Deposit))
+            if (transaction.Type == TransactionType.Deposit)
             {
                 _lastDeposit = DateTime.UtcNow;
             }
@@ -116,18 +115,12 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate
 
         public bool CanDeposit()
         {
-            var specification = SpecificationFactory.Instance.CreateSpecification<TokenAccount>()
-                .And(new DailyTokenDepositUnavailableSpecification().Not());
-
-            return specification.IsSatisfiedBy(this);
+            return new DepositTokenValidator().Validate(this).IsValid;
         }
 
         public bool CanCharge(Token token)
         {
-            var specification = SpecificationFactory.Instance.CreateSpecification<TokenAccount>()
-                .And(new InsufficientTokenSpecification(token).Not());
-
-            return specification.IsSatisfiedBy(this);
+            return new ChargeTokenValidator(token).Validate(this).IsValid;
         }
     }
 }

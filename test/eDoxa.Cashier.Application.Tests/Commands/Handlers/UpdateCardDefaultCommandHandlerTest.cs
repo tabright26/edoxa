@@ -15,18 +15,19 @@ using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
+using eDoxa.Cashier.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Tests.Extensions;
 using eDoxa.Cashier.Tests.Factories;
 using eDoxa.Commands.Extensions;
 using eDoxa.Commands.Result;
 using eDoxa.Functional;
 using eDoxa.Seedwork.Domain.Entities;
-using eDoxa.Seedwork.Domain.Validations;
 using eDoxa.Testing.MSTest;
 using eDoxa.Testing.MSTest.Extensions;
 
 using FluentAssertions;
+
+using FluentValidation.Results;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -78,7 +79,7 @@ namespace eDoxa.Cashier.Application.Tests.Commands.Handlers
             var result = await handler.HandleAsync(new UpdateCardDefaultCommand(cardId));
 
             // Assert
-            result.Should().BeOfType<Either<ValidationError, CommandResult>>();
+            result.Should().BeOfType<Either<ValidationResult, CommandResult>>();
 
             _mockStripeService.Verify(
                 mock => mock.UpdateCardDefaultAsync(It.IsAny<StripeCustomerId>(), It.IsAny<StripeCardId>(), It.IsAny<CancellationToken>()),

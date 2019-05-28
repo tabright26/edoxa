@@ -13,12 +13,13 @@ using System.Runtime.Serialization;
 using eDoxa.Commands.Abstractions;
 using eDoxa.Commands.Result;
 using eDoxa.Functional;
-using eDoxa.Seedwork.Domain.Validations;
+
+using FluentValidation.Results;
 
 namespace eDoxa.Cashier.Application.Commands
 {
     [DataContract]
-    public sealed class CreateCardCommand : Command<Either<ValidationError, CommandResult>>
+    public sealed class CreateCardCommand : Command<Either<ValidationResult, CommandResult>>
     {
         public CreateCardCommand(string sourceToken)
         {

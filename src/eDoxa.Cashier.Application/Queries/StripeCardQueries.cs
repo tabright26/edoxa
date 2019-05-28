@@ -13,9 +13,9 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.Domain.Services.Stripe.Abstractions;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
+using eDoxa.Cashier.Services.Stripe.Abstractions;
 using eDoxa.Security.Extensions;
 
 using Microsoft.AspNetCore.Http;

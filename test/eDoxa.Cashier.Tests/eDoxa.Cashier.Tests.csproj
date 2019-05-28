@@ -7,11 +7,11 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\eDoxa.Cashier.API\eDoxa.Cashier.Api.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Cashier.Application\eDoxa.Cashier.Application.csproj" />
-    <ProjectReference Include="..\..\src\eDoxa.Cashier.Domain.Services.Stripe\eDoxa.Cashier.Domain.Services.Stripe.csproj" />
-    <ProjectReference Include="..\..\src\eDoxa.Cashier.Domain.Services\eDoxa.Cashier.Domain.Services.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Cashier.Domain\eDoxa.Cashier.Domain.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Cashier.DTO\eDoxa.Cashier.DTO.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Cashier.Infrastructure\eDoxa.Cashier.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\eDoxa.Cashier.Services.Stripe\eDoxa.Cashier.Services.Stripe.csproj" />
+    <ProjectReference Include="..\..\src\eDoxa.Cashier.Services\eDoxa.Cashier.Services.csproj" />
     <ProjectReference Include="..\eDoxa.Testing.MSTest\eDoxa.Testing.MSTest.csproj" />
   </ItemGroup>
 

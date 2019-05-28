@@ -16,7 +16,8 @@ using eDoxa.Arena.Challenges.Services.Abstractions;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Functional;
 using eDoxa.Security.Extensions;
-using eDoxa.Seedwork.Domain.Validations;
+
+using FluentValidation.Results;
 
 using JetBrains.Annotations;
 
@@ -24,7 +25,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace eDoxa.Arena.Challenges.Application.Commands.Handlers
 {
-    internal sealed class RegisterParticipantCommandHandler : ICommandHandler<RegisterParticipantCommand, Either<ValidationError, string>>
+    internal sealed class RegisterParticipantCommandHandler : ICommandHandler<RegisterParticipantCommand, Either<ValidationResult, string>>
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IChallengeService _challengeService;
@@ -36,7 +37,7 @@ namespace eDoxa.Arena.Challenges.Application.Commands.Handlers
         }
 
         [ItemNotNull]
-        public async Task<Either<ValidationError, string>> Handle([NotNull] RegisterParticipantCommand command, CancellationToken cancellationToken)
+        public async Task<Either<ValidationResult, string>> Handle([NotNull] RegisterParticipantCommand command, CancellationToken cancellationToken)
         {
             var userId = _httpContextAccessor.GetUserId();
 
@@ -47,7 +48,7 @@ namespace eDoxa.Arena.Challenges.Application.Commands.Handlers
                 cancellationToken
             );
 
-            return either.Match<Either<ValidationError, string>>(x => x, x => "The participant has registered successfully.");
+            return either.Match<Either<ValidationResult, string>>(x => x, x => "The participant has registered successfully.");
         }
     }
 }

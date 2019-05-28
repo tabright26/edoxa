@@ -9,11 +9,12 @@
 // this source code package.
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Seedwork.Application.Validators;
+
+using FluentValidation;
 
 namespace eDoxa.Arena.Challenges.Services.Validators
 {
-    public sealed class SynchronizeChallengeValidator : DomainValidator<Challenge>
+    public sealed class SynchronizeChallengeValidator : AbstractValidator<Challenge>
     {
     }
 }
