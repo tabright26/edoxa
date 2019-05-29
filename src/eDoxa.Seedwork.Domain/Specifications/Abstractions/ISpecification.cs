@@ -11,7 +11,7 @@
 using System;
 using System.Linq.Expressions;
 
-namespace eDoxa.Seedwork.Domain.Specifications
+namespace eDoxa.Seedwork.Domain.Specifications.Abstractions
 {
     public interface ISpecification<TEntity>
     where TEntity : IEntity, IAggregateRoot

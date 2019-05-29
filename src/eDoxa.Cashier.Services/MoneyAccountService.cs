@@ -19,7 +19,7 @@ using eDoxa.Cashier.Domain.Validators;
 using eDoxa.Cashier.Services.Abstractions;
 using eDoxa.Cashier.Services.Stripe.Abstractions;
 using eDoxa.Functional;
-using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Application.Validations.Extensions;
 using eDoxa.Seedwork.Domain.Common;
 
 using FluentValidation.Results;

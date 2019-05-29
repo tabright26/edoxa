@@ -11,6 +11,8 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using eDoxa.Seedwork.Domain.Specifications.Abstractions;
+
 using JetBrains.Annotations;
 
 namespace eDoxa.Seedwork.Domain.Specifications.Extensions

@@ -16,8 +16,6 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-using static eDoxa.Seedwork.Domain.Aggregate.Enumeration;
-
 namespace eDoxa.Seedwork.Infrastructure.Extensions
 {
     public static class EntityTypeBuilderExtensions
@@ -37,9 +35,9 @@ namespace eDoxa.Seedwork.Infrastructure.Extensions
             Expression<Func<TEntity, TEnumeration>> expression
         )
         where TEntity : class, IEntity
-        where TEnumeration : Enumeration
+        where TEnumeration : Enumeration<TEnumeration>, new()
         {
-            return builder.Property(expression).HasConversion(entityId => entityId.Value, entityId => FromValue<TEnumeration>(entityId));
+            return builder.Property(expression).HasConversion(entityId => entityId.Value, entityId => Enumeration<TEnumeration>.FromValue(entityId));
         }
     }
 }

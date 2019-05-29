@@ -11,6 +11,8 @@
 using System;
 using System.Linq.Expressions;
 
+using eDoxa.Seedwork.Domain.Specifications.Abstractions;
+
 namespace eDoxa.Seedwork.Domain.Specifications
 {
     public sealed class OrSpecification<TEntity> : Specification<TEntity>

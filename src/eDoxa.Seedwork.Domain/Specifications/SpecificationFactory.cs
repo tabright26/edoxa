@@ -10,7 +10,9 @@
 
 using System;
 
-namespace eDoxa.Seedwork.Domain.Specifications.Factories
+using eDoxa.Seedwork.Domain.Specifications.Abstractions;
+
+namespace eDoxa.Seedwork.Domain.Specifications
 {
     public sealed class SpecificationFactory
     {

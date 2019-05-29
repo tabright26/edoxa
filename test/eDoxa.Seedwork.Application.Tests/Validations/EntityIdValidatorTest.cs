@@ -10,7 +10,7 @@
 
 using System;
 
-using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Application.Validations.Extensions;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 using FluentAssertions;

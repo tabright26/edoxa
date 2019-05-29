@@ -1,5 +1,5 @@
-﻿// Filename: StaticHelper.cs
-// Date Created: 2019-05-26
+﻿// Filename: ReflectionUtilities.cs
+// Date Created: 2019-05-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.

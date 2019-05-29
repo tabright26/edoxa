@@ -1,5 +1,5 @@
 ﻿// Filename: MoneyWithdrawBundleType.cs
-// Date Created: 2019-05-13
+// Date Created: 2019-05-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,16 +11,19 @@
 using System.ComponentModel;
 
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Domain.TypeConverters;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate
 {
-    [TypeConverter(typeof(EnumerationTypeConverter<MoneyWithdrawBundleType>))]
-    public sealed class MoneyWithdrawBundleType : Enumeration
+    [TypeConverter(typeof(EnumerationTypeConverter))]
+    public sealed class MoneyWithdrawBundleType : Enumeration<MoneyWithdrawBundleType>
     {
         public static readonly MoneyWithdrawBundleType Fifty = new MoneyWithdrawBundleType(1 << 0, nameof(Fifty));
         public static readonly MoneyWithdrawBundleType OneHundred = new MoneyWithdrawBundleType(1 << 1, nameof(OneHundred));
         public static readonly MoneyWithdrawBundleType TwoHundred = new MoneyWithdrawBundleType(1 << 2, nameof(TwoHundred));
+
+        public MoneyWithdrawBundleType()
+        {
+        }
 
         private MoneyWithdrawBundleType(int value, string name) : base(value, name)
         {

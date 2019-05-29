@@ -23,7 +23,7 @@ using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Common;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
-using eDoxa.Seedwork.Domain.Specifications.Factories;
+using eDoxa.Seedwork.Domain.Specifications;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {

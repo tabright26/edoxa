@@ -11,16 +11,19 @@
 using System.ComponentModel;
 
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Domain.TypeConverters;
 
 namespace eDoxa.Cashier.Domain
 {
-    [TypeConverter(typeof(EnumerationTypeConverter<TransactionStatus>))]
-    public sealed class TransactionStatus : Enumeration
+    [TypeConverter(typeof(EnumerationTypeConverter))]
+    public sealed class TransactionStatus : Enumeration<TransactionStatus>
     {
         public static readonly TransactionStatus Pending = new TransactionStatus(1 << 0, nameof(Pending));
         public static readonly TransactionStatus Completed = new TransactionStatus(1 << 1, nameof(Completed));
         public static readonly TransactionStatus Failed = new TransactionStatus(1 << 2, nameof(Failed));
+
+        public TransactionStatus()
+        {
+        }
 
         private TransactionStatus(int value, string name) : base(value, name)
         {

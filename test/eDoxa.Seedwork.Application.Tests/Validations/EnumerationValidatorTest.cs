@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Application.Validations.Extensions;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 using FluentAssertions;
@@ -38,6 +38,44 @@ namespace eDoxa.Seedwork.Application.Tests.Validations
 
             // Assert
             result.IsValid.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void Validate_AllEnumeration_ShouldBeFalse()
+        {
+            // Arrange
+            var model = new MockViewModel
+            {
+                Enumeration = MockEnumeration.All
+            };
+
+            var validator = new MockValidator();
+
+            // Act
+            var result = validator.Validate(model);
+
+            // Assert
+            result.IsValid.Should().BeFalse();
+            result.Errors.Should().HaveCount(1);
+        }
+
+        [TestMethod]
+        public void Validate_NoneEnumeration_ShouldBeFalse()
+        {
+            // Arrange
+            var model = new MockViewModel
+            {
+                Enumeration = new MockEnumeration()
+            };
+
+            var validator = new MockValidator();
+
+            // Act
+            var result = validator.Validate(model);
+
+            // Assert
+            result.IsValid.Should().BeFalse();
+            result.Errors.Should().HaveCount(1);
         }
 
         [TestMethod]
@@ -72,9 +110,13 @@ namespace eDoxa.Seedwork.Application.Tests.Validations
             public MockEnumeration Enumeration { get; set; }
         }
 
-        private class MockEnumeration : Enumeration
+        private class MockEnumeration : Enumeration<MockEnumeration>
         {
-            public static readonly MockEnumeration MockEnumeration1 = new MockEnumeration(default, nameof(MockEnumeration1));
+            public static readonly MockEnumeration MockEnumeration1 = new MockEnumeration(1 << 0, nameof(MockEnumeration1));
+
+            public MockEnumeration()
+            {
+            }
 
             private MockEnumeration(int value, string name) : base(value, name)
             {

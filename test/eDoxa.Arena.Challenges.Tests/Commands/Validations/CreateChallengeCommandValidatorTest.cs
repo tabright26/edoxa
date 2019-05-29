@@ -54,13 +54,13 @@ namespace eDoxa.Arena.Challenges.Tests.Commands.Validations
             // Arrange
             var command = new CreateChallengeCommand(
                 name,
-                Enumeration.FromName<Game>(game),
+                Enumeration<Game>.FromName(game),
                 duration,
                 bestOf,
                 payoutEntries,
                 new decimal(amount),
-                Enumeration.FromName<Currency>(currency),
-                Enumeration.FromName<ChallengeState>(testModeState)
+                Enumeration<Currency>.FromName(currency),
+                Enumeration<ChallengeState>.FromName(testModeState)
             );
 
             var validator = new CreateChallengeCommandValidator(_mockHostingEnvironment.Object);

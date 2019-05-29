@@ -24,7 +24,7 @@ using eDoxa.Arena.Challenges.Services.Validators;
 using eDoxa.Arena.Domain;
 using eDoxa.Functional;
 using eDoxa.Functional.Extensions;
-using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Application.Validations.Extensions;
 using eDoxa.Seedwork.Domain.Common;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 

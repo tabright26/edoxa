@@ -9,7 +9,7 @@
 // this source code package.
 
 using eDoxa.Commands.Abstractions.Validations;
-using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Application.Validations.Extensions;
 
 namespace eDoxa.Arena.Challenges.Application.Commands.Validations
 {

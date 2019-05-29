@@ -12,6 +12,8 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 
+using eDoxa.Seedwork.Domain.Specifications.Abstractions;
+
 namespace eDoxa.Seedwork.Domain.Specifications
 {
     public sealed class NotSpecification<TEntity> : Specification<TEntity>

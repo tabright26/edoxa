@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-namespace eDoxa.Seedwork.Domain.Specifications.Factories
+namespace eDoxa.Seedwork.Domain.Specifications.Abstractions
 {
     public interface ISpecificationFactory
     {
