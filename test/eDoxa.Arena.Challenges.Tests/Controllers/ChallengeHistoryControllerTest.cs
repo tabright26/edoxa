@@ -17,7 +17,6 @@ using eDoxa.Arena.Challenges.DTO;
 using eDoxa.Arena.Challenges.DTO.Queries;
 using eDoxa.Functional;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
-using eDoxa.Testing.MSTest.Extensions;
 
 using FluentAssertions;
 

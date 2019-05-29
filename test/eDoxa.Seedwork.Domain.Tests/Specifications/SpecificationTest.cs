@@ -18,7 +18,7 @@ using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Seedwork.Domain.Tests
+namespace eDoxa.Seedwork.Domain.Tests.Specifications
 {
     [TestClass]
     public sealed class SpecificationTest

@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using eDoxa.Arena.Challenges.Tests;
 using eDoxa.Cashier.Application.Queries;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Repositories;
@@ -21,7 +22,6 @@ using eDoxa.Cashier.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Tests.Factories;
 using eDoxa.Seedwork.Domain.Common;
 using eDoxa.Testing.MSTest;
-using eDoxa.Testing.MSTest.Extensions;
 
 using FluentAssertions;
 

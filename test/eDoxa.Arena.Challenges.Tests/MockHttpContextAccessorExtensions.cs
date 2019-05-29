@@ -20,7 +20,7 @@ using Microsoft.AspNetCore.Http;
 
 using Moq;
 
-namespace eDoxa.Testing.MSTest.Extensions
+namespace eDoxa.Arena.Challenges.Tests
 {
     public static class MockHttpContextAccessorExtensions
     {

@@ -1,5 +1,5 @@
 ﻿// Filename: EntityIdTest.cs
-// Date Created: 2019-05-20
+// Date Created: 2019-05-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -33,6 +33,21 @@ namespace eDoxa.Seedwork.Domain.Tests.Aggregate
 
             // Assert
             entityId.ToGuid().Should().Be(value);
+        }
+
+        [TestMethod]
+        public void Value_InvalidGuid_ShouldBeValue()
+        {
+            // Arrange
+            var guid = Guid.NewGuid();
+            var entityId1 = new MockEntityId(guid);
+            var entityId2 = new MockEntityId(guid);
+
+            // Act
+            var condition = entityId1.Equals(entityId2);
+
+            // Assert
+            condition.Should().BeTrue();
         }
 
         [TestMethod]
@@ -71,6 +86,33 @@ namespace eDoxa.Seedwork.Domain.Tests.Aggregate
 
             // Assert
             entityId.As<MockEntityId>().ToString().Should().Be(value);
+        }
+
+        [TestMethod]
+        public void ConvertFrom_InvalidString_ShouldBeValue()
+        {
+            // Arrange
+            const string value = "qeqw12312";
+            var converter = TypeDescriptor.GetConverter(typeof(MockEntityId));
+
+            // Act
+            var entityId = converter.ConvertFrom(value);
+
+            // Assert
+            entityId.As<MockEntityId>().IsTransient().Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void ConvertFrom_NullReference_ShouldBeValue()
+        {
+            // Arrange
+            var converter = TypeDescriptor.GetConverter(typeof(MockEntityId));
+
+            // Act
+            var entityId = converter.ConvertFrom(null);
+
+            // Assert
+            entityId.As<MockEntityId>().IsTransient().Should().BeTrue();
         }
 
         [DataRow(typeof(int))]
@@ -150,6 +192,14 @@ namespace eDoxa.Seedwork.Domain.Tests.Aggregate
         [TypeConverter(typeof(EntityIdTypeConverter))]
         private sealed class MockEntityId : EntityId<MockEntityId>
         {
+            public MockEntityId(Guid entityId) : this()
+            {
+                Value = entityId;
+            }
+
+            public MockEntityId()
+            {
+            }
         }
     }
 }

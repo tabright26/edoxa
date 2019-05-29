@@ -11,6 +11,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Arena.Challenges.Tests;
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.AggregateModels;
@@ -23,7 +24,6 @@ using eDoxa.Commands.Result;
 using eDoxa.Functional;
 using eDoxa.Seedwork.Domain.Common;
 using eDoxa.Testing.MSTest;
-using eDoxa.Testing.MSTest.Extensions;
 
 using FluentAssertions;
 

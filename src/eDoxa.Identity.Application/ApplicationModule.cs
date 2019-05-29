@@ -14,7 +14,6 @@ using eDoxa.Commands;
 using eDoxa.Identity.Application.Queries;
 using eDoxa.Identity.DTO.Queries;
 using eDoxa.Identity.Infrastructure;
-using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Application.Modules;
 using eDoxa.ServiceBus;
 
