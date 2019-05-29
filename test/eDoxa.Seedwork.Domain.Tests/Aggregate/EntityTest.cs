@@ -10,8 +10,8 @@
 
 using System;
 
-using eDoxa.Reflection.Tests.Extensions;
 using eDoxa.Seedwork.Domain.Aggregate;
+using eDoxa.Seedwork.Domain.Tests.Reflection.Extensions;
 using eDoxa.Testing.MSTest.Extensions;
 
 using FluentAssertions;

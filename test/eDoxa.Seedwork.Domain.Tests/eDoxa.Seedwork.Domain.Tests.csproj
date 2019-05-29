@@ -15,7 +15,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\eDoxa.Seedwork.Domain\eDoxa.Seedwork.Domain.csproj" />
-    <ProjectReference Include="..\eDoxa.Reflection.Tests\eDoxa.Reflection.Tests.csproj" />
     <ProjectReference Include="..\eDoxa.Testing.MSTest\eDoxa.Testing.MSTest.csproj" />
   </ItemGroup>
 
