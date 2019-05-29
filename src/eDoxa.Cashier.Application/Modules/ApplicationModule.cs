@@ -34,8 +34,6 @@ namespace eDoxa.Cashier.Application.Modules
 
             builder.RegisterModule<CommandModule<ApplicationModule>>();
 
-            builder.RegisterModule<CommandInfrastructureModule<CashierDbContext>>();
-
             builder.RegisterModule<IntegrationEventModule<ApplicationModule, CashierDbContext>>();
 
             builder.RegisterModule<InfrastructureModule>();

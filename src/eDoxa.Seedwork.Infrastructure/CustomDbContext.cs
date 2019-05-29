@@ -14,37 +14,21 @@ using System.Threading.Tasks;
 
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Infrastructure.Extensions;
-using eDoxa.Seedwork.Infrastructure.Models;
-
-using JetBrains.Annotations;
 
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
-using Moq;
-
 namespace eDoxa.Seedwork.Infrastructure
 {
     public abstract class CustomDbContext : DbContext, IUnitOfWork
     {
-        private const string DefaultSchema = "dbo";
-
         private readonly IMediator _mediator;
 
         protected CustomDbContext(DbContextOptions options, IMediator mediator) : base(options)
         {
             _mediator = mediator;
         }
-
-        protected CustomDbContext(DbContextOptions options) : base(options)
-        {
-            var mock = new Mock<IMediator>();
-
-            _mediator = mock.Object;
-        }
-
-        public DbSet<LogEntry> Logs => this.Set<LogEntry>();
 
         public async Task CommitAsync(CancellationToken cancellationToken = default)
         {
@@ -66,46 +50,6 @@ namespace eDoxa.Seedwork.Infrastructure
 
                 entity.ClearDomainEvents();
             }
-        }
-
-        protected override void OnModelCreating([NotNull] ModelBuilder builder)
-        {
-            builder.Entity<LogEntry>(
-                entity =>
-                {
-                    entity.ToTable(nameof(Logs), DefaultSchema);
-
-                    entity.Property(logEntry => logEntry.Id).IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field);
-
-                    entity.Property(logEntry => logEntry.Date).IsRequired().UsePropertyAccessMode(PropertyAccessMode.Field);
-
-                    entity.Property(logEntry => logEntry.Version).IsRequired(false).UsePropertyAccessMode(PropertyAccessMode.Field);
-
-                    entity.Property(logEntry => logEntry.Method).IsRequired(false).UsePropertyAccessMode(PropertyAccessMode.Field);
-
-                    entity.Property(logEntry => logEntry.Url).IsRequired(false).UsePropertyAccessMode(PropertyAccessMode.Field);
-
-                    entity.Property(logEntry => logEntry.LocalIpAddress).IsRequired(false).UsePropertyAccessMode(PropertyAccessMode.Field);
-
-                    entity.Property(logEntry => logEntry.RemoteIpAddress).IsRequired(false).UsePropertyAccessMode(PropertyAccessMode.Field);
-
-                    entity.Property(logEntry => logEntry.Origin).IsRequired(false).UsePropertyAccessMode(PropertyAccessMode.Field);
-
-                    entity.Property(logEntry => logEntry.RequestBody).IsRequired(false).UsePropertyAccessMode(PropertyAccessMode.Field);
-
-                    entity.Property(logEntry => logEntry.RequestType).IsRequired(false).UsePropertyAccessMode(PropertyAccessMode.Field);
-
-                    entity.Property(logEntry => logEntry.ResponseBody).IsRequired(false).UsePropertyAccessMode(PropertyAccessMode.Field);
-
-                    entity.Property(logEntry => logEntry.ResponseType).IsRequired(false).UsePropertyAccessMode(PropertyAccessMode.Field);
-
-                    entity.Property(logEntry => logEntry.IdempotencyKey).IsRequired(false).UsePropertyAccessMode(PropertyAccessMode.Field);
-
-                    entity.HasKey(logEntry => logEntry.Id);
-
-                    entity.HasIndex(logEntry => logEntry.IdempotencyKey).IsUnique();
-                }
-            );
         }
     }
 }

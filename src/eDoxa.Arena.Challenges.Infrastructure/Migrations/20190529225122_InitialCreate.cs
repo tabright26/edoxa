@@ -10,33 +10,6 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
             migrationBuilder.EnsureSchema(
                 name: "edoxa");
 
-            migrationBuilder.EnsureSchema(
-                name: "dbo");
-
-            migrationBuilder.CreateTable(
-                name: "Logs",
-                schema: "dbo",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    Date = table.Column<DateTime>(nullable: false),
-                    Version = table.Column<string>(nullable: true),
-                    Origin = table.Column<string>(nullable: true),
-                    Method = table.Column<string>(nullable: true),
-                    Url = table.Column<string>(nullable: true),
-                    LocalIpAddress = table.Column<string>(nullable: true),
-                    RemoteIpAddress = table.Column<string>(nullable: true),
-                    RequestBody = table.Column<string>(nullable: true),
-                    RequestType = table.Column<string>(nullable: true),
-                    ResponseBody = table.Column<string>(nullable: true),
-                    ResponseType = table.Column<string>(nullable: true),
-                    IdempotencyKey = table.Column<Guid>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Logs", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Challenges",
                 schema: "edoxa",
@@ -132,14 +105,6 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Logs_IdempotencyKey",
-                schema: "dbo",
-                table: "Logs",
-                column: "IdempotencyKey",
-                unique: true,
-                filter: "[IdempotencyKey] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Matches_ParticipantId",
                 schema: "edoxa",
                 table: "Matches",
@@ -160,10 +125,6 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Logs",
-                schema: "dbo");
-
             migrationBuilder.DropTable(
                 name: "Stats",
                 schema: "edoxa");

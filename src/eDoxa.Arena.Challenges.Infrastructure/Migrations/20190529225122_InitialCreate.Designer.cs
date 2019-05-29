@@ -10,7 +10,7 @@ using eDoxa.Arena.Challenges.Infrastructure;
 namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
 {
     [DbContext(typeof(ChallengesDbContext))]
-    [Migration("20190527202325_InitialCreate")]
+    [Migration("20190529225122_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -99,44 +99,6 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
                     b.HasIndex("ChallengeId");
 
                     b.ToTable("Participants");
-                });
-
-            modelBuilder.Entity("eDoxa.Seedwork.Infrastructure.Models.LogEntry", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("Date");
-
-                    b.Property<Guid?>("IdempotencyKey");
-
-                    b.Property<string>("LocalIpAddress");
-
-                    b.Property<string>("Method");
-
-                    b.Property<string>("Origin");
-
-                    b.Property<string>("RemoteIpAddress");
-
-                    b.Property<string>("RequestBody");
-
-                    b.Property<string>("RequestType");
-
-                    b.Property<string>("ResponseBody");
-
-                    b.Property<string>("ResponseType");
-
-                    b.Property<string>("Url");
-
-                    b.Property<string>("Version");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdempotencyKey")
-                        .IsUnique()
-                        .HasFilter("[IdempotencyKey] IS NOT NULL");
-
-                    b.ToTable("Logs","dbo");
                 });
 
             modelBuilder.Entity("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.Challenge", b =>

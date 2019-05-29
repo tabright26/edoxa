@@ -83,19 +83,6 @@ namespace eDoxa.Swagger.Filters
                     }
                 }
             }
-
-            if (context.ApiDescription.HttpMethod == HttpMethods.Put ||
-                context.ApiDescription.HttpMethod == HttpMethods.Post ||
-                context.ApiDescription.HttpMethod == HttpMethods.Delete ||
-                context.ApiDescription.HttpMethod == HttpMethods.Patch)
-            {
-                operation.Parameters.Add(
-                    new NonBodyParameter
-                    {
-                        Name = CustomHeaderNames.IdempotencyKey, In = "header", Type = "string", Required = false
-                    }
-                );
-            }
         }
     }
 }

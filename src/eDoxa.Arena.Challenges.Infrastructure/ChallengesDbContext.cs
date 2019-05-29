@@ -14,6 +14,8 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Challenges.Infrastructure.Configurations;
 using eDoxa.Seedwork.Infrastructure;
 
+using JetBrains.Annotations;
+
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
@@ -26,10 +28,6 @@ namespace eDoxa.Arena.Challenges.Infrastructure
         {
         }
 
-        internal ChallengesDbContext(DbContextOptions<ChallengesDbContext> options) : base(options)
-        {
-        }
-
         public DbSet<Challenge> Challenges => this.Set<Challenge>();
 
         public DbSet<Participant> Participants => this.Set<Participant>();
@@ -38,7 +36,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure
 
         public DbSet<Stat> Stats => this.Set<Stat>();
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating([NotNull] ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 

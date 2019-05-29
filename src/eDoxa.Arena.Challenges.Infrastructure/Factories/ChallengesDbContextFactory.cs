@@ -26,7 +26,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Factories
         [NotNull]
         public override ChallengesDbContext CreateDbContext(string[] args)
         {
-            return new ChallengesDbContext(Options);
+            return new ChallengesDbContext(Options, new NoMediator());
         }
     }
 }

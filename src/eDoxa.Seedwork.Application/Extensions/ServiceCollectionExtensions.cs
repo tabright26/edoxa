@@ -31,8 +31,6 @@ namespace eDoxa.Seedwork.Application.Extensions
                 action?.Invoke(options.Filters);
 
                 options.Filters.Add<ValidationExceptionFilter>();
-
-                options.Filters.Add<IdempotencyExceptionFilter>();
             });
 
             builder.AddFluentValidation(config =>

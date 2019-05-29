@@ -1,5 +1,5 @@
 ﻿// Filename: DesignTimeDbContextFactory.cs
-// Date Created: 2019-04-30
+// Date Created: 2019-05-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,10 +10,14 @@
 
 using System;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 
 using eDoxa.Security;
 
 using JetBrains.Annotations;
+
+using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -34,8 +38,10 @@ namespace eDoxa.Seedwork.Infrastructure.Factories
             {
                 var builder = new DbContextOptionsBuilder<TContext>();
 
-                builder.UseSqlServer(Configuration.GetConnectionString(CustomConnectionStrings.SqlServer),
-                    options => options.MigrationsAssembly(MigrationsAssembly.GetName().Name));
+                builder.UseSqlServer(
+                    Configuration.GetConnectionString(CustomConnectionStrings.SqlServer),
+                    options => options.MigrationsAssembly(MigrationsAssembly.GetName().Name)
+                );
 
                 return builder.Options;
             }
@@ -63,5 +69,27 @@ namespace eDoxa.Seedwork.Infrastructure.Factories
 
         [CanBeNull]
         public abstract TContext CreateDbContext(string[] args);
+
+        protected class NoMediator : IMediator
+        {
+            [NotNull]
+            public Task Publish([NotNull] object notification, CancellationToken cancellationToken = default)
+            {
+                return Task.CompletedTask;
+            }
+
+            [NotNull]
+            public Task Publish<TNotification>([NotNull] TNotification notification, CancellationToken cancellationToken = default)
+            where TNotification : INotification
+            {
+                return Task.CompletedTask;
+            }
+
+            [ItemNotNull]
+            public async Task<TResponse> Send<TResponse>([NotNull] IRequest<TResponse> request, CancellationToken cancellationToken = default)
+            {
+                return await Task.FromResult(default(TResponse));
+            }
+        }
     }
 }

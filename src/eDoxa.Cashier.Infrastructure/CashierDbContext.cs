@@ -14,6 +14,8 @@ using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.Infrastructure.Configurations;
 using eDoxa.Seedwork.Infrastructure;
 
+using JetBrains.Annotations;
+
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
@@ -23,10 +25,6 @@ namespace eDoxa.Cashier.Infrastructure
     public sealed class CashierDbContext : CustomDbContext
     {
         public CashierDbContext(DbContextOptions<CashierDbContext> options, IMediator mediator) : base(options, mediator)
-        {
-        }
-
-        internal CashierDbContext(DbContextOptions<CashierDbContext> options) : base(options)
         {
         }
 
@@ -40,7 +38,7 @@ namespace eDoxa.Cashier.Infrastructure
 
         public DbSet<TokenTransaction> TokenTransactions => this.Set<TokenTransaction>();
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating([NotNull] ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 

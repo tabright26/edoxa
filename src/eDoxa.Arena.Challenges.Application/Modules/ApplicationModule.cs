@@ -34,8 +34,6 @@ namespace eDoxa.Arena.Challenges.Application.Modules
 
             builder.RegisterModule<CommandModule<ApplicationModule>>();
 
-            builder.RegisterModule<CommandInfrastructureModule<ChallengesDbContext>>();
-
             builder.RegisterModule<IntegrationEventModule<ApplicationModule, ChallengesDbContext>>();
 
             builder.RegisterModule<InfrastructureModule>();

@@ -26,7 +26,7 @@ namespace eDoxa.Cashier.Infrastructure.Factories
         [NotNull]
         public override CashierDbContext CreateDbContext(string[] args)
         {
-            return new CashierDbContext(Options);
+            return new CashierDbContext(Options, new NoMediator());
         }
     }
 }

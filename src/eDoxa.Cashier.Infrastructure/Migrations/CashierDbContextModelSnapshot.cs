@@ -121,44 +121,6 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("eDoxa.Seedwork.Infrastructure.Models.LogEntry", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("Date");
-
-                    b.Property<Guid?>("IdempotencyKey");
-
-                    b.Property<string>("LocalIpAddress");
-
-                    b.Property<string>("Method");
-
-                    b.Property<string>("Origin");
-
-                    b.Property<string>("RemoteIpAddress");
-
-                    b.Property<string>("RequestBody");
-
-                    b.Property<string>("RequestType");
-
-                    b.Property<string>("ResponseBody");
-
-                    b.Property<string>("ResponseType");
-
-                    b.Property<string>("Url");
-
-                    b.Property<string>("Version");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdempotencyKey")
-                        .IsUnique()
-                        .HasFilter("[IdempotencyKey] IS NOT NULL");
-
-                    b.ToTable("Logs","dbo");
-                });
-
             modelBuilder.Entity("eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate.MoneyAccount", b =>
                 {
                     b.HasOne("eDoxa.Cashier.Domain.AggregateModels.UserAggregate.User", "User")
