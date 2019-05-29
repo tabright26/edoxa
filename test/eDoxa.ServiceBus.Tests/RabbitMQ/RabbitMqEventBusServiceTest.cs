@@ -1,11 +1,11 @@
 ﻿// Filename: RabbitMqEventBusServiceTest.cs
-// Date Created: 2019-03-04
+// Date Created: 2019-05-20
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
 // 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System.Reflection;
@@ -125,7 +125,10 @@ namespace eDoxa.ServiceBus.Tests.RabbitMQ
 
                     var factory = new ConnectionFactory
                     {
-                        HostName = "localhost", Port = 5672, UserName = "admin", Password = "4t8SaVXVMy0rT2kM"
+                        HostName = "localhost",
+                        Port = 5672,
+                        UserName = "admin",
+                        Password = "4t8SaVXVMy0rT2kM"
                     };
 
                     return new RabbitMqPersistentConnection(factory, logger.Object, 1);
@@ -143,7 +146,14 @@ namespace eDoxa.ServiceBus.Tests.RabbitMQ
 
                     var handler = serviceProvider.GetRequiredService<ISubscriptionHandler>();
 
-                    return new RabbitMqEventBusService(logger.Object, scope.Object, connection, handler, 1, nameof(RabbitMqEventBusService));
+                    return new RabbitMqEventBusService(
+                        logger.Object,
+                        scope.Object,
+                        connection,
+                        handler,
+                        1,
+                        nameof(RabbitMqEventBusService)
+                    );
                 }
             );
 

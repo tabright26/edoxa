@@ -19,7 +19,7 @@ using eDoxa.Arena.Domain.Abstractions;
 using eDoxa.Functional;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Domain.Entities;
+using eDoxa.Seedwork.Domain.Common;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate
 {

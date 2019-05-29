@@ -12,7 +12,7 @@ using System;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Services.LeagueOfLegends.Strategies;
-using eDoxa.Seedwork.Domain.Enumerations;
+using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 namespace eDoxa.Arena.Challenges.Services.Factories
 {

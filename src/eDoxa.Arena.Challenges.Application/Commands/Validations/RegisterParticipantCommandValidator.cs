@@ -13,7 +13,7 @@ using eDoxa.Seedwork.Application.Extensions;
 
 namespace eDoxa.Arena.Challenges.Application.Commands.Validations
 {
-    internal sealed class RegisterParticipantCommandValidator : CommandValidator<RegisterParticipantCommand>
+    public sealed class RegisterParticipantCommandValidator : CommandValidator<RegisterParticipantCommand>
     {
         public RegisterParticipantCommandValidator()
         {

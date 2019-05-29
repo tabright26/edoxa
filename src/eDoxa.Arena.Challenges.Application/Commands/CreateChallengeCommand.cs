@@ -14,7 +14,7 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.DTO;
 using eDoxa.Commands.Abstractions;
 using eDoxa.Functional;
-using eDoxa.Seedwork.Domain.Enumerations;
+using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 using FluentValidation.Results;
 

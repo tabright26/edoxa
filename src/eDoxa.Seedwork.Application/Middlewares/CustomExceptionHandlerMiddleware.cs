@@ -11,8 +11,6 @@
 using System;
 using System.Threading.Tasks;
 
-using eDoxa.Seedwork.Application.Models;
-
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;

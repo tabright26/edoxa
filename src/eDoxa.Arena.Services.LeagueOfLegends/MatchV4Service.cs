@@ -20,7 +20,7 @@ using Newtonsoft.Json;
 
 namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.Api
 {
-    internal sealed class MatchV4Service : IMatchV4Service
+    public sealed class MatchV4Service : IMatchV4Service
     {
         private readonly HttpClient _httpClient;
 

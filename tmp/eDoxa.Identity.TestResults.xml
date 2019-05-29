@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="c8720918-1ccb-4df4-9981-817df40ceb53" name="@58337e570c18 2019-05-29 00:45:45" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2019-05-29T00:45:45.1173601+00:00" queuing="2019-05-29T00:45:45.1173613+00:00" start="2019-05-29T00:45:40.7630095+00:00" finish="2019-05-29T00:45:45.1663231+00:00" />
+  <TestSettings name="default" id="5e363f46-e89e-4165-a86b-ec3cdc735b19">
+    <Deployment runDeploymentRoot="_58337e570c18_2019-05-29_00_45_45" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="13aecee9-220a-4cf0-988c-8a252d703592" testId="3742fdcb-32d6-cd96-1368-200675a53f57" testName="FindUsersAsync_ShouldBeNoContentObjectResult" computerName="58337e570c18" duration="00:00:00.0024229" startTime="2019-05-29T00:45:44.9569298+00:00" endTime="2019-05-29T00:45:44.9595575+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="13aecee9-220a-4cf0-988c-8a252d703592" />
+    <UnitTestResult executionId="9c092e81-8b02-4141-8e88-8b1d47f0dffc" testId="1b0b1f06-f8ea-8f5e-3d38-e14fccc8ad07" testName="FindUsersAsync_ShouldBeOkObjectResult" computerName="58337e570c18" duration="00:00:00.2948474" startTime="2019-05-29T00:45:44.6599136+00:00" endTime="2019-05-29T00:45:44.9567175+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9c092e81-8b02-4141-8e88-8b1d47f0dffc" />
+    <UnitTestResult executionId="a4da87bd-c7de-4e59-9470-fb2020c07211" testId="ea03b971-7301-ffa1-01d0-2f2dc17bf968" testName="Database_CanConnect_ShouldBeTrue" computerName="58337e570c18" duration="00:00:02.3846326" startTime="2019-05-29T00:45:42.1617635+00:00" endTime="2019-05-29T00:45:44.6120629+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a4da87bd-c7de-4e59-9470-fb2020c07211" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="Database_CanConnect_ShouldBeTrue" storage="/app/test/edoxa.identity.tests/bin/debug/netcoreapp2.2/edoxa.identity.tests.dll" id="ea03b971-7301-ffa1-01d0-2f2dc17bf968">
+      <Execution id="a4da87bd-c7de-4e59-9470-fb2020c07211" />
+      <TestMethod codeBase="/app/test/eDoxa.Identity.Tests/bin/Debug/netcoreapp2.2/eDoxa.Identity.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="eDoxa.Identity.Tests.IdentityDbContextFactoryTest" name="Database_CanConnect_ShouldBeTrue" />
+    </UnitTest>
+    <UnitTest name="FindUsersAsync_ShouldBeNoContentObjectResult" storage="/app/test/edoxa.identity.tests/bin/debug/netcoreapp2.2/edoxa.identity.tests.dll" id="3742fdcb-32d6-cd96-1368-200675a53f57">
+      <Execution id="13aecee9-220a-4cf0-988c-8a252d703592" />
+      <TestMethod codeBase="/app/test/eDoxa.Identity.Tests/bin/Debug/netcoreapp2.2/eDoxa.Identity.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="eDoxa.Identity.Tests.Controllers.UsersControllerTest" name="FindUsersAsync_ShouldBeNoContentObjectResult" />
+    </UnitTest>
+    <UnitTest name="FindUsersAsync_ShouldBeOkObjectResult" storage="/app/test/edoxa.identity.tests/bin/debug/netcoreapp2.2/edoxa.identity.tests.dll" id="1b0b1f06-f8ea-8f5e-3d38-e14fccc8ad07">
+      <Execution id="9c092e81-8b02-4141-8e88-8b1d47f0dffc" />
+      <TestMethod codeBase="/app/test/eDoxa.Identity.Tests/bin/Debug/netcoreapp2.2/eDoxa.Identity.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="eDoxa.Identity.Tests.Controllers.UsersControllerTest" name="FindUsersAsync_ShouldBeOkObjectResult" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="3742fdcb-32d6-cd96-1368-200675a53f57" executionId="13aecee9-220a-4cf0-988c-8a252d703592" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1b0b1f06-f8ea-8f5e-3d38-e14fccc8ad07" executionId="9c092e81-8b02-4141-8e88-8b1d47f0dffc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ea03b971-7301-ffa1-01d0-2f2dc17bf968" executionId="a4da87bd-c7de-4e59-9470-fb2020c07211" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="3" executed="3" passed="3" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+  </ResultSummary>
+</TestRun>

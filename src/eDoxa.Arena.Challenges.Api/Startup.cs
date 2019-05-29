@@ -63,7 +63,7 @@ namespace eDoxa.Arena.Challenges.Api
 
             services.AddVersioning();
 
-            services.AddAutoMapper(ChallengesMapperFactory.Instance);
+            services.AddAutoMapper(ChallengesMapperFactory.Instance, AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddMvcFilters();
 

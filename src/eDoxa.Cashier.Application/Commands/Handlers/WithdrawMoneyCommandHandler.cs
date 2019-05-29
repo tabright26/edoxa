@@ -27,7 +27,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
-    internal sealed class WithdrawMoneyCommandHandler : ICommandHandler<WithdrawMoneyCommand, Either<ValidationResult, TransactionStatus>>
+    public sealed class WithdrawMoneyCommandHandler : ICommandHandler<WithdrawMoneyCommand, Either<ValidationResult, TransactionStatus>>
     {
         private static readonly MoneyWithdrawBundles Bundles = new MoneyWithdrawBundles();
         private readonly IHttpContextAccessor _httpContextAccessor;

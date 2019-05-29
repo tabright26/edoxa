@@ -11,7 +11,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Application.Commands;
-using eDoxa.Seedwork.Domain.Entities;
+using eDoxa.Seedwork.Domain.Common;
 using eDoxa.ServiceBus;
 
 using MediatR;

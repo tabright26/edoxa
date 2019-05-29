@@ -12,7 +12,7 @@ using System;
 
 using eDoxa.Arena.Domain;
 using eDoxa.Arena.Domain.Abstractions;
-using eDoxa.Seedwork.Domain.Enumerations;
+using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 namespace eDoxa.Arena.Challenges.Domain.Factories
 {

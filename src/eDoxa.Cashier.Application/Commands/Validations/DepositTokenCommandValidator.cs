@@ -15,7 +15,7 @@ using FluentValidation;
 
 namespace eDoxa.Cashier.Application.Commands.Validations
 {
-    internal sealed class DepositTokenCommandValidator : CommandValidator<DepositTokenCommand>
+    public sealed class DepositTokenCommandValidator : CommandValidator<DepositTokenCommand>
     {
         private static readonly TokenDepositBundles Bundles = new TokenDepositBundles();
 

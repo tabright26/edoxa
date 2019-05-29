@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using eDoxa.Reflection;
+using eDoxa.Seedwork.Domain.Reflection;
 
 using JetBrains.Annotations;
 
@@ -50,14 +50,14 @@ namespace eDoxa.Seedwork.Domain.Aggregate
         // TODO: Should be remove.
         public static IEnumerable<TTypeObject> GetValues()
         {
-            return StaticUtils.GetDeclaredFields<TTypedObject>().Select(typeObject => typeObject.Value).ToList();
+            return ReflectionUtilities.GetDeclaredOnlyFields<TTypedObject>().Select(typeObject => typeObject.Value).ToList();
         }
 
         // TODO: Should be remove.
         public static IEnumerable<TTypeObject> GetValues<T>()
         where T : TTypedObject
         {
-            return StaticUtils.GetDeclaredFields<T>().Select(typeObject => typeObject.Value).ToList();
+            return ReflectionUtilities.GetDeclaredOnlyFields<T>().Select(typeObject => typeObject.Value).ToList();
         }
 
         // TODO: Should be remove.

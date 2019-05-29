@@ -31,7 +31,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure
             _challengeService = challengeService;
         }
 
-        public async Task SeedAsync()
+        public Task SeedAsync()
         {
             if (_environment.IsDevelopment())
             {
@@ -45,6 +45,8 @@ namespace eDoxa.Arena.Challenges.Infrastructure
                     //}
                 }
             }
+
+            return Task.CompletedTask;
         }
     }
 }

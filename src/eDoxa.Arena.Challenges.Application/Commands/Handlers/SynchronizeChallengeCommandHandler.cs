@@ -18,7 +18,7 @@ using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Application.Commands.Handlers
 {
-    internal sealed class SynchronizeChallengeCommandHandler : AsyncCommandHandler<SynchronizeChallengeCommand>
+    public sealed class SynchronizeChallengeCommandHandler : AsyncCommandHandler<SynchronizeChallengeCommand>
     {
         private readonly IChallengeService _challengeService;
 

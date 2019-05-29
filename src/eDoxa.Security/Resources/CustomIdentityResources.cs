@@ -11,7 +11,7 @@
 using System.Collections.Generic;
 
 using eDoxa.Security.Extensions;
-using eDoxa.Seedwork.Domain.Enumerations;
+using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 using IdentityModel;
 

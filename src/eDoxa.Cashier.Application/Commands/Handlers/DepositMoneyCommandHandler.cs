@@ -27,7 +27,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
-    internal sealed class DepositMoneyCommandHandler : ICommandHandler<DepositMoneyCommand, Either<ValidationResult, TransactionStatus>>
+    public sealed class DepositMoneyCommandHandler : ICommandHandler<DepositMoneyCommand, Either<ValidationResult, TransactionStatus>>
     {
         private static readonly MoneyDepositBundles Bundles = new MoneyDepositBundles();
         private readonly IHttpContextAccessor _httpContextAccessor;

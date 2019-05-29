@@ -19,7 +19,6 @@
     <ProjectReference Include="..\eDoxa.AutoMapper\eDoxa.AutoMapper.csproj" />
     <ProjectReference Include="..\eDoxa.Security\eDoxa.Security.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Infrastructure\eDoxa.Seedwork.Infrastructure.csproj" />
-    <ProjectReference Include="..\eDoxa.Specifications\eDoxa.Specifications.csproj" />
     <ProjectReference Include="..\eDoxa.Versioning\eDoxa.Versioning.csproj" />
   </ItemGroup>
 

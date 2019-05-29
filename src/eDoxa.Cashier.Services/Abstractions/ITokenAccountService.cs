@@ -15,7 +15,7 @@ using eDoxa.Cashier.Domain;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
 using eDoxa.Functional;
-using eDoxa.Seedwork.Domain.Entities;
+using eDoxa.Seedwork.Domain.Common;
 
 using FluentValidation.Results;
 

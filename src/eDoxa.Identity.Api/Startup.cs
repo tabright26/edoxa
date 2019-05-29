@@ -64,7 +64,7 @@ namespace eDoxa.Identity.Api
 
             services.AddVersioning();
 
-            services.AddAutoMapper(IdentityMapperFactory.Instance);
+            services.AddAutoMapper(IdentityMapperFactory.Instance, AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddMvcFilters();
 

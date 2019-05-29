@@ -14,7 +14,7 @@ using FluentValidation;
 
 namespace eDoxa.Cashier.Application.Commands.Validations
 {
-    internal sealed class CreateCardCommandValidator : CommandValidator<CreateBankAccountCommand>
+    public sealed class CreateCardCommandValidator : CommandValidator<CreateBankAccountCommand>
     {
         public CreateCardCommandValidator()
         {

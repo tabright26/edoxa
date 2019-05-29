@@ -1,5 +1,5 @@
 ﻿// Filename: FakeCashierFactory.cs
-// Date Created: 2019-05-13
+// Date Created: 2019-05-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -14,7 +14,7 @@ using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
-using eDoxa.Seedwork.Domain.Entities;
+using eDoxa.Seedwork.Domain.Common;
 
 namespace eDoxa.Cashier.Tests.Factories
 {

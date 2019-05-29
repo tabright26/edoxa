@@ -84,7 +84,7 @@ services:
     ports:
       - "5002:80"
 
-  challenge.api:
+  arena.challenges.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
@@ -97,7 +97,7 @@ services:
       - ServiceBus__UserName=${ASB_USERNAME:-admin}
       - ServiceBus__Password=${ASB_PASSWORD:-4t8SaVXVMy0rT2kM}
       - ServiceBus__RetryCount=${ASB_RETRYCOUNT:-5}
-      - ServiceBus__Subscription=Challenge      
+      - ServiceBus__Subscription=Arena.Challenges
       - Authority=${URL:-http://localhost}:5000
       - IdentityServer__Url=http://idsrv
     ports:

@@ -18,7 +18,7 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace eDoxa.Arena.Challenges.Application.Commands.Validations
 {
-    internal sealed class CreateChallengeCommandValidator : AbstractValidator<CreateChallengeCommand>
+    public sealed class CreateChallengeCommandValidator : AbstractValidator<CreateChallengeCommand>
     {
         public CreateChallengeCommandValidator(IHostingEnvironment environment)
         {

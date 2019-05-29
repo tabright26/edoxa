@@ -1,5 +1,5 @@
 ﻿// Filename: UserCreatedIntegrationEventTest.cs
-// Date Created: 2019-05-13
+// Date Created: 2019-05-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -23,7 +23,15 @@ namespace eDoxa.IdentityServer.Tests.IntegrationEvents
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<UserCreatedIntegrationEvent>.For(typeof(Guid), typeof(string), typeof(string), typeof(string), typeof(int), typeof(int), typeof(int))
+            ConstructorTests<UserCreatedIntegrationEvent>.For(
+                    typeof(Guid),
+                    typeof(string),
+                    typeof(string),
+                    typeof(string),
+                    typeof(int),
+                    typeof(int),
+                    typeof(int)
+                )
                 .WithName("UserCreatedIntegrationEvent")
                 .Assert();
         }

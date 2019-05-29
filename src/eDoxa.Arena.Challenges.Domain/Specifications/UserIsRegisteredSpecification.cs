@@ -13,8 +13,8 @@ using System.Linq;
 using System.Linq.Expressions;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Seedwork.Domain.Entities;
-using eDoxa.Specifications;
+using eDoxa.Seedwork.Domain.Common;
+using eDoxa.Seedwork.Domain.Specifications;
 
 namespace eDoxa.Arena.Challenges.Domain.Specifications
 {

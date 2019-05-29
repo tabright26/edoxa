@@ -14,7 +14,7 @@ using FluentValidation;
 
 namespace eDoxa.Cashier.Application.Commands.Validations
 {
-    internal sealed class VerifyAccountCommandValidator : CommandValidator<VerifyAccountCommand>
+    public sealed class VerifyAccountCommandValidator : CommandValidator<VerifyAccountCommand>
     {
         public VerifyAccountCommandValidator()
         {

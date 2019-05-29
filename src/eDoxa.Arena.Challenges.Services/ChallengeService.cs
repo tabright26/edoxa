@@ -25,8 +25,8 @@ using eDoxa.Arena.Domain;
 using eDoxa.Functional;
 using eDoxa.Functional.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Domain.Entities;
-using eDoxa.Seedwork.Domain.Enumerations;
+using eDoxa.Seedwork.Domain.Common;
+using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 using FluentValidation.Results;
 

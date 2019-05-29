@@ -15,7 +15,7 @@ using FluentValidation;
 
 namespace eDoxa.Cashier.Application.Commands.Validations
 {
-    internal sealed class WithdrawMoneyCommandValidator : CommandValidator<WithdrawMoneyCommand>
+    public sealed class WithdrawMoneyCommandValidator : CommandValidator<WithdrawMoneyCommand>
     {
         private static readonly MoneyWithdrawBundles Bundles = new MoneyWithdrawBundles();
 

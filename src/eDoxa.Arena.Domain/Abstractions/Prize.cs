@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Globalization;
 
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Domain.Enumerations;
+using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 namespace eDoxa.Arena.Domain.Abstractions
 {

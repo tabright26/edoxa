@@ -67,7 +67,7 @@ namespace eDoxa.Cashier.Api
 
             services.AddVersioning();
 
-            services.AddAutoMapper(CashierMapperFactory.Instance);
+            services.AddAutoMapper(CashierMapperFactory.Instance, AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddMvcFilters(filters => filters.Add<StripeExceptionFilter>());
 

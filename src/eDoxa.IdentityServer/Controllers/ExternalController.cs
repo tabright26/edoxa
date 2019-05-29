@@ -24,7 +24,6 @@ using IdentityModel;
 using IdentityServer4;
 using IdentityServer4.Events;
 using IdentityServer4.Services;
-using IdentityServer4.Stores;
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -38,7 +37,6 @@ namespace eDoxa.IdentityServer.Controllers
     [AllowAnonymous]
     public class ExternalController : Controller
     {
-        private readonly IClientStore _clientStore;
         private readonly IEventService _events;
         private readonly IIdentityServerInteractionService _interaction;
         private readonly SignInManager<User> _signInManager;
@@ -48,14 +46,12 @@ namespace eDoxa.IdentityServer.Controllers
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             IIdentityServerInteractionService interaction,
-            IClientStore clientStore,
             IEventService events
         )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _interaction = interaction;
-            _clientStore = clientStore;
             _events = events;
         }
 
@@ -194,13 +190,13 @@ namespace eDoxa.IdentityServer.Controllers
                 id.AddClaim(new Claim(JwtClaimTypes.Name, wp.Identity.Name));
 
                 // add the groups as claims -- be careful if the number of groups is too large
-                if (AccountOptions.IncludeWindowsGroups)
-                {
-                    var wi = wp.Identity as WindowsIdentity;
-                    var groups = wi.Groups.Translate(typeof(NTAccount));
-                    var roles = groups.Select(x => new Claim(JwtClaimTypes.Role, x.Value));
-                    id.AddClaims(roles);
-                }
+                //if (AccountOptions.IncludeWindowsGroups)
+                //{
+                //    var wi = wp.Identity as WindowsIdentity;
+                //    var groups = wi.Groups.Translate(typeof(NTAccount));
+                //    var roles = groups.Select(x => new Claim(JwtClaimTypes.Role, x.Value));
+                //    id.AddClaims(roles);
+                //}
 
                 await HttpContext.SignInAsync(IdentityServerConstants.ExternalCookieAuthenticationScheme, new ClaimsPrincipal(id), props);
 

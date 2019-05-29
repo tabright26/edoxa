@@ -1,5 +1,5 @@
 ﻿// Filename: WithAttributesTestCase.cs
-// Date Created: 2019-05-11
+// Date Created: 2019-05-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -31,7 +31,9 @@ namespace eDoxa.Testing.MSTest
             var attributeTypes = _attributeTypes;
 
             return !types.SequenceEqual(attributeTypes)
-                ? this.Fail($"The expected class attributes ({_attributeTypes}) does not match the current class attributes ({_info.DeclaringType.CustomAttributes}).")
+                ? this.Fail(
+                    $"The expected class attributes ({_attributeTypes}) does not match the current class attributes ({_info.DeclaringType.CustomAttributes})."
+                )
                 : this.Success();
         }
     }

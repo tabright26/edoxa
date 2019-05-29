@@ -1,11 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>
 
+    <ItemGroup>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.0" />
+        <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />
+    </ItemGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\..\src\eDoxa.Cashier.API\eDoxa.Cashier.Api.csproj" />
+    <ProjectReference Include="..\..\src\eDoxa.Cashier.Api\eDoxa.Cashier.Api.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Cashier.Application\eDoxa.Cashier.Application.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Cashier.Domain\eDoxa.Cashier.Domain.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Cashier.DTO\eDoxa.Cashier.DTO.csproj" />
@@ -13,6 +18,10 @@
     <ProjectReference Include="..\..\src\eDoxa.Cashier.Services.Stripe\eDoxa.Cashier.Services.Stripe.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Cashier.Services\eDoxa.Cashier.Services.csproj" />
     <ProjectReference Include="..\eDoxa.Testing.MSTest\eDoxa.Testing.MSTest.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="AggregateModels\MoneyAccountAggregate\Specifications\" />
   </ItemGroup>
 
 </Project>

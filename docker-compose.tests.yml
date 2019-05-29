@@ -1,0 +1,42 @@
+version: '3.4'
+
+services:
+  idsrv.tests:
+    image: ${ACR_REGISTRY:-edoxa}/idsrv.tests:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: test/eDoxa.IdentityServer.Tests/Dockerfile
+    volumes:
+      - ./tmp:/var/tmp
+
+  identity.tests:
+    image: ${ACR_REGISTRY:-edoxa}/identity.tests:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: test/eDoxa.Identity.Tests/Dockerfile
+    volumes:
+      - ./tmp:/var/tmp
+
+  cashier.tests:
+    image: ${ACR_REGISTRY:-edoxa}/cashier.tests:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: test/eDoxa.Cashier.Tests/Dockerfile
+    volumes:
+      - ./tmp:/var/tmp
+
+  arena.tests:
+    image: ${ACR_REGISTRY:-edoxa}/arena.tests:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: test/eDoxa.Arena.Tests/Dockerfile
+    volumes:
+      - ./tmp:/var/tmp
+
+  arena.challenges.tests:
+    image: ${ACR_REGISTRY:-edoxa}/arena.challenges.tests:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: test/eDoxa.Arena.Challenges.Tests/Dockerfile
+    volumes:
+      - ./tmp:/var/tmp

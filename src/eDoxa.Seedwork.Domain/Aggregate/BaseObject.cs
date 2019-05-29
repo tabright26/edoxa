@@ -11,7 +11,7 @@
 using System.Linq;
 using System.Reflection;
 
-using eDoxa.Reflection;
+using eDoxa.Seedwork.Domain.Reflection;
 
 using JetBrains.Annotations;
 

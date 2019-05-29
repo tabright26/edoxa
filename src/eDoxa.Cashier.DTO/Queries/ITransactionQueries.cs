@@ -10,7 +10,7 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Seedwork.Domain.Enumerations;
+using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 using JetBrains.Annotations;
 

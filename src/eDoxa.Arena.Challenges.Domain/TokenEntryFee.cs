@@ -9,7 +9,7 @@
 // this source code package.
 
 using eDoxa.Arena.Domain;
-using eDoxa.Seedwork.Domain.Enumerations;
+using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 namespace eDoxa.Arena.Challenges.Domain
 {

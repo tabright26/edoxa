@@ -8,6 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Reflection;
+
 using AutoMapper;
 
 using eDoxa.AutoMapper.Factories;
@@ -18,9 +20,10 @@ namespace eDoxa.AutoMapper.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddAutoMapper(this IServiceCollection services, IMapperFactory factory)
+        public static void AddAutoMapper(this IServiceCollection services, IMapperFactory factory, params Assembly[] assemblies)
         {
-            services.AddAutoMapper(config => factory.CreateConfiguration());
+            
+            services.AddAutoMapper(config => factory.CreateConfiguration(), assemblies);
         }
     }
 }

@@ -14,7 +14,7 @@ using FluentValidation;
 
 namespace eDoxa.Cashier.Application.Commands.Validations
 {
-    internal sealed class DeleteCardCommandValidator : CommandValidator<DeleteCardCommand>
+    public sealed class DeleteCardCommandValidator : CommandValidator<DeleteCardCommand>
     {
         public DeleteCardCommandValidator()
         {

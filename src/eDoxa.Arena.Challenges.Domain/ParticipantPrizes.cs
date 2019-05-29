@@ -11,7 +11,7 @@
 using System.Collections.Generic;
 
 using eDoxa.Arena.Domain.Abstractions;
-using eDoxa.Seedwork.Domain.Entities;
+using eDoxa.Seedwork.Domain.Common;
 
 namespace eDoxa.Arena.Challenges.Domain
 {

@@ -12,7 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.DTO.Queries;
-using eDoxa.Seedwork.Domain.Enumerations;
+using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

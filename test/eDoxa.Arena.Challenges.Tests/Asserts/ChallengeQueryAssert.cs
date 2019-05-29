@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeQueryAssert.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-05-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -35,7 +35,7 @@ namespace eDoxa.Arena.Challenges.Tests.Asserts
             challenge.Id.Should().NotBeEmpty();
 
             challenge.Game.Should().NotBe(null);
-            
+
             challenge.Name.Should().NotBeNullOrWhiteSpace();
 
             challenge.Setup.Should().NotBeNull();

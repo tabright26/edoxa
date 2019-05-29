@@ -18,6 +18,7 @@ using eDoxa.Cashier.Services;
 using eDoxa.Cashier.Services.Abstractions;
 using eDoxa.Commands;
 using eDoxa.Seedwork.Application;
+using eDoxa.Seedwork.Application.Modules;
 using eDoxa.ServiceBus;
 
 using JetBrains.Annotations;

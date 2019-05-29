@@ -11,7 +11,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Functional;
-using eDoxa.Seedwork.Domain.Enumerations;
+using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 namespace eDoxa.Cashier.DTO.Queries
 {

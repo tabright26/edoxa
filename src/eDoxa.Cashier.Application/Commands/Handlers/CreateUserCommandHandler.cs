@@ -19,7 +19,7 @@ using JetBrains.Annotations;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
-    internal sealed class CreateUserCommandHandler : AsyncCommandHandler<CreateUserCommand>
+    public sealed class CreateUserCommandHandler : AsyncCommandHandler<CreateUserCommand>
     {
         private readonly IStripeService _stripeService;
         private readonly IUserRepository _userRepository;
