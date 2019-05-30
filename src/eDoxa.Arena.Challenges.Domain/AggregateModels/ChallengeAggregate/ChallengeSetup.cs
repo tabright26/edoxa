@@ -10,7 +10,7 @@
 
 using System.Collections.Generic;
 
-using eDoxa.Arena.Domain;
+using eDoxa.Arena.Domain.ValueObjects;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate

@@ -15,39 +15,38 @@ using eDoxa.Seedwork.Domain.Specifications.Abstractions;
 
 namespace eDoxa.Seedwork.Domain.Specifications
 {
-    public abstract class Specification<TEntity> : ISpecification<TEntity>
-    where TEntity : IEntity, IAggregateRoot
+    public abstract class Specification<T> : ISpecification<T>
     {
-        public abstract Expression<Func<TEntity, bool>> ToExpression();
+        public abstract Expression<Func<T, bool>> ToExpression();
 
-        public bool IsSatisfiedBy(TEntity entity)
+        public bool IsSatisfiedBy(T entity)
         {
             return this.ToExpression().Compile()(entity);
         }
 
-        public ISpecification<TEntity> And(ISpecification<TEntity> other)
+        public ISpecification<T> And(ISpecification<T> other)
         {
-            return new AndSpecification<TEntity>(this, other);
+            return new AndSpecification<T>(this, other);
         }
 
-        public ISpecification<TEntity> And(Expression<Func<TEntity, bool>> other)
+        public ISpecification<T> And(Expression<Func<T, bool>> other)
         {
-            return new AndSpecification<TEntity>(this, new ExpressionSpecification<TEntity>(other));
+            return new AndSpecification<T>(this, new ExpressionSpecification<T>(other));
         }
 
-        public ISpecification<TEntity> Or(ISpecification<TEntity> other)
+        public ISpecification<T> Or(ISpecification<T> other)
         {
-            return new OrSpecification<TEntity>(this, other);
+            return new OrSpecification<T>(this, other);
         }
 
-        public ISpecification<TEntity> Or(Expression<Func<TEntity, bool>> other)
+        public ISpecification<T> Or(Expression<Func<T, bool>> other)
         {
-            return new OrSpecification<TEntity>(this, new ExpressionSpecification<TEntity>(other));
+            return new OrSpecification<T>(this, new ExpressionSpecification<T>(other));
         }
 
-        public ISpecification<TEntity> Not()
+        public ISpecification<T> Not()
         {
-            return new NotSpecification<TEntity>(this);
+            return new NotSpecification<T>(this);
         }
     }
 }

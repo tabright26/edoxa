@@ -10,7 +10,7 @@
 
 using System;
 
-using eDoxa.Cashier.Domain;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 using Newtonsoft.Json;
@@ -28,11 +28,11 @@ namespace eDoxa.Cashier.DTO
         [JsonConverter(typeof(UnixDateTimeConverter))]
         public DateTime Timestamp { get; set; }
 
-        [JsonProperty("currency")]
-        public CurrencyType CurrencyType { get; set; }
-
         [JsonProperty("amount")]
         public decimal Amount { get; set; }
+
+        [JsonProperty("currency")]
+        public CurrencyType CurrencyType { get; set; }
 
         [JsonProperty("description")]
         public string Description { get; set; }

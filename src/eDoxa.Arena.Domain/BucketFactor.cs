@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Arena.Domain.Abstractions;
+using eDoxa.Arena.Domain.ValueObjects;
 
 namespace eDoxa.Arena.Domain
 {

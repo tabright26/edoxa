@@ -25,9 +25,7 @@ namespace eDoxa.Cashier.Infrastructure.Modules
 
             builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerLifetimeScope();
 
-            builder.RegisterType<MoneyAccountRepository>().As<IMoneyAccountRepository>().InstancePerLifetimeScope();
-
-            builder.RegisterType<TokenAccountRepository>().As<ITokenAccountRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<AccountRepository>().As<IAccountRepository>().InstancePerLifetimeScope();
         }
     }
 }

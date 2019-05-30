@@ -11,7 +11,7 @@
 using System;
 using System.Linq.Expressions;
 
-using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Seedwork.Domain.Specifications;
 
 namespace eDoxa.Cashier.Domain.Specifications

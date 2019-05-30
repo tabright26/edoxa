@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using eDoxa.Arena.Domain.Abstractions;
+using eDoxa.Arena.Domain.ValueObjects;
 
 namespace eDoxa.Arena.Domain
 {
@@ -23,7 +24,7 @@ namespace eDoxa.Arena.Domain
 
         public Prize PrizeAtOrDefault(int index)
         {
-            return this.ElementAtOrDefault(index)?.Prize ?? new MoneyPrize(0);
+            return this.ElementAtOrDefault(index)?.Prize ?? Prize.None;
         }
     }
 }

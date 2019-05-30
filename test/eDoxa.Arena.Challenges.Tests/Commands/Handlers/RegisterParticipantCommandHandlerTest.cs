@@ -18,7 +18,7 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Services.Abstractions;
 using eDoxa.Arena.Challenges.Tests.Utilities.Fakes;
 using eDoxa.Arena.Challenges.Tests.Utilities.Mocks.Extensions;
-using eDoxa.Arena.Domain;
+using eDoxa.Arena.Domain.ValueObjects;
 using eDoxa.Commands.Extensions;
 using eDoxa.Functional;
 using eDoxa.Seedwork.Domain.Common;

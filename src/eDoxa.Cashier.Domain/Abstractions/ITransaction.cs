@@ -1,5 +1,5 @@
 ﻿// Filename: ITransaction.cs
-// Date Created: 2019-05-13
+// Date Created: 2019-05-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,7 +10,7 @@
 
 using System;
 
-using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Cashier.Domain.Abstractions
@@ -18,6 +18,8 @@ namespace eDoxa.Cashier.Domain.Abstractions
     public interface ITransaction : IEntity<TransactionId>
     {
         DateTime Timestamp { get; }
+
+        Currency Currency { get; }
 
         TransactionType Type { get; }
 
@@ -30,11 +32,5 @@ namespace eDoxa.Cashier.Domain.Abstractions
         void Complete();
 
         void Fail(string message);
-    }
-
-    public interface ITransaction<out TCurrency> : ITransaction
-    where TCurrency : ICurrency
-    {
-        TCurrency Amount { get; }
     }
 }

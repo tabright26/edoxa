@@ -43,7 +43,7 @@ namespace eDoxa.Arena.Challenges.Application.Commands
             EntryFee = new EntryFeeDTO
             {
                 Amount = amount,
-                CurrencyType = currencyType
+                Type = currencyType
             };
 
             TestModeState = testModeState;

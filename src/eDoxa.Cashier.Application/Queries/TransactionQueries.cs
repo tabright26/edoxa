@@ -1,5 +1,5 @@
 ﻿// Filename: TransactionQueries.cs
-// Date Created: 2019-05-16
+// Date Created: 2019-05-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -28,53 +28,37 @@ namespace eDoxa.Cashier.Application.Queries
 {
     public sealed partial class TransactionQueries
     {
-        private readonly IMoneyAccountRepository _moneyAccountRepository;
-        private readonly ITokenAccountRepository _tokenAccountRepository;
+        private readonly IAccountRepository _accountRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IMapper _mapper;
 
-        public TransactionQueries(IMoneyAccountRepository moneyAccountRepository, ITokenAccountRepository tokenAccountRepository, IHttpContextAccessor httpContextAccessor, IMapper mapper)
+        public TransactionQueries(IAccountRepository accountRepository, IHttpContextAccessor httpContextAccessor, IMapper mapper)
         {
-            _moneyAccountRepository = moneyAccountRepository;
-            _tokenAccountRepository = tokenAccountRepository;
+            _accountRepository = accountRepository;
             _httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
         }
 
-        private async Task<TransactionListDTO> GetMoneyTransactionsAsync(UserId userId)
+        private async Task<TransactionListDTO> GetTransactionsAsync(UserId userId, [CanBeNull] CurrencyType currency)
         {
-            var account = await _moneyAccountRepository.GetMoneyAccountAsNoTrackingAsync(userId);
+            var account = await _accountRepository.GetTransactionsAsNoTrackingAsync(userId);
 
-            return _mapper.Map<TransactionListDTO>(account.Transactions);
-        }
+            var transactions = account.Where(transaction => transaction.Currency.Type.HasFilter(currency))
+                .OrderBy(transaction => transaction.Currency.Type)
+                .ThenByDescending(transaction => transaction.Timestamp)
+                .ToList();
 
-        private async Task<TransactionListDTO> GetTokenTransactionsAsync(UserId userId)
-        {
-            var account = await _tokenAccountRepository.GetTokenAccountAsNoTrackingAsync(userId);
-
-            return _mapper.Map<TransactionListDTO>(account.Transactions);
+            return _mapper.Map<TransactionListDTO>(transactions);
         }
     }
 
     public sealed partial class TransactionQueries : ITransactionQueries
     {
-        public async Task<TransactionListDTO> GetTransactionsAsync([CanBeNull] CurrencyType currencyType)
+        public async Task<TransactionListDTO> GetTransactionsAsync([CanBeNull] CurrencyType currency)
         {
             var userId = _httpContextAccessor.GetUserId();
 
-            var transactions = new TransactionListDTO();
-
-            if (currencyType == null || currencyType == CurrencyType.Money)
-            {
-                transactions.Items.AddRange(await this.GetMoneyTransactionsAsync(userId));
-            }
-
-            if (currencyType == null || currencyType == CurrencyType.Token)
-            {
-                transactions.Items.AddRange(await this.GetTokenTransactionsAsync(userId));
-            }
-
-            return transactions.OrderBy(transaction => transaction.CurrencyType).ThenByDescending(transaction => transaction.Timestamp).ToList();
+            return await this.GetTransactionsAsync(userId, currency);
         }
     }
 }

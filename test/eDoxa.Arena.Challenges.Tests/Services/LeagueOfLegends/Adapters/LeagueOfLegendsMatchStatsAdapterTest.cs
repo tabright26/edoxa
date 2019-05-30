@@ -13,7 +13,7 @@ using System.Linq;
 
 using eDoxa.Arena.Challenges.Services.LeagueOfLegends.Adapters;
 using eDoxa.Arena.Challenges.Tests.Utilities.Fakes;
-using eDoxa.Arena.Domain;
+using eDoxa.Arena.Domain.ValueObjects;
 using eDoxa.Arena.Services.LeagueOfLegends.DTO;
 using eDoxa.Arena.Tests.Utilities.Stubs;
 using eDoxa.Seedwork.Domain.Common;

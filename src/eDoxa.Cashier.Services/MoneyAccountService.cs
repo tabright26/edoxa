@@ -13,7 +13,6 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Validators;
 using eDoxa.Cashier.Services.Abstractions;
@@ -24,18 +23,18 @@ using eDoxa.Seedwork.Domain.Common;
 
 using FluentValidation.Results;
 
-using TransactionStatus = eDoxa.Cashier.Domain.TransactionStatus;
+using TransactionStatus = eDoxa.Cashier.Domain.AggregateModels.AccountAggregate.TransactionStatus;
 
 namespace eDoxa.Cashier.Services
 {
     public sealed class MoneyAccountService : IMoneyAccountService
     {
-        private readonly IMoneyAccountRepository _moneyAccountRepository;
+        private readonly IAccountRepository _accountRepository;
         private readonly IStripeService _stripeService;
 
-        public MoneyAccountService(IMoneyAccountRepository moneyAccountRepository, IStripeService stripeService)
+        public MoneyAccountService(IAccountRepository accountRepository, IStripeService stripeService)
         {
-            _moneyAccountRepository = moneyAccountRepository;
+            _accountRepository = accountRepository;
             _stripeService = stripeService;
         }
 
@@ -46,11 +45,13 @@ namespace eDoxa.Cashier.Services
             CancellationToken cancellationToken = default
         )
         {
-            var account = await _moneyAccountRepository.GetUserAccountAsync(userId);
+            var account = await _accountRepository.GetAccountAsync(userId);
+
+            var moneyAccount = new MoneyAccount(account);
 
             var validator = new DepositMoneyValidator();
 
-            var result = validator.Validate(account);
+            var result = validator.Validate(moneyAccount);
 
             if (!result.IsValid)
             {
@@ -64,25 +65,25 @@ namespace eDoxa.Cashier.Services
                  return new ValidationFailure(null, "There are no credit cards associated with this account.").ToResult();
             }
 
-            var transaction = account.Deposit(bundle.Amount);
+            var transaction = moneyAccount.Deposit(bundle.Amount);
 
-            await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+            await _accountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
             try
             {
                 await _stripeService.CreateInvoiceAsync(customerId, bundle, transaction, cancellationToken);
 
-                transaction = account.CompleteTransaction(transaction);
+                transaction = moneyAccount.CompleteTransaction(transaction);
 
-                await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+                await _accountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
                 return transaction.Status;
             }
             catch (Exception exception)
             {
-                transaction = account.FailureTransaction(transaction, exception.Message);
+                transaction = moneyAccount.FailureTransaction(transaction, exception.Message);
 
-                await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+                await _accountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
                 return new ValidationFailure(null, transaction.Failure.ToString()).ToResult();
             }
@@ -95,38 +96,40 @@ namespace eDoxa.Cashier.Services
             CancellationToken cancellationToken = default
         )
         {
-            var account = await _moneyAccountRepository.GetUserAccountAsync(userId);
+            var account = await _accountRepository.GetAccountAsync(userId);
+
+            var moneyAccount = new MoneyAccount(account);
 
             var money = bundle.Amount;
 
             var validator = new WithdrawMoneyValidator(money);
 
-            var result = validator.Validate(account);
+            var result = validator.Validate(moneyAccount);
 
             if (!result.IsValid)
             {
                 return result;
             }
 
-            var transaction = account.Withdraw(money);
+            var transaction = moneyAccount.Withdraw(money);
 
-            await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+            await _accountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
             try
             {
                 await _stripeService.CreateTransferAsync(accountId, bundle, transaction, cancellationToken);
 
-                transaction = account.CompleteTransaction(transaction);
+                transaction = moneyAccount.CompleteTransaction(transaction);
 
-                await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+                await _accountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
                 return transaction.Status;
             }
             catch (Exception exception)
             {
-                transaction = account.FailureTransaction(transaction, exception.Message);
+                transaction = moneyAccount.FailureTransaction(transaction, exception.Message);
 
-                await _moneyAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+                await _accountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
                 return new ValidationFailure(null, transaction.Failure.ToString()).ToResult();
             }

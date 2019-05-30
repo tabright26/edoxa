@@ -10,9 +10,7 @@
 
 using AutoMapper;
 
-using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
-using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
-using eDoxa.Seedwork.Domain.Common.Enumerations;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 
 namespace eDoxa.Cashier.DTO.Profiles
 {
@@ -20,23 +18,14 @@ namespace eDoxa.Cashier.DTO.Profiles
     {
         public TransactionProfile()
         {
-            this.CreateMap<MoneyTransaction, TransactionDTO>()
+            this.CreateMap<Transaction, TransactionDTO>()
                 .ForMember(transaction => transaction.Id, config => config.MapFrom(transaction => transaction.Id.ToGuid()))
                 .ForMember(transaction => transaction.Timestamp, config => config.MapFrom(transaction => transaction.Timestamp))
-                .ForMember(transaction => transaction.Amount, config => config.MapFrom<decimal>(transaction => transaction.Amount))
-                .ForMember(transaction => transaction.CurrencyType, config => config.MapFrom(_ => CurrencyType.Money))
-                .ForMember(transaction => transaction.Status, config => config.MapFrom(transaction => transaction.Status))
+                .ForMember(transaction => transaction.Amount, config => config.MapFrom(transaction => transaction.Currency.Amount))
+                .ForMember(transaction => transaction.CurrencyType, config => config.MapFrom(transaction => transaction.Currency.Type))
+                .ForMember(transaction => transaction.Description, config => config.MapFrom(transaction => transaction.Description))
                 .ForMember(transaction => transaction.Type, config => config.MapFrom(transaction => transaction.Type))
-                .ForMember(transaction => transaction.Description, config => config.MapFrom(transaction => transaction.Description));
-
-            this.CreateMap<TokenTransaction, TransactionDTO>()
-                .ForMember(transaction => transaction.Id, config => config.MapFrom(transaction => transaction.Id.ToGuid()))
-                .ForMember(transaction => transaction.Timestamp, config => config.MapFrom(transaction => transaction.Timestamp))
-                .ForMember(transaction => transaction.Amount, config => config.MapFrom<decimal>(transaction => transaction.Amount))
-                .ForMember(transaction => transaction.CurrencyType, config => config.MapFrom(_ => CurrencyType.Token))
-                .ForMember(transaction => transaction.Status, config => config.MapFrom(transaction => transaction.Status))
-                .ForMember(transaction => transaction.Type, config => config.MapFrom(transaction => transaction.Type))
-                .ForMember(transaction => transaction.Description, config => config.MapFrom(transaction => transaction.Description));
+                .ForMember(transaction => transaction.Status, config => config.MapFrom(transaction => transaction.Status));
         }
     }
 }

@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Services.Stripe.Abstractions;
 using eDoxa.Security;
 using eDoxa.Seedwork.Domain.Common;

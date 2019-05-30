@@ -13,6 +13,7 @@ using System.Linq;
 
 using eDoxa.Arena.Domain;
 using eDoxa.Arena.Domain.Abstractions;
+using eDoxa.Arena.Domain.ValueObjects;
 
 namespace eDoxa.Arena.Challenges.Domain
 {

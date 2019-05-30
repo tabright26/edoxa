@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
+using eDoxa.Cashier.Domain.AggregateModels;
 
 using FluentAssertions;
 
@@ -36,7 +36,7 @@ namespace eDoxa.Cashier.Tests.Domain.AggregateModels.TokenAccountAggregate
             var token = token1 + token2;
 
             // Assert
-            token.As<long>().Should().Be(result);
+            token.As<decimal>().Should().Be(result);
         }
 
         [DataRow(100000, 50000, 50000)]
@@ -55,7 +55,7 @@ namespace eDoxa.Cashier.Tests.Domain.AggregateModels.TokenAccountAggregate
             var token = token1 - token2;
 
             // Assert
-            token.As<long>().Should().Be(result);
+            token.As<decimal>().Should().Be(result);
         }
     }
 }

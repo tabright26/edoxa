@@ -24,8 +24,8 @@ namespace eDoxa.Cashier.Api.Controllers
     [ApiController]
     [ApiVersion("1.0")]
     [Produces("application/json")]
-    [Route("api/accounts/token")]
-    [ApiExplorerSettings(GroupName = "Accounts")]
+    [Route("api/account/token")]
+    [ApiExplorerSettings(GroupName = "Account")]
     public class AccountTokenController : ControllerBase
     {
         private readonly IMediator _mediator;

@@ -11,7 +11,7 @@
 using System;
 using System.Linq.Expressions;
 
-using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Seedwork.Domain.Specifications;
 
 namespace eDoxa.Cashier.Domain.Specifications
@@ -27,7 +27,7 @@ namespace eDoxa.Cashier.Domain.Specifications
 
         public override Expression<Func<TokenAccount, bool>> ToExpression()
         {
-            return account => account.Balance < _token;
+            return account => account.Balance.Available < _token;
         }
     }
 }

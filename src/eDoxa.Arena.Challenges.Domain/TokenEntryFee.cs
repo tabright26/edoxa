@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Arena.Domain;
+using eDoxa.Arena.Domain.ValueObjects;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 namespace eDoxa.Arena.Challenges.Domain
@@ -24,7 +24,7 @@ namespace eDoxa.Arena.Challenges.Domain
         public static readonly TokenEntryFee SeventyFive = new TokenEntryFee(75000M);
         public static readonly TokenEntryFee OneHundred = new TokenEntryFee(100000M);
 
-        private TokenEntryFee(decimal entryFee) : base(entryFee, CurrencyType.Token)
+        private TokenEntryFee(decimal entryFee) : base(CurrencyType.Token, entryFee)
         {
         }
     }

@@ -40,8 +40,7 @@ namespace eDoxa.Cashier.Tests.Queries
         public void Constructor_Tests()
         {
             ConstructorTests<AccountQueries>.For(
-                    typeof(IMoneyAccountRepository),
-                    typeof(ITokenAccountRepository),
+                    typeof(IAccountRepository),
                     typeof(IHttpContextAccessor),
                     typeof(IMapper)
                 )

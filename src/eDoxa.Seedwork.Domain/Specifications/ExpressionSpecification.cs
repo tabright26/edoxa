@@ -13,17 +13,16 @@ using System.Linq.Expressions;
 
 namespace eDoxa.Seedwork.Domain.Specifications
 {
-    public sealed class ExpressionSpecification<TEntity> : Specification<TEntity>
-    where TEntity : IEntity, IAggregateRoot
+    public sealed class ExpressionSpecification<T> : Specification<T>
     {
-        private readonly Expression<Func<TEntity, bool>> _predicate;
+        private readonly Expression<Func<T, bool>> _predicate;
 
-        public ExpressionSpecification(Expression<Func<TEntity, bool>> predicate)
+        public ExpressionSpecification(Expression<Func<T, bool>> predicate)
         {
             _predicate = predicate;
         }
 
-        public override Expression<Func<TEntity, bool>> ToExpression()
+        public override Expression<Func<T, bool>> ToExpression()
         {
             return _predicate;
         }

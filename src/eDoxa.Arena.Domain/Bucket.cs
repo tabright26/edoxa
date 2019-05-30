@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 
 using eDoxa.Arena.Domain.Abstractions;
+using eDoxa.Arena.Domain.ValueObjects;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Domain

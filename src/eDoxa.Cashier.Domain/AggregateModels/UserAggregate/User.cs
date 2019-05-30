@@ -1,5 +1,5 @@
 ﻿// Filename: User.cs
-// Date Created: 2019-05-20
+// Date Created: 2019-05-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,8 +10,7 @@
 
 using System;
 
-using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
-using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Validators;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
@@ -23,35 +22,26 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 {
     public sealed class User : Entity<UserId>, IAggregateRoot
     {
-        private StripeAccountId _accountId;
-        [CanBeNull] private StripeBankAccountId _bankAccountId;
-        private StripeCustomerId _customerId;
-        private MoneyAccount _moneyAccount;
-        private TokenAccount _tokenAccount;
-
         public User(UserId userId, StripeAccountId accountId, StripeCustomerId customerId) : this()
         {
             Id = userId;
-            _accountId = accountId;
-            _customerId = customerId;
-            _moneyAccount = new MoneyAccount(this);
-            _tokenAccount = new TokenAccount(this);
+            AccountId = accountId;
+            CustomerId = customerId;
+            Account = new Account(this);
         }
 
         private User()
         {
-            _bankAccountId = null;
+            BankAccountId = null;
         }
 
-        public StripeAccountId AccountId => _accountId;
+        public StripeAccountId AccountId { get; private set; }
 
-        public StripeCustomerId CustomerId => _customerId;
+        public StripeCustomerId CustomerId { get; private set; }
 
-        [CanBeNull] public StripeBankAccountId BankAccountId => _bankAccountId;
+        [CanBeNull] public StripeBankAccountId BankAccountId { get; private set; }
 
-        public MoneyAccount MoneyAccount => _moneyAccount;
-
-        public TokenAccount TokenAccount => _tokenAccount;
+        public Account Account { get; private set; }
 
         public void AddBankAccount(StripeBankAccountId bankAccountId)
         {
@@ -60,7 +50,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
                 throw new InvalidOperationException();
             }
 
-            _bankAccountId = bankAccountId;
+            BankAccountId = bankAccountId;
         }
 
         public void RemoveBankAccount()
@@ -70,7 +60,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
                 throw new InvalidOperationException();
             }
 
-            _bankAccountId = null;
+            BankAccountId = null;
         }
 
         public bool CanAddBankAccount()

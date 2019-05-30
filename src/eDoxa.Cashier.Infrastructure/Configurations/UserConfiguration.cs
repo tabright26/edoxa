@@ -9,8 +9,7 @@
 // this source code package.
 
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
-using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Domain.Common;
 using eDoxa.Seedwork.Infrastructure.Extensions;
@@ -43,15 +42,9 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
                 )
                 .IsRequired(false);
 
-            builder.HasOne(user => user.MoneyAccount).WithOne(account => account.User).HasForeignKey<MoneyAccount>(nameof(UserId)).IsRequired().OnDelete(DeleteBehavior.Cascade);
-
-            builder.HasOne(user => user.TokenAccount).WithOne(account => account.User).HasForeignKey<TokenAccount>(nameof(UserId)).IsRequired().OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(user => user.Account).WithOne(account => account.User).HasForeignKey<Account>(nameof(UserId)).IsRequired().OnDelete(DeleteBehavior.Cascade);
 
             builder.HasKey(user => user.Id);
-
-            builder.Metadata.FindNavigation(nameof(User.MoneyAccount)).SetPropertyAccessMode(PropertyAccessMode.Field);
-
-            builder.Metadata.FindNavigation(nameof(User.TokenAccount)).SetPropertyAccessMode(PropertyAccessMode.Field);
         }
     }
 }

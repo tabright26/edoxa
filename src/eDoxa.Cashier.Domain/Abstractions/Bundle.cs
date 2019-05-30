@@ -8,7 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
+using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Seedwork.Domain.Common.Abstactions;
 
 namespace eDoxa.Cashier.Domain.Abstractions
 {

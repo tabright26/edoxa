@@ -23,31 +23,31 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
 {
     public sealed partial class UserRepository
     {
-        private readonly CashierDbContext _dbContext;
+        private readonly CashierDbContext _context;
 
-        public UserRepository(CashierDbContext dbContext)
+        public UserRepository(CashierDbContext context)
         {
-            _dbContext = dbContext;
+            _context = context;
         }
 
-        public IUnitOfWork UnitOfWork => _dbContext;
+        public IUnitOfWork UnitOfWork => _context;
     }
 
     public sealed partial class UserRepository : IUserRepository
     {
         public void Create(UserId userId, StripeAccountId accountId, StripeCustomerId customerId)
         {
-            _dbContext.Add(new User(userId, accountId, customerId));
+            _context.Add(new User(userId, accountId, customerId));
         }
 
         public async Task<User> GetUserAsync(UserId userId)
         {
-            return await _dbContext.Users.Where(user => user.Id == userId).SingleAsync();
+            return await _context.Users.Where(user => user.Id == userId).SingleAsync();
         }
 
         public async Task<User> GetUserAsNoTrackingAsync(UserId userId)
         {
-            return await _dbContext.Users.AsNoTracking().Where(user => user.Id == userId).SingleAsync();
+            return await _context.Users.AsNoTracking().Where(user => user.Id == userId).SingleAsync();
         }
     }
 }

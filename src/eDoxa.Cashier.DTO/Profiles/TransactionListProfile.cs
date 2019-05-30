@@ -1,5 +1,5 @@
 ﻿// Filename: TransactionListProfile.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-05-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,8 +13,7 @@ using System.Linq;
 
 using AutoMapper;
 
-using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
-using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 
 namespace eDoxa.Cashier.DTO.Profiles
 {
@@ -22,10 +21,7 @@ namespace eDoxa.Cashier.DTO.Profiles
     {
         public TransactionListProfile()
         {
-            this.CreateMap<IEnumerable<MoneyTransaction>, TransactionListDTO>()
-                .ForMember(list => list.Items, config => config.MapFrom(transactions => transactions.ToList()));
-
-            this.CreateMap<IEnumerable<TokenTransaction>, TransactionListDTO>()
+            this.CreateMap<IEnumerable<Transaction>, TransactionListDTO>()
                 .ForMember(list => list.Items, config => config.MapFrom(transactions => transactions.ToList()));
         }
     }

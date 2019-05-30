@@ -13,21 +13,20 @@ using System.Linq.Expressions;
 
 namespace eDoxa.Seedwork.Domain.Specifications.Abstractions
 {
-    public interface ISpecification<TEntity>
-    where TEntity : IEntity, IAggregateRoot
+    public interface ISpecification<T>
     {
-        Expression<Func<TEntity, bool>> ToExpression();
+        Expression<Func<T, bool>> ToExpression();
 
-        bool IsSatisfiedBy(TEntity entity);
+        bool IsSatisfiedBy(T entity);
 
-        ISpecification<TEntity> And(ISpecification<TEntity> specification);
+        ISpecification<T> And(ISpecification<T> specification);
 
-        ISpecification<TEntity> And(Expression<Func<TEntity, bool>> right);
+        ISpecification<T> And(Expression<Func<T, bool>> right);
 
-        ISpecification<TEntity> Or(ISpecification<TEntity> specification);
+        ISpecification<T> Or(ISpecification<T> specification);
 
-        ISpecification<TEntity> Or(Expression<Func<TEntity, bool>> right);
+        ISpecification<T> Or(Expression<Func<T, bool>> right);
 
-        ISpecification<TEntity> Not();
+        ISpecification<T> Not();
     }
 }

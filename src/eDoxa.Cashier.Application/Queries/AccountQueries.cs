@@ -25,15 +25,13 @@ namespace eDoxa.Cashier.Application.Queries
 {
     public sealed partial class AccountQueries
     {
-        private readonly IMoneyAccountRepository _moneyAccountRepository;
-        private readonly ITokenAccountRepository _tokenAccountRepository;
+        private readonly IAccountRepository _accountRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IMapper _mapper;
 
-        public AccountQueries(IMoneyAccountRepository moneyAccountRepository, ITokenAccountRepository tokenAccountRepository, IHttpContextAccessor httpContextAccessor, IMapper mapper)
+        public AccountQueries(IAccountRepository accountRepository, IHttpContextAccessor httpContextAccessor, IMapper mapper)
         {
-            _moneyAccountRepository = moneyAccountRepository;
-            _tokenAccountRepository = tokenAccountRepository;
+            _accountRepository = accountRepository;
             _httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
         }
@@ -41,27 +39,13 @@ namespace eDoxa.Cashier.Application.Queries
 
     public sealed partial class AccountQueries : IAccountQueries
     {
-        public async Task<Option<AccountDTO>> GetAccountAsync(CurrencyType currencyType)
+        public async Task<Option<BalanceDTO>> GetBalanceAsync(CurrencyType currencyType)
         {
             var userId = _httpContextAccessor.GetUserId();
 
-            AccountDTO mapper = null;
+            var balance = await _accountRepository.GetBalanceAsNoTrackingAsync(userId, currencyType);
 
-            if (currencyType == CurrencyType.Money)
-            {
-                var account = await _moneyAccountRepository.GetMoneyAccountAsNoTrackingAsync(userId);
-
-                mapper = _mapper.Map<AccountDTO>(account);
-            }
-
-            if (currencyType == CurrencyType.Token)
-            {
-                var account = await _tokenAccountRepository.GetTokenAccountAsNoTrackingAsync(userId);
-
-                mapper = _mapper.Map<AccountDTO>(account);
-            }
-
-            return mapper != null ? new Option<AccountDTO>(mapper) : new Option<AccountDTO>();
+            return balance != null ? new Option<BalanceDTO>(_mapper.Map<BalanceDTO>(balance)) : new Option<BalanceDTO>();
         }
     }
 }

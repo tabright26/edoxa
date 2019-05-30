@@ -10,6 +10,8 @@
 
 using System.Collections.Generic;
 
+using eDoxa.Arena.Domain.ValueObjects;
+
 namespace eDoxa.Arena.Domain.Abstractions
 {
     public interface IBucketFactors : IReadOnlyList<BucketFactor>

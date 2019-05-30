@@ -15,25 +15,24 @@ using eDoxa.Seedwork.Domain.Specifications.Abstractions;
 
 namespace eDoxa.Seedwork.Domain.Specifications
 {
-    public sealed class AndSpecification<TEntity> : Specification<TEntity>
-    where TEntity : IEntity, IAggregateRoot
+    public sealed class AndSpecification<T> : Specification<T>
     {
-        private readonly Expression<Func<TEntity, bool>> _left;
-        private readonly Expression<Func<TEntity, bool>> _right;
+        private readonly Expression<Func<T, bool>> _left;
+        private readonly Expression<Func<T, bool>> _right;
 
-        public AndSpecification(ISpecification<TEntity> left, ISpecification<TEntity> right)
+        public AndSpecification(ISpecification<T> left, ISpecification<T> right)
         {
             _left = left.ToExpression();
             _right = right.ToExpression();
         }
 
-        public override Expression<Func<TEntity, bool>> ToExpression()
+        public override Expression<Func<T, bool>> ToExpression()
         {
             var visitor = new ExpressionSpecificationVisitor(_left.Parameters[0], _right.Parameters[0]);
 
             var binaryExpression = Expression.AndAlso(visitor.Visit(_left.Body), _right.Body);
 
-            return Expression.Lambda<Func<TEntity, bool>>(binaryExpression, _right.Parameters);
+            return Expression.Lambda<Func<T, bool>>(binaryExpression, _right.Parameters);
         }
     }
 }

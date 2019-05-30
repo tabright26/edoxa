@@ -10,9 +10,8 @@
 
 using System;
 
-using eDoxa.Arena.Domain;
 using eDoxa.Arena.Domain.Abstractions;
-using eDoxa.Seedwork.Domain.Common.Enumerations;
+using eDoxa.Arena.Domain.ValueObjects;
 
 namespace eDoxa.Arena.Challenges.Domain.Factories
 {
@@ -31,25 +30,10 @@ namespace eDoxa.Arena.Challenges.Domain.Factories
         {
             if (PayoutBuckets.TryGetValue(payoutEntries, out var bucketFactors))
             {
-                return bucketFactors.CreatePayout(DeterminePayoutPrize(entryFee));
+                return bucketFactors.CreatePayout(entryFee.GetLowestPrize());
             }
 
             throw new NotImplementedException();
-        }
-
-        private static Prize DeterminePayoutPrize(EntryFee entryFee)
-        {
-            if (entryFee.CurrencyType == CurrencyType.Money)
-            {
-                return new MoneyPrize(entryFee.Amount);
-            }
-
-            if (entryFee.CurrencyType == CurrencyType.Token)
-            {
-                return new TokenPrize(entryFee.Amount);
-            }
-
-            throw new InvalidOperationException();
         }
     }
 }

@@ -21,7 +21,7 @@ using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Domain.Validators;
 using eDoxa.Arena.Challenges.Services.Abstractions;
 using eDoxa.Arena.Challenges.Services.Factories;
-using eDoxa.Arena.Domain;
+using eDoxa.Arena.Domain.ValueObjects;
 using eDoxa.Functional;
 using eDoxa.Functional.Extensions;
 using eDoxa.Seedwork.Application.Validations.Extensions;

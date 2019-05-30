@@ -12,9 +12,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Domain;
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Validators;
 using eDoxa.Cashier.Services.Abstractions;
@@ -29,12 +28,12 @@ namespace eDoxa.Cashier.Services
 {
     public sealed class TokenAccountService : ITokenAccountService
     {
+        private readonly IAccountRepository _accountRepository;
         private readonly IStripeService _stripeService;
-        private readonly ITokenAccountRepository _tokenAccountRepository;
 
-        public TokenAccountService(ITokenAccountRepository tokenAccountRepository, IStripeService stripeService)
+        public TokenAccountService(IAccountRepository accountRepository, IStripeService stripeService)
         {
-            _tokenAccountRepository = tokenAccountRepository;
+            _accountRepository = accountRepository;
             _stripeService = stripeService;
         }
 
@@ -45,11 +44,13 @@ namespace eDoxa.Cashier.Services
             CancellationToken cancellationToken = default
         )
         {
-            var account = await _tokenAccountRepository.GetUserAccountAsync(userId);
+            var account = await _accountRepository.GetAccountAsync(userId);
+
+            var tokenAccount = new TokenAccount(account);
 
             var validator = new DepositTokenValidator();
 
-            var result = validator.Validate(account);
+            var result = validator.Validate(tokenAccount);
 
             if (!result.IsValid)
             {
@@ -63,25 +64,25 @@ namespace eDoxa.Cashier.Services
                 return new ValidationFailure(null, "There are no credit cards associated with this account.").ToResult();
             }
 
-            var transaction = account.Deposit(bundle.Amount);
+            var transaction = tokenAccount.Deposit(bundle.Amount);
 
-            await _tokenAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+            await _accountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
             try
             {
                 await _stripeService.CreateInvoiceAsync(customerId, bundle, transaction, cancellationToken);
 
-                transaction = account.CompleteTransaction(transaction);
+                transaction = tokenAccount.CompleteTransaction(transaction);
 
-                await _tokenAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+                await _accountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
                 return transaction.Status;
             }
             catch (Exception exception)
             {
-                transaction = account.FailureTransaction(transaction, exception.Message);
+                transaction = tokenAccount.FailureTransaction(transaction, exception.Message);
 
-                await _tokenAccountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+                await _accountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
                 return new ValidationFailure(null, transaction.Failure.ToString()).ToResult();
             }

@@ -8,8 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
-using eDoxa.Cashier.Domain.AggregateModels.TokenAccountAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.Infrastructure.Configurations;
 using eDoxa.Seedwork.Infrastructure;
@@ -30,13 +29,9 @@ namespace eDoxa.Cashier.Infrastructure
 
         public DbSet<User> Users => this.Set<User>();
 
-        public DbSet<MoneyAccount> MoneyAccounts => this.Set<MoneyAccount>();
+        public DbSet<Account> Accounts => this.Set<Account>();
 
-        public DbSet<MoneyTransaction> MoneyTransactions => this.Set<MoneyTransaction>();
-
-        public DbSet<TokenAccount> TokenAccounts => this.Set<TokenAccount>();
-
-        public DbSet<TokenTransaction> TokenTransactions => this.Set<TokenTransaction>();
+        public DbSet<Transaction> Transactions => this.Set<Transaction>();
 
         protected override void OnModelCreating([NotNull] ModelBuilder builder)
         {
@@ -46,13 +41,9 @@ namespace eDoxa.Cashier.Infrastructure
 
             builder.ApplyConfiguration(new UserConfiguration());
 
-            builder.ApplyConfiguration(new MoneyAccountConfiguration());
+            builder.ApplyConfiguration(new AccountConfiguration());
 
-            builder.ApplyConfiguration(new MoneyTransactionConfiguration());
-
-            builder.ApplyConfiguration(new TokenAccountConfiguration());
-
-            builder.ApplyConfiguration(new TokenTransactionConfiguration());
+            builder.ApplyConfiguration(new TransactionConfiguration());
         }
     }
 }

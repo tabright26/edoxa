@@ -12,7 +12,7 @@ using System;
 using System.Linq;
 
 using eDoxa.Arena.Challenges.Tests.Utilities.Fakes;
-using eDoxa.Arena.Domain;
+using eDoxa.Arena.Domain.ValueObjects;
 using eDoxa.Seedwork.Domain.Common;
 
 using FluentAssertions;

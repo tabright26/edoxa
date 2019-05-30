@@ -15,7 +15,7 @@ using AutoMapper;
 
 using eDoxa.Arena.Challenges.DTO;
 using eDoxa.Arena.Challenges.Services.Abstractions;
-using eDoxa.Arena.Domain;
+using eDoxa.Arena.Domain.ValueObjects;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Functional;
 

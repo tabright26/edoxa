@@ -12,7 +12,7 @@ using System.Linq;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
-using eDoxa.Arena.Domain;
+using eDoxa.Arena.Domain.ValueObjects;
 using eDoxa.Arena.Services.LeagueOfLegends.DTO;
 
 namespace eDoxa.Arena.Challenges.Services.LeagueOfLegends.Adapters

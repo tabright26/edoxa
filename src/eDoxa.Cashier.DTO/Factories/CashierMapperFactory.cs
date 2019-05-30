@@ -29,7 +29,8 @@ namespace eDoxa.Cashier.DTO.Factories
     {
         protected override IEnumerable<Profile> CreateProfiles()
         {
-            yield return new AccountProfile();
+            yield return new BalanceProfile();
+            yield return new CurrencyProfile();
             yield return new StripeCardProfile();
             yield return new StripeCardListProfile();
             yield return new TransactionProfile();

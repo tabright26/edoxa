@@ -16,21 +16,20 @@ using eDoxa.Seedwork.Domain.Specifications.Abstractions;
 
 namespace eDoxa.Seedwork.Domain.Specifications
 {
-    public sealed class NotSpecification<TEntity> : Specification<TEntity>
-    where TEntity : IEntity, IAggregateRoot
+    public sealed class NotSpecification<T> : Specification<T>
     {
-        private readonly Expression<Func<TEntity, bool>> _left;
+        private readonly Expression<Func<T, bool>> _left;
 
-        public NotSpecification(ISpecification<TEntity> left)
+        public NotSpecification(ISpecification<T> left)
         {
             _left = left.ToExpression();
         }
 
-        public override Expression<Func<TEntity, bool>> ToExpression()
+        public override Expression<Func<T, bool>> ToExpression()
         {
             var notExpression = Expression.Not(_left.Body);
 
-            return Expression.Lambda<Func<TEntity, bool>>(notExpression, _left.Parameters.Single());
+            return Expression.Lambda<Func<T, bool>>(notExpression, _left.Parameters.Single());
         }
     }
 }

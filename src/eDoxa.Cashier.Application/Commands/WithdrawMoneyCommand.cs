@@ -10,8 +10,8 @@
 
 using System.Runtime.Serialization;
 
-using eDoxa.Cashier.Domain;
-using eDoxa.Cashier.Domain.AggregateModels.MoneyAccountAggregate;
+using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Commands.Abstractions;
 using eDoxa.Functional;
 

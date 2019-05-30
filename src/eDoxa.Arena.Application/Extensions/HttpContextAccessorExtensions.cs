@@ -10,7 +10,7 @@
 
 using System;
 
-using eDoxa.Arena.Domain;
+using eDoxa.Arena.Domain.ValueObjects;
 using eDoxa.Security.Extensions;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 

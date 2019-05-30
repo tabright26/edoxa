@@ -23,7 +23,7 @@ namespace eDoxa.Cashier.Tests.Services
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<MoneyAccountService>.For(typeof(IMoneyAccountRepository), typeof(IStripeService)).WithName("MoneyAccountService").Assert();
+            ConstructorTests<MoneyAccountService>.For(typeof(IAccountRepository), typeof(IStripeService)).WithName("MoneyAccountService").Assert();
         }
     }
 }

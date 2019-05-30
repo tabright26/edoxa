@@ -1,5 +1,5 @@
 ﻿// Filename: IAccount.cs
-// Date Created: 2019-05-13
+// Date Created: 2019-05-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,27 +9,61 @@
 // this source code package.
 
 using System;
+using System.Collections.Generic;
+
+using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
+using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Cashier.Domain.Abstractions
 {
-    public interface IAccount<TCurrency, TTransaction>
-    where TCurrency : ICurrency
-    where TTransaction : ITransaction<TCurrency>
+    public interface IAccount : IEntity<AccountId>, IAggregateRoot
     {
-        TCurrency Balance { get; }
+        User User { get; }
 
-        TCurrency Pending { get; }
+        IReadOnlyCollection<Transaction> Transactions { get; }
+
+        void CreateTransaction(Transaction transaction);
+    }
+
+    public interface IMoneyAccount
+    {
+        Balance Balance { get; }
 
         DateTime? LastDeposit { get; }
 
-        TTransaction Deposit(TCurrency amount);
+        DateTime? LastWithdraw { get; }
 
-        TTransaction Charge(TCurrency amount);
+        ITransaction Deposit(Money amount);
 
-        TTransaction Payout(TCurrency amount);
+        ITransaction Charge(Money amount);
 
-        TTransaction CompleteTransaction(TTransaction transaction);
+        ITransaction Payout(Money amount);
 
-        TTransaction FailureTransaction(TTransaction transaction, string message);
+        ITransaction Withdraw(Money amount);
+
+        ITransaction CompleteTransaction(ITransaction transaction);
+
+        ITransaction FailureTransaction(ITransaction transaction, string message);
+    }
+
+    public interface ITokenAccount
+    {
+        Balance Balance { get; }
+
+        DateTime? LastDeposit { get; }
+
+        ITransaction Deposit(Token amount);
+
+        ITransaction Charge(Token amount);
+
+        ITransaction Payout(Token amount);
+
+        ITransaction Reward(Token amount);
+
+        ITransaction CompleteTransaction(ITransaction transaction);
+
+        ITransaction FailureTransaction(ITransaction transaction, string message);
     }
 }

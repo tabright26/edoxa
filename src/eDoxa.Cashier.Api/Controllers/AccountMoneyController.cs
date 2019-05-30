@@ -24,8 +24,8 @@ namespace eDoxa.Cashier.Api.Controllers
     [ApiController]
     [ApiVersion("1.0")]
     [Produces("application/json")]
-    [Route("api/accounts/money")]
-    [ApiExplorerSettings(GroupName = "Accounts")]
+    [Route("api/account/money")]
+    [ApiExplorerSettings(GroupName = "Account")]
     public sealed class AccountMoneyController : ControllerBase
     {
         private readonly IMediator _mediator;

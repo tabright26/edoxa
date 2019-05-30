@@ -16,15 +16,15 @@ namespace eDoxa.Cashier.Tests.Utilities.Asserts
 {
     public static class CashierQueryAssert
     {
-        public static void IsMapped(AccountDTO account)
+        public static void IsMapped(BalanceDTO balance)
         {
-            account.Should().NotBeNull();
+            balance.Should().NotBeNull();
 
-            account.CurrencyType.Should().NotBeNull();
+            balance.CurrencyType.Should().NotBeNull();
 
-            account.Balance.Should().BeGreaterOrEqualTo(decimal.Zero);
+            balance.Available.Should().BeGreaterOrEqualTo(decimal.Zero);
 
-            account.Pending.Should().BeGreaterOrEqualTo(decimal.Zero);
+            balance.Pending.Should().BeGreaterOrEqualTo(decimal.Zero);
         }
 
         public static void IsMapped(TransactionListDTO transactions)
@@ -45,10 +45,10 @@ namespace eDoxa.Cashier.Tests.Utilities.Asserts
 
             transaction.Amount.Should().BeGreaterOrEqualTo(decimal.Zero);
 
-            transaction.Type.Should().NotBeNull();
-
             transaction.CurrencyType.Should().NotBeNull();
-
+            
+            transaction.Type.Should().NotBeNull();
+            
             transaction.Description.Should().NotBeNullOrEmpty();
         }
     }

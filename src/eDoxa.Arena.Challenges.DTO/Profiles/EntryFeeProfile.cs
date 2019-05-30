@@ -10,7 +10,7 @@
 
 using AutoMapper;
 
-using eDoxa.Arena.Domain;
+using eDoxa.Arena.Domain.ValueObjects;
 
 namespace eDoxa.Arena.Challenges.DTO.Profiles
 {
@@ -20,10 +20,10 @@ namespace eDoxa.Arena.Challenges.DTO.Profiles
         {
             this.CreateMap<EntryFee, EntryFeeDTO>()
                 .ForMember(entryFee => entryFee.Amount, config => config.MapFrom(entryFee => entryFee.Amount))
-                .ForMember(entryFee => entryFee.CurrencyType, config => config.MapFrom(entryFee => entryFee.CurrencyType))
+                .ForMember(entryFee => entryFee.Type, config => config.MapFrom(entryFee => entryFee.Type))
                 .ReverseMap()
                 .ForMember(entryFee => entryFee.Amount, config => config.MapFrom(entryFee => entryFee.Amount))
-                .ForMember(entryFee => entryFee.CurrencyType, config => config.MapFrom(entryFee => entryFee.CurrencyType));
+                .ForMember(entryFee => entryFee.Type, config => config.MapFrom(entryFee => entryFee.Type));
         }
     }
 }
