@@ -18,7 +18,7 @@ using StackExchange.Redis;
 
 #endregion
 
-namespace eDoxa.Security.Tests.Extensions
+namespace eDoxa.Seedwork.Tests.Extensions
 {
     [TestClass]
     public sealed class ServiceCollectionExtensionsTest

@@ -1,5 +1,5 @@
-﻿// Filename: EntryFee.cs
-// Date Created: 2019-05-20
+﻿// Filename: Currency.cs
+// Date Created: 2019-05-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,34 +9,28 @@
 // this source code package.
 
 using System.Collections.Generic;
-using System.Globalization;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
-namespace eDoxa.Arena.Domain
+namespace eDoxa.Seedwork.Domain.Common
 {
-    public class EntryFee : ValueObject
+    public abstract class Currency : ValueObject
     {
-        public EntryFee(decimal amount, CurrencyType currencyType)
+        protected Currency(CurrencyType type, decimal amount)
         {
+            Type = type;
             Amount = amount;
-            CurrencyType = currencyType;
         }
+
+        public CurrencyType Type { get; private set; }
 
         public decimal Amount { get; private set; }
 
-        public CurrencyType CurrencyType { get; private set; }
-
         protected override IEnumerable<object> GetAtomicValues()
         {
+            yield return Type;
             yield return Amount;
-            yield return CurrencyType;
-        }
-
-        public override string ToString()
-        {
-            return Amount.ToString(CultureInfo.InvariantCulture);
         }
     }
 }

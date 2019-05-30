@@ -30,7 +30,7 @@ namespace eDoxa.Arena.Challenges.Application.Commands
             int bestOf,
             int payoutEntries,
             decimal amount,
-            Currency currency,
+            CurrencyType currencyType,
             ChallengeState testModeState = null
         )
         {
@@ -43,7 +43,7 @@ namespace eDoxa.Arena.Challenges.Application.Commands
             EntryFee = new EntryFeeDTO
             {
                 Amount = amount,
-                Currency = currency
+                CurrencyType = currencyType
             };
 
             TestModeState = testModeState;

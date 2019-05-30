@@ -23,12 +23,12 @@ namespace eDoxa.Cashier.DTO.Profiles
             this.CreateMap<MoneyAccount, AccountDTO>()
                 .ForMember(account => account.Balance, config => config.MapFrom<decimal>(account => account.Balance))
                 .ForMember(account => account.Pending, config => config.MapFrom<decimal>(account => account.Pending))
-                .ForMember(account => account.Currency, config => config.MapFrom(_ => Currency.Money));
+                .ForMember(account => account.CurrencyType, config => config.MapFrom(_ => CurrencyType.Money));
 
             this.CreateMap<TokenAccount, AccountDTO>()
                 .ForMember(account => account.Balance, config => config.MapFrom<decimal>(account => account.Balance))
                 .ForMember(account => account.Pending, config => config.MapFrom<decimal>(account => account.Pending))
-                .ForMember(account => account.Currency, config => config.MapFrom(_ => Currency.Token));
+                .ForMember(account => account.CurrencyType, config => config.MapFrom(_ => CurrencyType.Token));
         }
     }
 }

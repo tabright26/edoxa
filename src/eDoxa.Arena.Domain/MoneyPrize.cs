@@ -15,7 +15,7 @@ namespace eDoxa.Arena.Domain
 {
     public sealed class MoneyPrize : Prize
     {
-        public MoneyPrize(decimal amount) : base(amount, Currency.Money)
+        public MoneyPrize(decimal amount) : base(amount, CurrencyType.Money)
         {
         }
     }

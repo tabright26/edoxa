@@ -58,7 +58,7 @@ namespace eDoxa.Cashier.Tests.Controllers
         public async Task GetAccountAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
-            _mockAccountQueries.Setup(mediator => mediator.GetAccountAsync(It.IsAny<Currency>()))
+            _mockAccountQueries.Setup(mediator => mediator.GetAccountAsync(It.IsAny<CurrencyType>()))
                 .ReturnsAsync(new Option<AccountDTO>(new AccountDTO()))
                 .Verifiable();
 
@@ -70,14 +70,14 @@ namespace eDoxa.Cashier.Tests.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            _mockAccountQueries.Verify(mediator => mediator.GetAccountAsync(It.IsAny<Currency>()), Times.Once);
+            _mockAccountQueries.Verify(mediator => mediator.GetAccountAsync(It.IsAny<CurrencyType>()), Times.Once);
         }
 
         [TestMethod]
         public async Task GetAccountAsync_ShouldBeOfTypeNotFoundObjectResult()
         {
             // Arrange
-            _mockAccountQueries.Setup(mediator => mediator.GetAccountAsync(It.IsAny<Currency>())).ReturnsAsync(new Option<AccountDTO>()).Verifiable();
+            _mockAccountQueries.Setup(mediator => mediator.GetAccountAsync(It.IsAny<CurrencyType>())).ReturnsAsync(new Option<AccountDTO>()).Verifiable();
 
             var controller = new AccountsController(_mockAccountQueries.Object);
 
@@ -87,7 +87,7 @@ namespace eDoxa.Cashier.Tests.Controllers
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
 
-            _mockAccountQueries.Verify(mediator => mediator.GetAccountAsync(It.IsAny<Currency>()), Times.Once);
+            _mockAccountQueries.Verify(mediator => mediator.GetAccountAsync(It.IsAny<CurrencyType>()), Times.Once);
         }
     }
 }

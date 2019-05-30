@@ -58,7 +58,7 @@ namespace eDoxa.Cashier.Tests.Controllers
         public async Task DepositTokenAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
-            _mockTransactionQueries.Setup(mock => mock.GetTransactionsAsync(It.IsAny<Currency>()))
+            _mockTransactionQueries.Setup(mock => mock.GetTransactionsAsync(It.IsAny<CurrencyType>()))
                 .ReturnsAsync(
                     new TransactionListDTO
                     {
@@ -78,14 +78,14 @@ namespace eDoxa.Cashier.Tests.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            _mockTransactionQueries.Verify(mock => mock.GetTransactionsAsync(It.IsAny<Currency>()), Times.Once);
+            _mockTransactionQueries.Verify(mock => mock.GetTransactionsAsync(It.IsAny<CurrencyType>()), Times.Once);
         }
 
         [TestMethod]
         public async Task DepositTokenAsync_ShouldBeOfTypeNoContentResult()
         {
             // Arrange
-            _mockTransactionQueries.Setup(mock => mock.GetTransactionsAsync(It.IsAny<Currency>())).ReturnsAsync(new TransactionListDTO()).Verifiable();
+            _mockTransactionQueries.Setup(mock => mock.GetTransactionsAsync(It.IsAny<CurrencyType>())).ReturnsAsync(new TransactionListDTO()).Verifiable();
 
             var controller = new TransactionsController(_mockTransactionQueries.Object);
 
@@ -95,7 +95,7 @@ namespace eDoxa.Cashier.Tests.Controllers
             // Assert
             result.Should().BeOfType<NoContentResult>();
 
-            _mockTransactionQueries.Verify(mock => mock.GetTransactionsAsync(It.IsAny<Currency>()), Times.Once);
+            _mockTransactionQueries.Verify(mock => mock.GetTransactionsAsync(It.IsAny<CurrencyType>()), Times.Once);
         }
     }
 }

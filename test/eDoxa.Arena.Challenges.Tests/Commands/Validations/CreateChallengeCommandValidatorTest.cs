@@ -59,7 +59,7 @@ namespace eDoxa.Arena.Challenges.Tests.Commands.Validations
                 bestOf,
                 payoutEntries,
                 new decimal(amount),
-                Enumeration<Currency>.FromName(currency),
+                Enumeration<CurrencyType>.FromName(currency),
                 Enumeration<ChallengeState>.FromName(testModeState)
             );
 

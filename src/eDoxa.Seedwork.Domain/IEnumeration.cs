@@ -1,5 +1,5 @@
 ﻿// Filename: IEnumeration.cs
-// Date Created: 2019-05-08
+// Date Created: 2019-05-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,8 +12,6 @@ namespace eDoxa.Seedwork.Domain
 {
     public interface IEnumeration
     {
-        int Value { get; }
-
-        string Name { get; }
+        // Marker interface
     }
 }

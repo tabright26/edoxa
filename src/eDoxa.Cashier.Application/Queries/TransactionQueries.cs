@@ -58,23 +58,23 @@ namespace eDoxa.Cashier.Application.Queries
 
     public sealed partial class TransactionQueries : ITransactionQueries
     {
-        public async Task<TransactionListDTO> GetTransactionsAsync([CanBeNull] Currency currency)
+        public async Task<TransactionListDTO> GetTransactionsAsync([CanBeNull] CurrencyType currencyType)
         {
             var userId = _httpContextAccessor.GetUserId();
 
             var transactions = new TransactionListDTO();
 
-            if (currency == null || currency == Currency.Money)
+            if (currencyType == null || currencyType == CurrencyType.Money)
             {
                 transactions.Items.AddRange(await this.GetMoneyTransactionsAsync(userId));
             }
 
-            if (currency == null || currency == Currency.Token)
+            if (currencyType == null || currencyType == CurrencyType.Token)
             {
                 transactions.Items.AddRange(await this.GetTokenTransactionsAsync(userId));
             }
 
-            return transactions.OrderBy(transaction => transaction.Currency).ThenByDescending(transaction => transaction.Timestamp).ToList();
+            return transactions.OrderBy(transaction => transaction.CurrencyType).ThenByDescending(transaction => transaction.Timestamp).ToList();
         }
     }
 }

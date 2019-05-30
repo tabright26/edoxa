@@ -29,7 +29,7 @@ namespace eDoxa.Cashier.DTO
         public DateTime Timestamp { get; set; }
 
         [JsonProperty("currency")]
-        public Currency Currency { get; set; }
+        public CurrencyType CurrencyType { get; set; }
 
         [JsonProperty("amount")]
         public decimal Amount { get; set; }

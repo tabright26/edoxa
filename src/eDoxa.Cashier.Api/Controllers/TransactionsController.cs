@@ -40,9 +40,9 @@ namespace eDoxa.Cashier.Api.Controllers
         ///     Get transactions by account currency.
         /// </summary>
         [HttpGet(Name = nameof(GetTransactionsAsync))]
-        public async Task<IActionResult> GetTransactionsAsync([FromQuery] [CanBeNull] Currency currency)
+        public async Task<IActionResult> GetTransactionsAsync([FromQuery] [CanBeNull] CurrencyType currencyType)
         {
-            var transactions = await _transactionQueries.GetTransactionsAsync(currency);
+            var transactions = await _transactionQueries.GetTransactionsAsync(currencyType);
 
             if (!transactions.Any())
             {

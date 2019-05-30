@@ -20,9 +20,9 @@ namespace eDoxa.Arena.Domain.Abstractions
     public abstract class Prize : ValueObject
     {
         private readonly decimal _amount;
-        private readonly Currency _currency;
+        private readonly CurrencyType _currencyType;
 
-        protected Prize(decimal amount, Currency currency)
+        protected Prize(decimal amount, CurrencyType currencyType)
         {
             if (amount < 0)
             {
@@ -30,12 +30,12 @@ namespace eDoxa.Arena.Domain.Abstractions
             }
 
             _amount = amount;
-            _currency = currency;
+            _currencyType = currencyType;
         }
 
         public decimal Amount => _amount;
 
-        public Currency Currency => _currency;
+        public CurrencyType CurrencyType => _currencyType;
 
         public static implicit operator decimal(Prize prize)
         {
@@ -45,7 +45,7 @@ namespace eDoxa.Arena.Domain.Abstractions
         protected override IEnumerable<object> GetAtomicValues()
         {
             yield return Amount;
-            yield return Currency;
+            yield return CurrencyType;
         }
 
         public override string ToString()
@@ -55,12 +55,12 @@ namespace eDoxa.Arena.Domain.Abstractions
 
         public Prize ApplyFactor(PrizeFactor factor)
         {
-            if (Currency == Currency.Money)
+            if (CurrencyType == CurrencyType.Money)
             {
                 return new MoneyPrize(Amount * factor);
             }
 
-            if (Currency == Currency.Token)
+            if (CurrencyType == CurrencyType.Token)
             {
                 return new TokenPrize(Amount * factor);
             }

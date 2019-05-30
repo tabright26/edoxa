@@ -20,10 +20,10 @@ namespace eDoxa.Arena.Challenges.DTO.Profiles
         {
             this.CreateMap<EntryFee, EntryFeeDTO>()
                 .ForMember(entryFee => entryFee.Amount, config => config.MapFrom(entryFee => entryFee.Amount))
-                .ForMember(entryFee => entryFee.Currency, config => config.MapFrom(entryFee => entryFee.Currency))
+                .ForMember(entryFee => entryFee.CurrencyType, config => config.MapFrom(entryFee => entryFee.CurrencyType))
                 .ReverseMap()
                 .ForMember(entryFee => entryFee.Amount, config => config.MapFrom(entryFee => entryFee.Amount))
-                .ForMember(entryFee => entryFee.Currency, config => config.MapFrom(entryFee => entryFee.Currency));
+                .ForMember(entryFee => entryFee.CurrencyType, config => config.MapFrom(entryFee => entryFee.CurrencyType));
         }
     }
 }

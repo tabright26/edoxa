@@ -18,7 +18,7 @@ namespace eDoxa.Cashier.DTO
     public class AccountDTO
     {
         [JsonProperty("currency")]
-        public Currency Currency { get; set; }
+        public CurrencyType CurrencyType { get; set; }
 
         [JsonProperty("balance")]
         public decimal Balance { get; set; }

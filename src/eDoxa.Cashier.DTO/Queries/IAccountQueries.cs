@@ -17,6 +17,6 @@ namespace eDoxa.Cashier.DTO.Queries
 {
     public interface IAccountQueries
     {
-        Task<Option<AccountDTO>> GetAccountAsync(Currency currency);
+        Task<Option<AccountDTO>> GetAccountAsync(CurrencyType currencyType);
     }
 }

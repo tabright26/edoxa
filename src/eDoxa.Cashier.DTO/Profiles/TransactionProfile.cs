@@ -24,7 +24,7 @@ namespace eDoxa.Cashier.DTO.Profiles
                 .ForMember(transaction => transaction.Id, config => config.MapFrom(transaction => transaction.Id.ToGuid()))
                 .ForMember(transaction => transaction.Timestamp, config => config.MapFrom(transaction => transaction.Timestamp))
                 .ForMember(transaction => transaction.Amount, config => config.MapFrom<decimal>(transaction => transaction.Amount))
-                .ForMember(transaction => transaction.Currency, config => config.MapFrom(_ => Currency.Money))
+                .ForMember(transaction => transaction.CurrencyType, config => config.MapFrom(_ => CurrencyType.Money))
                 .ForMember(transaction => transaction.Status, config => config.MapFrom(transaction => transaction.Status))
                 .ForMember(transaction => transaction.Type, config => config.MapFrom(transaction => transaction.Type))
                 .ForMember(transaction => transaction.Description, config => config.MapFrom(transaction => transaction.Description));
@@ -33,7 +33,7 @@ namespace eDoxa.Cashier.DTO.Profiles
                 .ForMember(transaction => transaction.Id, config => config.MapFrom(transaction => transaction.Id.ToGuid()))
                 .ForMember(transaction => transaction.Timestamp, config => config.MapFrom(transaction => transaction.Timestamp))
                 .ForMember(transaction => transaction.Amount, config => config.MapFrom<decimal>(transaction => transaction.Amount))
-                .ForMember(transaction => transaction.Currency, config => config.MapFrom(_ => Currency.Token))
+                .ForMember(transaction => transaction.CurrencyType, config => config.MapFrom(_ => CurrencyType.Token))
                 .ForMember(transaction => transaction.Status, config => config.MapFrom(transaction => transaction.Status))
                 .ForMember(transaction => transaction.Type, config => config.MapFrom(transaction => transaction.Type))
                 .ForMember(transaction => transaction.Description, config => config.MapFrom(transaction => transaction.Description));

@@ -39,12 +39,12 @@ namespace eDoxa.Arena.Challenges.Domain.Factories
 
         private static Prize DeterminePayoutPrize(EntryFee entryFee)
         {
-            if (entryFee.Currency == Currency.Money)
+            if (entryFee.CurrencyType == CurrencyType.Money)
             {
                 return new MoneyPrize(entryFee.Amount);
             }
 
-            if (entryFee.Currency == Currency.Token)
+            if (entryFee.CurrencyType == CurrencyType.Token)
             {
                 return new TokenPrize(entryFee.Amount);
             }

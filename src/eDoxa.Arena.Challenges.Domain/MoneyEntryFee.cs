@@ -24,7 +24,7 @@ namespace eDoxa.Arena.Challenges.Domain
         public static readonly MoneyEntryFee SeventyFive = new MoneyEntryFee(75M);
         public static readonly MoneyEntryFee OneHundred = new MoneyEntryFee(100M);
 
-        private MoneyEntryFee(decimal entryFee) : base(entryFee, Currency.Money)
+        private MoneyEntryFee(decimal entryFee) : base(entryFee, CurrencyType.Money)
         {
         }
     }

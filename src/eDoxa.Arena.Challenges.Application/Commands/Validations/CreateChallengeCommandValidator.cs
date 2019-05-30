@@ -42,7 +42,7 @@ namespace eDoxa.Arena.Challenges.Application.Commands.Validations
                     $"The {nameof(CreateChallengeCommand.PayoutEntries)} property is invalid. These are valid input values: {PayoutEntries.DisplayNames()}."
                 );
 
-            this.Enumeration(command => command.EntryFee.Currency)
+            this.Enumeration(command => command.EntryFee.CurrencyType)
                 .DependentRules(
                     () =>
                     {

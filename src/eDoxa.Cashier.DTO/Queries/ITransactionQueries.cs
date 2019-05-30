@@ -18,6 +18,6 @@ namespace eDoxa.Cashier.DTO.Queries
 {
     public interface ITransactionQueries
     {
-        Task<TransactionListDTO> GetTransactionsAsync([CanBeNull] Currency currency);
+        Task<TransactionListDTO> GetTransactionsAsync([CanBeNull] CurrencyType currencyType);
     }
 }

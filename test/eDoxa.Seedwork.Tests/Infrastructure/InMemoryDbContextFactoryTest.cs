@@ -18,7 +18,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Seedwork.Tests.Factories
+namespace eDoxa.Seedwork.Tests.Infrastructure
 {
     [TestClass]
     public sealed class InMemoryDbContextFactoryTest

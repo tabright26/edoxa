@@ -38,9 +38,9 @@ namespace eDoxa.Cashier.Api.Controllers
         ///     Get account by currency.
         /// </summary>
         [HttpGet("{currency}", Name = nameof(GetAccountAsync))]
-        public async Task<IActionResult> GetAccountAsync(Currency currency)
+        public async Task<IActionResult> GetAccountAsync(CurrencyType currencyType)
         {
-            var account = await _accountQueries.GetAccountAsync(currency);
+            var account = await _accountQueries.GetAccountAsync(currencyType);
 
             return account.Select(this.Ok).Cast<IActionResult>().DefaultIfEmpty(this.NotFound("User money account not found.")).Single();
         }

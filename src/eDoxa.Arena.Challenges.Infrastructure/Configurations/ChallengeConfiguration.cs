@@ -78,8 +78,8 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                     challengeSetup.OwnsOne(challenge => challenge.EntryFee).Property(entryFee => entryFee.Amount).IsRequired();
 
                     challengeSetup.OwnsOne(challenge => challenge.EntryFee)
-                        .Property(entryFee => entryFee.Currency)
-                        .HasConversion(entityId => entityId.Value, entityId => Enumeration<Currency>.FromValue(entityId))
+                        .Property(entryFee => entryFee.CurrencyType)
+                        .HasConversion(entityId => entityId.Value, entityId => Enumeration<CurrencyType>.FromValue(entityId))
                         .IsRequired();
 
                     challengeSetup.Ignore(setup => setup.PayoutEntries);

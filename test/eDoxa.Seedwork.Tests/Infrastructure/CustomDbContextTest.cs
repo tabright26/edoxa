@@ -21,7 +21,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
 
-namespace eDoxa.Seedwork.Tests
+namespace eDoxa.Seedwork.Tests.Infrastructure
 {
     [TestClass]
     public sealed class CustomDbContextTest

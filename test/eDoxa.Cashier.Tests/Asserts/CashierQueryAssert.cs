@@ -20,7 +20,7 @@ namespace eDoxa.Cashier.Tests.Asserts
         {
             account.Should().NotBeNull();
 
-            account.Currency.Should().NotBeNull();
+            account.CurrencyType.Should().NotBeNull();
 
             account.Balance.Should().BeGreaterOrEqualTo(decimal.Zero);
 
@@ -47,7 +47,7 @@ namespace eDoxa.Cashier.Tests.Asserts
 
             transaction.Type.Should().NotBeNull();
 
-            transaction.Currency.Should().NotBeNull();
+            transaction.CurrencyType.Should().NotBeNull();
 
             transaction.Description.Should().NotBeNullOrEmpty();
         }

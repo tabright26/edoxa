@@ -15,16 +15,16 @@ using eDoxa.Seedwork.Domain.Aggregate;
 namespace eDoxa.Seedwork.Domain.Common.Enumerations
 {
     [TypeConverter(typeof(EnumerationTypeConverter))]
-    public sealed class Currency : Enumeration<Currency>
+    public sealed class CurrencyType : Enumeration<CurrencyType>
     {
-        public static readonly Currency Money = new Currency(1, nameof(Money));
-        public static readonly Currency Token = new Currency(2, nameof(Token));
+        public static readonly CurrencyType Money = new CurrencyType(1, nameof(Money));
+        public static readonly CurrencyType Token = new CurrencyType(2, nameof(Token));
 
-        public Currency()
+        public CurrencyType()
         {
         }
 
-        private Currency(int value, string name) : base(value, name)
+        private CurrencyType(int value, string name) : base(value, name)
         {
         }
     }

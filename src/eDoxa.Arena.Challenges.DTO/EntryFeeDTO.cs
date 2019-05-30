@@ -21,6 +21,6 @@ namespace eDoxa.Arena.Challenges.DTO
         public decimal Amount { get; set; }
 
         [JsonProperty("currency")]
-        public Currency Currency { get; set; }
+        public CurrencyType CurrencyType { get; set; }
     }
 }

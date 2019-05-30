@@ -41,20 +41,20 @@ namespace eDoxa.Cashier.Application.Queries
 
     public sealed partial class AccountQueries : IAccountQueries
     {
-        public async Task<Option<AccountDTO>> GetAccountAsync(Currency currency)
+        public async Task<Option<AccountDTO>> GetAccountAsync(CurrencyType currencyType)
         {
             var userId = _httpContextAccessor.GetUserId();
 
             AccountDTO mapper = null;
 
-            if (currency == Currency.Money)
+            if (currencyType == CurrencyType.Money)
             {
                 var account = await _moneyAccountRepository.GetMoneyAccountAsNoTrackingAsync(userId);
 
                 mapper = _mapper.Map<AccountDTO>(account);
             }
 
-            if (currency == Currency.Token)
+            if (currencyType == CurrencyType.Token)
             {
                 var account = await _tokenAccountRepository.GetTokenAccountAsNoTrackingAsync(userId);
 

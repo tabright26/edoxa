@@ -19,11 +19,6 @@ using JetBrains.Annotations;
 
 namespace eDoxa.Seedwork.Domain.Aggregate
 {
-    public interface IEnumeration
-    {
-        string ToString();
-    }
-
     public static class Enumeration
     {
         public static IEnumerable<Type> GetTypes()

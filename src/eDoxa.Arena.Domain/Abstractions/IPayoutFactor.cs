@@ -14,6 +14,6 @@ namespace eDoxa.Arena.Domain.Abstractions
 {
     public interface IPayoutFactor
     {
-        IPayout CreatePayout(EntryFee entryFee, Currency currency);
+        IPayout CreatePayout(EntryFee entryFee, CurrencyType currencyType);
     }
 }
