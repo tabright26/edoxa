@@ -12,7 +12,7 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Seedwork.Domain.Tests.Aggregate
+namespace eDoxa.Seedwork.Tests.Aggregate
 {
     [TestClass]
     public sealed class EnumerationTest

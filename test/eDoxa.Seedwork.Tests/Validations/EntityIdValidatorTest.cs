@@ -1,4 +1,4 @@
-﻿// Filename: EnumerationValidatorTest.cs
+﻿// Filename: EntityIdValidatorTest.cs
 // Date Created: 2019-05-29
 // 
 // ================================================
@@ -7,6 +7,8 @@
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
+
+using System;
 
 using eDoxa.Seedwork.Application.Validations.Extensions;
 using eDoxa.Seedwork.Domain.Aggregate;
@@ -17,18 +19,18 @@ using FluentValidation;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Seedwork.Application.Tests.Validations
+namespace eDoxa.Seedwork.Tests.Validations
 {
     [TestClass]
-    public sealed class EnumerationValidatorTest
+    public sealed class EntityIdValidatorTest
     {
         [TestMethod]
-        public void Validate_Enumeration_ShouldBeTrue()
+        public void Validate_EntityId_ShouldBeTrue()
         {
             // Arrange
             var model = new MockViewModel
             {
-                Enumeration = MockEnumeration.MockEnumeration1
+                EntityId = new MockEntityId()
             };
 
             var validator = new MockValidator();
@@ -41,12 +43,12 @@ namespace eDoxa.Seedwork.Application.Tests.Validations
         }
 
         [TestMethod]
-        public void Validate_AllEnumeration_ShouldBeFalse()
+        public void Validate_NullEntityId_ShouldBeFalse()
         {
             // Arrange
             var model = new MockViewModel
             {
-                Enumeration = MockEnumeration.All
+                EntityId = null
             };
 
             var validator = new MockValidator();
@@ -60,31 +62,12 @@ namespace eDoxa.Seedwork.Application.Tests.Validations
         }
 
         [TestMethod]
-        public void Validate_NoneEnumeration_ShouldBeFalse()
+        public void Validate_EmptyEntityId_ShouldBeFalse()
         {
             // Arrange
             var model = new MockViewModel
             {
-                Enumeration = new MockEnumeration()
-            };
-
-            var validator = new MockValidator();
-
-            // Act
-            var result = validator.Validate(model);
-
-            // Assert
-            result.IsValid.Should().BeFalse();
-            result.Errors.Should().HaveCount(1);
-        }
-
-        [TestMethod]
-        public void Validate_NullEnumeration_ShouldBeFalse()
-        {
-            // Arrange
-            var model = new MockViewModel
-            {
-                Enumeration = null
+                EntityId = new MockEmptyEntityId()
             };
 
             var validator = new MockValidator();
@@ -101,25 +84,24 @@ namespace eDoxa.Seedwork.Application.Tests.Validations
         {
             public MockValidator()
             {
-                this.Enumeration(model => model.Enumeration);
+                this.EntityId(model => model.EntityId);
             }
         }
 
         private class MockViewModel
         {
-            public MockEnumeration Enumeration { get; set; }
+            public MockEntityId EntityId { get; set; }
         }
 
-        private class MockEnumeration : Enumeration<MockEnumeration>
+        private class MockEntityId : EntityId<MockEntityId>
         {
-            public static readonly MockEnumeration MockEnumeration1 = new MockEnumeration(1 << 0, nameof(MockEnumeration1));
+        }
 
-            public MockEnumeration()
+        private class MockEmptyEntityId : MockEntityId
+        {
+            public MockEmptyEntityId()
             {
-            }
-
-            private MockEnumeration(int value, string name) : base(value, name)
-            {
+                Value = Guid.Empty;
             }
         }
     }

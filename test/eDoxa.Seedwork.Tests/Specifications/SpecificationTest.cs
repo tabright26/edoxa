@@ -11,6 +11,7 @@
 using System;
 using System.Linq.Expressions;
 
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Specifications;
 
@@ -18,7 +19,7 @@ using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Seedwork.Domain.Tests.Specifications
+namespace eDoxa.Seedwork.Tests.Specifications
 {
     [TestClass]
     public sealed class SpecificationTest

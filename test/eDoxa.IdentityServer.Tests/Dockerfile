@@ -1,5 +1,5 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:2.2-stretch AS build
-WORKDIR /app
+WORKDIR /tmp
 COPY . .
-WORKDIR /app/test/eDoxa.IdentityServer.Tests
-ENTRYPOINT ["dotnet", "test", "--logger:trx;LogFileName=/var/tmp/eDoxa.IdentityServer.TestResults.xml"]
+WORKDIR /tmp/test/eDoxa.IdentityServer.Tests
+RUN dotnet restore

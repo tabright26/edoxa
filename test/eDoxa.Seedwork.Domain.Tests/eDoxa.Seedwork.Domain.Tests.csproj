@@ -18,4 +18,10 @@
     <ProjectReference Include="..\eDoxa.Testing.MSTest\eDoxa.Testing.MSTest.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Aggregate\" />
+    <Folder Include="Reflection\Extensions\" />
+    <Folder Include="Specifications\" />
+  </ItemGroup>
+
 </Project>

@@ -18,7 +18,7 @@ using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Seedwork.Domain.Tests.Reflection
+namespace eDoxa.Seedwork.Tests.Reflection
 {
     [TestClass]
     public sealed class DomainSignatureTest

@@ -14,7 +14,7 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Seedwork.Domain.Tests.Reflection.Extensions
+namespace eDoxa.Seedwork.Tests.Reflection.Extensions
 {
     public static class EntityExtensions
     {

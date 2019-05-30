@@ -8,6 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Seedwork.Infrastructure;
 using eDoxa.Seedwork.Infrastructure.Factories;
 
 using FluentAssertions;
@@ -17,7 +18,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Seedwork.Infrastructure.Tests.Factories
+namespace eDoxa.Seedwork.Tests.Factories
 {
     [TestClass]
     public sealed class InMemoryDbContextFactoryTest

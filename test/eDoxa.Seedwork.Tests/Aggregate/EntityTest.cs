@@ -10,15 +10,16 @@
 
 using System;
 
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Domain.Tests.Reflection.Extensions;
+using eDoxa.Seedwork.Tests.Reflection.Extensions;
 using eDoxa.Testing.MSTest.Extensions;
 
 using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Seedwork.Domain.Tests.Aggregate
+namespace eDoxa.Seedwork.Tests.Aggregate
 {
     [TestClass]
     public sealed class EntityTest

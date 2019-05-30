@@ -1,20 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TestRun id="4bbb9089-17c1-4c69-9cd2-90eb7050f5b6" name="@bbc31d02a488 2019-05-29 00:45:43" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
-  <Times creation="2019-05-29T00:45:43.9099715+00:00" queuing="2019-05-29T00:45:43.9099727+00:00" start="2019-05-29T00:45:42.1950134+00:00" finish="2019-05-29T00:45:43.9393442+00:00" />
-  <TestSettings name="default" id="2dd56cd6-5a13-428c-ad31-14d04a77f9be">
-    <Deployment runDeploymentRoot="_bbc31d02a488_2019-05-29_00_45_43" />
+<TestRun id="b074e7d9-b3a0-4ff4-a92f-a0ebda6e5ef0" name="@97d1d5ebdee8 2019-05-30 00:30:38" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2019-05-30T00:30:38.3525849+00:00" queuing="2019-05-30T00:30:38.3525863+00:00" start="2019-05-30T00:30:34.7908274+00:00" finish="2019-05-30T00:30:38.3868421+00:00" />
+  <TestSettings name="default" id="cce9e2e7-631a-480b-b3ec-2bb1fd0271a0">
+    <Deployment runDeploymentRoot="_97d1d5ebdee8_2019-05-30_00_30_38" />
   </TestSettings>
   <Results>
-    <UnitTestResult executionId="9a16d52c-55fc-4fae-958d-97f0cbcf12c6" testId="6b405ce2-49eb-bfa9-61a6-b58b75f997f8" testName="Constructor_Tests" computerName="bbc31d02a488" duration="00:00:00.0149620" startTime="2019-05-29T00:45:43.5035039+00:00" endTime="2019-05-29T00:45:43.5896553+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9a16d52c-55fc-4fae-958d-97f0cbcf12c6" />
+    <UnitTestResult executionId="795317c0-56c8-4fcd-b3ce-21fa089cfc56" testId="6b405ce2-49eb-bfa9-61a6-b58b75f997f8" testName="Constructor_Tests" computerName="97d1d5ebdee8" duration="00:00:00.0204285" startTime="2019-05-30T00:30:37.4870916+00:00" endTime="2019-05-30T00:30:37.6662133+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="795317c0-56c8-4fcd-b3ce-21fa089cfc56" />
   </Results>
   <TestDefinitions>
-    <UnitTest name="Constructor_Tests" storage="/app/test/edoxa.identityserver.tests/bin/debug/netcoreapp2.2/edoxa.identityserver.tests.dll" id="6b405ce2-49eb-bfa9-61a6-b58b75f997f8">
-      <Execution id="9a16d52c-55fc-4fae-958d-97f0cbcf12c6" />
-      <TestMethod codeBase="/app/test/eDoxa.IdentityServer.Tests/bin/Debug/netcoreapp2.2/eDoxa.IdentityServer.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="eDoxa.IdentityServer.Tests.IntegrationEvents.UserCreatedIntegrationEventTest" name="Constructor_Tests" />
+    <UnitTest name="Constructor_Tests" storage="/tmp/test/edoxa.identityserver.tests/bin/debug/netcoreapp2.2/edoxa.identityserver.tests.dll" id="6b405ce2-49eb-bfa9-61a6-b58b75f997f8">
+      <Execution id="795317c0-56c8-4fcd-b3ce-21fa089cfc56" />
+      <TestMethod codeBase="/tmp/test/eDoxa.IdentityServer.Tests/bin/Debug/netcoreapp2.2/eDoxa.IdentityServer.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="eDoxa.IdentityServer.Tests.IntegrationEvents.UserCreatedIntegrationEventTest" name="Constructor_Tests" />
     </UnitTest>
   </TestDefinitions>
   <TestEntries>
-    <TestEntry testId="6b405ce2-49eb-bfa9-61a6-b58b75f997f8" executionId="9a16d52c-55fc-4fae-958d-97f0cbcf12c6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6b405ce2-49eb-bfa9-61a6-b58b75f997f8" executionId="795317c0-56c8-4fcd-b3ce-21fa089cfc56" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
   </TestEntries>
   <TestLists>
     <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />

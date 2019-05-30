@@ -10,6 +10,8 @@
 
 using System;
 
+using eDoxa.Seedwork.Infrastructure;
+
 using FluentAssertions;
 
 using MediatR;
@@ -19,7 +21,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
 
-namespace eDoxa.Seedwork.Infrastructure.Tests
+namespace eDoxa.Seedwork.Tests
 {
     [TestClass]
     public sealed class CustomDbContextTest

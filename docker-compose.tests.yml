@@ -1,11 +1,21 @@
 version: '3.4'
 
 services:
+  seedwork.tests:
+    image: ${ACR_REGISTRY:-edoxa}/seedwork.tests:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: test/eDoxa.Seedwork.Tests/Dockerfile
+    entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Seedwork.TestResults.xml
+    volumes:
+      - ./tmp:/var/tmp
+
   idsrv.tests:
     image: ${ACR_REGISTRY:-edoxa}/idsrv.tests:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: test/eDoxa.IdentityServer.Tests/Dockerfile
+    entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.IdentityServer.TestResults.xml
     volumes:
       - ./tmp:/var/tmp
 
@@ -14,6 +24,7 @@ services:
     build:
       context: .
       dockerfile: test/eDoxa.Identity.Tests/Dockerfile
+    entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Identity.TestResults.xml
     volumes:
       - ./tmp:/var/tmp
 
@@ -22,6 +33,7 @@ services:
     build:
       context: .
       dockerfile: test/eDoxa.Cashier.Tests/Dockerfile
+    entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Cashier.TestResults.xml
     volumes:
       - ./tmp:/var/tmp
 
@@ -30,6 +42,7 @@ services:
     build:
       context: .
       dockerfile: test/eDoxa.Arena.Tests/Dockerfile
+    entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Arena.TestResults.xml
     volumes:
       - ./tmp:/var/tmp
 
@@ -38,5 +51,6 @@ services:
     build:
       context: .
       dockerfile: test/eDoxa.Arena.Challenges.Tests/Dockerfile
+    entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Arena.Challenges.TestResults.xml
     volumes:
       - ./tmp:/var/tmp
