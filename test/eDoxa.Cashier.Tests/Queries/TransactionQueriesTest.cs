@@ -1,5 +1,5 @@
 ﻿// Filename: TransactionQueriesTest.cs
-// Date Created: 2019-05-28
+// Date Created: 2019-05-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,7 +13,7 @@ using AutoMapper;
 using eDoxa.Cashier.Application.Queries;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.DTO.Factories;
-using eDoxa.Cashier.Tests.Factories;
+using eDoxa.Cashier.Tests.Utilities.Fakes;
 using eDoxa.Testing.MSTest;
 
 using Microsoft.AspNetCore.Http;

@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengesControllerTest.cs
-// Date Created: 2019-05-28
+// Date Created: 2019-05-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,14 +11,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using AutoMapper;
-
 using eDoxa.Arena.Challenges.Api.Controllers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.DTO;
 using eDoxa.Arena.Challenges.DTO.Queries;
-using eDoxa.Arena.Challenges.Services.Abstractions;
 using eDoxa.Functional;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
@@ -37,17 +34,13 @@ namespace eDoxa.Arena.Challenges.Tests.Controllers
     public sealed class ChallengesControllerTest
     {
         private Mock<IMediator> _mediator;
-        private Mock<IMapper> _mapper;
         private Mock<IChallengeQuery> _queries;
-        private Mock<IChallengeService> _challengeService;
 
         [TestInitialize]
         public void TestInitialize()
         {
             _queries = new Mock<IChallengeQuery>();
-            _mapper = new Mock<IMapper>();
             _mediator = new Mock<IMediator>();
-            _challengeService = new Mock<IChallengeService>();
         }
 
         [TestMethod]

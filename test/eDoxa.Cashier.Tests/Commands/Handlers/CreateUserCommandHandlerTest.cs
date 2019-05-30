@@ -1,5 +1,5 @@
 ﻿// Filename: CreateUserCommandHandlerTest.cs
-// Date Created: 2019-05-28
+// Date Created: 2019-05-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -16,8 +16,8 @@ using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Services.Stripe.Abstractions;
-using eDoxa.Cashier.Tests.Extensions;
-using eDoxa.Cashier.Tests.Factories;
+using eDoxa.Cashier.Tests.Utilities.Fakes;
+using eDoxa.Cashier.Tests.Utilities.Mocks.Extensions;
 using eDoxa.Commands.Extensions;
 using eDoxa.Seedwork.Domain.Common;
 using eDoxa.Testing.MSTest;

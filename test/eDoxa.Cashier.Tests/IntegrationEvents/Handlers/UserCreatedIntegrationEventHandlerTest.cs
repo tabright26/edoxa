@@ -1,5 +1,5 @@
 ﻿// Filename: UserCreatedIntegrationEventHandlerTest.cs
-// Date Created: 2019-05-28
+// Date Created: 2019-05-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.IntegrationEvents;
 using eDoxa.Cashier.Application.IntegrationEvents.Handlers;
-using eDoxa.Cashier.Tests.Factories;
+using eDoxa.Cashier.Tests.Utilities.Fakes;
 using eDoxa.Testing.MSTest;
 
 using MediatR;

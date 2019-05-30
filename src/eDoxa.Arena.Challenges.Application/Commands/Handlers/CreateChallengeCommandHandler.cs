@@ -25,7 +25,7 @@ using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Application.Commands.Handlers
 {
-    internal sealed class CreateChallengeCommandHandler : ICommandHandler<CreateChallengeCommand, Either<ValidationResult, ChallengeDTO>>
+    public sealed class CreateChallengeCommandHandler : ICommandHandler<CreateChallengeCommand, Either<ValidationResult, ChallengeDTO>>
     {
         private readonly IChallengeService _challengeService;
         private readonly IMapper _mapper;

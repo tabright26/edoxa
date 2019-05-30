@@ -1,32 +1,32 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TestRun id="4bc5785b-8321-436b-b4c5-5021f4d8c09b" name="@27c59da79507 2019-05-30 00:30:41" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
-  <Times creation="2019-05-30T00:30:41.0387048+00:00" queuing="2019-05-30T00:30:41.0387061+00:00" start="2019-05-30T00:30:31.7866789+00:00" finish="2019-05-30T00:30:42.1452232+00:00" />
-  <TestSettings name="default" id="941f0e05-b3dd-4aac-95e7-dc3711708361">
-    <Deployment runDeploymentRoot="_27c59da79507_2019-05-30_00_30_41" />
+<TestRun id="99a4f669-0264-48e8-8068-4a310ef46cd9" name="@daba6bf5cb96 2019-05-30 04:24:08" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2019-05-30T04:24:08.1215365+00:00" queuing="2019-05-30T04:24:08.1215373+00:00" start="2019-05-30T04:24:04.4657490+00:00" finish="2019-05-30T04:24:08.1425248+00:00" />
+  <TestSettings name="default" id="bf7bd889-1ff8-4297-986a-8a0b88446e80">
+    <Deployment runDeploymentRoot="_daba6bf5cb96_2019-05-30_04_24_08" />
   </TestSettings>
   <Results>
-    <UnitTestResult executionId="54046738-e82f-498d-878b-4d19aa58c6eb" testId="3742fdcb-32d6-cd96-1368-200675a53f57" testName="FindUsersAsync_ShouldBeNoContentObjectResult" computerName="27c59da79507" duration="00:00:00.0042907" startTime="2019-05-30T00:30:41.7017694+00:00" endTime="2019-05-30T00:30:41.7064411+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="54046738-e82f-498d-878b-4d19aa58c6eb" />
-    <UnitTestResult executionId="3c17b1e0-8960-44f8-ad83-084c33f4145f" testId="1b0b1f06-f8ea-8f5e-3d38-e14fccc8ad07" testName="FindUsersAsync_ShouldBeOkObjectResult" computerName="27c59da79507" duration="00:00:00.6802510" startTime="2019-05-30T00:30:40.9374760+00:00" endTime="2019-05-30T00:30:41.7016524+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3c17b1e0-8960-44f8-ad83-084c33f4145f" />
-    <UnitTestResult executionId="0372d6f9-2b97-44cd-a7cb-644d87b709e1" testId="ea03b971-7301-ffa1-01d0-2f2dc17bf968" testName="Database_CanConnect_ShouldBeTrue" computerName="27c59da79507" duration="00:00:05.5144482" startTime="2019-05-30T00:30:35.0093009+00:00" endTime="2019-05-30T00:30:40.6944898+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0372d6f9-2b97-44cd-a7cb-644d87b709e1" />
+    <UnitTestResult executionId="21d8667d-1e07-4101-9067-c81dcde4f7c0" testId="3742fdcb-32d6-cd96-1368-200675a53f57" testName="FindUsersAsync_ShouldBeNoContentObjectResult" computerName="daba6bf5cb96" duration="00:00:00.0021430" startTime="2019-05-30T04:24:07.9876474+00:00" endTime="2019-05-30T04:24:07.9899650+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="21d8667d-1e07-4101-9067-c81dcde4f7c0" />
+    <UnitTestResult executionId="375748bc-3864-4a67-a892-2434cc1e97f3" testId="1b0b1f06-f8ea-8f5e-3d38-e14fccc8ad07" testName="FindUsersAsync_ShouldBeOkObjectResult" computerName="daba6bf5cb96" duration="00:00:00.2642643" startTime="2019-05-30T04:24:07.7220850+00:00" endTime="2019-05-30T04:24:07.9874542+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="375748bc-3864-4a67-a892-2434cc1e97f3" />
+    <UnitTestResult executionId="ab149ce9-57e3-4738-9f6d-e43d4411ea7b" testId="09b3e74d-6762-2c53-61a7-5b4276a5b252" testName="Database_CanConnect_ShouldBeTrue" computerName="daba6bf5cb96" duration="00:00:01.8736568" startTime="2019-05-30T04:24:05.7488142+00:00" endTime="2019-05-30T04:24:07.6722716+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ab149ce9-57e3-4738-9f6d-e43d4411ea7b" />
   </Results>
   <TestDefinitions>
-    <UnitTest name="Database_CanConnect_ShouldBeTrue" storage="/tmp/test/edoxa.identity.tests/bin/debug/netcoreapp2.2/edoxa.identity.tests.dll" id="ea03b971-7301-ffa1-01d0-2f2dc17bf968">
-      <Execution id="0372d6f9-2b97-44cd-a7cb-644d87b709e1" />
-      <TestMethod codeBase="/tmp/test/eDoxa.Identity.Tests/bin/Debug/netcoreapp2.2/eDoxa.Identity.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="eDoxa.Identity.Tests.IdentityDbContextFactoryTest" name="Database_CanConnect_ShouldBeTrue" />
+    <UnitTest name="Database_CanConnect_ShouldBeTrue" storage="/tmp/test/edoxa.identity.tests/bin/debug/netcoreapp2.2/edoxa.identity.tests.dll" id="09b3e74d-6762-2c53-61a7-5b4276a5b252">
+      <Execution id="ab149ce9-57e3-4738-9f6d-e43d4411ea7b" />
+      <TestMethod codeBase="/tmp/test/eDoxa.Identity.Tests/bin/Debug/netcoreapp2.2/eDoxa.Identity.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="eDoxa.Identity.Tests.Infrastructure.IdentityDbContextFactoryTest" name="Database_CanConnect_ShouldBeTrue" />
     </UnitTest>
     <UnitTest name="FindUsersAsync_ShouldBeNoContentObjectResult" storage="/tmp/test/edoxa.identity.tests/bin/debug/netcoreapp2.2/edoxa.identity.tests.dll" id="3742fdcb-32d6-cd96-1368-200675a53f57">
-      <Execution id="54046738-e82f-498d-878b-4d19aa58c6eb" />
+      <Execution id="21d8667d-1e07-4101-9067-c81dcde4f7c0" />
       <TestMethod codeBase="/tmp/test/eDoxa.Identity.Tests/bin/Debug/netcoreapp2.2/eDoxa.Identity.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="eDoxa.Identity.Tests.Controllers.UsersControllerTest" name="FindUsersAsync_ShouldBeNoContentObjectResult" />
     </UnitTest>
     <UnitTest name="FindUsersAsync_ShouldBeOkObjectResult" storage="/tmp/test/edoxa.identity.tests/bin/debug/netcoreapp2.2/edoxa.identity.tests.dll" id="1b0b1f06-f8ea-8f5e-3d38-e14fccc8ad07">
-      <Execution id="3c17b1e0-8960-44f8-ad83-084c33f4145f" />
+      <Execution id="375748bc-3864-4a67-a892-2434cc1e97f3" />
       <TestMethod codeBase="/tmp/test/eDoxa.Identity.Tests/bin/Debug/netcoreapp2.2/eDoxa.Identity.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="eDoxa.Identity.Tests.Controllers.UsersControllerTest" name="FindUsersAsync_ShouldBeOkObjectResult" />
     </UnitTest>
   </TestDefinitions>
   <TestEntries>
-    <TestEntry testId="3742fdcb-32d6-cd96-1368-200675a53f57" executionId="54046738-e82f-498d-878b-4d19aa58c6eb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
-    <TestEntry testId="1b0b1f06-f8ea-8f5e-3d38-e14fccc8ad07" executionId="3c17b1e0-8960-44f8-ad83-084c33f4145f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
-    <TestEntry testId="ea03b971-7301-ffa1-01d0-2f2dc17bf968" executionId="0372d6f9-2b97-44cd-a7cb-644d87b709e1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3742fdcb-32d6-cd96-1368-200675a53f57" executionId="21d8667d-1e07-4101-9067-c81dcde4f7c0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1b0b1f06-f8ea-8f5e-3d38-e14fccc8ad07" executionId="375748bc-3864-4a67-a892-2434cc1e97f3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="09b3e74d-6762-2c53-61a7-5b4276a5b252" executionId="ab149ce9-57e3-4738-9f6d-e43d4411ea7b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
   </TestEntries>
   <TestLists>
     <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />

@@ -25,7 +25,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace eDoxa.Arena.Challenges.Application.Commands.Handlers
 {
-    internal sealed class RegisterParticipantCommandHandler : ICommandHandler<RegisterParticipantCommand, Either<ValidationResult, string>>
+    public sealed class RegisterParticipantCommandHandler : ICommandHandler<RegisterParticipantCommand, Either<ValidationResult, string>>
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IChallengeService _challengeService;

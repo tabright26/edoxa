@@ -17,7 +17,8 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Services.LeagueOfLegends.DTO;
-using eDoxa.Arena.Tests.Stubs;
+using eDoxa.Arena.Tests.Utilities.Mocks;
+using eDoxa.Arena.Tests.Utilities.Stubs;
 using eDoxa.Challenges.Domain.Services.LeagueOfLegends.Api;
 
 using FluentAssertions;
@@ -39,9 +40,9 @@ namespace eDoxa.Arena.Tests.Services.LeagueOfLegends
         {
             // Arrange
             var matchReferencesDTO =
-                StubConvert.DeserializeObject<IEnumerable<LeagueOfLegendsMatchReferenceDTO>>(@"Stubs/LeagueOfLegends/MatchReferences.json");
+                StubConvert.DeserializeObject<IEnumerable<LeagueOfLegendsMatchReferenceDTO>>(@"Utilities/Stubs/LeagueOfLegends/MatchReferences.json");
 
-            var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
+            var mockHttpMessageHandler = new MockHttpMessageHandler();
 
             mockHttpMessageHandler.Protected()
                 .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
@@ -78,18 +79,16 @@ namespace eDoxa.Arena.Tests.Services.LeagueOfLegends
         public async Task GetMatchAsync_ShouldBeOkObjectResult(long gameId)
         {
             // Arrange
-            var matches = StubConvert.DeserializeObject<IEnumerable<LeagueOfLegendsMatchDTO>>(@"Stubs/LeagueOfLegends/Matches.json");
+            var matches = StubConvert.DeserializeObject<IEnumerable<LeagueOfLegendsMatchDTO>>(@"Utilities/Stubs/LeagueOfLegends/Matches.json");
 
-            var match = matches.Single(x => x.GameId == gameId);
-
-            var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
+            var mockHttpMessageHandler = new MockHttpMessageHandler();
 
             mockHttpMessageHandler.Protected()
                 .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync(
                     () => new HttpResponseMessage(HttpStatusCode.OK)
                     {
-                        Content = new StringContent(JsonConvert.SerializeObject(match))
+                        Content = new StringContent(JsonConvert.SerializeObject(matches.Single(x => x.GameId == gameId)))
                     }
                 )
                 .Callback<HttpRequestMessage, CancellationToken>(
@@ -102,7 +101,7 @@ namespace eDoxa.Arena.Tests.Services.LeagueOfLegends
             var service = new MatchV4Service(new HttpClient(mockHttpMessageHandler.Object), It.IsAny<string>());
 
             // Act
-            match = await service.GetMatchAsync(It.IsAny<string>());
+            var match = await service.GetMatchAsync(It.IsAny<string>());
 
             // Assert
             match.Should().BeEquivalentTo(match);

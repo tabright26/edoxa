@@ -7,10 +7,10 @@
   </PropertyGroup>
 
     <ItemGroup>
-    <Content Include="Stubs\LeagueOfLegends\Matches.json">
+    <Content Include="Utilities\Stubs\LeagueOfLegends\Matches.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Stubs\LeagueOfLegends\MatchReferences.json">
+    <Content Include="Utilities\Stubs\LeagueOfLegends\MatchReferences.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

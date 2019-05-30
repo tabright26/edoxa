@@ -1,5 +1,5 @@
 ﻿// Filename: StripeCardsControllerTest.cs
-// Date Created: 2019-05-28
+// Date Created: 2019-05-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -16,7 +16,7 @@ using eDoxa.Cashier.Api.Controllers;
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
-using eDoxa.Cashier.Tests.Factories;
+using eDoxa.Cashier.Tests.Utilities.Fakes;
 using eDoxa.Commands.Result;
 using eDoxa.Testing.MSTest;
 

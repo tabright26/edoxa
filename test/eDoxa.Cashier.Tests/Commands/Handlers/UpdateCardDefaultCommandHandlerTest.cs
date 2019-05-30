@@ -1,5 +1,5 @@
 ﻿// Filename: UpdateCardDefaultCommandHandlerTest.cs
-// Date Created: 2019-05-28
+// Date Created: 2019-05-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,14 +11,13 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Tests;
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Services.Stripe.Abstractions;
-using eDoxa.Cashier.Tests.Extensions;
-using eDoxa.Cashier.Tests.Factories;
+using eDoxa.Cashier.Tests.Utilities.Fakes;
+using eDoxa.Cashier.Tests.Utilities.Mocks.Extensions;
 using eDoxa.Commands.Extensions;
 using eDoxa.Commands.Result;
 using eDoxa.Functional;
