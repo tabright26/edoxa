@@ -11,11 +11,15 @@
 using System.Threading;
 using System.Threading.Tasks;
 
+using AutoMapper;
+
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
-using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate.Transactions;
 using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.Services.Abstractions;
 using eDoxa.Cashier.Tests.Utilities.Fakes;
 using eDoxa.Cashier.Tests.Utilities.Mocks.Extensions;
@@ -36,27 +40,29 @@ using Moq;
 namespace eDoxa.Cashier.Tests.Commands.Handlers
 {
     [TestClass]
-    public sealed class WithdrawMoneyCommandHandlerTest
+    public sealed class WithdrawCommandHandlerTest
     {
         private static readonly FakeCashierFactory FakeCashierFactory = FakeCashierFactory.Instance;
         private Mock<IHttpContextAccessor> _mockHttpContextAccessor;
-        private Mock<IMoneyAccountService> _mockMoneyAccountService;
+        private Mock<IAccountService> _mockMoneyAccountService;
         private Mock<IUserRepository> _mockUserRepository;
+        private Mock<IMapper> _mockMapper;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            _mockMoneyAccountService = new Mock<IMoneyAccountService>();
+            _mockMoneyAccountService = new Mock<IAccountService>();
             _mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
             _mockHttpContextAccessor.SetupClaims();
             _mockUserRepository = new Mock<IUserRepository>();
+            _mockMapper = new Mock<IMapper>();
         }
 
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<WithdrawMoneyCommandHandler>.For(typeof(IHttpContextAccessor), typeof(IMoneyAccountService), typeof(IUserRepository))
-                .WithName("WithdrawMoneyCommandHandler")
+            ConstructorTests<WithdrawCommandHandler>.For(typeof(IHttpContextAccessor), typeof(IAccountService), typeof(IUserRepository), typeof(IMapper))
+                .WithName("WithdrawCommandHandler")
                 .Assert();
         }
 
@@ -64,27 +70,29 @@ namespace eDoxa.Cashier.Tests.Commands.Handlers
         public async Task HandleAsync_WithdrawMoneyCommand_ShouldBeOfTypeEither()
         {
             // Arrange
-            var command = new WithdrawMoneyCommand(MoneyWithdrawBundleType.Fifty);
+            var command = new WithdrawCommand(Money.Fifty.Amount);
 
             var user = FakeCashierFactory.CreateUser();
 
             _mockUserRepository.Setup(mock => mock.GetUserAsNoTrackingAsync(It.IsAny<UserId>())).ReturnsAsync(user).Verifiable();
 
             _mockMoneyAccountService
-                .Setup(mock => mock.WithdrawAsync(It.IsAny<UserId>(), It.IsAny<MoneyBundle>(), It.IsAny<StripeAccountId>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(TransactionStatus.Completed)
+                .Setup(mock => mock.WithdrawAsync(It.IsAny<UserId>(), It.IsAny<Money>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new MoneyWithdrawTransaction(Money.Ten))
                 .Verifiable();
 
-            var handler = new WithdrawMoneyCommandHandler(_mockHttpContextAccessor.Object, _mockMoneyAccountService.Object, _mockUserRepository.Object);
+            _mockMapper.Setup(x => x.Map<TransactionDTO>(It.IsAny<ITransaction>())).Returns(new TransactionDTO()).Verifiable();
+
+            var handler = new WithdrawCommandHandler(_mockHttpContextAccessor.Object, _mockMoneyAccountService.Object, _mockUserRepository.Object, _mockMapper.Object);
 
             // Act
             var result = await handler.HandleAsync(command);
 
             // Assert
-            result.Should().BeOfType<Either<ValidationResult, TransactionStatus>>();
+            result.Should().BeOfType<Either<ValidationResult, TransactionDTO>>();
 
             _mockMoneyAccountService.Verify(
-                mock => mock.WithdrawAsync(It.IsAny<UserId>(), It.IsAny<MoneyBundle>(), It.IsAny<StripeAccountId>(), It.IsAny<CancellationToken>()),
+                mock => mock.WithdrawAsync(It.IsAny<UserId>(), It.IsAny<Money>(), It.IsAny<CancellationToken>()),
                 Times.Once
             );
         }

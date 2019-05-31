@@ -1,5 +1,5 @@
 ﻿// Filename: TransactionsController.cs
-// Date Created: 2019-05-20
+// Date Created: 2019-05-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,10 +11,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
-
-using JetBrains.Annotations;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -37,12 +36,12 @@ namespace eDoxa.Cashier.Api.Controllers
         }
 
         /// <summary>
-        ///     Get transactions by account currency.
+        ///     Get transactions by currency, type and status.
         /// </summary>
         [HttpGet(Name = nameof(GetTransactionsAsync))]
-        public async Task<IActionResult> GetTransactionsAsync([FromQuery] [CanBeNull] CurrencyType currencyType)
+        public async Task<IActionResult> GetTransactionsAsync(CurrencyType currency = null, TransactionType type = null, TransactionStatus status = null)
         {
-            var transactions = await _transactionQueries.GetTransactionsAsync(currencyType);
+            var transactions = await _transactionQueries.GetTransactionsAsync(currency, type, status);
 
             if (!transactions.Any())
             {

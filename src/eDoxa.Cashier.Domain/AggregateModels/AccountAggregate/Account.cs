@@ -6,7 +6,7 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
-    public class Account : Entity<AccountId>, IAccount
+    public sealed class Account : Entity<AccountId>, IAccount
     {
         private HashSet<Transaction> _transactions;
 

@@ -1,5 +1,5 @@
-﻿// Filename: DepositTokenCommandHandler.cs
-// Date Created: 2019-05-19
+﻿// Filename: WithdrawCommandHandler.cs
+// Date Created: 2019-05-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,9 +11,11 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Domain.AggregateModels;
+using AutoMapper;
+
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.Services.Abstractions;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Functional;
@@ -27,28 +29,36 @@ using Microsoft.AspNetCore.Http;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
-    public sealed class DepositTokenCommandHandler : ICommandHandler<DepositTokenCommand, Either<ValidationResult, TransactionStatus>>
+    public sealed class WithdrawCommandHandler : ICommandHandler<WithdrawCommand, Either<ValidationResult, TransactionDTO>>
     {
-        private static readonly TokenDepositBundles Bundles = new TokenDepositBundles();
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly ITokenAccountService _tokenAccountService;
+        private readonly IAccountService _accountService;
         private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
-        public DepositTokenCommandHandler(IHttpContextAccessor httpContextAccessor, ITokenAccountService tokenAccountService, IUserRepository userRepository)
+        public WithdrawCommandHandler(
+            IHttpContextAccessor httpContextAccessor,
+            IAccountService accountService,
+            IUserRepository userRepository,
+            IMapper mapper
+        )
         {
             _httpContextAccessor = httpContextAccessor;
-            _tokenAccountService = tokenAccountService;
+            _accountService = accountService;
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
         [ItemNotNull]
-        public async Task<Either<ValidationResult, TransactionStatus>> Handle([NotNull] DepositTokenCommand command, CancellationToken cancellationToken)
+        public async Task<Either<ValidationResult, TransactionDTO>> Handle([NotNull] WithdrawCommand command, CancellationToken cancellationToken)
         {
             var userId = _httpContextAccessor.GetUserId();
 
             var user = await _userRepository.GetUserAsNoTrackingAsync(userId);
 
-            return await _tokenAccountService.DepositAsync(user.Id, Bundles[command.BundleType], user.CustomerId, cancellationToken);
+            var either = await _accountService.WithdrawAsync(user.Id, new Money(command.Amount), cancellationToken);
+
+            return either.Match<Either<ValidationResult, TransactionDTO>>(x => x, x => _mapper.Map<TransactionDTO>(x));
         }
     }
 }

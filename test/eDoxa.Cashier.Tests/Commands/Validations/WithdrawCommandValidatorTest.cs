@@ -1,4 +1,4 @@
-﻿// Filename: TokenAccountServiceTest.cs
+﻿// Filename: WithdrawMoneyCommandValidatorTest.cs
 // Date Created: 2019-05-29
 // 
 // ================================================
@@ -8,22 +8,20 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.Services;
-using eDoxa.Cashier.Services.Stripe.Abstractions;
+using eDoxa.Cashier.Application.Commands.Validations;
 using eDoxa.Testing.MSTest;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Cashier.Tests.Services
+namespace eDoxa.Cashier.Tests.Commands.Validations
 {
     [TestClass]
-    public sealed class TokenAccountServiceTest
+    public sealed class WithdrawCommandValidatorTest
     {
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<TokenAccountService>.For(typeof(IAccountRepository), typeof(IStripeService)).WithName("TokenAccountService").Assert();
+            ConstructorTests<WithdrawCommandValidator>.For().WithName("WithdrawCommandValidator").Assert();
         }
     }
 }

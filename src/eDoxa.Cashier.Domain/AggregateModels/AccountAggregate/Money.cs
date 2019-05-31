@@ -8,12 +8,9 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
-namespace eDoxa.Cashier.Domain.AggregateModels
+namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
     public sealed class Money : Currency
     {
@@ -26,7 +23,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels
         public static readonly Money TwoHundred = new Money(200);
         public static readonly Money FiveHundred = new Money(500);
 
-        public Money(decimal amount) : base(CurrencyType.Money, amount)
+        public Money(decimal amount) : base(amount, CurrencyType.Money)
         {
         }
 
@@ -37,12 +34,12 @@ namespace eDoxa.Cashier.Domain.AggregateModels
 
         public override string ToString()
         {
-            return Amount.ToString("$##.###");
+            return Amount.ToString("$##.##");
         }
 
-        public long AsCents()
+        public long ToCents()
         {
-            return Convert.ToInt64(Amount * 100);
+            return System.Convert.ToInt64(Amount * 100);
         }
     }
 }

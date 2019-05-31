@@ -8,13 +8,11 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Globalization;
 
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
-namespace eDoxa.Cashier.Domain.AggregateModels
+namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
     public sealed class Token : Currency
     {
@@ -25,13 +23,13 @@ namespace eDoxa.Cashier.Domain.AggregateModels
         public static readonly Token OneMillion = new Token(1000000);
         public static readonly Token FiveMillions = new Token(5000000);
 
-        public Token(long amount) : base(CurrencyType.Token, amount)
+        public Token(decimal amount) : base(amount, CurrencyType.Token)
         {
         }
 
         public static Token operator -(Token token)
         {
-            return new Token(-Convert.ToInt64(token.Amount));
+            return new Token(-System.Convert.ToInt64(token.Amount));
         }
 
         public override string ToString()

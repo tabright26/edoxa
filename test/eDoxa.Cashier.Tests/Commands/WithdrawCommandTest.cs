@@ -1,4 +1,4 @@
-﻿// Filename: DepositMoneyCommandTest.cs
+﻿// Filename: WithdrawMoneyCommandTest.cs
 // Date Created: 2019-05-29
 // 
 // ================================================
@@ -11,7 +11,6 @@
 using System.Runtime.Serialization;
 
 using eDoxa.Cashier.Application.Commands;
-using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Testing.MSTest;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -19,13 +18,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace eDoxa.Cashier.Tests.Commands
 {
     [TestClass]
-    public sealed class DepositMoneyCommandTest
+    public sealed class WithdrawCommandTest
     {
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<DepositMoneyCommand>.For(typeof(MoneyDepositBundleType))
-                .WithName("DepositMoneyCommand")
+            ConstructorTests<WithdrawCommand>.For(typeof(decimal))
+                .WithName("WithdrawCommand")
                 .WithAttributes(typeof(DataContractAttribute))
                 .Assert();
         }

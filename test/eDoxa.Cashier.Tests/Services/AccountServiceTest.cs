@@ -18,12 +18,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace eDoxa.Cashier.Tests.Services
 {
     [TestClass]
-    public sealed class MoneyAccountServiceTest
+    public sealed class AccountServiceTest
     {
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<MoneyAccountService>.For(typeof(IAccountRepository), typeof(IStripeService)).WithName("MoneyAccountService").Assert();
+            ConstructorTests<AccountService>.For(typeof(IAccountRepository), typeof(IStripeService)).WithName("AccountService").Assert();
         }
     }
 }

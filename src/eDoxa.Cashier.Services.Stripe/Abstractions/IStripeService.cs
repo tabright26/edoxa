@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Seedwork.Domain.Common;
 
 using Stripe;
@@ -63,8 +64,8 @@ namespace eDoxa.Cashier.Services.Stripe.Abstractions
 
         Task UpdateCardDefaultAsync(StripeCustomerId customerId, StripeCardId cardId, CancellationToken cancellationToken = default);
 
-        Task CreateInvoiceAsync(StripeCustomerId customerId, IBundle bundle, ITransaction transaction, CancellationToken cancellationToken = default);
+        Task CreateInvoiceAsync(StripeCustomerId customerId, Price price, ITransaction transaction, CancellationToken cancellationToken = default);
 
-        Task CreateTransferAsync(StripeAccountId accountId, IBundle bundle, ITransaction transaction, CancellationToken cancellationToken = default);
+        Task CreateTransferAsync(StripeAccountId accountId, Price price, ITransaction transaction, CancellationToken cancellationToken = default);
     }
 }

@@ -11,14 +11,14 @@
 using System;
 using System.Linq.Expressions;
 
-using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Seedwork.Domain.Specifications;
 
 namespace eDoxa.Cashier.Domain.Specifications
 {
-    public sealed class DailyTokenDepositUnavailableSpecification : Specification<TokenAccount>
+    public sealed class DailyTokenDepositUnavailableSpecification : Specification<AccountToken>
     {
-        public override Expression<Func<TokenAccount, bool>> ToExpression()
+        public override Expression<Func<AccountToken, bool>> ToExpression()
         {
             return account => account.LastDeposit.HasValue && account.LastDeposit.Value.AddDays(1) >= DateTime.UtcNow;
         }

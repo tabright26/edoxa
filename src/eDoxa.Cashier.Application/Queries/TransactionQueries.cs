@@ -13,14 +13,13 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Security.Extensions;
 using eDoxa.Seedwork.Domain.Common;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
-
-using JetBrains.Annotations;
 
 using Microsoft.AspNetCore.Http;
 
@@ -39,11 +38,17 @@ namespace eDoxa.Cashier.Application.Queries
             _mapper = mapper;
         }
 
-        private async Task<TransactionListDTO> GetTransactionsAsync(UserId userId, [CanBeNull] CurrencyType currency)
+        private async Task<TransactionListDTO> GetTransactionsAsync(
+            UserId userId,
+            CurrencyType currency = null,
+            TransactionType type = null,
+            TransactionStatus status = null
+        )
         {
             var account = await _accountRepository.GetTransactionsAsNoTrackingAsync(userId);
 
-            var transactions = account.Where(transaction => transaction.Currency.Type.HasFilter(currency))
+            var transactions = account
+                .Where(transaction => transaction.Currency.Type.HasFilter(currency) && transaction.Type.HasFilter(type) && transaction.Status.HasFilter(status))
                 .OrderBy(transaction => transaction.Currency.Type)
                 .ThenByDescending(transaction => transaction.Timestamp)
                 .ToList();
@@ -54,11 +59,11 @@ namespace eDoxa.Cashier.Application.Queries
 
     public sealed partial class TransactionQueries : ITransactionQueries
     {
-        public async Task<TransactionListDTO> GetTransactionsAsync([CanBeNull] CurrencyType currency)
+        public async Task<TransactionListDTO> GetTransactionsAsync(CurrencyType currency = null, TransactionType type = null, TransactionStatus status = null)
         {
             var userId = _httpContextAccessor.GetUserId();
 
-            return await this.GetTransactionsAsync(userId, currency);
+            return await this.GetTransactionsAsync(userId, currency, type, status);
         }
     }
 }

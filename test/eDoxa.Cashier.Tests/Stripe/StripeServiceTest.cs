@@ -12,6 +12,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Services.Stripe;
 using eDoxa.Cashier.Tests.Utilities.Fakes;
 
@@ -287,7 +288,7 @@ namespace eDoxa.Cashier.Tests.Stripe
             var service = this.StripeService();
 
             // Act
-            await service.CreateInvoiceAsync(FakeStripeFactory.CreateCustomerId(), FakeCashierFactory.CreateBundle(), FakeCashierFactory.CreateTransaction());
+            await service.CreateInvoiceAsync(FakeStripeFactory.CreateCustomerId(), Money.Ten, FakeCashierFactory.CreateTransaction());
 
             // Assert
             _mockInvoiceItemService.Verify(
@@ -312,7 +313,7 @@ namespace eDoxa.Cashier.Tests.Stripe
             var service = this.StripeService();
 
             // Act
-            await service.CreateTransferAsync(FakeStripeFactory.CreateAccountId(), FakeCashierFactory.CreateBundle(), FakeCashierFactory.CreateTransaction());
+            await service.CreateTransferAsync(FakeStripeFactory.CreateAccountId(), Money.Ten, FakeCashierFactory.CreateTransaction());
 
             // Assert
             _mockTransferService.Verify(

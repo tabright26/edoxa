@@ -1,5 +1,5 @@
-﻿// Filename: balanceProfile.cs
-// Date Created: 2019-05-06
+﻿// Filename: BalanceProfile.cs
+// Date Created: 2019-05-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,7 +10,7 @@
 
 using AutoMapper;
 
-using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 
 namespace eDoxa.Cashier.DTO.Profiles
 {

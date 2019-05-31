@@ -1,5 +1,5 @@
 ﻿// Filename: ITransactionQueries.cs
-// Date Created: 2019-05-16
+// Date Created: 2019-05-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,14 +10,13 @@
 
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
-
-using JetBrains.Annotations;
 
 namespace eDoxa.Cashier.DTO.Queries
 {
     public interface ITransactionQueries
     {
-        Task<TransactionListDTO> GetTransactionsAsync([CanBeNull] CurrencyType currency);
+        Task<TransactionListDTO> GetTransactionsAsync(CurrencyType currency = null, TransactionType type = null, TransactionStatus status = null);
     }
 }

@@ -1,4 +1,4 @@
-﻿// Filename: AccountsControllerTest.cs
+﻿// Filename: AccountControllerTest.cs
 // Date Created: 2019-05-29
 // 
 // ================================================
@@ -8,9 +8,18 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Threading.Tasks;
+
 using eDoxa.Cashier.Api.Controllers;
+using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
+using eDoxa.Functional;
+using eDoxa.Seedwork.Domain.Common.Enumerations;
 using eDoxa.Testing.MSTest;
+
+using FluentAssertions;
+
+using MediatR;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,17 +33,19 @@ namespace eDoxa.Cashier.Tests.Controllers
     public sealed class AccountControllerTest
     {
         private Mock<IAccountQueries> _mockAccountQueries;
+        private Mock<IMediator> _mockMediator;
 
         [TestInitialize]
         public void TestInitialize()
         {
             _mockAccountQueries = new Mock<IAccountQueries>();
+            _mockMediator = new Mock<IMediator>();
         }
 
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<AccountController>.For(typeof(IAccountQueries))
+            ConstructorTests<AccountController>.For(typeof(IAccountQueries), typeof(IMediator))
                 .WithName("AccountController")
                 .WithAttributes(
                     typeof(AuthorizeAttribute),
@@ -47,40 +58,40 @@ namespace eDoxa.Cashier.Tests.Controllers
                 .Assert();
         }
 
-        //[TestMethod]
-        //public async Task GetAccountAsync_ShouldBeOfTypeOkObjectResult()
-        //{
-        //    // Arrange
-        //    _mockAccountQueries.Setup(mediator => mediator.GetAccountAsync(It.IsAny<CurrencyType>()))
-        //        .ReturnsAsync(new Option<AccountDTO>(new AccountDTO()))
-        //        .Verifiable();
+        [TestMethod]
+        public async Task GetBalanceAsync_ShouldBeOfTypeOkObjectResult()
+        {
+            // Arrange
+            _mockAccountQueries.Setup(mediator => mediator.GetBalanceAsync(It.IsAny<CurrencyType>()))
+                .ReturnsAsync(new Option<BalanceDTO>(new BalanceDTO()))
+                .Verifiable();
 
-        //    var controller = new AccountsController(_mockAccountQueries.Object);
+            var controller = new AccountController(_mockAccountQueries.Object, _mockMediator.Object);
 
-        //    // Act
-        //    var result = await controller.GetAccountAsync(null);
+            // Act
+            var result = await controller.GetBalanceAsync(null);
 
-        //    // Assert
-        //    result.Should().BeOfType<OkObjectResult>();
+            // Assert
+            result.Should().BeOfType<OkObjectResult>();
 
-        //    _mockAccountQueries.Verify(mediator => mediator.GetAccountAsync(It.IsAny<CurrencyType>()), Times.Once);
-        //}
+            _mockAccountQueries.Verify(mediator => mediator.GetBalanceAsync(It.IsAny<CurrencyType>()), Times.Once);
+        }
 
-        //[TestMethod]
-        //public async Task GetAccountAsync_ShouldBeOfTypeNotFoundObjectResult()
-        //{
-        //    // Arrange
-        //    _mockAccountQueries.Setup(mediator => mediator.GetAccountAsync(It.IsAny<CurrencyType>())).ReturnsAsync(new Option<AccountDTO>()).Verifiable();
+        [TestMethod]
+        public async Task GetBalanceAsync_ShouldBeOfTypeNotFoundObjectResult()
+        {
+            // Arrange
+            _mockAccountQueries.Setup(mock => mock.GetBalanceAsync(It.IsAny<CurrencyType>())).ReturnsAsync(new Option<BalanceDTO>()).Verifiable();
 
-        //    var controller = new AccountsController(_mockAccountQueries.Object);
+            var controller = new AccountController(_mockAccountQueries.Object, _mockMediator.Object);
 
-        //    // Act
-        //    var result = await controller.GetAccountAsync(null);
+            // Act
+            var result = await controller.GetBalanceAsync(null);
 
-        //    // Assert
-        //    result.Should().BeOfType<NotFoundObjectResult>();
+            // Assert
+            result.Should().BeOfType<NotFoundObjectResult>();
 
-        //    _mockAccountQueries.Verify(mediator => mediator.GetAccountAsync(It.IsAny<CurrencyType>()), Times.Once);
-        //}
+            _mockAccountQueries.Verify(mediator => mediator.GetBalanceAsync(It.IsAny<CurrencyType>()), Times.Once);
+        }
     }
 }

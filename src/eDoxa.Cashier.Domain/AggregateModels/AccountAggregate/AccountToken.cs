@@ -12,18 +12,18 @@ using System;
 using System.Linq;
 
 using eDoxa.Cashier.Domain.Abstractions;
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate.Transactions;
 using eDoxa.Cashier.Domain.Validators;
+using eDoxa.Seedwork.Domain.Common.Abstactions;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
-namespace eDoxa.Cashier.Domain.AggregateModels
+namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
-    public sealed class TokenAccount : ITokenAccount
+    public sealed class AccountToken : IAccountToken
     {
         private readonly IAccount _account;
 
-        public TokenAccount(IAccount account)
+        public AccountToken(IAccount account)
         {
             _account = account;
         }

@@ -21,6 +21,8 @@ namespace eDoxa.Cashier.DTO.Profiles
             this.CreateMap<Currency, CurrencyDTO>()
                 .ForMember(currency => currency.Type, config => config.MapFrom(currency => currency.Type))
                 .ForMember(currency => currency.Amount, config => config.MapFrom(currency => currency.Amount));
+
+            this.CreateMap<CurrencyDTO, Currency>().ConvertUsing(currency => Currency.Convert(currency.Amount, currency.Type));
         }
     }
 }

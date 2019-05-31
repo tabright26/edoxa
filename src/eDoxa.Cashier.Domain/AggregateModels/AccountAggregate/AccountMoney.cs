@@ -12,18 +12,18 @@ using System;
 using System.Linq;
 
 using eDoxa.Cashier.Domain.Abstractions;
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate.Transactions;
 using eDoxa.Cashier.Domain.Validators;
+using eDoxa.Seedwork.Domain.Common.Abstactions;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
-namespace eDoxa.Cashier.Domain.AggregateModels
+namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
-    public class MoneyAccount : IMoneyAccount
+    public class AccountMoney : IAccountMoney
     {
         private readonly IAccount _account;
 
-        public MoneyAccount(IAccount account)
+        public AccountMoney(IAccount account)
         {
             _account = account;
         }
@@ -117,17 +117,17 @@ namespace eDoxa.Cashier.Domain.AggregateModels
             return transaction;
         }
 
-        public bool CanDeposit()
+        private bool CanDeposit()
         {
             return new DepositMoneyValidator().Validate(this).IsValid;
         }
 
-        public bool CanCharge(Money money)
+        private bool CanCharge(Money money)
         {
             return new ChargeMoneyValidator(money).Validate(this).IsValid;
         }
 
-        public bool CanWithdraw(Money money)
+        private bool CanWithdraw(Money money)
         {
             return new WithdrawMoneyValidator(money).Validate(this).IsValid;
         }

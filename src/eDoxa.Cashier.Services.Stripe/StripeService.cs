@@ -1,5 +1,5 @@
 ﻿// Filename: StripeService.cs
-// Date Created: 2019-05-13
+// Date Created: 2019-05-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -216,19 +216,19 @@ namespace eDoxa.Cashier.Services.Stripe
 
         public async Task CreateInvoiceAsync(
             StripeCustomerId customerId,
-            IBundle bundle,
+            Price price,
             ITransaction transaction,
             CancellationToken cancellationToken = default
         )
         {
-            await this.CreateInvoiceItemAsync(customerId, bundle, transaction, cancellationToken);
+            await this.CreateInvoiceItemAsync(customerId, price, transaction, cancellationToken);
 
             await this.CreateInvoiceAsync(customerId, transaction, cancellationToken);
         }
 
         public async Task CreateTransferAsync(
             StripeAccountId accountId,
-            IBundle bundle,
+            Price price,
             ITransaction transaction,
             CancellationToken cancellationToken = default
         )
@@ -236,7 +236,7 @@ namespace eDoxa.Cashier.Services.Stripe
             var options = new TransferCreateOptions
             {
                 Currency = StripeConstants.Currency,
-                Amount = bundle.Price.AsCents(),
+                Amount = price.ToCents(),
                 Destination = accountId.ToString(),
                 Description = transaction.Description.ToString(),
                 Metadata = new Dictionary<string, string>
@@ -250,7 +250,7 @@ namespace eDoxa.Cashier.Services.Stripe
 
         private async Task CreateInvoiceItemAsync(
             StripeCustomerId customerId,
-            IBundle bundle,
+            Price price,
             ITransaction transaction,
             CancellationToken cancellationToken = default
         )
@@ -259,7 +259,7 @@ namespace eDoxa.Cashier.Services.Stripe
             {
                 CustomerId = customerId.ToString(),
                 Description = transaction.Description.ToString(),
-                Amount = bundle.Price.AsCents(),
+                Amount = price.ToCents(),
                 Currency = StripeConstants.Currency,
                 TaxRates = _configuration.GetSection("TaxRateIds").Get<List<string>>(),
                 Metadata = new Dictionary<string, string>

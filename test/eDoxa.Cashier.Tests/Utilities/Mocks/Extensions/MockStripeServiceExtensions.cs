@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Tests.Utilities.Fakes;
 using eDoxa.Seedwork.Domain.Common;
@@ -78,13 +79,13 @@ namespace eDoxa.Cashier.Tests.Utilities.Mocks.Extensions
 
             mockStripeService
                 .Setup(
-                    mock => mock.CreateInvoiceAsync(It.IsAny<StripeCustomerId>(), It.IsAny<IBundle>(), It.IsAny<ITransaction>(), It.IsAny<CancellationToken>())
+                    mock => mock.CreateInvoiceAsync(It.IsAny<StripeCustomerId>(), It.IsAny<Money>(), It.IsAny<ITransaction>(), It.IsAny<CancellationToken>())
                 )
                 .Returns(Task.CompletedTask);
 
             mockStripeService
                 .Setup(
-                    mock => mock.CreateTransferAsync(It.IsAny<StripeAccountId>(), It.IsAny<IBundle>(), It.IsAny<ITransaction>(), It.IsAny<CancellationToken>())
+                    mock => mock.CreateTransferAsync(It.IsAny<StripeAccountId>(), It.IsAny<Money>(), It.IsAny<ITransaction>(), It.IsAny<CancellationToken>())
                 )
                 .Returns(Task.CompletedTask);
         }

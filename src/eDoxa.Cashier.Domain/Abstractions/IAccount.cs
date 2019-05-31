@@ -11,10 +11,10 @@
 using System;
 using System.Collections.Generic;
 
-using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Common.Abstactions;
 
 namespace eDoxa.Cashier.Domain.Abstractions
 {
@@ -27,40 +27,18 @@ namespace eDoxa.Cashier.Domain.Abstractions
         void CreateTransaction(Transaction transaction);
     }
 
-    public interface IMoneyAccount
+    public interface IAccount<in TCurrency>
+    where TCurrency : ICurrency
     {
         Balance Balance { get; }
 
         DateTime? LastDeposit { get; }
 
-        DateTime? LastWithdraw { get; }
+        ITransaction Deposit(TCurrency amount);
 
-        ITransaction Deposit(Money amount);
+        ITransaction Charge(TCurrency amount);
 
-        ITransaction Charge(Money amount);
-
-        ITransaction Payout(Money amount);
-
-        ITransaction Withdraw(Money amount);
-
-        ITransaction CompleteTransaction(ITransaction transaction);
-
-        ITransaction FailureTransaction(ITransaction transaction, string message);
-    }
-
-    public interface ITokenAccount
-    {
-        Balance Balance { get; }
-
-        DateTime? LastDeposit { get; }
-
-        ITransaction Deposit(Token amount);
-
-        ITransaction Charge(Token amount);
-
-        ITransaction Payout(Token amount);
-
-        ITransaction Reward(Token amount);
+        ITransaction Payout(TCurrency amount);
 
         ITransaction CompleteTransaction(ITransaction transaction);
 

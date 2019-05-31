@@ -39,9 +39,7 @@ namespace eDoxa.Cashier.Application.Modules
             builder.RegisterModule<InfrastructureModule>();
 
             // Services
-            builder.RegisterType<MoneyAccountService>().As<IMoneyAccountService>().InstancePerLifetimeScope();
-
-            builder.RegisterType<TokenAccountService>().As<ITokenAccountService>().InstancePerLifetimeScope();
+            builder.RegisterType<AccountService>().As<IAccountService>().InstancePerLifetimeScope();
 
             // Queries
             builder.RegisterType<StripeCardQueries>().As<IStripeCardQueries>().InstancePerLifetimeScope();

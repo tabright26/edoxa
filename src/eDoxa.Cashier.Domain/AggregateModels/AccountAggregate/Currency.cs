@@ -1,5 +1,5 @@
 ﻿// Filename: Currency.cs
-// Date Created: 2019-05-29
+// Date Created: 2019-05-30
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,17 +8,20 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Collections.Generic;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Common.Abstactions;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
+using JetBrains.Annotations;
+
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
     public class Currency : ValueObject, ICurrency
     {
-        protected Currency(CurrencyType type, decimal amount)
+        protected Currency(decimal amount, CurrencyType type)
         {
             Type = type;
             Amount = amount;
@@ -28,9 +31,30 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 
         public decimal Amount { get; private set; }
 
+        public static implicit operator Price(Currency currency)
+        {
+            return new Price(currency.Amount, currency.Type);
+        }
+
         public static implicit operator decimal(Currency currency)
         {
             return currency.Amount;
+        }
+
+        [CanBeNull]
+        public static Currency Convert(decimal amount, CurrencyType type)
+        {
+            if (type == CurrencyType.Money)
+            {
+                return new Money(amount);
+            }
+
+            if (type == CurrencyType.Token)
+            {
+                return new Token(amount);
+            }
+
+            throw new ArgumentException(nameof(type));
         }
 
         protected override IEnumerable<object> GetAtomicValues()
