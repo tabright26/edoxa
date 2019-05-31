@@ -8,9 +8,9 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-namespace eDoxa.Stripe.Utilities
+namespace eDoxa.Stripe
 {
-    public static class StripeConstants
+    internal static class StripeConstants
     {
         public const string Country = "CA";
         public const string Currency = "cad";

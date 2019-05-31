@@ -1,5 +1,5 @@
 ﻿// Filename: VerifyAccountCommandHandler.cs
-// Date Created: 2019-05-19
+// Date Created: 2019-05-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -14,20 +14,14 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Services.Extensions;
 using eDoxa.Commands.Abstractions.Handlers;
-using eDoxa.Commands.Result;
-using eDoxa.Functional;
 using eDoxa.Security.Extensions;
 using eDoxa.Stripe.Abstractions;
-
-using FluentValidation.Results;
-
-using JetBrains.Annotations;
 
 using Microsoft.AspNetCore.Http;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
-    public sealed class VerifyAccountCommandHandler : ICommandHandler<VerifyAccountCommand, Either<ValidationResult, CommandResult>>
+    public sealed class VerifyAccountCommandHandler : AsyncCommandHandler<VerifyAccountCommand>
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IStripeService _stripeService;
@@ -40,8 +34,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
             _userRepository = userRepository;
         }
 
-        [ItemNotNull]
-        public async Task<Either<ValidationResult, CommandResult>> Handle([NotNull] VerifyAccountCommand command, CancellationToken cancellationToken)
+        protected override async Task Handle(VerifyAccountCommand command, CancellationToken cancellationToken)
         {
             var userId = _httpContextAccessor.GetUserId();
 
@@ -56,8 +49,6 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
                 command.PostalCode,
                 cancellationToken
             );
-
-            return new CommandResult("Stripe account verified.");
         }
     }
 }

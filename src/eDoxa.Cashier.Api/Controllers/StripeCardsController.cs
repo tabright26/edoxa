@@ -1,5 +1,5 @@
 ﻿// Filename: StripeCardsController.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-05-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -59,9 +59,9 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpPost(Name = nameof(CreateCardAsync))]
         public async Task<IActionResult> CreateCardAsync([FromBody] CreateCardCommand command)
         {
-            var either = await _mediator.SendCommandAsync(command);
+            await _mediator.SendCommandAsync(command);
 
-            return either.Match<IActionResult>(error => this.BadRequest(error.ToString()), success => this.Ok(success.ToString()));
+            return this.Ok("Credit card added.");
         }
 
         /// <summary>
@@ -71,9 +71,9 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpDelete("{cardId}", Name = nameof(DeleteCardAsync))]
         public async Task<IActionResult> DeleteCardAsync(StripeCardId cardId)
         {
-            var either = await _mediator.SendCommandAsync(new DeleteCardCommand(cardId));
+            await _mediator.SendCommandAsync(new DeleteCardCommand(cardId));
 
-            return either.Match<IActionResult>(error => this.BadRequest(error.ToString()), success => this.Ok(success.ToString()));
+            return this.Ok("The card has been removed.");
         }
 
         /// <summary>
@@ -83,9 +83,9 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpPatch("{cardId}/default", Name = nameof(UpdateCardDefaultAsync))]
         public async Task<IActionResult> UpdateCardDefaultAsync(StripeCardId cardId)
         {
-            var either = await _mediator.SendCommandAsync(new UpdateCardDefaultCommand(cardId));
+            await _mediator.SendCommandAsync(new UpdateCardDefaultCommand(cardId));
 
-            return either.Match<IActionResult>(error => this.BadRequest(error.ToString()), success => this.Ok(success.ToString()));
+            return this.Ok("The card has been updated as default.");
         }
     }
 }

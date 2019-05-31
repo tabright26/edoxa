@@ -1,5 +1,5 @@
-﻿// Filename: CreateBankAccountCommandValidator.cs
-// Date Created: 2019-05-29
+﻿// Filename: DeleteBankAccountCommandValidator.cs
+// Date Created: 2019-05-31
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -20,14 +20,10 @@ using Microsoft.AspNetCore.Http;
 
 namespace eDoxa.Cashier.Application.Commands.Validations
 {
-    public sealed class CreateBankAccountCommandValidator : CommandValidator<CreateBankAccountCommand>
+    public class DeleteBankAccountCommandValidator : CommandValidator<DeleteBankAccountCommand>
     {
-        public CreateBankAccountCommandValidator(IHttpContextAccessor httpContextAccessor, IUserRepository userRepository)
+        public DeleteBankAccountCommandValidator(IHttpContextAccessor httpContextAccessor, IUserRepository userRepository)
         {
-            this.RuleFor(command => command.ExternalAccountTokenId)
-                .Must(sourceToken => !string.IsNullOrWhiteSpace(sourceToken))
-                .WithMessage("The external account token id is invalid.");
-
             this.RuleFor(command => command)
                 .CustomAsync(
                     async (command, context, cancellationToken) =>
@@ -36,7 +32,7 @@ namespace eDoxa.Cashier.Application.Commands.Validations
 
                         var user = await userRepository.GetUserAsNoTrackingAsync(userId);
 
-                        new AddBankAccountValidator().Validate(user).Errors.ForEach(context.AddFailure);
+                        new RemoveBankAccountValidator().Validate(user).Errors.ForEach(context.AddFailure);
                     }
                 );
         }

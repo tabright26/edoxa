@@ -18,10 +18,7 @@ using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.Services.Abstractions;
 using eDoxa.Commands.Abstractions.Handlers;
-using eDoxa.Functional;
 using eDoxa.Security.Extensions;
-
-using FluentValidation.Results;
 
 using JetBrains.Annotations;
 
@@ -29,7 +26,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
-    public sealed class DepositCommandHandler : ICommandHandler<DepositCommand, Either<ValidationResult, TransactionDTO>>
+    public sealed class DepositCommandHandler : ICommandHandler<DepositCommand, TransactionDTO>
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IAccountService _accountService;
@@ -50,15 +47,15 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         }
 
         [ItemNotNull]
-        public async Task<Either<ValidationResult, TransactionDTO>> Handle([NotNull] DepositCommand command, CancellationToken cancellationToken)
+        public async Task<TransactionDTO> Handle([NotNull] DepositCommand command, CancellationToken cancellationToken)
         {
             var userId = _httpContextAccessor.GetUserId();
 
             var user = await _userRepository.GetUserAsNoTrackingAsync(userId);
 
-            var either = await _accountService.DepositAsync(user.Id, _mapper.Map<Currency>(command.Currency), cancellationToken);
+            var transaction = await _accountService.DepositAsync(user.Id, _mapper.Map<Currency>(command.Currency), cancellationToken);
 
-            return either.Match<Either<ValidationResult, TransactionDTO>>(result => result, transaction => _mapper.Map<TransactionDTO>(transaction));
+            return _mapper.Map<TransactionDTO>(transaction);
         }
     }
 }

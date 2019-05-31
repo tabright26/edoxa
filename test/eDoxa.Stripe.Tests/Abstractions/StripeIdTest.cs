@@ -24,7 +24,7 @@ namespace eDoxa.Stripe.Tests.Abstractions
     [TestClass]
     public sealed class StripeIdTest
     {
-        private static readonly FakeStripeFactory FakeStripeFactory = FakeStripeFactory.Instance;
+        private static readonly StripeBuilder StripeBuilder = StripeBuilder.Instance;
 
         [DataRow(typeof(StripeConnectAccountId), "acct_qwe23okqwe123")]
         [DataRow(typeof(StripeBankAccountId), "ba_qwe23okqwe123")]
@@ -145,7 +145,7 @@ namespace eDoxa.Stripe.Tests.Abstractions
             var converter = TypeDescriptor.GetConverter(typeof(StripeConnectAccountId));
 
             // Act
-            var destination = converter.ConvertTo(FakeStripeFactory.CreateAccountId(), type);
+            var destination = converter.ConvertTo(StripeBuilder.CreateAccountId(), type);
 
             // Assert
             destination.Should().BeOfType(type);
@@ -161,7 +161,7 @@ namespace eDoxa.Stripe.Tests.Abstractions
             var converter = TypeDescriptor.GetConverter(typeof(StripeConnectAccountId));
 
             // Act
-            var action = new Action(() => converter.ConvertTo(FakeStripeFactory.CreateAccountId(), type));
+            var action = new Action(() => converter.ConvertTo(StripeBuilder.CreateAccountId(), type));
 
             // Assert
             action.Should().Throw<NotSupportedException>();

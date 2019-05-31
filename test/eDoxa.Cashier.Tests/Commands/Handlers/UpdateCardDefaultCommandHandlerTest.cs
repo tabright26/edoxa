@@ -17,17 +17,11 @@ using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Tests.Utilities.Fakes;
 using eDoxa.Cashier.Tests.Utilities.Mocks.Extensions;
 using eDoxa.Commands.Extensions;
-using eDoxa.Commands.Result;
-using eDoxa.Functional;
 using eDoxa.Seedwork.Domain.Common;
 using eDoxa.Stripe.Abstractions;
 using eDoxa.Stripe.Models;
 using eDoxa.Stripe.Tests.Utilities;
 using eDoxa.Testing.MSTest;
-
-using FluentAssertions;
-
-using FluentValidation.Results;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -40,7 +34,7 @@ namespace eDoxa.Cashier.Tests.Commands.Handlers
     public sealed class UpdateCardDefaultCommandHandlerTest
     {
         private static readonly FakeCashierFactory FakeCashierFactory = FakeCashierFactory.Instance;
-        private static readonly FakeStripeFactory FakeStripeFactory = FakeStripeFactory.Instance;
+        private static readonly StripeBuilder StripeBuilder = StripeBuilder.Instance;
         private Mock<IHttpContextAccessor> _mockHttpContextAccessor;
         private Mock<IStripeService> _mockStripeService;
         private Mock<IUserRepository> _mockUserRepository;
@@ -67,7 +61,7 @@ namespace eDoxa.Cashier.Tests.Commands.Handlers
         public async Task HandleAsync_UpdateCardDefaultCommand_ShouldBeOfTypeEither()
         {
             // Arrange
-            var cardId = FakeStripeFactory.CreateCardId();
+            var cardId = StripeBuilder.CreateCardId();
 
             var user = FakeCashierFactory.CreateUser();
 
@@ -76,11 +70,9 @@ namespace eDoxa.Cashier.Tests.Commands.Handlers
             var handler = new UpdateCardDefaultCommandHandler(_mockHttpContextAccessor.Object, _mockStripeService.Object, _mockUserRepository.Object);
 
             // Act
-            var result = await handler.HandleAsync(new UpdateCardDefaultCommand(cardId));
+            await handler.HandleAsync(new UpdateCardDefaultCommand(cardId));
 
             // Assert
-            result.Should().BeOfType<Either<ValidationResult, CommandResult>>();
-
             _mockStripeService.Verify(
                 mock => mock.UpdateCardDefaultAsync(It.IsAny<StripeCustomerId>(), It.IsAny<StripeCardId>(), It.IsAny<CancellationToken>()),
                 Times.Once

@@ -48,7 +48,7 @@ namespace eDoxa.Cashier.Api.Controllers
         {
             var account = await _accountQueries.GetBalanceAsync(currency);
 
-            return account.Select(this.Ok).Cast<IActionResult>().DefaultIfEmpty(this.NotFound("User money account not found.")).Single();
+            return account.Select(this.Ok).Cast<IActionResult>().DefaultIfEmpty(this.NotFound($"Account balance for currency {currency} not found.")).Single();
         }
 
         /// <summary>
@@ -57,9 +57,9 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpPost("deposit", Name = nameof(DepositAsync))]
         public async Task<IActionResult> DepositAsync([FromBody] DepositCommand command)
         {
-            var either = await _mediator.SendCommandAsync(command);
+            var transaction = await _mediator.SendCommandAsync(command);
 
-            return either.Match<IActionResult>(error => this.BadRequest(error.ToString()), this.Ok);
+            return this.Ok(transaction);
         }
 
         /// <summary>
@@ -68,9 +68,9 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpPost("withdraw", Name = nameof(WithdrawAsync))]
         public async Task<IActionResult> WithdrawAsync([FromBody] WithdrawCommand command)
         {
-            var either = await _mediator.SendCommandAsync(command);
+            var transaction = await _mediator.SendCommandAsync(command);
 
-            return either.Match<IActionResult>(error => this.BadRequest(error.ToString()), this.Ok);
+            return this.Ok(transaction);
         }
     }
 }

@@ -8,6 +8,11 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Threading;
+using System.Threading.Tasks;
+
+using JetBrains.Annotations;
+
 using MediatR;
 
 namespace eDoxa.Commands.Abstractions.Handlers
@@ -15,5 +20,7 @@ namespace eDoxa.Commands.Abstractions.Handlers
     public abstract class AsyncCommandHandler<TCommand> : AsyncRequestHandler<TCommand>, ICommandHandler<TCommand>
     where TCommand : ICommand
     {
+        [NotNull]
+        protected abstract override Task Handle([NotNull] TCommand request, CancellationToken cancellationToken);
     }
 }

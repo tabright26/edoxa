@@ -1,5 +1,5 @@
-﻿// Filename: InitializeServiceCommandHandler.cs
-// Date Created: 2019-05-19
+﻿// Filename: CreateUserCommandHandler.cs
+// Date Created: 2019-05-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -15,8 +15,6 @@ using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Stripe.Abstractions;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
     public sealed class CreateUserCommandHandler : AsyncCommandHandler<CreateUserCommand>
@@ -30,7 +28,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
             _userRepository = userRepository;
         }
 
-        protected override async Task Handle([NotNull] CreateUserCommand command, CancellationToken cancellationToken)
+        protected override async Task Handle(CreateUserCommand command, CancellationToken cancellationToken)
         {
             var connectAccountId = await _stripeService.CreateAccountAsync(
                 command.UserId,

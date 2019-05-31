@@ -22,7 +22,7 @@ namespace eDoxa.Cashier.Tests.Utilities.Mocks.Extensions
 {
     public static class MockStripeServiceExtensions
     {
-        private static readonly FakeStripeFactory FakeStripeFactory = FakeStripeFactory.Instance;
+        private static readonly StripeBuilder StripeBuilder = StripeBuilder.Instance;
 
         public static void SetupMethods(this Mock<IStripeService> mockStripeService)
         {
@@ -38,7 +38,7 @@ namespace eDoxa.Cashier.Tests.Utilities.Mocks.Extensions
                         It.IsAny<CancellationToken>()
                     )
                 )
-                .ReturnsAsync(FakeStripeFactory.CreateAccountId);
+                .ReturnsAsync(StripeBuilder.CreateAccountId);
 
             mockStripeService.Setup(
                     mock => mock.VerifyAccountAsync(
@@ -54,13 +54,13 @@ namespace eDoxa.Cashier.Tests.Utilities.Mocks.Extensions
                 .Returns(Task.CompletedTask);
 
             mockStripeService.Setup(mock => mock.CreateBankAccountAsync(It.IsAny<StripeConnectAccountId>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(FakeStripeFactory.CreateBankAccountId);
+                .ReturnsAsync(StripeBuilder.CreateBankAccountId);
 
             mockStripeService
                 .Setup(mock => mock.DeleteBankAccountAsync(It.IsAny<StripeConnectAccountId>(), It.IsAny<StripeBankAccountId>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask);
 
-            mockStripeService.Setup(mock => mock.GetCardsAsync(It.IsAny<StripeCustomerId>())).ReturnsAsync(FakeStripeFactory.CreateCards);
+            mockStripeService.Setup(mock => mock.GetCardsAsync(It.IsAny<StripeCustomerId>())).ReturnsAsync(StripeBuilder.CreateCards);
 
             mockStripeService.Setup(mock => mock.CreateCardAsync(It.IsAny<StripeCustomerId>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask);
@@ -70,7 +70,7 @@ namespace eDoxa.Cashier.Tests.Utilities.Mocks.Extensions
 
             mockStripeService
                 .Setup(mock => mock.CreateCustomerAsync(It.IsAny<Guid>(), It.IsAny<StripeConnectAccountId>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(FakeStripeFactory.CreateCustomerId);
+                .ReturnsAsync(StripeBuilder.CreateCustomerId);
 
             mockStripeService.Setup(mock => mock.UpdateCardDefaultAsync(It.IsAny<StripeCustomerId>(), It.IsAny<StripeCardId>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask);

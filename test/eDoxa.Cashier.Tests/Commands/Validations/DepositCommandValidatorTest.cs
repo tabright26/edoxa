@@ -1,4 +1,4 @@
-﻿// Filename: DepositMoneyCommandValidatorTest.cs
+﻿// Filename: DepositCommandValidatorTest.cs
 // Date Created: 2019-05-29
 // 
 // ================================================
@@ -9,8 +9,11 @@
 // this source code package.
 
 using eDoxa.Cashier.Application.Commands.Validations;
+using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Stripe.Abstractions;
 using eDoxa.Testing.MSTest;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Cashier.Tests.Commands.Validations
@@ -21,7 +24,10 @@ namespace eDoxa.Cashier.Tests.Commands.Validations
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<DepositCommandValidator>.For().WithName("DepositCommandValidator").Assert();
+            ConstructorTests<DepositCommandValidator>
+                .For(typeof(IHttpContextAccessor), typeof(IAccountRepository), typeof(IUserRepository), typeof(IStripeService))
+                .WithName("DepositCommandValidator")
+                .Assert();
         }
     }
 }

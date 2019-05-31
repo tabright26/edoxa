@@ -1,5 +1,5 @@
 ﻿// Filename: VerifyAccountCommand.cs
-// Date Created: 2019-05-13
+// Date Created: 2019-05-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,15 +11,11 @@
 using System.Runtime.Serialization;
 
 using eDoxa.Commands.Abstractions;
-using eDoxa.Commands.Result;
-using eDoxa.Functional;
-
-using FluentValidation.Results;
 
 namespace eDoxa.Cashier.Application.Commands
 {
     [DataContract]
-    public sealed class VerifyAccountCommand : Command<Either<ValidationResult, CommandResult>>
+    public sealed class VerifyAccountCommand : Command
     {
         public VerifyAccountCommand(
             string line1,

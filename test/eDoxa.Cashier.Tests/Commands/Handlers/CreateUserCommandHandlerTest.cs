@@ -33,7 +33,7 @@ namespace eDoxa.Cashier.Tests.Commands.Handlers
     [TestClass]
     public sealed class CreateUserCommandHandlerTest
     {
-        private static readonly FakeStripeFactory FakeStripeFactory = FakeStripeFactory.Instance;
+        private static readonly StripeBuilder StripeBuilder = StripeBuilder.Instance;
         private static readonly FakeCashierFactory FakeCashierFactory = FakeCashierFactory.Instance;
         private Mock<IStripeService> _mockStripeService;
         private Mock<IUserRepository> _mockUserRepository;
@@ -58,7 +58,7 @@ namespace eDoxa.Cashier.Tests.Commands.Handlers
             // Arrange
             var userId = FakeCashierFactory.CreateUserId();
 
-            var person = FakeStripeFactory.CreatePerson();
+            var person = StripeBuilder.CreatePerson();
 
             _mockUserRepository.Setup(mock => mock.Create(It.IsAny<UserId>(), It.IsAny<StripeConnectAccountId>(), It.IsAny<StripeCustomerId>())).Verifiable();
 

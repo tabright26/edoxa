@@ -30,7 +30,7 @@ namespace eDoxa.Cashier.Tests.IntegrationEvents.Handlers
     public sealed class UserCreatedIntegrationEventHandlerTest
     {
         private static readonly FakeCashierFactory FakeCashierFactory = FakeCashierFactory.Instance;
-        private static readonly FakeStripeFactory FakeStripeFactory = FakeStripeFactory.Instance;
+        private static readonly StripeBuilder StripeBuilder = StripeBuilder.Instance;
         private Mock<IMediator> _mockMediator;
 
         [TestInitialize]
@@ -51,7 +51,7 @@ namespace eDoxa.Cashier.Tests.IntegrationEvents.Handlers
             // Arrange
             var userId = FakeCashierFactory.CreateUserId();
 
-            var person = FakeStripeFactory.CreatePerson();
+            var person = StripeBuilder.CreatePerson();
 
             var integrationEvent = new UserCreatedIntegrationEvent
             {

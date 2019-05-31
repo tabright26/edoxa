@@ -89,7 +89,7 @@ namespace eDoxa.Cashier.Tests.Commands.Handlers
             var result = await handler.HandleAsync(command);
 
             // Assert
-            result.Should().BeOfType<Either<ValidationResult, TransactionDTO>>();
+            result.Should().BeOfType<TransactionDTO>();
 
             _mockMoneyAccountService.Verify(
                 mock => mock.WithdrawAsync(It.IsAny<UserId>(), It.IsAny<Money>(), It.IsAny<CancellationToken>()),

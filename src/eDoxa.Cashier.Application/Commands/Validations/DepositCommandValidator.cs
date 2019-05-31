@@ -11,27 +11,91 @@
 using System.Linq;
 
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
+using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Domain.Validators;
 using eDoxa.Cashier.DTO;
+using eDoxa.Cashier.Services.Extensions;
 using eDoxa.Commands.Abstractions.Validations;
+using eDoxa.Functional.Extensions;
+using eDoxa.Security.Extensions;
 using eDoxa.Seedwork.Application.Validations.Extensions;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
+using eDoxa.Stripe.Abstractions;
+using eDoxa.Stripe.Validators;
 
 using FluentValidation;
+
+using Microsoft.AspNetCore.Http;
 
 namespace eDoxa.Cashier.Application.Commands.Validations
 {
     public sealed class DepositCommandValidator : CommandValidator<DepositCommand>
     {
-        public DepositCommandValidator()
+        public DepositCommandValidator(
+            IHttpContextAccessor httpContextAccessor,
+            IAccountRepository accountRepository,
+            IUserRepository userRepository,
+            IStripeService stripeService
+        )
         {
-            this.RuleFor(command => command.Currency).NotNull().SetValidator(new CurrencyDepositValidator());
+            this.RuleFor(command => command.Currency)
+                .NotNull()
+                .SetValidator(new CurrencyDepositValidator())
+                .DependentRules(
+                    () =>
+                    {
+                        this.RuleFor(command => command)
+                            .CustomAsync(
+                                async (command, context, cancellationToken) =>
+                                {
+                                    var userId = httpContextAccessor.GetUserId();
+
+                                    var account = await accountRepository.GetAccountAsNoTrackingAsync(userId);
+
+                                    if (command.Currency.Type == CurrencyType.Money)
+                                    {
+                                        var moneyAccount = new AccountMoney(account);
+
+                                        var errors = new DepositMoneyValidator().Validate(moneyAccount).Errors;
+
+                                        if (errors.Any())
+                                        {
+                                            errors.ForEach(context.AddFailure);
+
+                                            return;
+                                        }
+                                    }
+
+                                    if (command.Currency.Type == CurrencyType.Token)
+                                    {
+                                        var tokenAccount = new AccountToken(account);
+
+                                        var errors = new DepositTokenValidator().Validate(tokenAccount).Errors;
+
+                                        if (errors.Any())
+                                        {
+                                            errors.ForEach(context.AddFailure);
+
+                                            return;
+                                        }
+                                    }
+
+                                    var user = await userRepository.GetUserAsNoTrackingAsync(userId);
+
+                                    var customer = await stripeService.GetCustomerAsync(user.GetCustomerId(), cancellationToken);
+
+                                    new StripeCustomerValidator().Validate(customer).Errors.ForEach(context.AddFailure);
+                                }
+                            );
+                    }
+                );
         }
 
         private sealed class CurrencyDepositValidator : AbstractValidator<CurrencyDTO>
         {
             public CurrencyDepositValidator()
             {
-                this.Enumeration(command => command.Type)
+                this.Enumeration(currency => currency.Type)
                     .DependentRules(
                         () =>
                         {

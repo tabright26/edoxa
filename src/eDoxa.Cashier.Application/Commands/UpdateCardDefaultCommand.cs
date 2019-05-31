@@ -1,5 +1,5 @@
 ﻿// Filename: UpdateCardDefaultCommand.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-05-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,16 +11,12 @@
 using System.Runtime.Serialization;
 
 using eDoxa.Commands.Abstractions;
-using eDoxa.Commands.Result;
-using eDoxa.Functional;
 using eDoxa.Stripe.Models;
-
-using FluentValidation.Results;
 
 namespace eDoxa.Cashier.Application.Commands
 {
     [DataContract]
-    public sealed class UpdateCardDefaultCommand : Command<Either<ValidationResult, CommandResult>>
+    public sealed class UpdateCardDefaultCommand : Command
     {
         public UpdateCardDefaultCommand(StripeCardId cardId)
         {

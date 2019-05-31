@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-namespace eDoxa.Stripe.Utilities
+namespace eDoxa.Stripe
 {
     internal sealed class StripeErrorTypes
     {

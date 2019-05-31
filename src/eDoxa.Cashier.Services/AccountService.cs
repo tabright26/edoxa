@@ -9,6 +9,7 @@
 // this source code package.
 
 using System;
+using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,16 +17,11 @@ using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.Domain.Validators;
 using eDoxa.Cashier.Services.Abstractions;
 using eDoxa.Cashier.Services.Extensions;
-using eDoxa.Functional;
-using eDoxa.Seedwork.Application.Validations.Extensions;
 using eDoxa.Seedwork.Domain.Common;
 using eDoxa.Seedwork.Domain.Common.Abstactions;
 using eDoxa.Stripe.Abstractions;
-
-using FluentValidation.Results;
 
 namespace eDoxa.Cashier.Services
 {
@@ -40,20 +36,11 @@ namespace eDoxa.Cashier.Services
             _stripeService = stripeService;
         }
 
-        public async Task<Either<ValidationResult, ITransaction>> WithdrawAsync(UserId userId, Money money, CancellationToken cancellationToken = default)
+        public async Task<ITransaction> WithdrawAsync(UserId userId, Money money, CancellationToken cancellationToken = default)
         {
             var account = await _accountRepository.GetAccountAsync(userId);
 
             var accountMoney = new AccountMoney(account);
-
-            var validator = new WithdrawMoneyValidator(money);
-
-            var result = validator.Validate(accountMoney);
-
-            if (!result.IsValid)
-            {
-                return result;
-            }
 
             var transaction = accountMoney.Withdraw(money);
 
@@ -81,11 +68,13 @@ namespace eDoxa.Cashier.Services
 
                 await _accountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
-                return new ValidationFailure(null, transaction.Failure.ToString()).ToResult();
+                ExceptionDispatchInfo.Capture(exception.InnerException).Throw();
+
+                throw new InvalidOperationException(transaction.Failure.ToString(), exception);
             }
         }
 
-        public async Task<Either<ValidationResult, ITransaction>> DepositAsync(UserId userId, ICurrency currency, CancellationToken cancellationToken = default)
+        public async Task<ITransaction> DepositAsync(UserId userId, ICurrency currency, CancellationToken cancellationToken = default)
         {
             var account = await _accountRepository.GetAccountAsync(userId);
 
@@ -95,15 +84,6 @@ namespace eDoxa.Cashier.Services
                 {
                     var moneyAccount = new AccountMoney(account);
 
-                    var validator = new DepositMoneyValidator();
-
-                    var result = validator.Validate(moneyAccount);
-
-                    if (!result.IsValid)
-                    {
-                        return result;
-                    }
-
                     return await this.DepositAsync(account.User, moneyAccount, money, cancellationToken);
                 }
 
@@ -111,26 +91,17 @@ namespace eDoxa.Cashier.Services
                 {
                     var tokenAccount = new AccountToken(account);
 
-                    var validator = new DepositTokenValidator();
-
-                    var result = validator.Validate(tokenAccount);
-
-                    if (!result.IsValid)
-                    {
-                        return result;
-                    }
-
                     return await this.DepositAsync(account.User, tokenAccount, token, cancellationToken);
                 }
 
                 default:
                 {
-                    return new ValidationFailure(null, "Invalid currency type.").ToResult();
+                    throw new InvalidOperationException();
                 }
             }
         }
 
-        private async Task<Either<ValidationResult, ITransaction>> DepositAsync<TCurrency>(
+        private async Task<ITransaction> DepositAsync<TCurrency>(
             User user,
             IAccount<TCurrency> account,
             TCurrency currency,
@@ -138,13 +109,6 @@ namespace eDoxa.Cashier.Services
         )
         where TCurrency : Currency
         {
-            var customer = await _stripeService.GetCustomerAsync(user.GetCustomerId(), cancellationToken);
-
-            if (customer.DefaultSource == null)
-            {
-                return new ValidationFailure(null, "There are no credit cards associated with this account.").ToResult();
-            }
-
             var transaction = account.Deposit(currency);
 
             await _accountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
@@ -171,7 +135,9 @@ namespace eDoxa.Cashier.Services
 
                 await _accountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
-                return new ValidationFailure(null, transaction.Failure.ToString()).ToResult();
+                ExceptionDispatchInfo.Capture(exception.InnerException).Throw();
+
+                throw new InvalidOperationException(transaction.Failure.ToString());
             }
         }
     }

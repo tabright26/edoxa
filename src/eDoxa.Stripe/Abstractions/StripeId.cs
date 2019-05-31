@@ -24,7 +24,7 @@ namespace eDoxa.Stripe.Abstractions
     public abstract partial class StripeId<TStripeId> : TypedObject<TStripeId, string>
     where TStripeId : StripeId<TStripeId>
     {
-        protected StripeId(string stripeId, string prefix)
+        protected internal StripeId(string stripeId, string prefix)
         {
             if (!IsValid(stripeId, prefix))
             {

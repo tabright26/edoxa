@@ -1,5 +1,5 @@
 ﻿// Filename: DeleteBankAccountCommandHandler.cs
-// Date Created: 2019-05-19
+// Date Created: 2019-05-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,23 +12,16 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.Domain.Validators;
 using eDoxa.Cashier.Services.Extensions;
 using eDoxa.Commands.Abstractions.Handlers;
-using eDoxa.Commands.Result;
-using eDoxa.Functional;
 using eDoxa.Security.Extensions;
 using eDoxa.Stripe.Abstractions;
-
-using FluentValidation.Results;
-
-using JetBrains.Annotations;
 
 using Microsoft.AspNetCore.Http;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
-    public sealed class DeleteBankAccountCommandHandler : ICommandHandler<DeleteBankAccountCommand, Either<ValidationResult, CommandResult>>
+    public sealed class DeleteBankAccountCommandHandler : AsyncCommandHandler<DeleteBankAccountCommand>
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IStripeService _stripeService;
@@ -41,29 +34,17 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
             _userRepository = userRepository;
         }
 
-        [ItemNotNull]
-        public async Task<Either<ValidationResult, CommandResult>> Handle([NotNull] DeleteBankAccountCommand request, CancellationToken cancellationToken)
+        protected override async Task Handle(DeleteBankAccountCommand request, CancellationToken cancellationToken)
         {
             var userId = _httpContextAccessor.GetUserId();
 
             var user = await _userRepository.GetUserAsync(userId);
-
-            var validator = new RemoveBankAccountValidator();
-
-            var result = validator.Validate(user);
-
-            if (!result.IsValid)
-            {
-                return result;
-            }
 
             await _stripeService.DeleteBankAccountAsync(user.GetConnectAccountId(), user.GetBankAccountId(), cancellationToken);
 
             user.RemoveBankAccount();
 
             await _userRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
-
-            return new CommandResult("The bank account has been removed.");
         }
     }
 }

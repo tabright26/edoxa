@@ -8,8 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Stripe.Utilities;
-
 using JetBrains.Annotations;
 
 using Microsoft.AspNetCore.Mvc;

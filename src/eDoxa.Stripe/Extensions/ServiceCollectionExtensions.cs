@@ -9,6 +9,7 @@
 // this source code package.
 
 using eDoxa.Stripe.Abstractions;
+using eDoxa.Stripe.Services;
 
 using Microsoft.Extensions.DependencyInjection;
 

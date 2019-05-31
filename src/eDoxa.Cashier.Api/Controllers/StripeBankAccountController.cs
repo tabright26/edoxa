@@ -1,5 +1,5 @@
 ﻿// Filename: StripeBankAccountController.cs
-// Date Created: 2019-05-14
+// Date Created: 2019-05-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -43,9 +43,9 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpPost(Name = nameof(CreateBankAccountAsync))]
         public async Task<IActionResult> CreateBankAccountAsync([FromBody] CreateBankAccountCommand command)
         {
-            var either = await _mediator.SendCommandAsync(command);
+            await _mediator.SendCommandAsync(command);
 
-            return either.Match<IActionResult>(error => this.BadRequest(error.ToString()), success => this.Ok(success.ToString()));
+            return this.Ok("The bank account has been added.");
         }
 
         /// <summary>
@@ -55,9 +55,9 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpDelete(Name = nameof(DeleteBankAccountAsync))]
         public async Task<IActionResult> DeleteBankAccountAsync()
         {
-            var either = await _mediator.SendCommandAsync(new DeleteBankAccountCommand());
+            await _mediator.SendCommandAsync(new DeleteBankAccountCommand());
 
-            return either.Match<IActionResult>(error => this.BadRequest(error.ToString()), success => this.Ok(success.ToString()));
+            return this.Ok("The bank account has been removed.");
         }
     }
 }

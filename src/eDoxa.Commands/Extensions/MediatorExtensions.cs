@@ -22,5 +22,10 @@ namespace eDoxa.Commands.Extensions
         {
             return await mediator.Send(command);
         }
+
+        public static async Task SendCommandAsync(this IMediator mediator, ICommand command)
+        {
+            await mediator.Send(command);
+        }
     }
 }

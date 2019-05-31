@@ -315,5 +315,5 @@ tempkey.rsa
 healthchecksdb
 
 # Temporairy folders
-tmp
-temp
+tmp/
+temp/

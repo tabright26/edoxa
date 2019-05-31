@@ -9,8 +9,10 @@
 // this source code package.
 
 using eDoxa.Cashier.Application.Commands.Validations;
+using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Testing.MSTest;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Cashier.Tests.Commands.Validations
@@ -21,7 +23,9 @@ namespace eDoxa.Cashier.Tests.Commands.Validations
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<CreateBankAccountCommandValidator>.For().WithName("CreateBankAccountCommandValidator").Assert();
+            ConstructorTests<CreateBankAccountCommandValidator>.For(typeof(IHttpContextAccessor), typeof(IUserRepository))
+                .WithName("CreateBankAccountCommandValidator")
+                .Assert();
         }
     }
 }

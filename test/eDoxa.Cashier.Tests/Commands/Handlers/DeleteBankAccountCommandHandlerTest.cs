@@ -17,16 +17,10 @@ using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Tests.Utilities.Fakes;
 using eDoxa.Cashier.Tests.Utilities.Mocks.Extensions;
 using eDoxa.Commands.Extensions;
-using eDoxa.Commands.Result;
-using eDoxa.Functional;
 using eDoxa.Seedwork.Domain.Common;
 using eDoxa.Stripe.Abstractions;
 using eDoxa.Stripe.Models;
 using eDoxa.Testing.MSTest;
-
-using FluentAssertions;
-
-using FluentValidation.Results;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -78,11 +72,9 @@ namespace eDoxa.Cashier.Tests.Commands.Handlers
             var handler = new DeleteBankAccountCommandHandler(_mockHttpContextAccessor.Object, _mockStripeService.Object, _mockUserRepository.Object);
 
             // Act
-            var result = await handler.HandleAsync(new DeleteBankAccountCommand());
+            await handler.HandleAsync(new DeleteBankAccountCommand());
 
             // Assert
-            result.Should().BeOfType<Either<ValidationResult, CommandResult>>();
-
             _mockStripeService.Verify(
                 mock => mock.DeleteBankAccountAsync(It.IsAny<StripeConnectAccountId>(), It.IsAny<StripeBankAccountId>(), It.IsAny<CancellationToken>()),
                 Times.Once

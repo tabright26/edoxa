@@ -44,6 +44,14 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
                 .SingleOrDefaultAsync();
         }
 
+        public async Task<Account> GetAccountAsNoTrackingAsync(UserId userId)
+        {
+            return await _context.Accounts.AsNoTracking().Include(account => account.User)
+                .Include(account => account.Transactions)
+                .Where(account => account.User.Id == userId)
+                .SingleOrDefaultAsync();
+        }
+
         public async Task<Balance> GetBalanceAsNoTrackingAsync(UserId userId, CurrencyType currency)
         {
             var transactions = await this.GetTransactionsAsNoTrackingAsync(userId);

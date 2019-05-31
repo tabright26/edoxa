@@ -12,15 +12,12 @@ using System.Runtime.Serialization;
 
 using eDoxa.Cashier.DTO;
 using eDoxa.Commands.Abstractions;
-using eDoxa.Functional;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
-
-using FluentValidation.Results;
 
 namespace eDoxa.Cashier.Application.Commands
 {
     [DataContract]
-    public sealed class DepositCommand : Command<Either<ValidationResult, TransactionDTO>>
+    public sealed class DepositCommand : Command<TransactionDTO>
     {
         public DepositCommand(decimal amount, CurrencyType type)
         {

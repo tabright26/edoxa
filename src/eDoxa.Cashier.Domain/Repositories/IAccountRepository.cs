@@ -22,6 +22,8 @@ namespace eDoxa.Cashier.Domain.Repositories
     {
         Task<Account> GetAccountAsync(UserId userId);
 
+        Task<Account> GetAccountAsNoTrackingAsync(UserId userId);
+
         Task<Balance> GetBalanceAsNoTrackingAsync(UserId userId, CurrencyType currency);
 
         Task<IReadOnlyCollection<Transaction>> GetTransactionsAsNoTrackingAsync(UserId userId);

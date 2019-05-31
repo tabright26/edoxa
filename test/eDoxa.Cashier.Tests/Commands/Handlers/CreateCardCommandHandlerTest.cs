@@ -17,17 +17,11 @@ using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Tests.Utilities.Fakes;
 using eDoxa.Cashier.Tests.Utilities.Mocks.Extensions;
 using eDoxa.Commands.Extensions;
-using eDoxa.Commands.Result;
-using eDoxa.Functional;
 using eDoxa.Seedwork.Domain.Common;
 using eDoxa.Stripe.Abstractions;
 using eDoxa.Stripe.Models;
 using eDoxa.Stripe.Tests.Utilities;
 using eDoxa.Testing.MSTest;
-
-using FluentAssertions;
-
-using FluentValidation.Results;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -40,7 +34,7 @@ namespace eDoxa.Cashier.Tests.Commands.Handlers
     public sealed class CreateCardCommandHandlerTest
     {
         private static readonly FakeCashierFactory FakeCashierFactory = FakeCashierFactory.Instance;
-        private static readonly FakeStripeFactory FakeStripeFactory = FakeStripeFactory.Instance;
+        private static readonly StripeBuilder StripeBuilder = StripeBuilder.Instance;
         private Mock<IHttpContextAccessor> _mockHttpContextAccessor;
         private Mock<IStripeService> _mockStripeService;
         private Mock<IUserRepository> _mockUserRepository;
@@ -67,7 +61,7 @@ namespace eDoxa.Cashier.Tests.Commands.Handlers
         public async Task HandleAsync_CreateCardCommand_ShouldBeOfTypeEither()
         {
             // Arrange
-            var card = FakeStripeFactory.CreateCard();
+            var card = StripeBuilder.CreateCard();
 
             var user = FakeCashierFactory.CreateUser();
 
@@ -76,15 +70,10 @@ namespace eDoxa.Cashier.Tests.Commands.Handlers
             var handler = new CreateCardCommandHandler(_mockHttpContextAccessor.Object, _mockStripeService.Object, _mockUserRepository.Object);
 
             // Act
-            var result = await handler.HandleAsync(new CreateCardCommand(card.Id));
+            await handler.HandleAsync(new CreateCardCommand(card.Id));
 
             // Assert
-            result.Should().BeOfType<Either<ValidationResult, CommandResult>>();
-
-            _mockStripeService.Verify(
-                mock => mock.CreateCardAsync(It.IsAny<StripeCustomerId>(), It.IsAny<string>(), It.IsAny<CancellationToken>()),
-                Times.Once
-            );
+            _mockStripeService.Verify(mock => mock.CreateCardAsync(It.IsAny<StripeCustomerId>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }

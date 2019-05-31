@@ -17,15 +17,14 @@ using System.Threading.Tasks;
 using eDoxa.Security;
 using eDoxa.Stripe.Abstractions;
 using eDoxa.Stripe.Models;
-using eDoxa.Stripe.Utilities;
 
 using Microsoft.Extensions.Configuration;
 
 using Stripe;
 
-namespace eDoxa.Stripe
+namespace eDoxa.Stripe.Services
 {
-    public sealed class StripeService : IStripeService
+    internal sealed class StripeService : IStripeService
     {
         private readonly AccountService _accountService;
         private readonly CardService _cardService;

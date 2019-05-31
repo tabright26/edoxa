@@ -12,17 +12,16 @@ using System;
 using System.Collections.Generic;
 
 using eDoxa.Stripe.Models;
-using eDoxa.Stripe.Utilities;
 
 using Stripe;
 
 namespace eDoxa.Stripe.Tests.Utilities
 {
-    public sealed class FakeStripeFactory
+    public sealed class StripeBuilder
     {
-        private static readonly Lazy<FakeStripeFactory> Lazy = new Lazy<FakeStripeFactory>(() => new FakeStripeFactory());
+        private static readonly Lazy<StripeBuilder> Lazy = new Lazy<StripeBuilder>(() => new StripeBuilder());
 
-        public static FakeStripeFactory Instance => Lazy.Value;
+        public static StripeBuilder Instance => Lazy.Value;
 
         public StripeConnectAccountId CreateAccountId()
         {
