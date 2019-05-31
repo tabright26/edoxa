@@ -33,7 +33,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 
         public static implicit operator Price(Currency currency)
         {
-            return new Price(currency.Amount, currency.Type);
+            return new Price(currency);
         }
 
         public static implicit operator decimal(Currency currency)

@@ -12,11 +12,12 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.Services.Stripe.Abstractions;
+using eDoxa.Cashier.Services.Extensions;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Commands.Result;
 using eDoxa.Functional;
 using eDoxa.Security.Extensions;
+using eDoxa.Stripe.Abstractions;
 
 using FluentValidation.Results;
 
@@ -47,7 +48,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
             var user = await _userRepository.GetUserAsNoTrackingAsync(userId);
 
             await _stripeService.VerifyAccountAsync(
-                user.AccountId,
+                user.GetConnectAccountId(),
                 command.Line1,
                 command.Line2,
                 command.City,

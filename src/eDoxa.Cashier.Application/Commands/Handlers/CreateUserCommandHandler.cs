@@ -12,8 +12,8 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.Services.Stripe.Abstractions;
 using eDoxa.Commands.Abstractions.Handlers;
+using eDoxa.Stripe.Abstractions;
 
 using JetBrains.Annotations;
 
@@ -32,7 +32,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 
         protected override async Task Handle([NotNull] CreateUserCommand command, CancellationToken cancellationToken)
         {
-            var accountId = await _stripeService.CreateAccountAsync(
+            var connectAccountId = await _stripeService.CreateAccountAsync(
                 command.UserId,
                 command.Email,
                 command.FirstName,
@@ -43,9 +43,9 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
                 cancellationToken
             );
 
-            var customerId = await _stripeService.CreateCustomerAsync(command.UserId, accountId, command.Email, cancellationToken);
+            var customerId = await _stripeService.CreateCustomerAsync(command.UserId, connectAccountId, command.Email, cancellationToken);
 
-            _userRepository.Create(command.UserId, accountId, customerId);
+            _userRepository.Create(command.UserId, connectAccountId.ToString(), customerId);
 
             await _userRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
         }

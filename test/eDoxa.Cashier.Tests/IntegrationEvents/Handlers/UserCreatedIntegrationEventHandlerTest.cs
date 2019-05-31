@@ -15,6 +15,7 @@ using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.IntegrationEvents;
 using eDoxa.Cashier.Application.IntegrationEvents.Handlers;
 using eDoxa.Cashier.Tests.Utilities.Fakes;
+using eDoxa.Stripe.Tests.Utilities;
 using eDoxa.Testing.MSTest;
 
 using MediatR;

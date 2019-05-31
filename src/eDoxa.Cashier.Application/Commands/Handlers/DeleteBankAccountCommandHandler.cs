@@ -13,11 +13,12 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Validators;
-using eDoxa.Cashier.Services.Stripe.Abstractions;
+using eDoxa.Cashier.Services.Extensions;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Commands.Result;
 using eDoxa.Functional;
 using eDoxa.Security.Extensions;
+using eDoxa.Stripe.Abstractions;
 
 using FluentValidation.Results;
 
@@ -56,7 +57,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
                 return result;
             }
 
-            await _stripeService.DeleteBankAccountAsync(user.AccountId, user.BankAccountId, cancellationToken);
+            await _stripeService.DeleteBankAccountAsync(user.GetConnectAccountId(), user.GetBankAccountId(), cancellationToken);
 
             user.RemoveBankAccount();
 

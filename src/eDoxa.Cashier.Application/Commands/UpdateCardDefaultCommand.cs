@@ -10,10 +10,10 @@
 
 using System.Runtime.Serialization;
 
-using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Commands.Abstractions;
 using eDoxa.Commands.Result;
 using eDoxa.Functional;
+using eDoxa.Stripe.Models;
 
 using FluentValidation.Results;
 

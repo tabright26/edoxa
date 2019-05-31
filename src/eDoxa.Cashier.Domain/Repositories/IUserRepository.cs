@@ -10,7 +10,6 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Common;
@@ -19,7 +18,7 @@ namespace eDoxa.Cashier.Domain.Repositories
 {
     public interface IUserRepository : IRepository<User>
     {
-        void Create(UserId userId, StripeAccountId accountId, StripeCustomerId customerId);
+        void Create(UserId userId, string connectAccountId, string customerId);
 
         Task<User> GetUserAsync(UserId userId);
 

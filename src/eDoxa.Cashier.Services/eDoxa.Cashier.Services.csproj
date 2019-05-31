@@ -10,10 +10,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\eDoxa.Cashier.Domain\eDoxa.Cashier.Domain.csproj" />
-    <ProjectReference Include="..\eDoxa.Cashier.Services.Stripe\eDoxa.Cashier.Services.Stripe.csproj" />
     <ProjectReference Include="..\eDoxa.Functional\eDoxa.Functional.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Domain\eDoxa.Seedwork.Domain.csproj" />
+    <ProjectReference Include="..\eDoxa.Stripe\eDoxa.Stripe.csproj" />
   </ItemGroup>
 
 </Project>

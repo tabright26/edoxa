@@ -11,7 +11,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Domain.Common;
 using eDoxa.Seedwork.Infrastructure.Abstractions;
@@ -42,11 +41,11 @@ namespace eDoxa.Cashier.Infrastructure
                 {
                     var user = new User(
                         UserId.Parse("e4655fe0-affd-4323-b022-bdb2ebde6091"),
-                        new StripeAccountId("acct_1EbASfAPhMnJQouG"),
-                        new StripeCustomerId("cus_F5L8mRzm6YN5ma")
+                        "acct_1EbASfAPhMnJQouG",
+                        "cus_F5L8mRzm6YN5ma"
                     );
 
-                    user.AddBankAccount(new StripeBankAccountId("ba_1EbB3sAPhMnJQouGHsvc0NFn"));
+                    user.AddBankAccount("ba_1EbB3sAPhMnJQouGHsvc0NFn");
 
                     _context.Users.Add(user);
 

@@ -22,10 +22,10 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 {
     public sealed class User : Entity<UserId>, IAggregateRoot
     {
-        public User(UserId userId, StripeAccountId accountId, StripeCustomerId customerId) : this()
+        public User(UserId userId, string connectAccountId, string customerId) : this()
         {
             Id = userId;
-            AccountId = accountId;
+            ConnectAccountId = connectAccountId;
             CustomerId = customerId;
             Account = new Account(this);
         }
@@ -35,15 +35,16 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
             BankAccountId = null;
         }
 
-        public StripeAccountId AccountId { get; private set; }
+        public string ConnectAccountId { get; private set; }
 
-        public StripeCustomerId CustomerId { get; private set; }
+        public string CustomerId { get; private set; }
 
-        [CanBeNull] public StripeBankAccountId BankAccountId { get; private set; }
+        [CanBeNull]
+        public string BankAccountId { get; private set; }
 
         public Account Account { get; private set; }
 
-        public void AddBankAccount(StripeBankAccountId bankAccountId)
+        public void AddBankAccount(string bankAccountId)
         {
             if (!this.CanAddBankAccount())
             {

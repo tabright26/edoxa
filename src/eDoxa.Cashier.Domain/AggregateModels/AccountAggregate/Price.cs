@@ -10,6 +10,7 @@
 
 using System;
 
+using eDoxa.Seedwork.Domain.Common.Abstactions;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
@@ -20,21 +21,21 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 
         private readonly Money _money;
 
-        public Price(decimal amount, CurrencyType type)
+        public Price(ICurrency currency)
         {
             Money money = null;
 
-            if (type == CurrencyType.Money)
+            if (currency.Type == CurrencyType.Money)
             {
-                money = new Money(amount);
+                money = new Money(currency.Amount);
             }
 
-            if (type == CurrencyType.Token)
+            if (currency.Type == CurrencyType.Token)
             {
-                money = new Money(amount / TokenToMoneyFactor);
+                money = new Money(currency.Amount / TokenToMoneyFactor);
             }
 
-            _money = money ?? throw new ArgumentException(nameof(type));
+            _money = money ?? throw new ArgumentException(nameof(currency));
         }
 
         public long ToCents()

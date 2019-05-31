@@ -5,12 +5,15 @@
   </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.0" />
-        <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />
+      <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.1" />
+      <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />
+      <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
     </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\eDoxa.Cashier.Api\eDoxa.Cashier.Api.csproj" />
+    <ProjectReference Include="..\..\src\eDoxa.Stripe\eDoxa.Stripe.csproj" />
+    <ProjectReference Include="..\eDoxa.Stripe.Tests\eDoxa.Stripe.Tests.csproj" />
     <ProjectReference Include="..\eDoxa.Testing.MSTest\eDoxa.Testing.MSTest.csproj" />
   </ItemGroup>
 

@@ -8,7 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Domain.Common;
@@ -29,18 +28,11 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
 
             builder.EntityId(user => user.Id).IsRequired();
 
-            builder.Property(user => user.AccountId).HasConversion(accountId => accountId.ToString(), accountId => new StripeAccountId(accountId)).IsRequired();
+            builder.Property(user => user.ConnectAccountId).IsRequired();
 
-            builder.Property(user => user.CustomerId)
-                .HasConversion(customerId => customerId.ToString(), customerId => new StripeCustomerId(customerId))
-                .IsRequired();
+            builder.Property(user => user.CustomerId).IsRequired();
 
-            builder.Property(user => user.BankAccountId)
-                .HasConversion(
-                    bankAccountId => bankAccountId != null ? bankAccountId.ToString() : null,
-                    bankAccountId => bankAccountId != null ? new StripeBankAccountId(bankAccountId) : null
-                )
-                .IsRequired(false);
+            builder.Property(user => user.BankAccountId).IsRequired(false);
 
             builder.HasOne(user => user.Account).WithOne(account => account.User).HasForeignKey<Account>(nameof(UserId)).IsRequired().OnDelete(DeleteBehavior.Cascade);
 

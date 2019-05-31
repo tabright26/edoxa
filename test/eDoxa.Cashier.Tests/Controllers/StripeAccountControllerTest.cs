@@ -13,8 +13,8 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Controllers;
 using eDoxa.Cashier.Application.Commands;
-using eDoxa.Cashier.Tests.Utilities.Fakes;
 using eDoxa.Commands.Result;
+using eDoxa.Stripe.Tests.Utilities;
 using eDoxa.Testing.MSTest;
 
 using FluentAssertions;

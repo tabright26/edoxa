@@ -12,11 +12,12 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.Services.Stripe.Abstractions;
+using eDoxa.Cashier.Services.Extensions;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Commands.Result;
 using eDoxa.Functional;
 using eDoxa.Security.Extensions;
+using eDoxa.Stripe.Abstractions;
 
 using FluentValidation.Results;
 
@@ -46,7 +47,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
             
             var user = await _userRepository.GetUserAsNoTrackingAsync(userId);
 
-            await _stripeService.CreateCardAsync(user.CustomerId, command.SourceToken, cancellationToken);
+            await _stripeService.CreateCardAsync(user.GetCustomerId(), command.SourceToken, cancellationToken);
 
             return new CommandResult("The card has been added.");
         }

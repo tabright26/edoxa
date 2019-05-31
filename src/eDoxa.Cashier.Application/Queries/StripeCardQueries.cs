@@ -15,8 +15,9 @@ using AutoMapper;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
-using eDoxa.Cashier.Services.Stripe.Abstractions;
+using eDoxa.Cashier.Services.Extensions;
 using eDoxa.Security.Extensions;
+using eDoxa.Stripe.Abstractions;
 
 using Microsoft.AspNetCore.Http;
 
@@ -46,7 +47,7 @@ namespace eDoxa.Cashier.Application.Queries
 
             var user = await _userRepository.GetUserAsNoTrackingAsync(userId);
 
-            var cards = await _service.GetCardsAsync(user.CustomerId);
+            var cards = await _service.GetCardsAsync(user.GetCustomerId());
 
             return _mapper.Map<StripeCardListDTO>(cards);
         }

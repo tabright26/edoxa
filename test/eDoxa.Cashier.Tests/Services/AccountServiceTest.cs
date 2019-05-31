@@ -10,7 +10,7 @@
 
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Services;
-using eDoxa.Cashier.Services.Stripe.Abstractions;
+using eDoxa.Stripe.Abstractions;
 using eDoxa.Testing.MSTest;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;

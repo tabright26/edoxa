@@ -8,15 +8,13 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Domain.Abstractions;
-using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.Services.Stripe.Abstractions;
-using eDoxa.Cashier.Tests.Utilities.Fakes;
-using eDoxa.Seedwork.Domain.Common;
+using eDoxa.Stripe.Abstractions;
+using eDoxa.Stripe.Models;
+using eDoxa.Stripe.Tests.Utilities;
 
 using Moq;
 
@@ -30,7 +28,7 @@ namespace eDoxa.Cashier.Tests.Utilities.Mocks.Extensions
         {
             mockStripeService.Setup(
                     mock => mock.CreateAccountAsync(
-                        It.IsAny<UserId>(),
+                        It.IsAny<Guid>(),
                         It.IsAny<string>(),
                         It.IsAny<string>(),
                         It.IsAny<string>(),
@@ -44,7 +42,7 @@ namespace eDoxa.Cashier.Tests.Utilities.Mocks.Extensions
 
             mockStripeService.Setup(
                     mock => mock.VerifyAccountAsync(
-                        It.IsAny<StripeAccountId>(),
+                        It.IsAny<StripeConnectAccountId>(),
                         It.IsAny<string>(),
                         It.IsAny<string>(),
                         It.IsAny<string>(),
@@ -55,11 +53,11 @@ namespace eDoxa.Cashier.Tests.Utilities.Mocks.Extensions
                 )
                 .Returns(Task.CompletedTask);
 
-            mockStripeService.Setup(mock => mock.CreateBankAccountAsync(It.IsAny<StripeAccountId>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            mockStripeService.Setup(mock => mock.CreateBankAccountAsync(It.IsAny<StripeConnectAccountId>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(FakeStripeFactory.CreateBankAccountId);
 
             mockStripeService
-                .Setup(mock => mock.DeleteBankAccountAsync(It.IsAny<StripeAccountId>(), It.IsAny<StripeBankAccountId>(), It.IsAny<CancellationToken>()))
+                .Setup(mock => mock.DeleteBankAccountAsync(It.IsAny<StripeConnectAccountId>(), It.IsAny<StripeBankAccountId>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask);
 
             mockStripeService.Setup(mock => mock.GetCardsAsync(It.IsAny<StripeCustomerId>())).ReturnsAsync(FakeStripeFactory.CreateCards);
@@ -71,7 +69,7 @@ namespace eDoxa.Cashier.Tests.Utilities.Mocks.Extensions
                 .Returns(Task.CompletedTask);
 
             mockStripeService
-                .Setup(mock => mock.CreateCustomerAsync(It.IsAny<UserId>(), It.IsAny<StripeAccountId>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .Setup(mock => mock.CreateCustomerAsync(It.IsAny<Guid>(), It.IsAny<StripeConnectAccountId>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(FakeStripeFactory.CreateCustomerId);
 
             mockStripeService.Setup(mock => mock.UpdateCardDefaultAsync(It.IsAny<StripeCustomerId>(), It.IsAny<StripeCardId>(), It.IsAny<CancellationToken>()))
@@ -79,13 +77,13 @@ namespace eDoxa.Cashier.Tests.Utilities.Mocks.Extensions
 
             mockStripeService
                 .Setup(
-                    mock => mock.CreateInvoiceAsync(It.IsAny<StripeCustomerId>(), It.IsAny<Money>(), It.IsAny<ITransaction>(), It.IsAny<CancellationToken>())
+                    mock => mock.CreateInvoiceAsync(It.IsAny<StripeCustomerId>(), It.IsAny<long>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<CancellationToken>())
                 )
                 .Returns(Task.CompletedTask);
 
             mockStripeService
                 .Setup(
-                    mock => mock.CreateTransferAsync(It.IsAny<StripeAccountId>(), It.IsAny<Money>(), It.IsAny<ITransaction>(), It.IsAny<CancellationToken>())
+                    mock => mock.CreateTransferAsync(It.IsAny<StripeConnectAccountId>(), It.IsAny<long>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<CancellationToken>())
                 )
                 .Returns(Task.CompletedTask);
         }

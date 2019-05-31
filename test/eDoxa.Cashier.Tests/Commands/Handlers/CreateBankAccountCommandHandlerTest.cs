@@ -13,15 +13,16 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
-using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Tests.Utilities.Fakes;
 using eDoxa.Cashier.Tests.Utilities.Mocks.Extensions;
 using eDoxa.Commands.Extensions;
 using eDoxa.Commands.Result;
 using eDoxa.Functional;
 using eDoxa.Seedwork.Domain.Common;
+using eDoxa.Stripe.Abstractions;
+using eDoxa.Stripe.Models;
+using eDoxa.Stripe.Tests.Utilities;
 using eDoxa.Testing.MSTest;
 
 using FluentAssertions;
@@ -85,7 +86,7 @@ namespace eDoxa.Cashier.Tests.Commands.Handlers
             result.Should().BeOfType<Either<ValidationResult, CommandResult>>();
 
             _mockStripeService.Verify(
-                mock => mock.CreateBankAccountAsync(It.IsAny<StripeAccountId>(), It.IsAny<string>(), It.IsAny<CancellationToken>()),
+                mock => mock.CreateBankAccountAsync(It.IsAny<StripeConnectAccountId>(), It.IsAny<string>(), It.IsAny<CancellationToken>()),
                 Times.Once
             );
         }

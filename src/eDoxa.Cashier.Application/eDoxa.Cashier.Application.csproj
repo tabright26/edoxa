@@ -9,7 +9,6 @@
     <ProjectReference Include="..\eDoxa.Cashier.Domain\eDoxa.Cashier.Domain.csproj" />
     <ProjectReference Include="..\eDoxa.Cashier.DTO\eDoxa.Cashier.DTO.csproj" />
     <ProjectReference Include="..\eDoxa.Cashier.Infrastructure\eDoxa.Cashier.Infrastructure.csproj" />
-    <ProjectReference Include="..\eDoxa.Cashier.Services.Stripe\eDoxa.Cashier.Services.Stripe.csproj" />
     <ProjectReference Include="..\eDoxa.Cashier.Services\eDoxa.Cashier.Services.csproj" />
     <ProjectReference Include="..\eDoxa.Commands\eDoxa.Commands.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />

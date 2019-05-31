@@ -7,7 +7,7 @@
   <ItemGroup>
     <ProjectReference Include="..\eDoxa.AutoMapper\eDoxa.AutoMapper.csproj" />
     <ProjectReference Include="..\eDoxa.Cashier.Domain\eDoxa.Cashier.Domain.csproj" />
-    <ProjectReference Include="..\eDoxa.Cashier.Services.Stripe\eDoxa.Cashier.Services.Stripe.csproj" />
+    <ProjectReference Include="..\eDoxa.Stripe\eDoxa.Stripe.csproj" />
   </ItemGroup>
 
 </Project>

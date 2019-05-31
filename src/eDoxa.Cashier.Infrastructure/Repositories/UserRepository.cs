@@ -11,7 +11,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Seedwork.Domain;
@@ -35,9 +34,9 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
 
     public sealed partial class UserRepository : IUserRepository
     {
-        public void Create(UserId userId, StripeAccountId accountId, StripeCustomerId customerId)
+        public void Create(UserId userId, string connectAccountId, string customerId)
         {
-            _context.Add(new User(userId, accountId, customerId));
+            _context.Add(new User(userId, connectAccountId, customerId));
         }
 
         public async Task<User> GetUserAsync(UserId userId)

@@ -14,13 +14,13 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using eDoxa.Cashier.Application.Queries;
-using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.DTO;
-using eDoxa.Cashier.Services.Stripe.Abstractions;
 using eDoxa.Cashier.Tests.Utilities.Fakes;
 using eDoxa.Cashier.Tests.Utilities.Mocks.Extensions;
 using eDoxa.Seedwork.Domain.Common;
+using eDoxa.Stripe.Abstractions;
+using eDoxa.Stripe.Models;
 using eDoxa.Testing.MSTest;
 
 using FluentAssertions;

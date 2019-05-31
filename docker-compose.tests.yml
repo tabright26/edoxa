@@ -37,6 +37,15 @@ services:
     volumes:
       - ./tmp:/var/tmp
 
+  stripe.tests:
+    image: ${ACR_REGISTRY:-edoxa}/stripe.tests:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: test/eDoxa.Stripe.Tests/Dockerfile
+    entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Stripe.TestResults.xml
+    volumes:
+      - ./tmp:/var/tmp
+
   arena.tests:
     image: ${ACR_REGISTRY:-edoxa}/arena.tests:${ACR_TAG:-latest}
     build:

@@ -13,11 +13,12 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Validators;
-using eDoxa.Cashier.Services.Stripe.Abstractions;
+using eDoxa.Cashier.Services.Extensions;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Commands.Result;
 using eDoxa.Functional;
 using eDoxa.Security.Extensions;
+using eDoxa.Stripe.Abstractions;
 
 using FluentValidation.Results;
 
@@ -56,7 +57,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
                 return result;
             }
 
-            var bankAccountId = await _stripeService.CreateBankAccountAsync(user.AccountId, command.ExternalAccountTokenId, cancellationToken);
+            var bankAccountId = await _stripeService.CreateBankAccountAsync(user.GetConnectAccountId(), command.ExternalAccountTokenId, cancellationToken);
 
             user.AddBankAccount(bankAccountId);
 

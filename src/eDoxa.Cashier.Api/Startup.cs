@@ -18,14 +18,14 @@ using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Application.Modules;
 using eDoxa.Cashier.DTO.Factories;
 using eDoxa.Cashier.Infrastructure;
-using eDoxa.Cashier.Services.Stripe.Extensions;
-using eDoxa.Cashier.Services.Stripe.Filters;
 using eDoxa.Monitoring.Extensions;
 using eDoxa.Security.Extensions;
 using eDoxa.Security.Resources;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.ServiceBus.Extensions;
+using eDoxa.Stripe.Extensions;
+using eDoxa.Stripe.Filters;
 using eDoxa.Swagger.Extensions;
 using eDoxa.Versioning.Extensions;
 

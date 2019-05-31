@@ -11,11 +11,11 @@
 using System;
 
 using eDoxa.Cashier.Domain.Abstractions;
-using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate.Transactions;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Domain.Common;
+using eDoxa.Stripe.Models;
 
 namespace eDoxa.Cashier.Tests.Utilities.Fakes
 {
@@ -32,7 +32,7 @@ namespace eDoxa.Cashier.Tests.Utilities.Fakes
 
         public User CreateUser()
         {
-            return new User(this.CreateUserId(), new StripeAccountId("acct_qweqwe1231qwe"), new StripeCustomerId("cus_qweqwe1231qwe"));
+            return new User(this.CreateUserId(), new StripeConnectAccountId("acct_qweqwe1231qwe"), new StripeCustomerId("cus_qweqwe1231qwe"));
         }
 
         public ITransaction CreateTransaction()

@@ -18,11 +18,12 @@ using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Validators;
 using eDoxa.Cashier.Services.Abstractions;
-using eDoxa.Cashier.Services.Stripe.Abstractions;
+using eDoxa.Cashier.Services.Extensions;
 using eDoxa.Functional;
 using eDoxa.Seedwork.Application.Validations.Extensions;
 using eDoxa.Seedwork.Domain.Common;
 using eDoxa.Seedwork.Domain.Common.Abstactions;
+using eDoxa.Stripe.Abstractions;
 
 using FluentValidation.Results;
 
@@ -60,7 +61,13 @@ namespace eDoxa.Cashier.Services
 
             try
             {
-                await _stripeService.CreateTransferAsync(account.User.AccountId, money, transaction, cancellationToken);
+                await _stripeService.CreateTransferAsync(
+                    account.User.GetConnectAccountId(),
+                    new Price(money).ToCents(),
+                    transaction.Id,
+                    transaction.Description.ToString(),
+                    cancellationToken
+                );
 
                 transaction = accountMoney.CompleteTransaction(transaction);
 
@@ -131,7 +138,7 @@ namespace eDoxa.Cashier.Services
         )
         where TCurrency : Currency
         {
-            var customer = await _stripeService.GetCustomerAsync(user.CustomerId, cancellationToken);
+            var customer = await _stripeService.GetCustomerAsync(user.GetCustomerId(), cancellationToken);
 
             if (customer.DefaultSource == null)
             {
@@ -145,9 +152,10 @@ namespace eDoxa.Cashier.Services
             try
             {
                 await _stripeService.CreateInvoiceAsync(
-                    user.CustomerId,
-                    currency,
-                    transaction,
+                    user.GetCustomerId(),
+                    new Price(currency).ToCents(),
+                    transaction.Id,
+                    transaction.Description.ToString(),
                     cancellationToken
                 );
 
