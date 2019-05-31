@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 using Newtonsoft.Json;
 
-namespace eDoxa.AutoMapper
+namespace eDoxa.Seedwork.Application
 {
     [JsonArray]
     public partial class ListDTO<T>

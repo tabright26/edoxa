@@ -10,7 +10,7 @@
 
 using System.Collections.Generic;
 
-using eDoxa.AutoMapper;
+using eDoxa.Seedwork.Application;
 
 namespace eDoxa.Cashier.DTO
 {

@@ -36,7 +36,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\eDoxa.Autofac\eDoxa.Autofac.csproj" />
-        <ProjectReference Include="..\eDoxa.AutoMapper\eDoxa.AutoMapper.csproj" />
         <ProjectReference Include="..\eDoxa.Identity.Application\eDoxa.Identity.Application.csproj" />
         <ProjectReference Include="..\eDoxa.Monitoring\eDoxa.Monitoring.csproj" />
         <ProjectReference Include="..\eDoxa.Security\eDoxa.Security.csproj" />

@@ -12,7 +12,6 @@ using AutoMapper;
 
 using eDoxa.Cashier.Application.Queries;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.DTO.Factories;
 using eDoxa.Cashier.Tests.Utilities.Fakes;
 using eDoxa.Testing.MSTest;
 
@@ -27,7 +26,6 @@ namespace eDoxa.Cashier.Tests.Queries
     public sealed class AccountQueriesTest
     {
         private static readonly FakeCashierFactory FakeCashierFactory = FakeCashierFactory.Instance;
-        private static readonly CashierMapperFactory CashierMapperFactory = CashierMapperFactory.Instance;
         private Mock<IHttpContextAccessor> _mockHttpContextAccessor;
 
         [TestInitialize]

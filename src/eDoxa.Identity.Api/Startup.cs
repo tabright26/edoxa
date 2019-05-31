@@ -11,13 +11,13 @@
 using System;
 using System.Reflection;
 
+using AutoMapper;
+
 using eDoxa.Autofac.Extensions;
-using eDoxa.AutoMapper.Extensions;
 using eDoxa.Identity.Api.Extensions;
 using eDoxa.Identity.Application;
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
-using eDoxa.Identity.DTO.Factories;
 using eDoxa.Identity.Infrastructure;
 using eDoxa.Monitoring.Extensions;
 using eDoxa.Security.Extensions;
@@ -64,7 +64,7 @@ namespace eDoxa.Identity.Api
 
             services.AddVersioning();
 
-            services.AddAutoMapper(IdentityMapperFactory.Instance, AppDomain.CurrentDomain.GetAssemblies());
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddMvcFilters();
 

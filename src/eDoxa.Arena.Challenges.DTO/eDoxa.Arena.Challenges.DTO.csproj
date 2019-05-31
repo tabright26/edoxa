@@ -8,7 +8,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\eDoxa.Arena.Challenges.Domain\eDoxa.Arena.Challenges.Domain.csproj" />
-        <ProjectReference Include="..\eDoxa.AutoMapper\eDoxa.AutoMapper.csproj" />
         <ProjectReference Include="..\eDoxa.Functional\eDoxa.Functional.csproj" />
         <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
     </ItemGroup>

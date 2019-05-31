@@ -60,10 +60,10 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id");
 
-                    b.Property<string>("AccountId")
-                        .IsRequired();
-
                     b.Property<string>("BankAccountId");
+
+                    b.Property<string>("ConnectAccountId")
+                        .IsRequired();
 
                     b.Property<string>("CustomerId")
                         .IsRequired();

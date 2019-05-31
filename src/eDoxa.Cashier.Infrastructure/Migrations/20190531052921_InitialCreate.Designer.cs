@@ -10,7 +10,7 @@ using eDoxa.Cashier.Infrastructure;
 namespace eDoxa.Cashier.Infrastructure.Migrations
 {
     [DbContext(typeof(CashierDbContext))]
-    [Migration("20190530185930_InitialCreate")]
+    [Migration("20190531052921_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -64,10 +64,10 @@ namespace eDoxa.Cashier.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id");
 
-                    b.Property<string>("AccountId")
-                        .IsRequired();
-
                     b.Property<string>("BankAccountId");
+
+                    b.Property<string>("ConnectAccountId")
+                        .IsRequired();
 
                     b.Property<string>("CustomerId")
                         .IsRequired();

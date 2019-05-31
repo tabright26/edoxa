@@ -12,13 +12,13 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 
+using AutoMapper;
+
 using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Application.Modules;
-using eDoxa.Arena.Challenges.DTO.Factories;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Services.Extensions;
 using eDoxa.Autofac.Extensions;
-using eDoxa.AutoMapper.Extensions;
 using eDoxa.Monitoring.Extensions;
 using eDoxa.Security.Extensions;
 using eDoxa.Security.Resources;
@@ -63,7 +63,7 @@ namespace eDoxa.Arena.Challenges.Api
 
             services.AddVersioning();
 
-            services.AddAutoMapper(ChallengesMapperFactory.Instance, AppDomain.CurrentDomain.GetAssemblies());
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddMvcFilters();
 

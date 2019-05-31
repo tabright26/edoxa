@@ -14,7 +14,7 @@ using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Cashier.Tests.Domain.AggregateModels.TokenAccountAggregate
+namespace eDoxa.Cashier.Tests.Domain.AggregateModels.AccountAggregate
 {
     [TestClass]
     public sealed class TokenTest

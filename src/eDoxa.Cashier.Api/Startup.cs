@@ -12,11 +12,11 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 
+using AutoMapper;
+
 using eDoxa.Autofac.Extensions;
-using eDoxa.AutoMapper.Extensions;
 using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Application.Modules;
-using eDoxa.Cashier.DTO.Factories;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Monitoring.Extensions;
 using eDoxa.Security.Extensions;
@@ -67,7 +67,7 @@ namespace eDoxa.Cashier.Api
 
             services.AddVersioning();
 
-            services.AddAutoMapper(CashierMapperFactory.Instance, AppDomain.CurrentDomain.GetAssemblies());
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddMvcFilters(filters => filters.Add<StripeExceptionFilter>());
 
