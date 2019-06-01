@@ -8,7 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -36,20 +35,20 @@ namespace eDoxa.Cashier.Tests.Controllers
     public sealed class StripeCardsControllerTest
     {
         private static readonly StripeBuilder StripeBuilder = StripeBuilder.Instance;
-        private Mock<IStripeCardQueries> _mockCardQueries;
+        private Mock<ICardQuery> _mockCardQueries;
         private Mock<IMediator> _mockMediator;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            _mockCardQueries = new Mock<IStripeCardQueries>();
+            _mockCardQueries = new Mock<ICardQuery>();
             _mockMediator = new Mock<IMediator>();
         }
 
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<StripeCardsController>.For(typeof(IStripeCardQueries), typeof(IMediator))
+            ConstructorTests<StripeCardsController>.For(typeof(ICardQuery), typeof(IMediator))
                 .WithName("StripeCardsController")
                 .WithAttributes(
                     typeof(AuthorizeAttribute),
@@ -68,12 +67,9 @@ namespace eDoxa.Cashier.Tests.Controllers
             // Arrange
             _mockCardQueries.Setup(queries => queries.GetCardsAsync())
                 .ReturnsAsync(
-                    new StripeCardListDTO
+                    new List<CardDTO>
                     {
-                        Items = new List<StripeCardDTO>
-                        {
-                            new StripeCardDTO()
-                        }
+                        new CardDTO()
                     }
                 )
                 .Verifiable();
@@ -93,7 +89,7 @@ namespace eDoxa.Cashier.Tests.Controllers
         public async Task GetCardsAsync_ShouldBeOfTypeNoContentResult()
         {
             // Arrange
-            _mockCardQueries.Setup(mock => mock.GetCardsAsync()).ReturnsAsync(new StripeCardListDTO()).Verifiable();
+            _mockCardQueries.Setup(mock => mock.GetCardsAsync()).ReturnsAsync(new List<CardDTO>()).Verifiable();
 
             var controller = new StripeCardsController(_mockCardQueries.Object, _mockMediator.Object);
 

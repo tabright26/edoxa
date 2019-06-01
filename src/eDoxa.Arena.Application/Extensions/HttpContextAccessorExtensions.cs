@@ -14,15 +14,12 @@ using eDoxa.Arena.Domain.ValueObjects;
 using eDoxa.Security.Extensions;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
-using JetBrains.Annotations;
-
 using Microsoft.AspNetCore.Http;
 
 namespace eDoxa.Arena.Application.Extensions
 {
     public static class HttpContextAccessorExtensions
     {
-        [CanBeNull]
         public static Func<Game, ExternalAccount> FuncExternalAccount(this IHttpContextAccessor accessor)
         {
             return game =>

@@ -27,6 +27,6 @@ namespace eDoxa.Arena.Challenges.DTO
         public decimal? AverageScore { get; set; }
 
         [JsonProperty("matches")]
-        public MatchListDTO Matches { get; set; }
+        public MatchDTO[] Matches { get; set; }
     }
 }

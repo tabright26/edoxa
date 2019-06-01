@@ -29,6 +29,6 @@ namespace eDoxa.Arena.Challenges.DTO
         public decimal TotalScore { get; set; }
 
         [JsonProperty("stats")]
-        public StatListDTO Stats { get; set; }
+        public StatDTO[] Stats { get; set; }
     }
 }

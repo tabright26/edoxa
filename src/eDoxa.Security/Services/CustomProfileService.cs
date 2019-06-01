@@ -12,7 +12,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Functional.Extensions;
+using eDoxa.Seedwork.Domain.Extensions;
 
 using IdentityServer4.Models;
 using IdentityServer4.Services;

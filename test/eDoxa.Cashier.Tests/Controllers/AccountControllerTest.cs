@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Api.Controllers;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
-using eDoxa.Functional;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 using eDoxa.Testing.MSTest;
 
@@ -32,20 +31,20 @@ namespace eDoxa.Cashier.Tests.Controllers
     [TestClass]
     public sealed class AccountControllerTest
     {
-        private Mock<IAccountQueries> _mockAccountQueries;
+        private Mock<IBalanceQuery> _mockAccountQueries;
         private Mock<IMediator> _mockMediator;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            _mockAccountQueries = new Mock<IAccountQueries>();
+            _mockAccountQueries = new Mock<IBalanceQuery>();
             _mockMediator = new Mock<IMediator>();
         }
 
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<AccountController>.For(typeof(IAccountQueries), typeof(IMediator))
+            ConstructorTests<AccountController>.For(typeof(IBalanceQuery), typeof(IMediator))
                 .WithName("AccountController")
                 .WithAttributes(
                     typeof(AuthorizeAttribute),
@@ -63,7 +62,7 @@ namespace eDoxa.Cashier.Tests.Controllers
         {
             // Arrange
             _mockAccountQueries.Setup(mediator => mediator.GetBalanceAsync(It.IsAny<CurrencyType>()))
-                .ReturnsAsync(new Option<BalanceDTO>(new BalanceDTO()))
+                .ReturnsAsync(new BalanceDTO())
                 .Verifiable();
 
             var controller = new AccountController(_mockAccountQueries.Object, _mockMediator.Object);
@@ -81,7 +80,7 @@ namespace eDoxa.Cashier.Tests.Controllers
         public async Task GetBalanceAsync_ShouldBeOfTypeNotFoundObjectResult()
         {
             // Arrange
-            _mockAccountQueries.Setup(mock => mock.GetBalanceAsync(It.IsAny<CurrencyType>())).ReturnsAsync(new Option<BalanceDTO>()).Verifiable();
+            _mockAccountQueries.Setup(mock => mock.GetBalanceAsync(It.IsAny<CurrencyType>())).ReturnsAsync((BalanceDTO) null).Verifiable();
 
             var controller = new AccountController(_mockAccountQueries.Object, _mockMediator.Object);
 

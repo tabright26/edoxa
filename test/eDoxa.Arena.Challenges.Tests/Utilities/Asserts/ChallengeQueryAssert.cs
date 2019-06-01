@@ -18,7 +18,7 @@ namespace eDoxa.Arena.Challenges.Tests.Utilities.Asserts
 {
     public static class ChallengeQueryAssert
     {
-        public static void IsMapped(ChallengeListDTO challenges)
+        public static void IsMapped(ChallengeDTO[] challenges)
         {
             challenges.Should().NotBeNullOrEmpty();
 
@@ -47,7 +47,7 @@ namespace eDoxa.Arena.Challenges.Tests.Utilities.Asserts
             IsMapped(challenge.Participants);
         }
 
-        public static void IsMapped(ParticipantListDTO participants)
+        public static void IsMapped(ParticipantDTO[] participants)
         {
             participants.Should().NotBeNullOrEmpty();
 
@@ -68,7 +68,7 @@ namespace eDoxa.Arena.Challenges.Tests.Utilities.Asserts
             IsMapped(participant.Matches);
         }
 
-        public static void IsMapped(MatchListDTO matches)
+        public static void IsMapped(MatchDTO[] matches)
         {
             matches.Should().NotBeNullOrEmpty();
 
@@ -87,7 +87,7 @@ namespace eDoxa.Arena.Challenges.Tests.Utilities.Asserts
             IsMapped(match.Stats);
         }
 
-        private static void IsMapped(StatListDTO stats)
+        private static void IsMapped(StatDTO[] stats)
         {
             stats.Should().NotBeNullOrEmpty();
 

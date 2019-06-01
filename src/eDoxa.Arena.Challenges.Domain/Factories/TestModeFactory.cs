@@ -14,8 +14,8 @@ using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Arena.Domain.ValueObjects;
-using eDoxa.Functional.Extensions;
 using eDoxa.Seedwork.Domain.Common;
+using eDoxa.Seedwork.Domain.Extensions;
 
 namespace eDoxa.Arena.Challenges.Domain.Factories
 {

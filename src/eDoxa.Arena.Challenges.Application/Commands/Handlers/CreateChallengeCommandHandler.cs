@@ -1,5 +1,5 @@
 ﻿// Filename: CreateChallengeCommandHandler.cs
-// Date Created: 2019-05-25
+// Date Created: 2019-05-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -16,16 +16,13 @@ using AutoMapper;
 using eDoxa.Arena.Challenges.DTO;
 using eDoxa.Arena.Challenges.Services.Abstractions;
 using eDoxa.Arena.Domain.ValueObjects;
-using eDoxa.Commands.Abstractions.Handlers;
-using eDoxa.Functional;
-
-using FluentValidation.Results;
+using eDoxa.Seedwork.Application.Commands.Abstractions.Handlers;
 
 using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Application.Commands.Handlers
 {
-    public sealed class CreateChallengeCommandHandler : ICommandHandler<CreateChallengeCommand, Either<ValidationResult, ChallengeDTO>>
+    public sealed class CreateChallengeCommandHandler : ICommandHandler<CreateChallengeCommand, ChallengeDTO>
     {
         private readonly IChallengeService _challengeService;
         private readonly IMapper _mapper;
@@ -37,9 +34,9 @@ namespace eDoxa.Arena.Challenges.Application.Commands.Handlers
         }
 
         [ItemCanBeNull]
-        public async Task<Either<ValidationResult, ChallengeDTO>> Handle([NotNull] CreateChallengeCommand command, CancellationToken cancellationToken)
+        public async Task<ChallengeDTO> Handle([NotNull] CreateChallengeCommand command, CancellationToken cancellationToken)
         {
-            var either = await _challengeService.CreateChallengeAsync(
+            var challenge = await _challengeService.CreateChallengeAsync(
                 command.Name,
                 command.Game,
                 command.Duration,
@@ -50,7 +47,7 @@ namespace eDoxa.Arena.Challenges.Application.Commands.Handlers
                 cancellationToken
             );
 
-            return either.Match<Either<ValidationResult, ChallengeDTO>>(error => error, challenge => _mapper.Map<ChallengeDTO>(challenge));
+            return _mapper.Map<ChallengeDTO>(challenge);
         }
     }
 }

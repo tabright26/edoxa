@@ -16,7 +16,6 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.DTO;
 using eDoxa.Arena.Challenges.DTO.Queries;
 using eDoxa.Arena.Challenges.Tests.Utilities.Mocks.Extensions;
-using eDoxa.Functional;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 using FluentAssertions;
@@ -51,16 +50,11 @@ namespace eDoxa.Arena.Challenges.Tests.Controllers
         public async Task FindUserChallengeHistoryAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            var value = new ChallengeListDTO
-            {
-                Items = new List<ChallengeDTO>
+            _queries.Setup(queries => queries.FindUserChallengeHistoryAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()))
+                .ReturnsAsync(new List<ChallengeDTO>
                 {
                     new ChallengeDTO()
-                }
-            };
-
-            _queries.Setup(queries => queries.FindUserChallengeHistoryAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()))
-                .ReturnsAsync(new Option<ChallengeListDTO>(value))
+                })
                 .Verifiable();
 
             var controller = new ChallengeHistoryController(_queries.Object);
@@ -81,7 +75,7 @@ namespace eDoxa.Arena.Challenges.Tests.Controllers
         {
             // Arrange
             _queries.Setup(queries => queries.FindUserChallengeHistoryAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()))
-                .ReturnsAsync(new Option<ChallengeListDTO>())
+                .ReturnsAsync(new List<ChallengeDTO>())
                 .Verifiable();
 
             var controller = new ChallengeHistoryController(_queries.Object);

@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Commands.Abstractions.Validations;
+using eDoxa.Seedwork.Application.Commands.Abstractions.Validations;
 
 using FluentValidation;
 

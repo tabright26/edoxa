@@ -12,7 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Services.Abstractions;
-using eDoxa.Commands.Abstractions.Handlers;
+using eDoxa.Seedwork.Application.Commands.Abstractions.Handlers;
 
 using JetBrains.Annotations;
 

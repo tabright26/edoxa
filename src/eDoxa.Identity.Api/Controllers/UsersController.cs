@@ -26,11 +26,11 @@ namespace eDoxa.Identity.Api.Controllers
     [ApiExplorerSettings(GroupName = "Users")]
     public class UsersController : ControllerBase
     {
-        private readonly IUserQueries _queries;
+        private readonly IUserQuery _userQuery;
 
-        public UsersController(IUserQueries queries)
+        public UsersController(IUserQuery userQuery)
         {
-            _queries = queries;
+            _userQuery = userQuery;
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace eDoxa.Identity.Api.Controllers
         [HttpGet(Name = nameof(FindUsersAsync))]
         public async Task<IActionResult> FindUsersAsync()
         {
-            var users = await _queries.FindUsersAsync();
+            var users = await _userQuery.FindUsersAsync();
 
             return users
                 .Select(this.Ok)

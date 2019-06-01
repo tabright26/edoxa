@@ -16,17 +16,14 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Domain.ValueObjects;
-using eDoxa.Functional;
 using eDoxa.Seedwork.Domain.Common;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
-
-using FluentValidation.Results;
 
 namespace eDoxa.Arena.Challenges.Services.Abstractions
 {
     public interface IChallengeService
     {
-        Task<Either<ValidationResult, Challenge>> CreateChallengeAsync(
+        Task<Challenge> CreateChallengeAsync(
             string name,
             Game game,
             int duration,
@@ -37,7 +34,7 @@ namespace eDoxa.Arena.Challenges.Services.Abstractions
             CancellationToken cancellationToken = default
         );
 
-        Task<Either<ValidationResult, Participant>> RegisterParticipantAsync(
+        Task<Participant> RegisterParticipantAsync(
             ChallengeId challengeId,
             UserId userId,
             Func<Game, ExternalAccount> funcExternalAccount,

@@ -8,7 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
@@ -27,11 +26,11 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
     [ApiExplorerSettings(GroupName = "Matches")]
     public class MatchesController : ControllerBase
     {
-        private readonly IMatchQuery _query;
+        private readonly IMatchQuery _matchQuery;
 
-        public MatchesController(IMatchQuery query)
+        public MatchesController(IMatchQuery matchQuery)
         {
-            _query = query;
+            _matchQuery = matchQuery;
         }
 
         /// <summary>
@@ -40,13 +39,14 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         [HttpGet("{matchId}", Name = nameof(FindMatchAsync))]
         public async Task<IActionResult> FindMatchAsync(MatchId matchId)
         {
-            var match = await _query.FindMatchAsync(matchId);
+            var match = await _matchQuery.FindMatchAsync(matchId);
 
-            return match
-                .Select(this.Ok)
-                .Cast<IActionResult>()
-                .DefaultIfEmpty(this.NotFound("Match not found."))
-                .Single();
+            if (match == null)
+            {
+                return this.NotFound("Match not found.");
+            }
+
+            return this.Ok(match);
         }
     }
 }

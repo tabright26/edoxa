@@ -8,6 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Collections.Generic;
+
 using eDoxa.Identity.DTO;
 
 using FluentAssertions;
@@ -16,7 +18,7 @@ namespace eDoxa.Identity.Tests.Utilities.Asserts
 {
     internal static class IdentityQueryAssert
     {
-        public static void IsMapped(UserListDTO users)
+        public static void IsMapped(IReadOnlyCollection<UserDTO> users)
         {
             users.Should().NotBeNull();
 

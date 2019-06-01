@@ -107,19 +107,6 @@ namespace eDoxa.Seedwork.Tests.Aggregate
         }
 
         [TestMethod]
-        public void Equals_ReferenceEquals_ShouldBeTrue()
-        {
-            // Arrange
-            var valueObject = new MockValueObjectWithProperty();
-
-            // Act
-            var condition = valueObject.Equals(valueObject);
-
-            // Assert
-            condition.Should().BeTrue();
-        }
-
-        [TestMethod]
         public void Equals_DifferentType_ShouldBeFalse()
         {
             // Arrange
@@ -128,7 +115,7 @@ namespace eDoxa.Seedwork.Tests.Aggregate
             var valueObject2 = new MockValueObjectWithProperties();
 
             // Act
-            var condition = valueObject1.Equals(valueObject2);
+            var condition = valueObject1 == valueObject2;
 
             // Assert
             condition.Should().BeFalse();

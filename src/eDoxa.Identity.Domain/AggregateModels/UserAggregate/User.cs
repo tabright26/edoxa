@@ -11,7 +11,7 @@
 using System;
 using System.Collections.Generic;
 
-using eDoxa.Functional.Extensions;
+using eDoxa.Seedwork.Domain.Extensions;
 
 using Microsoft.AspNetCore.Identity;
 

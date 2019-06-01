@@ -12,16 +12,13 @@ using System.Runtime.Serialization;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.DTO;
-using eDoxa.Commands.Abstractions;
-using eDoxa.Functional;
+using eDoxa.Seedwork.Application.Commands.Abstractions;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
-
-using FluentValidation.Results;
 
 namespace eDoxa.Arena.Challenges.Application.Commands
 {
     [DataContract]
-    public class CreateChallengeCommand : Command<Either<ValidationResult, ChallengeDTO>>
+    public class CreateChallengeCommand : Command<ChallengeDTO>
     {
         public CreateChallengeCommand(
             string name,

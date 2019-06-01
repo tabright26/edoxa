@@ -15,18 +15,14 @@ using System.Reflection;
 using AutoMapper;
 
 using eDoxa.Arena.Challenges.Api.Extensions;
-using eDoxa.Arena.Challenges.Application.Modules;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Services.Extensions;
-using eDoxa.Autofac.Extensions;
-using eDoxa.Monitoring.Extensions;
 using eDoxa.Security.Extensions;
 using eDoxa.Security.Resources;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.ServiceBus.Extensions;
 using eDoxa.Swagger.Extensions;
-using eDoxa.Versioning.Extensions;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -77,7 +73,7 @@ namespace eDoxa.Arena.Challenges.Api
 
             services.AddArena();
 
-            return services.Build<ApplicationModule>();
+            return services.Build<Modules>();
         }
 
         public void Configure(IApplicationBuilder application, IApiVersionDescriptionProvider provider)

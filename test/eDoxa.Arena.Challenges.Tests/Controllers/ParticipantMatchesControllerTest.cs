@@ -15,7 +15,6 @@ using eDoxa.Arena.Challenges.Api.Controllers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.DTO;
 using eDoxa.Arena.Challenges.DTO.Queries;
-using eDoxa.Functional;
 
 using FluentAssertions;
 
@@ -45,16 +44,11 @@ namespace eDoxa.Arena.Challenges.Tests.Controllers
         public async Task FindParticipantMatchesAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            var value = new MatchListDTO
-            {
-                Items = new List<MatchDTO>
+            _queries.Setup(queries => queries.FindParticipantMatchesAsync(It.IsAny<ParticipantId>()))
+                .ReturnsAsync(new List<MatchDTO>
                 {
                     new MatchDTO()
-                }
-            };
-
-            _queries.Setup(queries => queries.FindParticipantMatchesAsync(It.IsAny<ParticipantId>()))
-                .ReturnsAsync(new Option<MatchListDTO>(value))
+                })
                 .Verifiable();
 
             var controller = new ParticipantMatchesController(_queries.Object);
@@ -74,7 +68,7 @@ namespace eDoxa.Arena.Challenges.Tests.Controllers
         public async Task FindParticipantMatchesAsync_ShouldBeNoContentResult()
         {
             // Arrange
-            _queries.Setup(queries => queries.FindParticipantMatchesAsync(It.IsAny<ParticipantId>())).ReturnsAsync(new Option<MatchListDTO>()).Verifiable();
+            _queries.Setup(queries => queries.FindParticipantMatchesAsync(It.IsAny<ParticipantId>())).ReturnsAsync(new List<MatchDTO>()).Verifiable();
 
             var controller = new ParticipantMatchesController(_queries.Object);
 

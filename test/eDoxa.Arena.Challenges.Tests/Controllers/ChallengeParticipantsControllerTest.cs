@@ -17,7 +17,6 @@ using eDoxa.Arena.Challenges.Application.Commands;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.DTO;
 using eDoxa.Arena.Challenges.DTO.Queries;
-using eDoxa.Functional;
 
 using FluentAssertions;
 
@@ -47,16 +46,11 @@ namespace eDoxa.Arena.Challenges.Tests.Controllers
         public async Task FindChallengeParticipantsAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            var value = new ParticipantListDTO
-            {
-                Items = new List<ParticipantDTO>
+            _queries.Setup(queries => queries.FindChallengeParticipantsAsync(It.IsAny<ChallengeId>()))
+                .ReturnsAsync(new List<ParticipantDTO>
                 {
                     new ParticipantDTO()
-                }
-            };
-
-            _queries.Setup(queries => queries.FindChallengeParticipantsAsync(It.IsAny<ChallengeId>()))
-                .ReturnsAsync(new Option<ParticipantListDTO>(value))
+                })
                 .Verifiable();
 
             var controller = new ChallengeParticipantsController(_queries.Object, _mediator.Object);
@@ -75,7 +69,7 @@ namespace eDoxa.Arena.Challenges.Tests.Controllers
         {
             // Arrange
             _queries.Setup(queries => queries.FindChallengeParticipantsAsync(It.IsAny<ChallengeId>()))
-                .ReturnsAsync(new Option<ParticipantListDTO>())
+                .ReturnsAsync(new List<ParticipantDTO>())
                 .Verifiable();
 
             var controller = new ChallengeParticipantsController(_queries.Object, _mediator.Object);
@@ -94,7 +88,7 @@ namespace eDoxa.Arena.Challenges.Tests.Controllers
         {
             // Arrange
             _mediator.Setup(mediator => mediator.Send(It.IsAny<RegisterParticipantCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(string.Empty)
+                .ReturnsAsync(new ParticipantDTO())
                 .Verifiable();
 
             var controller = new ChallengeParticipantsController(_queries.Object, _mediator.Object);

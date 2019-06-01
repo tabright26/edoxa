@@ -1,5 +1,5 @@
 ﻿// Filename: UsersControllerTest.cs
-// Date Created: 2019-05-28
+// Date Created: 2019-05-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,9 +8,9 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using eDoxa.Functional;
 using eDoxa.Identity.Api.Controllers;
 using eDoxa.Identity.DTO;
 using eDoxa.Identity.DTO.Queries;
@@ -27,29 +27,28 @@ namespace eDoxa.Identity.Tests.Controllers
     [TestClass]
     public sealed class UsersControllerTest
     {
-        private Mock<IUserQueries> _queries;
+        private Mock<IUserQuery> _mockUserQueries;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            _queries = new Mock<IUserQueries>();
+            _mockUserQueries = new Mock<IUserQuery>();
         }
 
         [TestMethod]
         public async Task FindUsersAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            var value = new UserListDTO
-            {
-                Items =
-                {
-                    new UserDTO()
-                }
-            };
+            _mockUserQueries.Setup(service => service.FindUsersAsync())
+                .ReturnsAsync(
+                    new List<UserDTO>
+                    {
+                        new UserDTO()
+                    }
+                )
+                .Verifiable();
 
-            _queries.Setup(service => service.FindUsersAsync()).ReturnsAsync(new Option<UserListDTO>(value)).Verifiable();
-
-            var controller = new UsersController(_queries.Object);
+            var controller = new UsersController(_mockUserQueries.Object);
 
             // Act
             var result = await controller.FindUsersAsync();
@@ -62,9 +61,9 @@ namespace eDoxa.Identity.Tests.Controllers
         public async Task FindUsersAsync_ShouldBeNoContentObjectResult()
         {
             // Arrange
-            _queries.Setup(queries => queries.FindUsersAsync()).ReturnsAsync(new Option<UserListDTO>()).Verifiable();
+            _mockUserQueries.Setup(queries => queries.FindUsersAsync()).ReturnsAsync(new List<UserDTO>()).Verifiable();
 
-            var controller = new UsersController(_queries.Object);
+            var controller = new UsersController(_mockUserQueries.Object);
 
             // Act
             var result = await controller.FindUsersAsync();

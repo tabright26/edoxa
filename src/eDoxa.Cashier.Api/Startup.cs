@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-05-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -14,11 +14,8 @@ using System.Reflection;
 
 using AutoMapper;
 
-using eDoxa.Autofac.Extensions;
 using eDoxa.Cashier.Api.Extensions;
-using eDoxa.Cashier.Application.Modules;
 using eDoxa.Cashier.Infrastructure;
-using eDoxa.Monitoring.Extensions;
 using eDoxa.Security.Extensions;
 using eDoxa.Security.Resources;
 using eDoxa.Seedwork.Application.Extensions;
@@ -27,7 +24,6 @@ using eDoxa.ServiceBus.Extensions;
 using eDoxa.Stripe.Extensions;
 using eDoxa.Stripe.Filters;
 using eDoxa.Swagger.Extensions;
-using eDoxa.Versioning.Extensions;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -81,7 +77,7 @@ namespace eDoxa.Cashier.Api
 
             services.AddStripe();
 
-            return services.Build<ApplicationModule>();
+            return services.Build<Modules>();
         }
 
         public void Configure(IApplicationBuilder application, IApiVersionDescriptionProvider provider)

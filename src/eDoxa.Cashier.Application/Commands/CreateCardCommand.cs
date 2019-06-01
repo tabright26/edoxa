@@ -10,7 +10,7 @@
 
 using System.Runtime.Serialization;
 
-using eDoxa.Commands.Abstractions;
+using eDoxa.Seedwork.Application.Commands.Abstractions;
 
 namespace eDoxa.Cashier.Application.Commands
 {

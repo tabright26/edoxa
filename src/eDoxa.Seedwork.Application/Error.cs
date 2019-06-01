@@ -1,14 +1,16 @@
-﻿// Filename: ErrorDTO.cs
-// Date Created: 2019-04-27
+﻿// Filename: Error.cs
+// Date Created: 2019-05-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
+
+using JetBrains.Annotations;
 
 using Microsoft.AspNetCore.Http;
 
@@ -31,10 +33,13 @@ namespace eDoxa.Seedwork.Application
             Message = "Internal Server Error";
         }
 
-        [JsonProperty("statusCode")] public int StatusCode { get; }
+        [JsonProperty("statusCode")]
+        public int StatusCode { get; }
 
-        [JsonProperty("message")] public string Message { get; }
+        [JsonProperty("message")]
+        public string Message { get; }
 
+        [CanBeNull]
         public override string ToString()
         {
             return JsonConvert.SerializeObject(this);

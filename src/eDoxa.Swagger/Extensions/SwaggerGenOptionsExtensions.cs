@@ -10,8 +10,8 @@
 
 using System.Linq;
 
-using eDoxa.Functional.Extensions;
 using eDoxa.Seedwork.Domain.Aggregate;
+using eDoxa.Seedwork.Domain.Extensions;
 
 using Microsoft.Extensions.DependencyInjection;
 

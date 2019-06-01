@@ -12,21 +12,22 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
+using AutoMapper;
+
 using eDoxa.Arena.Challenges.Application.Commands;
 using eDoxa.Arena.Challenges.Application.Commands.Handlers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
+using eDoxa.Arena.Challenges.DTO;
 using eDoxa.Arena.Challenges.Services.Abstractions;
 using eDoxa.Arena.Challenges.Tests.Utilities.Fakes;
 using eDoxa.Arena.Challenges.Tests.Utilities.Mocks.Extensions;
 using eDoxa.Arena.Domain.ValueObjects;
-using eDoxa.Commands.Extensions;
-using eDoxa.Functional;
+using eDoxa.Seedwork.Application.Commands.Extensions;
 using eDoxa.Seedwork.Domain.Common;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 using FluentAssertions;
-
-using FluentValidation.Results;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -41,6 +42,7 @@ namespace eDoxa.Arena.Challenges.Tests.Commands.Handlers
         private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
         private Mock<IChallengeService> _mockChallengeService;
         private Mock<IHttpContextAccessor> _mockHttpContextAccessor;
+        private Mock<IMapper> _mockMapper;
 
         [TestInitialize]
         public void TestInitialize()
@@ -48,6 +50,7 @@ namespace eDoxa.Arena.Challenges.Tests.Commands.Handlers
             _mockChallengeService = new Mock<IChallengeService>();
             _mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
             _mockHttpContextAccessor.SetupClaims();
+            _mockMapper = new Mock<IMapper>();
         }
 
         [TestMethod]
@@ -65,13 +68,15 @@ namespace eDoxa.Arena.Challenges.Tests.Commands.Handlers
                 .ReturnsAsync(FakeChallengeFactory.CreateParticipant())
                 .Verifiable();
 
-            var handler = new RegisterParticipantCommandHandler(_mockHttpContextAccessor.Object, _mockChallengeService.Object);
+            _mockMapper.Setup(x => x.Map<ParticipantDTO>(It.IsAny<Participant>())).Returns(new ParticipantDTO()).Verifiable();
+
+            var handler = new RegisterParticipantCommandHandler(_mockHttpContextAccessor.Object, _mockChallengeService.Object, _mockMapper.Object);
 
             // Act
             var result = await handler.HandleAsync(new RegisterParticipantCommand(new ChallengeId()));
 
             // Assert
-            result.Should().BeOfType<Either<ValidationResult, string>>();
+            result.Should().BeOfType<ParticipantDTO>();
         }
     }
 }

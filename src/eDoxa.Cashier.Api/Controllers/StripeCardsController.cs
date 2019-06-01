@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.DTO.Queries;
-using eDoxa.Commands.Extensions;
+using eDoxa.Seedwork.Application.Commands.Extensions;
 using eDoxa.Stripe.Filters.Attributes;
 using eDoxa.Stripe.Models;
 
@@ -33,11 +33,11 @@ namespace eDoxa.Cashier.Api.Controllers
     public sealed class StripeCardsController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly IStripeCardQueries _stripeCardQueries;
+        private readonly ICardQuery _cardQuery;
 
-        public StripeCardsController(IStripeCardQueries stripeCardQueries, IMediator mediator)
+        public StripeCardsController(ICardQuery cardQuery, IMediator mediator)
         {
-            _stripeCardQueries = stripeCardQueries;
+            _cardQuery = cardQuery;
             _mediator = mediator;
         }
 
@@ -47,7 +47,7 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpGet(Name = nameof(GetCardsAsync))]
         public async Task<IActionResult> GetCardsAsync()
         {
-            var cards = await _stripeCardQueries.GetCardsAsync();
+            var cards = await _cardQuery.GetCardsAsync();
 
             return cards.Select(this.Ok).Cast<IActionResult>().DefaultIfEmpty(this.NoContent()).Single();
         }

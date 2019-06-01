@@ -11,13 +11,13 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Application.Extensions;
-using eDoxa.Arena.Challenges.Services.Abstractions;
-using eDoxa.Commands.Abstractions.Handlers;
-using eDoxa.Functional;
-using eDoxa.Security.Extensions;
+using AutoMapper;
 
-using FluentValidation.Results;
+using eDoxa.Arena.Application.Extensions;
+using eDoxa.Arena.Challenges.DTO;
+using eDoxa.Arena.Challenges.Services.Abstractions;
+using eDoxa.Security.Extensions;
+using eDoxa.Seedwork.Application.Commands.Abstractions.Handlers;
 
 using JetBrains.Annotations;
 
@@ -25,30 +25,31 @@ using Microsoft.AspNetCore.Http;
 
 namespace eDoxa.Arena.Challenges.Application.Commands.Handlers
 {
-    public sealed class RegisterParticipantCommandHandler : ICommandHandler<RegisterParticipantCommand, Either<ValidationResult, string>>
+    public sealed class RegisterParticipantCommandHandler : ICommandHandler<RegisterParticipantCommand, ParticipantDTO>
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IChallengeService _challengeService;
+        private readonly IMapper _mapper;
 
-        public RegisterParticipantCommandHandler(IHttpContextAccessor httpContextAccessor, IChallengeService challengeService)
+        public RegisterParticipantCommandHandler(IHttpContextAccessor httpContextAccessor, IChallengeService challengeService, IMapper mapper)
         {
             _httpContextAccessor = httpContextAccessor;
             _challengeService = challengeService;
+            _mapper = mapper;
         }
-
         [ItemNotNull]
-        public async Task<Either<ValidationResult, string>> Handle([NotNull] RegisterParticipantCommand command, CancellationToken cancellationToken)
+        public async Task<ParticipantDTO> Handle([NotNull] RegisterParticipantCommand command, CancellationToken cancellationToken)
         {
             var userId = _httpContextAccessor.GetUserId();
 
-            var either = await _challengeService.RegisterParticipantAsync(
+            var participant = await _challengeService.RegisterParticipantAsync(
                 command.ChallengeId,
                 userId,
                 _httpContextAccessor.FuncExternalAccount(),
                 cancellationToken
             );
 
-            return either.Match<Either<ValidationResult, string>>(x => x, x => "The participant has registered successfully.");
+            return _mapper.Map<ParticipantDTO>(participant);
         }
     }
 }

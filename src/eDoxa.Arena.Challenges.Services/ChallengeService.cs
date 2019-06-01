@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeService.cs
-// Date Created: 2019-05-25
+// Date Created: 2019-05-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -18,17 +18,12 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Challenges.Domain.Factories;
 using eDoxa.Arena.Challenges.Domain.Repositories;
-using eDoxa.Arena.Challenges.Domain.Validators;
 using eDoxa.Arena.Challenges.Services.Abstractions;
 using eDoxa.Arena.Challenges.Services.Factories;
 using eDoxa.Arena.Domain.ValueObjects;
-using eDoxa.Functional;
-using eDoxa.Functional.Extensions;
-using eDoxa.Seedwork.Application.Validations.Extensions;
 using eDoxa.Seedwork.Domain.Common;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
-
-using FluentValidation.Results;
+using eDoxa.Seedwork.Domain.Extensions;
 
 namespace eDoxa.Arena.Challenges.Services
 {
@@ -41,7 +36,7 @@ namespace eDoxa.Arena.Challenges.Services
             _challengeRepository = challengeRepository;
         }
 
-        public async Task<Either<ValidationResult, Participant>> RegisterParticipantAsync(
+        public async Task<Participant> RegisterParticipantAsync(
             ChallengeId challengeId,
             UserId userId,
             Func<Game, ExternalAccount> funcExternalAccount,
@@ -50,21 +45,7 @@ namespace eDoxa.Arena.Challenges.Services
         {
             var challenge = await _challengeRepository.FindChallengeAsync(challengeId);
 
-            if (challenge == null)
-            {
-                return new ValidationFailure(null, "Challenge not found.").ToResult();
-            }
-
             var externalAccount = funcExternalAccount(challenge.Game);
-
-            var validator = new RegisterParticipantValidator(userId, externalAccount);
-
-            var result = validator.Validate(challenge);
-
-            if (!result.IsValid)
-            {
-                return result;
-            }
 
             var participant = challenge.RegisterParticipant(userId, externalAccount);
 
@@ -87,7 +68,7 @@ namespace eDoxa.Arena.Challenges.Services
             return Task.CompletedTask;
         }
 
-        public async Task<Either<ValidationResult, Challenge>> CreateChallengeAsync(
+        public async Task<Challenge> CreateChallengeAsync(
             string name,
             Game game,
             int duration,

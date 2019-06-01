@@ -8,12 +8,11 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.DTO.Queries;
-using eDoxa.Commands.Extensions;
+using eDoxa.Seedwork.Application.Commands.Extensions;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 using MediatR;
@@ -31,12 +30,12 @@ namespace eDoxa.Cashier.Api.Controllers
     [ApiExplorerSettings(GroupName = "Account")]
     public sealed class AccountController : ControllerBase
     {
-        private readonly IAccountQueries _accountQueries;
+        private readonly IBalanceQuery _balanceQuery;
         private readonly IMediator _mediator;
 
-        public AccountController(IAccountQueries accountQueries, IMediator mediator)
+        public AccountController(IBalanceQuery balanceQuery, IMediator mediator)
         {
-            _accountQueries = accountQueries;
+            _balanceQuery = balanceQuery;
             _mediator = mediator;
         }
 
@@ -46,9 +45,14 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpGet("balance/{currency}", Name = nameof(GetBalanceAsync))]
         public async Task<IActionResult> GetBalanceAsync(CurrencyType currency)
         {
-            var account = await _accountQueries.GetBalanceAsync(currency);
+            var balance = await _balanceQuery.GetBalanceAsync(currency);
 
-            return account.Select(this.Ok).Cast<IActionResult>().DefaultIfEmpty(this.NotFound($"Account balance for currency {currency} not found.")).Single();
+            if (balance == null)
+            {
+                return this.NotFound($"Account balance for currency {currency} not found.");
+            }
+
+            return this.Ok(balance);
         }
 
         /// <summary>

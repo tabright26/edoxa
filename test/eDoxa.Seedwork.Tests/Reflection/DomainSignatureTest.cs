@@ -63,19 +63,6 @@ namespace eDoxa.Seedwork.Tests.Reflection
         }
 
         [TestMethod]
-        public void Equals_ReferenceEquals_ShouldBeTrue()
-        {
-            // Arrange
-            var signature = new DomainSignature(typeof(MockBaseObject1), Array.Empty<PropertyInfo>());
-
-            // Act
-            var condition = signature.Equals(signature);
-
-            // Assert
-            condition.Should().BeTrue();
-        }
-
-        [TestMethod]
         public void Equals_SameType_ShouldBeTrue()
         {
             // Arrange

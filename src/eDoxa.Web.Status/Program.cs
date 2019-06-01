@@ -10,8 +10,8 @@
 
 using System;
 
-using eDoxa.Monitoring.Extensions;
 using eDoxa.Security.Extensions;
+using eDoxa.Seedwork.Application.Extensions;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;

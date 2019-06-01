@@ -15,11 +15,11 @@ using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Validators;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.Services.Extensions;
-using eDoxa.Commands.Abstractions.Validations;
-using eDoxa.Functional.Extensions;
 using eDoxa.Security.Extensions;
+using eDoxa.Seedwork.Application.Commands.Abstractions.Validations;
 using eDoxa.Seedwork.Application.Validations.Extensions;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
+using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Stripe.Abstractions;
 using eDoxa.Stripe.Validators;
 

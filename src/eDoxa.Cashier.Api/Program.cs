@@ -11,8 +11,8 @@
 using System;
 
 using eDoxa.Cashier.Infrastructure;
-using eDoxa.Monitoring.Extensions;
 using eDoxa.Security.Extensions;
+using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.ServiceBus;
 

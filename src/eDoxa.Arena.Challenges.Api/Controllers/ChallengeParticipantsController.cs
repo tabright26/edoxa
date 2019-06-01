@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using eDoxa.Arena.Challenges.Application.Commands;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.DTO.Queries;
-using eDoxa.Commands.Extensions;
+using eDoxa.Seedwork.Application.Commands.Extensions;
 
 using MediatR;
 
@@ -48,11 +48,12 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         {
             var participants = await _participantQuery.FindChallengeParticipantsAsync(challengeId);
 
-            return participants
-                .Select(this.Ok)
-                .Cast<IActionResult>()
-                .DefaultIfEmpty(this.NoContent())
-                .Single();
+            if (!participants.Any())
+            {
+                return this.NoContent();
+            }
+
+            return this.Ok(participants);
         }
 
         /// <summary>
@@ -61,9 +62,9 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         [HttpPost(Name = nameof(RegisterChallengeParticipantAsync))]
         public async Task<IActionResult> RegisterChallengeParticipantAsync(ChallengeId challengeId)
         {
-            var either = await _mediator.SendCommandAsync(new RegisterParticipantCommand(challengeId));
+            await _mediator.SendCommandAsync(new RegisterParticipantCommand(challengeId));
 
-            return either.Match<IActionResult>(error => this.BadRequest(error.ToString()), this.Ok);
+            return this.Ok("The participant has registered successfully.");
         }
     }
 }

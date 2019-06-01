@@ -22,7 +22,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
 {
-    internal sealed partial class ParticipantRepository
+    public sealed partial class ParticipantRepository
     {
         private static readonly string NavigationPropertyPath = $"{nameof(Participant.Matches)}.{nameof(Match.Stats)}";
 
@@ -36,7 +36,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
         public IUnitOfWork UnitOfWork => _context;
     }
 
-    internal sealed partial class ParticipantRepository : IParticipantRepository
+    public sealed partial class ParticipantRepository : IParticipantRepository
     {
         public async Task<IEnumerable<Participant>> FindChallengeParticipantsAsNoTrackingAsync(ChallengeId challengeId)
         {

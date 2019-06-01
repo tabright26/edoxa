@@ -8,17 +8,20 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
-using eDoxa.Functional;
+
+using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.DTO.Queries
 {
     public interface IMatchQuery
     {
-        Task<Option<MatchListDTO>> FindParticipantMatchesAsync(ParticipantId participantId);
+        Task<IReadOnlyCollection<MatchDTO>> FindParticipantMatchesAsync(ParticipantId participantId);
 
-        Task<Option<MatchDTO>> FindMatchAsync(MatchId matchId);
+        [ItemCanBeNull]
+        Task<MatchDTO> FindMatchAsync(MatchId matchId);
     }
 }

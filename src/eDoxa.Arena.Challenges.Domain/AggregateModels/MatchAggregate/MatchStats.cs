@@ -11,7 +11,7 @@
 using System.Collections.Generic;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions;
-using eDoxa.Functional.Extensions;
+using eDoxa.Seedwork.Domain.Extensions;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
 {

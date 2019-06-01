@@ -8,7 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
@@ -42,11 +41,12 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         {
             var participant = await _query.FindParticipantAsync(participantId);
 
-            return participant
-                .Select(this.Ok)
-                .Cast<IActionResult>()
-                .DefaultIfEmpty(this.NotFound("Participant not found."))
-                .Single();
+            if (participant == null)
+            {
+                return this.NotFound("Participant not found.");
+            }
+
+            return this.Ok(participant);
         }
     }
 }

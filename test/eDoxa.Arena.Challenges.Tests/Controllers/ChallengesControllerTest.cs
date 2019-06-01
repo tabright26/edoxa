@@ -16,7 +16,6 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.DTO;
 using eDoxa.Arena.Challenges.DTO.Queries;
-using eDoxa.Functional;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 using FluentAssertions;
@@ -47,16 +46,11 @@ namespace eDoxa.Arena.Challenges.Tests.Controllers
         public async Task FindChallengesAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            var value = new ChallengeListDTO
-            {
-                Items = new List<ChallengeDTO>
+            _queries.Setup(queries => queries.GetChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()))
+                .ReturnsAsync(new List<ChallengeDTO>
                 {
                     new ChallengeDTO()
-                }
-            };
-
-            _queries.Setup(queries => queries.GetChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()))
-                .ReturnsAsync(new Option<ChallengeListDTO>(value))
+                })
                 .Verifiable();
 
             var controller = new ChallengesController(_queries.Object, _mediator.Object);
@@ -77,7 +71,7 @@ namespace eDoxa.Arena.Challenges.Tests.Controllers
         {
             // Arrange
             _queries.Setup(queries => queries.GetChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()))
-                .ReturnsAsync(new Option<ChallengeListDTO>())
+                .ReturnsAsync(new List<ChallengeDTO>())
                 .Verifiable();
 
             var controller = new ChallengesController(_queries.Object, _mediator.Object);
@@ -98,7 +92,7 @@ namespace eDoxa.Arena.Challenges.Tests.Controllers
         {
             // Arrange        
             _queries.Setup(queries => queries.GetChallengeAsync(It.IsAny<ChallengeId>()))
-                .ReturnsAsync(new Option<ChallengeDTO>(new ChallengeDTO()))
+                .ReturnsAsync(new ChallengeDTO())
                 .Verifiable();
 
             var controller = new ChallengesController(_queries.Object, _mediator.Object);
@@ -118,7 +112,7 @@ namespace eDoxa.Arena.Challenges.Tests.Controllers
         public async Task FindChallengeAsync_ShouldBeNotFoundObjectResult()
         {
             // Arrange
-            _queries.Setup(queries => queries.GetChallengeAsync(It.IsAny<ChallengeId>())).ReturnsAsync(new Option<ChallengeDTO>()).Verifiable();
+            _queries.Setup(queries => queries.GetChallengeAsync(It.IsAny<ChallengeId>())).ReturnsAsync((ChallengeDTO) null).Verifiable();
 
             var controller = new ChallengesController(_queries.Object, _mediator.Object);
 

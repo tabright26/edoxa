@@ -10,7 +10,7 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Seedwork.Application.DomainEventHandlers;
+using eDoxa.Seedwork.Application.DomainEvents.Handlers;
 using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Seedwork.Application.Extensions

@@ -19,13 +19,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.ServiceBus
 {
-    public sealed class IntegrationEventModule<TStartup, TContext> : Module
+    public sealed class IntegrationEventModule<TContext> : Module
     where TContext : DbContext
     {
         protected override void Load([NotNull] ContainerBuilder builder)
         {
             // Register all the CommandHandler classes (they implement IIntegrationEventHandler) in assembly holding the CommandHandlers.
-            builder.RegisterAssemblyTypes(typeof(TStartup).Assembly).AsClosedTypesOf(
+            builder.RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies()).AsClosedTypesOf(
                 typeof(IIntegrationEventHandler<>)
             );
 

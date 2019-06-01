@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -18,7 +18,6 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.DTO;
 using eDoxa.Arena.Challenges.DTO.Queries;
-using eDoxa.Functional;
 using eDoxa.Security.Extensions;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
@@ -28,7 +27,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace eDoxa.Arena.Challenges.Application.Queries
 {
-    internal sealed partial class ChallengeQuery
+    public sealed partial class ChallengeQuery
     {
         private readonly IMapper _mapper;
         private readonly IChallengeRepository _challengeRepository;
@@ -42,35 +41,30 @@ namespace eDoxa.Arena.Challenges.Application.Queries
         }
     }
 
-    internal sealed partial class ChallengeQuery : IChallengeQuery
+    public sealed partial class ChallengeQuery : IChallengeQuery
     {
-        public async Task<Option<ChallengeListDTO>> GetChallengesAsync([CanBeNull] Game game = null, [CanBeNull] ChallengeState state = null)
+        public async Task<IReadOnlyCollection<ChallengeDTO>> GetChallengesAsync([CanBeNull] Game game = null, [CanBeNull] ChallengeState state = null)
         {
             var challenges = await _challengeRepository.FindChallengesAsNoTrackingAsync(game, state);
 
-            var list = _mapper.Map<ChallengeListDTO>(challenges);
-
-            return list.Any() ? new Option<ChallengeListDTO>(list) : new Option<ChallengeListDTO>();
+            return _mapper.Map<IReadOnlyCollection<ChallengeDTO>>(challenges);
         }
 
-        public async Task<Option<ChallengeDTO>> GetChallengeAsync(ChallengeId challengeId)
+        [ItemCanBeNull]
+        public async Task<ChallengeDTO> GetChallengeAsync(ChallengeId challengeId)
         {
             var challenge = await _challengeRepository.FindChallengeAsNoTrackingAsync(challengeId);
 
-            var mapper = _mapper.Map<ChallengeDTO>(challenge);
-
-            return mapper != null ? new Option<ChallengeDTO>(mapper) : new Option<ChallengeDTO>();
+            return _mapper.Map<ChallengeDTO>(challenge);
         }
 
-        public async Task<Option<ChallengeListDTO>> FindUserChallengeHistoryAsync([CanBeNull] Game game = null, [CanBeNull] ChallengeState state = null)
+        public async Task<IReadOnlyCollection<ChallengeDTO>> FindUserChallengeHistoryAsync([CanBeNull] Game game = null, [CanBeNull] ChallengeState state = null)
         {
             var userId = _httpContextAccessor.GetUserId();
 
             var challenges = await _challengeRepository.FindUserChallengeHistoryAsNoTrackingAsync(userId, game, state);
 
-            var list = _mapper.Map<ChallengeListDTO>(challenges);
-
-            return list.Any() ? new Option<ChallengeListDTO>(list) : new Option<ChallengeListDTO>();
+            return _mapper.Map<IReadOnlyCollection<ChallengeDTO>>(challenges);
         }
     }
 }

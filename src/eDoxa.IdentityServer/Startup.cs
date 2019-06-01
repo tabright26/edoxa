@@ -10,14 +10,13 @@
 
 using System;
 
-using eDoxa.Autofac.Extensions;
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Infrastructure;
 using eDoxa.IdentityServer.Extensions;
 using eDoxa.IdentityServer.Factories;
-using eDoxa.Monitoring.Extensions;
 using eDoxa.Security.Extensions;
+using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.ServiceBus.Extensions;
 

@@ -15,8 +15,8 @@ using eDoxa.Arena.Challenges.Application.Commands;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.DTO.Queries;
-using eDoxa.Commands.Extensions;
 using eDoxa.Security;
+using eDoxa.Seedwork.Application.Commands.Extensions;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 using JetBrains.Annotations;
@@ -53,7 +53,12 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         {
             var challenges = await _challengeQuery.GetChallengesAsync(game, state);
 
-            return challenges.Select(this.Ok).Cast<IActionResult>().DefaultIfEmpty(this.NoContent()).Single();
+            if (!challenges.Any())
+            {
+                return this.NoContent();
+            }
+
+            return this.Ok(challenges);
         }
 
         /// <summary>
@@ -63,9 +68,9 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         [HttpPost(Name = nameof(CreateChallenge))]
         public async Task<IActionResult> CreateChallenge([FromBody] CreateChallengeCommand command)
         {
-            var either = await _mediator.SendCommandAsync(command);
+            var challenge = await _mediator.SendCommandAsync(command);
 
-            return either.Match<IActionResult>(error => this.BadRequest(error.ToString()), this.Ok);
+            return this.Ok(challenge);
         }
 
         /// <summary>
@@ -76,7 +81,12 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         {
             var challenge = await _challengeQuery.GetChallengeAsync(challengeId);
 
-            return challenge.Select(this.Ok).Cast<IActionResult>().DefaultIfEmpty(this.NotFound("Challenge not found.")).Single();
+            if (challenge == null)
+            {
+                return this.NotFound("Challenge not found.");
+            }
+
+            return this.Ok(challenge);
         }
 
         /// <summary>

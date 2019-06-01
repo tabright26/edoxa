@@ -13,8 +13,8 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Services.Extensions;
-using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Security.Extensions;
+using eDoxa.Seedwork.Application.Commands.Abstractions.Handlers;
 using eDoxa.Stripe.Abstractions;
 
 using JetBrains.Annotations;

@@ -11,7 +11,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Application.Commands;
-using eDoxa.Commands.Extensions;
+using eDoxa.Seedwork.Application.Commands.Extensions;
 using eDoxa.Stripe.Filters.Attributes;
 
 using MediatR;

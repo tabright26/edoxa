@@ -11,15 +11,13 @@
 using System.Runtime.Serialization;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
-using eDoxa.Commands.Abstractions;
-using eDoxa.Functional;
-
-using FluentValidation.Results;
+using eDoxa.Arena.Challenges.DTO;
+using eDoxa.Seedwork.Application.Commands.Abstractions;
 
 namespace eDoxa.Arena.Challenges.Application.Commands
 {
     [DataContract]
-    public sealed class RegisterParticipantCommand : Command<Either<ValidationResult, string>>
+    public sealed class RegisterParticipantCommand : Command<ParticipantDTO>
     {
         public RegisterParticipantCommand(ChallengeId challengeId)
         {

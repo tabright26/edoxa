@@ -12,6 +12,8 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
+using JetBrains.Annotations;
+
 namespace eDoxa.Seedwork.Domain.Aggregate
 {
     public abstract partial class Entity<TEntityId> : BaseObject
@@ -49,7 +51,7 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             return !(left == right);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals([CanBeNull] object obj)
         {
             var other = obj as Entity<TEntityId>;
 

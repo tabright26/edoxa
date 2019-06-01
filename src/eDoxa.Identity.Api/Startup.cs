@@ -13,20 +13,16 @@ using System.Reflection;
 
 using AutoMapper;
 
-using eDoxa.Autofac.Extensions;
 using eDoxa.Identity.Api.Extensions;
-using eDoxa.Identity.Application;
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Infrastructure;
-using eDoxa.Monitoring.Extensions;
 using eDoxa.Security.Extensions;
 using eDoxa.Security.Resources;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.ServiceBus.Extensions;
 using eDoxa.Swagger.Extensions;
-using eDoxa.Versioning.Extensions;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -76,7 +72,7 @@ namespace eDoxa.Identity.Api
 
             services.AddIdentityServerAuthentication(Configuration, Environment, IdentityApi);
 
-            return services.Build<ApplicationModule>();
+            return services.Build<Modules>();
         }
 
         public void Configure(IApplicationBuilder application, IApiVersionDescriptionProvider provider)

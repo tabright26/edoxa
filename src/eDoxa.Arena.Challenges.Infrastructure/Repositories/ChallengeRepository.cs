@@ -27,7 +27,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
 {
-    internal sealed partial class ChallengeRepository
+    public sealed partial class ChallengeRepository
     {
         private static readonly string NavigationPropertyPath = $"{nameof(Challenge.Participants)}.{nameof(Participant.Matches)}.{nameof(Match.Stats)}";
 
@@ -51,9 +51,8 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
         }
     }
 
-    internal sealed partial class ChallengeRepository : IChallengeRepository
+    public sealed partial class ChallengeRepository : IChallengeRepository
     {
-        [ItemCanBeNull]
         public async Task<Challenge> FindChallengeAsync(ChallengeId challengeId)
         {
             return await _context.Challenges.Include(NavigationPropertyPath).Where(challenge => challenge.Id == challengeId).SingleOrDefaultAsync();
@@ -83,6 +82,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
             return challenges.Where(challenge => challenge.Game.HasFilter(game) && challenge.State.HasFilter(state)).ToList();
         }
 
+        [ItemCanBeNull]
         public async Task<Challenge> FindChallengeAsNoTrackingAsync(ChallengeId challengeId)
         {
             return await _context.Challenges.AsNoTracking()

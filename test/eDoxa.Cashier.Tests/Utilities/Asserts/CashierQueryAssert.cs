@@ -8,6 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Collections.Generic;
+
 using eDoxa.Cashier.DTO;
 
 using FluentAssertions;
@@ -27,7 +29,7 @@ namespace eDoxa.Cashier.Tests.Utilities.Asserts
             balance.Pending.Should().BeGreaterOrEqualTo(decimal.Zero);
         }
 
-        public static void IsMapped(TransactionListDTO transactions)
+        public static void IsMapped(IReadOnlyCollection<TransactionDTO> transactions)
         {
             transactions.Should().NotBeNull();
 

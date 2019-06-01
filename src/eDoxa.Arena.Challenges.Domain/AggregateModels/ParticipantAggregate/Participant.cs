@@ -16,10 +16,11 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Arena.Domain.Abstractions;
 using eDoxa.Arena.Domain.ValueObjects;
-using eDoxa.Functional;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Common;
+
+using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate
 {
@@ -48,7 +49,8 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate
 
         public Challenge Challenge { get; private set; }
 
-        public Option<Score> AverageScore => Matches.Count >= Challenge.Setup.BestOf ? new Option<Score>(new ParticipantScore(this)) : new Option<Score>();
+        [CanBeNull]
+        public Score AverageScore => Matches.Count >= Challenge.Setup.BestOf ? new ParticipantScore(this) : null;
 
         public IReadOnlyCollection<Match> Matches => _matches;
 

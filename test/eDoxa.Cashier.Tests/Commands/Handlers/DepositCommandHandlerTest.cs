@@ -23,16 +23,13 @@ using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.Services.Abstractions;
 using eDoxa.Cashier.Tests.Utilities.Fakes;
 using eDoxa.Cashier.Tests.Utilities.Mocks.Extensions;
-using eDoxa.Commands.Extensions;
-using eDoxa.Functional;
+using eDoxa.Seedwork.Application.Commands.Extensions;
 using eDoxa.Seedwork.Domain.Common;
 using eDoxa.Seedwork.Domain.Common.Abstactions;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 using eDoxa.Testing.MSTest;
 
 using FluentAssertions;
-
-using FluentValidation.Results;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

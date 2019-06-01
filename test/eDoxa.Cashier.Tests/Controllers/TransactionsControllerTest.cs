@@ -31,18 +31,18 @@ namespace eDoxa.Cashier.Tests.Controllers
     [TestClass]
     public sealed class TransactionsControllerTest
     {
-        private Mock<ITransactionQueries> _mockTransactionQueries;
+        private Mock<ITransactionQuery> _mockTransactionQueries;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            _mockTransactionQueries = new Mock<ITransactionQueries>();
+            _mockTransactionQueries = new Mock<ITransactionQuery>();
         }
 
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<TransactionsController>.For(typeof(ITransactionQueries))
+            ConstructorTests<TransactionsController>.For(typeof(ITransactionQuery))
                 .WithName("TransactionsController")
                 .WithAttributes(
                     typeof(AuthorizeAttribute),
@@ -62,12 +62,9 @@ namespace eDoxa.Cashier.Tests.Controllers
             _mockTransactionQueries
                 .Setup(mock => mock.GetTransactionsAsync(It.IsAny<CurrencyType>(), It.IsAny<TransactionType>(), It.IsAny<TransactionStatus>()))
                 .ReturnsAsync(
-                    new TransactionListDTO
+                    new List<TransactionDTO>
                     {
-                        Items = new List<TransactionDTO>
-                        {
-                            new TransactionDTO()
-                        }
+                        new TransactionDTO()
                     }
                 )
                 .Verifiable();
@@ -92,7 +89,7 @@ namespace eDoxa.Cashier.Tests.Controllers
             // Arrange
             _mockTransactionQueries
                 .Setup(mock => mock.GetTransactionsAsync(It.IsAny<CurrencyType>(), It.IsAny<TransactionType>(), It.IsAny<TransactionStatus>()))
-                .ReturnsAsync(new TransactionListDTO())
+                .ReturnsAsync(new List<TransactionDTO>())
                 .Verifiable();
 
             var controller = new TransactionsController(_mockTransactionQueries.Object);

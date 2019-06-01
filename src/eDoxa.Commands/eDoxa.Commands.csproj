@@ -5,7 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\eDoxa.Autofac\eDoxa.Autofac.csproj" />
+    <PackageReference Include="Autofac" Version="4.9.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\eDoxa.Seedwork.Infrastructure\eDoxa.Seedwork.Infrastructure.csproj" />
     <ProjectReference Include="..\eDoxa.Versioning\eDoxa.Versioning.csproj" />
   </ItemGroup>

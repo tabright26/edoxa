@@ -23,8 +23,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\eDoxa.Monitoring\eDoxa.Monitoring.csproj" />
     <ProjectReference Include="..\eDoxa.Security\eDoxa.Security.csproj" />
+    <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>

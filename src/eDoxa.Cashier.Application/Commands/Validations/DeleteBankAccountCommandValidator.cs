@@ -10,9 +10,9 @@
 
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Validators;
-using eDoxa.Commands.Abstractions.Validations;
-using eDoxa.Functional.Extensions;
 using eDoxa.Security.Extensions;
+using eDoxa.Seedwork.Application.Commands.Abstractions.Validations;
+using eDoxa.Seedwork.Domain.Extensions;
 
 using FluentValidation;
 

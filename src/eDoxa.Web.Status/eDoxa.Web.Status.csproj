@@ -14,8 +14,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\eDoxa.Monitoring\eDoxa.Monitoring.csproj" />
     <ProjectReference Include="..\eDoxa.Security\eDoxa.Security.csproj" />
+    <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Serilog">
+      <HintPath>..\..\..\..\..\.nuget\packages\serilog\2.6.0\lib\netstandard1.3\Serilog.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

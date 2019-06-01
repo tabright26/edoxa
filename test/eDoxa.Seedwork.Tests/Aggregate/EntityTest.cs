@@ -152,19 +152,6 @@ namespace eDoxa.Seedwork.Tests.Aggregate
         }
 
         [TestMethod]
-        public void Equals_ReferenceEquals_ShouldBeTrue()
-        {
-            // Arrange
-            var entity = new MockEntity();
-
-            // Act
-            var condition = entity.Equals(entity);
-
-            // Assert
-            condition.Should().BeTrue();
-        }
-
-        [TestMethod]
         public void Equals_DifferentTypes_ShouldBeFalse()
         {
             // Arrange
