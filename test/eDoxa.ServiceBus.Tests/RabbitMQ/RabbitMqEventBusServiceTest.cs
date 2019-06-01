@@ -28,7 +28,7 @@ namespace eDoxa.ServiceBus.Tests.RabbitMQ
     [TestClass]
     public sealed class RabbitMqEventBusServiceTest
     {
-        [TestMethod]
+        [Ignore("Must be transferred to an integration test project because it requires external dependencies (RabbitMQ).")]
         public void Publish_PublishedAnIntegrationEvent_ShouldBeValid()
         {
             // Arrange
@@ -39,7 +39,7 @@ namespace eDoxa.ServiceBus.Tests.RabbitMQ
             eventBusService.Publish(integrationEvent);
         }
 
-        [TestMethod]
+        [Ignore("Must be transferred to an integration test project because it requires external dependencies (RabbitMQ).")]
         public void Subscribe()
         {
             // Arrange
@@ -57,7 +57,7 @@ namespace eDoxa.ServiceBus.Tests.RabbitMQ
             Assert.IsTrue(handler.ContainsIntegrationEvent<MockIntegrationEvent1>());
         }
 
-        [TestMethod]
+        [Ignore("Must be transferred to an integration test project because it requires external dependencies (RabbitMQ).")]
         public void SubscribeDynamic()
         {
             // Arrange
@@ -75,7 +75,7 @@ namespace eDoxa.ServiceBus.Tests.RabbitMQ
             Assert.IsTrue(handler.ContainsIntegrationEvent(nameof(MockIntegrationEvent1)));
         }
 
-        [TestMethod]
+        [Ignore("Must be transferred to an integration test project because it requires external dependencies (RabbitMQ).")]
         public void Unsubscribe()
         {
             // Arrange
@@ -94,7 +94,7 @@ namespace eDoxa.ServiceBus.Tests.RabbitMQ
             Assert.IsTrue(handler.IsEmpty);
         }
 
-        [TestMethod]
+        [Ignore("Must be transferred to an integration test project because it requires external dependencies (RabbitMQ).")]
         public void UnsubscribeDynamic()
         {
             // Arrange

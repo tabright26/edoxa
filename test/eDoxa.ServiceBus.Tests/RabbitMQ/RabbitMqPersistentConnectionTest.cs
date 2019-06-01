@@ -46,7 +46,7 @@ namespace eDoxa.ServiceBus.Tests.RabbitMQ
             _mockLogger.SetupLog();
         }
 
-        [TestMethod]
+        [Ignore("Must be transferred to an integration test project because it requires external dependencies (RabbitMQ).")]
         public void TryConnect_IsConnected_ShouldBeTrue()
         {
             using (var connection = new RabbitMqPersistentConnection(ConnectionFactory, _mockLogger.Object))
@@ -72,7 +72,7 @@ namespace eDoxa.ServiceBus.Tests.RabbitMQ
             action.Should().Throw<BrokerUnreachableException>();
         }
 
-        [TestMethod]
+        [Ignore("Must be transferred to an integration test project because it requires external dependencies (RabbitMQ).")]
         public void CreateChannel_TryConnectAndCreateChannel_ShouldBeNotNull()
         {
             using (var connection = new RabbitMqPersistentConnection(ConnectionFactory, _mockLogger.Object))
