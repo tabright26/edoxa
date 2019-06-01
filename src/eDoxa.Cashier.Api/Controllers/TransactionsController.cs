@@ -28,11 +28,11 @@ namespace eDoxa.Cashier.Api.Controllers
     [ApiExplorerSettings(GroupName = "Transactions")]
     public class TransactionsController : ControllerBase
     {
-        private readonly ITransactionQueries _transactionQueries;
+        private readonly ITransactionQuery _transactionQuery;
 
-        public TransactionsController(ITransactionQueries transactionQueries)
+        public TransactionsController(ITransactionQuery transactionQuery)
         {
-            _transactionQueries = transactionQueries;
+            _transactionQuery = transactionQuery;
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpGet(Name = nameof(GetTransactionsAsync))]
         public async Task<IActionResult> GetTransactionsAsync(CurrencyType currency = null, TransactionType type = null, TransactionStatus status = null)
         {
-            var transactions = await _transactionQueries.GetTransactionsAsync(currency, type, status);
+            var transactions = await _transactionQuery.GetTransactionsAsync(currency, type, status);
 
             if (!transactions.Any())
             {
