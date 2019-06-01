@@ -6,60 +6,60 @@ services:
     build:
       context: .
       dockerfile: test/eDoxa.Seedwork.Tests/Dockerfile
-    entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Seedwork.TestResults.xml
+    entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Seedwork.TestResults.trx
     volumes:
-      - /opt/vsts/tests:/var/tmp
+      - /opt/vsts/test/results:/var/tmp
 
   idsrv.tests:
     image: ${ACR_REGISTRY:-edoxa}/idsrv.tests:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: test/eDoxa.IdentityServer.Tests/Dockerfile
-    entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.IdentityServer.TestResults.xml
+    entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.IdentityServer.TestResults.trx
     volumes:
-      - /opt/vsts/tests:/var/tmp
+      - /opt/vsts/test/results:/var/tmp
 
   identity.tests:
     image: ${ACR_REGISTRY:-edoxa}/identity.tests:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: test/eDoxa.Identity.Tests/Dockerfile
-    entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Identity.TestResults.xml
+    entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Identity.TestResults.trx
     volumes:
-      - /opt/vsts/tests:/var/tmp
+      - /opt/vsts/test/results:/var/tmp
 
   cashier.tests:
     image: ${ACR_REGISTRY:-edoxa}/cashier.tests:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: test/eDoxa.Cashier.Tests/Dockerfile
-    entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Cashier.TestResults.xml
+    entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Cashier.TestResults.trx
     volumes:
-      - /opt/vsts/tests:/var/tmp
+      - /opt/vsts/test/results:/var/tmp
 
   stripe.tests:
     image: ${ACR_REGISTRY:-edoxa}/stripe.tests:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: test/eDoxa.Stripe.Tests/Dockerfile
-    entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Stripe.TestResults.xml
+    entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Stripe.TestResults.trx
     volumes:
-      - /opt/vsts/tests:/var/tmp
+      - /opt/vsts/test/results:/var/tmp
 
   arena.tests:
     image: ${ACR_REGISTRY:-edoxa}/arena.tests:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: test/eDoxa.Arena.Tests/Dockerfile
-    entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Arena.TestResults.xml
+    entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Arena.TestResults.trx
     volumes:
-      - /opt/vsts/tests:/var/tmp
+      - /opt/vsts/test/results:/var/tmp
 
   arena.challenges.tests:
     image: ${ACR_REGISTRY:-edoxa}/arena.challenges.tests:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: test/eDoxa.Arena.Challenges.Tests/Dockerfile
-    entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Arena.Challenges.TestResults.xml
+    entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Arena.Challenges.TestResults.trx
     volumes:
-      - /opt/vsts/tests:/var/tmp
+      - /opt/vsts/test/results:/var/tmp
