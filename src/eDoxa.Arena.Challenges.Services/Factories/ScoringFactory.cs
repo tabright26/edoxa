@@ -16,15 +16,15 @@ using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 namespace eDoxa.Arena.Challenges.Services.Factories
 {
-    public sealed class ScoringFactory
+    public sealed class ScoringFactory : IScoringFactory
     {
         private static readonly Lazy<ScoringFactory> Lazy = new Lazy<ScoringFactory>(() => new ScoringFactory());
 
         public static ScoringFactory Instance => Lazy.Value;
 
-        public IScoringStrategy CreateScoringStrategy(Game game)
+        public IScoringStrategy CreateStrategy(IChallenge challenge)
         {
-            if (game == Game.LeagueOfLegends)
+            if (challenge.Game == Game.LeagueOfLegends)
             {
                 return new LeagueOfLegendsScoringStrategy();
             }

@@ -61,7 +61,7 @@ namespace eDoxa.Cashier.Tests.Commands.Handlers
             // Arrange
             var user = FakeCashierFactory.CreateUser();
 
-            user.AddBankAccount(new StripeBankAccountId("ba_aqweq1231qwe123"));
+            user.AddBankAccount(new StripeBankAccountId("ba_aqweq1231qwe123").ToString());
 
             _mockUserRepository.Setup(mock => mock.GetUserAsync(It.IsAny<UserId>())).ReturnsAsync(user).Verifiable();
 

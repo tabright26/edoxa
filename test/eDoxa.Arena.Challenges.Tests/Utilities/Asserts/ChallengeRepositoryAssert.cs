@@ -34,7 +34,6 @@ namespace eDoxa.Arena.Challenges.Tests.Utilities.Asserts
             challenge.Game.Should().NotBe(null);
             challenge.Name.ToString().Should().NotBeNullOrWhiteSpace();
             challenge.Setup.Should().NotBeNull();
-            challenge.Scoring.Should().NotBeNull();
             challenge.Participants.Should().NotBeNullOrEmpty();
 
             foreach (var participant in challenge.Participants)

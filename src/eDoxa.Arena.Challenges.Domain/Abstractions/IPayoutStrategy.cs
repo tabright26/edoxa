@@ -8,7 +8,9 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-namespace eDoxa.Arena.Domain.Abstractions
+using eDoxa.Arena.Domain.Abstractions;
+
+namespace eDoxa.Arena.Challenges.Domain.Abstractions
 {
     public interface IPayoutStrategy
     {

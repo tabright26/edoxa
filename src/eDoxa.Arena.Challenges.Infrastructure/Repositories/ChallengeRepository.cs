@@ -62,7 +62,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
         {
             var challenges = await _context.Challenges.Include(NavigationPropertyPath).ToListAsync();
 
-            return challenges.Where(challenge => challenge.Game.HasFilter(game) && challenge.State.HasFilter(state)).ToList();
+            return challenges.Where(challenge => challenge.Game.HasFilter(game) && challenge.Timeline.State.HasFilter(state)).ToList();
         }
 
         public async Task<IReadOnlyCollection<Challenge>> FindUserChallengeHistoryAsNoTrackingAsync(UserId userId, [CanBeNull] Game game = null, [CanBeNull] ChallengeState state = null)
@@ -72,14 +72,14 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
                                            .Where(challenge => challenge.Participants.Any(participant => participant.UserId == userId))
                                            .ToListAsync();
 
-            return challenges.Where(challenge => challenge.Game.HasFilter(game) && challenge.State.HasFilter(state)).ToList();
+            return challenges.Where(challenge => challenge.Game.HasFilter(game) && challenge.Timeline.State.HasFilter(state)).ToList();
         }
 
         public async Task<IReadOnlyCollection<Challenge>> FindChallengesAsNoTrackingAsync([CanBeNull] Game game = null, [CanBeNull] ChallengeState state = null)
         {
             var challenges = await _context.Challenges.AsNoTracking().Include(NavigationPropertyPath).ToListAsync();
 
-            return challenges.Where(challenge => challenge.Game.HasFilter(game) && challenge.State.HasFilter(state)).ToList();
+            return challenges.Where(challenge => challenge.Game.HasFilter(game) && challenge.Timeline.State.HasFilter(state)).ToList();
         }
 
         [ItemCanBeNull]

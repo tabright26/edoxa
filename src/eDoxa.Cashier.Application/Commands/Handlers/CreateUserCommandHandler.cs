@@ -43,7 +43,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 
             var customerId = await _stripeService.CreateCustomerAsync(command.UserId, connectAccountId, command.Email, cancellationToken);
 
-            _userRepository.Create(command.UserId, connectAccountId.ToString(), customerId);
+            _userRepository.Create(command.UserId, connectAccountId.ToString(), customerId.ToString());
 
             await _userRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
         }

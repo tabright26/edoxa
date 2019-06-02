@@ -9,16 +9,34 @@
 // this source code package.
 
 using System;
+using System.Collections.Generic;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
 {
-    public class StatValue : TypedObject<StatValue, double>
+    public class StatValue : ValueObject
     {
-        public StatValue(object value)
+        public StatValue(object value) : this()
         {
             Value = Convert.ToDouble(value);
+        }
+
+        private StatValue()
+        {
+            // Required by EF Core.
+        }
+
+        public double Value { get; private set; }
+
+        public static implicit operator double(StatValue statValue)
+        {
+            return statValue.Value;
+        }
+
+        protected override IEnumerable<object> GetAtomicValues()
+        {
+            yield return Value;
         }
     }
 }

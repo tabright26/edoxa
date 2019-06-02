@@ -1,5 +1,5 @@
 // Filename: PrizePool.cs
-// Date Created: 2019-05-20
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,23 +9,28 @@
 // this source code package.
 
 using System;
-using System.Globalization;
 
 using eDoxa.Arena.Domain.ValueObjects;
-using eDoxa.Seedwork.Domain.Aggregate;
+using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 namespace eDoxa.Arena.Challenges.Domain
 {
-    public class PrizePool : TypedObject<PrizePool, decimal>
+    public sealed class PrizePool : Prize
     {
-        public PrizePool(Entries entries, EntryFee entryFee, ServiceChargeRatio serviceChargeRatio)
+        public PrizePool(Entries entries, EntryFee entryFee, ServiceChargeRatio serviceChargeRatio) : base(
+            Math.Floor(entries * entryFee.Amount * (1 - Convert.ToDecimal(serviceChargeRatio))),
+            entryFee.Type
+        )
         {
-            Value = Math.Floor(entries * entryFee.Amount * (1 - Convert.ToDecimal(serviceChargeRatio)));
         }
 
-        public override string ToString()
+        public PrizePool(decimal amount, CurrencyType currency) : base(amount, currency)
         {
-            return Value.ToString(CultureInfo.InvariantCulture);
+        }
+
+        private PrizePool()
+        {
+            // Required by EF Core.
         }
     }
 }

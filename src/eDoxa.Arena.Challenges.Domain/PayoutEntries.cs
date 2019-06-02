@@ -1,5 +1,5 @@
 // Filename: PayoutEntries.cs
-// Date Created: 2019-05-20
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,12 +9,13 @@
 // this source code package.
 
 using System;
+using System.Collections.Generic;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain
 {
-    public sealed class PayoutEntries : TypedObject<PayoutEntries, int>
+    public sealed class PayoutEntries : ValueObject
     {
         public static readonly PayoutEntries One = new PayoutEntries(1);
         public static readonly PayoutEntries Two = new PayoutEntries(2);
@@ -37,6 +38,23 @@ namespace eDoxa.Arena.Challenges.Domain
         public PayoutEntries(int payoutEntries)
         {
             Value = payoutEntries;
+        }
+
+        public int Value { get; private set; }
+
+        public static implicit operator int(PayoutEntries payoutEntries)
+        {
+            return payoutEntries.Value;
+        }
+
+        public override string ToString()
+        {
+            return Value.ToString();
+        }
+
+        protected override IEnumerable<object> GetAtomicValues()
+        {
+            yield return Value;
         }
     }
 }

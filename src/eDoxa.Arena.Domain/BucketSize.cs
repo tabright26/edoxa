@@ -9,12 +9,13 @@
 // this source code package.
 
 using System;
+using System.Collections.Generic;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Domain
 {
-    public sealed class BucketSize : TypedObject<BucketSize, int>
+    public sealed class BucketSize : ValueObject
     {
         private const int DefaultValue = 1;
 
@@ -28,6 +29,18 @@ namespace eDoxa.Arena.Domain
             }
 
             Value = size;
+        }
+
+        public int Value { get; private set; }
+
+        public static implicit operator int(BucketSize bucketSize)
+        {
+            return bucketSize.Value;
+        }
+
+        protected override IEnumerable<object> GetAtomicValues()
+        {
+            yield return Value;
         }
     }
 }

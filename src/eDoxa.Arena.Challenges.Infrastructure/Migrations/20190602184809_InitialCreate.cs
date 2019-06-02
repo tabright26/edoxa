@@ -16,20 +16,19 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
+                    TestMode = table.Column<bool>(nullable: false),
                     Game = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: false),
-                    Setup_BestOf = table.Column<int>(nullable: false),
-                    Setup_Entries = table.Column<int>(nullable: false),
+                    Setup_BestOf_Value = table.Column<int>(nullable: false),
+                    Setup_Entries_Value = table.Column<int>(nullable: false),
                     Setup_EntryFee_Type = table.Column<int>(nullable: false),
                     Setup_EntryFee_Amount = table.Column<decimal>(nullable: false),
-                    Setup_PayoutRatio = table.Column<float>(nullable: false),
-                    Setup_ServiceChargeRatio = table.Column<float>(nullable: false),
+                    Setup_PayoutRatio_Value = table.Column<float>(nullable: false),
+                    Setup_ServiceChargeRatio_Value = table.Column<float>(nullable: false),
                     Timeline_Duration = table.Column<long>(nullable: false),
                     Timeline_StartedAt = table.Column<DateTime>(nullable: true),
                     Timeline_ClosedAt = table.Column<DateTime>(nullable: true),
-                    CreatedAt = table.Column<DateTime>(nullable: false),
-                    TestMode = table.Column<bool>(nullable: false),
-                    Scoring = table.Column<string>(nullable: false)
+                    CreatedAt = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -52,6 +51,50 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
                     table.PrimaryKey("PK_Participants", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Participants_Challenges_ChallengeId",
+                        column: x => x.ChallengeId,
+                        principalSchema: "edoxa",
+                        principalTable: "Challenges",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Payout",
+                schema: "edoxa",
+                columns: table => new
+                {
+                    ChallengeId = table.Column<Guid>(nullable: false),
+                    Id = table.Column<Guid>(nullable: false),
+                    Prize_Type = table.Column<int>(nullable: false),
+                    Prize_Amount = table.Column<decimal>(nullable: false),
+                    Name = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payout", x => new { x.ChallengeId, x.Id });
+                    table.ForeignKey(
+                        name: "FK_Payout_Challenges_ChallengeId",
+                        column: x => x.ChallengeId,
+                        principalSchema: "edoxa",
+                        principalTable: "Challenges",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Scoring",
+                schema: "edoxa",
+                columns: table => new
+                {
+                    Name = table.Column<string>(nullable: false),
+                    Weighting = table.Column<float>(nullable: false),
+                    ChallengeId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Scoring", x => new { x.ChallengeId, x.Name, x.Weighting });
+                    table.ForeignKey(
+                        name: "FK_Scoring_Challenges_ChallengeId",
                         column: x => x.ChallengeId,
                         principalSchema: "edoxa",
                         principalTable: "Challenges",
@@ -125,6 +168,14 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Payout",
+                schema: "edoxa");
+
+            migrationBuilder.DropTable(
+                name: "Scoring",
+                schema: "edoxa");
+
             migrationBuilder.DropTable(
                 name: "Stats",
                 schema: "edoxa");

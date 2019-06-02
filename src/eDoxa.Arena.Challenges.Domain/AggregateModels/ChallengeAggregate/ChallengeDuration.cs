@@ -10,13 +10,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed class ChallengeDuration : TypedObject<ChallengeDuration, TimeSpan>
+    public sealed class ChallengeDuration : ValueObject
     {
         public static readonly ChallengeDuration OneDay = new ChallengeDuration(1);
         public static readonly ChallengeDuration TwoDays = new ChallengeDuration(2);
@@ -26,29 +25,31 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         public static readonly ChallengeDuration SixDays = new ChallengeDuration(6);
         public static readonly ChallengeDuration SevenDays = new ChallengeDuration(7);
 
-        public ChallengeDuration(int days)
+        public ChallengeDuration(int days) : this()
         {
             Value = TimeSpan.FromDays(days);
         }
 
-        public ChallengeDuration(long ticks)
+        public ChallengeDuration(long ticks) : this()
         {
             Value = TimeSpan.FromTicks(ticks);
         }
 
-        public static bool HasValue(int value)
+        private ChallengeDuration()
         {
-            return GetValues().Any(primitive => primitive.Equals(value));
+            // Required by EF Core.
         }
 
-        public new static string DisplayNames()
+        public static implicit operator TimeSpan(ChallengeDuration duration)
         {
-            return $"[ {string.Join(", ", GetValues())} ]";
+            return duration.Value;
         }
 
-        private new static IEnumerable<int> GetValues()
+        public TimeSpan Value { get; private set; }
+
+        protected override IEnumerable<object> GetAtomicValues()
         {
-            return TypedObject<ChallengeDuration, TimeSpan>.GetValues().Select(timeSpan => timeSpan.Days).ToArray();
+            yield return Value;
         }
     }
 }

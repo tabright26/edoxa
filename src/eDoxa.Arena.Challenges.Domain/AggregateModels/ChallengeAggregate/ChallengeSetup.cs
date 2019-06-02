@@ -54,10 +54,5 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             yield return PayoutEntries;
             yield return PrizePool;
         }
-
-        public override string ToString()
-        {
-            return string.Join(", ", this.GetAtomicValues());
-        }
     }
 }

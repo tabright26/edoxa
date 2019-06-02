@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeTimeline.cs
-// Date Created: 2019-05-27
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -42,6 +42,11 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         public DateTime? ClosedAt { get; private set; }
 
         public DateTime? EndedAt => StartedAt + Duration;
+
+        public ChallengeState State =>
+            ClosedAt != null ? ChallengeState.Closed :
+            EndedAt != null && EndedAt <= DateTime.UtcNow ? ChallengeState.Ended :
+            StartedAt != null ? ChallengeState.InProgress : ChallengeState.Inscription;
 
         public ChallengeTimeline Start()
         {

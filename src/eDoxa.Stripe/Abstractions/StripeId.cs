@@ -9,6 +9,7 @@
 // this source code package.
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
@@ -21,7 +22,7 @@ using JetBrains.Annotations;
 
 namespace eDoxa.Stripe.Abstractions
 {
-    public abstract partial class StripeId<TStripeId> : TypedObject<TStripeId, string>
+    public abstract partial class StripeId<TStripeId> : ValueObject
     where TStripeId : StripeId<TStripeId>
     {
         protected internal StripeId(string stripeId, string prefix)
@@ -32,6 +33,13 @@ namespace eDoxa.Stripe.Abstractions
             }
 
             Value = stripeId;
+        }
+
+        public string Value { get; private set; }
+
+        protected override IEnumerable<object> GetAtomicValues()
+        {
+            yield return Value;
         }
 
         private static bool IsValid(string stripeId, string prefix)

@@ -1,5 +1,5 @@
 ﻿// Filename: EntityId.cs
-// Date Created: 2019-05-20
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,6 +9,7 @@
 // this source code package.
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 
@@ -16,7 +17,7 @@ using JetBrains.Annotations;
 
 namespace eDoxa.Seedwork.Domain.Aggregate
 {
-    public abstract partial class EntityId<TEntityId> : TypedObject<TEntityId, Guid>
+    public abstract partial class EntityId<TEntityId> : ValueObject, IComparable
     where TEntityId : EntityId<TEntityId>, new()
     {
         public static readonly TEntityId Empty = new TEntityId
@@ -27,6 +28,18 @@ namespace eDoxa.Seedwork.Domain.Aggregate
         protected EntityId()
         {
             Value = Guid.NewGuid();
+        }
+
+        protected Guid Value { get; set; }
+
+        public int CompareTo([CanBeNull] object other)
+        {
+            return Value.CompareTo((other as TEntityId)?.Value);
+        }
+
+        public static implicit operator Guid(EntityId<TEntityId> entityId)
+        {
+            return entityId.Value;
         }
 
         public static TEntityId FromGuid(Guid value)
@@ -50,6 +63,16 @@ namespace eDoxa.Seedwork.Domain.Aggregate
         public bool IsTransient()
         {
             return Value == Empty.Value;
+        }
+
+        public override string ToString()
+        {
+            return Value.ToString();
+        }
+
+        protected override IEnumerable<object> GetAtomicValues()
+        {
+            yield return Value;
         }
     }
 

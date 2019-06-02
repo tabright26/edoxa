@@ -3,13 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using eDoxa.Arena.Challenges.Infrastructure;
 
 namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
 {
     [DbContext(typeof(ChallengesDbContext))]
-    internal class ChallengesDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190602194608_InitialCreate2")]
+    partial class InitialCreate2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -212,7 +216,8 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
                                 .HasColumnName("ChallengeId");
 
                             b1.Property<Guid>("Id")
-                                .ValueGeneratedOnAdd();
+                                .ValueGeneratedOnAdd()
+                                .HasDefaultValue(new Guid("211dfed2-d7ad-47e7-a761-2c39fb7d3c4b"));
 
                             b1.HasKey("ChallengeId", "Id");
 
@@ -227,7 +232,8 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
                                 {
                                     b2.Property<Guid>("ChallengeStatChallengeId");
 
-                                    b2.Property<Guid>("ChallengeStatId");
+                                    b2.Property<Guid>("ChallengeStatId")
+                                        .ValueGeneratedOnAdd();
 
                                     b2.Property<string>("Value")
                                         .IsRequired()
@@ -247,7 +253,8 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
                                 {
                                     b2.Property<Guid>("ChallengeStatChallengeId");
 
-                                    b2.Property<Guid>("ChallengeStatId");
+                                    b2.Property<Guid>("ChallengeStatId")
+                                        .ValueGeneratedOnAdd();
 
                                     b2.Property<float>("Value")
                                         .HasColumnName("Weighting");
@@ -289,7 +296,8 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
                                 .HasColumnName("ChallengeId");
 
                             b1.Property<Guid>("Id")
-                                .ValueGeneratedOnAdd();
+                                .ValueGeneratedOnAdd()
+                                .HasDefaultValue(new Guid("01fe4fce-9518-4008-ba06-a84fe4b96f37"));
 
                             b1.Property<int>("Size")
                                 .HasColumnName("Name");
@@ -307,7 +315,8 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
                                 {
                                     b2.Property<Guid>("BucketChallengeId");
 
-                                    b2.Property<Guid>("BucketId");
+                                    b2.Property<Guid>("BucketId")
+                                        .ValueGeneratedOnAdd();
 
                                     b2.Property<decimal>("Amount");
 

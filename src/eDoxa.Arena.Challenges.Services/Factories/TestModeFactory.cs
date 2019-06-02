@@ -17,7 +17,7 @@ using eDoxa.Arena.Domain.ValueObjects;
 using eDoxa.Seedwork.Domain.Common;
 using eDoxa.Seedwork.Domain.Extensions;
 
-namespace eDoxa.Arena.Challenges.Domain.Factories
+namespace eDoxa.Arena.Challenges.Services.Factories
 {
     public class TestModeFactory
     {
@@ -39,7 +39,6 @@ namespace eDoxa.Arena.Challenges.Domain.Factories
                 challenge.Name,
                 challenge.Setup,
                 challenge.Timeline,
-                challenge.Scoring,
                 true
             )
             {

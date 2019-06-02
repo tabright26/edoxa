@@ -9,6 +9,7 @@
 // this source code package.
 
 using System;
+using System.Collections.Generic;
 
 using eDoxa.Arena.Challenges.Domain;
 using eDoxa.Arena.Challenges.Domain.Abstractions;
@@ -48,9 +49,10 @@ namespace eDoxa.Arena.Challenges.Tests.Utilities.Fakes
                 Game.LeagueOfLegends,
                 new ChallengeName(nameof(Challenge)),
                 setup,
-                new ChallengeTimeline(ChallengeDuration.OneDay),
-                this.CreateScoringStrategy().Scoring
+                new ChallengeTimeline(ChallengeDuration.OneDay)
             );
+
+            challenge.ApplyScoringStrategy(this.CreateScoringStrategy());
 
             //var timeline = this.CreateChallengeTimeline(state);
 
@@ -92,9 +94,9 @@ namespace eDoxa.Arena.Challenges.Tests.Utilities.Fakes
 
     public sealed partial class FakeChallengeFactory
     {
-        public ChallengeSetup CreateChallengeSetup(int bestOf = 3, int payoutEntries = 25)
+        public ChallengeSetup CreateChallengeSetup(BestOf bestOf, int payoutEntries = 25)
         {
-            return new ChallengeSetup(new BestOf(bestOf), new PayoutEntries(payoutEntries), MoneyEntryFee.Five);
+            return new ChallengeSetup(bestOf, new PayoutEntries(payoutEntries), MoneyEntryFee.Five);
         }
 
         //public Timeline CreateChallengeTimeline(ChallengeState state = null)
@@ -193,7 +195,7 @@ namespace eDoxa.Arena.Challenges.Tests.Utilities.Fakes
 
     public sealed partial class FakeChallengeFactory
     {
-        public Participant CreateParticipant(int? bestOf = null)
+        public Participant CreateParticipant(BestOf bestOf = null)
         {
             var setup = this.CreateChallengeSetup(bestOf ?? BestOf.Three);
 
@@ -202,7 +204,7 @@ namespace eDoxa.Arena.Challenges.Tests.Utilities.Fakes
             return new Participant(challenge, new UserId(), new ExternalAccount(Guid.NewGuid()));
         }
 
-        public Participant CreateParticipantMatches(int matchCount = 0, int? bestOf = null)
+        public Participant CreateParticipantMatches(int matchCount = 0, BestOf bestOf = null)
         {
             var participant = this.CreateParticipant(bestOf);
 
@@ -252,14 +254,14 @@ namespace eDoxa.Arena.Challenges.Tests.Utilities.Fakes
 
         public IScoring CreateScoring()
         {
-            return new Scoring
+            return new Scoring(new HashSet<ChallengeStat>
             {
-                [Kills] = new StatWeighting(4F),
-                [Deaths] = new StatWeighting(-3F),
-                [Assists] = new StatWeighting(3F),
-                [TotalDamageDealtToChampions] = new StatWeighting(0.00015F),
-                [TotalHeal] = new StatWeighting(0.0008F)
-            };
+                new ChallengeStat(new StatName(nameof(Kills)), new StatWeighting(4F)),
+                new ChallengeStat(new StatName(nameof(Deaths)), new StatWeighting(-3F)),
+                new ChallengeStat(new StatName(nameof(Assists)), new StatWeighting(3F)),
+                new ChallengeStat(new StatName(nameof(TotalDamageDealtToChampions)), new StatWeighting(0.00015F)),
+                new ChallengeStat(new StatName(nameof(TotalHeal)), new StatWeighting(0.0008F))
+            });
         }
 
         //public PrizePool CreatePrizePool(int prizePool)

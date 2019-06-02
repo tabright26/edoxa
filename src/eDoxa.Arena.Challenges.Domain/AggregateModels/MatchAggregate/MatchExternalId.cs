@@ -9,13 +9,14 @@
 // this source code package.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
 {
-    public sealed class MatchExternalId : TypedObject<MatchExternalId, string>
+    public sealed class MatchExternalId : ValueObject
     {
         public MatchExternalId(string externalId)
         {
@@ -47,6 +48,8 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
             Value = externalId.ToString();
         }
 
+        public string Value { get; private set; }
+
         public static implicit operator MatchExternalId(string externalId)
         {
             return new MatchExternalId(externalId);
@@ -60,6 +63,11 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
         public static implicit operator MatchExternalId(Guid externalId)
         {
             return new MatchExternalId(externalId);
+        }
+
+        protected override IEnumerable<object> GetAtomicValues()
+        {
+            yield return Value;
         }
     }
 }

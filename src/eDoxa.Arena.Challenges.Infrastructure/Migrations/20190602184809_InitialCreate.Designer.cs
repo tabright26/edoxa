@@ -3,13 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using eDoxa.Arena.Challenges.Infrastructure;
 
 namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
 {
     [DbContext(typeof(ChallengesDbContext))]
-    internal class ChallengesDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190602184809_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,6 +29,9 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt");
 
                     b.Property<int>("Game");
+
+                    b.Property<string>("Name")
+                        .IsRequired();
 
                     b.Property<bool>("TestMode");
 
@@ -93,23 +100,6 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
 
             modelBuilder.Entity("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.Challenge", b =>
                 {
-                    b.OwnsOne("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ChallengeName", "Name", b1 =>
-                        {
-                            b1.Property<Guid>("ChallengeId");
-
-                            b1.Property<string>("Value")
-                                .IsRequired();
-
-                            b1.HasKey("ChallengeId");
-
-                            b1.ToTable("Challenges","edoxa");
-
-                            b1.HasOne("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.Challenge")
-                                .WithOne("Name")
-                                .HasForeignKey("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ChallengeName", "ChallengeId")
-                                .OnDelete(DeleteBehavior.Cascade);
-                        });
-
                     b.OwnsOne("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ChallengeSetup", "Setup", b1 =>
                         {
                             b1.Property<Guid>("ChallengeId");
@@ -211,10 +201,13 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
                             b1.Property<Guid>("ChallengeId")
                                 .HasColumnName("ChallengeId");
 
-                            b1.Property<Guid>("Id")
-                                .ValueGeneratedOnAdd();
+                            b1.Property<string>("Name")
+                                .HasColumnName("Name");
 
-                            b1.HasKey("ChallengeId", "Id");
+                            b1.Property<float>("Weighting")
+                                .HasColumnName("Weighting");
+
+                            b1.HasKey("ChallengeId", "Name", "Weighting");
 
                             b1.ToTable("Scoring");
 
@@ -222,45 +215,6 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
                                 .WithMany("Stats")
                                 .HasForeignKey("ChallengeId")
                                 .OnDelete(DeleteBehavior.Cascade);
-
-                            b1.OwnsOne("eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate.StatName", "Name", b2 =>
-                                {
-                                    b2.Property<Guid>("ChallengeStatChallengeId");
-
-                                    b2.Property<Guid>("ChallengeStatId");
-
-                                    b2.Property<string>("Value")
-                                        .IsRequired()
-                                        .HasColumnName("Name");
-
-                                    b2.HasKey("ChallengeStatChallengeId", "ChallengeStatId");
-
-                                    b2.ToTable("Scoring","edoxa");
-
-                                    b2.HasOne("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ChallengeStat")
-                                        .WithOne("Name")
-                                        .HasForeignKey("eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate.StatName", "ChallengeStatChallengeId", "ChallengeStatId")
-                                        .OnDelete(DeleteBehavior.Cascade);
-                                });
-
-                            b1.OwnsOne("eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate.StatWeighting", "Weighting", b2 =>
-                                {
-                                    b2.Property<Guid>("ChallengeStatChallengeId");
-
-                                    b2.Property<Guid>("ChallengeStatId");
-
-                                    b2.Property<float>("Value")
-                                        .HasColumnName("Weighting");
-
-                                    b2.HasKey("ChallengeStatChallengeId", "ChallengeStatId");
-
-                                    b2.ToTable("Scoring","edoxa");
-
-                                    b2.HasOne("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ChallengeStat")
-                                        .WithOne("Weighting")
-                                        .HasForeignKey("eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate.StatWeighting", "ChallengeStatChallengeId", "ChallengeStatId")
-                                        .OnDelete(DeleteBehavior.Cascade);
-                                });
                         });
 
                     b.OwnsOne("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ChallengeTimeline", "Timeline", b1 =>
@@ -288,8 +242,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
                             b1.Property<Guid>("ChallengeId")
                                 .HasColumnName("ChallengeId");
 
-                            b1.Property<Guid>("Id")
-                                .ValueGeneratedOnAdd();
+                            b1.Property<Guid>("Id");
 
                             b1.Property<int>("Size")
                                 .HasColumnName("Name");

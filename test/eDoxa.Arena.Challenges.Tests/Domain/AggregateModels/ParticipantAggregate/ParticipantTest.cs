@@ -8,6 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Arena.Challenges.Domain;
 using eDoxa.Arena.Challenges.Tests.Utilities.Fakes;
 
 using FluentAssertions;
@@ -59,7 +60,7 @@ namespace eDoxa.Arena.Challenges.Tests.Domain.AggregateModels.ParticipantAggrega
         public void AverageScore_MatchCountGreaterThanOrEqualToBestOf_ShouldNotBeNull(int matchCount, int bestOf)
         {
             // Arrange
-            var participant = FakeChallengeFactory.CreateParticipantMatches(matchCount, bestOf);
+            var participant = FakeChallengeFactory.CreateParticipantMatches(matchCount, new BestOf(bestOf));
 
             // Act
             var score = participant.AverageScore;

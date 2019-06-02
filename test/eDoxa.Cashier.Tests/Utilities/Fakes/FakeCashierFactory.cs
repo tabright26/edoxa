@@ -32,7 +32,7 @@ namespace eDoxa.Cashier.Tests.Utilities.Fakes
 
         public User CreateUser()
         {
-            return new User(this.CreateUserId(), new StripeConnectAccountId("acct_qweqwe1231qwe"), new StripeCustomerId("cus_qweqwe1231qwe"));
+            return new User(this.CreateUserId(), new StripeConnectAccountId("acct_qweqwe1231qwe").ToString(), new StripeCustomerId("cus_qweqwe1231qwe").ToString());
         }
 
         public ITransaction CreateTransaction()

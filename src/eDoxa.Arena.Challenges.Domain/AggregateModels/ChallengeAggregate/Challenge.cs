@@ -1,5 +1,5 @@
 ﻿// Filename: Challenge.cs
-// Date Created: 2019-05-20
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,30 +13,35 @@ using System.Collections.Generic;
 using System.Linq;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Challenges.Domain.DomainEvents;
-using eDoxa.Arena.Challenges.Domain.Factories;
 using eDoxa.Arena.Challenges.Domain.Specifications;
+using eDoxa.Arena.Domain;
 using eDoxa.Arena.Domain.Abstractions;
 using eDoxa.Arena.Domain.ValueObjects;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Common;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
+using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Specifications;
+
+using IPayoutStrategy = eDoxa.Arena.Challenges.Domain.Abstractions.IPayoutStrategy;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public class Challenge : Entity<ChallengeId>, IAggregateRoot
+    public class Challenge : Entity<ChallengeId>, IChallenge, IAggregateRoot
     {
         private HashSet<Participant> _participants;
+        private HashSet<ChallengeStat> _stats;
+        private List<Bucket> _buckets;
 
         public Challenge(
             Game game,
             ChallengeName name,
             ChallengeSetup setup,
             ChallengeTimeline timeline,
-            IScoring scoring,
             bool testMode = false
         ) : this()
         {
@@ -44,7 +49,6 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             Name = name;
             Setup = setup;
             Timeline = timeline;
-            Scoring = scoring;
             TestMode = testMode;
         }
 
@@ -52,7 +56,11 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         {
             CreatedAt = DateTime.UtcNow;
             _participants = new HashSet<Participant>();
+            _stats = new HashSet<ChallengeStat>();
+            _buckets = new List<Bucket>();
         }
+
+        public bool TestMode { get; private set; }
 
         public Game Game { get; private set; }
 
@@ -64,35 +72,33 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public DateTime CreatedAt { get; private set; }
 
-        public bool TestMode { get; private set; }
-
-        public IScoring Scoring { get; private set; }
-
-        public IPayout Payout => PayoutFactory.Instance.Create(Setup.PayoutEntries, Setup.EntryFee);
-
-        public ChallengeState State => ChallengeState.GetState(Timeline);
-
-        public IScoreboard Scoreboard => new Scoreboard(this);
+        public IReadOnlyCollection<ChallengeStat> Stats => _stats;
 
         public IReadOnlyCollection<Participant> Participants => _participants;
 
-        public void Close()
+        public IReadOnlyCollection<Bucket> Buckets => _buckets;
+
+        public void ApplyScoringStrategy(IScoringStrategy strategy)
         {
-            if (!this.CanComplete())
-            {
-                throw new InvalidOperationException();
-            }
-
-            Timeline = Timeline.Close();
-
-            this.AddDomainEvent(new ChallengePayoutDomainEvent(Id, Payout.GetParticipantPrizes(Scoreboard)));
+            strategy.Scoring.ForEach(stat => _stats.Add(new ChallengeStat(stat.Key, stat.Value)));
         }
 
-        private bool CanComplete()
+        public void ApplyPayoutStrategy(IPayoutStrategy strategy)
         {
-            var specification = SpecificationFactory.Instance.CreateSpecification<Challenge>();
+            strategy.Payout.Buckets.ForEach(bucket => _buckets.Add(bucket));
+        }
 
-            return specification.IsSatisfiedBy(this);
+        public void DistributePrizes(Scoreboard scoreboard)
+        {
+            Timeline = Timeline.Close();
+
+            var payout = new Payout(Buckets as IBuckets);
+
+            var participantPrizes = payout.GetParticipantPrizes(scoreboard);
+
+            var domainEvent = new ChallengePayoutDomainEvent(Id, participantPrizes);
+
+            this.AddDomainEvent(domainEvent);
         }
 
         public Participant RegisterParticipant(UserId userId, ExternalAccount externalAccount)
@@ -130,7 +136,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
                 throw new InvalidOperationException();
             }
 
-            Participants.Single(participant => participant.Id == participantId).SnapshotMatch(stats, Scoring);
+            Participants.Single(participant => participant.Id == participantId).SnapshotMatch(stats, new Scoring(Stats));
         }
 
         private bool CanSnapshotParticipantMatch(ParticipantId participantId)

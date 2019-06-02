@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Domain.ValueObjects
 {
-    public sealed class ExternalAccount : TypedObject<ExternalAccount, string>
+    public sealed class ExternalAccount : ValueObject
     {
         public ExternalAccount(string externalAccount)
         {
@@ -27,6 +28,8 @@ namespace eDoxa.Arena.Domain.ValueObjects
             Value = externalAccount.ToString();
         }
 
+        public string Value { get; private set; }
+
         public static implicit operator ExternalAccount(string externalAccount)
         {
             return new ExternalAccount(externalAccount);
@@ -35,6 +38,16 @@ namespace eDoxa.Arena.Domain.ValueObjects
         public static implicit operator ExternalAccount(Guid externalAccount)
         {
             return new ExternalAccount(externalAccount);
+        }
+
+        public override string ToString()
+        {
+            return Value;
+        }
+        
+        protected override IEnumerable<object> GetAtomicValues()
+        {
+            yield return Value;
         }
     }
 }

@@ -44,7 +44,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 
             var bankAccountId = await _stripeService.CreateBankAccountAsync(user.GetConnectAccountId(), command.ExternalAccountTokenId, cancellationToken);
 
-            user.AddBankAccount(bankAccountId);
+            user.AddBankAccount(bankAccountId.ToString());
 
             await _userRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
         }

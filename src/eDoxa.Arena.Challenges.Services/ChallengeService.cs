@@ -16,7 +16,6 @@ using eDoxa.Arena.Challenges.Domain;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
-using eDoxa.Arena.Challenges.Domain.Factories;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Services.Abstractions;
 using eDoxa.Arena.Challenges.Services.Factories;
@@ -58,7 +57,12 @@ namespace eDoxa.Arena.Challenges.Services
         {
             var challenges = await _challengeRepository.FindChallengesAsync();
 
-            challenges.ForEach(challenge => challenge.Close());
+            challenges.ForEach(challenge =>
+            {
+                var scoreboard = new Scoreboard(challenge);
+
+                challenge.DistributePrizes(scoreboard);
+            });
 
             await _challengeRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
         }
@@ -83,9 +87,10 @@ namespace eDoxa.Arena.Challenges.Services
                 game,
                 new ChallengeName(name),
                 new ChallengeSetup(new BestOf(bestOf), new PayoutEntries(payoutEntries), entryFee),
-                new ChallengeTimeline(new ChallengeDuration(duration)),
-                ScoringFactory.Instance.CreateScoringStrategy(game).Scoring
+                new ChallengeTimeline(new ChallengeDuration(duration))
             );
+
+            challenge.ApplyScoringStrategy(ScoringFactory.Instance.CreateStrategy(challenge));
 
             if (testModeState != null)
             {

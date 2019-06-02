@@ -1,5 +1,5 @@
 // Filename: Prize.cs
-// Date Created: 2019-05-30
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Common.Abstactions;
@@ -23,7 +24,7 @@ namespace eDoxa.Arena.Domain.ValueObjects
 
         public static readonly Prize None = new Prize(0, CurrencyType.Token);
 
-        public Prize(decimal amount, CurrencyType type)
+        public Prize(decimal amount, CurrencyType type) : this()
         {
             if (amount < 0)
             {
@@ -32,6 +33,11 @@ namespace eDoxa.Arena.Domain.ValueObjects
 
             Amount = amount;
             Type = type;
+        }
+
+        protected Prize()
+        {
+            // Required by EF Core.
         }
 
         public CurrencyType Type { get; private set; }
@@ -47,6 +53,16 @@ namespace eDoxa.Arena.Domain.ValueObjects
         {
             yield return Type;
             yield return Amount;
+        }
+
+        public override string ToString()
+        {
+            if (Type == CurrencyType.Money)
+            {
+                return $"${Amount}";
+            }
+
+            return Amount.ToString(CultureInfo.InvariantCulture);
         }
 
         public Prize ApplyFactor(PrizeFactor factor)

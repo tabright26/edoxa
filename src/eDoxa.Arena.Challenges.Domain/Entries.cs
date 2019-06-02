@@ -1,5 +1,5 @@
 ﻿// Filename: Entries.cs
-// Date Created: 2019-05-20
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,21 +9,44 @@
 // this source code package.
 
 using System;
+using System.Collections.Generic;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain
 {
-    public class Entries : TypedObject<Entries, int>
+    public class Entries : ValueObject
     {
-        public Entries(PayoutEntries payoutEntries, PayoutRatio payoutRatio)
+        public Entries(PayoutEntries payoutEntries, PayoutRatio payoutRatio) : this()
         {
             Value = Convert.ToInt32(payoutEntries / payoutRatio);
         }
 
-        public Entries(int entries)
+        public Entries(int entries) : this()
         {
             Value = entries;
+        }
+
+        private Entries()
+        {
+            // Required by EF Core.
+        }
+
+        public int Value { get; private set; }
+
+        public static implicit operator int(Entries entries)
+        {
+            return entries.Value;
+        }
+
+        public override string ToString()
+        {
+            return Value.ToString();
+        }
+
+        protected override IEnumerable<object> GetAtomicValues()
+        {
+            yield return Value;
         }
     }
 }

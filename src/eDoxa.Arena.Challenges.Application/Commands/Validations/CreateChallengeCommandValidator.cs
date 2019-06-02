@@ -8,8 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Arena.Challenges.Domain;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Application.Validations.Extensions;
 
 using FluentValidation;
@@ -26,21 +24,21 @@ namespace eDoxa.Arena.Challenges.Application.Commands.Validations
 
             this.Enumeration(command => command.Game);
 
-            this.RuleFor(command => command.Duration)
-                .Must(ChallengeDuration.HasValue)
-                .WithMessage(
-                    $"The {nameof(CreateChallengeCommand.Duration)} property is invalid. These are valid input values: {ChallengeDuration.DisplayNames()}."
-                );
+            //this.RuleFor(command => command.Duration)
+            //    .Must(ChallengeDuration.HasValue)
+            //    .WithMessage(
+            //        $"The {nameof(CreateChallengeCommand.Duration)} property is invalid. These are valid input values: {ChallengeDuration.DisplayNames()}."
+            //    );
 
-            this.RuleFor(command => command.BestOf)
-                .Must(BestOf.HasValue)
-                .WithMessage($"The {nameof(CreateChallengeCommand.BestOf)} property is invalid. These are valid input values: {BestOf.DisplayNames()}.");
+            //this.RuleFor(command => command.BestOf)
+            //    .Must(BestOf.HasValue)
+            //    .WithMessage($"The {nameof(CreateChallengeCommand.BestOf)} property is invalid. These are valid input values: {BestOf.DisplayNames()}.");
 
-            this.RuleFor(command => command.PayoutEntries)
-                .Must(PayoutEntries.HasValue)
-                .WithMessage(
-                    $"The {nameof(CreateChallengeCommand.PayoutEntries)} property is invalid. These are valid input values: {PayoutEntries.DisplayNames()}."
-                );
+            //this.RuleFor(command => command.PayoutEntries)
+            //    .Must(PayoutEntries.HasValue)
+            //    .WithMessage(
+            //        $"The {nameof(CreateChallengeCommand.PayoutEntries)} property is invalid. These are valid input values: {PayoutEntries.DisplayNames()}."
+            //    );
 
             this.Enumeration(command => command.EntryFee.Type)
                 .DependentRules(

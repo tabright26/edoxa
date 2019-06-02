@@ -9,6 +9,7 @@
 // this source code package.
 
 using System.Collections.Generic;
+using System.Globalization;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Common.Abstactions;
@@ -37,6 +38,16 @@ namespace eDoxa.Arena.Domain.ValueObjects
         {
             yield return Type;
             yield return Amount;
+        }
+
+        public override string ToString()
+        {
+            if (Type == CurrencyType.Money)
+            {
+                return $"${Amount}";
+            }
+
+            return Amount.ToString(CultureInfo.InvariantCulture);
         }
 
         public Prize GetLowestPrize()

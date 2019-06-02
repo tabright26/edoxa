@@ -60,7 +60,7 @@ namespace eDoxa.Cashier.Tests.Commands.Handlers
 
             var person = StripeBuilder.CreatePerson();
 
-            _mockUserRepository.Setup(mock => mock.Create(It.IsAny<UserId>(), It.IsAny<StripeConnectAccountId>(), It.IsAny<StripeCustomerId>())).Verifiable();
+            _mockUserRepository.Setup(mock => mock.Create(It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<string>())).Verifiable();
 
             _mockUserRepository.Setup(mock => mock.UnitOfWork.CommitAndDispatchDomainEventsAsync(It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)

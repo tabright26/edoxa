@@ -39,8 +39,8 @@ namespace eDoxa.Arena.Challenges.Tests.DomainEventHandlers
         [TestMethod]
         public async Task HandleAsync_PayoutProcessedDomainEvent_ShouldBeCompletedTask()
         {
-            // Arrange
-            var challenge = FakeChallengeFactory.CreateChallenge(ChallengeState.Closed);
+            // Arranges
+            var challenge = new ChallengeData(FakeChallengeFactory.CreateChallenge(ChallengeState.Closed));
 
             var userPrizes = challenge.Payout.GetParticipantPrizes(challenge.Scoreboard);
 

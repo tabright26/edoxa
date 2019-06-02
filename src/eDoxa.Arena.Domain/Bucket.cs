@@ -18,15 +18,20 @@ namespace eDoxa.Arena.Domain
 {
     public class Bucket : ValueObject
     {
-        public Bucket(Prize prize, BucketSize size)
+        public Bucket(Prize prize, BucketSize size) : this()
         {
             Size = size;
             Prize = prize;
         }
 
-        public Prize Prize { get; }
+        private Bucket()
+        {
+            // Required by EF Core.
+        }
 
-        public BucketSize Size { get; }
+        public Prize Prize { get; private set; }
+
+        public BucketSize Size { get; private set; }
 
         public IBuckets Items
         {
@@ -47,12 +52,6 @@ namespace eDoxa.Arena.Domain
         {
             yield return Prize;
             yield return Size;
-            yield return Items;
-        }
-
-        public override string ToString()
-        {
-            return Prize.ToString();
         }
     }
 }

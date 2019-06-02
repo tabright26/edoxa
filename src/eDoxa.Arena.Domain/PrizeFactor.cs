@@ -9,12 +9,13 @@
 // this source code package.
 
 using System;
+using System.Collections.Generic;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Domain
 {
-    public sealed class PrizeFactor : TypedObject<PrizeFactor, decimal>
+    public sealed class PrizeFactor : ValueObject
     {
         public PrizeFactor(decimal factor)
         {
@@ -24,6 +25,18 @@ namespace eDoxa.Arena.Domain
             }
 
             Value = factor;
+        }
+
+        public decimal Value { get; private set; }
+
+        public static implicit operator decimal(PrizeFactor prizeFactor)
+        {
+            return prizeFactor.Value;
+        }
+
+        protected override IEnumerable<object> GetAtomicValues()
+        {
+            yield return Value;
         }
     }
 }
