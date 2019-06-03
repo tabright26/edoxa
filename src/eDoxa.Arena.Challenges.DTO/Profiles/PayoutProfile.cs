@@ -1,5 +1,5 @@
 ﻿// Filename: PayoutProfile.cs
-// Date Created: 2019-05-20
+// Date Created: 2019-06-03
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -18,7 +18,9 @@ namespace eDoxa.Arena.Challenges.DTO.Profiles
     {
         public PayoutProfile()
         {
-            this.CreateMap<Payout, PayoutDTO>().ForMember(payout => payout.Buckets, config => config.MapFrom(payout => payout.Buckets));
+            this.CreateMap<Payout, PayoutDTO>()
+                .ForMember(payout => payout.Currency, config => config.MapFrom(payout => payout.Currency))
+                .ForMember(payout => payout.Buckets, config => config.MapFrom(payout => payout.Buckets));
         }
     }
 }

@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.DTO;
 using eDoxa.Arena.Challenges.Services.Abstractions;
 using eDoxa.Arena.Domain.ValueObjects;
@@ -43,7 +44,7 @@ namespace eDoxa.Arena.Challenges.Application.Commands.Handlers
                 command.BestOf,
                 command.PayoutEntries,
                 _mapper.Map<EntryFee>(command.EntryFee),
-                command.TestModeState,
+                _mapper.Map<TestMode>(command.TestMode),
                 cancellationToken
             );
 

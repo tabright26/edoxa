@@ -18,31 +18,26 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class ChallengeName : ValueObject
     {
-        public ChallengeName(string name) : this()
+        private readonly string _name;
+
+        public ChallengeName(string name)
         {
             if (string.IsNullOrWhiteSpace(name) || !name.All(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || c == '(' || c == ')'))
             {
                 throw new ArgumentException(nameof(name));
             }
 
-            Value = name;
+            _name = name;
         }
-
-        private ChallengeName()
-        {
-            // Required by EF Core.   
-        }
-
-        public string Value { get; private set; }
 
         public override string ToString()
         {
-            return Value;
+            return _name;
         }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
-            yield return Value;
+            yield return _name;
         }
     }
 }

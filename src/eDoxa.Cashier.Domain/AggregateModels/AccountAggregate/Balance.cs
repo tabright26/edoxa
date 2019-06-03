@@ -41,5 +41,10 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
             yield return Pending;
             yield return CurrencyType;
         }
+
+        public override string ToString()
+        {
+            return CurrencyType.ToString();
+        }
     }
 }

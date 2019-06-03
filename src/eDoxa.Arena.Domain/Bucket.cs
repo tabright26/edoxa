@@ -1,5 +1,5 @@
 ﻿// Filename: Bucket.cs
-// Date Created: 2019-05-24
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -33,25 +33,27 @@ namespace eDoxa.Arena.Domain
 
         public BucketSize Size { get; private set; }
 
-        public IBuckets Items
+        public override string ToString()
         {
-            get
-            {
-                var buckets = new List<BucketItem>();
-
-                for (var index = 0; index < Size; index++)
-                {
-                    buckets.Add(new BucketItem(Prize));
-                }
-
-                return new Buckets(buckets);
-            }
+            return $"{Prize}:{Size}";
         }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
             yield return Prize;
             yield return Size;
+        }
+
+        public IBuckets ToIndividualBuckets()
+        {
+            var buckets = new List<BucketItem>();
+
+            for (var index = 0; index < Size; index++)
+            {
+                buckets.Add(new BucketItem(Prize));
+            }
+
+            return new Buckets(buckets);
         }
     }
 }

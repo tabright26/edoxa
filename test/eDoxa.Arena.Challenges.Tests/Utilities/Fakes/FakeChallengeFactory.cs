@@ -218,7 +218,7 @@ namespace eDoxa.Arena.Challenges.Tests.Utilities.Fakes
 
         public Match CreateMatch()
         {
-            return new Match(this.CreateParticipant(), new MatchExternalId(AdminMatchExternalId.ToString()));
+            return new Match(this.CreateParticipant(), AdminMatchExternalId);
         }
 
         public IMatchStats CreateMatchStats(MatchExternalId matchExternalId = null)
@@ -236,11 +236,6 @@ namespace eDoxa.Arena.Challenges.Tests.Utilities.Fakes
                     TotalHeal = Random.Next(10000, 350000 + 1)
                 }
             );
-        }
-
-        public Stat CreateStat(StatName name, StatValue value, StatWeighting weighting)
-        {
-            return new Stat(new MatchId(), name, value, weighting);
         }
 
         public IScoringStrategy CreateScoringStrategy()

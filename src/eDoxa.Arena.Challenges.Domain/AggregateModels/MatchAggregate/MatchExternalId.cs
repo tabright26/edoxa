@@ -1,5 +1,5 @@
 ﻿// Filename: MatchExternalId.cs
-// Date Created: 2019-05-20
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -68,6 +68,11 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
         protected override IEnumerable<object> GetAtomicValues()
         {
             yield return Value;
+        }
+
+        public override string ToString()
+        {
+            return Value;
         }
     }
 }

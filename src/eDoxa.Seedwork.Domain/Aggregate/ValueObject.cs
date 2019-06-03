@@ -64,5 +64,7 @@ namespace eDoxa.Seedwork.Domain.Aggregate
         {
             return this.GetAtomicValues().Select(x => x != null ? x.GetHashCode() : 0).Aggregate((x, y) => x ^ y);
         }
+
+        public abstract override string ToString();
     }
 }

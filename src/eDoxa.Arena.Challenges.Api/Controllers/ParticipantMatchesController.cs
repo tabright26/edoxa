@@ -11,7 +11,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Challenges.DTO.Queries;
 
 using Microsoft.AspNetCore.Authorization;

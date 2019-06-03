@@ -34,6 +34,11 @@ namespace eDoxa.Arena.Domain
             return prizeFactor.Value;
         }
 
+        public override string ToString()
+        {
+            return Value.ToString("F1");
+        }
+
         protected override IEnumerable<object> GetAtomicValues()
         {
             yield return Value;

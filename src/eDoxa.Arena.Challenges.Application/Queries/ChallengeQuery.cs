@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.DTO;

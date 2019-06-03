@@ -1,9 +1,9 @@
 ﻿// Filename: Match.cs
-// Date Created: 2019-04-14
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -63,7 +63,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
 
                 var weighting = item.Value;
 
-                var stat = new Stat(Id, name, value, weighting);
+                var stat = new Stat(name, value, weighting);
 
                 _stats.Add(stat);
             }

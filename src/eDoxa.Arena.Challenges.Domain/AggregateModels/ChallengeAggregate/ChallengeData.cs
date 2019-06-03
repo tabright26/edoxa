@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
+using eDoxa.Arena.Domain;
 using eDoxa.Arena.Domain.Abstractions;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
@@ -42,10 +43,10 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public DateTime CreatedAt => _challenge.CreatedAt;
 
-        public IPayout Payout => new Payout(_challenge.Buckets as IBuckets);
+        public IPayout Payout => new Payout(new Buckets(_challenge.Buckets));
 
-        public IScoreboard Scoreboard => new Scoreboard(_challenge);
-        
+        public IScoreboard Scoreboard => new Scoreboard(_challenge.Participants);
+
         public IScoring Scoring => new Scoring(_challenge.Stats);
 
         public IReadOnlyCollection<Participant> Participants => _challenge.Participants;

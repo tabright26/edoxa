@@ -1,11 +1,11 @@
 ﻿// Filename: Entity.cs
-// Date Created: 2019-03-09
+// Date Created: 2019-06-01
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
 // 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
@@ -31,14 +31,8 @@ namespace eDoxa.Seedwork.Domain.Aggregate
 
         public TEntityId Id
         {
-            get
-            {
-                return _id;
-            }
-            protected set
-            {
-                _id = value ?? throw new ArgumentNullException(nameof(Id));
-            }
+            get => _id;
+            protected set => _id = value ?? throw new ArgumentNullException(nameof(Id));
         }
 
         public static bool operator ==(Entity<TEntityId> left, Entity<TEntityId> right)
@@ -78,6 +72,11 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             return Id == other.Id;
         }
 
+        public override string ToString()
+        {
+            return Id.ToString();
+        }
+
         public override int GetHashCode()
         {
             if (_cachedHashCode.HasValue)
@@ -95,7 +94,7 @@ namespace eDoxa.Seedwork.Domain.Aggregate
                 {
                     var hashCode = this.GetType().GetHashCode();
 
-                    _cachedHashCode = hashCode * HashMultiplier ^ Id.GetHashCode();
+                    _cachedHashCode = (hashCode * HashMultiplier) ^ Id.GetHashCode();
                 }
             }
 
@@ -123,13 +122,7 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             _domainEvents.Clear();
         }
 
-        public IReadOnlyCollection<IDomainEvent> DomainEvents
-        {
-            get
-            {
-                return _domainEvents;
-            }
-        }
+        public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents;
 
         public void AddDomainEvent(IDomainEvent domainEvent)
         {

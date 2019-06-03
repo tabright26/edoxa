@@ -1,5 +1,5 @@
 ﻿// Filename: IMatchRepository.cs
-// Date Created: 2019-05-21
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,8 +11,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Arena.Challenges.Domain.Repositories

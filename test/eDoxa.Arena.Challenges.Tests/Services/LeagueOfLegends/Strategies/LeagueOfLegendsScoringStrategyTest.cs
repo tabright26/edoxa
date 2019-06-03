@@ -33,7 +33,7 @@ namespace eDoxa.Arena.Challenges.Tests.Services.LeagueOfLegends.Strategies
             var strategy = new LeagueOfLegendsScoringStrategy();
 
             // Assert
-            strategy.Scoring.As<Scoring>().Should().Contain(key, new StatWeighting(value));
+            strategy.Scoring.As<Scoring>().Should().Contain(new StatName(key), new StatWeighting(value));
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿// Filename: PayoutDTO.cs
-// Date Created: 2019-05-20
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,6 +8,10 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Seedwork.Domain.Common.Enumerations;
+
+using JetBrains.Annotations;
+
 using Newtonsoft.Json;
 
 namespace eDoxa.Arena.Challenges.DTO
@@ -15,6 +19,10 @@ namespace eDoxa.Arena.Challenges.DTO
     [JsonObject]
     public class PayoutDTO
     {
+        [CanBeNull]
+        [JsonProperty("currency")]
+        public CurrencyType Currency { get; set; }
+
         [JsonProperty("buckets")]
         public BucketDTO[] Buckets { get; set; }
     }

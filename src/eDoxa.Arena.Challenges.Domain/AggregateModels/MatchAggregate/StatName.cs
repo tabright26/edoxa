@@ -1,5 +1,5 @@
 ﻿// Filename: StatName.cs
-// Date Created: 2019-05-20
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,45 +8,43 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
+using JetBrains.Annotations;
+
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
 {
-    public class StatName : ValueObject
+    public sealed class StatName : ValueObject, IComparable
     {
-        public StatName(PropertyInfo propertyInfo) : this()
+        private readonly string _name;
+
+        public StatName(PropertyInfo propertyInfo)
         {
-            Value = propertyInfo.GetMethod.Name.Substring(4);
+            _name = propertyInfo.GetMethod.Name.Substring(4);
         }
 
-        public StatName(string name) : this()
+        public StatName(string name)
         {
-            Value = name;
+            _name = name;
         }
 
-        private StatName()
+        public int CompareTo([CanBeNull] object obj)
         {
-            // Required by EF Core.
-        }
-
-        public string Value { get; private set; }
-
-        public static implicit operator StatName(string name)
-        {
-            return new StatName(name);
+            return string.Compare(_name, ((StatName) obj)?._name, StringComparison.OrdinalIgnoreCase);
         }
 
         public override string ToString()
         {
-            return Value;
+            return _name;
         }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
-            yield return Value;
+            yield return _name;
         }
     }
 }

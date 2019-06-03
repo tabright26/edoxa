@@ -56,8 +56,6 @@ namespace eDoxa.Arena.Challenges.Tests.Utilities.Asserts
 
                     foreach (var stat in match.Stats)
                     {
-                        stat.Id.ToGuid().Should().NotBeEmpty();
-                        stat.MatchId.ToGuid().Should().NotBeEmpty();
                         stat.Name.Should().NotBeNull();
                         stat.Score.Should().NotBeNull();
                     }

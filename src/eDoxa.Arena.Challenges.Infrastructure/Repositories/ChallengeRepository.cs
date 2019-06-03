@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;

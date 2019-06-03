@@ -1,4 +1,4 @@
-﻿// Filename: ChallengeTestMode.cs
+﻿// Filename: ChallengeId.cs
 // Date Created: 2019-06-02
 // 
 // ================================================
@@ -8,9 +8,14 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.ComponentModel;
+
+using eDoxa.Seedwork.Domain.Aggregate;
+
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public class ChallengeTestMode
+    [TypeConverter(typeof(EntityIdTypeConverter))]
+    public sealed class ChallengeId : EntityId<ChallengeId>
     {
     }
 }

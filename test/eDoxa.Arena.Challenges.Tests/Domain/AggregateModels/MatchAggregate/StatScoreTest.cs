@@ -1,5 +1,5 @@
 // Filename: StatScoreTest.cs
-// Date Created: 2019-05-29
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -7,6 +7,8 @@
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
+
+using System.Collections.Generic;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Arena.Challenges.Tests.Utilities.Fakes;
@@ -20,29 +22,44 @@ namespace eDoxa.Arena.Challenges.Tests.Domain.AggregateModels.MatchAggregate
     [TestClass]
     public sealed class StatScoreTest
     {
-        private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
+        private static IEnumerable<object[]> Data
+        {
+            get
+            {
+                yield return new object[] {new StatName(FakeChallengeFactory.Kills), new StatValue(457000), new StatWeighting(0.00015F), new decimal(68.55D)};
+                yield return new object[] {new StatName(FakeChallengeFactory.Assists), new StatValue(0.1F), new StatWeighting(1), new decimal(0.1D)};
 
-        [DataRow(FakeChallengeFactory.Kills, 457000, 0.00015F, 68.55D)]
-        [DataRow(FakeChallengeFactory.Assists, 0.1F, 1, 0.1D)]
-        [DataRow(FakeChallengeFactory.Deaths, 457342424L, 0.77F, 352153666.48D)]
-        [DataRow(FakeChallengeFactory.TotalDamageDealtToChampions, 0.25D, 100, 25D)]
-        [DataRow(FakeChallengeFactory.TotalHeal, 85, -3, -255D)]
+                yield return new object[]
+                {
+                    new StatName(FakeChallengeFactory.Deaths), new StatValue(457342424L), new StatWeighting(0.77F), new decimal(352153666.48D)
+                };
+
+                yield return new object[]
+                {
+                    new StatName(FakeChallengeFactory.TotalDamageDealtToChampions), new StatValue(0.25D), new StatWeighting(100), new decimal(25D)
+                };
+
+                yield return new object[] {new StatName(FakeChallengeFactory.TotalHeal), new StatValue(85), new StatWeighting(-3), new decimal(-255D)};
+            }
+        }
+
+        [DynamicData(nameof(Data))]
         [DataTestMethod]
         public void Constructor_Tests(
-            string name,
-            double value,
-            float weighting,
-            double result
+            StatName name,
+            StatValue value,
+            StatWeighting weighting,
+            decimal score
         )
         {
             // Arrange
-            var stat = FakeChallengeFactory.CreateStat(name, new StatValue(value), new StatWeighting(weighting));
+            var stat = new Stat(name, value, weighting);
 
             // Act
-            decimal score = new StatScore(stat);
+            decimal statScore = new StatScore(stat);
 
             // Assert
-            score.Should().Be(new decimal(result));
+            statScore.Should().Be(score);
         }
     }
 }

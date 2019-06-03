@@ -1,5 +1,5 @@
 ﻿// Filename: BucketProfile.cs
-// Date Created: 2019-05-20
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,9 +8,12 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Collections.Generic;
+
 using AutoMapper;
 
 using eDoxa.Arena.Domain;
+using eDoxa.Arena.Domain.Abstractions;
 
 namespace eDoxa.Arena.Challenges.DTO.Profiles
 {

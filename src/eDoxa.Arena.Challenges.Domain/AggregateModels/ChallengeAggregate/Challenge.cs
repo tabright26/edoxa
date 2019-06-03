@@ -27,8 +27,6 @@ using eDoxa.Seedwork.Domain.Common.Enumerations;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Specifications;
 
-using IPayoutStrategy = eDoxa.Arena.Challenges.Domain.Abstractions.IPayoutStrategy;
-
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public class Challenge : Entity<ChallengeId>, IChallenge, IAggregateRoot
@@ -41,26 +39,23 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             Game game,
             ChallengeName name,
             ChallengeSetup setup,
-            ChallengeTimeline timeline,
-            bool testMode = false
+            ChallengeTimeline timeline
         ) : this()
         {
             Game = game;
             Name = name;
             Setup = setup;
             Timeline = timeline;
-            TestMode = testMode;
         }
 
         private Challenge()
         {
+            TestMode = null;
             CreatedAt = DateTime.UtcNow;
-            _participants = new HashSet<Participant>();
             _stats = new HashSet<ChallengeStat>();
+            _participants = new HashSet<Participant>();
             _buckets = new List<Bucket>();
         }
-
-        public bool TestMode { get; private set; }
 
         public Game Game { get; private set; }
 
@@ -68,7 +63,9 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public ChallengeSetup Setup { get; private set; }
 
-        public ChallengeTimeline Timeline { get; protected set; }
+        public ChallengeTimeline Timeline { get; private set; }
+
+        public TestMode TestMode { get; private set; }
 
         public DateTime CreatedAt { get; private set; }
 
@@ -88,11 +85,18 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             strategy.Payout.Buckets.ForEach(bucket => _buckets.Add(bucket));
         }
 
+        public void EnableTestMode(TestMode testMode, ChallengeTimeline timeline)
+        {
+            TestMode = testMode;
+
+            Timeline = timeline;
+        }
+
         public void DistributePrizes(Scoreboard scoreboard)
         {
             Timeline = Timeline.Close();
 
-            var payout = new Payout(Buckets as IBuckets);
+            var payout = new Payout(new Buckets(Buckets));
 
             var participantPrizes = payout.GetParticipantPrizes(scoreboard);
 

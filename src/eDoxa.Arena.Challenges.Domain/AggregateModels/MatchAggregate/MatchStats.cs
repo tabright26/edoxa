@@ -1,28 +1,29 @@
 ﻿// Filename: MatchStats.cs
-// Date Created: 2019-04-28
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System.Collections.Generic;
+using System.Linq;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions;
-using eDoxa.Seedwork.Domain.Extensions;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
 {
     public sealed class MatchStats : Dictionary<StatName, StatValue>, IMatchStats
     {
-        // TODO: To defend.
-        public MatchStats(MatchExternalId matchExternalId, object stats)
+        public MatchStats(MatchExternalId matchExternalId, object stats) : base(
+            stats.GetType()
+                .GetProperties()
+                .ToDictionary(propertyInfo => new StatName(propertyInfo), propertyInfo => new StatValue(propertyInfo.GetValue(stats)))
+        )
         {
             MatchExternalId = matchExternalId;
-
-            stats.GetType().GetProperties().ForEach(property => this.Add(new StatName(property), new StatValue(property.GetValue(stats))));
         }
 
         public MatchExternalId MatchExternalId { get; }

@@ -9,6 +9,7 @@
 // this source code package.
 
 using eDoxa.Arena.Challenges.Domain;
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 
 namespace eDoxa.Arena.Challenges.Tests.Utilities.Fakes

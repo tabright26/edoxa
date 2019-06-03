@@ -14,7 +14,7 @@ namespace eDoxa.Arena.Domain
 {
     public sealed class BucketItem : Bucket
     {
-        public BucketItem(Prize prize) : base(prize, BucketSize.Default)
+        public BucketItem(Prize prize) : base(prize, BucketSize.Single)
         {
         }
     }

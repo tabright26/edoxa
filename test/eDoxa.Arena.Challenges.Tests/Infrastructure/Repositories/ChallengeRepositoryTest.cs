@@ -11,6 +11,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Domain;
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.Infrastructure.Repositories;
@@ -49,6 +50,8 @@ namespace eDoxa.Arena.Challenges.Tests.Infrastructure.Repositories
 
                     challenge = await repository.FindChallengeAsync(challenge.Id);
 
+                    var data = new ChallengeData(challenge);
+
                     challenge.Should().NotBeNull();
                 }
             }
@@ -66,6 +69,8 @@ namespace eDoxa.Arena.Challenges.Tests.Infrastructure.Repositories
             builder.StoreScoring(ScoringFactory.Instance);
 
             builder.StorePayout(PayoutFactory.Instance);
+
+            builder.EnableTestMode(new TestMode(ChallengeState.InProgress, TestModeMatchQuantity.Exact, TestModeParticipantQuantity.Fulfilled));
 
             return builder.Build() as Challenge;
         }

@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeDuration.cs
-// Date Created: 2019-05-21
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -17,22 +17,17 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class ChallengeDuration : ValueObject
     {
-        public static readonly ChallengeDuration OneDay = new ChallengeDuration(1);
-        public static readonly ChallengeDuration TwoDays = new ChallengeDuration(2);
-        public static readonly ChallengeDuration ThreeDays = new ChallengeDuration(3);
-        public static readonly ChallengeDuration FourDays = new ChallengeDuration(4);
-        public static readonly ChallengeDuration FiveDays = new ChallengeDuration(5);
-        public static readonly ChallengeDuration SixDays = new ChallengeDuration(6);
-        public static readonly ChallengeDuration SevenDays = new ChallengeDuration(7);
+        public static readonly ChallengeDuration OneDay = new ChallengeDuration(TimeSpan.FromDays(1));
+        public static readonly ChallengeDuration TwoDays = new ChallengeDuration(TimeSpan.FromDays(2));
+        public static readonly ChallengeDuration ThreeDays = new ChallengeDuration(TimeSpan.FromDays(3));
+        public static readonly ChallengeDuration FourDays = new ChallengeDuration(TimeSpan.FromDays(4));
+        public static readonly ChallengeDuration FiveDays = new ChallengeDuration(TimeSpan.FromDays(5));
+        public static readonly ChallengeDuration SixDays = new ChallengeDuration(TimeSpan.FromDays(6));
+        public static readonly ChallengeDuration SevenDays = new ChallengeDuration(TimeSpan.FromDays(7));
 
-        public ChallengeDuration(int days) : this()
+        public ChallengeDuration(TimeSpan timeSpan) : this()
         {
-            Value = TimeSpan.FromDays(days);
-        }
-
-        public ChallengeDuration(long ticks) : this()
-        {
-            Value = TimeSpan.FromTicks(ticks);
+            Ticks = timeSpan.Ticks;
         }
 
         private ChallengeDuration()
@@ -40,16 +35,21 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             // Required by EF Core.
         }
 
+        public long Ticks { get; private set; }
+
         public static implicit operator TimeSpan(ChallengeDuration duration)
         {
-            return duration.Value;
+            return TimeSpan.FromTicks(duration.Ticks);
         }
-
-        public TimeSpan Value { get; private set; }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
-            yield return Value;
+            yield return Ticks;
+        }
+
+        public override string ToString()
+        {
+            return TimeSpan.FromTicks(Ticks).ToString();
         }
     }
 }

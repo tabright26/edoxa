@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Domain.ValueObjects;
 using eDoxa.Seedwork.Infrastructure.Extensions;
@@ -24,7 +24,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
     {
         public void Configure([NotNull] EntityTypeBuilder<Participant> builder)
         {
-            builder.ToTable(nameof(ChallengesDbContext.Participants));
+            builder.ToTable("Participant");
 
             builder.EntityId(participant => participant.Id).IsRequired();
 
@@ -40,8 +40,6 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
 
             builder.Ignore(participant => participant.AverageScore);
 
-            builder.HasKey(participant => participant.Id);
-
             builder.HasMany(participant => participant.Matches)
                 .WithOne(match => match.Participant)
                 .HasForeignKey(nameof(ParticipantId))
@@ -49,6 +47,8 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.Metadata.FindNavigation(nameof(Participant.Matches)).SetPropertyAccessMode(PropertyAccessMode.Field);
+
+            builder.HasKey(participant => participant.Id);
         }
     }
 }

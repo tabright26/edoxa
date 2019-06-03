@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Controllers;
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.DTO;
 using eDoxa.Arena.Challenges.DTO.Queries;

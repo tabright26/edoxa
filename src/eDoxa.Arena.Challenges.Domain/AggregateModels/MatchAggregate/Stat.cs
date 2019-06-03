@@ -1,29 +1,33 @@
 ﻿// Filename: Stat.cs
-// Date Created: 2019-04-14
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
+
+using System.Collections.Generic;
 
 using eDoxa.Arena.Domain.Abstractions;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
 {
-    public class Stat : Entity<StatId>
+    public sealed class Stat : ValueObject
     {
-        public Stat(MatchId matchId, StatName name, StatValue value, StatWeighting weighting)
+        public Stat(StatName name, StatValue value, StatWeighting weighting) : this()
         {
-            MatchId = matchId;
             Name = name;
             Value = value;
             Weighting = weighting;
         }
 
-        public MatchId MatchId { get; private set; }
+        private Stat()
+        {
+            // Required by EF Core.
+        }
 
         public StatName Name { get; private set; }
 
@@ -32,5 +36,17 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
         public StatWeighting Weighting { get; private set; }
 
         public Score Score => new StatScore(this);
+
+        protected override IEnumerable<object> GetAtomicValues()
+        {
+            yield return Name;
+            yield return Value;
+            yield return Weighting;
+        }
+
+        public override string ToString()
+        {
+            return Score.ToString();
+        }
     }
 }

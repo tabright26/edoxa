@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeQueryAssert.cs
-// Date Created: 2019-05-29
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,8 +9,11 @@
 // this source code package.
 
 using System;
+using System.Collections.Generic;
 
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.DTO;
+using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 using FluentAssertions;
 
@@ -34,20 +37,47 @@ namespace eDoxa.Arena.Challenges.Tests.Utilities.Asserts
 
             challenge.Id.Should().NotBeEmpty();
 
-            challenge.Game.Should().NotBe(null);
+            challenge.Timestamp.Should().BeBefore(DateTime.UtcNow);
 
             challenge.Name.Should().NotBeNullOrWhiteSpace();
 
+            challenge.Game.Should().NotBeNull();
+
+            challenge.Game.Should().NotBe(new Game());
+
+            challenge.Game.Should().NotBe(Game.All);
+
+            challenge.State.Should().NotBeNull();
+
+            challenge.State.Should().NotBe(new ChallengeState());
+
+            challenge.State.Should().NotBe(ChallengeState.All);
+
             challenge.Setup.Should().NotBeNull();
+
+            challenge.Timeline.Should().NotBeNull();
 
             challenge.Scoring.Should().NotBeNull();
 
-            challenge.Payout.Should().NotBeNull();
+            challenge.Scoring.Should().NotBeEmpty();
+
+            challenge.Scoreboard.Should().NotBeNull();
+
+            challenge.Scoreboard.Should().HaveCount(challenge.Participants.Length);
+
+            IsMapped(challenge.Payout);
 
             IsMapped(challenge.Participants);
         }
 
-        public static void IsMapped(ParticipantDTO[] participants)
+        public static void IsMapped(PayoutDTO payout)
+        {
+            payout.Should().NotBeNull();
+
+            payout.Buckets.Should().NotBeNullOrEmpty();
+        }
+
+        public static void IsMapped(IList<ParticipantDTO> participants)
         {
             participants.Should().NotBeNullOrEmpty();
 
@@ -68,7 +98,7 @@ namespace eDoxa.Arena.Challenges.Tests.Utilities.Asserts
             IsMapped(participant.Matches);
         }
 
-        public static void IsMapped(MatchDTO[] matches)
+        public static void IsMapped(IList<MatchDTO> matches)
         {
             matches.Should().NotBeNullOrEmpty();
 
@@ -84,10 +114,12 @@ namespace eDoxa.Arena.Challenges.Tests.Utilities.Asserts
 
             match.Timestamp.Should().BeBefore(DateTime.UtcNow);
 
+            match.TotalScore.Should().BeGreaterOrEqualTo(decimal.Zero);
+
             IsMapped(match.Stats);
         }
 
-        private static void IsMapped(StatDTO[] stats)
+        private static void IsMapped(IList<StatDTO> stats)
         {
             stats.Should().NotBeNullOrEmpty();
 

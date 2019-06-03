@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Application.Commands;
 using eDoxa.Arena.Challenges.Application.Commands.Handlers;
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Services.Abstractions;
 using eDoxa.Seedwork.Application.Commands.Extensions;
 

@@ -1,5 +1,5 @@
 ﻿// Filename: StatWeighting.cs
-// Date Created: 2019-05-20
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -14,33 +14,28 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
 {
-    public class StatWeighting : ValueObject
+    public sealed class StatWeighting : ValueObject
     {
-        public StatWeighting(float weighting) : this()
+        private readonly float _weighting;
+
+        public StatWeighting(float weighting)
         {
-            Value = weighting;
+            _weighting = weighting;
         }
 
-        private StatWeighting()
+        public static implicit operator float(StatWeighting weighting)
         {
-            // Required by EF Core.
-        }
-
-        public float Value { get; private set; }
-
-        public static implicit operator float(StatWeighting statWeighting)
-        {
-            return statWeighting.Value;
+            return weighting._weighting;
         }
 
         public override string ToString()
         {
-            return Value.ToString("R");
+            return _weighting.ToString("R");
         }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
-            yield return Value;
+            yield return _weighting;
         }
     }
 }

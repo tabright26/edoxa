@@ -10,7 +10,7 @@
 
 using System.Runtime.Serialization;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.DTO;
 using eDoxa.Seedwork.Application.Commands.Abstractions;
 

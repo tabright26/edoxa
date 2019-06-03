@@ -1,5 +1,5 @@
 ﻿// Filename: CreateChallengeCommand.cs
-// Date Created: 2019-05-26
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,7 +10,6 @@
 
 using System.Runtime.Serialization;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.DTO;
 using eDoxa.Seedwork.Application.Commands.Abstractions;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
@@ -26,9 +25,8 @@ namespace eDoxa.Arena.Challenges.Application.Commands
             int duration,
             int bestOf,
             int payoutEntries,
-            decimal amount,
-            CurrencyType currencyType,
-            ChallengeState testModeState = null
+            EntryFeeDTO entryFee,
+            TestModeDTO testMode = null
         )
         {
             Name = name;
@@ -36,14 +34,8 @@ namespace eDoxa.Arena.Challenges.Application.Commands
             Duration = duration;
             BestOf = bestOf;
             PayoutEntries = payoutEntries;
-
-            EntryFee = new EntryFeeDTO
-            {
-                Amount = amount,
-                Type = currencyType
-            };
-
-            TestModeState = testModeState;
+            EntryFee = entryFee;
+            TestMode = testMode;
         }
 
         [DataMember(Name = "name")]
@@ -63,8 +55,8 @@ namespace eDoxa.Arena.Challenges.Application.Commands
 
         [DataMember(Name = "entryFee")]
         public EntryFeeDTO EntryFee { get; private set; }
-        
-        [DataMember(Name = "testModeState", IsRequired = false)]
-        public ChallengeState TestModeState { get; set; }
+
+        [DataMember(Name = "testMode", IsRequired = false)]
+        public TestModeDTO TestMode { get; set; }
     }
 }

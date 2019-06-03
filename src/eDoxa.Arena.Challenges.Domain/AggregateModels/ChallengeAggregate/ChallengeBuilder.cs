@@ -41,6 +41,11 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             _challenge.ApplyPayoutStrategy(strategy);
         }
 
+        public void EnableTestMode(TestMode testMode)
+        {
+            testMode.Enable(_challenge as Challenge);
+        }
+
         public IChallenge Build()
         {
             return _challenge;

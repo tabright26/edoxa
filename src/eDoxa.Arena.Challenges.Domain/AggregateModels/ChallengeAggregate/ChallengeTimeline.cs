@@ -9,10 +9,13 @@
 // this source code package.
 
 using System;
+using System.Collections.Generic;
+
+using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public class ChallengeTimeline
+    public class ChallengeTimeline : ValueObject
     {
         public ChallengeTimeline(ChallengeDuration duration) : this()
         {
@@ -56,6 +59,20 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         public ChallengeTimeline Close()
         {
             return new ChallengeTimeline(Duration, StartedAt, DateTime.UtcNow);
+        }
+
+        protected override IEnumerable<object> GetAtomicValues()
+        {
+            yield return Duration;
+            yield return StartedAt;
+            yield return EndedAt;
+            yield return ClosedAt;
+            yield return State;
+        }
+
+        public override string ToString()
+        {
+            return State.ToString();
         }
     }
 }

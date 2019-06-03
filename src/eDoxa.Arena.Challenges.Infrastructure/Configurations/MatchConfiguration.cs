@@ -1,5 +1,5 @@
 ﻿// Filename: MatchConfiguration.cs
-// Date Created: 2019-05-20
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,8 +8,10 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
+using System;
+
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 
 using JetBrains.Annotations;
@@ -23,7 +25,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
     {
         public void Configure([NotNull] EntityTypeBuilder<Match> builder)
         {
-            builder.ToTable(nameof(ChallengesDbContext.Matches));
+            builder.ToTable("Match");
 
             builder.EntityId(match => match.Id).IsRequired();
 
@@ -39,11 +41,34 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
 
             builder.Ignore(match => match.TotalScore);
 
+            builder.OwnsMany(
+                match => match.Stats,
+                matchStats =>
+                {
+                    matchStats.ToTable("Stat");
+
+                    matchStats.HasForeignKey(nameof(MatchId));
+
+                    matchStats.Property<MatchId>(nameof(MatchId))
+                        .HasConversion(entityId => entityId.ToGuid(), value => MatchId.FromGuid(value))
+                        .HasColumnName(nameof(MatchId))
+                        .IsRequired();
+
+                    matchStats.Property(stat => stat.Name).HasConversion(name => name.ToString(), name => new StatName(name)).HasColumnName("Name").IsRequired();
+
+                    matchStats.Property(stat => stat.Value).HasConversion<double>(value => value, value => new StatValue(value)).HasColumnName("Value").IsRequired();
+
+                    matchStats.Property(stat => stat.Weighting).HasConversion<float>(weighting => weighting, weighting => new StatWeighting(weighting)).HasColumnName("Weighting").IsRequired();
+
+                    matchStats.Ignore(stat => stat.Score);
+
+                    matchStats.Property<Guid>("Id").ValueGeneratedOnAdd().IsRequired();
+
+                    matchStats.HasKey(nameof(MatchId), "Id");
+                }
+            );
+
             builder.HasKey(match => match.Id);
-
-            builder.HasMany(match => match.Stats).WithOne().HasForeignKey(stat => stat.MatchId).IsRequired().OnDelete(DeleteBehavior.Cascade);
-
-            builder.Metadata.FindNavigation(nameof(Match.Stats)).SetPropertyAccessMode(PropertyAccessMode.Field);
         }
     }
 }

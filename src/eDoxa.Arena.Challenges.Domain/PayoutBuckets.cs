@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Domain;
 using eDoxa.Arena.Domain.Abstractions;
 

@@ -12,7 +12,6 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Domain.ValueObjects;
@@ -30,7 +29,7 @@ namespace eDoxa.Arena.Challenges.Services.Abstractions
             int bestOf,
             int payoutEntries,
             EntryFee entryFee,
-            ChallengeState testModeState = null,
+            TestMode testMode = null,
             CancellationToken cancellationToken = default
         );
 

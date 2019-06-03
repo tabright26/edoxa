@@ -13,7 +13,7 @@ using System;
 using eDoxa.Arena.Domain.ValueObjects;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
-namespace eDoxa.Arena.Challenges.Domain
+namespace eDoxa.Arena.Challenges.Domain.AggregateModels
 {
     public sealed class PrizePool : Prize
     {

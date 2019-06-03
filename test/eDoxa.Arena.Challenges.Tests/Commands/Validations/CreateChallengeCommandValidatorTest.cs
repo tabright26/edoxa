@@ -8,14 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Arena.Challenges.Application.Commands;
-using eDoxa.Arena.Challenges.Application.Commands.Validations;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Domain.Common.Enumerations;
-
-using FluentAssertions;
-
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -35,42 +27,42 @@ namespace eDoxa.Arena.Challenges.Tests.Commands.Validations
             _mockHostingEnvironment.SetupGet(mock => mock.EnvironmentName).Returns("Development");
         }
 
-        [DataRow("Weekly challenge", "leagueOfLegends", 4, 3, 10, 2.5D, "money", "inProgress")]
-        [DataRow("Monthly challenge", "leagueOfLegends", 1, 3, 100, 2.5D, "money", "inProgress")]
-        [DataRow("Daily challenge", "leagueOfLegends", 7, 7, 20, 2.5D, "money", "inProgress")]
-        [DataRow("Challenge", "leagueOfLegends", 3, 5, 15, 2500D, "token", "inProgress")]
-        [DataTestMethod]
-        public void Validate_CreateChallengeCommand_ShouldBeTrue(
-            string name,
-            string game,
-            int duration,
-            int bestOf,
-            int payoutEntries,
-            double amount,
-            string currency,
-            string testModeState
-        )
-        {
-            // Arrange
-            var command = new CreateChallengeCommand(
-                name,
-                Enumeration<Game>.FromName(game),
-                duration,
-                bestOf,
-                payoutEntries,
-                new decimal(amount),
-                Enumeration<CurrencyType>.FromName(currency),
-                Enumeration<ChallengeState>.FromName(testModeState)
-            );
+        //[DataRow("Weekly challenge", "leagueOfLegends", 4, 3, 10, 2.5D, "money", "inProgress")]
+        //[DataRow("Monthly challenge", "leagueOfLegends", 1, 3, 100, 2.5D, "money", "inProgress")]
+        //[DataRow("Daily challenge", "leagueOfLegends", 7, 7, 20, 2.5D, "money", "inProgress")]
+        //[DataRow("Challenge", "leagueOfLegends", 3, 5, 15, 2500D, "token", "inProgress")]
+        //[DataTestMethod]
+        //public void Validate_CreateChallengeCommand_ShouldBeTrue(
+        //    string name,
+        //    string game,
+        //    int duration,
+        //    int bestOf,
+        //    int payoutEntries,
+        //    double amount,
+        //    string currency,
+        //    string testModeState
+        //)
+        //{
+        //    // Arrange
+        //    var command = new CreateChallengeCommand(
+        //        name,
+        //        Enumeration<Game>.FromName(game),
+        //        duration,
+        //        bestOf,
+        //        payoutEntries,
+        //        new decimal(amount),
+        //        Enumeration<CurrencyType>.FromName(currency),
+        //        Enumeration<ChallengeState>.FromName(testModeState)
+        //    );
 
-            var validator = new CreateChallengeCommandValidator(_mockHostingEnvironment.Object);
+        //    var validator = new CreateChallengeCommandValidator(_mockHostingEnvironment.Object);
 
-            // Act
-            var result = validator.Validate(command);
+        //    // Act
+        //    var result = validator.Validate(command);
 
-            // Assert
-            result.IsValid.Should().BeTrue();
-        }
+        //    // Assert
+        //    result.IsValid.Should().BeTrue();
+        //}
 
         //[DataRow("Challenge", "leagueOfLegends", 1, 3, 10, 2.5D, "token", "inProgress", 1)]
         //[DataRow("Challenge", "leagueOfLegends", 1, 3, 10, 10D, "token", "inProgress", 1)]

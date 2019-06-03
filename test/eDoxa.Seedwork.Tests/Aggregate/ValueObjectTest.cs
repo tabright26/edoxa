@@ -171,6 +171,11 @@ namespace eDoxa.Seedwork.Tests.Aggregate
             {
                 return Array.Empty<object>();
             }
+
+            public override string ToString()
+            {
+                return typeof(MockValueObject).ToString();
+            }
         }
 
         private sealed class MockValueObjectWithProperty : MockValueObject

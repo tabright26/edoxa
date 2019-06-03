@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengesDbContext.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,11 +8,15 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.IO;
+using System.Reflection;
+
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Challenges.Infrastructure.Configurations;
 using eDoxa.Seedwork.Infrastructure;
+using eDoxa.Seedwork.Infrastructure.Factories;
 
 using JetBrains.Annotations;
 
@@ -34,8 +38,6 @@ namespace eDoxa.Arena.Challenges.Infrastructure
 
         public DbSet<Match> Matches => this.Set<Match>();
 
-        public DbSet<Stat> Stats => this.Set<Stat>();
-
         protected override void OnModelCreating([NotNull] ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -47,8 +49,19 @@ namespace eDoxa.Arena.Challenges.Infrastructure
             builder.ApplyConfiguration(new ParticipantConfiguration());
 
             builder.ApplyConfiguration(new MatchConfiguration());
+        }
 
-            builder.ApplyConfiguration(new StatConfiguration());
+        private sealed class ChallengesDbContextFactory : DesignTimeDbContextFactory<ChallengesDbContext>
+        {
+            protected override string BasePath => Path.Combine(Directory.GetCurrentDirectory(), "../eDoxa.Arena.Challenges.Api");
+
+            protected override Assembly MigrationsAssembly => Assembly.GetAssembly(typeof(ChallengesDbContextFactory));
+
+            [NotNull]
+            public override ChallengesDbContext CreateDbContext(string[] args)
+            {
+                return new ChallengesDbContext(Options, new NoMediator());
+            }
         }
     }
 }

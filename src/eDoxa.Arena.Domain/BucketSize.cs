@@ -17,11 +17,9 @@ namespace eDoxa.Arena.Domain
 {
     public sealed class BucketSize : ValueObject
     {
-        private const int DefaultValue = 1;
+        public static readonly BucketSize Single = new BucketSize(1);
 
-        public static readonly BucketSize Default = new BucketSize(DefaultValue);
-
-        public BucketSize(int size)
+        public BucketSize(int size) : this()
         {
             if (size < 1)
             {
@@ -29,6 +27,11 @@ namespace eDoxa.Arena.Domain
             }
 
             Value = size;
+        }
+
+        private BucketSize()
+        {
+            // Required by EF Core.
         }
 
         public int Value { get; private set; }
@@ -41,6 +44,11 @@ namespace eDoxa.Arena.Domain
         protected override IEnumerable<object> GetAtomicValues()
         {
             yield return Value;
+        }
+
+        public override string ToString()
+        {
+            return Value.ToString();
         }
     }
 }

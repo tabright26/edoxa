@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeSetup.cs
-// Date Created: 2019-05-20
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,6 +9,7 @@
 // this source code package.
 
 using System.Collections.Generic;
+using System.Linq;
 
 using eDoxa.Arena.Domain.ValueObjects;
 using eDoxa.Seedwork.Domain.Aggregate;
@@ -53,6 +54,11 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             yield return ServiceChargeRatio;
             yield return PayoutEntries;
             yield return PrizePool;
+        }
+
+        public override string ToString()
+        {
+            return string.Join(",", this.GetAtomicValues().Select(signature => $"{signature.GetType().Name}={signature.ToString()}"));
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿// Filename: EntityTypeBuilderExtensions.cs
-// Date Created: 2019-05-26
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -37,7 +37,7 @@ namespace eDoxa.Seedwork.Infrastructure.Extensions
         where TEntity : class, IEntity
         where TEnumeration : Enumeration<TEnumeration>, new()
         {
-            return builder.Property(expression).HasConversion(entityId => entityId.Value, entityId => Enumeration<TEnumeration>.FromValue(entityId));
+            return builder.Property(expression).HasConversion(enumeration => enumeration.Value, value => Enumeration<TEnumeration>.FromValue(value));
         }
     }
 }

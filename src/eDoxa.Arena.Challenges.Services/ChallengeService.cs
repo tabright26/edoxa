@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeService.cs
-// Date Created: 2019-05-29
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,7 +12,6 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Domain;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
@@ -57,12 +56,14 @@ namespace eDoxa.Arena.Challenges.Services
         {
             var challenges = await _challengeRepository.FindChallengesAsync();
 
-            challenges.ForEach(challenge =>
-            {
-                var scoreboard = new Scoreboard(challenge);
+            challenges.ForEach(
+                challenge =>
+                {
+                    var scoreboard = new Scoreboard(challenge.Participants);
 
-                challenge.DistributePrizes(scoreboard);
-            });
+                    challenge.DistributePrizes(scoreboard);
+                }
+            );
 
             await _challengeRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
         }
@@ -79,23 +80,27 @@ namespace eDoxa.Arena.Challenges.Services
             int bestOf,
             int payoutEntries,
             EntryFee entryFee,
-            ChallengeState testModeState = null,
+            TestMode testMode = null,
             CancellationToken cancellationToken = default
         )
         {
-            var challenge = new Challenge(
+            var builder = new ChallengeBuilder(
                 game,
                 new ChallengeName(name),
                 new ChallengeSetup(new BestOf(bestOf), new PayoutEntries(payoutEntries), entryFee),
-                new ChallengeTimeline(new ChallengeDuration(duration))
+                new ChallengeTimeline(new ChallengeDuration(TimeSpan.FromDays(duration)))
             );
 
-            challenge.ApplyScoringStrategy(ScoringFactory.Instance.CreateStrategy(challenge));
+            builder.StoreScoring(ScoringFactory.Instance);
 
-            if (testModeState != null)
+            builder.StorePayout(PayoutFactory.Instance);
+
+            if (testMode != null)
             {
-                challenge = TestModeFactory.Instance.CreateChallenge(challenge, testModeState);
+                builder.EnableTestMode(testMode);
             }
+
+            var challenge = builder.Build() as Challenge;
 
             _challengeRepository.Create(challenge);
 

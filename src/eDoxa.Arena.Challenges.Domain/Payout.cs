@@ -15,6 +15,7 @@ using eDoxa.Arena.Domain;
 using eDoxa.Arena.Domain.Abstractions;
 using eDoxa.Arena.Domain.ValueObjects;
 using eDoxa.Seedwork.Domain.Aggregate;
+using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 using JetBrains.Annotations;
 
@@ -29,7 +30,10 @@ namespace eDoxa.Arena.Challenges.Domain
             _buckets = buckets;
         }
 
-        private IBuckets BucketItems => new Buckets(_buckets.SelectMany(bucket => bucket.Items).OrderByDescending(bucket => bucket.Prize));
+        private IBuckets IndividualBuckets => new Buckets(_buckets.SelectMany(bucket => bucket.ToIndividualBuckets()).OrderByDescending(bucket => bucket.Prize));
+
+        [CanBeNull]
+        public CurrencyType Currency => _buckets.FirstOrDefault()?.Prize.Type;
 
         public IBuckets Buckets => _buckets;
 
@@ -52,11 +56,12 @@ namespace eDoxa.Arena.Challenges.Domain
         [CanBeNull]
         private Prize DetermineParticipantPrize(IScoreboard scoreboard, int index)
         {
-            return scoreboard.IsValidScore(index) ? BucketItems.PrizeAtOrDefault(index) : null;
+            return scoreboard.IsValidScore(index) ? IndividualBuckets.PrizeAtOrDefault(index) : null;
         }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
+            yield return Currency;
             yield return Buckets;
         }
 

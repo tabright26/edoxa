@@ -1,5 +1,5 @@
 ﻿// Filename: StatValue.cs
-// Date Created: 2019-05-20
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,33 +10,34 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
 {
-    public class StatValue : ValueObject
+    public sealed class StatValue : ValueObject
     {
-        public StatValue(object value) : this()
+        private readonly double _value;
+
+        public StatValue(object value)
         {
-            Value = Convert.ToDouble(value);
+            _value = Convert.ToDouble(value);
         }
 
-        private StatValue()
+        public static implicit operator double(StatValue value)
         {
-            // Required by EF Core.
-        }
-
-        public double Value { get; private set; }
-
-        public static implicit operator double(StatValue statValue)
-        {
-            return statValue.Value;
+            return value._value;
         }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
-            yield return Value;
+            yield return _value;
+        }
+
+        public override string ToString()
+        {
+            return _value.ToString(CultureInfo.InvariantCulture);
         }
     }
 }

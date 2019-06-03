@@ -1,5 +1,5 @@
 ﻿// Filename: Score.cs
-// Date Created: 2019-05-20
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -14,9 +14,11 @@ using System.Globalization;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
+using JetBrains.Annotations;
+
 namespace eDoxa.Arena.Domain.Abstractions
 {
-    public abstract class Score : ValueObject
+    public abstract class Score : ValueObject, IComparable
     {
         protected Score(decimal score)
         {
@@ -24,6 +26,11 @@ namespace eDoxa.Arena.Domain.Abstractions
         }
 
         public decimal Value { get; private set; }
+
+        public int CompareTo([CanBeNull] object obj)
+        {
+            return Value.CompareTo(((Score) obj)?.Value);
+        }
 
         public static implicit operator decimal(Score score)
         {

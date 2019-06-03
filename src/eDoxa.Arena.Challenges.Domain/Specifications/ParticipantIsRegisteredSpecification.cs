@@ -12,8 +12,8 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Seedwork.Domain.Specifications;
 
 namespace eDoxa.Arena.Challenges.Domain.Specifications

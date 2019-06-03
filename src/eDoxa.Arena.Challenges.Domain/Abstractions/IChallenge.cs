@@ -11,11 +11,9 @@
 using System;
 using System.Collections.Generic;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Domain;
-using eDoxa.Arena.Domain.Abstractions;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 namespace eDoxa.Arena.Challenges.Domain.Abstractions
@@ -39,6 +37,8 @@ namespace eDoxa.Arena.Challenges.Domain.Abstractions
         IReadOnlyCollection<Participant> Participants { get; }
 
         IReadOnlyCollection<Bucket> Buckets { get; }
+
+        void EnableTestMode(TestMode testMode, ChallengeTimeline timeline);
 
         void ApplyScoringStrategy(IScoringStrategy strategy);
 

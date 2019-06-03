@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeDTO.cs
-// Date Created: 2019-05-20
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -24,27 +24,24 @@ namespace eDoxa.Arena.Challenges.DTO
         [JsonProperty("id")]
         public Guid Id { get; set; }
 
+        [JsonProperty("timestamp")]
+        [JsonConverter(typeof(UnixDateTimeConverter))]
+        public DateTime Timestamp { get; set; }
+
         [JsonProperty("name")]
         public string Name { get; set; }
 
         [JsonProperty("game")]
         public Game Game { get; set; }
-
-        [JsonProperty("createdAt")]
-        [JsonConverter(typeof(UnixDateTimeConverter))]
-        public DateTime CreatedAt { get; set; }
-
-        [JsonProperty("testMode")]
-        public bool TestMode { get; set; }
-
+        
         [JsonProperty("state")]
         public ChallengeState State { get; set; }
+        
+        [JsonProperty("timeline")]
+        public ChallengeTimelineDTO Timeline { get; set; }
 
         [JsonProperty("setup")]
         public ChallengeSetupDTO Setup { get; set; }
-
-        [JsonProperty("timeline")]
-        public ChallengeTimelineDTO Timeline { get; set; }
 
         [JsonProperty("scoring")]
         public ScoringDTO Scoring { get; set; }

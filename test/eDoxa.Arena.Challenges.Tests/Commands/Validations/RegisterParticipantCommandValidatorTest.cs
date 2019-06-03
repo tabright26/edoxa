@@ -10,7 +10,7 @@
 
 using eDoxa.Arena.Challenges.Application.Commands;
 using eDoxa.Arena.Challenges.Application.Commands.Validations;
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Tests.Utilities.Mocks.Extensions;
 
