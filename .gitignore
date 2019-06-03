@@ -313,7 +313,3 @@ tempkey.rsa
 
 # HealhChecks database files
 healthchecksdb
-
-# Temporairy folders
-tmp/
-temp/
