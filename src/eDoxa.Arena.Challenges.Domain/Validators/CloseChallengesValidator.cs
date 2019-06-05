@@ -1,5 +1,5 @@
-﻿// Filename: SynchronizeChallengeValidator.cs
-// Date Created: 2019-05-27
+﻿// Filename: CloseChallengesValidator.cs
+// Date Created: 2019-06-05
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -14,7 +14,7 @@ using FluentValidation;
 
 namespace eDoxa.Arena.Challenges.Domain.Validators
 {
-    public sealed class SynchronizeChallengeValidator : AbstractValidator<Challenge>
+    public sealed class CloseChallengesValidator : AbstractValidator<Challenge>
     {
     }
 }

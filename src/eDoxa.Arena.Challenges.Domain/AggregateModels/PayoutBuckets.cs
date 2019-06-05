@@ -11,11 +11,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Domain;
 using eDoxa.Arena.Domain.Abstractions;
 
-namespace eDoxa.Arena.Challenges.Domain
+namespace eDoxa.Arena.Challenges.Domain.AggregateModels
 {
     public sealed class PayoutBuckets : ReadOnlyDictionary<PayoutEntries, IBucketFactors>
     {

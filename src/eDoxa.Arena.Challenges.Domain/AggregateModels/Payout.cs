@@ -19,7 +19,7 @@ using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Arena.Challenges.Domain
+namespace eDoxa.Arena.Challenges.Domain.AggregateModels
 {
     public sealed class Payout : ValueObject, IPayout
     {

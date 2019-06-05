@@ -12,7 +12,7 @@ using System.Collections.Generic;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
-namespace eDoxa.Arena.Challenges.Domain
+namespace eDoxa.Arena.Challenges.Domain.AggregateModels
 {
     public class PayoutRatio : ValueObject
     {

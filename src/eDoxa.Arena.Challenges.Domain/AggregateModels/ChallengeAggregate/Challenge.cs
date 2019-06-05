@@ -16,7 +16,7 @@ using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Challenges.Domain.DomainEvents;
-using eDoxa.Arena.Challenges.Domain.Specifications;
+using eDoxa.Arena.Challenges.Domain.Validators;
 using eDoxa.Arena.Domain;
 using eDoxa.Arena.Domain.ValueObjects;
 using eDoxa.Seedwork.Domain;
@@ -24,7 +24,6 @@ using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Common;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 using eDoxa.Seedwork.Domain.Extensions;
-using eDoxa.Seedwork.Domain.Specifications;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
@@ -125,28 +124,12 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         private bool CanRegisterParticipant(UserId userId)
         {
-            var specification = SpecificationFactory.Instance.CreateSpecification<Challenge>()
-                .And(new UserIsRegisteredSpecification(userId).Not())
-                .And(new ChallengeRegisterIsAvailableSpecification().Not());
-
-            return specification.IsSatisfiedBy(this);
+            return new RegisterParticipantValidator(userId).Validate(this).IsValid;
         }
 
         public void SnapshotParticipantMatch(ParticipantId participantId, IMatchStats stats)
         {
-            if (!this.CanSnapshotParticipantMatch(participantId))
-            {
-                throw new InvalidOperationException();
-            }
-
-            Participants.Single(participant => participant.Id == participantId).SnapshotMatch(stats, new Scoring(Stats));
-        }
-
-        private bool CanSnapshotParticipantMatch(ParticipantId participantId)
-        {
-            var specification = SpecificationFactory.Instance.CreateSpecification<Challenge>().And(new ParticipantIsRegisteredSpecification(participantId));
-
-            return specification.IsSatisfiedBy(this);
+            Participants.SingleOrDefault(participant => participant.Id == participantId)?.SnapshotMatch(stats, new Scoring(Stats));
         }
     }
 }

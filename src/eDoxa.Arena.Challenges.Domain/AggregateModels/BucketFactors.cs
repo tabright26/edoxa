@@ -15,7 +15,7 @@ using eDoxa.Arena.Domain;
 using eDoxa.Arena.Domain.Abstractions;
 using eDoxa.Arena.Domain.ValueObjects;
 
-namespace eDoxa.Arena.Challenges.Domain
+namespace eDoxa.Arena.Challenges.Domain.AggregateModels
 {
     public sealed class BucketFactors : List<BucketFactor>, IBucketFactors
     {
