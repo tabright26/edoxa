@@ -1,5 +1,5 @@
 ﻿// Filename: UserRepository.cs
-// Date Created: 2019-05-19
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -15,6 +15,8 @@ using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Common;
+
+using JetBrains.Annotations;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -39,11 +41,13 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
             _context.Add(new User(userId, connectAccountId, customerId));
         }
 
+        [ItemCanBeNull]
         public async Task<User> GetUserAsync(UserId userId)
         {
             return await _context.Users.Where(user => user.Id == userId).SingleAsync();
         }
 
+        [ItemCanBeNull]
         public async Task<User> GetUserAsNoTrackingAsync(UserId userId)
         {
             return await _context.Users.AsNoTracking().Where(user => user.Id == userId).SingleAsync();

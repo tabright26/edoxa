@@ -14,14 +14,18 @@ using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Common;
 
+using JetBrains.Annotations;
+
 namespace eDoxa.Cashier.Domain.Repositories
 {
     public interface IUserRepository : IRepository<User>
     {
         void Create(UserId userId, string connectAccountId, string customerId);
 
+        [ItemCanBeNull]
         Task<User> GetUserAsync(UserId userId);
 
+        [ItemCanBeNull]
         Task<User> GetUserAsNoTrackingAsync(UserId userId);
     }
 }

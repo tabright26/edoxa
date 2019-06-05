@@ -14,7 +14,7 @@ using System.Net.Sockets;
 
 namespace eDoxa.Security
 {
-    public static class Host
+    public static class Network
     {
         public static IPAddress GetIpAddress()
         {

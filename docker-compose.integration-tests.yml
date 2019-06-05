@@ -1,3 +1,22 @@
 version: '3.4'
 
 services:
+  mssql.test:
+    image: microsoft/mssql-server-linux:latest
+
+  redis.test:
+    image: redis:latest
+
+  rabbitmq.test:
+    image: rabbitmq:latest
+
+  arena.challenges.integration-tests:
+    image: ${ACR_REGISTRY:-edoxa}/arena.challenges.integration-tests:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: test/eDoxa.Arena.Challenges.IntegrationTests/Dockerfile
+    entrypoint: dotnet test
+    depends_on:
+      - mssql.test
+      - redis.test
+      - rabbitmq.test

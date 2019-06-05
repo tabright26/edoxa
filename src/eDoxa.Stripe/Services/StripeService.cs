@@ -124,7 +124,7 @@ namespace eDoxa.Stripe.Services
                 TosAcceptance = new AccountTosAcceptanceOptions
                 {
                     Date = DateTime.UtcNow,
-                    Ip = Host.GetIpAddress().ToString()
+                    Ip = Network.GetIpAddress().ToString()
                 }
             };
 

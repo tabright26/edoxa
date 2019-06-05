@@ -8,8 +8,6 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.DTO;
 using eDoxa.Arena.Challenges.Services.Factories;
 using eDoxa.Arena.Challenges.Tests.Utilities.Asserts;
-using eDoxa.Arena.Domain;
-using eDoxa.Arena.Domain.Abstractions;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 using Microsoft.Extensions.DependencyInjection;

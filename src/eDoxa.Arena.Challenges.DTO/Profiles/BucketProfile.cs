@@ -8,12 +8,9 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Collections.Generic;
-
 using AutoMapper;
 
 using eDoxa.Arena.Domain;
-using eDoxa.Arena.Domain.Abstractions;
 
 namespace eDoxa.Arena.Challenges.DTO.Profiles
 {

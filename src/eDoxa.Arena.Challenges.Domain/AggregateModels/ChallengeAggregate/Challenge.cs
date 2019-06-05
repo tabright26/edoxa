@@ -18,7 +18,6 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Challenges.Domain.DomainEvents;
 using eDoxa.Arena.Challenges.Domain.Specifications;
 using eDoxa.Arena.Domain;
-using eDoxa.Arena.Domain.Abstractions;
 using eDoxa.Arena.Domain.ValueObjects;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;

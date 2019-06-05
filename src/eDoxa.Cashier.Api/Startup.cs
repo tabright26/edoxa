@@ -88,7 +88,7 @@ namespace eDoxa.Cashier.Api
 
             application.UseCustomExceptionHandler();
 
-            application.UseAuthentication();
+            application.UseAuthentication(Environment);
 
             application.UseStaticFiles();
 
