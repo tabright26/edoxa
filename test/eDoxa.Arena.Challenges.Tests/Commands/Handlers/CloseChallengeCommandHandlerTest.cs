@@ -42,10 +42,10 @@ namespace eDoxa.Arena.Challenges.Tests.Commands.Handlers
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var handler = new CloseChallengeCommandHandler(_mockChallengeService.Object);
+            var handler = new CloseChallengesCommandHandler(_mockChallengeService.Object);
 
             // Act
-            await handler.HandleAsync(new CloseChallengeCommand(new ChallengeId()));
+            await handler.HandleAsync(new CloseChallengesCommand(new ChallengeId()));
 
             // Assert
             _mockChallengeService.Verify(mock => mock.CompleteAsync(It.IsAny<ChallengeId>(), It.IsAny<CancellationToken>()), Times.Once);

@@ -10,7 +10,6 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Domain;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure;
@@ -62,7 +61,7 @@ namespace eDoxa.Arena.Challenges.Tests.Infrastructure.Repositories
             var builder = new ChallengeBuilder(
                 Game.LeagueOfLegends,
                 new ChallengeName("Weekly challenge"),
-                new ChallengeSetup(BestOf.Three, PayoutEntries.Ten, MoneyEntryFee.Ten),
+                new ChallengeSetup(BestOf.Three, PayoutEntries.Ten, MoneyEntryFee.Ten, new Entries(20)),
                 new ChallengeTimeline(ChallengeDuration.OneDay)
             );
 

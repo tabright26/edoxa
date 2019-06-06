@@ -1,5 +1,5 @@
-﻿// Filename: CompleteChallengeCommandValidator.cs
-// Date Created: 2019-05-27
+﻿// Filename: CloseChallengesCommandValidator.cs
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,9 +13,9 @@ using eDoxa.Seedwork.Application.Validations.Extensions;
 
 namespace eDoxa.Arena.Challenges.Application.Commands.Validations
 {
-    internal sealed class CloseChallengeCommandValidator : CommandValidator<SynchronizeChallengeCommand>
+    internal sealed class CloseChallengesCommandValidator : CommandValidator<SynchronizeChallengesCommand>
     {
-        public CloseChallengeCommandValidator()
+        public CloseChallengesCommandValidator()
         {
             this.EntityId(command => command.ChallengeId);
         }

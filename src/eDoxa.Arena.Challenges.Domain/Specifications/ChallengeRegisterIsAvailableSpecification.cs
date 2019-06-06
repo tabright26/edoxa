@@ -20,7 +20,7 @@ namespace eDoxa.Arena.Challenges.Domain.Specifications
     {
         public override Expression<Func<Challenge, bool>> ToExpression()
         {
-            return challenge => challenge.Participants.Count >= challenge.Setup.Entries;
+            return challenge => challenge.Participants.Count < challenge.Setup.Entries;
         }
     }
 }

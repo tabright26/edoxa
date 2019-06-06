@@ -8,7 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Arena.Challenges.Domain;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 
@@ -16,7 +15,7 @@ namespace eDoxa.Arena.Challenges.Tests.Utilities.Fakes
 {
     public sealed class FakeChallengeSetup : ChallengeSetup
     {
-        public FakeChallengeSetup() : base(BestOf.Three, PayoutEntries.Ten, MoneyEntryFee.TwoAndHalf)
+        public FakeChallengeSetup() : base(BestOf.Three, PayoutEntries.Ten, MoneyEntryFee.TwoAndHalf, new Entries(20))
         {
         }
     }

@@ -1,5 +1,5 @@
-﻿// Filename: SynchronizeChallengeCommandValidator.cs
-// Date Created: 2019-05-27
+﻿// Filename: SynchronizeChallengesCommandValidator.cs
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,9 +13,9 @@ using eDoxa.Seedwork.Application.Validations.Extensions;
 
 namespace eDoxa.Arena.Challenges.Application.Commands.Validations
 {
-    public sealed class SynchronizeChallengeCommandValidator : CommandValidator<SynchronizeChallengeCommand>
+    public sealed class SynchronizeChallengesCommandValidator : CommandValidator<SynchronizeChallengesCommand>
     {
-        public SynchronizeChallengeCommandValidator()
+        public SynchronizeChallengesCommandValidator()
         {
             this.EntityId(command => command.ChallengeId);
         }

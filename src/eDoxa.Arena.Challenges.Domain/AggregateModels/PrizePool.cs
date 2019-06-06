@@ -1,5 +1,5 @@
 // Filename: PrizePool.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-02
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,28 +9,52 @@
 // this source code package.
 
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 
 using eDoxa.Arena.Domain.ValueObjects;
+using eDoxa.Seedwork.Domain.Aggregate;
+using eDoxa.Seedwork.Domain.Common.Abstactions;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels
 {
-    public sealed class PrizePool : Prize
+    public sealed class PrizePool : ValueObject, ICurrency
     {
-        public PrizePool(Entries entries, EntryFee entryFee, ServiceChargeRatio serviceChargeRatio) : base(
-            Math.Floor(entries * entryFee.Amount * (1 - Convert.ToDecimal(serviceChargeRatio))),
-            entryFee.Type
-        )
+        public PrizePool(Entries entries, EntryFee entryFee) : this()
         {
-        }
-
-        public PrizePool(decimal amount, CurrencyType currency) : base(amount, currency)
-        {
+            Amount = Math.Floor(entries * entryFee.Amount);
+            Type = entryFee.Type;
         }
 
         private PrizePool()
         {
             // Required by EF Core.
+        }
+
+        public CurrencyType Type { get; private set; }
+
+        public decimal Amount { get; private set; }
+
+        public static implicit operator decimal(PrizePool currency)
+        {
+            return currency.Amount;
+        }
+
+        protected override IEnumerable<object> GetAtomicValues()
+        {
+            yield return Type;
+            yield return Amount;
+        }
+
+        public override string ToString()
+        {
+            if (Type == CurrencyType.Money)
+            {
+                return $"${Amount}";
+            }
+
+            return Amount.ToString(CultureInfo.InvariantCulture);
         }
     }
 }

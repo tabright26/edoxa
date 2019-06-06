@@ -18,18 +18,18 @@ using eDoxa.Seedwork.Domain.Specifications;
 
 namespace eDoxa.Arena.Challenges.Domain.Specifications
 {
-    public sealed class UserIsRegisteredSpecification : Specification<Challenge>
+    public sealed class UserIsNotRegisteredSpecification : Specification<Challenge>
     {
         private readonly UserId _userId;
 
-        public UserIsRegisteredSpecification(UserId userId)
+        public UserIsNotRegisteredSpecification(UserId userId)
         {
             _userId = userId;
         }
 
         public override Expression<Func<Challenge, bool>> ToExpression()
         {
-            return challenge => challenge.Participants.Any(participant => participant.UserId == _userId);
+            return challenge => challenge.Participants.All(participant => participant.UserId != _userId);
         }
     }
 }

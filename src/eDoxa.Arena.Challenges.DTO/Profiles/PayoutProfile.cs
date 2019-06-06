@@ -10,7 +10,6 @@
 
 using AutoMapper;
 
-using eDoxa.Arena.Challenges.Domain;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 
 namespace eDoxa.Arena.Challenges.DTO.Profiles

@@ -48,20 +48,18 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
 
                     challengeSetup.OwnsOne(setup => setup.Entries).Property(entries => entries.Value).HasColumnName("Entries").IsRequired();
 
-                    challengeSetup.OwnsOne(setup => setup.PayoutRatio).Property(payoutRatio => payoutRatio.Value).HasColumnName("PayoutRatio").IsRequired();
-
-                    challengeSetup.OwnsOne(setup => setup.ServiceChargeRatio)
-                        .Property(serviceChargeRatio => serviceChargeRatio.Value)
-                        .HasColumnName("ServiceChargeRatio")
+                    challengeSetup.OwnsOne(setup => setup.PayoutEntries)
+                        .Property(payoutEntries => payoutEntries.Value)
+                        .HasColumnName("PayoutEntries")
                         .IsRequired();
 
-                    challengeSetup.OwnsOne(challenge => challenge.EntryFee).Property(entryFee => entryFee.Amount).HasColumnName("EntryFee").IsRequired();
+                    challengeSetup.OwnsOne(setup => setup.EntryFee).Property(entryFee => entryFee.Amount).HasColumnName("EntryFeeAmount").IsRequired();
 
-                    challengeSetup.OwnsOne(challenge => challenge.EntryFee).Enumeration(entryFee => entryFee.Type).HasColumnName("Currency").IsRequired();
+                    challengeSetup.OwnsOne(setup => setup.EntryFee).Enumeration(entryFee => entryFee.Type).HasColumnName("EntryFeeCurrency").IsRequired();
 
-                    challengeSetup.Ignore(setup => setup.PayoutEntries);
+                    challengeSetup.OwnsOne(setup => setup.PrizePool).Property(prizePool => prizePool.Amount).HasColumnName("PrizePoolAmount").IsRequired();
 
-                    challengeSetup.Ignore(setup => setup.PrizePool);
+                    challengeSetup.OwnsOne(setup => setup.PrizePool).Enumeration(prizePool => prizePool.Type).HasColumnName("PrizePoolCurrency").IsRequired();
                 }
             );
 
@@ -121,9 +119,9 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
 
                     challengeStats.OwnsOne(bucket => bucket.Size).Property(size => size.Value).HasColumnName("Size").IsRequired();
 
-                    challengeStats.OwnsOne(bucket => bucket.Prize).Property(prize => prize.Amount).HasColumnName("Prize").IsRequired();
+                    challengeStats.OwnsOne(bucket => bucket.Prize).Property(prize => prize.Amount).HasColumnName("PrizeAmount").IsRequired();
 
-                    challengeStats.OwnsOne(bucket => bucket.Prize).Enumeration(prize => prize.Type).HasColumnName("Currency").IsRequired();
+                    challengeStats.OwnsOne(bucket => bucket.Prize).Enumeration(prize => prize.Type).HasColumnName("PrizeCurrency").IsRequired();
 
                     challengeStats.Property<Guid>("Id").ValueGeneratedOnAdd().IsRequired();
 

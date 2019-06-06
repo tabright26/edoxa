@@ -18,17 +18,23 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public class ChallengeSetup : ValueObject
     {
-        public ChallengeSetup(BestOf bestOf, PayoutEntries payoutEntries, EntryFee entryFee) : this()
+        public ChallengeSetup(
+            BestOf bestOf,
+            PayoutEntries payoutEntries,
+            EntryFee entryFee,
+            Entries entries
+        ) : this()
         {
             BestOf = bestOf;
             EntryFee = entryFee;
-            Entries = new Entries(payoutEntries, PayoutRatio);
+            Entries = entries;
+            PayoutEntries = payoutEntries;
+            PrizePool = new PrizePool(Entries, EntryFee);
         }
 
         private ChallengeSetup()
         {
-            PayoutRatio = PayoutRatio.Default;
-            ServiceChargeRatio = ServiceChargeRatio.Default;
+            // Required by EF Core.
         }
 
         public BestOf BestOf { get; private set; }
@@ -37,21 +43,15 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public EntryFee EntryFee { get; private set; }
 
-        public PayoutRatio PayoutRatio { get; private set; }
+        public PrizePool PrizePool { get; private set; }
 
-        public ServiceChargeRatio ServiceChargeRatio { get; private set; }
-
-        public PayoutEntries PayoutEntries => new PayoutEntries(Entries, PayoutRatio);
-
-        public PrizePool PrizePool => new PrizePool(Entries, EntryFee, ServiceChargeRatio);
+        public PayoutEntries PayoutEntries { get; private set; }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
             yield return BestOf;
             yield return Entries;
             yield return EntryFee;
-            yield return PayoutRatio;
-            yield return ServiceChargeRatio;
             yield return PayoutEntries;
             yield return PrizePool;
         }

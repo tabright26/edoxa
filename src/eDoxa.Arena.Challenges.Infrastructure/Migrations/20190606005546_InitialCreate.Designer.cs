@@ -10,7 +10,7 @@ using eDoxa.Arena.Challenges.Infrastructure;
 namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
 {
     [DbContext(typeof(ChallengesDbContext))]
-    [Migration("20190603045450_InitialCreate")]
+    [Migration("20190606005546_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -129,37 +129,40 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
                                         .OnDelete(DeleteBehavior.Cascade);
                                 });
 
-                            b1.OwnsOne("eDoxa.Arena.Challenges.Domain.PayoutRatio", "PayoutRatio", b2 =>
+                            b1.OwnsOne("eDoxa.Arena.Challenges.Domain.AggregateModels.PayoutEntries", "PayoutEntries", b2 =>
                                 {
                                     b2.Property<Guid>("ChallengeSetupChallengeId");
 
-                                    b2.Property<float>("Value")
-                                        .HasColumnName("PayoutRatio");
+                                    b2.Property<int>("Value")
+                                        .HasColumnName("PayoutEntries");
 
                                     b2.HasKey("ChallengeSetupChallengeId");
 
                                     b2.ToTable("Setup","edoxa");
 
                                     b2.HasOne("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ChallengeSetup")
-                                        .WithOne("PayoutRatio")
-                                        .HasForeignKey("eDoxa.Arena.Challenges.Domain.PayoutRatio", "ChallengeSetupChallengeId")
+                                        .WithOne("PayoutEntries")
+                                        .HasForeignKey("eDoxa.Arena.Challenges.Domain.AggregateModels.PayoutEntries", "ChallengeSetupChallengeId")
                                         .OnDelete(DeleteBehavior.Cascade);
                                 });
 
-                            b1.OwnsOne("eDoxa.Arena.Challenges.Domain.ServiceChargeRatio", "ServiceChargeRatio", b2 =>
+                            b1.OwnsOne("eDoxa.Arena.Challenges.Domain.AggregateModels.PrizePool", "PrizePool", b2 =>
                                 {
                                     b2.Property<Guid>("ChallengeSetupChallengeId");
 
-                                    b2.Property<float>("Value")
-                                        .HasColumnName("ServiceChargeRatio");
+                                    b2.Property<decimal>("Amount")
+                                        .HasColumnName("PrizePoolAmount");
+
+                                    b2.Property<int>("Type")
+                                        .HasColumnName("PrizePoolCurrency");
 
                                     b2.HasKey("ChallengeSetupChallengeId");
 
                                     b2.ToTable("Setup","edoxa");
 
                                     b2.HasOne("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ChallengeSetup")
-                                        .WithOne("ServiceChargeRatio")
-                                        .HasForeignKey("eDoxa.Arena.Challenges.Domain.ServiceChargeRatio", "ChallengeSetupChallengeId")
+                                        .WithOne("PrizePool")
+                                        .HasForeignKey("eDoxa.Arena.Challenges.Domain.AggregateModels.PrizePool", "ChallengeSetupChallengeId")
                                         .OnDelete(DeleteBehavior.Cascade);
                                 });
 
@@ -168,10 +171,10 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
                                     b2.Property<Guid>("ChallengeSetupChallengeId");
 
                                     b2.Property<decimal>("Amount")
-                                        .HasColumnName("EntryFee");
+                                        .HasColumnName("EntryFeeAmount");
 
                                     b2.Property<int>("Type")
-                                        .HasColumnName("Currency");
+                                        .HasColumnName("EntryFeeCurrency");
 
                                     b2.HasKey("ChallengeSetupChallengeId");
 
@@ -250,13 +253,13 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
                         {
                             b1.Property<Guid>("ChallengeId");
 
-                            b1.Property<int>("AverageBestOf")
+                            b1.Property<int>("MatchQuantity")
                                 .HasColumnName("AverageBestOf");
 
                             b1.Property<int>("ParticipantQuantity")
                                 .HasColumnName("ParticipantQuantity");
 
-                            b1.Property<int>("State")
+                            b1.Property<int>("StartingState")
                                 .HasColumnName("State");
 
                             b1.HasKey("ChallengeId");
@@ -312,10 +315,10 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
                                     b2.Property<Guid>("BucketId");
 
                                     b2.Property<decimal>("Amount")
-                                        .HasColumnName("Prize");
+                                        .HasColumnName("PrizeAmount");
 
                                     b2.Property<int>("Type")
-                                        .HasColumnName("Currency");
+                                        .HasColumnName("PrizeCurrency");
 
                                     b2.HasKey("BucketChallengeId", "BucketId");
 

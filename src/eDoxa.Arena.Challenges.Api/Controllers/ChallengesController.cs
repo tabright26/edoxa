@@ -95,7 +95,7 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         [HttpPost("{challengeId}/close", Name = nameof(CloseChallengeAsync))]
         public async Task<IActionResult> CloseChallengeAsync(ChallengeId challengeId)
         {
-            await _mediator.SendCommandAsync(new CloseChallengeCommand(challengeId));
+            await _mediator.SendCommandAsync(new CloseChallengesCommand(challengeId));
 
             return this.Ok();
         }
@@ -107,7 +107,7 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         [HttpPost("{challengeId}/synchronize", Name = nameof(SynchronizeChallengeAsync))]
         public async Task<IActionResult> SynchronizeChallengeAsync(ChallengeId challengeId)
         {
-            await _mediator.SendCommandAsync(new SynchronizeChallengeCommand(challengeId));
+            await _mediator.SendCommandAsync(new SynchronizeChallengesCommand(challengeId));
 
             return this.Ok();
         }

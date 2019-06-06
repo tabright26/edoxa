@@ -87,7 +87,7 @@ namespace eDoxa.Arena.Challenges.Services
             var builder = new ChallengeBuilder(
                 game,
                 new ChallengeName(name),
-                new ChallengeSetup(new BestOf(bestOf), new PayoutEntries(payoutEntries), entryFee),
+                new ChallengeSetup(new BestOf(bestOf), new PayoutEntries(payoutEntries), entryFee, new Entries(Convert.ToInt32(payoutEntries * 2))),
                 new ChallengeTimeline(new ChallengeDuration(TimeSpan.FromDays(duration)))
             );
 

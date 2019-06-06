@@ -30,14 +30,19 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels
         public static readonly PayoutEntries SeventyFive = new PayoutEntries(75);
         public static readonly PayoutEntries OneHundred = new PayoutEntries(100);
 
-        public PayoutEntries(Entries entries, PayoutRatio payoutRatio)
+        public PayoutEntries(Entries entries, PayoutRatio payoutRatio) : this()
         {
             Value = Convert.ToInt32(Math.Floor(entries * payoutRatio));
         }
 
-        public PayoutEntries(int payoutEntries)
+        public PayoutEntries(int payoutEntries) : this()
         {
             Value = payoutEntries;
+        }
+
+        private PayoutEntries()
+        {
+            // Required by EF Core.
         }
 
         public int Value { get; private set; }

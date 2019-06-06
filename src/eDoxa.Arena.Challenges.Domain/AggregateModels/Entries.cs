@@ -8,7 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Collections.Generic;
 
 using eDoxa.Seedwork.Domain.Aggregate;
@@ -17,11 +16,6 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels
 {
     public class Entries : ValueObject
     {
-        public Entries(PayoutEntries payoutEntries, PayoutRatio payoutRatio) : this()
-        {
-            Value = Convert.ToInt32(payoutEntries / payoutRatio);
-        }
-
         public Entries(int entries) : this()
         {
             Value = entries;

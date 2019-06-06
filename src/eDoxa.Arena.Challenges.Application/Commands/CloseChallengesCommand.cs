@@ -1,5 +1,5 @@
-﻿// Filename: CompleteChallengeCommand.cs
-// Date Created: 2019-05-20
+﻿// Filename: CloseChallengesCommand.cs
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -16,9 +16,9 @@ using eDoxa.Seedwork.Application.Commands.Abstractions;
 namespace eDoxa.Arena.Challenges.Application.Commands
 {
     [DataContract]
-    public sealed class CloseChallengeCommand : Command
+    public sealed class CloseChallengesCommand : Command
     {
-        public CloseChallengeCommand(ChallengeId challengeId)
+        public CloseChallengesCommand(ChallengeId challengeId)
         {
             ChallengeId = challengeId;
         }
