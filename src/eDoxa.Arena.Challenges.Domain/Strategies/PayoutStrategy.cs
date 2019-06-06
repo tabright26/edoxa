@@ -19,7 +19,6 @@ namespace eDoxa.Arena.Challenges.Domain.Strategies
 {
     public sealed class PayoutStrategy : IPayoutStrategy
     {
-        private static readonly PayoutBuckets PayoutBuckets = new PayoutBuckets();
         private readonly PayoutEntries _payoutEntries;
         private readonly EntryFee _entryFee;
 
@@ -33,7 +32,9 @@ namespace eDoxa.Arena.Challenges.Domain.Strategies
         {
             get
             {
-                if (PayoutBuckets.TryGetValue(_payoutEntries, out var bucketFactors))
+                var payoutBuckets = new PayoutBuckets();
+
+                if (payoutBuckets.TryGetValue(_payoutEntries, out var bucketFactors))
                 {
                     return bucketFactors.CreatePayout(_entryFee.GetLowestPrize());
                 }

@@ -19,7 +19,7 @@ namespace eDoxa.Arena.Domain.ValueObjects
 {
     public class EntryFee : ValueObject, ICurrency
     {
-        protected EntryFee(CurrencyType type, decimal amount)
+        public EntryFee(CurrencyType type, decimal amount)
         {
             Type = type;
             Amount = amount;

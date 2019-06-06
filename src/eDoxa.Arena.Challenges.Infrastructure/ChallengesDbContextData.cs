@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengesDbContextData.cs
-// Date Created: 2019-05-20
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,7 +11,10 @@
 using System.Linq;
 using System.Threading.Tasks;
 
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Services.Abstractions;
+using eDoxa.Arena.Domain.ValueObjects;
+using eDoxa.Seedwork.Domain.Common.Enumerations;
 using eDoxa.Seedwork.Infrastructure.Abstractions;
 
 using Microsoft.AspNetCore.Hosting;
@@ -31,22 +34,68 @@ namespace eDoxa.Arena.Challenges.Infrastructure
             _challengeService = challengeService;
         }
 
-        public Task SeedAsync()
+        public async Task SeedAsync()
         {
             if (_environment.IsDevelopment())
             {
                 if (!_context.Challenges.Any())
                 {
-                    //foreach (var challengeType in ChallengeType.GetAll())
-                    //{
-                    //    var builder = new FakeLeagueOfLegendsChallengeBuilder(challengeType);
+                    // TODO: Temporary implementation.
+                    await _challengeService.CreateChallengeAsync(
+                        $"Challenge ({ChallengeState.Inscription})",
+                        Game.LeagueOfLegends,
+                        1,
+                        3,
+                        10,
+                        new EntryFee(CurrencyType.Money, 20M),
+                        new TestMode(ChallengeState.Inscription, TestModeMatchQuantity.Exact, TestModeParticipantQuantity.HalfFull)
+                    );
 
-                    //    await _fakeChallengeService.CreateChallenge(builder, true, true);
-                    //}
+                    // TODO: Temporary implementation.
+                    await _challengeService.CreateChallengeAsync(
+                        $"Challenge ({ChallengeState.InProgress})",
+                        Game.LeagueOfLegends,
+                        1,
+                        5,
+                        100,
+                        new EntryFee(CurrencyType.Money, 2.5M),
+                        new TestMode(ChallengeState.InProgress, TestModeMatchQuantity.Under, TestModeParticipantQuantity.Fulfilled)
+                    );
+
+                    // TODO: Temporary implementation.
+                    await _challengeService.CreateChallengeAsync(
+                        $"Challenge ({ChallengeState.InProgress})",
+                        Game.LeagueOfLegends,
+                        1,
+                        3,
+                        25,
+                        new EntryFee(CurrencyType.Money, 10M),
+                        new TestMode(ChallengeState.InProgress, TestModeMatchQuantity.Under, TestModeParticipantQuantity.Fulfilled)
+                    );
+
+                    // TODO: Temporary implementation.
+                    await _challengeService.CreateChallengeAsync(
+                        $"Challenge ({ChallengeState.Ended})",
+                        Game.LeagueOfLegends,
+                        1,
+                        3,
+                        20,
+                        new EntryFee(CurrencyType.Money, 100M),
+                        new TestMode(ChallengeState.Ended, TestModeMatchQuantity.Exact, TestModeParticipantQuantity.Fulfilled)
+                    );
+
+                    // TODO: Temporary implementation.
+                    await _challengeService.CreateChallengeAsync(
+                        $"Challenge ({ChallengeState.Closed})",
+                        Game.LeagueOfLegends,
+                        1,
+                        3,
+                        25,
+                        new EntryFee(CurrencyType.Money, 50M),
+                        new TestMode(ChallengeState.Closed, TestModeMatchQuantity.Exact, TestModeParticipantQuantity.Fulfilled)
+                    );
                 }
             }
-
-            return Task.CompletedTask;
         }
     }
 }
