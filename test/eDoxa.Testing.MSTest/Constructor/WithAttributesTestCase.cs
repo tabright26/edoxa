@@ -12,7 +12,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 
-namespace eDoxa.Testing.MSTest
+namespace eDoxa.Testing.MSTest.Constructor
 {
     public sealed class WithAttributesTestCase<T> : TestCase<T>
     {

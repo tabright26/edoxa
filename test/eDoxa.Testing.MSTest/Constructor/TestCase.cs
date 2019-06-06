@@ -10,7 +10,7 @@
 
 using System.Reflection;
 
-namespace eDoxa.Testing.MSTest
+namespace eDoxa.Testing.MSTest.Constructor
 {
     public abstract class TestCase<T>
     {

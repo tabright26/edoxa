@@ -1,5 +1,5 @@
-﻿// Filename: Host.cs
-// Date Created: 2019-05-14
+﻿// Filename: Network.cs
+// Date Created: 2019-06-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,7 +12,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 
-namespace eDoxa.Security
+namespace eDoxa.Security.Hosting
 {
     public static class Network
     {

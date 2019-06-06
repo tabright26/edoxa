@@ -11,7 +11,7 @@
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Services;
 using eDoxa.Stripe.Abstractions;
-using eDoxa.Testing.MSTest;
+using eDoxa.Testing.MSTest.Constructor;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

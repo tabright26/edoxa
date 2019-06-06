@@ -1,4 +1,4 @@
-﻿// Filename: EnvironmentName.cs
+﻿// Filename: EnvironmentNames.cs
 // Date Created: 2019-06-03
 // 
 // ================================================
@@ -10,7 +10,7 @@
 
 namespace eDoxa.Security.Hosting
 {
-    public static class EnvironmentName
+    public static class EnvironmentNames
     {
         public const string Testing = nameof(Testing);
     }

@@ -11,7 +11,7 @@
 using System.Reflection;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
-using eDoxa.Testing.MSTest;
+using eDoxa.Testing.MSTest.Constructor;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

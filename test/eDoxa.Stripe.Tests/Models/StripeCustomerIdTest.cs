@@ -10,7 +10,7 @@
 
 using eDoxa.Stripe.Exceptions;
 using eDoxa.Stripe.Models;
-using eDoxa.Testing.MSTest;
+using eDoxa.Testing.MSTest.Constructor;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

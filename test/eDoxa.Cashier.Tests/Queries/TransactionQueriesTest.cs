@@ -12,7 +12,7 @@ using AutoMapper;
 
 using eDoxa.Cashier.Application.Queries;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Testing.MSTest;
+using eDoxa.Testing.MSTest.Constructor;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

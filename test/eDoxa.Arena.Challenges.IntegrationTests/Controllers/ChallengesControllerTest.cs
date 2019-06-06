@@ -1,5 +1,5 @@
-﻿// Filename: ScenarioTest.cs
-// Date Created: 2019-06-03
+﻿// Filename: ChallengesControllerTest.cs
+// Date Created: 2019-06-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,40 +11,43 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 
+using eDoxa.Arena.Challenges.Api;
 using eDoxa.Arena.Challenges.DTO;
 using eDoxa.Arena.Challenges.Infrastructure;
-using eDoxa.Seedwork.Infrastructure.Extensions;
+using eDoxa.Testing.MSTest;
 using eDoxa.Testing.MSTest.Extensions;
 
 using FluentAssertions;
 
-using Microsoft.AspNetCore.TestHost;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Arena.Challenges.IntegrationTests
+namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 {
     [TestClass]
-    public sealed class ScenarioTest
+    public sealed class ChallengesControllerTest
     {
-        private readonly HttpClient _httpClient;
-        private readonly TestServer _testServer;
+        private HttpClient _httpClient;
+        private ChallengesDbContext _dbContext;
 
-        public ScenarioTest()
+        [TestInitialize]
+        public void TestInitialize()
         {
-            // The order of the method calls is sequential.
-            var factory = new CustomWebApplicationFactory();
+            var factory = new CustomWebApplicationFactory<ChallengesDbContext, Startup>();
 
             _httpClient = factory.CreateClient();
 
-            _testServer = factory.Server;
+            _dbContext = factory.DbContext;
+        }
+
+        public async Task<HttpResponseMessage> Execute()
+        {
+            return await _httpClient.GetAsync("api/challenges");
         }
 
         [TestMethod]
         public async Task ChallengesScenario()
         {
-            _testServer.MigrateDbContext<ChallengesDbContext, ScenarioDbContextData>();
-
-            var response = await _httpClient.GetAsync("api/challenges");
+            var response = await this.Execute();
 
             response.EnsureSuccessStatusCode();
 
@@ -54,9 +57,11 @@ namespace eDoxa.Arena.Challenges.IntegrationTests
         }
 
         [TestCleanup]
-        public void TestCleanup()
+        public async Task TestCleanup()
         {
-            _testServer.CleanupDbContext<ChallengesDbContext>();
+            _dbContext.Challenges.RemoveRange(_dbContext.Challenges);
+
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

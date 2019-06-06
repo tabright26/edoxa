@@ -1,5 +1,5 @@
-﻿// Filename: IdentityScenarioTest.cs
-// Date Created: 2019-06-03
+﻿// Filename: UsersControllerTest.cs
+// Date Created: 2019-06-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,40 +11,43 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 
+using eDoxa.Identity.Api;
 using eDoxa.Identity.DTO;
 using eDoxa.Identity.Infrastructure;
-using eDoxa.Seedwork.Infrastructure.Extensions;
+using eDoxa.Testing.MSTest;
 using eDoxa.Testing.MSTest.Extensions;
 
 using FluentAssertions;
 
-using Microsoft.AspNetCore.TestHost;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Identity.IntegrationTests
+namespace eDoxa.Identity.IntegrationTests.Controllers
 {
     [TestClass]
-    public sealed class ScenarioTest
+    public sealed class UsersControllerTest
     {
-        private readonly HttpClient _httpClient;
-        private readonly TestServer _testServer;
+        private HttpClient _httpClient;
+        private IdentityDbContext _dbContext;
 
-        public ScenarioTest()
+        [TestInitialize]
+        public void TestInitialize()
         {
-            // The order of the method calls is sequential.
-            var factory = new CustomWebApplicationFactory();
+            var factory = new CustomWebApplicationFactory<IdentityDbContext, Startup>();
 
             _httpClient = factory.CreateClient();
 
-            _testServer = factory.Server;
+            _dbContext = factory.DbContext;
+        }
+
+        public async Task<HttpResponseMessage> Execute()
+        {
+            return await _httpClient.GetAsync("api/users");
         }
 
         [TestMethod]
         public async Task IdentityScenario()
         {
-            _testServer.MigrateDbContext<IdentityDbContext, ScenarioDbContextData>();
-
-            var response = await _httpClient.GetAsync("api/users");
+            var response = await this.Execute();
 
             response.EnsureSuccessStatusCode();
 
@@ -54,9 +57,11 @@ namespace eDoxa.Identity.IntegrationTests
         }
 
         [TestCleanup]
-        public void TestCleanup()
+        public async Task TestCleanup()
         {
-            _testServer.CleanupDbContext<IdentityDbContext>();
+            _dbContext.Users.RemoveRange(_dbContext.Users);
+
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

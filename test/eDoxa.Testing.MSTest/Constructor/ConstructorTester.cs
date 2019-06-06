@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace eDoxa.Testing.MSTest
+namespace eDoxa.Testing.MSTest.Constructor
 {
     public class ConstructorTester<T> : Tester<T>
     {

@@ -9,18 +9,6 @@ services:
     ports:
       - "5433:1433"
 
-  redis.test:
-    ports:
-      - "6379:6379"
-
-  rabbitmq.test:
-    environment:
-      - RABBITMQ_DEFAULT_USER=admin
-      - RABBITMQ_DEFAULT_PASS=4t8SaVXVMy0rT2kM
-    ports:
-      - "15672:15672"
-      - "5672:5672" 
-
   arena.challenges.integration-tests:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development

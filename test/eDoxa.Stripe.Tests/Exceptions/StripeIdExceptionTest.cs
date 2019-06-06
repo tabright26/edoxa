@@ -11,7 +11,7 @@
 using System;
 
 using eDoxa.Stripe.Exceptions;
-using eDoxa.Testing.MSTest;
+using eDoxa.Testing.MSTest.Constructor;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

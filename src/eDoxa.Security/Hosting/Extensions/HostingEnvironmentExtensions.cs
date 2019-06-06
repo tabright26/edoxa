@@ -23,7 +23,7 @@ namespace eDoxa.Security.Hosting.Extensions
                 throw new ArgumentNullException(nameof(hostingEnvironment));
             }
 
-            return hostingEnvironment.IsEnvironment(EnvironmentName.Testing);
+            return hostingEnvironment.IsEnvironment(EnvironmentNames.Testing);
         }
     }
 }

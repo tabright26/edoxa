@@ -1,5 +1,5 @@
-﻿// Filename: CashierScenarioConstants.cs
-// Date Created: 2019-06-04
+﻿// Filename: CashierTestConstants.cs
+// Date Created: 2019-06-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,9 +10,9 @@
 
 using eDoxa.Seedwork.Domain.Common;
 
-namespace eDoxa.Cashier.IntegrationTests
+namespace eDoxa.Cashier.IntegrationTests.Helpers
 {
-    internal static class ScenarioConstants
+    internal static class CashierTestConstants
     {
         public const string TestStripeCustomerId = "cus_test";
         public const string TestStripeConnectAccountId = "acct_test";

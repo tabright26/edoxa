@@ -21,7 +21,7 @@ using eDoxa.Cashier.Tests.Utilities.Mocks.Extensions;
 using eDoxa.Seedwork.Domain.Common;
 using eDoxa.Stripe.Abstractions;
 using eDoxa.Stripe.Models;
-using eDoxa.Testing.MSTest;
+using eDoxa.Testing.MSTest.Constructor;
 
 using FluentAssertions;
 

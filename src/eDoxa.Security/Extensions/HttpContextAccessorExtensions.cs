@@ -1,5 +1,5 @@
 ﻿// Filename: HttpContextAccessorExtensions.cs
-// Date Created: 2019-05-24
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,7 +9,6 @@
 // this source code package.
 
 using System;
-using System.Linq;
 
 using eDoxa.Seedwork.Domain.Common;
 
@@ -31,7 +30,7 @@ namespace eDoxa.Security.Extensions
         [CanBeNull]
         public static string GetClaimOrDefault(this IHttpContextAccessor accessor, string claimType)
         {
-            return accessor.HttpContext?.User?.Claims?.SingleOrDefault(claim => claim.Type == claimType)?.Value;
+            return accessor.HttpContext?.GetClaimOrDefault(claimType);
         }
     }
 }

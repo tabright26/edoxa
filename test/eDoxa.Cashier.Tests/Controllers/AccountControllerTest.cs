@@ -14,7 +14,7 @@ using eDoxa.Cashier.Api.Controllers;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
-using eDoxa.Testing.MSTest;
+using eDoxa.Testing.MSTest.Constructor;
 
 using FluentAssertions;
 

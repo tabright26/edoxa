@@ -17,7 +17,7 @@ using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Stripe.Tests.Utilities;
-using eDoxa.Testing.MSTest;
+using eDoxa.Testing.MSTest.Constructor;
 
 using FluentAssertions;
 

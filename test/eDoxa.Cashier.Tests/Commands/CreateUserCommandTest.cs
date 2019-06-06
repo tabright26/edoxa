@@ -10,7 +10,7 @@
 
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Seedwork.Domain.Common;
-using eDoxa.Testing.MSTest;
+using eDoxa.Testing.MSTest.Constructor;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

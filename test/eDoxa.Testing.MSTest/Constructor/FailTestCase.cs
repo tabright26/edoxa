@@ -11,7 +11,7 @@
 using System;
 using System.Reflection;
 
-namespace eDoxa.Testing.MSTest
+namespace eDoxa.Testing.MSTest.Constructor
 {
     public class FailTestCase<T> : TestCase<T>
     {

@@ -1,5 +1,5 @@
 ﻿// Filename: StripeService.cs
-// Date Created: 2019-05-29
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -14,7 +14,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Security;
+using eDoxa.Security.Hosting;
 using eDoxa.Stripe.Abstractions;
 using eDoxa.Stripe.Models;
 
@@ -26,9 +26,9 @@ namespace eDoxa.Stripe.Services
 {
     internal sealed class StripeService : IStripeService
     {
+        private readonly IConfiguration _configuration;
         private readonly AccountService _accountService;
         private readonly CardService _cardService;
-        private readonly IConfiguration _configuration;
         private readonly CustomerService _customerService;
         private readonly ExternalAccountService _externalAccountService;
         private readonly InvoiceItemService _invoiceItemService;
@@ -147,7 +147,11 @@ namespace eDoxa.Stripe.Services
             return new StripeBankAccountId(bankAccount.Id);
         }
 
-        public async Task DeleteBankAccountAsync(StripeConnectAccountId connectAccountId, StripeBankAccountId bankAccountId, CancellationToken cancellationToken = default)
+        public async Task DeleteBankAccountAsync(
+            StripeConnectAccountId connectAccountId,
+            StripeBankAccountId bankAccountId,
+            CancellationToken cancellationToken = default
+        )
         {
             await _externalAccountService.DeleteAsync(connectAccountId.ToString(), bankAccountId.ToString(), cancellationToken: cancellationToken);
         }
@@ -219,7 +223,13 @@ namespace eDoxa.Stripe.Services
             CancellationToken cancellationToken = default
         )
         {
-            await this.CreateInvoiceItemAsync(customerId, price, transactionId, transactionDescription, cancellationToken);
+            await this.CreateInvoiceItemAsync(
+                customerId,
+                price,
+                transactionId,
+                transactionDescription,
+                cancellationToken
+            );
 
             await this.CreateInvoiceAsync(customerId, transactionId, cancellationToken);
         }

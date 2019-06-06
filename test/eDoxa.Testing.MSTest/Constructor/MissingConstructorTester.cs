@@ -10,7 +10,7 @@
 
 using System;
 
-namespace eDoxa.Testing.MSTest
+namespace eDoxa.Testing.MSTest.Constructor
 {
     public class MissingConstructorTester<T> : Tester<T>
     {

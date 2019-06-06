@@ -11,7 +11,7 @@
 using eDoxa.Cashier.Application.Commands.Validations;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Stripe.Abstractions;
-using eDoxa.Testing.MSTest;
+using eDoxa.Testing.MSTest.Constructor;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

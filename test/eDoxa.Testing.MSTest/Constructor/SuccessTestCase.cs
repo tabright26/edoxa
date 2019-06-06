@@ -11,7 +11,7 @@
 using System;
 using System.Reflection;
 
-namespace eDoxa.Testing.MSTest
+namespace eDoxa.Testing.MSTest.Constructor
 {
     public sealed class SuccessTestCase<T> : TestCase<T>
     {
