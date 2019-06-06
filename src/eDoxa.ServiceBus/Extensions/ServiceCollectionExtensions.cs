@@ -31,6 +31,7 @@ namespace eDoxa.ServiceBus.Extensions
     {
         private const string AzureServiceBusEnable = "AzureServiceBus:Enable";
         private const string ServiceBusHostName = "ServiceBus:HostName";
+        private const string ServiceBusPort = "ServiceBus:Port";
         private const string ServiceBusUserName = "ServiceBus:UserName";
         private const string ServiceBusPassword = "ServiceBus:Password";
         private const string ServiceBusRetryCount = "ServiceBus:RetryCount";
@@ -83,6 +84,11 @@ namespace eDoxa.ServiceBus.Extensions
                         {
                             HostName = configuration[ServiceBusHostName]
                         };
+
+                        if (!string.IsNullOrEmpty(configuration[ServiceBusPort]))
+                        {
+                            factory.Port = configuration.GetValue<int>(ServiceBusPort);
+                        }
 
                         if (!string.IsNullOrEmpty(configuration[ServiceBusUserName]))
                         {
