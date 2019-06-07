@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="966eadca-7a5d-4954-8889-fa7902119cbc" name="@9f2777473cee 2019-06-07 20:50:51" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2019-06-07T20:50:51.5189411+00:00" queuing="2019-06-07T20:50:51.5189432+00:00" start="2019-06-07T20:50:43.1044218+00:00" finish="2019-06-07T20:50:51.6419977+00:00" />
+  <TestSettings name="default" id="25db356a-0e98-438a-93bb-4dee45f1ec24">
+    <Deployment runDeploymentRoot="_9f2777473cee_2019-06-07_20_50_51" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="9c33991b-40fa-4a38-8844-fa5fe21da278" testId="f28cd595-3325-a272-8d8d-0179adbfc9b6" testName="GetMatchReferencesAsync_ShouldBeOkObjectResult" computerName="9f2777473cee" duration="00:00:02.3178667" startTime="2019-06-07T20:50:47.7267603+00:00" endTime="2019-06-07T20:50:50.1734002+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9c33991b-40fa-4a38-8844-fa5fe21da278" />
+    <UnitTestResult executionId="8b06e244-d597-4239-93e9-6bf223585663" testId="c131858d-5032-bfa5-23bc-8d545be5b154" testName="GetMatchAsync_ShouldBeOkObjectResult" computerName="9f2777473cee" duration="00:00:00.5519117" startTime="2019-06-07T20:50:50.2229334+00:00" endTime="2019-06-07T20:50:50.7818859+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8b06e244-d597-4239-93e9-6bf223585663" resultType="DataDrivenTest">
+      <InnerResults>
+        <UnitTestResult executionId="916ac65f-fa1f-4e75-b09d-ebb5d7b5547e" parentExecutionId="8b06e244-d597-4239-93e9-6bf223585663" testId="c131858d-5032-bfa5-23bc-8d545be5b154" testName="GetMatchAsync_ShouldBeOkObjectResult (2973265231)" computerName="9f2777473cee" duration="00:00:00.4253582" startTime="2019-06-07T20:50:50.2229334+00:00" endTime="2019-06-07T20:50:50.7818859+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="916ac65f-fa1f-4e75-b09d-ebb5d7b5547e" dataRowInfo="1" resultType="DataDrivenDataRow" />
+        <UnitTestResult executionId="1b2793fd-3e24-430a-9c95-11bfce6ec020" parentExecutionId="8b06e244-d597-4239-93e9-6bf223585663" testId="c131858d-5032-bfa5-23bc-8d545be5b154" testName="GetMatchAsync_ShouldBeOkObjectResult (2973293180)" computerName="9f2777473cee" duration="00:00:00.0223573" startTime="2019-06-07T20:50:50.2229334+00:00" endTime="2019-06-07T20:50:50.7818859+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1b2793fd-3e24-430a-9c95-11bfce6ec020" dataRowInfo="2" resultType="DataDrivenDataRow" />
+        <UnitTestResult executionId="eab55cfc-4bef-4709-be0b-586951c3f90d" parentExecutionId="8b06e244-d597-4239-93e9-6bf223585663" testId="c131858d-5032-bfa5-23bc-8d545be5b154" testName="GetMatchAsync_ShouldBeOkObjectResult (2974045372)" computerName="9f2777473cee" duration="00:00:00.0458407" startTime="2019-06-07T20:50:50.2229334+00:00" endTime="2019-06-07T20:50:50.7818859+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="eab55cfc-4bef-4709-be0b-586951c3f90d" dataRowInfo="3" resultType="DataDrivenDataRow" />
+        <UnitTestResult executionId="3893dc63-bbfe-4e4e-a8cb-1725caee80c0" parentExecutionId="8b06e244-d597-4239-93e9-6bf223585663" testId="c131858d-5032-bfa5-23bc-8d545be5b154" testName="GetMatchAsync_ShouldBeOkObjectResult (2974074080)" computerName="9f2777473cee" duration="00:00:00.0275607" startTime="2019-06-07T20:50:50.2229334+00:00" endTime="2019-06-07T20:50:50.7818859+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3893dc63-bbfe-4e4e-a8cb-1725caee80c0" dataRowInfo="4" resultType="DataDrivenDataRow" />
+        <UnitTestResult executionId="61084ac2-f1bd-42b3-9715-a6fcf57b8b0f" parentExecutionId="8b06e244-d597-4239-93e9-6bf223585663" testId="c131858d-5032-bfa5-23bc-8d545be5b154" testName="GetMatchAsync_ShouldBeOkObjectResult (2974102736)" computerName="9f2777473cee" duration="00:00:00.0235130" startTime="2019-06-07T20:50:50.2229334+00:00" endTime="2019-06-07T20:50:50.7818859+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="61084ac2-f1bd-42b3-9715-a6fcf57b8b0f" dataRowInfo="5" resultType="DataDrivenDataRow" />
+      </InnerResults>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GetMatchAsync_ShouldBeOkObjectResult" storage="/tmp/test/edoxa.arena.tests/bin/debug/netcoreapp2.2/edoxa.arena.tests.dll" id="c131858d-5032-bfa5-23bc-8d545be5b154">
+      <Execution id="8b06e244-d597-4239-93e9-6bf223585663" />
+      <TestMethod codeBase="/tmp/test/eDoxa.Arena.Tests/bin/Debug/netcoreapp2.2/eDoxa.Arena.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="eDoxa.Arena.Tests.Services.LeagueOfLegends.MatchV4ServiceTest" name="GetMatchAsync_ShouldBeOkObjectResult" />
+    </UnitTest>
+    <UnitTest name="GetMatchReferencesAsync_ShouldBeOkObjectResult" storage="/tmp/test/edoxa.arena.tests/bin/debug/netcoreapp2.2/edoxa.arena.tests.dll" id="f28cd595-3325-a272-8d8d-0179adbfc9b6">
+      <Execution id="9c33991b-40fa-4a38-8844-fa5fe21da278" />
+      <TestMethod codeBase="/tmp/test/eDoxa.Arena.Tests/bin/Debug/netcoreapp2.2/eDoxa.Arena.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="eDoxa.Arena.Tests.Services.LeagueOfLegends.MatchV4ServiceTest" name="GetMatchReferencesAsync_ShouldBeOkObjectResult" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="f28cd595-3325-a272-8d8d-0179adbfc9b6" executionId="9c33991b-40fa-4a38-8844-fa5fe21da278" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c131858d-5032-bfa5-23bc-8d545be5b154" executionId="8b06e244-d597-4239-93e9-6bf223585663" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="7" executed="7" passed="7" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+  </ResultSummary>
+</TestRun>

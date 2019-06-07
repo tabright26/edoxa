@@ -18,15 +18,15 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace eDoxa.Arena.Challenges.Tests.Domain.AggregateModels.MatchAggregate
 {
     [TestClass]
-    public sealed class MatchExternalIdTest
+    public sealed class MatchReferenceTest
     {
         [TestMethod]
         public void Constructor_Tests()
         {
-            const string message = "Match external ID validation failed.";
+            const string message = "Match reference validation failed.";
 
-            ConstructorTests<MatchExternalId>.For(typeof(string))
-                .WithName("MatchExternalId")
+            ConstructorTests<MatchReference>.For(typeof(string))
+                .WithName("MatchReference")
                 .Fail(new object[] {null}, typeof(ArgumentException), message)
                 .Fail(new object[] {"  "}, typeof(ArgumentException), message)
                 .Fail(new object[] {"9i8h7g 6f5e4d3 c2b1a0"}, typeof(ArgumentException), message)
@@ -42,10 +42,10 @@ namespace eDoxa.Arena.Challenges.Tests.Domain.AggregateModels.MatchAggregate
         [TestMethod]
         public void Constructor_TypeOfGuid_Tests()
         {
-            const string message = "Match external ID validation failed.";
+            const string message = "Match reference validation failed.";
 
-            ConstructorTests<MatchExternalId>.For(typeof(Guid))
-                .WithName("MatchExternalId")
+            ConstructorTests<MatchReference>.For(typeof(Guid))
+                .WithName("MatchReference")
                 .Fail(new object[] {Guid.Empty}, typeof(ArgumentException), message)
                 .Succeed(new object[] {Guid.NewGuid()}, message)
                 .Assert();

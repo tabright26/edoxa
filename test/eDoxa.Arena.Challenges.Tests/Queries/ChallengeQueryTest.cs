@@ -36,9 +36,7 @@ namespace eDoxa.Arena.Challenges.Tests.Queries
         {
             var services = new ServiceCollection();
 
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-
-            services.AddAutoMapper(assemblies);
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             var provider = services.BuildServiceProvider();
 
@@ -54,9 +52,9 @@ namespace eDoxa.Arena.Challenges.Tests.Queries
                 new ChallengeTimeline(ChallengeDuration.OneDay)
             );
 
-            builder.StoreScoring(ScoringFactory.Instance);
+            builder.StoreScoring(new ScoringFactory());
 
-            builder.StorePayout(PayoutFactory.Instance);
+            builder.StorePayout(new PayoutFactory());
 
             builder.EnableTestMode(new TestMode(ChallengeState.InProgress, TestModeMatchQuantity.Exact, TestModeParticipantQuantity.Fulfilled));
 

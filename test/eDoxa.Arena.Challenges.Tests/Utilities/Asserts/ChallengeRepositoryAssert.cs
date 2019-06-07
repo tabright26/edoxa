@@ -49,7 +49,7 @@ namespace eDoxa.Arena.Challenges.Tests.Utilities.Asserts
                 {
                     match.Id.ToGuid().Should().NotBeEmpty();
                     match.Timestamp.Should().BeBefore(DateTime.UtcNow);
-                    match.MatchExternalId.ToString().Should().NotBeNullOrWhiteSpace();
+                    match.MatchReference.ToString().Should().NotBeNullOrWhiteSpace();
                     match.TotalScore.Should().NotBeNull();
                     match.Participant.Should().NotBeNull();
                     match.Stats.Should().NotBeNullOrEmpty();

@@ -40,8 +40,8 @@ namespace eDoxa.Arena.Challenges.Services.Abstractions
             CancellationToken cancellationToken = default
         );
 
-        Task CompleteAsync(ChallengeId challengeId, CancellationToken cancellationToken = default);
+        Task CloseAsync(CancellationToken cancellationToken = default);
 
-        Task SynchronizeAsync(ChallengeId challengeId, CancellationToken cancellationToken = default);
+        Task SynchronizeAsync(Game game, CancellationToken cancellationToken = default);
     }
 }

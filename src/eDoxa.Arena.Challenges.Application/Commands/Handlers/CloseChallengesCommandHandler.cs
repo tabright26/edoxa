@@ -29,7 +29,7 @@ namespace eDoxa.Arena.Challenges.Application.Commands.Handlers
 
         protected override async Task Handle([NotNull] CloseChallengesCommand command, CancellationToken cancellationToken)
         {
-            await _challengeService.CompleteAsync(command.ChallengeId, cancellationToken);
+            await _challengeService.CloseAsync(cancellationToken);
         }
     }
 }

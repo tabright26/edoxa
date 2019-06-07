@@ -18,10 +18,6 @@ namespace eDoxa.Arena.Challenges.Services.Factories
 {
     public sealed class ScoringFactory : IScoringFactory
     {
-        private static readonly Lazy<ScoringFactory> Lazy = new Lazy<ScoringFactory>(() => new ScoringFactory());
-
-        public static ScoringFactory Instance => Lazy.Value;
-
         public IScoringStrategy CreateStrategy(IChallenge challenge)
         {
             if (challenge.Game == Game.LeagueOfLegends)

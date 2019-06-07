@@ -14,7 +14,7 @@ using System.Linq;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
-using eDoxa.Arena.Domain.ValueObjects;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Common;
 
@@ -134,7 +134,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             {
                 for (var index = 0; index < bestOf; index++)
                 {
-                    challenge.SnapshotParticipantMatch(participant.Id, this.FakeMatchStats());
+                    challenge.SnapshotParticipantMatch(participant, new MatchReference(Guid.NewGuid()), this.FakeMatchStats());
                 }
             }
         }
@@ -142,7 +142,6 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         private IMatchStats FakeMatchStats()
         {
             return new MatchStats(
-                new MatchExternalId(Guid.NewGuid()),
                 new
                 {
                     Kills = _random.Next(0, 40 + 1),

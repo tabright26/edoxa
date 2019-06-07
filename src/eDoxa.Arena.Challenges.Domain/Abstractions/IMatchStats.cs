@@ -16,6 +16,5 @@ namespace eDoxa.Arena.Challenges.Domain.Abstractions
 {
     public interface IMatchStats : IReadOnlyDictionary<StatName, StatValue>
     {
-        MatchExternalId MatchExternalId { get; }
     }
 }

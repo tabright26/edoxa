@@ -16,7 +16,7 @@ using AutoMapper;
 
 using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Infrastructure;
-using eDoxa.Arena.Services.Extensions;
+using eDoxa.Challenges.Domain.Services.LeagueOfLegends.Api.Extensions;
 using eDoxa.Security.Extensions;
 using eDoxa.Security.Resources;
 using eDoxa.Seedwork.Application.Extensions;
@@ -71,7 +71,7 @@ namespace eDoxa.Arena.Challenges.Api
 
             services.AddIdentityServerAuthentication(Configuration, Environment, ChallengeApi);
 
-            services.AddArena();
+            services.AddLeagueOfLegends();
 
             return services.Build<Modules>();
         }

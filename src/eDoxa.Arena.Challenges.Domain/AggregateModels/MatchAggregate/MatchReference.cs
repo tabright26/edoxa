@@ -16,9 +16,9 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
 {
-    public sealed class MatchExternalId : ValueObject
+    public sealed class MatchReference : ValueObject
     {
-        public MatchExternalId(string externalId)
+        public MatchReference(string externalId)
         {
             if (string.IsNullOrWhiteSpace(externalId) || !externalId.All(c => char.IsLetterOrDigit(c) || c == '-' || c == '_'))
             {
@@ -28,7 +28,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
             Value = externalId;
         }
 
-        public MatchExternalId(long externalId)
+        public MatchReference(long externalId)
         {
             if (externalId < 0)
             {
@@ -38,7 +38,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
             Value = externalId.ToString();
         }
 
-        public MatchExternalId(Guid externalId)
+        public MatchReference(Guid externalId)
         {
             if (externalId == Guid.Empty)
             {
@@ -50,19 +50,19 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
 
         public string Value { get; private set; }
 
-        public static implicit operator MatchExternalId(string externalId)
+        public static implicit operator MatchReference(string externalId)
         {
-            return new MatchExternalId(externalId);
+            return new MatchReference(externalId);
         }
 
-        public static implicit operator MatchExternalId(long externalId)
+        public static implicit operator MatchReference(long externalId)
         {
-            return new MatchExternalId(externalId);
+            return new MatchReference(externalId);
         }
 
-        public static implicit operator MatchExternalId(Guid externalId)
+        public static implicit operator MatchReference(Guid externalId)
         {
-            return new MatchExternalId(externalId);
+            return new MatchReference(externalId);
         }
 
         protected override IEnumerable<object> GetAtomicValues()

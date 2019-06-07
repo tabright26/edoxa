@@ -9,10 +9,9 @@
 // this source code package.
 
 using System;
-using System.Linq;
 
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Challenges.Tests.Utilities.Fakes;
-using eDoxa.Arena.Domain.ValueObjects;
 using eDoxa.Seedwork.Domain.Common;
 
 using FluentAssertions;
@@ -64,19 +63,6 @@ namespace eDoxa.Arena.Challenges.Tests.Domain.AggregateModels.ChallengeAggregate
 
             // Assert
             action.Should().Throw<InvalidOperationException>();
-        }
-
-        [TestMethod]
-        public void SnapshotParticipantMatch_ParticipantRegistered_ShouldNotThrowArgumentException()
-        {
-            // Arrange
-            var challenge = FakeChallengeFactory.CreateChallengeWithParticipant(new UserId());
-
-            // Act
-            var action = new Action(() => challenge.SnapshotParticipantMatch(challenge.Participants.First().Id, FakeChallengeFactory.CreateMatchStats()));
-
-            // Assert
-            action.Should().NotThrow<ArgumentException>();
         }
     }
 }

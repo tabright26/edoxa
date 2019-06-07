@@ -35,8 +35,8 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                 .HasConversion(participantId => participantId.ToGuid(), participantId => ParticipantId.FromGuid(participantId))
                 .IsRequired();
 
-            builder.Property(match => match.MatchExternalId)
-                .HasConversion(externalId => externalId.ToString(), externalId => new MatchExternalId(externalId))
+            builder.Property(match => match.MatchReference)
+                .HasConversion(externalId => externalId.ToString(), externalId => new MatchReference(externalId))
                 .IsRequired();
 
             builder.Ignore(match => match.TotalScore);
@@ -54,11 +54,20 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                         .HasColumnName(nameof(MatchId))
                         .IsRequired();
 
-                    matchStats.Property(stat => stat.Name).HasConversion(name => name.ToString(), name => new StatName(name)).HasColumnName("Name").IsRequired();
+                    matchStats.Property(stat => stat.Name)
+                        .HasConversion(name => name.ToString(), name => new StatName(name))
+                        .HasColumnName("Name")
+                        .IsRequired();
 
-                    matchStats.Property(stat => stat.Value).HasConversion<double>(value => value, value => new StatValue(value)).HasColumnName("Value").IsRequired();
+                    matchStats.Property(stat => stat.Value)
+                        .HasConversion<double>(value => value, value => new StatValue(value))
+                        .HasColumnName("Value")
+                        .IsRequired();
 
-                    matchStats.Property(stat => stat.Weighting).HasConversion<float>(weighting => weighting, weighting => new StatWeighting(weighting)).HasColumnName("Weighting").IsRequired();
+                    matchStats.Property(stat => stat.Weighting)
+                        .HasConversion<float>(weighting => weighting, weighting => new StatWeighting(weighting))
+                        .HasColumnName("Weighting")
+                        .IsRequired();
 
                     matchStats.Ignore(stat => stat.Score);
 

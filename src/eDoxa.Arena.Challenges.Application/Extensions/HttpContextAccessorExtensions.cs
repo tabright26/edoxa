@@ -10,13 +10,13 @@
 
 using System;
 
-using eDoxa.Arena.Domain.ValueObjects;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Security.Extensions;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 using Microsoft.AspNetCore.Http;
 
-namespace eDoxa.Arena.Application.Extensions
+namespace eDoxa.Arena.Challenges.Application.Extensions
 {
     public static class HttpContextAccessorExtensions
     {

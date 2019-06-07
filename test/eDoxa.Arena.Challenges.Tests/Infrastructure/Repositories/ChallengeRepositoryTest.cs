@@ -65,9 +65,9 @@ namespace eDoxa.Arena.Challenges.Tests.Infrastructure.Repositories
                 new ChallengeTimeline(ChallengeDuration.OneDay)
             );
 
-            builder.StoreScoring(ScoringFactory.Instance);
+            builder.StoreScoring(new ScoringFactory());
 
-            builder.StorePayout(PayoutFactory.Instance);
+            builder.StorePayout(new PayoutFactory());
 
             builder.EnableTestMode(new TestMode(ChallengeState.InProgress, TestModeMatchQuantity.Exact, TestModeParticipantQuantity.Fulfilled));
 

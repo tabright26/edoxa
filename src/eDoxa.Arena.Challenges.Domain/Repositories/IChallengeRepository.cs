@@ -15,6 +15,7 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Common;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
+using eDoxa.Seedwork.Domain.Specifications.Abstractions;
 
 using JetBrains.Annotations;
 
@@ -26,6 +27,8 @@ namespace eDoxa.Arena.Challenges.Domain.Repositories
 
         Task<IReadOnlyCollection<Challenge>> FindChallengesAsync([CanBeNull] Game game = null, [CanBeNull] ChallengeState state = null);
 
+        Task<IReadOnlyCollection<Challenge>> FindChallengesAsync(ISpecification<Challenge> specification);
+        
         Task<Challenge> FindChallengeAsync(ChallengeId challengeId);
 
         Task<IReadOnlyCollection<Challenge>> FindUserChallengeHistoryAsNoTrackingAsync(

@@ -18,7 +18,7 @@ namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.Api.Extensions
     {
         public static void AddLeagueOfLegends(this IServiceCollection services)
         {
-            services.AddSingleton<IMatchV4Service, MatchV4Service>();
+            services.AddSingleton<ILeagueOfLegendsMatchService, LeagueOfLegendsMatchService>();
         }
     }
 }

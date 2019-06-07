@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
@@ -18,7 +19,6 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Challenges.Domain.DomainEvents;
 using eDoxa.Arena.Challenges.Domain.Validators;
 using eDoxa.Arena.Domain;
-using eDoxa.Arena.Domain.ValueObjects;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Common;
@@ -50,10 +50,13 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         {
             TestMode = null;
             CreatedAt = DateTime.UtcNow;
+            LastSync = null;
             _stats = new HashSet<ChallengeStat>();
             _participants = new HashSet<Participant>();
             _buckets = new List<Bucket>();
         }
+
+        public TestMode TestMode { get; private set; }
 
         public Game Game { get; private set; }
 
@@ -63,15 +66,17 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public ChallengeTimeline Timeline { get; private set; }
 
-        public TestMode TestMode { get; private set; }
-
         public DateTime CreatedAt { get; private set; }
+
+        public DateTime? LastSync { get; private set; }
 
         public IReadOnlyCollection<ChallengeStat> Stats => _stats;
 
         public IReadOnlyCollection<Participant> Participants => _participants;
 
         public IReadOnlyCollection<Bucket> Buckets => _buckets;
+
+        private IReadOnlyCollection<Participant> ParticipantsToSync => Participants.Where(x => !x.HasFinalScore).OrderBy(x => x.LastSync).ToList();
 
         public void ApplyScoringStrategy(IScoringStrategy strategy)
         {
@@ -90,17 +95,71 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             Timeline = timeline;
         }
 
-        public void DistributePrizes(Scoreboard scoreboard)
+        public async Task SynchronizeAsync(IMatchReferencesFactory matchReferencesFactory, IMatchStatsFactory matchStatsFactory)
         {
-            Timeline = Timeline.Close();
+            foreach (var participant in ParticipantsToSync)
+            {
+                await this.SynchronizeAsync(matchReferencesFactory, matchStatsFactory, participant);
 
-            var payout = new Payout(new Buckets(Buckets));
+                participant.Sync();
+            }
 
-            var participantPrizes = payout.GetParticipantPrizes(scoreboard);
+            LastSync = DateTime.UtcNow;
+        }
 
-            var domainEvent = new ChallengePayoutDomainEvent(Id, participantPrizes);
+        internal bool LastSyncMoreThan(TimeSpan timeSpan)
+        {
+            return LastSync.HasValue && LastSync.Value + timeSpan < DateTime.UtcNow;
+        }
 
-            this.AddDomainEvent(domainEvent);
+        private async Task SynchronizeAsync(IMatchReferencesFactory matchReferencesFactory, IMatchStatsFactory matchStatsFactory, Participant participant)
+        {
+            var adapter = await matchReferencesFactory.CreateAdapterAsync(Game, participant.ExternalAccount, Timeline);
+
+            await this.SynchronizeAsync(adapter.MatchReferences, matchStatsFactory, participant);
+        }
+
+        private async Task SynchronizeAsync(IEnumerable<MatchReference> matchReferences, IMatchStatsFactory matchStatsFactory, Participant participant)
+        {
+            foreach (var matchReference in participant.GetUnsynchronizedMatchReferences(matchReferences))
+            {
+                await this.SnapshotParticipantMatchAsync(participant, matchReference, matchStatsFactory);
+            }
+        }
+
+        private async Task SnapshotParticipantMatchAsync(Participant participant, MatchReference matchReference, IMatchStatsFactory factory)
+        {
+            var adapter = await factory.CreateAdapter(Game, participant.ExternalAccount, matchReference);
+
+            this.SnapshotParticipantMatch(participant, matchReference, adapter.MatchStats);
+        }
+
+        internal void SnapshotParticipantMatch(Participant participant, MatchReference matchReference, IMatchStats matchStats)
+        {
+            var scoring = new Scoring(Stats);
+
+            participant.SnapshotMatch(matchReference, matchStats, scoring);
+        }
+
+        public void TryClose(Action closeChallenge)
+        {
+            if (Timeline.State.Equals(ChallengeState.Ended))
+            {
+                Timeline = Timeline.Close();
+
+                closeChallenge();
+            }
+        }
+
+        public void DistributeParticipantPrizes()
+        {
+            var buckets = new Buckets(Buckets);
+
+            var payout = new Payout(buckets);
+
+            var scoreboard = new Scoreboard(Participants);
+
+            this.AddDomainEvent(new ChallengePayoutDomainEvent(Id, payout.GetParticipantPrizes(scoreboard)));
         }
 
         public Participant RegisterParticipant(UserId userId, ExternalAccount externalAccount)
@@ -110,14 +169,11 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
                 throw new InvalidOperationException();
             }
 
-            if (Participants.Count == Setup.Entries - 1)
-            {
-                Timeline = Timeline.Start();
-            }
-
             var participant = new Participant(this, userId, externalAccount);
 
             _participants.Add(participant);
+
+            this.TryStart();
 
             return participant;
         }
@@ -127,9 +183,17 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             return new RegisterParticipantValidator(userId).Validate(this).IsValid;
         }
 
-        public void SnapshotParticipantMatch(ParticipantId participantId, IMatchStats stats)
+        internal bool CanStart()
         {
-            Participants.SingleOrDefault(participant => participant.Id == participantId)?.SnapshotMatch(stats, new Scoring(Stats));
+            return Participants.Count == Setup.Entries;
+        }
+
+        private void TryStart()
+        {
+            if (this.CanStart())
+            {
+                Timeline = Timeline.Start();
+            }
         }
     }
 }

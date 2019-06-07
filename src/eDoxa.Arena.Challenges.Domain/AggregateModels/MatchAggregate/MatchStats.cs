@@ -17,15 +17,12 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
 {
     public sealed class MatchStats : Dictionary<StatName, StatValue>, IMatchStats
     {
-        public MatchStats(MatchExternalId matchExternalId, object stats) : base(
+        public MatchStats(object stats) : base(
             stats.GetType()
                 .GetProperties()
                 .ToDictionary(propertyInfo => new StatName(propertyInfo), propertyInfo => new StatValue(propertyInfo.GetValue(stats)))
         )
         {
-            MatchExternalId = matchExternalId;
         }
-
-        public MatchExternalId MatchExternalId { get; }
     }
 }

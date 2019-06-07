@@ -1,5 +1,5 @@
 ﻿// Filename: ParticipantConfiguration.cs
-// Date Created: 2019-05-20
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,7 +10,6 @@
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
-using eDoxa.Arena.Domain.ValueObjects;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 
 using JetBrains.Annotations;
@@ -30,15 +29,21 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
 
             builder.Property(participant => participant.Timestamp).IsRequired();
 
+            builder.Property(participant => participant.LastSync).IsRequired(false);
+
             builder.Property<ChallengeId>(nameof(ChallengeId))
                 .HasConversion(challengeId => challengeId.ToGuid(), value => ChallengeId.FromGuid(value))
                 .IsRequired();
 
             builder.EntityId(participant => participant.UserId).IsRequired();
 
-            builder.Property(participant => participant.ExternalAccount).HasConversion(externalAccount => externalAccount.ToString(), externalAccount => new ExternalAccount(externalAccount)).IsRequired();
+            builder.Property(participant => participant.ExternalAccount)
+                .HasConversion(externalAccount => externalAccount.ToString(), externalAccount => new ExternalAccount(externalAccount))
+                .IsRequired();
 
             builder.Ignore(participant => participant.AverageScore);
+
+            builder.Ignore(participant => participant.HasFinalScore);
 
             builder.HasMany(participant => participant.Matches)
                 .WithOne(match => match.Participant)

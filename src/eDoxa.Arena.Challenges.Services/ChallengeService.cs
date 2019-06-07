@@ -12,26 +12,36 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Challenges.Domain.Repositories;
+using eDoxa.Arena.Challenges.Domain.Specifications;
 using eDoxa.Arena.Challenges.Services.Abstractions;
-using eDoxa.Arena.Challenges.Services.Factories;
 using eDoxa.Arena.Domain.ValueObjects;
 using eDoxa.Seedwork.Domain.Common;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 using eDoxa.Seedwork.Domain.Extensions;
+using eDoxa.Seedwork.Domain.Specifications;
 
 namespace eDoxa.Arena.Challenges.Services
 {
     public sealed class ChallengeService : IChallengeService
     {
         private readonly IChallengeRepository _challengeRepository;
+        private readonly IPayoutFactory _payoutFactory;
+        private readonly IScoringFactory _scoringFactory;
+        private readonly IMatchReferencesFactory _matchReferencesFactory;
+        private readonly IMatchStatsFactory _matchStatsFactory;
 
-        public ChallengeService(IChallengeRepository challengeRepository)
+        public ChallengeService(IChallengeRepository challengeRepository, IPayoutFactory payoutFactory, IScoringFactory scoringFactory, IMatchReferencesFactory matchReferencesFactory, IMatchStatsFactory matchStatsFactory)
         {
             _challengeRepository = challengeRepository;
+            _payoutFactory = payoutFactory;
+            _scoringFactory = scoringFactory;
+            _matchReferencesFactory = matchReferencesFactory;
+            _matchStatsFactory = matchStatsFactory;
         }
 
         public async Task<Participant> RegisterParticipantAsync(
@@ -52,25 +62,24 @@ namespace eDoxa.Arena.Challenges.Services
             return participant;
         }
 
-        public async Task CompleteAsync(ChallengeId challengeId, CancellationToken cancellationToken)
+        public async Task CloseAsync(CancellationToken cancellationToken = default)
         {
-            var challenges = await _challengeRepository.FindChallengesAsync();
+            var specification = SpecificationFactory.Instance.Create<Challenge>().And(new ChallengeOfStateSpecification(ChallengeState.Ended));
+
+            var challenges = await _challengeRepository.FindChallengesAsync(specification);
 
             challenges.ForEach(
-                challenge =>
-                {
-                    var scoreboard = new Scoreboard(challenge.Participants);
+                challenge => challenge.TryClose(
+                    async () =>
+                    {
+                        await challenge.SynchronizeAsync(_matchReferencesFactory, _matchStatsFactory);
 
-                    challenge.DistributePrizes(scoreboard);
-                }
+                        challenge.DistributeParticipantPrizes();
+                    }
+                )
             );
 
             await _challengeRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
-        }
-
-        public Task SynchronizeAsync(ChallengeId challengeId, CancellationToken cancellationToken = default)
-        {
-            return Task.CompletedTask;
         }
 
         public async Task<Challenge> CreateChallengeAsync(
@@ -91,9 +100,9 @@ namespace eDoxa.Arena.Challenges.Services
                 new ChallengeTimeline(new ChallengeDuration(TimeSpan.FromDays(duration)))
             );
 
-            builder.StoreScoring(ScoringFactory.Instance);
+            builder.StoreScoring(_scoringFactory);
 
-            builder.StorePayout(PayoutFactory.Instance);
+            builder.StorePayout(_payoutFactory);
 
             if (testMode != null)
             {
@@ -107,6 +116,21 @@ namespace eDoxa.Arena.Challenges.Services
             await _challengeRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
             return challenge;
+        }
+
+        public async Task SynchronizeAsync(Game game, CancellationToken cancellationToken = default)
+        {
+            var specification = SpecificationFactory.Instance.Create<Challenge>()
+                .And(new ChallengeForGameSpecification(game))
+                .And(new ChallengeLastSyncMoreThanSpecification(TimeSpan.FromHours(1)))
+                .And(new ChallengeOfStateSpecification(ChallengeState.Inscription).Not());
+
+            foreach (var challenge in await _challengeRepository.FindChallengesAsync(specification))
+            {
+                await challenge.SynchronizeAsync(_matchReferencesFactory, _matchStatsFactory);
+            }
+
+            await _challengeRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
         }
     }
 }

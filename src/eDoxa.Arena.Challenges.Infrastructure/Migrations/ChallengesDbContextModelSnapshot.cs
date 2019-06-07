@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengesDbContextModelSnapshot.cs
-// Date Created: 2019-06-05
+// Date Created: 2019-06-07
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -37,6 +37,8 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
 
                     b.Property<int>("Game").HasColumnName("Game");
 
+                    b.Property<DateTime?>("LastSync").HasColumnName("LastSync");
+
                     b.Property<string>("Name").IsRequired().HasColumnName("Name");
 
                     b.HasKey("Id");
@@ -51,7 +53,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id");
 
-                    b.Property<string>("MatchExternalId").IsRequired();
+                    b.Property<string>("MatchReference").IsRequired();
 
                     b.Property<Guid>("ParticipantId");
 
@@ -74,6 +76,8 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
                     b.Property<Guid>("ChallengeId");
 
                     b.Property<string>("ExternalAccount").IsRequired();
+
+                    b.Property<DateTime?>("LastSync");
 
                     b.Property<DateTime>("Timestamp");
 

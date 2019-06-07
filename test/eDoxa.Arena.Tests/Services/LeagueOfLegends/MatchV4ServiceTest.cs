@@ -59,7 +59,7 @@ namespace eDoxa.Arena.Tests.Services.LeagueOfLegends
                     }
                 );
 
-            var service = new MatchV4Service(new HttpClient(mockHttpMessageHandler.Object), It.IsAny<string>());
+            var service = new LeagueOfLegendsMatchService(new HttpClient(mockHttpMessageHandler.Object), It.IsAny<string>());
 
             // Act
             var matchReferences = await service.GetMatchReferencesAsync(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<DateTime>());
@@ -98,7 +98,7 @@ namespace eDoxa.Arena.Tests.Services.LeagueOfLegends
                     }
                 );
 
-            var service = new MatchV4Service(new HttpClient(mockHttpMessageHandler.Object), It.IsAny<string>());
+            var service = new LeagueOfLegendsMatchService(new HttpClient(mockHttpMessageHandler.Object), It.IsAny<string>());
 
             // Act
             var match = await service.GetMatchAsync(It.IsAny<string>());

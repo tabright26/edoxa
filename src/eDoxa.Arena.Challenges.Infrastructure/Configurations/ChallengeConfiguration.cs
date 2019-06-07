@@ -36,6 +36,8 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                 .HasColumnName("Name")
                 .IsRequired();
 
+            builder.Property(challenge => challenge.LastSync).HasColumnName("LastSync").IsRequired(false);
+
             builder.Enumeration(challenge => challenge.Game).HasColumnName("Game").IsRequired();
 
             builder.OwnsOne(

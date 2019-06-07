@@ -10,7 +10,7 @@ using eDoxa.Arena.Challenges.Infrastructure;
 namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
 {
     [DbContext(typeof(ChallengesDbContext))]
-    [Migration("20190606005546_InitialCreate")]
+    [Migration("20190607193040_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,6 +33,9 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
                     b.Property<int>("Game")
                         .HasColumnName("Game");
 
+                    b.Property<DateTime?>("LastSync")
+                        .HasColumnName("LastSync");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnName("Name");
@@ -46,7 +49,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id");
 
-                    b.Property<string>("MatchExternalId")
+                    b.Property<string>("MatchReference")
                         .IsRequired();
 
                     b.Property<Guid>("ParticipantId");
@@ -68,6 +71,8 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
 
                     b.Property<string>("ExternalAccount")
                         .IsRequired();
+
+                    b.Property<DateTime?>("LastSync");
 
                     b.Property<DateTime>("Timestamp");
 

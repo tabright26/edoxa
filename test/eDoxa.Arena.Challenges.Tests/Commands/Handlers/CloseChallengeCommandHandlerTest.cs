@@ -38,7 +38,7 @@ namespace eDoxa.Arena.Challenges.Tests.Commands.Handlers
         public async Task HandleAsync_CompleteCommand_ShouldBeCompletedTask()
         {
             // Arrange
-            _mockChallengeService.Setup(mock => mock.CompleteAsync(It.IsAny<ChallengeId>(), It.IsAny<CancellationToken>()))
+            _mockChallengeService.Setup(mock => mock.CloseAsync(It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
@@ -48,7 +48,7 @@ namespace eDoxa.Arena.Challenges.Tests.Commands.Handlers
             await handler.HandleAsync(new CloseChallengesCommand(new ChallengeId()));
 
             // Assert
-            _mockChallengeService.Verify(mock => mock.CompleteAsync(It.IsAny<ChallengeId>(), It.IsAny<CancellationToken>()), Times.Once);
+            _mockChallengeService.Verify(mock => mock.CloseAsync(It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }

@@ -24,9 +24,9 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
     {
         private HashSet<Stat> _stats;
 
-        public Match(Participant participant, MatchExternalId matchExternalId) : this()
+        public Match(Participant participant, MatchReference matchReference) : this()
         {
-            MatchExternalId = matchExternalId;
+            MatchReference = matchReference;
             Participant = participant;
         }
 
@@ -38,7 +38,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
 
         public DateTime Timestamp { get; private set; }
 
-        public MatchExternalId MatchExternalId { get; private set; }
+        public MatchReference MatchReference { get; private set; }
 
         public Score TotalScore => new MatchScore(this);
 

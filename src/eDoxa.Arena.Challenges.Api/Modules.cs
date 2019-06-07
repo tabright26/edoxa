@@ -1,5 +1,5 @@
-﻿// Filename: ApplicationModule.cs
-// Date Created: 2019-05-20
+﻿// Filename: Modules.cs
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,12 +11,14 @@
 using Autofac;
 
 using eDoxa.Arena.Challenges.Application.Queries;
+using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.DTO.Queries;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.Infrastructure.Repositories;
 using eDoxa.Arena.Challenges.Services;
 using eDoxa.Arena.Challenges.Services.Abstractions;
+using eDoxa.Arena.Challenges.Services.Factories;
 using eDoxa.Seedwork.Application.Commands;
 using eDoxa.Seedwork.Application.DomainEvents;
 using eDoxa.ServiceBus;
@@ -53,6 +55,15 @@ namespace eDoxa.Arena.Challenges.Api
 
             // Services
             builder.RegisterType<ChallengeService>().As<IChallengeService>().InstancePerLifetimeScope();
+
+            // Factories
+            builder.RegisterType<MatchReferencesFactory>().As<IMatchReferencesFactory>().SingleInstance();
+
+            builder.RegisterType<MatchStatsFactory>().As<IMatchStatsFactory>().SingleInstance();
+
+            builder.RegisterType<PayoutFactory>().As<IPayoutFactory>().SingleInstance();
+
+            builder.RegisterType<ScoringFactory>().As<IScoringFactory>().SingleInstance();
         }
     }
 }

@@ -19,6 +19,7 @@ using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Common;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
+using eDoxa.Seedwork.Domain.Specifications.Abstractions;
 
 using JetBrains.Annotations;
 
@@ -43,7 +44,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
         {
             _context.Add(challenge);
         }
-
+        
         public void Create(IEnumerable<Challenge> challenges)
         {
             _context.Challenges.AddRange(challenges);
@@ -62,6 +63,13 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
             var challenges = await _context.Challenges.Include(NavigationPropertyPath).ToListAsync();
 
             return challenges.Where(challenge => challenge.Game.HasFilter(game) && challenge.Timeline.State.HasFilter(state)).ToList();
+        }
+
+        public async Task<IReadOnlyCollection<Challenge>> FindChallengesAsync(ISpecification<Challenge> specification)
+        {
+            var challenges = await _context.Challenges.Include(NavigationPropertyPath).ToListAsync();
+
+            return challenges.Where(specification.IsSatisfiedBy).ToList();
         }
 
         public async Task<IReadOnlyCollection<Challenge>> FindUserChallengeHistoryAsNoTrackingAsync(UserId userId, [CanBeNull] Game game = null, [CanBeNull] ChallengeState state = null)

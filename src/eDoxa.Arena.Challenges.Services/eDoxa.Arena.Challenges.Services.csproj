@@ -7,6 +7,7 @@
   <ItemGroup>
     <ProjectReference Include="..\eDoxa.Arena.Challenges.Domain\eDoxa.Arena.Challenges.Domain.csproj" />
     <ProjectReference Include="..\eDoxa.Arena.Challenges.Services.LeagueOfLegends\eDoxa.Arena.Challenges.Services.LeagueOfLegends.csproj" />
+    <ProjectReference Include="..\eDoxa.Arena.Services.LeagueOfLegends\eDoxa.Arena.Services.LeagueOfLegends.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
   </ItemGroup>
 

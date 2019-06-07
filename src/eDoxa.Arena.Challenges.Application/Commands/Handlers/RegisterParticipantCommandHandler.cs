@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Arena.Application.Extensions;
+using eDoxa.Arena.Challenges.Application.Extensions;
 using eDoxa.Arena.Challenges.DTO;
 using eDoxa.Arena.Challenges.Services.Abstractions;
 using eDoxa.Security.Extensions;

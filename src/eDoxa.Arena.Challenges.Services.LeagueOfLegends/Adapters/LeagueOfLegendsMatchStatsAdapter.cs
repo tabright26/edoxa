@@ -1,18 +1,18 @@
-﻿// Filename: LeagueOfLegendsChallengeStatsAdapter.cs
-// Date Created: 2019-03-20
+﻿// Filename: LeagueOfLegendsMatchStatsAdapter.cs
+// Date Created: 2019-06-01
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
 // 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System.Linq;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
-using eDoxa.Arena.Domain.ValueObjects;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Services.LeagueOfLegends.DTO;
 
 namespace eDoxa.Arena.Challenges.Services.LeagueOfLegends.Adapters
@@ -32,15 +32,13 @@ namespace eDoxa.Arena.Challenges.Services.LeagueOfLegends.Adapters
         {
             get
             {
-                var externalId = new MatchExternalId(_match.GameId);
-
                 var participantId = _match.ParticipantIdentities
-                                          .Single(participantIdentity => participantIdentity.Player.AccountId == _externalAccount.ToString())
-                                          .ParticipantId;
+                    .Single(participantIdentity => participantIdentity.Player.AccountId == _externalAccount.ToString())
+                    .ParticipantId;
 
                 var stats = _match.Participants.Single(participant => participant.ParticipantId == participantId).Stats;
 
-                return new MatchStats(externalId, stats);
+                return new MatchStats(stats);
             }
         }
     }

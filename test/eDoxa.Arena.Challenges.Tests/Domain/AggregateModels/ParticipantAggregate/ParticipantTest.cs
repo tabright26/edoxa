@@ -9,6 +9,7 @@
 // this source code package.
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Arena.Challenges.Tests.Utilities.Fakes;
 
 using FluentAssertions;
@@ -31,7 +32,7 @@ namespace eDoxa.Arena.Challenges.Tests.Domain.AggregateModels.ParticipantAggrega
             var scoring = FakeChallengeFactory.CreateScoring();
 
             // Act
-            participant.SnapshotMatch(stats, scoring);
+            participant.SnapshotMatch(new MatchReference(213123123), stats, scoring);
 
             // Assert
             participant.Matches.Should().NotBeEmpty();

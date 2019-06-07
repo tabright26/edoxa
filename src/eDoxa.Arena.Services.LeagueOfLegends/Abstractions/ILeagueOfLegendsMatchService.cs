@@ -1,5 +1,5 @@
-﻿// Filename: IMatchV4Service.cs
-// Date Created: 2019-05-21
+﻿// Filename: ILeagueOfLegendsMatchService.cs
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -15,7 +15,10 @@ using eDoxa.Arena.Services.LeagueOfLegends.DTO;
 
 namespace eDoxa.Challenges.Domain.Services.LeagueOfLegends.Api.Abstractions
 {
-    public interface IMatchV4Service
+    /// <summary>
+    ///     API version 4
+    /// </summary>
+    public interface ILeagueOfLegendsMatchService
     {
         Task<LeagueOfLegendsMatchReferenceDTO[]> GetMatchReferencesAsync(string accountId, DateTime endTime, DateTime beginTime);
 

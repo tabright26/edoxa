@@ -4,7 +4,7 @@ using System.Linq;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
-namespace eDoxa.Arena.Domain.ValueObjects
+namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate
 {
     public sealed class ExternalAccount : ValueObject
     {

@@ -16,7 +16,6 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
-using eDoxa.Arena.Domain.ValueObjects;
 using eDoxa.Seedwork.Domain.Common;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
@@ -35,7 +34,7 @@ namespace eDoxa.Arena.Challenges.Tests.Utilities.Fakes
         public const string TotalHeal = nameof(TotalHeal);
         private static readonly Lazy<FakeChallengeFactory> Lazy = new Lazy<FakeChallengeFactory>(() => new FakeChallengeFactory());
 
-        private static readonly MatchExternalId AdminMatchExternalId = new MatchExternalId(2973265231);
+        private static readonly MatchReference AdminMatchReference = new MatchReference(2973265231);
         private static readonly Random Random = new Random();
 
         public static FakeChallengeFactory Instance => Lazy.Value;
@@ -209,7 +208,7 @@ namespace eDoxa.Arena.Challenges.Tests.Utilities.Fakes
 
             for (var index = 0; index < matchCount; index++)
             {
-                participant.SnapshotMatch(this.CreateMatchStats(), this.CreateScoring());
+                participant.SnapshotMatch(new MatchReference(123123123), this.CreateMatchStats(), this.CreateScoring());
             }
 
             return participant;
@@ -217,15 +216,12 @@ namespace eDoxa.Arena.Challenges.Tests.Utilities.Fakes
 
         public Match CreateMatch()
         {
-            return new Match(this.CreateParticipant(), AdminMatchExternalId);
+            return new Match(this.CreateParticipant(), AdminMatchReference);
         }
 
-        public IMatchStats CreateMatchStats(MatchExternalId matchExternalId = null)
+        public IMatchStats CreateMatchStats()
         {
-            matchExternalId = matchExternalId ?? new MatchExternalId(2233345251);
-
             return new MatchStats(
-                matchExternalId,
                 new
                 {
                     Kills = Random.Next(0, 40 + 1),

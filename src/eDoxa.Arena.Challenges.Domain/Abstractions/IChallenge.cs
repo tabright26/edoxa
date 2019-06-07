@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
@@ -32,6 +33,8 @@ namespace eDoxa.Arena.Challenges.Domain.Abstractions
 
         DateTime CreatedAt { get; }
 
+        DateTime? LastSync { get; }
+
         IReadOnlyCollection<ChallengeStat> Stats { get; }
 
         IReadOnlyCollection<Participant> Participants { get; }
@@ -43,5 +46,7 @@ namespace eDoxa.Arena.Challenges.Domain.Abstractions
         void ApplyScoringStrategy(IScoringStrategy strategy);
 
         void ApplyPayoutStrategy(IPayoutStrategy strategy);
+
+        Task SynchronizeAsync(IMatchReferencesFactory matchReferencesFactory, IMatchStatsFactory matchStatsFactory);
     }
 }
