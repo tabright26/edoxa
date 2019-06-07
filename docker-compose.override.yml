@@ -14,9 +14,6 @@ services:
       - "6379:6379"
 
   rabbitmq:
-    environment:
-      - RABBITMQ_DEFAULT_USER=admin
-      - RABBITMQ_DEFAULT_PASS=4t8SaVXVMy0rT2kM
     ports:
       - "15672:15672"
       - "5672:5672"
@@ -32,8 +29,6 @@ services:
       - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
       - AzureServiceBus__Enable=${ASB_ENABLE:-false}
       - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq}
-      - ServiceBus__UserName=${ASB_USERNAME:-admin}
-      - ServiceBus__Password=${ASB_PASSWORD:-4t8SaVXVMy0rT2kM}
       - ServiceBus__RetryCount=${ASB_RETRYCOUNT:-5}
       - ServiceBus__Subscription=IdentityServer
       - AzureKubernetesService__Enable=${AKS_ENABLE:-false}
@@ -56,8 +51,6 @@ services:
       - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
       - AzureServiceBus__Enable=${ASB_ENABLE:-false}
       - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq}
-      - ServiceBus__UserName=${ASB_USERNAME:-admin}
-      - ServiceBus__Password=${ASB_PASSWORD:-4t8SaVXVMy0rT2kM}
       - ServiceBus__RetryCount=${ASB_RETRYCOUNT:-5}
       - ServiceBus__Subscription=Identity
       - Authority=${URL:-http://localhost}:5000
@@ -75,8 +68,6 @@ services:
       - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
       - AzureServiceBus__Enable=${ASB_ENABLE:-false}
       - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq}
-      - ServiceBus__UserName=${ASB_USERNAME:-admin}
-      - ServiceBus__Password=${ASB_PASSWORD:-4t8SaVXVMy0rT2kM}
       - ServiceBus__RetryCount=${ASB_RETRYCOUNT:-5}
       - ServiceBus__Subscription=Cashier      
       - Authority=${URL:-http://localhost}:5000
@@ -94,8 +85,6 @@ services:
       - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
       - AzureServiceBus__Enable=${ASB_ENABLE:-false}
       - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq}
-      - ServiceBus__UserName=${ASB_USERNAME:-admin}
-      - ServiceBus__Password=${ASB_PASSWORD:-4t8SaVXVMy0rT2kM}
       - ServiceBus__RetryCount=${ASB_RETRYCOUNT:-5}
       - ServiceBus__Subscription=Arena.Challenges
       - Authority=${URL:-http://localhost}:5000

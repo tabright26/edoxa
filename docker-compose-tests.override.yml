@@ -11,84 +11,57 @@ services:
 
   redis.test:
     ports:
-      - "10379:6379"
+      - "6379:6379"
 
   rabbitmq.test:
-    environment:
-      - RABBITMQ_DEFAULT_USER=admin
-      - RABBITMQ_DEFAULT_PASS=4t8SaVXVMy0rT2kM
     ports:
-      - "19672:15672"
-      - "9672:5672" 
+      - "15672:15672"
+      - "5672:5672"
 
   idsrv.integration-tests:
     environment:
       - ASPNETCORE_ENVIRONMENT=Testing
+      - ASPNETCORE_URLS=http://+:80
       - ConnectionStrings__SqlServer=Server=mssql.test;Database=Services.Identity;User Id=sa;Password=fnU3Www9TnBDp3MA
       - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
       - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
       - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
       - AzureServiceBus__Enable=${ASB_ENABLE:-false}
-      - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq}
-      - ServiceBus__Port=${ASB_PORT:-9672}
-      - ServiceBus__UserName=${ASB_USERNAME:-admin}
-      - ServiceBus__Password=${ASB_PASSWORD:-4t8SaVXVMy0rT2kM}
-      - ServiceBus__RetryCount=${ASB_RETRYCOUNT:-5}
+      - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq.test}
       - ServiceBus__Subscription=IdentityServer
-    entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.IdentityServer.IntegrationTestResults.trx
-    volumes:
-      - /opt/vsts/test/results:/var/tmp
 
   identity.integration-tests:
     environment:
       - ASPNETCORE_ENVIRONMENT=Testing
+      - ASPNETCORE_URLS=http://+:80
       - ConnectionStrings__SqlServer=Server=mssql.test;Database=Services.Identity;User Id=sa;Password=fnU3Www9TnBDp3MA
       - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
       - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
       - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
       - AzureServiceBus__Enable=${ASB_ENABLE:-false}
-      - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq}
-      - ServiceBus__Port=${ASB_PORT:-9672}
-      - ServiceBus__UserName=${ASB_USERNAME:-admin}
-      - ServiceBus__Password=${ASB_PASSWORD:-4t8SaVXVMy0rT2kM}
-      - ServiceBus__RetryCount=${ASB_RETRYCOUNT:-5}
+      - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq.test}
       - ServiceBus__Subscription=Identity
-    entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Identity.IntegrationTestResults.trx
-    volumes:
-      - /opt/vsts/test/results:/var/tmp
 
   cashier.integration-tests:
     environment:
       - ASPNETCORE_ENVIRONMENT=Testing
+      - ASPNETCORE_URLS=http://+:80
       - ConnectionStrings__SqlServer=Server=mssql.test;Database=Services.Cashier;User Id=sa;Password=fnU3Www9TnBDp3MA
       - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
       - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
       - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
       - AzureServiceBus__Enable=${ASB_ENABLE:-false}
-      - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq}
-      - ServiceBus__Port=${ASB_PORT:-9672}
-      - ServiceBus__UserName=${ASB_USERNAME:-admin}
-      - ServiceBus__Password=${ASB_PASSWORD:-4t8SaVXVMy0rT2kM}
-      - ServiceBus__RetryCount=${ASB_RETRYCOUNT:-5}
+      - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq.test}
       - ServiceBus__Subscription=Cashier
-    entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Cashier.IntegrationTestResults.trx
-    volumes:
-      - /opt/vsts/test/results:/var/tmp
 
   arena.challenges.integration-tests:
     environment:
       - ASPNETCORE_ENVIRONMENT=Testing
+      - ASPNETCORE_URLS=http://+:80
       - ConnectionStrings__SqlServer=Server=mssql.test;Database=Services.Arena.Challenges;User Id=sa;Password=fnU3Www9TnBDp3MA
       - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
       - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
       - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
       - AzureServiceBus__Enable=${ASB_ENABLE:-false}
-      - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq}
-      - ServiceBus__Port=${ASB_PORT:-9672}
-      - ServiceBus__UserName=${ASB_USERNAME:-admin}
-      - ServiceBus__Password=${ASB_PASSWORD:-4t8SaVXVMy0rT2kM}
-      - ServiceBus__RetryCount=${ASB_RETRYCOUNT:-5}
+      - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq.test}
       - ServiceBus__Subscription=Arena.Challenges
-    entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Arena.Challenges.IntegrationTestResults.trx
-    volumes:
-      - /opt/vsts/test/results:/var/tmp

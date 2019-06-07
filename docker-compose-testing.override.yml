@@ -1,0 +1,19 @@
+version: '3.4'
+
+services:
+  mssql:
+    environment:
+      - SA_PASSWORD=fnU3Www9TnBDp3MA
+      - ACCEPT_EULA=Y
+      - MSSQL_PID=Express
+    ports:
+      - "5433:1433"
+
+  redis:
+    ports:
+      - "6379:6379"
+
+  rabbitmq:
+    ports:
+      - "15672:15672"
+      - "5672:5672"

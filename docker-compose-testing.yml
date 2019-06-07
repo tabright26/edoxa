@@ -1,0 +1,11 @@
+version: '3.4'
+
+services:
+  mssql:
+    image: microsoft/mssql-server-linux:latest
+
+  redis:
+    image: redis:latest
+
+  rabbitmq:
+    image: rabbitmq:latest

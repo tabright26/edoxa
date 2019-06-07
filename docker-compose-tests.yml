@@ -1,6 +1,15 @@
 version: '3.4'
 
 services:
+  mssql.test:
+    image: microsoft/mssql-server-linux:latest
+
+  redis.test:
+    image: redis:latest
+
+  rabbitmq.test:
+    image: rabbitmq:latest
+
   seedwork.tests:
     image: ${ACR_REGISTRY:-edoxa}/seedwork.tests:${ACR_TAG:-latest}
     build:
@@ -19,6 +28,19 @@ services:
     volumes:
       - /opt/vsts/test/results:/var/tmp
 
+  idsrv.integration-tests:
+    image: ${ACR_REGISTRY:-edoxa}/idsrv.integration-tests:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: test/eDoxa.IdentityServer.IntegrationTests/Dockerfile
+    entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.IdentityServer.IntegrationTestResults.trx
+    volumes:
+      - /opt/vsts/test/results:/var/tmp
+    depends_on:
+      - mssql.test
+      - redis.test
+      - rabbitmq.test
+
   identity.tests:
     image: ${ACR_REGISTRY:-edoxa}/identity.tests:${ACR_TAG:-latest}
     build:
@@ -28,6 +50,19 @@ services:
     volumes:
       - /opt/vsts/test/results:/var/tmp
 
+  identity.integration-tests:
+    image: ${ACR_REGISTRY:-edoxa}/identity.integration-tests:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: test/eDoxa.Identity.IntegrationTests/Dockerfile
+    entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Identity.IntegrationTestResults.trx
+    volumes:
+      - /opt/vsts/test/results:/var/tmp
+    depends_on:
+      - mssql.test
+      - redis.test
+      - rabbitmq.test
+
   cashier.tests:
     image: ${ACR_REGISTRY:-edoxa}/cashier.tests:${ACR_TAG:-latest}
     build:
@@ -36,6 +71,19 @@ services:
     entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Cashier.TestResults.trx
     volumes:
       - /opt/vsts/test/results:/var/tmp
+
+  cashier.integration-tests:
+    image: ${ACR_REGISTRY:-edoxa}/cashier.integration-tests:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: test/eDoxa.Cashier.IntegrationTests/Dockerfile
+    entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Cashier.IntegrationTestResults.trx
+    volumes:
+      - /opt/vsts/test/results:/var/tmp
+    depends_on:
+      - mssql.test
+      - redis.test
+      - rabbitmq.test
 
   stripe.tests:
     image: ${ACR_REGISTRY:-edoxa}/stripe.tests:${ACR_TAG:-latest}
@@ -63,3 +111,16 @@ services:
     entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Arena.Challenges.TestResults.trx
     volumes:
       - /opt/vsts/test/results:/var/tmp
+
+  arena.challenges.integration-tests:
+    image: ${ACR_REGISTRY:-edoxa}/arena.challenges.integration-tests:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: test/eDoxa.Arena.Challenges.IntegrationTests/Dockerfile
+    entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Arena.Challenges.IntegrationTestResults.trx
+    volumes:
+      - /opt/vsts/test/results:/var/tmp
+    depends_on:
+      - mssql.test
+      - redis.test
+      - rabbitmq.test
