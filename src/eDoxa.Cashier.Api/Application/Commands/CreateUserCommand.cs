@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Seedwork.Application.Commands.Abstractions;
+using eDoxa.Commands.Abstractions;
 using eDoxa.Seedwork.Domain.Common;
 
 namespace eDoxa.Cashier.Api.Application.Commands

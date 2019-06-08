@@ -15,7 +15,7 @@ using eDoxa.Cashier.Api.Application.Commands;
 using eDoxa.Cashier.Api.IntegrationEvents;
 using eDoxa.Cashier.Api.IntegrationEvents.Handlers;
 using eDoxa.Cashier.UnitTests.Utilities.Fakes;
-using eDoxa.Seedwork.Testing.Constructor;
+using eDoxa.Seedwork.Testing.TestConstructor;
 using eDoxa.Stripe.UnitTests.Utilities;
 
 using MediatR;
@@ -42,7 +42,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<UserCreatedIntegrationEventHandler>.For(typeof(IMediator)).WithName("UserCreatedIntegrationEventHandler").Assert();
+            TestConstructor<UserCreatedIntegrationEventHandler>.ForParameters(typeof(IMediator)).WithClassName("UserCreatedIntegrationEventHandler").Assert();
         }
 
         [TestMethod]

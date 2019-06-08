@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Application.Commands;
 using eDoxa.Cashier.Api.Controllers;
-using eDoxa.Seedwork.Testing.Constructor;
+using eDoxa.Seedwork.Testing.TestConstructor;
 using eDoxa.Stripe.UnitTests.Utilities;
 
 using FluentAssertions;
@@ -43,9 +43,9 @@ namespace eDoxa.Cashier.UnitTests.Controllers
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<StripeAccountController>.For(typeof(IMediator))
-                .WithName("StripeAccountController")
-                .WithAttributes(
+            TestConstructor<StripeAccountController>.ForParameters(typeof(IMediator))
+                .WithClassName("StripeAccountController")
+                .WithClassAttributes(
                     typeof(AuthorizeAttribute),
                     typeof(ApiControllerAttribute),
                     typeof(ApiVersionAttribute),

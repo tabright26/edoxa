@@ -11,7 +11,7 @@
 using System;
 using System.Collections.Generic;
 
-using eDoxa.ServiceBus;
+using eDoxa.IntegrationEvents;
 
 namespace eDoxa.Arena.Challenges.Api.IntegrationEvents
 {

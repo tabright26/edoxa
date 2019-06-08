@@ -17,9 +17,9 @@ using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.Infrastructure.Repositories;
-using eDoxa.Seedwork.Application.Commands;
+using eDoxa.Commands;
+using eDoxa.IntegrationEvents;
 using eDoxa.Seedwork.Application.DomainEvents;
-using eDoxa.ServiceBus;
 
 using JetBrains.Annotations;
 

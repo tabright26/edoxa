@@ -17,7 +17,7 @@ using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Services;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Seedwork.Application.Commands.Abstractions.Handlers;
+using eDoxa.Commands.Abstractions.Handlers;
 
 using JetBrains.Annotations;
 

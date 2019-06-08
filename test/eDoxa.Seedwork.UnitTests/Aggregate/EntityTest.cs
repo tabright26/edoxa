@@ -12,7 +12,6 @@ using System;
 
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.UnitTests.Reflection.Extensions;
 
 using FluentAssertions;
@@ -186,49 +185,49 @@ namespace eDoxa.Seedwork.UnitTests.Aggregate
             hashCode1.Should().Be(hashCode2);
         }
 
-        [TestMethod]
-        public void GetHashCode_CachedHashCodeHasValue_ShouldBeCachedHashCode()
-        {
-            // Arrange
-            var cachedHashCode = -54798654;
-            var entity = new MockEntity();
-            entity.SetPrivateField("_cachedHashCode", cachedHashCode);
+        //[TestMethod]
+        //public void GetHashCode_CachedHashCodeHasValue_ShouldBeCachedHashCode()
+        //{
+        //    // Arrange
+        //    var cachedHashCode = -54798654;
+        //    var entity = new MockEntity();
+        //    entity.SetPrivateField("_cachedHashCode", cachedHashCode);
 
-            // Act
-            var hashCode = entity.GetHashCode();
+        //    // Act
+        //    var hashCode = entity.GetHashCode();
 
-            // Assert
-            hashCode.Should().Be(cachedHashCode);
-        }
+        //    // Assert
+        //    hashCode.Should().Be(cachedHashCode);
+        //}
 
-        [TestMethod]
-        public void GetHashCode_IsTransient_ShouldAssignBaseHashCodeToCachedHashCode()
-        {
-            // Arrange
-            var entity = new MockEntity();
-            entity.SetPrivateField("_cachedHashCode", null);
-            entity.SetPrivateField("_id", null);
+        //[TestMethod]
+        //public void GetHashCode_IsTransient_ShouldAssignBaseHashCodeToCachedHashCode()
+        //{
+        //    // Arrange
+        //    var entity = new MockEntity();
+        //    entity.SetPrivateField("_cachedHashCode", null);
+        //    entity.SetPrivateField("_id", null);
 
-            // Act
-            var hashCode = entity.GetHashCode();
+        //    // Act
+        //    var hashCode = entity.GetHashCode();
 
-            // Assert
-            entity.GetPrivateField("_cachedHashCode").Should().Be(hashCode);
-        }
+        //    // Assert
+        //    entity.GetPrivateField("_cachedHashCode").Should().Be(hashCode);
+        //}
 
-        [TestMethod]
-        public void IsTransient_NullEntityId_ShouldBeTrue()
-        {
-            // Arrange            
-            var entity = new MockEntity();
-            entity.SetPrivateField("_id", null);
+        //[TestMethod]
+        //public void IsTransient_NullEntityId_ShouldBeTrue()
+        //{
+        //    // Arrange            
+        //    var entity = new MockEntity();
+        //    entity.SetPrivateField("_id", null);
 
-            // Act
-            var condition = entity.IsTransient();
+        //    // Act
+        //    var condition = entity.IsTransient();
 
-            // Assert
-            condition.Should().BeTrue();
-        }
+        //    // Assert
+        //    condition.Should().BeTrue();
+        //}
 
         [TestMethod]
         public void IsTransient_NotNullEntityId_ShouldBeFalse()

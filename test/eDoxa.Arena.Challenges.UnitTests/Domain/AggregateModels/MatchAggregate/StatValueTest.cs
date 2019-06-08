@@ -11,7 +11,7 @@
 using System;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
-using eDoxa.Seedwork.Testing.Constructor;
+using eDoxa.Seedwork.Testing.TestConstructor;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -25,25 +25,25 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.MatchAggregate
         {
             const string message = "StatValue validation failed.";
 
-            ConstructorTests<StatValue>.For(typeof(object))
-                .WithName("StatValue")
-                .Fail(new object[] {"Ten"}, typeof(FormatException), message)
-                .Succeed(new object[] {true}, message)
-                .Succeed(new object[] {false}, message)
-                .Succeed(new object[] {byte.MinValue}, message)
-                .Succeed(new object[] {byte.MaxValue}, message)
-                .Succeed(new object[] {short.MinValue}, message)
-                .Succeed(new object[] {short.MaxValue}, message)
-                .Succeed(new object[] {int.MinValue}, message)
-                .Succeed(new object[] {int.MaxValue}, message)
-                .Succeed(new object[] {long.MinValue}, message)
-                .Succeed(new object[] {long.MaxValue}, message)
-                .Succeed(new object[] {float.MinValue}, message)
-                .Succeed(new object[] {float.MaxValue}, message)
-                .Succeed(new object[] {double.MinValue}, message)
-                .Succeed(new object[] {double.MaxValue}, message)
-                .Succeed(new object[] {decimal.MinValue}, message)
-                .Succeed(new object[] {decimal.MaxValue}, message)
+            TestConstructor<StatValue>.ForParameters(typeof(object))
+                .WithClassName("StatValue")
+                .Failure(new object[] {"Ten"}, typeof(FormatException), message)
+                .Success(new object[] {true}, message)
+                .Success(new object[] {false}, message)
+                .Success(new object[] {byte.MinValue}, message)
+                .Success(new object[] {byte.MaxValue}, message)
+                .Success(new object[] {short.MinValue}, message)
+                .Success(new object[] {short.MaxValue}, message)
+                .Success(new object[] {int.MinValue}, message)
+                .Success(new object[] {int.MaxValue}, message)
+                .Success(new object[] {long.MinValue}, message)
+                .Success(new object[] {long.MaxValue}, message)
+                .Success(new object[] {float.MinValue}, message)
+                .Success(new object[] {float.MaxValue}, message)
+                .Success(new object[] {double.MinValue}, message)
+                .Success(new object[] {double.MaxValue}, message)
+                .Success(new object[] {decimal.MinValue}, message)
+                .Success(new object[] {decimal.MaxValue}, message)
                 .Assert();
         }
     }

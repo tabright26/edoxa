@@ -14,7 +14,7 @@ using eDoxa.Cashier.Api.Application.Abstractions;
 using eDoxa.Cashier.Api.Controllers;
 using eDoxa.Cashier.Api.ViewModels;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
-using eDoxa.Seedwork.Testing.Constructor;
+using eDoxa.Seedwork.Testing.TestConstructor;
 
 using FluentAssertions;
 
@@ -44,9 +44,9 @@ namespace eDoxa.Cashier.UnitTests.Controllers
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<AccountController>.For(typeof(IBalanceQuery), typeof(IMediator))
-                .WithName("AccountController")
-                .WithAttributes(
+            TestConstructor<AccountController>.ForParameters(typeof(IBalanceQuery), typeof(IMediator))
+                .WithClassName("AccountController")
+                .WithClassAttributes(
                     typeof(AuthorizeAttribute),
                     typeof(ApiControllerAttribute),
                     typeof(ApiVersionAttribute),

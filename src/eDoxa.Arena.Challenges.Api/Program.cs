@@ -11,10 +11,10 @@
 using System;
 
 using eDoxa.Arena.Challenges.Infrastructure;
+using eDoxa.IntegrationEvents;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Security.Extensions;
-using eDoxa.ServiceBus;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;

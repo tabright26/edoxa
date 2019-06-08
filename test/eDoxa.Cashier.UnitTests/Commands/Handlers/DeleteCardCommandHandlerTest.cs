@@ -16,9 +16,9 @@ using eDoxa.Cashier.Api.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.UnitTests.Utilities.Fakes;
 using eDoxa.Cashier.UnitTests.Utilities.Mocks.Extensions;
-using eDoxa.Seedwork.Application.Commands.Extensions;
+using eDoxa.Commands.Extensions;
 using eDoxa.Seedwork.Domain.Common;
-using eDoxa.Seedwork.Testing.Constructor;
+using eDoxa.Seedwork.Testing.TestConstructor;
 using eDoxa.Stripe.Abstractions;
 using eDoxa.Stripe.Models;
 using eDoxa.Stripe.UnitTests.Utilities;
@@ -52,8 +52,8 @@ namespace eDoxa.Cashier.UnitTests.Commands.Handlers
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<DeleteCardCommandHandler>.For(typeof(IHttpContextAccessor), typeof(IStripeService), typeof(IUserRepository))
-                .WithName("DeleteCardCommandHandler")
+            TestConstructor<DeleteCardCommandHandler>.ForParameters(typeof(IHttpContextAccessor), typeof(IStripeService), typeof(IUserRepository))
+                .WithClassName("DeleteCardCommandHandler")
                 .Assert();
         }
 

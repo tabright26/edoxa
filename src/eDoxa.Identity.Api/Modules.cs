@@ -13,9 +13,8 @@ using Autofac;
 using eDoxa.Identity.Api.Application.Abstractions;
 using eDoxa.Identity.Api.Application.Queries;
 using eDoxa.Identity.Infrastructure;
-using eDoxa.Seedwork.Application.Commands;
+using eDoxa.IntegrationEvents;
 using eDoxa.Seedwork.Application.DomainEvents;
-using eDoxa.ServiceBus;
 
 using JetBrains.Annotations;
 
@@ -28,8 +27,6 @@ namespace eDoxa.Identity.Api
             base.Load(builder);
 
             builder.RegisterModule<DomainEventModule>();
-
-            builder.RegisterModule<CommandModule>();
 
             builder.RegisterModule<IntegrationEventModule<IdentityDbContext>>();
 

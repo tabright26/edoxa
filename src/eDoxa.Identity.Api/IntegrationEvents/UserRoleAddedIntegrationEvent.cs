@@ -10,7 +10,7 @@
 
 using System;
 
-using eDoxa.ServiceBus;
+using eDoxa.IntegrationEvents;
 
 namespace eDoxa.Identity.Api.IntegrationEvents
 {

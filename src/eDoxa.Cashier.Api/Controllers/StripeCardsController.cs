@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Application.Abstractions;
 using eDoxa.Cashier.Api.Application.Commands;
-using eDoxa.Seedwork.Application.Commands.Extensions;
+using eDoxa.Commands.Extensions;
 using eDoxa.Stripe.Filters.Attributes;
 using eDoxa.Stripe.Models;
 

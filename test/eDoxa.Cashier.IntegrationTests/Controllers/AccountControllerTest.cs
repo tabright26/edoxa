@@ -17,8 +17,8 @@ using eDoxa.Cashier.Api.ViewModels;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.IntegrationTests.Helpers;
-using eDoxa.Seedwork.Testing;
-using eDoxa.Seedwork.Testing.Extensions;
+using eDoxa.Seedwork.Testing.TestServer;
+using eDoxa.Seedwork.Testing.TestServer.Extensions;
 
 using FluentAssertions;
 

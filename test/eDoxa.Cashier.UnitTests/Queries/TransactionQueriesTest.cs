@@ -12,7 +12,7 @@ using AutoMapper;
 
 using eDoxa.Cashier.Api.Application.Queries;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Seedwork.Testing.Constructor;
+using eDoxa.Seedwork.Testing.TestConstructor;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -25,8 +25,8 @@ namespace eDoxa.Cashier.UnitTests.Queries
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<TransactionQuery>.For(typeof(IAccountRepository), typeof(IHttpContextAccessor), typeof(IMapper))
-                .WithName("TransactionQuery")
+            TestConstructor<TransactionQuery>.ForParameters(typeof(IAccountRepository), typeof(IHttpContextAccessor), typeof(IMapper))
+                .WithClassName("TransactionQuery")
                 .Assert();
         }
     }

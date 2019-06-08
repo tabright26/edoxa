@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Application.Abstractions;
 using eDoxa.Cashier.Api.Application.Commands;
-using eDoxa.Seedwork.Application.Commands.Extensions;
+using eDoxa.Commands.Extensions;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 using MediatR;

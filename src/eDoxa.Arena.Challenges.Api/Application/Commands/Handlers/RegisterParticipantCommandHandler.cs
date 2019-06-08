@@ -16,7 +16,7 @@ using AutoMapper;
 using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Services;
-using eDoxa.Seedwork.Application.Commands.Abstractions.Handlers;
+using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Seedwork.Security.Extensions;
 
 using JetBrains.Annotations;

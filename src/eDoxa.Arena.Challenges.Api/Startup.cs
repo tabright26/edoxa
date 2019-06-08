@@ -17,11 +17,11 @@ using AutoMapper;
 using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Extensions;
+using eDoxa.IntegrationEvents.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Security.Extensions;
-using eDoxa.Seedwork.Security.Resources;
-using eDoxa.ServiceBus.Extensions;
+using eDoxa.Seedwork.Security.IdentityServer;
 using eDoxa.Swagger.Extensions;
 
 using Microsoft.AspNetCore.Builder;

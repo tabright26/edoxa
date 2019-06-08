@@ -11,7 +11,7 @@
 using System.Collections.Generic;
 
 using eDoxa.Seedwork.Security.Extensions;
-using eDoxa.Seedwork.Security.Resources;
+using eDoxa.Seedwork.Security.IdentityServer;
 
 using IdentityServer4;
 using IdentityServer4.Models;

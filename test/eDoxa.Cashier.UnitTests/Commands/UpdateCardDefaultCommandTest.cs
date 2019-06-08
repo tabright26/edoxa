@@ -11,7 +11,7 @@
 using System.Runtime.Serialization;
 
 using eDoxa.Cashier.Api.Application.Commands;
-using eDoxa.Seedwork.Testing.Constructor;
+using eDoxa.Seedwork.Testing.TestConstructor;
 using eDoxa.Stripe.Models;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -24,9 +24,9 @@ namespace eDoxa.Cashier.UnitTests.Commands
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<UpdateCardDefaultCommand>.For(typeof(StripeCardId))
-                .WithName("UpdateCardDefaultCommand")
-                .WithAttributes(typeof(DataContractAttribute))
+            TestConstructor<UpdateCardDefaultCommand>.ForParameters(typeof(StripeCardId))
+                .WithClassName("UpdateCardDefaultCommand")
+                .WithClassAttributes(typeof(DataContractAttribute))
                 .Assert();
         }
     }

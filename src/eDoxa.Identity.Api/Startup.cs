@@ -17,11 +17,11 @@ using eDoxa.Identity.Api.Extensions;
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Infrastructure;
+using eDoxa.IntegrationEvents.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Security.Extensions;
-using eDoxa.Seedwork.Security.Resources;
-using eDoxa.ServiceBus.Extensions;
+using eDoxa.Seedwork.Security.IdentityServer;
 using eDoxa.Swagger.Extensions;
 
 using Microsoft.AspNetCore.Builder;

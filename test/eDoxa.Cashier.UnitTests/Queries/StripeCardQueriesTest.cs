@@ -19,7 +19,7 @@ using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.UnitTests.Utilities.Fakes;
 using eDoxa.Cashier.UnitTests.Utilities.Mocks.Extensions;
 using eDoxa.Seedwork.Domain.Common;
-using eDoxa.Seedwork.Testing.Constructor;
+using eDoxa.Seedwork.Testing.TestConstructor;
 using eDoxa.Stripe.Abstractions;
 using eDoxa.Stripe.Models;
 
@@ -56,8 +56,8 @@ namespace eDoxa.Cashier.UnitTests.Queries
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<CardQuery>.For(typeof(IStripeService), typeof(IHttpContextAccessor), typeof(IMapper), typeof(IUserRepository))
-                .WithName("CardQuery")
+            TestConstructor<CardQuery>.ForParameters(typeof(IStripeService), typeof(IHttpContextAccessor), typeof(IMapper), typeof(IUserRepository))
+                .WithClassName("CardQuery")
                 .Assert();
         }
 

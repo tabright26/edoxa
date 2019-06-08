@@ -13,7 +13,7 @@ using System.Linq;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Validators;
-using eDoxa.Seedwork.Application.Commands.Abstractions.Validations;
+using eDoxa.Commands.Abstractions.Validations;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Security.Extensions;
 

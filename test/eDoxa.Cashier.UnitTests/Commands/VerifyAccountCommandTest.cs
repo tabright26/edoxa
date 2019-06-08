@@ -9,7 +9,7 @@
 // this source code package.
 
 using eDoxa.Cashier.Api.Application.Commands;
-using eDoxa.Seedwork.Testing.Constructor;
+using eDoxa.Seedwork.Testing.TestConstructor;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -21,7 +21,7 @@ namespace eDoxa.Cashier.UnitTests.Commands
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<VerifyAccountCommand>.For(
+            TestConstructor<VerifyAccountCommand>.ForParameters(
                     typeof(string),
                     typeof(string),
                     typeof(string),
@@ -29,7 +29,7 @@ namespace eDoxa.Cashier.UnitTests.Commands
                     typeof(string),
                     typeof(bool)
                 )
-                .WithName("VerifyAccountCommand")
+                .WithClassName("VerifyAccountCommand")
                 .Assert();
         }
     }

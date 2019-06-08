@@ -16,7 +16,7 @@ using eDoxa.Cashier.Api.Controllers;
 using eDoxa.Cashier.Api.ViewModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
-using eDoxa.Seedwork.Testing.Constructor;
+using eDoxa.Seedwork.Testing.TestConstructor;
 
 using FluentAssertions;
 
@@ -42,9 +42,9 @@ namespace eDoxa.Cashier.UnitTests.Controllers
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<TransactionsController>.For(typeof(ITransactionQuery))
-                .WithName("TransactionsController")
-                .WithAttributes(
+            TestConstructor<TransactionsController>.ForParameters(typeof(ITransactionQuery))
+                .WithClassName("TransactionsController")
+                .WithClassAttributes(
                     typeof(AuthorizeAttribute),
                     typeof(ApiControllerAttribute),
                     typeof(ApiVersionAttribute),

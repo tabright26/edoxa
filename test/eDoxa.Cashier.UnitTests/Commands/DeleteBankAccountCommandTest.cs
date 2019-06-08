@@ -9,7 +9,7 @@
 // this source code package.
 
 using eDoxa.Cashier.Api.Application.Commands;
-using eDoxa.Seedwork.Testing.Constructor;
+using eDoxa.Seedwork.Testing.TestConstructor;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -21,7 +21,7 @@ namespace eDoxa.Cashier.UnitTests.Commands
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<DeleteBankAccountCommand>.For().WithName("DeleteBankAccountCommand").Assert();
+            TestConstructor<DeleteBankAccountCommand>.ForParameters().WithClassName("DeleteBankAccountCommand").Assert();
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿// Filename: ServiceCollectionExtensions.cs
-// Date Created: 2019-04-30
+// Date Created: 2019-06-08
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,8 +9,6 @@
 // this source code package.
 
 using System;
-
-using eDoxa.Seedwork.Security.Services;
 
 using IdentityServer4.AccessTokenValidation;
 using IdentityServer4.Models;
@@ -31,25 +29,15 @@ namespace eDoxa.Seedwork.Security.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        // TODO: THIS IS NOT TESTED.
-        public static void AddDataProtection(this IServiceCollection services, IConfiguration configuration)
-        {
-            if (configuration.GetValue<bool>("AzureKubernetesService:Enable"))
-            {
-                services.AddDataProtection(
-                        options => { options.ApplicationDiscriminator = configuration["ApplicationDiscriminator"]; }
-                    )
-                    .PersistKeysToRedis(ConnectionMultiplexer.Connect(configuration.GetConnectionString(CustomConnectionStrings.Redis)), "data-protection");
-            }
-        }
-
         public static void AddCookiePolicy(this IServiceCollection services)
         {
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
+            services.Configure<CookiePolicyOptions>(
+                options =>
+                {
+                    options.CheckConsentNeeded = context => true;
+                    options.MinimumSameSitePolicy = SameSiteMode.None;
+                }
+            );
         }
 
         public static void AddCorsPolicy(this IServiceCollection services)
@@ -62,41 +50,58 @@ namespace eDoxa.Seedwork.Security.Extensions
             );
         }
 
+        // TODO: THIS IS NOT TESTED.
+        public static void AddDataProtection(this IServiceCollection services, IConfiguration configuration)
+        {
+            if (configuration.GetValue<bool>("AzureKubernetesService:Enable"))
+            {
+                services.AddDataProtection(
+                        options =>
+                        {
+                            options.ApplicationDiscriminator = configuration["ApplicationDiscriminator"];
+                        }
+                    )
+                    .PersistKeysToRedis(ConnectionMultiplexer.Connect(configuration.GetConnectionString(CustomConnectionStrings.Redis)), "data-protection");
+            }
+        }
+
         public static void AddIdentity<TUser, TRole, TContext, TFactory>(this IServiceCollection services, IHostingEnvironment environment)
         where TUser : class
         where TRole : class
         where TContext : DbContext
         where TFactory : UserClaimsPrincipalFactory<TUser, TRole>
         {
-            services.AddIdentity<TUser, TRole>(options =>
-                {
-                    // Password settings
-                    options.Password.RequireDigit = true;
-                    options.Password.RequiredLength = 8;
-                    options.Password.RequiredUniqueChars = 1;
-                    options.Password.RequireLowercase = true;
-                    options.Password.RequireNonAlphanumeric = true;
-                    options.Password.RequireUppercase = true;
-
-                    // Lockout settings
-                    options.Lockout.AllowedForNewUsers = true;
-                    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-                    options.Lockout.MaxFailedAccessAttempts = 5;
-
-                    // User settings
-                    options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_";
-                    options.User.RequireUniqueEmail = true;
-
-                    // Claims settings
-                    options.ClaimsIdentity.SecurityStampClaimType = CustomClaimTypes.SecurityStamp;
-
-                    // SignIn settings
-                    if (environment.IsProduction())
+            services.AddIdentity<TUser, TRole>(
+                    options =>
                     {
-                        options.SignIn.RequireConfirmedEmail = true;
-                        options.SignIn.RequireConfirmedPhoneNumber = true;
+                        // Password settings
+                        options.Password.RequireDigit = true;
+                        options.Password.RequiredLength = 8;
+                        options.Password.RequiredUniqueChars = 1;
+                        options.Password.RequireLowercase = true;
+                        options.Password.RequireNonAlphanumeric = true;
+                        options.Password.RequireUppercase = true;
+
+                        // Lockout settings
+                        options.Lockout.AllowedForNewUsers = true;
+                        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                        options.Lockout.MaxFailedAccessAttempts = 5;
+
+                        // User settings
+                        options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_";
+                        options.User.RequireUniqueEmail = true;
+
+                        // Claims settings
+                        options.ClaimsIdentity.SecurityStampClaimType = CustomClaimTypes.SecurityStamp;
+
+                        // SignIn settings
+                        if (environment.IsProduction())
+                        {
+                            options.SignIn.RequireConfirmedEmail = true;
+                            options.SignIn.RequireConfirmedPhoneNumber = true;
+                        }
                     }
-                })
+                )
                 .AddClaimsPrincipalFactory<TFactory>()
                 .AddEntityFrameworkStores<TContext>()
                 .AddDefaultTokenProviders()
@@ -108,52 +113,21 @@ namespace eDoxa.Seedwork.Security.Extensions
         where TRole : class
         where TContext : DbContext
         {
-            services.AddIdentityCore<TUser>()
-                .AddRoles<TRole>()
-                .AddEntityFrameworkStores<TContext>();
-        }
-
-        public static void AddIdentityServer<TUser>(this IServiceCollection services, IConfiguration configuration, IHostingEnvironment environment)
-        where TUser : IdentityUser<Guid>
-        {
-            var builder = services.AddIdentityServer(options =>
-                {
-                    options.IssuerUri = configuration.GetValue<string>("IdentityServer:Url");
-
-                    options.Authentication.CookieLifetime = TimeSpan.FromHours(2);
-
-                    options.Events.RaiseErrorEvents = true;
-                    options.Events.RaiseInformationEvents = true;
-                    options.Events.RaiseFailureEvents = true;
-                    options.Events.RaiseSuccessEvents = true;
-
-                    options.UserInteraction.LoginUrl = "/Account/Login";
-                    options.UserInteraction.LogoutUrl = "/Account/Logout";
-                })
-                .AddDeveloperSigningCredential()
-                .AddInMemoryPersistedGrants()
-                .AddInMemoryIdentityResources(Config.GetIdentityResources())
-                .AddInMemoryApiResources(Config.GetApiResources())
-                .AddInMemoryClients(Config.GetClients(configuration))
-                .AddProfileService<CustomProfileService<TUser>>()
-                .AddAspNetIdentity<TUser>();
-
-            if (environment.IsDevelopment())
-            {
-                builder.AddCorsPolicyService<CustomCorsPolicyService>();
-            }
+            services.AddIdentityCore<TUser>().AddRoles<TRole>().AddEntityFrameworkStores<TContext>();
         }
 
         public static void AddIdentityServerAuthentication(
             this IServiceCollection services,
             IConfiguration configuration,
             IHostingEnvironment environment,
-            ApiResource apiResource)
+            ApiResource apiResource
+        )
         {
             var authority = configuration.GetValue<string>("IdentityServer:Url");
 
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
-                .AddIdentityServerAuthentication(options =>
+                .AddIdentityServerAuthentication(
+                    options =>
                     {
                         options.ApiName = apiResource.Name;
                         options.Authority = authority;

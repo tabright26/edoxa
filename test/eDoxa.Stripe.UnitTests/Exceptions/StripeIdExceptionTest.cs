@@ -10,7 +10,7 @@
 
 using System;
 
-using eDoxa.Seedwork.Testing.Constructor;
+using eDoxa.Seedwork.Testing.TestConstructor;
 using eDoxa.Stripe.Exceptions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -23,7 +23,7 @@ namespace eDoxa.Stripe.UnitTests.Exceptions
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<StripeIdException>.For(typeof(string), typeof(Type)).WithName("StripeIdException").Assert();
+            TestConstructor<StripeIdException>.ForParameters(typeof(string), typeof(Type)).WithClassName("StripeIdException").Assert();
         }
     }
 }

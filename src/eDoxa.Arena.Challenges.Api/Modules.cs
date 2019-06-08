@@ -19,9 +19,9 @@ using eDoxa.Arena.Challenges.Domain.Factories;
 using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.Infrastructure.Repositories;
-using eDoxa.Seedwork.Application.Commands;
+using eDoxa.Commands;
+using eDoxa.IntegrationEvents;
 using eDoxa.Seedwork.Application.DomainEvents;
-using eDoxa.ServiceBus;
 
 using JetBrains.Annotations;
 

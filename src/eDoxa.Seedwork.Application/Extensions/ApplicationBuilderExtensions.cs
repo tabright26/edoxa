@@ -35,12 +35,5 @@ namespace eDoxa.Seedwork.Application.Extensions
                 }
             );
         }
-
-        public static void UseHealthChecksUI(this IApplicationBuilder application, string path)
-        {
-            application.UseHealthChecksUI(config => config.UIPath = path);
-
-            application.UseStatusCodePagesWithRedirects(path);
-        }
     }
 }

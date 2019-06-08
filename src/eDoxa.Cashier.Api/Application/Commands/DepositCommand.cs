@@ -11,7 +11,7 @@
 using System.Runtime.Serialization;
 
 using eDoxa.Cashier.Api.ViewModels;
-using eDoxa.Seedwork.Application.Commands.Abstractions;
+using eDoxa.Commands.Abstractions;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 namespace eDoxa.Cashier.Api.Application.Commands

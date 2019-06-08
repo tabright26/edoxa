@@ -11,7 +11,7 @@
 using System.Runtime.Serialization;
 
 using eDoxa.Arena.Challenges.Api.ViewModels;
-using eDoxa.Seedwork.Application.Commands.Abstractions;
+using eDoxa.Commands.Abstractions;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 namespace eDoxa.Arena.Challenges.Api.Application.Commands

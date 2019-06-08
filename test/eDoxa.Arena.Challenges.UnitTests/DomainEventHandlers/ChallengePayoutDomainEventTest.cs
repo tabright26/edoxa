@@ -15,8 +15,8 @@ using eDoxa.Arena.Challenges.Api.IntegrationEvents;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.DomainEvents;
 using eDoxa.Arena.Challenges.UnitTests.Utilities.Fakes;
+using eDoxa.IntegrationEvents;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.ServiceBus;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

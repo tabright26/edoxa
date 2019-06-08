@@ -12,7 +12,7 @@ using System.Runtime.Serialization;
 
 using eDoxa.Cashier.Api.Application.Commands;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
-using eDoxa.Seedwork.Testing.Constructor;
+using eDoxa.Seedwork.Testing.TestConstructor;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -24,9 +24,9 @@ namespace eDoxa.Cashier.UnitTests.Commands
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<DepositCommand>.For(typeof(decimal), typeof(CurrencyType))
-                .WithName("DepositCommand")
-                .WithAttributes(typeof(DataContractAttribute))
+            TestConstructor<DepositCommand>.ForParameters(typeof(decimal), typeof(CurrencyType))
+                .WithClassName("DepositCommand")
+                .WithClassAttributes(typeof(DataContractAttribute))
                 .Assert();
         }
     }

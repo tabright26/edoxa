@@ -10,7 +10,7 @@
 
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.Infrastructure.Repositories;
-using eDoxa.Seedwork.Testing.Constructor;
+using eDoxa.Seedwork.Testing.TestConstructor;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -22,7 +22,7 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Repositories
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<AccountRepository>.For(typeof(CashierDbContext)).WithName("AccountRepository").Assert();
+            TestConstructor<AccountRepository>.ForParameters(typeof(CashierDbContext)).WithClassName("AccountRepository").Assert();
         }
     }
 }

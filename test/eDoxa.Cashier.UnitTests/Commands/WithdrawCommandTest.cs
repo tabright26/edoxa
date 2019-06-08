@@ -11,7 +11,7 @@
 using System.Runtime.Serialization;
 
 using eDoxa.Cashier.Api.Application.Commands;
-using eDoxa.Seedwork.Testing.Constructor;
+using eDoxa.Seedwork.Testing.TestConstructor;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -23,7 +23,7 @@ namespace eDoxa.Cashier.UnitTests.Commands
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<WithdrawCommand>.For(typeof(decimal)).WithName("WithdrawCommand").WithAttributes(typeof(DataContractAttribute)).Assert();
+            TestConstructor<WithdrawCommand>.ForParameters(typeof(decimal)).WithClassName("WithdrawCommand").WithClassAttributes(typeof(DataContractAttribute)).Assert();
         }
     }
 }

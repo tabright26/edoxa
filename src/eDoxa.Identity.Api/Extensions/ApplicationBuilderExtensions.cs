@@ -10,7 +10,7 @@
 
 using eDoxa.Identity.Api.IntegrationEvents;
 using eDoxa.Identity.Api.IntegrationEvents.Handlers;
-using eDoxa.ServiceBus;
+using eDoxa.IntegrationEvents;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;

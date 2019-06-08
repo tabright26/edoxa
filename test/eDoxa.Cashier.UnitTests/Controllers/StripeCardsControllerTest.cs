@@ -16,7 +16,7 @@ using eDoxa.Cashier.Api.Application.Abstractions;
 using eDoxa.Cashier.Api.Application.Commands;
 using eDoxa.Cashier.Api.Controllers;
 using eDoxa.Cashier.Api.ViewModels;
-using eDoxa.Seedwork.Testing.Constructor;
+using eDoxa.Seedwork.Testing.TestConstructor;
 using eDoxa.Stripe.UnitTests.Utilities;
 
 using FluentAssertions;
@@ -48,9 +48,9 @@ namespace eDoxa.Cashier.UnitTests.Controllers
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<StripeCardsController>.For(typeof(ICardQuery), typeof(IMediator))
-                .WithName("StripeCardsController")
-                .WithAttributes(
+            TestConstructor<StripeCardsController>.ForParameters(typeof(ICardQuery), typeof(IMediator))
+                .WithClassName("StripeCardsController")
+                .WithClassAttributes(
                     typeof(AuthorizeAttribute),
                     typeof(ApiControllerAttribute),
                     typeof(ApiVersionAttribute),

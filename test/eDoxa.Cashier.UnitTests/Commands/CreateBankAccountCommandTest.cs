@@ -11,7 +11,7 @@
 using System.Runtime.Serialization;
 
 using eDoxa.Cashier.Api.Application.Commands;
-using eDoxa.Seedwork.Testing.Constructor;
+using eDoxa.Seedwork.Testing.TestConstructor;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -23,9 +23,9 @@ namespace eDoxa.Cashier.UnitTests.Commands
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<CreateBankAccountCommand>.For(typeof(string))
-                .WithName("CreateBankAccountCommand")
-                .WithAttributes(typeof(DataContractAttribute))
+            TestConstructor<CreateBankAccountCommand>.ForParameters(typeof(string))
+                .WithClassName("CreateBankAccountCommand")
+                .WithClassAttributes(typeof(DataContractAttribute))
                 .Assert();
         }
     }

@@ -10,7 +10,7 @@
 
 using System;
 
-using eDoxa.ServiceBus;
+using eDoxa.IntegrationEvents;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;

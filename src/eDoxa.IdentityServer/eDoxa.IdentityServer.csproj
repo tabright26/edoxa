@@ -21,8 +21,8 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\eDoxa.Identity.Domain\eDoxa.Identity.Domain.csproj" />
     <ProjectReference Include="..\eDoxa.Identity.Infrastructure\eDoxa.Identity.Infrastructure.csproj" />
+    <ProjectReference Include="..\eDoxa.IntegrationEvents\eDoxa.IntegrationEvents.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
   </ItemGroup>
 

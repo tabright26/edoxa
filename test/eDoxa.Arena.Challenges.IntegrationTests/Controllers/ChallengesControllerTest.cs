@@ -14,8 +14,8 @@ using System.Threading.Tasks;
 using eDoxa.Arena.Challenges.Api;
 using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Infrastructure;
-using eDoxa.Seedwork.Testing;
-using eDoxa.Seedwork.Testing.Extensions;
+using eDoxa.Seedwork.Testing.TestServer;
+using eDoxa.Seedwork.Testing.TestServer.Extensions;
 
 using FluentAssertions;
 

@@ -10,7 +10,6 @@
 
 using System;
 
-using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Security.Extensions;
 
 using Microsoft.AspNetCore;
@@ -52,7 +51,7 @@ namespace eDoxa.Web.Status
         {
             return WebHost.CreateDefaultBuilder<Startup>(args)
                           .CaptureStartupErrors(false)
-                          .ConfigureLogging()
+                          .ConfigureLogging((context, loggingBuilder) => loggingBuilder.AddSerilog())
                           .UseAzureKeyVault()
                           .UseApplicationInsights()
                           .UseSerilog();

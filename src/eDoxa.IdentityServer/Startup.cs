@@ -15,10 +15,10 @@ using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Infrastructure;
 using eDoxa.IdentityServer.Extensions;
 using eDoxa.IdentityServer.Factories;
+using eDoxa.IntegrationEvents.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Security.Extensions;
-using eDoxa.ServiceBus.Extensions;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

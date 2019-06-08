@@ -9,7 +9,7 @@
 // this source code package.
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
-using eDoxa.Seedwork.Testing.Constructor;
+using eDoxa.Seedwork.Testing.TestConstructor;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -23,16 +23,16 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.MatchAggregate
         {
             const string message = "StatWeighting validation failed.";
 
-            ConstructorTests<StatWeighting>.For(typeof(float))
-                .WithName("StatWeighting")
-                .Succeed(new object[] {byte.MinValue}, message)
-                .Succeed(new object[] {byte.MaxValue}, message)
-                .Succeed(new object[] {short.MinValue}, message)
-                .Succeed(new object[] {short.MaxValue}, message)
-                .Succeed(new object[] {int.MinValue}, message)
-                .Succeed(new object[] {int.MaxValue}, message)
-                .Succeed(new object[] {float.MinValue}, message)
-                .Succeed(new object[] {float.MaxValue}, message)
+            TestConstructor<StatWeighting>.ForParameters(typeof(float))
+                .WithClassName("StatWeighting")
+                .Success(new object[] {byte.MinValue}, message)
+                .Success(new object[] {byte.MaxValue}, message)
+                .Success(new object[] {short.MinValue}, message)
+                .Success(new object[] {short.MaxValue}, message)
+                .Success(new object[] {int.MinValue}, message)
+                .Success(new object[] {int.MaxValue}, message)
+                .Success(new object[] {float.MinValue}, message)
+                .Success(new object[] {float.MaxValue}, message)
                 .Assert();
         }
     }

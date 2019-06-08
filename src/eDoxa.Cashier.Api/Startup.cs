@@ -16,11 +16,11 @@ using AutoMapper;
 
 using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Infrastructure;
+using eDoxa.IntegrationEvents.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Security.Extensions;
-using eDoxa.Seedwork.Security.Resources;
-using eDoxa.ServiceBus.Extensions;
+using eDoxa.Seedwork.Security.IdentityServer;
 using eDoxa.Stripe.Extensions;
 using eDoxa.Stripe.Filters;
 using eDoxa.Swagger.Extensions;

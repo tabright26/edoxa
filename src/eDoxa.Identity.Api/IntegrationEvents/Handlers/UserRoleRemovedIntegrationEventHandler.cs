@@ -11,7 +11,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
-using eDoxa.ServiceBus;
+using eDoxa.IntegrationEvents;
 
 using Microsoft.AspNetCore.Identity;
 

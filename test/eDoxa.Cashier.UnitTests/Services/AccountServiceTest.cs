@@ -10,7 +10,7 @@
 
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services;
-using eDoxa.Seedwork.Testing.Constructor;
+using eDoxa.Seedwork.Testing.TestConstructor;
 using eDoxa.Stripe.Abstractions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -23,7 +23,7 @@ namespace eDoxa.Cashier.UnitTests.Services
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<AccountService>.For(typeof(IAccountRepository), typeof(IStripeService)).WithName("AccountService").Assert();
+            TestConstructor<AccountService>.ForParameters(typeof(IAccountRepository), typeof(IStripeService)).WithClassName("AccountService").Assert();
         }
     }
 }

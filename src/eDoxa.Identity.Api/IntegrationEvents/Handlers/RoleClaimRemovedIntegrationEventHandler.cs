@@ -12,7 +12,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
-using eDoxa.ServiceBus;
+using eDoxa.IntegrationEvents;
 
 using Microsoft.AspNetCore.Identity;
 

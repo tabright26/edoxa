@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Seedwork.Security.Resources;
+using eDoxa.Seedwork.Security.IdentityServer;
 
 namespace eDoxa.Seedwork.Security
 {

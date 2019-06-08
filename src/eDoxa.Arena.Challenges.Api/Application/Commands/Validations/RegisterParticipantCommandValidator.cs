@@ -11,7 +11,7 @@
 using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Repositories;
 using eDoxa.Arena.Challenges.Domain.Validators;
-using eDoxa.Seedwork.Application.Commands.Abstractions.Validations;
+using eDoxa.Commands.Abstractions.Validations;
 using eDoxa.Seedwork.Application.Validations.Extensions;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Security.Extensions;

@@ -11,7 +11,7 @@
 using System;
 
 using eDoxa.IdentityServer.IntegrationEvents;
-using eDoxa.Seedwork.Testing.Constructor;
+using eDoxa.Seedwork.Testing.TestConstructor;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -23,7 +23,7 @@ namespace eDoxa.IdentityServer.UnitTests.IntegrationEvents
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<UserCreatedIntegrationEvent>.For(
+            TestConstructor<UserCreatedIntegrationEvent>.ForParameters(
                     typeof(Guid),
                     typeof(string),
                     typeof(string),
@@ -32,7 +32,7 @@ namespace eDoxa.IdentityServer.UnitTests.IntegrationEvents
                     typeof(int),
                     typeof(int)
                 )
-                .WithName("UserCreatedIntegrationEvent")
+                .WithClassName("UserCreatedIntegrationEvent")
                 .Assert();
         }
     }

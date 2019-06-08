@@ -10,7 +10,7 @@
 
 using eDoxa.Cashier.Api.Application.Commands.Validations;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Seedwork.Testing.Constructor;
+using eDoxa.Seedwork.Testing.TestConstructor;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -23,8 +23,8 @@ namespace eDoxa.Cashier.UnitTests.Commands.Validations
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<CreateBankAccountCommandValidator>.For(typeof(IHttpContextAccessor), typeof(IUserRepository))
-                .WithName("CreateBankAccountCommandValidator")
+            TestConstructor<CreateBankAccountCommandValidator>.ForParameters(typeof(IHttpContextAccessor), typeof(IUserRepository))
+                .WithClassName("CreateBankAccountCommandValidator")
                 .Assert();
         }
     }

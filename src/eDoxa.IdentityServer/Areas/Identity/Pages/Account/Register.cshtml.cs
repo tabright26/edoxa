@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.IdentityServer.IntegrationEvents;
-using eDoxa.ServiceBus;
+using eDoxa.IntegrationEvents;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

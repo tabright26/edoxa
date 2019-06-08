@@ -10,7 +10,7 @@
 
 using eDoxa.Cashier.Api.Application.Commands;
 using eDoxa.Seedwork.Domain.Common;
-using eDoxa.Seedwork.Testing.Constructor;
+using eDoxa.Seedwork.Testing.TestConstructor;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -22,7 +22,7 @@ namespace eDoxa.Cashier.UnitTests.Commands
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<CreateUserCommand>.For(
+            TestConstructor<CreateUserCommand>.ForParameters(
                     typeof(UserId),
                     typeof(string),
                     typeof(string),
@@ -31,8 +31,8 @@ namespace eDoxa.Cashier.UnitTests.Commands
                     typeof(int),
                     typeof(int)
                 )
-                .WithName("CreateUserCommand")
-                .WithAttributes()
+                .WithClassName("CreateUserCommand")
+                .WithClassAttributes()
                 .Assert();
         }
     }

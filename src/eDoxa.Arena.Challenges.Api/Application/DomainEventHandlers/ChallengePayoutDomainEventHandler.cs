@@ -14,8 +14,8 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.IntegrationEvents;
 using eDoxa.Arena.Challenges.Domain.DomainEvents;
+using eDoxa.IntegrationEvents;
 using eDoxa.Seedwork.Application.DomainEvents.Handlers;
-using eDoxa.ServiceBus;
 
 using JetBrains.Annotations;
 

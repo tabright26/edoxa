@@ -11,7 +11,7 @@
 using System.Reflection;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
-using eDoxa.Seedwork.Testing.Constructor;
+using eDoxa.Seedwork.Testing.TestConstructor;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -23,7 +23,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.MatchAggregate
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<StatName>.For(typeof(PropertyInfo)).WithName("StatName").Assert();
+            TestConstructor<StatName>.ForParameters(typeof(PropertyInfo)).WithClassName("StatName").Assert();
         }
     }
 }

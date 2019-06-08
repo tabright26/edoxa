@@ -12,7 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Seedwork.Application.Commands.Abstractions.Handlers;
+using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Stripe.Abstractions;
 
 namespace eDoxa.Cashier.Api.Application.Commands.Handlers

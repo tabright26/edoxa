@@ -11,7 +11,7 @@
 using System.Runtime.Serialization;
 
 using eDoxa.Cashier.Api.Application.Commands;
-using eDoxa.Seedwork.Testing.Constructor;
+using eDoxa.Seedwork.Testing.TestConstructor;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -23,7 +23,7 @@ namespace eDoxa.Cashier.UnitTests.Commands
         [TestMethod]
         public void Constructor_Tests()
         {
-            ConstructorTests<CreateCardCommand>.For(typeof(string)).WithName("CreateCardCommand").WithAttributes(typeof(DataContractAttribute)).Assert();
+            TestConstructor<CreateCardCommand>.ForParameters(typeof(string)).WithClassName("CreateCardCommand").WithClassAttributes(typeof(DataContractAttribute)).Assert();
         }
     }
 }
