@@ -1,7 +1,7 @@
-version: '3.4'
+version: '3.7'
 
 services:
-  mssql:
+  mssql.testing:
     environment:
       - SA_PASSWORD=fnU3Www9TnBDp3MA
       - ACCEPT_EULA=Y
@@ -9,11 +9,11 @@ services:
     ports:
       - "5433:1433"
 
-  redis:
+  redis.testing:
     ports:
       - "6379:6379"
 
-  rabbitmq:
+  rabbitmq.testing:
     ports:
       - "15672:15672"
       - "5672:5672"

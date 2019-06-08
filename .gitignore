@@ -313,3 +313,7 @@ tempkey.rsa
 
 # HealhChecks database files
 healthchecksdb
+
+# TestResult files
+/vsts
+/opt/vsts

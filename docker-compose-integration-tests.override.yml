@@ -1,7 +1,7 @@
-version: '3.4'
+version: '3.7'
 
 services:
-  mssql.test:
+  mssql.integration-tests:
     environment:
       - SA_PASSWORD=fnU3Www9TnBDp3MA
       - ACCEPT_EULA=Y
@@ -9,11 +9,11 @@ services:
     ports:
       - "5433:1433"
 
-  redis.test:
+  redis.integration-tests:
     ports:
       - "6379:6379"
 
-  rabbitmq.test:
+  rabbitmq.integration-tests:
     ports:
       - "15672:15672"
       - "5672:5672"
@@ -22,46 +22,46 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Testing
       - ASPNETCORE_URLS=http://+:80
-      - ConnectionStrings__SqlServer=Server=mssql.test;Database=Services.Identity;User Id=sa;Password=fnU3Www9TnBDp3MA
+      - ConnectionStrings__SqlServer=Server=mssql.integration-tests;Database=Services.Identity;User Id=sa;Password=fnU3Www9TnBDp3MA
       - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
       - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
       - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
       - AzureServiceBus__Enable=${ASB_ENABLE:-false}
-      - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq.test}
+      - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq.integration-tests}
       - ServiceBus__Subscription=IdentityServer
 
   identity.integration-tests:
     environment:
       - ASPNETCORE_ENVIRONMENT=Testing
       - ASPNETCORE_URLS=http://+:80
-      - ConnectionStrings__SqlServer=Server=mssql.test;Database=Services.Identity;User Id=sa;Password=fnU3Www9TnBDp3MA
+      - ConnectionStrings__SqlServer=Server=mssql.integration-tests;Database=Services.Identity;User Id=sa;Password=fnU3Www9TnBDp3MA
       - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
       - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
       - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
       - AzureServiceBus__Enable=${ASB_ENABLE:-false}
-      - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq.test}
+      - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq.integration-tests}
       - ServiceBus__Subscription=Identity
 
   cashier.integration-tests:
     environment:
       - ASPNETCORE_ENVIRONMENT=Testing
       - ASPNETCORE_URLS=http://+:80
-      - ConnectionStrings__SqlServer=Server=mssql.test;Database=Services.Cashier;User Id=sa;Password=fnU3Www9TnBDp3MA
+      - ConnectionStrings__SqlServer=Server=mssql.integration-tests;Database=Services.Cashier;User Id=sa;Password=fnU3Www9TnBDp3MA
       - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
       - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
       - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
       - AzureServiceBus__Enable=${ASB_ENABLE:-false}
-      - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq.test}
+      - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq.integration-tests}
       - ServiceBus__Subscription=Cashier
 
   arena.challenges.integration-tests:
     environment:
       - ASPNETCORE_ENVIRONMENT=Testing
       - ASPNETCORE_URLS=http://+:80
-      - ConnectionStrings__SqlServer=Server=mssql.test;Database=Services.Arena.Challenges;User Id=sa;Password=fnU3Www9TnBDp3MA
+      - ConnectionStrings__SqlServer=Server=mssql.integration-tests;Database=Services.Arena.Challenges;User Id=sa;Password=fnU3Www9TnBDp3MA
       - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
       - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
       - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
       - AzureServiceBus__Enable=${ASB_ENABLE:-false}
-      - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq.test}
+      - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq.integration-tests}
       - ServiceBus__Subscription=Arena.Challenges
