@@ -1,5 +1,5 @@
 ﻿// Filename: IntegrationEventLogDbContextModelSnapshot.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -25,8 +25,8 @@ namespace eDoxa.Cashier.Infrastructure.Migrations.IntegrationEventLog
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
-                        .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity(
                 "eDoxa.EventBus.IntegrationEventLogEntry",

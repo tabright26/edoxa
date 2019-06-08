@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-05-29
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -16,10 +16,10 @@ using AutoMapper;
 
 using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Infrastructure;
-using eDoxa.Security.Extensions;
-using eDoxa.Security.Resources;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
+using eDoxa.Seedwork.Security.Extensions;
+using eDoxa.Seedwork.Security.Resources;
 using eDoxa.ServiceBus.Extensions;
 using eDoxa.Stripe.Extensions;
 using eDoxa.Stripe.Filters;

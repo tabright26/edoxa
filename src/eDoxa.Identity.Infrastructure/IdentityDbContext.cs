@@ -1,5 +1,5 @@
 ﻿// Filename: IdentityDbContext.cs
-// Date Created: 2019-05-19
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Infrastructure.Configurations;
-using eDoxa.Security;
+using eDoxa.Seedwork.Security;
 
 using JetBrains.Annotations;
 

@@ -1,4 +1,4 @@
-﻿// Filename: TestModeAverageBestOf.cs
+﻿// Filename: TestModeMatchQuantity.cs
 // Date Created: 2019-06-03
 // 
 // ================================================

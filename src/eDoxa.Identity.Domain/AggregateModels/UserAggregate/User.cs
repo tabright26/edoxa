@@ -1,5 +1,5 @@
 ﻿// Filename: User.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -19,7 +19,12 @@ namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
 {
     public sealed class User : IdentityUser<Guid>
     {
-        public User(string username, string email, PersonalName personalName, BirthDate birthDate) : this()
+        public User(
+            string username,
+            string email,
+            PersonalName personalName,
+            BirthDate birthDate
+        ) : this()
         {
             Email = email;
             NormalizedEmail = email.ToUpperInvariant();

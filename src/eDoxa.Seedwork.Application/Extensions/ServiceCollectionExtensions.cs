@@ -15,9 +15,9 @@ using Autofac;
 using Autofac.Core;
 using Autofac.Extensions.DependencyInjection;
 
-using eDoxa.Security;
 using eDoxa.Seedwork.Application.Filters;
 using eDoxa.Seedwork.Application.Versioning;
+using eDoxa.Seedwork.Security;
 
 using FluentValidation.AspNetCore;
 

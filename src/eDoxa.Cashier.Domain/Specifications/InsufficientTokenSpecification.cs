@@ -1,5 +1,5 @@
 ﻿// Filename: InsufficientTokenSpecification.cs
-// Date Created: 2019-05-18
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.

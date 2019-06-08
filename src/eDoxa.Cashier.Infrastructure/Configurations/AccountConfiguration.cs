@@ -1,5 +1,5 @@
-﻿// Filename: MoneyAccountConfiguration.cs
-// Date Created: 2019-05-20
+﻿// Filename: AccountConfiguration.cs
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.

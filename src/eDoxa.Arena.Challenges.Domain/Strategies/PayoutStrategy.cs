@@ -11,9 +11,8 @@
 using System;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions;
+using eDoxa.Arena.Challenges.Domain.Abstractions.Strategies;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
-using eDoxa.Arena.Domain.Abstractions;
-using eDoxa.Arena.Domain.ValueObjects;
 
 namespace eDoxa.Arena.Challenges.Domain.Strategies
 {

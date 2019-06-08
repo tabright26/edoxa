@@ -1,0 +1,82 @@
+﻿// Filename: UpdateCardDefaultCommandHandlerTest.cs
+// Date Created: 2019-06-01
+// 
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+// 
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
+// this source code package.
+
+using System.Threading;
+using System.Threading.Tasks;
+
+using eDoxa.Cashier.Api.Application.Commands;
+using eDoxa.Cashier.Api.Application.Commands.Handlers;
+using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.UnitTests.Utilities.Fakes;
+using eDoxa.Cashier.UnitTests.Utilities.Mocks.Extensions;
+using eDoxa.Seedwork.Application.Commands.Extensions;
+using eDoxa.Seedwork.Domain.Common;
+using eDoxa.Seedwork.Testing.Constructor;
+using eDoxa.Stripe.Abstractions;
+using eDoxa.Stripe.Models;
+using eDoxa.Stripe.UnitTests.Utilities;
+
+using Microsoft.AspNetCore.Http;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using Moq;
+
+namespace eDoxa.Cashier.UnitTests.Commands.Handlers
+{
+    [TestClass]
+    public sealed class UpdateCardDefaultCommandHandlerTest
+    {
+        private static readonly FakeCashierFactory FakeCashierFactory = FakeCashierFactory.Instance;
+        private static readonly StripeBuilder StripeBuilder = StripeBuilder.Instance;
+        private Mock<IHttpContextAccessor> _mockHttpContextAccessor;
+        private Mock<IStripeService> _mockStripeService;
+        private Mock<IUserRepository> _mockUserRepository;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            _mockStripeService = new Mock<IStripeService>();
+            _mockStripeService.SetupMethods();
+            _mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
+            _mockHttpContextAccessor.SetupClaims();
+            _mockUserRepository = new Mock<IUserRepository>();
+        }
+
+        [TestMethod]
+        public void Constructor_Tests()
+        {
+            ConstructorTests<UpdateCardDefaultCommandHandler>.For(typeof(IHttpContextAccessor), typeof(IStripeService), typeof(IUserRepository))
+                .WithName("UpdateCardDefaultCommandHandler")
+                .Assert();
+        }
+
+        [TestMethod]
+        public async Task HandleAsync_UpdateCardDefaultCommand_ShouldBeOfTypeEither()
+        {
+            // Arrange
+            var cardId = StripeBuilder.CreateCardId();
+
+            var user = FakeCashierFactory.CreateUser();
+
+            _mockUserRepository.Setup(mock => mock.GetUserAsNoTrackingAsync(It.IsAny<UserId>())).ReturnsAsync(user).Verifiable();
+
+            var handler = new UpdateCardDefaultCommandHandler(_mockHttpContextAccessor.Object, _mockStripeService.Object, _mockUserRepository.Object);
+
+            // Act
+            await handler.HandleAsync(new UpdateCardDefaultCommand(cardId));
+
+            // Assert
+            _mockStripeService.Verify(
+                mock => mock.UpdateCardDefaultAsync(It.IsAny<StripeCustomerId>(), It.IsAny<StripeCardId>(), It.IsAny<CancellationToken>()),
+                Times.Once
+            );
+        }
+    }
+}

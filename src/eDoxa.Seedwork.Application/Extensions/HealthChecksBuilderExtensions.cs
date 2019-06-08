@@ -10,7 +10,7 @@
 
 using System;
 
-using eDoxa.Security;
+using eDoxa.Seedwork.Security;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

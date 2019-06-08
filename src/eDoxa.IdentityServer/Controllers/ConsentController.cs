@@ -1,9 +1,9 @@
 // Filename: ConsentController.cs
-// Date Created: 2019-04-30
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -46,7 +46,8 @@ namespace eDoxa.IdentityServer.Controllers
             IClientStore clientStore,
             IResourceStore resourceStore,
             IEventService events,
-            ILogger<ConsentController> logger)
+            ILogger<ConsentController> logger
+        )
         {
             _interaction = interaction;
             _clientStore = clientStore;
@@ -88,7 +89,13 @@ namespace eDoxa.IdentityServer.Controllers
                 {
                     // if the client is PKCE then we assume it's native, so this change in how to
                     // return the response is for better UX for the end user.
-                    return this.View("Redirect", new RedirectViewModel {RedirectUrl = result.RedirectUri});
+                    return this.View(
+                        "Redirect",
+                        new RedirectViewModel
+                        {
+                            RedirectUrl = result.RedirectUri
+                        }
+                    );
                 }
 
                 return this.Redirect(result.RedirectUri);
@@ -153,8 +160,15 @@ namespace eDoxa.IdentityServer.Controllers
                     };
 
                     // emit event
-                    await _events.RaiseAsync(new ConsentGrantedEvent(User.GetSubjectId(), request.ClientId, request.ScopesRequested,
-                        grantedConsent.ScopesConsented, grantedConsent.RememberConsent));
+                    await _events.RaiseAsync(
+                        new ConsentGrantedEvent(
+                            User.GetSubjectId(),
+                            request.ClientId,
+                            request.ScopesRequested,
+                            grantedConsent.ScopesConsented,
+                            grantedConsent.RememberConsent
+                        )
+                    );
                 }
                 else
                 {
@@ -198,7 +212,13 @@ namespace eDoxa.IdentityServer.Controllers
 
                     if (resources != null && (resources.IdentityResources.Any() || resources.ApiResources.Any()))
                     {
-                        return this.CreateConsentViewModel(model, returnUrl, request, client, resources);
+                        return this.CreateConsentViewModel(
+                            model,
+                            returnUrl,
+                            request,
+                            client,
+                            resources
+                        );
                     }
 
                     _logger.LogError("No scopes matching: {0}", request.ScopesRequested.Aggregate((x, y) => x + ", " + y));
@@ -221,7 +241,8 @@ namespace eDoxa.IdentityServer.Controllers
             string returnUrl,
             AuthorizationRequest request,
             Client client,
-            Resources resources)
+            Resources resources
+        )
         {
             var vm = new ConsentViewModel
             {
@@ -240,14 +261,14 @@ namespace eDoxa.IdentityServer.Controllers
                 .ToArray();
 
             vm.ResourceScopes = resources.ApiResources.SelectMany(x => x.Scopes)
-                .Select(x => this.CreateScopeViewModel(x, vm.ScopesConsented.Contains(x.Name) || model == null)).ToArray();
+                .Select(x => this.CreateScopeViewModel(x, vm.ScopesConsented.Contains(x.Name) || model == null))
+                .ToArray();
 
             if (ConsentOptions.EnableOfflineAccess && resources.OfflineAccess)
             {
-                vm.ResourceScopes = vm.ResourceScopes.Union(new[]
-                {
-                    this.GetOfflineAccessScope(vm.ScopesConsented.Contains(IdentityServerConstants.StandardScopes.OfflineAccess) || model == null)
-                });
+                vm.ResourceScopes = vm.ResourceScopes.Union(
+                    new[] {this.GetOfflineAccessScope(vm.ScopesConsented.Contains(IdentityServerConstants.StandardScopes.OfflineAccess) || model == null)}
+                );
             }
 
             return vm;

@@ -1,5 +1,5 @@
 ﻿// Filename: StripeAccountController.cs
-// Date Created: 2019-05-29
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,7 +10,7 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Application.Commands;
+using eDoxa.Cashier.Api.Application.Commands;
 using eDoxa.Seedwork.Application.Commands.Extensions;
 using eDoxa.Stripe.Filters.Attributes;
 

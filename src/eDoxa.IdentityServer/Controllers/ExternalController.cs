@@ -1,5 +1,5 @@
 // Filename: ExternalController.cs
-// Date Created: 2019-05-20
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -85,12 +85,8 @@ namespace eDoxa.IdentityServer.Controllers
                 RedirectUri = Url.Action(nameof(this.Callback)),
                 Items =
                 {
-                    {
-                        "returnUrl", returnUrl
-                    },
-                    {
-                        "scheme", provider
-                    }
+                    {"returnUrl", returnUrl},
+                    {"scheme", provider}
                 }
             };
 
@@ -176,12 +172,8 @@ namespace eDoxa.IdentityServer.Controllers
                     RedirectUri = Url.Action("Callback"),
                     Items =
                     {
-                        {
-                            "returnUrl", returnUrl
-                        },
-                        {
-                            "scheme", AccountOptions.WindowsAuthenticationSchemeName
-                        }
+                        {"returnUrl", returnUrl},
+                        {"scheme", AccountOptions.WindowsAuthenticationSchemeName}
                     }
                 };
 

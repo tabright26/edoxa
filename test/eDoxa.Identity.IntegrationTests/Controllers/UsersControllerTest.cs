@@ -12,10 +12,10 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api;
-using eDoxa.Identity.Application.ViewModels;
+using eDoxa.Identity.Api.ViewModels;
 using eDoxa.Identity.Infrastructure;
-using eDoxa.Testing.MSTest;
-using eDoxa.Testing.MSTest.Extensions;
+using eDoxa.Seedwork.Testing;
+using eDoxa.Seedwork.Testing.Extensions;
 
 using FluentAssertions;
 

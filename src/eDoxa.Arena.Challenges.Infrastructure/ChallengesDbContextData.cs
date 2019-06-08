@@ -11,9 +11,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 
+using eDoxa.Arena.Challenges.Domain.Abstractions.Services;
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Services.Abstractions;
-using eDoxa.Arena.Domain.ValueObjects;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 using eDoxa.Seedwork.Infrastructure.Abstractions;
 

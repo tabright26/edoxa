@@ -42,7 +42,6 @@ namespace eDoxa.ServiceBus.Tests
         }
 
         [TestMethod]
-        [Description("The integration event is equal to its own prototype.")]
         public void EqualsOperator_IntegrationEventIsEqualToItsOwnPrototype_ShouldBeTrue()
         {
             // Arrange
@@ -56,7 +55,6 @@ namespace eDoxa.ServiceBus.Tests
         }
 
         [TestMethod]
-        [Description("The integration event is equal to its own prototype.")]
         public void NotEqualsOperator_IntegrationEventIsEqualToItsOwnPrototype_ShouldBeFalse()
         {
             // Arrange
@@ -70,7 +68,6 @@ namespace eDoxa.ServiceBus.Tests
         }
 
         [TestMethod]
-        [Description("The integration event isn't equal to null reference.")]
         public void EqualsIntegrationEvent_IsEqualToNullReference_ShouldBeFalse()
         {
             // Act
@@ -81,7 +78,6 @@ namespace eDoxa.ServiceBus.Tests
         }
 
         [TestMethod]
-        [Description("The integration event is equal to itself by memory reference.")]
         public void EqualsEntity_IntegrationEventIsEqualToItSelf_ShouldBeTrue()
         {
             // Act
@@ -92,7 +88,6 @@ namespace eDoxa.ServiceBus.Tests
         }
 
         [TestMethod]
-        [Description("Two different types of entities are not equal.")]
         public void EqualsEntity_TwoDifferentTypesOfEntitiesAreNotEqual_ShouldBeTrue()
         {
             // Act
@@ -103,7 +98,6 @@ namespace eDoxa.ServiceBus.Tests
         }
 
         [TestMethod]
-        [Description("The integration event is equal to its own prototype.")]
         public void EqualsIntegrationEvent_IntegrationEventIsEqualToItsOwnPrototype_ShouldBeTrue()
         {
             // Arrange
@@ -117,7 +111,6 @@ namespace eDoxa.ServiceBus.Tests
         }
 
         [TestMethod]
-        [Description("The integration event is equal to the object that is a non-cast entity.")]
         public void EqualsObject_IntegrationEventIsEqualToTheObjectThatIsNonCastEntity_ShouldBeTrue()
         {
             // Arrange
@@ -131,7 +124,6 @@ namespace eDoxa.ServiceBus.Tests
         }
 
         [TestMethod]
-        [Description("The persistent integration event hash code is equal to its own prototype hash code.")]
         public void GetHashCode_IntegrationEventHashCodeIsEqualToItsOwnPrototypeHashCode_ShouldBeEqual()
         {
             // Arrange

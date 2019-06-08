@@ -1,9 +1,9 @@
 // Filename: DiagnosticsViewModel.cs
-// Date Created: 2019-04-30
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -36,6 +36,7 @@ namespace eDoxa.IdentityServer.ViewModels
         }
 
         public AuthenticateResult AuthenticateResult { get; }
+
         public IEnumerable<string> Clients { get; } = new List<string>();
     }
 }

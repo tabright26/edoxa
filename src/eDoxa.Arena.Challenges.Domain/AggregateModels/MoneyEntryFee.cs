@@ -1,5 +1,5 @@
 ﻿// Filename: MoneyEntryFee.cs
-// Date Created: 2019-05-23
+// Date Created: 2019-06-05
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,7 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Arena.Domain.ValueObjects;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels

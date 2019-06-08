@@ -10,9 +10,9 @@
 
 using System;
 
+using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.ServiceBus.Exceptions;
 using eDoxa.ServiceBus.RabbitMQ;
-using eDoxa.Testing.MSTest.Extensions;
 
 using FluentAssertions;
 

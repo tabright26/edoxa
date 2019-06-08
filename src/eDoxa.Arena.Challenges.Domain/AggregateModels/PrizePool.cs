@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-using eDoxa.Arena.Domain.ValueObjects;
 using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Common.Abstactions;
 using eDoxa.Seedwork.Domain.Common.Enumerations;

@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengesController.cs
-// Date Created: 2019-05-20
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,12 +11,12 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Application.Abstractions.Queries;
-using eDoxa.Arena.Challenges.Application.Commands;
+using eDoxa.Arena.Challenges.Api.Application.Abstractions;
+using eDoxa.Arena.Challenges.Api.Application.Commands;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Security;
 using eDoxa.Seedwork.Application.Commands.Extensions;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
+using eDoxa.Seedwork.Security;
 
 using JetBrains.Annotations;
 

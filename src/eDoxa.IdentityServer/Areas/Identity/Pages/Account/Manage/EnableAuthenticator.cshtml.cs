@@ -1,7 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿// Filename: EnableAuthenticator.cshtml.cs
+// Date Created: 2019-06-01
+// 
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+// 
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
+// this source code package.
+
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
-using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
@@ -15,16 +25,12 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account.Manage
 {
     public class EnableAuthenticatorModel : PageModel
     {
+        private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
         private readonly UserManager<User> _userManager;
         private readonly ILogger<EnableAuthenticatorModel> _logger;
         private readonly UrlEncoder _urlEncoder;
 
-        private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
-
-        public EnableAuthenticatorModel(
-            UserManager<User> userManager,
-            ILogger<EnableAuthenticatorModel> logger,
-            UrlEncoder urlEncoder)
+        public EnableAuthenticatorModel(UserManager<User> userManager, ILogger<EnableAuthenticatorModel> logger, UrlEncoder urlEncoder)
         {
             _userManager = userManager;
             _logger = logger;
@@ -44,18 +50,10 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account.Manage
         [BindProperty]
         public InputModel Input { get; set; }
 
-        public class InputModel
-        {
-            [Required]
-            [StringLength(7, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
-            [DataType(DataType.Text)]
-            [Display(Name = "Verification Code")]
-            public string Code { get; set; }
-        }
-
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
+
             if (user == null)
             {
                 return this.NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
@@ -69,6 +67,7 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account.Manage
         public async Task<IActionResult> OnPostAsync()
         {
             var user = await _userManager.GetUserAsync(User);
+
             if (user == null)
             {
                 return this.NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
@@ -77,19 +76,20 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account.Manage
             if (!ModelState.IsValid)
             {
                 await this.LoadSharedKeyAndQrCodeUriAsync(user);
+
                 return this.Page();
             }
 
             // Strip spaces and hypens
             var verificationCode = Input.Code.Replace(" ", string.Empty).Replace("-", string.Empty);
 
-            var is2faTokenValid = await _userManager.VerifyTwoFactorTokenAsync(
-                user, _userManager.Options.Tokens.AuthenticatorTokenProvider, verificationCode);
+            var is2faTokenValid = await _userManager.VerifyTwoFactorTokenAsync(user, _userManager.Options.Tokens.AuthenticatorTokenProvider, verificationCode);
 
             if (!is2faTokenValid)
             {
                 ModelState.AddModelError("Input.Code", "Verification code is invalid.");
                 await this.LoadSharedKeyAndQrCodeUriAsync(user);
+
                 return this.Page();
             }
 
@@ -103,18 +103,18 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account.Manage
             {
                 var recoveryCodes = await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
                 RecoveryCodes = recoveryCodes.ToArray();
+
                 return this.RedirectToPage("./ShowRecoveryCodes");
             }
-            else
-            {
-                return this.RedirectToPage("./TwoFactorAuthentication");
-            }
+
+            return this.RedirectToPage("./TwoFactorAuthentication");
         }
 
         private async Task LoadSharedKeyAndQrCodeUriAsync(User user)
         {
             // Load the authenticator key & QR code URI to display on the form
             var unformattedKey = await _userManager.GetAuthenticatorKeyAsync(user);
+
             if (string.IsNullOrEmpty(unformattedKey))
             {
                 await _userManager.ResetAuthenticatorKeyAsync(user);
@@ -131,11 +131,13 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account.Manage
         {
             var result = new StringBuilder();
             var currentPosition = 0;
+
             while (currentPosition + 4 < unformattedKey.Length)
             {
                 result.Append(unformattedKey.Substring(currentPosition, 4)).Append(" ");
                 currentPosition += 4;
             }
+
             if (currentPosition < unformattedKey.Length)
             {
                 result.Append(unformattedKey.Substring(currentPosition));
@@ -146,11 +148,16 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account.Manage
 
         private string GenerateQrCodeUri(string email, string unformattedKey)
         {
-            return string.Format(
-                AuthenticatorUriFormat,
-                _urlEncoder.Encode("eDoxa.IdentityServer"),
-                _urlEncoder.Encode(email),
-                unformattedKey);
+            return string.Format(AuthenticatorUriFormat, _urlEncoder.Encode("eDoxa.IdentityServer"), _urlEncoder.Encode(email), unformattedKey);
+        }
+
+        public class InputModel
+        {
+            [Required]
+            [StringLength(7, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [DataType(DataType.Text)]
+            [Display(Name = "Verification Code")]
+            public string Code { get; set; }
         }
     }
 }

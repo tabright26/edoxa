@@ -1,5 +1,5 @@
-﻿// Filename: TokenAccount.cs
-// Date Created: 2019-05-29
+﻿// Filename: AccountToken.cs
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.

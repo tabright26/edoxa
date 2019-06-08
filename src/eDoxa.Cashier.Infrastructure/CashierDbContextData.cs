@@ -1,5 +1,5 @@
 ﻿// Filename: CashierDbContextData.cs
-// Date Created: 2019-05-20
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -39,11 +39,7 @@ namespace eDoxa.Cashier.Infrastructure
             {
                 if (!_context.Users.Any())
                 {
-                    var user = new User(
-                        UserId.Parse("e4655fe0-affd-4323-b022-bdb2ebde6091"),
-                        "acct_1EbASfAPhMnJQouG",
-                        "cus_F5L8mRzm6YN5ma"
-                    );
+                    var user = new User(UserId.Parse("e4655fe0-affd-4323-b022-bdb2ebde6091"), "acct_1EbASfAPhMnJQouG", "cus_F5L8mRzm6YN5ma");
 
                     user.AddBankAccount("ba_1EbB3sAPhMnJQouGHsvc0NFn");
 

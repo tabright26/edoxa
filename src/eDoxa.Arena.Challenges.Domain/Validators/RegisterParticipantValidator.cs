@@ -20,7 +20,9 @@ namespace eDoxa.Arena.Challenges.Domain.Validators
     {
         public RegisterParticipantValidator(UserId userId)
         {
-            this.RuleFor(challenge => challenge).Must(new UserIsNotRegisteredSpecification(userId).IsSatisfiedBy).WithMessage("The user already is registered.");
+            this.RuleFor(challenge => challenge)
+                .Must(new UserIsNotRegisteredSpecification(userId).IsSatisfiedBy)
+                .WithMessage("The user already is registered.");
 
             this.RuleFor(challenge => challenge)
                 .Must(new ChallengeRegisterIsAvailableSpecification().IsSatisfiedBy)

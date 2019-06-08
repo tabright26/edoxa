@@ -9,6 +9,7 @@
 // this source code package.
 
 using eDoxa.Arena.Challenges.Domain.Abstractions;
+using eDoxa.Arena.Challenges.Domain.Abstractions.Factories;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate

@@ -14,11 +14,12 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions;
+using eDoxa.Arena.Challenges.Domain.Abstractions.Factories;
+using eDoxa.Arena.Challenges.Domain.Abstractions.Strategies;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Challenges.Domain.DomainEvents;
 using eDoxa.Arena.Challenges.Domain.Validators;
-using eDoxa.Arena.Domain;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Common;
@@ -58,6 +59,8 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public TestMode TestMode { get; private set; }
 
+        private IReadOnlyCollection<Participant> ParticipantsToSync => Participants.Where(x => !x.HasFinalScore).OrderBy(x => x.LastSync).ToList();
+
         public Game Game { get; private set; }
 
         public ChallengeName Name { get; private set; }
@@ -75,8 +78,6 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         public IReadOnlyCollection<Participant> Participants => _participants;
 
         public IReadOnlyCollection<Bucket> Buckets => _buckets;
-
-        private IReadOnlyCollection<Participant> ParticipantsToSync => Participants.Where(x => !x.HasFinalScore).OrderBy(x => x.LastSync).ToList();
 
         public void ApplyScoringStrategy(IScoringStrategy strategy)
         {

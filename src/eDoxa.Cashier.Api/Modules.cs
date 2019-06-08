@@ -1,5 +1,5 @@
 ﻿// Filename: Modules.cs
-// Date Created: 2019-05-31
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,13 +10,13 @@
 
 using Autofac;
 
-using eDoxa.Cashier.Application.Abstractions.Queries;
-using eDoxa.Cashier.Application.Queries;
+using eDoxa.Cashier.Api.Application.Abstractions;
+using eDoxa.Cashier.Api.Application.Queries;
+using eDoxa.Cashier.Domain.Abstractions.Services;
 using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.Infrastructure.Repositories;
-using eDoxa.Cashier.Services;
-using eDoxa.Cashier.Services.Abstractions;
 using eDoxa.Seedwork.Application.Commands;
 using eDoxa.Seedwork.Application.DomainEvents;
 using eDoxa.ServiceBus;

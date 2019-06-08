@@ -1,5 +1,5 @@
 ﻿// Filename: ExternalLogin.cshtml.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -36,7 +36,8 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
             SignInManager<User> signInManager,
             UserManager<User> userManager,
             ILogger<ExternalLoginModel> logger,
-            IEventBusService eventBusService)
+            IEventBusService eventBusService
+        )
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -60,7 +61,15 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
         public IActionResult OnPost(string provider, string returnUrl = null)
         {
             // Request a redirect to the external login provider.
-            var redirectUrl = Url.Page("./ExternalLogin", "Callback", new {returnUrl});
+            var redirectUrl = Url.Page(
+                "./ExternalLogin",
+                "Callback",
+                new
+                {
+                    returnUrl
+                }
+            );
+
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
 
             return new ChallengeResult(provider, properties);
@@ -74,7 +83,13 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
             {
                 ErrorMessage = $"Error from external provider: {remoteError}";
 
-                return this.RedirectToPage("./Login", new {ReturnUrl = returnUrl});
+                return this.RedirectToPage(
+                    "./Login",
+                    new
+                    {
+                        ReturnUrl = returnUrl
+                    }
+                );
             }
 
             var info = await _signInManager.GetExternalLoginInfoAsync();
@@ -83,7 +98,13 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
             {
                 ErrorMessage = "Error loading external login information.";
 
-                return this.RedirectToPage("./Login", new {ReturnUrl = returnUrl});
+                return this.RedirectToPage(
+                    "./Login",
+                    new
+                    {
+                        ReturnUrl = returnUrl
+                    }
+                );
             }
 
             // Sign in the user with this external login provider if the user already has a login.
@@ -127,7 +148,13 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
             {
                 ErrorMessage = "Error loading external login information during confirmation.";
 
-                return this.RedirectToPage("./Login", new {ReturnUrl = returnUrl});
+                return this.RedirectToPage(
+                    "./Login",
+                    new
+                    {
+                        ReturnUrl = returnUrl
+                    }
+                );
             }
 
             if (ModelState.IsValid)
@@ -185,7 +212,8 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
 
             public string LastName { get; set; }
 
-            [Required] [EmailAddress] public string Email { get; set; }
+            [Required] [EmailAddress]
+            public string Email { get; set; }
         }
     }
 }

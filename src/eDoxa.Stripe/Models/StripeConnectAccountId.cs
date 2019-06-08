@@ -1,5 +1,5 @@
-﻿// Filename: StripeAccountId.cs
-// Date Created: 2019-05-30
+﻿// Filename: StripeConnectAccountId.cs
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.

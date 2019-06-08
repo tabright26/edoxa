@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeHistoryController.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,7 +11,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Application.Abstractions.Queries;
+using eDoxa.Arena.Challenges.Api.Application.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
@@ -45,11 +45,7 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         {
             var challenges = await _challengeQuery.FindUserChallengeHistoryAsync(game, state);
 
-            return challenges
-                .Select(this.Ok)
-                .Cast<IActionResult>()
-                .DefaultIfEmpty(this.NoContent())
-                .Single();
+            return challenges.Select(this.Ok).Cast<IActionResult>().DefaultIfEmpty(this.NoContent()).Single();
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿// Filename: Program.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,9 +11,9 @@
 using System;
 
 using eDoxa.Cashier.Infrastructure;
-using eDoxa.Security.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
+using eDoxa.Seedwork.Security.Extensions;
 using eDoxa.ServiceBus;
 
 using Microsoft.AspNetCore;
@@ -60,11 +60,11 @@ namespace eDoxa.Cashier.Api
         private static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             return WebHost.CreateDefaultBuilder<Startup>(args)
-                          .CaptureStartupErrors(false)
-                          .ConfigureLogging()
-                          .UseAzureKeyVault()
-                          .UseApplicationInsights()
-                          .UseSerilog();
+                .CaptureStartupErrors(false)
+                .ConfigureLogging()
+                .UseAzureKeyVault()
+                .UseApplicationInsights()
+                .UseSerilog();
         }
     }
 }

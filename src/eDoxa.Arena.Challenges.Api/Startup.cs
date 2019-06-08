@@ -1,9 +1,9 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-04-21
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -16,11 +16,11 @@ using AutoMapper;
 
 using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Infrastructure;
-using eDoxa.Challenges.Domain.Services.LeagueOfLegends.Api.Extensions;
-using eDoxa.Security.Extensions;
-using eDoxa.Security.Resources;
+using eDoxa.Arena.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
+using eDoxa.Seedwork.Security.Extensions;
+using eDoxa.Seedwork.Security.Resources;
 using eDoxa.ServiceBus.Extensions;
 using eDoxa.Swagger.Extensions;
 
@@ -71,7 +71,7 @@ namespace eDoxa.Arena.Challenges.Api
 
             services.AddIdentityServerAuthentication(Configuration, Environment, ChallengeApi);
 
-            services.AddLeagueOfLegends();
+            services.AddArena();
 
             return services.Build<Modules>();
         }

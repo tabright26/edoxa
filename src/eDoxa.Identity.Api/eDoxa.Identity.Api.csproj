@@ -23,9 +23,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="AspNet.Security.OAuth.BattleNet" Version="2.0.1" />
-        <PackageReference Include="AspNet.Security.OAuth.Twitch" Version="2.0.1" />
-        <PackageReference Include="AspNet.Security.OpenId.Steam" Version="2.0.0" />
+        <PackageReference Include="AspNet.Security.OAuth.BattleNet" Version="2.1.0" />
+        <PackageReference Include="AspNet.Security.OAuth.Twitch" Version="2.1.0" />
+        <PackageReference Include="AspNet.Security.OpenId.Steam" Version="2.1.0" />
         <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.7.0" />
         <PackageReference Include="Microsoft.AspNetCore.App" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.OAuth" Version="2.2.0" />
@@ -35,16 +35,15 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\eDoxa.Identity.Application\eDoxa.Identity.Application.csproj" />
-        <ProjectReference Include="..\eDoxa.Security\eDoxa.Security.csproj" />
+        <ProjectReference Include="..\eDoxa.Identity.Infrastructure\eDoxa.Identity.Infrastructure.csproj" />
         <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
         <ProjectReference Include="..\eDoxa.Swagger\eDoxa.Swagger.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <Content Update="appsettings.Testing.json">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
+        <Content Update="appsettings.Testing.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
 </Project>

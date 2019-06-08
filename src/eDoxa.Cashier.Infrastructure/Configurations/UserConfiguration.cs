@@ -1,5 +1,5 @@
 ﻿// Filename: UserConfiguration.cs
-// Date Created: 2019-05-20
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -34,7 +34,11 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
 
             builder.Property(user => user.BankAccountId).IsRequired(false);
 
-            builder.HasOne(user => user.Account).WithOne(account => account.User).HasForeignKey<Account>(nameof(UserId)).IsRequired().OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(user => user.Account)
+                .WithOne(account => account.User)
+                .HasForeignKey<Account>(nameof(UserId))
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasKey(user => user.Id);
         }

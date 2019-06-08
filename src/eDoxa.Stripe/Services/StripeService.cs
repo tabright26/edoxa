@@ -14,7 +14,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Security.Hosting;
+using eDoxa.Seedwork.Security.Hosting;
 using eDoxa.Stripe.Abstractions;
 using eDoxa.Stripe.Models;
 
@@ -24,7 +24,7 @@ using Stripe;
 
 namespace eDoxa.Stripe.Services
 {
-    internal sealed class StripeService : IStripeService
+    public sealed class StripeService : IStripeService
     {
         private readonly IConfiguration _configuration;
         private readonly AccountService _accountService;

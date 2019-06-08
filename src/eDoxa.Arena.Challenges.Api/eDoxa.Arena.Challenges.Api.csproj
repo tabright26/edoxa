@@ -31,16 +31,15 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\eDoxa.Arena.Challenges.Domain\eDoxa.Arena.Challenges.Domain.csproj" />
-        <ProjectReference Include="..\eDoxa.Arena.Challenges.Application\eDoxa.Arena.Challenges.Application.csproj" />
+        <ProjectReference Include="..\eDoxa.Arena.Challenges.Infrastructure\eDoxa.Arena.Challenges.Infrastructure.csproj" />
         <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
         <ProjectReference Include="..\eDoxa.Swagger\eDoxa.Swagger.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <Content Update="appsettings.Testing.json">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
+        <Content Update="appsettings.Testing.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
 </Project>

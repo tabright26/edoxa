@@ -1,10 +1,20 @@
-﻿using System.Collections.Generic;
+﻿// Filename: Login.cshtml.cs
+// Date Created: 2019-06-01
+// 
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+// 
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
+// this source code package.
+
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -36,23 +46,17 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
         [TempData]
         public string ErrorMessage { get; set; }
 
-        public class InputModel
-        {
-            [Required]
-            [EmailAddress]
-            public string Email { get; set; }
-
-            [Required]
-            [DataType(DataType.Password)]
-            public string Password { get; set; }
-
-            [Display(Name = "Remember me?")]
-            public bool RememberMe { get; set; }
-        }
-
         public IActionResult OnGet(string returnUrl = null)
         {
-            return this.RedirectToAction("Login", "Account", new { area = "", returnUrl });
+            return this.RedirectToAction(
+                "Login",
+                "Account",
+                new
+                {
+                    area = "",
+                    returnUrl
+                }
+            );
 
             //if (!string.IsNullOrEmpty(ErrorMessage))
             //{
@@ -71,7 +75,15 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
 
         public IActionResult OnPost(string returnUrl = null)
         {
-            return this.RedirectToAction("Login", "Account", new { area = "", returnUrl });
+            return this.RedirectToAction(
+                "Login",
+                "Account",
+                new
+                {
+                    area = "",
+                    returnUrl
+                }
+            );
 
             //returnUrl = returnUrl ?? Url.Content("~/");
 
@@ -105,6 +117,20 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
 
             //// If we got this far, something failed, redisplay form
             //return this.Page();
+        }
+
+        public class InputModel
+        {
+            [Required]
+            [EmailAddress]
+            public string Email { get; set; }
+
+            [Required]
+            [DataType(DataType.Password)]
+            public string Password { get; set; }
+
+            [Display(Name = "Remember me?")]
+            public bool RememberMe { get; set; }
         }
     }
 }

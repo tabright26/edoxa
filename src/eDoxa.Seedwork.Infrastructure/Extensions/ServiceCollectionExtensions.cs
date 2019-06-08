@@ -11,8 +11,8 @@
 using System;
 using System.Reflection;
 
-using eDoxa.Security;
 using eDoxa.Seedwork.Infrastructure.Abstractions;
+using eDoxa.Seedwork.Security;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

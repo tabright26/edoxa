@@ -1,5 +1,5 @@
 ﻿// Filename: BucketFactors.cs
-// Date Created: 2019-05-23
+// Date Created: 2019-06-05
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,9 +11,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using eDoxa.Arena.Domain;
-using eDoxa.Arena.Domain.Abstractions;
-using eDoxa.Arena.Domain.ValueObjects;
+using eDoxa.Arena.Challenges.Domain.Abstractions;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels
 {

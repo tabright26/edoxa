@@ -1,5 +1,5 @@
 ﻿// Filename: 20190503182142_InitialCreate.cs
-// Date Created: 2019-05-03
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -31,7 +31,11 @@ namespace eDoxa.Identity.Infrastructure.Migrations
                     NormalizedName = table.Column<string>(maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(nullable: true)
                 },
-                constraints: table => { table.PrimaryKey("PK_Roles", x => x.Id); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Roles", x => x.Id);
+                }
+            );
 
             migrationBuilder.CreateTable(
                 "Users",
@@ -54,15 +58,18 @@ namespace eDoxa.Identity.Infrastructure.Migrations
                     LockoutEnabled = table.Column<bool>(),
                     AccessFailedCount = table.Column<int>()
                 },
-                constraints: table => { table.PrimaryKey("PK_Users", x => x.Id); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                }
+            );
 
             migrationBuilder.CreateTable(
                 "RoleClaims",
                 schema: "edoxa",
                 columns: table => new
                 {
-                    Id = table.Column<int>()
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<int>().Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     RoleId = table.Column<Guid>(),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -77,16 +84,17 @@ namespace eDoxa.Identity.Infrastructure.Migrations
                         principalSchema: "edoxa",
                         principalTable: "Roles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 "UserClaims",
                 schema: "edoxa",
                 columns: table => new
                 {
-                    Id = table.Column<int>()
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<int>().Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<Guid>(),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -101,8 +109,10 @@ namespace eDoxa.Identity.Infrastructure.Migrations
                         principalSchema: "edoxa",
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 "UserLogins",
@@ -116,7 +126,14 @@ namespace eDoxa.Identity.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserLogins", x => new {x.LoginProvider, x.ProviderKey});
+                    table.PrimaryKey(
+                        "PK_UserLogins",
+                        x => new
+                        {
+                            x.LoginProvider,
+                            x.ProviderKey
+                        }
+                    );
 
                     table.ForeignKey(
                         "FK_UserLogins_Users_UserId",
@@ -124,8 +141,10 @@ namespace eDoxa.Identity.Infrastructure.Migrations
                         principalSchema: "edoxa",
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 "UserRoles",
@@ -137,7 +156,14 @@ namespace eDoxa.Identity.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserRoles", x => new {x.UserId, x.RoleId});
+                    table.PrimaryKey(
+                        "PK_UserRoles",
+                        x => new
+                        {
+                            x.UserId,
+                            x.RoleId
+                        }
+                    );
 
                     table.ForeignKey(
                         "FK_UserRoles_Roles_RoleId",
@@ -145,7 +171,8 @@ namespace eDoxa.Identity.Infrastructure.Migrations
                         principalSchema: "edoxa",
                         principalTable: "Roles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Cascade
+                    );
 
                     table.ForeignKey(
                         "FK_UserRoles_Users_UserId",
@@ -153,8 +180,10 @@ namespace eDoxa.Identity.Infrastructure.Migrations
                         principalSchema: "edoxa",
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 "UserTokens",
@@ -168,7 +197,15 @@ namespace eDoxa.Identity.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserTokens", x => new {x.UserId, x.LoginProvider, x.Name});
+                    table.PrimaryKey(
+                        "PK_UserTokens",
+                        x => new
+                        {
+                            x.UserId,
+                            x.LoginProvider,
+                            x.Name
+                        }
+                    );
 
                     table.ForeignKey(
                         "FK_UserTokens_Users_UserId",
@@ -176,14 +213,12 @@ namespace eDoxa.Identity.Infrastructure.Migrations
                         principalSchema: "edoxa",
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
-            migrationBuilder.CreateIndex(
-                "IX_RoleClaims_RoleId",
-                schema: "edoxa",
-                table: "RoleClaims",
-                column: "RoleId");
+            migrationBuilder.CreateIndex("IX_RoleClaims_RoleId", schema: "edoxa", table: "RoleClaims", column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 "RoleNameIndex",
@@ -191,31 +226,16 @@ namespace eDoxa.Identity.Infrastructure.Migrations
                 table: "Roles",
                 column: "NormalizedName",
                 unique: true,
-                filter: "[NormalizedName] IS NOT NULL");
+                filter: "[NormalizedName] IS NOT NULL"
+            );
 
-            migrationBuilder.CreateIndex(
-                "IX_UserClaims_UserId",
-                schema: "edoxa",
-                table: "UserClaims",
-                column: "UserId");
+            migrationBuilder.CreateIndex("IX_UserClaims_UserId", schema: "edoxa", table: "UserClaims", column: "UserId");
 
-            migrationBuilder.CreateIndex(
-                "IX_UserLogins_UserId",
-                schema: "edoxa",
-                table: "UserLogins",
-                column: "UserId");
+            migrationBuilder.CreateIndex("IX_UserLogins_UserId", schema: "edoxa", table: "UserLogins", column: "UserId");
 
-            migrationBuilder.CreateIndex(
-                "IX_UserRoles_RoleId",
-                schema: "edoxa",
-                table: "UserRoles",
-                column: "RoleId");
+            migrationBuilder.CreateIndex("IX_UserRoles_RoleId", schema: "edoxa", table: "UserRoles", column: "RoleId");
 
-            migrationBuilder.CreateIndex(
-                "EmailIndex",
-                schema: "edoxa",
-                table: "Users",
-                column: "NormalizedEmail");
+            migrationBuilder.CreateIndex("EmailIndex", schema: "edoxa", table: "Users", column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
                 "UserNameIndex",
@@ -223,38 +243,25 @@ namespace eDoxa.Identity.Infrastructure.Migrations
                 table: "Users",
                 column: "NormalizedUserName",
                 unique: true,
-                filter: "[NormalizedUserName] IS NOT NULL");
+                filter: "[NormalizedUserName] IS NOT NULL"
+            );
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                "RoleClaims",
-                "edoxa");
+            migrationBuilder.DropTable("RoleClaims", "edoxa");
 
-            migrationBuilder.DropTable(
-                "UserClaims",
-                "edoxa");
+            migrationBuilder.DropTable("UserClaims", "edoxa");
 
-            migrationBuilder.DropTable(
-                "UserLogins",
-                "edoxa");
+            migrationBuilder.DropTable("UserLogins", "edoxa");
 
-            migrationBuilder.DropTable(
-                "UserRoles",
-                "edoxa");
+            migrationBuilder.DropTable("UserRoles", "edoxa");
 
-            migrationBuilder.DropTable(
-                "UserTokens",
-                "edoxa");
+            migrationBuilder.DropTable("UserTokens", "edoxa");
 
-            migrationBuilder.DropTable(
-                "Roles",
-                "edoxa");
+            migrationBuilder.DropTable("Roles", "edoxa");
 
-            migrationBuilder.DropTable(
-                "Users",
-                "edoxa");
+            migrationBuilder.DropTable("Users", "edoxa");
         }
     }
 }

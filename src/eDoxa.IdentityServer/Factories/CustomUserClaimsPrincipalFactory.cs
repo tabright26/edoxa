@@ -1,5 +1,5 @@
 ﻿// Filename: CustomUserClaimsPrincipalFactory.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -25,13 +25,11 @@ namespace eDoxa.IdentityServer.Factories
 {
     public sealed class CustomUserClaimsPrincipalFactory : UserClaimsPrincipalFactory<User, Role>
     {
-        public CustomUserClaimsPrincipalFactory(
-            UserManager<User> userManager,
-            RoleManager<Role> roleManager,
-            IOptions<IdentityOptions> options) : base(
+        public CustomUserClaimsPrincipalFactory(UserManager<User> userManager, RoleManager<Role> roleManager, IOptions<IdentityOptions> options) : base(
             userManager,
             roleManager,
-            options)
+            options
+        )
         {
         }
 

@@ -1,5 +1,5 @@
 ﻿// Filename: AccountController.cs
-// Date Created: 2019-05-20
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -286,17 +286,15 @@ namespace eDoxa.IdentityServer.Controllers
             var schemes = await _schemeProvider.GetAllSchemesAsync();
 
             var providers = schemes
-                            .Where(
-                                x => x.DisplayName != null || x.Name.Equals(AccountOptions.WindowsAuthenticationSchemeName, StringComparison.OrdinalIgnoreCase)
-                            )
-                            .Select(
-                                x => new ExternalProvider
-                                {
-                                    DisplayName = x.DisplayName,
-                                    AuthenticationScheme = x.Name
-                                }
-                            )
-                            .ToList();
+                .Where(x => x.DisplayName != null || x.Name.Equals(AccountOptions.WindowsAuthenticationSchemeName, StringComparison.OrdinalIgnoreCase))
+                .Select(
+                    x => new ExternalProvider
+                    {
+                        DisplayName = x.DisplayName,
+                        AuthenticationScheme = x.Name
+                    }
+                )
+                .ToList();
 
             var allowLocal = true;
 

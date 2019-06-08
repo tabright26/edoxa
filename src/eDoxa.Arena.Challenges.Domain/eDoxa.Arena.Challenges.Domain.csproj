@@ -11,7 +11,7 @@
   </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\eDoxa.Arena.Domain\eDoxa.Arena.Domain.csproj" />
+        <ProjectReference Include="..\eDoxa.Arena\eDoxa.Arena.csproj" />
         <ProjectReference Include="..\eDoxa.Seedwork.Domain\eDoxa.Seedwork.Domain.csproj" />
     </ItemGroup>
 

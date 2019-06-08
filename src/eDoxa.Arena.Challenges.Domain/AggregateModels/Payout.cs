@@ -1,5 +1,5 @@
 ﻿// Filename: Payout.cs
-// Date Created: 2019-05-20
+// Date Created: 2019-06-05
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,9 +11,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using eDoxa.Arena.Domain;
-using eDoxa.Arena.Domain.Abstractions;
-using eDoxa.Arena.Domain.ValueObjects;
+using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
@@ -30,7 +28,8 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels
             _buckets = buckets;
         }
 
-        private IBuckets IndividualBuckets => new Buckets(_buckets.SelectMany(bucket => bucket.ToIndividualBuckets()).OrderByDescending(bucket => bucket.Prize));
+        private IBuckets IndividualBuckets =>
+            new Buckets(_buckets.SelectMany(bucket => bucket.ToIndividualBuckets()).OrderByDescending(bucket => bucket.Prize));
 
         [CanBeNull]
         public CurrencyType Currency => _buckets.FirstOrDefault()?.Prize.Type;

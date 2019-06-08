@@ -12,7 +12,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Infrastructure;
-using eDoxa.Testing.MSTest;
+using eDoxa.Seedwork.Testing;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

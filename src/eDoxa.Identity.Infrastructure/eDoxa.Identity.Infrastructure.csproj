@@ -13,8 +13,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\eDoxa.Identity.Domain\eDoxa.Identity.Domain.csproj" />
-    <ProjectReference Include="..\eDoxa.Security\eDoxa.Security.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Infrastructure\eDoxa.Seedwork.Infrastructure.csproj" />
+    <ProjectReference Include="..\eDoxa.Seedwork.Security\eDoxa.Seedwork.Security.csproj" />
     <ProjectReference Include="..\eDoxa.ServiceBus\eDoxa.ServiceBus.csproj" />
   </ItemGroup>
 

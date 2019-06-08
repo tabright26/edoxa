@@ -7,11 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Serilog" Version="2.8.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\eDoxa.Seedwork.Domain\eDoxa.Seedwork.Domain.csproj" />
+    <ProjectReference Include="..\eDoxa.Stripe\eDoxa.Stripe.csproj" />
   </ItemGroup>
 
 </Project>

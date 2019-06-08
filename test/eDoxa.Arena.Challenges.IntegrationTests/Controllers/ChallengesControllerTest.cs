@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengesControllerTest.cs
-// Date Created: 2019-06-06
+// Date Created: 2019-06-07
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,10 +12,10 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api;
-using eDoxa.Arena.Challenges.Application.ViewModels;
+using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Infrastructure;
-using eDoxa.Testing.MSTest;
-using eDoxa.Testing.MSTest.Extensions;
+using eDoxa.Seedwork.Testing;
+using eDoxa.Seedwork.Testing.Extensions;
 
 using FluentAssertions;
 

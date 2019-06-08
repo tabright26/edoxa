@@ -10,7 +10,7 @@
 
 using System.Linq;
 
-using eDoxa.Arena.Domain.Abstractions;
+using eDoxa.Arena.Challenges.Domain.Abstractions;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate
 {

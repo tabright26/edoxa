@@ -12,9 +12,11 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using eDoxa.Arena.Challenges.Domain.Abstractions.Factories;
+using eDoxa.Arena.Challenges.Domain.Abstractions.Strategies;
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
-using eDoxa.Arena.Domain;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 namespace eDoxa.Arena.Challenges.Domain.Abstractions

@@ -5,7 +5,7 @@ services:
     image: ${ACR_REGISTRY:-edoxa}/seedwork.unit-tests:${ACR_TAG:-latest}
     build:
       context: .
-      dockerfile: test/eDoxa.Seedwork.Tests/Dockerfile
+      dockerfile: test/eDoxa.Seedwork.UnitTests/Dockerfile
     entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Seedwork.UnitTestResults.trx
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp      
@@ -14,7 +14,7 @@ services:
     image: ${ACR_REGISTRY:-edoxa}/idsrv.unit-tests:${ACR_TAG:-latest}
     build:
       context: .
-      dockerfile: test/eDoxa.IdentityServer.Tests/Dockerfile
+      dockerfile: test/eDoxa.IdentityServer.UnitTests/Dockerfile
     entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.IdentityServer.UnitTestResults.trx
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp      
@@ -23,7 +23,7 @@ services:
     image: ${ACR_REGISTRY:-edoxa}/identity.unit-tests:${ACR_TAG:-latest}
     build:
       context: .
-      dockerfile: test/eDoxa.Identity.Tests/Dockerfile
+      dockerfile: test/eDoxa.Identity.UnitTests/Dockerfile
     entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Identity.UnitTestResults.trx
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
@@ -32,7 +32,7 @@ services:
     image: ${ACR_REGISTRY:-edoxa}/cashier.unit-tests:${ACR_TAG:-latest}
     build:
       context: .
-      dockerfile: test/eDoxa.Cashier.Tests/Dockerfile
+      dockerfile: test/eDoxa.Cashier.UnitTests/Dockerfile
     entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Cashier.UnitTestResults.trx
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp      
@@ -41,7 +41,7 @@ services:
     image: ${ACR_REGISTRY:-edoxa}/stripe.unit-tests:${ACR_TAG:-latest}
     build:
       context: .
-      dockerfile: test/eDoxa.Stripe.Tests/Dockerfile
+      dockerfile: test/eDoxa.Stripe.UnitTests/Dockerfile
     entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Stripe.UnitTestResults.trx
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
@@ -50,7 +50,7 @@ services:
     image: ${ACR_REGISTRY:-edoxa}/arena.unit-tests:${ACR_TAG:-latest}
     build:
       context: .
-      dockerfile: test/eDoxa.Arena.Tests/Dockerfile
+      dockerfile: test/eDoxa.Arena.UnitTests/Dockerfile
     entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Arena.UnitTestResults.trx
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
@@ -59,7 +59,7 @@ services:
     image: ${ACR_REGISTRY:-edoxa}/arena.challenges.unit-tests:${ACR_TAG:-latest}
     build:
       context: .
-      dockerfile: test/eDoxa.Arena.Challenges.Tests/Dockerfile
+      dockerfile: test/eDoxa.Arena.Challenges.UnitTests/Dockerfile
     entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Arena.Challenges.UnitTestResults.trx
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp      

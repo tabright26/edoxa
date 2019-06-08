@@ -1,4 +1,14 @@
-﻿using System;
+﻿// Filename: IdentityDbContextData.cs
+// Date Created: 2019-06-01
+// 
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+// 
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
+// this source code package.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -6,8 +16,8 @@ using System.Threading.Tasks;
 
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
-using eDoxa.Security;
 using eDoxa.Seedwork.Infrastructure.Abstractions;
+using eDoxa.Seedwork.Security;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -23,7 +33,13 @@ namespace eDoxa.Identity.Infrastructure
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<Role> _roleManager;
 
-        public IdentityDbContextData(ILogger<IdentityDbContextData> logger, IHostingEnvironment environment, IdentityDbContext context, UserManager<User> userManager, RoleManager<Role> roleManager)
+        public IdentityDbContextData(
+            ILogger<IdentityDbContextData> logger,
+            IHostingEnvironment environment,
+            IdentityDbContext context,
+            UserManager<User> userManager,
+            RoleManager<Role> roleManager
+        )
         {
             _logger = logger;
             _environment = environment;

@@ -13,7 +13,7 @@ using System.Reflection;
 
 using Autofac;
 
-using eDoxa.Security;
+using eDoxa.Seedwork.Security;
 using eDoxa.ServiceBus.Azure;
 using eDoxa.ServiceBus.RabbitMQ;
 
