@@ -16,9 +16,9 @@ using AutoMapper;
 
 using eDoxa.Arena.Challenges.Application.Commands;
 using eDoxa.Arena.Challenges.Application.Commands.Handlers;
+using eDoxa.Arena.Challenges.Application.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
-using eDoxa.Arena.Challenges.DTO;
 using eDoxa.Arena.Challenges.Services.Abstractions;
 using eDoxa.Arena.Challenges.Tests.Utilities.Fakes;
 using eDoxa.Arena.Challenges.Tests.Utilities.Mocks.Extensions;
@@ -67,7 +67,7 @@ namespace eDoxa.Arena.Challenges.Tests.Commands.Handlers
                 .ReturnsAsync(FakeChallengeFactory.CreateParticipant())
                 .Verifiable();
 
-            _mockMapper.Setup(x => x.Map<ParticipantDTO>(It.IsAny<Participant>())).Returns(new ParticipantDTO()).Verifiable();
+            _mockMapper.Setup(x => x.Map<ParticipantViewModel>(It.IsAny<Participant>())).Returns(new ParticipantViewModel()).Verifiable();
 
             var handler = new RegisterParticipantCommandHandler(_mockHttpContextAccessor.Object, _mockChallengeService.Object, _mockMapper.Object);
 
@@ -75,7 +75,7 @@ namespace eDoxa.Arena.Challenges.Tests.Commands.Handlers
             var result = await handler.HandleAsync(new RegisterParticipantCommand(new ChallengeId()));
 
             // Assert
-            result.Should().BeOfType<ParticipantDTO>();
+            result.Should().BeOfType<ParticipantViewModel>();
         }
     }
 }

@@ -2,9 +2,9 @@
 
 using AutoMapper;
 
+using eDoxa.Arena.Challenges.Application.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.DTO;
 using eDoxa.Arena.Challenges.Services.Factories;
 using eDoxa.Arena.Challenges.Tests.Utilities.Asserts;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
@@ -26,7 +26,7 @@ namespace eDoxa.Arena.Challenges.Tests.Queries
             var challenge = CreateChallenge();
 
             // Act
-            var challengeDTO = mapper.Map<ChallengeDTO>(challenge);
+            var challengeDTO = mapper.Map<ChallengeViewModel>(challenge);
 
             // Assert
             ChallengeQueryAssert.IsMapped(challengeDTO);

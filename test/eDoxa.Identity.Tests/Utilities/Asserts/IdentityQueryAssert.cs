@@ -10,7 +10,7 @@
 
 using System.Collections.Generic;
 
-using eDoxa.Identity.DTO;
+using eDoxa.Identity.Application.ViewModels;
 
 using FluentAssertions;
 
@@ -18,7 +18,7 @@ namespace eDoxa.Identity.Tests.Utilities.Asserts
 {
     internal static class IdentityQueryAssert
     {
-        public static void IsMapped(IReadOnlyCollection<UserDTO> users)
+        public static void IsMapped(IReadOnlyCollection<UserViewModel> users)
         {
             users.Should().NotBeNull();
 
@@ -28,7 +28,7 @@ namespace eDoxa.Identity.Tests.Utilities.Asserts
             }
         }
 
-        public static void IsMapped(UserDTO user)
+        public static void IsMapped(UserViewModel user)
         {
             user.Should().NotBeNull();
         }

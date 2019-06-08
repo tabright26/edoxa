@@ -13,8 +13,8 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api;
+using eDoxa.Cashier.Application.ViewModels;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
-using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.IntegrationTests.Helpers;
 using eDoxa.Testing.MSTest;
@@ -64,7 +64,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
             response.EnsureSuccessStatusCode();
 
-            var balance = await response.DeserializeAsync<BalanceDTO>();
+            var balance = await response.DeserializeAsync<BalanceViewModel>();
 
             balance.Should().NotBeNull();
         }

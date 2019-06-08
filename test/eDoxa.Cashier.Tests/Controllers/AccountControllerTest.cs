@@ -11,8 +11,8 @@
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Controllers;
-using eDoxa.Cashier.DTO;
-using eDoxa.Cashier.DTO.Queries;
+using eDoxa.Cashier.Application.Abstractions.Queries;
+using eDoxa.Cashier.Application.ViewModels;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 using eDoxa.Testing.MSTest.Constructor;
 
@@ -62,7 +62,7 @@ namespace eDoxa.Cashier.Tests.Controllers
         {
             // Arrange
             _mockAccountQueries.Setup(mediator => mediator.GetBalanceAsync(It.IsAny<CurrencyType>()))
-                .ReturnsAsync(new BalanceDTO())
+                .ReturnsAsync(new BalanceViewModel())
                 .Verifiable();
 
             var controller = new AccountController(_mockAccountQueries.Object, _mockMediator.Object);
@@ -80,7 +80,7 @@ namespace eDoxa.Cashier.Tests.Controllers
         public async Task GetBalanceAsync_ShouldBeOfTypeNotFoundObjectResult()
         {
             // Arrange
-            _mockAccountQueries.Setup(mock => mock.GetBalanceAsync(It.IsAny<CurrencyType>())).ReturnsAsync((BalanceDTO) null).Verifiable();
+            _mockAccountQueries.Setup(mock => mock.GetBalanceAsync(It.IsAny<CurrencyType>())).ReturnsAsync((BalanceViewModel) null).Verifiable();
 
             var controller = new AccountController(_mockAccountQueries.Object, _mockMediator.Object);
 

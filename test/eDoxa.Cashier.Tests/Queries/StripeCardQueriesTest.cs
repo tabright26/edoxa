@@ -14,8 +14,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using eDoxa.Cashier.Application.Queries;
+using eDoxa.Cashier.Application.ViewModels;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.Tests.Utilities.Fakes;
 using eDoxa.Cashier.Tests.Utilities.Mocks.Extensions;
 using eDoxa.Seedwork.Domain.Common;
@@ -78,11 +78,11 @@ namespace eDoxa.Cashier.Tests.Queries
                 )
                 .Verifiable();
 
-            _mockMapper.Setup(mock => mock.Map<IReadOnlyCollection<CardDTO>>(It.IsAny<IReadOnlyCollection<Card>>()))
+            _mockMapper.Setup(mock => mock.Map<IReadOnlyCollection<CardViewModel>>(It.IsAny<IReadOnlyCollection<Card>>()))
                 .Returns(
-                    new List<CardDTO>
+                    new List<CardViewModel>
                     {
-                        new CardDTO()
+                        new CardViewModel()
                     }
                 )
                 .Verifiable();
@@ -97,7 +97,7 @@ namespace eDoxa.Cashier.Tests.Queries
             // Assert
             _mockStripeService.Verify(mock => mock.GetCardsAsync(It.IsAny<StripeCustomerId>()), Times.Once);
 
-            _mockMapper.Verify(mock => mock.Map<IReadOnlyCollection<CardDTO>>(It.IsAny<IReadOnlyCollection<Card>>()), Times.Once);
+            _mockMapper.Verify(mock => mock.Map<IReadOnlyCollection<CardViewModel>>(It.IsAny<IReadOnlyCollection<Card>>()), Times.Once);
         }
 
         [TestMethod]
@@ -110,7 +110,7 @@ namespace eDoxa.Cashier.Tests.Queries
 
             _mockStripeService.Setup(mock => mock.GetCardsAsync(It.IsAny<StripeCustomerId>())).ReturnsAsync(new List<Card>()).Verifiable();
 
-            _mockMapper.Setup(mock => mock.Map<IReadOnlyCollection<CardDTO>>(It.IsAny<IReadOnlyCollection<Card>>())).Returns(new List<CardDTO>()).Verifiable();
+            _mockMapper.Setup(mock => mock.Map<IReadOnlyCollection<CardViewModel>>(It.IsAny<IReadOnlyCollection<Card>>())).Returns(new List<CardViewModel>()).Verifiable();
 
             var queries = new CardQuery(_mockStripeService.Object, _mockHttpContextAccessor.Object, _mockMapper.Object, _mockUserRepository.Object);
 
@@ -122,7 +122,7 @@ namespace eDoxa.Cashier.Tests.Queries
             // Assert
             _mockStripeService.Verify(mock => mock.GetCardsAsync(It.IsAny<StripeCustomerId>()), Times.Once);
 
-            _mockMapper.Verify(mock => mock.Map<IReadOnlyCollection<CardDTO>>(It.IsAny<IReadOnlyCollection<Card>>()), Times.Once);
+            _mockMapper.Verify(mock => mock.Map<IReadOnlyCollection<CardViewModel>>(It.IsAny<IReadOnlyCollection<Card>>()), Times.Once);
         }
     }
 }

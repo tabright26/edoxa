@@ -10,10 +10,10 @@
 
 using Autofac;
 
+using eDoxa.Arena.Challenges.Application.Abstractions.Queries;
 using eDoxa.Arena.Challenges.Application.Queries;
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.Repositories;
-using eDoxa.Arena.Challenges.DTO.Queries;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.Infrastructure.Repositories;
 using eDoxa.Arena.Challenges.Services;

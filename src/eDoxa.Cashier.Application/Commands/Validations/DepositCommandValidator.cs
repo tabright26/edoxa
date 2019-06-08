@@ -10,10 +10,10 @@
 
 using System.Linq;
 
+using eDoxa.Cashier.Application.ViewModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Validators;
-using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.Services.Extensions;
 using eDoxa.Security.Extensions;
 using eDoxa.Seedwork.Application.Commands.Abstractions.Validations;
@@ -91,7 +91,7 @@ namespace eDoxa.Cashier.Application.Commands.Validations
                 );
         }
 
-        private sealed class CurrencyDepositValidator : AbstractValidator<CurrencyDTO>
+        private sealed class CurrencyDepositValidator : AbstractValidator<CurrencyViewModel>
         {
             public CurrencyDepositValidator()
             {

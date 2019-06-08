@@ -13,9 +13,9 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using eDoxa.Cashier.Application.ViewModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.Services.Abstractions;
 using eDoxa.Security.Extensions;
 using eDoxa.Seedwork.Application.Commands.Abstractions.Handlers;
@@ -26,7 +26,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace eDoxa.Cashier.Application.Commands.Handlers
 {
-    public sealed class DepositCommandHandler : ICommandHandler<DepositCommand, TransactionDTO>
+    public sealed class DepositCommandHandler : ICommandHandler<DepositCommand, TransactionViewModel>
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IAccountService _accountService;
@@ -47,7 +47,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
         }
 
         [ItemNotNull]
-        public async Task<TransactionDTO> Handle([NotNull] DepositCommand command, CancellationToken cancellationToken)
+        public async Task<TransactionViewModel> Handle([NotNull] DepositCommand command, CancellationToken cancellationToken)
         {
             var userId = _httpContextAccessor.GetUserId();
 
@@ -55,7 +55,7 @@ namespace eDoxa.Cashier.Application.Commands.Handlers
 
             var transaction = await _accountService.DepositAsync(user.Id, _mapper.Map<Currency>(command.Currency), cancellationToken);
 
-            return _mapper.Map<TransactionDTO>(transaction);
+            return _mapper.Map<TransactionViewModel>(transaction);
         }
     }
 }

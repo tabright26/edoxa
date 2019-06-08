@@ -13,11 +13,11 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using eDoxa.Arena.Challenges.Application.Abstractions.Queries;
+using eDoxa.Arena.Challenges.Application.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Challenges.Domain.Repositories;
-using eDoxa.Arena.Challenges.DTO;
-using eDoxa.Arena.Challenges.DTO.Queries;
 
 using JetBrains.Annotations;
 
@@ -37,19 +37,19 @@ namespace eDoxa.Arena.Challenges.Application.Queries
 
     public sealed partial class ParticipantQuery : IParticipantQuery
     {
-        public async Task<IReadOnlyCollection<ParticipantDTO>> FindChallengeParticipantsAsync(ChallengeId challengeId)
+        public async Task<IReadOnlyCollection<ParticipantViewModel>> FindChallengeParticipantsAsync(ChallengeId challengeId)
         {
             var participants = await _repository.FindChallengeParticipantsAsNoTrackingAsync(challengeId);
 
-            return _mapper.Map<IReadOnlyCollection<ParticipantDTO>>(participants);
+            return _mapper.Map<IReadOnlyCollection<ParticipantViewModel>>(participants);
         }
 
         [ItemCanBeNull]
-        public async Task<ParticipantDTO> FindParticipantAsync(ParticipantId participantId)
+        public async Task<ParticipantViewModel> FindParticipantAsync(ParticipantId participantId)
         {
             var participant = await _repository.FindParticipantAsNoTrackingAsync(participantId);
 
-            return _mapper.Map<ParticipantDTO>(participant);
+            return _mapper.Map<ParticipantViewModel>(participant);
         }
     }
 }

@@ -12,7 +12,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api;
-using eDoxa.Identity.DTO;
+using eDoxa.Identity.Application.ViewModels;
 using eDoxa.Identity.Infrastructure;
 using eDoxa.Testing.MSTest;
 using eDoxa.Testing.MSTest.Extensions;
@@ -51,7 +51,7 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
 
             response.EnsureSuccessStatusCode();
 
-            var users = await response.DeserializeAsync<UserDTO[]>();
+            var users = await response.DeserializeAsync<UserViewModel[]>();
 
             users.Should().BeNull();
         }

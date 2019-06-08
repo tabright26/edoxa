@@ -10,14 +10,14 @@
 
 using System.Runtime.Serialization;
 
-using eDoxa.Arena.Challenges.DTO;
+using eDoxa.Arena.Challenges.Application.ViewModels;
 using eDoxa.Seedwork.Application.Commands.Abstractions;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 namespace eDoxa.Arena.Challenges.Application.Commands
 {
     [DataContract]
-    public class CreateChallengeCommand : Command<ChallengeDTO>
+    public class CreateChallengeCommand : Command<ChallengeViewModel>
     {
         public CreateChallengeCommand(
             string name,
@@ -25,8 +25,8 @@ namespace eDoxa.Arena.Challenges.Application.Commands
             int duration,
             int bestOf,
             int payoutEntries,
-            EntryFeeDTO entryFee,
-            TestModeDTO testMode = null
+            EntryFeeViewModel entryFee,
+            TestModeViewModel testMode = null
         )
         {
             Name = name;
@@ -54,9 +54,9 @@ namespace eDoxa.Arena.Challenges.Application.Commands
         public int PayoutEntries { get; private set; }
 
         [DataMember(Name = "entryFee")]
-        public EntryFeeDTO EntryFee { get; private set; }
+        public EntryFeeViewModel EntryFee { get; private set; }
 
         [DataMember(Name = "testMode", IsRequired = false)]
-        public TestModeDTO TestMode { get; set; }
+        public TestModeViewModel TestMode { get; set; }
     }
 }

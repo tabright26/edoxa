@@ -13,10 +13,10 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Controllers;
+using eDoxa.Arena.Challenges.Application.Abstractions.Queries;
 using eDoxa.Arena.Challenges.Application.Commands;
+using eDoxa.Arena.Challenges.Application.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.DTO;
-using eDoxa.Arena.Challenges.DTO.Queries;
 
 using FluentAssertions;
 
@@ -47,9 +47,9 @@ namespace eDoxa.Arena.Challenges.Tests.Controllers
         {
             // Arrange
             _queries.Setup(queries => queries.FindChallengeParticipantsAsync(It.IsAny<ChallengeId>()))
-                .ReturnsAsync(new List<ParticipantDTO>
+                .ReturnsAsync(new List<ParticipantViewModel>
                 {
-                    new ParticipantDTO()
+                    new ParticipantViewModel()
                 })
                 .Verifiable();
 
@@ -69,7 +69,7 @@ namespace eDoxa.Arena.Challenges.Tests.Controllers
         {
             // Arrange
             _queries.Setup(queries => queries.FindChallengeParticipantsAsync(It.IsAny<ChallengeId>()))
-                .ReturnsAsync(new List<ParticipantDTO>())
+                .ReturnsAsync(new List<ParticipantViewModel>())
                 .Verifiable();
 
             var controller = new ChallengeParticipantsController(_queries.Object, _mediator.Object);
@@ -88,7 +88,7 @@ namespace eDoxa.Arena.Challenges.Tests.Controllers
         {
             // Arrange
             _mediator.Setup(mediator => mediator.Send(It.IsAny<RegisterParticipantCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new ParticipantDTO())
+                .ReturnsAsync(new ParticipantViewModel())
                 .Verifiable();
 
             var controller = new ChallengeParticipantsController(_queries.Object, _mediator.Object);

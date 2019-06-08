@@ -13,11 +13,11 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using eDoxa.Arena.Challenges.Application.Abstractions.Queries;
+using eDoxa.Arena.Challenges.Application.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Challenges.Domain.Repositories;
-using eDoxa.Arena.Challenges.DTO;
-using eDoxa.Arena.Challenges.DTO.Queries;
 
 using JetBrains.Annotations;
 
@@ -37,19 +37,19 @@ namespace eDoxa.Arena.Challenges.Application.Queries
 
     public sealed partial class MatchQuery : IMatchQuery
     {
-        public async Task<IReadOnlyCollection<MatchDTO>> FindParticipantMatchesAsync(ParticipantId participantId)
+        public async Task<IReadOnlyCollection<MatchViewModel>> FindParticipantMatchesAsync(ParticipantId participantId)
         {
             var matches = await _repository.FindParticipantMatchesAsNoTrackingAsync(participantId);
 
-            return _mapper.Map<IReadOnlyCollection<MatchDTO>>(matches);
+            return _mapper.Map<IReadOnlyCollection<MatchViewModel>>(matches);
         }
 
         [ItemCanBeNull]
-        public async Task<MatchDTO> FindMatchAsync(MatchId matchId)
+        public async Task<MatchViewModel> FindMatchAsync(MatchId matchId)
         {
             var match = await _repository.FindMatchAsNoTrackingAsync(matchId);
 
-            return _mapper.Map<MatchDTO>(match);
+            return _mapper.Map<MatchViewModel>(match);
         }
     }
 }

@@ -13,9 +13,9 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Controllers;
+using eDoxa.Cashier.Application.Abstractions.Queries;
 using eDoxa.Cashier.Application.Commands;
-using eDoxa.Cashier.DTO;
-using eDoxa.Cashier.DTO.Queries;
+using eDoxa.Cashier.Application.ViewModels;
 using eDoxa.Stripe.Tests.Utilities;
 using eDoxa.Testing.MSTest.Constructor;
 
@@ -67,9 +67,9 @@ namespace eDoxa.Cashier.Tests.Controllers
             // Arrange
             _mockCardQueries.Setup(queries => queries.GetCardsAsync())
                 .ReturnsAsync(
-                    new List<CardDTO>
+                    new List<CardViewModel>
                     {
-                        new CardDTO()
+                        new CardViewModel()
                     }
                 )
                 .Verifiable();
@@ -89,7 +89,7 @@ namespace eDoxa.Cashier.Tests.Controllers
         public async Task GetCardsAsync_ShouldBeOfTypeNoContentResult()
         {
             // Arrange
-            _mockCardQueries.Setup(mock => mock.GetCardsAsync()).ReturnsAsync(new List<CardDTO>()).Verifiable();
+            _mockCardQueries.Setup(mock => mock.GetCardsAsync()).ReturnsAsync(new List<CardViewModel>()).Verifiable();
 
             var controller = new StripeCardsController(_mockCardQueries.Object, _mockMediator.Object);
 

@@ -13,8 +13,8 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Identity.DTO;
-using eDoxa.Identity.DTO.Queries;
+using eDoxa.Identity.Application.Abstractions.Queries;
+using eDoxa.Identity.Application.ViewModels;
 using eDoxa.Identity.Infrastructure;
 
 using Microsoft.EntityFrameworkCore;
@@ -35,11 +35,11 @@ namespace eDoxa.Identity.Application.Queries
 
     public sealed partial class UserQuery : IUserQuery
     {
-        public async Task<IReadOnlyCollection<UserDTO>> FindUsersAsync()
+        public async Task<IReadOnlyCollection<UserViewModel>> FindUsersAsync()
         {
             var users = await _context.Users.AsNoTracking().ToListAsync();
 
-            return _mapper.Map<IReadOnlyCollection<UserDTO>>(users);
+            return _mapper.Map<IReadOnlyCollection<UserViewModel>>(users);
         }
     }
 }

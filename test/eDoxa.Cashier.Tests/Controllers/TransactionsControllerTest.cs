@@ -12,9 +12,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Controllers;
+using eDoxa.Cashier.Application.Abstractions.Queries;
+using eDoxa.Cashier.Application.ViewModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.DTO;
-using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 using eDoxa.Testing.MSTest.Constructor;
 
@@ -62,9 +62,9 @@ namespace eDoxa.Cashier.Tests.Controllers
             _mockTransactionQueries
                 .Setup(mock => mock.GetTransactionsAsync(It.IsAny<CurrencyType>(), It.IsAny<TransactionType>(), It.IsAny<TransactionStatus>()))
                 .ReturnsAsync(
-                    new List<TransactionDTO>
+                    new List<TransactionViewModel>
                     {
-                        new TransactionDTO()
+                        new TransactionViewModel()
                     }
                 )
                 .Verifiable();
@@ -89,7 +89,7 @@ namespace eDoxa.Cashier.Tests.Controllers
             // Arrange
             _mockTransactionQueries
                 .Setup(mock => mock.GetTransactionsAsync(It.IsAny<CurrencyType>(), It.IsAny<TransactionType>(), It.IsAny<TransactionStatus>()))
-                .ReturnsAsync(new List<TransactionDTO>())
+                .ReturnsAsync(new List<TransactionViewModel>())
                 .Verifiable();
 
             var controller = new TransactionsController(_mockTransactionQueries.Object);

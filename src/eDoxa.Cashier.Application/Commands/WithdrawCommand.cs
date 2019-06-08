@@ -10,13 +10,13 @@
 
 using System.Runtime.Serialization;
 
-using eDoxa.Cashier.DTO;
+using eDoxa.Cashier.Application.ViewModels;
 using eDoxa.Seedwork.Application.Commands.Abstractions;
 
 namespace eDoxa.Cashier.Application.Commands
 {
     [DataContract]
-    public sealed class WithdrawCommand : Command<TransactionDTO>
+    public sealed class WithdrawCommand : Command<TransactionViewModel>
     {
         public WithdrawCommand(decimal amount)
         {

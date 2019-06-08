@@ -10,8 +10,8 @@
 
 using Autofac;
 
+using eDoxa.Identity.Application.Abstractions.Queries;
 using eDoxa.Identity.Application.Queries;
-using eDoxa.Identity.DTO.Queries;
 using eDoxa.Identity.Infrastructure;
 using eDoxa.Seedwork.Application.Commands;
 using eDoxa.Seedwork.Application.DomainEvents;

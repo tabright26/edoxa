@@ -11,9 +11,9 @@
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Controllers;
+using eDoxa.Arena.Challenges.Application.Abstractions.Queries;
+using eDoxa.Arena.Challenges.Application.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
-using eDoxa.Arena.Challenges.DTO;
-using eDoxa.Arena.Challenges.DTO.Queries;
 
 using FluentAssertions;
 
@@ -43,7 +43,7 @@ namespace eDoxa.Arena.Challenges.Tests.Controllers
         public async Task FindMatchAsync_ShouldBeOkObjectResult()
         {
             // Arrange        
-            _queries.Setup(queries => queries.FindMatchAsync(It.IsAny<MatchId>())).ReturnsAsync(new MatchDTO()).Verifiable();
+            _queries.Setup(queries => queries.FindMatchAsync(It.IsAny<MatchId>())).ReturnsAsync(new MatchViewModel()).Verifiable();
 
             var controller = new MatchesController(_queries.Object);
 
@@ -60,7 +60,7 @@ namespace eDoxa.Arena.Challenges.Tests.Controllers
         public async Task FindMatchAsync_ShouldBeNotFoundObjectResult()
         {
             // Arrange
-            _queries.Setup(queries => queries.FindMatchAsync(It.IsAny<MatchId>())).ReturnsAsync((MatchDTO) null).Verifiable();
+            _queries.Setup(queries => queries.FindMatchAsync(It.IsAny<MatchId>())).ReturnsAsync((MatchViewModel) null).Verifiable();
 
             var controller = new MatchesController(_queries.Object);
 

@@ -10,18 +10,18 @@
 
 using System.Runtime.Serialization;
 
-using eDoxa.Cashier.DTO;
+using eDoxa.Cashier.Application.ViewModels;
 using eDoxa.Seedwork.Application.Commands.Abstractions;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 namespace eDoxa.Cashier.Application.Commands
 {
     [DataContract]
-    public sealed class DepositCommand : Command<TransactionDTO>
+    public sealed class DepositCommand : Command<TransactionViewModel>
     {
         public DepositCommand(decimal amount, CurrencyType type)
         {
-            Currency = new CurrencyDTO
+            Currency = new CurrencyViewModel
             {
                 Amount = amount,
                 Type = type
@@ -29,6 +29,6 @@ namespace eDoxa.Cashier.Application.Commands
         }
 
         [DataMember(Name = "currency")]
-        public CurrencyDTO Currency { get; private set; }
+        public CurrencyViewModel Currency { get; private set; }
     }
 }

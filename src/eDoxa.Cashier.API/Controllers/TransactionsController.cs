@@ -11,8 +11,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Application.Abstractions.Queries;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 using Microsoft.AspNetCore.Authorization;

@@ -12,9 +12,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Controllers;
+using eDoxa.Arena.Challenges.Application.Abstractions.Queries;
+using eDoxa.Arena.Challenges.Application.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.DTO;
-using eDoxa.Arena.Challenges.DTO.Queries;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 using FluentAssertions;
@@ -46,9 +46,9 @@ namespace eDoxa.Arena.Challenges.Tests.Controllers
         {
             // Arrange
             _queries.Setup(queries => queries.GetChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()))
-                .ReturnsAsync(new List<ChallengeDTO>
+                .ReturnsAsync(new List<ChallengeViewModel>
                 {
-                    new ChallengeDTO()
+                    new ChallengeViewModel()
                 })
                 .Verifiable();
 
@@ -70,7 +70,7 @@ namespace eDoxa.Arena.Challenges.Tests.Controllers
         {
             // Arrange
             _queries.Setup(queries => queries.GetChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()))
-                .ReturnsAsync(new List<ChallengeDTO>())
+                .ReturnsAsync(new List<ChallengeViewModel>())
                 .Verifiable();
 
             var controller = new ChallengesController(_queries.Object, _mediator.Object);
@@ -91,7 +91,7 @@ namespace eDoxa.Arena.Challenges.Tests.Controllers
         {
             // Arrange        
             _queries.Setup(queries => queries.GetChallengeAsync(It.IsAny<ChallengeId>()))
-                .ReturnsAsync(new ChallengeDTO())
+                .ReturnsAsync(new ChallengeViewModel())
                 .Verifiable();
 
             var controller = new ChallengesController(_queries.Object, _mediator.Object);
@@ -111,7 +111,7 @@ namespace eDoxa.Arena.Challenges.Tests.Controllers
         public async Task FindChallengeAsync_ShouldBeNotFoundObjectResult()
         {
             // Arrange
-            _queries.Setup(queries => queries.GetChallengeAsync(It.IsAny<ChallengeId>())).ReturnsAsync((ChallengeDTO) null).Verifiable();
+            _queries.Setup(queries => queries.GetChallengeAsync(It.IsAny<ChallengeId>())).ReturnsAsync((ChallengeViewModel) null).Verifiable();
 
             var controller = new ChallengesController(_queries.Object, _mediator.Object);
 

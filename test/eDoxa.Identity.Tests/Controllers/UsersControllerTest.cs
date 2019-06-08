@@ -12,8 +12,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Controllers;
-using eDoxa.Identity.DTO;
-using eDoxa.Identity.DTO.Queries;
+using eDoxa.Identity.Application.Abstractions.Queries;
+using eDoxa.Identity.Application.ViewModels;
 
 using FluentAssertions;
 
@@ -41,9 +41,9 @@ namespace eDoxa.Identity.Tests.Controllers
             // Arrange
             _mockUserQueries.Setup(service => service.FindUsersAsync())
                 .ReturnsAsync(
-                    new List<UserDTO>
+                    new List<UserViewModel>
                     {
-                        new UserDTO()
+                        new UserViewModel()
                     }
                 )
                 .Verifiable();
@@ -61,7 +61,7 @@ namespace eDoxa.Identity.Tests.Controllers
         public async Task FindUsersAsync_ShouldBeNoContentObjectResult()
         {
             // Arrange
-            _mockUserQueries.Setup(queries => queries.FindUsersAsync()).ReturnsAsync(new List<UserDTO>()).Verifiable();
+            _mockUserQueries.Setup(queries => queries.FindUsersAsync()).ReturnsAsync(new List<UserViewModel>()).Verifiable();
 
             var controller = new UsersController(_mockUserQueries.Object);
 

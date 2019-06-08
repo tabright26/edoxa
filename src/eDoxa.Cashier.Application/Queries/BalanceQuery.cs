@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using eDoxa.Cashier.Application.Abstractions.Queries;
+using eDoxa.Cashier.Application.ViewModels;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.DTO;
-using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Security.Extensions;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
@@ -41,13 +41,13 @@ namespace eDoxa.Cashier.Application.Queries
     public sealed partial class BalanceQuery : IBalanceQuery
     {
         [ItemCanBeNull]
-        public async Task<BalanceDTO> GetBalanceAsync(CurrencyType currencyType)
+        public async Task<BalanceViewModel> GetBalanceAsync(CurrencyType currencyType)
         {
             var userId = _httpContextAccessor.GetUserId();
 
             var balance = await _accountRepository.GetBalanceAsNoTrackingAsync(userId, currencyType);
 
-            return _mapper.Map<BalanceDTO>(balance);
+            return _mapper.Map<BalanceViewModel>(balance);
         }
     }
 }

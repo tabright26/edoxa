@@ -14,10 +14,10 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using eDoxa.Cashier.Application.Abstractions.Queries;
+using eDoxa.Cashier.Application.ViewModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.DTO;
-using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Security.Extensions;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
@@ -41,7 +41,7 @@ namespace eDoxa.Cashier.Application.Queries
 
     public sealed partial class TransactionQuery : ITransactionQuery
     {
-        public async Task<IReadOnlyCollection<TransactionDTO>> GetTransactionsAsync(CurrencyType currency = null, TransactionType type = null, TransactionStatus status = null)
+        public async Task<IReadOnlyCollection<TransactionViewModel>> GetTransactionsAsync(CurrencyType currency = null, TransactionType type = null, TransactionStatus status = null)
         {
             var userId = _httpContextAccessor.GetUserId();
 
@@ -53,7 +53,7 @@ namespace eDoxa.Cashier.Application.Queries
                 .ThenByDescending(transaction => transaction.Timestamp)
                 .ToList();
 
-            return _mapper.Map<IReadOnlyCollection<TransactionDTO>>(transactions);
+            return _mapper.Map<IReadOnlyCollection<TransactionViewModel>>(transactions);
         }
     }
 }

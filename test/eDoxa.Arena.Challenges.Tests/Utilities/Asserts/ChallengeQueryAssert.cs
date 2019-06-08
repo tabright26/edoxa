@@ -11,8 +11,8 @@
 using System;
 using System.Collections.Generic;
 
+using eDoxa.Arena.Challenges.Application.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.DTO;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 using FluentAssertions;
@@ -21,7 +21,7 @@ namespace eDoxa.Arena.Challenges.Tests.Utilities.Asserts
 {
     public static class ChallengeQueryAssert
     {
-        public static void IsMapped(ChallengeDTO[] challenges)
+        public static void IsMapped(ChallengeViewModel[] challenges)
         {
             challenges.Should().NotBeNullOrEmpty();
 
@@ -31,7 +31,7 @@ namespace eDoxa.Arena.Challenges.Tests.Utilities.Asserts
             }
         }
 
-        public static void IsMapped(ChallengeDTO challenge)
+        public static void IsMapped(ChallengeViewModel challenge)
         {
             challenge.Should().NotBeNull();
 
@@ -70,14 +70,14 @@ namespace eDoxa.Arena.Challenges.Tests.Utilities.Asserts
             IsMapped(challenge.Participants);
         }
 
-        public static void IsMapped(PayoutDTO payout)
+        public static void IsMapped(PayoutViewModel payout)
         {
             payout.Should().NotBeNull();
 
             payout.Buckets.Should().NotBeNullOrEmpty();
         }
 
-        public static void IsMapped(IList<ParticipantDTO> participants)
+        public static void IsMapped(IList<ParticipantViewModel> participants)
         {
             participants.Should().NotBeNullOrEmpty();
 
@@ -87,7 +87,7 @@ namespace eDoxa.Arena.Challenges.Tests.Utilities.Asserts
             }
         }
 
-        public static void IsMapped(ParticipantDTO participant)
+        public static void IsMapped(ParticipantViewModel participant)
         {
             participant.Id.Should().NotBeEmpty();
 
@@ -98,7 +98,7 @@ namespace eDoxa.Arena.Challenges.Tests.Utilities.Asserts
             IsMapped(participant.Matches);
         }
 
-        public static void IsMapped(IList<MatchDTO> matches)
+        public static void IsMapped(IList<MatchViewModel> matches)
         {
             matches.Should().NotBeNullOrEmpty();
 
@@ -108,7 +108,7 @@ namespace eDoxa.Arena.Challenges.Tests.Utilities.Asserts
             }
         }
 
-        public static void IsMapped(MatchDTO match)
+        public static void IsMapped(MatchViewModel match)
         {
             match.Id.Should().NotBeEmpty();
 
@@ -119,7 +119,7 @@ namespace eDoxa.Arena.Challenges.Tests.Utilities.Asserts
             IsMapped(match.Stats);
         }
 
-        private static void IsMapped(IList<StatDTO> stats)
+        private static void IsMapped(IList<StatViewModel> stats)
         {
             stats.Should().NotBeNullOrEmpty();
 
@@ -129,7 +129,7 @@ namespace eDoxa.Arena.Challenges.Tests.Utilities.Asserts
             }
         }
 
-        private static void IsMapped(StatDTO stat)
+        private static void IsMapped(StatViewModel stat)
         {
             stat.Name.Should().NotBeNullOrWhiteSpace();
         }

@@ -13,9 +13,9 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using eDoxa.Cashier.Application.Abstractions.Queries;
+using eDoxa.Cashier.Application.ViewModels;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.DTO;
-using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Cashier.Services.Extensions;
 using eDoxa.Security.Extensions;
 using eDoxa.Stripe.Abstractions;
@@ -42,7 +42,7 @@ namespace eDoxa.Cashier.Application.Queries
 
     public sealed partial class CardQuery : ICardQuery
     {
-        public async Task<IReadOnlyCollection<CardDTO>> GetCardsAsync()
+        public async Task<IReadOnlyCollection<CardViewModel>> GetCardsAsync()
         {
             var userId = _httpContextAccessor.GetUserId();
 
@@ -50,7 +50,7 @@ namespace eDoxa.Cashier.Application.Queries
 
             var cards = await _service.GetCardsAsync(user.GetCustomerId());
 
-            return _mapper.Map<IReadOnlyCollection<CardDTO>>(cards);
+            return _mapper.Map<IReadOnlyCollection<CardViewModel>>(cards);
         }
     }
 }

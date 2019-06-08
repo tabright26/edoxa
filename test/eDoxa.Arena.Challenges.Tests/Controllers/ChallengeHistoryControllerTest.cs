@@ -12,9 +12,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Controllers;
+using eDoxa.Arena.Challenges.Application.Abstractions.Queries;
+using eDoxa.Arena.Challenges.Application.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.DTO;
-using eDoxa.Arena.Challenges.DTO.Queries;
 using eDoxa.Arena.Challenges.Tests.Utilities.Mocks.Extensions;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 
@@ -51,9 +51,9 @@ namespace eDoxa.Arena.Challenges.Tests.Controllers
         {
             // Arrange
             _queries.Setup(queries => queries.FindUserChallengeHistoryAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()))
-                .ReturnsAsync(new List<ChallengeDTO>
+                .ReturnsAsync(new List<ChallengeViewModel>
                 {
-                    new ChallengeDTO()
+                    new ChallengeViewModel()
                 })
                 .Verifiable();
 
@@ -75,7 +75,7 @@ namespace eDoxa.Arena.Challenges.Tests.Controllers
         {
             // Arrange
             _queries.Setup(queries => queries.FindUserChallengeHistoryAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()))
-                .ReturnsAsync(new List<ChallengeDTO>())
+                .ReturnsAsync(new List<ChallengeViewModel>())
                 .Verifiable();
 
             var controller = new ChallengeHistoryController(_queries.Object);

@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using eDoxa.Arena.Challenges.Application.Extensions;
-using eDoxa.Arena.Challenges.DTO;
+using eDoxa.Arena.Challenges.Application.ViewModels;
 using eDoxa.Arena.Challenges.Services.Abstractions;
 using eDoxa.Security.Extensions;
 using eDoxa.Seedwork.Application.Commands.Abstractions.Handlers;
@@ -25,7 +25,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace eDoxa.Arena.Challenges.Application.Commands.Handlers
 {
-    public sealed class RegisterParticipantCommandHandler : ICommandHandler<RegisterParticipantCommand, ParticipantDTO>
+    public sealed class RegisterParticipantCommandHandler : ICommandHandler<RegisterParticipantCommand, ParticipantViewModel>
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IChallengeService _challengeService;
@@ -38,7 +38,7 @@ namespace eDoxa.Arena.Challenges.Application.Commands.Handlers
             _mapper = mapper;
         }
         [ItemNotNull]
-        public async Task<ParticipantDTO> Handle([NotNull] RegisterParticipantCommand command, CancellationToken cancellationToken)
+        public async Task<ParticipantViewModel> Handle([NotNull] RegisterParticipantCommand command, CancellationToken cancellationToken)
         {
             var userId = _httpContextAccessor.GetUserId();
 
@@ -49,7 +49,7 @@ namespace eDoxa.Arena.Challenges.Application.Commands.Handlers
                 cancellationToken
             );
 
-            return _mapper.Map<ParticipantDTO>(participant);
+            return _mapper.Map<ParticipantViewModel>(participant);
         }
     }
 }

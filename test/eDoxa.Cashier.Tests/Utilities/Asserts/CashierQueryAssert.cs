@@ -10,7 +10,7 @@
 
 using System.Collections.Generic;
 
-using eDoxa.Cashier.DTO;
+using eDoxa.Cashier.Application.ViewModels;
 
 using FluentAssertions;
 
@@ -18,7 +18,7 @@ namespace eDoxa.Cashier.Tests.Utilities.Asserts
 {
     public static class CashierQueryAssert
     {
-        public static void IsMapped(BalanceDTO balance)
+        public static void IsMapped(BalanceViewModel balance)
         {
             balance.Should().NotBeNull();
 
@@ -29,7 +29,7 @@ namespace eDoxa.Cashier.Tests.Utilities.Asserts
             balance.Pending.Should().BeGreaterOrEqualTo(decimal.Zero);
         }
 
-        public static void IsMapped(IReadOnlyCollection<TransactionDTO> transactions)
+        public static void IsMapped(IReadOnlyCollection<TransactionViewModel> transactions)
         {
             transactions.Should().NotBeNull();
 
@@ -39,7 +39,7 @@ namespace eDoxa.Cashier.Tests.Utilities.Asserts
             }
         }
 
-        public static void IsMapped(TransactionDTO transaction)
+        public static void IsMapped(TransactionViewModel transaction)
         {
             transaction.Should().NotBeNull();
 

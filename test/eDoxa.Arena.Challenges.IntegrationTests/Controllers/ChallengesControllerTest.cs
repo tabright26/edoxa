@@ -12,7 +12,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api;
-using eDoxa.Arena.Challenges.DTO;
+using eDoxa.Arena.Challenges.Application.ViewModels;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Testing.MSTest;
 using eDoxa.Testing.MSTest.Extensions;
@@ -51,7 +51,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 
             response.EnsureSuccessStatusCode();
 
-            var challenges = await response.DeserializeAsync<ChallengeDTO[]>();
+            var challenges = await response.DeserializeAsync<ChallengeViewModel[]>();
 
             challenges.Should().BeNull();
         }

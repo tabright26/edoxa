@@ -10,14 +10,14 @@
 
 using System.Runtime.Serialization;
 
+using eDoxa.Arena.Challenges.Application.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.DTO;
 using eDoxa.Seedwork.Application.Commands.Abstractions;
 
 namespace eDoxa.Arena.Challenges.Application.Commands
 {
     [DataContract]
-    public sealed class RegisterParticipantCommand : Command<ParticipantDTO>
+    public sealed class RegisterParticipantCommand : Command<ParticipantViewModel>
     {
         public RegisterParticipantCommand(ChallengeId challengeId)
         {

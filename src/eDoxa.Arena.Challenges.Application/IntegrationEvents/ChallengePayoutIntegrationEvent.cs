@@ -1,5 +1,5 @@
-﻿// Filename: ChallengePayoutProcessedIntegrationEvent.cs
-// Date Created: 2019-05-03
+﻿// Filename: ChallengePayoutIntegrationEvent.cs
+// Date Created: 2019-06-07
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.

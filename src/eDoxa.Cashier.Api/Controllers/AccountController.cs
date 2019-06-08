@@ -10,8 +10,8 @@
 
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Application.Abstractions.Queries;
 using eDoxa.Cashier.Application.Commands;
-using eDoxa.Cashier.DTO.Queries;
 using eDoxa.Seedwork.Application.Commands.Extensions;
 using eDoxa.Seedwork.Domain.Common.Enumerations;
 

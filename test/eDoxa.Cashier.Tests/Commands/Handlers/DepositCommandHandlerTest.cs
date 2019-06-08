@@ -15,11 +15,11 @@ using AutoMapper;
 
 using eDoxa.Cashier.Application.Commands;
 using eDoxa.Cashier.Application.Commands.Handlers;
+using eDoxa.Cashier.Application.ViewModels;
 using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate.Transactions;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.DTO;
 using eDoxa.Cashier.Services.Abstractions;
 using eDoxa.Cashier.Tests.Utilities.Fakes;
 using eDoxa.Cashier.Tests.Utilities.Mocks.Extensions;
@@ -80,7 +80,7 @@ namespace eDoxa.Cashier.Tests.Commands.Handlers
                 .ReturnsAsync(new MoneyDepositTransaction(Money.Ten))
                 .Verifiable();
 
-            _mockMapper.Setup(x => x.Map<TransactionDTO>(It.IsAny<ITransaction>())).Returns(new TransactionDTO()).Verifiable();
+            _mockMapper.Setup(x => x.Map<TransactionViewModel>(It.IsAny<ITransaction>())).Returns(new TransactionViewModel()).Verifiable();
 
             var handler = new DepositCommandHandler(_mockHttpContextAccessor.Object, _mockMoneyAccountService.Object, _mockUserRepository.Object, _mockMapper.Object);
 
@@ -88,7 +88,7 @@ namespace eDoxa.Cashier.Tests.Commands.Handlers
             var result = await handler.HandleAsync(command);
 
             // Assert
-            result.Should().BeOfType<TransactionDTO>();
+            result.Should().BeOfType<TransactionViewModel>();
 
             _mockMoneyAccountService.Verify(
                 mock => mock.DepositAsync(It.IsAny<UserId>(), It.IsAny<ICurrency>(), It.IsAny<CancellationToken>()),
