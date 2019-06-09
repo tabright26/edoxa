@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Application.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Seedwork.Domain.Common.Enumerations;
+using eDoxa.Seedwork.Common.Enumerations;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
