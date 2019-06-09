@@ -13,8 +13,8 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
-using eDoxa.IdentityServer.Attributes;
 using eDoxa.IdentityServer.Extensions;
+using eDoxa.IdentityServer.Infrastructure.Attributes;
 using eDoxa.IdentityServer.ViewModels;
 
 using IdentityModel;
@@ -33,8 +33,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace eDoxa.IdentityServer.Controllers
 {
-    [SecurityHeaders]
     [AllowAnonymous]
+    [SecurityHeaders]
     public class AccountController : Controller
     {
         private readonly IClientStore _clientStore;

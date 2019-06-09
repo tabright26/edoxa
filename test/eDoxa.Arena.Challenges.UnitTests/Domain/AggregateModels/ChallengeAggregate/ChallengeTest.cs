@@ -12,7 +12,7 @@ using System;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Challenges.UnitTests.Utilities.Fakes;
-using eDoxa.Seedwork.Domain.Common;
+using eDoxa.Seedwork.Common;
 
 using FluentAssertions;
 

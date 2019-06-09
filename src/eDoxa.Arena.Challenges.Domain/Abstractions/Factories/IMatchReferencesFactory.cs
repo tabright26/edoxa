@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Adapters;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
-using eDoxa.Seedwork.Domain.Common.Enumerations;
+using eDoxa.Seedwork.Common.Enumerations;
 
 namespace eDoxa.Arena.Challenges.Domain.Abstractions.Factories
 {

@@ -17,7 +17,7 @@ using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.UnitTests.Utilities.Fakes;
 using eDoxa.Cashier.UnitTests.Utilities.Mocks.Extensions;
 using eDoxa.Commands.Extensions;
-using eDoxa.Seedwork.Domain.Common;
+using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Testing.TestConstructor;
 using eDoxa.Stripe.Abstractions;
 using eDoxa.Stripe.Models;

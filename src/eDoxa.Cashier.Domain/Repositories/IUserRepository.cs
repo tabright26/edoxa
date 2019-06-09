@@ -11,8 +11,8 @@
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
+using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Common;
 
 using JetBrains.Annotations;
 

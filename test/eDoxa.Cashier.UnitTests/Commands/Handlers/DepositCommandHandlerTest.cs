@@ -24,9 +24,9 @@ using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.UnitTests.Utilities.Fakes;
 using eDoxa.Cashier.UnitTests.Utilities.Mocks.Extensions;
 using eDoxa.Commands.Extensions;
-using eDoxa.Seedwork.Domain.Common;
-using eDoxa.Seedwork.Domain.Common.Abstactions;
-using eDoxa.Seedwork.Domain.Common.Enumerations;
+using eDoxa.Seedwork.Common;
+using eDoxa.Seedwork.Common.Abstactions;
+using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Testing.TestConstructor;
 
 using FluentAssertions;

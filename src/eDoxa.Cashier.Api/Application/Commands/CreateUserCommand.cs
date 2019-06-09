@@ -9,7 +9,7 @@
 // this source code package.
 
 using eDoxa.Commands.Abstractions;
-using eDoxa.Seedwork.Domain.Common;
+using eDoxa.Seedwork.Common;
 
 namespace eDoxa.Cashier.Api.Application.Commands
 {

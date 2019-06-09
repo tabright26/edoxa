@@ -9,7 +9,7 @@
 // this source code package.
 
 using eDoxa.Cashier.Api.Application.Commands;
-using eDoxa.Seedwork.Domain.Common;
+using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Testing.TestConstructor;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;

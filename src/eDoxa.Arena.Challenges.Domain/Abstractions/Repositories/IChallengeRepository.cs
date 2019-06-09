@@ -12,9 +12,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Seedwork.Common;
+using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Common;
-using eDoxa.Seedwork.Domain.Common.Enumerations;
 using eDoxa.Seedwork.Domain.Specifications.Abstractions;
 
 using JetBrains.Annotations;

@@ -15,8 +15,8 @@ using eDoxa.Arena.Challenges.Api.Application.Abstractions;
 using eDoxa.Arena.Challenges.Api.Application.Commands;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Commands.Extensions;
-using eDoxa.Seedwork.Domain.Common.Enumerations;
-using eDoxa.Seedwork.Security;
+using eDoxa.Seedwork.Common.Enumerations;
+using eDoxa.Seedwork.Security.Constants;
 
 using JetBrains.Annotations;
 

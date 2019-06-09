@@ -12,7 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
-using eDoxa.Seedwork.Domain.Common;
+using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Infrastructure.Abstractions;
 
 using Microsoft.AspNetCore.Hosting;

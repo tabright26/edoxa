@@ -1,5 +1,5 @@
 ﻿// Filename: ApplicationBuilderExtensions.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-08
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,8 +8,9 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Seedwork.Security.Authentication;
+using eDoxa.Seedwork.Security.Constants;
 using eDoxa.Seedwork.Security.Hosting.Extensions;
+using eDoxa.Seedwork.Security.Middlewares;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

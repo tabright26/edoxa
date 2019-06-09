@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Infrastructure.Configurations;
-using eDoxa.Seedwork.Security;
+using eDoxa.Seedwork.Security.Constants;
 
 using JetBrains.Annotations;
 

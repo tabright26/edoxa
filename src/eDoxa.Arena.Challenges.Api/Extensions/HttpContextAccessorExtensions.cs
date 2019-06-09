@@ -11,7 +11,7 @@
 using System;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
-using eDoxa.Seedwork.Domain.Common.Enumerations;
+using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Security.Extensions;
 
 using Microsoft.AspNetCore.Http;

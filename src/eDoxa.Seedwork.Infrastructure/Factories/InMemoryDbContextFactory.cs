@@ -1,11 +1,11 @@
-﻿// Filename: CustomDbContextFactory.cs
-// Date Created: 2019-04-03
+﻿// Filename: InMemoryDbContextFactory.cs
+// Date Created: 2019-06-01
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
 // 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;

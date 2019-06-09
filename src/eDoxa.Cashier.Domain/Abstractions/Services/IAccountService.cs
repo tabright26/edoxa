@@ -12,8 +12,8 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Seedwork.Domain.Common;
-using eDoxa.Seedwork.Domain.Common.Abstactions;
+using eDoxa.Seedwork.Common;
+using eDoxa.Seedwork.Common.Abstactions;
 
 namespace eDoxa.Cashier.Domain.Abstractions.Services
 {

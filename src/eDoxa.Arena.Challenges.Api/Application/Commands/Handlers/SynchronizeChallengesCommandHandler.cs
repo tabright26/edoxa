@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions.Services;
 using eDoxa.Commands.Abstractions.Handlers;
-using eDoxa.Seedwork.Domain.Common.Enumerations;
+using eDoxa.Seedwork.Common.Enumerations;
 
 using JetBrains.Annotations;
 

@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Infrastructure.Abstractions;
-using eDoxa.Seedwork.Security;
+using eDoxa.Seedwork.Security.Constants;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;

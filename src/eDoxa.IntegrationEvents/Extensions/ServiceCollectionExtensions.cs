@@ -15,7 +15,7 @@ using Autofac;
 
 using eDoxa.IntegrationEvents.Azure;
 using eDoxa.IntegrationEvents.RabbitMQ;
-using eDoxa.Seedwork.Security;
+using eDoxa.Seedwork.Security.Constants;
 
 using Microsoft.Azure.ServiceBus;
 using Microsoft.EntityFrameworkCore;

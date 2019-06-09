@@ -23,8 +23,8 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Challenges.UnitTests.Utilities.Fakes;
 using eDoxa.Arena.Challenges.UnitTests.Utilities.Mocks.Extensions;
 using eDoxa.Commands.Extensions;
-using eDoxa.Seedwork.Domain.Common;
-using eDoxa.Seedwork.Domain.Common.Enumerations;
+using eDoxa.Seedwork.Common;
+using eDoxa.Seedwork.Common.Enumerations;
 
 using FluentAssertions;
 

@@ -18,7 +18,7 @@ using eDoxa.Cashier.Api.Application.Abstractions;
 using eDoxa.Cashier.Api.ViewModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Seedwork.Domain.Common.Enumerations;
+using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Security.Extensions;
 
 using Microsoft.AspNetCore.Http;

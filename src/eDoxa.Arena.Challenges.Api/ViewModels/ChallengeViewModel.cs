@@ -11,7 +11,7 @@
 using System;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Seedwork.Domain.Common.Enumerations;
+using eDoxa.Seedwork.Common.Enumerations;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;

@@ -1,5 +1,5 @@
 ﻿// Filename: ServiceCollectionExtensions.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-08
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,6 +10,7 @@
 
 using eDoxa.Seedwork.Application.Extensions;
 
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -26,6 +27,14 @@ namespace eDoxa.Identity.Api.Extensions
             healthChecks.AddSqlServer(configuration);
 
             healthChecks.AddIdentityServer(configuration);
+        }
+
+        public static void AddIdentityCore<TUser, TRole, TContext>(this IServiceCollection services)
+        where TUser : class
+        where TRole : class
+        where TContext : DbContext
+        {
+            services.AddIdentityCore<TUser>().AddRoles<TRole>().AddEntityFrameworkStores<TContext>();
         }
     }
 }

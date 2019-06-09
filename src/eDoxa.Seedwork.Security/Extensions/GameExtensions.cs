@@ -1,5 +1,5 @@
 ﻿// Filename: GameExtensions.cs
-// Date Created: 2019-05-05
+// Date Created: 2019-06-08
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,7 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Seedwork.Domain.Common.Enumerations;
+using eDoxa.Seedwork.Common.Enumerations;
+using eDoxa.Seedwork.Security.Constants;
 
 namespace eDoxa.Seedwork.Security.Extensions
 {

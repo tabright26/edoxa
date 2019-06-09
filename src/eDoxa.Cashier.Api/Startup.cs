@@ -20,7 +20,7 @@ using eDoxa.IntegrationEvents.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Security.Extensions;
-using eDoxa.Seedwork.Security.IdentityServer;
+using eDoxa.Seedwork.Security.IdentityServer.Resources;
 using eDoxa.Stripe.Extensions;
 using eDoxa.Stripe.Filters;
 using eDoxa.Swagger.Extensions;

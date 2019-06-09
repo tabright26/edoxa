@@ -11,8 +11,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.IdentityServer.Attributes;
 using eDoxa.IdentityServer.Extensions;
+using eDoxa.IdentityServer.Infrastructure.Attributes;
 using eDoxa.IdentityServer.ViewModels;
 
 using IdentityServer4;
@@ -28,11 +28,8 @@ using Microsoft.Extensions.Logging;
 
 namespace eDoxa.IdentityServer.Controllers
 {
-    /// <summary>
-    ///     This controller processes the consent UI
-    /// </summary>
-    [SecurityHeaders]
     [Authorize]
+    [SecurityHeaders]
     public class ConsentController : Controller
     {
         private readonly IClientStore _clientStore;

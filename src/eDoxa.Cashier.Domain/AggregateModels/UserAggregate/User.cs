@@ -12,9 +12,9 @@ using System;
 
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Validators;
+using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Domain.Common;
 
 using JetBrains.Annotations;
 

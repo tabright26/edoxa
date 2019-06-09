@@ -8,8 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.IdentityServer.IntegrationEvents;
-using eDoxa.IdentityServer.IntegrationEvents.Handlers;
 using eDoxa.IntegrationEvents;
 
 using Microsoft.AspNetCore.Builder;
@@ -22,24 +20,6 @@ namespace eDoxa.IdentityServer.Extensions
         public static void UseIntegrationEventSubscriptions(this IApplicationBuilder application)
         {
             var service = application.ApplicationServices.GetRequiredService<IEventBusService>();
-
-            service.Subscribe<RoleClaimAddedIntegrationEvent, RoleClaimAddedIntegrationEventHandler>();
-
-            service.Subscribe<RoleClaimRemovedIntegrationEvent, RoleClaimRemovedIntegrationEventHandler>();
-
-            service.Subscribe<RoleCreatedIntegrationEvent, RoleCreatedIntegrationEventHandler>();
-
-            service.Subscribe<RoleDeletedIntegrationEvent, RoleDeletedIntegrationEventHandler>();
-
-            service.Subscribe<UserClaimAddedIntegrationEvent, UserClaimAddedIntegrationEventHandler>();
-
-            service.Subscribe<UserClaimRemovedIntegrationEvent, UserClaimRemovedIntegrationEventHandler>();
-
-            service.Subscribe<UserClaimReplacedIntegrationEvent, UserClaimReplacedIntegrationEventHandler>();
-
-            service.Subscribe<UserRoleAddedIntegrationEvent, UserRoleAddedIntegrationEventHandler>();
-
-            service.Subscribe<UserRoleRemovedIntegrationEvent, UserRoleRemovedIntegrationEventHandler>();
         }
     }
 }

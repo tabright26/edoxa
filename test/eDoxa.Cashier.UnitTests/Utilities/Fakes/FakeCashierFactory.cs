@@ -14,7 +14,7 @@ using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate.Transactions;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
-using eDoxa.Seedwork.Domain.Common;
+using eDoxa.Seedwork.Common;
 using eDoxa.Stripe.Models;
 
 namespace eDoxa.Cashier.UnitTests.Utilities.Fakes

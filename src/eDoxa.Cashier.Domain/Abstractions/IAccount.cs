@@ -13,8 +13,8 @@ using System.Collections.Generic;
 
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
+using eDoxa.Seedwork.Common.Abstactions;
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Common.Abstactions;
 
 namespace eDoxa.Cashier.Domain.Abstractions
 {

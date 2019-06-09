@@ -13,7 +13,7 @@ using System.Linq;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
-using eDoxa.Seedwork.Domain.Common;
+using eDoxa.Seedwork.Common;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels
 {

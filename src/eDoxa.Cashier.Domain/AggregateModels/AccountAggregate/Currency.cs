@@ -12,9 +12,9 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 
+using eDoxa.Seedwork.Common.Abstactions;
+using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Domain.Common.Abstactions;
-using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 using JetBrains.Annotations;
 

@@ -1,5 +1,5 @@
 ﻿// Filename: HttpContextAccessorExtensions.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-08
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,7 +10,7 @@
 
 using System;
 
-using eDoxa.Seedwork.Domain.Common;
+using eDoxa.Seedwork.Common;
 
 using IdentityModel;
 
@@ -22,15 +22,15 @@ namespace eDoxa.Seedwork.Security.Extensions
 {
     public static class HttpContextAccessorExtensions
     {
-        public static UserId GetUserId(this IHttpContextAccessor accessor)
-        {
-            return UserId.Parse(accessor.GetClaimOrDefault(JwtClaimTypes.Subject) ?? throw new NullReferenceException(JwtClaimTypes.Subject));
-        }
-
         [CanBeNull]
         public static string GetClaimOrDefault(this IHttpContextAccessor accessor, string claimType)
         {
             return accessor.HttpContext?.GetClaimOrDefault(claimType);
+        }
+
+        public static UserId GetUserId(this IHttpContextAccessor accessor)
+        {
+            return UserId.Parse(accessor.GetClaimOrDefault(JwtClaimTypes.Subject) ?? throw new NullReferenceException(JwtClaimTypes.Subject));
         }
     }
 }

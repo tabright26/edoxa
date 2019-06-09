@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
+using eDoxa.Seedwork.Security.Constants;
 
 using IdentityServer4.AccessTokenValidation;
 using IdentityServer4.Models;
@@ -17,9 +17,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -63,57 +60,6 @@ namespace eDoxa.Seedwork.Security.Extensions
                     )
                     .PersistKeysToRedis(ConnectionMultiplexer.Connect(configuration.GetConnectionString(CustomConnectionStrings.Redis)), "data-protection");
             }
-        }
-
-        public static void AddIdentity<TUser, TRole, TContext, TFactory>(this IServiceCollection services, IHostingEnvironment environment)
-        where TUser : class
-        where TRole : class
-        where TContext : DbContext
-        where TFactory : UserClaimsPrincipalFactory<TUser, TRole>
-        {
-            services.AddIdentity<TUser, TRole>(
-                    options =>
-                    {
-                        // Password settings
-                        options.Password.RequireDigit = true;
-                        options.Password.RequiredLength = 8;
-                        options.Password.RequiredUniqueChars = 1;
-                        options.Password.RequireLowercase = true;
-                        options.Password.RequireNonAlphanumeric = true;
-                        options.Password.RequireUppercase = true;
-
-                        // Lockout settings
-                        options.Lockout.AllowedForNewUsers = true;
-                        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-                        options.Lockout.MaxFailedAccessAttempts = 5;
-
-                        // User settings
-                        options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_";
-                        options.User.RequireUniqueEmail = true;
-
-                        // Claims settings
-                        options.ClaimsIdentity.SecurityStampClaimType = CustomClaimTypes.SecurityStamp;
-
-                        // SignIn settings
-                        if (environment.IsProduction())
-                        {
-                            options.SignIn.RequireConfirmedEmail = true;
-                            options.SignIn.RequireConfirmedPhoneNumber = true;
-                        }
-                    }
-                )
-                .AddClaimsPrincipalFactory<TFactory>()
-                .AddEntityFrameworkStores<TContext>()
-                .AddDefaultTokenProviders()
-                .AddDefaultUI(UIFramework.Bootstrap4);
-        }
-
-        public static void AddIdentityCore<TUser, TRole, TContext>(this IServiceCollection services)
-        where TUser : class
-        where TRole : class
-        where TContext : DbContext
-        {
-            services.AddIdentityCore<TUser>().AddRoles<TRole>().AddEntityFrameworkStores<TContext>();
         }
 
         public static void AddIdentityServerAuthentication(

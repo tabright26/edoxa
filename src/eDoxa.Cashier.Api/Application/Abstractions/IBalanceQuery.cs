@@ -11,7 +11,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.ViewModels;
-using eDoxa.Seedwork.Domain.Common.Enumerations;
+using eDoxa.Seedwork.Common.Enumerations;
 
 using JetBrains.Annotations;
 

@@ -10,12 +10,14 @@
 
 using System;
 
-using eDoxa.IdentityServer.Services;
+using eDoxa.IdentityServer.Infrastructure;
+using eDoxa.IdentityServer.Infrastructure.Services;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Security;
+using eDoxa.Seedwork.Security.Constants;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,33 +37,68 @@ namespace eDoxa.IdentityServer.Extensions
             healthChecks.AddRedis(configuration);
         }
 
-        public static void AddIdentityCore<TUser, TRole, TContext>(this IServiceCollection services)
+        public static void AddIdentity<TUser, TRole, TContext, TFactory>(this IServiceCollection services, IHostingEnvironment environment)
         where TUser : class
         where TRole : class
         where TContext : DbContext
+        where TFactory : UserClaimsPrincipalFactory<TUser, TRole>
         {
-            services.AddIdentityCore<TUser>()
-                .AddRoles<TRole>()
-                .AddEntityFrameworkStores<TContext>();
+            services.AddIdentity<TUser, TRole>(
+                    options =>
+                    {
+                        // Password settings
+                        options.Password.RequireDigit = true;
+                        options.Password.RequiredLength = 8;
+                        options.Password.RequiredUniqueChars = 1;
+                        options.Password.RequireLowercase = true;
+                        options.Password.RequireNonAlphanumeric = true;
+                        options.Password.RequireUppercase = true;
+
+                        // Lockout settings
+                        options.Lockout.AllowedForNewUsers = true;
+                        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                        options.Lockout.MaxFailedAccessAttempts = 5;
+
+                        // User settings
+                        options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_";
+                        options.User.RequireUniqueEmail = true;
+
+                        // Claims settings
+                        options.ClaimsIdentity.SecurityStampClaimType = CustomClaimTypes.SecurityStamp;
+
+                        // SignIn settings
+                        if (environment.IsProduction())
+                        {
+                            options.SignIn.RequireConfirmedEmail = true;
+                            options.SignIn.RequireConfirmedPhoneNumber = true;
+                        }
+                    }
+                )
+                .AddClaimsPrincipalFactory<TFactory>()
+                .AddEntityFrameworkStores<TContext>()
+                .AddDefaultTokenProviders()
+                .AddDefaultUI(UIFramework.Bootstrap4);
         }
 
         public static void AddIdentityServer<TUser>(this IServiceCollection services, IConfiguration configuration, IHostingEnvironment environment)
         where TUser : IdentityUser<Guid>
         {
-            var builder = services.AddIdentityServer(options =>
-                {
-                    options.IssuerUri = configuration.GetValue<string>("IdentityServer:Url");
+            var builder = services.AddIdentityServer(
+                    options =>
+                    {
+                        options.IssuerUri = configuration.GetValue<string>("IdentityServer:Url");
 
-                    options.Authentication.CookieLifetime = TimeSpan.FromHours(2);
+                        options.Authentication.CookieLifetime = TimeSpan.FromHours(2);
 
-                    options.Events.RaiseErrorEvents = true;
-                    options.Events.RaiseInformationEvents = true;
-                    options.Events.RaiseFailureEvents = true;
-                    options.Events.RaiseSuccessEvents = true;
+                        options.Events.RaiseErrorEvents = true;
+                        options.Events.RaiseInformationEvents = true;
+                        options.Events.RaiseFailureEvents = true;
+                        options.Events.RaiseSuccessEvents = true;
 
-                    options.UserInteraction.LoginUrl = "/Account/Login";
-                    options.UserInteraction.LogoutUrl = "/Account/Logout";
-                })
+                        options.UserInteraction.LoginUrl = "/Account/Login";
+                        options.UserInteraction.LogoutUrl = "/Account/Logout";
+                    }
+                )
                 .AddDeveloperSigningCredential()
                 .AddInMemoryPersistedGrants()
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())

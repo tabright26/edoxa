@@ -10,7 +10,7 @@
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Specifications;
-using eDoxa.Seedwork.Domain.Common;
+using eDoxa.Seedwork.Common;
 
 using FluentValidation;
 

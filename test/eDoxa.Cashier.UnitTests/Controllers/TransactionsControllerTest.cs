@@ -15,7 +15,7 @@ using eDoxa.Cashier.Api.Application.Abstractions;
 using eDoxa.Cashier.Api.Controllers;
 using eDoxa.Cashier.Api.ViewModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Seedwork.Domain.Common.Enumerations;
+using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Testing.TestConstructor;
 
 using FluentAssertions;

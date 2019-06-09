@@ -10,7 +10,7 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.IdentityServer.Attributes;
+using eDoxa.IdentityServer.Infrastructure.Attributes;
 using eDoxa.IdentityServer.ViewModels;
 
 using IdentityServer4.Services;
@@ -22,8 +22,8 @@ using Microsoft.Extensions.Logging;
 
 namespace eDoxa.IdentityServer.Controllers
 {
-    [SecurityHeaders]
     [AllowAnonymous]
+    [SecurityHeaders]
     public class HomeController : Controller
     {
         private readonly IHostingEnvironment _environment;
