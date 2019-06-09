@@ -16,5 +16,16 @@ namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
 {
     public sealed class UserClaim : IdentityUserClaim<Guid>
     {
+        public UserClaim(Guid userId, string type, string value) : this()
+        {
+            UserId = userId;
+            ClaimType = type;
+            ClaimValue = value;
+        }
+
+        public UserClaim()
+        {
+            // Required by EF Core.
+        }
     }
 }

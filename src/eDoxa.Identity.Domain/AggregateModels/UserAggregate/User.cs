@@ -30,8 +30,8 @@ namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
             NormalizedEmail = email.ToUpperInvariant();
             UserName = username;
             NormalizedUserName = username.ToUpperInvariant();
-            personalName.ToClaims().ForEach(claim => Claims.Add(claim));
-            Claims.Add(birthDate.ToClaim());
+            personalName.ToClaims(Id).ForEach(claim => Claims.Add(claim));
+            Claims.Add(birthDate.ToClaim(Id));
         }
 
         public User()
@@ -62,6 +62,11 @@ namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
         private void UpdateSecurityStamp()
         {
             SecurityStamp = Guid.NewGuid().ToString("D");
+        }
+
+        public void AddRole(Guid roleId)
+        {
+            Roles.Add(new UserRole(Id, roleId));
         }
     }
 }

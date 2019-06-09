@@ -14,12 +14,13 @@ using System.Threading.Tasks;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Services;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Infrastructure.Abstractions;
 
 using Microsoft.AspNetCore.Hosting;
 
-namespace eDoxa.Arena.Challenges.Infrastructure
+namespace eDoxa.Arena.Challenges.Api.Application.Data
 {
     public sealed class ChallengesDbContextData : IDbContextData
     {

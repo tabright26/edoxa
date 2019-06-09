@@ -14,6 +14,7 @@ using System.Reflection;
 
 using AutoMapper;
 
+using eDoxa.Arena.Challenges.Api.Application.Data;
 using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Extensions;

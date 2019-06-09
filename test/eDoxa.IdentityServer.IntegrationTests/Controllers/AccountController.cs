@@ -25,13 +25,15 @@ namespace eDoxa.IdentityServer.IntegrationTests.Controllers
         private IdentityDbContext _dbContext;
 
         [TestInitialize]
-        public void TestInitialize()
+        public async Task TestInitialize()
         {
             var factory = new CustomWebApplicationFactory<IdentityDbContext, Startup>();
 
             _httpClient = factory.CreateClient();
 
             _dbContext = factory.DbContext;
+
+            await this.TestCleanup();
         }
 
         public async Task<HttpResponseMessage> Execute()

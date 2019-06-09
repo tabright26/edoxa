@@ -1,5 +1,5 @@
 ﻿// Filename: UsersController.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-08
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -41,7 +41,12 @@ namespace eDoxa.Identity.Api.Controllers
         {
             var users = await _userQuery.FindUsersAsync();
 
-            return users.Select(this.Ok).Cast<IActionResult>().DefaultIfEmpty(this.NoContent()).Single();
+            if (!users.Any())
+            {
+                return this.NoContent();
+            }
+
+            return this.Ok(users);
         }
     }
 }

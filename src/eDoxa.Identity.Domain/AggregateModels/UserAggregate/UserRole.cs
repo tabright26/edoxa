@@ -16,5 +16,15 @@ namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
 {
     public sealed class UserRole : IdentityUserRole<Guid>
     {
+        public UserRole(Guid userId, Guid roleId) : this()
+        {
+            UserId = userId;
+            RoleId = roleId;
+        }
+
+        public UserRole()
+        {
+            // Required by EF core.
+        }
     }
 }

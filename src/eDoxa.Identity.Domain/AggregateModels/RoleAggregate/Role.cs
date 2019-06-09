@@ -17,12 +17,13 @@ namespace eDoxa.Identity.Domain.AggregateModels.RoleAggregate
 {
     public sealed class Role : IdentityRole<Guid>
     {
-        public Role(string roleName) : base(roleName)
+        public Role(string roleName) : this()
         {
-            Claims = new HashSet<RoleClaim>();
+            Name = roleName;
+            NormalizedName = roleName.ToUpperInvariant();
         }
 
-        public Role()
+        private Role()
         {
             Claims = new HashSet<RoleClaim>();
         }

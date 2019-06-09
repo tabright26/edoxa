@@ -16,5 +16,16 @@ namespace eDoxa.Identity.Domain.AggregateModels.RoleAggregate
 {
     public sealed class RoleClaim : IdentityRoleClaim<Guid>
     {
+        public RoleClaim(Guid roleId, string type, string value) : this()
+        {
+            RoleId = roleId;
+            ClaimType = type;
+            ClaimValue = value;
+        }
+
+        public RoleClaim()
+        {
+            // Required by EF core.
+        }
     }
 }

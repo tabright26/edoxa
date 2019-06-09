@@ -13,6 +13,7 @@ using System.Reflection;
 
 using AutoMapper;
 
+using eDoxa.Identity.Api.Application.Data;
 using eDoxa.Identity.Api.Extensions;
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;

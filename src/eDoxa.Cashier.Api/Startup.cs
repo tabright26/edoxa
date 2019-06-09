@@ -14,6 +14,7 @@ using System.Reflection;
 
 using AutoMapper;
 
+using eDoxa.Cashier.Api.Application.Data;
 using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.IntegrationEvents.Extensions;

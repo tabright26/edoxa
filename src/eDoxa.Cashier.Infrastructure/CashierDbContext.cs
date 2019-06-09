@@ -8,10 +8,14 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.IO;
+using System.Reflection;
+
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.Infrastructure.Configurations;
 using eDoxa.Seedwork.Infrastructure;
+using eDoxa.Seedwork.Infrastructure.Factories;
 
 using JetBrains.Annotations;
 
@@ -44,6 +48,19 @@ namespace eDoxa.Cashier.Infrastructure
             builder.ApplyConfiguration(new AccountConfiguration());
 
             builder.ApplyConfiguration(new TransactionConfiguration());
+        }
+
+        private sealed class CashierDbContextFactory : DesignTimeDbContextFactory<CashierDbContext>
+        {
+            protected override string BasePath => Path.Combine(Directory.GetCurrentDirectory(), "../eDoxa.Cashier.Api");
+
+            protected override Assembly MigrationsAssembly => Assembly.GetAssembly(typeof(CashierDbContextFactory));
+
+            [NotNull]
+            public override CashierDbContext CreateDbContext(string[] args)
+            {
+                return new CashierDbContext(Options, new NoMediator());
+            }
         }
     }
 }

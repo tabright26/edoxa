@@ -13,5 +13,6 @@ namespace eDoxa.Seedwork.Security.Constants
     public static class CustomRoles
     {
         public const string Administrator = "administrator";
+        public const string Challenger = "challenger";
     }
 }

@@ -10,12 +10,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Infrastructure.Configurations;
+using eDoxa.Seedwork.Infrastructure.Factories;
 using eDoxa.Seedwork.Security.Constants;
 
 using JetBrains.Annotations;
@@ -122,6 +125,19 @@ namespace eDoxa.Identity.Infrastructure
             builder.ApplyConfiguration(new RoleConfiguration());
 
             builder.ApplyConfiguration(new RoleClaimConfiguration());
+        }
+
+        private sealed class IdentityDbContextFactory : DesignTimeDbContextFactory<IdentityDbContext>
+        {
+            protected override string BasePath => Path.Combine(Directory.GetCurrentDirectory(), "../eDoxa.Identity.Api");
+
+            protected override Assembly MigrationsAssembly => Assembly.GetAssembly(typeof(IdentityDbContextFactory));
+
+            [NotNull]
+            public override IdentityDbContext CreateDbContext(string[] args)
+            {
+                return new IdentityDbContext(Options);
+            }
         }
     }
 }

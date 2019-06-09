@@ -12,13 +12,14 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
+using eDoxa.Cashier.Infrastructure;
 using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Infrastructure.Abstractions;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace eDoxa.Cashier.Infrastructure
+namespace eDoxa.Cashier.Api.Application.Data
 {
     public sealed class CashierDbContextData : IDbContextData
     {
