@@ -12,11 +12,11 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Application.Commands;
+using eDoxa.Cashier.Api.Application.Data.Fakers;
 using eDoxa.Cashier.Api.IntegrationEvents;
 using eDoxa.Cashier.Api.IntegrationEvents.Handlers;
-using eDoxa.Cashier.UnitTests.Utilities.Fakes;
 using eDoxa.Seedwork.Testing.TestConstructor;
-using eDoxa.Stripe.UnitTests.Utilities;
+using eDoxa.Stripe.Data.Fakers;
 
 using MediatR;
 
@@ -29,8 +29,6 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
     [TestClass]
     public sealed class UserCreatedIntegrationEventHandlerTest
     {
-        private static readonly FakeCashierFactory FakeCashierFactory = FakeCashierFactory.Instance;
-        private static readonly StripeBuilder StripeBuilder = StripeBuilder.Instance;
         private Mock<IMediator> _mockMediator;
 
         [TestInitialize]
@@ -49,13 +47,17 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
         public async Task HandleAsync_InitializeServiceCommand_ShouldBeCompletedTask()
         {
             // Arrange
-            var userId = FakeCashierFactory.CreateUserId();
+            var userFaker = new UserFaker();
 
-            var person = StripeBuilder.CreatePerson();
+            var user = userFaker.FakeNewUser();
+
+            var personFaker = new PersonFaker();
+
+            var person = personFaker.FakePerson();
 
             var integrationEvent = new UserCreatedIntegrationEvent
             {
-                UserId = userId.ToGuid(),
+                UserId = user.Id.ToGuid(),
                 Email = person.Email,
                 FirstName = person.FirstName,
                 LastName = person.LastName,

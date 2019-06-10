@@ -11,9 +11,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
+using eDoxa.Cashier.Api.Application.Data.Fakers;
 using eDoxa.Cashier.Infrastructure;
-using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Infrastructure.Abstractions;
 
 using Microsoft.AspNetCore.Hosting;
@@ -40,9 +39,9 @@ namespace eDoxa.Cashier.Api.Application.Data
             {
                 if (!_context.Users.Any())
                 {
-                    var user = new User(UserId.Parse("e4655fe0-affd-4323-b022-bdb2ebde6091"), "acct_1EbASfAPhMnJQouG", "cus_F5L8mRzm6YN5ma");
+                    var userFaker = new UserFaker();
 
-                    user.AddBankAccount("ba_1EbB3sAPhMnJQouGHsvc0NFn");
+                    var user = userFaker.FakeAdminUser();
 
                     _context.Users.Add(user);
 

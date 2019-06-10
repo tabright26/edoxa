@@ -13,11 +13,11 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using eDoxa.Cashier.Api.Application.Data.Fakers;
 using eDoxa.Cashier.Api.Application.Queries;
 using eDoxa.Cashier.Api.ViewModels;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.UnitTests.Utilities.Fakes;
-using eDoxa.Cashier.UnitTests.Utilities.Mocks.Extensions;
+using eDoxa.Cashier.UnitTests.Extensions;
 using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Testing.TestConstructor;
 using eDoxa.Stripe.Abstractions;
@@ -37,7 +37,6 @@ namespace eDoxa.Cashier.UnitTests.Queries
     [TestClass]
     public sealed class StripeCardQueriesTest
     {
-        private static readonly FakeCashierFactory FakeCashierFactory = FakeCashierFactory.Instance;
         private Mock<IHttpContextAccessor> _mockHttpContextAccessor;
         private Mock<IMapper> _mockMapper;
         private Mock<IStripeService> _mockStripeService;
@@ -65,7 +64,9 @@ namespace eDoxa.Cashier.UnitTests.Queries
         public async Task GetCardsAsync_ShouldNotBeEmpty()
         {
             // Arrange
-            var user = FakeCashierFactory.CreateUser();
+            var userFaker = new UserFaker();
+
+            var user = userFaker.FakeNewUser();
 
             _mockUserRepository.Setup(mock => mock.GetUserAsNoTrackingAsync(It.IsAny<UserId>())).ReturnsAsync(user).Verifiable();
 
@@ -104,7 +105,9 @@ namespace eDoxa.Cashier.UnitTests.Queries
         public async Task GetCardsAsync_ShouldBeEmpty()
         {
             // Arrange
-            var user = FakeCashierFactory.CreateUser();
+            var userFaker = new UserFaker();
+
+            var user = userFaker.FakeNewUser();
 
             _mockUserRepository.Setup(mock => mock.GetUserAsNoTrackingAsync(It.IsAny<UserId>())).ReturnsAsync(user).Verifiable();
 

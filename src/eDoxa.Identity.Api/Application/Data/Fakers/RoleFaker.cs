@@ -1,5 +1,5 @@
 ﻿// Filename: RoleFaker.cs
-// Date Created: 2019-06-08
+// Date Created: 2019-06-09
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -25,14 +25,10 @@ namespace eDoxa.Identity.Api.Application.Data.Fakers
 
         public RoleFaker()
         {
-            this.UseSeed(8675309);
-
             this.RuleSet(
                 AdminRole,
                 ruleSet =>
                 {
-                    ruleSet.StrictMode(false);
-
                     ruleSet.CustomInstantiator(_ => new Role(CustomRoles.Administrator));
 
                     ruleSet.RuleFor(role => role.Id, Guid.Parse("6349E9F9-4799-4100-9A1D-34F79CF480D4"));
@@ -51,8 +47,6 @@ namespace eDoxa.Identity.Api.Application.Data.Fakers
                 ChallengerRole,
                 ruleSet =>
                 {
-                    ruleSet.StrictMode(false);
-
                     ruleSet.CustomInstantiator(_ => new Role(CustomRoles.Challenger));
 
                     ruleSet.RuleFor(role => role.Id, Guid.Parse("0FC7B6DF-69CE-443D-B127-D4A8CC4B7361"));

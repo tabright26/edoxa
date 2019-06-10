@@ -13,9 +13,9 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Application.Commands;
 using eDoxa.Cashier.Api.Application.Commands.Handlers;
+using eDoxa.Cashier.Api.Application.Data.Fakers;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.UnitTests.Utilities.Fakes;
-using eDoxa.Cashier.UnitTests.Utilities.Mocks.Extensions;
+using eDoxa.Cashier.UnitTests.Extensions;
 using eDoxa.Commands.Extensions;
 using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Testing.TestConstructor;
@@ -32,7 +32,6 @@ namespace eDoxa.Cashier.UnitTests.Commands.Handlers
     [TestClass]
     public sealed class DeleteBankAccountCommandHandlerTest
     {
-        private static readonly FakeCashierFactory FakeCashierFactory = FakeCashierFactory.Instance;
         private Mock<IHttpContextAccessor> _mockHttpContextAccessor;
         private Mock<IStripeService> _mockStripeService;
         private Mock<IUserRepository> _mockUserRepository;
@@ -59,9 +58,9 @@ namespace eDoxa.Cashier.UnitTests.Commands.Handlers
         public async Task HandleAsync_DeleteBankAccountCommand_ShouldBeOfTypeEither()
         {
             // Arrange
-            var user = FakeCashierFactory.CreateUser();
+            var userFaker = new UserFaker();
 
-            user.AddBankAccount(new StripeBankAccountId("ba_aqweq1231qwe123").ToString());
+            var user = userFaker.FakeNewUser();
 
             _mockUserRepository.Setup(mock => mock.GetUserAsync(It.IsAny<UserId>())).ReturnsAsync(user).Verifiable();
 

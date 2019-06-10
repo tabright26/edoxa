@@ -16,7 +16,7 @@ using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Factories;
-using eDoxa.Arena.Challenges.UnitTests.Utilities.Asserts;
+using eDoxa.Arena.Challenges.UnitTests.Asserts;
 using eDoxa.Seedwork.Common.Enumerations;
 
 using Microsoft.Extensions.DependencyInjection;

@@ -15,7 +15,7 @@ using eDoxa.Arena.Challenges.Api.Application.Abstractions;
 using eDoxa.Arena.Challenges.Api.Controllers;
 using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.UnitTests.Utilities.Mocks.Extensions;
+using eDoxa.Arena.Challenges.UnitTests.Extensions;
 using eDoxa.Seedwork.Common.Enumerations;
 
 using FluentAssertions;

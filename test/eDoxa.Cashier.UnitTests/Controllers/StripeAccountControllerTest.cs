@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Api.Application.Commands;
 using eDoxa.Cashier.Api.Controllers;
 using eDoxa.Seedwork.Testing.TestConstructor;
-using eDoxa.Stripe.UnitTests.Utilities;
+using eDoxa.Stripe.Data.Fakers;
 
 using FluentAssertions;
 
@@ -31,7 +31,6 @@ namespace eDoxa.Cashier.UnitTests.Controllers
     [TestClass]
     public sealed class StripeAccountControllerTest
     {
-        private static readonly StripeBuilder StripeBuilder = StripeBuilder.Instance;
         private Mock<IMediator> _mockMediator;
 
         [TestInitialize]
@@ -60,7 +59,9 @@ namespace eDoxa.Cashier.UnitTests.Controllers
         public async Task VerifyAccountAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
-            var address = StripeBuilder.CreateAddress();
+            var addressFaker = new AddressFaker();
+
+            var address = addressFaker.FakeAddress();
 
             _mockMediator.Setup(mock => mock.Send(It.IsAny<VerifyAccountCommand>(), It.IsAny<CancellationToken>())).Returns(Unit.Task).Verifiable();
 

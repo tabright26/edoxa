@@ -11,9 +11,10 @@
 using System;
 using System.ComponentModel;
 
+using eDoxa.Stripe.Data.Fakers;
 using eDoxa.Stripe.Exceptions;
 using eDoxa.Stripe.Models;
-using eDoxa.Stripe.UnitTests.Utilities;
+using eDoxa.Stripe.UnitTests.Extensions;
 
 using FluentAssertions;
 
@@ -24,8 +25,6 @@ namespace eDoxa.Stripe.UnitTests.Abstractions
     [TestClass]
     public sealed class StripeIdTest
     {
-        private static readonly StripeBuilder StripeBuilder = StripeBuilder.Instance;
-
         [DataRow(typeof(StripeConnectAccountId), "acct_qwe23okqwe123")]
         [DataRow(typeof(StripeBankAccountId), "ba_qwe23okqwe123")]
         [DataRow(typeof(StripeCardId), "card_qwe23okqwe123")]
@@ -142,10 +141,14 @@ namespace eDoxa.Stripe.UnitTests.Abstractions
         public void ConvertTo_ShouldBeOfType(Type type)
         {
             // Arrange
+            var accountFaker = new AccountFaker();
+
+            var account = accountFaker.FakeAccount();
+
             var converter = TypeDescriptor.GetConverter(typeof(StripeConnectAccountId));
 
             // Act
-            var destination = converter.ConvertTo(StripeBuilder.CreateAccountId(), type);
+            var destination = converter.ConvertTo(account.ToStripeId(), type);
 
             // Assert
             destination.Should().BeOfType(type);
@@ -158,10 +161,14 @@ namespace eDoxa.Stripe.UnitTests.Abstractions
         public void ConvertTo_ShouldThrowNotSupportedException(Type type)
         {
             // Arrange
+            var accountFaker = new AccountFaker();
+
+            var account = accountFaker.FakeAccount();
+
             var converter = TypeDescriptor.GetConverter(typeof(StripeConnectAccountId));
 
             // Act
-            var action = new Action(() => converter.ConvertTo(StripeBuilder.CreateAccountId(), type));
+            var action = new Action(() => converter.ConvertTo(account.ToStripeId(), type));
 
             // Assert
             action.Should().Throw<NotSupportedException>();

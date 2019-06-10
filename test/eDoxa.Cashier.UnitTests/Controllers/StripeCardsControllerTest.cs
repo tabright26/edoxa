@@ -17,7 +17,8 @@ using eDoxa.Cashier.Api.Application.Commands;
 using eDoxa.Cashier.Api.Controllers;
 using eDoxa.Cashier.Api.ViewModels;
 using eDoxa.Seedwork.Testing.TestConstructor;
-using eDoxa.Stripe.UnitTests.Utilities;
+using eDoxa.Stripe.Data.Fakers;
+using eDoxa.Stripe.UnitTests.Extensions;
 
 using FluentAssertions;
 
@@ -34,7 +35,6 @@ namespace eDoxa.Cashier.UnitTests.Controllers
     [TestClass]
     public sealed class StripeCardsControllerTest
     {
-        private static readonly StripeBuilder StripeBuilder = StripeBuilder.Instance;
         private Mock<ICardQuery> _mockCardQueries;
         private Mock<IMediator> _mockMediator;
 
@@ -106,14 +106,12 @@ namespace eDoxa.Cashier.UnitTests.Controllers
         public async Task CreateCardAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
-            var sourceToken = StripeBuilder.CreateSourceToken();
-
             _mockMediator.Setup(mock => mock.Send(It.IsAny<CreateCardCommand>(), It.IsAny<CancellationToken>())).Returns(Unit.Task).Verifiable();
 
             var controller = new StripeCardsController(_mockCardQueries.Object, _mockMediator.Object);
 
             // Act
-            var result = await controller.CreateCardAsync(new CreateCardCommand(sourceToken));
+            var result = await controller.CreateCardAsync(new CreateCardCommand("qwe23rwr2r12rqwe123qwsda241qweasd"));
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -125,14 +123,16 @@ namespace eDoxa.Cashier.UnitTests.Controllers
         public async Task DeleteCardAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
-            var cardId = StripeBuilder.CreateCardId();
+            var cardFaker = new CardFaker();
+
+            var card = cardFaker.FakeCard();
 
             _mockMediator.Setup(mock => mock.Send(It.IsAny<DeleteCardCommand>(), It.IsAny<CancellationToken>())).Returns(Unit.Task).Verifiable();
 
             var controller = new StripeCardsController(_mockCardQueries.Object, _mockMediator.Object);
 
             // Act
-            var result = await controller.DeleteCardAsync(cardId);
+            var result = await controller.DeleteCardAsync(card.ToStripeId());
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -144,14 +144,16 @@ namespace eDoxa.Cashier.UnitTests.Controllers
         public async Task UpdateCardDefaultAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
-            var cardId = StripeBuilder.CreateCardId();
+            var cardFaker = new CardFaker();
+
+            var card = cardFaker.FakeCard();
 
             _mockMediator.Setup(mediator => mediator.Send(It.IsAny<UpdateCardDefaultCommand>(), It.IsAny<CancellationToken>())).Returns(Unit.Task).Verifiable();
 
             var controller = new StripeCardsController(_mockCardQueries.Object, _mockMediator.Object);
 
             // Act
-            var result = await controller.UpdateCardDefaultAsync(cardId);
+            var result = await controller.UpdateCardDefaultAsync(card.ToStripeId());
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();

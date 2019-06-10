@@ -15,14 +15,14 @@ using AutoMapper;
 
 using eDoxa.Cashier.Api.Application.Commands;
 using eDoxa.Cashier.Api.Application.Commands.Handlers;
+using eDoxa.Cashier.Api.Application.Data.Fakers;
 using eDoxa.Cashier.Api.ViewModels;
 using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.Abstractions.Services;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate.Transactions;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.UnitTests.Utilities.Fakes;
-using eDoxa.Cashier.UnitTests.Utilities.Mocks.Extensions;
+using eDoxa.Cashier.UnitTests.Extensions;
 using eDoxa.Commands.Extensions;
 using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Common.Abstactions;
@@ -41,7 +41,6 @@ namespace eDoxa.Cashier.UnitTests.Commands.Handlers
     [TestClass]
     public sealed class DepositCommandHandlerTest
     {
-        private static readonly FakeCashierFactory FakeCashierFactory = FakeCashierFactory.Instance;
         private Mock<IHttpContextAccessor> _mockHttpContextAccessor;
         private Mock<IAccountService> _mockMoneyAccountService;
         private Mock<IUserRepository> _mockUserRepository;
@@ -71,7 +70,9 @@ namespace eDoxa.Cashier.UnitTests.Commands.Handlers
             // Arrange
             var command = new DepositCommand(10, CurrencyType.Money);
 
-            var user = FakeCashierFactory.CreateUser();
+            var userFaker = new UserFaker();
+
+            var user = userFaker.FakeNewUser();
 
             _mockUserRepository.Setup(mock => mock.GetUserAsNoTrackingAsync(It.IsAny<UserId>())).ReturnsAsync(user).Verifiable();
 

@@ -25,7 +25,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
             User = user;
         }
 
-        private Account()
+        public Account()
         {
             _transactions = new HashSet<Transaction>();
         }

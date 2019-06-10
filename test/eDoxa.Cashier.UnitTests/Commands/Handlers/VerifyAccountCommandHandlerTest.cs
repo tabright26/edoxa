@@ -13,15 +13,15 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Application.Commands;
 using eDoxa.Cashier.Api.Application.Commands.Handlers;
+using eDoxa.Cashier.Api.Application.Data.Fakers;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.UnitTests.Utilities.Fakes;
-using eDoxa.Cashier.UnitTests.Utilities.Mocks.Extensions;
+using eDoxa.Cashier.UnitTests.Extensions;
 using eDoxa.Commands.Extensions;
 using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Testing.TestConstructor;
 using eDoxa.Stripe.Abstractions;
+using eDoxa.Stripe.Data.Fakers;
 using eDoxa.Stripe.Models;
-using eDoxa.Stripe.UnitTests.Utilities;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -33,8 +33,6 @@ namespace eDoxa.Cashier.UnitTests.Commands.Handlers
     [TestClass]
     public sealed class VerifyAccountCommandHandlerTest
     {
-        private static readonly FakeCashierFactory FakeCashierFactory = FakeCashierFactory.Instance;
-        private static readonly StripeBuilder StripeBuilder = StripeBuilder.Instance;
         private Mock<IHttpContextAccessor> _mockHttpContextAccessor;
         private Mock<IStripeService> _mockStripeService;
         private Mock<IUserRepository> _mockUserRepository;
@@ -60,7 +58,9 @@ namespace eDoxa.Cashier.UnitTests.Commands.Handlers
         public async Task HandleAsync_VerifyAccountCommand_ShouldBeOfTypeEither()
         {
             // Arrange
-            var address = StripeBuilder.CreateAddress();
+            var addressFaker = new AddressFaker();
+
+            var address = addressFaker.FakeAddress();
 
             var command = new VerifyAccountCommand(
                 address.Line1,
@@ -71,7 +71,9 @@ namespace eDoxa.Cashier.UnitTests.Commands.Handlers
                 true
             );
 
-            var user = FakeCashierFactory.CreateUser();
+            var userFaker = new UserFaker();
+
+            var user = userFaker.FakeNewUser();
 
             _mockUserRepository.Setup(mock => mock.GetUserAsNoTrackingAsync(It.IsAny<UserId>())).ReturnsAsync(user).Verifiable();
 

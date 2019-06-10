@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Api.Application.Commands;
 using eDoxa.Cashier.Api.Controllers;
 using eDoxa.Seedwork.Testing.TestConstructor;
-using eDoxa.Stripe.UnitTests.Utilities;
 
 using FluentAssertions;
 
@@ -31,7 +30,6 @@ namespace eDoxa.Cashier.UnitTests.Controllers
     [TestClass]
     public sealed class StripeBankAccountControllerTest
     {
-        private static readonly StripeBuilder StripeBuilder = StripeBuilder.Instance;
         private Mock<IMediator> _mockMediator;
 
         [TestInitialize]
@@ -60,14 +58,12 @@ namespace eDoxa.Cashier.UnitTests.Controllers
         public async Task CreateBankAccountAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
-            var sourceToken = StripeBuilder.CreateSourceToken();
-
             _mockMediator.Setup(mock => mock.Send(It.IsAny<CreateBankAccountCommand>(), It.IsAny<CancellationToken>())).Returns(Unit.Task).Verifiable();
 
             var controller = new StripeBankAccountController(_mockMediator.Object);
 
             // Act
-            var result = await controller.CreateBankAccountAsync(new CreateBankAccountCommand(sourceToken));
+            var result = await controller.CreateBankAccountAsync(new CreateBankAccountCommand("qwe23rwr2r12rqwe123qwsda241qweasd"));
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();

@@ -14,15 +14,15 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Application.Commands;
 using eDoxa.Cashier.Api.Application.Commands.Handlers;
+using eDoxa.Cashier.Api.Application.Data.Fakers;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.UnitTests.Utilities.Fakes;
-using eDoxa.Cashier.UnitTests.Utilities.Mocks.Extensions;
+using eDoxa.Cashier.UnitTests.Extensions;
 using eDoxa.Commands.Extensions;
 using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Testing.TestConstructor;
 using eDoxa.Stripe.Abstractions;
+using eDoxa.Stripe.Data.Fakers;
 using eDoxa.Stripe.Models;
-using eDoxa.Stripe.UnitTests.Utilities;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -33,8 +33,6 @@ namespace eDoxa.Cashier.UnitTests.Commands.Handlers
     [TestClass]
     public sealed class CreateUserCommandHandlerTest
     {
-        private static readonly StripeBuilder StripeBuilder = StripeBuilder.Instance;
-        private static readonly FakeCashierFactory FakeCashierFactory = FakeCashierFactory.Instance;
         private Mock<IStripeService> _mockStripeService;
         private Mock<IUserRepository> _mockUserRepository;
 
@@ -56,9 +54,13 @@ namespace eDoxa.Cashier.UnitTests.Commands.Handlers
         public async Task HandleAsync_InitializeServiceCommand_ShouldBeCompletedTask()
         {
             // Arrange
-            var userId = FakeCashierFactory.CreateUserId();
+            var userFaker = new UserFaker();
 
-            var person = StripeBuilder.CreatePerson();
+            var user = userFaker.FakeNewUser();
+
+            var personFaker = new PersonFaker();
+
+            var person = personFaker.FakePerson();
 
             _mockUserRepository.Setup(mock => mock.Create(It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<string>())).Verifiable();
 
@@ -71,7 +73,7 @@ namespace eDoxa.Cashier.UnitTests.Commands.Handlers
             // Act
             await handler.HandleAsync(
                 new CreateUserCommand(
-                    userId,
+                    user.Id,
                     person.Email,
                     person.FirstName,
                     person.LastName,

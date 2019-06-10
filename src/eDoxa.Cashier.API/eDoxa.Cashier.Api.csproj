@@ -43,8 +43,4 @@
       </Content>
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Application\Data\Fakers\" />
-    </ItemGroup>
-
 </Project>

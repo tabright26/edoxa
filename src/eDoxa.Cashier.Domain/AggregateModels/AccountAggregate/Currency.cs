@@ -22,15 +22,28 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
     public class Currency : ValueObject, ICurrency
     {
-        protected Currency(decimal amount, CurrencyType type)
+        protected Currency(decimal amount, CurrencyType type) : this()
         {
             Type = type;
             Amount = amount;
         }
 
+        private Currency()
+        {
+        }
+
         public CurrencyType Type { get; private set; }
 
         public decimal Amount { get; private set; }
+
+        public static Currency operator -(Currency currency)
+        {
+            return new Currency
+            {
+                Amount = currency.Amount,
+                Type = currency.Type
+            };
+        }
 
         public static implicit operator Price(Currency currency)
         {

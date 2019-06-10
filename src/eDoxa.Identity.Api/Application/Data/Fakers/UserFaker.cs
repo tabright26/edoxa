@@ -1,5 +1,5 @@
 ﻿// Filename: UserFaker.cs
-// Date Created: 2019-06-08
+// Date Created: 2019-06-09
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -25,14 +25,10 @@ namespace eDoxa.Identity.Api.Application.Data.Fakers
 
         public UserFaker()
         {
-            this.UseSeed(8675309);
-
             this.RuleSet(
                 NewUser,
                 ruleSet =>
                 {
-                    ruleSet.StrictMode(false);
-
                     ruleSet.CustomInstantiator(
                         faker =>
                         {
@@ -67,8 +63,6 @@ namespace eDoxa.Identity.Api.Application.Data.Fakers
                 AdminUser,
                 ruleSet =>
                 {
-                    ruleSet.StrictMode(false);
-
                     ruleSet.CustomInstantiator(
                         _ =>
                         {

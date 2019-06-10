@@ -24,7 +24,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
             Type = type;
         }
 
-        private Transaction()
+        public Transaction()
         {
             Timestamp = DateTime.UtcNow;
             Status = TransactionStatus.Pending;

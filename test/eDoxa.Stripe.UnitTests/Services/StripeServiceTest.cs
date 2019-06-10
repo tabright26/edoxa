@@ -13,8 +13,9 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Stripe.Data.Fakers;
 using eDoxa.Stripe.Services;
-using eDoxa.Stripe.UnitTests.Utilities;
+using eDoxa.Stripe.UnitTests.Extensions;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -28,7 +29,6 @@ namespace eDoxa.Stripe.UnitTests.Services
     [TestClass]
     public sealed class StripeServiceTest
     {
-        private static readonly StripeBuilder StripeBuilder = StripeBuilder.Instance;
         private Mock<AccountService> _mockAccountService;
         private Mock<CardService> _mockCardService;
         private Mock<CustomerService> _mockCustomerService;
@@ -53,7 +53,9 @@ namespace eDoxa.Stripe.UnitTests.Services
         public async Task CreateAccountAsync()
         {
             // Arrange
-            var account = StripeBuilder.CreateAccount();
+            var accountFaker = new AccountFaker();
+
+            var account = accountFaker.FakeAccount();
 
             _mockAccountService.Setup(mock => mock.CreateAsync(It.IsAny<AccountCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(account)
@@ -83,7 +85,9 @@ namespace eDoxa.Stripe.UnitTests.Services
         public async Task VerifyAccountAsync()
         {
             // Arrange
-            var account = StripeBuilder.CreateAccount();
+            var accountFaker = new AccountFaker();
+
+            var account = accountFaker.FakeAccount();
 
             _mockAccountService
                 .Setup(
@@ -96,7 +100,7 @@ namespace eDoxa.Stripe.UnitTests.Services
 
             // Act
             await service.VerifyAccountAsync(
-                StripeBuilder.CreateAccountId(),
+                account.ToStripeId(),
                 account.Individual.Address.Line1,
                 account.Individual.Address.Line2,
                 account.Individual.Address.City,
@@ -115,6 +119,12 @@ namespace eDoxa.Stripe.UnitTests.Services
         public async Task CreateBankAccountAsync()
         {
             // Arrange
+            var bankAccountFaker = new BankAccountFaker();
+
+            var accountFaker = new AccountFaker();
+
+            var account = accountFaker.FakeAccount();
+
             _mockExternalAccountService
                 .Setup(
                     mock => mock.CreateAsync(
@@ -124,13 +134,13 @@ namespace eDoxa.Stripe.UnitTests.Services
                         It.IsAny<CancellationToken>()
                     )
                 )
-                .ReturnsAsync(StripeBuilder.CreateBankAccount)
+                .ReturnsAsync(bankAccountFaker.FakeBankAccount)
                 .Verifiable();
 
             var service = this.StripeService();
 
             // Act
-            await service.CreateBankAccountAsync(StripeBuilder.CreateAccountId(), StripeBuilder.CreateSourceToken());
+            await service.CreateBankAccountAsync(account.ToStripeId(), "qwe23rwr2r12rqwe123qwsda241qweasd");
 
             // Assert
             _mockExternalAccountService.Verify(
@@ -148,16 +158,23 @@ namespace eDoxa.Stripe.UnitTests.Services
         public async Task DeleteBankAccountAsync()
         {
             // Arrange
+            var bankAccountFaker = new BankAccountFaker();
+
+            var bankAccount = bankAccountFaker.FakeBankAccount();
+
+            var accountFaker = new AccountFaker();
+
+            var account = accountFaker.FakeAccount();
 
             _mockExternalAccountService
                 .Setup(mock => mock.DeleteAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(StripeBuilder.CreateBankAccount)
+                .ReturnsAsync(bankAccountFaker.FakeBankAccount)
                 .Verifiable();
 
             var service = this.StripeService();
 
             // Act
-            await service.DeleteBankAccountAsync(StripeBuilder.CreateAccountId(), StripeBuilder.CreateBankAccountId());
+            await service.DeleteBankAccountAsync(account.ToStripeId(), bankAccount.ToStripeId());
 
             // Assert
             _mockExternalAccountService.Verify(
@@ -170,15 +187,21 @@ namespace eDoxa.Stripe.UnitTests.Services
         public async Task ListCardsAsync()
         {
             // Arrange
+            var customerFaker = new CustomerFaker();
+
+            var customer = customerFaker.FakeCustomer();
+
+            var cardFaker = new CardFaker();
+
             _mockCardService
                 .Setup(mock => mock.ListAsync(It.IsAny<string>(), It.IsAny<CardListOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(StripeBuilder.CreateCards())
+                .ReturnsAsync(cardFaker.FakeCards(5))
                 .Verifiable();
 
             var service = this.StripeService();
 
             // Act
-            await service.GetCardsAsync(StripeBuilder.CreateCustomerId());
+            await service.GetCardsAsync(customer.ToStripeId());
 
             // Assert
             _mockCardService.Verify(
@@ -191,15 +214,23 @@ namespace eDoxa.Stripe.UnitTests.Services
         public async Task CreateCardAsync()
         {
             // Arrange
+            var customerFaker = new CustomerFaker();
+
+            var customer = customerFaker.FakeCustomer();
+
+            var cardFaker = new CardFaker();
+
+            var card = cardFaker.FakeCard();
+
             _mockCardService
                 .Setup(mock => mock.CreateAsync(It.IsAny<string>(), It.IsAny<CardCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(StripeBuilder.CreateCard)
+                .ReturnsAsync(card)
                 .Verifiable();
 
             var service = this.StripeService();
 
             // Act
-            await service.CreateCardAsync(StripeBuilder.CreateCustomerId(), StripeBuilder.CreateSourceToken());
+            await service.CreateCardAsync(customer.ToStripeId(), "qwe23rwr2r12rqwe123qwsda241qweasd");
 
             // Assert
             _mockCardService.Verify(
@@ -212,14 +243,22 @@ namespace eDoxa.Stripe.UnitTests.Services
         public async Task DeleteCardAsync()
         {
             // Arrange
+            var customerFaker = new CustomerFaker();
+
+            var customer = customerFaker.FakeCustomer();
+
+            var cardFaker = new CardFaker();
+
+            var card = cardFaker.FakeCard();
+
             _mockCardService.Setup(mock => mock.DeleteAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(StripeBuilder.CreateCard)
+                .ReturnsAsync(card)
                 .Verifiable();
 
             var service = this.StripeService();
 
             // Act
-            await service.DeleteCardAsync(StripeBuilder.CreateCustomerId(), StripeBuilder.CreateCardId());
+            await service.DeleteCardAsync(customer.ToStripeId(), card.ToStripeId());
 
             // Assert
             _mockCardService.Verify(
@@ -232,14 +271,22 @@ namespace eDoxa.Stripe.UnitTests.Services
         public async Task CreateCustomerAsync()
         {
             // Arrange
+            var accountFaker = new AccountFaker();
+
+            var account = accountFaker.FakeAccount();
+
+            var customerFaker = new CustomerFaker();
+
+            var customer = customerFaker.FakeCustomer();
+
             _mockCustomerService.Setup(mock => mock.CreateAsync(It.IsAny<CustomerCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(StripeBuilder.CreateCustomer)
+                .ReturnsAsync(customer)
                 .Verifiable();
 
             var service = this.StripeService();
 
             // Act
-            await service.CreateCustomerAsync(Guid.NewGuid(), StripeBuilder.CreateAccountId(), StripeBuilder.CreateCustomer().Email);
+            await service.CreateCustomerAsync(Guid.NewGuid(), account.ToStripeId(), customer.Email);
 
             // Assert
             _mockCustomerService.Verify(
@@ -252,17 +299,25 @@ namespace eDoxa.Stripe.UnitTests.Services
         public async Task UpdateCardDefaultAsync()
         {
             // Arrange
+            var customerFaker = new CustomerFaker();
+
+            var customer = customerFaker.FakeCustomer();
+
+            var cardFaker = new CardFaker();
+
+            var card = cardFaker.FakeCard();
+
             _mockCustomerService
                 .Setup(
                     mock => mock.UpdateAsync(It.IsAny<string>(), It.IsAny<CustomerUpdateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>())
                 )
-                .ReturnsAsync(StripeBuilder.CreateCustomer)
+                .ReturnsAsync(customer)
                 .Verifiable();
 
             var service = this.StripeService();
 
             // Act
-            await service.UpdateCardDefaultAsync(StripeBuilder.CreateCustomerId(), StripeBuilder.CreateCardId());
+            await service.UpdateCardDefaultAsync(customer.ToStripeId(), card.ToStripeId());
 
             // Assert
             _mockCustomerService.Verify(
@@ -275,19 +330,27 @@ namespace eDoxa.Stripe.UnitTests.Services
         public async Task CreateInvoiceAsync()
         {
             // Arrange
+            var invoiceFaker = new InvoiceFaker();
+
+            var invoiceItemFaker = new InvoiceItemFaker();
+
+            var customerFaker = new CustomerFaker();
+
+            var customer = customerFaker.FakeCustomer();
+
             _mockInvoiceItemService
                 .Setup(mock => mock.CreateAsync(It.IsAny<InvoiceItemCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(StripeBuilder.CreateInvoiceItem)
+                .ReturnsAsync(invoiceItemFaker.FakeInvoiceItem)
                 .Verifiable();
 
             _mockInvoiceService.Setup(mock => mock.CreateAsync(It.IsAny<InvoiceCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(StripeBuilder.CreateInvoice)
+                .ReturnsAsync(invoiceFaker.FakeInvoice)
                 .Verifiable();
 
             var service = this.StripeService();
 
             // Act
-            await service.CreateInvoiceAsync(StripeBuilder.CreateCustomerId(), 1000, Guid.NewGuid(), string.Empty);
+            await service.CreateInvoiceAsync(customer.ToStripeId(), 1000, Guid.NewGuid(), string.Empty);
 
             // Assert
             _mockInvoiceItemService.Verify(
@@ -305,14 +368,20 @@ namespace eDoxa.Stripe.UnitTests.Services
         public async Task CreatePayoutAsync()
         {
             // Arrange
+            var transferFaker = new TransferFaker();
+
+            var accountFaker = new AccountFaker();
+
+            var account = accountFaker.FakeAccount();
+
             _mockTransferService.Setup(mock => mock.CreateAsync(It.IsAny<TransferCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(StripeBuilder.CreateTransfer)
+                .ReturnsAsync(transferFaker.FakeTransfer)
                 .Verifiable();
 
             var service = this.StripeService();
 
             // Act
-            await service.CreateTransferAsync(StripeBuilder.CreateAccountId(), 1000, Guid.NewGuid(), string.Empty);
+            await service.CreateTransferAsync(account.ToStripeId(), 1000, Guid.NewGuid(), string.Empty);
 
             // Assert
             _mockTransferService.Verify(

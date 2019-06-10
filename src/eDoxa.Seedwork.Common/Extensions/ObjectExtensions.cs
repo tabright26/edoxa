@@ -17,7 +17,14 @@ namespace eDoxa.Seedwork.Common.Extensions
         public static string DumbAsJson<T>(this T obj)
         where T : class
         {
-            return JsonConvert.SerializeObject(obj, Formatting.Indented);
+            return JsonConvert.SerializeObject(
+                obj,
+                Formatting.Indented,
+                new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                }
+            );
         }
     }
 }

@@ -12,7 +12,7 @@ using eDoxa.Arena.Challenges.Api.Application.Commands;
 using eDoxa.Arena.Challenges.Api.Application.Commands.Validations;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Repositories;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.UnitTests.Utilities.Mocks.Extensions;
+using eDoxa.Arena.Challenges.UnitTests.Extensions;
 
 using FluentAssertions;
 

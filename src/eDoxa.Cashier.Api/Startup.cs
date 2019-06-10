@@ -14,6 +14,8 @@ using System.Reflection;
 
 using AutoMapper;
 
+using Bogus;
+
 using eDoxa.Cashier.Api.Application.Data;
 using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Infrastructure;
@@ -46,6 +48,7 @@ namespace eDoxa.Cashier.Api
             Environment = environment;
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             StripeConfiguration.SetApiKey(configuration["StripeConfiguration:ApiKey"]);
+            Randomizer.Seed = new Random(8675309);
         }
 
         private IHostingEnvironment Environment { get; }
