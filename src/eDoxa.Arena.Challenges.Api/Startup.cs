@@ -14,8 +14,6 @@ using System.Reflection;
 
 using AutoMapper;
 
-using Bogus;
-
 using eDoxa.Arena.Challenges.Api.Application.Data;
 using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Infrastructure;
@@ -44,7 +42,6 @@ namespace eDoxa.Arena.Challenges.Api
             Configuration = configuration;
             Environment = environment;
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-            Randomizer.Seed = new Random(8675309);
         }
 
         private IHostingEnvironment Environment { get; }

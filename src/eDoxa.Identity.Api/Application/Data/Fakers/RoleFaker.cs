@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using Bogus;
 
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
+using eDoxa.Seedwork.Common.Extensions;
 using eDoxa.Seedwork.Security.Constants;
 
 namespace eDoxa.Identity.Api.Application.Data.Fakers
@@ -25,6 +26,8 @@ namespace eDoxa.Identity.Api.Application.Data.Fakers
 
         public RoleFaker()
         {
+            this.UseSeed();
+
             this.RuleSet(
                 AdminRole,
                 ruleSet =>

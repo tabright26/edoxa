@@ -1,5 +1,5 @@
-﻿// Filename: ParticipantFaker.cs
-// Date Created: 2019-06-09
+﻿// Filename: UserIdFaker.cs
+// Date Created: 2019-06-10
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,18 +10,20 @@
 
 using Bogus;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Seedwork.Common.Extensions;
 
-namespace eDoxa.Arena.Challenges.Api.Application.Data.Fakers
+namespace eDoxa.Seedwork.Common.Fakers
 {
-    public class ParticipantFaker : Faker<Participant>
+    public sealed class UserIdFaker : Faker<UserId>
     {
-        public ParticipantFaker()
+        public UserIdFaker()
         {
             this.UseSeed();
+
+            this.CustomInstantiator(faker => UserId.FromGuid(faker.Random.Guid()));
         }
-        public Participant FakeParticipant()
+
+        public UserId FakeUserId()
         {
             return this.Generate();
         }

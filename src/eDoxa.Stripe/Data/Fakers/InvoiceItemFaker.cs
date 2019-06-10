@@ -10,6 +10,8 @@
 
 using Bogus;
 
+using eDoxa.Seedwork.Common.Extensions;
+
 using Stripe;
 
 namespace eDoxa.Stripe.Data.Fakers
@@ -18,7 +20,7 @@ namespace eDoxa.Stripe.Data.Fakers
     {
         public InvoiceItemFaker()
         {
-            this.UseSeed(8675309);
+            this.UseSeed();
         }
 
         public InvoiceItem FakeInvoiceItem()

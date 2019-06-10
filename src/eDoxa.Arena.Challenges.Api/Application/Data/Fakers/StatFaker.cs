@@ -11,10 +11,20 @@
 using Bogus;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
+using eDoxa.Seedwork.Common.Extensions;
 
 namespace eDoxa.Arena.Challenges.Api.Application.Data.Fakers
 {
     public class StatFaker : Faker<Stat>
     {
+        public StatFaker()
+        {
+            this.UseSeed();
+        }
+
+        public Stat FakeStat()
+        {
+            return this.Generate();
+        }
     }
 }

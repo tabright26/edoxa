@@ -10,15 +10,17 @@
 
 using Bogus;
 
+using eDoxa.Seedwork.Common.Extensions;
+
 using Stripe;
 
 namespace eDoxa.Stripe.Data.Fakers
 {
     public sealed class AddressFaker : Faker<Address>
     {
-        public AddressFaker() : base("en_CA")
+        public AddressFaker()
         {
-            this.UseSeed(8675309);
+            this.UseSeed();
 
             this.RuleFor(address => address.Line1, faker => faker.Address.StreetAddress());
 

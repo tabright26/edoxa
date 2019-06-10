@@ -10,6 +10,8 @@
 
 using Bogus;
 
+using eDoxa.Seedwork.Common.Extensions;
+
 using Stripe;
 
 namespace eDoxa.Stripe.Data.Fakers
@@ -18,7 +20,17 @@ namespace eDoxa.Stripe.Data.Fakers
     {
         public InvoiceFaker()
         {
-            this.UseSeed(8675309);
+            this.UseSeed();
+
+            this.RuleFor(invoice => invoice.Id, faker => $"in_{faker.Random.Guid().ToString().Replace("-", string.Empty)}");
+
+            this.RuleFor(invoice => invoice.Object, "invoice");
+
+            this.RuleFor(invoice => invoice.Created, faker => faker.Date.Recent());
+
+            this.RuleFor(invoice => invoice.Description, faker => faker.Lorem.Sentence());
+
+            this.RuleFor(invoice => invoice.Currency, "cad");
         }
 
         public Invoice FakeInvoice()

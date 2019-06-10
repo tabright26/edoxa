@@ -34,7 +34,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate
             ExternalAccount = externalAccount;
         }
 
-        private Participant()
+        public Participant()
         {
             Timestamp = DateTime.UtcNow;
             LastSync = null;

@@ -1,5 +1,5 @@
-﻿// Filename: UserFakerTest.cs
-// Date Created: 2019-06-09
+﻿// Filename: TransactionFakerTest.cs
+// Date Created: 2019-06-10
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,34 +10,33 @@
 
 using System;
 
-using eDoxa.Identity.Api.Application.Data.Fakers;
+using eDoxa.Cashier.Api.Application.Data.Fakers;
 using eDoxa.Seedwork.Common.Extensions;
-using eDoxa.Seedwork.Common.Fakers;
 
 using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Identity.UnitTests.Application.Data.Fakers
+namespace eDoxa.Cashier.UnitTests.Application.Data.Fakers
 {
     [TestClass]
-    public class UserFakerTest
+    public sealed class TransactionFakerTest
     {
         [TestMethod]
-        public void FakeNewUsers_ShouldNotThrow()
+        public void FakePositiveTransactions_ShouldNotThrow()
         {
             // Arrange
-            var userFaker = new UserFaker();
+            var transactionFaker = new TransactionFaker();
 
             // Act
             var action = new Action(
                 () =>
                 {
-                    var users = userFaker.FakeNewUsers(99);
+                    var transactions = transactionFaker.FakePositiveTransactions(10);
 
-                    Console.WriteLine(users.DumbAsJson());
+                    Console.WriteLine(transactions.DumbAsJson());
 
-                    users.Should().HaveCount(99);
+                    transactions.Should().HaveCount(10);
                 }
             );
 
@@ -46,18 +45,18 @@ namespace eDoxa.Identity.UnitTests.Application.Data.Fakers
         }
 
         [TestMethod]
-        public void FakeNewUser_ShouldNotThrow()
+        public void FakePositiveTransaction_ShouldNotThrow()
         {
             // Arrange
-            var userFaker = new UserFaker();
+            var transactionFaker = new TransactionFaker();
 
             // Act
             var action = new Action(
                 () =>
                 {
-                    var user = userFaker.FakeNewUser();
+                    var transaction = transactionFaker.FakePositiveTransaction();
 
-                    Console.WriteLine(user.DumbAsJson());
+                    Console.WriteLine(transaction.DumbAsJson());
                 }
             );
 
@@ -66,18 +65,20 @@ namespace eDoxa.Identity.UnitTests.Application.Data.Fakers
         }
 
         [TestMethod]
-        public void FakeAdminUser_ShouldNotThrow()
+        public void FakeNegativeTransactions_ShouldNotThrow()
         {
             // Arrange
-            var userFaker = new UserFaker();
+            var transactionFaker = new TransactionFaker();
 
             // Act
             var action = new Action(
                 () =>
                 {
-                    var user = userFaker.FakeAdminUser();
+                    var transactions = transactionFaker.FakeNegativeTransactions(10);
 
-                    Console.WriteLine(user.DumbAsJson());
+                    Console.WriteLine(transactions.DumbAsJson());
+
+                    transactions.Should().HaveCount(10);
                 }
             );
 
@@ -86,22 +87,18 @@ namespace eDoxa.Identity.UnitTests.Application.Data.Fakers
         }
 
         [TestMethod]
-        public void FakeUserId_ShouldNotThrow()
+        public void FakeNegativeTransaction_ShouldNotThrow()
         {
             // Arrange
-            var userIdFaker = new UserIdFaker();
+            var transactionFaker = new TransactionFaker();
 
             // Act
             var action = new Action(
                 () =>
                 {
-                    var user = userIdFaker.FakeUserId();
+                    var transaction = transactionFaker.FakeNegativeTransaction();
 
-                    Console.WriteLine(user.DumbAsJson());
-
-                    user = userIdFaker.FakeUserId();
-
-                    Console.WriteLine(user.DumbAsJson());
+                    Console.WriteLine(transaction.DumbAsJson());
                 }
             );
 

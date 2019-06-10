@@ -13,8 +13,6 @@ using System.Reflection;
 
 using AutoMapper;
 
-using Bogus;
-
 using eDoxa.Identity.Api.Application.Data;
 using eDoxa.Identity.Api.Extensions;
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
@@ -43,7 +41,6 @@ namespace eDoxa.Identity.Api
         {
             Configuration = configuration;
             Environment = environment;
-            Randomizer.Seed = new Random(8675309);
         }
 
         private IHostingEnvironment Environment { get; }

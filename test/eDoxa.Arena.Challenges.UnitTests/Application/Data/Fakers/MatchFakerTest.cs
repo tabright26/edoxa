@@ -1,5 +1,5 @@
-﻿// Filename: CustomerFakerTest.cs
-// Date Created: 2019-06-09
+﻿// Filename: MatchFakerTest.cs
+// Date Created: 2019-06-10
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,31 +10,31 @@
 
 using System;
 
+using eDoxa.Arena.Challenges.Api.Application.Data.Fakers;
 using eDoxa.Seedwork.Common.Extensions;
-using eDoxa.Stripe.Data.Fakers;
 
 using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Stripe.UnitTests.Data.Fakers
+namespace eDoxa.Arena.Challenges.UnitTests.Application.Data.Fakers
 {
     [TestClass]
-    public sealed class CustomerFakerTest
+    public sealed class MatchFakerTest
     {
         [TestMethod]
-        public void FakeCustomer_ShouldNotThrow()
+        public void FakeMatch_ShouldNotThrow()
         {
             // Arrange
-            var customerFaker = new CustomerFaker();
+            var matchFaker = new MatchFaker();
 
             // Act
             var action = new Action(
                 () =>
                 {
-                    var customer = customerFaker.FakeCustomer();
+                    var match = matchFaker.FakeMatch();
 
-                    Console.WriteLine(customer.DumbAsJson());
+                    Console.WriteLine(match.DumbAsJson());
                 }
             );
 

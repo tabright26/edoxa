@@ -12,6 +12,7 @@ using Bogus;
 
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
+using eDoxa.Seedwork.Common.Extensions;
 
 namespace eDoxa.Cashier.Api.Application.Data.Fakers
 {
@@ -24,7 +25,7 @@ namespace eDoxa.Cashier.Api.Application.Data.Fakers
 
         public AccountFaker()
         {
-            this.UseSeed(8675309);
+            this.UseSeed();
 
             this.RuleSet(
                 NewAccount,

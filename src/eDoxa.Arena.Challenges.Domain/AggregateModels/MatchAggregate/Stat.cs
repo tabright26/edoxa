@@ -24,7 +24,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
             Weighting = weighting;
         }
 
-        private Stat()
+        public Stat()
         {
             // Required by EF Core.
         }

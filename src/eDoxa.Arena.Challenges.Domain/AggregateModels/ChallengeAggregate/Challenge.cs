@@ -47,7 +47,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             Timeline = timeline;
         }
 
-        private Challenge()
+        public Challenge()
         {
             TestMode = null;
             CreatedAt = DateTime.UtcNow;

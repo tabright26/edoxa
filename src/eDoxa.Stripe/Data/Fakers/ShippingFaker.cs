@@ -10,6 +10,8 @@
 
 using Bogus;
 
+using eDoxa.Seedwork.Common.Extensions;
+
 using Stripe;
 
 namespace eDoxa.Stripe.Data.Fakers
@@ -20,11 +22,16 @@ namespace eDoxa.Stripe.Data.Fakers
 
         public ShippingFaker()
         {
-            this.UseSeed(8675309);
+            this.UseSeed();
 
             this.RuleFor(shipping => shipping.Phone, faker => faker.Phone.PhoneNumber("##########"));
 
             this.RuleFor(shipping => shipping.Address, _addressFaker);
+        }
+
+        public Shipping FakeShipping()
+        {
+            return this.Generate();
         }
     }
 }

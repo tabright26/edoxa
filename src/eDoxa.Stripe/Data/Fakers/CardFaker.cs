@@ -10,6 +10,8 @@
 
 using Bogus;
 
+using eDoxa.Seedwork.Common.Extensions;
+
 using Stripe;
 
 namespace eDoxa.Stripe.Data.Fakers
@@ -21,7 +23,7 @@ namespace eDoxa.Stripe.Data.Fakers
 
         public CardFaker()
         {
-            this.UseSeed(8675309);
+            this.UseSeed();
 
             this.RuleFor(customer => customer.Id, faker => $"card_{faker.Random.Guid().ToString().Replace("-", string.Empty)}");
 

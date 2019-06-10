@@ -1,5 +1,5 @@
-﻿// Filename: CustomerFakerTest.cs
-// Date Created: 2019-06-09
+﻿// Filename: PersonFakerTest.cs
+// Date Created: 2019-06-10
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -20,21 +20,21 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace eDoxa.Stripe.UnitTests.Data.Fakers
 {
     [TestClass]
-    public sealed class CustomerFakerTest
+    public sealed class PersonFakerTest
     {
         [TestMethod]
-        public void FakeCustomer_ShouldNotThrow()
+        public void FakePerson_ShouldNotThrow()
         {
             // Arrange
-            var customerFaker = new CustomerFaker();
+            var personFaker = new PersonFaker();
 
             // Act
             var action = new Action(
                 () =>
                 {
-                    var customer = customerFaker.FakeCustomer();
+                    var person = personFaker.FakePerson();
 
-                    Console.WriteLine(customer.DumbAsJson());
+                    Console.WriteLine(person.DumbAsJson());
                 }
             );
 

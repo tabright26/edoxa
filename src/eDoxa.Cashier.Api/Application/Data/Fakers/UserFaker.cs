@@ -14,6 +14,8 @@ using Bogus;
 
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Common;
+using eDoxa.Seedwork.Common.Extensions;
+using eDoxa.Seedwork.Common.Fakers;
 using eDoxa.Stripe.Models;
 
 namespace eDoxa.Cashier.Api.Application.Data.Fakers
@@ -23,11 +25,12 @@ namespace eDoxa.Cashier.Api.Application.Data.Fakers
         private const string NewUser = nameof(NewUser);
         private const string AdminUser = nameof(AdminUser);
 
+        private readonly UserIdFaker _userIdFaker = new UserIdFaker();
         private readonly AccountFaker _accountFaker = new AccountFaker();
 
         public UserFaker()
         {
-            this.UseSeed(8675309);
+            this.UseSeed();
 
             this.RuleSet(
                 NewUser,
@@ -36,7 +39,7 @@ namespace eDoxa.Cashier.Api.Application.Data.Fakers
                     ruleSet.CustomInstantiator(
                         faker =>
                         {
-                            var userId = UserId.FromGuid(faker.Random.Guid());
+                            var userId = _userIdFaker.FakeUserId();
 
                             var connectAccountId = new StripeConnectAccountId($"acct_{faker.Random.Guid().ToString().Replace("-", string.Empty)}");
 

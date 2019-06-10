@@ -29,7 +29,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
             Participant = participant;
         }
 
-        private Match()
+        public Match()
         {
             Timestamp = DateTime.UtcNow;
             _stats = new HashSet<Stat>();
