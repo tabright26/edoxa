@@ -10,11 +10,9 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Domain.Fakers;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.Infrastructure.Repositories;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Infrastructure.Factories;
 
 using FluentAssertions;
@@ -29,7 +27,9 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Repositories
         [TestMethod]
         public async Task Create_Challenge_ShouldNotBeNull()
         {
-            var challenge = CreateChallenge();
+            var challengeFaker = new ChallengeFaker();
+
+            var challenge = challengeFaker.FakeChallenge();
 
             using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
             {
@@ -53,18 +53,36 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Repositories
             }
         }
 
-        private static Challenge CreateChallenge()
+        [DataRow(2)]
+        [DataRow(5)]
+        [DataRow(10)]
+        [DataTestMethod]
+        public async Task Create_Challenges_ShouldHaveCount(int count)
         {
-            var builder = new ChallengeBuilder(
-                Game.LeagueOfLegends,
-                new ChallengeName("Weekly challenge"),
-                new ChallengeSetup(BestOf.Three, PayoutEntries.Ten, MoneyEntryFee.Ten, new Entries(20)),
-                ChallengeDuration.OneDay
-            );
+            var challengeFaker = new ChallengeFaker();
 
-            builder.EnableTestMode(new TestMode(ChallengeState.InProgress, TestModeMatchQuantity.Exact, TestModeParticipantQuantity.Fulfilled));
+            var challenges = challengeFaker.FakeChallenges(count);
 
-            return builder.Build() as Challenge;
+            using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
+            {
+                using (var context = factory.CreateContext())
+                {
+                    var repository = new ChallengeRepository(context);
+
+                    repository.Create(challenges);
+
+                    await repository.UnitOfWork.CommitAsync();
+                }
+
+                using (var context = factory.CreateContext())
+                {
+                    var repository = new ChallengeRepository(context);
+
+                    challenges = await repository.FindChallengesAsync();
+
+                    challenges.Should().HaveCount(count);
+                }
+            }
         }
     }
 }

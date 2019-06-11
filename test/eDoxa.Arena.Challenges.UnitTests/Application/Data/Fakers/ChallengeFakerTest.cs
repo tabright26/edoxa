@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
+using System.Linq;
 
 using eDoxa.Arena.Challenges.Domain.Fakers;
 using eDoxa.Seedwork.Common.Enumerations;
@@ -30,12 +30,20 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Data.Fakers
             var challengeFaker = new ChallengeFaker();
 
             // Act
-            var action = new Action(() => challengeFaker.FakeChallenge(Game.LeagueOfLegends));
+            var challenge = challengeFaker.FakeChallenge(Game.LeagueOfLegends);
 
             // Assert
-            action.Should().NotThrow();
+            var participants = challenge.Participants.ToList();
+
+            participants.Should().HaveCount(participants.Distinct().Count());
+
+            var matches = challenge.Participants.SelectMany(participant => participant.Matches).ToList();
+
+            matches.Should().HaveCount(matches.Distinct().Count());
+
+            challenge.DumbAsJson(true);
         }
-        
+
         [TestMethod]
         public void FakeChallenge_ShouldNotThrow()
         {
@@ -43,17 +51,15 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Data.Fakers
             var challengeFaker = new ChallengeFaker();
 
             // Act
-            var action = new Action(
-                () =>
-                {
-                    var challenge = challengeFaker.FakeChallenge();
-
-                    challenge.DumbAsJson(true);
-                }
-            );
+            var challenges = challengeFaker.FakeChallenges(5);
 
             // Assert
-            action.Should().NotThrow();
+            var matchReferences = challenges.SelectMany(
+                    challenge => challenge.Participants.SelectMany(participant => participant.Matches.Select(match => match.Reference))
+                )
+                .ToList();
+
+            matchReferences.Should().HaveCount(matchReferences.Distinct().Count());
         }
     }
 }

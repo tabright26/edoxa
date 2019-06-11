@@ -31,7 +31,7 @@ namespace eDoxa.Arena.Challenges.Api.Profiles
                 .ForMember(challenge => challenge.State, config => config.MapFrom(challenge => challenge.Timeline.State))
                 .ForMember(challenge => challenge.Timeline, config => config.MapFrom(challenge => challenge.Timeline))
                 .ForMember(challenge => challenge.Setup, config => config.MapFrom(challenge => challenge.Setup))
-                .ForMember(challenge => challenge.Scoring, config => config.MapFrom(challenge => new Scoring(challenge.Stats)))
+                .ForMember(challenge => challenge.Scoring, config => config.MapFrom(challenge => new Scoring(challenge.ScoringItems)))
                 .ForMember(challenge => challenge.Payout, config => config.MapFrom(challenge => new Payout(new Buckets(challenge.Buckets))))
                 .ForMember(challenge => challenge.Scoreboard, config => config.MapFrom(challenge => new Scoreboard(challenge.Participants)))
                 .ForMember(

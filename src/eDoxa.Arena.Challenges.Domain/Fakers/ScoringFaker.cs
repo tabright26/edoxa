@@ -32,16 +32,16 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers
                 {
                     this.CustomInstantiator(
                         scoring => new Scoring(
-                            new HashSet<ChallengeStat>
+                            new HashSet<ScoringItem>
                             {
-                                new ChallengeStat(new StatName(nameof(LeagueOfLegendsParticipantStatsDto.Kills)), new StatWeighting(4F)),
-                                new ChallengeStat(new StatName(nameof(LeagueOfLegendsParticipantStatsDto.Deaths)), new StatWeighting(-3F)),
-                                new ChallengeStat(new StatName(nameof(LeagueOfLegendsParticipantStatsDto.Assists)), new StatWeighting(3F)),
-                                new ChallengeStat(
+                                new ScoringItem(new StatName(nameof(LeagueOfLegendsParticipantStatsDto.Kills)), new StatWeighting(4F)),
+                                new ScoringItem(new StatName(nameof(LeagueOfLegendsParticipantStatsDto.Deaths)), new StatWeighting(-3F)),
+                                new ScoringItem(new StatName(nameof(LeagueOfLegendsParticipantStatsDto.Assists)), new StatWeighting(3F)),
+                                new ScoringItem(
                                     new StatName(nameof(LeagueOfLegendsParticipantStatsDto.TotalDamageDealtToChampions)),
                                     new StatWeighting(0.00015F)
                                 ),
-                                new ChallengeStat(new StatName(nameof(LeagueOfLegendsParticipantStatsDto.TotalHeal)), new StatWeighting(0.0008F))
+                                new ScoringItem(new StatName(nameof(LeagueOfLegendsParticipantStatsDto.TotalHeal)), new StatWeighting(0.0008F))
                             }
                         )
                     );

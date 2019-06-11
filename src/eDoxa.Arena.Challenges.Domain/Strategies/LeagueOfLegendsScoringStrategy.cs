@@ -22,13 +22,13 @@ namespace eDoxa.Arena.Challenges.Domain.Strategies
     {
         public IScoring Scoring =>
             new Scoring(
-                new HashSet<ChallengeStat>
+                new HashSet<ScoringItem>
                 {
-                    new ChallengeStat(new StatName(nameof(LeagueOfLegendsParticipantStatsDto.Kills)), new StatWeighting(4)),
-                    new ChallengeStat(new StatName(nameof(LeagueOfLegendsParticipantStatsDto.Deaths)), new StatWeighting(-3)),
-                    new ChallengeStat(new StatName(nameof(LeagueOfLegendsParticipantStatsDto.Assists)), new StatWeighting(3)),
-                    new ChallengeStat(new StatName(nameof(LeagueOfLegendsParticipantStatsDto.TotalDamageDealtToChampions)), new StatWeighting(0.0008F)),
-                    new ChallengeStat(new StatName(nameof(LeagueOfLegendsParticipantStatsDto.TotalHeal)), new StatWeighting(0.0015F))
+                    new ScoringItem(new StatName(nameof(LeagueOfLegendsParticipantStatsDto.Kills)), new StatWeighting(4)),
+                    new ScoringItem(new StatName(nameof(LeagueOfLegendsParticipantStatsDto.Deaths)), new StatWeighting(-3)),
+                    new ScoringItem(new StatName(nameof(LeagueOfLegendsParticipantStatsDto.Assists)), new StatWeighting(3)),
+                    new ScoringItem(new StatName(nameof(LeagueOfLegendsParticipantStatsDto.TotalDamageDealtToChampions)), new StatWeighting(0.0008F)),
+                    new ScoringItem(new StatName(nameof(LeagueOfLegendsParticipantStatsDto.TotalHeal)), new StatWeighting(0.0015F))
                 }
             );
     }

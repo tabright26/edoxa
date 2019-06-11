@@ -54,7 +54,11 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate
         [CanBeNull]
         public Score AverageScore => Matches.Count >= MatchBestOf ? new ParticipantScore(this) : null;
 
-        public IReadOnlyCollection<Match> Matches => _matches;
+        public IReadOnlyCollection<Match> Matches
+        {
+            get => _matches;
+            set => _matches = new HashSet<Match>(value);
+        }
 
         public bool HasFinalScore(ChallengeTimeline timeline)
         {

@@ -57,7 +57,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
             var builder = new ChallengeBuilder(
                 Game.LeagueOfLegends,
                 new ChallengeName("Weekly challenge"),
-                new ChallengeSetup(BestOf.Three, PayoutEntries.Ten, MoneyEntryFee.Ten, new Entries(20)),
+                new ChallengeSetup(BestOf.Three, PayoutEntries.Ten, MoneyEntryFee.Ten),
                 ChallengeDuration.OneDay
             );
 

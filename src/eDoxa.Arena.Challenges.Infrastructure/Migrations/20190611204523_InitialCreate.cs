@@ -1,4 +1,4 @@
-﻿// Filename: 20190611175301_InitialCreate.cs
+﻿// Filename: 20190611204523_InitialCreate.cs
 // Date Created: 2019-06-11
 // 
 // ================================================
@@ -269,7 +269,23 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
 
             migrationBuilder.CreateIndex("IX_Match_ParticipantId", schema: "edoxa", table: "Match", column: "ParticipantId");
 
+            migrationBuilder.CreateIndex(
+                "IX_Match_Reference",
+                schema: "edoxa",
+                table: "Match",
+                column: "Reference",
+                unique: true
+            );
+
             migrationBuilder.CreateIndex("IX_Participant_ChallengeId", schema: "edoxa", table: "Participant", column: "ChallengeId");
+
+            migrationBuilder.CreateIndex(
+                "IX_Participant_Id_UserId",
+                schema: "edoxa",
+                table: "Participant",
+                columns: new[] {"Id", "UserId"},
+                unique: true
+            );
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

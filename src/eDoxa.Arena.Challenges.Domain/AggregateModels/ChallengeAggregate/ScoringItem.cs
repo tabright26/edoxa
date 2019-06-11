@@ -15,15 +15,15 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed class ChallengeStat : ValueObject
+    public sealed class ScoringItem : ValueObject
     {
-        public ChallengeStat(StatName name, StatWeighting weighting) : this()
+        public ScoringItem(StatName name, StatWeighting weighting) : this()
         {
             Name = name;
             Weighting = weighting;
         }
 
-        private ChallengeStat()
+        private ScoringItem()
         {
             // Required by EF Core.
         }

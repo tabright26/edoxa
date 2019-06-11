@@ -46,7 +46,11 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                 .IsRequired();
 
             builder.Ignore(match => match.TotalScore);
-            
+
+            builder.HasKey(match => match.Id);
+
+            builder.HasIndex(match => match.Reference).IsUnique();
+
             builder.OwnsMany(
                 match => match.Stats,
                 matchStats =>
@@ -82,8 +86,6 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                     matchStats.HasKey(nameof(MatchId), "Id");
                 }
             );
-
-            builder.HasKey(match => match.Id);
         }
     }
 }

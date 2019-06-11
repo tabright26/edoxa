@@ -26,21 +26,13 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
         {
             builder.ToTable("Participant");
 
-            builder.EntityId(participant => participant.Id)
-                .HasColumnName("Id")
-                .IsRequired();
+            builder.EntityId(participant => participant.Id).HasColumnName("Id").IsRequired();
 
-            builder.Property(participant => participant.Timestamp)
-                .HasColumnName("Timestamp")
-                .IsRequired();
+            builder.Property(participant => participant.Timestamp).HasColumnName("Timestamp").IsRequired();
 
-            builder.Property(participant => participant.LastSync)
-                .HasColumnName("LastSync")
-                .IsRequired(false);
-            
-            builder.EntityId(participant => participant.UserId)
-                .HasColumnName("UserId")
-                .IsRequired();
+            builder.Property(participant => participant.LastSync).HasColumnName("LastSync").IsRequired(false);
+
+            builder.EntityId(participant => participant.UserId).HasColumnName("UserId").IsRequired();
 
             builder.Property(participant => participant.ExternalAccount)
                 .HasConversion(externalAccount => externalAccount.ToString(), externalAccount => new ExternalAccount(externalAccount))
@@ -59,15 +51,20 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
 
             builder.Ignore(participant => participant.AverageScore);
 
-            builder.HasMany(participant => participant.Matches)
-                .WithOne()
-                .HasForeignKey(nameof(ParticipantId))
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
+            builder.HasKey(participant => participant.Id);
+
+            builder.HasIndex(
+                    participant => new
+                    {
+                        ParticipantId = participant.Id,
+                        participant.UserId
+                    }
+                )
+                .IsUnique();
+
+            builder.HasMany(participant => participant.Matches).WithOne().HasForeignKey(nameof(ParticipantId)).IsRequired().OnDelete(DeleteBehavior.Cascade);
 
             builder.Metadata.FindNavigation(nameof(Participant.Matches)).SetPropertyAccessMode(PropertyAccessMode.Field);
-
-            builder.HasKey(participant => participant.Id);
         }
     }
 }

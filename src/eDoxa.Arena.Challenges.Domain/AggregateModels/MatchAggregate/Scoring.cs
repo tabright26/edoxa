@@ -18,7 +18,9 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
 {
     public sealed class Scoring : Dictionary<StatName, StatWeighting>, IScoring
     {
-        public Scoring(IEnumerable<ChallengeStat> stats) : base(stats.ToDictionary(stat => stat.Name, stat => stat.Weighting))
+        public Scoring(IEnumerable<ScoringItem> scoringItems) : base(
+            scoringItems.ToDictionary(scoringItem => scoringItem.Name, scoringItem => scoringItem.Weighting)
+        )
         {
         }
 

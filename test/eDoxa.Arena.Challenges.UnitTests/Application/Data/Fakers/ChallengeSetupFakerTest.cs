@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.Fakers;
@@ -25,18 +26,11 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Data.Fakers
     [TestClass]
     public sealed class ChallengeSetupFakerTest
     {
-        public static IEnumerable<object[]> Data
-        {
-            get
-            {
-                yield return new object[] {CurrencyType.Money, typeof(MoneyEntryFee)};
-                yield return new object[] {CurrencyType.Token, typeof(TokenEntryFee)};
-            }
-        }
+        public static IEnumerable<object[]> Data => CurrencyType.GetAll().Select(currency => new object[] {currency});
 
         [DataTestMethod]
         [DynamicData(nameof(Data))]
-        public void FakeSetup(CurrencyType currency, Type entryFeeType)
+        public void FakeSetup(CurrencyType currency)
         {
             // Arrange
             var setupFaker = new ChallengeSetupFaker();
@@ -45,7 +39,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Data.Fakers
             var setup = setupFaker.FakeSetup(currency);
 
             // Assert
-            setup.EntryFee.Should().BeOfType(entryFeeType);
+            setup.EntryFee.Type.Should().Be(currency);
 
             Console.WriteLine(setup.DumbAsJson());
         }

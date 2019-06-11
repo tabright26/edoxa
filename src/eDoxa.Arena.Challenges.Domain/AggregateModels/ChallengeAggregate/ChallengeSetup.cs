@@ -8,6 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,19 +16,14 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public class ChallengeSetup : ValueObject
+    public sealed class ChallengeSetup : ValueObject
     {
-        public ChallengeSetup(
-            BestOf bestOf,
-            PayoutEntries payoutEntries,
-            EntryFee entryFee,
-            Entries entries
-        ) : this()
+        public ChallengeSetup(BestOf bestOf, PayoutEntries payoutEntries, EntryFee entryFee) : this()
         {
             BestOf = bestOf;
-            EntryFee = entryFee;
-            Entries = entries;
+            Entries = new Entries(Convert.ToInt32(payoutEntries * 2));
             PayoutEntries = payoutEntries;
+            EntryFee = new EntryFee(entryFee.Type, entryFee.Amount);
             PrizePool = new PrizePool(Entries, EntryFee);
         }
 

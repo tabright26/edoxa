@@ -32,7 +32,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
     public class Challenge : Entity<ChallengeId>, IChallenge, IAggregateRoot
     {
         private HashSet<Participant> _participants;
-        private HashSet<ChallengeStat> _stats;
+        private HashSet<ScoringItem> _scoringItems;
         private List<Bucket> _buckets;
 
         public Challenge(
@@ -55,12 +55,16 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             TestMode = null;
             CreatedAt = DateTime.UtcNow;
             LastSync = null;
-            _stats = new HashSet<ChallengeStat>();
+            _scoringItems = new HashSet<ScoringItem>();
             _participants = new HashSet<Participant>();
             _buckets = new List<Bucket>();
         }
 
         public TestMode TestMode { get; private set; }
+
+        public IReadOnlyCollection<ScoringItem> ScoringItems => _scoringItems;
+
+        public IReadOnlyCollection<Bucket> Buckets => _buckets;
 
         public DateTime CreatedAt { get; private set; }
 
@@ -76,13 +80,13 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public ChallengeState State => Timeline.State;
 
-        public IReadOnlyCollection<ChallengeStat> Stats => _stats;
+        public IReadOnlyCollection<Participant> Participants
+        {
+            get => _participants;
+            private set => _participants = new HashSet<Participant>(value);
+        }
 
-        public IReadOnlyCollection<Bucket> Buckets => _buckets;
-
-        public IReadOnlyCollection<Participant> Participants => _participants;
-
-        public IScoring Scoring => new Scoring(Stats);
+        public IScoring Scoring => new Scoring(ScoringItems);
 
         public IPayout Payout => new Payout(new Buckets(Buckets));
 
@@ -97,7 +101,9 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public async Task SynchronizeAsync(IMatchReferencesFactory matchReferencesFactory, IMatchStatsFactory matchStatsFactory)
         {
-            foreach (var participant in Participants.Where(participant => !participant.HasFinalScore(Timeline)).OrderBy(participant => participant.LastSync).ToList())
+            foreach (var participant in Participants.Where(participant => !participant.HasFinalScore(Timeline))
+                .OrderBy(participant => participant.LastSync)
+                .ToList())
             {
                 await this.SynchronizeAsync(matchReferencesFactory, matchStatsFactory, participant);
 
@@ -109,7 +115,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         private void ApplyScoringStrategy(IScoringStrategy strategy)
         {
-            strategy.Scoring.ForEach(stat => _stats.Add(new ChallengeStat(stat.Key, stat.Value)));
+            strategy.Scoring.ForEach(stat => _scoringItems.Add(new ScoringItem(stat.Key, stat.Value)));
         }
 
         private void ApplyPayoutStrategy(IPayoutStrategy strategy)

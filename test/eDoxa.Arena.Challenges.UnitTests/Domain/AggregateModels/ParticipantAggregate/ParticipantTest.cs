@@ -62,20 +62,20 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ParticipantAgg
             matches.Should().HaveCount(matchCount);
         }
 
-        [DataRow(1, 1)]
-        [DataRow(3, 3)]
-        [DataRow(5, 5)]
-        [DataTestMethod]
-        public void AverageScore_MatchCountGreaterThanOrEqualToBestOf_ShouldNotBeNull(int matchCount, int bestOf)
-        {
-            // Arrange
-            var participant = FakeChallengeFactory.CreateParticipantMatches(matchCount, new BestOf(bestOf));
+        //[DataRow(1, 1)]
+        //[DataRow(3, 3)]
+        //[DataRow(5, 5)]
+        //[DataTestMethod]
+        //public void AverageScore_MatchCountGreaterThanOrEqualToBestOf_ShouldNotBeNull(int matchCount, int bestOf)
+        //{
+        //    // Arrange
+        //    var participant = FakeChallengeFactory.CreateParticipantMatches(matchCount, new BestOf(bestOf));
 
-            // Act
-            var score = participant.AverageScore;
+        //    // Act
+        //    var score = participant.AverageScore;
 
-            // Assert
-            score.Should().NotBeNull();
-        }
+        //    // Assert
+        //    score.Should().NotBeNull();
+        //}
     }
 }

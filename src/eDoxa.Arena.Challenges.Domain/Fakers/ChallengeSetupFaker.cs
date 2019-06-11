@@ -33,7 +33,7 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers
 
                             var entryFee = faker.PickRandom(ValueObject.GetDeclaredOnlyFields<MoneyEntryFee>());
 
-                            return new ChallengeSetup(bestOf, payoutEntries, entryFee, new Entries(payoutEntries * 2));
+                            return new ChallengeSetup(bestOf, payoutEntries, entryFee);
                         }
                     );
                 }
@@ -52,7 +52,7 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers
 
                             var entryFee = faker.PickRandom(ValueObject.GetDeclaredOnlyFields<TokenEntryFee>());
 
-                            return new ChallengeSetup(bestOf, payoutEntries, entryFee, new Entries(payoutEntries * 2));
+                            return new ChallengeSetup(bestOf, payoutEntries, entryFee);
                         }
                     );
                 }

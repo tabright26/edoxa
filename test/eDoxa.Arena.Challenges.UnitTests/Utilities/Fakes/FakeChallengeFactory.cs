@@ -65,7 +65,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Utilities.Fakes
     {
         public ChallengeSetup CreateChallengeSetup(BestOf bestOf)
         {
-            return new ChallengeSetup(bestOf, PayoutEntries.TwentyFive, MoneyEntryFee.Five, new Entries(50));
+            return new ChallengeSetup(bestOf, PayoutEntries.TwentyFive, MoneyEntryFee.Five);
         }
     }
 
@@ -76,7 +76,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Utilities.Fakes
             return new Participant(new UserId(), new ExternalAccount(Guid.NewGuid()), BestOf.Five);
         }
 
-        public Participant CreateParticipantMatches(int matchCount = 0, BestOf bestOf = null)
+        public Participant CreateParticipantMatches(int matchCount = 0)
         {
             var scoringFaker = new ScoringFaker();
 

@@ -10,10 +10,7 @@
 
 using System.Linq;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Fakers;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.Extensions;
 
 using FluentAssertions;
@@ -32,9 +29,13 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Data.Fakers
             var participantFaker = new ParticipantFaker();
 
             // Act
-            var participant = participantFaker.FakeParticipant(Game.LeagueOfLegends, ChallengeState.Closed, BestOf.Five);
+            var participant = participantFaker.FakeParticipant();
 
             participant.DumbAsJson(true);
+
+            var participant1 = participantFaker.FakeParticipant();
+
+            participant1.DumbAsJson(true);
 
             // Assert
             var matchReferences = participant.Matches.Select(match => match.Reference).ToList();

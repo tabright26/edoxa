@@ -8,13 +8,18 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
+
+using Bogus;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Common.Abstactions;
 using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Domain.Extensions;
+
+using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Domain.Fakers
 {
@@ -22,6 +27,7 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers
     {
         private readonly ChallengeSetupFaker _challengeSetupFaker = new ChallengeSetupFaker();
         private readonly ChallengeTimelineFaker _challengeTimelineFaker = new ChallengeTimelineFaker();
+        private readonly ParticipantFaker _participantFaker = new ParticipantFaker();
 
         private Game _game;
         private ChallengeState _state;
@@ -40,20 +46,38 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers
 
             this.RuleFor(challenge => challenge.Timeline, (faker, challenge) => _challengeTimelineFaker.FakeTimeline(_state ?? faker.PickRandom(ChallengeState.GetAll())));
 
-            this.FinishWith(
-                (faker, challenge) =>
-                {
-                    var participantFaker = new ParticipantFaker();
+            this.RuleFor(challenge => challenge.Participants, (_, challenge) => _participantFaker.FakeParticipants(challenge.Setup.Entries, challenge.Game, challenge.State, challenge.Setup.BestOf));
 
-                    participantFaker.UseSeed(faker.Random.Int(1000000, 9999999));
-
-                    participantFaker.FakeParticipants(challenge.Setup.Entries, challenge.Game, challenge.State, challenge.Setup.BestOf).ForEach(participant => challenge.RegisterParticipant(participant.UserId, participant.ExternalAccount));
-                }
-            );
+            this.RuleFor(challenge => challenge.LastSync, (_, challenge) => challenge.Participants.Max(participant => participant.Timestamp as DateTime?));
         }
 
-        public IEnumerable<Challenge> FakeChallenges(int count)
+        [NotNull]
+        public override Faker<Challenge> UseSeed(int seed)
         {
+            var challengeFaker = base.UseSeed(seed);
+
+            _challengeSetupFaker.UseSeed(seed);
+
+            _challengeTimelineFaker.UseSeed(seed);
+
+            _participantFaker.UseSeed(seed);
+
+            return challengeFaker;
+        }
+
+        public IEnumerable<Challenge> FakeChallenges(
+            int count,
+            Game game = null,
+            ChallengeState state = null,
+            CurrencyType entryFeeCurrency = null
+        )
+        {
+            _game = game;
+
+            _state = state;
+
+            _entryFeeCurrency = entryFeeCurrency;
+
             return this.Generate(count);
         }
 
