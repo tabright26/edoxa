@@ -9,7 +9,6 @@
 // this source code package.
 
 using eDoxa.Arena.Challenges.Domain.Abstractions;
-using eDoxa.Arena.Challenges.Domain.Abstractions.Factories;
 using eDoxa.Seedwork.Common.Enumerations;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
@@ -26,20 +25,6 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         )
         {
             _challenge = new Challenge(game, name, setup, duration);
-        }
-
-        public void StoreScoring(IScoringFactory factory)
-        {
-            var strategy = factory.CreateStrategy(_challenge);
-
-            _challenge.ApplyScoringStrategy(strategy);
-        }
-
-        public void StorePayout(IPayoutFactory factory)
-        {
-            var strategy = factory.CreateStrategy(_challenge);
-
-            _challenge.ApplyPayoutStrategy(strategy);
         }
 
         public void EnableTestMode(TestMode testMode)

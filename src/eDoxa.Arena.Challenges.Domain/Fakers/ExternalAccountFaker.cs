@@ -1,7 +1,5 @@
 ﻿using System;
 
-using Bogus;
-
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Seedwork.Common.Abstactions;
 using eDoxa.Seedwork.Common.Enumerations;

@@ -11,8 +11,6 @@
 using System;
 using System.Collections.Generic;
 
-using Bogus;
-
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.Seedwork.Common.Abstactions;
 using eDoxa.Seedwork.Security.Constants;

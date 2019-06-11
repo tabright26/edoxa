@@ -10,8 +10,6 @@
 
 using System.Collections.Generic;
 
-using Bogus;
-
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Common.Abstactions;

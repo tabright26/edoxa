@@ -60,10 +60,6 @@ namespace eDoxa.Arena.Challenges.Api
             builder.RegisterType<MatchReferencesFactory>().As<IMatchReferencesFactory>().SingleInstance();
 
             builder.RegisterType<MatchStatsFactory>().As<IMatchStatsFactory>().SingleInstance();
-
-            builder.RegisterType<PayoutFactory>().As<IPayoutFactory>().SingleInstance();
-
-            builder.RegisterType<ScoringFactory>().As<IScoringFactory>().SingleInstance();
         }
     }
 }

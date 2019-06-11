@@ -11,8 +11,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using Bogus;
-
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Seedwork.Common.Abstactions;
 

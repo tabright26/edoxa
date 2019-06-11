@@ -12,8 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using Bogus;
-
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Common.Abstactions;
 using eDoxa.Seedwork.Common.Fakers;

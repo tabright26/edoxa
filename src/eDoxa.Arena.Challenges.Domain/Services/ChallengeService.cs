@@ -29,22 +29,16 @@ namespace eDoxa.Arena.Challenges.Domain.Services
     public sealed class ChallengeService : IChallengeService
     {
         private readonly IChallengeRepository _challengeRepository;
-        private readonly IPayoutFactory _payoutFactory;
-        private readonly IScoringFactory _scoringFactory;
         private readonly IMatchReferencesFactory _matchReferencesFactory;
         private readonly IMatchStatsFactory _matchStatsFactory;
 
         public ChallengeService(
             IChallengeRepository challengeRepository,
-            IPayoutFactory payoutFactory,
-            IScoringFactory scoringFactory,
             IMatchReferencesFactory matchReferencesFactory,
             IMatchStatsFactory matchStatsFactory
         )
         {
             _challengeRepository = challengeRepository;
-            _payoutFactory = payoutFactory;
-            _scoringFactory = scoringFactory;
             _matchReferencesFactory = matchReferencesFactory;
             _matchStatsFactory = matchStatsFactory;
         }
@@ -104,10 +98,6 @@ namespace eDoxa.Arena.Challenges.Domain.Services
                 new ChallengeSetup(new BestOf(bestOf), new PayoutEntries(payoutEntries), entryFee, new Entries(Convert.ToInt32(payoutEntries * 2))),
                 new ChallengeDuration(TimeSpan.FromDays(duration))
             );
-
-            builder.StoreScoring(_scoringFactory);
-
-            builder.StorePayout(_payoutFactory);
 
             if (testMode != null)
             {

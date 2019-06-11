@@ -10,8 +10,6 @@
 
 using System;
 
-using Bogus;
-
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Seedwork.Common.Abstactions;

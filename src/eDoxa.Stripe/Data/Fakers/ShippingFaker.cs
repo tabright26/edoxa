@@ -8,8 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using Bogus;
-
 using eDoxa.Seedwork.Common.Abstactions;
 
 using Stripe;

@@ -11,8 +11,6 @@
 using System;
 using System.Collections.Generic;
 
-using Bogus;
-
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Strategies;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;

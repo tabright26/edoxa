@@ -18,8 +18,6 @@ using eDoxa.Arena.Challenges.Domain.Fakers;
 using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Common.Enumerations;
 
-using Match = eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate.Match;
-
 namespace eDoxa.Arena.Challenges.UnitTests.Utilities.Fakes
 {
     public sealed partial class FakeChallengeFactory
@@ -37,10 +35,6 @@ namespace eDoxa.Arena.Challenges.UnitTests.Utilities.Fakes
             setup = setup ?? setupFaker.FakeSetup(CurrencyType.Money);
 
             var challenge = new Challenge(Game.LeagueOfLegends, new ChallengeName(nameof(Challenge)), setup, ChallengeDuration.OneDay);
-
-            var scoringFaker = new ScoringFaker();
-
-            challenge.ApplyScoringStrategy(scoringFaker.FakeScoringStrategy(Game.LeagueOfLegends));
 
             return challenge;
         }

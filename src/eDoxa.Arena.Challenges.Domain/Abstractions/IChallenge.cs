@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions.Factories;
-using eDoxa.Arena.Challenges.Domain.Abstractions.Strategies;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
@@ -44,10 +43,6 @@ namespace eDoxa.Arena.Challenges.Domain.Abstractions
         IReadOnlyCollection<Bucket> Buckets { get; }
 
         void EnableTestMode(TestMode testMode, ChallengeTimeline timeline);
-
-        void ApplyScoringStrategy(IScoringStrategy strategy);
-
-        void ApplyPayoutStrategy(IPayoutStrategy strategy);
 
         Task SynchronizeAsync(IMatchReferencesFactory matchReferencesFactory, IMatchStatsFactory matchStatsFactory);
     }

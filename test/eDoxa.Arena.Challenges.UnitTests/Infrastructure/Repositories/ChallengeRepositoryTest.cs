@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.Factories;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.Infrastructure.Repositories;
 using eDoxa.Seedwork.Common.Enumerations;
@@ -64,10 +63,6 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Repositories
                 new ChallengeSetup(BestOf.Three, PayoutEntries.Ten, MoneyEntryFee.Ten, new Entries(20)),
                 ChallengeDuration.OneDay
             );
-
-            builder.StoreScoring(new ScoringFactory());
-
-            builder.StorePayout(new PayoutFactory());
 
             builder.EnableTestMode(new TestMode(ChallengeState.InProgress, TestModeMatchQuantity.Exact, TestModeParticipantQuantity.Fulfilled));
 

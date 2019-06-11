@@ -11,8 +11,6 @@
 using System;
 using System.Collections.Generic;
 
-using Bogus;
-
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Common.Abstactions;
 using eDoxa.Seedwork.Common.Enumerations;

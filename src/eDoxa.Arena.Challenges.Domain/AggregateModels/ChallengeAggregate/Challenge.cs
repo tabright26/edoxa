@@ -19,6 +19,7 @@ using eDoxa.Arena.Challenges.Domain.Abstractions.Strategies;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Challenges.Domain.DomainEvents;
+using eDoxa.Arena.Challenges.Domain.Factories;
 using eDoxa.Arena.Challenges.Domain.Validators;
 using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Common.Enumerations;
@@ -45,6 +46,8 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             Name = name;
             Setup = setup;
             Timeline = new ChallengeTimeline(duration);
+            this.ApplyScoringStrategy(ScoringFactory.Instance.CreateStrategy(this));
+            this.ApplyPayoutStrategy(PayoutFactory.Instance.CreateStrategy(this));
         }
 
         private Challenge()
@@ -58,6 +61,9 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         }
 
         public TestMode TestMode { get; private set; }
+
+        private IEnumerable<Participant> ParticipantsToSync =>
+            Participants.Where(participant => !participant.HasFinalScore).OrderBy(participant => participant.LastSync).ToList();
 
         public DateTime CreatedAt { get; private set; }
 
@@ -77,18 +83,6 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public IReadOnlyCollection<Bucket> Buckets => _buckets;
 
-        private IEnumerable<Participant> ParticipantsToSync => Participants.Where(participant => !participant.HasFinalScore).OrderBy(participant => participant.LastSync).ToList();
-
-        public void ApplyScoringStrategy(IScoringStrategy strategy)
-        {
-            strategy.Scoring.ForEach(stat => _stats.Add(new ChallengeStat(stat.Key, stat.Value)));
-        }
-
-        public void ApplyPayoutStrategy(IPayoutStrategy strategy)
-        {
-            strategy.Payout.Buckets.ForEach(bucket => _buckets.Add(bucket));
-        }
-
         public void EnableTestMode(TestMode testMode, ChallengeTimeline timeline)
         {
             TestMode = testMode;
@@ -106,6 +100,16 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             }
 
             LastSync = DateTime.UtcNow;
+        }
+
+        private void ApplyScoringStrategy(IScoringStrategy strategy)
+        {
+            strategy.Scoring.ForEach(stat => _stats.Add(new ChallengeStat(stat.Key, stat.Value)));
+        }
+
+        private void ApplyPayoutStrategy(IPayoutStrategy strategy)
+        {
+            strategy.Payout.Buckets.ForEach(bucket => _buckets.Add(bucket));
         }
 
         internal bool LastSyncMoreThan(TimeSpan timeSpan)

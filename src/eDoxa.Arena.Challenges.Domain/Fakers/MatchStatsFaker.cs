@@ -10,8 +10,6 @@
 
 using System;
 
-using Bogus;
-
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Adapters;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;

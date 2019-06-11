@@ -11,15 +11,18 @@
 using System;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions;
-using eDoxa.Arena.Challenges.Domain.Abstractions.Factories;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Strategies;
 using eDoxa.Arena.Challenges.Domain.Strategies;
 using eDoxa.Seedwork.Common.Enumerations;
 
 namespace eDoxa.Arena.Challenges.Domain.Factories
 {
-    public sealed class ScoringFactory : IScoringFactory
+    public sealed class ScoringFactory
     {
+        private static readonly Lazy<ScoringFactory> Lazy = new Lazy<ScoringFactory>(() => new ScoringFactory());
+
+        public static ScoringFactory Instance => Lazy.Value;
+
         public IScoringStrategy CreateStrategy(IChallenge challenge)
         {
             if (challenge.Game == Game.LeagueOfLegends)
