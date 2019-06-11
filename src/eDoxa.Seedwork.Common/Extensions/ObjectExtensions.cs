@@ -8,16 +8,18 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
+
 using Newtonsoft.Json;
 
 namespace eDoxa.Seedwork.Common.Extensions
 {
     public static class ObjectExtensions
     {
-        public static string DumbAsJson<T>(this T obj)
+        public static string DumbAsJson<T>(this T obj, bool console = false)
         where T : class
         {
-            return JsonConvert.SerializeObject(
+            var json = JsonConvert.SerializeObject(
                 obj,
                 Formatting.Indented,
                 new JsonSerializerSettings
@@ -25,6 +27,15 @@ namespace eDoxa.Seedwork.Common.Extensions
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                 }
             );
+
+            if (console)
+            {
+                Console.WriteLine($"{obj.GetType().FullName} object as json:");
+
+                Console.WriteLine(json);
+            }
+
+            return json;
         }
     }
 }

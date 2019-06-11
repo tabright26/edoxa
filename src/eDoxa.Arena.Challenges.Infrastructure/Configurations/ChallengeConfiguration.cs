@@ -27,18 +27,26 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
         {
             builder.ToTable("Challenge");
 
-            builder.EntityId(challenge => challenge.Id).HasColumnName("Id").IsRequired();
+            builder.EntityId(challenge => challenge.Id)
+                .HasColumnName("Id")
+                .IsRequired();
 
-            builder.Property(challenge => challenge.CreatedAt).HasColumnName("CreatedAt").IsRequired();
+            builder.Property(challenge => challenge.CreatedAt)
+                .HasColumnName("CreatedAt")
+                .IsRequired();
+
+            builder.Property(challenge => challenge.LastSync)
+                .HasColumnName("LastSync")
+                .IsRequired(false);
 
             builder.Property(challenge => challenge.Name)
                 .HasConversion(name => name.ToString(), name => new ChallengeName(name))
                 .HasColumnName("Name")
                 .IsRequired();
-
-            builder.Property(challenge => challenge.LastSync).HasColumnName("LastSync").IsRequired(false);
-
-            builder.Enumeration(challenge => challenge.Game).HasColumnName("Game").IsRequired();
+            
+            builder.Enumeration(challenge => challenge.Game)
+                .HasColumnName("Game")
+                .IsRequired();
 
             builder.OwnsOne(
                 challenge => challenge.Setup,
@@ -71,7 +79,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                 {
                     challengeTimeline.ToTable("Timeline");
 
-                    challengeTimeline.OwnsOne(challenge => challenge.Duration).Property(duration => duration.Ticks).HasColumnName("Duration").IsRequired();
+                    challengeTimeline.Property(challenge => challenge.Duration).HasConversion(duration => duration.Ticks, ticks => new ChallengeDuration(TimeSpan.FromTicks(ticks))).HasColumnName("Duration").IsRequired();
 
                     challengeTimeline.Property(challenge => challenge.StartedAt).HasColumnName("StartedAt").IsRequired(false);
 
@@ -161,7 +169,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
             );
 
             builder.HasMany(challenge => challenge.Participants)
-                .WithOne(participant => participant.Challenge)
+                .WithOne()
                 .HasForeignKey(nameof(ChallengeId))
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);

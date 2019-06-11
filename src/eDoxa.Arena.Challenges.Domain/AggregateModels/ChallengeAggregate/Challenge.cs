@@ -62,9 +62,6 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public TestMode TestMode { get; private set; }
 
-        private IEnumerable<Participant> ParticipantsToSync =>
-            Participants.Where(participant => !participant.HasFinalScore).OrderBy(participant => participant.LastSync).ToList();
-
         public DateTime CreatedAt { get; private set; }
 
         public DateTime? LastSync { get; private set; }
@@ -77,11 +74,19 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public ChallengeTimeline Timeline { get; private set; }
 
+        public ChallengeState State => Timeline.State;
+
         public IReadOnlyCollection<ChallengeStat> Stats => _stats;
+
+        public IReadOnlyCollection<Bucket> Buckets => _buckets;
 
         public IReadOnlyCollection<Participant> Participants => _participants;
 
-        public IReadOnlyCollection<Bucket> Buckets => _buckets;
+        public IScoring Scoring => new Scoring(Stats);
+
+        public IPayout Payout => new Payout(new Buckets(Buckets));
+
+        public IScoreboard Scoreboard => new Scoreboard(Participants);
 
         public void EnableTestMode(TestMode testMode, ChallengeTimeline timeline)
         {
@@ -92,7 +97,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public async Task SynchronizeAsync(IMatchReferencesFactory matchReferencesFactory, IMatchStatsFactory matchStatsFactory)
         {
-            foreach (var participant in ParticipantsToSync)
+            foreach (var participant in Participants.Where(participant => !participant.HasFinalScore(Timeline)).OrderBy(participant => participant.LastSync).ToList())
             {
                 await this.SynchronizeAsync(matchReferencesFactory, matchStatsFactory, participant);
 
@@ -141,9 +146,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         internal void SnapshotParticipantMatch(Participant participant, MatchReference matchReference, IMatchStats matchStats)
         {
-            var scoring = new Scoring(Stats);
-
-            participant.SnapshotMatch(matchReference, matchStats, scoring);
+            participant.SnapshotMatch(matchReference, matchStats, Scoring);
         }
 
         public void TryClose(Action closeChallenge)
@@ -158,13 +161,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public void DistributeParticipantPrizes()
         {
-            var buckets = new Buckets(Buckets);
-
-            var payout = new Payout(buckets);
-
-            var scoreboard = new Scoreboard(Participants);
-
-            this.AddDomainEvent(new ChallengePayoutDomainEvent(Id, payout.GetParticipantPrizes(scoreboard)));
+            this.AddDomainEvent(new ChallengePayoutDomainEvent(Id, Payout.GetParticipantPrizes(Scoreboard)));
         }
 
         public Participant RegisterParticipant(UserId userId, ExternalAccount externalAccount)
@@ -174,7 +171,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
                 throw new InvalidOperationException();
             }
 
-            var participant = new Participant(this, userId, externalAccount);
+            var participant = new Participant(userId, externalAccount, Setup.BestOf);
 
             _participants.Add(participant);
 

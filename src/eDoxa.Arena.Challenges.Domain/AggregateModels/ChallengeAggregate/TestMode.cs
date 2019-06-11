@@ -25,7 +25,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         private readonly Random _random = new Random();
 
         private readonly MatchStatsFaker _matchStatsFaker = new MatchStatsFaker();
-        private readonly TimelineFaker _timelineFaker = new TimelineFaker();
+        private readonly ChallengeTimelineFaker _challengeTimelineFaker = new ChallengeTimelineFaker();
 
         public TestMode(ChallengeState startingState, TestModeMatchQuantity matchQuantity, TestModeParticipantQuantity participantQuantity) : this()
         {
@@ -65,7 +65,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
                 this.FakeMatches(challenge);
             }
 
-            challenge.EnableTestMode(this, _timelineFaker.FakeTimeline(StartingState));
+            challenge.EnableTestMode(this, _challengeTimelineFaker.FakeTimeline(StartingState));
         }
 
         private void FakeParticipants(Challenge challenge)

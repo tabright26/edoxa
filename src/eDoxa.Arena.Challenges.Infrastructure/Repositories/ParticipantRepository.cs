@@ -40,11 +40,9 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
     {
         public async Task<IEnumerable<Participant>> FindChallengeParticipantsAsNoTrackingAsync(ChallengeId challengeId)
         {
-            return await _context.Participants.AsNoTracking()
-                .Include(NavigationPropertyPath)
-                .Where(participant => participant.Challenge.Id == challengeId)
-                .OrderBy(participant => participant.Timestamp)
-                .ToListAsync();
+            var challenge = await _context.Challenges.AsNoTracking().Include("Participants.Matches.Stats").Where(x => x.Id == challengeId).SingleOrDefaultAsync();
+
+            return challenge != null ? challenge.Participants.OrderBy(participant => participant.Timestamp).ToList() : new List<Participant>();
         }
 
         public async Task<Participant> FindParticipantAsNoTrackingAsync(ParticipantId participantId)

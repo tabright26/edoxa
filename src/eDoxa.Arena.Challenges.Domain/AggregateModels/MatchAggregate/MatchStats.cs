@@ -24,5 +24,9 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
         )
         {
         }
+
+        public MatchStats(IEnumerable<Stat> stats) : base(stats.ToDictionary(stat => stat.Name, stat=> stat.Value))
+        {
+        }
     }
 }

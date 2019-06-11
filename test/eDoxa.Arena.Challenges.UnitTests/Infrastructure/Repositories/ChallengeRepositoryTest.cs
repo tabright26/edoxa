@@ -48,8 +48,6 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Repositories
 
                     challenge = await repository.FindChallengeAsync(challenge.Id);
 
-                    var data = new ChallengeData(challenge);
-
                     challenge.Should().NotBeNull();
                 }
             }

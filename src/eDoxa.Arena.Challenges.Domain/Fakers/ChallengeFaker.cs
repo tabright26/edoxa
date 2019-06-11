@@ -8,21 +8,20 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Collections.Generic;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Common.Abstactions;
 using eDoxa.Seedwork.Common.Enumerations;
-using eDoxa.Seedwork.Common.Extensions;
 using eDoxa.Seedwork.Domain.Aggregate;
+using eDoxa.Seedwork.Domain.Extensions;
 
 namespace eDoxa.Arena.Challenges.Domain.Fakers
 {
     public class ChallengeFaker : CustomFaker<Challenge>
     {
-        private readonly SetupFaker _setupFaker = new SetupFaker();
-        private readonly TimelineFaker _timelineFaker = new TimelineFaker();
+        private readonly ChallengeSetupFaker _challengeSetupFaker = new ChallengeSetupFaker();
+        private readonly ChallengeTimelineFaker _challengeTimelineFaker = new ChallengeTimelineFaker();
 
         private Game _game;
         private ChallengeState _state;
@@ -34,21 +33,28 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers
                 faker => new Challenge(
                     _game ?? faker.PickRandom(Game.GetAll()),
                     new ChallengeName("Challenge"),
-                    _setupFaker.FakeSetup(_entryFeeCurrency ?? faker.PickRandom(CurrencyType.GetAll())),
+                    _challengeSetupFaker.FakeSetup(_entryFeeCurrency ?? faker.PickRandom(CurrencyType.GetAll())),
                     faker.PickRandom(ValueObject.GetDeclaredOnlyFields<ChallengeDuration>())
                 )
             );
 
-            this.RuleFor(challenge => challenge.Timeline, faker => _timelineFaker.FakeTimeline(_state ?? faker.PickRandom(ChallengeState.GetAll())));
+            this.RuleFor(challenge => challenge.Timeline, (faker, challenge) => _challengeTimelineFaker.FakeTimeline(_state ?? faker.PickRandom(ChallengeState.GetAll())));
+
+            this.FinishWith(
+                (faker, challenge) =>
+                {
+                    var participantFaker = new ParticipantFaker();
+
+                    participantFaker.UseSeed(faker.Random.Int(1000000, 9999999));
+
+                    participantFaker.FakeParticipants(challenge.Setup.Entries, challenge.Game, challenge.State, challenge.Setup.BestOf).ForEach(participant => challenge.RegisterParticipant(participant.UserId, participant.ExternalAccount));
+                }
+            );
         }
 
         public IEnumerable<Challenge> FakeChallenges(int count)
         {
-            var challenges = this.Generate(count);
-
-            Console.WriteLine(challenges.DumbAsJson());
-
-            return challenges;
+            return this.Generate(count);
         }
 
         public Challenge FakeChallenge(Game game = null, ChallengeState state = null, CurrencyType entryFeeCurrency = null)
@@ -59,11 +65,7 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers
 
             _entryFeeCurrency = entryFeeCurrency;
 
-            var challenge = this.Generate();
-
-            Console.WriteLine(challenge.DumbAsJson());
-
-            return challenge;
+            return this.Generate();
         }
     }
 }

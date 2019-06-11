@@ -48,7 +48,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Data.Fakers
                 {
                     var challenge = challengeFaker.FakeChallenge();
 
-                    Console.WriteLine(challenge.DumbAsJson());
+                    challenge.DumbAsJson(true);
                 }
             );
 

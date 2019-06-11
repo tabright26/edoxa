@@ -13,16 +13,15 @@ using System.Collections.Generic;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Common.Abstactions;
-using eDoxa.Seedwork.Common.Extensions;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.Fakers
 {
-    public sealed class TimelineFaker : CustomFaker<ChallengeTimeline>
+    public sealed class ChallengeTimelineFaker : CustomFaker<ChallengeTimeline>
     {
         private static readonly IEnumerable<ChallengeDuration> Durations = ValueObject.GetDeclaredOnlyFields<ChallengeDuration>();
 
-        public TimelineFaker()
+        public ChallengeTimelineFaker()
         {
             this.RuleSet(
                 ChallengeState.Inscription.ToString(),
@@ -67,11 +66,7 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers
 
         public ChallengeTimeline FakeTimeline(ChallengeState state)
         {
-            var timeline = this.Generate(state.ToString());
-
-            Console.WriteLine(timeline.DumbAsJson());
-
-            return timeline;
+            return this.Generate(state.ToString());
         }
     }
 }

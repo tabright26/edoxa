@@ -1,5 +1,5 @@
-﻿// Filename: 20190607193040_InitialCreate.cs
-// Date Created: 2019-06-07
+﻿// Filename: 20190611175301_InitialCreate.cs
+// Date Created: 2019-06-11
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -26,10 +26,10 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(),
-                    Game = table.Column<int>(),
-                    Name = table.Column<string>(),
                     CreatedAt = table.Column<DateTime>(),
-                    LastSync = table.Column<DateTime>(nullable: true)
+                    LastSync = table.Column<DateTime>(nullable: true),
+                    Game = table.Column<int>(),
+                    Name = table.Column<string>()
                 },
                 constraints: table =>
                 {
@@ -45,8 +45,9 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
                     Id = table.Column<Guid>(),
                     Timestamp = table.Column<DateTime>(),
                     LastSync = table.Column<DateTime>(nullable: true),
-                    ExternalAccount = table.Column<string>(),
+                    MatchBestOf = table.Column<int>(),
                     UserId = table.Column<Guid>(),
+                    ExternalAccount = table.Column<string>(),
                     ChallengeId = table.Column<Guid>()
                 },
                 constraints: table =>
@@ -215,7 +216,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(),
                     Timestamp = table.Column<DateTime>(),
-                    MatchReference = table.Column<string>(),
+                    Reference = table.Column<string>(),
                     ParticipantId = table.Column<Guid>()
                 },
                 constraints: table =>

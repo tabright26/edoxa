@@ -42,14 +42,13 @@ namespace eDoxa.Arena.Challenges.UnitTests.Asserts
                 participant.Timestamp.Should().BeBefore(DateTime.UtcNow);
                 participant.ExternalAccount.ToString().Should().NotBeNullOrWhiteSpace();
                 participant.UserId.ToGuid().Should().NotBeEmpty();
-                participant.Challenge.Should().NotBeNull();
                 participant.Matches.Should().NotBeNullOrEmpty();
 
                 foreach (var match in participant.Matches)
                 {
                     match.Id.ToGuid().Should().NotBeEmpty();
                     match.Timestamp.Should().BeBefore(DateTime.UtcNow);
-                    match.MatchReference.ToString().Should().NotBeNullOrWhiteSpace();
+                    match.Reference.ToString().Should().NotBeNullOrWhiteSpace();
                     match.TotalScore.Should().NotBeNull();
                     match.Stats.Should().NotBeNullOrEmpty();
 

@@ -27,11 +27,11 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate
     {
         private HashSet<Match> _matches;
 
-        public Participant(Challenge challenge, UserId userId, ExternalAccount externalAccount) : this()
+        public Participant(UserId userId, ExternalAccount externalAccount, BestOf matchBestOf) : this()
         {
-            Challenge = challenge;
             UserId = userId;
             ExternalAccount = externalAccount;
+            MatchBestOf = matchBestOf;
         }
 
         public Participant()
@@ -45,18 +45,21 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate
 
         public DateTime? LastSync { get; private set; }
 
-        public ExternalAccount ExternalAccount { get; private set; }
+        public BestOf MatchBestOf { get; private set; }
 
         public UserId UserId { get; private set; }
 
-        public Challenge Challenge { get; private set; }
+        public ExternalAccount ExternalAccount { get; private set; }
 
         [CanBeNull]
-        public Score AverageScore => Matches.Count >= Challenge.Setup.BestOf ? new ParticipantScore(this) : null;
-
-        public bool HasFinalScore => LastSync.HasValue && LastSync.Value >= Challenge.Timeline.EndedAt;
+        public Score AverageScore => Matches.Count >= MatchBestOf ? new ParticipantScore(this) : null;
 
         public IReadOnlyCollection<Match> Matches => _matches;
+
+        public bool HasFinalScore(ChallengeTimeline timeline)
+        {
+            return LastSync.HasValue && LastSync.Value >= timeline.EndedAt;
+        }
 
         public void SnapshotMatch(MatchReference matchReference, IMatchStats stats, IScoring scoring)
         {
@@ -65,7 +68,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate
 
         public IEnumerable<MatchReference> GetUnsynchronizedMatchReferences(IEnumerable<MatchReference> matchReferences)
         {
-            return matchReferences.Where(matchReference => Matches.All(match => match.MatchReference != matchReference));
+            return matchReferences.Where(matchReference => Matches.All(match => match.Reference != matchReference));
         }
 
         internal void Sync()

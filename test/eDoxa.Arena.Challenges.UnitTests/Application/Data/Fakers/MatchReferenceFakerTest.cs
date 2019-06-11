@@ -1,4 +1,4 @@
-﻿// Filename: TimelineFakerTest.cs
+﻿// Filename: MatchReferenceFakerTest.cs
 // Date Created: 2019-06-10
 // 
 // ================================================
@@ -8,11 +8,12 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Fakers;
+using eDoxa.Seedwork.Common.Enumerations;
 
 using FluentAssertions;
 
@@ -20,23 +21,22 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Application.Data.Fakers
 {
-    [TestClass]
-    public sealed class TimelineFakerTest
+    public sealed class MatchReferenceFakerTest
     {
-        public static IEnumerable<object[]> Data => ChallengeState.GetAll().Select(state => new object[] { state });
+        public static IEnumerable<object[]> Data => Game.GetAll().Select(game => new object[] {game});
 
         [DataTestMethod]
         [DynamicData(nameof(Data))]
-        public void FakeTimeline(ChallengeState state)
+        public void FakeMatch_ShouldNotThrow(Game game)
         {
             // Arrange
-            var timelineFaker = new TimelineFaker();
+            var matchFaker = new MatchReferenceFaker();
 
             // Act
-            var timeline = timelineFaker.FakeTimeline(state);
+            var action = new Action(() => matchFaker.FakeMatchReference(game));
 
             // Assert
-            timeline.State.Should().Be(state);
+            action.Should().NotThrow();
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿// Filename: ParticipantFaker.cs
-// Date Created: 2019-06-09
+// Date Created: 2019-06-10
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,14 +8,17 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
+using System.Collections.Generic;
 
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Seedwork.Common.Abstactions;
 using eDoxa.Seedwork.Common.Enumerations;
-using eDoxa.Seedwork.Common.Extensions;
 using eDoxa.Seedwork.Common.Fakers;
+using eDoxa.Seedwork.Domain.Aggregate;
+using eDoxa.Seedwork.Domain.Extensions;
 
 namespace eDoxa.Arena.Challenges.Domain.Fakers
 {
@@ -23,45 +26,64 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers
     {
         private readonly UserIdFaker _userIdFaker = new UserIdFaker();
         private readonly ExternalAccountFaker _externalAccountFaker = new ExternalAccountFaker();
-        //private readonly MatchFaker _matchFaker = new MatchFaker();
 
         private Game _game;
         private ChallengeState _state;
+        private BestOf _bestOf;
 
-        public ParticipantFaker(Challenge challenge)
+        public ParticipantFaker()
         {
             this.CustomInstantiator(
                 faker =>
                 {
-                    var externalAccount = _externalAccountFaker.FakeExternalAccount(_game ?? faker.PickRandom(Game.GetAll()));
+                    var game = _game ?? faker.PickRandom(Game.GetAll());
+
+                    var state = _state ?? faker.PickRandom(ChallengeState.GetAll());
 
                     var userId = _userIdFaker.FakeUserId();
 
-                    return new Participant(challenge, userId, externalAccount);
-                }
-            );
+                    var externalAccount = _externalAccountFaker.FakeExternalAccount(game);
 
-            this.FinishWith(
-                (faker, participant) =>
-                {
-                    var state = _state ?? faker.PickRandom(ChallengeState.GetAll());
+                    var bestOf = _bestOf ?? faker.PickRandom(ValueObject.GetDeclaredOnlyFields<BestOf>());
 
+                    var participant = new Participant(userId, externalAccount, bestOf);
 
+                    if (state != ChallengeState.Inscription)
+                    {
+                        var matchFaker = new MatchFaker();
+
+                        matchFaker.UseSeed(faker.Random.Int(1000000, 9999999));
+
+                        var matches = matchFaker.FakeMatches(faker.Random.Int(0, bestOf + 3), game);
+
+                        matches.ForEach(match => participant.SnapshotMatch(match.Reference, new MatchStats(match.Stats), new Scoring(match.Stats)));
+                    }
+
+                    return participant;
                 }
             );
         }
 
-        public Participant FakeParticipant(Game game = null, ChallengeState state = null)
+        public IEnumerable<Participant> FakeParticipants(int count, Game game = null, ChallengeState state = null, BestOf bestOf = null)
         {
             _game = game;
 
             _state = state;
 
-            var participant = this.Generate();
+            _bestOf = bestOf;
 
-            Console.WriteLine(participant.DumbAsJson());
+            return this.Generate(count);
+        }
 
-            return participant;
+        public Participant FakeParticipant(Game game = null, ChallengeState state = null, BestOf bestOf = null)
+        {
+            _game = game;
+
+            _state = state;
+
+            _bestOf = bestOf;
+
+            return this.Generate();
         }
     }
 }

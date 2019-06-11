@@ -8,6 +8,15 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+using eDoxa.Arena.Challenges.Domain.Fakers;
+using eDoxa.Seedwork.Common.Enumerations;
+
+using FluentAssertions;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Application.Data.Fakers
@@ -15,24 +24,74 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Data.Fakers
     [TestClass]
     public sealed class MatchFakerTest
     {
-        //[TestMethod]
-        //public void FakeMatch_ShouldNotThrow()
-        //{
-        //    // Arrange
-        //    var matchFaker = new MatchFaker();
+        public static IEnumerable<object[]> Data => Game.GetAll().Select(game => new object[] {game});
 
-        //    // Act
-        //    var action = new Action(
-        //        () =>
-        //        {
-        //            var match = matchFaker.FakeMatch();
+        [TestMethod]
+        public void FakeMatches_ShouldNotThrow()
+        {
+            // Arrange
+            var matchFaker = new MatchFaker();
 
-        //            Console.WriteLine(match.DumbAsJson());
-        //        }
-        //    );
+            // Act
+            var action = new Action(
+                () =>
+                {
+                    var matches = matchFaker.FakeMatches(5);
 
-        //    // Assert
-        //    action.Should().NotThrow();
-        //}
+                    matches.Select(match => match.Reference).Distinct().Should().HaveCount(5);
+                }
+            );
+
+            // Assert
+            action.Should().NotThrow();
+        }
+
+        [DataTestMethod]
+        [DynamicData(nameof(Data))]
+        public void FakeMatches_ShouldNotThrow(Game game)
+        {
+            // Arrange
+            var matchFaker = new MatchFaker();
+
+            // Act
+            var action = new Action(
+                () =>
+                {
+                    var matches = matchFaker.FakeMatches(5, game);
+
+                    matches.Select(match => match.Reference).Distinct().Should().HaveCount(5);
+                }
+            );
+
+            // Assert
+            action.Should().NotThrow();
+        }
+
+        [TestMethod]
+        public void FakeMatch_ShouldNotThrow()
+        {
+            // Arrange
+            var matchFaker = new MatchFaker();
+
+            // Act
+            var action = new Action(() => matchFaker.FakeMatch());
+
+            // Assert
+            action.Should().NotThrow();
+        }
+
+        [DataTestMethod]
+        [DynamicData(nameof(Data))]
+        public void FakeMatch_ShouldNotThrow(Game game)
+        {
+            // Arrange
+            var matchFaker = new MatchFaker();
+
+            // Act
+            var action = new Action(() => matchFaker.FakeMatch(game));
+
+            // Assert
+            action.Should().NotThrow();
+        }
     }
 }

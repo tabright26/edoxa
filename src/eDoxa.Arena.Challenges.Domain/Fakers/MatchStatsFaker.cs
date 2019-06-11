@@ -8,14 +8,11 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Adapters;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Seedwork.Common.Abstactions;
 using eDoxa.Seedwork.Common.Enumerations;
-using eDoxa.Seedwork.Common.Extensions;
 
 using Moq;
 
@@ -47,11 +44,7 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers
 
         public IMatchStats FakeMatchStats(Game game)
         {
-            var matchStats = this.Generate(game.ToString());
-
-            Console.WriteLine(matchStats.DumbAsJson());
-
-            return matchStats;
+            return this.Generate(game.ToString());
         }
 
         public IMatchStatsAdapter FakeMatchStatsAdapter(Game game)

@@ -8,7 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Collections.Generic;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions;
@@ -18,7 +17,6 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Arena.Services.LeagueOfLegends.Dtos;
 using eDoxa.Seedwork.Common.Abstactions;
 using eDoxa.Seedwork.Common.Enumerations;
-using eDoxa.Seedwork.Common.Extensions;
 
 using Moq;
 
@@ -53,11 +51,7 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers
 
         public IScoring FakeScoring(Game game)
         {
-            var scoring = this.Generate(game.ToString());
-
-            Console.WriteLine(scoring.DumbAsJson());
-
-            return scoring;
+            return this.Generate(game.ToString());
         }
 
         public IScoringStrategy FakeScoringStrategy(Game game)

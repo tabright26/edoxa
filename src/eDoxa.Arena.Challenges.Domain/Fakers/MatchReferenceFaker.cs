@@ -1,23 +1,23 @@
-﻿using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
+﻿using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Seedwork.Common.Abstactions;
 using eDoxa.Seedwork.Common.Enumerations;
 
 namespace eDoxa.Arena.Challenges.Domain.Fakers
 {
-    public sealed class ExternalAccountFaker : CustomFaker<ExternalAccount>
+    public sealed class MatchReferenceFaker : CustomFaker<MatchReference>
     {
-        public ExternalAccountFaker()
+        public MatchReferenceFaker()
         {
             this.RuleSet(
                 Game.LeagueOfLegends.ToString(),
                 ruleSet =>
                 {
-                    ruleSet.CustomInstantiator(faker => new ExternalAccount(faker.Random.Guid().ToString().Replace("-", string.Empty)));
+                    this.CustomInstantiator(faker => new MatchReference(faker.Random.Long(1000000000, 9999999999)));
                 }
             );
         }
 
-        public ExternalAccount FakeExternalAccount(Game game)
+        public MatchReference FakeMatchReference(Game game)
         {
             return this.Generate(game.ToString());
         }

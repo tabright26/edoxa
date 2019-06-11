@@ -23,7 +23,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace eDoxa.Arena.Challenges.UnitTests.Application.Data.Fakers
 {
     [TestClass]
-    public sealed class SetupFakerTest
+    public sealed class ChallengeSetupFakerTest
     {
         public static IEnumerable<object[]> Data
         {
@@ -39,7 +39,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Data.Fakers
         public void FakeSetup(CurrencyType currency, Type entryFeeType)
         {
             // Arrange
-            var setupFaker = new SetupFaker();
+            var setupFaker = new ChallengeSetupFaker();
 
             // Act
             var setup = setupFaker.FakeSetup(currency);

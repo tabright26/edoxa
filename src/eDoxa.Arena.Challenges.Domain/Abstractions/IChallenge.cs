@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions.Factories;
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Seedwork.Common.Enumerations;
@@ -24,6 +23,10 @@ namespace eDoxa.Arena.Challenges.Domain.Abstractions
     {
         ChallengeId Id { get; }
 
+        DateTime CreatedAt { get; }
+
+        DateTime? LastSync { get; }
+
         Game Game { get; }
 
         ChallengeName Name { get; }
@@ -32,15 +35,15 @@ namespace eDoxa.Arena.Challenges.Domain.Abstractions
 
         ChallengeTimeline Timeline { get; }
 
-        DateTime CreatedAt { get; }
+        ChallengeState State { get; }
 
-        DateTime? LastSync { get; }
+        IScoring Scoring { get; }
 
-        IReadOnlyCollection<ChallengeStat> Stats { get; }
+        IPayout Payout { get; }
+
+        IScoreboard Scoreboard { get; }
 
         IReadOnlyCollection<Participant> Participants { get; }
-
-        IReadOnlyCollection<Bucket> Buckets { get; }
 
         void EnableTestMode(TestMode testMode, ChallengeTimeline timeline);
 

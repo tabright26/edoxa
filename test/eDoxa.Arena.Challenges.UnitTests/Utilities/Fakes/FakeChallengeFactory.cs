@@ -24,13 +24,11 @@ namespace eDoxa.Arena.Challenges.UnitTests.Utilities.Fakes
     {
         private static readonly Lazy<FakeChallengeFactory> Lazy = new Lazy<FakeChallengeFactory>(() => new FakeChallengeFactory());
 
-        private static readonly MatchReference AdminMatchReference = new MatchReference(2973265231);
-
         public static FakeChallengeFactory Instance => Lazy.Value;
 
         public Challenge CreateChallenge(ChallengeSetup setup = null)
         {
-            var setupFaker = new SetupFaker();
+            var setupFaker = new ChallengeSetupFaker();
 
             setup = setup ?? setupFaker.FakeSetup(CurrencyType.Money);
 
@@ -73,13 +71,9 @@ namespace eDoxa.Arena.Challenges.UnitTests.Utilities.Fakes
 
     public sealed partial class FakeChallengeFactory
     {
-        public Participant CreateParticipant(BestOf bestOf = null)
+        public Participant CreateParticipant()
         {
-            var setup = this.CreateChallengeSetup(bestOf ?? BestOf.Three);
-
-            var challenge = this.CreateChallenge(setup);
-
-            return new Participant(challenge, new UserId(), new ExternalAccount(Guid.NewGuid()));
+            return new Participant(new UserId(), new ExternalAccount(Guid.NewGuid()), BestOf.Five);
         }
 
         public Participant CreateParticipantMatches(int matchCount = 0, BestOf bestOf = null)
@@ -90,7 +84,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Utilities.Fakes
 
             var matchStatsFaker = new MatchStatsFaker();
 
-            var participant = this.CreateParticipant(bestOf);
+            var participant = this.CreateParticipant();
 
             for (var index = 0; index < matchCount; index++)
             {

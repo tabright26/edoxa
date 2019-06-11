@@ -8,10 +8,13 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
+using System.Linq;
 
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Fakers;
 using eDoxa.Seedwork.Common.Enumerations;
+using eDoxa.Seedwork.Common.Extensions;
 
 using FluentAssertions;
 
@@ -26,15 +29,17 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Data.Fakers
         public void FakeParticipant_ShouldNotThrow()
         {
             // Arrange
-            var challengeFaker = new ChallengeFaker();
-
-            var participantFaker = new ParticipantFaker(challengeFaker.FakeChallenge());
+            var participantFaker = new ParticipantFaker();
 
             // Act
-            var action = new Action(() => participantFaker.FakeParticipant(Game.LeagueOfLegends));
+            var participant = participantFaker.FakeParticipant(Game.LeagueOfLegends, ChallengeState.Closed, BestOf.Five);
+
+            participant.DumbAsJson(true);
 
             // Assert
-            action.Should().NotThrow();
+            var matchReferences = participant.Matches.Select(match => match.Reference).ToList();
+
+            matchReferences.Should().BeEquivalentTo(matchReferences.Distinct());
         }
     }
 }

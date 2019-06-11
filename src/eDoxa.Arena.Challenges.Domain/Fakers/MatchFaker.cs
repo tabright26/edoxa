@@ -8,51 +8,46 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Collections.Generic;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Seedwork.Common.Abstactions;
 using eDoxa.Seedwork.Common.Enumerations;
-using eDoxa.Seedwork.Common.Extensions;
 
 namespace eDoxa.Arena.Challenges.Domain.Fakers
 {
-    public class MatchFaker : CustomFaker<Match>
+    public sealed class MatchFaker : CustomFaker<Match>
     {
-        private readonly ScoringFaker _scoringFaker = new ScoringFaker();
+        private readonly MatchReferenceFaker _matchReferenceFaker = new MatchReferenceFaker();
         private readonly MatchStatsFaker _matchStatsFaker = new MatchStatsFaker();
+        private readonly ScoringFaker _scoringFaker = new ScoringFaker();
+
+        private Game _game;
 
         public MatchFaker()
         {
             this.CustomInstantiator(
                 faker =>
                 {
-                    var game = faker.PickRandom(Game.GetAll());
+                    var game = _game ?? faker.PickRandom(Game.GetAll());
 
-                    var matchReference = new MatchReference(faker.Random.Guid().ToString().Replace("-", string.Empty));
-
-                    return new Match(matchReference, _matchStatsFaker.FakeMatchStats(game), _scoringFaker.FakeScoring(game));
+                    return new Match(_matchReferenceFaker.FakeMatchReference(game), _matchStatsFaker.FakeMatchStats(game), _scoringFaker.FakeScoring(game));
                 }
             );
         }
 
-        public IEnumerable<Match> FakeMatches(int count)
+        public IEnumerable<Match> FakeMatches(int count, Game game = null)
         {
-            var matches = this.Generate(count);
+            _game = game;
 
-            Console.WriteLine(matches.DumbAsJson());
-
-            return matches;
+            return this.Generate(count);
         }
 
-        public Match FakeMatch()
+        public Match FakeMatch(Game game = null)
         {
-            var match = this.Generate();
+            _game = game;
 
-            Console.WriteLine(match.DumbAsJson());
-
-            return match;
+            return this.Generate();
         }
     }
 }

@@ -8,20 +8,17 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Common.Abstactions;
 using eDoxa.Seedwork.Common.Enumerations;
-using eDoxa.Seedwork.Common.Extensions;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.Fakers
 {
-    public sealed class SetupFaker : CustomFaker<ChallengeSetup>
+    public sealed class ChallengeSetupFaker : CustomFaker<ChallengeSetup>
     {
-        public SetupFaker()
+        public ChallengeSetupFaker()
         {
             this.RuleSet(
                 CurrencyType.Money.ToString(),
@@ -64,11 +61,7 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers
 
         public ChallengeSetup FakeSetup(CurrencyType currency)
         {
-            var setup = this.Generate(currency.ToString());
-
-            Console.WriteLine(setup.DumbAsJson());
-
-            return setup;
+            return this.Generate(currency.ToString());
         }
     }
 }

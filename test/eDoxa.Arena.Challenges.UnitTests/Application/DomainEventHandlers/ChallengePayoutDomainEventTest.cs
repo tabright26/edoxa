@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Application.DomainEventHandlers;
 using eDoxa.Arena.Challenges.Api.IntegrationEvents;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.DomainEvents;
 using eDoxa.Arena.Challenges.UnitTests.Utilities.Fakes;
 using eDoxa.IntegrationEvents;
@@ -40,7 +40,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.DomainEventHandlers
         public async Task HandleAsync_PayoutProcessedDomainEvent_ShouldBeCompletedTask()
         {
             // Arranges
-            var challenge = new ChallengeData(FakeChallengeFactory.CreateChallenge());
+            IChallenge challenge = FakeChallengeFactory.CreateChallenge();
 
             var userPrizes = challenge.Payout.GetParticipantPrizes(challenge.Scoreboard);
 
