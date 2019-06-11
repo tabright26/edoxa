@@ -46,7 +46,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
             builder.Ignore(participant => participant.HasFinalScore);
 
             builder.HasMany(participant => participant.Matches)
-                .WithOne(match => match.Participant)
+                .WithOne()
                 .HasForeignKey(nameof(ParticipantId))
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);

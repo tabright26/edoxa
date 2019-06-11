@@ -51,7 +51,6 @@ namespace eDoxa.Arena.Challenges.UnitTests.Asserts
                     match.Timestamp.Should().BeBefore(DateTime.UtcNow);
                     match.MatchReference.ToString().Should().NotBeNullOrWhiteSpace();
                     match.TotalScore.Should().NotBeNull();
-                    match.Participant.Should().NotBeNull();
                     match.Stats.Should().NotBeNullOrEmpty();
 
                     foreach (var stat in match.Stats)

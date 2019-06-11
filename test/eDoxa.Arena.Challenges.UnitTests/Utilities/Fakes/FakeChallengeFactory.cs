@@ -105,10 +105,5 @@ namespace eDoxa.Arena.Challenges.UnitTests.Utilities.Fakes
 
             return participant;
         }
-
-        public Match CreateMatch()
-        {
-            return new Match(this.CreateParticipant(), AdminMatchReference);
-        }
     }
 }

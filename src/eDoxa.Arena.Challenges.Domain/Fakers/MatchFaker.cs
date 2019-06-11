@@ -12,8 +12,8 @@ using System;
 using System.Collections.Generic;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Seedwork.Common.Abstactions;
+using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.Extensions;
 
 namespace eDoxa.Arena.Challenges.Domain.Fakers
@@ -23,25 +23,16 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers
         private readonly ScoringFaker _scoringFaker = new ScoringFaker();
         private readonly MatchStatsFaker _matchStatsFaker = new MatchStatsFaker();
 
-        public MatchFaker(Participant participant)
+        public MatchFaker()
         {
-            var game = participant.Challenge.Game;
-            
             this.CustomInstantiator(
                 faker =>
                 {
+                    var game = faker.PickRandom(Game.GetAll());
+
                     var matchReference = new MatchReference(faker.Random.Guid().ToString().Replace("-", string.Empty));
 
-                    return new Match(participant, matchReference);
-                }
-            );
-
-            this.RuleFor(match => match.Timestamp, DateTime.UtcNow);
-
-            this.FinishWith(
-                (faker, match) =>
-                {
-                    match.SnapshotStats(_matchStatsFaker.FakeMatchStats(game), _scoringFaker.FakeScoring(game));
+                    return new Match(matchReference, _matchStatsFaker.FakeMatchStats(game), _scoringFaker.FakeScoring(game));
                 }
             );
         }

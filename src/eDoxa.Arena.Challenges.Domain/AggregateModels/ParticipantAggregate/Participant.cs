@@ -60,11 +60,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate
 
         public void SnapshotMatch(MatchReference matchReference, IMatchStats stats, IScoring scoring)
         {
-            var match = new Match(this, matchReference);
-
-            match.SnapshotStats(stats, scoring);
-
-            _matches.Add(match);
+            _matches.Add(new Match(matchReference, stats, scoring));
         }
 
         public IEnumerable<MatchReference> GetUnsynchronizedMatchReferences(IEnumerable<MatchReference> matchReferences)

@@ -8,8 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Arena.Challenges.Domain.Fakers;
-using eDoxa.Arena.Challenges.UnitTests.Utilities.Fakes;
 using eDoxa.Seedwork.Common.Enumerations;
 
 using FluentAssertions;
@@ -21,18 +21,6 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.MatchAggregate
     [TestClass]
     public sealed class MatchTest
     {
-        private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
-
-        [TestMethod]
-        public void Match_ShouldNotBeNull()
-        {
-            // Act
-            var match = FakeChallengeFactory.CreateMatch();
-
-            // Assert
-            match.Should().NotBeNull();
-        }
-
         [TestMethod]
         public void SnapshotStats_Stats_ShouldHaveCountOfScoring()
         {
@@ -45,11 +33,9 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.MatchAggregate
 
             var stats = matchStatsFaker.FakeMatchStats(Game.LeagueOfLegends);
 
-            var match = FakeChallengeFactory.CreateMatch();
-
             // Act
-            match.SnapshotStats(stats, scoring);
-
+            var match = new Match(new MatchReference(12312312312), stats, scoring);
+            
             // Assert
             match.Stats.Should().HaveCount(scoring.Count);
         }

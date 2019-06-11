@@ -18,26 +18,26 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
 {
     public sealed class StatValue : ValueObject
     {
-        private readonly double _value;
-
         public StatValue(object value)
         {
-            _value = Convert.ToDouble(value);
+            Value = Convert.ToDouble(value);
         }
+
+        public double Value { get; private set; }
 
         public static implicit operator double(StatValue value)
         {
-            return value._value;
+            return value.Value;
         }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
-            yield return _value;
+            yield return Value;
         }
 
         public override string ToString()
         {
-            return _value.ToString(CultureInfo.InvariantCulture);
+            return Value.ToString(CultureInfo.InvariantCulture);
         }
     }
 }
