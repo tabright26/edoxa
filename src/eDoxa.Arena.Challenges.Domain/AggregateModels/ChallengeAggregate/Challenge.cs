@@ -38,16 +38,16 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             Game game,
             ChallengeName name,
             ChallengeSetup setup,
-            ChallengeTimeline timeline
+            ChallengeDuration duration
         ) : this()
         {
             Game = game;
             Name = name;
             Setup = setup;
-            Timeline = timeline;
+            Timeline = new ChallengeTimeline(duration);
         }
 
-        public Challenge()
+        private Challenge()
         {
             TestMode = null;
             CreatedAt = DateTime.UtcNow;
@@ -59,7 +59,9 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public TestMode TestMode { get; private set; }
 
-        private IReadOnlyCollection<Participant> ParticipantsToSync => Participants.Where(x => !x.HasFinalScore).OrderBy(x => x.LastSync).ToList();
+        public DateTime CreatedAt { get; private set; }
+
+        public DateTime? LastSync { get; private set; }
 
         public Game Game { get; private set; }
 
@@ -69,15 +71,13 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public ChallengeTimeline Timeline { get; private set; }
 
-        public DateTime CreatedAt { get; private set; }
-
-        public DateTime? LastSync { get; private set; }
-
         public IReadOnlyCollection<ChallengeStat> Stats => _stats;
 
         public IReadOnlyCollection<Participant> Participants => _participants;
 
         public IReadOnlyCollection<Bucket> Buckets => _buckets;
+
+        private IEnumerable<Participant> ParticipantsToSync => Participants.Where(participant => !participant.HasFinalScore).OrderBy(participant => participant.LastSync).ToList();
 
         public void ApplyScoringStrategy(IScoringStrategy strategy)
         {

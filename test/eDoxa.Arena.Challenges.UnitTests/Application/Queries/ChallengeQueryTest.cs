@@ -59,7 +59,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
                 Game.LeagueOfLegends,
                 new ChallengeName("Weekly challenge"),
                 new ChallengeSetup(BestOf.Three, PayoutEntries.Ten, MoneyEntryFee.Ten, new Entries(20)),
-                new ChallengeTimeline(ChallengeDuration.OneDay)
+                ChallengeDuration.OneDay
             );
 
             builder.StoreScoring(new ScoringFactory());

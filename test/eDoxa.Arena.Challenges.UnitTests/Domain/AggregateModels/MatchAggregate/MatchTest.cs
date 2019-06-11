@@ -8,7 +8,9 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Arena.Challenges.Domain.Fakers;
 using eDoxa.Arena.Challenges.UnitTests.Utilities.Fakes;
+using eDoxa.Seedwork.Common.Enumerations;
 
 using FluentAssertions;
 
@@ -35,8 +37,14 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.MatchAggregate
         public void SnapshotStats_Stats_ShouldHaveCountOfScoring()
         {
             // Arrange
-            var scoring = FakeChallengeFactory.CreateScoring();
-            var stats = FakeChallengeFactory.CreateMatchStats();
+            var scoringFaker = new ScoringFaker();
+
+            var scoring = scoringFaker.FakeScoring(Game.LeagueOfLegends);
+
+            var matchStatsFaker = new MatchStatsFaker();
+
+            var stats = matchStatsFaker.FakeMatchStats(Game.LeagueOfLegends);
+
             var match = FakeChallengeFactory.CreateMatch();
 
             // Act

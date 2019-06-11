@@ -10,18 +10,16 @@
 
 using Bogus;
 
-using eDoxa.Seedwork.Common.Extensions;
+using eDoxa.Seedwork.Common.Abstactions;
 
 using Stripe;
 
 namespace eDoxa.Stripe.Data.Fakers
 {
-    public sealed class DobFaker : Faker<Dob>
+    public sealed class DobFaker : CustomFaker<Dob>
     {
         public DobFaker()
         {
-            this.UseSeed();
-
             this.CustomInstantiator(
                 faker =>
                 {

@@ -14,20 +14,18 @@ using System.Collections.Generic;
 using Bogus;
 
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
-using eDoxa.Seedwork.Common.Extensions;
+using eDoxa.Seedwork.Common.Abstactions;
 using eDoxa.Seedwork.Security.Constants;
 
 namespace eDoxa.Identity.Api.Application.Data.Fakers
 {
-    public sealed class RoleFaker : Faker<Role>
+    public sealed class RoleFaker : CustomFaker<Role>
     {
         private const string AdminRole = "admin";
         private const string ChallengerRole = "challenger";
 
         public RoleFaker()
         {
-            this.UseSeed();
-
             this.RuleSet(
                 AdminRole,
                 ruleSet =>

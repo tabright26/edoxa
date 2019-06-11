@@ -10,20 +10,18 @@
 
 using Bogus;
 
-using eDoxa.Seedwork.Common.Extensions;
+using eDoxa.Seedwork.Common.Abstactions;
 
 using Stripe;
 
 namespace eDoxa.Stripe.Data.Fakers
 {
-    public sealed class ShippingFaker : Faker<Shipping>
+    public sealed class ShippingFaker : CustomFaker<Shipping>
     {
         private readonly AddressFaker _addressFaker = new AddressFaker();
 
         public ShippingFaker()
         {
-            this.UseSeed();
-
             this.RuleFor(shipping => shipping.Phone, faker => faker.Phone.PhoneNumber("##########"));
 
             this.RuleFor(shipping => shipping.Address, _addressFaker);

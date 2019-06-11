@@ -102,7 +102,7 @@ namespace eDoxa.Arena.Challenges.Domain.Services
                 game,
                 new ChallengeName(name),
                 new ChallengeSetup(new BestOf(bestOf), new PayoutEntries(payoutEntries), entryFee, new Entries(Convert.ToInt32(payoutEntries * 2))),
-                new ChallengeTimeline(new ChallengeDuration(TimeSpan.FromDays(duration)))
+                new ChallengeDuration(TimeSpan.FromDays(duration))
             );
 
             builder.StoreScoring(_scoringFactory);

@@ -10,19 +10,14 @@
 
 using Bogus;
 
-using eDoxa.Seedwork.Common.Extensions;
+using eDoxa.Seedwork.Common.Abstactions;
 
 using Stripe;
 
 namespace eDoxa.Stripe.Data.Fakers
 {
-    public sealed class InvoiceItemFaker : Faker<InvoiceItem>
+    public sealed class InvoiceItemFaker : CustomFaker<InvoiceItem>
     {
-        public InvoiceItemFaker()
-        {
-            this.UseSeed();
-        }
-
         public InvoiceItem FakeInvoiceItem()
         {
             return this.Generate();

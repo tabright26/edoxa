@@ -8,13 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-
-using eDoxa.Arena.Challenges.Api.Application.Data.Fakers;
-using eDoxa.Seedwork.Common.Extensions;
-
-using FluentAssertions;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Application.Data.Fakers
@@ -22,24 +15,24 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Data.Fakers
     [TestClass]
     public sealed class MatchFakerTest
     {
-        [TestMethod]
-        public void FakeMatch_ShouldNotThrow()
-        {
-            // Arrange
-            var matchFaker = new MatchFaker();
+        //[TestMethod]
+        //public void FakeMatch_ShouldNotThrow()
+        //{
+        //    // Arrange
+        //    var matchFaker = new MatchFaker();
 
-            // Act
-            var action = new Action(
-                () =>
-                {
-                    var match = matchFaker.FakeMatch();
+        //    // Act
+        //    var action = new Action(
+        //        () =>
+        //        {
+        //            var match = matchFaker.FakeMatch();
 
-                    Console.WriteLine(match.DumbAsJson());
-                }
-            );
+        //            Console.WriteLine(match.DumbAsJson());
+        //        }
+        //    );
 
-            // Assert
-            action.Should().NotThrow();
-        }
+        //    // Assert
+        //    action.Should().NotThrow();
+        //}
     }
 }

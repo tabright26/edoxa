@@ -15,12 +15,12 @@ using System.Linq;
 using Bogus;
 
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
-using eDoxa.Seedwork.Common.Extensions;
+using eDoxa.Seedwork.Common.Abstactions;
 using eDoxa.Seedwork.Common.Fakers;
 
 namespace eDoxa.Identity.Api.Application.Data.Fakers
 {
-    public sealed class UserFaker : Faker<User>
+    public sealed class UserFaker : CustomFaker<User>
     {
         private const string NewUser = "new";
         private const string AdminUser = "admin";
@@ -29,8 +29,6 @@ namespace eDoxa.Identity.Api.Application.Data.Fakers
 
         public UserFaker()
         {
-            this.UseSeed();
-
             this.RuleSet(
                 NewUser,
                 ruleSet =>

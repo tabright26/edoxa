@@ -12,9 +12,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
+using eDoxa.Arena.Challenges.Domain.Fakers;
 using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Domain.Aggregate;
 
@@ -23,6 +23,9 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
     public sealed class TestMode : ValueObject
     {
         private readonly Random _random = new Random();
+
+        private readonly MatchStatsFaker _matchStatsFaker = new MatchStatsFaker();
+        private readonly TimelineFaker _timelineFaker = new TimelineFaker();
 
         public TestMode(ChallengeState startingState, TestModeMatchQuantity matchQuantity, TestModeParticipantQuantity participantQuantity) : this()
         {
@@ -62,27 +65,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
                 this.FakeMatches(challenge);
             }
 
-            challenge.EnableTestMode(this, this.FakeTimeline(challenge.Timeline.Duration));
-        }
-
-        private ChallengeTimeline FakeTimeline(ChallengeDuration duration)
-        {
-            if (StartingState == ChallengeState.InProgress)
-            {
-                return new TestModeChallengeTimeline(duration, DateTime.UtcNow);
-            }
-
-            if (StartingState == ChallengeState.Ended)
-            {
-                return new TestModeChallengeTimeline(duration, DateTime.UtcNow.Subtract(duration));
-            }
-
-            if (StartingState == ChallengeState.Closed)
-            {
-                return new TestModeChallengeTimeline(duration, DateTime.UtcNow.Subtract(duration), DateTime.UtcNow);
-            }
-
-            return new TestModeChallengeTimeline(duration);
+            challenge.EnableTestMode(this, _timelineFaker.FakeTimeline(StartingState));
         }
 
         private void FakeParticipants(Challenge challenge)
@@ -134,23 +117,9 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             {
                 for (var index = 0; index < bestOf; index++)
                 {
-                    challenge.SnapshotParticipantMatch(participant, new MatchReference(Guid.NewGuid()), this.FakeMatchStats());
+                    challenge.SnapshotParticipantMatch(participant, new MatchReference(Guid.NewGuid()), _matchStatsFaker.FakeMatchStats(challenge.Game));
                 }
             }
-        }
-
-        private IMatchStats FakeMatchStats()
-        {
-            return new MatchStats(
-                new
-                {
-                    Kills = _random.Next(0, 40 + 1),
-                    Deaths = _random.Next(0, 15 + 1),
-                    Assists = _random.Next(0, 50 + 1),
-                    TotalDamageDealtToChampions = _random.Next(10000, 500000 + 1),
-                    TotalHeal = _random.Next(10000, 350000 + 1)
-                }
-            );
         }
     }
 }

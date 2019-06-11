@@ -10,16 +10,14 @@
 
 using Bogus;
 
-using eDoxa.Seedwork.Common.Extensions;
+using eDoxa.Seedwork.Common.Abstactions;
 
 namespace eDoxa.Seedwork.Common.Fakers
 {
-    public sealed class UserIdFaker : Faker<UserId>
+    public sealed class UserIdFaker : CustomFaker<UserId>
     {
         public UserIdFaker()
         {
-            this.UseSeed();
-
             this.CustomInstantiator(faker => UserId.FromGuid(faker.Random.Guid()));
         }
 

@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 using JetBrains.Annotations;
 
@@ -25,6 +26,15 @@ namespace eDoxa.Seedwork.Domain.Aggregate
         public static bool operator !=([CanBeNull] ValueObject left, [CanBeNull] ValueObject right)
         {
             return !(left == right);
+        }
+
+        public static IEnumerable<TValueObject> GetDeclaredOnlyFields<TValueObject>()
+        where TValueObject : ValueObject
+        {
+            return typeof(TValueObject).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
+                .Select(fieldInfo => fieldInfo.GetValue(null))
+                .Cast<TValueObject>()
+                .ToList();
         }
 
         protected abstract IEnumerable<object> GetAtomicValues();

@@ -10,7 +10,8 @@
 
 using System;
 
-using eDoxa.Arena.Challenges.Api.Application.Data.Fakers;
+using eDoxa.Arena.Challenges.Domain.Fakers;
+using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.Extensions;
 
 using FluentAssertions;
@@ -23,11 +24,24 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Data.Fakers
     public sealed class ChallengeFakerTest
     {
         [TestMethod]
+        public void FakeChallenges_ShouldNotThrow()
+        {
+            // Arrange
+            var challengeFaker = new ChallengeFaker();
+
+            // Act
+            var action = new Action(() => challengeFaker.FakeChallenge(Game.LeagueOfLegends));
+
+            // Assert
+            action.Should().NotThrow();
+        }
+        
+        [TestMethod]
         public void FakeChallenge_ShouldNotThrow()
         {
             // Arrange
             var challengeFaker = new ChallengeFaker();
-            
+
             // Act
             var action = new Action(
                 () =>

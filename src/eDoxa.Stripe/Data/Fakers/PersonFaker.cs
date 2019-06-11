@@ -8,21 +8,19 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Seedwork.Common.Extensions;
+using eDoxa.Seedwork.Common.Abstactions;
 
 using Stripe;
 
 namespace eDoxa.Stripe.Data.Fakers
 {
-    public sealed class PersonFaker : Bogus.Faker<Person>
+    public sealed class PersonFaker : CustomFaker<Person>
     {
         private readonly AddressFaker _addressFaker = new AddressFaker();
         private readonly DobFaker _dobFaker = new DobFaker();
 
         public PersonFaker()
         {
-            this.UseSeed();
-
             this.RuleFor(person => person.FirstName, faker => faker.Name.FirstName());
 
             this.RuleFor(person => person.LastName, faker => faker.Name.LastName());

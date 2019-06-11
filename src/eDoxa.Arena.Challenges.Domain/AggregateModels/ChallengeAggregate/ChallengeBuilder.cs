@@ -22,10 +22,10 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             Game game,
             ChallengeName name,
             ChallengeSetup setup,
-            ChallengeTimeline timeline
+            ChallengeDuration duration
         )
         {
-            _challenge = new Challenge(game, name, setup, timeline);
+            _challenge = new Challenge(game, name, setup, duration);
         }
 
         public void StoreScoring(IScoringFactory factory)

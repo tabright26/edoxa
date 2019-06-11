@@ -10,8 +10,8 @@
 
 using System;
 
-using eDoxa.Arena.Challenges.Api.Application.Data.Fakers;
-using eDoxa.Seedwork.Common.Extensions;
+using eDoxa.Arena.Challenges.Domain.Fakers;
+using eDoxa.Seedwork.Common.Enumerations;
 
 using FluentAssertions;
 
@@ -26,17 +26,12 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Data.Fakers
         public void FakeParticipant_ShouldNotThrow()
         {
             // Arrange
-            var participantFaker = new ParticipantFaker();
+            var challengeFaker = new ChallengeFaker();
+
+            var participantFaker = new ParticipantFaker(challengeFaker.FakeChallenge());
 
             // Act
-            var action = new Action(
-                () =>
-                {
-                    var participant = participantFaker.FakeParticipant();
-
-                    Console.WriteLine(participant.DumbAsJson());
-                }
-            );
+            var action = new Action(() => participantFaker.FakeParticipant(Game.LeagueOfLegends));
 
             // Assert
             action.Should().NotThrow();

@@ -9,18 +9,14 @@
 // this source code package.
 
 using System;
-using System.Collections.Generic;
 
-using eDoxa.Arena.Challenges.Domain.Abstractions;
-using eDoxa.Arena.Challenges.Domain.Abstractions.Strategies;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
+using eDoxa.Arena.Challenges.Domain.Fakers;
 using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Common.Enumerations;
-
-using Moq;
 
 using Match = eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate.Match;
 
@@ -28,36 +24,23 @@ namespace eDoxa.Arena.Challenges.UnitTests.Utilities.Fakes
 {
     public sealed partial class FakeChallengeFactory
     {
-        public const string Kills = nameof(Kills);
-        public const string Deaths = nameof(Deaths);
-        public const string Assists = nameof(Assists);
-        public const string TotalDamageDealtToChampions = nameof(TotalDamageDealtToChampions);
-        public const string TotalHeal = nameof(TotalHeal);
         private static readonly Lazy<FakeChallengeFactory> Lazy = new Lazy<FakeChallengeFactory>(() => new FakeChallengeFactory());
 
         private static readonly MatchReference AdminMatchReference = new MatchReference(2973265231);
-        private static readonly Random Random = new Random();
 
         public static FakeChallengeFactory Instance => Lazy.Value;
 
-        public Challenge CreateChallenge(ChallengeState state = null, ChallengeSetup setup = null)
+        public Challenge CreateChallenge(ChallengeSetup setup = null)
         {
-            setup = setup ?? new FakeChallengeSetup();
+            var setupFaker = new SetupFaker();
 
-            var challenge = new Challenge(Game.LeagueOfLegends, new ChallengeName(nameof(Challenge)), setup, new ChallengeTimeline(ChallengeDuration.OneDay));
+            setup = setup ?? setupFaker.FakeSetup(CurrencyType.Money);
 
-            challenge.ApplyScoringStrategy(this.CreateScoringStrategy());
+            var challenge = new Challenge(Game.LeagueOfLegends, new ChallengeName(nameof(Challenge)), setup, ChallengeDuration.OneDay);
 
-            //var timeline = this.CreateChallengeTimeline(state);
+            var scoringFaker = new ScoringFaker();
 
-            //challenge.GetType().GetField("_timeline", BindingFlags.Instance | BindingFlags.NonPublic)?.SetValue(challenge, timeline);
-
-            //if (state.Value >= ChallengeState.Opened.Value)
-            //{
-            //    var scoring = new Option<IScoring>(this.CreateScoring());
-
-            //    challenge.GetType().GetField("_scoring", BindingFlags.Instance | BindingFlags.NonPublic)?.SetValue(challenge, scoring);
-            //}
+            challenge.ApplyScoringStrategy(scoringFaker.FakeScoringStrategy(Game.LeagueOfLegends));
 
             return challenge;
         }
@@ -92,99 +75,6 @@ namespace eDoxa.Arena.Challenges.UnitTests.Utilities.Fakes
         {
             return new ChallengeSetup(bestOf, PayoutEntries.TwentyFive, MoneyEntryFee.Five, new Entries(50));
         }
-
-        //public Timeline CreateChallengeTimeline(ChallengeState state = null)
-        //{
-        //    state = state ?? ChallengeState.Draft;
-
-        //    if (state.Equals(ChallengeState.Draft))
-        //    {
-        //        return CreateChallengeTimelineAsDraft();
-        //    }
-
-        //    if (state.Equals(ChallengeState.Configured))
-        //    {
-        //        return CreateChallengeTimelineAsConfigured();
-        //    }
-
-        //    if (state.Equals(ChallengeState.Opened))
-        //    {
-        //        return CreateChallengeTimelineAsOpened();
-        //    }
-
-        //    if (state.Equals(ChallengeState.InProgress))
-        //    {
-        //        return CreateChallengeTimelineAsInProgress();
-        //    }
-
-        //    if (state.Equals(ChallengeState.Ended))
-        //    {
-        //        return CreateChallengeTimelineAsEnded();
-        //    }
-
-        //    if (state.Equals(ChallengeState.Closed))
-        //    {
-        //        return CreateChallengeTimelineAsClosed();
-        //    }
-
-        //    throw new ArgumentOutOfRangeException(nameof(state));
-        //}
-
-        //private static Timeline CreateChallengeTimelineAsDraft()
-        //{
-        //    return new Timeline();
-        //}
-
-        //private static Timeline CreateChallengeTimelineAsConfigured()
-        //{
-        //    var publishedAt = TimelinePublishedAt.Min.AddDays(1);
-
-        //    var timeline = CreateChallengeTimelineAsDraft();
-
-        //    timeline = timeline.Configure(publishedAt, TimelineRegistrationPeriod.Default, TimelineExtensionPeriod.Default);
-
-        //    return timeline;
-        //}
-
-        //private static Timeline CreateChallengeTimelineAsOpened()
-        //{
-        //    var timeline = CreateChallengeTimelineAsDraft();
-
-        //    timeline = timeline.Publish(TimelineRegistrationPeriod.Default, TimelineExtensionPeriod.Default);
-
-        //    return timeline;
-        //}
-
-        //private static Timeline CreateChallengeTimelineAsInProgress()
-        //{
-        //    var timeline = CreateChallengeTimelineAsOpened();
-
-        //    var publishedAt = timeline.PublishedAt - TimelineExtensionPeriod.Default;
-
-        //    timeline.GetType().GetField("_publishedAt", BindingFlags.NonPublic | BindingFlags.Instance)?.SetValue(timeline, publishedAt);
-
-        //    return timeline;
-        //}
-
-        //private static Timeline CreateChallengeTimelineAsEnded()
-        //{
-        //    var timeline = CreateChallengeTimelineAsInProgress();
-
-        //    var publishedAt = timeline.PublishedAt - TimelineRegistrationPeriod.Default;
-
-        //    timeline.GetType().GetField("_publishedAt", BindingFlags.NonPublic | BindingFlags.Instance)?.SetValue(timeline, publishedAt);
-
-        //    return timeline;
-        //}
-
-        //private static Timeline CreateChallengeTimelineAsClosed()
-        //{
-        //    var timeline = CreateChallengeTimelineAsEnded();
-
-        //    timeline = timeline.Close();
-
-        //    return timeline;
-        //}
     }
 
     public sealed partial class FakeChallengeFactory
@@ -193,18 +83,24 @@ namespace eDoxa.Arena.Challenges.UnitTests.Utilities.Fakes
         {
             var setup = this.CreateChallengeSetup(bestOf ?? BestOf.Three);
 
-            var challenge = this.CreateChallenge(setup: setup);
+            var challenge = this.CreateChallenge(setup);
 
             return new Participant(challenge, new UserId(), new ExternalAccount(Guid.NewGuid()));
         }
 
         public Participant CreateParticipantMatches(int matchCount = 0, BestOf bestOf = null)
         {
+            var scoringFaker = new ScoringFaker();
+
+            var scoring = scoringFaker.FakeScoring(Game.LeagueOfLegends);
+
+            var matchStatsFaker = new MatchStatsFaker();
+
             var participant = this.CreateParticipant(bestOf);
 
             for (var index = 0; index < matchCount; index++)
             {
-                participant.SnapshotMatch(new MatchReference(123123123), this.CreateMatchStats(), this.CreateScoring());
+                participant.SnapshotMatch(new MatchReference(123123123), matchStatsFaker.FakeMatchStats(Game.LeagueOfLegends), scoring);
             }
 
             return participant;
@@ -214,52 +110,5 @@ namespace eDoxa.Arena.Challenges.UnitTests.Utilities.Fakes
         {
             return new Match(this.CreateParticipant(), AdminMatchReference);
         }
-
-        public IMatchStats CreateMatchStats()
-        {
-            return new MatchStats(
-                new
-                {
-                    Kills = Random.Next(0, 40 + 1),
-                    Deaths = Random.Next(0, 15 + 1),
-                    Assists = Random.Next(0, 50 + 1),
-                    TotalDamageDealtToChampions = Random.Next(10000, 500000 + 1),
-                    TotalHeal = Random.Next(10000, 350000 + 1)
-                }
-            );
-        }
-
-        public IScoringStrategy CreateScoringStrategy()
-        {
-            var mock = new Mock<IScoringStrategy>();
-
-            mock.SetupGet(strategy => strategy.Scoring).Returns(this.CreateScoring());
-
-            return mock.Object;
-        }
-
-        public IScoring CreateScoring()
-        {
-            return new Scoring(
-                new HashSet<ChallengeStat>
-                {
-                    new ChallengeStat(new StatName(nameof(Kills)), new StatWeighting(4F)),
-                    new ChallengeStat(new StatName(nameof(Deaths)), new StatWeighting(-3F)),
-                    new ChallengeStat(new StatName(nameof(Assists)), new StatWeighting(3F)),
-                    new ChallengeStat(new StatName(nameof(TotalDamageDealtToChampions)), new StatWeighting(0.00015F)),
-                    new ChallengeStat(new StatName(nameof(TotalHeal)), new StatWeighting(0.0008F))
-                }
-            );
-        }
-
-        //public PrizePool CreatePrizePool(int prizePool)
-        //{
-        //    return new PrizePool(new Entries(payoutEntries * 2, false), new PayoutRatio(0.5F, false));
-        //}
-
-        //public PayoutEntries CreatePayoutEntries(int payoutEntries)
-        //{
-        //    return new PayoutEntries(new Entries(payoutEntries * 2, false), new PayoutRatio(0.5F, false));
-        //}
     }
 }

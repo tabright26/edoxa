@@ -11,7 +11,8 @@
 using System.Collections.Generic;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
-using eDoxa.Arena.Challenges.UnitTests.Utilities.Fakes;
+using eDoxa.Arena.Challenges.Domain.Fakers;
+using eDoxa.Seedwork.Common.Enumerations;
 
 using FluentAssertions;
 
@@ -22,13 +23,13 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.MatchAggregate
     [TestClass]
     public sealed class MatchStatsTest
     {
-        private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
-
         [TestMethod]
         public void Stats_ShouldBeAssignableToType()
         {
             // Arrange
-            var stats = FakeChallengeFactory.CreateMatchStats();
+            var matchStatsFaker = new MatchStatsFaker();
+
+            var stats = matchStatsFaker.FakeMatchStats(Game.LeagueOfLegends);
 
             // Act
             var type = typeof(Dictionary<StatName, StatValue>);

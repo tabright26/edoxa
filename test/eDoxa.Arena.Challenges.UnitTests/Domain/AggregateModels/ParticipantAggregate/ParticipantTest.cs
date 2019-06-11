@@ -10,7 +10,9 @@
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
+using eDoxa.Arena.Challenges.Domain.Fakers;
 using eDoxa.Arena.Challenges.UnitTests.Utilities.Fakes;
+using eDoxa.Seedwork.Common.Enumerations;
 
 using FluentAssertions;
 
@@ -28,8 +30,14 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ParticipantAgg
         {
             // Arrange
             var participant = FakeChallengeFactory.CreateParticipant();
-            var stats = FakeChallengeFactory.CreateMatchStats();
-            var scoring = FakeChallengeFactory.CreateScoring();
+
+            var matchStatsFaker = new MatchStatsFaker();
+
+            var stats = matchStatsFaker.FakeMatchStats(Game.LeagueOfLegends);
+
+            var scoringFaker = new ScoringFaker();
+
+            var scoring = scoringFaker.FakeScoring(Game.LeagueOfLegends);
 
             // Act
             participant.SnapshotMatch(new MatchReference(213123123), stats, scoring);
