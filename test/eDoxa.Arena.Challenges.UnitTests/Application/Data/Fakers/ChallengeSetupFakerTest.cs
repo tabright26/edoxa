@@ -1,4 +1,4 @@
-﻿// Filename: SetupFakerTest.cs
+﻿// Filename: ChallengeSetupFakerTest.cs
 // Date Created: 2019-06-10
 // 
 // ================================================
@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.Fakers;
 using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.Extensions;

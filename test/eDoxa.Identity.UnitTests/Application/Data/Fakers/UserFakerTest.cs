@@ -95,11 +95,11 @@ namespace eDoxa.Identity.UnitTests.Application.Data.Fakers
             var action = new Action(
                 () =>
                 {
-                    var user = userIdFaker.FakeUserId();
+                    var user = userIdFaker.Generate();
 
                     Console.WriteLine(user.DumbAsJson());
 
-                    user = userIdFaker.FakeUserId();
+                    user = userIdFaker.Generate();
 
                     Console.WriteLine(user.DumbAsJson());
                 }

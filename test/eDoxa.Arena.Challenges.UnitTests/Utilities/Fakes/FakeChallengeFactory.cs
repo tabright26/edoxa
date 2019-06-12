@@ -80,7 +80,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Utilities.Fakes
         {
             var scoringFaker = new ScoringFaker();
 
-            var scoring = scoringFaker.FakeScoring(Game.LeagueOfLegends);
+            var scoring = scoringFaker.FakeMatchStats(Game.LeagueOfLegends);
 
             var matchStatsFaker = new MatchStatsFaker();
 

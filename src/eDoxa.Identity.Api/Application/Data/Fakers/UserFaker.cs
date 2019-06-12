@@ -51,7 +51,7 @@ namespace eDoxa.Identity.Api.Application.Data.Fakers
                         }
                     );
 
-                    ruleSet.RuleFor(user => user.Id, faker => _userIdFaker.FakeUserId().ToGuid());
+                    ruleSet.RuleFor(user => user.Id, faker => _userIdFaker.Generate().ToGuid());
 
                     ruleSet.RuleFor(user => user.EmailConfirmed, faker => faker.Random.Bool());
 

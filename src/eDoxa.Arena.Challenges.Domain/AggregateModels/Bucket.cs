@@ -45,11 +45,11 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels
 
         public IBuckets ToIndividualBuckets()
         {
-            var buckets = new List<BucketItem>();
+            var buckets = new List<IndividualBucket>();
 
             for (var index = 0; index < Size; index++)
             {
-                buckets.Add(new BucketItem(Prize));
+                buckets.Add(new IndividualBucket(Prize));
             }
 
             return new Buckets(buckets);

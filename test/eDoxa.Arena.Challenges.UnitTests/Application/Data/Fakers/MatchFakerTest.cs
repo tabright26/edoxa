@@ -30,20 +30,13 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Data.Fakers
         public void FakeMatches_ShouldNotThrow()
         {
             // Arrange
-            var matchFaker = new MatchFaker();
+            var matchFaker1 = new MatchFaker();
 
             // Act
-            var action = new Action(
-                () =>
-                {
-                    var matches = matchFaker.FakeMatches(5);
-
-                    matches.Select(match => match.Reference).Distinct().Should().HaveCount(5);
-                }
-            );
+            var matches = matchFaker1.FakeMatches(5, Game.LeagueOfLegends).ToList();
 
             // Assert
-            action.Should().NotThrow();
+            matches.Should().HaveCount(matches.Select(match => match.Reference).Distinct().Count());
         }
 
         [DataTestMethod]
@@ -51,20 +44,13 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Data.Fakers
         public void FakeMatches_ShouldNotThrow(Game game)
         {
             // Arrange
-            var matchFaker = new MatchFaker();
+            var matchFaker1 = new MatchFaker();
 
             // Act
-            var action = new Action(
-                () =>
-                {
-                    var matches = matchFaker.FakeMatches(5, game);
-
-                    matches.Select(match => match.Reference).Distinct().Should().HaveCount(5);
-                }
-            );
+            var matches = matchFaker1.FakeMatches(5, game).ToList();
 
             // Assert
-            action.Should().NotThrow();
+            matches.Should().HaveCount(matches.Select(match => match.Reference).Distinct().Count());
         }
 
         [TestMethod]
@@ -74,7 +60,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Data.Fakers
             var matchFaker = new MatchFaker();
 
             // Act
-            var action = new Action(() => matchFaker.FakeMatch());
+            var action = new Action(() => matchFaker.FakeMatch(Game.LeagueOfLegends));
 
             // Assert
             action.Should().NotThrow();
@@ -88,7 +74,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Data.Fakers
             var matchFaker = new MatchFaker();
 
             // Act
-            var action = new Action(() => matchFaker.FakeMatch(game));
+            var action = new Action(() => matchFaker.FakeMatch(Game.LeagueOfLegends));
 
             // Assert
             action.Should().NotThrow();

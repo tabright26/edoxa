@@ -35,7 +35,7 @@ namespace eDoxa.Cashier.Api.Application.Data.Fakers
                     ruleSet.CustomInstantiator(
                         faker =>
                         {
-                            var userId = _userIdFaker.FakeUserId();
+                            var userId = _userIdFaker.Generate();
 
                             var connectAccountId = new StripeConnectAccountId($"acct_{faker.Random.Guid().ToString().Replace("-", string.Empty)}");
 

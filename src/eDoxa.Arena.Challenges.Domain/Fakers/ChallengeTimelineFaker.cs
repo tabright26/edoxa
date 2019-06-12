@@ -1,4 +1,4 @@
-﻿// Filename: TimelineFaker.cs
+﻿// Filename: ChallengeTimelineFaker.cs
 // Date Created: 2019-06-10
 // 
 // ================================================
@@ -23,50 +23,43 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers
 
         public ChallengeTimelineFaker()
         {
-            this.RuleSet(
-                ChallengeState.Inscription.ToString(),
-                ruleSet =>
+            this.CustomInstantiator(
+                faker =>
                 {
-                    ruleSet.CustomInstantiator(faker => new ChallengeTimeline(faker.PickRandom(Durations)));
+                    State = State ?? faker.PickRandom(ChallengeState.GetAll());
+
+                    return new ChallengeTimeline(faker.PickRandom(Durations));
                 }
             );
 
-            this.RuleSet(
-                ChallengeState.InProgress.ToString(),
-                ruleSet =>
+            this.RuleFor(
+                timeline => timeline.StartedAt,
+                (faker, timeline) =>
                 {
-                    ruleSet.CustomInstantiator(faker => new ChallengeTimeline(faker.PickRandom(Durations)));
+                    if (State == ChallengeState.InProgress)
+                    {
+                        return DateTime.UtcNow;
+                    }
 
-                    ruleSet.RuleFor(timeline => timeline.StartedAt, DateTime.UtcNow);
+                    if (State == ChallengeState.Ended || State == ChallengeState.Closed)
+                    {
+                        return DateTime.UtcNow.Subtract(timeline.Duration);
+                    }
+
+                    return timeline.StartedAt;
                 }
             );
 
-            this.RuleSet(
-                ChallengeState.Ended.ToString(),
-                ruleSet =>
-                {
-                    ruleSet.CustomInstantiator(faker => new ChallengeTimeline(faker.PickRandom(Durations)));
-
-                    ruleSet.RuleFor(timeline => timeline.StartedAt, (faker, timeline) => DateTime.UtcNow.Subtract(timeline.Duration));
-                }
-            );
-
-            this.RuleSet(
-                ChallengeState.Closed.ToString(),
-                ruleSet =>
-                {
-                    ruleSet.CustomInstantiator(faker => new ChallengeTimeline(faker.PickRandom(Durations)));
-
-                    ruleSet.RuleFor(timeline => timeline.StartedAt, (faker, timeline) => DateTime.UtcNow.Subtract(timeline.Duration));
-
-                    ruleSet.RuleFor(timeline => timeline.ClosedAt, DateTime.UtcNow);
-                }
-            );
+            this.RuleFor(timeline => timeline.ClosedAt, (faker, timeline) => State == ChallengeState.Closed ? DateTime.UtcNow : timeline.ClosedAt);
         }
 
-        public ChallengeTimeline FakeTimeline(ChallengeState state)
+        private ChallengeState State { get; set; }
+
+        public ChallengeTimeline FakeTimeline(ChallengeState state = null)
         {
-            return this.Generate(state.ToString());
+            State = state;
+
+            return this.Generate();
         }
     }
 }

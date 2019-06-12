@@ -16,6 +16,7 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Challenges.Domain.Fakers;
 using eDoxa.Seedwork.Common;
+using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
@@ -24,9 +25,9 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
     {
         private readonly Random _random = new Random();
 
-        private readonly MatchStatsFaker _matchStatsFaker = new MatchStatsFaker();
         private readonly ChallengeTimelineFaker _challengeTimelineFaker = new ChallengeTimelineFaker();
-
+        private readonly MatchStatsFaker _matchStatsFaker = new MatchStatsFaker();
+        
         public TestMode(ChallengeState startingState, TestModeMatchQuantity matchQuantity, TestModeParticipantQuantity participantQuantity) : this()
         {
             StartingState = startingState;
@@ -117,7 +118,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             {
                 for (var index = 0; index < bestOf; index++)
                 {
-                    challenge.SnapshotParticipantMatch(participant, new MatchReference(Guid.NewGuid()), _matchStatsFaker.FakeMatchStats(challenge.Game));
+                    challenge.SnapshotParticipantMatch(participant, new MatchReference(Guid.NewGuid()), _matchStatsFaker.FakeMatchStats(Game.LeagueOfLegends));
                 }
             }
         }

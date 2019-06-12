@@ -10,9 +10,9 @@
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels
 {
-    public sealed class BucketItem : Bucket
+    public sealed class IndividualBucket : Bucket
     {
-        public BucketItem(Prize prize) : base(prize, BucketSize.Single)
+        public IndividualBucket(Prize prize) : base(prize, BucketSize.Individual)
         {
         }
     }

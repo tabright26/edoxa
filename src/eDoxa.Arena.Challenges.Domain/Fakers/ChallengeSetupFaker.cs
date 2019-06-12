@@ -1,4 +1,4 @@
-﻿// Filename: SetupFaker.cs
+﻿// Filename: ChallengeSetupFaker.cs
 // Date Created: 2019-06-10
 // 
 // ================================================
@@ -7,6 +7,9 @@
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
+
+using System.Collections.Generic;
+using System.Linq;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
@@ -18,50 +21,46 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers
 {
     public sealed class ChallengeSetupFaker : CustomFaker<ChallengeSetup>
     {
+        private static readonly IEnumerable<MoneyEntryFee> MoneyEntryFees = ValueObject.GetDeclaredOnlyFields<MoneyEntryFee>();
+
+        private static readonly IEnumerable<TokenEntryFee> TokenEntryFees = ValueObject.GetDeclaredOnlyFields<TokenEntryFee>();
+
+        private static readonly IEnumerable<EntryFee> EntryFees = MoneyEntryFees.Cast<EntryFee>().Union(TokenEntryFees);
+
         public ChallengeSetupFaker()
         {
-            this.RuleSet(
-                CurrencyType.Money.ToString(),
-                ruleSet =>
+            this.CustomInstantiator(
+                faker =>
                 {
-                    ruleSet.CustomInstantiator(
-                        faker =>
+                    var bestOf = faker.PickRandom(ValueObject.GetDeclaredOnlyFields<BestOf>());
+
+                    var payoutEntries = faker.PickRandom(ValueObject.GetDeclaredOnlyFields<PayoutEntries>());
+
+                    if (EntryFeeCurrency != null)
+                    {
+                        if (EntryFeeCurrency == CurrencyType.Money)
                         {
-                            var bestOf = faker.PickRandom(ValueObject.GetDeclaredOnlyFields<BestOf>());
-
-                            var payoutEntries = faker.PickRandom(ValueObject.GetDeclaredOnlyFields<PayoutEntries>());
-
-                            var entryFee = faker.PickRandom(ValueObject.GetDeclaredOnlyFields<MoneyEntryFee>());
-
-                            return new ChallengeSetup(bestOf, payoutEntries, entryFee);
+                            return new ChallengeSetup(bestOf, payoutEntries, faker.PickRandom(MoneyEntryFees));
                         }
-                    );
-                }
-            );
 
-            this.RuleSet(
-                CurrencyType.Token.ToString(),
-                ruleSet =>
-                {
-                    ruleSet.CustomInstantiator(
-                        faker =>
+                        if (EntryFeeCurrency == CurrencyType.Token)
                         {
-                            var bestOf = faker.PickRandom(ValueObject.GetDeclaredOnlyFields<BestOf>());
-
-                            var payoutEntries = faker.PickRandom(ValueObject.GetDeclaredOnlyFields<PayoutEntries>());
-
-                            var entryFee = faker.PickRandom(ValueObject.GetDeclaredOnlyFields<TokenEntryFee>());
-
-                            return new ChallengeSetup(bestOf, payoutEntries, entryFee);
+                            return new ChallengeSetup(bestOf, payoutEntries, faker.PickRandom(TokenEntryFees));
                         }
-                    );
+                    }
+
+                    return new ChallengeSetup(bestOf, payoutEntries, faker.PickRandom(EntryFees));
                 }
             );
         }
 
-        public ChallengeSetup FakeSetup(CurrencyType currency)
+        private CurrencyType EntryFeeCurrency { get; set; }
+
+        public ChallengeSetup FakeSetup(CurrencyType entryFeeCurrency = null)
         {
-            return this.Generate(currency.ToString());
+            EntryFeeCurrency = entryFeeCurrency;
+
+            return this.Generate();
         }
     }
 }

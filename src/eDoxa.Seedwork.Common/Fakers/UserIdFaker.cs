@@ -18,10 +18,5 @@ namespace eDoxa.Seedwork.Common.Fakers
         {
             this.CustomInstantiator(faker => UserId.FromGuid(faker.Random.Guid()));
         }
-
-        public UserId FakeUserId()
-        {
-            return this.Generate();
-        }
     }
 }

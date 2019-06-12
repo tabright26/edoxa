@@ -10,14 +10,9 @@
 
 using System.Collections.Generic;
 
-using Bogus;
-
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Seedwork.Common.Abstactions;
 using eDoxa.Seedwork.Common.Enumerations;
-
-using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Domain.Fakers
 {
@@ -27,44 +22,25 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers
         private readonly MatchStatsFaker _matchStatsFaker = new MatchStatsFaker();
         private readonly ScoringFaker _scoringFaker = new ScoringFaker();
 
-        private Game _game;
-
         public MatchFaker()
         {
             this.CustomInstantiator(
-                faker =>
-                {
-                    var game = _game ?? faker.PickRandom(Game.GetAll());
-
-                    return new Match(_matchReferenceFaker.FakeMatchReference(game), _matchStatsFaker.FakeMatchStats(game), _scoringFaker.FakeScoring(game));
-                }
+                _ => new Match(_matchReferenceFaker.FakeMatchReference(Game), _matchStatsFaker.FakeMatchStats(Game), _scoringFaker.FakeMatchStats(Game))
             );
         }
 
-        [NotNull]
-        public override Faker<Match> UseSeed(int seed)
+        private Game Game { get; set; }
+
+        public IEnumerable<Match> FakeMatches(int count, Game game)
         {
-            var challengeFaker = base.UseSeed(seed);
-
-            _matchReferenceFaker.UseSeed(seed);
-
-            _matchStatsFaker.UseSeed(seed);
-
-            _scoringFaker.UseSeed(seed);
-
-            return challengeFaker;
-        }
-
-        public IEnumerable<Match> FakeMatches(int count, Game game = null)
-        {
-            _game = game;
+            Game = game;
 
             return this.Generate(count);
         }
 
-        public Match FakeMatch(Game game = null)
+        public Match FakeMatch(Game game)
         {
-            _game = game;
+            Game = game;
 
             return this.Generate();
         }

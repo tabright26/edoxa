@@ -11,7 +11,6 @@
 using System.Linq;
 
 using eDoxa.Arena.Challenges.Domain.Fakers;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.Extensions;
 
 using FluentAssertions;
@@ -24,13 +23,99 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Data.Fakers
     public sealed class ChallengeFakerTest
     {
         [TestMethod]
+        public void FakeChallenges_ShouldNotThrow1()
+        {
+            // Arrange
+            var challengeFaker1 = new ChallengeFaker();
+
+            var challengeFaker2 = new ChallengeFaker();
+
+            // Act
+            var challenge1 = challengeFaker1.Generate();
+            
+            var challenge2 = challengeFaker2.Generate();
+
+            // Assert
+            challenge1.Should().Be(challenge2);
+        }
+
+        [TestMethod]
+        public void FakeChallenges_ShouldNotThrow2()
+        {
+            // Arrange
+            var challengeFaker = new ChallengeFaker();
+
+            // Act
+            var challenge1 = challengeFaker.FakeChallenge();
+
+            var challenge2 = challengeFaker.FakeChallenge();
+
+            // Assert
+            challenge1.Should().NotBe(challenge2);
+        }
+
+        [TestMethod]
+        public void FakeChallenges_ShouldNotThrow3()
+        {
+            // Arrange
+            var challengeFaker = new ChallengeFaker();
+
+            // Act
+            var challenge1 = challengeFaker.FakeChallenge();
+
+            challengeFaker.ParticipantFaker = new ParticipantFaker();
+
+            var challenge2 = challengeFaker.FakeChallenge();
+
+            challengeFaker.ParticipantFaker = new ParticipantFaker();
+
+            var challenge3 = challengeFaker.FakeChallenge();
+
+            var participants1 = challenge1.Participants.OrderBy(x => x.Id).ToList();
+
+            var participants2 = challenge2.Participants.OrderBy(x => x.Id).ToList();
+
+            var participants3 = challenge3.Participants.OrderBy(x => x.Id).ToList();
+
+            var r = participants1.Union(participants2).Union(participants3).Distinct().ToList();
+
+            // Assert
+            r.Should().HaveCount(200);
+        }
+
+        [TestMethod]
+        public void FakeChallenges_ShouldNotThrow4()
+        {
+            // Arrange
+            var challengeFaker = new ChallengeFaker();
+
+            // Act
+            var challenge1 = challengeFaker.FakeChallenge();
+
+            var challenge2 = challengeFaker.FakeChallenge();
+
+            var challenge3 = challengeFaker.FakeChallenge();
+
+            var participants1 = challenge1.Participants.OrderBy(x => x.Id).ToList();
+
+            var participants2 = challenge2.Participants.OrderBy(x => x.Id).ToList();
+
+            var participants3 = challenge3.Participants.OrderBy(x => x.Id).ToList();
+
+            var r = participants1.Union(participants2).Union(participants3).Distinct().ToList();
+
+            // Assert
+            r.Should().HaveCount(270);
+        }
+
+        [TestMethod]
         public void FakeChallenges_ShouldNotThrow()
         {
             // Arrange
             var challengeFaker = new ChallengeFaker();
 
             // Act
-            var challenge = challengeFaker.FakeChallenge(Game.LeagueOfLegends);
+            var challenge = challengeFaker.FakeChallenge();
 
             // Assert
             var participants = challenge.Participants.ToList();

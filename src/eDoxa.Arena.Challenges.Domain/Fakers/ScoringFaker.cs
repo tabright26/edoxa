@@ -30,7 +30,7 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers
                 Game.LeagueOfLegends.ToString(),
                 ruleSet =>
                 {
-                    this.CustomInstantiator(
+                    ruleSet.CustomInstantiator(
                         scoring => new Scoring(
                             new HashSet<ScoringItem>
                             {
@@ -49,7 +49,7 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers
             );
         }
 
-        public IScoring FakeScoring(Game game)
+        public IScoring FakeMatchStats(Game game)
         {
             return this.Generate(game.ToString());
         }
@@ -58,7 +58,7 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers
         {
             var mock = new Mock<IScoringStrategy>();
 
-            var scoring = this.FakeScoring(game);
+            var scoring = this.FakeMatchStats(game);
 
             mock.SetupGet(strategy => strategy.Scoring).Returns(scoring);
 

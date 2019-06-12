@@ -29,7 +29,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Repositories
         {
             var challengeFaker = new ChallengeFaker();
 
-            var challenge = challengeFaker.FakeChallenge();
+            var challenge = challengeFaker.Generate();
 
             using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
             {
@@ -61,15 +61,13 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Repositories
         {
             var challengeFaker = new ChallengeFaker();
 
-            var challenges = challengeFaker.FakeChallenges(count);
-
             using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {
                     var repository = new ChallengeRepository(context);
 
-                    repository.Create(challenges);
+                    repository.Create(challengeFaker.Generate(count));
 
                     await repository.UnitOfWork.CommitAsync();
                 }
@@ -78,7 +76,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Repositories
                 {
                     var repository = new ChallengeRepository(context);
 
-                    challenges = await repository.FindChallengesAsync();
+                    var challenges = await repository.FindChallengesAsync();
 
                     challenges.Should().HaveCount(count);
                 }

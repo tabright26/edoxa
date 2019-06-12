@@ -12,8 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using Bogus;
-
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
@@ -22,9 +20,6 @@ using eDoxa.Seedwork.Common.Abstactions;
 using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.Fakers;
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Domain.Extensions;
-
-using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Domain.Fakers
 {
@@ -32,77 +27,74 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers
     {
         private readonly UserIdFaker _userIdFaker = new UserIdFaker();
         private readonly ExternalAccountFaker _externalAccountFaker = new ExternalAccountFaker();
-        private readonly MatchFaker _matchFaker = new MatchFaker();
-
-        private Game _game;
-        private ChallengeState _state;
-        private BestOf _bestOf;
 
         public ParticipantFaker()
         {
-            this.CustomInstantiator(
-                faker =>
+            this.CustomInstantiator(faker =>
                 {
-                    _matchFaker.UseSeed(faker.Random.Int(1000000, 9999999));
+                    State = State ?? faker.PickRandom(ChallengeState.GetAll());
 
-                    var game = _game ?? faker.PickRandom(Game.GetAll());
+                    BestOf = BestOf ?? faker.PickRandom(ValueObject.GetDeclaredOnlyFields<BestOf>());
 
-                    var state = _state ?? faker.PickRandom(ChallengeState.GetAll());
-
-                    var userId = _userIdFaker.FakeUserId();
-
-                    var externalAccount = _externalAccountFaker.FakeExternalAccount(game);
-
-                    var bestOf = _bestOf ?? faker.PickRandom(ValueObject.GetDeclaredOnlyFields<BestOf>());
-
-                    var participant = new Participant(userId, externalAccount, bestOf);
-
-                    var matches = _matchFaker.FakeMatches(faker.Random.Int(0, bestOf + 3), game);
-
-                    if (state != ChallengeState.Inscription)
-                    {
-                        matches.ForEach(match => participant.SnapshotMatch(match.Reference, new MatchStats(match.Stats), new Scoring(match.Stats)));
-                    }
-
-                    return participant;
+                    return new Participant(_userIdFaker.Generate(), _externalAccountFaker.FakeExternalAccount(Game), BestOf);
                 }
             );
+
+            this.RuleFor(participant => participant.Id, faker => ParticipantId.FromGuid(faker.Random.Guid()));
+
+            this.RuleFor(participant => participant.Matches, faker => State != ChallengeState.Inscription ? MatchFaker.FakeMatches(faker.Random.Int(0, BestOf + 3), Game) : new HashSet<Match>());
 
             this.RuleFor(participant => participant.LastSync, (_, participant) => participant.Matches.Max(match => match.Timestamp as DateTime?));
         }
 
-        [NotNull]
-        public override Faker<Participant> UseSeed(int seed)
+        public MatchFaker MatchFaker { get; set; } = new MatchFaker();
+
+        private Game Game { get; set; }
+
+        private ChallengeState State { get; set; }
+
+        private BestOf BestOf { get; set; }
+
+        public IEnumerable<Participant> FakeParticipants(int count, Game game, ChallengeState state = null, BestOf bestOf = null)
         {
-            var challengeFaker = base.UseSeed(seed);
+            Game = game;
 
-            _userIdFaker.UseSeed(seed);
+            State = state;
 
-            _externalAccountFaker.UseSeed(seed);
-
-            _matchFaker.UseSeed(seed);
-
-            return challengeFaker;
-        }
-
-        public IEnumerable<Participant> FakeParticipants(int count, Game game = null, ChallengeState state = null, BestOf bestOf = null)
-        {
-            _game = game;
-
-            _state = state;
-
-            _bestOf = bestOf;
+            BestOf = bestOf;
 
             return this.Generate(count);
         }
 
-        public Participant FakeParticipant(Game game = null, ChallengeState state = null, BestOf bestOf = null)
+        public IEnumerable<Participant> FakeParticipants(int count, Challenge challenge)
         {
-            _game = game;
+            Game = challenge.Game;
 
-            _state = state;
+            State = challenge.State;
 
-            _bestOf = bestOf;
+            BestOf = challenge.Setup.BestOf;
+
+            return this.Generate(count);
+        }
+
+        public Participant FakeParticipant(Game game, ChallengeState state = null, BestOf bestOf = null)
+        {
+            Game = game;
+
+            State = state;
+
+            BestOf = bestOf;
+
+            return this.Generate();
+        }
+
+        public Participant FakeParticipant(Challenge challenge)
+        {
+            Game = challenge.Game;
+
+            State = challenge.State;
+
+            BestOf = challenge.Setup.BestOf;
 
             return this.Generate();
         }

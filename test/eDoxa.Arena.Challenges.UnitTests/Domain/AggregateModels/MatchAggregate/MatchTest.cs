@@ -25,16 +25,20 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.MatchAggregate
         public void SnapshotStats_Stats_ShouldHaveCountOfScoring()
         {
             // Arrange
+            var matchReferenceFaker = new MatchReferenceFaker();
+
+            var matchReference = matchReferenceFaker.FakeMatchReference(Game.LeagueOfLegends);
+
             var scoringFaker = new ScoringFaker();
 
-            var scoring = scoringFaker.FakeScoring(Game.LeagueOfLegends);
+            var scoring = scoringFaker.FakeMatchStats(Game.LeagueOfLegends);
 
             var matchStatsFaker = new MatchStatsFaker();
 
             var stats = matchStatsFaker.FakeMatchStats(Game.LeagueOfLegends);
 
             // Act
-            var match = new Match(new MatchReference(12312312312), stats, scoring);
+            var match = new Match(matchReference, stats, scoring);
             
             // Assert
             match.Stats.Should().HaveCount(scoring.Count);

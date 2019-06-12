@@ -26,7 +26,7 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers
                 Game.LeagueOfLegends.ToString(),
                 ruleSet =>
                 {
-                    this.CustomInstantiator(
+                    ruleSet.CustomInstantiator(
                         faker => new MatchStats(
                             new
                             {

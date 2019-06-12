@@ -17,7 +17,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels
 {
     public sealed class BucketSize : ValueObject
     {
-        public static readonly BucketSize Single = new BucketSize(1);
+        public static readonly BucketSize Individual = new BucketSize(1);
 
         public BucketSize(int size) : this()
         {
