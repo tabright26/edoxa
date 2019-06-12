@@ -10,8 +10,8 @@
 
 using System.Linq;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ValueObjects;
 using eDoxa.Arena.Challenges.Domain.Fakers;
 using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.Extensions;

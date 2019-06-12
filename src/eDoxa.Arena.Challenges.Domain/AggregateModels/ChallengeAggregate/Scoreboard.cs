@@ -13,9 +13,9 @@ using System.Linq;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
-using eDoxa.Seedwork.Common;
+using eDoxa.Seedwork.Common.ValueObjects;
 
-namespace eDoxa.Arena.Challenges.Domain.AggregateModels
+namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class Scoreboard : Dictionary<UserId, Score>, IScoreboard
     {

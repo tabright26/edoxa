@@ -10,7 +10,8 @@
 
 using System;
 
-using eDoxa.Seedwork.Common;
+using eDoxa.Seedwork.Common.Enumerations;
+using eDoxa.Seedwork.Common.ValueObjects;
 
 using IdentityModel;
 
@@ -31,6 +32,16 @@ namespace eDoxa.Seedwork.Security.Extensions
         public static UserId GetUserId(this IHttpContextAccessor accessor)
         {
             return UserId.Parse(accessor.GetClaimOrDefault(JwtClaimTypes.Subject) ?? throw new NullReferenceException(JwtClaimTypes.Subject));
+        }
+
+        public static Func<Game, UserGameReference> FuncUserGameReference(this IHttpContextAccessor accessor)
+        {
+            return game =>
+            {
+                var userGameReference = accessor.GetClaimOrDefault(game.GetClaimType());
+
+                return userGameReference != null ? new UserGameReference(userGameReference) : null;
+            };
         }
     }
 }

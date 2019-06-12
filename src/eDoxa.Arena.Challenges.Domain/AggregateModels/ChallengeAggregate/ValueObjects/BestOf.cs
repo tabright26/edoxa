@@ -1,4 +1,4 @@
-﻿// Filename: Entries.cs
+﻿// Filename: BestOf.cs
 // Date Created: 2019-06-02
 // 
 // ================================================
@@ -12,25 +12,30 @@ using System.Collections.Generic;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
-namespace eDoxa.Arena.Challenges.Domain.AggregateModels
+namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ValueObjects
 {
-    public class Entries : ValueObject
+    public sealed class BestOf : ValueObject
     {
-        public Entries(int entries) : this()
+        public static readonly BestOf One = new BestOf(1);
+        public static readonly BestOf Three = new BestOf(3);
+        public static readonly BestOf Five = new BestOf(5);
+        public static readonly BestOf Seven = new BestOf(7);
+
+        public BestOf(int bestOf) : this()
         {
-            Value = entries;
+            Value = bestOf;
         }
 
-        private Entries()
+        private BestOf()
         {
             // Required by EF Core.
         }
 
         public int Value { get; private set; }
 
-        public static implicit operator int(Entries entries)
+        public static implicit operator int(BestOf bestOf)
         {
-            return entries.Value;
+            return bestOf.Value;
         }
 
         public override string ToString()

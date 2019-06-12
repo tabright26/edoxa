@@ -16,9 +16,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Services.LeagueOfLegends;
 using eDoxa.Arena.Services.LeagueOfLegends.Dtos;
-using eDoxa.Arena.UnitTests.Utilities.Mocks;
 using eDoxa.Arena.UnitTests.Utilities.Stubs;
 
 using FluentAssertions;
@@ -33,7 +31,7 @@ using Newtonsoft.Json;
 namespace eDoxa.Arena.UnitTests.Services.LeagueOfLegends
 {
     [TestClass]
-    public sealed class MatchV4ServiceTest
+    public sealed class LeagueOfLegendsMatchService
     {
         [TestMethod]
         public async Task GetMatchReferencesAsync_ShouldBeOkObjectResult()
@@ -42,7 +40,7 @@ namespace eDoxa.Arena.UnitTests.Services.LeagueOfLegends
             var matchReferencesDTO =
                 StubConvert.DeserializeObject<IEnumerable<LeagueOfLegendsMatchReferenceDto>>(@"Utilities/Stubs/LeagueOfLegends/MatchReferences.json");
 
-            var mockHttpMessageHandler = new MockHttpMessageHandler();
+            var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
 
             mockHttpMessageHandler.Protected()
                 .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
@@ -59,7 +57,7 @@ namespace eDoxa.Arena.UnitTests.Services.LeagueOfLegends
                     }
                 );
 
-            var service = new LeagueOfLegendsMatchService(new HttpClient(mockHttpMessageHandler.Object), It.IsAny<string>());
+            var service = new Arena.Services.LeagueOfLegends.LeagueOfLegendsMatchService(new HttpClient(mockHttpMessageHandler.Object), It.IsAny<string>());
 
             // Act
             var matchReferences = await service.GetMatchReferencesAsync(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<DateTime>());
@@ -81,7 +79,7 @@ namespace eDoxa.Arena.UnitTests.Services.LeagueOfLegends
             // Arrange
             var matches = StubConvert.DeserializeObject<IEnumerable<LeagueOfLegendsMatchDto>>(@"Utilities/Stubs/LeagueOfLegends/Matches.json");
 
-            var mockHttpMessageHandler = new MockHttpMessageHandler();
+            var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
 
             mockHttpMessageHandler.Protected()
                 .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
@@ -98,7 +96,7 @@ namespace eDoxa.Arena.UnitTests.Services.LeagueOfLegends
                     }
                 );
 
-            var service = new LeagueOfLegendsMatchService(new HttpClient(mockHttpMessageHandler.Object), It.IsAny<string>());
+            var service = new Arena.Services.LeagueOfLegends.LeagueOfLegendsMatchService(new HttpClient(mockHttpMessageHandler.Object), It.IsAny<string>());
 
             // Act
             var match = await service.GetMatchAsync(It.IsAny<string>());

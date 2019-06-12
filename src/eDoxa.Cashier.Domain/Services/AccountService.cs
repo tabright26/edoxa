@@ -19,8 +19,8 @@ using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.Domain.Extensions;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Common.Abstactions;
+using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Stripe.Abstractions;
 
 namespace eDoxa.Cashier.Domain.Services

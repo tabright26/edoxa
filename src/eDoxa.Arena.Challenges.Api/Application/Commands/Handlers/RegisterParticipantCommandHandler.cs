@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Services;
 using eDoxa.Commands.Abstractions.Handlers;
@@ -46,7 +45,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Commands.Handlers
             var participant = await _challengeService.RegisterParticipantAsync(
                 command.ChallengeId,
                 userId,
-                _httpContextAccessor.FuncExternalAccount(),
+                _httpContextAccessor.FuncUserGameReference(),
                 cancellationToken
             );
 

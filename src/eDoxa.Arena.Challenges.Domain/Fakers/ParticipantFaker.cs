@@ -12,8 +12,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ValueObjects;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Seedwork.Common.Abstactions;
@@ -26,7 +26,7 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers
     public sealed class ParticipantFaker : CustomFaker<Participant>
     {
         private readonly UserIdFaker _userIdFaker = new UserIdFaker();
-        private readonly ExternalAccountFaker _externalAccountFaker = new ExternalAccountFaker();
+        private readonly UserGameReferenceFaker _userGameReferenceFaker = new UserGameReferenceFaker();
 
         public ParticipantFaker()
         {
@@ -36,7 +36,7 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers
 
                     BestOf = BestOf ?? faker.PickRandom(ValueObject.GetDeclaredOnlyFields<BestOf>());
 
-                    return new Participant(_userIdFaker.Generate(), _externalAccountFaker.FakeExternalAccount(Game), BestOf);
+                    return new Participant(_userIdFaker.Generate(), _userGameReferenceFaker.FakeUserGameReference(Game), BestOf);
                 }
             );
 

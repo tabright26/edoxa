@@ -22,12 +22,12 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             Duration = duration;
         }
 
-        protected ChallengeTimeline(ChallengeDuration duration, DateTime? startedAt) : this(duration)
+        private ChallengeTimeline(ChallengeDuration duration, DateTime? startedAt) : this(duration)
         {
             StartedAt = startedAt;
         }
 
-        protected ChallengeTimeline(ChallengeDuration duration, DateTime? startedAt, DateTime? closedAt) : this(duration, startedAt)
+        private ChallengeTimeline(ChallengeDuration duration, DateTime? startedAt, DateTime? closedAt) : this(duration, startedAt)
         {
             ClosedAt = closedAt;
         }

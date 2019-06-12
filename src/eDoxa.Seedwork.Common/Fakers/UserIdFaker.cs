@@ -9,6 +9,7 @@
 // this source code package.
 
 using eDoxa.Seedwork.Common.Abstactions;
+using eDoxa.Seedwork.Common.ValueObjects;
 
 namespace eDoxa.Seedwork.Common.Fakers
 {

@@ -20,8 +20,8 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Challenges.Domain.Fakers;
 using eDoxa.Arena.Challenges.Domain.Specifications;
-using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Common.Enumerations;
+using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Specifications;
 
@@ -47,15 +47,15 @@ namespace eDoxa.Arena.Challenges.Domain.Services
         public async Task<Participant> RegisterParticipantAsync(
             ChallengeId challengeId,
             UserId userId,
-            Func<Game, ExternalAccount> funcExternalAccount,
+            Func<Game, UserGameReference> funcUserGameReference,
             CancellationToken cancellationToken = default
         )
         {
             var challenge = await _challengeRepository.FindChallengeAsync(challengeId);
 
-            var externalAccount = funcExternalAccount(challenge.Game);
+            var userGameReference = funcUserGameReference(challenge.Game);
 
-            var participant = challenge.RegisterParticipant(userId, externalAccount);
+            var participant = challenge.RegisterParticipant(userId, userGameReference);
 
             await _challengeRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 

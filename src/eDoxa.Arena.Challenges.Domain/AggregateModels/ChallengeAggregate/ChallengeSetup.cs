@@ -8,10 +8,10 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ValueObjects;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
@@ -21,9 +21,9 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         public ChallengeSetup(BestOf bestOf, PayoutEntries payoutEntries, EntryFee entryFee) : this()
         {
             BestOf = bestOf;
-            Entries = new Entries(Convert.ToInt32(payoutEntries * 2));
+            Entries = new Entries(payoutEntries);
             PayoutEntries = payoutEntries;
-            EntryFee = new EntryFee(entryFee.Type, entryFee.Amount);
+            EntryFee = new EntryFee(entryFee.Type, entryFee.Amount); // Required by EF Core.
             PrizePool = new PrizePool(Entries, EntryFee);
         }
 

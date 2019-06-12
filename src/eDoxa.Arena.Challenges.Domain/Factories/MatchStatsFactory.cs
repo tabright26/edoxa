@@ -15,9 +15,9 @@ using eDoxa.Arena.Challenges.Domain.Abstractions.Adapters;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Factories;
 using eDoxa.Arena.Challenges.Domain.Adapters;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Services.LeagueOfLegends.Abstractions;
 using eDoxa.Seedwork.Common.Enumerations;
+using eDoxa.Seedwork.Common.ValueObjects;
 
 namespace eDoxa.Arena.Challenges.Domain.Factories
 {
@@ -30,13 +30,13 @@ namespace eDoxa.Arena.Challenges.Domain.Factories
             _leagueOfLegendsMatchService = leagueOfLegendsMatchService;
         }
 
-        public async Task<IMatchStatsAdapter> CreateAdapter(Game game, ExternalAccount externalAccount, MatchReference matchReference)
+        public async Task<IMatchStatsAdapter> CreateAdapter(Game game, UserGameReference userGameReference, MatchReference matchReference)
         {
             if (game == Game.LeagueOfLegends)
             {
                 var match = await _leagueOfLegendsMatchService.GetMatchAsync(matchReference.ToString());
 
-                return new LeagueOfLegendsMatchStatsAdapter(externalAccount, match);
+                return new LeagueOfLegendsMatchStatsAdapter(userGameReference, match);
             }
 
             throw new NotSupportedException();

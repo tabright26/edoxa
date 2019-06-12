@@ -16,9 +16,11 @@ using eDoxa.Seedwork.Common.Abstactions;
 using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Domain.Aggregate;
 
+using JetBrains.Annotations;
+
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels
 {
-    public class Prize : ValueObject, ICurrency
+    public class Prize : ValueObject, ICurrency, IComparable
     {
         private const decimal Factor = 1000M;
 
@@ -63,6 +65,11 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels
             }
 
             return Amount.ToString(CultureInfo.InvariantCulture);
+        }
+
+        public int CompareTo([CanBeNull] object obj)
+        {
+            return Amount.CompareTo(((Prize) obj)?.Amount);
         }
 
         public Prize ApplyFactor(PrizeFactor factor)

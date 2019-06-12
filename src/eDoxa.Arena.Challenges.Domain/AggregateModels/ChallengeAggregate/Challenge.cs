@@ -21,8 +21,8 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Challenges.Domain.DomainEvents;
 using eDoxa.Arena.Challenges.Domain.Factories;
 using eDoxa.Arena.Challenges.Domain.Validators;
-using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Common.Enumerations;
+using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Extensions;
@@ -120,7 +120,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         private async Task SynchronizeAsync(IMatchReferencesFactory matchReferencesFactory, IMatchStatsFactory matchStatsFactory, Participant participant)
         {
-            var adapter = await matchReferencesFactory.CreateAdapterAsync(Game, participant.ExternalAccount, Timeline);
+            var adapter = await matchReferencesFactory.CreateAdapterAsync(Game, participant.UserGameReference, Timeline);
 
             await this.SynchronizeAsync(adapter.MatchReferences, matchStatsFactory, participant);
         }
@@ -135,7 +135,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         private async Task SnapshotParticipantMatchAsync(Participant participant, MatchReference matchReference, IMatchStatsFactory factory)
         {
-            var adapter = await factory.CreateAdapter(Game, participant.ExternalAccount, matchReference);
+            var adapter = await factory.CreateAdapter(Game, participant.UserGameReference, matchReference);
 
             this.SnapshotParticipantMatch(participant, matchReference, adapter.MatchStats);
         }
@@ -160,14 +160,14 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             this.AddDomainEvent(new ChallengePayoutDomainEvent(Id, Payout.GetParticipantPrizes(Scoreboard)));
         }
 
-        public Participant RegisterParticipant(UserId userId, ExternalAccount externalAccount)
+        public Participant RegisterParticipant(UserId userId, UserGameReference userGameReference)
         {
             if (!this.CanRegisterParticipant(userId))
             {
                 throw new InvalidOperationException();
             }
 
-            var participant = new Participant(userId, externalAccount, Setup.BestOf);
+            var participant = new Participant(userId, userGameReference, Setup.BestOf);
 
             _participants.Add(participant);
 

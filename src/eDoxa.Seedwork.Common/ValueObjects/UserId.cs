@@ -12,7 +12,7 @@ using System.ComponentModel;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
-namespace eDoxa.Seedwork.Common
+namespace eDoxa.Seedwork.Common.ValueObjects
 {
     [TypeConverter(typeof(EntityIdTypeConverter))]
     public sealed class UserId : EntityId<UserId>

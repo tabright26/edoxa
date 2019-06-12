@@ -11,9 +11,9 @@
 using System.Collections.Generic;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions;
-using eDoxa.Seedwork.Common;
+using eDoxa.Seedwork.Common.ValueObjects;
 
-namespace eDoxa.Arena.Challenges.Domain.AggregateModels
+namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class ParticipantPrizes : Dictionary<UserId, Prize>, IParticipantPrizes
     {

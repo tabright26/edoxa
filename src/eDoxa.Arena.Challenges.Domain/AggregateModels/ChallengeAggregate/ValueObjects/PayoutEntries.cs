@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
-namespace eDoxa.Arena.Challenges.Domain.AggregateModels
+namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ValueObjects
 {
     public sealed class PayoutEntries : ValueObject
     {

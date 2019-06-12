@@ -24,9 +24,9 @@ using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate.Transactions;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.UnitTests.Extensions;
 using eDoxa.Commands.Extensions;
-using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Common.Abstactions;
 using eDoxa.Seedwork.Common.Enumerations;
+using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Testing.TestConstructor;
 
 using FluentAssertions;

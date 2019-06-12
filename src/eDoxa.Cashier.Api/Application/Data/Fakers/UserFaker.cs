@@ -11,9 +11,9 @@
 using System.Collections.Generic;
 
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
-using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Common.Abstactions;
 using eDoxa.Seedwork.Common.Fakers;
+using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Stripe.Models;
 
 namespace eDoxa.Cashier.Api.Application.Data.Fakers

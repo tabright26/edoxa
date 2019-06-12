@@ -1,5 +1,5 @@
-﻿// Filename: ExternalAccountFaker.cs
-// Date Created: 2019-06-10
+﻿// Filename: UserGameReferenceFaker.cs
+// Date Created: 2019-06-12
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,26 +8,28 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Seedwork.Common.Abstactions;
 using eDoxa.Seedwork.Common.Enumerations;
+using eDoxa.Seedwork.Common.ValueObjects;
 
-namespace eDoxa.Arena.Challenges.Domain.Fakers
+namespace eDoxa.Seedwork.Common.Fakers
 {
-    public sealed class ExternalAccountFaker : CustomFaker<ExternalAccount>
+    public sealed class UserGameReferenceFaker : CustomFaker<UserGameReference>
     {
-        public ExternalAccountFaker()
+        public UserGameReferenceFaker()
         {
             this.RuleSet(
                 Game.LeagueOfLegends.ToString(),
                 ruleSet =>
                 {
-                    ruleSet.CustomInstantiator(faker => new ExternalAccount($"LeagueOfLegends{faker.Random.Guid().ToString().Replace("-", string.Empty).Substring(10)}"));
+                    ruleSet.CustomInstantiator(
+                        faker => new UserGameReference($"LeagueOfLegends{faker.Random.Guid().ToString().Replace("-", string.Empty).Substring(10)}")
+                    );
                 }
             );
         }
 
-        public ExternalAccount FakeExternalAccount(Game game)
+        public UserGameReference FakeUserGameReference(Game game)
         {
             return this.Generate(game.ToString());
         }

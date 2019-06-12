@@ -1,4 +1,4 @@
-﻿// Filename: 20190612162933_InitialCreate.cs
+﻿// Filename: 20190612181422_InitialCreate.cs
 // Date Created: 2019-06-12
 // 
 // ================================================
@@ -80,7 +80,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
                     LastSync = table.Column<DateTime>(nullable: true),
                     MatchBestOf = table.Column<int>(),
                     UserId = table.Column<Guid>(),
-                    ExternalAccount = table.Column<string>(),
+                    UserGameReference = table.Column<string>(),
                     ChallengeId = table.Column<Guid>()
                 },
                 constraints: table =>

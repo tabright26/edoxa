@@ -20,11 +20,11 @@ using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Services;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
+using eDoxa.Arena.Challenges.Domain.Fakers;
 using eDoxa.Arena.Challenges.UnitTests.Extensions;
-using eDoxa.Arena.Challenges.UnitTests.Utilities.Fakes;
 using eDoxa.Commands.Extensions;
-using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Common.Enumerations;
+using eDoxa.Seedwork.Common.ValueObjects;
 
 using FluentAssertions;
 
@@ -38,7 +38,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Commands.Handlers
     [TestClass]
     public sealed class RegisterParticipantCommandHandlerTest
     {
-        private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
+        private ParticipantFaker _participantFaker;
         private Mock<IChallengeService> _mockChallengeService;
         private Mock<IHttpContextAccessor> _mockHttpContextAccessor;
         private Mock<IMapper> _mockMapper;
@@ -46,6 +46,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Commands.Handlers
         [TestInitialize]
         public void TestInitialize()
         {
+            _participantFaker = new ParticipantFaker();
             _mockChallengeService = new Mock<IChallengeService>();
             _mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
             _mockHttpContextAccessor.SetupClaims();
@@ -60,11 +61,11 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Commands.Handlers
                     mock => mock.RegisterParticipantAsync(
                         It.IsAny<ChallengeId>(),
                         It.IsAny<UserId>(),
-                        It.IsAny<Func<Game, ExternalAccount>>(),
+                        It.IsAny<Func<Game, UserGameReference>>(),
                         It.IsAny<CancellationToken>()
                     )
                 )
-                .ReturnsAsync(FakeChallengeFactory.CreateParticipant())
+                .ReturnsAsync(_participantFaker.FakeParticipant(Game.LeagueOfLegends))
                 .Verifiable();
 
             _mockMapper.Setup(x => x.Map<ParticipantViewModel>(It.IsAny<Participant>())).Returns(new ParticipantViewModel()).Verifiable();

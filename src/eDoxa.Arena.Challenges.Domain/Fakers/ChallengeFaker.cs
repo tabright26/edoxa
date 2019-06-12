@@ -47,6 +47,11 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers
                 {
                     _participantFaker = _participantFaker ?? new ParticipantFaker();
 
+                    if (challenge.State == ChallengeState.Inscription)
+                    {
+                        return ParticipantFaker.FakeParticipants(faker.Random.Int(1, challenge.Setup.Entries - 1), challenge);
+                    }
+
                     return ParticipantFaker.FakeParticipants(challenge.Setup.Entries, challenge);
                 }
             );
@@ -73,7 +78,7 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers
 
         private CurrencyType EntryFeeCurrency { get; set; }
 
-        public IEnumerable<Challenge> FakeChallenges(
+        public List<Challenge> FakeChallenges(
             int count,
             Game game = null,
             ChallengeState state = null,

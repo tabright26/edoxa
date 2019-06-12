@@ -13,19 +13,19 @@ using System.Linq;
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Adapters;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Services.LeagueOfLegends.Dtos;
+using eDoxa.Seedwork.Common.ValueObjects;
 
 namespace eDoxa.Arena.Challenges.Domain.Adapters
 {
     public sealed class LeagueOfLegendsMatchStatsAdapter : IMatchStatsAdapter
     {
-        private readonly ExternalAccount _externalAccount;
+        private readonly UserGameReference _userGameReference;
         private readonly LeagueOfLegendsMatchDto _match;
 
-        public LeagueOfLegendsMatchStatsAdapter(ExternalAccount externalAccount, LeagueOfLegendsMatchDto match)
+        public LeagueOfLegendsMatchStatsAdapter(UserGameReference userGameReference, LeagueOfLegendsMatchDto match)
         {
-            _externalAccount = externalAccount;
+            _userGameReference = userGameReference;
             _match = match;
         }
 
@@ -34,7 +34,7 @@ namespace eDoxa.Arena.Challenges.Domain.Adapters
             get
             {
                 var participantId = _match.ParticipantIdentities
-                    .Single(participantIdentity => participantIdentity.Player.AccountId == _externalAccount.ToString())
+                    .Single(participantIdentity => participantIdentity.Player.AccountId == _userGameReference.ToString())
                     .ParticipantId;
 
                 var stats = _match.Participants.Single(participant => participant.ParticipantId == participantId).Stats;

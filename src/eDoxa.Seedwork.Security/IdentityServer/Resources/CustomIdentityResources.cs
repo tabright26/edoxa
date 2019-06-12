@@ -50,9 +50,9 @@ namespace eDoxa.Seedwork.Security.IdentityServer.Resources
             }
         }
 
-        public sealed class ExternalAccount : IdentityResource
+        public sealed class UserGameReference : IdentityResource
         {
-            public ExternalAccount() : base(
+            public UserGameReference() : base(
                 "games",
                 "Your game(s)",
                 new HashSet<string>

@@ -8,9 +8,10 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ValueObjects;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
+using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 
 using JetBrains.Annotations;
@@ -34,9 +35,9 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
 
             builder.EntityId(participant => participant.UserId).HasColumnName("UserId").IsRequired();
 
-            builder.Property(participant => participant.ExternalAccount)
-                .HasConversion(externalAccount => externalAccount.ToString(), externalAccount => new ExternalAccount(externalAccount))
-                .HasColumnName("ExternalAccount")
+            builder.Property(participant => participant.UserGameReference)
+                .HasConversion(userGameReference => userGameReference.ProviderKey, providerKey => new UserGameReference(providerKey))
+                .HasColumnName("UserGameReference")
                 .IsRequired();
 
             builder.Property(participant => participant.MatchBestOf)

@@ -1,4 +1,4 @@
-﻿// Filename: ExternalAccountIsProvidedSpecification.cs
+﻿// Filename: UserGameReferenceIsProvidedSpecification.cs
 // Date Created: 2019-06-01
 // 
 // ================================================
@@ -12,23 +12,23 @@ using System;
 using System.Linq.Expressions;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
+using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Domain.Specifications;
 
 namespace eDoxa.Arena.Challenges.Domain.Specifications
 {
-    public sealed class ExternalAccountIsProvidedSpecification : Specification<Challenge>
+    public sealed class UserGameReferenceIsProvidedSpecification : Specification<Challenge>
     {
-        private readonly ExternalAccount _externalAccount;
+        private readonly UserGameReference _userGameReference;
 
-        public ExternalAccountIsProvidedSpecification(ExternalAccount externalAccount)
+        public UserGameReferenceIsProvidedSpecification(UserGameReference userGameReference)
         {
-            _externalAccount = externalAccount;
+            _userGameReference = userGameReference;
         }
 
         public override Expression<Func<Challenge, bool>> ToExpression()
         {
-            return challenge => _externalAccount != null;
+            return challenge => _userGameReference != null;
         }
     }
 }

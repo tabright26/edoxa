@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Application.DomainEventHandlers;
 using eDoxa.Arena.Challenges.Api.IntegrationEvents;
-using eDoxa.Arena.Challenges.Domain.Abstractions;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.DomainEvents;
-using eDoxa.Arena.Challenges.UnitTests.Utilities.Fakes;
+using eDoxa.Arena.Challenges.Domain.Fakers;
 using eDoxa.IntegrationEvents;
 using eDoxa.Seedwork.Application.Extensions;
 
@@ -27,7 +27,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.DomainEventHandlers
     [TestClass]
     public sealed class ChallengePayoutDomainEventTest
     {
-        private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
+        private readonly ChallengeFaker _challengeFaker = new ChallengeFaker();
         private Mock<IIntegrationEventService> _mockIntegrationEventService;
 
         [TestInitialize]
@@ -40,16 +40,14 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.DomainEventHandlers
         public async Task HandleAsync_PayoutProcessedDomainEvent_ShouldBeCompletedTask()
         {
             // Arranges
-            IChallenge challenge = FakeChallengeFactory.CreateChallenge();
-
-            var userPrizes = challenge.Payout.GetParticipantPrizes(challenge.Scoreboard);
+            var challenge = _challengeFaker.FakeChallenge(state: ChallengeState.Ended);
 
             _mockIntegrationEventService.Setup(mock => mock.PublishAsync(It.IsAny<ChallengePayoutIntegrationEvent>())).Returns(Task.CompletedTask).Verifiable();
 
             var handler = new ChallengePayoutDomainEventHandler(_mockIntegrationEventService.Object);
 
             // Act
-            await handler.HandleAsync(new ChallengePayoutDomainEvent(challenge.Id, userPrizes));
+            await handler.HandleAsync(new ChallengePayoutDomainEvent(challenge.Id, challenge.Payout.GetParticipantPrizes(challenge.Scoreboard)));
 
             // Assert
             _mockIntegrationEventService.Verify(mock => mock.PublishAsync(It.IsAny<ChallengePayoutIntegrationEvent>()), Times.Once);

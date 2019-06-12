@@ -9,10 +9,11 @@
 // this source code package.
 
 using System;
+using System.Linq;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
-using eDoxa.Arena.Challenges.UnitTests.Utilities.Fakes;
-using eDoxa.Seedwork.Common;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Domain.Fakers;
+using eDoxa.Seedwork.Common.ValueObjects;
 
 using FluentAssertions;
 
@@ -23,30 +24,37 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
     [TestClass]
     public sealed class ChallengeTest
     {
-        private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
+        private ChallengeFaker _challengeFaker;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            _challengeFaker = new ChallengeFaker();
+        }
 
         [TestMethod]
         public void RegisterParticipant_IntoEmptyCollection_ShouldNotBeEmpty()
         {
             // Arrange
-            var challenge = FakeChallengeFactory.CreateChallenge();
+            var challenge = _challengeFaker.FakeChallenge(state: ChallengeState.Inscription);
+
+            var participantCount = challenge.Participants.Count;
 
             // Act
-            challenge.RegisterParticipant(new UserId(), new ExternalAccount(Guid.NewGuid()));
+            challenge.RegisterParticipant(new UserId(), new UserGameReference(Guid.NewGuid().ToString()));
 
             // Assert
-            challenge.Participants.Should().NotBeEmpty();
+            challenge.Participants.Should().HaveCount(participantCount + 1);
         }
 
         [TestMethod]
         public void RegisterParticipant_WhoAlreadyExist_ShouldThrowInvalidOperationException()
         {
             // Arrange
-            var userId = new UserId();
-            var challenge = FakeChallengeFactory.CreateChallengeWithParticipant(userId);
+            var challenge = _challengeFaker.FakeChallenge(state: ChallengeState.Inscription);
 
             // Act
-            var action = new Action(() => challenge.RegisterParticipant(userId, new ExternalAccount(Guid.NewGuid())));
+            var action = new Action(() => challenge.RegisterParticipant(challenge.Participants.First().UserId, new UserGameReference(Guid.NewGuid().ToString())));
 
             // Act => Assert
             action.Should().Throw<InvalidOperationException>();
@@ -56,10 +64,17 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
         public void RegisterParticipant_WithEntriesFull_ShouldThrowInvalidOperationException()
         {
             // Arrange
-            var challenge = FakeChallengeFactory.CreateChallengeWithParticipants();
+            var challenge = _challengeFaker.FakeChallenge(state: ChallengeState.Inscription);
+
+            var participantCount = challenge.Setup.Entries - challenge.Participants.Count;
+
+            for (var index = 0; index < participantCount; index++)
+            {
+                challenge.RegisterParticipant(new UserId(), new UserGameReference(Guid.NewGuid().ToString()));
+            }
 
             // Act
-            var action = new Action(() => challenge.RegisterParticipant(new UserId(), new ExternalAccount(Guid.NewGuid())));
+            var action = new Action(() => challenge.RegisterParticipant(new UserId(), new UserGameReference(Guid.NewGuid().ToString())));
 
             // Assert
             action.Should().Throw<InvalidOperationException>();

@@ -56,7 +56,7 @@ namespace eDoxa.Seedwork.Security.IdentityServer.Resources
                 "eDoxa Challenge API",
                 new IdentityResources.Profile().UserClaims.Union(
                     new CustomIdentityResources.Role().UserClaims.Union(
-                        new CustomIdentityResources.Permission().UserClaims.Union(new CustomIdentityResources.ExternalAccount().UserClaims)
+                        new CustomIdentityResources.Permission().UserClaims.Union(new CustomIdentityResources.UserGameReference().UserClaims)
                     )
                 )
             )

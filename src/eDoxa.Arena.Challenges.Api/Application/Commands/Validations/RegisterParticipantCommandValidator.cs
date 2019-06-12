@@ -8,7 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Repositories;
 using eDoxa.Arena.Challenges.Domain.Validators;
 using eDoxa.Commands.Abstractions.Validations;
@@ -50,9 +49,9 @@ namespace eDoxa.Arena.Challenges.Api.Application.Commands.Validations
                                     {
                                         var userId = httpContextAccessor.GetUserId();
 
-                                        var externalAccount = httpContextAccessor.FuncExternalAccount();
+                                        var userGameReference = httpContextAccessor.FuncUserGameReference();
 
-                                        if (externalAccount(challenge.Game) == null)
+                                        if (userGameReference(challenge.Game) == null)
                                         {
                                             context.AddFailure("This user does not provide an external account for the challenge-specific game.");
                                         }

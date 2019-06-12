@@ -40,7 +40,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Asserts
             {
                 participant.Id.ToGuid().Should().NotBeEmpty();
                 participant.Timestamp.Should().BeBefore(DateTime.UtcNow);
-                participant.ExternalAccount.ToString().Should().NotBeNullOrWhiteSpace();
+                participant.UserGameReference.ToString().Should().NotBeNullOrWhiteSpace();
                 participant.UserId.ToGuid().Should().NotBeEmpty();
                 participant.Matches.Should().NotBeNullOrEmpty();
 

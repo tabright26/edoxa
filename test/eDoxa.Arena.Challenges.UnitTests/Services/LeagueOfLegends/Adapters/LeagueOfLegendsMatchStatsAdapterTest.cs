@@ -8,8 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Arena.Challenges.UnitTests.Utilities.Fakes;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Services.LeagueOfLegends.Adapters
@@ -17,8 +15,6 @@ namespace eDoxa.Arena.Challenges.UnitTests.Services.LeagueOfLegends.Adapters
     [TestClass]
     public sealed class LeagueOfLegendsMatchStatsAdapterTest
     {
-        private static readonly FakeChallengeFactory FakeChallengeFactory = FakeChallengeFactory.Instance;
-
         //[TestMethod]
         //public void SnapshotParticipantMatch_ShouldBeValid()
         //{

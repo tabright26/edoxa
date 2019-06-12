@@ -74,10 +74,6 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
                     b.Property<Guid>("ChallengeId")
                         .HasColumnName("ChallengeId");
 
-                    b.Property<string>("ExternalAccount")
-                        .IsRequired()
-                        .HasColumnName("ExternalAccount");
-
                     b.Property<DateTime?>("LastSync")
                         .HasColumnName("LastSync");
 
@@ -86,6 +82,10 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
 
                     b.Property<DateTime>("Timestamp")
                         .HasColumnName("Timestamp");
+
+                    b.Property<string>("UserGameReference")
+                        .IsRequired()
+                        .HasColumnName("UserGameReference");
 
                     b.Property<Guid>("UserId")
                         .HasColumnName("UserId");
@@ -183,7 +183,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
                                 .HasForeignKey("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ChallengeSetup", "ChallengeId")
                                 .OnDelete(DeleteBehavior.Cascade);
 
-                            b1.OwnsOne("eDoxa.Arena.Challenges.Domain.AggregateModels.EntryFee", "EntryFee", b2 =>
+                            b1.OwnsOne("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ValueObjects.EntryFee", "EntryFee", b2 =>
                                 {
                                     b2.Property<Guid>("ChallengeSetupChallengeId");
 
@@ -199,11 +199,11 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
 
                                     b2.HasOne("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ChallengeSetup")
                                         .WithOne("EntryFee")
-                                        .HasForeignKey("eDoxa.Arena.Challenges.Domain.AggregateModels.EntryFee", "ChallengeSetupChallengeId")
+                                        .HasForeignKey("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ValueObjects.EntryFee", "ChallengeSetupChallengeId")
                                         .OnDelete(DeleteBehavior.Cascade);
                                 });
 
-                            b1.OwnsOne("eDoxa.Arena.Challenges.Domain.AggregateModels.PrizePool", "PrizePool", b2 =>
+                            b1.OwnsOne("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ValueObjects.PrizePool", "PrizePool", b2 =>
                                 {
                                     b2.Property<Guid>("ChallengeSetupChallengeId");
 
@@ -219,7 +219,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
 
                                     b2.HasOne("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ChallengeSetup")
                                         .WithOne("PrizePool")
-                                        .HasForeignKey("eDoxa.Arena.Challenges.Domain.AggregateModels.PrizePool", "ChallengeSetupChallengeId")
+                                        .HasForeignKey("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ValueObjects.PrizePool", "ChallengeSetupChallengeId")
                                         .OnDelete(DeleteBehavior.Cascade);
                                 });
                         });

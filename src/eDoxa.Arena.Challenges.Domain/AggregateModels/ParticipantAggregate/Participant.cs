@@ -14,8 +14,9 @@ using System.Linq;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ValueObjects;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
-using eDoxa.Seedwork.Common;
+using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
 
@@ -27,10 +28,10 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate
     {
         private HashSet<Match> _matches;
 
-        public Participant(UserId userId, ExternalAccount externalAccount, BestOf matchBestOf) : this()
+        public Participant(UserId userId, UserGameReference userGameReference, BestOf matchBestOf) : this()
         {
             UserId = userId;
-            ExternalAccount = externalAccount;
+            UserGameReference = userGameReference;
             MatchBestOf = matchBestOf;
         }
 
@@ -49,7 +50,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate
 
         public UserId UserId { get; private set; }
 
-        public ExternalAccount ExternalAccount { get; private set; }
+        public UserGameReference UserGameReference { get; private set; }
 
         [CanBeNull]
         public Score AverageScore => Matches.Count >= MatchBestOf ? new ParticipantScore(this) : null;

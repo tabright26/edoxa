@@ -18,7 +18,7 @@ using eDoxa.Cashier.Api.Application.Data.Fakers;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.UnitTests.Extensions;
 using eDoxa.Commands.Extensions;
-using eDoxa.Seedwork.Common;
+using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Testing.TestConstructor;
 using eDoxa.Stripe.Abstractions;
 using eDoxa.Stripe.Data.Fakers;

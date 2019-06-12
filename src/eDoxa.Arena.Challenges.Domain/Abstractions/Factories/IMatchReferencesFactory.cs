@@ -12,13 +12,13 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions.Adapters;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Seedwork.Common.Enumerations;
+using eDoxa.Seedwork.Common.ValueObjects;
 
 namespace eDoxa.Arena.Challenges.Domain.Abstractions.Factories
 {
     public interface IMatchReferencesFactory
     {
-        Task<IMatchReferencesAdapter> CreateAdapterAsync(Game game, ExternalAccount externalAccount, ChallengeTimeline timeline);
+        Task<IMatchReferencesAdapter> CreateAdapterAsync(Game game, UserGameReference userGameReference, ChallengeTimeline timeline);
     }
 }

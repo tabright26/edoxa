@@ -1,4 +1,4 @@
-﻿// Filename: BestOf.cs
+﻿// Filename: Entries.cs
 // Date Created: 2019-06-02
 // 
 // ================================================
@@ -8,34 +8,35 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Collections.Generic;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
-namespace eDoxa.Arena.Challenges.Domain.AggregateModels
+namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ValueObjects
 {
-    public sealed class BestOf : ValueObject
+    public class Entries : ValueObject
     {
-        public static readonly BestOf One = new BestOf(1);
-        public static readonly BestOf Three = new BestOf(3);
-        public static readonly BestOf Five = new BestOf(5);
-        public static readonly BestOf Seven = new BestOf(7);
-
-        public BestOf(int bestOf) : this()
+        public Entries(int entries) : this()
         {
-            Value = bestOf;
+            Value = entries;
         }
 
-        private BestOf()
+        public Entries(PayoutEntries payoutEntries) : this()
+        {
+            Value = Convert.ToInt32(payoutEntries * 2);
+        }
+
+        private Entries()
         {
             // Required by EF Core.
         }
 
         public int Value { get; private set; }
 
-        public static implicit operator int(BestOf bestOf)
+        public static implicit operator int(Entries entries)
         {
-            return bestOf.Value;
+            return entries.Value;
         }
 
         public override string ToString()
