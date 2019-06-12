@@ -25,19 +25,17 @@ namespace eDoxa.Arena.Challenges.Domain.Abstractions.Repositories
     {
         void Create(Challenge challenge);
 
-        Task<IReadOnlyCollection<Challenge>> FindChallengesAsync([CanBeNull] Game game = null, [CanBeNull] ChallengeState state = null);
+        void Create(IEnumerable<Challenge> challenges);
+
+        Task<IReadOnlyCollection<Challenge>> FindChallengesAsync(Game game = null, ChallengeState state = null);
 
         Task<IReadOnlyCollection<Challenge>> FindChallengesAsync(ISpecification<Challenge> specification);
 
         Task<Challenge> FindChallengeAsync(ChallengeId challengeId);
 
-        Task<IReadOnlyCollection<Challenge>> FindUserChallengeHistoryAsNoTrackingAsync(
-            UserId userId,
-            [CanBeNull] Game game = null,
-            [CanBeNull] ChallengeState state = null
-        );
+        Task<IReadOnlyCollection<Challenge>> FindUserChallengeHistoryAsNoTrackingAsync(UserId userId, Game game = null, ChallengeState state = null);
 
-        Task<IReadOnlyCollection<Challenge>> FindChallengesAsNoTrackingAsync([CanBeNull] Game game = null, [CanBeNull] ChallengeState state = null);
+        Task<IReadOnlyCollection<Challenge>> FindChallengesAsNoTrackingAsync(Game game = null, ChallengeState state = null);
 
         [ItemCanBeNull]
         Task<Challenge> FindChallengeAsNoTrackingAsync(ChallengeId challengeId);

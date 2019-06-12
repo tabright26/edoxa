@@ -13,10 +13,8 @@ using System;
 using AutoMapper;
 
 using eDoxa.Arena.Challenges.Api.ViewModels;
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Domain.Fakers;
 using eDoxa.Arena.Challenges.UnitTests.Asserts;
-using eDoxa.Seedwork.Common.Enumerations;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -30,15 +28,17 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
         public void M()
         {
             // Arrange
+            var challengeFaker = new ChallengeFaker();
+
+            var challenge = challengeFaker.FakeChallenge();
+
             var mapper = CreateMapper();
 
-            var challenge = CreateChallenge();
-
             // Act
-            var challengeDTO = mapper.Map<ChallengeViewModel>(challenge);
+            var challengeViewModel = mapper.Map<ChallengeViewModel>(challenge);
 
             // Assert
-            ChallengeQueryAssert.IsMapped(challengeDTO);
+            ChallengeQueryAssert.IsMapped(challengeViewModel);
         }
 
         private static IMapper CreateMapper()
@@ -50,20 +50,6 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
             var provider = services.BuildServiceProvider();
 
             return provider.GetService<IMapper>();
-        }
-
-        private static Challenge CreateChallenge()
-        {
-            var builder = new ChallengeBuilder(
-                Game.LeagueOfLegends,
-                new ChallengeName("Weekly challenge"),
-                new ChallengeSetup(BestOf.Three, PayoutEntries.Ten, MoneyEntryFee.Ten),
-                ChallengeDuration.OneDay
-            );
-
-            builder.EnableTestMode(new TestMode(ChallengeState.InProgress, TestModeMatchQuantity.Exact, TestModeParticipantQuantity.Fulfilled));
-
-            return builder.Build() as Challenge;
         }
     }
 }

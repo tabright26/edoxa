@@ -93,14 +93,12 @@ namespace eDoxa.Arena.Challenges.UnitTests.Asserts
 
             participant.UserId.Should().NotBeEmpty();
 
-            participant.Matches.Should().NotBeNullOrEmpty();
-
             IsMapped(participant.Matches);
         }
 
         public static void IsMapped(IList<MatchViewModel> matches)
         {
-            matches.Should().NotBeNullOrEmpty();
+            matches.Should().NotBeNull();
 
             foreach (var match in matches)
             {

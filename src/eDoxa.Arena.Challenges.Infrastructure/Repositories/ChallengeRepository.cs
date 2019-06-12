@@ -39,7 +39,10 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
         }
 
         public IUnitOfWork UnitOfWork => _context;
+    }
 
+    public sealed partial class ChallengeRepository : IChallengeRepository
+    {
         public void Create(Challenge challenge)
         {
             _context.Add(challenge);
@@ -49,16 +52,13 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
         {
             _context.Challenges.AddRange(challenges);
         }
-    }
 
-    public sealed partial class ChallengeRepository : IChallengeRepository
-    {
         public async Task<Challenge> FindChallengeAsync(ChallengeId challengeId)
         {
             return await _context.Challenges.Include(NavigationPropertyPath).Where(challenge => challenge.Id == challengeId).SingleOrDefaultAsync();
         }
 
-        public async Task<IReadOnlyCollection<Challenge>> FindChallengesAsync([CanBeNull] Game game = null, [CanBeNull] ChallengeState state = null)
+        public async Task<IReadOnlyCollection<Challenge>> FindChallengesAsync(Game game = null, ChallengeState state = null)
         {
             var challenges = await _context.Challenges.Include(NavigationPropertyPath).ToListAsync();
 
@@ -74,8 +74,8 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
 
         public async Task<IReadOnlyCollection<Challenge>> FindUserChallengeHistoryAsNoTrackingAsync(
             UserId userId,
-            [CanBeNull] Game game = null,
-            [CanBeNull] ChallengeState state = null
+            Game game = null,
+            ChallengeState state = null
         )
         {
             var challenges = await _context.Challenges.AsNoTracking()

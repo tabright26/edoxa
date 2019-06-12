@@ -8,19 +8,18 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Commands.Abstractions.Validations;
 using eDoxa.Seedwork.Application.Validations.Extensions;
-
-using FluentValidation;
 
 using Microsoft.AspNetCore.Hosting;
 
 namespace eDoxa.Arena.Challenges.Api.Application.Commands.Validations
 {
-    public sealed class CreateChallengeCommandValidator : AbstractValidator<CreateChallengeCommand>
+    public sealed class FakeChallengesCommandValidator : CommandValidator<FakeChallengesCommand>
     {
-        public CreateChallengeCommandValidator(IHostingEnvironment environment)
+        public FakeChallengesCommandValidator(IHostingEnvironment environment)
         {
-            this.RuleFor(command => command.Name).NotEmpty().WithMessage($"The {nameof(CreateChallengeCommand.Name)} property is required.");
+            //this.RuleFor(command => command.Name).NotEmpty().WithMessage($"The {nameof(FakeChallengesCommand.Name)} property is required.");
 
             this.Enumeration(command => command.Game);
 
@@ -40,18 +39,18 @@ namespace eDoxa.Arena.Challenges.Api.Application.Commands.Validations
             //        $"The {nameof(CreateChallengeCommand.PayoutEntries)} property is invalid. These are valid input values: {PayoutEntries.DisplayNames()}."
             //    );
 
-            this.Enumeration(command => command.EntryFee.Type)
-                .DependentRules(
-                    () =>
-                    {
-                        //this.RuleFor(command => command.EntryFee)
-                        //    .Must(entryFee => EntryFeeHasValue(entryFee.Amount, entryFee.Currency))
-                        //    .WithMessage(
-                        //        command =>
-                        //            $"The {nameof(CreateChallengeCommand.EntryFee)} property is invalid. These are valid input values: {EntryFeeDisplayNames(command.EntryFee.Currency)}."
-                        //    );
-                    }
-                );
+            //this.Enumeration(command => command.EntryFee.Type)
+            //    .DependentRules(
+            //        () =>
+            //        {
+            //            //this.RuleFor(command => command.EntryFee)
+            //            //    .Must(entryFee => EntryFeeHasValue(entryFee.Amount, entryFee.Currency))
+            //            //    .WithMessage(
+            //            //        command =>
+            //            //            $"The {nameof(CreateChallengeCommand.EntryFee)} property is invalid. These are valid input values: {EntryFeeDisplayNames(command.EntryFee.Currency)}."
+            //            //    );
+            //        }
+            //    );
 
             //this.RuleFor(command => command.TestMode)
             //    .Must(testMode => !environment.IsProduction() || !testMode)

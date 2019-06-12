@@ -93,34 +93,11 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                 }
             );
 
-            builder.OwnsOne(
-                challenge => challenge.TestMode,
-                challengeTestMode =>
-                {
-                    challengeTestMode.ToTable("TestMode");
-
-                    challengeTestMode.Property(challenge => challenge.StartingState)
-                        .HasConversion(state => state.Value, value => ChallengeState.FromValue(value))
-                        .HasColumnName("State")
-                        .IsRequired();
-
-                    challengeTestMode.Property(challenge => challenge.MatchQuantity)
-                        .HasConversion(state => state.Value, value => TestModeMatchQuantity.FromValue(value))
-                        .HasColumnName("AverageBestOf")
-                        .IsRequired();
-
-                    challengeTestMode.Property(challenge => challenge.ParticipantQuantity)
-                        .HasConversion(state => state.Value, value => TestModeParticipantQuantity.FromValue(value))
-                        .HasColumnName("ParticipantQuantity")
-                        .IsRequired();
-                }
-            );
-
             builder.OwnsMany(
                 challenge => challenge.Buckets,
                 challengeStats =>
                 {
-                    challengeStats.ToTable("Payout");
+                    challengeStats.ToTable("Bucket");
 
                     challengeStats.HasForeignKey(nameof(ChallengeId));
 
@@ -145,7 +122,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                 challenge => challenge.ScoringItems,
                 challengeStats =>
                 {
-                    challengeStats.ToTable("Scoring");
+                    challengeStats.ToTable("ScoringItem");
 
                     challengeStats.HasForeignKey(nameof(ChallengeId));
 
@@ -174,7 +151,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
 
             builder.Ignore(challenge => challenge.Payout);
 
-            builder.Ignore(challenge => challenge.Scoring);
+            builder.Ignore(challenge => challenge.Scoreboard);
 
             builder.HasMany(challenge => challenge.Participants).WithOne().HasForeignKey(nameof(ChallengeId)).IsRequired().OnDelete(DeleteBehavior.Cascade);
 

@@ -9,15 +9,16 @@
 // this source code package.
 
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions.Factories;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Repositories;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Services;
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
+using eDoxa.Arena.Challenges.Domain.Fakers;
 using eDoxa.Arena.Challenges.Domain.Specifications;
 using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Common.Enumerations;
@@ -81,36 +82,29 @@ namespace eDoxa.Arena.Challenges.Domain.Services
             await _challengeRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
         }
 
-        public async Task<Challenge> CreateChallengeAsync(
-            string name,
-            Game game,
-            int duration,
-            int bestOf,
-            int payoutEntries,
-            EntryFee entryFee,
-            TestMode testMode = null,
+        public async Task<IEnumerable<Challenge>> FakeChallengesAsync(
+            int count,
+            int? seed = null,
+            Game game = null,
+            ChallengeState state = null,
+            CurrencyType entryFeeCurrency = null,
             CancellationToken cancellationToken = default
         )
         {
-            var builder = new ChallengeBuilder(
-                game,
-                new ChallengeName(name),
-                new ChallengeSetup(new BestOf(bestOf), new PayoutEntries(payoutEntries), entryFee),
-                new ChallengeDuration(TimeSpan.FromDays(duration))
-            );
+            var challengeFaker = new ChallengeFaker();
 
-            if (testMode != null)
+            if (seed.HasValue)
             {
-                builder.EnableTestMode(testMode);
+                challengeFaker.UseSeed(seed.Value);
             }
+            
+            var challenges = challengeFaker.FakeChallenges(count, game, state, entryFeeCurrency);
 
-            var challenge = builder.Build() as Challenge;
-
-            _challengeRepository.Create(challenge);
+            _challengeRepository.Create(challenges);
 
             await _challengeRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
 
-            return challenge;
+            return challenges;
         }
 
         public async Task SynchronizeAsync(Game game, CancellationToken cancellationToken = default)

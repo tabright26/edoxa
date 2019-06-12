@@ -65,7 +65,7 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         /// </summary>
         [Authorize(Roles = CustomRoles.Administrator)]
         [HttpPost(Name = nameof(CreateChallenge))]
-        public async Task<IActionResult> CreateChallenge([FromBody] CreateChallengeCommand command)
+        public async Task<IActionResult> CreateChallenge([FromBody] FakeChallengesCommand command)
         {
             var challenge = await _mediator.SendCommandAsync(command);
 

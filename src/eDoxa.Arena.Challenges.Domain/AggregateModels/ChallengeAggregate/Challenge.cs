@@ -52,15 +52,12 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         private Challenge()
         {
-            TestMode = null;
             CreatedAt = DateTime.UtcNow;
             LastSync = null;
             _scoringItems = new HashSet<ScoringItem>();
             _participants = new HashSet<Participant>();
             _buckets = new List<Bucket>();
         }
-
-        public TestMode TestMode { get; private set; }
 
         public IReadOnlyCollection<ScoringItem> ScoringItems => _scoringItems;
 
@@ -91,13 +88,6 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         public IPayout Payout => new Payout(new Buckets(Buckets));
 
         public IScoreboard Scoreboard => new Scoreboard(Participants);
-
-        public void EnableTestMode(TestMode testMode, ChallengeTimeline timeline)
-        {
-            TestMode = testMode;
-
-            Timeline = timeline;
-        }
 
         public async Task SynchronizeAsync(IMatchReferencesFactory matchReferencesFactory, IMatchStatsFactory matchStatsFactory)
         {

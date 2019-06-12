@@ -10,7 +10,7 @@ using eDoxa.Arena.Challenges.Infrastructure;
 namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
 {
     [DbContext(typeof(ChallengesDbContext))]
-    [Migration("20190611204523_InitialCreate")]
+    [Migration("20190612162933_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -116,7 +116,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
 
                             b1.HasKey("ChallengeId", "Id");
 
-                            b1.ToTable("Payout");
+                            b1.ToTable("Bucket");
 
                             b1.HasOne("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.Challenge")
                                 .WithMany("Buckets")
@@ -134,7 +134,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
 
                                     b2.HasKey("BucketChallengeId", "BucketId");
 
-                                    b2.ToTable("Payout","edoxa");
+                                    b2.ToTable("Bucket","edoxa");
 
                                     b2.HasOne("eDoxa.Arena.Challenges.Domain.AggregateModels.Bucket")
                                         .WithOne("Size")
@@ -156,7 +156,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
 
                                     b2.HasKey("BucketChallengeId", "BucketId");
 
-                                    b2.ToTable("Payout","edoxa");
+                                    b2.ToTable("Bucket","edoxa");
 
                                     b2.HasOne("eDoxa.Arena.Challenges.Domain.AggregateModels.Bucket")
                                         .WithOne("Prize")
@@ -268,34 +268,11 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Migrations
 
                             b1.HasKey("ChallengeId", "Id");
 
-                            b1.ToTable("Scoring");
+                            b1.ToTable("ScoringItem");
 
                             b1.HasOne("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.Challenge")
                                 .WithMany("ScoringItems")
                                 .HasForeignKey("ChallengeId")
-                                .OnDelete(DeleteBehavior.Cascade);
-                        });
-
-                    b.OwnsOne("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.TestMode", "TestMode", b1 =>
-                        {
-                            b1.Property<Guid>("ChallengeId");
-
-                            b1.Property<int>("MatchQuantity")
-                                .HasColumnName("AverageBestOf");
-
-                            b1.Property<int>("ParticipantQuantity")
-                                .HasColumnName("ParticipantQuantity");
-
-                            b1.Property<int>("StartingState")
-                                .HasColumnName("State");
-
-                            b1.HasKey("ChallengeId");
-
-                            b1.ToTable("TestMode","edoxa");
-
-                            b1.HasOne("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.Challenge")
-                                .WithOne("TestMode")
-                                .HasForeignKey("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.TestMode", "ChallengeId")
                                 .OnDelete(DeleteBehavior.Cascade);
                         });
                 });

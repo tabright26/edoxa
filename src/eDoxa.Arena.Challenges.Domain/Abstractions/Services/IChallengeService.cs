@@ -9,10 +9,10 @@
 // this source code package.
 
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Seedwork.Common;
@@ -22,14 +22,12 @@ namespace eDoxa.Arena.Challenges.Domain.Abstractions.Services
 {
     public interface IChallengeService
     {
-        Task<Challenge> CreateChallengeAsync(
-            string name,
-            Game game,
-            int duration,
-            int bestOf,
-            int payoutEntries,
-            EntryFee entryFee,
-            TestMode testMode = null,
+        Task<IEnumerable<Challenge>> FakeChallengesAsync(
+            int count,
+            int? seed = null,
+            Game game = null,
+            ChallengeState state = null,
+            CurrencyType entryFeeCurrency = null,
             CancellationToken cancellationToken = default
         );
 

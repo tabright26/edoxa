@@ -45,8 +45,6 @@ namespace eDoxa.Arena.Challenges.Domain.Abstractions
 
         IReadOnlyCollection<Participant> Participants { get; }
 
-        void EnableTestMode(TestMode testMode, ChallengeTimeline timeline);
-
         Task SynchronizeAsync(IMatchReferencesFactory matchReferencesFactory, IMatchStatsFactory matchStatsFactory);
     }
 }
