@@ -8,6 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using AutoMapper;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -24,9 +26,18 @@ namespace eDoxa.Seedwork.Testing.TestServer.Extensions
 
             var dbContext = provider.GetService<TDbContext>();
 
-            dbContext.Database.Migrate();
+            dbContext.Database.EnsureCreated();
 
             return dbContext;
+        }
+
+        public static IMapper ResolveMapper(this Microsoft.AspNetCore.TestHost.TestServer testServer)
+        {
+            var scope = testServer.Host.Services.CreateScope();
+
+            var provider = scope.ServiceProvider;
+
+            return provider.GetService<IMapper>();
         }
     }
 }

@@ -8,6 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using AutoMapper;
+
 using eDoxa.Seedwork.Security.Hosting;
 using eDoxa.Seedwork.Testing.TestServer.Extensions;
 
@@ -24,8 +26,11 @@ namespace eDoxa.Seedwork.Testing.TestServer
     where TStartup : class
     {
         private TDbContext _dbContext;
+        private IMapper _mapper;
 
         public TDbContext DbContext => _dbContext;
+
+        public IMapper Mapper => _mapper;
 
         protected override void ConfigureWebHost([NotNull] IWebHostBuilder builder)
         {
@@ -38,6 +43,8 @@ namespace eDoxa.Seedwork.Testing.TestServer
             var server = base.CreateServer(builder);
 
             _dbContext = server.MigrateDbContext<TDbContext>();
+
+            _mapper = server.ResolveMapper();
 
             return server;
         }

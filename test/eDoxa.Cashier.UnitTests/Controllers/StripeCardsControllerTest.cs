@@ -18,7 +18,7 @@ using eDoxa.Cashier.Api.Controllers;
 using eDoxa.Cashier.Api.ViewModels;
 using eDoxa.Seedwork.Testing.TestConstructor;
 using eDoxa.Stripe.Data.Fakers;
-using eDoxa.Stripe.UnitTests.Extensions;
+using eDoxa.Stripe.Extensions;
 
 using FluentAssertions;
 

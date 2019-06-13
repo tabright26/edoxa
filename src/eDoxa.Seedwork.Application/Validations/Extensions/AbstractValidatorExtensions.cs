@@ -31,9 +31,16 @@ namespace eDoxa.Seedwork.Application.Validations.Extensions
         )
         where TEnumeration : Enumeration<TEnumeration>, new()
         {
-            return validator.RuleFor(expression)
-                .NotNull()
-                .DependentRules(() => validator.RuleFor(expression).NotAll().DependentRules(() => validator.RuleFor(expression).IsInEnumeration()));
+            return validator.RuleFor(expression).NotNull().DependentRules(() => validator.RuleFor(expression).IsInEnumeration());
+        }
+
+        public static IRuleBuilderOptions<T, TEnumeration> OptionalEnumeration<T, TEnumeration>(
+            this AbstractValidator<T> validator,
+            Expression<Func<T, TEnumeration>> expression
+        )
+        where TEnumeration : Enumeration<TEnumeration>, new()
+        {
+            return validator.RuleFor(expression).IsInEnumeration().WhenNotNull(expression);
         }
     }
 }

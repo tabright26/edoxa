@@ -24,7 +24,13 @@ namespace eDoxa.Seedwork.Testing.TestServer.Extensions
         {
             var content = await response.Content.ReadAsStringAsync();
 
-            return JsonConvert.DeserializeObject<T>(content);
+            return JsonConvert.DeserializeObject<T>(
+                content,
+                new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                }
+            );
         }
     }
 }

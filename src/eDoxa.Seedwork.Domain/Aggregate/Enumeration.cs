@@ -146,7 +146,7 @@ namespace eDoxa.Seedwork.Domain.Aggregate
                 {
                     case null:
                     {
-                        return All;
+                        return null;
                     }
 
                     case int obj:

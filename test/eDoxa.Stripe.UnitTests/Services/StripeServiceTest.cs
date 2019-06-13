@@ -14,8 +14,8 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Stripe.Data.Fakers;
+using eDoxa.Stripe.Extensions;
 using eDoxa.Stripe.Services;
-using eDoxa.Stripe.UnitTests.Extensions;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

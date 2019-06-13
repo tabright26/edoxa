@@ -12,7 +12,7 @@ using eDoxa.Stripe.Models;
 
 using Stripe;
 
-namespace eDoxa.Stripe.UnitTests.Extensions
+namespace eDoxa.Stripe.Extensions
 {
     public static class StripeExtensions
     {

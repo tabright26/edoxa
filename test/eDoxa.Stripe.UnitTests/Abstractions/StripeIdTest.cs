@@ -13,8 +13,8 @@ using System.ComponentModel;
 
 using eDoxa.Stripe.Data.Fakers;
 using eDoxa.Stripe.Exceptions;
+using eDoxa.Stripe.Extensions;
 using eDoxa.Stripe.Models;
-using eDoxa.Stripe.UnitTests.Extensions;
 
 using FluentAssertions;
 

@@ -21,8 +21,8 @@ using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Testing.TestConstructor;
 using eDoxa.Stripe.Abstractions;
 using eDoxa.Stripe.Data.Fakers;
+using eDoxa.Stripe.Extensions;
 using eDoxa.Stripe.Models;
-using eDoxa.Stripe.UnitTests.Extensions;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

@@ -14,8 +14,8 @@ using System.Threading.Tasks;
 
 using eDoxa.Stripe.Abstractions;
 using eDoxa.Stripe.Data.Fakers;
+using eDoxa.Stripe.Extensions;
 using eDoxa.Stripe.Models;
-using eDoxa.Stripe.UnitTests.Extensions;
 
 using Moq;
 

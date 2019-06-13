@@ -251,7 +251,7 @@ namespace eDoxa.Seedwork.UnitTests.Aggregate
         }
 
         [TestMethod]
-        public void ConvertFrom_NullReference_ShouldBeAll()
+        public void ConvertFrom_NullReference_ShouldBeNull()
         {
             // Arrange
             var converter = TypeDescriptor.GetConverter(typeof(MockEnumeration));
@@ -260,7 +260,7 @@ namespace eDoxa.Seedwork.UnitTests.Aggregate
             var enumeration = converter.ConvertFrom(null);
 
             // Assert
-            enumeration.As<MockEnumeration>().Should().Be(MockEnumeration.All);
+            enumeration.As<MockEnumeration>().Should().BeNull();
         }
 
         [DataRow(typeof(double))]

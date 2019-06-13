@@ -15,5 +15,7 @@ namespace eDoxa.Seedwork.Infrastructure.Abstractions
     public interface IDbContextData
     {
         Task SeedAsync();
+
+        Task CleanupAsync();
     }
 }
