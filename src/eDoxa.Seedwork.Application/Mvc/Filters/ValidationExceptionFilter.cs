@@ -18,7 +18,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace eDoxa.Seedwork.Application.Filters
+namespace eDoxa.Seedwork.Application.Mvc.Filters
 {
     public sealed class ValidationExceptionFilter : IExceptionFilter
     {

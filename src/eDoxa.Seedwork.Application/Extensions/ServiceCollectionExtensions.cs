@@ -14,7 +14,7 @@ using Autofac;
 using Autofac.Core;
 using Autofac.Extensions.DependencyInjection;
 
-using eDoxa.Seedwork.Application.Filters;
+using eDoxa.Seedwork.Application.Mvc.Filters;
 using eDoxa.Seedwork.Application.Versioning;
 using eDoxa.Seedwork.Security.Constants;
 
