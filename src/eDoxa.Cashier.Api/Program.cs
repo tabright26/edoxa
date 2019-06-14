@@ -11,7 +11,7 @@
 using System;
 
 using eDoxa.Cashier.Infrastructure;
-using eDoxa.IntegrationEvents;
+using eDoxa.IntegrationEvents.Infrastructure;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Security.AzureKeyVault.Extensions;
@@ -37,7 +37,7 @@ namespace eDoxa.Cashier.Api
 
                 host.MigrateDbContext<CashierDbContext>();
 
-                host.MigrateDbContext<IntegrationEventLogDbContext>();
+                host.MigrateDbContext<IntegrationEventDbContext>();
 
                 Log.Information("Starting {Application} web host...");
 

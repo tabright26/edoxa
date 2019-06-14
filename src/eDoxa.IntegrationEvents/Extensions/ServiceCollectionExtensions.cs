@@ -14,6 +14,7 @@ using System.Reflection;
 using Autofac;
 
 using eDoxa.IntegrationEvents.Azure;
+using eDoxa.IntegrationEvents.Infrastructure;
 using eDoxa.IntegrationEvents.RabbitMQ;
 using eDoxa.Seedwork.Security.Constants;
 
@@ -39,7 +40,7 @@ namespace eDoxa.IntegrationEvents.Extensions
 
         public static void AddIntegrationEventDbContext(this IServiceCollection services, IConfiguration configuration, Assembly migrationsAssembly)
         {
-            services.AddDbContext<IntegrationEventLogDbContext>(
+            services.AddDbContext<IntegrationEventDbContext>(
                 options => options.UseSqlServer(
                     configuration.GetConnectionString(CustomConnectionStrings.SqlServer),
                     sqlServerOptions =>

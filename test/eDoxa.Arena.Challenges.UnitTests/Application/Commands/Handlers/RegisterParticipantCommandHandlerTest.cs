@@ -9,6 +9,7 @@
 // this source code package.
 
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -38,7 +39,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Commands.Handlers
     [TestClass]
     public sealed class RegisterParticipantCommandHandlerTest
     {
-        private ParticipantFaker _participantFaker;
+        private ChallengeFaker _challengeFaker;
         private Mock<IChallengeService> _mockChallengeService;
         private Mock<IHttpContextAccessor> _mockHttpContextAccessor;
         private Mock<IMapper> _mockMapper;
@@ -46,7 +47,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Commands.Handlers
         [TestInitialize]
         public void TestInitialize()
         {
-            _participantFaker = new ParticipantFaker();
+            _challengeFaker = new ChallengeFaker(Game.LeagueOfLegends);
             _mockChallengeService = new Mock<IChallengeService>();
             _mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
             _mockHttpContextAccessor.SetupClaims();
@@ -65,7 +66,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Commands.Handlers
                         It.IsAny<CancellationToken>()
                     )
                 )
-                .ReturnsAsync(_participantFaker.FakeParticipant(Game.LeagueOfLegends))
+                .ReturnsAsync(_challengeFaker.Generate().Participants.First())
                 .Verifiable();
 
             _mockMapper.Setup(x => x.Map<ParticipantViewModel>(It.IsAny<Participant>())).Returns(new ParticipantViewModel()).Verifiable();

@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
 
@@ -22,11 +23,11 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
     {
         private HashSet<Stat> _stats;
 
-        public Match(MatchReference reference, IMatchStats stats, IScoring scoring) : this()
+        public Match(Participant participant, MatchReference reference, IMatchStats stats) : this()
         {
+            Participant = participant;
             Reference = reference;
-
-            this.SnapshotStats(stats, scoring);
+            this.SnapshotStats(stats);
         }
 
         public Match()
@@ -41,13 +42,15 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
 
         public Score TotalScore => new MatchScore(this);
 
+        public Participant Participant { get; private set; }
+
         public IReadOnlyCollection<Stat> Stats => _stats;
 
-        private void SnapshotStats(IMatchStats stats, IScoring scoring)
+        private void SnapshotStats(IMatchStats stats)
         {
-            for (var index = 0; index < scoring.Count; index++)
+            for (var index = 0; index < Participant.Challenge.Scoring.Count; index++)
             {
-                var item = scoring.ElementAt(index);
+                var item = Participant.Challenge.Scoring.ElementAt(index);
 
                 var name = item.Key;
 

@@ -22,7 +22,7 @@ namespace eDoxa.Seedwork.Infrastructure.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddDbContext<TDbContext>(this IServiceCollection services, IConfiguration configuration)
+        public static void AddDbContext<TDbContext>(this IServiceCollection services, IConfiguration configuration, Assembly assembly)
         where TDbContext : DbContext
         {
             services.AddDbContext<TDbContext>(
@@ -30,18 +30,18 @@ namespace eDoxa.Seedwork.Infrastructure.Extensions
                     configuration.GetConnectionString(CustomConnectionStrings.SqlServer),
                     sqlServerOptions =>
                     {
-                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(TDbContext)).GetName().Name);
+                        sqlServerOptions.MigrationsAssembly(assembly.GetName().Name);
                         sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
                     }
                 )
             );
         }
 
-        public static void AddDbContext<TDbContext, TDbContextData>(this IServiceCollection services, IConfiguration configuration)
+        public static void AddDbContext<TDbContext, TDbContextData>(this IServiceCollection services, IConfiguration configuration, Assembly assembly)
         where TDbContext : DbContext
         where TDbContextData : class, IDbContextData
         {
-            services.AddDbContext<TDbContext>(configuration);
+            services.AddDbContext<TDbContext>(configuration, assembly);
 
             services.AddScoped<IDbContextData, TDbContextData>();
         }

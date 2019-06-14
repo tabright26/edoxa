@@ -14,8 +14,8 @@ using System.Reflection;
 
 using AutoMapper;
 
-using eDoxa.Cashier.Api.Application.Data;
 using eDoxa.Cashier.Api.Extensions;
+using eDoxa.Cashier.Api.Infrastructure.Data;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.IntegrationEvents.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
@@ -58,9 +58,9 @@ namespace eDoxa.Cashier.Api
 
             services.AddEntityFrameworkSqlServer();
 
-            services.AddIntegrationEventDbContext(Configuration, Assembly.GetAssembly(typeof(CashierDbContext)));
+            services.AddIntegrationEventDbContext(Configuration, Assembly.GetAssembly(typeof(Startup)));
 
-            services.AddDbContext<CashierDbContext, CashierDbContextData>(Configuration);
+            services.AddDbContext<CashierDbContext, CashierDbContextData>(Configuration, Assembly.GetAssembly(typeof(Startup)));
 
             services.AddVersioning();
 

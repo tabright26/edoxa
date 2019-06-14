@@ -21,9 +21,6 @@ namespace eDoxa.Arena.Challenges.Api.Profiles
         {
             this.CreateMap<EntryFee, EntryFeeViewModel>()
                 .ForMember(entryFee => entryFee.Amount, config => config.MapFrom(entryFee => entryFee.Amount))
-                .ForMember(entryFee => entryFee.Type, config => config.MapFrom(entryFee => entryFee.Type))
-                .ReverseMap()
-                .ForMember(entryFee => entryFee.Amount, config => config.MapFrom(entryFee => entryFee.Amount))
                 .ForMember(entryFee => entryFee.Type, config => config.MapFrom(entryFee => entryFee.Type));
         }
     }

@@ -109,10 +109,5 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers.Extensions
                 ? new Entries(faker.Random.Int(1, challenge.Setup.Entries - 1))
                 : challenge.Setup.Entries;
         }
-
-        public static BestOf ChallegeSetupBestOf(this Faker faker, BestOf bestOf = null)
-        {
-            return bestOf ?? faker.PickRandom(ValueObject.GetDeclaredOnlyFields<BestOf>());
-        }
     }
 }

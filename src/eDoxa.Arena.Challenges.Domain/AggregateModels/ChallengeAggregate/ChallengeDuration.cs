@@ -37,8 +37,6 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public long Ticks { get; private set; }
 
-        public int Days => TimeSpan.FromTicks(Ticks).Days;
-
         public static implicit operator TimeSpan(ChallengeDuration duration)
         {
             return TimeSpan.FromTicks(duration.Ticks);

@@ -65,10 +65,6 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                     challengeSetup.OwnsOne(setup => setup.EntryFee).Property(entryFee => entryFee.Amount).HasColumnName("EntryFeeAmount").IsRequired();
 
                     challengeSetup.OwnsOne(setup => setup.EntryFee).Enumeration(entryFee => entryFee.Type).HasColumnName("EntryFeeCurrency").IsRequired();
-
-                    challengeSetup.OwnsOne(setup => setup.PrizePool).Property(prizePool => prizePool.Amount).HasColumnName("PrizePoolAmount").IsRequired();
-
-                    challengeSetup.OwnsOne(setup => setup.PrizePool).Enumeration(prizePool => prizePool.Type).HasColumnName("PrizePoolCurrency").IsRequired();
                 }
             );
 
@@ -153,7 +149,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
 
             builder.Ignore(challenge => challenge.Scoreboard);
 
-            builder.HasMany(challenge => challenge.Participants).WithOne().HasForeignKey(nameof(ChallengeId)).IsRequired().OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(challenge => challenge.Participants).WithOne(participant => participant.Challenge).HasForeignKey(nameof(ChallengeId)).IsRequired().OnDelete(DeleteBehavior.Cascade);
 
             builder.Metadata.FindNavigation(nameof(Challenge.Participants)).SetPropertyAccessMode(PropertyAccessMode.Field);
 

@@ -13,9 +13,9 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Cashier.Api.Application.Data.Fakers;
 using eDoxa.Cashier.Api.Application.Queries;
 using eDoxa.Cashier.Api.ViewModels;
+using eDoxa.Cashier.Domain.Fakers;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.UnitTests.Extensions;
 using eDoxa.Seedwork.Common.ValueObjects;

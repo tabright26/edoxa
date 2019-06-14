@@ -26,8 +26,5 @@ namespace eDoxa.Arena.Challenges.Api.ViewModels
 
         [JsonProperty("entryFee")]
         public EntryFeeViewModel EntryFee { get; set; }
-
-        [JsonProperty("prizePool")]
-        public decimal PrizePool { get; set; }
     }
 }

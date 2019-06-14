@@ -25,7 +25,7 @@ namespace eDoxa.Cashier.Api.Controllers
     [ApiVersion("1.0")]
     [Produces("application/json")]
     [Route("api/transactions")]
-    [ApiExplorerSettings(GroupName = "Transactions")]
+    [ApiExplorerSettings(GroupName = "Transaction")]
     public class TransactionsController : ControllerBase
     {
         private readonly ITransactionQuery _transactionQuery;

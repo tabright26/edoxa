@@ -14,8 +14,8 @@ using System.Reflection;
 
 using AutoMapper;
 
-using eDoxa.Arena.Challenges.Api.Application.Data;
 using eDoxa.Arena.Challenges.Api.Extensions;
+using eDoxa.Arena.Challenges.Api.Infrastructure.Data;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Extensions;
 using eDoxa.IntegrationEvents.Extensions;
@@ -54,9 +54,9 @@ namespace eDoxa.Arena.Challenges.Api
 
             services.AddEntityFrameworkSqlServer();
 
-            services.AddIntegrationEventDbContext(Configuration, Assembly.GetAssembly(typeof(ChallengesDbContext)));
+            services.AddIntegrationEventDbContext(Configuration, Assembly.GetAssembly(typeof(Startup)));
 
-            services.AddDbContext<ChallengesDbContext, ChallengesDbContextData>(Configuration);
+            services.AddDbContext<ChallengesDbContext, ChallengesDbContextData>(Configuration, Assembly.GetAssembly(typeof(Startup)));
 
             services.AddVersioning();
 

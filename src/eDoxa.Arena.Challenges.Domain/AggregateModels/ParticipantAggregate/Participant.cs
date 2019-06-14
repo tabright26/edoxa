@@ -14,7 +14,6 @@ using System.Linq;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ValueObjects;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Domain;
@@ -28,11 +27,11 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate
     {
         private HashSet<Match> _matches;
 
-        public Participant(UserId userId, UserGameReference userGameReference, BestOf matchBestOf) : this()
+        public Participant(Challenge challenge, UserId userId, UserGameReference userGameReference) : this()
         {
+            Challenge = challenge;
             UserId = userId;
             UserGameReference = userGameReference;
-            MatchBestOf = matchBestOf;
         }
 
         public Participant()
@@ -46,14 +45,14 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate
 
         public DateTime? LastSync { get; private set; }
 
-        public BestOf MatchBestOf { get; private set; }
+        public Challenge Challenge { get; private set; }
 
         public UserId UserId { get; private set; }
 
         public UserGameReference UserGameReference { get; private set; }
 
         [CanBeNull]
-        public Score AverageScore => Matches.Count >= MatchBestOf ? new ParticipantScore(this) : null;
+        public Score AverageScore => Matches.Count >= Challenge.Setup.BestOf ? new ParticipantScore(this) : null;
 
         public IReadOnlyCollection<Match> Matches
         {
@@ -66,9 +65,9 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate
             return LastSync.HasValue && LastSync.Value >= timeline.EndedAt;
         }
 
-        public void SnapshotMatch(MatchReference matchReference, IMatchStats stats, IScoring scoring)
+        public void SnapshotMatch(MatchReference matchReference, IMatchStats stats)
         {
-            _matches.Add(new Match(matchReference, stats, scoring));
+            _matches.Add(new Match(this, matchReference, stats));
         }
 
         public IEnumerable<MatchReference> GetUnsynchronizedMatchReferences(IEnumerable<MatchReference> matchReferences)

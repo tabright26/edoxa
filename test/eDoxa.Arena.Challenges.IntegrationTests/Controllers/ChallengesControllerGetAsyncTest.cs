@@ -84,7 +84,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         {
             var challengeFaker = new ChallengeFaker();
 
-            var challenges = challengeFaker.FakeChallenges(count);
+            var challenges = challengeFaker.Generate(count);
 
             _dbContext.Challenges.AddRange(challenges);
 
@@ -132,7 +132,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 
             challengeFaker.UseSeed(seed);
 
-            return challengeFaker.FakeChallenge();
+            return challengeFaker.Generate();
         }
     }
 }

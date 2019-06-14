@@ -10,6 +10,7 @@
 
 using System.Threading.Tasks;
 
+using eDoxa.IntegrationEvents.Infrastructure;
 using eDoxa.IntegrationEvents.UnitTests.Mocks;
 
 using FluentAssertions;
@@ -26,7 +27,7 @@ namespace eDoxa.IntegrationEvents.UnitTests.Infrastructure
         public async Task IntegrationEventLoggerDbContext_EntityMappingConsistency_ShouldBeValid()
         {
             // Arrange
-            var options = new DbContextOptionsBuilder<IntegrationEventLogDbContext>().UseInMemoryDatabase(
+            var options = new DbContextOptionsBuilder<IntegrationEventDbContext>().UseInMemoryDatabase(
                     $"{nameof(IntegrationEventLogDbContextTest)}.{nameof(this.IntegrationEventLoggerDbContext_EntityMappingConsistency_ShouldBeValid)}"
                 )
                 .Options;
@@ -35,17 +36,17 @@ namespace eDoxa.IntegrationEvents.UnitTests.Infrastructure
             var mockIntegrationEventLogEntry = new MockIntegrationEventLogEntry(mockIntegrationEvent);
 
             // Act
-            using (var context = new IntegrationEventLogDbContext(options))
+            using (var context = new IntegrationEventDbContext(options))
             {
-                context.IntegrationEventLogs.Add(mockIntegrationEventLogEntry);
+                context.Logs.Add(mockIntegrationEventLogEntry);
 
                 await context.SaveChangesAsync();
             }
 
             // Assert
-            using (var context = new IntegrationEventLogDbContext(options))
+            using (var context = new IntegrationEventDbContext(options))
             {
-                var integrationEventLogEntry = await context.IntegrationEventLogs.SingleAsync();
+                var integrationEventLogEntry = await context.Logs.SingleAsync();
 
                 var integrationEvent = MockIntegrationEvent.Deserialize(integrationEventLogEntry.JsonObject);
 
@@ -55,9 +56,9 @@ namespace eDoxa.IntegrationEvents.UnitTests.Infrastructure
             }
 
             // Act
-            using (var context = new IntegrationEventLogDbContext(options))
+            using (var context = new IntegrationEventDbContext(options))
             {
-                var integrationEventLogEntry = await context.IntegrationEventLogs.SingleAsync();
+                var integrationEventLogEntry = await context.Logs.SingleAsync();
 
                 Assert.AreEqual(0, integrationEventLogEntry.PublishAttempted);
                 Assert.AreEqual(IntegrationEventState.NotPublished, integrationEventLogEntry.State);
@@ -71,9 +72,9 @@ namespace eDoxa.IntegrationEvents.UnitTests.Infrastructure
             }
 
             // Assert
-            using (var context = new IntegrationEventLogDbContext(options))
+            using (var context = new IntegrationEventDbContext(options))
             {
-                var integrationEventLogEntry = await context.IntegrationEventLogs.SingleAsync();
+                var integrationEventLogEntry = await context.Logs.SingleAsync();
 
                 Assert.AreEqual(1, integrationEventLogEntry.PublishAttempted);
                 Assert.AreEqual(IntegrationEventState.Published, integrationEventLogEntry.State);

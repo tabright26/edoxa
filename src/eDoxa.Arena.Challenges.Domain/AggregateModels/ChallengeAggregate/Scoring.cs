@@ -23,9 +23,5 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         )
         {
         }
-
-        public Scoring(IEnumerable<Stat> stats) : base(stats.ToDictionary(stat => stat.Name, stat => stat.Weighting))
-        {
-        }
     }
 }

@@ -13,8 +13,8 @@ using System.Reflection;
 
 using AutoMapper;
 
-using eDoxa.Identity.Api.Application.Data;
 using eDoxa.Identity.Api.Extensions;
+using eDoxa.Identity.Api.Infrastructure.Data;
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Infrastructure;
@@ -53,9 +53,9 @@ namespace eDoxa.Identity.Api
 
             services.AddEntityFrameworkSqlServer();
 
-            services.AddIntegrationEventDbContext(Configuration, Assembly.GetAssembly(typeof(IdentityDbContext)));
+            services.AddIntegrationEventDbContext(Configuration, Assembly.GetAssembly(typeof(Startup)));
 
-            services.AddDbContext<IdentityDbContext, IdentityDbContextData>(Configuration);
+            services.AddDbContext<IdentityDbContext, IdentityDbContextData>(Configuration, Assembly.GetAssembly(typeof(Startup)));
 
             services.AddIdentityCore<User, Role, IdentityDbContext>();
 

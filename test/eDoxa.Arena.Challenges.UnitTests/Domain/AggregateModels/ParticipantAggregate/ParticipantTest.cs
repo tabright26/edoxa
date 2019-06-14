@@ -8,9 +8,12 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Collections.Generic;
+using System.Linq;
+
 using Bogus;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Fakers;
 using eDoxa.Arena.Challenges.Domain.Fakers.Extensions;
 using eDoxa.Seedwork.Common.Enumerations;
@@ -24,48 +27,40 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ParticipantAgg
     [TestClass]
     public sealed class ParticipantTest
     {
-        private ParticipantFaker _participantFaker;
+        public static IEnumerable<object[]> Data => Game.GetAll().Select(game => new object[] {game});
 
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            _participantFaker = new ParticipantFaker();
-        }
-
-        [TestMethod]
-        public void SnapshotMatch_Matches_ShouldNotBeEmpty()
+        [DataTestMethod]
+        [DynamicData(nameof(Data))]
+        public void SnapshotMatch_Matches_ShouldNotBeEmpty(Game game)
         {
             // Arrange
-            var participant = _participantFaker.FakeParticipant(Game.LeagueOfLegends);
+            var challengeFaker = new ChallengeFaker(game);
+            var participant = challengeFaker.Generate().Participants.First();
 
             var faker = new Faker();
-
-            var stats = faker.MatchStats(Game.LeagueOfLegends);
-
-            var scoring = faker.Scoring(Game.LeagueOfLegends);
+            var matchReference = faker.MatchReference(game);
+            var stats = faker.MatchStats(game);
 
             // Act
-            participant.SnapshotMatch(new MatchReference(213123123), stats, scoring);
+            participant.SnapshotMatch(matchReference, stats);
 
             // Assert
             participant.Matches.Should().NotBeEmpty();
         }
 
-        //[DataRow(1)]
-        //[DataRow(3)]
-        //[DataRow(5)]
-        //[DataTestMethod]
-        //public void Matches_ShouldHaveCountOf(int matchCount)
-        //{
-        //    // Arrange
-        //    var participant = FakeChallengeFactory.CreateParticipantMatches(matchCount);
+        [TestMethod]
+        public void Matches_ShouldHaveCountOf()
+        {
+            // Arrange
+            var challengeFaker = new ChallengeFaker(Game.LeagueOfLegends, ChallengeState.InProgress);
+            var challenge = challengeFaker.Generate();
+            
+            // Act
+            var matches = challenge.Participants.First().Matches;
 
-        //    // Act
-        //    var matches = participant.Matches;
-
-        //    // Assert
-        //    matches.Should().HaveCount(matchCount);
-        //}
+            // Assert
+            matches.Should().NotBeEmpty();
+        }
 
         //[DataRow(1, 1)]
         //[DataRow(3, 3)]

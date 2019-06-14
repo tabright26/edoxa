@@ -91,7 +91,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 
             challengeFaker.UseSeed(seed);
 
-            var challenges = challengeFaker.FakeChallenges(2);
+            var challenges = challengeFaker.Generate(2);
 
             var challengeViewModel2 = _mapper.Deserialize<IEnumerable<ChallengeViewModel>>(challenges);
 

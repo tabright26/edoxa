@@ -15,12 +15,12 @@ using AutoMapper;
 
 using eDoxa.Cashier.Api.Application.Commands;
 using eDoxa.Cashier.Api.Application.Commands.Handlers;
-using eDoxa.Cashier.Api.Application.Data.Fakers;
 using eDoxa.Cashier.Api.ViewModels;
 using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.Abstractions.Services;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate.Transactions;
+using eDoxa.Cashier.Domain.Fakers;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.UnitTests.Extensions;
 using eDoxa.Commands.Extensions;

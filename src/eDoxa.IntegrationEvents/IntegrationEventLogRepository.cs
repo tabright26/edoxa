@@ -12,6 +12,8 @@ using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 
+using eDoxa.IntegrationEvents.Infrastructure;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
@@ -19,12 +21,12 @@ namespace eDoxa.IntegrationEvents
 {
     public class IntegrationEventLogRepository : IIntegrationEventLogRepository
     {
-        private readonly IntegrationEventLogDbContext _context;
+        private readonly IntegrationEventDbContext _context;
 
         public IntegrationEventLogRepository(DbConnection connection)
         {
-            _context = new IntegrationEventLogDbContext(
-                new DbContextOptionsBuilder<IntegrationEventLogDbContext>()
+            _context = new IntegrationEventDbContext(
+                new DbContextOptionsBuilder<IntegrationEventDbContext>()
                     .UseSqlServer(connection)
                     .ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning))
                     .Options
@@ -37,18 +39,18 @@ namespace eDoxa.IntegrationEvents
 
             _context.Database.UseTransaction(transaction);
 
-            _context.IntegrationEventLogs.Add(logEntry);
+            _context.Logs.Add(logEntry);
 
             return _context.SaveChangesAsync();
         }
 
         public Task MarkIntegrationEventAsPublishedAsync(IntegrationEvent integrationEvent)
         {
-            var integrationEventLogEntry = _context.IntegrationEventLogs.Single(logEntry => logEntry.Id == integrationEvent.Id);
+            var integrationEventLogEntry = _context.Logs.Single(logEntry => logEntry.Id == integrationEvent.Id);
 
             integrationEventLogEntry.MarkAsPublished();
 
-            _context.IntegrationEventLogs.Update(integrationEventLogEntry);
+            _context.Logs.Update(integrationEventLogEntry);
 
             return _context.SaveChangesAsync();
         }

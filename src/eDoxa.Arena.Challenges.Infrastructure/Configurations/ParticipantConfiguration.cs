@@ -9,7 +9,6 @@
 // this source code package.
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ValueObjects;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Infrastructure.Extensions;
@@ -40,11 +39,6 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                 .HasColumnName("UserGameReference")
                 .IsRequired();
 
-            builder.Property(participant => participant.MatchBestOf)
-                .HasConversion(bestOf => bestOf.Value, value => new BestOf(value))
-                .HasColumnName("MatchBestOf")
-                .IsRequired();
-
             builder.Property<ChallengeId>(nameof(ChallengeId))
                 .HasConversion(challengeId => challengeId.ToGuid(), value => ChallengeId.FromGuid(value))
                 .HasColumnName(nameof(ChallengeId))
@@ -63,7 +57,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                 )
                 .IsUnique();
 
-            builder.HasMany(participant => participant.Matches).WithOne().HasForeignKey(nameof(ParticipantId)).IsRequired().OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(participant => participant.Matches).WithOne(match => match.Participant).HasForeignKey(nameof(ParticipantId)).IsRequired().OnDelete(DeleteBehavior.Cascade);
 
             builder.Metadata.FindNavigation(nameof(Participant.Matches)).SetPropertyAccessMode(PropertyAccessMode.Field);
         }

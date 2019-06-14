@@ -9,6 +9,7 @@
 // this source code package.
 
 using System;
+using System.Reflection;
 
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
@@ -48,7 +49,7 @@ namespace eDoxa.IdentityServer
 
             services.AddEntityFrameworkSqlServer();
 
-            services.AddDbContext<IdentityDbContext>(Configuration);
+            services.AddDbContext<IdentityDbContext>(Configuration, Assembly.GetAssembly(typeof(Startup)));
 
             services.AddDataProtection(Configuration);
 

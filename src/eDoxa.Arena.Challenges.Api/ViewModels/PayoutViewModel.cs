@@ -8,10 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Seedwork.Common.Enumerations;
-
-using JetBrains.Annotations;
-
 using Newtonsoft.Json;
 
 namespace eDoxa.Arena.Challenges.Api.ViewModels
@@ -19,9 +15,8 @@ namespace eDoxa.Arena.Challenges.Api.ViewModels
     [JsonObject]
     public class PayoutViewModel
     {
-        [CanBeNull]
-        [JsonProperty("currency")]
-        public CurrencyType Currency { get; set; }
+        [JsonProperty("prizePool")]
+        public PrizePoolViewModel PrizePool { get; set; }
 
         [JsonProperty("buckets")]
         public BucketViewModel[] Buckets { get; set; }

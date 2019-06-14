@@ -27,7 +27,7 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
     [ApiVersion("1.0")]
     [Produces("application/json")]
     [Route("api/participants")]
-    [ApiExplorerSettings(GroupName = "Participants")]
+    [ApiExplorerSettings(GroupName = "Participant")]
     public class ParticipantsController : ControllerBase
     {
         private readonly IParticipantQuery _query;

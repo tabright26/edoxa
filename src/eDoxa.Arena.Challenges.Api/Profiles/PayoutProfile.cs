@@ -20,7 +20,7 @@ namespace eDoxa.Arena.Challenges.Api.Profiles
         public PayoutProfile()
         {
             this.CreateMap<Payout, PayoutViewModel>()
-                .ForMember(payout => payout.Currency, config => config.MapFrom(payout => payout.Currency))
+                .ForMember(payout => payout.PrizePool, config => config.MapFrom(payout => payout.PrizePool))
                 .ForMember(payout => payout.Buckets, config => config.MapFrom(payout => payout.Buckets));
         }
     }

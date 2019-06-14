@@ -10,7 +10,7 @@
 
 using System;
 
-using eDoxa.Cashier.Api.Application.Data.Fakers;
+using eDoxa.Cashier.Domain.Fakers;
 using eDoxa.Seedwork.Common.Extensions;
 
 using FluentAssertions;

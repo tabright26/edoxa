@@ -23,7 +23,6 @@ namespace eDoxa.Arena.Challenges.Api.Profiles
                 .ForMember(setup => setup.BestOf, config => config.MapFrom<int>(setup => setup.BestOf))
                 .ForMember(setup => setup.Entries, config => config.MapFrom<int>(setup => setup.Entries))
                 .ForMember(setup => setup.PayoutEntries, config => config.MapFrom<int>(setup => setup.PayoutEntries))
-                .ForMember(setup => setup.PrizePool, config => config.MapFrom<decimal>(setup => setup.PrizePool))
                 .ForMember(setup => setup.EntryFee, config => config.MapFrom(setup => setup.EntryFee));
         }
     }

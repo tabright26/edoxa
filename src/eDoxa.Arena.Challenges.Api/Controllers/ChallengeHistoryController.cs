@@ -30,7 +30,7 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
     [ApiVersion("1.0")]
     [Produces("application/json")]
     [Route("api/challenges/history")]
-    [ApiExplorerSettings(GroupName = "Challenges")]
+    [ApiExplorerSettings(GroupName = "Challenge")]
     public sealed class ChallengeHistoryController : ControllerBase
     {
         private readonly IChallengeQuery _challengeQuery;

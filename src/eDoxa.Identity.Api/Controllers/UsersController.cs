@@ -23,7 +23,7 @@ namespace eDoxa.Identity.Api.Controllers
     [ApiVersion("1.0")]
     [Produces("application/json")]
     [Route("api/users")]
-    [ApiExplorerSettings(GroupName = "Users")]
+    [ApiExplorerSettings(GroupName = "User")]
     public class UsersController : ControllerBase
     {
         private readonly IUserQuery _userQuery;

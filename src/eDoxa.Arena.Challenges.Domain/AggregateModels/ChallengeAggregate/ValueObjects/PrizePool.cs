@@ -8,10 +8,11 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 
+using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Seedwork.Common.Abstactions;
 using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Domain.Aggregate;
@@ -20,10 +21,10 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.Value
 {
     public sealed class PrizePool : ValueObject, ICurrency
     {
-        public PrizePool(Entries entries, EntryFee entryFee) : this()
+        public PrizePool(IBuckets buckets) : this()
         {
-            Amount = Math.Floor(entries * entryFee.Amount);
-            Type = entryFee.Type;
+            Amount = buckets.SelectMany(bucket => bucket.ToIndividualBuckets()).Sum(bucket => bucket.Prize.Amount);
+            Type = buckets.First().Prize.Type;
         }
 
         private PrizePool()

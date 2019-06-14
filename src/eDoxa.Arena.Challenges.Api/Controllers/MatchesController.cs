@@ -27,7 +27,7 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
     [ApiVersion("1.0")]
     [Produces("application/json")]
     [Route("api/matches")]
-    [ApiExplorerSettings(GroupName = "Matches")]
+    [ApiExplorerSettings(GroupName = "Match")]
     public class MatchesController : ControllerBase
     {
         private readonly IMatchQuery _matchQuery;

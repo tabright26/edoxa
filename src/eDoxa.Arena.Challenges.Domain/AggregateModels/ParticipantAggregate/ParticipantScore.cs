@@ -16,7 +16,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate
 {
     public sealed class ParticipantScore : Score
     {
-        internal ParticipantScore(Participant participant) : base(participant.Matches.OrderBy(match => match.TotalScore).Take(participant.MatchBestOf).Average(match => match.TotalScore))
+        internal ParticipantScore(Participant participant) : base(participant.Matches.OrderBy(match => match.TotalScore).Take(participant.Challenge.Setup.BestOf).Average(match => match.TotalScore))
         {
         }
     }

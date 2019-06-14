@@ -30,7 +30,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
             // Arrange
             var challengeFaker = new ChallengeFaker();
 
-            var challenge = challengeFaker.FakeChallenge();
+            var challenge = challengeFaker.Generate();
 
             var mapper = CreateMapper();
 

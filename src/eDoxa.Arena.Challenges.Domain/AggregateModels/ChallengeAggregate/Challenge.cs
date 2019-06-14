@@ -142,7 +142,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         internal void SnapshotParticipantMatch(Participant participant, MatchReference matchReference, IMatchStats matchStats)
         {
-            participant.SnapshotMatch(matchReference, matchStats, Scoring);
+            participant.SnapshotMatch(matchReference, matchStats);
         }
 
         public void TryClose(Action closeChallenge)
@@ -167,7 +167,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
                 throw new InvalidOperationException();
             }
 
-            var participant = new Participant(userId, userGameReference, Setup.BestOf);
+            var participant = new Participant(this, userId, userGameReference);
 
             _participants.Add(participant);
 

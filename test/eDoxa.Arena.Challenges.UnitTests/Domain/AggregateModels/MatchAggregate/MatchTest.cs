@@ -8,14 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using Bogus;
-
-using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
-using eDoxa.Arena.Challenges.Domain.Fakers.Extensions;
-using eDoxa.Seedwork.Common.Enumerations;
-
-using FluentAssertions;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.MatchAggregate
@@ -23,21 +15,21 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.MatchAggregate
     [TestClass]
     public sealed class MatchTest
     {
-        [TestMethod]
-        public void SnapshotStats_Stats_ShouldHaveCountOfScoring()
-        {
-            // Arrange
-            var faker = new Faker();
+        //[TestMethod]
+        //public void SnapshotStats_Stats_ShouldHaveCountOfScoring()
+        //{
+        //    // Arrange
+        //    var faker = new Faker();
 
-            var scoring = faker.Scoring(Game.LeagueOfLegends);
+        //    var scoring = faker.Scoring(Game.LeagueOfLegends);
 
-            var stats = faker.MatchStats(Game.LeagueOfLegends);
+        //    var stats = faker.MatchStats(Game.LeagueOfLegends);
 
-            // Act
-            var match = new Match(faker.MatchReference(Game.LeagueOfLegends), stats, scoring);
+        //    // Act
+        //    var match = new Match(faker.MatchReference(Game.LeagueOfLegends), stats, scoring);
 
-            // Assert
-            match.Stats.Should().HaveCount(scoring.Count);
-        }
+        //    // Assert
+        //    match.Stats.Should().HaveCount(scoring.Count);
+        //}
     }
 }

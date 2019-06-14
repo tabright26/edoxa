@@ -46,9 +46,9 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Data.Fakers
             var challengeFaker = new ChallengeFaker();
 
             // Act
-            var challenge1 = challengeFaker.FakeChallenge();
+            var challenge1 = challengeFaker.Generate();
 
-            var challenge2 = challengeFaker.FakeChallenge();
+            var challenge2 = challengeFaker.Generate();
 
             // Assert
             challenge1.Should().NotBe(challenge2);
@@ -61,15 +61,15 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Data.Fakers
             var challengeFaker = new ChallengeFaker();
 
             // Act
-            var challenge1 = challengeFaker.FakeChallenge();
+            var challenge1 = challengeFaker.Generate();
 
             //challengeFaker.ParticipantFaker = new ParticipantFaker();
 
-            var challenge2 = challengeFaker.FakeChallenge();
+            var challenge2 = challengeFaker.Generate();
 
             //challengeFaker.ParticipantFaker = new ParticipantFaker();
 
-            var challenge3 = challengeFaker.FakeChallenge();
+            var challenge3 = challengeFaker.Generate();
 
             var participants1 = challenge1.Participants.OrderBy(x => x.Id).ToList();
 
@@ -90,11 +90,11 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Data.Fakers
             var challengeFaker = new ChallengeFaker();
 
             // Act
-            var challenge1 = challengeFaker.FakeChallenge();
+            var challenge1 = challengeFaker.Generate();
 
-            var challenge2 = challengeFaker.FakeChallenge();
+            var challenge2 = challengeFaker.Generate();
 
-            var challenge3 = challengeFaker.FakeChallenge();
+            var challenge3 = challengeFaker.Generate();
 
             var participants1 = challenge1.Participants.OrderBy(participant => participant.Id).ToList();
 
@@ -115,7 +115,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Data.Fakers
             var challengeFaker = new ChallengeFaker();
 
             // Act
-            var challenge = challengeFaker.FakeChallenge();
+            var challenge = challengeFaker.Generate();
 
             // Assert
             var participants = challenge.Participants.ToList();
@@ -136,7 +136,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Data.Fakers
             var challengeFaker = new ChallengeFaker();
 
             // Act
-            var challenges = challengeFaker.FakeChallenges(5);
+            var challenges = challengeFaker.Generate(5);
 
             // Assert
             var matchReferences = challenges.SelectMany(

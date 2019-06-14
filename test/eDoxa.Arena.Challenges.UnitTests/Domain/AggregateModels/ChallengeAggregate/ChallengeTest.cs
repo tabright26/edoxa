@@ -29,14 +29,14 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
         [TestInitialize]
         public void TestInitialize()
         {
-            _challengeFaker = new ChallengeFaker();
+            _challengeFaker = new ChallengeFaker(state: ChallengeState.Inscription);
         }
 
         [TestMethod]
         public void RegisterParticipant_IntoEmptyCollection_ShouldNotBeEmpty()
         {
             // Arrange
-            var challenge = _challengeFaker.FakeChallenge(state: ChallengeState.Inscription);
+            var challenge = _challengeFaker.Generate();
 
             var participantCount = challenge.Participants.Count;
 
@@ -51,7 +51,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
         public void RegisterParticipant_WhoAlreadyExist_ShouldThrowInvalidOperationException()
         {
             // Arrange
-            var challenge = _challengeFaker.FakeChallenge(state: ChallengeState.Inscription);
+            var challenge = _challengeFaker.Generate();
 
             // Act
             var action = new Action(() => challenge.RegisterParticipant(challenge.Participants.First().UserId, new UserGameReference(Guid.NewGuid().ToString())));
@@ -64,7 +64,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
         public void RegisterParticipant_WithEntriesFull_ShouldThrowInvalidOperationException()
         {
             // Arrange
-            var challenge = _challengeFaker.FakeChallenge(state: ChallengeState.Inscription);
+            var challenge = _challengeFaker.Generate();
 
             var participantCount = challenge.Setup.Entries - challenge.Participants.Count;
 

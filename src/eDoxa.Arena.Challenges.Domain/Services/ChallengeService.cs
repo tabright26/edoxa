@@ -87,11 +87,11 @@ namespace eDoxa.Arena.Challenges.Domain.Services
             CancellationToken cancellationToken = default
         )
         {
-            var challengeFaker = new ChallengeFaker();
+            var challengeFaker = new ChallengeFaker(game, state, entryFeeCurrency);
 
             challengeFaker.UseSeed(seed);
 
-            var challenges = challengeFaker.FakeChallenges(count, game, state, entryFeeCurrency);
+            var challenges = challengeFaker.Generate(count);
 
             _challengeRepository.Create(challenges);
 

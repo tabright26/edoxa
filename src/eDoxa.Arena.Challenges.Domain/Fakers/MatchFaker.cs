@@ -8,40 +8,24 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Collections.Generic;
-
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Challenges.Domain.Fakers.Extensions;
 using eDoxa.Seedwork.Common.Abstactions;
-using eDoxa.Seedwork.Common.Enumerations;
 
 namespace eDoxa.Arena.Challenges.Domain.Fakers
 {
     public sealed class MatchFaker : CustomFaker<Match>
     {
-        public MatchFaker()
+        public MatchFaker(Participant participant)
         {
-            this.CustomInstantiator(faker => new Match(faker.MatchReference(Game), faker.MatchStats(Game), faker.Scoring(Game)));
+            this.CustomInstantiator(
+                faker => new Match(participant, faker.MatchReference(participant.Challenge.Game), faker.MatchStats(participant.Challenge.Game))
+            );
 
             this.RuleFor(match => match.Id, faker => faker.MatchId());
 
             this.RuleFor(match => match.Timestamp, faker => faker.MatchTimestamp());
-        }
-
-        private Game Game { get; set; }
-
-        public IEnumerable<Match> FakeMatches(int count, Game game)
-        {
-            Game = game;
-
-            return this.Generate(count);
-        }
-
-        public Match FakeMatch(Game game)
-        {
-            Game = game;
-
-            return this.Generate();
         }
     }
 }

@@ -9,10 +9,7 @@
 // this source code package.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-
-using Bogus;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Fakers.Extensions;
@@ -25,67 +22,41 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers
 {
     public class ChallengeFaker : CustomFaker<Challenge>
     {
-        private readonly ParticipantFaker _participantFaker = new ParticipantFaker();
+        private ParticipantFaker _participantFaker;
 
-        public ChallengeFaker()
+        public ChallengeFaker(Game game = null, ChallengeState state = null, CurrencyType entryFeeCurrency = null)
         {
             this.CustomInstantiator(
-                faker => new Challenge(faker.ChallengeGame(Game), faker.ChallengeName(), faker.ChallengeSetup(EntryFeeCurrency), faker.ChallengeDuration())
+                faker => new Challenge(faker.ChallengeGame(game), faker.ChallengeName(), faker.ChallengeSetup(entryFeeCurrency), faker.ChallengeDuration())
             );
 
             this.RuleFor(challenge => challenge.Id, faker => faker.ChallengeId());
 
-            this.RuleFor(challenge => challenge.Timeline, (faker, challenge) => faker.ChallengeTimeline(challenge.Timeline.Duration, State));
+            this.RuleFor(challenge => challenge.Timeline, (faker, challenge) => faker.ChallengeTimeline(challenge.Timeline.Duration, state));
 
             this.RuleFor(challenge => challenge.CreatedAt, (faker, challenge) => faker.ChallengeCreatedAt(challenge.Timeline));
 
             this.RuleFor(
                 challenge => challenge.Participants,
-                (faker, challenge) => _participantFaker.FakeParticipants(faker.ChallegeSetupEntries(challenge), challenge)
+                (faker, challenge) =>
+                {
+                    _participantFaker = _participantFaker ?? new ParticipantFaker(challenge);
+
+                    _participantFaker.UseSeed(faker.Random.Int());
+
+                    return _participantFaker.Generate(faker.ChallegeSetupEntries(challenge));
+                }
             );
 
             this.RuleFor(challenge => challenge.LastSync, (faker, challenge) => challenge.Participants.Max(participant => participant.Timestamp as DateTime?));
         }
 
-        private Game Game { get; set; }
-
-        private ChallengeState State { get; set; }
-
-        private CurrencyType EntryFeeCurrency { get; set; }
-
         [NotNull]
-        public override Faker<Challenge> UseSeed(int seed)
+        public override Challenge Generate(string ruleSets = null)
         {
-            _participantFaker.UseSeed(seed);
+            _participantFaker = null;
 
-            return base.UseSeed(seed);
-        }
-
-        public List<Challenge> FakeChallenges(
-            int count,
-            Game game = null,
-            ChallengeState state = null,
-            CurrencyType entryFeeCurrency = null
-        )
-        {
-            Game = game;
-
-            State = state;
-
-            EntryFeeCurrency = entryFeeCurrency;
-
-            return this.Generate(count);
-        }
-
-        public Challenge FakeChallenge(Game game = null, ChallengeState state = null, CurrencyType entryFeeCurrency = null)
-        {
-            Game = game;
-
-            State = state;
-
-            EntryFeeCurrency = entryFeeCurrency;
-
-            return this.Generate();
+            return base.Generate(ruleSets);
         }
     }
 }

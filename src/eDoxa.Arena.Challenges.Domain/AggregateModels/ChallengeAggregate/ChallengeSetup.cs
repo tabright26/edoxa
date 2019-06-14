@@ -24,7 +24,6 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             Entries = new Entries(payoutEntries);
             PayoutEntries = payoutEntries;
             EntryFee = new EntryFee(entryFee.Type, entryFee.Amount); // Required by EF Core.
-            PrizePool = new PrizePool(Entries, EntryFee);
         }
 
         private ChallengeSetup()
@@ -38,8 +37,6 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public EntryFee EntryFee { get; private set; }
 
-        public PrizePool PrizePool { get; private set; }
-
         public PayoutEntries PayoutEntries { get; private set; }
 
         protected override IEnumerable<object> GetAtomicValues()
@@ -48,7 +45,6 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             yield return Entries;
             yield return EntryFee;
             yield return PayoutEntries;
-            yield return PrizePool;
         }
 
         public override string ToString()
