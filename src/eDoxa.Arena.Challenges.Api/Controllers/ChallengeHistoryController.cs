@@ -49,7 +49,12 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         {
             var challenges = await _challengeQuery.FindUserChallengeHistoryAsync(game, state);
 
-            return challenges.Select(this.Ok).Cast<IActionResult>().DefaultIfEmpty(this.NoContent()).Single();
+            if (!challenges.Any())
+            {
+                return this.NoContent();
+            }
+
+            return this.Ok(challenges);
         }
     }
 }

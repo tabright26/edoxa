@@ -48,7 +48,12 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         {
             var matches = await _query.FindParticipantMatchesAsync(participantId);
 
-            return matches.Select(this.Ok).Cast<IActionResult>().DefaultIfEmpty(this.NoContent()).Single();
+            if (!matches.Any())
+            {
+                return this.NoContent();
+            }
+
+            return this.Ok(matches);
         }
     }
 }

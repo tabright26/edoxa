@@ -9,6 +9,7 @@
 // this source code package.
 
 using System;
+using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -16,10 +17,14 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using eDoxa.Arena.Challenges.Api;
+using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Domain.Fakers;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Seedwork.Testing.TestServer;
 using eDoxa.Seedwork.Testing.TestServer.Extensions;
+
+using FluentAssertions;
 
 using IdentityModel;
 
@@ -60,6 +65,28 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
             _dbContext.Challenges.RemoveRange(_dbContext.Challenges);
 
             await _dbContext.SaveChangesAsync();
+        }
+
+        [TestMethod]
+        public async Task T1()
+        {
+            var challengeFaker = new ChallengeFaker(state: ChallengeState.Inscription);
+
+            var challenge = challengeFaker.Generate();
+
+            _dbContext.Challenges.Add(challenge);
+
+            await _dbContext.SaveChangesAsync();
+
+            var response = await this.ExecuteAsync(challenge.Id);
+
+            response.EnsureSuccessStatusCode();
+
+            var challengeViewModels1 = await response.DeserializeAsync<ParticipantViewModel[]>();
+
+            var challengeViewModels2 = _mapper.Deserialize<ParticipantViewModel[]>(challenge.Participants);
+
+            challengeViewModels1.AsEnumerable().Should().BeEquivalentTo(challengeViewModels2.AsEnumerable());
         }
     }
 }

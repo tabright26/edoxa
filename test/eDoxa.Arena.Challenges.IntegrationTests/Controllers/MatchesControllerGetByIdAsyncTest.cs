@@ -9,6 +9,7 @@
 // this source code package.
 
 using System;
+using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -16,11 +17,16 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using eDoxa.Arena.Challenges.Api;
+using eDoxa.Arena.Challenges.Api.ViewModels;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
+using eDoxa.Arena.Challenges.Domain.Fakers;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Seedwork.Security.Constants;
 using eDoxa.Seedwork.Testing.TestServer;
 using eDoxa.Seedwork.Testing.TestServer.Extensions;
+
+using FluentAssertions;
 
 using IdentityModel;
 
@@ -65,6 +71,30 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
             _dbContext.Challenges.RemoveRange(_dbContext.Challenges);
 
             await _dbContext.SaveChangesAsync();
+        }
+
+        [TestMethod]
+        public async Task T1()
+        {
+            var challengeFaker = new ChallengeFaker(state: ChallengeState.Ended);
+
+            var challenge = challengeFaker.Generate();
+
+            _dbContext.Challenges.Add(challenge);
+
+            await _dbContext.SaveChangesAsync();
+
+            var match = challenge.Participants.First().Matches.First();
+
+            var response = await this.ExecuteAsync(match.Id);
+
+            response.EnsureSuccessStatusCode();
+
+            var challengeViewModel1 = await response.DeserializeAsync<MatchViewModel>();
+
+            var challengeViewModel2 = _mapper.Deserialize<MatchViewModel>(match);
+
+            challengeViewModel1.Should().BeEquivalentTo(challengeViewModel2);
         }
     }
 }

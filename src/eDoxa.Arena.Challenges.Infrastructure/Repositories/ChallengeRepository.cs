@@ -72,21 +72,20 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
             return challenges.Where(specification.IsSatisfiedBy).ToList();
         }
 
+        // TODO: We should use Dapper or EF Core TableQuery.
         public async Task<IReadOnlyCollection<Challenge>> FindUserChallengeHistoryAsNoTrackingAsync(
             UserId userId,
             Game game = null,
             ChallengeState state = null
         )
         {
-            var challenges = await _context.Challenges.AsNoTracking()
-                .Include(NavigationPropertyPath)
-                .Where(challenge => challenge.Participants.Any(participant => participant.UserId == userId))
-                .ToListAsync();
+            var challenges = await this.FindChallengesAsNoTrackingAsync(game, state);
 
-            return challenges.Where(challenge => challenge.Game.HasFilter(game) && challenge.Timeline.State.HasFilter(state)).ToList();
+            return challenges.Where(challenge => challenge.Participants.Any(participant => participant.UserId == userId)).ToList();
         }
 
-        public async Task<IReadOnlyCollection<Challenge>> FindChallengesAsNoTrackingAsync([CanBeNull] Game game = null, [CanBeNull] ChallengeState state = null)
+        // TODO: We should use Dapper or EF Core TableQuery.
+        public async Task<IReadOnlyCollection<Challenge>> FindChallengesAsNoTrackingAsync(Game game = null, ChallengeState state = null)
         {
             var challenges = await _context.Challenges.AsNoTracking().Include(NavigationPropertyPath).ToListAsync();
 
