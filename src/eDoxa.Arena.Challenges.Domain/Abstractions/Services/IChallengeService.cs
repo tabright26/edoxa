@@ -24,7 +24,7 @@ namespace eDoxa.Arena.Challenges.Domain.Abstractions.Services
     {
         Task<IEnumerable<Challenge>> FakeChallengesAsync(
             int count,
-            int? seed = null,
+            int seed,
             Game game = null,
             ChallengeState state = null,
             CurrencyType entryFeeCurrency = null,

@@ -41,7 +41,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
         }
 
         [TestMethod]
-        public async Task FindParticipantMatchesAsync_ShouldBeOkObjectResult()
+        public async Task GetAsync_ShouldBeOkObjectResult()
         {
             // Arrange
             _queries.Setup(queries => queries.FindParticipantMatchesAsync(It.IsAny<ParticipantId>()))
@@ -56,7 +56,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
             var controller = new ParticipantMatchesController(_queries.Object);
 
             // Act
-            var result = await controller.FindParticipantMatchesAsync(It.IsAny<ParticipantId>());
+            var result = await controller.GetAsync(new ParticipantId());
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -67,7 +67,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
         }
 
         [TestMethod]
-        public async Task FindParticipantMatchesAsync_ShouldBeNoContentResult()
+        public async Task GetAsync_ShouldBeNoContentResult()
         {
             // Arrange
             _queries.Setup(queries => queries.FindParticipantMatchesAsync(It.IsAny<ParticipantId>())).ReturnsAsync(new List<MatchViewModel>()).Verifiable();
@@ -75,7 +75,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
             var controller = new ParticipantMatchesController(_queries.Object);
 
             // Act
-            var result = await controller.FindParticipantMatchesAsync(It.IsAny<ParticipantId>());
+            var result = await controller.GetAsync(new ParticipantId());
 
             // Assert
             result.Should().BeOfType<NoContentResult>();

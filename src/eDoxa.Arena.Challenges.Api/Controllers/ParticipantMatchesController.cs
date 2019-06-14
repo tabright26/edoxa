@@ -8,14 +8,19 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Application.Abstractions;
+using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Arena.Challenges.Api.Controllers
 {
@@ -37,8 +42,9 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         /// <summary>
         ///     Find the matches of a participant.
         /// </summary>
-        [HttpGet(Name = nameof(FindParticipantMatchesAsync))]
-        public async Task<IActionResult> FindParticipantMatchesAsync(ParticipantId participantId)
+        [HttpGet]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<MatchViewModel>))]
+        public async Task<IActionResult> GetAsync(ParticipantId participantId)
         {
             var matches = await _query.FindParticipantMatchesAsync(participantId);
 

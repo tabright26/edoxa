@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
+using eDoxa.Arena.Challenges.Domain.Fakers.Extensions;
 using eDoxa.Seedwork.Common.Abstactions;
 using eDoxa.Seedwork.Common.Enumerations;
 
@@ -18,15 +19,13 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers
 {
     public sealed class MatchFaker : CustomFaker<Match>
     {
-        private readonly MatchReferenceFaker _matchReferenceFaker = new MatchReferenceFaker();
-        private readonly MatchStatsFaker _matchStatsFaker = new MatchStatsFaker();
-        private readonly ScoringFaker _scoringFaker = new ScoringFaker();
-
         public MatchFaker()
         {
-            this.CustomInstantiator(
-                _ => new Match(_matchReferenceFaker.FakeMatchReference(Game), _matchStatsFaker.FakeMatchStats(Game), _scoringFaker.FakeMatchStats(Game))
-            );
+            this.CustomInstantiator(faker => new Match(faker.MatchReference(Game), faker.MatchStats(Game), faker.Scoring(Game)));
+
+            this.RuleFor(match => match.Id, faker => faker.MatchId());
+
+            this.RuleFor(match => match.Timestamp, faker => faker.MatchTimestamp());
         }
 
         private Game Game { get; set; }

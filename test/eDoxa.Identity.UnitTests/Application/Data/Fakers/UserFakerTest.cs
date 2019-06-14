@@ -12,7 +12,6 @@ using System;
 
 using eDoxa.Identity.Api.Application.Data.Fakers;
 using eDoxa.Seedwork.Common.Extensions;
-using eDoxa.Seedwork.Common.Fakers;
 
 using FluentAssertions;
 
@@ -76,30 +75,6 @@ namespace eDoxa.Identity.UnitTests.Application.Data.Fakers
                 () =>
                 {
                     var user = userFaker.FakeAdminUser();
-
-                    Console.WriteLine(user.DumbAsJson());
-                }
-            );
-
-            // Assert
-            action.Should().NotThrow();
-        }
-
-        [TestMethod]
-        public void FakeUserId_ShouldNotThrow()
-        {
-            // Arrange
-            var userIdFaker = new UserIdFaker();
-
-            // Act
-            var action = new Action(
-                () =>
-                {
-                    var user = userIdFaker.Generate();
-
-                    Console.WriteLine(user.DumbAsJson());
-
-                    user = userIdFaker.Generate();
 
                     Console.WriteLine(user.DumbAsJson());
                 }

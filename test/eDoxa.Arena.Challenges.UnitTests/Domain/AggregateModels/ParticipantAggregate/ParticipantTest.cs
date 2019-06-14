@@ -8,8 +8,11 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using Bogus;
+
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Arena.Challenges.Domain.Fakers;
+using eDoxa.Arena.Challenges.Domain.Fakers.Extensions;
 using eDoxa.Seedwork.Common.Enumerations;
 
 using FluentAssertions;
@@ -35,13 +38,11 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ParticipantAgg
             // Arrange
             var participant = _participantFaker.FakeParticipant(Game.LeagueOfLegends);
 
-            var matchStatsFaker = new MatchStatsFaker();
+            var faker = new Faker();
 
-            var stats = matchStatsFaker.FakeMatchStats(Game.LeagueOfLegends);
+            var stats = faker.MatchStats(Game.LeagueOfLegends);
 
-            var scoringFaker = new ScoringFaker();
-
-            var scoring = scoringFaker.FakeMatchStats(Game.LeagueOfLegends);
+            var scoring = faker.Scoring(Game.LeagueOfLegends);
 
             // Act
             participant.SnapshotMatch(new MatchReference(213123123), stats, scoring);

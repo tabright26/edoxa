@@ -14,7 +14,7 @@ using System.Linq;
 
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Common.Abstactions;
-using eDoxa.Seedwork.Common.Fakers;
+using eDoxa.Seedwork.Common.Extensions;
 
 namespace eDoxa.Identity.Api.Application.Data.Fakers
 {
@@ -22,8 +22,6 @@ namespace eDoxa.Identity.Api.Application.Data.Fakers
     {
         private const string NewUser = "new";
         private const string AdminUser = "admin";
-
-        private readonly UserIdFaker _userIdFaker = new UserIdFaker();
 
         public UserFaker()
         {
@@ -51,7 +49,7 @@ namespace eDoxa.Identity.Api.Application.Data.Fakers
                         }
                     );
 
-                    ruleSet.RuleFor(user => user.Id, faker => _userIdFaker.Generate().ToGuid());
+                    ruleSet.RuleFor(user => user.Id, faker => faker.UserId());
 
                     ruleSet.RuleFor(user => user.EmailConfirmed, faker => faker.Random.Bool());
 

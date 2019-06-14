@@ -11,10 +11,14 @@
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Application.Abstractions;
+using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Arena.Challenges.Api.Controllers
 {
@@ -36,8 +40,9 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         /// <summary>
         ///     Find a match.
         /// </summary>
-        [HttpGet("{matchId}", Name = nameof(FindMatchAsync))]
-        public async Task<IActionResult> FindMatchAsync(MatchId matchId)
+        [HttpGet("{matchId}")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(MatchViewModel))]
+        public async Task<IActionResult> GetByIdAsync(MatchId matchId)
         {
             var match = await _matchQuery.FindMatchAsync(matchId);
 

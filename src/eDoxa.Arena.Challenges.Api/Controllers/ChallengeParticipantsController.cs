@@ -8,18 +8,23 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Application.Abstractions;
 using eDoxa.Arena.Challenges.Api.Application.Commands;
+using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Commands.Extensions;
 
 using MediatR;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Arena.Challenges.Api.Controllers
 {
@@ -43,8 +48,9 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         /// <summary>
         ///     Find the participants of a challenge.
         /// </summary>
-        [HttpGet(Name = nameof(FindChallengeParticipantsAsync))]
-        public async Task<IActionResult> FindChallengeParticipantsAsync(ChallengeId challengeId)
+        [HttpGet]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<ParticipantViewModel>))]
+        public async Task<IActionResult> GetAsync(ChallengeId challengeId)
         {
             var participants = await _participantQuery.FindChallengeParticipantsAsync(challengeId);
 
@@ -59,12 +65,13 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         /// <summary>
         ///     Register a participant to a challenge.
         /// </summary>
-        [HttpPost(Name = nameof(RegisterChallengeParticipantAsync))]
-        public async Task<IActionResult> RegisterChallengeParticipantAsync(ChallengeId challengeId)
+        [HttpPost]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ParticipantViewModel))]
+        public async Task<IActionResult> PostAsync(ChallengeId challengeId)
         {
-            await _mediator.SendCommandAsync(new RegisterParticipantCommand(challengeId));
+            var participant = await _mediator.SendCommandAsync(new RegisterParticipantCommand(challengeId));
 
-            return this.Ok("The participant has registered successfully.");
+            return this.Ok(participant);
         }
     }
 }

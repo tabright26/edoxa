@@ -33,11 +33,7 @@ namespace eDoxa.Arena.Challenges.Domain.Services
         private readonly IMatchReferencesFactory _matchReferencesFactory;
         private readonly IMatchStatsFactory _matchStatsFactory;
 
-        public ChallengeService(
-            IChallengeRepository challengeRepository,
-            IMatchReferencesFactory matchReferencesFactory,
-            IMatchStatsFactory matchStatsFactory
-        )
+        public ChallengeService(IChallengeRepository challengeRepository, IMatchReferencesFactory matchReferencesFactory, IMatchStatsFactory matchStatsFactory)
         {
             _challengeRepository = challengeRepository;
             _matchReferencesFactory = matchReferencesFactory;
@@ -84,7 +80,7 @@ namespace eDoxa.Arena.Challenges.Domain.Services
 
         public async Task<IEnumerable<Challenge>> FakeChallengesAsync(
             int count,
-            int? seed = null,
+            int seed,
             Game game = null,
             ChallengeState state = null,
             CurrencyType entryFeeCurrency = null,
@@ -93,11 +89,8 @@ namespace eDoxa.Arena.Challenges.Domain.Services
         {
             var challengeFaker = new ChallengeFaker();
 
-            if (seed.HasValue)
-            {
-                challengeFaker.UseSeed(seed.Value);
-            }
-            
+            challengeFaker.UseSeed(seed);
+
             var challenges = challengeFaker.FakeChallenges(count, game, state, entryFeeCurrency);
 
             _challengeRepository.Create(challenges);

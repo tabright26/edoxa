@@ -1,5 +1,5 @@
-﻿// Filename: ChallengesControllerTest.cs
-// Date Created: 2019-06-07
+﻿// Filename: ParticipantsControllerGetByIdAsyncTest.cs
+// Date Created: 2019-06-13
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,52 +8,55 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
+using AutoMapper;
+
 using eDoxa.Arena.Challenges.Api;
-using eDoxa.Arena.Challenges.Api.ViewModels;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Challenges.Infrastructure;
+using eDoxa.Seedwork.Security.Constants;
 using eDoxa.Seedwork.Testing.TestServer;
 using eDoxa.Seedwork.Testing.TestServer.Extensions;
 
-using FluentAssertions;
+using IdentityModel;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 {
     [TestClass]
-    public sealed class ChallengesControllerTest
+    public sealed class ParticipantsControllerGetByIdAsyncTest
     {
+        private static readonly Claim[] Claims =
+        {
+            new Claim(JwtClaimTypes.Subject, Guid.NewGuid().ToString()), new Claim(JwtClaimTypes.Role, CustomRoles.Administrator)
+        };
+
         private HttpClient _httpClient;
         private ChallengesDbContext _dbContext;
+        private IMapper _mapper;
+
+        public async Task<HttpResponseMessage> ExecuteAsync(ParticipantId participantId)
+        {
+            return await _httpClient.DefaultRequestHeaders(Claims).GetAsync($"api/participants/{participantId}");
+        }
 
         [TestInitialize]
-        public void TestInitialize()
+        public async Task TestInitialize()
         {
             var factory = new CustomWebApplicationFactory<ChallengesDbContext, Startup>();
 
             _httpClient = factory.CreateClient();
 
             _dbContext = factory.DbContext;
-        }
 
-        public async Task<HttpResponseMessage> Execute()
-        {
-            return await _httpClient.GetAsync("api/challenges");
-        }
+            _mapper = factory.Mapper;
 
-        [TestMethod]
-        public async Task ChallengesScenario()
-        {
-            var response = await this.Execute();
-
-            response.EnsureSuccessStatusCode();
-
-            var challenges = await response.DeserializeAsync<ChallengeViewModel[]>();
-
-            challenges.Should().BeNull();
+            await this.TestCleanup();
         }
 
         [TestCleanup]

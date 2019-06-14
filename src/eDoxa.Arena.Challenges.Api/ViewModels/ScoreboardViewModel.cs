@@ -29,5 +29,11 @@ namespace eDoxa.Arena.Challenges.Api.ViewModels
         )
         {
         }
+
+        [JsonConstructor]
+        public ScoreboardViewModel()
+        {
+            
+        }
     }
 }

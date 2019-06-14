@@ -8,17 +8,20 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Application.Abstractions;
+using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Common.Enumerations;
 
-using JetBrains.Annotations;
-
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Arena.Challenges.Api.Controllers
 {
@@ -28,7 +31,7 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
     [Produces("application/json")]
     [Route("api/challenges/history")]
     [ApiExplorerSettings(GroupName = "Challenges")]
-    public class ChallengeHistoryController : ControllerBase
+    public sealed class ChallengeHistoryController : ControllerBase
     {
         private readonly IChallengeQuery _challengeQuery;
 
@@ -40,8 +43,9 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         /// <summary>
         ///     Find the challenge history of a user.
         /// </summary>
-        [HttpGet(Name = nameof(FindUserChallengeHistoryAsync))]
-        public async Task<IActionResult> FindUserChallengeHistoryAsync([CanBeNull] Game game, [CanBeNull] ChallengeState state)
+        [HttpGet]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<ChallengeViewModel>))]
+        public async Task<IActionResult> GetAsync(Game game = null, ChallengeState state = null)
         {
             var challenges = await _challengeQuery.FindUserChallengeHistoryAsync(game, state);
 

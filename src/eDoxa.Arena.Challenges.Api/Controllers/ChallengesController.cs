@@ -8,22 +8,20 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Application.Abstractions;
-using eDoxa.Arena.Challenges.Api.Application.Commands;
+using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Commands.Extensions;
 using eDoxa.Seedwork.Common.Enumerations;
-using eDoxa.Seedwork.Security.Constants;
-
-using JetBrains.Annotations;
-
-using MediatR;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Arena.Challenges.Api.Controllers
 {
@@ -36,19 +34,18 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
     public class ChallengesController : ControllerBase
     {
         private readonly IChallengeQuery _challengeQuery;
-        private readonly IMediator _mediator;
 
-        public ChallengesController(IChallengeQuery challengeQuery, IMediator mediator)
+        public ChallengesController(IChallengeQuery challengeQuery)
         {
             _challengeQuery = challengeQuery;
-            _mediator = mediator;
         }
 
         /// <summary>
         ///     Get challenges.
         /// </summary>
-        [HttpGet(Name = nameof(GetChallengesAsync))]
-        public async Task<IActionResult> GetChallengesAsync([CanBeNull] Game game, [CanBeNull] ChallengeState state)
+        [HttpGet]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<ChallengeViewModel>))]
+        public async Task<IActionResult> GetAsync(Game game = null, ChallengeState state = null)
         {
             var challenges = await _challengeQuery.GetChallengesAsync(game, state);
 
@@ -61,22 +58,11 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         }
 
         /// <summary>
-        ///     Create a challenge - Administrator only.
-        /// </summary>
-        [Authorize(Roles = CustomRoles.Administrator)]
-        [HttpPost(Name = nameof(CreateChallenge))]
-        public async Task<IActionResult> CreateChallenge([FromBody] FakeChallengesCommand command)
-        {
-            var challenge = await _mediator.SendCommandAsync(command);
-
-            return this.Ok(challenge);
-        }
-
-        /// <summary>
         ///     Find a challenge.
         /// </summary>
-        [HttpGet("{challengeId}", Name = nameof(GetChallengeAsync))]
-        public async Task<IActionResult> GetChallengeAsync(ChallengeId challengeId)
+        [HttpGet("{challengeId}")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeViewModel))]
+        public async Task<IActionResult> GetByIdAsync(ChallengeId challengeId)
         {
             var challenge = await _challengeQuery.GetChallengeAsync(challengeId);
 
@@ -86,30 +72,6 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
             }
 
             return this.Ok(challenge);
-        }
-
-        /// <summary>
-        ///     Complete a challenge - Administrator only.
-        /// </summary>
-        [Authorize(Roles = CustomRoles.Administrator)]
-        [HttpPost("{challengeId}/close", Name = nameof(CloseChallengeAsync))]
-        public async Task<IActionResult> CloseChallengeAsync(ChallengeId challengeId)
-        {
-            await _mediator.SendCommandAsync(new CloseChallengesCommand(challengeId));
-
-            return this.Ok();
-        }
-
-        /// <summary>
-        ///     Synchronize a challenge - Administrator only.
-        /// </summary>
-        [Authorize(Roles = CustomRoles.Administrator)]
-        [HttpPost("{challengeId}/synchronize", Name = nameof(SynchronizeChallengeAsync))]
-        public async Task<IActionResult> SynchronizeChallengeAsync(ChallengeId challengeId)
-        {
-            await _mediator.SendCommandAsync(new SynchronizeChallengesCommand(challengeId));
-
-            return this.Ok();
         }
     }
 }

@@ -12,42 +12,49 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using Bogus;
+
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ValueObjects;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
+using eDoxa.Arena.Challenges.Domain.Fakers.Extensions;
 using eDoxa.Seedwork.Common.Abstactions;
 using eDoxa.Seedwork.Common.Enumerations;
-using eDoxa.Seedwork.Common.Fakers;
-using eDoxa.Seedwork.Domain.Aggregate;
+using eDoxa.Seedwork.Common.Extensions;
+
+using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Domain.Fakers
 {
     public sealed class ParticipantFaker : CustomFaker<Participant>
     {
-        private readonly UserIdFaker _userIdFaker = new UserIdFaker();
-        private readonly UserGameReferenceFaker _userGameReferenceFaker = new UserGameReferenceFaker();
+        private readonly MatchFaker _matchFaker = new MatchFaker();
 
         public ParticipantFaker()
         {
-            this.CustomInstantiator(faker =>
+            this.CustomInstantiator(
+                faker =>
                 {
-                    State = State ?? faker.PickRandom(ChallengeState.GetAll());
+                    State = faker.ChallengeState(State);
 
-                    BestOf = BestOf ?? faker.PickRandom(ValueObject.GetDeclaredOnlyFields<BestOf>());
-
-                    return new Participant(_userIdFaker.Generate(), _userGameReferenceFaker.FakeUserGameReference(Game), BestOf);
+                    return new Participant(faker.UserId(), faker.UserGameReference(Game), faker.ChallegeSetupBestOf(BestOf));
                 }
             );
 
-            this.RuleFor(participant => participant.Id, faker => ParticipantId.FromGuid(faker.Random.Guid()));
+            this.RuleFor(participant => participant.Id, faker => faker.ParticipantId());
 
-            this.RuleFor(participant => participant.Matches, faker => State != ChallengeState.Inscription ? MatchFaker.FakeMatches(faker.Random.Int(0, BestOf + 3), Game) : new HashSet<Match>());
+            this.RuleFor(
+                participant => participant.Matches,
+                (faker, participant) => State != ChallengeState.Inscription
+                    ? _matchFaker.FakeMatches(faker.Random.Int(0, participant.MatchBestOf + 3), Game)
+                    : new HashSet<Match>()
+            );
 
-            this.RuleFor(participant => participant.LastSync, (_, participant) => participant.Matches.Max(match => match.Timestamp as DateTime?));
+            this.RuleFor(participant => participant.Timestamp, (faker, participant) => faker.ParticipantTimestamp(participant.Matches));
+
+            this.RuleFor(participant => participant.LastSync, (faker, participant) => participant.Matches.Max(match => match.Timestamp as DateTime?));
         }
-
-        public MatchFaker MatchFaker { get; set; } = new MatchFaker();
 
         private Game Game { get; set; }
 
@@ -55,7 +62,20 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers
 
         private BestOf BestOf { get; set; }
 
-        public IEnumerable<Participant> FakeParticipants(int count, Game game, ChallengeState state = null, BestOf bestOf = null)
+        [NotNull]
+        public override Faker<Participant> UseSeed(int seed)
+        {
+            _matchFaker.UseSeed(seed);
+
+            return base.UseSeed(seed);
+        }
+
+        public IEnumerable<Participant> FakeParticipants(
+            int count,
+            Game game,
+            ChallengeState state = null,
+            BestOf bestOf = null
+        )
         {
             Game = game;
 

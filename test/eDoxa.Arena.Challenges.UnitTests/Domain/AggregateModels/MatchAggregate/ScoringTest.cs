@@ -10,8 +10,10 @@
 
 using System.Collections.Generic;
 
+using Bogus;
+
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
-using eDoxa.Arena.Challenges.Domain.Fakers;
+using eDoxa.Arena.Challenges.Domain.Fakers.Extensions;
 using eDoxa.Seedwork.Common.Enumerations;
 
 using FluentAssertions;
@@ -27,9 +29,9 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.MatchAggregate
         public void Scoring_ShouldBeAssignableToType()
         {
             // Arrange
-            var scoringFaker = new ScoringFaker();
+            var faker = new Faker();
 
-            var scoring = scoringFaker.FakeMatchStats(Game.LeagueOfLegends);
+            var scoring = faker.Scoring(Game.LeagueOfLegends);
 
             // Act
             var type = typeof(Dictionary<StatName, StatWeighting>);

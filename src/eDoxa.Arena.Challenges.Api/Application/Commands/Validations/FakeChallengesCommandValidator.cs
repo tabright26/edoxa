@@ -1,4 +1,4 @@
-﻿// Filename: CreateChallengeCommandValidator.cs
+﻿// Filename: FakeChallengesCommandValidator.cs
 // Date Created: 2019-06-07
 // 
 // ================================================
@@ -11,63 +11,23 @@
 using eDoxa.Commands.Abstractions.Validations;
 using eDoxa.Seedwork.Application.Validations.Extensions;
 
-using Microsoft.AspNetCore.Hosting;
+using FluentValidation;
 
 namespace eDoxa.Arena.Challenges.Api.Application.Commands.Validations
 {
     public sealed class FakeChallengesCommandValidator : CommandValidator<FakeChallengesCommand>
     {
-        public FakeChallengesCommandValidator(IHostingEnvironment environment)
+        public FakeChallengesCommandValidator()
         {
-            //this.RuleFor(command => command.Name).NotEmpty().WithMessage($"The {nameof(FakeChallengesCommand.Name)} property is required.");
+            this.RuleFor(command => command.Count).ExclusiveBetween(1, 10);
 
-            this.Enumeration(command => command.Game);
+            this.RuleFor(command => command.Seed).ExclusiveBetween(0, int.MaxValue);
 
-            //this.RuleFor(command => command.Duration)
-            //    .Must(ChallengeDuration.HasValue)
-            //    .WithMessage(
-            //        $"The {nameof(CreateChallengeCommand.Duration)} property is invalid. These are valid input values: {ChallengeDuration.DisplayNames()}."
-            //    );
+            this.OptionalEnumeration(command => command.Game);
 
-            //this.RuleFor(command => command.BestOf)
-            //    .Must(BestOf.HasValue)
-            //    .WithMessage($"The {nameof(CreateChallengeCommand.BestOf)} property is invalid. These are valid input values: {BestOf.DisplayNames()}.");
+            this.OptionalEnumeration(command => command.State);
 
-            //this.RuleFor(command => command.PayoutEntries)
-            //    .Must(PayoutEntries.HasValue)
-            //    .WithMessage(
-            //        $"The {nameof(CreateChallengeCommand.PayoutEntries)} property is invalid. These are valid input values: {PayoutEntries.DisplayNames()}."
-            //    );
-
-            //this.Enumeration(command => command.EntryFee.Type)
-            //    .DependentRules(
-            //        () =>
-            //        {
-            //            //this.RuleFor(command => command.EntryFee)
-            //            //    .Must(entryFee => EntryFeeHasValue(entryFee.Amount, entryFee.Currency))
-            //            //    .WithMessage(
-            //            //        command =>
-            //            //            $"The {nameof(CreateChallengeCommand.EntryFee)} property is invalid. These are valid input values: {EntryFeeDisplayNames(command.EntryFee.Currency)}."
-            //            //    );
-            //        }
-            //    );
-
-            //this.RuleFor(command => command.TestMode)
-            //    .Must(testMode => !environment.IsProduction() || !testMode)
-            //    .WithMessage($"The {nameof(CreateChallengeCommand.TestMode)} property must be false in the production environment.");
+            this.OptionalEnumeration(command => command.EntryFeeCurrency);
         }
-
-        //public static bool EntryFeeHasValue(decimal amount, Currency currency)
-        //{
-        //    return currency.Equals(Currency.Money)
-        //        ? MoneyEntryFee.HasValue<MoneyEntryFee>(amount)
-        //        : currency.Equals(Currency.Token) && TokenEntryFee.HasValue<TokenEntryFee>(amount);
-        //}
-
-        //public static string EntryFeeDisplayNames(Currency currency)
-        //{
-        //    return currency.Equals(Currency.Money) ? MoneyEntryFee.DisplayNames<MoneyEntryFee>() :
-        //        currency.Equals(Currency.Token) ? TokenEntryFee.DisplayNames<TokenEntryFee>() : $"no valid inputs for {currency}";
-        //}
     }
 }

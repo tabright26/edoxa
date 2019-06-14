@@ -21,8 +21,14 @@ namespace eDoxa.Arena.Challenges.Api.ViewModels
     [JsonDictionary]
     public class ScoringViewModel : Dictionary<string, float>
     {
-        public ScoringViewModel(Scoring scoring) : base(scoring.ToDictionary(pair => pair.Key.ToString(), pair => Convert.ToSingle((float) pair.Value)))
+        public ScoringViewModel(Scoring scoring) : base(scoring.ToDictionary(pair => pair.Key.ToString(), pair => Convert.ToSingle(pair.Value)))
         {
+        }
+
+        [JsonConstructor]
+        public ScoringViewModel()
+        {
+            
         }
     }
 }

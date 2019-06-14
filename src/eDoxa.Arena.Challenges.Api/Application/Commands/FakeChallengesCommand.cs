@@ -23,7 +23,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Commands
     {
         public FakeChallengesCommand(
             int count,
-            int? seed = null,
+            int seed,
             Game game = null,
             ChallengeState state = null,
             CurrencyType entryFeeCurrency = null
@@ -39,8 +39,8 @@ namespace eDoxa.Arena.Challenges.Api.Application.Commands
         [DataMember(Name = "count")]
         public int Count { get; private set; }
 
-        [DataMember(Name = "seed", IsRequired = false)]
-        public int? Seed { get; private set; }
+        [DataMember(Name = "seed")]
+        public int Seed { get; private set; }
 
         [DataMember(Name = "game", IsRequired = false)]
         public Game Game { get; private set; }

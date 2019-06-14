@@ -32,7 +32,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Data.Fakers
 
             // Act
             var challenge1 = challengeFaker1.Generate();
-            
+
             var challenge2 = challengeFaker2.Generate();
 
             // Assert
@@ -54,7 +54,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Data.Fakers
             challenge1.Should().NotBe(challenge2);
         }
 
-        [TestMethod]
+        [Ignore("This feature is temporairy disabled.")]
         public void FakeChallenges_ShouldNotThrow3()
         {
             // Arrange
@@ -63,11 +63,11 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Data.Fakers
             // Act
             var challenge1 = challengeFaker.FakeChallenge();
 
-            challengeFaker.ParticipantFaker = new ParticipantFaker();
+            //challengeFaker.ParticipantFaker = new ParticipantFaker();
 
             var challenge2 = challengeFaker.FakeChallenge();
 
-            challengeFaker.ParticipantFaker = new ParticipantFaker();
+            //challengeFaker.ParticipantFaker = new ParticipantFaker();
 
             var challenge3 = challengeFaker.FakeChallenge();
 
@@ -96,16 +96,16 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Data.Fakers
 
             var challenge3 = challengeFaker.FakeChallenge();
 
-            var participants1 = challenge1.Participants.OrderBy(x => x.Id).ToList();
+            var participants1 = challenge1.Participants.OrderBy(participant => participant.Id).ToList();
 
-            var participants2 = challenge2.Participants.OrderBy(x => x.Id).ToList();
+            var participants2 = challenge2.Participants.OrderBy(participant => participant.Id).ToList();
 
-            var participants3 = challenge3.Participants.OrderBy(x => x.Id).ToList();
+            var participants3 = challenge3.Participants.OrderBy(participant => participant.Id).ToList();
 
-            var r = participants1.Union(participants2).Union(participants3).Distinct().ToList();
+            var participants = participants1.Union(participants2).Union(participants3).Distinct().ToList();
 
             // Assert
-            r.Should().HaveCount(270);
+            participants.Should().HaveCount(participants1.Count + participants2.Count + participants3.Count);
         }
 
         [TestMethod]

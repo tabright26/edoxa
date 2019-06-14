@@ -54,10 +54,10 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
                 )
                 .Verifiable();
 
-            var controller = new ChallengesController(_queries.Object, _mediator.Object);
+            var controller = new ChallengesController(_queries.Object);
 
             // Act
-            var result = await controller.GetChallengesAsync(null, null);
+            var result = await controller.GetAsync();
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -68,17 +68,17 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
         }
 
         [TestMethod]
-        public async Task FindChallengesAsync_ShouldBeNoContentResult()
+        public async Task GetAsync_ShouldBeNoContentResult()
         {
             // Arrange
             _queries.Setup(queries => queries.GetChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()))
                 .ReturnsAsync(new List<ChallengeViewModel>())
                 .Verifiable();
 
-            var controller = new ChallengesController(_queries.Object, _mediator.Object);
+            var controller = new ChallengesController(_queries.Object);
 
             // Act
-            var result = await controller.GetChallengesAsync(null, null);
+            var result = await controller.GetAsync();
 
             // Assert
             result.Should().BeOfType<NoContentResult>();
@@ -89,15 +89,15 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
         }
 
         [TestMethod]
-        public async Task FindChallengeAsync_ShouldBeOkObjectResult()
+        public async Task GetByIdAsync_ShouldBeOkObjectResult()
         {
             // Arrange        
             _queries.Setup(queries => queries.GetChallengeAsync(It.IsAny<ChallengeId>())).ReturnsAsync(new ChallengeViewModel()).Verifiable();
 
-            var controller = new ChallengesController(_queries.Object, _mediator.Object);
+            var controller = new ChallengesController(_queries.Object);
 
             // Act
-            var result = await controller.GetChallengeAsync(It.IsAny<ChallengeId>());
+            var result = await controller.GetByIdAsync(new ChallengeId());
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -108,15 +108,15 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
         }
 
         [TestMethod]
-        public async Task FindChallengeAsync_ShouldBeNotFoundObjectResult()
+        public async Task GetByIdAsync_ShouldBeNotFoundObjectResult()
         {
             // Arrange
             _queries.Setup(queries => queries.GetChallengeAsync(It.IsAny<ChallengeId>())).ReturnsAsync((ChallengeViewModel) null).Verifiable();
 
-            var controller = new ChallengesController(_queries.Object, _mediator.Object);
+            var controller = new ChallengesController(_queries.Object);
 
             // Act
-            var result = await controller.GetChallengeAsync(It.IsAny<ChallengeId>());
+            var result = await controller.GetByIdAsync(new ChallengeId());
 
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();

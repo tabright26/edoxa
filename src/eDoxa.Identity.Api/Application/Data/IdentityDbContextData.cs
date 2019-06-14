@@ -81,5 +81,15 @@ namespace eDoxa.Identity.Api.Application.Data
                 }
             }
         }
+
+        public async Task CleanupAsync()
+        {
+            if (!_environment.IsProduction())
+            {
+                _context.Users.RemoveRange(_context.Users);
+
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }

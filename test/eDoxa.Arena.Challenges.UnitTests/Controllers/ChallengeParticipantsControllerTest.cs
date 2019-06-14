@@ -43,7 +43,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
         }
 
         [TestMethod]
-        public async Task FindChallengeParticipantsAsync_ShouldBeOkObjectResult()
+        public async Task GetAsync_ShouldBeOkObjectResult()
         {
             // Arrange
             _queries.Setup(queries => queries.FindChallengeParticipantsAsync(It.IsAny<ChallengeId>()))
@@ -58,7 +58,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
             var controller = new ChallengeParticipantsController(_queries.Object, _mediator.Object);
 
             // Act
-            var result = await controller.FindChallengeParticipantsAsync(It.IsAny<ChallengeId>());
+            var result = await controller.GetAsync(new ChallengeId());
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -67,7 +67,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
         }
 
         [TestMethod]
-        public async Task FindChallengeParticipantsAsync_ShouldBeNoContentResult()
+        public async Task GetAsync_ShouldBeNoContentResult()
         {
             // Arrange
             _queries.Setup(queries => queries.FindChallengeParticipantsAsync(It.IsAny<ChallengeId>()))
@@ -77,7 +77,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
             var controller = new ChallengeParticipantsController(_queries.Object, _mediator.Object);
 
             // Act
-            var result = await controller.FindChallengeParticipantsAsync(It.IsAny<ChallengeId>());
+            var result = await controller.GetAsync(new ChallengeId());
 
             // Assert
             result.Should().BeOfType<NoContentResult>();
@@ -86,7 +86,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
         }
 
         [TestMethod]
-        public async Task RegisterChallengeParticipantAsync_ShouldBeOkObjectResult()
+        public async Task PostAsync_ShouldBeOkObjectResult()
         {
             // Arrange
             _mediator.Setup(mediator => mediator.Send(It.IsAny<RegisterParticipantCommand>(), It.IsAny<CancellationToken>()))
@@ -96,7 +96,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
             var controller = new ChallengeParticipantsController(_queries.Object, _mediator.Object);
 
             // Act
-            var result = await controller.RegisterChallengeParticipantAsync(new ChallengeId());
+            var result = await controller.PostAsync(new ChallengeId());
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();

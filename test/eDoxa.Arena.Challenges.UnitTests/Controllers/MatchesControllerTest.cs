@@ -40,7 +40,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
         }
 
         [TestMethod]
-        public async Task FindMatchAsync_ShouldBeOkObjectResult()
+        public async Task GetByIdAsync_ShouldBeOkObjectResult()
         {
             // Arrange        
             _queries.Setup(queries => queries.FindMatchAsync(It.IsAny<MatchId>())).ReturnsAsync(new MatchViewModel()).Verifiable();
@@ -48,7 +48,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
             var controller = new MatchesController(_queries.Object);
 
             // Act
-            var result = await controller.FindMatchAsync(It.IsAny<MatchId>());
+            var result = await controller.GetByIdAsync(new MatchId());
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -57,7 +57,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
         }
 
         [TestMethod]
-        public async Task FindMatchAsync_ShouldBeNotFoundObjectResult()
+        public async Task GetByIdAsync_ShouldBeNotFoundObjectResult()
         {
             // Arrange
             _queries.Setup(queries => queries.FindMatchAsync(It.IsAny<MatchId>())).ReturnsAsync((MatchViewModel) null).Verifiable();
@@ -65,7 +65,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
             var controller = new MatchesController(_queries.Object);
 
             // Act
-            var result = await controller.FindMatchAsync(It.IsAny<MatchId>());
+            var result = await controller.GetByIdAsync(new MatchId());
 
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();

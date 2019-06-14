@@ -47,7 +47,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
         }
 
         [TestMethod]
-        public async Task FindUserChallengeHistoryAsync_ShouldBeOkObjectResult()
+        public async Task GetAsync_ShouldBeOkObjectResult()
         {
             // Arrange
             _queries.Setup(queries => queries.FindUserChallengeHistoryAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()))
@@ -62,7 +62,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
             var controller = new ChallengeHistoryController(_queries.Object);
 
             // Act
-            var result = await controller.FindUserChallengeHistoryAsync(null, null);
+            var result = await controller.GetAsync();
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -73,7 +73,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
         }
 
         [TestMethod]
-        public async Task FindUserChallengeHistoryAsync_ShouldBeNoContentResult()
+        public async Task GetAsync_ShouldBeNoContentResult()
         {
             // Arrange
             _queries.Setup(queries => queries.FindUserChallengeHistoryAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()))
@@ -83,7 +83,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
             var controller = new ChallengeHistoryController(_queries.Object);
 
             // Act
-            var result = await controller.FindUserChallengeHistoryAsync(null, null);
+            var result = await controller.GetAsync();
 
             // Assert
             result.Should().BeOfType<NoContentResult>();
