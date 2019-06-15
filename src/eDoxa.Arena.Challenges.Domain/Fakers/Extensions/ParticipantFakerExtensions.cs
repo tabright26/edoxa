@@ -9,12 +9,10 @@
 // this source code package.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 using Bogus;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.Fakers.Extensions
@@ -26,9 +24,14 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers.Extensions
             return AggregateModels.ParticipantAggregate.ParticipantId.FromGuid(faker.Random.Guid());
         }
 
-        public static DateTime ParticipantTimestamp(this Faker faker, IEnumerable<Match> matches)
+        public static DateTime ParticipantTimestamp(this Faker faker, Challenge challenge)
         {
-            return faker.Date.Recent(1, matches.Min(match => match.Timestamp as DateTime?));
+            if (challenge.State != ChallengeState.Inscription)
+            {
+                return faker.Date.Recent(1, challenge.Timeline.StartedAt);
+            }
+
+            return faker.Date.Soon(1, challenge.CreatedAt);
         }
     }
 }

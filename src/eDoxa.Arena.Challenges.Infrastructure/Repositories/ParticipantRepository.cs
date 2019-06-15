@@ -51,6 +51,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
         {
             return await _context.Participants.AsNoTracking()
                 .Include(NavigationPropertyPath)
+                .Include(participant => participant.Challenge)
                 .Where(participant => participant.Id == participantId)
                 .SingleOrDefaultAsync();
         }

@@ -14,9 +14,9 @@ using Bogus;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Adapters;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Seedwork.Common.Enumerations;
-using eDoxa.Seedwork.Common.Extensions;
 
 using Moq;
 
@@ -39,9 +39,9 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers.Extensions
             throw new ArgumentNullException(nameof(game));
         }
 
-        public static DateTime MatchTimestamp(this Faker faker)
+        public static DateTime MatchTimestamp(this Faker faker, ChallengeTimeline timeline)
         {
-            return faker.Date.Recent(1, DateTime.UtcNow.DateKeepHours());
+            return faker.Date.Soon(1, timeline.StartedAt);
         }
 
         public static IMatchStats MatchStats(this Faker faker, Game game)

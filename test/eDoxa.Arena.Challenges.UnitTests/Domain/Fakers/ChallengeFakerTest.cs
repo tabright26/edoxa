@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeFakerTest.cs
-// Date Created: 2019-06-10
+// Date Created: 2019-06-15
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,20 +8,28 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Collections.Generic;
 using System.Linq;
 
+using Bogus;
+
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Fakers;
-using eDoxa.Seedwork.Common.Extensions;
+using eDoxa.Seedwork.Domain.Extensions;
 
 using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Arena.Challenges.UnitTests.Application.Data.Fakers
+namespace eDoxa.Arena.Challenges.UnitTests.Domain.Fakers
 {
     [TestClass]
     public sealed class ChallengeFakerTest
     {
+        private static readonly Faker Faker = new Faker();
+
+        private static IEnumerable<object[]> ChallengeStates => ChallengeState.GetAll().Select(state => new object[] {state, Faker.Random.Int()});
+
         [TestMethod]
         public void FakeChallenges_ShouldNotThrow1()
         {
@@ -54,6 +62,61 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Data.Fakers
             challenge1.Should().NotBe(challenge2);
         }
 
+        [DataTestMethod]
+        [DynamicData(nameof(ChallengeStates))]
+        public void Generate_ChallengesWithAnyStateGeneratedByAnySeed_ShouldBeValid(ChallengeState state, int seed)
+        {
+            // Arrange
+            var challengeFaker = new ChallengeFaker(state: state);
+
+            challengeFaker.UseSeed(seed);
+
+            // Act
+            var challenges = challengeFaker.Generate(20);
+
+            // Assert
+            challenges.ForEach(
+                challenge =>
+                {
+                    challenge.Participants.ForEach(
+                        participant =>
+                        {
+                            challenge.LastSync?.Should().BeAfter(participant.Timestamp);
+
+                            participant.Timestamp.Should().BeAfter(challenge.CreatedAt);
+
+                            participant.Matches.ForEach(
+                                match =>
+                                {
+                                    challenge.LastSync?.Should().BeOnOrAfter(match.Timestamp);
+
+                                    participant.LastSync?.Should().BeOnOrAfter(match.Timestamp);
+
+                                    match.Timestamp.Should().BeAfter(participant.Timestamp);
+                                }
+                            );
+                        }
+                    );
+
+                    challenge.Participants.Select(participant => participant.Id).Distinct().Should().HaveCount(challenge.Participants.Count);
+
+                    challenge.Participants.Select(participant => participant.UserId).Distinct().Should().HaveCount(challenge.Participants.Count);
+
+                    challenge.Participants.SelectMany(participant => participant.Matches)
+                        .Select(match => match.Id)
+                        .Distinct()
+                        .Should()
+                        .HaveCount(challenge.Participants.SelectMany(participant => participant.Matches).Count());
+
+                    challenge.Participants.SelectMany(participant => participant.Matches)
+                        .Select(match => match.Reference)
+                        .Distinct()
+                        .Should()
+                        .HaveCount(challenge.Participants.SelectMany(participant => participant.Matches).Count());
+                }
+            );
+        }
+
         [Ignore("This feature is temporairy disabled.")]
         public void FakeChallenges_ShouldNotThrow3()
         {
@@ -83,7 +146,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Data.Fakers
             r.Should().HaveCount(200);
         }
 
-        [TestMethod]
+        [Ignore("This feature is temporairy disabled.")]
         public void FakeChallenges_ShouldNotThrow4()
         {
             // Arrange
@@ -106,45 +169,6 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Data.Fakers
 
             // Assert
             participants.Should().HaveCount(participants1.Count + participants2.Count + participants3.Count);
-        }
-
-        [TestMethod]
-        public void FakeChallenges_ShouldNotThrow()
-        {
-            // Arrange
-            var challengeFaker = new ChallengeFaker();
-
-            // Act
-            var challenge = challengeFaker.Generate();
-
-            // Assert
-            var participants = challenge.Participants.ToList();
-
-            participants.Should().HaveCount(participants.Distinct().Count());
-
-            var matches = challenge.Participants.SelectMany(participant => participant.Matches).ToList();
-
-            matches.Should().HaveCount(matches.Distinct().Count());
-
-            challenge.DumbAsJson(true);
-        }
-
-        [TestMethod]
-        public void FakeChallenge_ShouldNotThrow()
-        {
-            // Arrange
-            var challengeFaker = new ChallengeFaker();
-
-            // Act
-            var challenges = challengeFaker.Generate(5);
-
-            // Assert
-            var matchReferences = challenges.SelectMany(
-                    challenge => challenge.Participants.SelectMany(participant => participant.Matches.Select(match => match.Reference))
-                )
-                .ToList();
-
-            matchReferences.Should().HaveCount(matchReferences.Distinct().Count());
         }
     }
 }

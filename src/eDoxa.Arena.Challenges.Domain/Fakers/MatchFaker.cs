@@ -8,24 +8,23 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using Bogus;
+
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Challenges.Domain.Fakers.Extensions;
-using eDoxa.Seedwork.Common.Abstactions;
 
 namespace eDoxa.Arena.Challenges.Domain.Fakers
 {
-    public sealed class MatchFaker : CustomFaker<Match>
+    internal sealed class MatchFaker : Faker<Match>
     {
         public MatchFaker(Participant participant)
         {
-            this.CustomInstantiator(
-                faker => new Match(participant, faker.MatchReference(participant.Challenge.Game), faker.MatchStats(participant.Challenge.Game))
-            );
+            this.CustomInstantiator(faker => new Match(participant, faker.MatchReference(participant.Challenge.Game), faker.MatchStats(participant.Challenge.Game)));
 
             this.RuleFor(match => match.Id, faker => faker.MatchId());
 
-            this.RuleFor(match => match.Timestamp, faker => faker.MatchTimestamp());
+            this.RuleFor(match => match.Timestamp, (faker, match) => faker.MatchTimestamp(match.Participant.Challenge.Timeline));
         }
     }
 }

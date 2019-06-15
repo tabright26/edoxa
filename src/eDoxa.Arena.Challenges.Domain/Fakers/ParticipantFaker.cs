@@ -12,18 +12,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using Bogus;
+
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Arena.Challenges.Domain.Fakers.Extensions;
-using eDoxa.Seedwork.Common.Abstactions;
 using eDoxa.Seedwork.Common.Extensions;
 
 using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Domain.Fakers
 {
-    public sealed class ParticipantFaker : CustomFaker<Participant>
+    internal sealed class ParticipantFaker : Faker<Participant>
     {
         private MatchFaker _matchFaker;
 
@@ -47,7 +48,7 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers
                 }
             );
 
-            this.RuleFor(participant => participant.Timestamp, (faker, participant) => faker.ParticipantTimestamp(participant.Matches));
+            this.RuleFor(participant => participant.Timestamp, (faker, participant) => faker.ParticipantTimestamp(participant.Challenge));
 
             this.RuleFor(participant => participant.LastSync, (faker, participant) => participant.Matches.Max(match => match.Timestamp as DateTime?));
         }

@@ -11,21 +11,24 @@
 using System;
 using System.Linq;
 
+using Bogus;
+
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Fakers.Extensions;
-using eDoxa.Seedwork.Common.Abstactions;
 using eDoxa.Seedwork.Common.Enumerations;
 
 using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Domain.Fakers
 {
-    public class ChallengeFaker : CustomFaker<Challenge>
+    public class ChallengeFaker : Faker<Challenge>
     {
         private ParticipantFaker _participantFaker;
 
         public ChallengeFaker(Game game = null, ChallengeState state = null, CurrencyType entryFeeCurrency = null)
         {
+            this.UseSeed(8675309);
+
             this.CustomInstantiator(
                 faker => new Challenge(faker.ChallengeGame(game), faker.ChallengeName(), faker.ChallengeSetup(entryFeeCurrency), faker.ChallengeDuration())
             );
@@ -33,8 +36,6 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers
             this.RuleFor(challenge => challenge.Id, faker => faker.ChallengeId());
 
             this.RuleFor(challenge => challenge.Timeline, (faker, challenge) => faker.ChallengeTimeline(challenge.Timeline.Duration, state));
-
-            this.RuleFor(challenge => challenge.CreatedAt, (faker, challenge) => faker.ChallengeCreatedAt(challenge.Timeline));
 
             this.RuleFor(
                 challenge => challenge.Participants,
@@ -48,7 +49,9 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers
                 }
             );
 
-            this.RuleFor(challenge => challenge.LastSync, (faker, challenge) => challenge.Participants.Max(participant => participant.Timestamp as DateTime?));
+            this.RuleFor(challenge => challenge.CreatedAt, (faker, challenge) => faker.ChallengeCreatedAt(challenge));
+
+            this.RuleFor(challenge => challenge.LastSync, (faker, challenge) => challenge.Participants.SelectMany(participant => participant.Matches).Max(participant => participant.Timestamp as DateTime?));
         }
 
         [NotNull]

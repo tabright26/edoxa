@@ -95,12 +95,12 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers.Extensions
 
         public static ChallengeState ChallengeState(this Faker faker, ChallengeState state = null)
         {
-            return state ?? faker.PickRandom(Enumeration<ChallengeState>.GetAll());
+            return state ?? faker.PickRandom(Enumeration<ChallengeState>.GetAllAllow());
         }
 
-        public static DateTime ChallengeCreatedAt(this Faker faker, ChallengeTimeline timeline)
+        public static DateTime ChallengeCreatedAt(this Faker faker, Challenge challenge)
         {
-            return faker.Date.Recent(2, timeline.StartedAt ?? DateTime.UtcNow.DateKeepHours());
+            return faker.Date.Recent(1, challenge.Timeline.StartedAt.HasValue ? challenge.Participants.Min(participant => participant.Timestamp) : DateTime.UtcNow.DateKeepHours());
         }
 
         public static Entries ChallegeSetupEntries(this Faker faker, Challenge challenge)
