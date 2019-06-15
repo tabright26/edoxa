@@ -47,7 +47,7 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<ChallengeViewModel>))]
         public async Task<IActionResult> GetAsync(Game game = null, ChallengeState state = null)
         {
-            var challenges = await _challengeQuery.GetChallengesAsync(game, state);
+            var challenges = await _challengeQuery.FindChallengesAsync(game, state);
 
             if (!challenges.Any())
             {
@@ -64,7 +64,7 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeViewModel))]
         public async Task<IActionResult> GetByIdAsync(ChallengeId challengeId)
         {
-            var challenge = await _challengeQuery.GetChallengeAsync(challengeId);
+            var challenge = await _challengeQuery.FindChallengeAsync(challengeId);
 
             if (challenge == null)
             {

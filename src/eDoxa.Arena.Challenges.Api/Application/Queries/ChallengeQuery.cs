@@ -28,9 +28,9 @@ namespace eDoxa.Arena.Challenges.Api.Application.Queries
 {
     public sealed partial class ChallengeQuery
     {
-        private readonly IMapper _mapper;
         private readonly IChallengeRepository _challengeRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IMapper _mapper;
 
         public ChallengeQuery(IChallengeRepository challengeRepository, IHttpContextAccessor httpContextAccessor, IMapper mapper)
         {
@@ -42,7 +42,16 @@ namespace eDoxa.Arena.Challenges.Api.Application.Queries
 
     public sealed partial class ChallengeQuery : IChallengeQuery
     {
-        public async Task<IReadOnlyCollection<ChallengeViewModel>> GetChallengesAsync([CanBeNull] Game game = null, [CanBeNull] ChallengeState state = null)
+        public async Task<IReadOnlyCollection<ChallengeViewModel>> FindUserChallengeHistoryAsync(Game game = null, ChallengeState state = null)
+        {
+            var userId = _httpContextAccessor.GetUserId();
+
+            var challenges = await _challengeRepository.FindUserChallengeHistoryAsNoTrackingAsync(userId, game, state);
+
+            return _mapper.Map<IReadOnlyCollection<ChallengeViewModel>>(challenges);
+        }
+
+        public async Task<IReadOnlyCollection<ChallengeViewModel>> FindChallengesAsync(Game game = null, ChallengeState state = null)
         {
             var challenges = await _challengeRepository.FindChallengesAsNoTrackingAsync(game, state);
 
@@ -50,23 +59,11 @@ namespace eDoxa.Arena.Challenges.Api.Application.Queries
         }
 
         [ItemCanBeNull]
-        public async Task<ChallengeViewModel> GetChallengeAsync(ChallengeId challengeId)
+        public async Task<ChallengeViewModel> FindChallengeAsync(ChallengeId challengeId)
         {
             var challenge = await _challengeRepository.FindChallengeAsNoTrackingAsync(challengeId);
 
             return _mapper.Map<ChallengeViewModel>(challenge);
-        }
-
-        public async Task<IReadOnlyCollection<ChallengeViewModel>> FindUserChallengeHistoryAsync(
-            [CanBeNull] Game game = null,
-            [CanBeNull] ChallengeState state = null
-        )
-        {
-            var userId = _httpContextAccessor.GetUserId();
-
-            var challenges = await _challengeRepository.FindUserChallengeHistoryAsNoTrackingAsync(userId, game, state);
-
-            return _mapper.Map<IReadOnlyCollection<ChallengeViewModel>>(challenges);
         }
     }
 }

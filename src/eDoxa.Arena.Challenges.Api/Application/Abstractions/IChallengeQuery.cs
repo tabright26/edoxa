@@ -21,11 +21,11 @@ namespace eDoxa.Arena.Challenges.Api.Application.Abstractions
 {
     public interface IChallengeQuery
     {
-        Task<IReadOnlyCollection<ChallengeViewModel>> GetChallengesAsync([CanBeNull] Game game = null, [CanBeNull] ChallengeState state = null);
+        Task<IReadOnlyCollection<ChallengeViewModel>> FindUserChallengeHistoryAsync(Game game = null, ChallengeState state = null);
+
+        Task<IReadOnlyCollection<ChallengeViewModel>> FindChallengesAsync(Game game = null, ChallengeState state = null);
 
         [ItemCanBeNull]
-        Task<ChallengeViewModel> GetChallengeAsync(ChallengeId challengeId);
-
-        Task<IReadOnlyCollection<ChallengeViewModel>> FindUserChallengeHistoryAsync([CanBeNull] Game game = null, [CanBeNull] ChallengeState state = null);
+        Task<ChallengeViewModel> FindChallengeAsync(ChallengeId challengeId);
     }
 }

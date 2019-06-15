@@ -8,8 +8,10 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions.Repositories;
@@ -22,6 +24,8 @@ using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Specifications.Abstractions;
 
 using JetBrains.Annotations;
+
+using LinqKit;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -72,19 +76,26 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
             return challenges.Where(specification.IsSatisfiedBy).ToList();
         }
 
-        // TODO: We should use Dapper or EF Core TableQuery.
         public async Task<IReadOnlyCollection<Challenge>> FindUserChallengeHistoryAsNoTrackingAsync(
             UserId userId,
             Game game = null,
             ChallengeState state = null
         )
         {
+            //var challenges = from challenge in _context.Challenges.AsNoTracking().Include(NavigationPropertyPath).AsExpandable()
+            //                 let participants = _context.Participants.Where(participant => participant.UserId == userId)
+            //                 where challenge.Game.HasFilter(game) &&
+            //                       challenge.Timeline.State.HasFilter(state) &&
+            //                       participants.Any(participant => participant.Challenge.Id == challenge.Id)
+            //                 select challenge;
+
+            //return await challenges.ToListAsync();
+
             var challenges = await this.FindChallengesAsNoTrackingAsync(game, state);
 
             return challenges.Where(challenge => challenge.Participants.Any(participant => participant.UserId == userId)).ToList();
         }
 
-        // TODO: We should use Dapper or EF Core TableQuery.
         public async Task<IReadOnlyCollection<Challenge>> FindChallengesAsNoTrackingAsync(Game game = null, ChallengeState state = null)
         {
             var challenges = await _context.Challenges.AsNoTracking().Include(NavigationPropertyPath).ToListAsync();
