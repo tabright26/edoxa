@@ -25,7 +25,7 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers.Extensions
     {
         public static Game ChallengeGame(this Faker faker, Game game = null)
         {
-            return game ?? faker.PickRandom(Game.GetAll());
+            return game ?? faker.PickRandom(Game.GetEnumerations());
         }
 
         public static ChallengeId ChallengeId(this Faker faker)
@@ -95,12 +95,15 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers.Extensions
 
         public static ChallengeState ChallengeState(this Faker faker, ChallengeState state = null)
         {
-            return state ?? faker.PickRandom(Enumeration<ChallengeState>.GetAllAllow());
+            return state ?? faker.PickRandom(Enumeration<ChallengeState>.GetAllowEnumerations());
         }
 
         public static DateTime ChallengeCreatedAt(this Faker faker, Challenge challenge)
         {
-            return faker.Date.Recent(1, challenge.Timeline.StartedAt.HasValue ? challenge.Participants.Min(participant => participant.Timestamp) : DateTime.UtcNow.DateKeepHours());
+            return faker.Date.Recent(
+                1,
+                challenge.Timeline.StartedAt.HasValue ? challenge.Participants.Min(participant => participant.Timestamp) : DateTime.UtcNow.DateKeepHours()
+            );
         }
 
         public static Entries ChallegeSetupEntries(this Faker faker, Challenge challenge)

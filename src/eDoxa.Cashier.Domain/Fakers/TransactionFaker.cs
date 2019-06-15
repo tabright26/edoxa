@@ -1,5 +1,5 @@
 ﻿// Filename: TransactionFaker.cs
-// Date Created: 2019-06-09
+// Date Created: 2019-06-14
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -57,7 +57,7 @@ namespace eDoxa.Cashier.Domain.Fakers
                         transaction => transaction.Type,
                         (faker, transaction) =>
                         {
-                            var types = TransactionType.GetAll().ToList();
+                            var types = TransactionType.GetEnumerations().ToList();
 
                             if (transaction.Currency is Money)
                             {
@@ -76,7 +76,7 @@ namespace eDoxa.Cashier.Domain.Fakers
                         transaction => transaction.Status,
                         (faker, transaction) =>
                         {
-                            var status = TransactionStatus.GetAll().ToList();
+                            var status = TransactionStatus.GetEnumerations().ToList();
 
                             status.Remove(TransactionStatus.Pending);
 
@@ -107,7 +107,7 @@ namespace eDoxa.Cashier.Domain.Fakers
                         transaction => transaction.Type,
                         (faker, transaction) =>
                         {
-                            var types = TransactionType.GetAll().ToList();
+                            var types = TransactionType.GetEnumerations().ToList();
 
                             if (transaction.Currency is Token)
                             {
@@ -128,7 +128,7 @@ namespace eDoxa.Cashier.Domain.Fakers
                         transaction => transaction.Status,
                         (faker, transaction) =>
                         {
-                            var status = TransactionStatus.GetAll().ToList();
+                            var status = TransactionStatus.GetEnumerations().ToList();
 
                             status.Remove(TransactionStatus.Pending);
 

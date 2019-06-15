@@ -106,5 +106,10 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
                 .Where(challenge => challenge.Id == challengeId)
                 .SingleOrDefaultAsync();
         }
+
+        public async Task<bool> ChallengeSeedExistsAsync(int seed)
+        {
+            return await _context.Challenges.AnyAsync(challenge => challenge.Seed == seed);
+        }
     }
 }

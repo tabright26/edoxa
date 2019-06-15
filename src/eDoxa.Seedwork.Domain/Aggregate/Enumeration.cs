@@ -31,7 +31,7 @@ namespace eDoxa.Seedwork.Domain.Aggregate
                 .ToList();
         }
 
-        public static IEnumerable<IEnumeration> GetAll(Type type)
+        public static IEnumerable<IEnumeration> GetEnumerations(Type type)
         {
             return type.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
                 .Select(fieldInfo => fieldInfo.GetValue(null))
@@ -39,7 +39,7 @@ namespace eDoxa.Seedwork.Domain.Aggregate
                 .ToList();
         }
 
-        public static IEnumerable<IEnumeration> GetAllAllow(Type type)
+        public static IEnumerable<IEnumeration> GetAllowEnumerations(Type type)
         {
             return type.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
                 .Where(
@@ -101,23 +101,23 @@ namespace eDoxa.Seedwork.Domain.Aggregate
         [CanBeNull]
         public static TEnumeration FromValue(int value)
         {
-            return GetAll().SingleOrDefault(enumeration => enumeration.Value == value) ?? None;
+            return GetEnumerations().SingleOrDefault(enumeration => enumeration.Value == value) ?? None;
         }
 
         [CanBeNull]
         public static TEnumeration FromName([CanBeNull] string name)
         {
-            return GetAll().SingleOrDefault(enumeration => string.Equals(enumeration.Name, name, StringComparison.InvariantCultureIgnoreCase)) ?? None;
+            return GetEnumerations().SingleOrDefault(enumeration => string.Equals(enumeration.Name, name, StringComparison.InvariantCultureIgnoreCase)) ?? None;
         }
 
-        public static IEnumerable<TEnumeration> GetAll()
+        public static IEnumerable<TEnumeration> GetEnumerations()
         {
-            return Enumeration.GetAll(typeof(TEnumeration)).Cast<TEnumeration>().ToList();
+            return Enumeration.GetEnumerations(typeof(TEnumeration)).Cast<TEnumeration>().ToList();
         }
 
-        public static IEnumerable<TEnumeration> GetAllAllow()
+        public static IEnumerable<TEnumeration> GetAllowEnumerations()
         {
-            return Enumeration.GetAllAllow(typeof(TEnumeration)).Cast<TEnumeration>().ToList();
+            return Enumeration.GetAllowEnumerations(typeof(TEnumeration)).Cast<TEnumeration>().ToList();
         }
 
         public override bool Equals([CanBeNull] object obj)
@@ -137,7 +137,7 @@ namespace eDoxa.Seedwork.Domain.Aggregate
 
         public static bool HasEnumeration([CanBeNull] TEnumeration enumeration)
         {
-            return enumeration != null && enumeration != All && enumeration != None && GetAll().Contains(enumeration);
+            return enumeration != null && enumeration != All && enumeration != None && GetEnumerations().Contains(enumeration);
         }
 
         public bool HasFilter([CanBeNull] TEnumeration enumeration)

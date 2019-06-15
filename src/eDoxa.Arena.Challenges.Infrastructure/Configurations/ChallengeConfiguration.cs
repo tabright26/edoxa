@@ -143,13 +143,19 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                 }
             );
 
+            builder.Property(challenge => challenge.Seed).IsRequired(false);
+
             builder.Ignore(challenge => challenge.Scoring);
 
             builder.Ignore(challenge => challenge.Payout);
 
             builder.Ignore(challenge => challenge.Scoreboard);
 
-            builder.HasMany(challenge => challenge.Participants).WithOne(participant => participant.Challenge).HasForeignKey(nameof(ChallengeId)).IsRequired().OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(challenge => challenge.Participants)
+                .WithOne(participant => participant.Challenge)
+                .HasForeignKey(nameof(ChallengeId))
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Metadata.FindNavigation(nameof(Challenge.Participants)).SetPropertyAccessMode(PropertyAccessMode.Field);
 

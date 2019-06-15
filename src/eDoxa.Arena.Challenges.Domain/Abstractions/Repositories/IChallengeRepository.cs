@@ -39,5 +39,7 @@ namespace eDoxa.Arena.Challenges.Domain.Abstractions.Repositories
 
         [ItemCanBeNull]
         Task<Challenge> FindChallengeAsNoTrackingAsync(ChallengeId challengeId);
+
+        Task<bool> ChallengeSeedExistsAsync(int seed);
     }
 }

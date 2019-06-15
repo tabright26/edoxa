@@ -30,7 +30,13 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers
             this.UseSeed(8675309);
 
             this.CustomInstantiator(
-                faker => new Challenge(faker.ChallengeGame(game), faker.ChallengeName(), faker.ChallengeSetup(entryFeeCurrency), faker.ChallengeDuration())
+                faker => new Challenge(
+                    faker.ChallengeGame(game),
+                    faker.ChallengeName(),
+                    faker.ChallengeSetup(entryFeeCurrency),
+                    faker.ChallengeDuration(),
+                    localSeed
+                )
             );
 
             this.RuleFor(challenge => challenge.Id, faker => faker.ChallengeId());
@@ -51,7 +57,11 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers
 
             this.RuleFor(challenge => challenge.CreatedAt, (faker, challenge) => faker.ChallengeCreatedAt(challenge));
 
-            this.RuleFor(challenge => challenge.LastSync, (faker, challenge) => challenge.Participants.SelectMany(participant => participant.Matches).Max(participant => participant.Timestamp as DateTime?));
+            this.RuleFor(
+                challenge => challenge.LastSync,
+                (faker, challenge) =>
+                    challenge.Participants.SelectMany(participant => participant.Matches).Max(participant => participant.Timestamp as DateTime?)
+            );
         }
 
         [NotNull]

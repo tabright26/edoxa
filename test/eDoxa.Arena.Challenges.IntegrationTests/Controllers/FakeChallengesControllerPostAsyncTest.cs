@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -22,7 +23,6 @@ using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.Fakers;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Seedwork.Application.Http;
-using eDoxa.Seedwork.Security.Constants;
 using eDoxa.Seedwork.Testing.TestServer;
 using eDoxa.Seedwork.Testing.TestServer.Extensions;
 
@@ -30,6 +30,8 @@ using FluentAssertions;
 
 using IdentityModel;
 
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
@@ -37,18 +39,14 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
     [TestClass]
     public sealed class FakeChallengesControllerPostAsyncTest
     {
-        private static readonly Claim[] Claims =
-        {
-            new Claim(JwtClaimTypes.Subject, Guid.NewGuid().ToString()), new Claim(JwtClaimTypes.Role, CustomRoles.Administrator)
-        };
-
         private HttpClient _httpClient;
         private ChallengesDbContext _dbContext;
         private IMapper _mapper;
 
         public async Task<HttpResponseMessage> ExecuteAsync(FakeChallengesCommand command)
         {
-            return await _httpClient.DefaultRequestHeaders(Claims).PostAsync("api/fake/challenges", new JsonContent(command));
+            return await _httpClient.DefaultRequestHeaders(new[] {new Claim(JwtClaimTypes.Subject, Guid.NewGuid().ToString())})
+                .PostAsync("api/fake/challenges", new JsonContent(command));
         }
 
         [TestInitialize]
@@ -73,13 +71,12 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
             await _dbContext.SaveChangesAsync();
         }
 
-        [DataRow(100)]
-        [DataRow(1000)]
-        [DataRow(10000)]
+        [DataRow(2, 100)]
+        [DataRow(5, 1000)]
         [DataTestMethod]
-        public async Task Ok(int seed)
+        public async Task Status200Ok(int count, int seed)
         {
-            var command = new FakeChallengesCommand(2, seed);
+            var command = new FakeChallengesCommand(count, seed);
 
             var response = await this.ExecuteAsync(command);
 
@@ -91,11 +88,40 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 
             challengeFaker.UseSeed(seed);
 
-            var challenges = challengeFaker.Generate(2);
+            var challenges = challengeFaker.Generate(count);
 
             var challengeViewModel2 = _mapper.Deserialize<IEnumerable<ChallengeViewModel>>(challenges);
 
             challengeViewModels1.Should().BeEquivalentTo(challengeViewModel2);
+        }
+
+        [DataRow(2, 100)]
+        [DataRow(5, 1000)]
+        [DataRow(10, 10000)]
+        [DataTestMethod]
+        public async Task Status400BadRequest(int count, int seed)
+        {
+            var challengeFaker = new ChallengeFaker();
+
+            challengeFaker.UseSeed(seed);
+
+            var challenges = challengeFaker.Generate(count);
+
+            _dbContext.Challenges.AddRange(challenges);
+
+            await _dbContext.SaveChangesAsync();
+
+            var command = new FakeChallengesCommand(count, seed);
+
+            var response = await this.ExecuteAsync(command);
+
+            response.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
+
+            var validationProblemDetails = await response.DeserializeAsync<ValidationProblemDetails>();
+
+            validationProblemDetails.Should().NotBeNull();
+
+            validationProblemDetails?.Errors.First().Value.First().Should().Be($"This seed was already used: {seed}.");
         }
     }
 }

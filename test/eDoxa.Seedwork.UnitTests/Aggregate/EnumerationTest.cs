@@ -44,7 +44,7 @@ namespace eDoxa.Seedwork.UnitTests.Aggregate
             const int expectedCount = 5;
 
             // Act
-            var enumerations = Enumeration.GetAll(typeof(MockEnumeration));
+            var enumerations = Enumeration.GetEnumerations(typeof(MockEnumeration));
 
             // Assert
             enumerations.Should().HaveCount(expectedCount);

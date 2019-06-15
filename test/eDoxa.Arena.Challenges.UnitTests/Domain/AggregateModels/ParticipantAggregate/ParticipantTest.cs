@@ -27,7 +27,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ParticipantAgg
     [TestClass]
     public sealed class ParticipantTest
     {
-        public static IEnumerable<object[]> Data => Game.GetAll().Select(game => new object[] {game});
+        public static IEnumerable<object[]> Data => Game.GetEnumerations().Select(game => new object[] {game});
 
         [DataTestMethod]
         [DynamicData(nameof(Data))]
@@ -54,7 +54,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ParticipantAgg
             // Arrange
             var challengeFaker = new ChallengeFaker(Game.LeagueOfLegends, ChallengeState.InProgress);
             var challenge = challengeFaker.Generate();
-            
+
             // Act
             var matches = challenge.Participants.First().Matches;
 

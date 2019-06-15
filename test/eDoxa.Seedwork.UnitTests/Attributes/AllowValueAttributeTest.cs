@@ -50,7 +50,7 @@ namespace eDoxa.Seedwork.UnitTests.Attributes
         public void Enumeration_GetAllAllow_ShouldBeAllAllow()
         {
             // Act
-            var enumerations = AllowValueEnumeration.GetAllAllow().ToList();
+            var enumerations = AllowValueEnumeration.GetAllowEnumerations().ToList();
 
             // Assert
             enumerations.Should().HaveCount(1);
@@ -61,7 +61,7 @@ namespace eDoxa.Seedwork.UnitTests.Attributes
         public void Enumeration_GetAll_ShouldBeAll()
         {
             // Act
-            var enumerations = AllowValueEnumeration.GetAll().ToList();
+            var enumerations = AllowValueEnumeration.GetEnumerations().ToList();
 
             // Assert
             enumerations.Should().HaveCount(2);

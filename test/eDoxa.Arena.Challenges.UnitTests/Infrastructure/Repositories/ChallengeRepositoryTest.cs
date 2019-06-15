@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using eDoxa.Arena.Challenges.Domain.Fakers;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.Infrastructure.Repositories;
+using eDoxa.Arena.Challenges.UnitTests.Extensions;
 using eDoxa.Seedwork.Infrastructure.Factories;
 
 using FluentAssertions;
@@ -49,6 +50,16 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Repositories
                     challenge = await repository.FindChallengeAsync(challenge.Id);
 
                     challenge.Should().NotBeNull();
+
+                    challenge.ShouldBeValidObjectState();
+
+                    var challengeAsNoTracking = await repository.FindChallengeAsync(challenge.Id);
+
+                    challengeAsNoTracking.Should().NotBeNull();
+
+                    challengeAsNoTracking.ShouldBeValidObjectState();
+
+                    challengeAsNoTracking.Should().BeEquivalentTo(challenge);
                 }
             }
         }
@@ -79,6 +90,16 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Repositories
                     var challenges = await repository.FindChallengesAsync();
 
                     challenges.Should().HaveCount(count);
+
+                    challenges.ShouldBeValidObjectState();
+
+                    var challengesAsNoTracking = await repository.FindChallengesAsNoTrackingAsync();
+
+                    challengesAsNoTracking.Should().HaveCount(count);
+
+                    challengesAsNoTracking.ShouldBeValidObjectState();
+
+                    challengesAsNoTracking.Should().BeEquivalentTo(challenges);
                 }
             }
         }

@@ -39,13 +39,15 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             Game game,
             ChallengeName name,
             ChallengeSetup setup,
-            ChallengeDuration duration
+            ChallengeDuration duration,
+            int? seed = null
         ) : this()
         {
             Game = game;
             Name = name;
             Setup = setup;
             Timeline = new ChallengeTimeline(duration);
+            Seed = seed;
             this.ApplyScoringStrategy(ScoringFactory.Instance.CreateStrategy(this));
             this.ApplyPayoutStrategy(PayoutFactory.Instance.CreateStrategy(this));
         }
@@ -62,6 +64,8 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         public IReadOnlyCollection<ScoringItem> ScoringItems => _scoringItems;
 
         public IReadOnlyCollection<Bucket> Buckets => _buckets;
+
+        public int? Seed { get; private set; }
 
         public DateTime CreatedAt { get; private set; }
 
