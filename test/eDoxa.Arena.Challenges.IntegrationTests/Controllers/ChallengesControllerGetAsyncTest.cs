@@ -77,7 +77,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
             challenges.Should().BeNull();
         }
 
-        [DataRow(2)]
+        //[DataRow(2)]
         [DataRow(5)]
         [DataTestMethod]
         public async Task The_response_http_should_have_exactly_the_same_number_of_fake_challenges_added_to_the_database(int count)

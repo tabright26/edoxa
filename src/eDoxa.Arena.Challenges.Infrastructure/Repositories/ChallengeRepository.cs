@@ -8,15 +8,12 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions.Repositories;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.ValueObjects;
@@ -25,15 +22,13 @@ using eDoxa.Seedwork.Domain.Specifications.Abstractions;
 
 using JetBrains.Annotations;
 
-using LinqKit;
-
 using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
 {
     public sealed partial class ChallengeRepository
     {
-        private static readonly string NavigationPropertyPath = $"{nameof(Challenge.Participants)}.{nameof(Participant.Matches)}.{nameof(Match.Stats)}";
+        private static readonly string NavigationPropertyPath = $"{nameof(Challenge.Participants)}.{nameof(Participant.Matches)}";
 
         private readonly ChallengesDbContext _context;
 

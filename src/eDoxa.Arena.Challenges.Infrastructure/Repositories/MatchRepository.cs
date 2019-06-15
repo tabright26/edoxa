@@ -23,8 +23,6 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
 {
     public sealed partial class MatchRepository
     {
-        private const string NavigationPropertyPath = nameof(Match.Stats);
-
         private readonly ChallengesDbContext _context;
 
         public MatchRepository(ChallengesDbContext context)
@@ -40,7 +38,6 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
         public async Task<IEnumerable<Match>> FindParticipantMatchesAsNoTrackingAsync(ParticipantId participantId)
         {
             return await _context.Matches.AsNoTracking()
-                .Include(NavigationPropertyPath)
                 .Where(match => match.Participant.Id == participantId)
                 .OrderBy(match => match.Timestamp)
                 .ToListAsync();
@@ -48,7 +45,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
 
         public async Task<Match> FindMatchAsNoTrackingAsync(MatchId matchId)
         {
-            return await _context.Matches.AsNoTracking().Include(NavigationPropertyPath).Where(match => match.Id == matchId).SingleOrDefaultAsync();
+            return await _context.Matches.AsNoTracking().Where(match => match.Id == matchId).SingleOrDefaultAsync();
         }
     }
 }

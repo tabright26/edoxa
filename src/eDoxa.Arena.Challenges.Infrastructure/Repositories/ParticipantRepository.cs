@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions.Repositories;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Seedwork.Domain;
 
@@ -24,7 +23,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
 {
     public sealed partial class ParticipantRepository
     {
-        private static readonly string NavigationPropertyPath = $"{nameof(Participant.Matches)}.{nameof(Match.Stats)}";
+        private static readonly string NavigationPropertyPath = $"{nameof(Participant.Matches)}";
 
         private readonly ChallengesDbContext _context;
 
