@@ -4,11 +4,4 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\eDoxa.Cashier.Domain\eDoxa.Cashier.Domain.csproj" />
-    <ProjectReference Include="..\eDoxa.Cashier.Infrastructure\eDoxa.Cashier.Infrastructure.csproj" />
-    <ProjectReference Include="..\eDoxa.Cashier.Services\eDoxa.Cashier.Services.csproj" />
-    <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
-  </ItemGroup>
-
 </Project>

@@ -1,5 +1,5 @@
 ﻿// Filename: Currency.cs
-// Date Created: 2019-05-30
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,9 +12,9 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 
+using eDoxa.Seedwork.Common.Abstactions;
+using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Domain.Common.Abstactions;
-using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 using JetBrains.Annotations;
 
@@ -22,15 +22,28 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
     public class Currency : ValueObject, ICurrency
     {
-        protected Currency(decimal amount, CurrencyType type)
+        protected Currency(decimal amount, CurrencyType type) : this()
         {
             Type = type;
             Amount = amount;
         }
 
+        private Currency()
+        {
+        }
+
         public CurrencyType Type { get; private set; }
 
         public decimal Amount { get; private set; }
+
+        public static Currency operator -(Currency currency)
+        {
+            return new Currency
+            {
+                Amount = currency.Amount,
+                Type = currency.Type
+            };
+        }
 
         public static implicit operator Price(Currency currency)
         {

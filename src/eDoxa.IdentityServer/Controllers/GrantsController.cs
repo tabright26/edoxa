@@ -1,9 +1,9 @@
 // Filename: GrantsController.cs
-// Date Created: 2019-04-30
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.IdentityServer.Attributes;
+using eDoxa.IdentityServer.Infrastructure.Attributes;
 using eDoxa.IdentityServer.ViewModels;
 
 using IdentityServer4.Events;
@@ -28,8 +28,8 @@ namespace eDoxa.IdentityServer.Controllers
     /// <summary>
     ///     This sample controller allows a user to revoke grants given to clients
     /// </summary>
-    [SecurityHeaders]
     [Authorize]
+    [SecurityHeaders]
     public class GrantsController : Controller
     {
         private readonly IClientStore _clients;
@@ -41,7 +41,8 @@ namespace eDoxa.IdentityServer.Controllers
             IIdentityServerInteractionService interaction,
             IClientStore clients,
             IResourceStore resources,
-            IEventService events)
+            IEventService events
+        )
         {
             _interaction = interaction;
             _clients = clients;

@@ -1,4 +1,14 @@
-﻿using System;
+﻿// Filename: Disable2fa.cshtml.cs
+// Date Created: 2019-06-01
+// 
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+// 
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
+// this source code package.
+
+using System;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
@@ -15,9 +25,7 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<User> _userManager;
         private readonly ILogger<Disable2faModel> _logger;
 
-        public Disable2faModel(
-            UserManager<User> userManager,
-            ILogger<Disable2faModel> logger)
+        public Disable2faModel(UserManager<User> userManager, ILogger<Disable2faModel> logger)
         {
             _userManager = userManager;
             _logger = logger;
@@ -29,6 +37,7 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account.Manage
         public async Task<IActionResult> OnGet()
         {
             var user = await _userManager.GetUserAsync(User);
+
             if (user == null)
             {
                 return this.NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
@@ -45,12 +54,14 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account.Manage
         public async Task<IActionResult> OnPostAsync()
         {
             var user = await _userManager.GetUserAsync(User);
+
             if (user == null)
             {
                 return this.NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
             var disable2faResult = await _userManager.SetTwoFactorEnabledAsync(user, false);
+
             if (!disable2faResult.Succeeded)
             {
                 throw new InvalidOperationException($"Unexpected error occurred disabling 2FA for user with ID '{_userManager.GetUserId(User)}'.");
@@ -58,6 +69,7 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account.Manage
 
             _logger.LogInformation("User with ID '{UserId}' has disabled 2fa.", _userManager.GetUserId(User));
             StatusMessage = "2fa has been disabled. You can reenable 2fa when you setup an authenticator app";
+
             return this.RedirectToPage("./TwoFactorAuthentication");
         }
     }

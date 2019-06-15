@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Seedwork.Domain.Common;
+using eDoxa.Seedwork.Common.ValueObjects;
 
 namespace eDoxa.Cashier.IntegrationTests.Helpers
 {

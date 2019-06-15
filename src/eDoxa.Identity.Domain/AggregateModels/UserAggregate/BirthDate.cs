@@ -1,5 +1,5 @@
 ﻿// Filename: BirthDate.cs
-// Date Created: 2019-05-13
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -30,11 +30,23 @@ namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
             _day = day;
         }
 
+        public BirthDate(DateTime dateTime)
+        {
+            _year = dateTime.Year;
+            _month = dateTime.Month;
+            _day = dateTime.Day;
+        }
+
         public int Year => _year;
 
         public int Month => _month;
 
         public int Day => _day;
+
+        public UserClaim ToClaim(Guid userId)
+        {
+            return new UserClaim(userId, JwtClaimTypes.BirthDate, this.ToString());
+        }
 
         public DateTime ToDate()
         {
@@ -44,15 +56,6 @@ namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
         public override string ToString()
         {
             return this.ToDate().ToString("yyyy-MM-dd");
-        }
-
-        public UserClaim ToClaim()
-        {
-            return new UserClaim
-            {
-                ClaimType = JwtClaimTypes.BirthDate,
-                ClaimValue = this.ToString()
-            };
         }
 
         public static IEnumerable<int> Years()

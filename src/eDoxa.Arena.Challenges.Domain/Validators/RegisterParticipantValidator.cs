@@ -10,7 +10,7 @@
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Specifications;
-using eDoxa.Seedwork.Domain.Common;
+using eDoxa.Seedwork.Common.ValueObjects;
 
 using FluentValidation;
 
@@ -20,7 +20,9 @@ namespace eDoxa.Arena.Challenges.Domain.Validators
     {
         public RegisterParticipantValidator(UserId userId)
         {
-            this.RuleFor(challenge => challenge).Must(new UserIsNotRegisteredSpecification(userId).IsSatisfiedBy).WithMessage("The user already is registered.");
+            this.RuleFor(challenge => challenge)
+                .Must(new UserIsNotRegisteredSpecification(userId).IsSatisfiedBy)
+                .WithMessage("The user already is registered.");
 
             this.RuleFor(challenge => challenge)
                 .Must(new ChallengeRegisterIsAvailableSpecification().IsSatisfiedBy)

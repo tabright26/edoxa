@@ -11,17 +11,14 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.7.9" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI" Version="2.2.29" />
+    <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\eDoxa.Security\eDoxa.Security.csproj" />
-    <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Serilog">
-      <HintPath>..\..\..\..\..\.nuget\packages\serilog\2.6.0\lib\netstandard1.3\Serilog.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\eDoxa.Seedwork.Security\eDoxa.Seedwork.Security.csproj" />
   </ItemGroup>
 
 </Project>

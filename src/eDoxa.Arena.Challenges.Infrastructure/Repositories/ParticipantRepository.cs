@@ -1,5 +1,5 @@
 ﻿// Filename: ParticipantRepository.cs
-// Date Created: 2019-05-21
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,10 +12,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using eDoxa.Arena.Challenges.Domain.Abstractions.Repositories;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
-using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Seedwork.Domain;
 
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +23,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
 {
     public sealed partial class ParticipantRepository
     {
-        private static readonly string NavigationPropertyPath = $"{nameof(Participant.Matches)}.{nameof(Match.Stats)}";
+        private static readonly string NavigationPropertyPath = $"{nameof(Participant.Matches)}";
 
         private readonly ChallengesDbContext _context;
 
@@ -41,18 +40,20 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
         public async Task<IEnumerable<Participant>> FindChallengeParticipantsAsNoTrackingAsync(ChallengeId challengeId)
         {
             return await _context.Participants.AsNoTracking()
-                                 .Include(NavigationPropertyPath)
-                                 .Where(participant => participant.Challenge.Id == challengeId)
-                                 .OrderBy(participant => participant.Timestamp)
-                                 .ToListAsync();
+                .Include(NavigationPropertyPath)
+                .Include(participant => participant.Challenge)
+                .Where(participant => participant.Challenge.Id == challengeId)
+                .OrderBy(participant => participant.Timestamp)
+                .ToListAsync();
         }
 
         public async Task<Participant> FindParticipantAsNoTrackingAsync(ParticipantId participantId)
         {
             return await _context.Participants.AsNoTracking()
-                                 .Include(NavigationPropertyPath)
-                                 .Where(participant => participant.Id == participantId)
-                                 .SingleOrDefaultAsync();
+                .Include(NavigationPropertyPath)
+                .Include(participant => participant.Challenge)
+                .Where(participant => participant.Id == participantId)
+                .SingleOrDefaultAsync();
         }
     }
 }

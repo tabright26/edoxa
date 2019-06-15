@@ -1,13 +1,14 @@
 ﻿// Filename: CommandModule.cs
-// Date Created: 2019-04-28
+// Date Created: 2019-06-08
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Reflection;
 
 using Autofac;
@@ -25,17 +26,15 @@ using Module = Autofac.Module;
 
 namespace eDoxa.Commands
 {
-    public sealed class CommandModule<TCommandHandler> : Module
+    public sealed class CommandModule : Module
     {
         protected override void Load([NotNull] ContainerBuilder builder)
         {
             base.Load(builder);
 
-            builder.RegisterAssemblyTypes(typeof(TCommandHandler).GetTypeInfo().Assembly)
-                .AsClosedTypesOf(typeof(ICommandHandler<,>))
-                .AsImplementedInterfaces();
+            builder.RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies()).AsClosedTypesOf(typeof(ICommandHandler<,>)).AsImplementedInterfaces();
 
-            builder.RegisterAssemblyTypes(typeof(TCommandHandler).GetTypeInfo().Assembly)
+            builder.RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies())
                 .Where(type => type.IsClosedTypeOf(typeof(IValidator<>)))
                 .AsImplementedInterfaces();
 

@@ -7,10 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\eDoxa.Arena.Challenges.Services\eDoxa.Arena.Challenges.Services.csproj" />
     <ProjectReference Include="..\eDoxa.Arena.Challenges.Domain\eDoxa.Arena.Challenges.Domain.csproj" />
+    <ProjectReference Include="..\eDoxa.IntegrationEvents\eDoxa.IntegrationEvents.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Infrastructure\eDoxa.Seedwork.Infrastructure.csproj" />
-    <ProjectReference Include="..\eDoxa.ServiceBus\eDoxa.ServiceBus.csproj" />
   </ItemGroup>
 
 </Project>

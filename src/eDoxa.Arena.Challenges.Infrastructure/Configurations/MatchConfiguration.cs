@@ -27,19 +27,29 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
         {
             builder.ToTable("Match");
 
-            builder.EntityId(match => match.Id).IsRequired();
+            builder.EntityId(match => match.Id)
+                .HasColumnName("Id")
+                .IsRequired();
 
-            builder.Property(match => match.Timestamp).IsRequired();
+            builder.Property(match => match.Timestamp)
+                .HasColumnName("Timestamp")
+                .IsRequired();
+            
+            builder.Property(match => match.Reference)
+                .HasConversion(externalId => externalId.ToString(), externalId => new MatchReference(externalId))
+                .HasColumnName("Reference")
+                .IsRequired();
 
             builder.Property<ParticipantId>(nameof(ParticipantId))
                 .HasConversion(participantId => participantId.ToGuid(), participantId => ParticipantId.FromGuid(participantId))
-                .IsRequired();
-
-            builder.Property(match => match.MatchReference)
-                .HasConversion(externalId => externalId.ToString(), externalId => new MatchReference(externalId))
+                .HasColumnName(nameof(ParticipantId))
                 .IsRequired();
 
             builder.Ignore(match => match.TotalScore);
+
+            builder.HasKey(match => match.Id);
+
+            builder.HasIndex(match => match.Reference).IsUnique();
 
             builder.OwnsMany(
                 match => match.Stats,
@@ -60,12 +70,12 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                         .IsRequired();
 
                     matchStats.Property(stat => stat.Value)
-                        .HasConversion<double>(value => value, value => new StatValue(value))
+                        .HasConversion(statValue => statValue.Value, value => new StatValue(value))
                         .HasColumnName("Value")
                         .IsRequired();
 
                     matchStats.Property(stat => stat.Weighting)
-                        .HasConversion<float>(weighting => weighting, weighting => new StatWeighting(weighting))
+                        .HasConversion(weighting => weighting.Value, weighting => new StatWeighting(weighting))
                         .HasColumnName("Weighting")
                         .IsRequired();
 
@@ -76,8 +86,6 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                     matchStats.HasKey(nameof(MatchId), "Id");
                 }
             );
-
-            builder.HasKey(match => match.Id);
         }
     }
 }

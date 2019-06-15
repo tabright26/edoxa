@@ -13,8 +13,8 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Common;
 
 using JetBrains.Annotations;
 

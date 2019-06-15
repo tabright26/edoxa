@@ -1,5 +1,5 @@
 ﻿// Filename: TransactionFailure.cs
-// Date Created: 2019-05-18
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,20 +8,29 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Collections.Generic;
+
+using eDoxa.Seedwork.Domain.Aggregate;
+
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
-    public sealed class TransactionFailure
+    public sealed class TransactionFailure : ValueObject
     {
-        private string _value;
-
         public TransactionFailure(string message)
         {
-            _value = message;
+            Message = message;
         }
+
+        public string Message { get; private set; }
 
         public override string ToString()
         {
-            return _value;
+            return Message;
+        }
+
+        protected override IEnumerable<object> GetAtomicValues()
+        {
+            yield return Message;
         }
     }
 }

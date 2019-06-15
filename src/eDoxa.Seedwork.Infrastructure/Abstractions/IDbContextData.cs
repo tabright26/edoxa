@@ -1,5 +1,5 @@
 ﻿// Filename: IDbContextData.cs
-// Date Created: 2019-05-20
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -15,5 +15,7 @@ namespace eDoxa.Seedwork.Infrastructure.Abstractions
     public interface IDbContextData
     {
         Task SeedAsync();
+
+        Task CleanupAsync();
     }
 }

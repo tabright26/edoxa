@@ -20,31 +20,31 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
 {
     public sealed class StatName : ValueObject, IComparable
     {
-        private readonly string _name;
-
         public StatName(PropertyInfo propertyInfo)
         {
-            _name = propertyInfo.GetMethod.Name.Substring(4);
+            Value = propertyInfo.GetMethod.Name.Substring(4);
         }
 
         public StatName(string name)
         {
-            _name = name;
+            Value = name;
         }
+
+        public string Value { get; private set; }
 
         public int CompareTo([CanBeNull] object obj)
         {
-            return string.Compare(_name, ((StatName) obj)?._name, StringComparison.OrdinalIgnoreCase);
+            return string.Compare(Value, ((StatName) obj)?.Value, StringComparison.OrdinalIgnoreCase);
         }
 
         public override string ToString()
         {
-            return _name;
+            return Value;
         }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
-            yield return _name;
+            yield return Value;
         }
     }
 }

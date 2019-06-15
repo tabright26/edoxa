@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeHistoryController.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,17 +8,20 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Application.Abstractions.Queries;
+using eDoxa.Arena.Challenges.Api.Application.Abstractions;
+using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Seedwork.Domain.Common.Enumerations;
-
-using JetBrains.Annotations;
+using eDoxa.Seedwork.Common.Enumerations;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Arena.Challenges.Api.Controllers
 {
@@ -27,8 +30,8 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
     [ApiVersion("1.0")]
     [Produces("application/json")]
     [Route("api/challenges/history")]
-    [ApiExplorerSettings(GroupName = "Challenges")]
-    public class ChallengeHistoryController : ControllerBase
+    [ApiExplorerSettings(GroupName = "Challenge")]
+    public sealed class ChallengeHistoryController : ControllerBase
     {
         private readonly IChallengeQuery _challengeQuery;
 
@@ -40,16 +43,18 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         /// <summary>
         ///     Find the challenge history of a user.
         /// </summary>
-        [HttpGet(Name = nameof(FindUserChallengeHistoryAsync))]
-        public async Task<IActionResult> FindUserChallengeHistoryAsync([CanBeNull] Game game, [CanBeNull] ChallengeState state)
+        [HttpGet]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<ChallengeViewModel>))]
+        public async Task<IActionResult> GetAsync(Game game = null, ChallengeState state = null)
         {
             var challenges = await _challengeQuery.FindUserChallengeHistoryAsync(game, state);
 
-            return challenges
-                .Select(this.Ok)
-                .Cast<IActionResult>()
-                .DefaultIfEmpty(this.NoContent())
-                .Single();
+            if (!challenges.Any())
+            {
+                return this.NoContent();
+            }
+
+            return this.Ok(challenges);
         }
     }
 }

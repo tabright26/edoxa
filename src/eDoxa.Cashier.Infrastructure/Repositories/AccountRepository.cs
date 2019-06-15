@@ -1,5 +1,5 @@
 ﻿// Filename: AccountRepository.cs
-// Date Created: 2019-05-29
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -14,9 +14,9 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Seedwork.Common.Enumerations;
+using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Common;
-using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -46,7 +46,8 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
 
         public async Task<Account> GetAccountAsNoTrackingAsync(UserId userId)
         {
-            return await _context.Accounts.AsNoTracking().Include(account => account.User)
+            return await _context.Accounts.AsNoTracking()
+                .Include(account => account.User)
                 .Include(account => account.Transactions)
                 .Where(account => account.User.Id == userId)
                 .SingleOrDefaultAsync();

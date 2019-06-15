@@ -1,20 +1,20 @@
 ﻿// Filename: Program.cs
-// Date Created: 2019-03-18
+// Date Created: 2019-06-01
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
 // 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System;
 
 using eDoxa.Arena.Challenges.Infrastructure;
-using eDoxa.Security.Extensions;
+using eDoxa.IntegrationEvents.Infrastructure;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
-using eDoxa.ServiceBus;
+using eDoxa.Seedwork.Security.AzureKeyVault.Extensions;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -37,7 +37,7 @@ namespace eDoxa.Arena.Challenges.Api
 
                 host.MigrateDbContext<ChallengesDbContext>();
 
-                host.MigrateDbContext<IntegrationEventLogDbContext>();
+                host.MigrateDbContext<IntegrationEventDbContext>();
 
                 Log.Information("Starting {Application} web host...");
 
@@ -60,11 +60,11 @@ namespace eDoxa.Arena.Challenges.Api
         private static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             return WebHost.CreateDefaultBuilder<Startup>(args)
-                          .CaptureStartupErrors(false)
-                          .ConfigureLogging()
-                          .UseAzureKeyVault()
-                          .UseApplicationInsights()
-                          .UseSerilog();
+                .CaptureStartupErrors(false)
+                .ConfigureLogging()
+                .UseAzureKeyVault()
+                .UseApplicationInsights()
+                .UseSerilog();
         }
     }
 }

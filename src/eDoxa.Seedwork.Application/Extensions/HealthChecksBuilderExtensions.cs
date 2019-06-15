@@ -1,5 +1,5 @@
 ﻿// Filename: HealthChecksBuilderExtensions.cs
-// Date Created: 2019-04-30
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,7 +10,7 @@
 
 using System;
 
-using eDoxa.Security;
+using eDoxa.Seedwork.Security.Constants;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,10 +32,7 @@ namespace eDoxa.Seedwork.Application.Extensions
                     options.UseClientSecrets(configuration[AzureKeyVaultClientId], configuration[AzureKeyVaultClientSecret]);
                 },
                 "azure-key-vault",
-                tags: new[]
-                {
-                    "akv", "key-vault"
-                }
+                tags: new[] {"akv", "key-vault"}
             );
         }
 
@@ -44,35 +41,18 @@ namespace eDoxa.Seedwork.Application.Extensions
             builder.AddSqlServer(
                 configuration.GetConnectionString(CustomConnectionStrings.SqlServer),
                 name: "microsoft-sql-server",
-                tags: new[]
-                {
-                    "mssql", "sql", "sql-server"
-                }
+                tags: new[] {"mssql", "sql", "sql-server"}
             );
         }
 
         public static void AddIdentityServer(this IHealthChecksBuilder builder, IConfiguration configuration)
         {
-            builder.AddIdentityServer(
-                new Uri(configuration["IdentityServer:Url"]),
-                "identity-server",
-                tags: new[]
-                {
-                    "idsrv"
-                }
-            );
+            builder.AddIdentityServer(new Uri(configuration["IdentityServer:Url"]), "identity-server", tags: new[] {"idsrv"});
         }
 
         public static void AddRedis(this IHealthChecksBuilder builder, IConfiguration configuration)
         {
-            builder.AddRedis(
-                configuration.GetConnectionString(CustomConnectionStrings.Redis),
-                "redis",
-                tags: new[]
-                {
-                    "cache"
-                }
-            );
+            builder.AddRedis(configuration.GetConnectionString(CustomConnectionStrings.Redis), "redis", tags: new[] {"cache"});
         }
     }
 }

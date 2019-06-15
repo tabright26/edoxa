@@ -1,5 +1,5 @@
 ﻿// Filename: PayoutRatio.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-05
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.

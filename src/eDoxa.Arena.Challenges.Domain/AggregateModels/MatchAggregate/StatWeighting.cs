@@ -16,26 +16,26 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate
 {
     public sealed class StatWeighting : ValueObject
     {
-        private readonly float _weighting;
-
         public StatWeighting(float weighting)
         {
-            _weighting = weighting;
+            Value = weighting;
         }
+
+        public float Value { get; private set; }
 
         public static implicit operator float(StatWeighting weighting)
         {
-            return weighting._weighting;
+            return weighting.Value;
         }
 
         public override string ToString()
         {
-            return _weighting.ToString("R");
+            return Value.ToString("R");
         }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
-            yield return _weighting;
+            yield return Value;
         }
     }
 }

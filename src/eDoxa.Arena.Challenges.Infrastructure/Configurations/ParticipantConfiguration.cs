@@ -10,6 +10,7 @@
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
+using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 
 using JetBrains.Annotations;
@@ -25,35 +26,40 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
         {
             builder.ToTable("Participant");
 
-            builder.EntityId(participant => participant.Id).IsRequired();
+            builder.EntityId(participant => participant.Id).HasColumnName("Id").IsRequired();
 
-            builder.Property(participant => participant.Timestamp).IsRequired();
+            builder.Property(participant => participant.Timestamp).HasColumnName("Timestamp").IsRequired();
 
-            builder.Property(participant => participant.LastSync).IsRequired(false);
+            builder.Property(participant => participant.LastSync).HasColumnName("LastSync").IsRequired(false);
+
+            builder.EntityId(participant => participant.UserId).HasColumnName("UserId").IsRequired();
+
+            builder.Property(participant => participant.UserGameReference)
+                .HasConversion(userGameReference => userGameReference.ProviderKey, providerKey => new UserGameReference(providerKey))
+                .HasColumnName("UserGameReference")
+                .IsRequired();
 
             builder.Property<ChallengeId>(nameof(ChallengeId))
                 .HasConversion(challengeId => challengeId.ToGuid(), value => ChallengeId.FromGuid(value))
-                .IsRequired();
-
-            builder.EntityId(participant => participant.UserId).IsRequired();
-
-            builder.Property(participant => participant.ExternalAccount)
-                .HasConversion(externalAccount => externalAccount.ToString(), externalAccount => new ExternalAccount(externalAccount))
+                .HasColumnName(nameof(ChallengeId))
                 .IsRequired();
 
             builder.Ignore(participant => participant.AverageScore);
 
-            builder.Ignore(participant => participant.HasFinalScore);
+            builder.HasKey(participant => participant.Id);
 
-            builder.HasMany(participant => participant.Matches)
-                .WithOne(match => match.Participant)
-                .HasForeignKey(nameof(ParticipantId))
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
+            builder.HasIndex(
+                    participant => new
+                    {
+                        ParticipantId = participant.Id,
+                        participant.UserId
+                    }
+                )
+                .IsUnique();
+
+            builder.HasMany(participant => participant.Matches).WithOne(match => match.Participant).HasForeignKey(nameof(ParticipantId)).IsRequired().OnDelete(DeleteBehavior.Cascade);
 
             builder.Metadata.FindNavigation(nameof(Participant.Matches)).SetPropertyAccessMode(PropertyAccessMode.Field);
-
-            builder.HasKey(participant => participant.Id);
         }
     }
 }

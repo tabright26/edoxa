@@ -1,5 +1,5 @@
-﻿// Filename: TokenAccount.cs
-// Date Created: 2019-05-29
+﻿// Filename: AccountToken.cs
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -14,7 +14,7 @@ using System.Linq;
 using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate.Transactions;
 using eDoxa.Cashier.Domain.Validators;
-using eDoxa.Seedwork.Domain.Common.Enumerations;
+using eDoxa.Seedwork.Common.Enumerations;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {

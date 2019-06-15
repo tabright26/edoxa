@@ -13,12 +13,12 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api;
-using eDoxa.Cashier.Application.ViewModels;
+using eDoxa.Cashier.Api.ViewModels;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.IntegrationTests.Helpers;
-using eDoxa.Testing.MSTest;
-using eDoxa.Testing.MSTest.Extensions;
+using eDoxa.Seedwork.Testing.TestServer;
+using eDoxa.Seedwork.Testing.TestServer.Extensions;
 
 using FluentAssertions;
 

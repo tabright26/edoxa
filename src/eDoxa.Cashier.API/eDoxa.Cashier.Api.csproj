@@ -31,7 +31,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\eDoxa.Cashier.Application\eDoxa.Cashier.Application.csproj" />
+        <ProjectReference Include="..\eDoxa.Cashier.Infrastructure\eDoxa.Cashier.Infrastructure.csproj" />
+        <ProjectReference Include="..\eDoxa.Commands\eDoxa.Commands.csproj" />
         <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
         <ProjectReference Include="..\eDoxa.Swagger\eDoxa.Swagger.csproj" />
     </ItemGroup>

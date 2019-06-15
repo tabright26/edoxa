@@ -1,9 +1,9 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-04-21
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -14,14 +14,15 @@ using System.Reflection;
 using AutoMapper;
 
 using eDoxa.Identity.Api.Extensions;
+using eDoxa.Identity.Api.Infrastructure.Data;
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Infrastructure;
-using eDoxa.Security.Extensions;
-using eDoxa.Security.Resources;
+using eDoxa.IntegrationEvents.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
-using eDoxa.ServiceBus.Extensions;
+using eDoxa.Seedwork.Security.Extensions;
+using eDoxa.Seedwork.Security.IdentityServer.Resources;
 using eDoxa.Swagger.Extensions;
 
 using Microsoft.AspNetCore.Builder;
@@ -52,9 +53,9 @@ namespace eDoxa.Identity.Api
 
             services.AddEntityFrameworkSqlServer();
 
-            services.AddIntegrationEventDbContext(Configuration, Assembly.GetAssembly(typeof(IdentityDbContext)));
+            services.AddIntegrationEventDbContext(Configuration, Assembly.GetAssembly(typeof(Startup)));
 
-            services.AddDbContext<IdentityDbContext, IdentityDbContextData>(Configuration);
+            services.AddDbContext<IdentityDbContext, IdentityDbContextData>(Configuration, Assembly.GetAssembly(typeof(Startup)));
 
             services.AddIdentityCore<User, Role, IdentityDbContext>();
 

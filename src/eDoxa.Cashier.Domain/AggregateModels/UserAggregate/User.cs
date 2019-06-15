@@ -1,5 +1,5 @@
 ﻿// Filename: User.cs
-// Date Created: 2019-05-29
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,9 +12,9 @@ using System;
 
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Validators;
+using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Domain.Common;
 
 using JetBrains.Annotations;
 

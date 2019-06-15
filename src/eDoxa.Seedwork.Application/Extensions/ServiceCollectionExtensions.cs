@@ -1,5 +1,5 @@
 ﻿// Filename: ServiceCollectionExtensions.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,24 +9,20 @@
 // this source code package.
 
 using System;
-using System.Collections.Generic;
 
 using Autofac;
 using Autofac.Core;
 using Autofac.Extensions.DependencyInjection;
 
-using eDoxa.Security;
-using eDoxa.Seedwork.Application.Filters;
+using eDoxa.Seedwork.Application.Mvc.Filters;
 using eDoxa.Seedwork.Application.Versioning;
+using eDoxa.Seedwork.Security.Constants;
 
 using FluentValidation.AspNetCore;
-
-using HealthChecks.UI.Configuration;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Versioning;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using Newtonsoft.Json;
@@ -82,46 +78,27 @@ namespace eDoxa.Seedwork.Application.Extensions
 
         public static void AddMvcFilters(this IServiceCollection services, Action<FilterCollection> action = null)
         {
-            var builder = services.AddMvc(options =>
-            {
-                action?.Invoke(options.Filters);
+            var builder = services.AddMvc(
+                options =>
+                {
+                    action?.Invoke(options.Filters);
 
-                options.Filters.Add<ValidationExceptionFilter>();
-            });
+                    options.Filters.Add<ValidationExceptionFilter>();
+                }
+            );
 
-            builder.AddFluentValidation(config =>
-            {
-                config.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
-            });
+            builder.AddFluentValidation(
+                config =>
+                {
+                    config.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
+                }
+            );
 
             builder.AddControllersAsServices();
 
             builder.AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
             builder.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-        }
-        
-        public static void AddHealthChecksUI(this IServiceCollection services, IConfiguration configuration)
-        {
-            var endpoints = new List<HealthCheckSetting>();
-
-            configuration.GetSection("HealthChecks:Endpoints").Bind(endpoints);
-
-            services.AddHealthChecksUI(
-                setupSettings: settings =>
-                {
-                    foreach (var endpoint in endpoints)
-                    {
-                        settings.AddHealthCheckEndpoint(endpoint.Name, endpoint.Uri);
-                    }
-
-                    settings.SetEvaluationTimeInSeconds(configuration.GetValue<int>("HealthChecks:EvaluationTimeInSeconds"));
-
-                    settings.SetMinimumSecondsBetweenFailureNotifications(
-                        configuration.GetValue<int>("HealthChecks:MinimumSecondsBetweenFailureNotifications")
-                    );
-                }
-            );
         }
     }
 }

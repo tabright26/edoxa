@@ -1,5 +1,5 @@
 ﻿// Filename: Program.cs
-// Date Created: 2019-04-30
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,8 +10,8 @@
 
 using System;
 
-using eDoxa.Security.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Security.AzureKeyVault.Extensions;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;

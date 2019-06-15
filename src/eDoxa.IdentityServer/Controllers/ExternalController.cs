@@ -1,5 +1,5 @@
 // Filename: ExternalController.cs
-// Date Created: 2019-05-20
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -16,7 +16,7 @@ using System.Security.Principal;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
-using eDoxa.IdentityServer.Attributes;
+using eDoxa.IdentityServer.Infrastructure.Attributes;
 using eDoxa.IdentityServer.ViewModels;
 
 using IdentityModel;
@@ -33,8 +33,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace eDoxa.IdentityServer.Controllers
 {
-    [SecurityHeaders]
     [AllowAnonymous]
+    [SecurityHeaders]
     public class ExternalController : Controller
     {
         private readonly IEventService _events;
@@ -85,12 +85,8 @@ namespace eDoxa.IdentityServer.Controllers
                 RedirectUri = Url.Action(nameof(this.Callback)),
                 Items =
                 {
-                    {
-                        "returnUrl", returnUrl
-                    },
-                    {
-                        "scheme", provider
-                    }
+                    {"returnUrl", returnUrl},
+                    {"scheme", provider}
                 }
             };
 
@@ -176,12 +172,8 @@ namespace eDoxa.IdentityServer.Controllers
                     RedirectUri = Url.Action("Callback"),
                     Items =
                     {
-                        {
-                            "returnUrl", returnUrl
-                        },
-                        {
-                            "scheme", AccountOptions.WindowsAuthenticationSchemeName
-                        }
+                        {"returnUrl", returnUrl},
+                        {"scheme", AccountOptions.WindowsAuthenticationSchemeName}
                     }
                 };
 

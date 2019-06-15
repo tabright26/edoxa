@@ -1,5 +1,5 @@
 ﻿// Filename: PayoutBuckets.cs
-// Date Created: 2019-05-22
+// Date Created: 2019-06-05
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,8 +11,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-using eDoxa.Arena.Domain;
-using eDoxa.Arena.Domain.Abstractions;
+using eDoxa.Arena.Challenges.Domain.Abstractions;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ValueObjects;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels
 {

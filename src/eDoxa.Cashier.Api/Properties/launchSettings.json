@@ -18,7 +18,7 @@
         "ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONVAULT": "https://edoxa-development.vault.azure.net"
       }
     },
-    "eDoxa.Cashier.API": {
+    "eDoxa.Cashier.Api": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "http://localhost:55002/",

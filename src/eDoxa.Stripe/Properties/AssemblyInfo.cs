@@ -1,5 +1,5 @@
 ﻿// Filename: AssemblyInfo.cs
-// Date Created: 2019-05-22
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,4 +10,4 @@
 
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("eDoxa.Stripe.Tests")]
+[assembly: InternalsVisibleTo("eDoxa.Stripe.UnitTests")]

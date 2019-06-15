@@ -1,5 +1,5 @@
 ﻿// Filename: Program.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,10 +11,10 @@
 using System;
 
 using eDoxa.Identity.Infrastructure;
-using eDoxa.Security.Extensions;
+using eDoxa.IntegrationEvents.Infrastructure;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
-using eDoxa.ServiceBus;
+using eDoxa.Seedwork.Security.AzureKeyVault.Extensions;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -37,7 +37,7 @@ namespace eDoxa.Identity.Api
 
                 host.MigrateDbContext<IdentityDbContext>();
 
-                host.MigrateDbContext<IntegrationEventLogDbContext>();
+                host.MigrateDbContext<IntegrationEventDbContext>();
 
                 Log.Information("Starting {Application} web host...");
 

@@ -1,4 +1,14 @@
-﻿using System.Threading.Tasks;
+﻿// Filename: TwoFactorAuthentication.cshtml.cs
+// Date Created: 2019-06-01
+// 
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+// 
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
+// this source code package.
+
+using System.Threading.Tasks;
 
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 
@@ -17,10 +27,7 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account.Manage
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger<TwoFactorAuthenticationModel> _logger;
 
-        public TwoFactorAuthenticationModel(
-            UserManager<User> userManager,
-            SignInManager<User> signInManager,
-            ILogger<TwoFactorAuthenticationModel> logger)
+        public TwoFactorAuthenticationModel(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<TwoFactorAuthenticationModel> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -42,6 +49,7 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account.Manage
         public async Task<IActionResult> OnGet()
         {
             var user = await _userManager.GetUserAsync(User);
+
             if (user == null)
             {
                 return this.NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
@@ -58,6 +66,7 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account.Manage
         public async Task<IActionResult> OnPost()
         {
             var user = await _userManager.GetUserAsync(User);
+
             if (user == null)
             {
                 return this.NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
@@ -65,6 +74,7 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account.Manage
 
             await _signInManager.ForgetTwoFactorClientAsync();
             StatusMessage = "The current browser has been forgotten. When you login again from this browser you will be prompted for your 2fa code.";
+
             return this.RedirectToPage();
         }
     }

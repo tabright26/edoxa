@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,16 +9,17 @@
 // this source code package.
 
 using System;
+using System.Reflection;
 
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Infrastructure;
 using eDoxa.IdentityServer.Extensions;
-using eDoxa.IdentityServer.Factories;
-using eDoxa.Security.Extensions;
+using eDoxa.IdentityServer.Infrastructure.Factories;
+using eDoxa.IntegrationEvents.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
-using eDoxa.ServiceBus.Extensions;
+using eDoxa.Seedwork.Security.Extensions;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -48,7 +49,7 @@ namespace eDoxa.IdentityServer
 
             services.AddEntityFrameworkSqlServer();
 
-            services.AddDbContext<IdentityDbContext>(Configuration);
+            services.AddDbContext<IdentityDbContext>(Configuration, Assembly.GetAssembly(typeof(Startup)));
 
             services.AddDataProtection(Configuration);
 

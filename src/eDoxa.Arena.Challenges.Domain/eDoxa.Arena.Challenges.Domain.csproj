@@ -10,9 +10,10 @@
     <PackageReference Include="Moq" Version="4.11.0" />
   </ItemGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\eDoxa.Arena.Domain\eDoxa.Arena.Domain.csproj" />
-        <ProjectReference Include="..\eDoxa.Seedwork.Domain\eDoxa.Seedwork.Domain.csproj" />
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\eDoxa.Arena\eDoxa.Arena.csproj" />
+    <ProjectReference Include="..\eDoxa.Seedwork.Common\eDoxa.Seedwork.Common.csproj" />
+    <ProjectReference Include="..\eDoxa.Seedwork.Domain\eDoxa.Seedwork.Domain.csproj" />
+  </ItemGroup>
 
 </Project>

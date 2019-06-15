@@ -1,5 +1,5 @@
-﻿// Filename: MoneyAccountConfiguration.cs
-// Date Created: 2019-05-20
+﻿// Filename: AccountConfiguration.cs
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,7 +9,7 @@
 // this source code package.
 
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Seedwork.Domain.Common;
+using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 
 using JetBrains.Annotations;

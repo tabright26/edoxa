@@ -1,5 +1,5 @@
 ﻿// Filename: Balance.cs
-// Date Created: 2019-05-30
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,8 +11,8 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {

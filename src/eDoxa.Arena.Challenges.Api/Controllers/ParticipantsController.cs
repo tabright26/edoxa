@@ -1,20 +1,24 @@
 ﻿// Filename: ParticipantsController.cs
-// Date Created: 2019-04-21
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Application.Abstractions.Queries;
+using eDoxa.Arena.Challenges.Api.Application.Abstractions;
+using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Arena.Challenges.Api.Controllers
 {
@@ -23,7 +27,7 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
     [ApiVersion("1.0")]
     [Produces("application/json")]
     [Route("api/participants")]
-    [ApiExplorerSettings(GroupName = "Participants")]
+    [ApiExplorerSettings(GroupName = "Participant")]
     public class ParticipantsController : ControllerBase
     {
         private readonly IParticipantQuery _query;
@@ -36,8 +40,9 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         /// <summary>
         ///     Find a participant.
         /// </summary>
-        [HttpGet("{participantId}", Name = nameof(FindParticipantAsync))]
-        public async Task<IActionResult> FindParticipantAsync(ParticipantId participantId)
+        [HttpGet("{participantId}")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ParticipantViewModel))]
+        public async Task<IActionResult> GetByIdAsync(ParticipantId participantId)
         {
             var participant = await _query.FindParticipantAsync(participantId);
 

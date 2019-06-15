@@ -1,5 +1,5 @@
 ﻿// Filename: Price.cs
-// Date Created: 2019-05-30
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,8 +10,8 @@
 
 using System;
 
-using eDoxa.Seedwork.Domain.Common.Abstactions;
-using eDoxa.Seedwork.Domain.Common.Enumerations;
+using eDoxa.Seedwork.Common.Abstactions;
+using eDoxa.Seedwork.Common.Enumerations;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {

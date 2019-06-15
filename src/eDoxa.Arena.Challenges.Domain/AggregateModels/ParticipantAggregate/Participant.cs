@@ -15,10 +15,9 @@ using System.Linq;
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
-using eDoxa.Arena.Domain.Abstractions;
+using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Domain.Common;
 
 using JetBrains.Annotations;
 
@@ -28,14 +27,14 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate
     {
         private HashSet<Match> _matches;
 
-        public Participant(Challenge challenge, UserId userId, ExternalAccount externalAccount) : this()
+        public Participant(Challenge challenge, UserId userId, UserGameReference userGameReference) : this()
         {
             Challenge = challenge;
             UserId = userId;
-            ExternalAccount = externalAccount;
+            UserGameReference = userGameReference;
         }
 
-        private Participant()
+        public Participant()
         {
             Timestamp = DateTime.UtcNow;
             LastSync = null;
@@ -46,31 +45,34 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate
 
         public DateTime? LastSync { get; private set; }
 
-        public ExternalAccount ExternalAccount { get; private set; }
+        public Challenge Challenge { get; private set; }
 
         public UserId UserId { get; private set; }
 
-        public Challenge Challenge { get; private set; }
+        public UserGameReference UserGameReference { get; private set; }
 
         [CanBeNull]
         public Score AverageScore => Matches.Count >= Challenge.Setup.BestOf ? new ParticipantScore(this) : null;
 
-        public bool HasFinalScore => LastSync.HasValue && LastSync.Value >= Challenge.Timeline.EndedAt;
-
-        public IReadOnlyCollection<Match> Matches => _matches;
-
-        public void SnapshotMatch(MatchReference matchReference, IMatchStats stats, IScoring scoring)
+        public IReadOnlyCollection<Match> Matches
         {
-            var match = new Match(this, matchReference);
+            get => _matches;
+            set => _matches = new HashSet<Match>(value);
+        }
 
-            match.SnapshotStats(stats, scoring);
+        public bool HasFinalScore(ChallengeTimeline timeline)
+        {
+            return LastSync.HasValue && LastSync.Value >= timeline.EndedAt;
+        }
 
-            _matches.Add(match);
+        public void SnapshotMatch(MatchReference matchReference, IMatchStats stats)
+        {
+            _matches.Add(new Match(this, matchReference, stats));
         }
 
         public IEnumerable<MatchReference> GetUnsynchronizedMatchReferences(IEnumerable<MatchReference> matchReferences)
         {
-            return matchReferences.Where(matchReference => Matches.All(match => match.MatchReference != matchReference));
+            return matchReferences.Where(matchReference => Matches.All(match => match.Reference != matchReference));
         }
 
         internal void Sync()

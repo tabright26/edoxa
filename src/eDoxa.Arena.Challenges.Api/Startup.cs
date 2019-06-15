@@ -1,9 +1,9 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-04-21
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -15,13 +15,14 @@ using System.Reflection;
 using AutoMapper;
 
 using eDoxa.Arena.Challenges.Api.Extensions;
+using eDoxa.Arena.Challenges.Api.Infrastructure.Data;
 using eDoxa.Arena.Challenges.Infrastructure;
-using eDoxa.Challenges.Domain.Services.LeagueOfLegends.Api.Extensions;
-using eDoxa.Security.Extensions;
-using eDoxa.Security.Resources;
+using eDoxa.Arena.Extensions;
+using eDoxa.IntegrationEvents.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
-using eDoxa.ServiceBus.Extensions;
+using eDoxa.Seedwork.Security.Extensions;
+using eDoxa.Seedwork.Security.IdentityServer.Resources;
 using eDoxa.Swagger.Extensions;
 
 using Microsoft.AspNetCore.Builder;
@@ -53,9 +54,9 @@ namespace eDoxa.Arena.Challenges.Api
 
             services.AddEntityFrameworkSqlServer();
 
-            services.AddIntegrationEventDbContext(Configuration, Assembly.GetAssembly(typeof(ChallengesDbContext)));
+            services.AddIntegrationEventDbContext(Configuration, Assembly.GetAssembly(typeof(Startup)));
 
-            services.AddDbContext<ChallengesDbContext, ChallengesDbContextData>(Configuration);
+            services.AddDbContext<ChallengesDbContext, ChallengesDbContextData>(Configuration, Assembly.GetAssembly(typeof(Startup)));
 
             services.AddVersioning();
 
@@ -71,7 +72,7 @@ namespace eDoxa.Arena.Challenges.Api
 
             services.AddIdentityServerAuthentication(Configuration, Environment, ChallengeApi);
 
-            services.AddLeagueOfLegends();
+            services.AddArena();
 
             return services.Build<Modules>();
         }

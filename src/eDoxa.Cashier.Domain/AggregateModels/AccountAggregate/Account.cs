@@ -1,4 +1,14 @@
-﻿using System.Collections.Generic;
+﻿// Filename: Account.cs
+// Date Created: 2019-06-01
+// 
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+// 
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
+// this source code package.
+
+using System.Collections.Generic;
 
 using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
@@ -15,7 +25,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
             User = user;
         }
 
-        private Account()
+        public Account()
         {
             _transactions = new HashSet<Transaction>();
         }

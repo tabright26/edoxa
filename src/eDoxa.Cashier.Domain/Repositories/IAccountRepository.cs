@@ -1,5 +1,5 @@
-﻿// Filename: IMoneyAccountRepository.cs
-// Date Created: 2019-05-06
+﻿// Filename: IAccountRepository.cs
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,9 +12,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
+using eDoxa.Seedwork.Common.Enumerations;
+using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Common;
-using eDoxa.Seedwork.Domain.Common.Enumerations;
 
 namespace eDoxa.Cashier.Domain.Repositories
 {

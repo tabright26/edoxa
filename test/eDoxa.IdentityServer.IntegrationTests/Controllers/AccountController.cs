@@ -12,7 +12,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Infrastructure;
-using eDoxa.Testing.MSTest;
+using eDoxa.Seedwork.Testing.TestServer;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -25,13 +25,15 @@ namespace eDoxa.IdentityServer.IntegrationTests.Controllers
         private IdentityDbContext _dbContext;
 
         [TestInitialize]
-        public void TestInitialize()
+        public async Task TestInitialize()
         {
             var factory = new CustomWebApplicationFactory<IdentityDbContext, Startup>();
 
             _httpClient = factory.CreateClient();
 
             _dbContext = factory.DbContext;
+
+            await this.TestCleanup();
         }
 
         public async Task<HttpResponseMessage> Execute()

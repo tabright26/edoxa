@@ -11,25 +11,19 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using eDoxa.Arena.Domain.ValueObjects;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ValueObjects;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public class ChallengeSetup : ValueObject
+    public sealed class ChallengeSetup : ValueObject
     {
-        public ChallengeSetup(
-            BestOf bestOf,
-            PayoutEntries payoutEntries,
-            EntryFee entryFee,
-            Entries entries
-        ) : this()
+        public ChallengeSetup(BestOf bestOf, PayoutEntries payoutEntries, EntryFee entryFee) : this()
         {
             BestOf = bestOf;
-            EntryFee = entryFee;
-            Entries = entries;
+            Entries = new Entries(payoutEntries);
             PayoutEntries = payoutEntries;
-            PrizePool = new PrizePool(Entries, EntryFee);
+            EntryFee = new EntryFee(entryFee.Type, entryFee.Amount); // Required by EF Core.
         }
 
         private ChallengeSetup()
@@ -43,8 +37,6 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public EntryFee EntryFee { get; private set; }
 
-        public PrizePool PrizePool { get; private set; }
-
         public PayoutEntries PayoutEntries { get; private set; }
 
         protected override IEnumerable<object> GetAtomicValues()
@@ -53,7 +45,6 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             yield return Entries;
             yield return EntryFee;
             yield return PayoutEntries;
-            yield return PrizePool;
         }
 
         public override string ToString()

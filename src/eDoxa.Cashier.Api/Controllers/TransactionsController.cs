@@ -1,5 +1,5 @@
 ﻿// Filename: TransactionsController.cs
-// Date Created: 2019-05-29
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,9 +11,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Application.Abstractions.Queries;
+using eDoxa.Cashier.Api.Application.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Seedwork.Domain.Common.Enumerations;
+using eDoxa.Seedwork.Common.Enumerations;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +25,7 @@ namespace eDoxa.Cashier.Api.Controllers
     [ApiVersion("1.0")]
     [Produces("application/json")]
     [Route("api/transactions")]
-    [ApiExplorerSettings(GroupName = "Transactions")]
+    [ApiExplorerSettings(GroupName = "Transaction")]
     public class TransactionsController : ControllerBase
     {
         private readonly ITransactionQuery _transactionQuery;

@@ -1,5 +1,5 @@
 ﻿// Filename: User.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -19,14 +19,19 @@ namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
 {
     public sealed class User : IdentityUser<Guid>
     {
-        public User(string username, string email, PersonalName personalName, BirthDate birthDate) : this()
+        public User(
+            string username,
+            string email,
+            PersonalName personalName,
+            BirthDate birthDate
+        ) : this()
         {
             Email = email;
             NormalizedEmail = email.ToUpperInvariant();
             UserName = username;
             NormalizedUserName = username.ToUpperInvariant();
-            personalName.ToClaims().ForEach(claim => Claims.Add(claim));
-            Claims.Add(birthDate.ToClaim());
+            personalName.ToClaims(Id).ForEach(claim => Claims.Add(claim));
+            Claims.Add(birthDate.ToClaim(Id));
         }
 
         public User()
@@ -57,6 +62,11 @@ namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
         private void UpdateSecurityStamp()
         {
             SecurityStamp = Guid.NewGuid().ToString("D");
+        }
+
+        public void AddRole(Guid roleId)
+        {
+            Roles.Add(new UserRole(Id, roleId));
         }
     }
 }

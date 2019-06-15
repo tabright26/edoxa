@@ -12,16 +12,20 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using eDoxa.Arena.Challenges.Domain.Abstractions.Factories;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
-using eDoxa.Arena.Domain;
-using eDoxa.Seedwork.Domain.Common.Enumerations;
+using eDoxa.Seedwork.Common.Enumerations;
 
 namespace eDoxa.Arena.Challenges.Domain.Abstractions
 {
     public interface IChallenge
     {
         ChallengeId Id { get; }
+
+        DateTime CreatedAt { get; }
+
+        DateTime? LastSync { get; }
 
         Game Game { get; }
 
@@ -31,21 +35,15 @@ namespace eDoxa.Arena.Challenges.Domain.Abstractions
 
         ChallengeTimeline Timeline { get; }
 
-        DateTime CreatedAt { get; }
+        ChallengeState State { get; }
 
-        DateTime? LastSync { get; }
+        IScoring Scoring { get; }
 
-        IReadOnlyCollection<ChallengeStat> Stats { get; }
+        IPayout Payout { get; }
+
+        IScoreboard Scoreboard { get; }
 
         IReadOnlyCollection<Participant> Participants { get; }
-
-        IReadOnlyCollection<Bucket> Buckets { get; }
-
-        void EnableTestMode(TestMode testMode, ChallengeTimeline timeline);
-
-        void ApplyScoringStrategy(IScoringStrategy strategy);
-
-        void ApplyPayoutStrategy(IPayoutStrategy strategy);
 
         Task SynchronizeAsync(IMatchReferencesFactory matchReferencesFactory, IMatchStatsFactory matchStatsFactory);
     }

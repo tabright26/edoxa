@@ -1,16 +1,16 @@
 // Filename: DiagnosticsController.cs
-// Date Created: 2019-04-30
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
 using System.Threading.Tasks;
 
-using eDoxa.IdentityServer.Attributes;
+using eDoxa.IdentityServer.Infrastructure.Attributes;
 using eDoxa.IdentityServer.ViewModels;
 
 using Microsoft.AspNetCore.Authentication;
@@ -19,8 +19,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace eDoxa.IdentityServer.Controllers
 {
-    [SecurityHeaders]
     [Authorize]
+    [SecurityHeaders]
     public class DiagnosticsController : Controller
     {
         public async Task<IActionResult> Index()

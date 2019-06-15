@@ -1,5 +1,5 @@
 ﻿// Filename: Register.cshtml.cs
-// Date Created: 2019-05-06
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.IdentityServer.IntegrationEvents;
-using eDoxa.ServiceBus;
+using eDoxa.IntegrationEvents;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -43,7 +43,8 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
             SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            IEventBusService eventBusService)
+            IEventBusService eventBusService
+        )
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -56,8 +57,8 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
 
         public string ReturnUrl { get; set; }
 
-        public IEnumerable<SelectListItem> Years { get; set; } = BirthDate.Years().Select(year => new SelectListItem(year.ToString(), year.ToString()))
-            .OrderByDescending(item => item.Value);
+        public IEnumerable<SelectListItem> Years { get; set; } =
+            BirthDate.Years().Select(year => new SelectListItem(year.ToString(), year.ToString())).OrderByDescending(item => item.Value);
 
         public IEnumerable<SelectListItem> Months { get; set; } =
             BirthDate.Months().Select(month => new SelectListItem(DateTimeFormatInfo.CurrentInfo.GetMonthName(month), month.ToString()));
@@ -101,11 +102,19 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
                         null,
-                        new {userId = user.Id, code},
-                        Request.Scheme);
+                        new
+                        {
+                            userId = user.Id,
+                            code
+                        },
+                        Request.Scheme
+                    );
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    await _emailSender.SendEmailAsync(
+                        Input.Email,
+                        "Confirm your email",
+                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>."
+                    );
 
                     await _signInManager.SignInAsync(user, false);
 

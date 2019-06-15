@@ -12,7 +12,7 @@ using System;
 using System.Linq.Expressions;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Seedwork.Domain.Common.Enumerations;
+using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Domain.Specifications;
 
 namespace eDoxa.Arena.Challenges.Domain.Specifications

@@ -1,9 +1,9 @@
 ﻿// Filename: UsersController.cs
-// Date Created: 2019-04-21
+// Date Created: 2019-06-08
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -11,7 +11,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Application.Abstractions.Queries;
+using eDoxa.Identity.Api.Application.Abstractions;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +23,7 @@ namespace eDoxa.Identity.Api.Controllers
     [ApiVersion("1.0")]
     [Produces("application/json")]
     [Route("api/users")]
-    [ApiExplorerSettings(GroupName = "Users")]
+    [ApiExplorerSettings(GroupName = "User")]
     public class UsersController : ControllerBase
     {
         private readonly IUserQuery _userQuery;
@@ -41,11 +41,12 @@ namespace eDoxa.Identity.Api.Controllers
         {
             var users = await _userQuery.FindUsersAsync();
 
-            return users
-                .Select(this.Ok)
-                .Cast<IActionResult>()
-                .DefaultIfEmpty(this.NoContent())
-                .Single();
+            if (!users.Any())
+            {
+                return this.NoContent();
+            }
+
+            return this.Ok(users);
         }
     }
 }

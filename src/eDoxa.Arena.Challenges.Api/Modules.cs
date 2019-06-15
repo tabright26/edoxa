@@ -10,18 +10,18 @@
 
 using Autofac;
 
-using eDoxa.Arena.Challenges.Application.Abstractions.Queries;
-using eDoxa.Arena.Challenges.Application.Queries;
-using eDoxa.Arena.Challenges.Domain.Abstractions;
-using eDoxa.Arena.Challenges.Domain.Repositories;
+using eDoxa.Arena.Challenges.Api.Application.Abstractions;
+using eDoxa.Arena.Challenges.Api.Application.Queries;
+using eDoxa.Arena.Challenges.Domain.Abstractions.Factories;
+using eDoxa.Arena.Challenges.Domain.Abstractions.Repositories;
+using eDoxa.Arena.Challenges.Domain.Abstractions.Services;
+using eDoxa.Arena.Challenges.Domain.Factories;
+using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.Infrastructure.Repositories;
-using eDoxa.Arena.Challenges.Services;
-using eDoxa.Arena.Challenges.Services.Abstractions;
-using eDoxa.Arena.Challenges.Services.Factories;
-using eDoxa.Seedwork.Application.Commands;
+using eDoxa.Commands;
+using eDoxa.IntegrationEvents;
 using eDoxa.Seedwork.Application.DomainEvents;
-using eDoxa.ServiceBus;
 
 using JetBrains.Annotations;
 
@@ -60,10 +60,6 @@ namespace eDoxa.Arena.Challenges.Api
             builder.RegisterType<MatchReferencesFactory>().As<IMatchReferencesFactory>().SingleInstance();
 
             builder.RegisterType<MatchStatsFactory>().As<IMatchStatsFactory>().SingleInstance();
-
-            builder.RegisterType<PayoutFactory>().As<IPayoutFactory>().SingleInstance();
-
-            builder.RegisterType<ScoringFactory>().As<IScoringFactory>().SingleInstance();
         }
     }
 }

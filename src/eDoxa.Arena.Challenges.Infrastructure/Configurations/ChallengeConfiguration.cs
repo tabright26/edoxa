@@ -11,6 +11,7 @@
 using System;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ValueObjects;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 
@@ -31,12 +32,12 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
 
             builder.Property(challenge => challenge.CreatedAt).HasColumnName("CreatedAt").IsRequired();
 
+            builder.Property(challenge => challenge.LastSync).HasColumnName("LastSync").IsRequired(false);
+
             builder.Property(challenge => challenge.Name)
                 .HasConversion(name => name.ToString(), name => new ChallengeName(name))
                 .HasColumnName("Name")
                 .IsRequired();
-
-            builder.Property(challenge => challenge.LastSync).HasColumnName("LastSync").IsRequired(false);
 
             builder.Enumeration(challenge => challenge.Game).HasColumnName("Game").IsRequired();
 
@@ -46,22 +47,24 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                 {
                     challengeSetup.ToTable("Setup");
 
-                    challengeSetup.OwnsOne(setup => setup.BestOf).Property(bestOf => bestOf.Value).HasColumnName("BestOf").IsRequired();
+                    challengeSetup.Property(setup => setup.BestOf)
+                        .HasConversion(bestOf => bestOf.Value, value => new BestOf(value))
+                        .HasColumnName("BestOf")
+                        .IsRequired();
 
-                    challengeSetup.OwnsOne(setup => setup.Entries).Property(entries => entries.Value).HasColumnName("Entries").IsRequired();
+                    challengeSetup.Property(setup => setup.Entries)
+                        .HasConversion(entries => entries.Value, value => new Entries(value))
+                        .HasColumnName("Entries")
+                        .IsRequired();
 
-                    challengeSetup.OwnsOne(setup => setup.PayoutEntries)
-                        .Property(payoutEntries => payoutEntries.Value)
+                    challengeSetup.Property(setup => setup.PayoutEntries)
+                        .HasConversion(payoutEntries => payoutEntries.Value, value => new PayoutEntries(value))
                         .HasColumnName("PayoutEntries")
                         .IsRequired();
 
                     challengeSetup.OwnsOne(setup => setup.EntryFee).Property(entryFee => entryFee.Amount).HasColumnName("EntryFeeAmount").IsRequired();
 
                     challengeSetup.OwnsOne(setup => setup.EntryFee).Enumeration(entryFee => entryFee.Type).HasColumnName("EntryFeeCurrency").IsRequired();
-
-                    challengeSetup.OwnsOne(setup => setup.PrizePool).Property(prizePool => prizePool.Amount).HasColumnName("PrizePoolAmount").IsRequired();
-
-                    challengeSetup.OwnsOne(setup => setup.PrizePool).Enumeration(prizePool => prizePool.Type).HasColumnName("PrizePoolCurrency").IsRequired();
                 }
             );
 
@@ -71,7 +74,10 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                 {
                     challengeTimeline.ToTable("Timeline");
 
-                    challengeTimeline.OwnsOne(challenge => challenge.Duration).Property(duration => duration.Ticks).HasColumnName("Duration").IsRequired();
+                    challengeTimeline.Property(challenge => challenge.Duration)
+                        .HasConversion(duration => duration.Ticks, ticks => new ChallengeDuration(TimeSpan.FromTicks(ticks)))
+                        .HasColumnName("Duration")
+                        .IsRequired();
 
                     challengeTimeline.Property(challenge => challenge.StartedAt).HasColumnName("StartedAt").IsRequired(false);
 
@@ -83,34 +89,11 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                 }
             );
 
-            builder.OwnsOne(
-                challenge => challenge.TestMode,
-                challengeTestMode =>
-                {
-                    challengeTestMode.ToTable("TestMode");
-
-                    challengeTestMode.Property(challenge => challenge.StartingState)
-                        .HasConversion(state => state.Value, value => ChallengeState.FromValue(value))
-                        .HasColumnName("State")
-                        .IsRequired();
-
-                    challengeTestMode.Property(challenge => challenge.MatchQuantity)
-                        .HasConversion(state => state.Value, value => TestModeMatchQuantity.FromValue(value))
-                        .HasColumnName("AverageBestOf")
-                        .IsRequired();
-
-                    challengeTestMode.Property(challenge => challenge.ParticipantQuantity)
-                        .HasConversion(state => state.Value, value => TestModeParticipantQuantity.FromValue(value))
-                        .HasColumnName("ParticipantQuantity")
-                        .IsRequired();
-                }
-            );
-
             builder.OwnsMany(
                 challenge => challenge.Buckets,
                 challengeStats =>
                 {
-                    challengeStats.ToTable("Payout");
+                    challengeStats.ToTable("Bucket");
 
                     challengeStats.HasForeignKey(nameof(ChallengeId));
 
@@ -132,10 +115,10 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
             );
 
             builder.OwnsMany(
-                challenge => challenge.Stats,
+                challenge => challenge.ScoringItems,
                 challengeStats =>
                 {
-                    challengeStats.ToTable("Scoring");
+                    challengeStats.ToTable("ScoringItem");
 
                     challengeStats.HasForeignKey(nameof(ChallengeId));
 
@@ -159,6 +142,14 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                     challengeStats.HasKey(nameof(ChallengeId), "Id");
                 }
             );
+
+            builder.Property(challenge => challenge.Seed).IsRequired(false);
+
+            builder.Ignore(challenge => challenge.Scoring);
+
+            builder.Ignore(challenge => challenge.Payout);
+
+            builder.Ignore(challenge => challenge.Scoreboard);
 
             builder.HasMany(challenge => challenge.Participants)
                 .WithOne(participant => participant.Challenge)

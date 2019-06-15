@@ -1,5 +1,5 @@
 ﻿// Filename: TransactionDescription.cs
-// Date Created: 2019-05-13
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,20 +8,29 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Collections.Generic;
+
+using eDoxa.Seedwork.Domain.Aggregate;
+
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
-    public sealed class TransactionDescription
+    public sealed class TransactionDescription : ValueObject
     {
-        private string _value;
-
-        public TransactionDescription(string description)
+        public TransactionDescription(string text)
         {
-            _value = description;
+            Text = text;
+        }
+
+        public string Text { get; private set; }
+
+        protected override IEnumerable<object> GetAtomicValues()
+        {
+            yield return Text;
         }
 
         public override string ToString()
         {
-            return _value;
+            return Text;
         }
     }
 }

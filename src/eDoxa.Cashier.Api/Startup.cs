@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-05-29
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -15,12 +15,13 @@ using System.Reflection;
 using AutoMapper;
 
 using eDoxa.Cashier.Api.Extensions;
+using eDoxa.Cashier.Api.Infrastructure.Data;
 using eDoxa.Cashier.Infrastructure;
-using eDoxa.Security.Extensions;
-using eDoxa.Security.Resources;
+using eDoxa.IntegrationEvents.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
-using eDoxa.ServiceBus.Extensions;
+using eDoxa.Seedwork.Security.Extensions;
+using eDoxa.Seedwork.Security.IdentityServer.Resources;
 using eDoxa.Stripe.Extensions;
 using eDoxa.Stripe.Filters;
 using eDoxa.Swagger.Extensions;
@@ -57,9 +58,9 @@ namespace eDoxa.Cashier.Api
 
             services.AddEntityFrameworkSqlServer();
 
-            services.AddIntegrationEventDbContext(Configuration, Assembly.GetAssembly(typeof(CashierDbContext)));
+            services.AddIntegrationEventDbContext(Configuration, Assembly.GetAssembly(typeof(Startup)));
 
-            services.AddDbContext<CashierDbContext, CashierDbContextData>(Configuration);
+            services.AddDbContext<CashierDbContext, CashierDbContextData>(Configuration, Assembly.GetAssembly(typeof(Startup)));
 
             services.AddVersioning();
 

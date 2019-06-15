@@ -1,5 +1,5 @@
 ﻿// Filename: PersonalName.cs
-// Date Created: 2019-05-13
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,6 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -39,24 +40,16 @@ namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
 
         public string LastName => _lastName;
 
+        public IEnumerable<UserClaim> ToClaims(Guid userId)
+        {
+            yield return new UserClaim(userId, JwtClaimTypes.GivenName, FirstName);
+
+            yield return new UserClaim(userId, JwtClaimTypes.FamilyName, LastName);
+        }
+
         public override string ToString()
         {
             return $"{_firstName} {_lastName}";
-        }
-
-        public IEnumerable<UserClaim> ToClaims()
-        {
-            yield return new UserClaim
-            {
-                ClaimType = JwtClaimTypes.GivenName,
-                ClaimValue = FirstName
-            };
-
-            yield return new UserClaim
-            {
-                ClaimType = JwtClaimTypes.FamilyName,
-                ClaimValue = LastName
-            };
         }
 
         protected override IEnumerable<object> GetAtomicValues()

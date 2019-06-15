@@ -1,21 +1,26 @@
 ﻿// Filename: ParticipantMatchesController.cs
-// Date Created: 2019-04-21
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Application.Abstractions.Queries;
+using eDoxa.Arena.Challenges.Api.Application.Abstractions;
+using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Arena.Challenges.Api.Controllers
 {
@@ -24,7 +29,7 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
     [ApiVersion("1.0")]
     [Produces("application/json")]
     [Route("api/participants/{participantId}/matches")]
-    [ApiExplorerSettings(GroupName = "Participants")]
+    [ApiExplorerSettings(GroupName = "Participant")]
     public class ParticipantMatchesController : ControllerBase
     {
         private readonly IMatchQuery _query;
@@ -37,16 +42,18 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         /// <summary>
         ///     Find the matches of a participant.
         /// </summary>
-        [HttpGet(Name = nameof(FindParticipantMatchesAsync))]
-        public async Task<IActionResult> FindParticipantMatchesAsync(ParticipantId participantId)
+        [HttpGet]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<MatchViewModel>))]
+        public async Task<IActionResult> GetAsync(ParticipantId participantId)
         {
             var matches = await _query.FindParticipantMatchesAsync(participantId);
 
-            return matches
-                .Select(this.Ok)
-                .Cast<IActionResult>()
-                .DefaultIfEmpty(this.NoContent())
-                .Single();
+            if (!matches.Any())
+            {
+                return this.NoContent();
+            }
+
+            return this.Ok(matches);
         }
     }
 }

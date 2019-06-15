@@ -10,15 +10,13 @@
 
 using System.Linq;
 
-using eDoxa.Arena.Domain.Abstractions;
+using eDoxa.Arena.Challenges.Domain.Abstractions;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate
 {
     public sealed class ParticipantScore : Score
     {
-        internal ParticipantScore(Participant participant) : base(
-            participant.Matches.OrderBy(match => match.TotalScore).Take(participant.Challenge.Setup.BestOf).Average(match => match.TotalScore)
-        )
+        internal ParticipantScore(Participant participant) : base(participant.Matches.OrderBy(match => match.TotalScore).Take(participant.Challenge.Setup.BestOf).Average(match => match.TotalScore))
         {
         }
     }

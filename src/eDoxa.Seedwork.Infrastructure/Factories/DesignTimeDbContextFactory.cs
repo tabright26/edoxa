@@ -1,5 +1,5 @@
 ﻿// Filename: DesignTimeDbContextFactory.cs
-// Date Created: 2019-05-29
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,7 +13,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Security;
+using eDoxa.Seedwork.Security.Constants;
 
 using JetBrains.Annotations;
 

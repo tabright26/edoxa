@@ -1,9 +1,9 @@
 ﻿// Filename: CommandValidationBehavior.cs
-// Date Created: 2019-04-27
+// Date Created: 2019-06-08
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-//  
+// 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
@@ -38,8 +38,7 @@ namespace eDoxa.Commands.Behaviors
         {
             _logger.LogInformation($"Validating {typeof(TCommand).Name}...");
 
-            var errors = _validators
-                .Select(validator => validator.Validate(command))
+            var errors = _validators.Select(validator => validator.Validate(command))
                 .SelectMany(result => result.Errors)
                 .Where(failure => failure != null)
                 .ToList();
