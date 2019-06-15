@@ -40,13 +40,13 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers.Extensions
 
         public static ChallengeSetup ChallengeSetup(this Faker faker, CurrencyType entryFeeCurrency = null)
         {
-            var bestOf = faker.PickRandom(ValueObject.GetDeclaredOnlyFields<BestOf>());
+            var bestOf = faker.PickRandom(ValueObject.GetAllowValues<BestOf>());
 
-            var payoutEntries = faker.PickRandom(ValueObject.GetDeclaredOnlyFields<PayoutEntries>());
+            var payoutEntries = faker.PickRandom(ValueObject.GetAllowValues<PayoutEntries>());
 
-            var moneyEntryFees = ValueObject.GetDeclaredOnlyFields<MoneyEntryFee>();
+            var moneyEntryFees = ValueObject.GetAllowValues<MoneyEntryFee>();
 
-            var tokenEntryFees = ValueObject.GetDeclaredOnlyFields<TokenEntryFee>();
+            var tokenEntryFees = ValueObject.GetAllowValues<TokenEntryFee>();
 
             if (entryFeeCurrency != null)
             {
@@ -90,7 +90,7 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers.Extensions
 
         public static ChallengeDuration ChallengeDuration(this Faker faker)
         {
-            return faker.PickRandom(ValueObject.GetDeclaredOnlyFields<ChallengeDuration>());
+            return faker.PickRandom(ValueObject.GetAllowValues<ChallengeDuration>());
         }
 
         public static ChallengeState ChallengeState(this Faker faker, ChallengeState state = null)

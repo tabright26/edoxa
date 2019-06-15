@@ -15,6 +15,8 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
+using eDoxa.Seedwork.Domain.Attributes;
+
 using JetBrains.Annotations;
 
 namespace eDoxa.Seedwork.Domain.Aggregate
@@ -32,6 +34,17 @@ namespace eDoxa.Seedwork.Domain.Aggregate
         public static IEnumerable<IEnumeration> GetAll(Type type)
         {
             return type.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
+                .Select(fieldInfo => fieldInfo.GetValue(null))
+                .Cast<IEnumeration>()
+                .ToList();
+        }
+
+        public static IEnumerable<IEnumeration> GetAllAllow(Type type)
+        {
+            return type.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
+                .Where(
+                    fieldInfo => Attribute.GetCustomAttribute(fieldInfo, typeof(AllowValueAttribute)) is AllowValueAttribute allowValue && allowValue.IsAllowed
+                )
                 .Select(fieldInfo => fieldInfo.GetValue(null))
                 .Cast<IEnumeration>()
                 .ToList();
@@ -100,6 +113,11 @@ namespace eDoxa.Seedwork.Domain.Aggregate
         public static IEnumerable<TEnumeration> GetAll()
         {
             return Enumeration.GetAll(typeof(TEnumeration)).Cast<TEnumeration>().ToList();
+        }
+
+        public static IEnumerable<TEnumeration> GetAllAllow()
+        {
+            return Enumeration.GetAllAllow(typeof(TEnumeration)).Cast<TEnumeration>().ToList();
         }
 
         public override bool Equals([CanBeNull] object obj)

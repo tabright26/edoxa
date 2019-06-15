@@ -8,9 +8,12 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+
+using eDoxa.Seedwork.Domain.Attributes;
 
 using JetBrains.Annotations;
 
@@ -28,10 +31,20 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             return !(left == right);
         }
 
-        public static IEnumerable<TValueObject> GetDeclaredOnlyFields<TValueObject>()
+        public static IEnumerable<TValueObject> GetValues<TValueObject>()
         where TValueObject : ValueObject
         {
             return typeof(TValueObject).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
+                .Select(fieldInfo => fieldInfo.GetValue(null))
+                .Cast<TValueObject>()
+                .ToList();
+        }
+
+        public static IEnumerable<TValueObject> GetAllowValues<TValueObject>()
+        where TValueObject : ValueObject
+        {
+            return typeof(TValueObject).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
+                .Where(fieldInfo => Attribute.GetCustomAttribute(fieldInfo, typeof(AllowValueAttribute)) is AllowValueAttribute allowValue && allowValue.IsAllowed)
                 .Select(fieldInfo => fieldInfo.GetValue(null))
                 .Cast<TValueObject>()
                 .ToList();

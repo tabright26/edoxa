@@ -8,8 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Seedwork.Common.Attributes;
 using eDoxa.Seedwork.Common.Enumerations;
+using eDoxa.Seedwork.Domain.Attributes;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {

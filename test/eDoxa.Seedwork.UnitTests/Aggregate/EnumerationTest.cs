@@ -11,9 +11,9 @@
 using System;
 using System.ComponentModel;
 
-using eDoxa.Seedwork.Common.Attributes;
 using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Domain.Aggregate;
+using eDoxa.Seedwork.Domain.Attributes;
 
 using FluentAssertions;
 

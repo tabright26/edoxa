@@ -10,7 +10,7 @@
 
 using System;
 
-namespace eDoxa.Seedwork.Common.Attributes
+namespace eDoxa.Seedwork.Domain.Attributes
 {
     public sealed class AllowValueAttribute : Attribute
     {

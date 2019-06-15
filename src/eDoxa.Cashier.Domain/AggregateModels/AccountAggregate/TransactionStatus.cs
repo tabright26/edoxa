@@ -10,8 +10,8 @@
 
 using System.ComponentModel;
 
-using eDoxa.Seedwork.Common.Attributes;
 using eDoxa.Seedwork.Domain.Aggregate;
+using eDoxa.Seedwork.Domain.Attributes;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {

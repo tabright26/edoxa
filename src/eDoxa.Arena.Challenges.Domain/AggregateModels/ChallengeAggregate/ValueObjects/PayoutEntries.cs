@@ -11,8 +11,8 @@
 using System;
 using System.Collections.Generic;
 
-using eDoxa.Seedwork.Common.Attributes;
 using eDoxa.Seedwork.Domain.Aggregate;
+using eDoxa.Seedwork.Domain.Attributes;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ValueObjects
 {

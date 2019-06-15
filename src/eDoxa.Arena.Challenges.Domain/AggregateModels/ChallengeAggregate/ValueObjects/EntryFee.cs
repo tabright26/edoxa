@@ -12,9 +12,9 @@ using System.Collections.Generic;
 using System.Globalization;
 
 using eDoxa.Seedwork.Common.Abstactions;
-using eDoxa.Seedwork.Common.Attributes;
 using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Domain.Aggregate;
+using eDoxa.Seedwork.Domain.Attributes;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ValueObjects
 {
