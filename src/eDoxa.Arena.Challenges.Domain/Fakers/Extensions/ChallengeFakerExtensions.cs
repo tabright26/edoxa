@@ -95,7 +95,7 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers.Extensions
 
         public static ChallengeState ChallengeState(this Faker faker, ChallengeState state = null)
         {
-            return state ?? faker.PickRandom(Enumeration<ChallengeState>.GetAllowEnumerations());
+            return state ?? faker.PickRandom(Enumeration<ChallengeState>.GetEnumerations(true));
         }
 
         public static DateTime ChallengeCreatedAt(this Faker faker, Challenge challenge)
