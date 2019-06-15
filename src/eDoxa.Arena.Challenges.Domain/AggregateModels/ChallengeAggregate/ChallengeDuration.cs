@@ -11,19 +11,20 @@
 using System;
 using System.Collections.Generic;
 
+using eDoxa.Seedwork.Common.Attributes;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class ChallengeDuration : ValueObject
     {
-        public static readonly ChallengeDuration OneDay = new ChallengeDuration(TimeSpan.FromDays(1));
-        public static readonly ChallengeDuration TwoDays = new ChallengeDuration(TimeSpan.FromDays(2));
-        public static readonly ChallengeDuration ThreeDays = new ChallengeDuration(TimeSpan.FromDays(3));
-        public static readonly ChallengeDuration FourDays = new ChallengeDuration(TimeSpan.FromDays(4));
-        public static readonly ChallengeDuration FiveDays = new ChallengeDuration(TimeSpan.FromDays(5));
-        public static readonly ChallengeDuration SixDays = new ChallengeDuration(TimeSpan.FromDays(6));
-        public static readonly ChallengeDuration SevenDays = new ChallengeDuration(TimeSpan.FromDays(7));
+        [AllowValue(true)] public static readonly ChallengeDuration OneDay = new ChallengeDuration(TimeSpan.FromDays(1));
+        [AllowValue(true)] public static readonly ChallengeDuration TwoDays = new ChallengeDuration(TimeSpan.FromDays(2));
+        [AllowValue(true)] public static readonly ChallengeDuration ThreeDays = new ChallengeDuration(TimeSpan.FromDays(3));
+        [AllowValue(true)] public static readonly ChallengeDuration FourDays = new ChallengeDuration(TimeSpan.FromDays(4));
+        [AllowValue(true)] public static readonly ChallengeDuration FiveDays = new ChallengeDuration(TimeSpan.FromDays(5));
+        [AllowValue(false)] public static readonly ChallengeDuration SixDays = new ChallengeDuration(TimeSpan.FromDays(6));
+        [AllowValue(false)] public static readonly ChallengeDuration SevenDays = new ChallengeDuration(TimeSpan.FromDays(7));
 
         public ChallengeDuration(TimeSpan timeSpan) : this()
         {

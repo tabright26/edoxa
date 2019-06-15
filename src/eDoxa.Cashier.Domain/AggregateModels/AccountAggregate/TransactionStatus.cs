@@ -10,6 +10,7 @@
 
 using System.ComponentModel;
 
+using eDoxa.Seedwork.Common.Attributes;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
@@ -17,9 +18,9 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
     [TypeConverter(typeof(EnumerationTypeConverter))]
     public sealed class TransactionStatus : Enumeration<TransactionStatus>
     {
-        public static readonly TransactionStatus Pending = new TransactionStatus(1 << 0, nameof(Pending));
-        public static readonly TransactionStatus Completed = new TransactionStatus(1 << 1, nameof(Completed));
-        public static readonly TransactionStatus Failed = new TransactionStatus(1 << 2, nameof(Failed));
+        [AllowValue(false)] public static readonly TransactionStatus Pending = new TransactionStatus(1 << 0, nameof(Pending));
+        [AllowValue(true)] public static readonly TransactionStatus Completed = new TransactionStatus(1 << 1, nameof(Completed));
+        [AllowValue(true)] public static readonly TransactionStatus Failed = new TransactionStatus(1 << 2, nameof(Failed));
 
         public TransactionStatus()
         {

@@ -10,18 +10,19 @@
 
 using System.Globalization;
 
+using eDoxa.Seedwork.Common.Attributes;
 using eDoxa.Seedwork.Common.Enumerations;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
     public sealed class Token : Currency
     {
-        public static readonly Token FiftyThousand = new Token(50000);
-        public static readonly Token OneHundredThousand = new Token(100000);
-        public static readonly Token TwoHundredFiftyThousand = new Token(250000);
-        public static readonly Token FiveHundredThousand = new Token(500000);
-        public static readonly Token OneMillion = new Token(1000000);
-        public static readonly Token FiveMillions = new Token(5000000);
+        [AllowValue(true)] public static readonly Token FiftyThousand = new Token(50000);
+        [AllowValue(true)] public static readonly Token OneHundredThousand = new Token(100000);
+        [AllowValue(true)] public static readonly Token TwoHundredFiftyThousand = new Token(250000);
+        [AllowValue(true)] public static readonly Token FiveHundredThousand = new Token(500000);
+        [AllowValue(true)] public static readonly Token OneMillion = new Token(1000000);
+        [AllowValue(false)] public static readonly Token FiveMillions = new Token(5000000);
 
         public Token(decimal amount) : base(amount, CurrencyType.Token)
         {

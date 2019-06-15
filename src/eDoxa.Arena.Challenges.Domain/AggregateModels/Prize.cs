@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Globalization;
 
 using eDoxa.Seedwork.Common.Abstactions;
+using eDoxa.Seedwork.Common.Attributes;
 using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Domain.Aggregate;
 
@@ -24,7 +25,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels
     {
         private const decimal Factor = 1000M;
 
-        public static readonly Prize None = new Prize(0, CurrencyType.Token);
+        [AllowValue(false)] public static readonly Prize None = new Prize(0, CurrencyType.Token);
 
         public Prize(decimal amount, CurrencyType type) : this()
         {
@@ -40,6 +41,11 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels
         protected Prize()
         {
             // Required by EF Core.
+        }
+
+        public int CompareTo([CanBeNull] object obj)
+        {
+            return Amount.CompareTo(((Prize) obj)?.Amount);
         }
 
         public CurrencyType Type { get; private set; }
@@ -65,11 +71,6 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels
             }
 
             return Amount.ToString(CultureInfo.InvariantCulture);
-        }
-
-        public int CompareTo([CanBeNull] object obj)
-        {
-            return Amount.CompareTo(((Prize) obj)?.Amount);
         }
 
         public Prize ApplyFactor(PrizeFactor factor)

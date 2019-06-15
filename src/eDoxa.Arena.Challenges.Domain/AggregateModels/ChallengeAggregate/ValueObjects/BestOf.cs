@@ -1,5 +1,5 @@
 ﻿// Filename: BestOf.cs
-// Date Created: 2019-06-02
+// Date Created: 2019-06-12
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,16 +10,17 @@
 
 using System.Collections.Generic;
 
+using eDoxa.Seedwork.Common.Attributes;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ValueObjects
 {
     public sealed class BestOf : ValueObject
     {
-        public static readonly BestOf One = new BestOf(1);
-        public static readonly BestOf Three = new BestOf(3);
-        public static readonly BestOf Five = new BestOf(5);
-        public static readonly BestOf Seven = new BestOf(7);
+        [AllowValue(true)] public static readonly BestOf One = new BestOf(1);
+        [AllowValue(true)] public static readonly BestOf Three = new BestOf(3);
+        [AllowValue(false)] public static readonly BestOf Five = new BestOf(5);
+        [AllowValue(false)] public static readonly BestOf Seven = new BestOf(7);
 
         public BestOf(int bestOf) : this()
         {

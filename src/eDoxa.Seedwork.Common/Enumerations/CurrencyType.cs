@@ -10,6 +10,7 @@
 
 using System.ComponentModel;
 
+using eDoxa.Seedwork.Common.Attributes;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Seedwork.Common.Enumerations
@@ -17,8 +18,8 @@ namespace eDoxa.Seedwork.Common.Enumerations
     [TypeConverter(typeof(EnumerationTypeConverter))]
     public sealed class CurrencyType : Enumeration<CurrencyType>
     {
-        public static readonly CurrencyType Money = new CurrencyType(1, nameof(Money));
-        public static readonly CurrencyType Token = new CurrencyType(2, nameof(Token));
+        [AllowValue(true)] public static readonly CurrencyType Money = new CurrencyType(1, nameof(Money));
+        [AllowValue(true)] public static readonly CurrencyType Token = new CurrencyType(2, nameof(Token));
 
         public CurrencyType()
         {

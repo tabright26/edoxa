@@ -9,6 +9,7 @@
 // this source code package.
 
 using eDoxa.Seedwork.Application.Validations.Extensions;
+using eDoxa.Seedwork.Common.Attributes;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 using FluentAssertions;
@@ -112,7 +113,7 @@ namespace eDoxa.Seedwork.UnitTests.Validations
 
         private class MockEnumeration : Enumeration<MockEnumeration>
         {
-            public static readonly MockEnumeration MockEnumeration1 = new MockEnumeration(1 << 0, nameof(MockEnumeration1));
+            [AllowValue(true)] public static readonly MockEnumeration MockEnumeration1 = new MockEnumeration(1 << 0, nameof(MockEnumeration1));
 
             public MockEnumeration()
             {

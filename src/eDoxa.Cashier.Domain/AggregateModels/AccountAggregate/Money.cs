@@ -8,20 +8,21 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Seedwork.Common.Attributes;
 using eDoxa.Seedwork.Common.Enumerations;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
     public sealed class Money : Currency
     {
-        public static readonly Money Five = new Money(5);
-        public static readonly Money Ten = new Money(10);
-        public static readonly Money Twenty = new Money(20);
-        public static readonly Money TwentyFive = new Money(25);
-        public static readonly Money Fifty = new Money(50);
-        public static readonly Money OneHundred = new Money(100);
-        public static readonly Money TwoHundred = new Money(200);
-        public static readonly Money FiveHundred = new Money(500);
+        [AllowValue(true)] public static readonly Money Five = new Money(5);
+        [AllowValue(true)] public static readonly Money Ten = new Money(10);
+        [AllowValue(true)] public static readonly Money Twenty = new Money(20);
+        [AllowValue(true)] public static readonly Money TwentyFive = new Money(25);
+        [AllowValue(true)] public static readonly Money Fifty = new Money(50);
+        [AllowValue(true)] public static readonly Money OneHundred = new Money(100);
+        [AllowValue(false)] public static readonly Money TwoHundred = new Money(200);
+        [AllowValue(false)] public static readonly Money FiveHundred = new Money(500);
 
         public Money(decimal amount) : base(amount, CurrencyType.Money)
         {

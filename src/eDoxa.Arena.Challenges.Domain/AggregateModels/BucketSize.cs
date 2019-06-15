@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 
+using eDoxa.Seedwork.Common.Attributes;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 using JetBrains.Annotations;
@@ -19,7 +20,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels
 {
     public sealed class BucketSize : ValueObject, IComparable
     {
-        public static readonly BucketSize Individual = new BucketSize(1);
+        [AllowValue(false)] public static readonly BucketSize Individual = new BucketSize(1);
 
         public BucketSize(int size) : this()
         {
