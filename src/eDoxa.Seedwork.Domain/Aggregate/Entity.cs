@@ -8,114 +8,29 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Collections.Generic;
-using System.Reflection;
 
 using JetBrains.Annotations;
 
 namespace eDoxa.Seedwork.Domain.Aggregate
 {
-    public abstract partial class Entity<TEntityId> : BaseObject
+    public abstract class Entity<TEntityId> : IEntity
     where TEntityId : EntityId<TEntityId>, new()
     {
-        private const int HashMultiplier = 31;
-
-        private int? _cachedHashCode;
+        private List<IDomainEvent> _domainEvents = new List<IDomainEvent>();
+        private int? _requestedHashCode;
         private TEntityId _id;
 
         protected Entity()
         {
-            _id = new TEntityId();
+            Id = new TEntityId();
         }
 
-        public TEntityId Id
+        public virtual TEntityId Id
         {
             get => _id;
-            protected set => _id = value ?? throw new ArgumentNullException(nameof(Id));
+            protected set => _id = value;
         }
-
-        public static bool operator ==(Entity<TEntityId> left, Entity<TEntityId> right)
-        {
-            return EqualityComparer<Entity<TEntityId>>.Default.Equals(left, right);
-        }
-
-        public static bool operator !=(Entity<TEntityId> left, Entity<TEntityId> right)
-        {
-            return !(left == right);
-        }
-
-        public override bool Equals([CanBeNull] object obj)
-        {
-            var other = obj as Entity<TEntityId>;
-
-            if (other == null)
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(this, other))
-            {
-                return true;
-            }
-
-            if (this.GetType() != other.GetType())
-            {
-                return false;
-            }
-
-            if (this.IsTransient() || other.IsTransient())
-            {
-                return false;
-            }
-
-            return Id == other.Id;
-        }
-
-        public override string ToString()
-        {
-            return Id.ToString();
-        }
-
-        public override int GetHashCode()
-        {
-            if (_cachedHashCode.HasValue)
-            {
-                return _cachedHashCode.Value;
-            }
-
-            if (this.IsTransient())
-            {
-                _cachedHashCode = base.GetHashCode();
-            }
-            else
-            {
-                unchecked
-                {
-                    var hashCode = this.GetType().GetHashCode();
-
-                    _cachedHashCode = (hashCode * HashMultiplier) ^ Id.GetHashCode();
-                }
-            }
-
-            return _cachedHashCode.Value;
-        }
-
-        public bool IsTransient()
-        {
-            return Id == null || Id.IsTransient();
-        }
-
-        protected override PropertyInfo[] TypeSignatureProperties()
-        {
-            return Array.Empty<PropertyInfo>();
-        }
-    }
-
-    public abstract partial class Entity<TEntityId> : IEntity
-    where TEntityId : EntityId<TEntityId>, new()
-    {
-        private List<IDomainEvent> _domainEvents = new List<IDomainEvent>();
 
         public void ClearDomainEvents()
         {
@@ -127,6 +42,65 @@ namespace eDoxa.Seedwork.Domain.Aggregate
         public void AddDomainEvent(IDomainEvent domainEvent)
         {
             _domainEvents.Add(domainEvent);
+        }
+
+        public bool IsTransient()
+        {
+            return Id.IsTransient();
+        }
+
+        public override bool Equals([CanBeNull] object obj)
+        {
+            if (!(obj is Entity<TEntityId>))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (this.GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            var entity = (Entity<TEntityId>) obj;
+
+            if (entity.IsTransient() || this.IsTransient())
+            {
+                return false;
+            }
+
+            return entity.Id == Id;
+        }
+
+        public override int GetHashCode()
+        {
+            if (!this.IsTransient())
+            {
+                if (!_requestedHashCode.HasValue)
+                {
+                    _requestedHashCode = Id.GetHashCode() ^ 31;
+                }
+
+                // XOR for random distribution. See:
+                // https://blogs.msdn.microsoft.com/ericlippert/2011/02/28/guidelines-and-rules-for-gethashcode/
+                return _requestedHashCode.Value;
+            }
+
+            return base.GetHashCode();
+        }
+
+        public static bool operator ==([CanBeNull] Entity<TEntityId> left, [CanBeNull] Entity<TEntityId> right)
+        {
+            return left?.Equals(right) ?? Equals(right, null);
+        }
+
+        public static bool operator !=([CanBeNull] Entity<TEntityId> left, [CanBeNull] Entity<TEntityId> right)
+        {
+            return !(left == right);
         }
     }
 }

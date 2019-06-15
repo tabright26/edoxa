@@ -8,11 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.UnitTests.Reflection.Extensions;
 
 using FluentAssertions;
 
@@ -24,29 +21,14 @@ namespace eDoxa.Seedwork.UnitTests.Aggregate
     public sealed class EntityTest
     {
         [TestMethod]
-        public void Id_NullReference_ShouldThrowArgumentNullException()
-        {
-            // Arrange
-            var entity = new MockEntity();
-
-            // Act
-            var action = new Action(() => entity.SetEntityIdProperty(null));
-
-            // Assert
-            Assert.ThrowsException<ArgumentNullException>(action);
-        }
-
-        [TestMethod]
         public void OperatorEquals_SameEntityId_ShouldBeTrue()
         {
             // Arrange
             var entityId = new MockEntityId();
 
-            var entity1 = new MockEntity();
-            entity1.SetEntityIdProperty(entityId);
+            var entity1 = new MockEntity(entityId);
 
-            var entity2 = new MockEntity();
-            entity2.SetEntityIdProperty(entityId);
+            var entity2 = new MockEntity(entityId);
 
             // Act
             var condition = entity1 == entity2;
@@ -60,12 +42,10 @@ namespace eDoxa.Seedwork.UnitTests.Aggregate
         {
             // Arrange
             var entityId1 = new MockEntityId();
-            var entity1 = new MockEntity();
-            entity1.SetEntityIdProperty(entityId1);
+            var entity1 = new MockEntity(entityId1);
 
             var entityId2 = new MockEntityId();
-            var entity2 = new MockEntity();
-            entity2.SetEntityIdProperty(entityId2);
+            var entity2 = new MockEntity(entityId2);
 
             // Act
             var condition = entity1 == entity2;
@@ -79,12 +59,10 @@ namespace eDoxa.Seedwork.UnitTests.Aggregate
         {
             // Arrange
             var entityId1 = new MockEntityId();
-            var entity1 = new MockEntity();
-            entity1.SetEntityIdProperty(entityId1);
+            var entity1 = new MockEntity(entityId1);
 
             var entityId2 = new MockEntityId();
-            var entity2 = new MockEntity();
-            entity2.SetEntityIdProperty(entityId2);
+            var entity2 = new MockEntity(entityId2);
 
             // Act
             var condition = entity1 != entity2;
@@ -98,12 +76,8 @@ namespace eDoxa.Seedwork.UnitTests.Aggregate
         {
             // Arrange
             var entityId = new MockEntityId();
-
-            var entity1 = new MockEntity();
-            entity1.SetEntityIdProperty(entityId);
-
-            var entity2 = new MockEntity();
-            entity2.SetEntityIdProperty(entityId);
+            var entity1 = new MockEntity(entityId);
+            var entity2 = new MockEntity(entityId);
 
             // Act
             var condition = entity1 != entity2;
@@ -117,12 +91,8 @@ namespace eDoxa.Seedwork.UnitTests.Aggregate
         {
             // Arrange
             var entityId = new MockEntityId();
-
-            var entity1 = new MockEntity();
-            entity1.SetEntityIdProperty(entityId);
-
-            var entity2 = new MockEntity();
-            entity2.SetEntityIdProperty(entityId);
+            var entity1 = new MockEntity(entityId);
+            var entity2 = new MockEntity(entityId);
 
             // Act
             var condition = entity1.Equals(entity2);
@@ -136,12 +106,10 @@ namespace eDoxa.Seedwork.UnitTests.Aggregate
         {
             // Arrange
             var entityId1 = new MockEntityId();
-            var entity1 = new MockEntity();
-            entity1.SetEntityIdProperty(entityId1);
+            var entity1 = new MockEntity(entityId1);
 
             var entityId2 = new MockEntityId();
-            var entity2 = new MockEntity();
-            entity2.SetEntityIdProperty(entityId2);
+            var entity2 = new MockEntity(entityId2);
 
             // Act
             var condition = entity1.Equals(entity2);
@@ -155,10 +123,8 @@ namespace eDoxa.Seedwork.UnitTests.Aggregate
         {
             // Arrange
             var entityId = new MockEntityId();
-            var entity1 = new MockEntity();
-            entity1.SetEntityIdProperty(entityId);
-            var entity2 = new MockEntityWithDomainEvents();
-            entity2.SetEntityIdProperty(entityId);
+            var entity1 = new MockEntity(entityId);
+            var entity2 = new MockEntityWithDomainEvents(entityId);
 
             // Act
             var condition = entity1.Equals(entity2);
@@ -172,10 +138,8 @@ namespace eDoxa.Seedwork.UnitTests.Aggregate
         {
             // Arrange
             var entityId = new MockEntityId();
-            var entity1 = new MockEntity();
-            entity1.SetEntityIdProperty(entityId);
-            var entity2 = new MockEntity();
-            entity2.SetEntityIdProperty(entityId);
+            var entity1 = new MockEntity(entityId);
+            var entity2 = new MockEntity(entityId);
 
             // Act
             var hashCode1 = entity1.GetHashCode();
@@ -184,50 +148,6 @@ namespace eDoxa.Seedwork.UnitTests.Aggregate
             // Assert
             hashCode1.Should().Be(hashCode2);
         }
-
-        //[TestMethod]
-        //public void GetHashCode_CachedHashCodeHasValue_ShouldBeCachedHashCode()
-        //{
-        //    // Arrange
-        //    var cachedHashCode = -54798654;
-        //    var entity = new MockEntity();
-        //    entity.SetPrivateField("_cachedHashCode", cachedHashCode);
-
-        //    // Act
-        //    var hashCode = entity.GetHashCode();
-
-        //    // Assert
-        //    hashCode.Should().Be(cachedHashCode);
-        //}
-
-        //[TestMethod]
-        //public void GetHashCode_IsTransient_ShouldAssignBaseHashCodeToCachedHashCode()
-        //{
-        //    // Arrange
-        //    var entity = new MockEntity();
-        //    entity.SetPrivateField("_cachedHashCode", null);
-        //    entity.SetPrivateField("_id", null);
-
-        //    // Act
-        //    var hashCode = entity.GetHashCode();
-
-        //    // Assert
-        //    entity.GetPrivateField("_cachedHashCode").Should().Be(hashCode);
-        //}
-
-        //[TestMethod]
-        //public void IsTransient_NullEntityId_ShouldBeTrue()
-        //{
-        //    // Arrange            
-        //    var entity = new MockEntity();
-        //    entity.SetPrivateField("_id", null);
-
-        //    // Act
-        //    var condition = entity.IsTransient();
-
-        //    // Assert
-        //    condition.Should().BeTrue();
-        //}
 
         [TestMethod]
         public void IsTransient_NotNullEntityId_ShouldBeFalse()
@@ -275,15 +195,28 @@ namespace eDoxa.Seedwork.UnitTests.Aggregate
 
         private sealed class MockEntityWithDomainEvents : MockEntity
         {
+            public MockEntityWithDomainEvents(MockEntityId mockEntityId)
+            {
+                Id = mockEntityId;
+                this.AddDomainEvent(new MockDomainEvent());
+                this.AddDomainEvent(new MockDomainEvent());
+            }
+
             public MockEntityWithDomainEvents()
             {
-                this.AddDomainEvent(new MockDomainEvent());
-                this.AddDomainEvent(new MockDomainEvent());
             }
         }
 
         private class MockEntity : Entity<MockEntityId>, IAggregateRoot
         {
+            public MockEntity(MockEntityId mockEntityId)
+            {
+                Id = mockEntityId;
+            }
+
+            public MockEntity()
+            {
+            }
         }
 
         private sealed class MockEntityId : EntityId<MockEntityId>
