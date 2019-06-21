@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Arena.Challenges.Domain.Abstractions.Repositories;
+using eDoxa.Arena.Challenges.Domain.Abstractions.Queries;
 using eDoxa.Commands.Abstractions.Validations;
 using eDoxa.Seedwork.Application.Validations.Extensions;
 
@@ -18,7 +18,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Commands.Validations
 {
     public sealed class FakeChallengesCommandValidator : CommandValidator<FakeChallengesCommand>
     {
-        public FakeChallengesCommandValidator(IChallengeRepository challengeRepository)
+        public FakeChallengesCommandValidator(IChallengeQuery challengeQuery)
         {
             this.RuleFor(command => command.Count).ExclusiveBetween(1, 10);
 
@@ -34,7 +34,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Commands.Validations
                 .CustomAsync(
                     async (command, context, cancellationToken) =>
                     {
-                        if (await challengeRepository.ChallengeSeedExistsAsync(command.Seed))
+                        if (await challengeQuery.ChallengeSeedExistsAsync(command.Seed))
                         {
                             context.AddFailure($"This seed was already used: {command.Seed}.");
                         }

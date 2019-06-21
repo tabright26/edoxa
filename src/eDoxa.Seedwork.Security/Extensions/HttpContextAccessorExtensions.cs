@@ -34,13 +34,13 @@ namespace eDoxa.Seedwork.Security.Extensions
             return UserId.Parse(accessor.GetClaimOrDefault(JwtClaimTypes.Subject) ?? throw new NullReferenceException(JwtClaimTypes.Subject));
         }
 
-        public static Func<Game, UserGameReference> FuncUserGameReference(this IHttpContextAccessor accessor)
+        public static Func<Game, GameAccountId> FuncUserGameReference(this IHttpContextAccessor accessor)
         {
             return game =>
             {
                 var userGameReference = accessor.GetClaimOrDefault(game.GetClaimType());
 
-                return userGameReference != null ? new UserGameReference(userGameReference) : null;
+                return userGameReference != null ? new GameAccountId(userGameReference) : null;
             };
         }
     }

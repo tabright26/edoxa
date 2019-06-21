@@ -9,7 +9,6 @@
 // this source code package.
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
 using eDoxa.Arena.Challenges.Domain.Strategies;
 using eDoxa.Arena.Services.LeagueOfLegends.Dtos;
 

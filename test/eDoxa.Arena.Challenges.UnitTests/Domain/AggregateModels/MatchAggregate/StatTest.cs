@@ -10,7 +10,7 @@
 
 using System.Collections.Generic;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Services.LeagueOfLegends.Dtos;
 
 using FluentAssertions;

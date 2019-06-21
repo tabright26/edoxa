@@ -16,105 +16,114 @@ using System.Threading.Tasks;
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Factories;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Strategies;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
-using eDoxa.Arena.Challenges.Domain.DomainEvents;
 using eDoxa.Arena.Challenges.Domain.Factories;
 using eDoxa.Arena.Challenges.Domain.Validators;
+using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Common.Enumerations;
-using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Domain.Extensions;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public class Challenge : Entity<ChallengeId>, IChallenge, IAggregateRoot
     {
-        private HashSet<Participant> _participants;
-        private HashSet<ScoringItem> _scoringItems;
-        private List<Bucket> _buckets;
+        private readonly HashSet<Participant> _participants;
+
+        private IScoring _scoring;
+        private IPayout _payout;
 
         public Challenge(
             Game game,
             ChallengeName name,
             ChallengeSetup setup,
             ChallengeDuration duration,
-            int? seed = null
-        ) : this()
+            IDateTimeProvider provider
+        )
         {
             Game = game;
             Name = name;
             Setup = setup;
             Timeline = new ChallengeTimeline(duration);
-            Seed = seed;
+            CreatedAt = provider.DateTime;
+            LastSync = null;
+            _participants = new HashSet<Participant>();
             this.ApplyScoringStrategy(ScoringFactory.Instance.CreateStrategy(this));
             this.ApplyPayoutStrategy(PayoutFactory.Instance.CreateStrategy(this));
         }
 
-        private Challenge()
-        {
-            CreatedAt = DateTime.UtcNow;
-            LastSync = null;
-            _scoringItems = new HashSet<ScoringItem>();
-            _participants = new HashSet<Participant>();
-            _buckets = new List<Bucket>();
-        }
-
-        public IReadOnlyCollection<ScoringItem> ScoringItems => _scoringItems;
-
-        public IReadOnlyCollection<Bucket> Buckets => _buckets;
-
-        public int? Seed { get; private set; }
-
-        public DateTime CreatedAt { get; private set; }
+        public DateTime CreatedAt { get; }
 
         public DateTime? LastSync { get; private set; }
 
-        public Game Game { get; private set; }
+        public Game Game { get; }
 
-        public ChallengeName Name { get; private set; }
+        public ChallengeName Name { get; }
 
-        public ChallengeSetup Setup { get; private set; }
+        public ChallengeSetup Setup { get; }
 
         public ChallengeTimeline Timeline { get; private set; }
 
         public ChallengeState State => Timeline.State;
 
-        public IReadOnlyCollection<Participant> Participants
-        {
-            get => _participants;
-            private set => _participants = new HashSet<Participant>(value);
-        }
+        public IScoring Scoring => _scoring;
 
-        public IScoring Scoring => new Scoring(ScoringItems);
+        public IPayout Payout => _payout;
 
-        public IPayout Payout => new Payout(new Buckets(Buckets));
+        public IReadOnlyCollection<Participant> Participants => _participants;
 
-        public IScoreboard Scoreboard => new Scoreboard(Participants);
+        public IScoreboard Scoreboard => new Scoreboard(_participants, Setup.BestOf);
 
-        public async Task SynchronizeAsync(IMatchReferencesFactory matchReferencesFactory, IMatchStatsFactory matchStatsFactory)
+        public async Task SynchronizeAsync(IGameMatchIdsFactory gameMatchIdsFactory, IMatchStatsFactory matchStatsFactory)
         {
             foreach (var participant in Participants.Where(participant => !participant.HasFinalScore(Timeline))
-                .OrderBy(participant => participant.LastSync)
+                .OrderBy(participant => participant.SynchronizedAt)
                 .ToList())
             {
-                await this.SynchronizeAsync(matchReferencesFactory, matchStatsFactory, participant);
+                await this.SynchronizeAsync(gameMatchIdsFactory, matchStatsFactory, participant);
 
-                participant.Sync();
+                participant.Synchronize(new UtcNowDateTimeProvider());
             }
 
             LastSync = DateTime.UtcNow;
         }
 
+        //public void DistributeParticipantPrizes()
+        //{
+        //    this.AddDomainEvent(new ChallengePayoutDomainEvent(Id, Payout.GetParticipantPrizes(Scoreboard)));
+        //}
+
+        public Participant Register(Participant participant)
+        {
+            if (!this.CanRegister(participant))
+            {
+                throw new InvalidOperationException();
+            }
+
+            _participants.Add(participant);
+
+            this.TryStart();
+
+            return participant;
+        }
+
+        public void ApplyScoring(IScoring scoring)
+        {
+            _scoring = scoring;
+        }
+
+        public void ApplyPayout(IPayout payout)
+        {
+            _payout = payout;
+        }
+
         private void ApplyScoringStrategy(IScoringStrategy strategy)
         {
-            strategy.Scoring.ForEach(stat => _scoringItems.Add(new ScoringItem(stat.Key, stat.Value)));
+            this.ApplyScoring(strategy.Scoring);
         }
 
         private void ApplyPayoutStrategy(IPayoutStrategy strategy)
         {
-            strategy.Payout.Buckets.ForEach(bucket => _buckets.Add(bucket));
+            this.ApplyPayout(strategy.Payout);
         }
 
         internal bool LastSyncMoreThan(TimeSpan timeSpan)
@@ -122,14 +131,14 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             return LastSync.HasValue && LastSync.Value + timeSpan < DateTime.UtcNow;
         }
 
-        private async Task SynchronizeAsync(IMatchReferencesFactory matchReferencesFactory, IMatchStatsFactory matchStatsFactory, Participant participant)
+        private async Task SynchronizeAsync(IGameMatchIdsFactory gameMatchIdsFactory, IMatchStatsFactory matchStatsFactory, Participant participant)
         {
-            var adapter = await matchReferencesFactory.CreateAdapterAsync(Game, participant.UserGameReference, Timeline);
+            var adapter = await gameMatchIdsFactory.CreateAdapterAsync(Game, participant.GameAccountId, Timeline);
 
-            await this.SynchronizeAsync(adapter.MatchReferences, matchStatsFactory, participant);
+            await this.SynchronizeAsync(adapter.GameMatchIds, matchStatsFactory, participant);
         }
 
-        private async Task SynchronizeAsync(IEnumerable<MatchReference> matchReferences, IMatchStatsFactory matchStatsFactory, Participant participant)
+        private async Task SynchronizeAsync(IEnumerable<GameMatchId> matchReferences, IMatchStatsFactory matchStatsFactory, Participant participant)
         {
             foreach (var matchReference in participant.GetUnsynchronizedMatchReferences(matchReferences))
             {
@@ -137,16 +146,20 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             }
         }
 
-        private async Task SnapshotParticipantMatchAsync(Participant participant, MatchReference matchReference, IMatchStatsFactory factory)
+        private async Task SnapshotParticipantMatchAsync(Participant participant, GameMatchId gameMatchId, IMatchStatsFactory factory)
         {
-            var adapter = await factory.CreateAdapter(Game, participant.UserGameReference, matchReference);
+            var adapter = await factory.CreateAdapter(Game, participant.GameAccountId, gameMatchId);
 
-            this.SnapshotParticipantMatch(participant, matchReference, adapter.MatchStats);
+            this.SnapshotParticipantMatch(participant, gameMatchId, adapter.MatchStats);
         }
 
-        internal void SnapshotParticipantMatch(Participant participant, MatchReference matchReference, IMatchStats matchStats)
+        internal void SnapshotParticipantMatch(Participant participant, GameMatchId gameMatchId, IMatchStats matchStats)
         {
-            participant.SnapshotMatch(matchReference, matchStats);
+            var match = new Match(gameMatchId, new UtcNowDateTimeProvider());
+
+            match.SnapshotStats(Scoring, matchStats);
+
+            participant.Synchronize(match);
         }
 
         public void TryClose(Action closeChallenge)
@@ -159,30 +172,9 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             }
         }
 
-        public void DistributeParticipantPrizes()
+        private bool CanRegister(Participant participant)
         {
-            this.AddDomainEvent(new ChallengePayoutDomainEvent(Id, Payout.GetParticipantPrizes(Scoreboard)));
-        }
-
-        public Participant RegisterParticipant(UserId userId, UserGameReference userGameReference)
-        {
-            if (!this.CanRegisterParticipant(userId))
-            {
-                throw new InvalidOperationException();
-            }
-
-            var participant = new Participant(this, userId, userGameReference);
-
-            _participants.Add(participant);
-
-            this.TryStart();
-
-            return participant;
-        }
-
-        private bool CanRegisterParticipant(UserId userId)
-        {
-            return new RegisterParticipantValidator(userId).Validate(this).IsValid;
+            return new RegisterParticipantValidator(participant.UserId).Validate(this).IsValid;
         }
 
         internal bool CanStart()

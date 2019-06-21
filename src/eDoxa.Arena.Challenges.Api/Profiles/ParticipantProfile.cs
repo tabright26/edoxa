@@ -8,12 +8,11 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Linq;
-
 using AutoMapper;
 
-using eDoxa.Arena.Challenges.Api.ViewModels;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
+using eDoxa.Arena.Challenges.Api.Profiles.Resolvers;
+using eDoxa.Arena.Challenges.Domain.ViewModels;
+using eDoxa.Arena.Challenges.Infrastructure.Models;
 
 namespace eDoxa.Arena.Challenges.Api.Profiles
 {
@@ -21,11 +20,11 @@ namespace eDoxa.Arena.Challenges.Api.Profiles
     {
         public ParticipantProfile()
         {
-            this.CreateMap<Participant, ParticipantViewModel>()
-                .ForMember(participant => participant.Id, config => config.MapFrom(participant => participant.Id.ToGuid()))
-                .ForMember(participant => participant.UserId, config => config.MapFrom(participant => participant.UserId.ToGuid()))
-                .ForMember(participant => participant.AverageScore, config => config.MapFrom(participant => participant.AverageScore))
-                .ForMember(participant => participant.Matches, config => config.MapFrom(participant => participant.Matches.OrderBy(match => match.Timestamp)));
+            this.CreateMap<ParticipantModel, ParticipantViewModel>()
+                .ForMember(participant => participant.Id, config => config.MapFrom(participant => participant.Id))
+                .ForMember(participant => participant.UserId, config => config.MapFrom(participant => participant.UserId))
+                .ForMember(participant => participant.Matches, config => config.MapFrom(participant => participant.Matches))
+                .ForMember(participant => participant.AverageScore, config => config.MapFrom<ParticipantScoreResolver>());
         }
     }
 }

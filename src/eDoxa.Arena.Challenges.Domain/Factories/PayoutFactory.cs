@@ -12,6 +12,7 @@ using System;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Strategies;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Strategies;
 
 namespace eDoxa.Arena.Challenges.Domain.Factories
@@ -24,7 +25,12 @@ namespace eDoxa.Arena.Challenges.Domain.Factories
 
         public IPayoutStrategy CreateStrategy(IChallenge challenge)
         {
-            return new PayoutStrategy(challenge.Setup.PayoutEntries, challenge.Setup.EntryFee);
+            return this.CreateStrategy(challenge.Setup.PayoutEntries, challenge.Setup.EntryFee);
+        }
+
+        public IPayoutStrategy CreateStrategy(PayoutEntries payoutEntries, EntryFee entryFee)
+        {
+            return new PayoutStrategy(payoutEntries, entryFee);
         }
     }
 }

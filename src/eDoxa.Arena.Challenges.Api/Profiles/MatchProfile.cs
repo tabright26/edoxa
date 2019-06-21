@@ -8,12 +8,11 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Linq;
-
 using AutoMapper;
 
-using eDoxa.Arena.Challenges.Api.ViewModels;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
+using eDoxa.Arena.Challenges.Api.Profiles.Resolvers;
+using eDoxa.Arena.Challenges.Domain.ViewModels;
+using eDoxa.Arena.Challenges.Infrastructure.Models;
 
 namespace eDoxa.Arena.Challenges.Api.Profiles
 {
@@ -21,11 +20,11 @@ namespace eDoxa.Arena.Challenges.Api.Profiles
     {
         public MatchProfile()
         {
-            this.CreateMap<Match, MatchViewModel>()
-                .ForMember(match => match.Id, config => config.MapFrom(match => match.Id.ToGuid()))
+            this.CreateMap<MatchModel, MatchViewModel>()
+                .ForMember(match => match.Id, config => config.MapFrom(match => match.Id))
                 .ForMember(match => match.Timestamp, config => config.MapFrom(match => match.Timestamp))
-                .ForMember(match => match.TotalScore, config => config.MapFrom<decimal>(match => match.TotalScore))
-                .ForMember(match => match.Stats, config => config.MapFrom(match => match.Stats.OrderBy(stat => stat.Name)));
+                .ForMember(match => match.Stats, config => config.MapFrom(match => match.Stats))
+                .ForMember(match => match.TotalScore, config => config.MapFrom<MatchScoreResolver>());
         }
     }
 }

@@ -30,7 +30,6 @@ namespace eDoxa.Arena.Challenges.UnitTests.Asserts
         internal static void IsLoaded(Challenge challenge)
         {
             challenge.Should().NotBeNull();
-            challenge.Id.ToGuid().Should().NotBeEmpty();
             challenge.Game.Should().NotBe(null);
             challenge.Name.ToString().Should().NotBeNullOrWhiteSpace();
             challenge.Setup.Should().NotBeNull();
@@ -38,17 +37,15 @@ namespace eDoxa.Arena.Challenges.UnitTests.Asserts
 
             foreach (var participant in challenge.Participants)
             {
-                participant.Id.ToGuid().Should().NotBeEmpty();
-                participant.Timestamp.Should().BeBefore(DateTime.UtcNow);
-                participant.UserGameReference.ToString().Should().NotBeNullOrWhiteSpace();
+                participant.RegisteredAt.Should().BeBefore(DateTime.UtcNow);
+                participant.GameAccountId.ToString().Should().NotBeNullOrWhiteSpace();
                 participant.UserId.ToGuid().Should().NotBeEmpty();
                 participant.Matches.Should().NotBeNullOrEmpty();
 
                 foreach (var match in participant.Matches)
                 {
-                    match.Id.ToGuid().Should().NotBeEmpty();
-                    match.Timestamp.Should().BeBefore(DateTime.UtcNow);
-                    match.Reference.ToString().Should().NotBeNullOrWhiteSpace();
+                    match.SynchronizedAt.Should().BeBefore(DateTime.UtcNow);
+                    match.GameMatchId.ToString().Should().NotBeNullOrWhiteSpace();
                     match.TotalScore.Should().NotBeNull();
                     match.Stats.Should().NotBeNullOrEmpty();
 

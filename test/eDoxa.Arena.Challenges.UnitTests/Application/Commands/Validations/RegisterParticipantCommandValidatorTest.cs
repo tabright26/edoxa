@@ -10,7 +10,7 @@
 
 using eDoxa.Arena.Challenges.Api.Application.Commands;
 using eDoxa.Arena.Challenges.Api.Application.Commands.Validations;
-using eDoxa.Arena.Challenges.Domain.Abstractions.Repositories;
+using eDoxa.Arena.Challenges.Domain.Abstractions.Queries;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.UnitTests.Extensions;
 
@@ -27,14 +27,14 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Commands.Validations
     public sealed class RegisterParticipantCommandValidatorTest
     {
         private Mock<IHttpContextAccessor> _mockHttpContextAccessor;
-        private Mock<IChallengeRepository> _mockChallengeRepository;
+        private Mock<IChallengeQuery> _mockChallengeRepository;
 
         [TestInitialize]
         public void TestInitialize()
         {
             _mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
             _mockHttpContextAccessor.SetupClaims();
-            _mockChallengeRepository = new Mock<IChallengeRepository>();
+            _mockChallengeRepository = new Mock<IChallengeQuery>();
         }
 
         [TestMethod]

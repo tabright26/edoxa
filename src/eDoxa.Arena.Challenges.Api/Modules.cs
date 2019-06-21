@@ -10,14 +10,14 @@
 
 using Autofac;
 
-using eDoxa.Arena.Challenges.Api.Application.Abstractions;
-using eDoxa.Arena.Challenges.Api.Application.Queries;
+using eDoxa.Arena.Challenges.Api.Application.Services;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Factories;
+using eDoxa.Arena.Challenges.Domain.Abstractions.Queries;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Repositories;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Services;
 using eDoxa.Arena.Challenges.Domain.Factories;
-using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.Infrastructure;
+using eDoxa.Arena.Challenges.Infrastructure.Queries;
 using eDoxa.Arena.Challenges.Infrastructure.Repositories;
 using eDoxa.Commands;
 using eDoxa.IntegrationEvents;
@@ -42,10 +42,6 @@ namespace eDoxa.Arena.Challenges.Api
             // Repositories
             builder.RegisterType<ChallengeRepository>().As<IChallengeRepository>().InstancePerLifetimeScope();
 
-            builder.RegisterType<ParticipantRepository>().As<IParticipantRepository>().InstancePerLifetimeScope();
-
-            builder.RegisterType<MatchRepository>().As<IMatchRepository>().InstancePerLifetimeScope();
-
             // Queries
             builder.RegisterType<ChallengeQuery>().As<IChallengeQuery>().InstancePerLifetimeScope();
 
@@ -57,7 +53,7 @@ namespace eDoxa.Arena.Challenges.Api
             builder.RegisterType<ChallengeService>().As<IChallengeService>().InstancePerLifetimeScope();
 
             // Factories
-            builder.RegisterType<MatchReferencesFactory>().As<IMatchReferencesFactory>().SingleInstance();
+            builder.RegisterType<GameMatchIdsFactory>().As<IGameMatchIdsFactory>().SingleInstance();
 
             builder.RegisterType<MatchStatsFactory>().As<IMatchStatsFactory>().SingleInstance();
         }

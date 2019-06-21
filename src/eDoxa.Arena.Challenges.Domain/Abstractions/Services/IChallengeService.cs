@@ -14,7 +14,6 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.ValueObjects;
 
@@ -22,7 +21,7 @@ namespace eDoxa.Arena.Challenges.Domain.Abstractions.Services
 {
     public interface IChallengeService
     {
-        Task<IEnumerable<Challenge>> FakeChallengesAsync(
+        Task<IEnumerable<IChallenge>> FakeChallengesAsync(
             int count,
             int seed,
             Game game = null,
@@ -34,7 +33,7 @@ namespace eDoxa.Arena.Challenges.Domain.Abstractions.Services
         Task<Participant> RegisterParticipantAsync(
             ChallengeId challengeId,
             UserId userId,
-            Func<Game, UserGameReference> funcUserGameReference,
+            Func<Game, GameAccountId> funcUserGameReference,
             CancellationToken cancellationToken = default
         );
 

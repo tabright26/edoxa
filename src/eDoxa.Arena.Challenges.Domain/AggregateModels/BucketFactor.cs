@@ -8,6 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels
 {
     public sealed class BucketFactor

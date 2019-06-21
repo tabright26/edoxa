@@ -197,7 +197,7 @@ namespace eDoxa.Seedwork.UnitTests.Aggregate
         {
             public MockEntityWithDomainEvents(MockEntityId mockEntityId)
             {
-                Id = mockEntityId;
+                this.SetEntityId(mockEntityId);
                 this.AddDomainEvent(new MockDomainEvent());
                 this.AddDomainEvent(new MockDomainEvent());
             }
@@ -211,7 +211,7 @@ namespace eDoxa.Seedwork.UnitTests.Aggregate
         {
             public MockEntity(MockEntityId mockEntityId)
             {
-                Id = mockEntityId;
+                this.SetEntityId(mockEntityId);
             }
 
             public MockEntity()

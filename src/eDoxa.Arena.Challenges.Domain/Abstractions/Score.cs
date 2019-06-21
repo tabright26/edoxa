@@ -20,31 +20,31 @@ namespace eDoxa.Arena.Challenges.Domain.Abstractions
 {
     public abstract class Score : ValueObject, IComparable
     {
+        private readonly decimal _score;
+
         protected Score(decimal score)
         {
-            Value = Math.Round(score, 2);
+            _score = score;
         }
-
-        public decimal Value { get; private set; }
 
         public int CompareTo([CanBeNull] object obj)
         {
-            return Value.CompareTo(((Score) obj)?.Value);
+            return _score.CompareTo(((Score) obj)?._score);
         }
 
         public static implicit operator decimal(Score score)
         {
-            return score.Value;
+            return score._score;
         }
 
         public override string ToString()
         {
-            return Value.ToString(CultureInfo.InvariantCulture);
+            return _score.ToString(CultureInfo.InvariantCulture);
         }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
-            yield return Value;
+            yield return _score;
         }
     }
 }

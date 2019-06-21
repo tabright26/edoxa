@@ -8,6 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.ComponentModel;
 
 using eDoxa.Seedwork.Domain.Aggregate;
@@ -29,6 +30,18 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         private ChallengeState(int value, string name) : base(value, name)
         {
+        }
+
+        public static ChallengeState From(ChallengeTimeline timeline)
+        {
+            return Resolve(timeline.Duration, timeline.StartedAt, timeline.ClosedAt);
+        }
+
+        public static ChallengeState Resolve(TimeSpan duration, DateTime? startedAt, DateTime? closedAt)
+        {
+            var endedAt = startedAt + duration;
+
+            return closedAt != null ? Closed : endedAt != null && endedAt <= DateTime.UtcNow ? Ended : startedAt != null ? InProgress : Inscription;
         }
     }
 }

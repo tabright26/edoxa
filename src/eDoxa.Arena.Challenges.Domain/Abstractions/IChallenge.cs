@@ -14,15 +14,13 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions.Factories;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Seedwork.Common.Enumerations;
+using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Arena.Challenges.Domain.Abstractions
 {
-    public interface IChallenge
+    public interface IChallenge : IEntity<ChallengeId>
     {
-        ChallengeId Id { get; }
-
         DateTime CreatedAt { get; }
 
         DateTime? LastSync { get; }
@@ -45,6 +43,8 @@ namespace eDoxa.Arena.Challenges.Domain.Abstractions
 
         IReadOnlyCollection<Participant> Participants { get; }
 
-        Task SynchronizeAsync(IMatchReferencesFactory matchReferencesFactory, IMatchStatsFactory matchStatsFactory);
+        Task SynchronizeAsync(IGameMatchIdsFactory gameMatchIdsFactory, IMatchStatsFactory matchStatsFactory);
+
+        Participant Register(Participant participant);
     }
 }

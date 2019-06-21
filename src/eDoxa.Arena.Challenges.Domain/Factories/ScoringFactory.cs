@@ -25,7 +25,12 @@ namespace eDoxa.Arena.Challenges.Domain.Factories
 
         public IScoringStrategy CreateStrategy(IChallenge challenge)
         {
-            if (challenge.Game == Game.LeagueOfLegends)
+            return this.CreateStrategy(challenge.Game);
+        }
+
+        public IScoringStrategy CreateStrategy(Game game)
+        {
+            if (game == Game.LeagueOfLegends)
             {
                 return new LeagueOfLegendsScoringStrategy();
             }

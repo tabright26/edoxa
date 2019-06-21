@@ -8,15 +8,13 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-
 using AutoMapper;
 
-using eDoxa.Arena.Challenges.Api.ViewModels;
-using eDoxa.Arena.Challenges.Domain.Fakers;
+using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
+using eDoxa.Arena.Challenges.Domain.ViewModels;
 using eDoxa.Arena.Challenges.UnitTests.Asserts;
+using eDoxa.Arena.Challenges.UnitTests.Utilities;
 
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
@@ -24,6 +22,8 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
     [TestClass]
     public sealed class ChallengeQueryTest
     {
+        private static readonly IMapper Mapper = MapperBuilder.CreateMapper();
+
         [TestMethod]
         public void M()
         {
@@ -32,24 +32,11 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
 
             var challenge = challengeFaker.Generate();
 
-            var mapper = CreateMapper();
-
             // Act
-            var challengeViewModel = mapper.Map<ChallengeViewModel>(challenge);
+            var challengeViewModel = Mapper.Map<ChallengeViewModel>(challenge);
 
             // Assert
             ChallengeQueryAssert.IsMapped(challengeViewModel);
-        }
-
-        private static IMapper CreateMapper()
-        {
-            var services = new ServiceCollection();
-
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
-            var provider = services.BuildServiceProvider();
-
-            return provider.GetService<IMapper>();
         }
     }
 }

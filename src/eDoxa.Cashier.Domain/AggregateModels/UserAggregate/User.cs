@@ -24,10 +24,10 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
     {
         public User(UserId userId, string connectAccountId, string customerId) : this()
         {
-            Id = userId;
             ConnectAccountId = connectAccountId;
             CustomerId = customerId;
             Account = new Account(this);
+            this.SetEntityId(userId);
         }
 
         private User()

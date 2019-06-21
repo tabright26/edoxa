@@ -24,11 +24,11 @@ namespace eDoxa.Seedwork.Common.Extensions
             return ValueObjects.UserId.FromGuid(faker.Random.Guid());
         }
 
-        public static UserGameReference UserGameReference(this Faker faker, Game game)
+        public static GameAccountId UserGameReference(this Faker faker, Game game)
         {
             if (game == Game.LeagueOfLegends)
             {
-                return new UserGameReference(faker.Random.Replace("*****_*************************"));
+                return new GameAccountId(faker.Random.Replace("*****_*************************"));
             }
 
             throw new ArgumentNullException(nameof(game));

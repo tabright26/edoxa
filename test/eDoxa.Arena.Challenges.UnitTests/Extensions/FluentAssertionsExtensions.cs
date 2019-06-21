@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Domain.Extensions;
@@ -21,12 +22,12 @@ namespace eDoxa.Arena.Challenges.UnitTests.Extensions
 {
     public static class FluentAssertionsExtensions
     {
-        public static void ShouldBeValidObjectState(this IEnumerable<Challenge> challenges)
+        public static void ShouldBeValidObjectState(this IEnumerable<IChallenge> challenges)
         {
             challenges.ForEach(challenge => challenge.ShouldBeValidObjectState());
         }
 
-        public static void ShouldBeValidObjectState(this Challenge challenge)
+        public static void ShouldBeValidObjectState(this IChallenge challenge)
         {
             challenge.Payout.Buckets.Should().NotBeNullOrEmpty();
 
@@ -43,9 +44,9 @@ namespace eDoxa.Arena.Challenges.UnitTests.Extensions
             challenge.Participants.ForEach(
                 participant =>
                 {
-                    challenge.LastSync?.Should().BeAfter(participant.Timestamp);
+                    challenge.LastSync?.Should().BeAfter(participant.RegisteredAt);
 
-                    participant.Timestamp.Should().BeAfter(challenge.CreatedAt);
+                    participant.RegisteredAt.Should().BeAfter(challenge.CreatedAt);
 
                     if (challenge.State != ChallengeState.Inscription)
                     {
@@ -55,28 +56,28 @@ namespace eDoxa.Arena.Challenges.UnitTests.Extensions
                     participant.Matches.ForEach(
                         match =>
                         {
-                            challenge.LastSync?.Should().BeOnOrAfter(match.Timestamp);
+                            challenge.LastSync?.Should().BeOnOrAfter(match.SynchronizedAt);
 
-                            participant.LastSync?.Should().BeOnOrAfter(match.Timestamp);
+                            participant.SynchronizedAt?.Should().BeOnOrAfter(match.SynchronizedAt);
 
-                            match.Timestamp.Should().BeAfter(participant.Timestamp);
+                            match.SynchronizedAt.Should().BeAfter(participant.RegisteredAt);
                         }
                     );
                 }
             );
 
-            challenge.Participants.Select(participant => participant.Id).Distinct().Should().HaveCount(challenge.Participants.Count);
+            //challenge.Participants.Select(participant => participant.Id).Distinct().Should().HaveCount(challenge.Participants.Count);
 
-            challenge.Participants.Select(participant => participant.UserId).Distinct().Should().HaveCount(challenge.Participants.Count);
+            //challenge.Participants.Select(participant => participant.UserId).Distinct().Should().HaveCount(challenge.Participants.Count);
+
+            //challenge.Participants.SelectMany(participant => participant.Matches)
+            //    .Select(match => match.Id)
+            //    .Distinct()
+            //    .Should()
+            //    .HaveCount(challenge.Participants.SelectMany(participant => participant.Matches).Count());
 
             challenge.Participants.SelectMany(participant => participant.Matches)
-                .Select(match => match.Id)
-                .Distinct()
-                .Should()
-                .HaveCount(challenge.Participants.SelectMany(participant => participant.Matches).Count());
-
-            challenge.Participants.SelectMany(participant => participant.Matches)
-                .Select(match => match.Reference)
+                .Select(match => match.GameMatchId)
                 .Distinct()
                 .Should()
                 .HaveCount(challenge.Participants.SelectMany(participant => participant.Matches).Count());

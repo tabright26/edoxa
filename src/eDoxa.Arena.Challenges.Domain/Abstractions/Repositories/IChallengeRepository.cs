@@ -9,37 +9,27 @@
 // this source code package.
 
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Common.Enumerations;
-using eDoxa.Seedwork.Common.ValueObjects;
-using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Specifications.Abstractions;
-
-using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Domain.Abstractions.Repositories
 {
-    public interface IChallengeRepository : IRepository<Challenge>
+    public interface IChallengeRepository
     {
-        void Create(Challenge challenge);
+        void Create(IChallenge challenge);
 
-        void Create(IEnumerable<Challenge> challenges);
+        void Create(IEnumerable<IChallenge> challenges);
 
-        Task<IReadOnlyCollection<Challenge>> FindChallengesAsync(Game game = null, ChallengeState state = null);
+        Task<IReadOnlyCollection<IChallenge>> FindChallengesAsync(Game game = null, ChallengeState state = null);
 
-        Task<IReadOnlyCollection<Challenge>> FindChallengesAsync(ISpecification<Challenge> specification);
+        Task<IReadOnlyCollection<IChallenge>> FindChallengesAsync(ISpecification<IChallenge> specification);
 
-        Task<Challenge> FindChallengeAsync(ChallengeId challengeId);
+        Task<IChallenge> FindChallengeAsync(ChallengeId challengeId);
 
-        Task<IReadOnlyCollection<Challenge>> FindUserChallengeHistoryAsNoTrackingAsync(UserId userId, Game game = null, ChallengeState state = null);
-
-        Task<IReadOnlyCollection<Challenge>> FindChallengesAsNoTrackingAsync(Game game = null, ChallengeState state = null);
-
-        [ItemCanBeNull]
-        Task<Challenge> FindChallengeAsNoTrackingAsync(ChallengeId challengeId);
-
-        Task<bool> ChallengeSeedExistsAsync(int seed);
+        Task CommitAsync(CancellationToken cancellationToken = default);
     }
 }

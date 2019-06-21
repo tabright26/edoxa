@@ -14,8 +14,8 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Services;
+using eDoxa.Arena.Challenges.Domain.ViewModels;
 using eDoxa.Commands.Abstractions.Handlers;
 
 using JetBrains.Annotations;

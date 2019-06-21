@@ -16,15 +16,11 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using eDoxa.Arena.Challenges.Api;
-using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.Fakers;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Seedwork.Security.Constants;
 using eDoxa.Seedwork.Testing.TestServer;
 using eDoxa.Seedwork.Testing.TestServer.Extensions;
-
-using FluentAssertions;
 
 using IdentityModel;
 
@@ -71,26 +67,26 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
             await _dbContext.SaveChangesAsync();
         }
 
-        [TestMethod]
-        public async Task T1()
-        {
-            var challengeFaker = new ChallengeFaker(state: ChallengeState.Closed);
+        //[TestMethod]
+        //public async Task T1()
+        //{
+        //    var challengeFaker = new ChallengeFaker(state: ChallengeState.Closed);
 
-            var challenge = challengeFaker.Generate();
+        //    var challenge = challengeFaker.Generate();
 
-            _dbContext.Challenges.Add(challenge);
+        //    _dbContext.Challenges.Add(challenge);
 
-            await _dbContext.SaveChangesAsync();
+        //    await _dbContext.SaveChangesAsync();
 
-            var response = await this.ExecuteAsync(challenge.Id);
+        //    var response = await this.ExecuteAsync(challenge.Id);
 
-            response.EnsureSuccessStatusCode();
+        //    response.EnsureSuccessStatusCode();
 
-            var challengeViewModel1 = await response.DeserializeAsync<ChallengeViewModel>();
+        //    var challengeViewModel1 = await response.DeserializeAsync<ChallengeViewModel>();
 
-            var challengeViewModel2 = _mapper.Deserialize<ChallengeViewModel>(challenge);
+        //    var challengeViewModel2 = _mapper.Deserialize<ChallengeViewModel>(challenge);
 
-            challengeViewModel1.Should().BeEquivalentTo(challengeViewModel2);
-        }
+        //    challengeViewModel1.Should().BeEquivalentTo(challengeViewModel2);
+        //}
     }
 }

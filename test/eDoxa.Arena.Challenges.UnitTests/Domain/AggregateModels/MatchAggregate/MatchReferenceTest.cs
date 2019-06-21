@@ -10,7 +10,7 @@
 
 using System;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Testing.TestConstructor;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -23,10 +23,10 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.MatchAggregate
         [TestMethod]
         public void Constructor_Tests()
         {
-            const string message = "Match reference validation failed.";
+            const string message = "Game match id validation failed.";
 
-            TestConstructor<MatchReference>.ForParameters(typeof(string))
-                .WithClassName("MatchReference")
+            TestConstructor<GameMatchId>.ForParameters(typeof(string))
+                .WithClassName("GameMatchId")
                 .Failure(new object[] {null}, typeof(ArgumentException), message)
                 .Failure(new object[] {"  "}, typeof(ArgumentException), message)
                 .Failure(new object[] {"9i8h7g 6f5e4d3 c2b1a0"}, typeof(ArgumentException), message)
@@ -42,10 +42,10 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.MatchAggregate
         [TestMethod]
         public void Constructor_TypeOfGuid_Tests()
         {
-            const string message = "Match reference validation failed.";
+            const string message = "Game match id validation failed.";
 
-            TestConstructor<MatchReference>.ForParameters(typeof(Guid))
-                .WithClassName("MatchReference")
+            TestConstructor<GameMatchId>.ForParameters(typeof(Guid))
+                .WithClassName("GameMatchId")
                 .Failure(new object[] {Guid.Empty}, typeof(ArgumentException), message)
                 .Success(new object[] {Guid.NewGuid()}, message)
                 .Assert();

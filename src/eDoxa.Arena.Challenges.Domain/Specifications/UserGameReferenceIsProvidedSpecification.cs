@@ -19,16 +19,16 @@ namespace eDoxa.Arena.Challenges.Domain.Specifications
 {
     public sealed class UserGameReferenceIsProvidedSpecification : Specification<Challenge>
     {
-        private readonly UserGameReference _userGameReference;
+        private readonly GameAccountId _gameAccountId;
 
-        public UserGameReferenceIsProvidedSpecification(UserGameReference userGameReference)
+        public UserGameReferenceIsProvidedSpecification(GameAccountId gameAccountId)
         {
-            _userGameReference = userGameReference;
+            _gameAccountId = gameAccountId;
         }
 
         public override Expression<Func<Challenge, bool>> ToExpression()
         {
-            return challenge => _userGameReference != null;
+            return challenge => _gameAccountId != null;
         }
     }
 }

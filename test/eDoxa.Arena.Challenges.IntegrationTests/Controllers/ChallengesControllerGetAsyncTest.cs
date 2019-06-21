@@ -16,10 +16,10 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using eDoxa.Arena.Challenges.Api;
-using eDoxa.Arena.Challenges.Api.ViewModels;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.Fakers;
+using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
+using eDoxa.Arena.Challenges.Domain.ViewModels;
 using eDoxa.Arena.Challenges.Infrastructure;
+using eDoxa.Arena.Challenges.Infrastructure.Models;
 using eDoxa.Seedwork.Testing.TestServer;
 using eDoxa.Seedwork.Testing.TestServer.Extensions;
 
@@ -77,7 +77,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
             challenges.Should().BeNull();
         }
 
-        //[DataRow(2)]
+        [DataRow(2)]
         [DataRow(5)]
         [DataTestMethod]
         public async Task The_response_http_should_have_exactly_the_same_number_of_fake_challenges_added_to_the_database(int count)
@@ -107,7 +107,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         {
             var challenge1 = FakeChallenge(seed);
 
-            _dbContext.Challenges.AddRange(challenge1);
+            _dbContext.Challenges.Add(challenge1);
 
             await _dbContext.SaveChangesAsync();
 
@@ -121,12 +121,12 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 
             var challenge2 = FakeChallenge(seed);
 
-            var challengeViewModel2 = _mapper.Deserialize<ChallengeViewModel>(challenge2);
+            var challengeViewModel2 = _mapper.Map<ChallengeViewModel>(challenge2);
 
             challengeViewModel1.Should().BeEquivalentTo(challengeViewModel2);
         }
 
-        private static Challenge FakeChallenge(int seed)
+        private static ChallengeModel FakeChallenge(int seed)
         {
             var challengeFaker = new ChallengeFaker();
 

@@ -60,7 +60,13 @@ namespace eDoxa.Arena.Challenges.Api
 
             services.AddVersioning();
 
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            // TODO: Update to version 8.
+            services.AddAutoMapper(
+                config =>
+                {
+                    config.AddProfiles(Assembly.GetAssembly(typeof(Startup)));
+                    config.AddProfiles(Assembly.GetAssembly(typeof(ChallengesDbContext)));
+                });
 
             services.AddMvcFilters();
 

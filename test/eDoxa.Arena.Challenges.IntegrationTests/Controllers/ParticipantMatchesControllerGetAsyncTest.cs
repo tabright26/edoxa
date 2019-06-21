@@ -9,7 +9,6 @@
 // this source code package.
 
 using System;
-using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -17,16 +16,11 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using eDoxa.Arena.Challenges.Api;
-using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
-using eDoxa.Arena.Challenges.Domain.Fakers;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Seedwork.Security.Constants;
 using eDoxa.Seedwork.Testing.TestServer;
 using eDoxa.Seedwork.Testing.TestServer.Extensions;
-
-using FluentAssertions;
 
 using IdentityModel;
 
@@ -73,28 +67,28 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
             await _dbContext.SaveChangesAsync();
         }
 
-        [TestMethod]
-        public async Task T1()
-        {
-            var challengeFaker = new ChallengeFaker(state: ChallengeState.Ended);
+        //[TestMethod]
+        //public async Task T1()
+        //{
+        //    var challengeFaker = new ChallengeFaker(state: ChallengeState.Ended);
 
-            var challenge = challengeFaker.Generate();
+        //    var challenge = challengeFaker.Generate();
 
-            _dbContext.Challenges.Add(challenge);
+        //    _dbContext.Challenges.Add(challenge);
 
-            await _dbContext.SaveChangesAsync();
+        //    await _dbContext.SaveChangesAsync();
 
-            var participant = challenge.Participants.First();
+        //    var participant = challenge.Participants.First();
 
-            var response = await this.ExecuteAsync(participant.Id);
+        //    var response = await this.ExecuteAsync(participant.Id);
 
-            response.EnsureSuccessStatusCode();
+        //    response.EnsureSuccessStatusCode();
 
-            var challengeViewModels1 = await response.DeserializeAsync<MatchViewModel[]>();
+        //    var challengeViewModels1 = await response.DeserializeAsync<MatchViewModel[]>();
 
-            var challengeViewModels2 = _mapper.Deserialize<MatchViewModel[]>(participant.Matches);
+        //    var challengeViewModels2 = _mapper.Deserialize<MatchViewModel[]>(participant.Matches);
 
-            challengeViewModels1.AsEnumerable().Should().BeEquivalentTo(challengeViewModels2.AsEnumerable());
-        }
+        //    challengeViewModels1.AsEnumerable().Should().BeEquivalentTo(challengeViewModels2.AsEnumerable());
+        //}
     }
 }
