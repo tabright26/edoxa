@@ -160,7 +160,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.Extensions
             throw new ArgumentNullException(nameof(game));
         }
 
-        public static DateTime MatchTimestamp(this Faker faker, TimelineModel timeline)
+        public static DateTime MatchTimestamp(this Faker faker, ChallengeTimelineModel timeline)
         {
             return faker.Date.Soon(1, timeline.StartedAt);
         }

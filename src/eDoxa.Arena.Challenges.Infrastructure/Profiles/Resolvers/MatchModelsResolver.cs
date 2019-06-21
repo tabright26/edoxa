@@ -1,4 +1,14 @@
-﻿using System.Collections.Generic;
+﻿// Filename: MatchModelsResolver.cs
+// Date Created: 2019-06-21
+// 
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+// 
+// This file is subject to the terms and conditions
+// defined in file 'LICENSE.md', which is part of
+// this source code package.
+
+using System.Collections.Generic;
 
 using AutoMapper;
 
@@ -8,9 +18,9 @@ using eDoxa.Seedwork.Domain.Extensions;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Arena.Challenges.Infrastructure.Converters
+namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.Resolvers
 {
-    internal sealed class MatchConverter : IMemberValueResolver<Participant, ParticipantModel, IReadOnlyCollection<Match>, ICollection<MatchModel>>
+    internal sealed class MatchModelsResolver : IMemberValueResolver<Participant, ParticipantModel, IReadOnlyCollection<Match>, ICollection<MatchModel>>
     {
         [NotNull]
         public ICollection<MatchModel> Resolve(

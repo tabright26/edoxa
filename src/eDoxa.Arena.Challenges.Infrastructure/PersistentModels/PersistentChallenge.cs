@@ -11,7 +11,7 @@
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Common;
 
-namespace eDoxa.Arena.Challenges.Infrastructure
+namespace eDoxa.Arena.Challenges.Infrastructure.PersistentModels
 {
     internal sealed class PersistentChallenge : Challenge
     {

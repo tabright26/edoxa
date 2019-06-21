@@ -1,4 +1,4 @@
-﻿// Filename: TimelineConverter.cs
+﻿// Filename: ChallengeTimelineConverter.cs
 // Date Created: 2019-06-21
 // 
 // ================================================
@@ -19,12 +19,12 @@ using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Api.Profiles.Converters
 {
-    public class TimelineConverter : IValueConverter<ChallengeModel, TimelineViewModel>
+    internal sealed class ChallengeTimelineConverter : IValueConverter<ChallengeModel, ChallengeTimelineViewModel>
     {
         [NotNull]
-        public TimelineViewModel Convert([NotNull] ChallengeModel challenge, [NotNull] ResolutionContext context)
+        public ChallengeTimelineViewModel Convert([NotNull] ChallengeModel challenge, [NotNull] ResolutionContext context)
         {
-            return new TimelineViewModel
+            return new ChallengeTimelineViewModel
             {
                 StartedAt = challenge.Timeline.StartedAt,
                 EndedAt = challenge.Timeline.StartedAt + TimeSpan.FromTicks(challenge.Timeline.Duration),

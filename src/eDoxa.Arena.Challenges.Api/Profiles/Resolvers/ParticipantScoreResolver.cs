@@ -30,10 +30,7 @@ namespace eDoxa.Arena.Challenges.Api.Profiles.Resolvers
         )
         {
             return Participant.HasAverageScore(source.Matches.Count, source.Challenge.Setup.BestOf)
-                ? ParticipantScore.Resolve(
-                    source.Matches.Select(match => context.Mapper.Map<MatchViewModel>(match).TotalScore),
-                    source.Challenge.Setup.BestOf
-                )
+                ? ParticipantScore.Resolve(source.Matches.Select(match => context.Mapper.Map<MatchViewModel>(match).TotalScore), source.Challenge.Setup.BestOf)
                 : (decimal?) null;
         }
     }

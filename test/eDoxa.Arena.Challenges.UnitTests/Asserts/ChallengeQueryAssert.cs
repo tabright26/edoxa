@@ -36,7 +36,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Asserts
 
             challenge.Id.Should().NotBeEmpty();
 
-            challenge.Timestamp.Should().BeBefore(DateTime.UtcNow);
+            challenge.CreatedAt.Should().BeBefore(DateTime.UtcNow);
 
             challenge.Name.Should().NotBeNullOrWhiteSpace();
 
@@ -105,7 +105,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Asserts
         {
             match.Id.Should().NotBeEmpty();
 
-            match.Timestamp.Should().BeBefore(DateTime.UtcNow);
+            match.SynchronizedAt.Should().BeBefore(DateTime.UtcNow);
 
             match.TotalScore.Should().BeGreaterOrEqualTo(decimal.Zero);
 

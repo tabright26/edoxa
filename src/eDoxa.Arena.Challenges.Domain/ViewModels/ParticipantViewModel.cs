@@ -1,5 +1,5 @@
 ﻿// Filename: ParticipantViewModel.cs
-// Date Created: 2019-06-07
+// Date Created: 2019-06-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -25,6 +25,9 @@ namespace eDoxa.Arena.Challenges.Domain.ViewModels
 
         [JsonProperty("averageScore")]
         public decimal? AverageScore { get; set; }
+
+        [JsonProperty("challengeId")]
+        public Guid ChallengeId { get; set; }
 
         [JsonProperty("matches")]
         public MatchViewModel[] Matches { get; set; }

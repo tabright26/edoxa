@@ -1,4 +1,4 @@
-﻿// Filename: TimelineConverter.cs
+﻿// Filename: ChallengeTimelineModelConverter.cs
 // Date Created: 2019-06-21
 // 
 // ================================================
@@ -15,14 +15,14 @@ using eDoxa.Arena.Challenges.Infrastructure.Models;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Arena.Challenges.Infrastructure.Converters
+namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.Converters
 {
-    internal sealed class ChallengeTimelineConverter : IValueConverter<ChallengeTimeline, TimelineModel>
+    internal sealed class ChallengeTimelineModelConverter : IValueConverter<ChallengeTimeline, ChallengeTimelineModel>
     {
         [NotNull]
-        public TimelineModel Convert([NotNull] ChallengeTimeline sourceMember, [NotNull] ResolutionContext context)
+        public ChallengeTimelineModel Convert([NotNull] ChallengeTimeline sourceMember, [NotNull] ResolutionContext context)
         {
-            return new TimelineModel
+            return new ChallengeTimelineModel
             {
                 Duration = sourceMember.Duration.Ticks,
                 StartedAt = sourceMember.StartedAt,

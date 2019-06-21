@@ -1,5 +1,5 @@
 ﻿// Filename: PrizePoolViewModel.cs
-// Date Created: 2019-06-14
+// Date Created: 2019-06-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -17,10 +17,10 @@ namespace eDoxa.Arena.Challenges.Domain.ViewModels
     [JsonObject]
     public class PrizePoolViewModel
     {
+        [JsonProperty("currency")]
+        public CurrencyType Currency { get; set; }
+
         [JsonProperty("amount")]
         public decimal Amount { get; set; }
-
-        [JsonProperty("currency")]
-        public CurrencyType Type { get; set; }
     }
 }

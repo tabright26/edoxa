@@ -27,9 +27,9 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Models
 
         public int? Seed { get; set; }
 
-        public SetupModel Setup { get; set; }
+        public ChallengeSetupModel Setup { get; set; }
 
-        public TimelineModel Timeline { get; set; }
+        public ChallengeTimelineModel Timeline { get; set; }
 
         public ICollection<ScoringItemModel> ScoringItems { get; set; }
 

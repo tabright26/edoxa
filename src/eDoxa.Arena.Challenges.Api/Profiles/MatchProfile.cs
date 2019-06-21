@@ -22,9 +22,10 @@ namespace eDoxa.Arena.Challenges.Api.Profiles
         {
             this.CreateMap<MatchModel, MatchViewModel>()
                 .ForMember(match => match.Id, config => config.MapFrom(match => match.Id))
-                .ForMember(match => match.Timestamp, config => config.MapFrom(match => match.SynchronizedAt))
+                .ForMember(match => match.SynchronizedAt, config => config.MapFrom(match => match.SynchronizedAt))
+                .ForMember(match => match.TotalScore, config => config.MapFrom<MatchScoreResolver>())
                 .ForMember(match => match.Stats, config => config.MapFrom(match => match.Stats))
-                .ForMember(match => match.TotalScore, config => config.MapFrom<MatchScoreResolver>());
+                .ForMember(match => match.ParticipantId, config => config.MapFrom(match => match.Participant.Id));
         }
     }
 }

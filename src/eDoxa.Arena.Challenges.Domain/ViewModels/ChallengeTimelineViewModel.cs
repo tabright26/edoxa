@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeTimelineViewModel.cs
-// Date Created: 2019-06-07
+// Date Created: 2019-06-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -16,7 +16,7 @@ using Newtonsoft.Json.Converters;
 namespace eDoxa.Arena.Challenges.Domain.ViewModels
 {
     [JsonObject]
-    public class TimelineViewModel
+    public class ChallengeTimelineViewModel
     {
         [JsonProperty("startedAt")]
         [JsonConverter(typeof(UnixDateTimeConverter))]

@@ -14,9 +14,9 @@ using System.Collections.Generic;
 using AutoMapper;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Infrastructure.Converters;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
-using eDoxa.Arena.Challenges.Infrastructure.Models.Converters;
+using eDoxa.Arena.Challenges.Infrastructure.Profiles.ConverterTypes;
+using eDoxa.Arena.Challenges.Infrastructure.Profiles.Resolvers;
 
 namespace eDoxa.Arena.Challenges.Infrastructure.Profiles
 {
@@ -24,7 +24,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Profiles
     {
         public ParticipantProfile()
         {
-            this.CreateMap<ParticipantModel, Participant>().ConvertUsing(new ParticipantModelConverter());
+            this.CreateMap<ParticipantModel, Participant>().ConvertUsing(new ParticipantTypeConverter());
 
             this.CreateMap<Participant, ParticipantModel>()
                 .ForMember(participant => participant.Id, config => config.MapFrom<Guid>(participant => participant.Id))
@@ -34,7 +34,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Profiles
                 .ForMember(participant => participant.UserId, config => config.MapFrom<Guid>(participant => participant.UserId))
                 .ForMember(
                     participant => participant.Matches,
-                    config => config.MapFrom<MatchConverter, IReadOnlyCollection<Match>>(participant => participant.Matches)
+                    config => config.MapFrom<MatchModelsResolver, IReadOnlyCollection<Match>>(participant => participant.Matches)
                 )
                 .ForMember(participant => participant.Challenge, config => config.Ignore());
         }

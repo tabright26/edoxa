@@ -1,4 +1,4 @@
-﻿// Filename: SetupConverter.cs
+﻿// Filename: ChallengeSetupModelConverter.cs
 // Date Created: 2019-06-21
 // 
 // ================================================
@@ -15,14 +15,14 @@ using eDoxa.Arena.Challenges.Infrastructure.Models;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Arena.Challenges.Infrastructure.Converters
+namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.Converters
 {
-    internal sealed class ChallengeSetupConverter : IValueConverter<ChallengeSetup, SetupModel>
+    internal sealed class ChallengeSetupModelConverter : IValueConverter<ChallengeSetup, ChallengeSetupModel>
     {
         [NotNull]
-        public SetupModel Convert([NotNull] ChallengeSetup sourceMember, [NotNull] ResolutionContext context)
+        public ChallengeSetupModel Convert([NotNull] ChallengeSetup sourceMember, [NotNull] ResolutionContext context)
         {
-            return new SetupModel
+            return new ChallengeSetupModel
             {
                 BestOf = sourceMember.BestOf.Value,
                 Entries = sourceMember.Entries.Value,

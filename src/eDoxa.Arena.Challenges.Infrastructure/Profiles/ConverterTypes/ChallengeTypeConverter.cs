@@ -1,5 +1,5 @@
-﻿// Filename: ChallengeConverter.cs
-// Date Created: 2019-06-18
+﻿// Filename: ChallengeTypeConverter.cs
+// Date Created: 2019-06-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -16,15 +16,17 @@ using AutoMapper;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Infrastructure.Models;
+using eDoxa.Arena.Challenges.Infrastructure.PersistentModels;
 using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Infrastructure;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Arena.Challenges.Infrastructure.Models.Converters
+namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.ConverterTypes
 {
-    internal sealed class ChallengeModelConverter : ITypeConverter<ChallengeModel, IChallenge>
+    internal sealed class ChallengeTypeConverter : ITypeConverter<ChallengeModel, IChallenge>
     {
         [NotNull]
         public IChallenge Convert([NotNull] ChallengeModel source, [NotNull] IChallenge destination, [NotNull] ResolutionContext context)

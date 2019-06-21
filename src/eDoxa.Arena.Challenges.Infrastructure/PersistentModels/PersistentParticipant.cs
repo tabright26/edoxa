@@ -12,7 +12,7 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Common.ValueObjects;
 
-namespace eDoxa.Arena.Challenges.Infrastructure
+namespace eDoxa.Arena.Challenges.Infrastructure.PersistentModels
 {
     internal sealed class PersistentParticipant : Participant
     {

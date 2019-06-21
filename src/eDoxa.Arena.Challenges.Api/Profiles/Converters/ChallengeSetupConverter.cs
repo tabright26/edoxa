@@ -1,4 +1,4 @@
-﻿// Filename: SetupConverter.cs
+﻿// Filename: ChallengeSetupConverter.cs
 // Date Created: 2019-06-21
 // 
 // ================================================
@@ -18,12 +18,12 @@ using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Api.Profiles.Converters
 {
-    public sealed class SetupConverter : IValueConverter<ChallengeModel, SetupViewModel>
+    internal sealed class ChallengeSetupConverter : IValueConverter<ChallengeModel, ChallengeSetupViewModel>
     {
         [NotNull]
-        public SetupViewModel Convert([NotNull] ChallengeModel challenge, [NotNull] ResolutionContext context)
+        public ChallengeSetupViewModel Convert([NotNull] ChallengeModel challenge, [NotNull] ResolutionContext context)
         {
-            return new SetupViewModel
+            return new ChallengeSetupViewModel
             {
                 BestOf = challenge.Setup.BestOf,
                 Entries = challenge.Setup.Entries,
@@ -31,7 +31,7 @@ namespace eDoxa.Arena.Challenges.Api.Profiles.Converters
                 EntryFee = new EntryFeeViewModel
                 {
                     Amount = challenge.Setup.EntryFeeAmount,
-                    Type = CurrencyType.FromValue(challenge.Setup.EntryFeeCurrency)
+                    Currency = CurrencyType.FromValue(challenge.Setup.EntryFeeCurrency)
                 }
             };
         }

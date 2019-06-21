@@ -14,7 +14,7 @@ using AutoMapper;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
-using eDoxa.Arena.Challenges.Infrastructure.Models.Converters;
+using eDoxa.Arena.Challenges.Infrastructure.Profiles.ConverterTypes;
 
 namespace eDoxa.Arena.Challenges.Infrastructure.Profiles
 {
@@ -22,7 +22,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Profiles
     {
         public MatchProfile()
         {
-            this.CreateMap<MatchModel, Match>().ConvertUsing(new MatchModelConverter());
+            this.CreateMap<MatchModel, Match>().ConvertUsing(new MatchTypeConverter());
 
             this.CreateMap<Match, MatchModel>()
                 .ForMember(match => match.Id, config => config.MapFrom<Guid>(match => match.Id))

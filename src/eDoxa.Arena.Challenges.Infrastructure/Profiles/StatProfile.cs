@@ -12,7 +12,7 @@ using AutoMapper;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
-using eDoxa.Arena.Challenges.Infrastructure.Models.Converters;
+using eDoxa.Arena.Challenges.Infrastructure.Profiles.ConverterTypes;
 
 namespace eDoxa.Arena.Challenges.Infrastructure.Profiles
 {
@@ -20,7 +20,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Profiles
     {
         public StatProfile()
         {
-            this.CreateMap<StatModel, Stat>().ConvertUsing(new StatModelConverter());
+            this.CreateMap<StatModel, Stat>().ConvertUsing(new StatTypeConverter());
 
             this.CreateMap<Stat, StatModel>()
                 .ForMember(stat => stat.Name, config => config.MapFrom<string>(stat => stat.Name))

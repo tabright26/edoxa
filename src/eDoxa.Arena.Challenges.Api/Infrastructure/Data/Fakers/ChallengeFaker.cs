@@ -47,7 +47,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers
                 {
                     var timeline = faker.ChallengeTimeline(state);
 
-                    return new TimelineModel
+                    return new ChallengeTimelineModel
                     {
                         Duration = timeline.Duration.Ticks,
                         StartedAt = timeline.StartedAt,
@@ -62,7 +62,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers
                 {
                     var setup = faker.ChallengeSetup(entryFeeCurrency);
 
-                    return new SetupModel
+                    return new ChallengeSetupModel
                     {
                         Entries = setup.Entries,
                         PayoutEntries = setup.PayoutEntries,

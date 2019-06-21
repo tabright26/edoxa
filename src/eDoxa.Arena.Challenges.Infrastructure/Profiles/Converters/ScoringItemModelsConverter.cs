@@ -1,4 +1,4 @@
-﻿// Filename: PayoutConverter.cs
+﻿// Filename: ScoringItemModelsConverter.cs
 // Date Created: 2019-06-21
 // 
 // ================================================
@@ -18,19 +18,18 @@ using eDoxa.Arena.Challenges.Infrastructure.Models;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Arena.Challenges.Infrastructure.Converters
+namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.Converters
 {
-    internal sealed class PayoutConverter : IValueConverter<IPayout, ICollection<BucketModel>>
+    internal sealed class ScoringItemModelsConverter : IValueConverter<IScoring, ICollection<ScoringItemModel>>
     {
         [NotNull]
-        public ICollection<BucketModel> Convert([NotNull] IPayout sourceMember, [NotNull] ResolutionContext context)
+        public ICollection<ScoringItemModel> Convert([NotNull] IScoring sourceMember, [NotNull] ResolutionContext context)
         {
-            return sourceMember.Buckets.Select(
-                    bucket => new BucketModel
+            return sourceMember.Select(
+                    scoring => new ScoringItemModel
                     {
-                        Size = bucket.Size,
-                        PrizeCurrency = bucket.Prize.Type.Value,
-                        PrizeAmount = bucket.Prize.Amount
+                        Name = scoring.Key,
+                        Weighting = scoring.Value
                     }
                 )
                 .ToList();

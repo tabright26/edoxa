@@ -20,7 +20,7 @@ using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Api.Profiles.Converters
 {
-    public sealed class PayoutConverter : IValueConverter<ChallengeModel, PayoutViewModel>
+    internal sealed class PayoutConverter : IValueConverter<ChallengeModel, PayoutViewModel>
     {
         [NotNull]
         public PayoutViewModel Convert([NotNull] ChallengeModel challenge, [NotNull] ResolutionContext context)
@@ -29,7 +29,7 @@ namespace eDoxa.Arena.Challenges.Api.Profiles.Converters
             {
                 PrizePool = new PrizePoolViewModel
                 {
-                    Type = CurrencyType.FromValue(challenge.Buckets.First().PrizeCurrency),
+                    Currency = CurrencyType.FromValue(challenge.Buckets.First().PrizeCurrency),
                     Amount = challenge.Buckets.Sum(bucket => bucket.Size * bucket.PrizeAmount)
                 },
                 Buckets = challenge.Buckets.Select(

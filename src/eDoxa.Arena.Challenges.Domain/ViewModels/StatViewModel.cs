@@ -1,5 +1,5 @@
 ﻿// Filename: StatViewModel.cs
-// Date Created: 2019-06-07
+// Date Created: 2019-06-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.

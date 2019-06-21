@@ -1,4 +1,4 @@
-﻿// Filename: ParticipantConverter.cs
+﻿// Filename: ParticipantModelsResolver.cs
 // Date Created: 2019-06-21
 // 
 // ================================================
@@ -19,10 +19,10 @@ using eDoxa.Seedwork.Domain.Extensions;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Arena.Challenges.Infrastructure.Converters
+namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.Resolvers
 {
     internal sealed class
-        ParticipantConverter : IMemberValueResolver<IChallenge, ChallengeModel, IReadOnlyCollection<Participant>, ICollection<ParticipantModel>>
+        ParticipantModelsResolver : IMemberValueResolver<IChallenge, ChallengeModel, IReadOnlyCollection<Participant>, ICollection<ParticipantModel>>
     {
         [NotNull]
         public ICollection<ParticipantModel> Resolve(

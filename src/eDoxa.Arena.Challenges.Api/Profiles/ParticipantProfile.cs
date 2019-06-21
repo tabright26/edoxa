@@ -23,8 +23,9 @@ namespace eDoxa.Arena.Challenges.Api.Profiles
             this.CreateMap<ParticipantModel, ParticipantViewModel>()
                 .ForMember(participant => participant.Id, config => config.MapFrom(participant => participant.Id))
                 .ForMember(participant => participant.UserId, config => config.MapFrom(participant => participant.UserId))
+                .ForMember(participant => participant.AverageScore, config => config.MapFrom<ParticipantScoreResolver>())
                 .ForMember(participant => participant.Matches, config => config.MapFrom(participant => participant.Matches))
-                .ForMember(participant => participant.AverageScore, config => config.MapFrom<ParticipantScoreResolver>());
+                .ForMember(participant => participant.ChallengeId, config => config.MapFrom(participant => participant.Challenge.Id));
         }
     }
 }

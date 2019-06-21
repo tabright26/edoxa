@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeViewModel.cs
-// Date Created: 2019-06-07
+// Date Created: 2019-06-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -23,24 +23,24 @@ namespace eDoxa.Arena.Challenges.Domain.ViewModels
         [JsonProperty("id")]
         public Guid Id { get; set; }
 
-        [JsonProperty("timestamp")]
-        [JsonConverter(typeof(UnixDateTimeConverter))]
-        public DateTime Timestamp { get; set; }
-
         [JsonProperty("name")]
         public string Name { get; set; }
 
         [JsonProperty("game")]
         public ChallengeGame Game { get; set; }
 
+        [JsonProperty("createdAt")]
+        [JsonConverter(typeof(UnixDateTimeConverter))]
+        public DateTime CreatedAt { get; set; }
+
         [JsonProperty("state")]
         public ChallengeState State { get; set; }
 
-        [JsonProperty("setup")]
-        public SetupViewModel Setup { get; set; }
-
         [JsonProperty("timeline")]
-        public TimelineViewModel Timeline { get; set; }
+        public ChallengeTimelineViewModel Timeline { get; set; }
+
+        [JsonProperty("setup")]
+        public ChallengeSetupViewModel Setup { get; set; }
 
         [JsonProperty("scoring")]
         public ScoringViewModel Scoring { get; set; }

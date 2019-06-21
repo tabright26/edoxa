@@ -15,9 +15,10 @@ using AutoMapper;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Infrastructure.Converters;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
-using eDoxa.Arena.Challenges.Infrastructure.Models.Converters;
+using eDoxa.Arena.Challenges.Infrastructure.Profiles.Converters;
+using eDoxa.Arena.Challenges.Infrastructure.Profiles.ConverterTypes;
+using eDoxa.Arena.Challenges.Infrastructure.Profiles.Resolvers;
 
 namespace eDoxa.Arena.Challenges.Infrastructure.Profiles
 {
@@ -25,7 +26,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Profiles
     {
         public ChallengeProfile()
         {
-            this.CreateMap<ChallengeModel, IChallenge>().ConvertUsing(new ChallengeModelConverter());
+            this.CreateMap<ChallengeModel, IChallenge>().ConvertUsing(new ChallengeTypeConverter());
 
             this.CreateMap<IChallenge, ChallengeModel>()
                 .ForMember(challenge => challenge.Id, config => config.MapFrom<Guid>(challenge => challenge.Id))
@@ -33,13 +34,13 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Profiles
                 .ForMember(challenge => challenge.Game, config => config.MapFrom(challenge => challenge.Game.Value))
                 .ForMember(challenge => challenge.CreatedAt, config => config.MapFrom(challenge => challenge.CreatedAt))
                 .ForMember(challenge => challenge.SynchronizedAt, config => config.MapFrom(challenge => challenge.SynchronizedAt))
-                .ForMember(challenge => challenge.Timeline, config => config.ConvertUsing<ChallengeTimelineConverter, ChallengeTimeline>())
-                .ForMember(challenge => challenge.Setup, config => config.ConvertUsing<ChallengeSetupConverter, ChallengeSetup>())
-                .ForMember(challenge => challenge.ScoringItems, config => config.ConvertUsing(new ScoringConverter(), challenge => challenge.Scoring))
-                .ForMember(challenge => challenge.Buckets, config => config.ConvertUsing(new PayoutConverter(), challenge => challenge.Payout))
+                .ForMember(challenge => challenge.Timeline, config => config.ConvertUsing<ChallengeTimelineModelConverter, ChallengeTimeline>())
+                .ForMember(challenge => challenge.Setup, config => config.ConvertUsing<ChallengeSetupModelConverter, ChallengeSetup>())
+                .ForMember(challenge => challenge.ScoringItems, config => config.ConvertUsing(new ScoringItemModelsConverter(), challenge => challenge.Scoring))
+                .ForMember(challenge => challenge.Buckets, config => config.ConvertUsing(new BucketModelsConverter(), challenge => challenge.Payout))
                 .ForMember(
                     challenge => challenge.Participants,
-                    config => config.MapFrom<ParticipantConverter, IReadOnlyCollection<Participant>>(challenge => challenge.Participants)
+                    config => config.MapFrom<ParticipantModelsResolver, IReadOnlyCollection<Participant>>(challenge => challenge.Participants)
                 )
                 .ForMember(challenge => challenge.Seed, config => config.Ignore());
         }

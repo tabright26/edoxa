@@ -1,5 +1,5 @@
-﻿// Filename: MapParticipantConverter.cs
-// Date Created: 2019-06-19
+﻿// Filename: ParticipantTypeConverter.cs
+// Date Created: 2019-06-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,15 +13,17 @@ using System.Collections.Generic;
 using AutoMapper;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Infrastructure.Models;
+using eDoxa.Arena.Challenges.Infrastructure.PersistentModels;
 using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Infrastructure;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Arena.Challenges.Infrastructure.Models.Converters
+namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.ConverterTypes
 {
-    internal sealed class ParticipantModelConverter : ITypeConverter<ParticipantModel, Participant>
+    internal sealed class ParticipantTypeConverter : ITypeConverter<ParticipantModel, Participant>
     {
         [NotNull]
         public Participant Convert([NotNull] ParticipantModel source, [NotNull] Participant destination, [NotNull] ResolutionContext context)

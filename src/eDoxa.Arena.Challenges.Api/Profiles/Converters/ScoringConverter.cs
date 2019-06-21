@@ -18,7 +18,7 @@ using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Api.Profiles.Converters
 {
-    public sealed class ScoringConverter : IValueConverter<ChallengeModel, ScoringViewModel>
+    internal sealed class ScoringConverter : IValueConverter<ChallengeModel, ScoringViewModel>
     {
         [NotNull]
         public ScoringViewModel Convert([NotNull] ChallengeModel challenge, [NotNull] ResolutionContext context)

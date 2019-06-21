@@ -1,5 +1,5 @@
-﻿// Filename: MapMatchConverter.cs
-// Date Created: 2019-06-19
+﻿// Filename: MatchTypeConverter.cs
+// Date Created: 2019-06-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,13 +13,15 @@ using System.Collections.Generic;
 using AutoMapper;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Infrastructure.Models;
+using eDoxa.Arena.Challenges.Infrastructure.PersistentModels;
 using eDoxa.Seedwork.Infrastructure;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Arena.Challenges.Infrastructure.Models.Converters
+namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.ConverterTypes
 {
-    internal sealed class MatchModelConverter : ITypeConverter<MatchModel, Match>
+    internal sealed class MatchTypeConverter : ITypeConverter<MatchModel, Match>
     {
         [NotNull]
         public Match Convert([NotNull] MatchModel source, [NotNull] Match destination, [NotNull] ResolutionContext context)

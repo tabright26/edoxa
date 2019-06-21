@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeSetupViewModel.cs
-// Date Created: 2019-06-07
+// Date Created: 2019-06-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,7 +13,7 @@ using Newtonsoft.Json;
 namespace eDoxa.Arena.Challenges.Domain.ViewModels
 {
     [JsonObject]
-    public class SetupViewModel
+    public class ChallengeSetupViewModel
     {
         [JsonProperty("bestOf")]
         public int BestOf { get; set; }

@@ -1,5 +1,5 @@
 ﻿// Filename: MatchViewModel.cs
-// Date Created: 2019-06-07
+// Date Created: 2019-06-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -21,12 +21,15 @@ namespace eDoxa.Arena.Challenges.Domain.ViewModels
         [JsonProperty("id")]
         public Guid Id { get; set; }
 
-        [JsonProperty("timestamp")]
+        [JsonProperty("synchronizedAt")]
         [JsonConverter(typeof(UnixDateTimeConverter))]
-        public DateTime Timestamp { get; set; }
+        public DateTime SynchronizedAt { get; set; }
 
         [JsonProperty("totalScore")]
         public decimal TotalScore { get; set; }
+
+        [JsonProperty("participantId")]
+        public Guid ParticipantId { get; set; }
 
         [JsonProperty("stats")]
         public StatViewModel[] Stats { get; set; }
