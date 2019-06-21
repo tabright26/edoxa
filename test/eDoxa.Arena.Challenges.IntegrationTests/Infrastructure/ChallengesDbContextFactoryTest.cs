@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengesDbContextFactoryTest.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -15,7 +15,7 @@ using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure
+namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure
 {
     [TestClass]
     public sealed class ChallengesDbContextFactoryTest

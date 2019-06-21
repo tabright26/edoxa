@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeRepositoryTest.cs
-// Date Created: 2019-06-02
+// Date Created: 2019-06-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -20,7 +20,7 @@ using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.Infrastructure.Repositories;
-using eDoxa.Arena.Challenges.UnitTests.Utilities;
+using eDoxa.Arena.Challenges.IntegrationTests.Helpers;
 using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.ValueObjects;
@@ -30,7 +30,7 @@ using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Repositories
+namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Repositories
 {
     [TestClass]
     public sealed class ChallengeRepositoryTest

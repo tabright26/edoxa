@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeQueriesTest.cs
-// Date Created: 2019-06-19
+// Date Created: 2019-06-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -20,8 +20,7 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.Infrastructure.Queries;
 using eDoxa.Arena.Challenges.Infrastructure.Repositories;
-using eDoxa.Arena.Challenges.UnitTests.Extensions;
-using eDoxa.Arena.Challenges.UnitTests.Utilities;
+using eDoxa.Arena.Challenges.IntegrationTests.Helpers;
 using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.ValueObjects;
@@ -36,7 +35,7 @@ using Moq;
 
 using Match = eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.Match;
 
-namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Queries
+namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Queries
 {
     [TestClass]
     public sealed class ChallengeQueriesTest
