@@ -148,7 +148,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Repositories
 
                     var challengeFromRepository = await repository.FindChallengeAsync(challenge.Id);
 
-                    challengeFromRepository.Should().BeEquivalentTo(challenge);
+                    challengeFromRepository.Should().Be(challenge);
 
                     challengeFromRepository.State.Should().Be(ChallengeState.Inscription);
                 }

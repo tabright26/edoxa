@@ -1,4 +1,4 @@
-﻿// Filename: ParticipantConfiguration.cs
+﻿// Filename: ParticipantModelConfiguration.cs
 // Date Created: 2019-06-18
 // 
 // ================================================
@@ -25,7 +25,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
 
             builder.Property(participant => participant.Id);
 
-            builder.HasMany(participant => participant.Matches).WithOne(match => match.Participant).HasForeignKey(match => match.ParticipantId);
+            builder.HasMany(participant => participant.Matches).WithOne(match => match.Participant);
 
             builder.HasKey(participant => participant.Id);
 

@@ -16,6 +16,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure
     internal sealed class PersistentChallenge : Challenge
     {
         public PersistentChallenge(
+            ChallengeId challengeId,
             ChallengeGame game,
             ChallengeName name,
             ChallengeSetup setup,
@@ -29,6 +30,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure
             provider
         )
         {
+            this.SetEntityId(challengeId);
         }
     }
 }

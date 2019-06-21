@@ -24,7 +24,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Extensions
     {
         public static void CopyChanges(this IMapper mapper, IChallenge challenge, ChallengeModel challengeModel)
         {
-            challengeModel.LastSync = challenge.SynchronizedAt;
+            challengeModel.SynchronizedAt = challenge.SynchronizedAt;
 
             challengeModel.Timeline.StartedAt = challenge.Timeline.StartedAt;
 
@@ -39,7 +39,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Extensions
 
         private static void CopyChanges(this IMapper mapper, Participant participant, ParticipantModel participantModel)
         {
-            participantModel.LastSync = participant.SynchronizedAt;
+            participantModel.SynchronizedAt = participant.SynchronizedAt;
 
             var matches = participant.Matches.Where(match => participantModel.Matches.All(matchModel => matchModel.Id != match.Id));
 

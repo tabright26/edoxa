@@ -1,4 +1,4 @@
-﻿// Filename: ChallengeConfiguration.cs
+﻿// Filename: ChallengeModelConfiguration.cs
 // Date Created: 2019-06-18
 // 
 // ================================================
@@ -7,6 +7,8 @@
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
+
+using System;
 
 using eDoxa.Arena.Challenges.Infrastructure.Models;
 
@@ -35,17 +37,11 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                 {
                     challengeStats.ToTable("ScoringItem");
 
-                    challengeStats.HasForeignKey(scoringItem => scoringItem.ChallengeId);
+                    challengeStats.HasForeignKey("ChallengeId");
 
-                    challengeStats.Property(scoringItem => scoringItem.Id).ValueGeneratedOnAdd();
+                    challengeStats.Property<Guid>("Id").ValueGeneratedOnAdd();
 
-                    challengeStats.HasKey(
-                        scoringItem => new
-                        {
-                            scoringItem.ChallengeId,
-                            scoringItem.Id
-                        }
-                    );
+                    challengeStats.HasKey("ChallengeId", "Id");
                 }
             );
 
@@ -55,23 +51,15 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                 {
                     challengeStats.ToTable("Bucket");
 
-                    challengeStats.HasForeignKey(bucket => bucket.ChallengeId);
+                    challengeStats.HasForeignKey("ChallengeId");
 
-                    challengeStats.Property(bucket => bucket.Id).ValueGeneratedOnAdd();
+                    challengeStats.Property<Guid>("Id").ValueGeneratedOnAdd();
 
-                    challengeStats.HasKey(
-                        bucket => new
-                        {
-                            bucket.ChallengeId,
-                            bucket.Id
-                        }
-                    );
+                    challengeStats.HasKey("ChallengeId", "Id");
                 }
             );
 
-            builder.HasMany(challenge => challenge.Participants)
-                .WithOne(participant => participant.Challenge)
-                .HasForeignKey(participant => participant.ChallengeId);
+            builder.HasMany(challenge => challenge.Participants).WithOne(participant => participant.Challenge);
 
             builder.HasKey(challenge => challenge.Id);
         }

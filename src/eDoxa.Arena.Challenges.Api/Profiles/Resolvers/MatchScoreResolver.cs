@@ -29,7 +29,7 @@ namespace eDoxa.Arena.Challenges.Api.Profiles.Resolvers
             [NotNull] ResolutionContext context
         )
         {
-            return MatchScore.Resolve(source.Stats.Select(stat => context.Mapper.Map<StatModel, StatViewModel>(stat).Score));
+            return MatchScore.Resolve(source.Stats.Select(stat => context.Mapper.Map<StatViewModel>(stat).Score));
         }
     }
 }

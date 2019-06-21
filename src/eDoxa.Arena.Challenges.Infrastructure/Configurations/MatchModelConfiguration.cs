@@ -1,5 +1,5 @@
-﻿// Filename: MatchConfiguration.cs
-// Date Created: 2019-06-01
+﻿// Filename: MatchModelConfiguration.cs
+// Date Created: 2019-06-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -7,6 +7,8 @@
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
+
+using System;
 
 using eDoxa.Arena.Challenges.Infrastructure.Models;
 
@@ -27,21 +29,15 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
 
             builder.OwnsMany(
                 match => match.Stats,
-                matchStats => 
+                matchStats =>
                 {
                     matchStats.ToTable("Stat");
 
-                    matchStats.HasForeignKey(stat => stat.MatchId);
+                    matchStats.HasForeignKey("MatchId");
 
-                    matchStats.Property(stat => stat.Id).ValueGeneratedOnAdd();
+                    matchStats.Property<Guid>("Id").ValueGeneratedOnAdd();
 
-                    matchStats.HasKey(
-                        stat => new
-                        {
-                            stat.MatchId,
-                            stat.Id
-                        }
-                    );
+                    matchStats.HasKey("MatchId", "Id");
                 }
             );
 

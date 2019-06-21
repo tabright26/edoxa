@@ -14,8 +14,8 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     Game = table.Column<int>(nullable: false),
-                    Timestamp = table.Column<DateTime>(nullable: false),
-                    LastSync = table.Column<DateTime>(nullable: true),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    SynchronizedAt = table.Column<DateTime>(nullable: true),
                     Seed = table.Column<int>(nullable: true),
                     Setup_BestOf = table.Column<int>(nullable: false),
                     Setup_Entries = table.Column<int>(nullable: false),
@@ -57,11 +57,11 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    Timestamp = table.Column<DateTime>(nullable: false),
-                    LastSync = table.Column<DateTime>(nullable: true),
+                    RegisteredAt = table.Column<DateTime>(nullable: false),
+                    SynchronizedAt = table.Column<DateTime>(nullable: true),
                     GameAccountId = table.Column<string>(nullable: true),
                     UserId = table.Column<Guid>(nullable: false),
-                    ChallengeId = table.Column<Guid>(nullable: false)
+                    ChallengeId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -71,7 +71,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
                         column: x => x.ChallengeId,
                         principalTable: "Challenge",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -99,9 +99,9 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    Timestamp = table.Column<DateTime>(nullable: false),
+                    SynchronizedAt = table.Column<DateTime>(nullable: false),
                     GameMatchId = table.Column<string>(nullable: true),
-                    ParticipantId = table.Column<Guid>(nullable: false)
+                    ParticipantId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -111,15 +111,15 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
                         column: x => x.ParticipantId,
                         principalTable: "Participant",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Stat",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
                     MatchId = table.Column<Guid>(nullable: false),
+                    Id = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     Value = table.Column<double>(nullable: false),
                     Weighting = table.Column<float>(nullable: false)

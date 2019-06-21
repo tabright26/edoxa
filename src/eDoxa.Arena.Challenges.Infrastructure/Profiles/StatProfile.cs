@@ -11,8 +11,8 @@
 using AutoMapper;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Infrastructure.Converters;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
+using eDoxa.Arena.Challenges.Infrastructure.Models.Converters;
 
 namespace eDoxa.Arena.Challenges.Infrastructure.Profiles
 {
@@ -20,14 +20,12 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Profiles
     {
         public StatProfile()
         {
-            this.CreateMap<StatModel, Stat>().ConvertUsing(new StatConverter());
+            this.CreateMap<StatModel, Stat>().ConvertUsing(new StatModelConverter());
 
             this.CreateMap<Stat, StatModel>()
                 .ForMember(stat => stat.Name, config => config.MapFrom<string>(stat => stat.Name))
                 .ForMember(stat => stat.Value, config => config.MapFrom<double>(stat => stat.Value))
-                .ForMember(stat => stat.Weighting, config => config.MapFrom<float>(stat => stat.Weighting))
-                .ForMember(stat => stat.Id, config => config.Ignore())
-                .ForMember(stat => stat.MatchId, config => config.Ignore());
+                .ForMember(stat => stat.Weighting, config => config.MapFrom<float>(stat => stat.Weighting));
         }
     }
 }

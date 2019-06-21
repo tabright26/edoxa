@@ -47,29 +47,27 @@ namespace eDoxa.Seedwork.Domain.Aggregate
 
         public override bool Equals([CanBeNull] object obj)
         {
-            if (!(obj is Entity<TEntityId>))
+            if (!(obj is Entity<TEntityId> entity))
             {
                 return false;
             }
 
-            if (ReferenceEquals(this, obj))
+            if (ReferenceEquals(this, entity))
             {
                 return true;
             }
 
-            if (this.GetType() != obj.GetType())
+            if (this.GetType() != entity.GetType())
             {
                 return false;
             }
 
-            var entity = (Entity<TEntityId>) obj;
-
-            if (entity.IsTransient() || this.IsTransient())
+            if (this.IsTransient() || entity.IsTransient())
             {
                 return false;
             }
 
-            return entity.Id == Id;
+            return Id == entity.Id;
         }
 
         public override int GetHashCode()
@@ -99,7 +97,7 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             return !(left == right);
         }
 
-        public void SetEntityId(TEntityId entityId)
+        protected void SetEntityId(TEntityId entityId)
         {
             if (entityId.IsTransient())
             {

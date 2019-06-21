@@ -18,7 +18,7 @@ using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Arena.Challenges.Domain.Abstractions
 {
-    public interface IChallenge : IEntity<ChallengeId>
+    public interface IChallenge : IEntity<ChallengeId>, IAggregateRoot
     {
         DateTime CreatedAt { get; }
 

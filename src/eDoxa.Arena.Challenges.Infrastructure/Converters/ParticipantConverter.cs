@@ -1,5 +1,5 @@
-﻿// Filename: MapParticipantConverter.cs
-// Date Created: 2019-06-19
+﻿// Filename: ParticipantConverter.cs
+// Date Created: 2019-06-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,34 +12,32 @@ using System.Collections.Generic;
 
 using AutoMapper;
 
+using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
-using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Domain.Extensions;
-using eDoxa.Seedwork.Infrastructure;
 
 using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Infrastructure.Converters
 {
-    internal sealed class ParticipantConverter : ITypeConverter<ParticipantModel, Participant>
+    internal sealed class
+        ParticipantConverter : IMemberValueResolver<IChallenge, ChallengeModel, IReadOnlyCollection<Participant>, ICollection<ParticipantModel>>
     {
         [NotNull]
-        public Participant Convert([NotNull] ParticipantModel source, [NotNull] Participant destination, [NotNull] ResolutionContext context)
+        public ICollection<ParticipantModel> Resolve(
+            [NotNull] IChallenge source,
+            [NotNull] ChallengeModel destination,
+            [NotNull] IReadOnlyCollection<Participant> sourceMember,
+            [NotNull] ICollection<ParticipantModel> destMember,
+            [NotNull] ResolutionContext context
+        )
         {
-            var participant = new Participant(
-                UserId.FromGuid(source.UserId),
-                new GameAccountId(source.GameAccountId),
-                new PersistentDateTimeProvider(source.Timestamp)
-            );
+            var participants = context.Mapper.Map<ICollection<ParticipantModel>>(sourceMember);
 
-            participant.SetEntityId(ParticipantId.FromGuid(source.Id));
+            participants.ForEach(participant => participant.Challenge = destination);
 
-            var matches = context.Mapper.Map<ICollection<Match>>(source.Matches);
-
-            matches.ForEach(match => participant.Synchronize(match));
-
-            return participant;
+            return participants;
         }
     }
 }

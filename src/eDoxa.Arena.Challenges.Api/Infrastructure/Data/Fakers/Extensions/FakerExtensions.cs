@@ -106,7 +106,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.Extensions
         {
             return faker.Date.Recent(
                 1,
-                challenge.Timeline.StartedAt.HasValue ? challenge.Participants.Min(participant => participant.Timestamp) : DateTime.UtcNow.DateKeepHours()
+                challenge.Timeline.StartedAt.HasValue ? challenge.Participants.Min(participant => participant.RegisteredAt) : DateTime.UtcNow.DateKeepHours()
             );
         }
 

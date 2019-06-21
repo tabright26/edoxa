@@ -19,12 +19,13 @@ using eDoxa.Arena.Challenges.Domain.Abstractions.Strategies;
 using eDoxa.Arena.Challenges.Domain.Factories;
 using eDoxa.Arena.Challenges.Domain.Validators;
 using eDoxa.Seedwork.Common;
-using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
+
+using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public abstract class Challenge : Entity<ChallengeId>, IChallenge, IAggregateRoot
+    public abstract partial class Challenge : Entity<ChallengeId>, IChallenge
     {
         private readonly HashSet<Participant> _participants = new HashSet<Participant>();
 
@@ -186,6 +187,24 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             {
                 Timeline = Timeline.Start();
             }
+        }
+    }
+
+    public abstract partial class Challenge : IEquatable<IChallenge>
+    {
+        public bool Equals([CanBeNull] IChallenge challenge)
+        {
+            return Id.Equals(challenge?.Id);
+        }
+
+        public sealed override bool Equals([CanBeNull] object obj)
+        {
+            return this.Equals(obj as IChallenge);
+        }
+
+        public sealed override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }

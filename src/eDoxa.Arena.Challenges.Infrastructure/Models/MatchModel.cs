@@ -17,13 +17,11 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Models
 {
     public class MatchModel : PersistentObject
     {
-        public DateTime Timestamp { get; set; }
+        public DateTime SynchronizedAt { get; set; }
 
         public string GameMatchId { get; set; }
 
         public ParticipantModel Participant { get; set; }
-
-        public Guid ParticipantId { get; set; }
 
         public ICollection<StatModel> Stats { get; set; }
     }

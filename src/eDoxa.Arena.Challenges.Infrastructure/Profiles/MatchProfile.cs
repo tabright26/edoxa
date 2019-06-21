@@ -13,8 +13,8 @@ using System;
 using AutoMapper;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Infrastructure.Converters;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
+using eDoxa.Arena.Challenges.Infrastructure.Models.Converters;
 
 namespace eDoxa.Arena.Challenges.Infrastructure.Profiles
 {
@@ -22,15 +22,14 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Profiles
     {
         public MatchProfile()
         {
-            this.CreateMap<MatchModel, Match>().ConvertUsing(new MatchConverter());
+            this.CreateMap<MatchModel, Match>().ConvertUsing(new MatchModelConverter());
 
             this.CreateMap<Match, MatchModel>()
                 .ForMember(match => match.Id, config => config.MapFrom<Guid>(match => match.Id))
-                .ForMember(match => match.Timestamp, config => config.MapFrom(match => match.SynchronizedAt))
+                .ForMember(match => match.SynchronizedAt, config => config.MapFrom(match => match.SynchronizedAt))
                 .ForMember(match => match.GameMatchId, config => config.MapFrom<string>(match => match.GameMatchId))
                 .ForMember(match => match.Stats, config => config.MapFrom(match => match.Stats))
-                .ForMember(match => match.Participant, config => config.Ignore())
-                .ForMember(match => match.ParticipantId, config => config.Ignore());
+                .ForMember(match => match.Participant, config => config.Ignore());
         }
     }
 }

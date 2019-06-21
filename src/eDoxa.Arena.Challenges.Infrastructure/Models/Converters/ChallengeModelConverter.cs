@@ -16,21 +16,21 @@ using AutoMapper;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Infrastructure.Models;
 using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Infrastructure;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Arena.Challenges.Infrastructure.Converters
+namespace eDoxa.Arena.Challenges.Infrastructure.Models.Converters
 {
-    internal sealed class ChallengeConverter : ITypeConverter<ChallengeModel, IChallenge>
+    internal sealed class ChallengeModelConverter : ITypeConverter<ChallengeModel, IChallenge>
     {
         [NotNull]
         public IChallenge Convert([NotNull] ChallengeModel source, [NotNull] IChallenge destination, [NotNull] ResolutionContext context)
         {
             var challenge = new PersistentChallenge(
+                ChallengeId.FromGuid(source.Id),
                 ChallengeGame.FromValue(source.Game),
                 new ChallengeName(source.Name),
                 new ChallengeSetup(
@@ -39,10 +39,8 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Converters
                     new EntryFee(CurrencyType.FromValue(source.Setup.EntryFeeCurrency), source.Setup.EntryFeeAmount)
                 ),
                 new ChallengeDuration(TimeSpan.FromTicks(source.Timeline.Duration)),
-                new PersistentDateTimeProvider(source.Timestamp)
+                new PersistentDateTimeProvider(source.CreatedAt)
             );
-
-            challenge.SetEntityId(ChallengeId.FromGuid(source.Id));
 
             var scoring = new Scoring();
 

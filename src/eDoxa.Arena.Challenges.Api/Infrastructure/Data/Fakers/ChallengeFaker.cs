@@ -102,11 +102,11 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers
                 }
             );
 
-            this.RuleFor(challenge => challenge.Timestamp, (faker, model) => faker.ChallengeCreatedAt(model));
+            this.RuleFor(challenge => challenge.CreatedAt, (faker, model) => faker.ChallengeCreatedAt(model));
 
             this.RuleFor(
-                challenge => challenge.LastSync,
-                (faker, model) => model.Participants.SelectMany(participant => participant.Matches).Max(participant => participant.Timestamp as DateTime?)
+                challenge => challenge.SynchronizedAt,
+                (faker, model) => model.Participants.SelectMany(participant => participant.Matches).Max(participant => participant.SynchronizedAt as DateTime?)
             );
 
             this.RuleFor(
@@ -185,9 +185,9 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers
                     }
                 );
 
-                this.RuleFor(participant => participant.Timestamp, faker => faker.ParticipantTimestamp(challengeModel));
+                this.RuleFor(participant => participant.RegisteredAt, faker => faker.ParticipantTimestamp(challengeModel));
 
-                this.RuleFor(participant => participant.LastSync, (faker, participant) => participant.Matches.Max(match => match.Timestamp as DateTime?));
+                this.RuleFor(participant => participant.SynchronizedAt, (faker, participant) => participant.Matches.Max(match => match.SynchronizedAt as DateTime?));
             }
 
             [NotNull]
@@ -218,7 +218,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers
                         }
                     );
 
-                    this.RuleFor(match => match.Timestamp, (faker, match) => faker.MatchTimestamp(challengeModel.Timeline));
+                    this.RuleFor(match => match.SynchronizedAt, (faker, match) => faker.MatchTimestamp(challengeModel.Timeline));
                 }
 
                 // TODO: To refactor.

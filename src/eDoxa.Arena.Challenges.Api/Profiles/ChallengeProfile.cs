@@ -26,7 +26,7 @@ namespace eDoxa.Arena.Challenges.Api.Profiles
                 .ForMember(challenge => challenge.Id, config => config.MapFrom(challenge => challenge.Id))
                 .ForMember(challenge => challenge.Name, config => config.MapFrom(challenge => challenge.Name))
                 .ForMember(challenge => challenge.Game, config => config.MapFrom(challenge => ChallengeGame.FromValue(challenge.Game)))
-                .ForMember(challenge => challenge.Timestamp, config => config.MapFrom(challenge => challenge.Timestamp))
+                .ForMember(challenge => challenge.Timestamp, config => config.MapFrom(challenge => challenge.CreatedAt))
                 .ForMember(challenge => challenge.State, config => config.MapFrom<ChallengeStateResolver>())
                 .ForMember(challenge => challenge.Setup, config => config.ConvertUsing(new SetupConverter(), challenge => challenge))
                 .ForMember(challenge => challenge.Timeline, config => config.ConvertUsing(new TimelineConverter(), challenge => challenge))

@@ -1,4 +1,4 @@
-﻿// Filename: PayoutBucketModel.cs
+﻿// Filename: BucketModel.cs
 // Date Created: 2019-06-18
 // 
 // ================================================
@@ -7,8 +7,6 @@
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
-
-using System;
 
 using eDoxa.Seedwork.Infrastructure;
 
@@ -21,7 +19,5 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Models
         public int PrizeCurrency { get; set; }
 
         public decimal PrizeAmount { get; set; }
-
-        public Guid ChallengeId { get; set; }
     }
 }

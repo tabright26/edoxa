@@ -14,12 +14,13 @@ using System.Linq;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Seedwork.Common;
-using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
+
+using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed class Match : Entity<MatchId>, IAggregateRoot
+    public partial class Match : Entity<MatchId>
     {
         private readonly HashSet<Stat> _stats = new HashSet<Stat>();
 
@@ -66,6 +67,24 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             provider = provider ?? new UtcNowDateTimeProvider();
 
             return provider.DateTime;
+        }
+    }
+
+    public partial class Match : IEquatable<Match>
+    {
+        public bool Equals([CanBeNull] Match match)
+        {
+            return Id.Equals(match?.Id);
+        }
+
+        public sealed override bool Equals([CanBeNull] object obj)
+        {
+            return this.Equals(obj as Match);
+        }
+
+        public sealed override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }

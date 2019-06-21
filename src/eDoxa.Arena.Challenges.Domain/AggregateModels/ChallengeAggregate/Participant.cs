@@ -15,14 +15,13 @@ using System.Linq;
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Common.ValueObjects;
-using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public class Participant : Entity<ParticipantId>, IAggregateRoot
+    public partial class Participant : Entity<ParticipantId>
     {
         private readonly HashSet<Match> _matches = new HashSet<Match>();
 
@@ -81,6 +80,24 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         internal void Synchronize(IDateTimeProvider provider)
         {
             SynchronizedAt = provider.DateTime;
+        }
+    }
+
+    public partial class Participant : IEquatable<Participant>
+    {
+        public bool Equals([CanBeNull] Participant participant)
+        {
+            return Id.Equals(participant?.Id);
+        }
+
+        public sealed override bool Equals([CanBeNull] object obj)
+        {
+            return this.Equals(obj as Participant);
+        }
+
+        public sealed override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }

@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Infrastructure.Models;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Arena.Challenges.Infrastructure.Converters
+namespace eDoxa.Arena.Challenges.Infrastructure.Models.Converters
 {
-    internal sealed class StatConverter : ITypeConverter<StatModel, Stat>
+    internal sealed class StatModelConverter : ITypeConverter<StatModel, Stat>
     {
         [NotNull]
         public Stat Convert([NotNull] StatModel source, [NotNull] Stat destination, [NotNull] ResolutionContext context)

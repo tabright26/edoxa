@@ -44,7 +44,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Queries
             return await Participants.Include(NavigationPropertyPath)
                 .Include(participant => participant.Challenge)
                 .Where(participant => participant.Challenge.Id == challengeId)
-                .OrderBy(participant => participant.Timestamp)
+                .OrderBy(participant => participant.RegisteredAt)
                 .ToListAsync();
         }
 

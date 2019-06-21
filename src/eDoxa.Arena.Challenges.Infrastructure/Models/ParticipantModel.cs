@@ -17,15 +17,13 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Models
 {
     public class ParticipantModel : PersistentObject
     {
-        public DateTime Timestamp { get; set; }
+        public DateTime RegisteredAt { get; set; }
 
-        public DateTime? LastSync { get; set; }
+        public DateTime? SynchronizedAt { get; set; }
 
         public string GameAccountId { get; set; }
 
         public Guid UserId { get; set; }
-
-        public Guid ChallengeId { get; set; }
 
         public ChallengeModel Challenge { get; set; }
 

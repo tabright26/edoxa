@@ -9,13 +9,15 @@
 // this source code package.
 
 using System;
-using System.Linq;
+using System.Collections.Generic;
 
 using AutoMapper;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure.Converters;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
+using eDoxa.Arena.Challenges.Infrastructure.Models.Converters;
 
 namespace eDoxa.Arena.Challenges.Infrastructure.Profiles
 {
@@ -23,63 +25,21 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Profiles
     {
         public ChallengeProfile()
         {
-            this.CreateMap<ChallengeModel, IChallenge>().ConvertUsing(new ChallengeConverter());
+            this.CreateMap<ChallengeModel, IChallenge>().ConvertUsing(new ChallengeModelConverter());
 
             this.CreateMap<IChallenge, ChallengeModel>()
                 .ForMember(challenge => challenge.Id, config => config.MapFrom<Guid>(challenge => challenge.Id))
                 .ForMember(challenge => challenge.Name, config => config.MapFrom<string>(challenge => challenge.Name))
                 .ForMember(challenge => challenge.Game, config => config.MapFrom(challenge => challenge.Game.Value))
-                .ForMember(challenge => challenge.Timestamp, config => config.MapFrom(challenge => challenge.CreatedAt))
-                .ForMember(challenge => challenge.LastSync, config => config.MapFrom(challenge => challenge.SynchronizedAt))
+                .ForMember(challenge => challenge.CreatedAt, config => config.MapFrom(challenge => challenge.CreatedAt))
+                .ForMember(challenge => challenge.SynchronizedAt, config => config.MapFrom(challenge => challenge.SynchronizedAt))
+                .ForMember(challenge => challenge.Timeline, config => config.ConvertUsing<ChallengeTimelineConverter, ChallengeTimeline>())
+                .ForMember(challenge => challenge.Setup, config => config.ConvertUsing<ChallengeSetupConverter, ChallengeSetup>())
+                .ForMember(challenge => challenge.ScoringItems, config => config.ConvertUsing(new ScoringConverter(), challenge => challenge.Scoring))
+                .ForMember(challenge => challenge.Buckets, config => config.ConvertUsing(new PayoutConverter(), challenge => challenge.Payout))
                 .ForMember(
-                    challenge => challenge.Setup,
-                    config => config.MapFrom(
-                        challenge => new SetupModel
-                        {
-                            BestOf = challenge.Setup.BestOf.Value,
-                            Entries = challenge.Setup.Entries.Value,
-                            PayoutEntries = challenge.Setup.PayoutEntries.Value,
-                            EntryFeeAmount = challenge.Setup.EntryFee.Amount,
-                            EntryFeeCurrency = challenge.Setup.EntryFee.Type.Value
-                        }
-                    )
-                )
-                .ForMember(
-                    challenge => challenge.Timeline,
-                    config => config.MapFrom(
-                        challenge => new TimelineModel
-                        {
-                            Duration = challenge.Timeline.Duration.Ticks,
-                            StartedAt = challenge.Timeline.StartedAt,
-                            ClosedAt = challenge.Timeline.ClosedAt
-                        }
-                    )
-                )
-                .ForMember(challenge => challenge.Participants, config => config.MapFrom(challenge => challenge.Participants))
-                .ForMember(
-                    challenge => challenge.ScoringItems,
-                    config => config.MapFrom(
-                        challenge => challenge.Scoring.Select(
-                            scoring => new ScoringItemModel
-                            {
-                                Name = scoring.Key,
-                                Weighting = scoring.Value
-                            }
-                        )
-                    )
-                )
-                .ForMember(
-                    challenge => challenge.Buckets,
-                    config => config.MapFrom(
-                        challenge => challenge.Payout.Buckets.Select(
-                            bucket => new BucketModel
-                            {
-                                Size = bucket.Size,
-                                PrizeCurrency = bucket.Prize.Type.Value,
-                                PrizeAmount = bucket.Prize.Amount
-                            }
-                        )
-                    )
+                    challenge => challenge.Participants,
+                    config => config.MapFrom<ParticipantConverter, IReadOnlyCollection<Participant>>(challenge => challenge.Participants)
                 )
                 .ForMember(challenge => challenge.Seed, config => config.Ignore());
         }

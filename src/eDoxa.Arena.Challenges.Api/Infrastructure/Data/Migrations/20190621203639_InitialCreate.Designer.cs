@@ -10,7 +10,7 @@ using eDoxa.Arena.Challenges.Infrastructure;
 namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ChallengesDbContext))]
-    [Migration("20190620234308_InitialCreate")]
+    [Migration("20190621203639_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,15 +26,15 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("Game");
+                    b.Property<DateTime>("CreatedAt");
 
-                    b.Property<DateTime?>("LastSync");
+                    b.Property<int>("Game");
 
                     b.Property<string>("Name");
 
                     b.Property<int?>("Seed");
 
-                    b.Property<DateTime>("Timestamp");
+                    b.Property<DateTime?>("SynchronizedAt");
 
                     b.HasKey("Id");
 
@@ -48,9 +48,9 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
 
                     b.Property<string>("GameMatchId");
 
-                    b.Property<Guid>("ParticipantId");
+                    b.Property<Guid?>("ParticipantId");
 
-                    b.Property<DateTime>("Timestamp");
+                    b.Property<DateTime>("SynchronizedAt");
 
                     b.HasKey("Id");
 
@@ -68,13 +68,13 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid>("ChallengeId");
+                    b.Property<Guid?>("ChallengeId");
 
                     b.Property<string>("GameAccountId");
 
-                    b.Property<DateTime?>("LastSync");
+                    b.Property<DateTime>("RegisteredAt");
 
-                    b.Property<DateTime>("Timestamp");
+                    b.Property<DateTime?>("SynchronizedAt");
 
                     b.Property<Guid>("UserId");
 
@@ -183,8 +183,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
                 {
                     b.HasOne("eDoxa.Arena.Challenges.Infrastructure.Models.ParticipantModel", "Participant")
                         .WithMany("Matches")
-                        .HasForeignKey("ParticipantId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ParticipantId");
 
                     b.OwnsMany("eDoxa.Arena.Challenges.Infrastructure.Models.StatModel", "Stats", b1 =>
                         {
@@ -214,8 +213,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
                 {
                     b.HasOne("eDoxa.Arena.Challenges.Infrastructure.Models.ChallengeModel", "Challenge")
                         .WithMany("Participants")
-                        .HasForeignKey("ChallengeId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ChallengeId");
                 });
 #pragma warning restore 612, 618
         }

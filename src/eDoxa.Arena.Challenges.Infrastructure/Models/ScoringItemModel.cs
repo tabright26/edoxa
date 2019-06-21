@@ -8,8 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-
 using eDoxa.Seedwork.Infrastructure;
 
 namespace eDoxa.Arena.Challenges.Infrastructure.Models
@@ -19,7 +17,5 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Models
         public string Name { get; set; }
 
         public float Weighting { get; set; }
-
-        public Guid ChallengeId { get; set; }
     }
 }

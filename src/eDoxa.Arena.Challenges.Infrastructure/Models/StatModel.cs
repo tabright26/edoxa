@@ -8,20 +8,14 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-
-using eDoxa.Seedwork.Infrastructure;
-
 namespace eDoxa.Arena.Challenges.Infrastructure.Models
 {
-    public class StatModel : PersistentObject
+    public class StatModel
     {
         public string Name { get; set; }
 
         public double Value { get; set; }
 
         public float Weighting { get; set; }
-
-        public Guid MatchId { get; set; }
     }
 }
