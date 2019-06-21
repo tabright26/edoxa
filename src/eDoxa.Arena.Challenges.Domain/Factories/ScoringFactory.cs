@@ -12,8 +12,8 @@ using System;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Strategies;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Strategies;
-using eDoxa.Seedwork.Common.Enumerations;
 
 namespace eDoxa.Arena.Challenges.Domain.Factories
 {
@@ -28,9 +28,9 @@ namespace eDoxa.Arena.Challenges.Domain.Factories
             return this.CreateStrategy(challenge.Game);
         }
 
-        public IScoringStrategy CreateStrategy(Game game)
+        public IScoringStrategy CreateStrategy(ChallengeGame game)
         {
-            if (game == Game.LeagueOfLegends)
+            if (game == ChallengeGame.LeagueOfLegends)
             {
                 return new LeagueOfLegendsScoringStrategy();
             }

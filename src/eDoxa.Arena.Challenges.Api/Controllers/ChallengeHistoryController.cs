@@ -15,7 +15,6 @@ using System.Threading.Tasks;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Queries;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.ViewModels;
-using eDoxa.Seedwork.Common.Enumerations;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -45,7 +44,7 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         /// </summary>
         [HttpGet]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<ChallengeViewModel>))]
-        public async Task<IActionResult> GetAsync(Game game = null, ChallengeState state = null)
+        public async Task<IActionResult> GetAsync(ChallengeGame game = null, ChallengeState state = null)
         {
             var challenges = await _challengeQuery.FindUserChallengeHistoryAsync(game, state);
 

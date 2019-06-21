@@ -17,7 +17,6 @@ using AutoMapper;
 using eDoxa.Arena.Challenges.Api;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Testing.TestServer;
 using eDoxa.Seedwork.Testing.TestServer.Extensions;
@@ -35,7 +34,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         private ChallengesDbContext _dbContext;
         private IMapper _mapper;
 
-        public async Task<HttpResponseMessage> ExecuteAsync(UserId userId, Game game = null, ChallengeState state = null)
+        public async Task<HttpResponseMessage> ExecuteAsync(UserId userId, ChallengeGame game = null, ChallengeState state = null)
         {
             return await _httpClient.DefaultRequestHeaders(new[] {new Claim(JwtClaimTypes.Subject, userId.ToString())})
                 .GetAsync($"api/challenges/history?game={game}&state={state}");

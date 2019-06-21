@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-using Bogus;
+﻿using Bogus;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Seedwork.Common.Enumerations;
 
 namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.DataSets
 {
@@ -22,9 +16,9 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.DataSets
             return new ChallengeName(nameof(Domain.AggregateModels.ChallengeAggregate.Challenge));
         }
 
-        public Game Game()
+        public ChallengeGame Game()
         {
-            return Seedwork.Common.Enumerations.Game.LeagueOfLegends;
+            return ChallengeGame.LeagueOfLegends;
         }
 
         //public ChallengeState State()

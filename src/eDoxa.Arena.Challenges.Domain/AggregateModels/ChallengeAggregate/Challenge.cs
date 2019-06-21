@@ -19,45 +19,43 @@ using eDoxa.Arena.Challenges.Domain.Abstractions.Strategies;
 using eDoxa.Arena.Challenges.Domain.Factories;
 using eDoxa.Arena.Challenges.Domain.Validators;
 using eDoxa.Seedwork.Common;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public class Challenge : Entity<ChallengeId>, IChallenge, IAggregateRoot
+    public abstract class Challenge : Entity<ChallengeId>, IChallenge, IAggregateRoot
     {
-        private readonly HashSet<Participant> _participants;
+        private readonly HashSet<Participant> _participants = new HashSet<Participant>();
 
         private IScoring _scoring;
         private IPayout _payout;
 
-        public Challenge(
-            Game game,
+        protected Challenge(
+            ChallengeGame game,
             ChallengeName name,
             ChallengeSetup setup,
             ChallengeDuration duration,
             IDateTimeProvider provider
         )
         {
-            Game = game;
             Name = name;
+            Game = game;
             Setup = setup;
             Timeline = new ChallengeTimeline(duration);
             CreatedAt = provider.DateTime;
-            LastSync = null;
-            _participants = new HashSet<Participant>();
+            SynchronizedAt = null;
             this.ApplyScoringStrategy(ScoringFactory.Instance.CreateStrategy(this));
             this.ApplyPayoutStrategy(PayoutFactory.Instance.CreateStrategy(this));
         }
 
         public DateTime CreatedAt { get; }
 
-        public DateTime? LastSync { get; private set; }
-
-        public Game Game { get; }
+        public DateTime? SynchronizedAt { get; private set; }
 
         public ChallengeName Name { get; }
+
+        public ChallengeGame Game { get; }
 
         public ChallengeSetup Setup { get; }
 
@@ -84,7 +82,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
                 participant.Synchronize(new UtcNowDateTimeProvider());
             }
 
-            LastSync = DateTime.UtcNow;
+            SynchronizedAt = DateTime.UtcNow;
         }
 
         //public void DistributeParticipantPrizes()
@@ -128,7 +126,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         internal bool LastSyncMoreThan(TimeSpan timeSpan)
         {
-            return LastSync.HasValue && LastSync.Value + timeSpan < DateTime.UtcNow;
+            return SynchronizedAt.HasValue && SynchronizedAt.Value + timeSpan < DateTime.UtcNow;
         }
 
         private async Task SynchronizeAsync(IGameMatchIdsFactory gameMatchIdsFactory, IMatchStatsFactory matchStatsFactory, Participant participant)

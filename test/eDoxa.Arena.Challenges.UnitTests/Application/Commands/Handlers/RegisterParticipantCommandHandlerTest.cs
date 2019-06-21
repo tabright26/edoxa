@@ -12,8 +12,8 @@ using AutoMapper;
 
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Services;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.UnitTests.Extensions;
-using eDoxa.Seedwork.Common.Enumerations;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -33,7 +33,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Commands.Handlers
         [TestInitialize]
         public void TestInitialize()
         {
-            _challengeFaker = new ChallengeFaker(Game.LeagueOfLegends);
+            _challengeFaker = new ChallengeFaker(ChallengeGame.LeagueOfLegends);
             _mockChallengeService = new Mock<IChallengeService>();
             _mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
             _mockHttpContextAccessor.SetupClaims();

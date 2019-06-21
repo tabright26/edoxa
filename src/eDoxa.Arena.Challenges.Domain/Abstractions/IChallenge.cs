@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions.Factories;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Arena.Challenges.Domain.Abstractions
@@ -23,11 +22,11 @@ namespace eDoxa.Arena.Challenges.Domain.Abstractions
     {
         DateTime CreatedAt { get; }
 
-        DateTime? LastSync { get; }
-
-        Game Game { get; }
+        DateTime? SynchronizedAt { get; }
 
         ChallengeName Name { get; }
+
+        ChallengeGame Game { get; }
 
         ChallengeSetup Setup { get; }
 

@@ -11,7 +11,6 @@
 using System;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Seedwork.Common.Enumerations;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -32,7 +31,7 @@ namespace eDoxa.Arena.Challenges.Domain.ViewModels
         public string Name { get; set; }
 
         [JsonProperty("game")]
-        public Game Game { get; set; }
+        public ChallengeGame Game { get; set; }
 
         [JsonProperty("state")]
         public ChallengeState State { get; set; }

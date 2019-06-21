@@ -31,7 +31,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers
     {
         private ParticipantFaker _participantFaker;
 
-        public ChallengeFaker(Game game = null, ChallengeState state = null, CurrencyType entryFeeCurrency = null)
+        public ChallengeFaker(ChallengeGame game = null, ChallengeState state = null, CurrencyType entryFeeCurrency = null)
         {
             this.UseSeed(8675309);
 
@@ -77,7 +77,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers
                 challenge => challenge.ScoringItems,
                 (faker, challenge) =>
                 {
-                    var scoring = ScoringFactory.Instance.CreateStrategy(Game.FromValue(challenge.Game)).Scoring;
+                    var scoring = ScoringFactory.Instance.CreateStrategy(ChallengeGame.FromValue(challenge.Game)).Scoring;
 
                     return scoring.Select(
                             sc => new ScoringItemModel
@@ -162,7 +162,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers
 
                 this.RuleFor(participant => participant.UserId, faker => faker.UserId().ToGuid());
 
-                this.RuleFor(participant => participant.GameAccountId, faker => faker.UserGameReference(Game.FromValue(challengeModel.Game)).ToString());
+                this.RuleFor(participant => participant.GameAccountId, faker => faker.UserGameReference(ChallengeGame.FromValue(challengeModel.Game)).ToString());
 
                 this.RuleFor(
                     participant => participant.Matches,
@@ -204,13 +204,13 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers
                 {
                     this.RuleFor(match => match.Id, faker => faker.MatchId());
 
-                    this.RuleFor(match => match.GameMatchId, faker => faker.MatchReference(Game.FromValue(challengeModel.Game)).ToString());
+                    this.RuleFor(match => match.GameMatchId, faker => faker.MatchReference(ChallengeGame.FromValue(challengeModel.Game)).ToString());
 
                     this.RuleFor(
                         match => match.Stats,
                         faker =>
                         {
-                            var matchStats = faker.MatchStats(Game.FromValue(challengeModel.Game));
+                            var matchStats = faker.MatchStats(ChallengeGame.FromValue(challengeModel.Game));
 
                             var scoring = challengeModel.ScoringItems;
 

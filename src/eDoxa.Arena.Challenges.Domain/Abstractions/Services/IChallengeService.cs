@@ -24,7 +24,7 @@ namespace eDoxa.Arena.Challenges.Domain.Abstractions.Services
         Task<IEnumerable<IChallenge>> FakeChallengesAsync(
             int count,
             int seed,
-            Game game = null,
+            ChallengeGame game = null,
             ChallengeState state = null,
             CurrencyType entryFeeCurrency = null,
             CancellationToken cancellationToken = default
@@ -33,12 +33,12 @@ namespace eDoxa.Arena.Challenges.Domain.Abstractions.Services
         Task<Participant> RegisterParticipantAsync(
             ChallengeId challengeId,
             UserId userId,
-            Func<Game, GameAccountId> funcUserGameReference,
+            Func<ChallengeGame, GameAccountId> funcUserGameReference,
             CancellationToken cancellationToken = default
         );
 
         Task CloseAsync(CancellationToken cancellationToken = default);
 
-        Task SynchronizeAsync(Game game, CancellationToken cancellationToken = default);
+        Task SynchronizeAsync(ChallengeGame game, CancellationToken cancellationToken = default);
     }
 }

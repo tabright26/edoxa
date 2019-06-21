@@ -52,7 +52,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Services
         public async Task<Participant> RegisterParticipantAsync(
             ChallengeId challengeId,
             UserId userId,
-            Func<Game, GameAccountId> funcUserGameReference,
+            Func<ChallengeGame, GameAccountId> funcUserGameReference,
             CancellationToken cancellationToken = default
         )
         {
@@ -92,7 +92,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Services
         public async Task<IEnumerable<IChallenge>> FakeChallengesAsync(
             int count,
             int seed,
-            Game game = null,
+            ChallengeGame game = null,
             ChallengeState state = null,
             CurrencyType entryFeeCurrency = null,
             CancellationToken cancellationToken = default
@@ -111,7 +111,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Services
             return challenges;
         }
 
-        public async Task SynchronizeAsync(Game game, CancellationToken cancellationToken = default)
+        public async Task SynchronizeAsync(ChallengeGame game, CancellationToken cancellationToken = default)
         {
             //var specification = SpecificationFactory.Instance.Create<Challenge>()
             //    .And(new ChallengeForGameSpecification(game))

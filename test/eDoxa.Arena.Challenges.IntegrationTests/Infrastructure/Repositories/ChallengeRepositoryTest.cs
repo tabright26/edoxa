@@ -17,12 +17,12 @@ using AutoMapper;
 using Bogus;
 
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.Extensions;
+using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.Infrastructure.Repositories;
 using eDoxa.Arena.Challenges.IntegrationTests.Helpers;
 using eDoxa.Seedwork.Common;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Infrastructure.Factories;
 
@@ -123,8 +123,8 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Repositories
         {
             var faker = new Faker();
 
-            var challenge = new Challenge(
-                Game.LeagueOfLegends,
+            IChallenge challenge = new FakeChallenge(
+                ChallengeGame.LeagueOfLegends,
                 new ChallengeName("Challenge"),
                 new ChallengeSetup(BestOf.Three, PayoutEntries.One, MoneyEntryFee.Five),
                 ChallengeDuration.TwoDays,
@@ -148,7 +148,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Repositories
 
                     var challengeFromRepository = await repository.FindChallengeAsync(challenge.Id);
 
-                    challengeFromRepository.Should().Be(challenge);
+                    challengeFromRepository.Should().BeEquivalentTo(challenge);
 
                     challengeFromRepository.State.Should().Be(ChallengeState.Inscription);
                 }
@@ -207,7 +207,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Repositories
 
                 var match1 = new Match(new GameMatchId(Guid.NewGuid()), new UtcNowDateTimeProvider());
 
-                match1.SnapshotStats(challenge.Scoring, faker.MatchStats(Game.LeagueOfLegends));
+                match1.SnapshotStats(challenge.Scoring, faker.MatchStats(ChallengeGame.LeagueOfLegends));
 
                 using (var context = factory.CreateContext())
                 {
@@ -241,7 +241,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Repositories
 
                 var match2 = new Match(new GameMatchId(Guid.NewGuid()), new UtcNowDateTimeProvider());
 
-                match2.SnapshotStats(challenge.Scoring, faker.MatchStats(Game.LeagueOfLegends));
+                match2.SnapshotStats(challenge.Scoring, faker.MatchStats(ChallengeGame.LeagueOfLegends));
 
                 using (var context = factory.CreateContext())
                 {
@@ -275,12 +275,12 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Repositories
             }
         }
 
-        private static Challenge CreateChallenge()
+        private static IChallenge CreateChallenge()
         {
             var faker = new Faker();
 
-            var challenge = new Challenge(
-                Game.LeagueOfLegends,
+            var challenge = new FakeChallenge(
+                ChallengeGame.LeagueOfLegends,
                 new ChallengeName("Challenge"),
                 new ChallengeSetup(BestOf.Five, PayoutEntries.Five, MoneyEntryFee.Five),
                 ChallengeDuration.TwoDays,
@@ -298,13 +298,25 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Repositories
                 {
                     var match = new Match(new GameMatchId(Guid.NewGuid()), new UtcNowDateTimeProvider());
 
-                    match.SnapshotStats(challenge.Scoring, faker.MatchStats(Game.LeagueOfLegends));
+                    match.SnapshotStats(challenge.Scoring, faker.MatchStats(ChallengeGame.LeagueOfLegends));
 
                     participant.Synchronize(match);
                 }
             }
 
             return challenge;
+        }
+
+        private sealed class FakeChallenge : Challenge
+        {
+            public FakeChallenge(ChallengeGame game, ChallengeName name, ChallengeSetup setup,
+                ChallengeDuration duration,
+                IDateTimeProvider provider
+            ) : base(game, name, setup, duration,
+                provider
+            )
+            {
+            }
         }
     }
 }

@@ -13,7 +13,6 @@ using System.Linq;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Domain.Extensions;
 
 using FluentAssertions;
@@ -31,9 +30,9 @@ namespace eDoxa.Arena.Challenges.UnitTests.Extensions
         {
             challenge.Payout.Buckets.Should().NotBeNullOrEmpty();
 
-            challenge.Game.Should().Should().NotBe(Game.All);
+            challenge.Game.Should().Should().NotBe(ChallengeGame.All);
 
-            challenge.Game.Should().Should().NotBe(new Game());
+            challenge.Game.Should().Should().NotBe(new ChallengeGame());
 
             challenge.State.Should().NotBe(ChallengeState.All);
 
@@ -44,7 +43,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Extensions
             challenge.Participants.ForEach(
                 participant =>
                 {
-                    challenge.LastSync?.Should().BeAfter(participant.RegisteredAt);
+                    challenge.SynchronizedAt?.Should().BeAfter(participant.RegisteredAt);
 
                     participant.RegisteredAt.Should().BeAfter(challenge.CreatedAt);
 
@@ -56,7 +55,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Extensions
                     participant.Matches.ForEach(
                         match =>
                         {
-                            challenge.LastSync?.Should().BeOnOrAfter(match.SynchronizedAt);
+                            challenge.SynchronizedAt?.Should().BeOnOrAfter(match.SynchronizedAt);
 
                             participant.SynchronizedAt?.Should().BeOnOrAfter(match.SynchronizedAt);
 

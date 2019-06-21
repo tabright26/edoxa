@@ -14,11 +14,11 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api;
 using eDoxa.Arena.Challenges.Api.Application.Commands;
+using eDoxa.Arena.Challenges.Api.Extensions;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Seedwork.Application.Http;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.ValueObjects;
-using eDoxa.Seedwork.Security.Extensions;
 using eDoxa.Seedwork.Testing.TestServer;
 using eDoxa.Seedwork.Testing.TestServer.Extensions;
 
@@ -38,7 +38,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         {
             return await _httpClient
                 .DefaultRequestHeaders(
-                    new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(Game.LeagueOfLegends.GetClaimType(), gameAccountId.ToString())}
+                    new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(ChallengeGame.LeagueOfLegends.GetClaimType(), gameAccountId.ToString())}
                 )
                 .PostAsync($"api/challenges/{command.ChallengeId}/participants", new JsonContent(command));
         }

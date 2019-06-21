@@ -8,11 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-
 using Bogus;
 
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.ValueObjects;
 
 namespace eDoxa.Seedwork.Common.Extensions
@@ -22,16 +19,6 @@ namespace eDoxa.Seedwork.Common.Extensions
         public static UserId UserId(this Faker faker)
         {
             return ValueObjects.UserId.FromGuid(faker.Random.Guid());
-        }
-
-        public static GameAccountId UserGameReference(this Faker faker, Game game)
-        {
-            if (game == Game.LeagueOfLegends)
-            {
-                return new GameAccountId(faker.Random.Replace("*****_*************************"));
-            }
-
-            throw new ArgumentNullException(nameof(game));
         }
     }
 }

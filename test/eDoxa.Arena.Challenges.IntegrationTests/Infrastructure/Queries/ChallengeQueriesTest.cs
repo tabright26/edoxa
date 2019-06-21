@@ -22,7 +22,6 @@ using eDoxa.Arena.Challenges.Infrastructure.Queries;
 using eDoxa.Arena.Challenges.Infrastructure.Repositories;
 using eDoxa.Arena.Challenges.IntegrationTests.Helpers;
 using eDoxa.Seedwork.Common;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Infrastructure.Factories;
 
@@ -91,8 +90,8 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Queries
         {
             var faker = new Faker();
 
-            var challenge = new Challenge(
-                Game.LeagueOfLegends,
+            var challenge = new FakeChallenge(
+                ChallengeGame.LeagueOfLegends,
                 new ChallengeName("Challenge"),
                 new ChallengeSetup(BestOf.Five, PayoutEntries.Five, MoneyEntryFee.Five),
                 ChallengeDuration.TwoDays,
@@ -110,13 +109,25 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Queries
                 {
                     var match = new Match(new GameMatchId(Guid.NewGuid()), new UtcNowDateTimeProvider());
 
-                    match.SnapshotStats(challenge.Scoring, faker.MatchStats(Game.LeagueOfLegends));
+                    match.SnapshotStats(challenge.Scoring, faker.MatchStats(ChallengeGame.LeagueOfLegends));
 
                     participant.Synchronize(match);
                 }
             }
 
             return challenge;
+        }
+
+        private sealed class FakeChallenge : Challenge
+        {
+            public FakeChallenge(ChallengeGame game, ChallengeName name, ChallengeSetup setup,
+                ChallengeDuration duration,
+                IDateTimeProvider provider
+            ) : base(game, name, setup, duration,
+                provider
+            )
+            {
+            }
         }
     }
 }

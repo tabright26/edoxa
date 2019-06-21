@@ -27,9 +27,9 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.Extensions
 {
     public static class FakerExtensions
     {
-        public static Game ChallengeGame(this Faker faker, Game game = null)
+        public static ChallengeGame ChallengeGame(this Faker faker, ChallengeGame game = null)
         {
-            return game ?? faker.PickRandom(Game.LeagueOfLegends);
+            return game ?? faker.PickRandom(Domain.AggregateModels.ChallengeAggregate.ChallengeGame.LeagueOfLegends);
         }
 
         public static ChallengeId ChallengeId(this Faker faker)
@@ -150,9 +150,9 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.Extensions
             return Domain.AggregateModels.ChallengeAggregate.MatchId.FromGuid(faker.Random.Guid());
         }
 
-        public static GameMatchId MatchReference(this Faker faker, Game game)
+        public static GameMatchId MatchReference(this Faker faker, ChallengeGame game)
         {
-            if (game == Game.LeagueOfLegends)
+            if (game == Domain.AggregateModels.ChallengeAggregate.ChallengeGame.LeagueOfLegends)
             {
                 return new GameMatchId(faker.Random.Long(1000000000, 9999999999));
             }
@@ -165,9 +165,9 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.Extensions
             return faker.Date.Soon(1, timeline.StartedAt);
         }
 
-        public static IMatchStats MatchStats(this Faker faker, Game game)
+        public static IMatchStats MatchStats(this Faker faker, ChallengeGame game)
         {
-            if (game == Game.LeagueOfLegends)
+            if (game == Domain.AggregateModels.ChallengeAggregate.ChallengeGame.LeagueOfLegends)
             {
                 return new MatchStats(
                     new
@@ -184,7 +184,17 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.Extensions
             throw new ArgumentNullException(nameof(game));
         }
 
-        public static IMatchStatsAdapter MatchStatsAdapter(this Faker faker, Game game)
+        public static GameAccountId UserGameReference(this Faker faker, ChallengeGame game)
+        {
+            if (game == Domain.AggregateModels.ChallengeAggregate.ChallengeGame.LeagueOfLegends)
+            {
+                return new GameAccountId(faker.Random.Replace("*****_*************************"));
+            }
+
+            throw new ArgumentNullException(nameof(game));
+        }
+
+        public static IMatchStatsAdapter MatchStatsAdapter(this Faker faker, ChallengeGame game)
         {
             var mock = new Mock<IMatchStatsAdapter>();
 

@@ -14,7 +14,7 @@ using System.Linq;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
-namespace eDoxa.Seedwork.Common.ValueObjects
+namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class GameAccountId : ValueObject
     {

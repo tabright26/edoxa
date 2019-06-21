@@ -12,8 +12,8 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions.Services;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Commands.Abstractions.Handlers;
-using eDoxa.Seedwork.Common.Enumerations;
 
 using JetBrains.Annotations;
 
@@ -30,7 +30,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Commands.Handlers
 
         protected override async Task Handle([NotNull] SynchronizeChallengesCommand command, CancellationToken cancellationToken)
         {
-            await _challengeService.SynchronizeAsync(Game.LeagueOfLegends, cancellationToken);
+            await _challengeService.SynchronizeAsync(ChallengeGame.LeagueOfLegends, cancellationToken);
         }
     }
 }

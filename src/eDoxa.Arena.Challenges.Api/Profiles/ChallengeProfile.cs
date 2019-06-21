@@ -12,9 +12,9 @@ using AutoMapper;
 
 using eDoxa.Arena.Challenges.Api.Profiles.Converters;
 using eDoxa.Arena.Challenges.Api.Profiles.Resolvers;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.ViewModels;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
-using eDoxa.Seedwork.Common.Enumerations;
 
 namespace eDoxa.Arena.Challenges.Api.Profiles
 {
@@ -25,7 +25,7 @@ namespace eDoxa.Arena.Challenges.Api.Profiles
             this.CreateMap<ChallengeModel, ChallengeViewModel>()
                 .ForMember(challenge => challenge.Id, config => config.MapFrom(challenge => challenge.Id))
                 .ForMember(challenge => challenge.Name, config => config.MapFrom(challenge => challenge.Name))
-                .ForMember(challenge => challenge.Game, config => config.MapFrom(challenge => Game.FromValue(challenge.Game)))
+                .ForMember(challenge => challenge.Game, config => config.MapFrom(challenge => ChallengeGame.FromValue(challenge.Game)))
                 .ForMember(challenge => challenge.Timestamp, config => config.MapFrom(challenge => challenge.Timestamp))
                 .ForMember(challenge => challenge.State, config => config.MapFrom<ChallengeStateResolver>())
                 .ForMember(challenge => challenge.Setup, config => config.ConvertUsing(new SetupConverter(), challenge => challenge))

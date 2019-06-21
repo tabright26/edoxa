@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.ViewModels;
-using eDoxa.Seedwork.Common.Enumerations;
 
 using JetBrains.Annotations;
 
@@ -21,9 +20,9 @@ namespace eDoxa.Arena.Challenges.Domain.Abstractions.Queries
 {
     public interface IChallengeQuery
     {
-        Task<IReadOnlyCollection<ChallengeViewModel>> FindUserChallengeHistoryAsync(Game game = null, ChallengeState state = null);
+        Task<IReadOnlyCollection<ChallengeViewModel>> FindUserChallengeHistoryAsync(ChallengeGame game = null, ChallengeState state = null);
 
-        Task<IReadOnlyCollection<ChallengeViewModel>> FindChallengesAsync(Game game = null, ChallengeState state = null);
+        Task<IReadOnlyCollection<ChallengeViewModel>> FindChallengesAsync(ChallengeGame game = null, ChallengeState state = null);
 
         [ItemCanBeNull]
         Task<ChallengeViewModel> FindChallengeAsync(ChallengeId challengeId);

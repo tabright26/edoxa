@@ -18,7 +18,6 @@ using eDoxa.Arena.Challenges.Domain.Abstractions.Queries;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.ViewModels;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Security.Extensions;
 
@@ -52,7 +51,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Queries
 
         public async Task<IReadOnlyCollection<ChallengeModel>> FindUserChallengeHistoryAsNoTrackingAsync(
             UserId userId,
-            Game game = null,
+            ChallengeGame game = null,
             ChallengeState state = null
         )
         {
@@ -70,7 +69,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Queries
             return challenges.Where(challenge => challenge.Participants.Any(participant => participant.UserId == userId.ToGuid())).ToList();
         }
 
-        public async Task<IReadOnlyCollection<ChallengeModel>> FindChallengesAsNoTrackingAsync(Game game = null, ChallengeState state = null)
+        public async Task<IReadOnlyCollection<ChallengeModel>> FindChallengesAsNoTrackingAsync(ChallengeGame game = null, ChallengeState state = null)
         {
             var challengeModels = await Challenges.Include(NavigationPropertyPath).ToListAsync();
 
@@ -88,7 +87,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Queries
 
     public sealed partial class ChallengeQuery : IChallengeQuery
     {
-        public async Task<IReadOnlyCollection<ChallengeViewModel>> FindUserChallengeHistoryAsync(Game game = null, ChallengeState state = null)
+        public async Task<IReadOnlyCollection<ChallengeViewModel>> FindUserChallengeHistoryAsync(ChallengeGame game = null, ChallengeState state = null)
         {
             var userId = _httpContextAccessor.GetUserId();
 
@@ -97,7 +96,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Queries
             return _mapper.Map<IReadOnlyCollection<ChallengeViewModel>>(challenges);
         }
 
-        public async Task<IReadOnlyCollection<ChallengeViewModel>> FindChallengesAsync(Game game = null, ChallengeState state = null)
+        public async Task<IReadOnlyCollection<ChallengeViewModel>> FindChallengesAsync(ChallengeGame game = null, ChallengeState state = null)
         {
             var challenges = await this.FindChallengesAsNoTrackingAsync(game, state);
 

@@ -14,7 +14,6 @@ using Bogus;
 
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Seedwork.Common.Enumerations;
 
 using FluentAssertions;
 
@@ -31,7 +30,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.MatchAggregate
             // Arrange
             var faker = new Faker();
 
-            var stats = faker.MatchStats(Game.LeagueOfLegends);
+            var stats = faker.MatchStats(ChallengeGame.LeagueOfLegends);
 
             // Act
             var type = typeof(Dictionary<StatName, StatValue>);

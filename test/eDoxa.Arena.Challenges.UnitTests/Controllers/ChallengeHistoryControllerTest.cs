@@ -16,7 +16,6 @@ using eDoxa.Arena.Challenges.Domain.Abstractions.Queries;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.ViewModels;
 using eDoxa.Arena.Challenges.UnitTests.Extensions;
-using eDoxa.Seedwork.Common.Enumerations;
 
 using FluentAssertions;
 
@@ -50,7 +49,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
         public async Task GetAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            _queries.Setup(queries => queries.FindUserChallengeHistoryAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()))
+            _queries.Setup(queries => queries.FindUserChallengeHistoryAsync(It.IsAny<ChallengeGame>(), It.IsAny<ChallengeState>()))
                 .ReturnsAsync(
                     new List<ChallengeViewModel>
                     {
@@ -76,7 +75,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
         public async Task GetAsync_ShouldBeNoContentResult()
         {
             // Arrange
-            _queries.Setup(queries => queries.FindUserChallengeHistoryAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()))
+            _queries.Setup(queries => queries.FindUserChallengeHistoryAsync(It.IsAny<ChallengeGame>(), It.IsAny<ChallengeState>()))
                 .ReturnsAsync(new List<ChallengeViewModel>())
                 .Verifiable();
 

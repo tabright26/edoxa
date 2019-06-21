@@ -13,7 +13,6 @@ using System.Collections.Generic;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.ViewModels;
-using eDoxa.Seedwork.Common.Enumerations;
 
 using FluentAssertions;
 
@@ -43,9 +42,9 @@ namespace eDoxa.Arena.Challenges.UnitTests.Asserts
 
             challenge.Game.Should().NotBeNull();
 
-            challenge.Game.Should().NotBe(new Game());
+            challenge.Game.Should().NotBe(new ChallengeGame());
 
-            challenge.Game.Should().NotBe(Game.All);
+            challenge.Game.Should().NotBe(ChallengeGame.All);
 
             challenge.State.Should().NotBeNull();
 

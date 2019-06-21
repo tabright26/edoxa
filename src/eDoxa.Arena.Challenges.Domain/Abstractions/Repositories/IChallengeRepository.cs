@@ -13,7 +13,6 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Domain.Specifications.Abstractions;
 
 namespace eDoxa.Arena.Challenges.Domain.Abstractions.Repositories
@@ -24,7 +23,7 @@ namespace eDoxa.Arena.Challenges.Domain.Abstractions.Repositories
 
         void Create(IEnumerable<IChallenge> challenges);
 
-        Task<IReadOnlyCollection<IChallenge>> FindChallengesAsync(Game game = null, ChallengeState state = null);
+        Task<IReadOnlyCollection<IChallenge>> FindChallengesAsync(ChallengeGame game = null, ChallengeState state = null);
 
         Task<IReadOnlyCollection<IChallenge>> FindChallengesAsync(ISpecification<IChallenge> specification);
 

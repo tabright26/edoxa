@@ -30,7 +30,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Profiles
                 .ForMember(challenge => challenge.Name, config => config.MapFrom<string>(challenge => challenge.Name))
                 .ForMember(challenge => challenge.Game, config => config.MapFrom(challenge => challenge.Game.Value))
                 .ForMember(challenge => challenge.Timestamp, config => config.MapFrom(challenge => challenge.CreatedAt))
-                .ForMember(challenge => challenge.LastSync, config => config.MapFrom(challenge => challenge.LastSync))
+                .ForMember(challenge => challenge.LastSync, config => config.MapFrom(challenge => challenge.SynchronizedAt))
                 .ForMember(
                     challenge => challenge.Setup,
                     config => config.MapFrom(

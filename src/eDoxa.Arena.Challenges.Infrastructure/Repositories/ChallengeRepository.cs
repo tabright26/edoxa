@@ -21,7 +21,6 @@ using eDoxa.Arena.Challenges.Domain.Abstractions.Repositories;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure.Extensions;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Specifications.Abstractions;
 
@@ -97,7 +96,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
             }
         }
 
-        public async Task<IReadOnlyCollection<IChallenge>> FindChallengesAsync(Game game = null, ChallengeState state = null)
+        public async Task<IReadOnlyCollection<IChallenge>> FindChallengesAsync(ChallengeGame game = null, ChallengeState state = null)
         {
             var challengeModels = await _context.Challenges.Include(NavigationPropertyPath).ToListAsync();
 

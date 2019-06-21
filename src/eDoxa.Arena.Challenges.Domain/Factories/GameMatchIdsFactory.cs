@@ -16,8 +16,6 @@ using eDoxa.Arena.Challenges.Domain.Abstractions.Factories;
 using eDoxa.Arena.Challenges.Domain.Adapters;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Services.LeagueOfLegends.Abstractions;
-using eDoxa.Seedwork.Common.Enumerations;
-using eDoxa.Seedwork.Common.ValueObjects;
 
 // ReSharper disable PossibleInvalidOperationException
 
@@ -32,14 +30,14 @@ namespace eDoxa.Arena.Challenges.Domain.Factories
             _leagueOfLegendsMatchService = leagueOfLegendsMatchService;
         }
 
-        public async Task<IGameMatchIdsAdapter> CreateAdapterAsync(Game game, GameAccountId gameAccountId, ChallengeTimeline timeline)
+        public async Task<IGameMatchIdsAdapter> CreateAdapterAsync(ChallengeGame game, GameAccountId gameAccountId, ChallengeTimeline timeline)
         {
             if (timeline.State == ChallengeState.Inscription)
             {
                 throw new InvalidOperationException();
             }
 
-            if (game == Game.LeagueOfLegends)
+            if (game == ChallengeGame.LeagueOfLegends)
             {
                 var matchReferences = await _leagueOfLegendsMatchService.GetMatchReferencesAsync(
                     gameAccountId.ToString(),

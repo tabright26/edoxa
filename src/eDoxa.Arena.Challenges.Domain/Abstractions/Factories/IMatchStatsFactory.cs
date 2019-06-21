@@ -12,13 +12,11 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions.Adapters;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Seedwork.Common.Enumerations;
-using eDoxa.Seedwork.Common.ValueObjects;
 
 namespace eDoxa.Arena.Challenges.Domain.Abstractions.Factories
 {
     public interface IMatchStatsFactory
     {
-        Task<IMatchStatsAdapter> CreateAdapter(Game game, GameAccountId gameAccountId, GameMatchId gameMatchId);
+        Task<IMatchStatsAdapter> CreateAdapter(ChallengeGame game, GameAccountId gameAccountId, GameMatchId gameMatchId);
     }
 }

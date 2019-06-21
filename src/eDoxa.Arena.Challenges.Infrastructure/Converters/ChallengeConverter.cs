@@ -30,8 +30,8 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Converters
         [NotNull]
         public IChallenge Convert([NotNull] ChallengeModel source, [NotNull] IChallenge destination, [NotNull] ResolutionContext context)
         {
-            var challenge = new Challenge(
-                Game.FromValue(source.Game),
+            var challenge = new PersistentChallenge(
+                ChallengeGame.FromValue(source.Game),
                 new ChallengeName(source.Name),
                 new ChallengeSetup(
                     new BestOf(source.Setup.BestOf),
