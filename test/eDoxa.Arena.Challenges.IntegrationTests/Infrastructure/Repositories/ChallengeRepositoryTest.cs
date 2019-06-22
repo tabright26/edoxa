@@ -16,8 +16,8 @@ using AutoMapper;
 
 using Bogus;
 
+using eDoxa.Arena.Challenges.Api.Infrastructure.Fakers;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Fakers.Extensions;
-using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.Infrastructure.Repositories;
@@ -40,9 +40,11 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Repositories
         [TestMethod]
         public async Task Create_Challenge_ShouldNotBeNull()
         {
-            //var challengeFaker = new ChallengeFaker();
+            var challengeFaker = new ChallengeFaker();
 
-            var challenge = CreateChallenge();
+            challengeFaker.UseSeed(1);
+
+            var challenge = challengeFaker.Generate();
 
             using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
             {
@@ -123,13 +125,11 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Repositories
         {
             var faker = new Faker();
 
-            var challenge = new FakeChallenge(
-                new ChallengeName("Challenge"),
-                ChallengeGame.LeagueOfLegends,
-                new ChallengeSetup(BestOf.Three, PayoutEntries.One, MoneyEntryFee.Five),
-                ChallengeDuration.TwoDays,
-                new UtcNowDateTimeProvider()
-            );
+            var challengeFaker = new ChallengeFaker(state: ChallengeState.Inscription);
+
+            challengeFaker.UseSeed(1);
+
+            var challenge = challengeFaker.Generate();
 
             using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
             {
@@ -274,57 +274,6 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Repositories
 
                     challengeFromRepository.Timeline.State.Should().Be(ChallengeState.InProgress);
                 }
-            }
-        }
-
-        private static IChallenge CreateChallenge()
-        {
-            var faker = new Faker();
-
-            var challenge = new FakeChallenge(
-                new ChallengeName("Challenge"),
-                ChallengeGame.LeagueOfLegends,
-                new ChallengeSetup(BestOf.Five, PayoutEntries.Five, MoneyEntryFee.Five),
-                ChallengeDuration.TwoDays,
-                new UtcNowDateTimeProvider()
-            );
-
-            for (var i = 0; i < challenge.Setup.Entries; i++)
-            {
-                challenge.Register(new Participant(new UserId(), new GameAccountId(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider()));
-            }
-
-            foreach (var participant in challenge.Participants)
-            {
-                for (var j = 0; j < challenge.Setup.BestOf; j++)
-                {
-                    var match = new Match(new GameMatchId(Guid.NewGuid()), new UtcNowDateTimeProvider());
-
-                    match.SnapshotStats(challenge.Scoring, faker.Match().Stats(ChallengeGame.LeagueOfLegends));
-
-                    participant.Synchronize(match);
-                }
-            }
-
-            return challenge;
-        }
-
-        private sealed class FakeChallenge : Challenge
-        {
-            public FakeChallenge(
-                ChallengeName name,
-                ChallengeGame game,
-                ChallengeSetup setup,
-                ChallengeDuration duration,
-                IDateTimeProvider createdAt
-            ) : base(
-                name,
-                game,
-                setup,
-                duration,
-                createdAt
-            )
-            {
             }
         }
     }

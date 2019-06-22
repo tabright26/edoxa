@@ -28,15 +28,7 @@ namespace eDoxa.Arena.Challenges.Domain.ViewModels
 
         [JsonProperty("game")]
         public ChallengeGame Game { get; set; }
-
-        [JsonProperty("createdAt")]
-        [JsonConverter(typeof(UnixDateTimeConverter))]
-        public DateTime CreatedAt { get; set; }
-
-        [JsonProperty("synchronizedAt")]
-        [JsonConverter(typeof(UnixDateTimeConverter))]
-        public DateTime? SynchronizedAt { get; set; }
-
+        
         [JsonProperty("state")]
         public ChallengeState State { get; set; }
 
@@ -45,6 +37,10 @@ namespace eDoxa.Arena.Challenges.Domain.ViewModels
 
         [JsonProperty("setup")]
         public ChallengeSetupViewModel Setup { get; set; }
+
+        [JsonProperty("synchronizedAt")]
+        [JsonConverter(typeof(UnixDateTimeConverter))]
+        public DateTime? SynchronizedAt { get; set; }
 
         [JsonProperty("scoring")]
         public ScoringViewModel Scoring { get; set; }

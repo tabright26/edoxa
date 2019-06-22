@@ -16,7 +16,6 @@ using eDoxa.Arena.Challenges.Api.Infrastructure.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Factories;
 using eDoxa.Seedwork.Common.Enumerations;
-using eDoxa.Seedwork.Common.Extensions;
 
 namespace eDoxa.Arena.Challenges.Api.Infrastructure.Fakers
 {
@@ -39,8 +38,6 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Fakers
 
                     // -----------------------------------------
 
-                    var created = faker.Date.Recent(1, DateTime.UtcNow.DateKeepHours());
-
                     var timeline = faker.Challenge().Timeline(state);
 
                     var synchronizedAt = timeline != ChallengeState.Inscription && timeline.StartedAt.HasValue && timeline.EndedAt.HasValue
@@ -51,8 +48,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Fakers
                         faker.Challenge().Name(),
                         game,
                         setup,
-                        timeline.Duration,
-                        new FakeDateTimeProvider(created),
+                        timeline,
                         scoring,
                         payout
                     );
@@ -64,7 +60,6 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Fakers
                         setup,
                         timeline,
                         scoring,
-                        created,
                         synchronizedAt
                     );
 

@@ -18,6 +18,10 @@ namespace eDoxa.Arena.Challenges.Domain.ViewModels
     [JsonObject]
     public class ChallengeTimelineViewModel
     {
+        [JsonProperty("createdAt")]
+        [JsonConverter(typeof(UnixDateTimeConverter))]
+        public DateTime CreatedAt { get; set; }
+        
         [JsonProperty("startedAt")]
         [JsonConverter(typeof(UnixDateTimeConverter))]
         public DateTime? StartedAt { get; set; }

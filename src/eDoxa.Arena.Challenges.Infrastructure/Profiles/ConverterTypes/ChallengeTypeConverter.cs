@@ -32,8 +32,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.ConverterTypes
                 new ChallengeName(source.Name),
                 ChallengeGame.FromValue(source.Game),
                 context.Mapper.Map<ChallengeSetup>(source.Setup),
-                new ChallengeDuration(TimeSpan.FromTicks(source.Timeline.Duration)),
-                new PersistentDateTimeProvider(source.CreatedAt),
+                new ChallengeTimeline(new PersistentDateTimeProvider(source.Timeline.CreatedAt), new ChallengeDuration(TimeSpan.FromTicks(source.Timeline.Duration))),
                 context.Mapper.Map<IScoring>(source.ScoringItems),
                 context.Mapper.Map<IPayout>(source.Buckets)
             );

@@ -21,11 +21,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Models
 
         public int Game { get; set; }
 
-        public DateTime CreatedAt { get; set; }
-
         public DateTime? SynchronizedAt { get; set; }
-
-        public int? Seed { get; set; }
 
         public ChallengeSetupModel Setup { get; set; }
 

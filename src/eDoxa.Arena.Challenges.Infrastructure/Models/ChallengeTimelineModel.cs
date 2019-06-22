@@ -14,6 +14,8 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Models
 {
     public class ChallengeTimelineModel
     {
+        public DateTime CreatedAt { get; set; }
+
         public long Duration { get; set; }
 
         public DateTime? StartedAt { get; set; }

@@ -18,22 +18,32 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class ChallengeTimeline : ValueObject
     {
-        public ChallengeTimeline(ChallengeDuration duration)
+        public ChallengeTimeline(IDateTimeProvider createdAt, ChallengeDuration duration)
         {
+            CreatedAt = createdAt.DateTime;
             Duration = duration;
             StartedAt = null;
             ClosedAt = null;
         }
 
-        private ChallengeTimeline(ChallengeDuration duration, DateTime? startedAt, DateTime? closedAt) : this(duration, startedAt)
+        private ChallengeTimeline(
+            DateTime createdAt,
+            ChallengeDuration duration,
+            DateTime? startedAt,
+            DateTime? closedAt
+        ) : this(createdAt, duration, startedAt)
         {
             ClosedAt = closedAt;
         }
 
-        private ChallengeTimeline(ChallengeDuration duration, DateTime? startedAt) : this(duration)
+        private ChallengeTimeline(DateTime createdAt, ChallengeDuration duration, DateTime? startedAt)
         {
+            CreatedAt = createdAt;
+            Duration = duration;
             StartedAt = startedAt;
         }
+
+        public DateTime CreatedAt { get; }
 
         public ChallengeDuration Duration { get; }
 
@@ -52,16 +62,17 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public ChallengeTimeline Start(IDateTimeProvider startedAt)
         {
-            return new ChallengeTimeline(Duration, startedAt.DateTime);
+            return new ChallengeTimeline(CreatedAt, Duration, startedAt.DateTime);
         }
 
         public ChallengeTimeline Close(IDateTimeProvider closedAt)
         {
-            return new ChallengeTimeline(Duration, StartedAt, closedAt.DateTime);
+            return new ChallengeTimeline(CreatedAt, Duration, StartedAt, closedAt.DateTime);
         }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
+            yield return CreatedAt;
             yield return Duration;
             yield return StartedAt;
             yield return EndedAt;

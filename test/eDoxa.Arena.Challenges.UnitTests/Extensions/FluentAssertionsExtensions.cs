@@ -45,7 +45,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Extensions
                 {
                     challenge.SynchronizedAt?.Should().BeAfter(participant.RegisteredAt);
 
-                    participant.RegisteredAt.Should().BeAfter(challenge.CreatedAt);
+                    participant.RegisteredAt.Should().BeAfter(challenge.Timeline.CreatedAt);
 
                     if (challenge.Timeline.State != ChallengeState.Inscription)
                     {

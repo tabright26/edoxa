@@ -21,10 +21,6 @@ namespace eDoxa.Arena.Challenges.Domain.Abstractions
 {
     public interface IChallenge : IEntity<ChallengeId>, IAggregateRoot
     {
-        DateTime CreatedAt { get; }
-
-        DateTime? SynchronizedAt { get; }
-
         ChallengeName Name { get; }
 
         ChallengeGame Game { get; }
@@ -32,6 +28,8 @@ namespace eDoxa.Arena.Challenges.Domain.Abstractions
         ChallengeSetup Setup { get; }
 
         ChallengeTimeline Timeline { get; }
+
+        DateTime? SynchronizedAt { get; }
 
         IScoring Scoring { get; }
 
@@ -41,12 +39,12 @@ namespace eDoxa.Arena.Challenges.Domain.Abstractions
 
         IReadOnlyCollection<Participant> Participants { get; }
 
+        void Register(Participant participant);
+
         void Start(IDateTimeProvider startedAt);
 
         void Close(IDateTimeProvider closedAt);
 
         Task SynchronizeAsync(IGameMatchIdsFactory gameMatchIdsFactory, IMatchStatsFactory matchStatsFactory, IDateTimeProvider synchronizedAt = null);
-
-        void Register(Participant participant);
     }
 }

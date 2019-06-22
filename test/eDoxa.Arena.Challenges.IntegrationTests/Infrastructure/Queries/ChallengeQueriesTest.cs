@@ -8,21 +8,15 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Threading.Tasks;
 
 using AutoMapper;
 
-using Bogus;
-
-using eDoxa.Arena.Challenges.Api.Infrastructure.Fakers.Extensions;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Api.Infrastructure.Fakers;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.Infrastructure.Queries;
 using eDoxa.Arena.Challenges.Infrastructure.Repositories;
 using eDoxa.Arena.Challenges.IntegrationTests.Helpers;
-using eDoxa.Seedwork.Common;
-using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Infrastructure.Factories;
 
 using FluentAssertions;
@@ -31,8 +25,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
-
-using Match = eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.Match;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Queries
 {
@@ -44,9 +36,11 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Queries
         [TestMethod]
         public async Task Create_Challenge_ShouldNotBeNull()
         {
-            //var challengeFaker = new ChallengeFaker();
+            var challengeFaker = new ChallengeFaker();
 
-            var challenge = CreateChallenge();
+            challengeFaker.UseSeed(1);
+
+            var challenge = challengeFaker.Generate();
 
             using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
             {
@@ -83,59 +77,6 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Queries
 
                     //challengeAsNoTracking.Should().BeEquivalentTo(challenge);
                 }
-            }
-        }
-
-        private static Challenge CreateChallenge()
-        {
-            var faker = new Faker();
-
-            var challenge = new FakeChallenge(
-                ChallengeGame.LeagueOfLegends,
-                new ChallengeName("Challenge"),
-                new ChallengeSetup(BestOf.Five, PayoutEntries.Five, MoneyEntryFee.Five),
-                ChallengeDuration.TwoDays,
-                new UtcNowDateTimeProvider()
-            );
-
-            for (var i = 0; i < challenge.Setup.Entries; i++)
-            {
-                challenge.Register(new Participant(new UserId(), new GameAccountId(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider()));
-            }
-
-            challenge.Start(new UtcNowDateTimeProvider());
-
-            foreach (var participant in challenge.Participants)
-            {
-                for (var j = 0; j < challenge.Setup.BestOf; j++)
-                {
-                    var match = new Match(new GameMatchId(Guid.NewGuid()), new UtcNowDateTimeProvider());
-
-                    match.SnapshotStats(challenge.Scoring, faker.Match().Stats(ChallengeGame.LeagueOfLegends));
-
-                    participant.Synchronize(match);
-                }
-            }
-
-            return challenge;
-        }
-
-        private sealed class FakeChallenge : Challenge
-        {
-            public FakeChallenge(
-                ChallengeGame game,
-                ChallengeName name,
-                ChallengeSetup setup,
-                ChallengeDuration duration,
-                IDateTimeProvider createdAt
-            ) : base(
-                name,
-                game,
-                setup,
-                duration,
-                createdAt
-            )
-            {
             }
         }
     }

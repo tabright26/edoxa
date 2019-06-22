@@ -65,7 +65,9 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Fakers.DataSets
 
             var duration = Faker.Timeline().Duration();
 
-            var timeline = new ChallengeTimeline(duration);
+            var created = Faker.Date.Recent(1, DateTime.UtcNow.DateKeepHours());
+
+            var timeline = new ChallengeTimeline(new FakeDateTimeProvider(created), duration);
 
             if (state == ChallengeState.InProgress)
             {

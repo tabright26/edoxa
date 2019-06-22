@@ -32,8 +32,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             ChallengeName name,
             ChallengeGame game,
             ChallengeSetup setup,
-            ChallengeDuration duration,
-            IDateTimeProvider createdAt = null,
+            ChallengeTimeline timeline,
             IScoring scoring = null,
             IPayout payout = null
         )
@@ -41,16 +40,11 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             Name = name;
             Game = game;
             Setup = setup;
-            Timeline = new ChallengeTimeline(duration);
-            CreatedAt = createdAt?.DateTime ?? new UtcNowDateTimeProvider().DateTime;
-            SynchronizedAt = null;
+            Timeline = timeline;
             Scoring = scoring ?? ScoringFactory.Instance.CreateStrategy(this).Scoring;
             Payout = payout ?? PayoutFactory.Instance.CreateStrategy(this).Payout;
+            SynchronizedAt = null;
         }
-
-        public DateTime CreatedAt { get; }
-
-        public DateTime? SynchronizedAt { get; private set; }
 
         public ChallengeName Name { get; }
 
@@ -59,6 +53,8 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         public ChallengeSetup Setup { get; }
 
         public ChallengeTimeline Timeline { get; private set; }
+
+        public DateTime? SynchronizedAt { get; private set; }
 
         public IScoring Scoring { get; }
 

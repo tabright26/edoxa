@@ -14,14 +14,13 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     Game = table.Column<int>(nullable: false),
-                    CreatedAt = table.Column<DateTime>(nullable: false),
                     SynchronizedAt = table.Column<DateTime>(nullable: true),
-                    Seed = table.Column<int>(nullable: true),
                     Setup_BestOf = table.Column<int>(nullable: false),
                     Setup_Entries = table.Column<int>(nullable: false),
                     Setup_EntryFeeAmount = table.Column<decimal>(nullable: false),
                     Setup_EntryFeeCurrency = table.Column<int>(nullable: false),
                     Setup_PayoutEntries = table.Column<int>(nullable: false),
+                    Timeline_CreatedAt = table.Column<DateTime>(nullable: false),
                     Timeline_Duration = table.Column<long>(nullable: false),
                     Timeline_StartedAt = table.Column<DateTime>(nullable: true),
                     Timeline_ClosedAt = table.Column<DateTime>(nullable: true)
@@ -71,7 +70,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
                         column: x => x.ChallengeId,
                         principalTable: "Challenge",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -111,7 +110,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
                         column: x => x.ParticipantId,
                         principalTable: "Participant",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

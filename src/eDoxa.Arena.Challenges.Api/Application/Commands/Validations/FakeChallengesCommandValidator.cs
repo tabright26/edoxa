@@ -30,16 +30,16 @@ namespace eDoxa.Arena.Challenges.Api.Application.Commands.Validations
 
             this.OptionalEnumeration(command => command.EntryFeeCurrency);
 
-            this.RuleFor(command => command)
-                .CustomAsync(
-                    async (command, context, cancellationToken) =>
-                    {
-                        if (await challengeQuery.ChallengeSeedExistsAsync(command.Seed))
-                        {
-                            context.AddFailure($"This seed was already used: {command.Seed}.");
-                        }
-                    }
-                );
+            //this.RuleFor(command => command)
+            //    .CustomAsync(
+            //        async (command, context, cancellationToken) =>
+            //        {
+            //            if (await challengeQuery.ChallengeExistsAsync(command.Seed))
+            //            {
+            //                context.AddFailure($"This seed was already used: {command.Seed}.");
+            //            }
+            //        }
+            //    );
         }
     }
 }

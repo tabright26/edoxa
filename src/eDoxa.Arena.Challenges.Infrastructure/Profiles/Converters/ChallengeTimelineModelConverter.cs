@@ -24,6 +24,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.Converters
         {
             return new ChallengeTimelineModel
             {
+                CreatedAt = sourceMember.CreatedAt,
                 Duration = sourceMember.Duration.Ticks,
                 StartedAt = sourceMember.StartedAt,
                 ClosedAt = sourceMember.ClosedAt

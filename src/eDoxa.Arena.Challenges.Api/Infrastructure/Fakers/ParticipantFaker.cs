@@ -26,7 +26,6 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Fakers
             ChallengeSetup setup,
             ChallengeTimeline timeline,
             IScoring scoring,
-            DateTime createdAt,
             DateTime? synchronizedAt
         )
         {
@@ -36,7 +35,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Fakers
                     var participant = new Participant(
                         faker.UserId(),
                         faker.Participant().GameAccountId(game),
-                        new FakeDateTimeProvider(FakerHub.Date.Between(createdAt, timeline.StartedAt ?? DateTime.UtcNow.DateKeepHours()))
+                        new FakeDateTimeProvider(FakerHub.Date.Between(timeline.CreatedAt, timeline.StartedAt ?? DateTime.UtcNow.DateKeepHours()))
                     );
 
                     participant.SetEntityId(faker.Participant().Id());

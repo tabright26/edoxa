@@ -27,6 +27,6 @@ namespace eDoxa.Arena.Challenges.Domain.Abstractions.Queries
         [ItemCanBeNull]
         Task<ChallengeViewModel> FindChallengeAsync(ChallengeId challengeId);
 
-        Task<bool> ChallengeSeedExistsAsync(int seed);
+        Task<bool> ChallengeExistsAsync(ChallengeId challengeId);
     }
 }

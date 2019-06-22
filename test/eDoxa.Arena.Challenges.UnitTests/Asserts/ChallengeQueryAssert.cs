@@ -36,8 +36,6 @@ namespace eDoxa.Arena.Challenges.UnitTests.Asserts
 
             challenge.Id.Should().NotBeEmpty();
 
-            challenge.CreatedAt.Should().BeBefore(DateTime.UtcNow);
-
             challenge.Name.Should().NotBeNullOrWhiteSpace();
 
             challenge.Game.Should().NotBeNull();
@@ -55,6 +53,8 @@ namespace eDoxa.Arena.Challenges.UnitTests.Asserts
             challenge.Setup.Should().NotBeNull();
 
             challenge.Timeline.Should().NotBeNull();
+
+            challenge.Timeline.CreatedAt.Should().BeBefore(DateTime.UtcNow);
 
             challenge.Scoring.Should().NotBeNull();
 

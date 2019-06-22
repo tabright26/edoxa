@@ -44,9 +44,9 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Queries
 
         private IQueryable<ChallengeModel> Challenges { get; }
 
-        public async Task<bool> ChallengeSeedExistsAsync(int seed)
+        public async Task<bool> ChallengeExistsAsync(ChallengeId challengeId)
         {
-            return await Challenges.AnyAsync(challenge => challenge.Seed == seed);
+            return await Challenges.AnyAsync(challenge => challenge.Id == challengeId);
         }
 
         public async Task<IReadOnlyCollection<ChallengeModel>> FindUserChallengeHistoryAsNoTrackingAsync(
