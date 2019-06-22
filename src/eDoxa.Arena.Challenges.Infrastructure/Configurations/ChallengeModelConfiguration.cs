@@ -59,7 +59,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                 }
             );
 
-            builder.HasMany(challenge => challenge.Participants).WithOne(participant => participant.Challenge);
+            builder.HasMany(challenge => challenge.Participants).WithOne(participant => participant.Challenge).OnDelete(DeleteBehavior.Cascade);
 
             builder.HasKey(challenge => challenge.Id);
         }

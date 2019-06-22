@@ -13,9 +13,9 @@ using System.Reflection;
 
 using AutoMapper;
 
-using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.ViewModels;
 using eDoxa.Arena.Challenges.Infrastructure;
+using eDoxa.Arena.Challenges.Infrastructure.Models;
 
 namespace eDoxa.Arena.Challenges.Api.Infrastructure.Fakers.Extensions
 {
@@ -31,14 +31,14 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Fakers.Extensions
             )
         );
 
-        public static IEnumerable<IChallenge> GenerateEntities(this ChallengeFaker challengeFaker, int count)
+        public static ICollection<ChallengeModel> GenerateModels(this ChallengeFaker challengeFaker, int count)
         {
-            return Mapper.Map<IEnumerable<IChallenge>>(challengeFaker.Generate(count));
+            return Mapper.Map<ICollection<ChallengeModel>>(challengeFaker.Generate(count));
         }
 
-        public static IChallenge GenerateEntity(this ChallengeFaker challengeFaker)
+        public static ChallengeModel GenerateModel(this ChallengeFaker challengeFaker)
         {
-            return Mapper.Map<IChallenge>(challengeFaker.Generate());
+            return Mapper.Map<ChallengeModel>(challengeFaker.Generate());
         }
 
         public static IReadOnlyCollection<ChallengeViewModel> GenerateViewModels(this ChallengeFaker challengeFaker, int count)

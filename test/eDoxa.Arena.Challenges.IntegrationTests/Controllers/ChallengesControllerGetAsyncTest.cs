@@ -17,6 +17,7 @@ using AutoMapper;
 
 using eDoxa.Arena.Challenges.Api;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Fakers;
+using eDoxa.Arena.Challenges.Api.Infrastructure.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.ViewModels;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
@@ -26,6 +27,8 @@ using eDoxa.Seedwork.Testing.TestServer.Extensions;
 using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using Newtonsoft.Json;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 {
@@ -84,7 +87,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         {
             var challengeFaker = new ChallengeFaker();
 
-            var challenges = challengeFaker.Generate(count);
+            var challenges = challengeFaker.GenerateModels(count);
 
             _dbContext.Challenges.AddRange(challenges);
 
@@ -121,7 +124,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 
             var challenge2 = FakeChallenge(seed);
 
-            var challengeViewModel2 = _mapper.Map<ChallengeViewModel>(challenge2);
+            var challengeViewModel2 = JsonConvert.DeserializeObject<ChallengeViewModel>(JsonConvert.SerializeObject(_mapper.Map<ChallengeViewModel>(challenge2)));
 
             challengeViewModel1.Should().BeEquivalentTo(challengeViewModel2);
         }
@@ -132,7 +135,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 
             challengeFaker.UseSeed(seed);
 
-            return challengeFaker.Generate();
+            return challengeFaker.GenerateModel();
         }
     }
 }

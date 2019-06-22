@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeFaker.cs
-// Date Created: 2019-06-21
+// Date Created: 2019-06-22
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,104 +9,90 @@
 // this source code package.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 using Bogus;
 
 using eDoxa.Arena.Challenges.Api.Infrastructure.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Infrastructure.Models;
+using eDoxa.Arena.Challenges.Domain.Factories;
 using eDoxa.Seedwork.Common.Enumerations;
+using eDoxa.Seedwork.Common.Extensions;
 
 namespace eDoxa.Arena.Challenges.Api.Infrastructure.Fakers
 {
-    public sealed class ChallengeFaker : Faker<ChallengeModel>
+    public sealed class ChallengeFaker : Faker<Challenge>
     {
         public ChallengeFaker(ChallengeGame game = null, ChallengeState state = null, CurrencyType entryFeeCurrency = null)
         {
-            this.UseSeed(8675309);
-
             this.CustomInstantiator(
                 faker =>
                 {
                     game = faker.Challenge().Game(game);
-                    var timeline = faker.Challenge().Timeline(state);
+
+                    state = faker.Challenge().State(state);
+
                     var setup = faker.Challenge().Setup(entryFeeCurrency);
 
-                    var challengeModel = new ChallengeModel
+                    var scoring = ScoringFactory.Instance.CreateStrategy(game).Scoring;
+
+                    var payout = PayoutFactory.Instance.CreateStrategy(setup.PayoutEntries, setup.EntryFee).Payout;
+
+                    // -----------------------------------------
+
+                    var created = faker.Date.Recent(1, DateTime.UtcNow.DateKeepHours());
+
+                    var timeline = faker.Challenge().Timeline(state);
+
+                    var synchronizedAt = timeline != ChallengeState.Inscription && timeline.StartedAt.HasValue && timeline.EndedAt.HasValue
+                        ? faker.Date.Between(timeline.StartedAt.Value, timeline.EndedAt.Value)
+                        : (DateTime?) null;
+
+                    var challenge = new Challenge(
+                        faker.Challenge().Name(),
+                        game,
+                        setup,
+                        timeline.Duration,
+                        new FakeDateTimeProvider(created),
+                        scoring,
+                        payout
+                    );
+
+                    challenge.SetEntityId(faker.Challenge().Id());
+
+                    var participantFaker = new ParticipantFaker(
+                        game,
+                        setup,
+                        timeline,
+                        scoring,
+                        created,
+                        synchronizedAt
+                    );
+
+                    participantFaker.UseSeed(faker.Random.Int());
+
+                    var participants =
+                        participantFaker.Generate(state == ChallengeState.Inscription ? new Entries(faker.Random.Int(1, setup.Entries - 1)) : setup.Entries);
+
+                    participants.ForEach(participant => challenge.Register(participant));
+
+                    if (timeline.StartedAt.HasValue)
                     {
-                        Id = faker.Challenge().Id(),
-                        Name = faker.Challenge().Name(),
-                        Game = game.Value,
-                        Timeline = new ChallengeTimelineModel
-                        {
-                            Duration = timeline.Duration.Ticks,
-                            StartedAt = timeline.StartedAt,
-                            ClosedAt = timeline.ClosedAt
-                        },
-                        Setup = new ChallengeSetupModel
-                        {
-                            BestOf = setup.BestOf,
-                            Entries = setup.Entries,
-                            PayoutEntries = setup.PayoutEntries,
-                            EntryFeeCurrency = setup.EntryFee.Type.Value,
-                            EntryFeeAmount = setup.EntryFee.Amount
-                        },
-                        Seed = localSeed
-                    };
+                        challenge.Start(new FakeDateTimeProvider(timeline.StartedAt.Value));
+                    }
 
-                    challengeModel.Buckets = this.Buckets(setup.PayoutEntries, setup.EntryFee).ToList();
+                    if (synchronizedAt.HasValue)
+                    {
+                        challenge.Synchronize(new FakeDateTimeProvider(synchronizedAt.Value));
+                    }
 
-                    challengeModel.ScoringItems = this.ScoringItems(game).ToList();
+                    if (timeline.ClosedAt.HasValue)
+                    {
+                        challenge.Close(new FakeDateTimeProvider(timeline.ClosedAt.Value));
+                    }
 
-                    challengeModel.Participants = faker.Challenge()
-                        .Participants(
-                            challengeModel,
-                            game,
-                            timeline.State,
-                            setup.BestOf,
-                            setup.Entries,
-                            timeline.StartedAt
-                        )
-                        .ToList();
-
-                    challengeModel.CreatedAt = faker.Challenge()
-                        .CreatedAt(timeline.StartedAt, challengeModel.Participants.Select(participant => participant.RegisteredAt));
-
-                    challengeModel.SynchronizedAt = challengeModel.Participants.SelectMany(participant => participant.Matches)
-                        .Max(participant => participant.SynchronizedAt as DateTime?);
-
-                    return challengeModel;
+                    return challenge;
                 }
             );
-        }
-
-        private IEnumerable<ScoringItemModel> ScoringItems(ChallengeGame game)
-        {
-            return FakerHub.Challenge()
-                .Scoring(game)
-                .Select(
-                    item => new ScoringItemModel
-                    {
-                        Name = item.Key,
-                        Weighting = item.Value
-                    }
-                );
-        }
-
-        private IEnumerable<BucketModel> Buckets(PayoutEntries payoutEntries, EntryFee entryFee)
-        {
-            return FakerHub.Challenge()
-                .Payout(payoutEntries, entryFee)
-                .Buckets.Select(
-                    bucket => new BucketModel
-                    {
-                        Size = bucket.Size,
-                        PrizeCurrency = bucket.Prize.Type.Value,
-                        PrizeAmount = bucket.Prize.Amount
-                    }
-                );
         }
     }
 }

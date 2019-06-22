@@ -28,6 +28,7 @@ namespace eDoxa.Seedwork.Testing.TestServer.Extensions
                 content,
                 new JsonSerializerSettings
                 {
+                    DateFormatString = "yyyy'-'MM'-'dd'T'HH':'mm':'ss",
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                 }
             );

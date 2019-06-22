@@ -102,7 +102,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
 
             var challenges = challengeModels.Select(challenge => _mapper.Map<IChallenge>(challenge));
 
-            challenges = challenges.Where(challenge => challenge.Game.HasFilter(game) && challenge.State.HasFilter(state));
+            challenges = challenges.Where(challenge => challenge.Game.HasFilter(game) && challenge.Timeline.State.HasFilter(state));
 
             return challenges.ToList();
         }

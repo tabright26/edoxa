@@ -25,7 +25,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
 
             builder.Property(participant => participant.Id);
 
-            builder.HasMany(participant => participant.Matches).WithOne(match => match.Participant);
+            builder.HasMany(participant => participant.Matches).WithOne(match => match.Participant).OnDelete(DeleteBehavior.Cascade);
 
             builder.HasKey(participant => participant.Id);
 

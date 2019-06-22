@@ -41,21 +41,31 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.Fakers
         {
             var challengeFaker = new ChallengeFaker();
 
-            var challenge = challengeFaker.GenerateViewModel();
+            challengeFaker.UseSeed(1);
+
+            var challenges = challengeFaker.Generate(10);
+
+            challenges.ShouldBeValidObjectState();
         }
 
         [TestMethod]
         public void FakeChallenges_ShouldNotThrow1()
         {
             // Arrange
+            const int seed = 1;
+
             var challengeFaker1 = new ChallengeFaker();
+
+            challengeFaker1.UseSeed(seed);
 
             var challengeFaker2 = new ChallengeFaker();
 
-            // Act
-            var challenge1 = challengeFaker1.GenerateEntity();
+            challengeFaker2.UseSeed(seed);
 
-            var challenge2 = challengeFaker2.GenerateEntity();
+            // Act
+            var challenge1 = challengeFaker1.Generate();
+
+            var challenge2 = challengeFaker2.Generate();
 
             // Assert
             challenge1.Should().Be(challenge2);
@@ -68,9 +78,9 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.Fakers
             var challengeFaker = new ChallengeFaker();
 
             // Act
-            var challenge1 = challengeFaker.GenerateEntity();
+            var challenge1 = challengeFaker.Generate();
 
-            var challenge2 = challengeFaker.GenerateEntity();
+            var challenge2 = challengeFaker.Generate();
 
             // Assert
             challenge1.Should().NotBe(challenge2);
@@ -86,7 +96,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.Fakers
             challengeFaker.UseSeed(seed);
 
             // Act
-            var challenges = challengeFaker.GenerateEntities(20);
+            var challenges = challengeFaker.Generate(20);
 
             // Assert
             challenges.ShouldBeValidObjectState();

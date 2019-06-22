@@ -34,9 +34,9 @@ namespace eDoxa.Arena.Challenges.UnitTests.Extensions
 
             challenge.Game.Should().Should().NotBe(new ChallengeGame());
 
-            challenge.State.Should().NotBe(ChallengeState.All);
+            challenge.Timeline.State.Should().NotBe(ChallengeState.All);
 
-            challenge.State.Should().NotBe(new ChallengeState());
+            challenge.Timeline.State.Should().NotBe(new ChallengeState());
 
             challenge.Participants.Should().NotBeNullOrEmpty();
 
@@ -47,7 +47,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Extensions
 
                     participant.RegisteredAt.Should().BeAfter(challenge.CreatedAt);
 
-                    if (challenge.State != ChallengeState.Inscription)
+                    if (challenge.Timeline.State != ChallengeState.Inscription)
                     {
                         participant.Matches.Should().NotBeNullOrEmpty();
                     }
@@ -65,15 +65,15 @@ namespace eDoxa.Arena.Challenges.UnitTests.Extensions
                 }
             );
 
-            //challenge.Participants.Select(participant => participant.Id).Distinct().Should().HaveCount(challenge.Participants.Count);
+            challenge.Participants.Select(participant => participant.Id).Distinct().Should().HaveCount(challenge.Participants.Count);
 
-            //challenge.Participants.Select(participant => participant.UserId).Distinct().Should().HaveCount(challenge.Participants.Count);
+            challenge.Participants.Select(participant => participant.UserId).Distinct().Should().HaveCount(challenge.Participants.Count);
 
-            //challenge.Participants.SelectMany(participant => participant.Matches)
-            //    .Select(match => match.Id)
-            //    .Distinct()
-            //    .Should()
-            //    .HaveCount(challenge.Participants.SelectMany(participant => participant.Matches).Count());
+            challenge.Participants.SelectMany(participant => participant.Matches)
+                .Select(match => match.Id)
+                .Distinct()
+                .Should()
+                .HaveCount(challenge.Participants.SelectMany(participant => participant.Matches).Count());
 
             challenge.Participants.SelectMany(participant => participant.Matches)
                 .Select(match => match.GameMatchId)

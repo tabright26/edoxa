@@ -11,6 +11,7 @@
 using AutoMapper;
 
 using eDoxa.Arena.Challenges.Api.Infrastructure.Fakers;
+using eDoxa.Arena.Challenges.Api.Infrastructure.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.ViewModels;
 using eDoxa.Arena.Challenges.UnitTests.Asserts;
 using eDoxa.Arena.Challenges.UnitTests.Utilities;
@@ -30,7 +31,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
             // Arrange
             var challengeFaker = new ChallengeFaker();
 
-            var challenge = challengeFaker.Generate();
+            var challenge = challengeFaker.GenerateModel();
 
             // Act
             var challengeViewModel = Mapper.Map<ChallengeViewModel>(challenge);

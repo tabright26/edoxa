@@ -33,8 +33,6 @@ namespace eDoxa.Arena.Challenges.Domain.Abstractions
 
         ChallengeTimeline Timeline { get; }
 
-        ChallengeState State { get; }
-
         IScoring Scoring { get; }
 
         IPayout Payout { get; }

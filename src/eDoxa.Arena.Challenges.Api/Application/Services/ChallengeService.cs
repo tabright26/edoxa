@@ -95,7 +95,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Services
 
             challengeFaker.UseSeed(seed);
 
-            var challenges = challengeFaker.GenerateEntities(count).ToList();
+            var challenges = challengeFaker.Generate(count).ToList();
 
             _challengeRepository.Create(challenges);
 

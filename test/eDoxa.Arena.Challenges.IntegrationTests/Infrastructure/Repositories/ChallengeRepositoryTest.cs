@@ -123,7 +123,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Repositories
         {
             var faker = new Faker();
 
-            IChallenge challenge = new FakeChallenge(
+            var challenge = new FakeChallenge(
                 new ChallengeName("Challenge"),
                 ChallengeGame.LeagueOfLegends,
                 new ChallengeSetup(BestOf.Three, PayoutEntries.One, MoneyEntryFee.Five),
@@ -150,7 +150,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Repositories
 
                     challengeFromRepository.Should().Be(challenge);
 
-                    challengeFromRepository.State.Should().Be(ChallengeState.Inscription);
+                    challengeFromRepository.Timeline.State.Should().Be(ChallengeState.Inscription);
                 }
 
                 var participant1 = new Participant(new UserId(), new GameAccountId(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider());
@@ -165,7 +165,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Repositories
 
                     await repository.CommitAsync();
 
-                    challengeFromRepository.State.Should().Be(ChallengeState.Inscription);
+                    challengeFromRepository.Timeline.State.Should().Be(ChallengeState.Inscription);
                 }
 
                 using (var context = factory.CreateContext())
@@ -176,7 +176,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Repositories
 
                     challengeFromRepository.Participants.Should().Contain(participant1);
 
-                    challengeFromRepository.State.Should().Be(ChallengeState.Inscription);
+                    challengeFromRepository.Timeline.State.Should().Be(ChallengeState.Inscription);
                 }
 
                 var participant2 = new Participant(new UserId(), new GameAccountId(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider());
@@ -193,7 +193,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Repositories
 
                     await repository.CommitAsync();
 
-                    challengeFromRepository.State.Should().Be(ChallengeState.InProgress);
+                    challengeFromRepository.Timeline.State.Should().Be(ChallengeState.InProgress);
                 }
 
                 using (var context = factory.CreateContext())
@@ -204,7 +204,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Repositories
 
                     challengeFromRepository.Participants.Should().BeEquivalentTo(participant1, participant2);
 
-                    challengeFromRepository.State.Should().Be(ChallengeState.InProgress);
+                    challengeFromRepository.Timeline.State.Should().Be(ChallengeState.InProgress);
                 }
 
                 var match1 = new Match(new GameMatchId(Guid.NewGuid()), new UtcNowDateTimeProvider());
@@ -238,7 +238,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Repositories
 
                     par.AverageScore(challenge.Setup.BestOf).Should().BeNull();
 
-                    challengeFromRepository.State.Should().Be(ChallengeState.InProgress);
+                    challengeFromRepository.Timeline.State.Should().Be(ChallengeState.InProgress);
                 }
 
                 var match2 = new Match(new GameMatchId(Guid.NewGuid()), new UtcNowDateTimeProvider());
@@ -272,7 +272,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Repositories
 
                     par.AverageScore(challenge.Setup.BestOf).Should().BeNull();
 
-                    challengeFromRepository.State.Should().Be(ChallengeState.InProgress);
+                    challengeFromRepository.Timeline.State.Should().Be(ChallengeState.InProgress);
                 }
             }
         }
