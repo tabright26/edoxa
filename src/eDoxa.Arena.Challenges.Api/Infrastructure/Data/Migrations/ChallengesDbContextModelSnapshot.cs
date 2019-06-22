@@ -3,13 +3,13 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+
 using eDoxa.Arena.Challenges.Infrastructure;
 
 namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ChallengesDbContext))]
-    partial class ChallengesDbContextModelSnapshot : ModelSnapshot
+    internal class ChallengesDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {

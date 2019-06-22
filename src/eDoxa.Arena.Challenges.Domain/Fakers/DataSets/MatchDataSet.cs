@@ -15,7 +15,7 @@ using Bogus;
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 
-namespace eDoxa.Arena.Challenges.Api.Infrastructure.Fakers.DataSets
+namespace eDoxa.Arena.Challenges.Domain.Fakers.DataSets
 {
     public class MatchDataSet
     {

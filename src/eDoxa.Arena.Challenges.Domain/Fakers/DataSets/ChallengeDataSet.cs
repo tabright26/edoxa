@@ -14,16 +14,15 @@ using System.Linq;
 
 using Bogus;
 
-using eDoxa.Arena.Challenges.Api.Infrastructure.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Factories;
-using eDoxa.Arena.Challenges.Infrastructure.Models;
+using eDoxa.Arena.Challenges.Domain.Fakers.Extensions;
+using eDoxa.Arena.Challenges.Domain.Fakers.Providers;
 using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.Extensions;
-using eDoxa.Seedwork.Infrastructure;
 
-namespace eDoxa.Arena.Challenges.Api.Infrastructure.Fakers.DataSets
+namespace eDoxa.Arena.Challenges.Domain.Fakers.DataSets
 {
     public class ChallengeDataSet
     {
@@ -71,17 +70,17 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Fakers.DataSets
 
             if (state == ChallengeState.InProgress)
             {
-                timeline = timeline.Start(new PersistentDateTimeProvider(DateTime.UtcNow.DateKeepHours()));
+                timeline = timeline.Start(new FakeDateTimeProvider(DateTime.UtcNow.DateKeepHours()));
             }
 
             if (state == ChallengeState.Ended)
             {
-                timeline = timeline.Start(new PersistentDateTimeProvider(DateTime.UtcNow.DateKeepHours().Subtract(duration)));
+                timeline = timeline.Start(new FakeDateTimeProvider(DateTime.UtcNow.DateKeepHours().Subtract(duration)));
             }
 
             if (state == ChallengeState.Closed)
             {
-                timeline = timeline.Close(new PersistentDateTimeProvider(DateTime.UtcNow.DateKeepHours()));
+                timeline = timeline.Close(new FakeDateTimeProvider(DateTime.UtcNow.DateKeepHours()));
             }
 
             return timeline;
@@ -102,63 +101,42 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Fakers.DataSets
             return PayoutFactory.Instance.CreateStrategy(payoutEntries, entryFee).Payout;
         }
 
-        public IEnumerable<ParticipantModel> Participants(
-            ChallengeModel challengeModel,
-            ChallengeGame game,
-            ChallengeState state,
-            BestOf bestOf,
-            Entries entries,
-            DateTime? startedAt
-        )
-        {
-            for (var index = 0; index < this.ParticipantCount(state, entries); index++)
-            {
-                yield return this.Participant(
-                    challengeModel,
-                    game,
-                    state,
-                    bestOf,
-                    startedAt
-                );
-            }
-        }
-
         private Entries ParticipantCount(ChallengeState state, Entries entries)
         {
             return state == ChallengeState.Inscription ? new Entries(Faker.Random.Int(1, entries - 1)) : entries;
         }
 
-        public ParticipantModel Participant(
-            ChallengeModel challengeModel,
-            ChallengeGame game,
-            ChallengeState state,
-            BestOf bestOf,
-            DateTime? startedAt
-        )
-        {
-            var participant = new ParticipantModel
-            {
-                Id = Faker.Participant().Id(),
-                UserId = Faker.UserId(),
-                GameAccountId = Faker.Participant().GameAccountId(game),
-                Challenge = challengeModel
-            };
+        //public ParticipantModel Participant(
+        //    ChallengeModel challengeModel,
+        //    ChallengeGame game,
+        //    ChallengeState state,
+        //    BestOf bestOf,
+        //    DateTime? startedAt
+        //)
+        //{
+        //    var participant = new ParticipantModel
+        //    {
+        //        Id = Faker.Participant().Id(),
+        //        UserId = Faker.UserId(),
+        //        GameAccountId = Faker.Participant().GameAccountId(game),
+        //        Challenge = challengeModel
+        //    };
 
-            participant.Matches = Faker.Participant()
-                .Matches(
-                    participant,
-                    game,
-                    state,
-                    bestOf,
-                    startedAt
-                )
-                .ToList();
+        //    participant.Matches = Faker.Participant()
+        //        .Matches(
+        //            participant,
+        //            game,
+        //            state,
+        //            bestOf,
+        //            startedAt
+        //        )
+        //        .ToList();
 
-            participant.RegisteredAt = Faker.Participant().RegisteredAt(state, startedAt);
+        //    participant.RegisteredAt = Faker.Participant().RegisteredAt(state, startedAt);
 
-            participant.SynchronizedAt = participant.Matches.Max(match => match.SynchronizedAt as DateTime?);
+        //    participant.SynchronizedAt = participant.Matches.Max(match => match.SynchronizedAt as DateTime?);
 
-            return participant;
-        }
+        //    return participant;
+        //}
     }
 }

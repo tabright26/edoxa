@@ -16,7 +16,7 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Domain.Aggregate;
 
-namespace eDoxa.Arena.Challenges.Api.Infrastructure.Fakers.DataSets
+namespace eDoxa.Arena.Challenges.Domain.Fakers.DataSets
 {
     public class ChallengeSetupDataSet
     {

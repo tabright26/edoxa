@@ -12,7 +12,7 @@ using System;
 
 using eDoxa.Seedwork.Common;
 
-namespace eDoxa.Arena.Challenges.Api.Infrastructure
+namespace eDoxa.Arena.Challenges.Domain.Fakers.Providers
 {
     public sealed class FakeDateTimeProvider : IDateTimeProvider
     {

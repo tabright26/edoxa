@@ -14,12 +14,12 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Api.Infrastructure.Fakers;
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Factories;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Repositories;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Services;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Domain.Fakers;
 using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.ValueObjects;

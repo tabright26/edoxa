@@ -12,8 +12,8 @@ using System.Collections.Generic;
 
 using Bogus;
 
-using eDoxa.Arena.Challenges.Api.Infrastructure.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Domain.Fakers.Extensions;
 
 using FluentAssertions;
 

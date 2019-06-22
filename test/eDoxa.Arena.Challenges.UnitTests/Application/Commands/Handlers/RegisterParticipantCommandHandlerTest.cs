@@ -10,9 +10,9 @@
 
 using AutoMapper;
 
-using eDoxa.Arena.Challenges.Api.Infrastructure.Fakers;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Services;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Domain.Fakers;
 using eDoxa.Arena.Challenges.UnitTests.Extensions;
 
 using Microsoft.AspNetCore.Http;

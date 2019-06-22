@@ -12,12 +12,13 @@ using System;
 
 using Bogus;
 
-using eDoxa.Arena.Challenges.Api.Infrastructure.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Domain.Fakers.Extensions;
+using eDoxa.Arena.Challenges.Domain.Fakers.Providers;
 using eDoxa.Seedwork.Common.Extensions;
 
-namespace eDoxa.Arena.Challenges.Api.Infrastructure.Fakers
+namespace eDoxa.Arena.Challenges.Domain.Fakers
 {
     internal sealed class ParticipantFaker : Faker<Participant>
     {
