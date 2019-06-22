@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeFakerExtensions.cs
-// Date Created: 2019-06-13
+// Date Created: 2019-06-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,23 +9,46 @@
 // this source code package.
 
 using System.Collections.Generic;
+using System.Reflection;
 
 using AutoMapper;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions;
+using eDoxa.Arena.Challenges.Domain.ViewModels;
+using eDoxa.Arena.Challenges.Infrastructure;
 
 namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.Extensions
 {
     public static class ChallengeFakerExtensions
     {
-        public static IEnumerable<IChallenge> GenerateEntities(this ChallengeFaker challengeFaker, IMapper mapper, int count)
+        private static readonly IMapper Mapper = new Mapper(
+            new MapperConfiguration(
+                config =>
+                {
+                    config.AddProfiles(Assembly.GetAssembly(typeof(Startup)));
+                    config.AddProfiles(Assembly.GetAssembly(typeof(ChallengesDbContext)));
+                }
+            )
+        );
+
+        public static IEnumerable<IChallenge> GenerateEntities(this ChallengeFaker challengeFaker, int count)
         {
-            return mapper.Map<IEnumerable<IChallenge>>(challengeFaker.Generate(count));
+            return Mapper.Map<IEnumerable<IChallenge>>(challengeFaker.Generate(count));
         }
 
-        public static IChallenge GenerateEntity(this ChallengeFaker challengeFaker, IMapper mapper)
+        public static IChallenge GenerateEntity(this ChallengeFaker challengeFaker)
         {
-            return mapper.Map<IChallenge>(challengeFaker.Generate());
+            return Mapper.Map<IChallenge>(challengeFaker.Generate());
+        }
+
+        public static IReadOnlyCollection<ChallengeViewModel> GenerateViewModels(this ChallengeFaker challengeFaker, int count)
+        {
+            return Mapper.Map<IReadOnlyCollection<ChallengeViewModel>>(challengeFaker.Generate(count));
+        }
+
+        public static ChallengeViewModel GenerateViewModel(this ChallengeFaker challengeFaker)
+        {
+            return Mapper.Map<ChallengeViewModel>(challengeFaker.Generate());
         }
     }
 }

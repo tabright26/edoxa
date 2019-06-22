@@ -34,19 +34,16 @@ namespace eDoxa.Arena.Challenges.Api.Application.Services
         private readonly IChallengeRepository _challengeRepository;
         private readonly IGameMatchIdsFactory _gameMatchIdsFactory;
         private readonly IMatchStatsFactory _matchStatsFactory;
-        private readonly IMapper _mapper;
 
         public ChallengeService(
             IChallengeRepository challengeRepository,
             IGameMatchIdsFactory gameMatchIdsFactory,
-            IMatchStatsFactory matchStatsFactory,
-            IMapper mapper
+            IMatchStatsFactory matchStatsFactory
         )
         {
             _challengeRepository = challengeRepository;
             _gameMatchIdsFactory = gameMatchIdsFactory;
             _matchStatsFactory = matchStatsFactory;
-            _mapper = mapper;
         }
 
         public async Task<Participant> RegisterParticipantAsync(
@@ -102,7 +99,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Services
 
             challengeFaker.UseSeed(seed);
 
-            var challenges = challengeFaker.GenerateEntities(_mapper, count).ToList();
+            var challenges = challengeFaker.GenerateEntities(count).ToList();
 
             _challengeRepository.Create(challenges);
 

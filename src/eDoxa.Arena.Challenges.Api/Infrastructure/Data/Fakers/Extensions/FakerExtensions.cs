@@ -184,7 +184,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.Extensions
             throw new ArgumentNullException(nameof(game));
         }
 
-        public static GameAccountId UserGameReference(this Faker faker, ChallengeGame game)
+        public static GameAccountId GameMatchId(this Faker faker, ChallengeGame game)
         {
             if (game == Domain.AggregateModels.ChallengeAggregate.ChallengeGame.LeagueOfLegends)
             {

@@ -37,6 +37,14 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.Fakers
         private static IEnumerable<object[]> ChallengeStates => ChallengeState.GetEnumerations().Select(state => new object[] {state, Faker.Random.Int()});
 
         [TestMethod]
+        public void M()
+        {
+            var challengeFaker = new ChallengeFaker();
+
+            var challenge = challengeFaker.GenerateViewModel();
+        }
+
+        [TestMethod]
         public void FakeChallenges_ShouldNotThrow1()
         {
             // Arrange
@@ -45,9 +53,9 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.Fakers
             var challengeFaker2 = new ChallengeFaker();
 
             // Act
-            var challenge1 = challengeFaker1.GenerateEntity(Mapper);
+            var challenge1 = challengeFaker1.GenerateEntity();
 
-            var challenge2 = challengeFaker2.GenerateEntity(Mapper);
+            var challenge2 = challengeFaker2.GenerateEntity();
 
             // Assert
             challenge1.Should().Be(challenge2);
@@ -60,9 +68,9 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.Fakers
             var challengeFaker = new ChallengeFaker();
 
             // Act
-            var challenge1 = challengeFaker.GenerateEntity(Mapper);
+            var challenge1 = challengeFaker.GenerateEntity();
 
-            var challenge2 = challengeFaker.GenerateEntity(Mapper);
+            var challenge2 = challengeFaker.GenerateEntity();
 
             // Assert
             challenge1.Should().NotBe(challenge2);
@@ -78,7 +86,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.Fakers
             challengeFaker.UseSeed(seed);
 
             // Act
-            var challenges = challengeFaker.GenerateEntities(Mapper, 20);
+            var challenges = challengeFaker.GenerateEntities(20);
 
             // Assert
             challenges.ShouldBeValidObjectState();
