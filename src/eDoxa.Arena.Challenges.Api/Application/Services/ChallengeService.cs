@@ -44,7 +44,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Services
             _matchStatsFactory = matchStatsFactory;
         }
 
-        public async Task<Participant> RegisterParticipantAsync(
+        public async Task RegisterParticipantAsync(
             ChallengeId challengeId,
             UserId userId,
             Func<ChallengeGame, GameAccountId> funcUserGameReference,
@@ -55,11 +55,9 @@ namespace eDoxa.Arena.Challenges.Api.Application.Services
 
             var userGameReference = funcUserGameReference(challenge.Game);
 
-            var participant = challenge.Register(new Participant(userId, userGameReference, new UtcNowDateTimeProvider()));
+            challenge.Register(new Participant(userId, userGameReference, new UtcNowDateTimeProvider()));
 
             await _challengeRepository.CommitAsync(cancellationToken);
-
-            return participant;
         }
 
         public async Task CloseAsync(CancellationToken cancellationToken = default)

@@ -69,9 +69,9 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ParticipantViewModel))]
         public async Task<IActionResult> PostAsync(ChallengeId challengeId)
         {
-            var participant = await _mediator.SendCommandAsync(new RegisterParticipantCommand(challengeId));
+            await _mediator.SendCommandAsync(new RegisterParticipantCommand(challengeId));
 
-            return this.Ok(participant);
+            return this.Ok("Participant as been registered.");
         }
     }
 }

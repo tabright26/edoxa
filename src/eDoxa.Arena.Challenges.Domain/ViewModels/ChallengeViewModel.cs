@@ -33,6 +33,10 @@ namespace eDoxa.Arena.Challenges.Domain.ViewModels
         [JsonConverter(typeof(UnixDateTimeConverter))]
         public DateTime CreatedAt { get; set; }
 
+        [JsonProperty("synchronizedAt")]
+        [JsonConverter(typeof(UnixDateTimeConverter))]
+        public DateTime? SynchronizedAt { get; set; }
+
         [JsonProperty("state")]
         public ChallengeState State { get; set; }
 

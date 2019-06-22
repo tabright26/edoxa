@@ -24,10 +24,10 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
     {
         private readonly HashSet<Stat> _stats = new HashSet<Stat>();
 
-        public Match(GameMatchId gameMatchId, IDateTimeProvider provider = null)
+        public Match(GameMatchId gameMatchId, IDateTimeProvider synchronizedAt)
         {
             GameMatchId = gameMatchId;
-            SynchronizedAt = Synchronize(provider);
+            SynchronizedAt = synchronizedAt.DateTime;
         }
 
         public GameMatchId GameMatchId { get; }
@@ -60,13 +60,6 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
                 _stats.Add(stat);
             }
-        }
-
-        private static DateTime Synchronize(IDateTimeProvider provider = null)
-        {
-            provider = provider ?? new UtcNowDateTimeProvider();
-
-            return provider.DateTime;
         }
     }
 

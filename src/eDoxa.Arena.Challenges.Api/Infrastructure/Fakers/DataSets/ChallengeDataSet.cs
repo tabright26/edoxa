@@ -21,6 +21,7 @@ using eDoxa.Arena.Challenges.Domain.Factories;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
 using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.Extensions;
+using eDoxa.Seedwork.Infrastructure;
 
 namespace eDoxa.Arena.Challenges.Api.Infrastructure.Fakers.DataSets
 {
@@ -64,22 +65,24 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Fakers.DataSets
 
             var duration = Faker.Timeline().Duration();
 
-            if (state == ChallengeState.Closed)
+            var timeline = new ChallengeTimeline(duration);
+
+            if (state == ChallengeState.InProgress)
             {
-                return new ChallengeTimeline(duration, DateTime.UtcNow.DateKeepHours().Subtract(duration), DateTime.UtcNow.DateKeepHours());
+                timeline = timeline.Start(new PersistentDateTimeProvider(DateTime.UtcNow.DateKeepHours()));
             }
 
             if (state == ChallengeState.Ended)
             {
-                return new ChallengeTimeline(duration, DateTime.UtcNow.DateKeepHours().Subtract(duration));
+                timeline = timeline.Start(new PersistentDateTimeProvider(DateTime.UtcNow.DateKeepHours().Subtract(duration)));
             }
 
-            if (state == ChallengeState.InProgress)
+            if (state == ChallengeState.Closed)
             {
-                return new ChallengeTimeline(duration, DateTime.UtcNow.DateKeepHours());
+                timeline = timeline.Close(new PersistentDateTimeProvider(DateTime.UtcNow.DateKeepHours()));
             }
 
-            return new ChallengeTimeline(duration);
+            return timeline;
         }
 
         public ChallengeSetup Setup(CurrencyType entryFeeCurrency = null)

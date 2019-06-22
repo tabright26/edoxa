@@ -18,21 +18,21 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class ChallengeTimeline : ValueObject
     {
-        public ChallengeTimeline(ChallengeDuration duration, DateTime? startedAt, DateTime? closedAt) : this(duration, startedAt)
-        {
-            ClosedAt = closedAt;
-        }
-
-        public ChallengeTimeline(ChallengeDuration duration, DateTime? startedAt) : this(duration)
-        {
-            StartedAt = startedAt;
-        }
-
         public ChallengeTimeline(ChallengeDuration duration)
         {
             Duration = duration;
             StartedAt = null;
             ClosedAt = null;
+        }
+
+        private ChallengeTimeline(ChallengeDuration duration, DateTime? startedAt, DateTime? closedAt) : this(duration, startedAt)
+        {
+            ClosedAt = closedAt;
+        }
+
+        private ChallengeTimeline(ChallengeDuration duration, DateTime? startedAt) : this(duration)
+        {
+            StartedAt = startedAt;
         }
 
         public ChallengeDuration Duration { get; }
@@ -50,18 +50,14 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             return timeline.State;
         }
 
-        public ChallengeTimeline Start(IDateTimeProvider provider = null)
+        public ChallengeTimeline Start(IDateTimeProvider startedAt)
         {
-            provider = provider ?? new UtcNowDateTimeProvider();
-
-            return new ChallengeTimeline(Duration, provider.DateTime);
+            return new ChallengeTimeline(Duration, startedAt.DateTime);
         }
 
-        public ChallengeTimeline Close(IDateTimeProvider provider = null)
+        public ChallengeTimeline Close(IDateTimeProvider closedAt)
         {
-            provider = provider ?? new UtcNowDateTimeProvider();
-
-            return new ChallengeTimeline(Duration, StartedAt, provider.DateTime);
+            return new ChallengeTimeline(Duration, StartedAt, closedAt.DateTime);
         }
 
         protected override IEnumerable<object> GetAtomicValues()

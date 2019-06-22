@@ -11,46 +11,31 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using AutoMapper;
-
 using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Services;
-using eDoxa.Arena.Challenges.Domain.ViewModels;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Seedwork.Security.Extensions;
-
-using JetBrains.Annotations;
 
 using Microsoft.AspNetCore.Http;
 
 namespace eDoxa.Arena.Challenges.Api.Application.Commands.Handlers
 {
-    public sealed class RegisterParticipantCommandHandler : ICommandHandler<RegisterParticipantCommand, ParticipantViewModel>
+    public sealed class RegisterParticipantCommandHandler : AsyncCommandHandler<RegisterParticipantCommand>
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IChallengeService _challengeService;
-        private readonly IMapper _mapper;
 
-        public RegisterParticipantCommandHandler(IHttpContextAccessor httpContextAccessor, IChallengeService challengeService, IMapper mapper)
+        public RegisterParticipantCommandHandler(IHttpContextAccessor httpContextAccessor, IChallengeService challengeService)
         {
             _httpContextAccessor = httpContextAccessor;
             _challengeService = challengeService;
-            _mapper = mapper;
         }
 
-        [ItemNotNull]
-        public async Task<ParticipantViewModel> Handle([NotNull] RegisterParticipantCommand command, CancellationToken cancellationToken)
+        protected override async Task Handle(RegisterParticipantCommand command, CancellationToken cancellationToken)
         {
             var userId = _httpContextAccessor.GetUserId();
 
-            var participant = await _challengeService.RegisterParticipantAsync(
-                command.ChallengeId,
-                userId,
-                _httpContextAccessor.FuncUserGameReference(),
-                cancellationToken
-            );
-
-            return _mapper.Map<ParticipantViewModel>(participant);
+            await _challengeService.RegisterParticipantAsync(command.ChallengeId, userId, _httpContextAccessor.FuncUserGameReference(), cancellationToken);
         }
     }
 }

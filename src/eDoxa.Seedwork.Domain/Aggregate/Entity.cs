@@ -97,7 +97,7 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             return !(left == right);
         }
 
-        protected void SetEntityId(TEntityId entityId)
+        public void SetEntityId(TEntityId entityId)
         {
             if (entityId.IsTransient())
             {

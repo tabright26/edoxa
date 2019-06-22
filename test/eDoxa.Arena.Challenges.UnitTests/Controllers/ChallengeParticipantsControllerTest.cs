@@ -90,7 +90,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
         {
             // Arrange
             _mediator.Setup(mediator => mediator.Send(It.IsAny<RegisterParticipantCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new ParticipantViewModel())
+                .Returns(Unit.Task)
                 .Verifiable();
 
             var controller = new ChallengeParticipantsController(_queries.Object, _mediator.Object);

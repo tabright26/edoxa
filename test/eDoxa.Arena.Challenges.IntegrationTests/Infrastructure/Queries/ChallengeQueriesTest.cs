@@ -103,6 +103,8 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Queries
                 challenge.Register(new Participant(new UserId(), new GameAccountId(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider()));
             }
 
+            challenge.Start(new UtcNowDateTimeProvider());
+
             foreach (var participant in challenge.Participants)
             {
                 for (var j = 0; j < challenge.Setup.BestOf; j++)
@@ -120,11 +122,18 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Queries
 
         private sealed class FakeChallenge : Challenge
         {
-            public FakeChallenge(ChallengeGame game, ChallengeName name, ChallengeSetup setup,
+            public FakeChallenge(
+                ChallengeGame game,
+                ChallengeName name,
+                ChallengeSetup setup,
                 ChallengeDuration duration,
-                IDateTimeProvider provider
-            ) : base(game, name, setup, duration,
-                provider
+                IDateTimeProvider createdAt
+            ) : base(
+                name,
+                game,
+                setup,
+                duration,
+                createdAt
             )
             {
             }

@@ -18,9 +18,9 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class Scoreboard : Dictionary<UserId, Score>, IScoreboard
     {
-        public Scoreboard(IEnumerable<Participant> participants, BestOf bestOf) : base(
-            participants.OrderByDescending(participant => participant.AverageScore(bestOf))
-                .ToDictionary(participant => participant.UserId, participant => participant.AverageScore(bestOf))
+        public Scoreboard(IChallenge challenge) : base(
+            challenge.Participants.OrderByDescending(participant => participant.AverageScore(challenge.Setup.BestOf))
+                .ToDictionary(participant => participant.UserId, participant => participant.AverageScore(challenge.Setup.BestOf))
         )
         {
         }

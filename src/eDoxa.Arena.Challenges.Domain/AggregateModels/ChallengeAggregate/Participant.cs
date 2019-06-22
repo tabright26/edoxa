@@ -25,11 +25,11 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
     {
         private readonly HashSet<Match> _matches = new HashSet<Match>();
 
-        public Participant(UserId userId, GameAccountId gameAccountId, IDateTimeProvider provider = null)
+        public Participant(UserId userId, GameAccountId gameAccountId, IDateTimeProvider registeredAt)
         {
             UserId = userId;
             GameAccountId = gameAccountId;
-            RegisteredAt = Register(provider);
+            RegisteredAt = registeredAt.DateTime;
             SynchronizedAt = null;
         }
 
@@ -39,17 +39,9 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public DateTime RegisteredAt { get; }
 
-        // TODO: Remove private setter.
         public DateTime? SynchronizedAt { get; private set; }
 
         public IReadOnlyCollection<Match> Matches => _matches;
-
-        private static DateTime Register(IDateTimeProvider provider = null)
-        {
-            provider = provider ?? new UtcNowDateTimeProvider();
-
-            return provider.DateTime;
-        }
 
         [CanBeNull]
         public Score AverageScore(BestOf bestOf)
@@ -72,14 +64,14 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             _matches.Add(match);
         }
 
-        public IEnumerable<GameMatchId> GetUnsynchronizedMatchReferences(IEnumerable<GameMatchId> matchReferences)
+        public IEnumerable<GameMatchId> GetUnsynchronizedMatchReferences(IEnumerable<GameMatchId> gameMatchIds)
         {
-            return matchReferences.Where(matchReference => Matches.All(match => match.GameMatchId != matchReference));
+            return gameMatchIds.Where(gameMatchId => Matches.All(match => match.GameMatchId != gameMatchId));
         }
 
-        internal void Synchronize(IDateTimeProvider provider)
+        public void Synchronize(IDateTimeProvider synchronizedAt)
         {
-            SynchronizedAt = provider.DateTime;
+            SynchronizedAt = synchronizedAt.DateTime;
         }
     }
 

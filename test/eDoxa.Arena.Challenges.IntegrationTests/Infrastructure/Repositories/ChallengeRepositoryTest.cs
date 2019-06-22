@@ -124,8 +124,8 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Repositories
             var faker = new Faker();
 
             IChallenge challenge = new FakeChallenge(
-                ChallengeGame.LeagueOfLegends,
                 new ChallengeName("Challenge"),
+                ChallengeGame.LeagueOfLegends,
                 new ChallengeSetup(BestOf.Three, PayoutEntries.One, MoneyEntryFee.Five),
                 ChallengeDuration.TwoDays,
                 new UtcNowDateTimeProvider()
@@ -188,6 +188,8 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Repositories
                     var challengeFromRepository = await repository.FindChallengeAsync(challenge.Id);
 
                     challengeFromRepository.Register(participant2);
+
+                    challengeFromRepository.Start(new UtcNowDateTimeProvider());
 
                     await repository.CommitAsync();
 
@@ -280,8 +282,8 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Repositories
             var faker = new Faker();
 
             var challenge = new FakeChallenge(
-                ChallengeGame.LeagueOfLegends,
                 new ChallengeName("Challenge"),
+                ChallengeGame.LeagueOfLegends,
                 new ChallengeSetup(BestOf.Five, PayoutEntries.Five, MoneyEntryFee.Five),
                 ChallengeDuration.TwoDays,
                 new UtcNowDateTimeProvider()
@@ -309,11 +311,18 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Repositories
 
         private sealed class FakeChallenge : Challenge
         {
-            public FakeChallenge(ChallengeGame game, ChallengeName name, ChallengeSetup setup,
+            public FakeChallenge(
+                ChallengeName name,
+                ChallengeGame game,
+                ChallengeSetup setup,
                 ChallengeDuration duration,
-                IDateTimeProvider provider
-            ) : base(game, name, setup, duration,
-                provider
+                IDateTimeProvider createdAt
+            ) : base(
+                name,
+                game,
+                setup,
+                duration,
+                createdAt
             )
             {
             }

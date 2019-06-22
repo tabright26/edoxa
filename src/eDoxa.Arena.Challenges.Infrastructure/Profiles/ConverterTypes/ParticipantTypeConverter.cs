@@ -14,7 +14,6 @@ using AutoMapper;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
-using eDoxa.Arena.Challenges.Infrastructure.PersistentModels;
 using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Infrastructure;
@@ -28,16 +27,22 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.ConverterTypes
         [NotNull]
         public Participant Convert([NotNull] ParticipantModel source, [NotNull] Participant destination, [NotNull] ResolutionContext context)
         {
-            var participant = new PersistentParticipant(
-                ParticipantId.FromGuid(source.Id),
+            var participant = new Participant(
                 UserId.FromGuid(source.UserId),
                 new GameAccountId(source.GameAccountId),
                 new PersistentDateTimeProvider(source.RegisteredAt)
             );
 
+            participant.SetEntityId(ParticipantId.FromGuid(source.Id));
+
             var matches = context.Mapper.Map<ICollection<Match>>(source.Matches);
 
             matches.ForEach(match => participant.Synchronize(match));
+
+            if (source.SynchronizedAt.HasValue)
+            {
+                participant.Synchronize(new PersistentDateTimeProvider(source.SynchronizedAt.Value));
+            }
 
             return participant;
         }

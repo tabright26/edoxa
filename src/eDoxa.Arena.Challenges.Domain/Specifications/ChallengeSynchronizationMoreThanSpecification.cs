@@ -16,18 +16,18 @@ using eDoxa.Seedwork.Domain.Specifications;
 
 namespace eDoxa.Arena.Challenges.Domain.Specifications
 {
-    public sealed class ChallengeLastSyncMoreThanSpecification : Specification<Challenge>
+    public sealed class ChallengeSynchronizationMoreThanSpecification : Specification<Challenge>
     {
         private readonly TimeSpan _timeSpan;
 
-        public ChallengeLastSyncMoreThanSpecification(TimeSpan timeSpan)
+        public ChallengeSynchronizationMoreThanSpecification(TimeSpan timeSpan)
         {
             _timeSpan = timeSpan;
         }
 
         public override Expression<Func<Challenge, bool>> ToExpression()
         {
-            return challenge => challenge.LastSyncMoreThan(_timeSpan);
+            return challenge => challenge.SynchronizationMoreThan(_timeSpan);
         }
     }
 }

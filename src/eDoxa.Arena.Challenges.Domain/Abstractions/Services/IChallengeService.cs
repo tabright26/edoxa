@@ -30,7 +30,7 @@ namespace eDoxa.Arena.Challenges.Domain.Abstractions.Services
             CancellationToken cancellationToken = default
         );
 
-        Task<Participant> RegisterParticipantAsync(
+        Task RegisterParticipantAsync(
             ChallengeId challengeId,
             UserId userId,
             Func<ChallengeGame, GameAccountId> funcUserGameReference,

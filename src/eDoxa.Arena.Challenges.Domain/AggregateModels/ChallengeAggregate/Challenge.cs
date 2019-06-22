@@ -15,7 +15,6 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Factories;
-using eDoxa.Arena.Challenges.Domain.Abstractions.Strategies;
 using eDoxa.Arena.Challenges.Domain.Factories;
 using eDoxa.Arena.Challenges.Domain.Validators;
 using eDoxa.Seedwork.Common;
@@ -25,29 +24,28 @@ using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public abstract partial class Challenge : Entity<ChallengeId>, IChallenge
+    public partial class Challenge : Entity<ChallengeId>, IChallenge
     {
         private readonly HashSet<Participant> _participants = new HashSet<Participant>();
 
-        private IScoring _scoring;
-        private IPayout _payout;
-
-        protected Challenge(
-            ChallengeGame game,
+        public Challenge(
             ChallengeName name,
+            ChallengeGame game,
             ChallengeSetup setup,
             ChallengeDuration duration,
-            IDateTimeProvider provider
+            IDateTimeProvider createdAt = null,
+            IScoring scoring = null,
+            IPayout payout = null
         )
         {
             Name = name;
             Game = game;
-            Setup = setup;
             Timeline = new ChallengeTimeline(duration);
-            CreatedAt = provider.DateTime;
+            Setup = setup;
+            CreatedAt = createdAt?.DateTime ?? new UtcNowDateTimeProvider().DateTime;
             SynchronizedAt = null;
-            this.ApplyScoringStrategy(ScoringFactory.Instance.CreateStrategy(this));
-            this.ApplyPayoutStrategy(PayoutFactory.Instance.CreateStrategy(this));
+            Scoring = scoring ?? ScoringFactory.Instance.CreateStrategy(this).Scoring;
+            Payout = payout ?? PayoutFactory.Instance.CreateStrategy(this).Payout;
         }
 
         public DateTime CreatedAt { get; }
@@ -58,40 +56,21 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public ChallengeGame Game { get; }
 
-        public ChallengeSetup Setup { get; }
+        public ChallengeState State => Timeline;
 
         public ChallengeTimeline Timeline { get; private set; }
 
-        public ChallengeState State => Timeline.State;
+        public ChallengeSetup Setup { get; }
 
-        public IScoring Scoring => _scoring;
+        public IScoring Scoring { get; }
 
-        public IPayout Payout => _payout;
+        public IPayout Payout { get; }
 
         public IReadOnlyCollection<Participant> Participants => _participants;
 
-        public IScoreboard Scoreboard => new Scoreboard(_participants, Setup.BestOf);
+        public IScoreboard Scoreboard => new Scoreboard(this);
 
-        public async Task SynchronizeAsync(IGameMatchIdsFactory gameMatchIdsFactory, IMatchStatsFactory matchStatsFactory)
-        {
-            foreach (var participant in Participants.Where(participant => !participant.HasFinalScore(Timeline))
-                .OrderBy(participant => participant.SynchronizedAt)
-                .ToList())
-            {
-                await this.SynchronizeAsync(gameMatchIdsFactory, matchStatsFactory, participant);
-
-                participant.Synchronize(new UtcNowDateTimeProvider());
-            }
-
-            SynchronizedAt = DateTime.UtcNow;
-        }
-
-        //public void DistributeParticipantPrizes()
-        //{
-        //    this.AddDomainEvent(new ChallengePayoutDomainEvent(Id, Payout.GetParticipantPrizes(Scoreboard)));
-        //}
-
-        public Participant Register(Participant participant)
+        public virtual void Register(Participant participant)
         {
             if (!this.CanRegister(participant))
             {
@@ -99,98 +78,129 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             }
 
             _participants.Add(participant);
-
-            this.TryStart();
-
-            return participant;
         }
 
-        public void ApplyScoring(IScoring scoring)
+        //public void DistributeParticipantPrizes()
+        //{
+        //    this.AddDomainEvent(new ChallengePayoutDomainEvent(Id, Payout.GetParticipantPrizes(Scoreboard)));
+        //}
+
+        public async Task SynchronizeAsync(
+            IGameMatchIdsFactory gameMatchIdsFactory,
+            IMatchStatsFactory matchStatsFactory,
+            IDateTimeProvider synchronizedAt = null
+        )
         {
-            _scoring = scoring;
+            foreach (var participant in Participants.Where(participant => !participant.HasFinalScore(Timeline))
+                .OrderBy(participant => participant.SynchronizedAt)
+                .ToList())
+            {
+                await this.SynchronizeAsync(gameMatchIdsFactory, matchStatsFactory, participant, synchronizedAt);
+            }
+
+            this.Synchronize(synchronizedAt);
         }
 
-        public void ApplyPayout(IPayout payout)
+        public void Start(IDateTimeProvider startedAt)
         {
-            _payout = payout;
+            if (!this.CanStart())
+            {
+                throw new InvalidOperationException();
+            }
+
+            Timeline = Timeline.Start(startedAt);
         }
 
-        private void ApplyScoringStrategy(IScoringStrategy strategy)
+        private bool CanStart()
         {
-            this.ApplyScoring(strategy.Scoring);
+            return Participants.Count == Setup.Entries;
         }
 
-        private void ApplyPayoutStrategy(IPayoutStrategy strategy)
+        public void Close(IDateTimeProvider closedAt)
         {
-            this.ApplyPayout(strategy.Payout);
+            if (!this.CanClose())
+            {
+                throw new InvalidOperationException();
+            }
+
+            Timeline = Timeline.Close(closedAt);
         }
 
-        internal bool LastSyncMoreThan(TimeSpan timeSpan)
+        private bool CanClose()
+        {
+            return true;
+        }
+
+        protected bool CanRegister(Participant participant)
+        {
+            return new RegisterParticipantValidator(participant.UserId).Validate(this).IsValid;
+        }
+
+        internal bool SynchronizationMoreThan(TimeSpan timeSpan)
         {
             return SynchronizedAt.HasValue && SynchronizedAt.Value + timeSpan < DateTime.UtcNow;
         }
 
-        private async Task SynchronizeAsync(IGameMatchIdsFactory gameMatchIdsFactory, IMatchStatsFactory matchStatsFactory, Participant participant)
+        private async Task SynchronizeAsync(
+            IGameMatchIdsFactory gameMatchIdsFactory,
+            IMatchStatsFactory matchStatsFactory,
+            Participant participant,
+            IDateTimeProvider synchronizedAt = null
+        )
         {
             var adapter = await gameMatchIdsFactory.CreateAdapterAsync(Game, participant.GameAccountId, Timeline);
 
-            await this.SynchronizeAsync(adapter.GameMatchIds, matchStatsFactory, participant);
+            await this.SynchronizeAsync(adapter.GameMatchIds, matchStatsFactory, participant, synchronizedAt);
         }
 
-        private async Task SynchronizeAsync(IEnumerable<GameMatchId> matchReferences, IMatchStatsFactory matchStatsFactory, Participant participant)
+        private async Task SynchronizeAsync(
+            IEnumerable<GameMatchId> matchReferences,
+            IMatchStatsFactory matchStatsFactory,
+            Participant participant,
+            IDateTimeProvider synchronizedAt = null
+        )
         {
             foreach (var matchReference in participant.GetUnsynchronizedMatchReferences(matchReferences))
             {
-                await this.SnapshotParticipantMatchAsync(participant, matchReference, matchStatsFactory);
+                await this.SnapshotParticipantMatchAsync(participant, matchReference, matchStatsFactory, synchronizedAt);
             }
+
+            participant.Synchronize(synchronizedAt);
         }
 
-        private async Task SnapshotParticipantMatchAsync(Participant participant, GameMatchId gameMatchId, IMatchStatsFactory factory)
+        private async Task SnapshotParticipantMatchAsync(
+            Participant participant,
+            GameMatchId gameMatchId,
+            IMatchStatsFactory factory,
+            IDateTimeProvider synchronizedAt = null
+        )
         {
             var adapter = await factory.CreateAdapter(Game, participant.GameAccountId, gameMatchId);
 
-            this.SnapshotParticipantMatch(participant, gameMatchId, adapter.MatchStats);
+            this.SnapshotParticipantMatch(participant, gameMatchId, adapter.MatchStats, synchronizedAt);
         }
 
-        internal void SnapshotParticipantMatch(Participant participant, GameMatchId gameMatchId, IMatchStats matchStats)
+        internal void SnapshotParticipantMatch(
+            Participant participant,
+            GameMatchId gameMatchId,
+            IMatchStats matchStats,
+            IDateTimeProvider synchronizedAt = null
+        )
         {
-            var match = new Match(gameMatchId, new UtcNowDateTimeProvider());
+            var match = new Match(gameMatchId, synchronizedAt);
 
             match.SnapshotStats(Scoring, matchStats);
 
             participant.Synchronize(match);
         }
 
-        public void TryClose(Action closeChallenge)
+        public void Synchronize(IDateTimeProvider synchronizedAt = null)
         {
-            if (Timeline.State.Equals(ChallengeState.Ended))
-            {
-                Timeline = Timeline.Close();
-
-                closeChallenge();
-            }
-        }
-
-        private bool CanRegister(Participant participant)
-        {
-            return new RegisterParticipantValidator(participant.UserId).Validate(this).IsValid;
-        }
-
-        internal bool CanStart()
-        {
-            return Participants.Count == Setup.Entries;
-        }
-
-        private void TryStart()
-        {
-            if (this.CanStart())
-            {
-                Timeline = Timeline.Start();
-            }
+            SynchronizedAt = synchronizedAt?.DateTime;
         }
     }
 
-    public abstract partial class Challenge : IEquatable<IChallenge>
+    public partial class Challenge : IEquatable<IChallenge>
     {
         public bool Equals([CanBeNull] IChallenge challenge)
         {

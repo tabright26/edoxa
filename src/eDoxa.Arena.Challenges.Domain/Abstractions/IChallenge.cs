@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions.Factories;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Arena.Challenges.Domain.Abstractions
@@ -42,8 +43,12 @@ namespace eDoxa.Arena.Challenges.Domain.Abstractions
 
         IReadOnlyCollection<Participant> Participants { get; }
 
-        Task SynchronizeAsync(IGameMatchIdsFactory gameMatchIdsFactory, IMatchStatsFactory matchStatsFactory);
+        void Start(IDateTimeProvider startedAt);
 
-        Participant Register(Participant participant);
+        void Close(IDateTimeProvider closedAt);
+
+        Task SynchronizeAsync(IGameMatchIdsFactory gameMatchIdsFactory, IMatchStatsFactory matchStatsFactory, IDateTimeProvider synchronizedAt = null);
+
+        void Register(Participant participant);
     }
 }
