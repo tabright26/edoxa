@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeFakerExtensions.cs
-// Date Created: 2019-06-20
+// Date Created: 2019-06-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -17,7 +17,7 @@ using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.ViewModels;
 using eDoxa.Arena.Challenges.Infrastructure;
 
-namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.Extensions
+namespace eDoxa.Arena.Challenges.Api.Infrastructure.Fakers.Extensions
 {
     public static class ChallengeFakerExtensions
     {

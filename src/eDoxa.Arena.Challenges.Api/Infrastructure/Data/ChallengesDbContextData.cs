@@ -11,6 +11,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
+using eDoxa.Arena.Challenges.Api.Infrastructure.Fakers;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Seedwork.Infrastructure.Abstractions;
 
@@ -35,11 +36,11 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data
             {
                 if (!_context.Challenges.Any())
                 {
-                    //var challengeFaker = new ChallengeFaker();
+                    var challengeFaker = new ChallengeFaker();
 
-                    //_context.Challenges.AddRange(challengeFaker.Generate(10));
+                    _context.Challenges.AddRange(challengeFaker.Generate(10));
 
-                    //await _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync();
                 }
             }
         }

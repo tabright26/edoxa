@@ -15,7 +15,7 @@ using AutoMapper;
 
 using Bogus;
 
-using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.Extensions;
+using eDoxa.Arena.Challenges.Api.Infrastructure.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.Infrastructure.Queries;
@@ -109,7 +109,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Queries
                 {
                     var match = new Match(new GameMatchId(Guid.NewGuid()), new UtcNowDateTimeProvider());
 
-                    match.SnapshotStats(challenge.Scoring, faker.MatchStats(ChallengeGame.LeagueOfLegends));
+                    match.SnapshotStats(challenge.Scoring, faker.Match().Stats(ChallengeGame.LeagueOfLegends));
 
                     participant.Synchronize(match);
                 }

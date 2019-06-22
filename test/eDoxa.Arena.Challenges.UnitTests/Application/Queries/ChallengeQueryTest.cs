@@ -10,7 +10,7 @@
 
 using AutoMapper;
 
-using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
+using eDoxa.Arena.Challenges.Api.Infrastructure.Fakers;
 using eDoxa.Arena.Challenges.Domain.ViewModels;
 using eDoxa.Arena.Challenges.UnitTests.Asserts;
 using eDoxa.Arena.Challenges.UnitTests.Utilities;
