@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeQueryTest.cs
-// Date Created: 2019-06-03
+// Date Created: 2019-06-09
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,13 +8,9 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using AutoMapper;
-
+using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Domain.Fakers;
-using eDoxa.Arena.Challenges.Domain.ViewModels;
-using eDoxa.Arena.Challenges.Infrastructure.Extensions;
-using eDoxa.Arena.Challenges.UnitTests.Asserts;
-using eDoxa.Arena.Challenges.UnitTests.Utilities;
+using eDoxa.Arena.Challenges.UnitTests.Extensions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -23,21 +19,17 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
     [TestClass]
     public sealed class ChallengeQueryTest
     {
-        private static readonly IMapper Mapper = MapperBuilder.CreateMapper();
-
         [TestMethod]
-        public void M()
+        public void ChallengeViewModel_Mapping_ShouldBeValid()
         {
             // Arrange
             var challengeFaker = new ChallengeFaker();
 
-            var challenge = challengeFaker.GenerateModel();
-
             // Act
-            var challengeViewModel = Mapper.Map<ChallengeViewModel>(challenge);
+            var challenge = challengeFaker.GenerateViewModel();
 
             // Assert
-            ChallengeQueryAssert.IsMapped(challengeViewModel);
+            challenge.AssertMappingIsValid();
         }
     }
 }

@@ -18,9 +18,14 @@ namespace eDoxa.Arena.Challenges.Api.Application.Commands
     [DataContract]
     public sealed class RegisterParticipantCommand : Command
     {
-        public RegisterParticipantCommand(ChallengeId challengeId)
+        public RegisterParticipantCommand(ChallengeId challengeId) : this()
         {
             ChallengeId = challengeId;
+        }
+
+        public RegisterParticipantCommand()
+        {
+            // Required for unit tests.
         }
 
         [IgnoreDataMember] public ChallengeId ChallengeId { get; private set; }

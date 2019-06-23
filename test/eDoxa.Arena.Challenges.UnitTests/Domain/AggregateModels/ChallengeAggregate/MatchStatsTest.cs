@@ -9,6 +9,7 @@
 // this source code package.
 
 using System.Collections.Generic;
+using System.Linq;
 
 using Bogus;
 
@@ -19,18 +20,21 @@ using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.MatchAggregate
+namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggregate
 {
     [TestClass]
     public sealed class MatchStatsTest
     {
-        [TestMethod]
-        public void Stats_ShouldBeAssignableToType()
+        private static readonly Faker Faker = new Faker();
+
+        private static IEnumerable<object[]> ChallengeGames => ChallengeGame.GetEnumerations().Select(game => new object[] { game });
+
+        [DataTestMethod]
+        [DynamicData(nameof(ChallengeGames))]
+        public void Stats_ShouldBeAssignableToType(ChallengeGame game)
         {
             // Arrange
-            var faker = new Faker();
-
-            var stats = faker.Match().Stats(ChallengeGame.LeagueOfLegends);
+            var stats = Faker.Match().Stats(game);
 
             // Act
             var type = typeof(Dictionary<StatName, StatValue>);

@@ -8,6 +8,20 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Collections.Generic;
+
+using Bogus;
+
+using eDoxa.Arena.Challenges.Domain.Adapters;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Domain.Fakers;
+using eDoxa.Arena.Services.LeagueOfLegends.Dtos;
+using eDoxa.Arena.UnitTests.Utilities.Stubs;
+using eDoxa.Seedwork.Common;
+using eDoxa.Seedwork.Common.Extensions;
+
+using FluentAssertions;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Services.LeagueOfLegends.Adapters
@@ -15,29 +29,33 @@ namespace eDoxa.Arena.Challenges.UnitTests.Services.LeagueOfLegends.Adapters
     [TestClass]
     public sealed class LeagueOfLegendsMatchStatsAdapterTest
     {
-        //[TestMethod]
-        //public void SnapshotParticipantMatch_ShouldBeValid()
-        //{
-        //    // Arrange
-        //    var matches = StubConvert.DeserializeObject<IEnumerable<LeagueOfLegendsMatchDTO>>(@"Utilities/Stubs/LeagueOfLegends/Matches.json");
+        private static readonly Faker Faker = new Faker();
 
-        //    var userId = new UserId();
+        [TestMethod]
+        public void SnapshotParticipantMatch_ShouldHaveCountOfFive()
+        {
+            // Arrange
+            var matches = StubConvert.DeserializeObject<IEnumerable<LeagueOfLegendsMatchDto>>(@"Utilities/Stubs/LeagueOfLegends/Matches.json");
 
-        //    var externalAccount = new ExternalAccount("NzH50JS-LCAu0UEY4EMjuS710F_U_8pLfEpNib9X06dD4w");
+            var gameAccountId = new GameAccountId("NzH50JS-LCAu0UEY4EMjuS710F_U_8pLfEpNib9X06dD4w");
 
-        //    var challenge = FakeChallengeFactory.CreateChallenge();
+            var challengeFaker = new ChallengeFaker(state: ChallengeState.Inscription);
 
-        //    challenge.RegisterParticipant(userId, externalAccount);
+            var challenge = challengeFaker.Generate();
 
-        //    foreach (var match in matches)
-        //    {
-        //        var adapter = new LeagueOfLegendsMatchStatsAdapter(externalAccount, match);
+            var participant = new Participant(Faker.UserId(), gameAccountId, new UtcNowDateTimeProvider());
 
-        //         challenge.SnapshotParticipantMatch(challenge.Participants.Single(x => x.UserId == userId), new MatchReference(123123123123),  adapter.MatchStats);
-        //    }
+            challenge.Register(participant);
 
-        //    // Act => Assert
-        //    challenge.Participants.Single(x => x.UserId == userId).Matches.Should().HaveCount(5);
-        //}
+            foreach (var match in matches)
+            {
+                var adapter = new LeagueOfLegendsMatchStatsAdapter(gameAccountId, match);
+
+                challenge.SnapshotParticipantMatch(participant, new GameMatchId(match.GameId), adapter.MatchStats, new UtcNowDateTimeProvider());
+            }
+
+            // Act => Assert
+            participant.Matches.Should().HaveCount(5);
+        }
     }
 }

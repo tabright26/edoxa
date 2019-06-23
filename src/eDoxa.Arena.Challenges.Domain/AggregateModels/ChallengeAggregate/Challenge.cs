@@ -139,7 +139,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             IGameMatchIdsFactory gameMatchIdsFactory,
             IMatchStatsFactory matchStatsFactory,
             Participant participant,
-            IDateTimeProvider synchronizedAt = null
+            IDateTimeProvider synchronizedAt
         )
         {
             var adapter = await gameMatchIdsFactory.CreateAdapterAsync(Game, participant.GameAccountId, Timeline);
@@ -151,7 +151,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             IEnumerable<GameMatchId> matchReferences,
             IMatchStatsFactory matchStatsFactory,
             Participant participant,
-            IDateTimeProvider synchronizedAt = null
+            IDateTimeProvider synchronizedAt
         )
         {
             foreach (var matchReference in participant.GetUnsynchronizedMatchReferences(matchReferences))
@@ -166,7 +166,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             Participant participant,
             GameMatchId gameMatchId,
             IMatchStatsFactory factory,
-            IDateTimeProvider synchronizedAt = null
+            IDateTimeProvider synchronizedAt
         )
         {
             var adapter = await factory.CreateAdapter(Game, participant.GameAccountId, gameMatchId);
@@ -178,7 +178,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             Participant participant,
             GameMatchId gameMatchId,
             IMatchStats matchStats,
-            IDateTimeProvider synchronizedAt = null
+            IDateTimeProvider synchronizedAt
         )
         {
             var match = new Match(gameMatchId, synchronizedAt);
@@ -188,7 +188,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             participant.Synchronize(match);
         }
 
-        public void Synchronize(IDateTimeProvider synchronizedAt = null)
+        public void Synchronize(IDateTimeProvider synchronizedAt)
         {
             SynchronizedAt = synchronizedAt?.DateTime;
         }

@@ -1,4 +1,4 @@
-﻿// Filename: CreateChallengeCommand.cs
+﻿// Filename: FakeChallengesCommand.cs
 // Date Created: 2019-06-07
 // 
 // ================================================
@@ -25,13 +25,18 @@ namespace eDoxa.Arena.Challenges.Api.Application.Commands
             ChallengeGame game = null,
             ChallengeState state = null,
             CurrencyType entryFeeCurrency = null
-        )
+        ) : this()
         {
             Count = count;
             Seed = seed;
             Game = game;
             State = state;
             EntryFeeCurrency = entryFeeCurrency;
+        }
+
+        public FakeChallengesCommand()
+        {
+            // Required for unit tests.
         }
 
         [DataMember(Name = "count")]

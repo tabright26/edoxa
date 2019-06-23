@@ -16,7 +16,7 @@ using FluentValidation;
 
 namespace eDoxa.Arena.Challenges.Api.Application.Commands.Validations
 {
-    public sealed class FakeChallengesCommandValidator : CommandValidator<FakeChallengesCommand>
+    public class FakeChallengesCommandValidator : CommandValidator<FakeChallengesCommand>
     {
         public FakeChallengesCommandValidator(IChallengeQuery challengeQuery)
         {

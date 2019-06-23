@@ -40,15 +40,10 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers.DataSets
         {
             if (game == ChallengeGame.LeagueOfLegends)
             {
-                return new GameAccountId(Faker.Random.Replace("*****_*************************"));
+                return new GameAccountId(Faker.Random.Replace("*******_******************_*_*****************"));
             }
 
             throw new ArgumentNullException(nameof(game));
-        }
-
-        private int MatchCount(BestOf bestOf, ChallengeState state)
-        {
-            return state != ChallengeState.Inscription ? Faker.Random.Int(1, bestOf + 3) : 0;
         }
     }
 }

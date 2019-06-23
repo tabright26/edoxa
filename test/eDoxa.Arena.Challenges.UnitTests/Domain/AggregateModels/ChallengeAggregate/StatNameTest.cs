@@ -15,7 +15,7 @@ using eDoxa.Seedwork.Testing.TestConstructor;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.MatchAggregate
+namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggregate
 {
     [TestClass]
     public sealed class StatNameTest
