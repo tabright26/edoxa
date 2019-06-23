@@ -31,9 +31,9 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         [AllowValue(false)] public static readonly PayoutEntries SeventyFive = new PayoutEntries(75);
         [AllowValue(false)] public static readonly PayoutEntries OneHundred = new PayoutEntries(100);
 
-        public PayoutEntries(Entries entries, PayoutRatio payoutRatio) : this()
+        public PayoutEntries(Entries entries) : this()
         {
-            Value = Convert.ToInt32(Math.Floor(entries * payoutRatio));
+            Value = Convert.ToInt32(Math.Floor(entries * 0.5F));
         }
 
         public PayoutEntries(int payoutEntries) : this()

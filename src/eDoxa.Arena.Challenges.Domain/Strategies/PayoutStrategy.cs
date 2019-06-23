@@ -8,39 +8,23 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Strategies;
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.Strategies
 {
     public sealed class PayoutStrategy : IPayoutStrategy
     {
-        private readonly PayoutEntries _payoutEntries;
-        private readonly EntryFee _entryFee;
+        private readonly IPayout _payout;
 
         public PayoutStrategy(PayoutEntries payoutEntries, EntryFee entryFee)
         {
-            _payoutEntries = payoutEntries;
-            _entryFee = entryFee;
+            var payoutChart = new PayoutChart();
+
+            _payout = payoutChart.GetPayout(payoutEntries, entryFee);
         }
 
-        public IPayout Payout
-        {
-            get
-            {
-                var payoutBuckets = new PayoutBuckets();
-
-                if (payoutBuckets.TryGetValue(_payoutEntries, out var bucketFactors))
-                {
-                    return bucketFactors.CreatePayout(_entryFee.GetLowestPrize());
-                }
-
-                throw new NotImplementedException();
-            }
-        }
+        public IPayout Payout => _payout;
     }
 }

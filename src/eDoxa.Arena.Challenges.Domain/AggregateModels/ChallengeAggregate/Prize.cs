@@ -27,7 +27,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         [AllowValue(false)] public static readonly Prize None = new Prize(0, CurrencyType.Token);
 
-        public Prize(decimal amount, CurrencyType type) : this()
+        public Prize(decimal amount, CurrencyType type)
         {
             if (amount < 0)
             {
@@ -36,11 +36,6 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
             Amount = amount;
             Type = type;
-        }
-
-        protected Prize()
-        {
-            // Required by EF Core.
         }
 
         public int CompareTo([CanBeNull] object obj)
@@ -73,8 +68,13 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             return Amount.ToString(CultureInfo.InvariantCulture);
         }
 
-        public Prize ApplyFactor(PrizeFactor factor)
+        public Prize ApplyFactor(decimal factor)
         {
+            if (factor < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(factor));
+            }
+
             return new Prize(Amount * factor, Type);
         }
 

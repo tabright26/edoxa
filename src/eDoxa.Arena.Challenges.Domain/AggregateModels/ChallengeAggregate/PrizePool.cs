@@ -21,15 +21,10 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class PrizePool : ValueObject, ICurrency
     {
-        public PrizePool(IBuckets buckets) : this()
+        public PrizePool(IBuckets buckets)
         {
             Amount = buckets.SelectMany(bucket => bucket.ToIndividualBuckets()).Sum(bucket => bucket.Prize.Amount);
             Type = buckets.First().Prize.Type;
-        }
-
-        private PrizePool()
-        {
-            // Required by EF Core.
         }
 
         public CurrencyType Type { get; private set; }

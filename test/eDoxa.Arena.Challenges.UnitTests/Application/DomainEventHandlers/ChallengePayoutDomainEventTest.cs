@@ -42,7 +42,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.DomainEventHandlers
         {
             // Arranges
             var challenge = _challengeFaker.Generate();
-
+            
             _mockIntegrationEventService.Setup(mock => mock.PublishAsync(It.IsAny<ChallengePayoutIntegrationEvent>())).Returns(Task.CompletedTask).Verifiable();
 
             var handler = new ChallengePayoutDomainEventHandler(_mockIntegrationEventService.Object);
