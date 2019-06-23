@@ -105,8 +105,6 @@ namespace eDoxa.Arena.Challenges.UnitTests.Asserts
         {
             match.Id.Should().NotBeEmpty();
 
-            match.SynchronizedAt.Should().BeBefore(DateTime.UtcNow);
-
             match.TotalScore.Should().BeGreaterOrEqualTo(decimal.Zero);
 
             IsMapped(match.Stats);

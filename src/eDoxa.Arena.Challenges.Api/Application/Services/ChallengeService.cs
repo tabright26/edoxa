@@ -9,12 +9,9 @@
 // this source code package.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Factories;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Repositories;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Services;
@@ -81,7 +78,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Services
             await Task.CompletedTask;
         }
 
-        public async Task<IEnumerable<IChallenge>> FakeChallengesAsync(
+        public async Task FakeChallengesAsync(
             int count,
             int seed,
             ChallengeGame game = null,
@@ -94,13 +91,11 @@ namespace eDoxa.Arena.Challenges.Api.Application.Services
 
             challengeFaker.UseSeed(seed);
 
-            var challenges = challengeFaker.Generate(count).ToList();
+            var challenges = challengeFaker.Generate(count);
 
             _challengeRepository.Create(challenges);
 
             await _challengeRepository.CommitAsync(cancellationToken);
-
-            return challenges;
         }
 
         public async Task SynchronizeAsync(ChallengeGame game, CancellationToken cancellationToken = default)

@@ -17,6 +17,7 @@ using eDoxa.Arena.Challenges.Domain.Factories;
 using eDoxa.Arena.Challenges.Domain.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.Fakers.Providers;
 using eDoxa.Seedwork.Common.Enumerations;
+using eDoxa.Seedwork.Common.Extensions;
 
 namespace eDoxa.Arena.Challenges.Domain.Fakers
 {
@@ -37,58 +38,79 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers
 
                     var payout = PayoutFactory.Instance.CreateStrategy(setup.PayoutEntries, setup.EntryFee).Payout;
 
-                    // -----------------------------------------
+                    var duration = faker.Timeline().Duration();
 
-                    var timeline = faker.Challenge().Timeline(state);
+                    var utcNow = DateTime.UtcNow.DateKeepHours();
 
-                    var synchronizedAt = timeline != ChallengeState.Inscription && timeline.StartedAt.HasValue && timeline.EndedAt.HasValue
-                        ? faker.Date.Between(timeline.StartedAt.Value, timeline.EndedAt.Value)
-                        : (DateTime?) null;
+                    var createdAt = faker.Date.Recent(1, utcNow);
+
+                    var startedAt = faker.Date.Between(createdAt, utcNow);
+
+                    var endedAt = startedAt + duration;
+
+                    var closedAt = faker.Date.Soon(1, endedAt);
+
+                    var synchronizedAt = faker.Date.Between(startedAt, closedAt);
 
                     var challenge = new Challenge(
                         faker.Challenge().Name(),
                         game,
                         setup,
-                        timeline,
+                        new ChallengeTimeline(new FakeDateTimeProvider(createdAt), duration),
                         scoring,
                         payout
                     );
 
                     challenge.SetEntityId(faker.Challenge().Id());
 
-                    var participantFaker = new ParticipantFaker(
-                        game,
-                        setup,
-                        timeline,
-                        scoring,
-                        synchronizedAt
-                    );
+                    var participantFaker = new ParticipantFaker(game, createdAt, startedAt);
 
                     participantFaker.UseSeed(faker.Random.Int());
 
-                    var participants =
-                        participantFaker.Generate(state == ChallengeState.Inscription ? new Entries(faker.Random.Int(1, setup.Entries - 1)) : setup.Entries);
+                    var participants = participantFaker.Generate(this.ParticipantCount(state, setup.Entries));
 
                     participants.ForEach(participant => challenge.Register(participant));
 
-                    if (timeline.StartedAt.HasValue)
+                    if (state != ChallengeState.Inscription)
                     {
-                        challenge.Start(new FakeDateTimeProvider(timeline.StartedAt.Value));
-                    }
+                        challenge.Start(new FakeDateTimeProvider(startedAt));
 
-                    if (synchronizedAt.HasValue)
-                    {
-                        challenge.Synchronize(new FakeDateTimeProvider(synchronizedAt.Value));
-                    }
+                        participants.ForEach(
+                            participant =>
+                            {
+                                var matchFaker = new MatchFaker(game, scoring, synchronizedAt);
 
-                    if (timeline.ClosedAt.HasValue)
-                    {
-                        challenge.Close(new FakeDateTimeProvider(timeline.ClosedAt.Value));
+                                matchFaker.UseSeed(faker.Random.Int());
+
+                                var matches = matchFaker.Generate(this.MatchCount(state, setup.BestOf));
+
+                                matches.ForEach(participant.Synchronize);
+
+                                participant.Synchronize(new FakeDateTimeProvider(synchronizedAt));
+                            }
+                        );
+
+                        challenge.Synchronize(new FakeDateTimeProvider(synchronizedAt));
+
+                        if (state == ChallengeState.Closed)
+                        {
+                            challenge.Close(new FakeDateTimeProvider(closedAt));
+                        }
                     }
 
                     return challenge;
                 }
             );
+        }
+
+        private int ParticipantCount(ChallengeState state, Entries entries)
+        {
+            return state == ChallengeState.Inscription ? new Entries(FakerHub.Random.Int(1, entries - 1)) : entries;
+        }
+
+        private int MatchCount(ChallengeState state, BestOf bestOf)
+        {
+            return state != ChallengeState.Inscription ? FakerHub.Random.Int(1, bestOf + 3) : 0;
         }
     }
 }

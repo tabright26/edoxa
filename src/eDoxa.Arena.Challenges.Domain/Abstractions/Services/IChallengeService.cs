@@ -9,7 +9,6 @@
 // this source code package.
 
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -21,7 +20,7 @@ namespace eDoxa.Arena.Challenges.Domain.Abstractions.Services
 {
     public interface IChallengeService
     {
-        Task<IEnumerable<IChallenge>> FakeChallengesAsync(
+        Task FakeChallengesAsync(
             int count,
             int seed,
             ChallengeGame game = null,

@@ -36,6 +36,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Repositories
     public sealed class ChallengeRepositoryTest
     {
         private static readonly IMapper Mapper = MapperBuilder.CreateMapper();
+        private static readonly Faker Faker = new Faker();
 
         [TestMethod]
         public async Task Create_Challenge_ShouldNotBeNull()
@@ -123,13 +124,11 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Repositories
         [TestMethod]
         public async Task Update_Challenge_ShouldNotBeNull()
         {
-            var faker = new Faker();
-
             var challengeFaker = new ChallengeFaker(state: ChallengeState.Inscription);
 
             challengeFaker.UseSeed(1);
 
-            var challenge = challengeFaker.Generate();
+            var fakeChallenge = challengeFaker.Generate();
 
             using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
             {
@@ -137,7 +136,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Repositories
                 {
                     var repository = new ChallengeRepository(context, Mapper);
 
-                    repository.Create(challenge);
+                    repository.Create(fakeChallenge);
 
                     await repository.CommitAsync();
                 }
@@ -146,11 +145,11 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Repositories
                 {
                     var repository = new ChallengeRepository(context, Mapper);
 
-                    var challengeFromRepository = await repository.FindChallengeAsync(challenge.Id);
+                    var challenge = await repository.FindChallengeAsync(fakeChallenge.Id);
 
-                    challengeFromRepository.Should().Be(challenge);
+                    challenge.Should().Be(fakeChallenge);
 
-                    challengeFromRepository.Timeline.State.Should().Be(ChallengeState.Inscription);
+                    challenge.Timeline.State.Should().Be(ChallengeState.Inscription);
                 }
 
                 var participant1 = new Participant(new UserId(), new GameAccountId(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider());
@@ -159,67 +158,72 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Repositories
                 {
                     var repository = new ChallengeRepository(context, Mapper);
 
-                    var challengeFromRepository = await repository.FindChallengeAsync(challenge.Id);
+                    var challenge = await repository.FindChallengeAsync(fakeChallenge.Id);
 
-                    challengeFromRepository.Register(participant1);
-
-                    await repository.CommitAsync();
-
-                    challengeFromRepository.Timeline.State.Should().Be(ChallengeState.Inscription);
-                }
-
-                using (var context = factory.CreateContext())
-                {
-                    var repository = new ChallengeRepository(context, Mapper);
-
-                    var challengeFromRepository = await repository.FindChallengeAsync(challenge.Id);
-
-                    challengeFromRepository.Participants.Should().Contain(participant1);
-
-                    challengeFromRepository.Timeline.State.Should().Be(ChallengeState.Inscription);
-                }
-
-                var participant2 = new Participant(new UserId(), new GameAccountId(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider());
-
-                using (var context = factory.CreateContext())
-                {
-                    var repository = new ChallengeRepository(context, Mapper);
-
-                    var challengeFromRepository = await repository.FindChallengeAsync(challenge.Id);
-
-                    challengeFromRepository.Register(participant2);
-
-                    challengeFromRepository.Start(new UtcNowDateTimeProvider());
+                    challenge.Register(participant1);
 
                     await repository.CommitAsync();
 
-                    challengeFromRepository.Timeline.State.Should().Be(ChallengeState.InProgress);
+                    challenge.Timeline.State.Should().Be(ChallengeState.Inscription);
                 }
 
                 using (var context = factory.CreateContext())
                 {
                     var repository = new ChallengeRepository(context, Mapper);
 
-                    var challengeFromRepository = await repository.FindChallengeAsync(challenge.Id);
+                    var challenge = await repository.FindChallengeAsync(fakeChallenge.Id);
 
-                    challengeFromRepository.Participants.Should().BeEquivalentTo(participant1, participant2);
+                    challenge.Participants.Should().Contain(participant1);
 
-                    challengeFromRepository.Timeline.State.Should().Be(ChallengeState.InProgress);
+                    challenge.Timeline.State.Should().Be(ChallengeState.Inscription);
+                }
+
+                using (var context = factory.CreateContext())
+                {
+                    var repository = new ChallengeRepository(context, Mapper);
+
+                    var challenge = await repository.FindChallengeAsync(fakeChallenge.Id);
+
+                    var participantCount = challenge.Setup.Entries - challenge.Participants.Count;
+
+                    for (var index = 0; index < participantCount; index++)
+                    {
+                        challenge.Register(new Participant(new UserId(), new GameAccountId(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider()));
+                    }
+
+                    challenge.Start(new UtcNowDateTimeProvider());
+
+                    await repository.CommitAsync();
+
+                    challenge.Timeline.State.Should().Be(ChallengeState.InProgress);
+                }
+
+                using (var context = factory.CreateContext())
+                {
+                    var repository = new ChallengeRepository(context, Mapper);
+
+                    var challenge = await repository.FindChallengeAsync(fakeChallenge.Id);
+
+                    challenge.Participants.Should().HaveCount(challenge.Setup.Entries);
+
+                    challenge.Timeline.State.Should().Be(ChallengeState.InProgress);
                 }
 
                 var match1 = new Match(new GameMatchId(Guid.NewGuid()), new UtcNowDateTimeProvider());
 
-                match1.SnapshotStats(challenge.Scoring, faker.Match().Stats(ChallengeGame.LeagueOfLegends));
+                match1.SnapshotStats(fakeChallenge.Scoring, Faker.Match().Stats(ChallengeGame.LeagueOfLegends));
 
                 using (var context = factory.CreateContext())
                 {
                     var repository = new ChallengeRepository(context, Mapper);
 
-                    var challengeFromRepository = await repository.FindChallengeAsync(challenge.Id);
+                    var challenge = await repository.FindChallengeAsync(fakeChallenge.Id);
 
-                    var par = challengeFromRepository.Participants.Single(p => p == participant1);
+                    var participant = challenge.Participants.Single(p => p == participant1);
 
-                    par.Synchronize(match1);
+                    participant.Synchronize(match1);
+
+                    participant.Synchronize(new UtcNowDateTimeProvider());
 
                     await repository.CommitAsync();
                 }
@@ -228,32 +232,32 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Repositories
                 {
                     var repository = new ChallengeRepository(context, Mapper);
 
-                    var challengeFromRepository = await repository.FindChallengeAsync(challenge.Id);
+                    var challenge = await repository.FindChallengeAsync(fakeChallenge.Id);
 
-                    var par = challengeFromRepository.Participants.Single(p => p == participant1);
+                    var participant = challenge.Participants.Single(p => p == participant1);
 
-                    par.Matches.Should().Contain(match1);
+                    participant.Matches.Should().Contain(match1);
 
-                    par.SynchronizedAt.Should().BeNull();
+                    participant.SynchronizedAt.Should().NotBeNull();
 
-                    par.AverageScore(challenge.Setup.BestOf).Should().BeNull();
-
-                    challengeFromRepository.Timeline.State.Should().Be(ChallengeState.InProgress);
+                    challenge.Timeline.State.Should().Be(ChallengeState.InProgress);
                 }
 
                 var match2 = new Match(new GameMatchId(Guid.NewGuid()), new UtcNowDateTimeProvider());
 
-                match2.SnapshotStats(challenge.Scoring, faker.Match().Stats(ChallengeGame.LeagueOfLegends));
+                match2.SnapshotStats(fakeChallenge.Scoring, Faker.Match().Stats(ChallengeGame.LeagueOfLegends));
 
                 using (var context = factory.CreateContext())
                 {
                     var repository = new ChallengeRepository(context, Mapper);
 
-                    var challengeFromRepository = await repository.FindChallengeAsync(challenge.Id);
+                    var challenge = await repository.FindChallengeAsync(fakeChallenge.Id);
 
-                    var par = challengeFromRepository.Participants.Single(p => p == participant1);
+                    var participant = challenge.Participants.Single(p => p == participant1);
 
-                    par.Synchronize(match2);
+                    participant.Synchronize(match2);
+
+                    participant.Synchronize(new UtcNowDateTimeProvider());
 
                     await repository.CommitAsync();
                 }
@@ -262,17 +266,15 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Repositories
                 {
                     var repository = new ChallengeRepository(context, Mapper);
 
-                    var challengeFromRepository = await repository.FindChallengeAsync(challenge.Id);
+                    var challenge = await repository.FindChallengeAsync(fakeChallenge.Id);
 
-                    var par = challengeFromRepository.Participants.Single(p => p == participant1);
+                    var participant = challenge.Participants.Single(p => p == participant1);
 
-                    par.Matches.Should().BeEquivalentTo(match1, match2);
+                    participant.Matches.Should().BeEquivalentTo(match1, match2);
 
-                    par.SynchronizedAt.Should().BeNull();
+                    participant.SynchronizedAt.Should().NotBeNull();
 
-                    par.AverageScore(challenge.Setup.BestOf).Should().BeNull();
-
-                    challengeFromRepository.Timeline.State.Should().Be(ChallengeState.InProgress);
+                    challenge.Timeline.State.Should().Be(ChallengeState.InProgress);
                 }
             }
         }

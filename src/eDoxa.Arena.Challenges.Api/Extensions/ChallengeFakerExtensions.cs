@@ -15,21 +15,31 @@ using AutoMapper;
 
 using eDoxa.Arena.Challenges.Domain.Fakers;
 using eDoxa.Arena.Challenges.Domain.ViewModels;
+using eDoxa.Arena.Challenges.Infrastructure;
+using eDoxa.Arena.Challenges.Infrastructure.Models;
 
 namespace eDoxa.Arena.Challenges.Api.Extensions
 {
     public static class ChallengeFakerExtensions
     {
-        private static readonly IMapper Mapper = new Mapper(new MapperConfiguration(config => config.AddProfiles(Assembly.GetAssembly(typeof(Startup)))));
+        private static readonly IMapper Mapper = new Mapper(
+            new MapperConfiguration(
+                config =>
+                {
+                    config.AddProfiles(Assembly.GetAssembly(typeof(ChallengesDbContext)));
+                    config.AddProfiles(Assembly.GetAssembly(typeof(Startup)));
+                }
+            )
+        );
 
         public static IReadOnlyCollection<ChallengeViewModel> GenerateViewModels(this ChallengeFaker challengeFaker, int count)
         {
-            return Mapper.Map<IReadOnlyCollection<ChallengeViewModel>>(challengeFaker.Generate(count));
+            return Mapper.Map<IReadOnlyCollection<ChallengeViewModel>>(Mapper.Map<ICollection<ChallengeModel>>(challengeFaker.Generate(count)));
         }
 
         public static ChallengeViewModel GenerateViewModel(this ChallengeFaker challengeFaker)
         {
-            return Mapper.Map<ChallengeViewModel>(challengeFaker.Generate());
+            return Mapper.Map<ChallengeViewModel>(Mapper.Map<ChallengeModel>(challengeFaker.Generate()));
         }
     }
 }

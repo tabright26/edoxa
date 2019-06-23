@@ -33,11 +33,17 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Profiles
                 .ForMember(challenge => challenge.Name, config => config.MapFrom<string>(challenge => challenge.Name))
                 .ForMember(challenge => challenge.Game, config => config.MapFrom(challenge => challenge.Game.Value))
                 .ForMember(challenge => challenge.SynchronizedAt, config => config.MapFrom(challenge => challenge.SynchronizedAt))
-                .ForMember(challenge => challenge.Timeline, config => config.ConvertUsing<ChallengeTimelineModelConverter, ChallengeTimeline>())
-                .ForMember(challenge => challenge.Setup, config => config.ConvertUsing<ChallengeSetupModelConverter, ChallengeSetup>())
+                .ForMember(
+                    challenge => challenge.Timeline,
+                    config => config.ConvertUsing(new ChallengeTimelineModelConverter(), challenge => challenge.Timeline)
+                )
+                .ForMember(challenge => challenge.Setup, config => config.ConvertUsing(new ChallengeSetupModelConverter(), challenge => challenge.Setup))
                 .ForMember(challenge => challenge.ScoringItems, config => config.ConvertUsing(new ScoringItemModelsConverter(), challenge => challenge.Scoring))
                 .ForMember(challenge => challenge.Buckets, config => config.ConvertUsing(new BucketModelsConverter(), challenge => challenge.Payout))
-                .ForMember(challenge => challenge.Participants, config => config.MapFrom<ParticipantModelsResolver, IReadOnlyCollection<Participant>>(challenge => challenge.Participants));
+                .ForMember(
+                    challenge => challenge.Participants,
+                    config => config.MapFrom<ParticipantModelsResolver, IReadOnlyCollection<Participant>>(challenge => challenge.Participants)
+                );
         }
     }
 }

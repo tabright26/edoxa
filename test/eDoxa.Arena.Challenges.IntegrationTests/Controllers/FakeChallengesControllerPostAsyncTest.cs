@@ -9,23 +9,16 @@
 // this source code package.
 
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using AutoMapper;
-
 using eDoxa.Arena.Challenges.Api;
 using eDoxa.Arena.Challenges.Api.Application.Commands;
-using eDoxa.Arena.Challenges.Domain.Fakers;
-using eDoxa.Arena.Challenges.Domain.ViewModels;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Seedwork.Application.Http;
 using eDoxa.Seedwork.Testing.TestServer;
 using eDoxa.Seedwork.Testing.TestServer.Extensions;
-
-using FluentAssertions;
 
 using IdentityModel;
 
@@ -38,7 +31,6 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
     {
         private HttpClient _httpClient;
         private ChallengesDbContext _dbContext;
-        private IMapper _mapper;
 
         public async Task<HttpResponseMessage> ExecuteAsync(FakeChallengesCommand command)
         {
@@ -54,8 +46,6 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
             _httpClient = factory.CreateClient();
 
             _dbContext = factory.DbContext;
-
-            _mapper = factory.Mapper;
 
             await this.TestCleanup();
         }
@@ -78,18 +68,6 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
             var response = await this.ExecuteAsync(command);
 
             response.EnsureSuccessStatusCode();
-
-            var challengeViewModels1 = await response.DeserializeAsync<ChallengeViewModel[]>();
-
-            var challengeFaker = new ChallengeFaker();
-
-            challengeFaker.UseSeed(seed);
-
-            var challenges = challengeFaker.Generate(count);
-
-            var challengeViewModel2 = _mapper.Deserialize<IEnumerable<ChallengeViewModel>>(challenges);
-
-            challengeViewModels1.Should().BeEquivalentTo(challengeViewModel2);
         }
 
         //[DataRow(2, 100)]

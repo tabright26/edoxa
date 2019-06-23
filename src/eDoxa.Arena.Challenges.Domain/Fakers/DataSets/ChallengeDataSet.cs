@@ -100,43 +100,5 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers.DataSets
         {
             return PayoutFactory.Instance.CreateStrategy(payoutEntries, entryFee).Payout;
         }
-
-        private Entries ParticipantCount(ChallengeState state, Entries entries)
-        {
-            return state == ChallengeState.Inscription ? new Entries(Faker.Random.Int(1, entries - 1)) : entries;
-        }
-
-        //public ParticipantModel Participant(
-        //    ChallengeModel challengeModel,
-        //    ChallengeGame game,
-        //    ChallengeState state,
-        //    BestOf bestOf,
-        //    DateTime? startedAt
-        //)
-        //{
-        //    var participant = new ParticipantModel
-        //    {
-        //        Id = Faker.Participant().Id(),
-        //        UserId = Faker.UserId(),
-        //        GameAccountId = Faker.Participant().GameAccountId(game),
-        //        Challenge = challengeModel
-        //    };
-
-        //    participant.Matches = Faker.Participant()
-        //        .Matches(
-        //            participant,
-        //            game,
-        //            state,
-        //            bestOf,
-        //            startedAt
-        //        )
-        //        .ToList();
-
-        //    participant.RegisteredAt = Faker.Participant().RegisteredAt(state, startedAt);
-
-        //    participant.SynchronizedAt = participant.Matches.Max(match => match.SynchronizedAt as DateTime?);
-
-        //    return participant;
-        //}
     }
 }

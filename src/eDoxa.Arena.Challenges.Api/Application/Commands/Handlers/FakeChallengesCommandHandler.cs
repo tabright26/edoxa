@@ -8,35 +8,28 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-using AutoMapper;
-
 using eDoxa.Arena.Challenges.Domain.Abstractions.Services;
-using eDoxa.Arena.Challenges.Domain.ViewModels;
 using eDoxa.Commands.Abstractions.Handlers;
 
 using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Api.Application.Commands.Handlers
 {
-    public sealed class FakeChallengesCommandHandler : ICommandHandler<FakeChallengesCommand, IEnumerable<ChallengeViewModel>>
+    public sealed class FakeChallengesCommandHandler : AsyncCommandHandler<FakeChallengesCommand>
     {
         private readonly IChallengeService _challengeService;
-        private readonly IMapper _mapper;
 
-        public FakeChallengesCommandHandler(IChallengeService challengeService, IMapper mapper)
+        public FakeChallengesCommandHandler(IChallengeService challengeService)
         {
             _challengeService = challengeService;
-            _mapper = mapper;
         }
 
-        [ItemCanBeNull]
-        public async Task<IEnumerable<ChallengeViewModel>> Handle([NotNull] FakeChallengesCommand command, CancellationToken cancellationToken)
+        protected override async Task Handle([NotNull] FakeChallengesCommand command, CancellationToken cancellationToken)
         {
-            var challenges = await _challengeService.FakeChallengesAsync(
+            await _challengeService.FakeChallengesAsync(
                 command.Count,
                 command.Seed,
                 command.Game,
@@ -44,8 +37,6 @@ namespace eDoxa.Arena.Challenges.Api.Application.Commands.Handlers
                 command.EntryFeeCurrency,
                 cancellationToken
             );
-
-            return _mapper.Map<IEnumerable<ChallengeViewModel>>(challenges);
         }
     }
 }

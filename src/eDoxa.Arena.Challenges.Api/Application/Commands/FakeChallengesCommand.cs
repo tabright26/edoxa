@@ -8,18 +8,16 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.ViewModels;
 using eDoxa.Commands.Abstractions;
 using eDoxa.Seedwork.Common.Enumerations;
 
 namespace eDoxa.Arena.Challenges.Api.Application.Commands
 {
     [DataContract]
-    public class FakeChallengesCommand : Command<IEnumerable<ChallengeViewModel>>
+    public class FakeChallengesCommand : Command
     {
         public FakeChallengesCommand(
             int count,

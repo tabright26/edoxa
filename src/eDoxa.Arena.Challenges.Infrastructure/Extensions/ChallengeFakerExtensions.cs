@@ -20,8 +20,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Extensions
 {
     public static class ChallengeFakerExtensions
     {
-        private static readonly IMapper Mapper =
-            new Mapper(new MapperConfiguration(config => config.AddProfiles(Assembly.GetAssembly(typeof(ChallengesDbContext)))));
+        private static readonly IMapper Mapper = new Mapper(new MapperConfiguration(config => config.AddProfiles(Assembly.GetAssembly(typeof(ChallengesDbContext)))));
 
         public static ICollection<ChallengeModel> GenerateModels(this ChallengeFaker challengeFaker, int count)
         {

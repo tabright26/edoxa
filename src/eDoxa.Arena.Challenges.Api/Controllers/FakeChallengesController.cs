@@ -49,7 +49,9 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<ChallengeViewModel>))]
         public async Task<IActionResult> PostAsync([FromBody] FakeChallengesCommand command)
         {
-            return this.Ok(await _mediator.SendCommandAsync(command));
+            await _mediator.SendCommandAsync(command);
+
+            return this.Ok("Fake challenges have been seeded.");
         }
     }
 }
