@@ -1,5 +1,5 @@
 ﻿// Filename: MatchQuery.cs
-// Date Created: 2019-06-07
+// Date Created: 2019-06-19
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -37,9 +37,9 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Queries
 
         private IQueryable<MatchModel> Matches { get; }
 
-        public async Task<IEnumerable<MatchModel>> FindParticipantMatchesAsNoTrackingAsync(ParticipantId participantId)
+        public async Task<IReadOnlyCollection<MatchModel>> FindParticipantMatchesAsNoTrackingAsync(ParticipantId participantId)
         {
-            return await Matches.Where(match => match.Participant.Id == participantId).OrderBy(match => match.SynchronizedAt).ToListAsync();
+            return await Matches.Include(match => match.Participant).Where(match => match.Participant.Id == participantId).ToListAsync();
         }
 
         public async Task<MatchModel> FindMatchAsNoTrackingAsync(MatchId matchId)

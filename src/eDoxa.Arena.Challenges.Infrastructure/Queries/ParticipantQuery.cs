@@ -1,5 +1,5 @@
 ﻿// Filename: ParticipantQuery.cs
-// Date Created: 2019-06-07
+// Date Created: 2019-06-19
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -39,21 +39,17 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Queries
 
         private IQueryable<ParticipantModel> Participants { get; }
 
-        public async Task<IEnumerable<ParticipantModel>> FindChallengeParticipantsAsNoTrackingAsync(ChallengeId challengeId)
+        public async Task<IReadOnlyCollection<ParticipantModel>> FindChallengeParticipantsAsNoTrackingAsync(ChallengeId challengeId)
         {
             return await Participants.Include(NavigationPropertyPath)
                 .Include(participant => participant.Challenge)
                 .Where(participant => participant.Challenge.Id == challengeId)
-                .OrderBy(participant => participant.RegisteredAt)
                 .ToListAsync();
         }
 
         public async Task<ParticipantModel> FindParticipantAsNoTrackingAsync(ParticipantId participantId)
         {
-            return await Participants.Include(NavigationPropertyPath)
-                .Include(participant => participant.Challenge)
-                .Where(participant => participant.Id == participantId)
-                .SingleOrDefaultAsync();
+            return await Participants.Include(NavigationPropertyPath).Where(participant => participant.Id == participantId).SingleOrDefaultAsync();
         }
     }
 

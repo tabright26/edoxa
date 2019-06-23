@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeQuery.cs
-// Date Created: 2019-06-07
+// Date Created: 2019-06-19
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,6 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -44,44 +45,55 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Queries
 
         private IQueryable<ChallengeModel> Challenges { get; }
 
-        public async Task<bool> ChallengeExistsAsync(ChallengeId challengeId)
-        {
-            return await Challenges.AnyAsync(challenge => challenge.Id == challengeId);
-        }
-
         public async Task<IReadOnlyCollection<ChallengeModel>> FindUserChallengeHistoryAsNoTrackingAsync(
             UserId userId,
             ChallengeGame game = null,
             ChallengeState state = null
         )
         {
-            //var challenges = from challenge in _context.Challenges.AsNoTracking().Include(NavigationPropertyPath).AsExpandable()
-            //                 let participants = _context.Participants.Where(participant => participant.UserId == userId)
-            //                 where challenge.Game.HasFilter(game) &&
-            //                       challenge.Timeline.State.HasFilter(state) &&
-            //                       participants.Any(participant => participant.Challenge.Id == challenge.Id)
-            //                 select challenge;
+            var challenges = Challenges.Include(NavigationPropertyPath)
+                .Where(challenge => challenge.Participants.Any(participant => participant.UserId == userId));
 
-            //return await challenges.ToListAsync();
+            challenges = Where(challenges, game, state);
 
-            var challenges = await this.FindChallengesAsNoTrackingAsync(game, state);
-
-            return challenges.Where(challenge => challenge.Participants.Any(participant => participant.UserId == userId.ToGuid())).ToList();
+            return await challenges.ToListAsync();
         }
 
         public async Task<IReadOnlyCollection<ChallengeModel>> FindChallengesAsNoTrackingAsync(ChallengeGame game = null, ChallengeState state = null)
         {
-            var challengeModels = await Challenges.Include(NavigationPropertyPath).ToListAsync();
+            var challenges = Challenges.Include(NavigationPropertyPath);
 
-            //challenges.Where(challenge => challenge.Game.HasFilter(game) && challenge.Timeline.State.HasFilter(state)).ToList()
+            challenges = Where(challenges, game, state);
 
-            return challengeModels.ToList();
+            return await challenges.ToListAsync();
         }
 
         [ItemCanBeNull]
         public async Task<ChallengeModel> FindChallengeAsNoTrackingAsync(ChallengeId challengeId)
         {
-            return await Challenges.Include(NavigationPropertyPath).Where(challenge => challenge.Id == challengeId.ToGuid()).SingleOrDefaultAsync();
+            return await Challenges.Include(NavigationPropertyPath).Where(challenge => challenge.Id == challengeId).SingleOrDefaultAsync();
+        }
+
+        private static IQueryable<ChallengeModel> Where(IQueryable<ChallengeModel> challenges, ChallengeGame game = null, ChallengeState state = null)
+        {
+            if (game != null)
+            {
+                challenges = challenges.Where(challenge => challenge.Game == game.Value);
+            }
+
+            if (state != null)
+            {
+                challenges = challenges.Where(
+                    challenge => ChallengeState.Resolve(
+                                     TimeSpan.FromTicks(challenge.Timeline.Duration),
+                                     challenge.Timeline.StartedAt,
+                                     challenge.Timeline.ClosedAt
+                                 ) ==
+                                 state
+                );
+            }
+
+            return challenges;
         }
     }
 
@@ -109,6 +121,11 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Queries
             var challenge = await this.FindChallengeAsNoTrackingAsync(challengeId);
 
             return _mapper.Map<ChallengeViewModel>(challenge);
+        }
+
+        public async Task<bool> ChallengeExistsAsync(ChallengeId challengeId)
+        {
+            return await Challenges.AnyAsync(challenge => challenge.Id == challengeId);
         }
     }
 }
