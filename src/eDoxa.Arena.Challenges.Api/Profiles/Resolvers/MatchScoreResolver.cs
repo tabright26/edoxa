@@ -13,7 +13,6 @@ using System.Linq;
 using AutoMapper;
 
 using eDoxa.Arena.Challenges.Api.ViewModels;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
 
 using JetBrains.Annotations;
@@ -29,7 +28,7 @@ namespace eDoxa.Arena.Challenges.Api.Profiles.Resolvers
             [NotNull] ResolutionContext context
         )
         {
-            return MatchScore.Resolve(source.Stats.Select(stat => context.Mapper.Map<StatViewModel>(stat).Score));
+            return source.Stats.Select(stat => context.Mapper.Map<StatViewModel>(stat).Score).Sum();
         }
     }
 }

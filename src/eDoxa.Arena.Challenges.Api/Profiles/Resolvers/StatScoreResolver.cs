@@ -8,10 +8,11 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
+
 using AutoMapper;
 
 using eDoxa.Arena.Challenges.Api.ViewModels;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
 
 using JetBrains.Annotations;
@@ -27,7 +28,7 @@ namespace eDoxa.Arena.Challenges.Api.Profiles.Resolvers
             [NotNull] ResolutionContext context
         )
         {
-            return StatScore.Resolve(source.Value, source.Weighting);
+            return Convert.ToDecimal(source.Value * source.Weighting);
         }
     }
 }

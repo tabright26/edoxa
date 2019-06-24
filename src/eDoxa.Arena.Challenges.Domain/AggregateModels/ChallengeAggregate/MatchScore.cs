@@ -8,7 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Collections.Generic;
 using System.Linq;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions;
@@ -17,13 +16,8 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class MatchScore : Score
     {
-        internal MatchScore(Match match) : base(Resolve(match.Stats.Select(stat => (decimal) stat.Score)))
+        internal MatchScore(Match match) : base(match.Stats.Sum(stat => stat.Score))
         {
-        }
-
-        public static decimal Resolve(IEnumerable<decimal> scores)
-        {
-            return scores.Sum();
         }
     }
 }

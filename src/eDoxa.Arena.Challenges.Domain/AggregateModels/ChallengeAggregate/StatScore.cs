@@ -16,13 +16,8 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class StatScore : Score
     {
-        internal StatScore(Stat stat) : base(Resolve(stat.Value, stat.Weighting))
+        internal StatScore(Stat stat) : base(Convert.ToDecimal(stat.Value * stat.Weighting))
         {
-        }
-
-        public static decimal Resolve(double value, float weighting)
-        {
-            return Convert.ToDecimal(value * weighting);
         }
     }
 }
