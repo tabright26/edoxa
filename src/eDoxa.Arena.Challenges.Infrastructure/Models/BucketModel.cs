@@ -8,6 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.ComponentModel.DataAnnotations.Schema;
+
 using eDoxa.Seedwork.Infrastructure;
 
 namespace eDoxa.Arena.Challenges.Infrastructure.Models
@@ -18,6 +20,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Models
 
         public int PrizeCurrency { get; set; }
 
+        [Column(TypeName = "decimal(10, 2)")]
         public decimal PrizeAmount { get; set; }
     }
 }
