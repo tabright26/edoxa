@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Application.Commands;
-using eDoxa.Arena.Challenges.Domain.ViewModels;
+using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Commands.Extensions;
 using eDoxa.Seedwork.Application.Mvc.Filters.Attributes;
 

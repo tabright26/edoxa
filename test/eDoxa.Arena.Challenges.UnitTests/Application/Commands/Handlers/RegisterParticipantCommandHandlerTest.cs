@@ -14,11 +14,11 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using eDoxa.Arena.Challenges.Api.Application.Abstractions.Services;
 using eDoxa.Arena.Challenges.Api.Application.Commands;
 using eDoxa.Arena.Challenges.Api.Application.Commands.Handlers;
-using eDoxa.Arena.Challenges.Domain.Abstractions.Services;
+using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.ViewModels;
 using eDoxa.Arena.Challenges.UnitTests.Extensions;
 using eDoxa.Commands.Extensions;
 using eDoxa.Seedwork.Common.ValueObjects;

@@ -15,16 +15,17 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Arena.Challenges.Domain.Abstractions.Queries;
+using eDoxa.Arena.Challenges.Api.Application.Abstractions.Queries;
+using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.ViewModels;
+using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
 
 using JetBrains.Annotations;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace eDoxa.Arena.Challenges.Infrastructure.Queries
+namespace eDoxa.Arena.Challenges.Api.Application.Queries
 {
     public sealed partial class MatchQuery
     {

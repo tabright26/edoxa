@@ -1,4 +1,4 @@
-﻿// Filename: PrizePoolViewModel.cs
+﻿// Filename: EntryFeeViewModel.cs
 // Date Created: 2019-06-21
 // 
 // ================================================
@@ -12,10 +12,10 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Arena.Challenges.Domain.ViewModels
+namespace eDoxa.Arena.Challenges.Api.ViewModels
 {
     [JsonObject]
-    public class PrizePoolViewModel
+    public class EntryFeeViewModel
     {
         [JsonProperty("currency")]
         public Currency Currency { get; set; }

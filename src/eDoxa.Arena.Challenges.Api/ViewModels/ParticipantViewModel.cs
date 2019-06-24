@@ -12,7 +12,7 @@ using System;
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Arena.Challenges.Domain.ViewModels
+namespace eDoxa.Arena.Challenges.Api.ViewModels
 {
     [JsonObject]
     public class ParticipantViewModel

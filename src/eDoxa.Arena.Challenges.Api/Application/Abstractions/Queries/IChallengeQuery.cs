@@ -11,12 +11,12 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.ViewModels;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Arena.Challenges.Domain.Abstractions.Queries
+namespace eDoxa.Arena.Challenges.Api.Application.Abstractions.Queries
 {
     public interface IChallengeQuery
     {

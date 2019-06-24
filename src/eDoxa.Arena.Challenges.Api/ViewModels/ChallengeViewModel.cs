@@ -15,7 +15,7 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace eDoxa.Arena.Challenges.Domain.ViewModels
+namespace eDoxa.Arena.Challenges.Api.ViewModels
 {
     [JsonObject]
     public class ChallengeViewModel

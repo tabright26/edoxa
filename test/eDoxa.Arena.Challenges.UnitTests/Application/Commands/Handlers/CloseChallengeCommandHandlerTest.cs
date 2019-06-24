@@ -11,9 +11,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Arena.Challenges.Api.Application.Abstractions.Services;
 using eDoxa.Arena.Challenges.Api.Application.Commands;
 using eDoxa.Arena.Challenges.Api.Application.Commands.Handlers;
-using eDoxa.Arena.Challenges.Domain.Abstractions.Services;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Commands.Extensions;
 

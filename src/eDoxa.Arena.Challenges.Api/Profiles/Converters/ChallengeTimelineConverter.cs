@@ -12,7 +12,7 @@ using System;
 
 using AutoMapper;
 
-using eDoxa.Arena.Challenges.Domain.ViewModels;
+using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
 
 using JetBrains.Annotations;

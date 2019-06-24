@@ -10,14 +10,14 @@
 
 using Autofac;
 
+using eDoxa.Arena.Challenges.Api.Application.Abstractions.Queries;
+using eDoxa.Arena.Challenges.Api.Application.Abstractions.Services;
+using eDoxa.Arena.Challenges.Api.Application.Queries;
 using eDoxa.Arena.Challenges.Api.Application.Services;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Factories;
-using eDoxa.Arena.Challenges.Domain.Abstractions.Queries;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Repositories;
-using eDoxa.Arena.Challenges.Domain.Abstractions.Services;
 using eDoxa.Arena.Challenges.Domain.Factories;
 using eDoxa.Arena.Challenges.Infrastructure;
-using eDoxa.Arena.Challenges.Infrastructure.Queries;
 using eDoxa.Arena.Challenges.Infrastructure.Repositories;
 using eDoxa.Commands;
 using eDoxa.IntegrationEvents;

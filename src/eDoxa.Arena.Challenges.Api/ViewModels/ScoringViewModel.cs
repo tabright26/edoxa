@@ -12,7 +12,7 @@ using System.Collections.Generic;
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Arena.Challenges.Domain.ViewModels
+namespace eDoxa.Arena.Challenges.Api.ViewModels
 {
     [JsonDictionary]
     public class ScoringViewModel : Dictionary<string, float>

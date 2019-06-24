@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Common.ValueObjects;
 
-namespace eDoxa.Arena.Challenges.Domain.Abstractions.Services
+namespace eDoxa.Arena.Challenges.Api.Application.Abstractions.Services
 {
     public interface IChallengeService
     {
