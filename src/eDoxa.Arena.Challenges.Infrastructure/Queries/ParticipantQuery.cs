@@ -8,6 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -39,17 +40,22 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Queries
 
         private IQueryable<ParticipantModel> Participants { get; }
 
-        public async Task<IReadOnlyCollection<ParticipantModel>> FindChallengeParticipantsAsNoTrackingAsync(ChallengeId challengeId)
+        private async Task<IReadOnlyCollection<ParticipantModel>> FindChallengeParticipantsAsNoTrackingAsync(Guid challengeId)
         {
-            return await Participants.Include(NavigationPropertyPath)
-                .Include(participant => participant.Challenge)
-                .Where(participant => participant.Challenge.Id == challengeId)
-                .ToListAsync();
+            var participants = from participant in Participants.Include(NavigationPropertyPath).Include(participant => participant.Challenge)
+                               where participant.Challenge.Id == challengeId
+                               select participant;
+
+            return await participants.ToListAsync();
         }
 
-        public async Task<ParticipantModel> FindParticipantAsNoTrackingAsync(ParticipantId participantId)
+        private async Task<ParticipantModel> FindParticipantAsNoTrackingAsync(Guid participantId)
         {
-            return await Participants.Include(NavigationPropertyPath).Where(participant => participant.Id == participantId).SingleOrDefaultAsync();
+            var participants = from participant in Participants.Include(NavigationPropertyPath)
+                               where participant.Id == participantId
+                               select participant;
+
+            return await participants.SingleOrDefaultAsync();
         }
     }
 

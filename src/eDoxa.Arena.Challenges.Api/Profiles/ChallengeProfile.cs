@@ -11,7 +11,6 @@
 using AutoMapper;
 
 using eDoxa.Arena.Challenges.Api.Profiles.Converters;
-using eDoxa.Arena.Challenges.Api.Profiles.Resolvers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.ViewModels;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
@@ -26,7 +25,7 @@ namespace eDoxa.Arena.Challenges.Api.Profiles
                 .ForMember(challenge => challenge.Id, config => config.MapFrom(challenge => challenge.Id))
                 .ForMember(challenge => challenge.Name, config => config.MapFrom(challenge => challenge.Name))
                 .ForMember(challenge => challenge.Game, config => config.MapFrom(challenge => ChallengeGame.FromValue(challenge.Game)))
-                .ForMember(challenge => challenge.State, config => config.MapFrom<ChallengeStateResolver>())
+                .ForMember(challenge => challenge.State, config => config.MapFrom(challenge => ChallengeState.FromValue(challenge.State)))
                 .ForMember(challenge => challenge.Timeline, config => config.ConvertUsing(new ChallengeTimelineConverter(), challenge => challenge))
                 .ForMember(challenge => challenge.Setup, config => config.ConvertUsing(new ChallengeSetupConverter(), challenge => challenge))
                 .ForMember(challenge => challenge.Scoring, config => config.ConvertUsing(new ScoringConverter(), challenge => challenge))

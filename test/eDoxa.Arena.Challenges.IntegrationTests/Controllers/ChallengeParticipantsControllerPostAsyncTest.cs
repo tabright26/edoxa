@@ -12,12 +12,18 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
+using Bogus;
+
 using eDoxa.Arena.Challenges.Api;
 using eDoxa.Arena.Challenges.Api.Application.Commands;
 using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Domain.Fakers;
+using eDoxa.Arena.Challenges.Domain.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Infrastructure;
+using eDoxa.Arena.Challenges.Infrastructure.Extensions;
 using eDoxa.Seedwork.Application.Http;
+using eDoxa.Seedwork.Common.Extensions;
 using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Testing.TestServer;
 using eDoxa.Seedwork.Testing.TestServer.Extensions;
@@ -38,7 +44,11 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         {
             return await _httpClient
                 .DefaultRequestHeaders(
-                    new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(ChallengeGame.LeagueOfLegends.GetClaimType(), gameAccountId.ToString())}
+                    new[]
+                    {
+                        new Claim(JwtClaimTypes.Subject, userId.ToString()),
+                        new Claim(ChallengeGame.LeagueOfLegends.GetClaimType(), gameAccountId.ToString())
+                    }
                 )
                 .PostAsync($"api/challenges/{command.ChallengeId}/participants", new JsonContent(command));
         }
@@ -63,33 +73,37 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
             await _dbContext.SaveChangesAsync();
         }
 
-        //[TestMethod]
-        //public async Task T1()
-        //{
-        //    var faker = new Faker();
+        [TestMethod]
+        public async Task T1()
+        {
+            var faker = new Faker();
 
-        //    var userId = faker.UserId();
+            var userId = faker.UserId();
 
-        //    var challengeFaker = new ChallengeFaker(Game.LeagueOfLegends, ChallengeState.Inscription);
+            var challengeFaker = new ChallengeFaker(ChallengeGame.LeagueOfLegends, ChallengeState.Inscription);
 
-        //    challengeFaker.UseSeed(0);
+            challengeFaker.UseSeed(1);
 
-        //    var challenge = challengeFaker.Generate();
+            var challenge = challengeFaker.GenerateModel();
 
-        //    _dbContext.Challenges.Add(challenge);
+            _dbContext.Challenges.Add(challenge);
 
-        //    await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
-        //    var response = await this.ExecuteAsync(userId, faker.UserGameReference(Game.LeagueOfLegends), new RegisterParticipantCommand(challenge.Id));
+            var response = await this.ExecuteAsync(
+                userId,
+                faker.Participant().GameAccountId(ChallengeGame.LeagueOfLegends),
+                new RegisterParticipantCommand(ChallengeId.FromGuid(challenge.Id))
+            );
 
-        //    response.EnsureSuccessStatusCode();
+            response.EnsureSuccessStatusCode();
 
-        //    var model = await response.DeserializeAsync<ParticipantViewModel>();
+            //var model = await response.DeserializeAsync<ParticipantViewModel>();
 
-        //    // Assert
-        //    model.Should().NotBeNull();
+            //// Assert
+            //model.Should().NotBeNull();
 
-        //    model?.UserId.Should().Be(userId);
-        //}
+            //model?.UserId.Should().Be(userId);
+        }
     }
 }

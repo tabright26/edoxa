@@ -8,7 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Arena.Challenges.Domain.Abstractions.Queries;
 using eDoxa.Commands.Abstractions.Validations;
 using eDoxa.Seedwork.Application.Validations.Extensions;
 
@@ -16,30 +15,19 @@ using FluentValidation;
 
 namespace eDoxa.Arena.Challenges.Api.Application.Commands.Validations
 {
-    public class FakeChallengesCommandValidator : CommandValidator<FakeChallengesCommand>
+    public sealed class FakeChallengesCommandValidator : CommandValidator<FakeChallengesCommand>
     {
-        public FakeChallengesCommandValidator(IChallengeQuery challengeQuery)
+        public FakeChallengesCommandValidator()
         {
-            this.RuleFor(command => command.Count).ExclusiveBetween(1, 10);
+            this.RuleFor(command => command.Count).InclusiveBetween(1, 10);
 
-            this.RuleFor(command => command.Seed).ExclusiveBetween(0, int.MaxValue);
+            this.RuleFor(command => command.Seed).InclusiveBetween(1, int.MaxValue);
 
             this.OptionalEnumeration(command => command.Game);
 
             this.OptionalEnumeration(command => command.State);
 
             this.OptionalEnumeration(command => command.EntryFeeCurrency);
-
-            //this.RuleFor(command => command)
-            //    .CustomAsync(
-            //        async (command, context, cancellationToken) =>
-            //        {
-            //            if (await challengeQuery.ChallengeExistsAsync(command.Seed))
-            //            {
-            //                context.AddFailure($"This seed was already used: {command.Seed}.");
-            //            }
-            //        }
-            //    );
         }
     }
 }

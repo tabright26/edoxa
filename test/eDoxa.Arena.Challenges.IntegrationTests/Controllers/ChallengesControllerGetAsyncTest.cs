@@ -124,7 +124,8 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 
             var challenge2 = FakeChallenge(seed);
 
-            var challengeViewModel2 = JsonConvert.DeserializeObject<ChallengeViewModel>(JsonConvert.SerializeObject(_mapper.Map<ChallengeViewModel>(challenge2)));
+            var challengeViewModel2 =
+                JsonConvert.DeserializeObject<ChallengeViewModel>(JsonConvert.SerializeObject(_mapper.Map<ChallengeViewModel>(challenge2)));
 
             challengeViewModel1.Should().BeEquivalentTo(challengeViewModel2);
         }

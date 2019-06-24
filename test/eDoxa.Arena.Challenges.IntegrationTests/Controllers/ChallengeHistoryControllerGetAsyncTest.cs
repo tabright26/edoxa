@@ -8,6 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -16,10 +17,15 @@ using AutoMapper;
 
 using eDoxa.Arena.Challenges.Api;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Domain.Fakers;
+using eDoxa.Arena.Challenges.Domain.ViewModels;
 using eDoxa.Arena.Challenges.Infrastructure;
+using eDoxa.Arena.Challenges.Infrastructure.Extensions;
 using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Testing.TestServer;
 using eDoxa.Seedwork.Testing.TestServer.Extensions;
+
+using FluentAssertions;
 
 using IdentityModel;
 
@@ -62,30 +68,32 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
             await _dbContext.SaveChangesAsync();
         }
 
-        //[TestMethod]
-        //public async Task T1()
-        //{
-        //    var challengeFaker = new ChallengeFaker(state: ChallengeState.InProgress);
+        [TestMethod]
+        public async Task T1()
+        {
+            var challengeFaker = new ChallengeFaker(state: ChallengeState.InProgress);
 
-        //    var challenge = challengeFaker.Generate();
+            challengeFaker.UseSeed(1);
 
-        //    _dbContext.Challenges.Add(challenge);
+            var challenge = challengeFaker.GenerateModel();
 
-        //    await _dbContext.SaveChangesAsync();
+            _dbContext.Challenges.Add(challenge);
 
-        //    var participant = challenge.Participants.First();
+            await _dbContext.SaveChangesAsync();
 
-        //    var response = await this.ExecuteAsync(participant.UserId);
+            var participant = challenge.Participants.First();
 
-        //    response.EnsureSuccessStatusCode();
+            var response = await this.ExecuteAsync(UserId.FromGuid(participant.UserId));
 
-        //    var challengeViewModels = await response.DeserializeAsync<ChallengeViewModel[]>();
+            response.EnsureSuccessStatusCode();
 
-        //    var challengeViewModel1 = challengeViewModels.First();
+            var challengeViewModels = await response.DeserializeAsync<ChallengeViewModel[]>();
 
-        //    var challengeViewModel2 = _mapper.Deserialize<ChallengeViewModel>(challenge);
+            var challengeViewModel1 = challengeViewModels.First();
 
-        //    challengeViewModel1.Should().BeEquivalentTo(challengeViewModel2);
-        //}
+            var challengeViewModel2 = _mapper.Deserialize<ChallengeViewModel>(challenge);
+
+            challengeViewModel1.Should().BeEquivalentTo(challengeViewModel2);
+        }
     }
 }

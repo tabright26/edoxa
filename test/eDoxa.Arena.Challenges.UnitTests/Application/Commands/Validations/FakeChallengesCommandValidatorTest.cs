@@ -9,14 +9,11 @@
 // this source code package.
 
 using eDoxa.Arena.Challenges.Api.Application.Commands.Validations;
-using eDoxa.Arena.Challenges.Domain.Abstractions.Queries;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 
 using FluentValidation.TestHelper;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using Moq;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Application.Commands.Validations
 {
@@ -28,8 +25,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Commands.Validations
         [TestInitialize]
         public void TestInitialize()
         {
-            var mockChallengeQuery = new Mock<IChallengeQuery>();
-            _validator = new FakeChallengesCommandValidator(mockChallengeQuery.Object);
+            _validator = new FakeChallengesCommandValidator();
         }
 
         [TestMethod]

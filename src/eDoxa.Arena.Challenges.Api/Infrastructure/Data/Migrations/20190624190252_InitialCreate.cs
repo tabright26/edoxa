@@ -1,4 +1,4 @@
-﻿// Filename: 20190624050846_InitialCreate.cs
+﻿// Filename: 20190624190252_InitialCreate.cs
 // Date Created: 2019-06-24
 // 
 // ================================================
@@ -25,6 +25,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
                     Id = table.Column<Guid>(),
                     Name = table.Column<string>(nullable: true),
                     Game = table.Column<int>(),
+                    State = table.Column<int>(),
                     SynchronizedAt = table.Column<DateTime>(nullable: true),
                     Setup_BestOf = table.Column<int>(),
                     Setup_Entries = table.Column<int>(),

@@ -24,11 +24,13 @@ using eDoxa.Arena.Challenges.Infrastructure.Models;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Specifications.Abstractions;
 
+using JetBrains.Annotations;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
 {
-    public sealed class ChallengeRepository : IChallengeRepository
+    public sealed partial class ChallengeRepository
     {
         private const string NavigationPropertyPath = "Participants.Matches";
 
@@ -43,7 +45,43 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
             _context = context;
             _mapper = mapper;
         }
-    
+
+        private async Task<IReadOnlyCollection<ChallengeModel>> FindChallengeModelsAsync(int? game = null, int? state = null)
+        {
+            var challenges = from challenge in _context.Challenges.Include(NavigationPropertyPath)
+                             where (game == null || challenge.Game == game) && (state == null || challenge.State == state)
+                             select challenge;
+
+            return await challenges.ToListAsync();
+        }
+
+        [ItemCanBeNull]
+        private async Task<ChallengeModel> FindChallengeModelAsync(Guid challengeId)
+        {
+            var challenges = from challenge in _context.Challenges.Include(NavigationPropertyPath)
+                             where challenge.Id == challengeId
+                             select challenge;
+
+            return await challenges.SingleOrDefaultAsync();
+        }
+
+        private async Task<bool> AnyChallengeModelAsync(Guid challengeId)
+        {
+            var challenges = from challenge in _context.Challenges
+                             where challenge.Id == challengeId
+                             select challenge;
+
+            return await challenges.AnyAsync();
+        }
+    }
+
+    public sealed partial class ChallengeRepository : IChallengeRepository
+    {
+        public void Create(IEnumerable<IChallenge> challenges)
+        {
+            challenges.ForEach(this.Create);
+        }
+
         public void Create(IChallenge challenge)
         {
             var challengeModel = _mapper.Map<ChallengeModel>(challenge);
@@ -53,19 +91,29 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
             _materializedObjects[challenge] = challengeModel;
         }
 
-        public void Create(IEnumerable<IChallenge> challenges)
+        public async Task<IReadOnlyCollection<IChallenge>> FindChallengesAsync(ChallengeGame game = null, ChallengeState state = null)
         {
-            challenges.ForEach(this.Create);
+            var challenges = await this.FindChallengeModelsAsync(game?.Value, state?.Value);
+
+            return challenges.Select(challenge => _mapper.Map<IChallenge>(challenge)).ToList();
         }
 
+        public async Task<IReadOnlyCollection<IChallenge>> FindChallengesAsync(ISpecification<IChallenge> specification)
+        {
+            var challenges = await this.FindChallengeModelsAsync();
+
+            return challenges.Select(challenge => _mapper.Map<IChallenge>(challenge)).Where(specification.IsSatisfiedBy).ToList();
+        }
+
+        [ItemCanBeNull]
         public async Task<IChallenge> FindChallengeAsync(ChallengeId challengeId)
         {
-            if (_materializedIds.TryGetValue(challengeId.ToGuid(), out var challenge))
+            if (_materializedIds.TryGetValue(challengeId, out var challenge))
             {
                 return challenge;
             }
 
-            var challengeModel = await _context.Challenges.Include(NavigationPropertyPath).SingleOrDefaultAsync(x => x.Id == challengeId.ToGuid());
+            var challengeModel = await this.FindChallengeModelAsync(challengeId);
 
             if (challengeModel == null)
             {
@@ -81,6 +129,11 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
             return challenge;
         }
 
+        public async Task<bool> AnyChallengeAsync(ChallengeId challengeId)
+        {
+            return await this.AnyChallengeModelAsync(challengeId);
+        }
+
         public async Task CommitAsync(CancellationToken cancellationToken = default)
         {
             foreach (var (challenge, challengeModel) in _materializedObjects)
@@ -94,26 +147,6 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
             {
                 _materializedIds[challengeModel.Id] = challenge;
             }
-        }
-
-        public async Task<IReadOnlyCollection<IChallenge>> FindChallengesAsync(ChallengeGame game = null, ChallengeState state = null)
-        {
-            var challengeModels = await _context.Challenges.Include(NavigationPropertyPath).ToListAsync();
-
-            var challenges = challengeModels.Select(challenge => _mapper.Map<IChallenge>(challenge));
-
-            challenges = challenges.Where(challenge => challenge.Game.HasFilter(game) && challenge.Timeline.State.HasFilter(state));
-
-            return challenges.ToList();
-        }
-
-        public async Task<IReadOnlyCollection<IChallenge>> FindChallengesAsync(ISpecification<IChallenge> specification)
-        {
-            var challengeModels = await _context.Challenges.Include(NavigationPropertyPath).ToListAsync();
-
-            var challenges = challengeModels.Select(challenge => _mapper.Map<IChallenge>(challenge));
-
-            return challenges.Where(specification.IsSatisfiedBy).ToList();
         }
     }
 }

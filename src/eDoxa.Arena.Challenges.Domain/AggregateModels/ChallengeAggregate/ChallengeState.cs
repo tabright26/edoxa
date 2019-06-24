@@ -33,14 +33,9 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public static ChallengeState From(ChallengeTimeline timeline)
         {
-            return From(timeline.Duration, timeline.StartedAt, timeline.ClosedAt);
-        }
-
-        public static ChallengeState From(TimeSpan duration, DateTime? startedAt, DateTime? closedAt)
-        {
-            var endedAt = startedAt + duration;
-
-            return closedAt != null ? Closed : endedAt != null && endedAt <= DateTime.UtcNow ? Ended : startedAt != null ? InProgress : Inscription;
+            return timeline.ClosedAt != null ? Closed :
+                timeline.EndedAt != null && timeline.EndedAt <= DateTime.UtcNow ? Ended :
+                timeline.StartedAt != null ? InProgress : Inscription;
         }
     }
 }

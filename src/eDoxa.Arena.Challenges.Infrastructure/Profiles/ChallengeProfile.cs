@@ -32,6 +32,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Profiles
                 .ForMember(challenge => challenge.Id, config => config.MapFrom<Guid>(challenge => challenge.Id))
                 .ForMember(challenge => challenge.Name, config => config.MapFrom<string>(challenge => challenge.Name))
                 .ForMember(challenge => challenge.Game, config => config.MapFrom(challenge => challenge.Game.Value))
+                .ForMember(challenge => challenge.State, config => config.MapFrom(challenge => challenge.Timeline.State.Value))
                 .ForMember(challenge => challenge.SynchronizedAt, config => config.MapFrom(challenge => challenge.SynchronizedAt))
                 .ForMember(
                     challenge => challenge.Timeline,

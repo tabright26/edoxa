@@ -9,6 +9,7 @@
 // this source code package.
 
 using System;
+using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -17,10 +18,15 @@ using AutoMapper;
 
 using eDoxa.Arena.Challenges.Api;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Domain.Fakers;
+using eDoxa.Arena.Challenges.Domain.ViewModels;
 using eDoxa.Arena.Challenges.Infrastructure;
+using eDoxa.Arena.Challenges.Infrastructure.Extensions;
 using eDoxa.Seedwork.Security.Constants;
 using eDoxa.Seedwork.Testing.TestServer;
 using eDoxa.Seedwork.Testing.TestServer.Extensions;
+
+using FluentAssertions;
 
 using IdentityModel;
 
@@ -67,28 +73,22 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
             await _dbContext.SaveChangesAsync();
         }
 
-        //[TestMethod]
-        //public async Task T1()
-        //{
-        //    var challengeFaker = new ChallengeFaker(state: ChallengeState.Ended);
+        [TestMethod]
+        public async Task T1()
+        {
+            var challengeFaker = new ChallengeFaker(state: ChallengeState.Ended);
+            var challenge = challengeFaker.GenerateModel();
+            _dbContext.Challenges.Add(challenge);
+            await _dbContext.SaveChangesAsync();
+            var participant = challenge.Participants.First();
 
-        //    var challenge = challengeFaker.Generate();
+            // Act
+            var response = await this.ExecuteAsync(ParticipantId.FromGuid(participant.Id));
 
-        //    _dbContext.Challenges.Add(challenge);
-
-        //    await _dbContext.SaveChangesAsync();
-
-        //    var participant = challenge.Participants.First();
-
-        //    var response = await this.ExecuteAsync(participant.Id);
-
-        //    response.EnsureSuccessStatusCode();
-
-        //    var challengeViewModels1 = await response.DeserializeAsync<MatchViewModel[]>();
-
-        //    var challengeViewModels2 = _mapper.Deserialize<MatchViewModel[]>(participant.Matches);
-
-        //    challengeViewModels1.AsEnumerable().Should().BeEquivalentTo(challengeViewModels2.AsEnumerable());
-        //}
+            // Assert
+            response.EnsureSuccessStatusCode();
+            var matches = await response.DeserializeAsync<MatchViewModel[]>();
+            matches.Should().HaveCount(participant.Matches.Count);
+        }
     }
 }

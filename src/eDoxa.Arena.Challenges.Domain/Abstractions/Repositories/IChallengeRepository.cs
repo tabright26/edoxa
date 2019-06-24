@@ -15,19 +15,24 @@ using System.Threading.Tasks;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Domain.Specifications.Abstractions;
 
+using JetBrains.Annotations;
+
 namespace eDoxa.Arena.Challenges.Domain.Abstractions.Repositories
 {
     public interface IChallengeRepository
     {
-        void Create(IChallenge challenge);
-
         void Create(IEnumerable<IChallenge> challenges);
+
+        void Create(IChallenge challenge);
 
         Task<IReadOnlyCollection<IChallenge>> FindChallengesAsync(ChallengeGame game = null, ChallengeState state = null);
 
         Task<IReadOnlyCollection<IChallenge>> FindChallengesAsync(ISpecification<IChallenge> specification);
 
+        [ItemCanBeNull]
         Task<IChallenge> FindChallengeAsync(ChallengeId challengeId);
+
+        Task<bool> AnyChallengeAsync(ChallengeId challengeId);
 
         Task CommitAsync(CancellationToken cancellationToken = default);
     }

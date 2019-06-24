@@ -8,6 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -37,14 +38,22 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Queries
 
         private IQueryable<MatchModel> Matches { get; }
 
-        public async Task<IReadOnlyCollection<MatchModel>> FindParticipantMatchesAsNoTrackingAsync(ParticipantId participantId)
+        private async Task<IReadOnlyCollection<MatchModel>> FindParticipantMatchesAsNoTrackingAsync(Guid participantId)
         {
-            return await Matches.Include(match => match.Participant).Where(match => match.Participant.Id == participantId).ToListAsync();
+            var matches = from match in Matches.Include(match => match.Participant)
+                          where match.Participant.Id == participantId
+                          select match;
+
+            return await matches.ToListAsync();
         }
 
-        public async Task<MatchModel> FindMatchAsNoTrackingAsync(MatchId matchId)
+        private async Task<MatchModel> FindMatchAsNoTrackingAsync(Guid matchId)
         {
-            return await Matches.Where(match => match.Id == matchId).SingleOrDefaultAsync();
+            var matches = from match in Matches
+                          where match.Id == matchId
+                          select match;
+
+            return await matches.SingleOrDefaultAsync();
         }
     }
 

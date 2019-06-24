@@ -28,11 +28,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Services
         private readonly IGameMatchIdsFactory _gameMatchIdsFactory;
         private readonly IMatchStatsFactory _matchStatsFactory;
 
-        public ChallengeService(
-            IChallengeRepository challengeRepository,
-            IGameMatchIdsFactory gameMatchIdsFactory,
-            IMatchStatsFactory matchStatsFactory
-        )
+        public ChallengeService(IChallengeRepository challengeRepository, IGameMatchIdsFactory gameMatchIdsFactory, IMatchStatsFactory matchStatsFactory)
         {
             _challengeRepository = challengeRepository;
             _gameMatchIdsFactory = gameMatchIdsFactory;
@@ -91,6 +87,14 @@ namespace eDoxa.Arena.Challenges.Api.Application.Services
             challengeFaker.UseSeed(seed);
 
             var challenges = challengeFaker.Generate(count);
+
+            foreach (var challenge in challenges)
+            {
+                if (await _challengeRepository.AnyChallengeAsync(challenge.Id))
+                {
+                    throw new InvalidOperationException("This seed was already used.");
+                }
+            }
 
             _challengeRepository.Create(challenges);
 
