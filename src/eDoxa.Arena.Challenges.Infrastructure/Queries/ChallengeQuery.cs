@@ -8,7 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,6 +17,7 @@ using AutoMapper;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Queries;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.ViewModels;
+using eDoxa.Arena.Challenges.Infrastructure.Extensions;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
 using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Security.Extensions;
@@ -54,7 +54,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Queries
             var challenges = Challenges.Include(NavigationPropertyPath)
                 .Where(challenge => challenge.Participants.Any(participant => participant.UserId == userId));
 
-            challenges = Where(challenges, game, state);
+            challenges = Filters(challenges, game, state);
 
             return await challenges.ToListAsync();
         }
@@ -63,7 +63,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Queries
         {
             var challenges = Challenges.Include(NavigationPropertyPath);
 
-            challenges = Where(challenges, game, state);
+            challenges = Filters(challenges, game, state);
 
             return await challenges.ToListAsync();
         }
@@ -74,7 +74,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Queries
             return await Challenges.Include(NavigationPropertyPath).Where(challenge => challenge.Id == challengeId).SingleOrDefaultAsync();
         }
 
-        private static IQueryable<ChallengeModel> Where(IQueryable<ChallengeModel> challenges, ChallengeGame game = null, ChallengeState state = null)
+        private static IQueryable<ChallengeModel> Filters(IQueryable<ChallengeModel> challenges, ChallengeGame game = null, ChallengeState state = null)
         {
             if (game != null)
             {
@@ -83,14 +83,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Queries
 
             if (state != null)
             {
-                challenges = challenges.Where(
-                    challenge => ChallengeState.From(
-                                     TimeSpan.FromTicks(challenge.Timeline.Duration),
-                                     challenge.Timeline.StartedAt,
-                                     challenge.Timeline.ClosedAt
-                                 ) ==
-                                 state
-                );
+                challenges = challenges.Where(challenge => challenge.Timeline.ResolveState() == state);
             }
 
             return challenges;
