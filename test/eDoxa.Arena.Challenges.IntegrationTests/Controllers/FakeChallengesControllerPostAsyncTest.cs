@@ -9,6 +9,7 @@
 // this source code package.
 
 using System;
+using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -26,7 +27,6 @@ using FluentAssertions;
 
 using IdentityModel;
 
-using Microsoft.AspNetCore.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
@@ -66,12 +66,15 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         [DataRow(2, 100)]
         [DataRow(5, 1000)]
         [DataTestMethod]
-        public async Task Status200Ok(int count, int seed)
+        public async Task ShouldBeOk(int count, int seed)
         {
+            // Arrange
             var command = new FakeChallengesCommand(count, seed);
 
+            // Act
             var response = await this.ExecuteAsync(command);
 
+            // Assert
             response.EnsureSuccessStatusCode();
         }
 
@@ -79,7 +82,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         [DataRow(5, 1000)]
         [DataRow(10, 10000)]
         [DataTestMethod]
-        public async Task Status400BadRequest(int count, int seed)
+        public async Task ShouldBeBadRequest(int count, int seed)
         {
             // Arrange
             var challengeFaker = new ChallengeFaker();
@@ -93,7 +96,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
             var response = await this.ExecuteAsync(command);
 
             // Assert
-            response.StatusCode.Should().Be(StatusCodes.Status500InternalServerError);
+            response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
         }
     }
 }

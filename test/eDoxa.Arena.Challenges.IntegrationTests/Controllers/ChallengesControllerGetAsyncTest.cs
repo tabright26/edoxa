@@ -13,22 +13,17 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using AutoMapper;
-
 using eDoxa.Arena.Challenges.Api;
 using eDoxa.Arena.Challenges.Domain.Fakers;
 using eDoxa.Arena.Challenges.Domain.ViewModels;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.Infrastructure.Extensions;
-using eDoxa.Arena.Challenges.Infrastructure.Models;
 using eDoxa.Seedwork.Testing.TestServer;
 using eDoxa.Seedwork.Testing.TestServer.Extensions;
 
 using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using Newtonsoft.Json;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 {
@@ -37,7 +32,6 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
     {
         private HttpClient _httpClient;
         private ChallengesDbContext _dbContext;
-        private IMapper _mapper;
 
         public async Task<HttpResponseMessage> ExecuteAsync()
         {
@@ -53,8 +47,6 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 
             _dbContext = factory.DbContext;
 
-            _mapper = factory.Mapper;
-
             await this.TestCleanup();
         }
 
@@ -67,17 +59,14 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         }
 
         [TestMethod]
-        public async Task When_database_empty_status_code_should_be_no_content()
+        public async Task ShouldBeNoContent()
         {
+            // Act
             var response = await this.ExecuteAsync();
 
+            // Assert
             response.EnsureSuccessStatusCode();
-
             response.StatusCode.Should().Be(HttpStatusCode.NoContent);
-
-            var challenges = await response.DeserializeAsync<ChallengeViewModel[]>();
-
-            challenges.Should().BeNull();
         }
 
         [DataRow(2)]
@@ -85,20 +74,18 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         [DataTestMethod]
         public async Task The_response_http_should_have_exactly_the_same_number_of_fake_challenges_added_to_the_database(int count)
         {
+            // Arrange
             var challengeFaker = new ChallengeFaker();
-
             var challenges = challengeFaker.GenerateModels(count);
-
             _dbContext.Challenges.AddRange(challenges);
-
             await _dbContext.SaveChangesAsync();
 
+            // Act
             var response = await this.ExecuteAsync();
 
+            // Assert
             response.EnsureSuccessStatusCode();
-
             var challengeViewModels = await response.DeserializeAsync<ChallengeViewModel[]>();
-
             challengeViewModels.Should().HaveCount(count);
         }
 
@@ -108,35 +95,23 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         [DataTestMethod]
         public async Task Fake_challenge_with_same_seed_should_be_equivalent(int seed)
         {
-            var challenge1 = FakeChallenge(seed);
-
-            _dbContext.Challenges.Add(challenge1);
-
+            // Arrange
+            var challengeFaker = new ChallengeFaker();
+            challengeFaker.UseSeed(seed);
+            var challenge = challengeFaker.GenerateModel();
+            _dbContext.Challenges.Add(challenge);
             await _dbContext.SaveChangesAsync();
 
+            // Act
             var response = await this.ExecuteAsync();
 
+            // Assert
             response.EnsureSuccessStatusCode();
-
-            var challengeViewModels = await response.DeserializeAsync<ChallengeViewModel[]>();
-
-            var challengeViewModel1 = challengeViewModels.First();
-
-            var challenge2 = FakeChallenge(seed);
-
-            var challengeViewModel2 =
-                JsonConvert.DeserializeObject<ChallengeViewModel>(JsonConvert.SerializeObject(_mapper.Map<ChallengeViewModel>(challenge2)));
-
-            challengeViewModel1.Should().BeEquivalentTo(challengeViewModel2);
-        }
-
-        private static ChallengeModel FakeChallenge(int seed)
-        {
-            var challengeFaker = new ChallengeFaker();
-
+            var challengeViewModel = (await response.DeserializeAsync<ChallengeViewModel[]>()).First();
+            challengeFaker = new ChallengeFaker();
             challengeFaker.UseSeed(seed);
-
-            return challengeFaker.GenerateModel();
+            challenge = challengeFaker.GenerateModel();
+            challengeViewModel.Id.Should().Be(challenge.Id);
         }
     }
 }

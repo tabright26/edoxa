@@ -13,8 +13,6 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using AutoMapper;
-
 using eDoxa.Arena.Challenges.Api;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Fakers;
@@ -38,7 +36,6 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
     {
         private HttpClient _httpClient;
         private ChallengesDbContext _dbContext;
-        private IMapper _mapper;
 
         public async Task<HttpResponseMessage> ExecuteAsync(UserId userId, ChallengeGame game = null, ChallengeState state = null)
         {
@@ -55,8 +52,6 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 
             _dbContext = factory.DbContext;
 
-            _mapper = factory.Mapper;
-
             await this.TestCleanup();
         }
 
@@ -69,31 +64,23 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         }
 
         [TestMethod]
-        public async Task T1()
+        public async Task ShouldBeOk()
         {
+            // Arrange
             var challengeFaker = new ChallengeFaker(state: ChallengeState.InProgress);
-
             challengeFaker.UseSeed(1);
-
             var challenge = challengeFaker.GenerateModel();
-
             _dbContext.Challenges.Add(challenge);
-
             await _dbContext.SaveChangesAsync();
-
             var participant = challenge.Participants.First();
 
+            // Act
             var response = await this.ExecuteAsync(UserId.FromGuid(participant.UserId));
 
+            // Assert
             response.EnsureSuccessStatusCode();
-
-            var challengeViewModels = await response.DeserializeAsync<ChallengeViewModel[]>();
-
-            var challengeViewModel1 = challengeViewModels.First();
-
-            var challengeViewModel2 = _mapper.Deserialize<ChallengeViewModel>(challenge);
-
-            challengeViewModel1.Should().BeEquivalentTo(challengeViewModel2);
+            var challengeViewModel = (await response.DeserializeAsync<ChallengeViewModel[]>()).First();
+            challengeViewModel.Id.Should().Be(challenge.Id);
         }
     }
 }

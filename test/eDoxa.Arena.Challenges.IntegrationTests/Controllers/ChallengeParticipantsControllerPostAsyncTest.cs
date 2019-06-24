@@ -74,36 +74,26 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         }
 
         [TestMethod]
-        public async Task T1()
+        public async Task ShouldBeOk()
         {
+            // Arrange
             var faker = new Faker();
-
             var userId = faker.UserId();
-
             var challengeFaker = new ChallengeFaker(ChallengeGame.LeagueOfLegends, ChallengeState.Inscription);
-
             challengeFaker.UseSeed(1);
-
             var challenge = challengeFaker.GenerateModel();
-
             _dbContext.Challenges.Add(challenge);
-
             await _dbContext.SaveChangesAsync();
 
+            // Act
             var response = await this.ExecuteAsync(
                 userId,
                 faker.Participant().GameAccountId(ChallengeGame.LeagueOfLegends),
                 new RegisterParticipantCommand(ChallengeId.FromGuid(challenge.Id))
             );
 
+            // Assert
             response.EnsureSuccessStatusCode();
-
-            //var model = await response.DeserializeAsync<ParticipantViewModel>();
-
-            //// Assert
-            //model.Should().NotBeNull();
-
-            //model?.UserId.Should().Be(userId);
         }
     }
 }

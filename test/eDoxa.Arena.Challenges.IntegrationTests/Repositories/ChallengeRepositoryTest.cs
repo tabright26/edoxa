@@ -30,7 +30,7 @@ using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Repositories
+namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
 {
     [TestClass]
     public sealed class ChallengeRepositoryTest

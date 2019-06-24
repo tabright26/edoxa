@@ -26,7 +26,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
 
-namespace eDoxa.Arena.Challenges.IntegrationTests.Infrastructure.Queries
+namespace eDoxa.Arena.Challenges.IntegrationTests.Queries
 {
     [TestClass]
     public sealed class ChallengeQueriesTest

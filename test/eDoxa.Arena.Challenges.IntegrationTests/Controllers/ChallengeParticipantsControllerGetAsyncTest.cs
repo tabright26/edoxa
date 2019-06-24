@@ -9,12 +9,9 @@
 // this source code package.
 
 using System;
-using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
-
-using AutoMapper;
 
 using eDoxa.Arena.Challenges.Api;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
@@ -38,7 +35,6 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
     {
         private HttpClient _httpClient;
         private ChallengesDbContext _dbContext;
-        private IMapper _mapper;
 
         public async Task<HttpResponseMessage> ExecuteAsync(ChallengeId challengeId)
         {
@@ -55,8 +51,6 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 
             _dbContext = factory.DbContext;
 
-            _mapper = factory.Mapper;
-
             await this.TestCleanup();
         }
 
@@ -69,27 +63,22 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         }
 
         [TestMethod]
-        public async Task T1()
+        public async Task ShouldBeOk()
         {
+            // Arrange
             var challengeFaker = new ChallengeFaker(state: ChallengeState.Inscription);
-
             challengeFaker.UseSeed(1);
-
             var challenge = challengeFaker.GenerateModel();
-
             _dbContext.Challenges.Add(challenge);
-
             await _dbContext.SaveChangesAsync();
 
+            // Act
             var response = await this.ExecuteAsync(ChallengeId.FromGuid(challenge.Id));
 
+            // Assert
             response.EnsureSuccessStatusCode();
-
-            var challengeViewModels1 = await response.DeserializeAsync<ParticipantViewModel[]>();
-
-            var challengeViewModels2 = _mapper.Deserialize<ParticipantViewModel[]>(challenge.Participants);
-
-            challengeViewModels1.AsEnumerable().Should().BeEquivalentTo(challengeViewModels2.AsEnumerable());
+            var participantViewModels = await response.DeserializeAsync<ParticipantViewModel[]>();
+            participantViewModels.Should().HaveCount(challenge.Participants.Count);
         }
     }
 }

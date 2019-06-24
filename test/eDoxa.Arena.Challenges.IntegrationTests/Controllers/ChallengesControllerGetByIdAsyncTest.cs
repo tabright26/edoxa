@@ -13,8 +13,6 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using AutoMapper;
-
 using eDoxa.Arena.Challenges.Api;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Fakers;
@@ -36,18 +34,16 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
     [TestClass]
     public sealed class ChallengesControllerGetByIdAsyncTest
     {
-        private static readonly Claim[] Claims =
-        {
-            new Claim(JwtClaimTypes.Subject, Guid.NewGuid().ToString()), new Claim(JwtClaimTypes.Role, CustomRoles.Administrator)
-        };
-
         private HttpClient _httpClient;
         private ChallengesDbContext _dbContext;
-        private IMapper _mapper;
 
         public async Task<HttpResponseMessage> ExecuteAsync(ChallengeId challengeId)
         {
-            return await _httpClient.DefaultRequestHeaders(Claims).GetAsync($"api/challenges/{challengeId}");
+            return await _httpClient
+                .DefaultRequestHeaders(
+                    new[] {new Claim(JwtClaimTypes.Subject, Guid.NewGuid().ToString()), new Claim(JwtClaimTypes.Role, CustomRoles.Administrator)}
+                )
+                .GetAsync($"api/challenges/{challengeId}");
         }
 
         [TestInitialize]
@@ -58,8 +54,6 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
             _httpClient = factory.CreateClient();
 
             _dbContext = factory.DbContext;
-
-            _mapper = factory.Mapper;
 
             await this.TestCleanup();
         }
@@ -73,25 +67,22 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         }
 
         [TestMethod]
-        public async Task T1()
+        public async Task ShouldBeOk()
         {
+            // Arrange
             var challengeFaker = new ChallengeFaker(state: ChallengeState.Closed);
-
             var challenge = challengeFaker.GenerateModel();
-
             _dbContext.Challenges.Add(challenge);
-
             await _dbContext.SaveChangesAsync();
 
+            // Act
             var response = await this.ExecuteAsync(ChallengeId.FromGuid(challenge.Id));
 
+            // Assert
             response.EnsureSuccessStatusCode();
-
-            var challengeViewModel1 = await response.DeserializeAsync<ChallengeViewModel>();
-
-            var challengeViewModel2 = _mapper.Deserialize<ChallengeViewModel>(challenge);
-
-            challengeViewModel1.Should().BeEquivalentTo(challengeViewModel2);
+            var challengeViewModel = await response.DeserializeAsync<ChallengeViewModel>();
+            challengeViewModel.Should().NotBeNull();
+            challengeViewModel?.Id.Should().Be(challenge.Id);
         }
     }
 }

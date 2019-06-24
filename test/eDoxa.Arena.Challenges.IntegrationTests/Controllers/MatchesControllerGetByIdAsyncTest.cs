@@ -35,17 +35,16 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
     [TestClass]
     public sealed class MatchesControllerGetByIdAsyncTest
     {
-        private static readonly Claim[] Claims =
-        {
-            new Claim(JwtClaimTypes.Subject, Guid.NewGuid().ToString()), new Claim(JwtClaimTypes.Role, CustomRoles.Administrator)
-        };
-
         private HttpClient _httpClient;
         private ChallengesDbContext _dbContext;
 
         public async Task<HttpResponseMessage> ExecuteAsync(MatchId matchId)
         {
-            return await _httpClient.DefaultRequestHeaders(Claims).GetAsync($"api/matches/{matchId}");
+            return await _httpClient
+                .DefaultRequestHeaders(
+                    new[] {new Claim(JwtClaimTypes.Subject, Guid.NewGuid().ToString()), new Claim(JwtClaimTypes.Role, CustomRoles.Administrator)}
+                )
+                .GetAsync($"api/matches/{matchId}");
         }
 
         [TestInitialize]
@@ -69,7 +68,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         }
 
         [TestMethod]
-        public async Task GetById_WithValidId_ShouldBeSuccessStatusCode()
+        public async Task ShouldBeOk()
         {
             // Arrange
             var challengeFaker = new ChallengeFaker(state: ChallengeState.Ended);
@@ -84,9 +83,9 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 
             // Assert
             response.EnsureSuccessStatusCode();
-            var match = await response.DeserializeAsync<MatchViewModel>();
-            match.Should().NotBeNull();
-            match?.Id.Should().Be(match.Id);
+            var matchViewModel = await response.DeserializeAsync<MatchViewModel>();
+            matchViewModel.Should().NotBeNull();
+            matchViewModel?.Id.Should().Be(matchViewModel.Id);
         }
     }
 }
