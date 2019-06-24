@@ -42,22 +42,6 @@ namespace eDoxa.Arena.Challenges.Api.Application.Commands.Validations
                                             }
                                         );
                                     }
-                                    else
-                                    {
-                                        // TODO:
-                                        //var userId = httpContextAccessor.GetUserId();
-
-                                        //var userGameReference = httpContextAccessor.FuncUserGameReference();
-
-                                        //if (userGameReference(challenge.Game) == null)
-                                        //{
-                                        //    context.AddFailure("This user does not provide an external account for the challenge-specific game.");
-                                        //}
-                                        //else
-                                        //{
-                                        //    new RegisterParticipantValidator(userId).Validate(challenge).Errors.ForEach(context.AddFailure);
-                                        //}
-                                    }
                                 }
                             );
                     }

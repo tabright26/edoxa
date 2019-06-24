@@ -31,7 +31,7 @@ namespace eDoxa.Arena.Challenges.Api.Profiles.Converters
                 EntryFee = new EntryFeeViewModel
                 {
                     Amount = challenge.Setup.EntryFeeAmount,
-                    Currency = Currency.FromValue(challenge.Setup.EntryFeeCurrency)
+                    Currency = Currency.FromValue(challenge.Setup.EntryFeeCurrency).Name
                 }
             };
         }

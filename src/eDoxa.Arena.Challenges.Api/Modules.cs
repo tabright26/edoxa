@@ -12,6 +12,7 @@ using Autofac;
 
 using eDoxa.Arena.Challenges.Api.Application.Abstractions.Queries;
 using eDoxa.Arena.Challenges.Api.Application.Abstractions.Services;
+using eDoxa.Arena.Challenges.Api.Application.DomainEvents;
 using eDoxa.Arena.Challenges.Api.Application.Queries;
 using eDoxa.Arena.Challenges.Api.Application.Services;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Factories;
@@ -21,7 +22,6 @@ using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.Infrastructure.Repositories;
 using eDoxa.Commands;
 using eDoxa.IntegrationEvents;
-using eDoxa.Seedwork.Application.DomainEvents;
 
 using JetBrains.Annotations;
 

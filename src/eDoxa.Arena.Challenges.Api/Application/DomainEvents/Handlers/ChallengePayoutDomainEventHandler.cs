@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengePayoutDomainEventHandler.cs
-// Date Created: 2019-06-07
+// Date Created: 2019-06-24
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,14 +12,14 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Arena.Challenges.Api.Application.DomainEvents.Abstractions;
 using eDoxa.Arena.Challenges.Api.IntegrationEvents;
 using eDoxa.Arena.Challenges.Domain.DomainEvents;
 using eDoxa.IntegrationEvents;
-using eDoxa.Seedwork.Application.DomainEvents.Handlers;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Arena.Challenges.Api.Application.DomainEventHandlers
+namespace eDoxa.Arena.Challenges.Api.Application.DomainEvents.Handlers
 {
     public sealed class ChallengePayoutDomainEventHandler : IDomainEventHandler<ChallengePayoutDomainEvent>
     {

@@ -85,13 +85,11 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             return !(left == right);
         }
 
-        [CanBeNull]
         public static TEnumeration FromValue(int value)
         {
             return GetEnumerations().SingleOrDefault(enumeration => enumeration.Value == value) ?? None;
         }
 
-        [CanBeNull]
         public static TEnumeration FromName([CanBeNull] string name)
         {
             return GetEnumerations().SingleOrDefault(enumeration => string.Equals(enumeration.Name, name, StringComparison.InvariantCultureIgnoreCase)) ?? None;

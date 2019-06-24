@@ -30,7 +30,7 @@ namespace eDoxa.Arena.Challenges.Api.Profiles.Converters
                 PrizePool = new PrizePoolViewModel
                 {
                     Amount = challenge.Buckets.Sum(bucket => bucket.Size * bucket.PrizeAmount),
-                    Currency = Currency.FromValue(challenge.Buckets.First().PrizeCurrency)
+                    Currency = Currency.FromValue(challenge.Buckets.First().PrizeCurrency).Name
                 },
                 Buckets = challenge.Buckets.Select(
                         bucket => new BucketViewModel

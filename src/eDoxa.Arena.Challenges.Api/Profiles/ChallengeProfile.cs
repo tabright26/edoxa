@@ -24,13 +24,13 @@ namespace eDoxa.Arena.Challenges.Api.Profiles
             this.CreateMap<ChallengeModel, ChallengeViewModel>()
                 .ForMember(challenge => challenge.Id, config => config.MapFrom(challenge => challenge.Id))
                 .ForMember(challenge => challenge.Name, config => config.MapFrom(challenge => challenge.Name))
-                .ForMember(challenge => challenge.Game, config => config.MapFrom(challenge => ChallengeGame.FromValue(challenge.Game)))
-                .ForMember(challenge => challenge.State, config => config.MapFrom(challenge => ChallengeState.FromValue(challenge.State)))
+                .ForMember(challenge => challenge.Game, config => config.MapFrom(challenge => ChallengeGame.FromValue(challenge.Game).Name))
+                .ForMember(challenge => challenge.State, config => config.MapFrom(challenge => ChallengeState.FromValue(challenge.State).Name))
+                .ForMember(challenge => challenge.SynchronizedAt, config => config.MapFrom(challenge => challenge.SynchronizedAt))
                 .ForMember(challenge => challenge.Timeline, config => config.ConvertUsing(new ChallengeTimelineConverter(), challenge => challenge))
                 .ForMember(challenge => challenge.Setup, config => config.ConvertUsing(new ChallengeSetupConverter(), challenge => challenge))
                 .ForMember(challenge => challenge.Scoring, config => config.ConvertUsing(new ScoringConverter(), challenge => challenge))
                 .ForMember(challenge => challenge.Payout, config => config.ConvertUsing(new PayoutConverter(), challenge => challenge))
-                .ForMember(challenge => challenge.SynchronizedAt, config => config.MapFrom(challenge => challenge.SynchronizedAt))
                 .ForMember(challenge => challenge.Participants, config => config.MapFrom(challenge => challenge.Participants));
         }
     }

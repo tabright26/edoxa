@@ -85,12 +85,12 @@ namespace eDoxa.Arena.Challenges.UnitTests.Extensions
             challenge.Should().NotBeNull();
             challenge.Id.Should().NotBeEmpty();
             challenge.Name.Should().NotBeNullOrWhiteSpace();
-            challenge.Game.Should().NotBeNull();
-            challenge.Game.Should().NotBe(new ChallengeGame());
-            challenge.Game.Should().NotBe(ChallengeGame.All);
-            challenge.State.Should().NotBeNull();
-            challenge.State.Should().NotBe(new ChallengeState());
-            challenge.State.Should().NotBe(ChallengeState.All);
+            challenge.Game.Should().NotBeNullOrWhiteSpace();
+            challenge.Game.Should().NotBe(new ChallengeGame().Name);
+            challenge.Game.Should().NotBe(ChallengeGame.All.Name);
+            challenge.State.Should().NotBeNullOrWhiteSpace();
+            challenge.State.Should().NotBe(new ChallengeState().Name);
+            challenge.State.Should().NotBe(ChallengeState.All.Name);
             challenge.Setup.Should().NotBeNull();
             challenge.Timeline.Should().NotBeNull();
             challenge.Timeline.CreatedAt.Should().BeBefore(DateTime.UtcNow);

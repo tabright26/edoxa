@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeQuery.cs
-// Date Created: 2019-06-19
+// Date Created: 2019-06-24
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.

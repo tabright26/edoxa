@@ -9,14 +9,13 @@
 // this source code package.
 
 using System.Threading.Tasks;
-
-using eDoxa.Arena.Challenges.Api.Application.DomainEventHandlers;
+using eDoxa.Arena.Challenges.Api.Application.DomainEvents.Extensions;
+using eDoxa.Arena.Challenges.Api.Application.DomainEvents.Handlers;
 using eDoxa.Arena.Challenges.Api.IntegrationEvents;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.DomainEvents;
 using eDoxa.Arena.Challenges.Domain.Fakers;
 using eDoxa.IntegrationEvents;
-using eDoxa.Seedwork.Application.Extensions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
