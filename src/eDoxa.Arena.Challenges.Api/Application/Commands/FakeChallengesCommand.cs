@@ -12,7 +12,6 @@ using System.Runtime.Serialization;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Commands.Abstractions;
-using eDoxa.Seedwork.Common.Enumerations;
 
 namespace eDoxa.Arena.Challenges.Api.Application.Commands
 {
@@ -24,7 +23,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Commands
             int seed,
             ChallengeGame game = null,
             ChallengeState state = null,
-            CurrencyType entryFeeCurrency = null
+            Currency entryFeeCurrency = null
         ) : this()
         {
             Count = count;
@@ -52,6 +51,6 @@ namespace eDoxa.Arena.Challenges.Api.Application.Commands
         public ChallengeState State { get; private set; }
 
         [DataMember(Name = "entryFeeCurrency", IsRequired = false)]
-        public CurrencyType EntryFeeCurrency { get; private set; }
+        public Currency EntryFeeCurrency { get; private set; }
     }
 }

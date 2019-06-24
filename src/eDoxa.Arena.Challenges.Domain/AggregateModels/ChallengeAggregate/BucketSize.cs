@@ -12,51 +12,48 @@ using System;
 using System.Collections.Generic;
 
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Domain.Attributes;
 
 using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed class BucketSize : ValueObject, IComparable
+    public sealed partial class BucketSize : ValueObject
     {
-        [AllowValue(false)] public static readonly BucketSize Individual = new BucketSize(1);
+        public static readonly BucketSize Individual = new BucketSize(1);
 
-        public BucketSize(int size) : this()
+        private readonly int _bucketSize;
+
+        public BucketSize(int size)
         {
             if (size < 1)
             {
                 throw new ArgumentException(nameof(size));
             }
 
-            Value = size;
-        }
-
-        private BucketSize()
-        {
-            // Required by EF Core.
-        }
-
-        public int Value { get; private set; }
-
-        public int CompareTo([CanBeNull] object obj)
-        {
-            return Value.CompareTo(((BucketSize) obj)?.Value);
+            _bucketSize = size;
         }
 
         public static implicit operator int(BucketSize bucketSize)
         {
-            return bucketSize.Value;
+            return bucketSize._bucketSize;
         }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
-            yield return Value;
+            yield return _bucketSize;
         }
 
         public override string ToString()
         {
-            return Value.ToString();
+            return _bucketSize.ToString();
+        }
+    }
+
+    public sealed partial class BucketSize : IComparable
+    {
+        public int CompareTo([CanBeNull] object obj)
+        {
+            return _bucketSize.CompareTo(((BucketSize) obj)?._bucketSize);
         }
     }
 }

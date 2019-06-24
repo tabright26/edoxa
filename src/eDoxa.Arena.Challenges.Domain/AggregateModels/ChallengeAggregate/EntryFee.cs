@@ -11,71 +11,68 @@
 using System.Collections.Generic;
 using System.Globalization;
 
-using eDoxa.Seedwork.Common.Abstactions;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Domain.Attributes;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class TokenEntryFee : EntryFee
     {
-        [AllowValue(true)] public static readonly TokenEntryFee TwoThousandFiveHundred = new TokenEntryFee(2500M);
-        [AllowValue(true)] public static readonly TokenEntryFee FiveThousand = new TokenEntryFee(5000M);
-        [AllowValue(true)] public static readonly TokenEntryFee TenThousand = new TokenEntryFee(10000M);
-        [AllowValue(true)] public static readonly TokenEntryFee TwentyThousand = new TokenEntryFee(20000M);
-        [AllowValue(true)] public static readonly TokenEntryFee TwentyFiveThousand = new TokenEntryFee(25000M);
-        [AllowValue(true)] public static readonly TokenEntryFee FiftyThousand = new TokenEntryFee(50000M);
-        [AllowValue(false)] public static readonly TokenEntryFee SeventyFiveThousand = new TokenEntryFee(75000M);
-        [AllowValue(false)] public static readonly TokenEntryFee OneHundredThousand = new TokenEntryFee(100000M);
+        public static readonly TokenEntryFee TwoThousandFiveHundred = new TokenEntryFee(2500M);
+        public static readonly TokenEntryFee FiveThousand = new TokenEntryFee(5000M);
+        public static readonly TokenEntryFee TenThousand = new TokenEntryFee(10000M);
+        public static readonly TokenEntryFee TwentyThousand = new TokenEntryFee(20000M);
+        public static readonly TokenEntryFee TwentyFiveThousand = new TokenEntryFee(25000M);
+        public static readonly TokenEntryFee FiftyThousand = new TokenEntryFee(50000M);
+        public static readonly TokenEntryFee SeventyFiveThousand = new TokenEntryFee(75000M);
+        public static readonly TokenEntryFee OneHundredThousand = new TokenEntryFee(100000M);
 
-        private TokenEntryFee(decimal entryFee) : base(CurrencyType.Token, entryFee)
+        private TokenEntryFee(decimal entryFee) : base(entryFee, Currency.Token)
         {
         }
     }
 
     public sealed class MoneyEntryFee : EntryFee
     {
-        [AllowValue(true)] public static readonly MoneyEntryFee TwoAndHalf = new MoneyEntryFee(2.5M);
-        [AllowValue(true)] public static readonly MoneyEntryFee Five = new MoneyEntryFee(5M);
-        [AllowValue(true)] public static readonly MoneyEntryFee Ten = new MoneyEntryFee(10M);
-        [AllowValue(true)] public static readonly MoneyEntryFee Twenty = new MoneyEntryFee(20M);
-        [AllowValue(true)] public static readonly MoneyEntryFee TwentyFive = new MoneyEntryFee(25M);
-        [AllowValue(true)] public static readonly MoneyEntryFee Fifty = new MoneyEntryFee(50M);
-        [AllowValue(false)] public static readonly MoneyEntryFee SeventyFive = new MoneyEntryFee(75M);
-        [AllowValue(false)] public static readonly MoneyEntryFee OneHundred = new MoneyEntryFee(100M);
+        public static readonly MoneyEntryFee TwoAndHalf = new MoneyEntryFee(2.5M);
+        public static readonly MoneyEntryFee Five = new MoneyEntryFee(5M);
+        public static readonly MoneyEntryFee Ten = new MoneyEntryFee(10M);
+        public static readonly MoneyEntryFee Twenty = new MoneyEntryFee(20M);
+        public static readonly MoneyEntryFee TwentyFive = new MoneyEntryFee(25M);
+        public static readonly MoneyEntryFee Fifty = new MoneyEntryFee(50M);
+        public static readonly MoneyEntryFee SeventyFive = new MoneyEntryFee(75M);
+        public static readonly MoneyEntryFee OneHundred = new MoneyEntryFee(100M);
 
-        private MoneyEntryFee(decimal entryFee) : base(CurrencyType.Money, entryFee)
+        private MoneyEntryFee(decimal entryFee) : base(entryFee, Currency.Money)
         {
         }
     }
 
-    public class EntryFee : ValueObject, ICurrency
+    public class EntryFee : ValueObject
     {
-        public EntryFee(CurrencyType type, decimal amount)
+        public EntryFee(decimal amount, Currency currency)
         {
-            Type = type;
             Amount = amount;
+            Currency = currency;
         }
-
-        public CurrencyType Type { get; private set; }
 
         public decimal Amount { get; private set; }
 
-        public static implicit operator decimal(EntryFee currency)
+        public Currency Currency { get; private set; }
+
+        public static implicit operator decimal(EntryFee entryFee)
         {
-            return currency.Amount;
+            return entryFee.Amount;
         }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
-            yield return Type;
             yield return Amount;
+            yield return Currency;
         }
 
         public override string ToString()
         {
-            if (Type == CurrencyType.Money)
+            if (Currency == Currency.Money)
             {
                 return $"${Amount}";
             }
@@ -85,7 +82,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public Prize GetLowestPrize()
         {
-            return new Prize(Amount, Type);
+            return new Prize(Amount, Currency);
         }
     }
 }

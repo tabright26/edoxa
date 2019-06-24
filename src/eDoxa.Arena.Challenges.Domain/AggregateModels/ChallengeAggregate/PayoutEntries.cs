@@ -12,55 +12,48 @@ using System;
 using System.Collections.Generic;
 
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Domain.Attributes;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class PayoutEntries : ValueObject
     {
-        [AllowValue(false)] public static readonly PayoutEntries One = new PayoutEntries(1);
-        [AllowValue(false)] public static readonly PayoutEntries Two = new PayoutEntries(2);
-        [AllowValue(false)] public static readonly PayoutEntries Three = new PayoutEntries(3);
-        [AllowValue(false)] public static readonly PayoutEntries Four = new PayoutEntries(4);
-        [AllowValue(true)] public static readonly PayoutEntries Five = new PayoutEntries(5);
-        [AllowValue(true)] public static readonly PayoutEntries Ten = new PayoutEntries(10);
-        [AllowValue(true)] public static readonly PayoutEntries Fifteen = new PayoutEntries(15);
-        [AllowValue(true)] public static readonly PayoutEntries Twenty = new PayoutEntries(20);
-        [AllowValue(true)] public static readonly PayoutEntries TwentyFive = new PayoutEntries(25);
-        [AllowValue(true)] public static readonly PayoutEntries Fifty = new PayoutEntries(50);
-        [AllowValue(false)] public static readonly PayoutEntries SeventyFive = new PayoutEntries(75);
-        [AllowValue(false)] public static readonly PayoutEntries OneHundred = new PayoutEntries(100);
+        public static readonly PayoutEntries One = new PayoutEntries(1);
+        public static readonly PayoutEntries Two = new PayoutEntries(2);
+        public static readonly PayoutEntries Three = new PayoutEntries(3);
+        public static readonly PayoutEntries Four = new PayoutEntries(4);
+        public static readonly PayoutEntries Five = new PayoutEntries(5);
+        public static readonly PayoutEntries Ten = new PayoutEntries(10);
+        public static readonly PayoutEntries Fifteen = new PayoutEntries(15);
+        public static readonly PayoutEntries Twenty = new PayoutEntries(20);
+        public static readonly PayoutEntries TwentyFive = new PayoutEntries(25);
+        public static readonly PayoutEntries Fifty = new PayoutEntries(50);
+        public static readonly PayoutEntries SeventyFive = new PayoutEntries(75);
+        public static readonly PayoutEntries OneHundred = new PayoutEntries(100);
 
-        public PayoutEntries(Entries entries) : this()
+        private readonly int _payoutEntries;
+
+        public PayoutEntries(Entries entries) : this(Convert.ToInt32(Math.Floor(entries * 0.5F)))
         {
-            Value = Convert.ToInt32(Math.Floor(entries * 0.5F));
         }
 
-        public PayoutEntries(int payoutEntries) : this()
+        public PayoutEntries(int payoutEntries)
         {
-            Value = payoutEntries;
+            _payoutEntries = payoutEntries;
         }
-
-        private PayoutEntries()
-        {
-            // Required by EF Core.
-        }
-
-        public int Value { get; private set; }
 
         public static implicit operator int(PayoutEntries payoutEntries)
         {
-            return payoutEntries.Value;
+            return payoutEntries._payoutEntries;
         }
 
         public override string ToString()
         {
-            return Value.ToString();
+            return _payoutEntries.ToString();
         }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
-            yield return Value;
+            yield return _payoutEntries;
         }
     }
 }

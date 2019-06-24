@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Seedwork.Common.Enumerations;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 
 using Newtonsoft.Json;
 
@@ -18,7 +18,7 @@ namespace eDoxa.Arena.Challenges.Domain.ViewModels
     public class EntryFeeViewModel
     {
         [JsonProperty("currency")]
-        public CurrencyType Currency { get; set; }
+        public Currency Currency { get; set; }
 
         [JsonProperty("amount")]
         public decimal Amount { get; set; }

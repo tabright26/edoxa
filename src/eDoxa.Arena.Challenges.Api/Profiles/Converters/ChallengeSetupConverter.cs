@@ -10,9 +10,9 @@
 
 using AutoMapper;
 
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.ViewModels;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
-using eDoxa.Seedwork.Common.Enumerations;
 
 using JetBrains.Annotations;
 
@@ -31,7 +31,7 @@ namespace eDoxa.Arena.Challenges.Api.Profiles.Converters
                 EntryFee = new EntryFeeViewModel
                 {
                     Amount = challenge.Setup.EntryFeeAmount,
-                    Currency = CurrencyType.FromValue(challenge.Setup.EntryFeeCurrency)
+                    Currency = Currency.FromValue(challenge.Setup.EntryFeeCurrency)
                 }
             };
         }

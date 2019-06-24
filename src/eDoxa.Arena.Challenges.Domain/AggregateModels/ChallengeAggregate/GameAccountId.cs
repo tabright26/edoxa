@@ -1,5 +1,5 @@
 ﻿// Filename: GameAccountId.cs
-// Date Created: 2019-06-12
+// Date Created: 2019-06-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -32,7 +32,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public static implicit operator string(GameAccountId gameAccountId)
         {
-            return gameAccountId.ToString();
+            return gameAccountId._gameAccountId;
         }
 
         public static implicit operator GameAccountId(string gameAccountId)

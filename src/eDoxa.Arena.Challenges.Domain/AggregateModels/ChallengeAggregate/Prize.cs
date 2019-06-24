@@ -12,22 +12,17 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-using eDoxa.Seedwork.Common.Abstactions;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Domain.Attributes;
 
 using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public class Prize : ValueObject, ICurrency, IComparable
+    public sealed partial class Prize : ValueObject
     {
-        private const decimal Factor = 1000M;
+        public static readonly Prize None = new Prize(0, Currency.Token);
 
-        [AllowValue(false)] public static readonly Prize None = new Prize(0, CurrencyType.Token);
-
-        public Prize(decimal amount, CurrencyType type)
+        public Prize(decimal amount, Currency currency)
         {
             if (amount < 0)
             {
@@ -35,17 +30,12 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             }
 
             Amount = amount;
-            Type = type;
+            Currency = currency;
         }
 
-        public int CompareTo([CanBeNull] object obj)
-        {
-            return Amount.CompareTo(((Prize) obj)?.Amount);
-        }
+        public decimal Amount { get; }
 
-        public CurrencyType Type { get; private set; }
-
-        public decimal Amount { get; private set; }
+        public Currency Currency { get; }
 
         public static implicit operator decimal(Prize currency)
         {
@@ -54,13 +44,13 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         protected override IEnumerable<object> GetAtomicValues()
         {
-            yield return Type;
             yield return Amount;
+            yield return Currency;
         }
 
         public override string ToString()
         {
-            if (Type == CurrencyType.Money)
+            if (Currency == Currency.Money)
             {
                 return $"${Amount}";
             }
@@ -75,12 +65,15 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
                 throw new ArgumentOutOfRangeException(nameof(factor));
             }
 
-            return new Prize(Amount * factor, Type);
+            return new Prize(Amount * factor, Currency);
         }
+    }
 
-        public Prize ConvertTo(CurrencyType type)
+    public sealed partial class Prize : IComparable
+    {
+        public int CompareTo([CanBeNull] object obj)
         {
-            return Type != type ? Type == CurrencyType.Money ? new Prize(Amount * Factor, type) : new Prize(Amount / Factor, type) : this;
+            return Amount.CompareTo(((Prize) obj)?.Amount);
         }
     }
 }

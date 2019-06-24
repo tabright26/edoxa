@@ -13,7 +13,6 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.ValueObjects;
 
 namespace eDoxa.Arena.Challenges.Domain.Abstractions.Services
@@ -25,7 +24,7 @@ namespace eDoxa.Arena.Challenges.Domain.Abstractions.Services
             int seed,
             ChallengeGame game = null,
             ChallengeState state = null,
-            CurrencyType entryFeeCurrency = null,
+            Currency entryFeeCurrency = null,
             CancellationToken cancellationToken = default
         );
 

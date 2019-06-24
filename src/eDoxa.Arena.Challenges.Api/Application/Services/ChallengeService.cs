@@ -18,7 +18,6 @@ using eDoxa.Arena.Challenges.Domain.Abstractions.Services;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Fakers;
 using eDoxa.Seedwork.Common;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.ValueObjects;
 
 namespace eDoxa.Arena.Challenges.Api.Application.Services
@@ -83,7 +82,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Services
             int seed,
             ChallengeGame game = null,
             ChallengeState state = null,
-            CurrencyType entryFeeCurrency = null,
+            Currency entryFeeCurrency = null,
             CancellationToken cancellationToken = default
         )
         {

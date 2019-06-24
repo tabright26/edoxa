@@ -12,7 +12,6 @@ using AutoMapper;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
-using eDoxa.Seedwork.Common.Enumerations;
 
 using JetBrains.Annotations;
 
@@ -26,7 +25,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.ConverterTypes
             return new ChallengeSetup(
                 new BestOf(source.BestOf),
                 new PayoutEntries(source.PayoutEntries),
-                new EntryFee(CurrencyType.FromValue(source.EntryFeeCurrency), source.EntryFeeAmount)
+                new EntryFee(source.EntryFeeAmount, Currency.FromValue(source.EntryFeeCurrency))
             );
         }
     }

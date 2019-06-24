@@ -32,7 +32,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public static implicit operator string(ChallengeName name)
         {
-            return name.ToString();
+            return name._name;
         }
 
         public override string ToString()

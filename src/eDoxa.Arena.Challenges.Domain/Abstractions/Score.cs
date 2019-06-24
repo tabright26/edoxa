@@ -18,18 +18,13 @@ using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Domain.Abstractions
 {
-    public abstract class Score : ValueObject, IComparable
+    public abstract partial class Score : ValueObject
     {
         private readonly decimal _score;
 
         protected Score(decimal score)
         {
             _score = score;
-        }
-
-        public int CompareTo([CanBeNull] object obj)
-        {
-            return _score.CompareTo(((Score) obj)?._score);
         }
 
         public static implicit operator decimal(Score score)
@@ -45,6 +40,14 @@ namespace eDoxa.Arena.Challenges.Domain.Abstractions
         protected override IEnumerable<object> GetAtomicValues()
         {
             yield return _score;
+        }
+    }
+
+    public abstract partial class Score : IComparable
+    {
+        public int CompareTo([CanBeNull] object obj)
+        {
+            return _score.CompareTo(((Score) obj)?._score);
         }
     }
 }

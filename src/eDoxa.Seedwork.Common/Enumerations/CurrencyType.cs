@@ -11,15 +11,14 @@
 using System.ComponentModel;
 
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Domain.Attributes;
 
 namespace eDoxa.Seedwork.Common.Enumerations
 {
     [TypeConverter(typeof(EnumerationTypeConverter))]
     public sealed class CurrencyType : Enumeration<CurrencyType>
     {
-        [AllowValue(true)] public static readonly CurrencyType Money = new CurrencyType(1, nameof(Money));
-        [AllowValue(true)] public static readonly CurrencyType Token = new CurrencyType(2, nameof(Token));
+        public static readonly CurrencyType Money = new CurrencyType(1, nameof(Money));
+        public static readonly CurrencyType Token = new CurrencyType(2, nameof(Token));
 
         public CurrencyType()
         {

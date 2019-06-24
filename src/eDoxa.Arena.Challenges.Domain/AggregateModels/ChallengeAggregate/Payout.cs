@@ -27,10 +27,10 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             _buckets = buckets;
         }
 
-        private IBuckets IndividualBuckets =>
-            new Buckets(_buckets.SelectMany(bucket => bucket.ToIndividualBuckets()).OrderByDescending(bucket => bucket.Prize));
-
         public PrizePool PrizePool => new PrizePool(_buckets);
+
+        private IBuckets IndividualBuckets =>
+            new Buckets(_buckets.SelectMany(bucket => bucket.AsIndividualBuckets()).OrderByDescending(bucket => bucket.Prize));
 
         public IBuckets Buckets => _buckets;
 

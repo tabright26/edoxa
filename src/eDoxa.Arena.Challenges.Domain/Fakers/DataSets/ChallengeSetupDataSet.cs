@@ -13,7 +13,6 @@ using System.Linq;
 using Bogus;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.Fakers.DataSets
@@ -29,28 +28,28 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers.DataSets
 
         public BestOf BestOf()
         {
-            return Faker.PickRandom(ValueObject.GetAllowValues<BestOf>());
+            return Faker.PickRandom(ValueObject.GetValues<BestOf>());
         }
 
         public PayoutEntries PayoutEntries()
         {
-            return Faker.PickRandom(ValueObject.GetAllowValues<PayoutEntries>());
+            return Faker.PickRandom(ValueObject.GetValues<PayoutEntries>());
         }
 
-        public EntryFee EntryFee(CurrencyType entryFeeCurrency = null)
+        public EntryFee EntryFee(Currency entryFeeCurrency = null)
         {
-            var moneyEntryFees = ValueObject.GetAllowValues<MoneyEntryFee>().ToList();
+            var moneyEntryFees = ValueObject.GetValues<MoneyEntryFee>().ToList();
 
-            var tokenEntryFees = ValueObject.GetAllowValues<TokenEntryFee>().ToList();
+            var tokenEntryFees = ValueObject.GetValues<TokenEntryFee>().ToList();
 
             if (entryFeeCurrency != null)
             {
-                if (entryFeeCurrency == CurrencyType.Money)
+                if (entryFeeCurrency == Currency.Money)
                 {
                     Faker.PickRandom(moneyEntryFees);
                 }
 
-                if (entryFeeCurrency == CurrencyType.Token)
+                if (entryFeeCurrency == Currency.Token)
                 {
                     Faker.PickRandom(tokenEntryFees);
                 }

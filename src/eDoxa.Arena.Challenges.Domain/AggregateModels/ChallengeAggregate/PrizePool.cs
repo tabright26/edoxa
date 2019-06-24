@@ -13,38 +13,36 @@ using System.Globalization;
 using System.Linq;
 
 using eDoxa.Arena.Challenges.Domain.Abstractions;
-using eDoxa.Seedwork.Common.Abstactions;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed class PrizePool : ValueObject, ICurrency
+    public sealed class PrizePool : ValueObject
     {
         public PrizePool(IBuckets buckets)
         {
-            Amount = buckets.SelectMany(bucket => bucket.ToIndividualBuckets()).Sum(bucket => bucket.Prize.Amount);
-            Type = buckets.First().Prize.Type;
+            Amount = buckets.SelectMany(bucket => bucket.AsIndividualBuckets()).Sum(bucket => bucket.Prize.Amount);
+            Currency = buckets.First().Prize.Currency;
         }
 
-        public CurrencyType Type { get; private set; }
+        public decimal Amount { get; }
 
-        public decimal Amount { get; private set; }
+        public Currency Currency { get; }
 
-        public static implicit operator decimal(PrizePool currency)
+        public static implicit operator decimal(PrizePool prizePool)
         {
-            return currency.Amount;
+            return prizePool.Amount;
         }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
-            yield return Type;
             yield return Amount;
+            yield return Currency;
         }
 
         public override string ToString()
         {
-            if (Type == CurrencyType.Money)
+            if (Currency == Currency.Money)
             {
                 return $"${Amount}";
             }

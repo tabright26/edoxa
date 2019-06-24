@@ -17,26 +17,21 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class ChallengeSetup : ValueObject
     {
-        public ChallengeSetup(BestOf bestOf, PayoutEntries payoutEntries, EntryFee entryFee) : this()
+        public ChallengeSetup(BestOf bestOf, PayoutEntries payoutEntries, EntryFee entryFee)
         {
             BestOf = bestOf;
             Entries = new Entries(payoutEntries);
             PayoutEntries = payoutEntries;
-            EntryFee = new EntryFee(entryFee.Type, entryFee.Amount); // Required by EF Core.
+            EntryFee = entryFee;
         }
 
-        private ChallengeSetup()
-        {
-            // Required by EF Core.
-        }
+        public BestOf BestOf { get; }
 
-        public BestOf BestOf { get; private set; }
+        public Entries Entries { get; }
 
-        public Entries Entries { get; private set; }
+        public EntryFee EntryFee { get; }
 
-        public EntryFee EntryFee { get; private set; }
-
-        public PayoutEntries PayoutEntries { get; private set; }
+        public PayoutEntries PayoutEntries { get; }
 
         protected override IEnumerable<object> GetAtomicValues()
         {

@@ -16,14 +16,13 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Factories;
 using eDoxa.Arena.Challenges.Domain.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.Fakers.Providers;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.Extensions;
 
 namespace eDoxa.Arena.Challenges.Domain.Fakers
 {
     public sealed class ChallengeFaker : Faker<Challenge>
     {
-        public ChallengeFaker(ChallengeGame game = null, ChallengeState state = null, CurrencyType entryFeeCurrency = null)
+        public ChallengeFaker(ChallengeGame game = null, ChallengeState state = null, Currency entryFeeCurrency = null)
         {
             this.CustomInstantiator(
                 faker =>

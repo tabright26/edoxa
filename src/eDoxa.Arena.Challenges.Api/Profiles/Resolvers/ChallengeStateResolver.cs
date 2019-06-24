@@ -30,7 +30,7 @@ namespace eDoxa.Arena.Challenges.Api.Profiles.Resolvers
             [NotNull] ResolutionContext context
         )
         {
-            return ChallengeState.Resolve(TimeSpan.FromTicks(source.Timeline.Duration), source.Timeline.StartedAt, source.Timeline.ClosedAt);
+            return ChallengeState.From(TimeSpan.FromTicks(source.Timeline.Duration), source.Timeline.StartedAt, source.Timeline.ClosedAt);
         }
     }
 }

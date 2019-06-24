@@ -16,7 +16,6 @@ using AutoMapper;
 using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
-using eDoxa.Seedwork.Common.Enumerations;
 
 using JetBrains.Annotations;
 
@@ -30,7 +29,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.ConverterTypes
             return new Payout(
                 new Buckets(
                     source.Select(
-                        bucket => new Bucket(new Prize(bucket.PrizeAmount, CurrencyType.FromValue(bucket.PrizeCurrency)), new BucketSize(bucket.Size))
+                        bucket => new Bucket(new Prize(bucket.PrizeAmount, Currency.FromValue(bucket.PrizeCurrency)), new BucketSize(bucket.Size))
                     )
                 )
             );

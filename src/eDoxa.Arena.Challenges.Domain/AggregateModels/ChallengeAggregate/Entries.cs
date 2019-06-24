@@ -15,38 +15,32 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public class Entries : ValueObject
+    public sealed class Entries : ValueObject
     {
-        public Entries(int entries) : this()
+        private readonly int _entries;
+
+        public Entries(PayoutEntries payoutEntries) : this(Convert.ToInt32(payoutEntries * 2))
         {
-            Value = entries;
         }
 
-        public Entries(PayoutEntries payoutEntries) : this()
+        public Entries(int entries)
         {
-            Value = Convert.ToInt32(payoutEntries * 2);
+            _entries = entries;
         }
-
-        private Entries()
-        {
-            // Required by EF Core.
-        }
-
-        public int Value { get; private set; }
 
         public static implicit operator int(Entries entries)
         {
-            return entries.Value;
+            return entries._entries;
         }
 
         public override string ToString()
         {
-            return Value.ToString();
+            return _entries.ToString();
         }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
-            yield return Value;
+            yield return _entries;
         }
     }
 }

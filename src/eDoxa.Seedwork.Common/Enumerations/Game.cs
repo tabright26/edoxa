@@ -11,14 +11,13 @@
 using System.ComponentModel;
 
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Domain.Attributes;
 
 namespace eDoxa.Seedwork.Common.Enumerations
 {
     [TypeConverter(typeof(EnumerationTypeConverter))]
     public sealed class Game : Enumeration<Game>
     {
-        [AllowValue(true)] public static readonly Game LeagueOfLegends = new Game(1 << 0, nameof(LeagueOfLegends));
+        public static readonly Game LeagueOfLegends = new Game(1 << 0, nameof(LeagueOfLegends));
 
         public Game()
         {

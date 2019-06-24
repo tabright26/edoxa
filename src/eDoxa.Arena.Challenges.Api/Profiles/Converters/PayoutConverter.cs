@@ -12,9 +12,9 @@ using System.Linq;
 
 using AutoMapper;
 
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.ViewModels;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
-using eDoxa.Seedwork.Common.Enumerations;
 
 using JetBrains.Annotations;
 
@@ -29,8 +29,8 @@ namespace eDoxa.Arena.Challenges.Api.Profiles.Converters
             {
                 PrizePool = new PrizePoolViewModel
                 {
-                    Currency = CurrencyType.FromValue(challenge.Buckets.First().PrizeCurrency),
-                    Amount = challenge.Buckets.Sum(bucket => bucket.Size * bucket.PrizeAmount)
+                    Amount = challenge.Buckets.Sum(bucket => bucket.Size * bucket.PrizeAmount),
+                    Currency = Currency.FromValue(challenge.Buckets.First().PrizeCurrency)
                 },
                 Buckets = challenge.Buckets.Select(
                         bucket => new BucketViewModel

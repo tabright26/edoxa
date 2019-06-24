@@ -15,8 +15,6 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
-using eDoxa.Seedwork.Domain.Attributes;
-
 using JetBrains.Annotations;
 
 namespace eDoxa.Seedwork.Domain.Aggregate
@@ -31,13 +29,9 @@ namespace eDoxa.Seedwork.Domain.Aggregate
                 .ToList();
         }
 
-        public static IEnumerable<IEnumeration> GetEnumerations(Type type, bool allowOnly = false)
+        public static IEnumerable<IEnumeration> GetEnumerations(Type type)
         {
             return type.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
-                .Where(
-                    fieldInfo => !allowOnly ||
-                                 Attribute.GetCustomAttribute(fieldInfo, typeof(AllowValueAttribute)) is AllowValueAttribute allowValue && allowValue.IsAllowed
-                )
                 .Select(fieldInfo => fieldInfo.GetValue(null))
                 .Cast<IEnumeration>()
                 .ToList();
@@ -103,9 +97,9 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             return GetEnumerations().SingleOrDefault(enumeration => string.Equals(enumeration.Name, name, StringComparison.InvariantCultureIgnoreCase)) ?? None;
         }
 
-        public static IEnumerable<TEnumeration> GetEnumerations(bool allowOnly = false)
+        public static IEnumerable<TEnumeration> GetEnumerations()
         {
-            return Enumeration.GetEnumerations(typeof(TEnumeration), allowOnly).Cast<TEnumeration>().ToList();
+            return Enumeration.GetEnumerations(typeof(TEnumeration)).Cast<TEnumeration>().ToList();
         }
 
         public override bool Equals([CanBeNull] object obj)
@@ -123,9 +117,9 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             return Value.GetHashCode();
         }
 
-        public static bool HasEnumeration([CanBeNull] TEnumeration enumeration, bool allowOnly = false)
+        public static bool HasEnumeration([CanBeNull] TEnumeration enumeration)
         {
-            return enumeration != null && enumeration != All && enumeration != None && GetEnumerations(allowOnly).Contains(enumeration);
+            return enumeration != null && enumeration != All && enumeration != None && GetEnumerations().Contains(enumeration);
         }
 
         public bool HasFilter([CanBeNull] TEnumeration enumeration)

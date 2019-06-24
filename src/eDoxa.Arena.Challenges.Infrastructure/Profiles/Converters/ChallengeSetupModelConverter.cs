@@ -24,11 +24,11 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.Converters
         {
             return new ChallengeSetupModel
             {
-                BestOf = sourceMember.BestOf.Value,
-                Entries = sourceMember.Entries.Value,
-                PayoutEntries = sourceMember.PayoutEntries.Value,
+                BestOf = sourceMember.BestOf,
+                Entries = sourceMember.Entries,
+                PayoutEntries = sourceMember.PayoutEntries,
                 EntryFeeAmount = sourceMember.EntryFee.Amount,
-                EntryFeeCurrency = sourceMember.EntryFee.Type.Value
+                EntryFeeCurrency = sourceMember.EntryFee.Currency.Value
             };
         }
     }

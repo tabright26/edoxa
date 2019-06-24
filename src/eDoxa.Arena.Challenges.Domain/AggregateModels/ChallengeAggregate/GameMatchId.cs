@@ -50,11 +50,6 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             _gameMatchId = gameMatchId.ToString();
         }
 
-        public static implicit operator string(GameMatchId gameMatchId)
-        {
-            return gameMatchId.ToString();
-        }
-
         public static implicit operator GameMatchId(string gameMatchId)
         {
             return new GameMatchId(gameMatchId);
@@ -68,6 +63,11 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         public static implicit operator GameMatchId(Guid gameMatchId)
         {
             return new GameMatchId(gameMatchId);
+        }
+
+        public static implicit operator string(GameMatchId gameMatchId)
+        {
+            return gameMatchId._gameMatchId;
         }
 
         protected override IEnumerable<object> GetAtomicValues()

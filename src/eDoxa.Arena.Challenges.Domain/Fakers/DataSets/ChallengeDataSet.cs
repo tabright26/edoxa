@@ -19,7 +19,6 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Factories;
 using eDoxa.Arena.Challenges.Domain.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.Fakers.Providers;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.Extensions;
 
 namespace eDoxa.Arena.Challenges.Domain.Fakers.DataSets
@@ -86,7 +85,7 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers.DataSets
             return timeline;
         }
 
-        public ChallengeSetup Setup(CurrencyType entryFeeCurrency = null)
+        public ChallengeSetup Setup(Currency entryFeeCurrency = null)
         {
             return new ChallengeSetup(Faker.Setup().BestOf(), Faker.Setup().PayoutEntries(), Faker.Setup().EntryFee(entryFeeCurrency));
         }

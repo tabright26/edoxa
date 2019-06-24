@@ -84,7 +84,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Queries
             if (state != null)
             {
                 challenges = challenges.Where(
-                    challenge => ChallengeState.Resolve(
+                    challenge => ChallengeState.From(
                                      TimeSpan.FromTicks(challenge.Timeline.Duration),
                                      challenge.Timeline.StartedAt,
                                      challenge.Timeline.ClosedAt

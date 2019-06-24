@@ -17,20 +17,15 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public class Bucket : ValueObject
     {
-        public Bucket(Prize prize, BucketSize size) : this()
+        public Bucket(Prize prize, BucketSize size)
         {
             Size = size;
             Prize = prize;
         }
 
-        private Bucket()
-        {
-            // Required by EF Core.
-        }
+        public Prize Prize { get; }
 
-        public Prize Prize { get; private set; }
-
-        public BucketSize Size { get; private set; }
+        public BucketSize Size { get; }
 
         public override string ToString()
         {
@@ -43,7 +38,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             yield return Size;
         }
 
-        public IBuckets ToIndividualBuckets()
+        public IBuckets AsIndividualBuckets()
         {
             var buckets = new List<IndividualBucket>();
 

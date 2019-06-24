@@ -64,7 +64,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public IScoreboard Scoreboard => new Scoreboard(this);
 
-        public virtual void Register(Participant participant)
+        public void Register(Participant participant)
         {
             if (!this.CanRegister(participant))
             {
@@ -105,11 +105,6 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             Timeline = Timeline.Start(startedAt);
         }
 
-        private bool CanStart()
-        {
-            return Participants.Count == Setup.Entries;
-        }
-
         public void Close(IDateTimeProvider closedAt)
         {
             if (!this.CanClose())
@@ -118,6 +113,11 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             }
 
             Timeline = Timeline.Close(closedAt);
+        }
+
+        private bool CanStart()
+        {
+            return Participants.Count == Setup.Entries;
         }
 
         private bool CanClose()
@@ -190,7 +190,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public void Synchronize(IDateTimeProvider synchronizedAt)
         {
-            SynchronizedAt = synchronizedAt?.DateTime;
+            SynchronizedAt = synchronizedAt.DateTime;
         }
     }
 

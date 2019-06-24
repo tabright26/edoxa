@@ -11,42 +11,36 @@
 using System.Collections.Generic;
 
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Domain.Attributes;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class BestOf : ValueObject
     {
-        [AllowValue(true)] public static readonly BestOf One = new BestOf(1);
-        [AllowValue(true)] public static readonly BestOf Three = new BestOf(3);
-        [AllowValue(false)] public static readonly BestOf Five = new BestOf(5);
-        [AllowValue(false)] public static readonly BestOf Seven = new BestOf(7);
+        public static readonly BestOf One = new BestOf(1);
+        public static readonly BestOf Three = new BestOf(3);
+        public static readonly BestOf Five = new BestOf(5);
+        public static readonly BestOf Seven = new BestOf(7);
 
-        public BestOf(int bestOf) : this()
+        private readonly int _bestOf;
+
+        public BestOf(int bestOf)
         {
-            Value = bestOf;
+            _bestOf = bestOf;
         }
-
-        private BestOf()
-        {
-            // Required by EF Core.
-        }
-
-        public int Value { get; private set; }
 
         public static implicit operator int(BestOf bestOf)
         {
-            return bestOf.Value;
+            return bestOf._bestOf;
         }
 
         public override string ToString()
         {
-            return Value.ToString();
+            return _bestOf.ToString();
         }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
-            yield return Value;
+            yield return _bestOf;
         }
     }
 }

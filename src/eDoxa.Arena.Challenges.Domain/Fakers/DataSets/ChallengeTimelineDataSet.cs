@@ -26,7 +26,7 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers.DataSets
 
         public ChallengeDuration Duration()
         {
-            return Faker.PickRandom(ValueObject.GetAllowValues<ChallengeDuration>());
+            return Faker.PickRandom(ValueObject.GetValues<ChallengeDuration>());
         }
     }
 }

@@ -29,7 +29,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.Converters
                     bucket => new BucketModel
                     {
                         Size = bucket.Size,
-                        PrizeCurrency = bucket.Prize.Type.Value,
+                        PrizeCurrency = bucket.Prize.Currency.Value,
                         PrizeAmount = bucket.Prize.Amount
                     }
                 )
