@@ -12,11 +12,11 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Api.Application.Abstractions.Services;
-using eDoxa.Arena.Challenges.Domain.Abstractions.Factories;
-using eDoxa.Arena.Challenges.Domain.Abstractions.Repositories;
+using eDoxa.Arena.Challenges.Api.Application.Fakers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.Fakers;
+using eDoxa.Arena.Challenges.Domain.Factories;
+using eDoxa.Arena.Challenges.Domain.Repositories;
+using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Domain.Extensions;
@@ -26,13 +26,13 @@ namespace eDoxa.Arena.Challenges.Api.Application.Services
     public sealed class ChallengeService : IChallengeService
     {
         private readonly IChallengeRepository _challengeRepository;
-        private readonly IGameMatchIdsFactory _gameMatchIdsFactory;
+        private readonly IGameReferencesFactory _gameReferencesFactory;
         private readonly IMatchStatsFactory _matchStatsFactory;
 
-        public ChallengeService(IChallengeRepository challengeRepository, IGameMatchIdsFactory gameMatchIdsFactory, IMatchStatsFactory matchStatsFactory)
+        public ChallengeService(IChallengeRepository challengeRepository, IGameReferencesFactory gameReferencesFactory, IMatchStatsFactory matchStatsFactory)
         {
             _challengeRepository = challengeRepository;
-            _gameMatchIdsFactory = gameMatchIdsFactory;
+            _gameReferencesFactory = gameReferencesFactory;
             _matchStatsFactory = matchStatsFactory;
         }
 
@@ -89,21 +89,27 @@ namespace eDoxa.Arena.Challenges.Api.Application.Services
             await _challengeRepository.CommitAsync(cancellationToken);
         }
 
-        public async Task SynchronizeAsync(ChallengeGame game, CancellationToken cancellationToken = default)
+        public async Task SynchronizeAsync(IDateTimeProvider synchronizedAt, ChallengeGame game, CancellationToken cancellationToken = default)
         {
             //var specification = SpecificationFactory.Instance.Create<Challenge>()
             //    .And(new ChallengeForGameSpecification(game))
             //    .And(new ChallengeLastSyncMoreThanSpecification(TimeSpan.FromHours(1)))
             //    .And(new ChallengeOfStateSpecification(ChallengeState.Inscription).Not());
 
-            //foreach (var challenge in await _challengeRepository.FindChallengesAsync(specification))
-            //{
-            //    await challenge.SynchronizeAsync(_matchReferencesFactory, _matchStatsFactory);
-            //}
+            var gameReferencesAdapter = _gameReferencesFactory.CreateInstance(game);
 
-            //await _challengeRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+            var matchStatsAdapter = _matchStatsFactory.CreateInstance(game);
 
-            await Task.CompletedTask;
+            foreach (var challenge in await _challengeRepository.FindChallengesAsync(game))
+            {
+                challenge.Synchronize(
+                    (gameAccountId, startedAt, closedAt) => gameReferencesAdapter.GetGameReferencesAsync(gameAccountId, startedAt, closedAt).Result,
+                    (gameAccountId, gameReference) => matchStatsAdapter.GetMatchStatsAsync(gameAccountId, gameReference).Result,
+                    synchronizedAt
+                );
+            }
+
+            await _challengeRepository.CommitAsync(cancellationToken);
         }
     }
 }

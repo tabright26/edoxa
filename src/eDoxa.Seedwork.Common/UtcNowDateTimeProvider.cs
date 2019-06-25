@@ -14,6 +14,13 @@ namespace eDoxa.Seedwork.Common
 {
     public sealed class UtcNowDateTimeProvider : IDateTimeProvider
     {
-        public DateTime DateTime => DateTime.UtcNow;
+        private readonly DateTime _dateTime;
+
+        public UtcNowDateTimeProvider()
+        {
+            _dateTime = DateTime.UtcNow;
+        }
+
+        public DateTime DateTime => _dateTime;
     }
 }

@@ -25,7 +25,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.ConverterTypes
         [NotNull]
         public Match Convert([NotNull] MatchModel source, [NotNull] Match destination, [NotNull] ResolutionContext context)
         {
-            var match = new Match(source.GameMatchId, new PersistentDateTimeProvider(source.SynchronizedAt));
+            var match = new Match(source.GameReference, new PersistentDateTimeProvider(source.SynchronizedAt));
 
             match.SetEntityId(MatchId.FromGuid(source.Id));
 

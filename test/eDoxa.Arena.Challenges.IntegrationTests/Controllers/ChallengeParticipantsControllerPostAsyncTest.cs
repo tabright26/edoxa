@@ -16,11 +16,11 @@ using Bogus;
 
 using eDoxa.Arena.Challenges.Api;
 using eDoxa.Arena.Challenges.Api.Application.Commands;
+using eDoxa.Arena.Challenges.Api.Application.Fakers;
+using eDoxa.Arena.Challenges.Api.Application.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Api.Extensions;
-using eDoxa.Arena.Challenges.Domain.Abstractions.Repositories;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.Fakers;
-using eDoxa.Arena.Challenges.Domain.Fakers.Extensions;
+using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Seedwork.Application.Http;
 using eDoxa.Seedwork.Common.Extensions;

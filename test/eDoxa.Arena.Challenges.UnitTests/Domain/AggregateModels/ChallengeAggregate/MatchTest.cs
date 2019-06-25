@@ -13,9 +13,9 @@ using System.Linq;
 
 using Bogus;
 
+using eDoxa.Arena.Challenges.Api.Application.Factories;
+using eDoxa.Arena.Challenges.Api.Application.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.Factories;
-using eDoxa.Arena.Challenges.Domain.Fakers.Extensions;
 using eDoxa.Seedwork.Common;
 
 using FluentAssertions;
@@ -36,7 +36,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
         public void SnapshotStats_Stats_ShouldHaveCountOfScoring(ChallengeGame game)
         {
             // Arrange
-            var scoring = ScoringFactory.Instance.CreateStrategy(game).Scoring;
+            var scoring = new ScoringFactory().CreateInstance(game).Scoring;
 
             var stats = Faker.Match().Stats(game);
 

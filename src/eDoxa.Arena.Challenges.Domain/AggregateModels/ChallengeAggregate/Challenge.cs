@@ -10,12 +10,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Domain.Abstractions;
-using eDoxa.Arena.Challenges.Domain.Abstractions.Factories;
-using eDoxa.Arena.Challenges.Domain.Factories;
 using eDoxa.Arena.Challenges.Domain.Validators;
 using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Domain.Aggregate;
@@ -33,17 +28,16 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             ChallengeGame game,
             ChallengeSetup setup,
             ChallengeTimeline timeline,
-            IScoring scoring = null,
-            IPayout payout = null
+            IScoring scoring,
+            IPayout payout
         )
         {
             Name = name;
             Game = game;
             Setup = setup;
             Timeline = timeline;
-            Scoring = scoring ?? ScoringFactory.Instance.CreateStrategy(this).Scoring;
-            Payout = payout ?? PayoutFactory.Instance.CreateStrategy(this).Payout;
-            SynchronizedAt = null;
+            Scoring = scoring;
+            Payout = payout;
         }
 
         public ChallengeName Name { get; }
@@ -74,26 +68,17 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             _participants.Add(participant);
         }
 
-        //public void DistributeParticipantPrizes()
+        //public async void Synchronize(IGameMatchIdsFactory gameMatchIdsFactory, IMatchStatsFactory matchStatsFactory, IDateTimeProvider synchronizedAt)
         //{
-        //    this.AddDomainEvent(new ChallengePayoutDomainEvent(Id, Payout.GetParticipantPrizes(Scoreboard)));
+        //    foreach (var participant in Participants.Where(participant => !participant.HasFinalScore(Timeline))
+        //        .OrderBy(participant => participant.SynchronizedAt)
+        //        .ToList())
+        //    {
+        //        await this.SynchronizeAsync(gameMatchIdsFactory, matchStatsFactory, participant, synchronizedAt);
+        //    }
+
+        //    this.Synchronize(synchronizedAt);
         //}
-
-        public async Task SynchronizeAsync(
-            IGameMatchIdsFactory gameMatchIdsFactory,
-            IMatchStatsFactory matchStatsFactory,
-            IDateTimeProvider synchronizedAt = null
-        )
-        {
-            foreach (var participant in Participants.Where(participant => !participant.HasFinalScore(Timeline))
-                .OrderBy(participant => participant.SynchronizedAt)
-                .ToList())
-            {
-                await this.SynchronizeAsync(gameMatchIdsFactory, matchStatsFactory, participant, synchronizedAt);
-            }
-
-            this.Synchronize(synchronizedAt);
-        }
 
         public void Start(IDateTimeProvider startedAt)
         {
@@ -113,6 +98,19 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             }
 
             Timeline = Timeline.Close(closedAt);
+        }
+
+        //public void DistributeParticipantPrizes()
+        //{
+        //    this.AddDomainEvent(new ChallengePayoutDomainEvent(Id, Payout.GetParticipantPrizes(Scoreboard)));
+        //}
+
+        public void Synchronize(
+            Func<GameAccountId, DateTime, DateTime, IEnumerable<GameReference>> getParticipantGameReferences,
+            Func<GameAccountId, GameReference, IMatchStats> getParticipantMatchStats,
+            IDateTimeProvider synchronizedAt
+        )
+        {
         }
 
         private bool CanStart()
@@ -135,53 +133,53 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             return SynchronizedAt.HasValue && SynchronizedAt.Value + timeSpan < DateTime.UtcNow;
         }
 
-        private async Task SynchronizeAsync(
-            IGameMatchIdsFactory gameMatchIdsFactory,
-            IMatchStatsFactory matchStatsFactory,
-            Participant participant,
-            IDateTimeProvider synchronizedAt
-        )
-        {
-            var adapter = await gameMatchIdsFactory.CreateAdapterAsync(Game, participant.GameAccountId, Timeline);
+        //private async Task SynchronizeAsync(
+        //    IGameMatchIdsFactory gameMatchIdsFactory,
+        //    IMatchStatsFactory matchStatsFactory,
+        //    Participant participant,
+        //    IDateTimeProvider synchronizedAt
+        //)
+        //{
+        //    var adapter = await gameMatchIdsFactory.CreateAdapterAsync(Game, participant.GameAccountId, Timeline);
 
-            await this.SynchronizeAsync(adapter.GameMatchIds, matchStatsFactory, participant, synchronizedAt);
-        }
+        //    await this.SynchronizeAsync(adapter.GetGameReferences, matchStatsFactory, participant, synchronizedAt);
+        //}
 
-        private async Task SynchronizeAsync(
-            IEnumerable<GameMatchId> matchReferences,
-            IMatchStatsFactory matchStatsFactory,
-            Participant participant,
-            IDateTimeProvider synchronizedAt
-        )
-        {
-            foreach (var matchReference in participant.GetUnsynchronizedMatchReferences(matchReferences))
-            {
-                await this.SnapshotParticipantMatchAsync(participant, matchReference, matchStatsFactory, synchronizedAt);
-            }
+        //private async Task SynchronizeAsync(
+        //    IEnumerable<GameMatchId> matchReferences,
+        //    IMatchStatsFactory matchStatsFactory,
+        //    Participant participant,
+        //    IDateTimeProvider synchronizedAt
+        //)
+        //{
+        //    foreach (var matchReference in participant.GetUnsynchronizedMatchReferences(matchReferences))
+        //    {
+        //        await this.SnapshotParticipantMatchAsync(participant, matchReference, matchStatsFactory, synchronizedAt);
+        //    }
 
-            participant.Synchronize(synchronizedAt);
-        }
+        //    participant.Synchronize(synchronizedAt);
+        //}
 
-        private async Task SnapshotParticipantMatchAsync(
-            Participant participant,
-            GameMatchId gameMatchId,
-            IMatchStatsFactory factory,
-            IDateTimeProvider synchronizedAt
-        )
-        {
-            var adapter = await factory.CreateAdapter(Game, participant.GameAccountId, gameMatchId);
+        //private async Task SnapshotParticipantMatchAsync(
+        //    Participant participant,
+        //    GameMatchId gameMatchId,
+        //    IMatchStatsFactory factory,
+        //    IDateTimeProvider synchronizedAt
+        //)
+        //{
+        //    var adapter = await factory.CreateAdapter(Game, participant.GameAccountId, gameMatchId);
 
-            this.SnapshotParticipantMatch(participant, gameMatchId, adapter.MatchStats, synchronizedAt);
-        }
+        //    this.SnapshotParticipantMatch(participant, gameMatchId, adapter.MatchStats, synchronizedAt);
+        //}
 
         internal void SnapshotParticipantMatch(
             Participant participant,
-            GameMatchId gameMatchId,
+            GameReference gameReference,
             IMatchStats matchStats,
             IDateTimeProvider synchronizedAt
         )
         {
-            var match = new Match(gameMatchId, synchronizedAt);
+            var match = new Match(gameReference, synchronizedAt);
 
             match.SnapshotStats(Scoring, matchStats);
 

@@ -12,8 +12,8 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using eDoxa.Arena.Challenges.Api.Application.Fakers;
 using eDoxa.Arena.Challenges.Api.Application.Queries;
-using eDoxa.Arena.Challenges.Domain.Fakers;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.Infrastructure.Repositories;
 using eDoxa.Arena.Challenges.IntegrationTests.Helpers;

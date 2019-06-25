@@ -16,9 +16,9 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Arena.Challenges.Domain.Abstractions;
-using eDoxa.Arena.Challenges.Domain.Abstractions.Repositories;
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Infrastructure.Extensions;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
 using eDoxa.Seedwork.Domain.Extensions;

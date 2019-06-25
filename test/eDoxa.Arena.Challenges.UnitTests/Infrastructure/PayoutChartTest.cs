@@ -9,9 +9,9 @@
 // this source code package.
 
 using System;
-using System.IO;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Infrastructure.Data;
 
 using FluentAssertions;
 
@@ -26,26 +26,13 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure
         public void PayoutChart_FromCsv_ShouldNotThrow()
         {
             // Arrange
-            var payoutChart = new PayoutChart(Path.Combine(Directory.GetCurrentDirectory(), @"Data\PayoutChart.csv"));
+            var payoutChart = new PayoutChart();
 
             // Act
             var action = new Action(() => payoutChart.GetPayout(PayoutEntries.Fifteen, MoneyEntryFee.Five));
 
             // Assert
             action.Should().NotThrow();
-        }
-
-        [TestMethod]
-        public void PayoutChart_FromCsv_ShouldThrowIOException()
-        {
-            // Arrange
-            var payoutChart = new PayoutChart("InvalidPath");
-
-            // Act
-            var action = new Action(() => payoutChart.GetPayout(PayoutEntries.Fifteen, MoneyEntryFee.Five));
-
-            // Assert
-            action.Should().Throw<IOException>();
         }
     }
 }

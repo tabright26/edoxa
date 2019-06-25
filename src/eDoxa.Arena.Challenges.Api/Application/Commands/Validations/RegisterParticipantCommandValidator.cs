@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Arena.Challenges.Api.Application.Abstractions.Queries;
+using eDoxa.Arena.Challenges.Domain.Queries;
 using eDoxa.Commands.Abstractions.Validations;
 using eDoxa.Seedwork.Application.Validations.Extensions;
 

@@ -13,12 +13,12 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api;
-using eDoxa.Arena.Challenges.Api.Application.Abstractions.Services;
-using eDoxa.Arena.Challenges.Domain.Abstractions;
-using eDoxa.Arena.Challenges.Domain.Abstractions.Repositories;
+using eDoxa.Arena.Challenges.Api.Application.Fakers;
+using eDoxa.Arena.Challenges.Api.Application.Fakers.Providers;
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.Fakers;
-using eDoxa.Arena.Challenges.Domain.Fakers.Providers;
+using eDoxa.Arena.Challenges.Domain.Repositories;
+using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Testing.TestServer;

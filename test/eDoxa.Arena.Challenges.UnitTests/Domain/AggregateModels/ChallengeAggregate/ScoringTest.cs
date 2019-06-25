@@ -11,8 +11,8 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using eDoxa.Arena.Challenges.Api.Application.Factories;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.Factories;
 
 using FluentAssertions;
 
@@ -30,7 +30,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
         public void Scoring_ShouldBeAssignableToType(ChallengeGame game)
         {
             // Arrange
-            var scoring = ScoringFactory.Instance.CreateStrategy(game).Scoring;
+            var scoring = new ScoringFactory().CreateInstance(game).Scoring;
 
             // Act
             var type = typeof(Dictionary<StatName, StatWeighting>);

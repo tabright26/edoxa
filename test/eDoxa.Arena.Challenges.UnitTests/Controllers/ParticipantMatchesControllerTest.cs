@@ -11,10 +11,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Api.Application.Abstractions.Queries;
 using eDoxa.Arena.Challenges.Api.Controllers;
-using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Domain.Queries;
+using eDoxa.Arena.Challenges.Domain.ViewModels;
 
 using FluentAssertions;
 

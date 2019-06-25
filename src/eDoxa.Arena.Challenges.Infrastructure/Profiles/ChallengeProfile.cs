@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 using AutoMapper;
 
-using eDoxa.Arena.Challenges.Domain.Abstractions;
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
 using eDoxa.Arena.Challenges.Infrastructure.Profiles.Converters;

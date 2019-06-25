@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Domain.Aggregate;
@@ -64,9 +63,9 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             _matches.Add(match);
         }
 
-        public IEnumerable<GameMatchId> GetUnsynchronizedMatchReferences(IEnumerable<GameMatchId> gameMatchIds)
+        public IEnumerable<GameReference> GetUnsynchronizedMatchReferences(IEnumerable<GameReference> gameReferences)
         {
-            return gameMatchIds.Where(gameMatchId => Matches.All(match => match.GameMatchId != gameMatchId));
+            return gameReferences.Where(gameReference => Matches.All(match => match.GameReference != gameReference));
         }
 
         public void Synchronize(IDateTimeProvider synchronizedAt)

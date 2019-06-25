@@ -8,11 +8,11 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Arena.Challenges.Api.Application.Abstractions.Queries;
 using eDoxa.Arena.Challenges.Api.Application.Commands.Validations;
-using eDoxa.Arena.Challenges.Api.Extensions;
+using eDoxa.Arena.Challenges.Api.Application.Fakers;
+using eDoxa.Arena.Challenges.Api.Application.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.Fakers;
+using eDoxa.Arena.Challenges.Domain.Queries;
 
 using FluentValidation.TestHelper;
 

@@ -12,9 +12,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using eDoxa.Arena.Challenges.Api.ViewModels;
-using eDoxa.Arena.Challenges.Domain.Abstractions;
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Domain.ViewModels;
 using eDoxa.Seedwork.Domain.Extensions;
 
 using FluentAssertions;
@@ -69,7 +69,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Extensions
                 .HaveCount(challenge.Participants.SelectMany(participant => participant.Matches).Count());
 
             challenge.Participants.SelectMany(participant => participant.Matches)
-                .Select(match => match.GameMatchId)
+                .Select(match => match.GameReference)
                 .Distinct()
                 .Should()
                 .HaveCount(challenge.Participants.SelectMany(participant => participant.Matches).Count());

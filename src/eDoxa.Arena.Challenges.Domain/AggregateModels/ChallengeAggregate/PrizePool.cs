@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
-using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate

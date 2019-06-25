@@ -1,4 +1,4 @@
-﻿// Filename: ChallengeLastSyncMoreThanSpecification.cs
+﻿// Filename: ChallengeSynchronizationMoreThanSpecification.cs
 // Date Created: 2019-06-07
 // 
 // ================================================

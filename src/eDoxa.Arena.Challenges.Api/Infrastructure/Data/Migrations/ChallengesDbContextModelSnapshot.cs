@@ -3,7 +3,6 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-
 using eDoxa.Arena.Challenges.Infrastructure;
 
 namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
@@ -42,7 +41,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("GameMatchId");
+                    b.Property<string>("GameReference");
 
                     b.Property<Guid?>("ParticipantId");
 
@@ -50,9 +49,9 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GameMatchId")
+                    b.HasIndex("GameReference")
                         .IsUnique()
-                        .HasFilter("[GameMatchId] IS NOT NULL");
+                        .HasFilter("[GameReference] IS NOT NULL");
 
                     b.HasIndex("ParticipantId");
 

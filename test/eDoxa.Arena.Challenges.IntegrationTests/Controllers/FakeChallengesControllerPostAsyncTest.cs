@@ -16,8 +16,8 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api;
 using eDoxa.Arena.Challenges.Api.Application.Commands;
-using eDoxa.Arena.Challenges.Domain.Abstractions.Repositories;
-using eDoxa.Arena.Challenges.Domain.Fakers;
+using eDoxa.Arena.Challenges.Api.Application.Fakers;
+using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Seedwork.Application.Http;
 using eDoxa.Seedwork.Testing.TestServer;

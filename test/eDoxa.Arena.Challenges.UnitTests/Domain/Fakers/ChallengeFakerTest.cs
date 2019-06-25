@@ -13,8 +13,8 @@ using System.Linq;
 
 using Bogus;
 
+using eDoxa.Arena.Challenges.Api.Application.Fakers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.Fakers;
 using eDoxa.Arena.Challenges.UnitTests.Extensions;
 
 using FluentAssertions;

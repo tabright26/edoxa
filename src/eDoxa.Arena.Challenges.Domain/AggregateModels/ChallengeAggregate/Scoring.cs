@@ -11,8 +11,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using eDoxa.Arena.Challenges.Domain.Abstractions;
-
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class Scoring : Dictionary<StatName, StatWeighting>, IScoring

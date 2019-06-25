@@ -19,7 +19,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Models
     {
         public DateTime SynchronizedAt { get; set; }
 
-        public string GameMatchId { get; set; }
+        public string GameReference { get; set; }
 
         public ParticipantModel Participant { get; set; }
 

@@ -57,7 +57,7 @@ namespace eDoxa.Arena.UnitTests.Services.LeagueOfLegends
                     }
                 );
 
-            var service = new Arena.Services.LeagueOfLegends.LeagueOfLegendsMatchService(new HttpClient(mockHttpMessageHandler.Object), It.IsAny<string>());
+            var service = new Arena.Services.LeagueOfLegends.LeagueOfLegendsService(new HttpClient(mockHttpMessageHandler.Object), It.IsAny<string>());
 
             // Act
             var matchReferences = await service.GetMatchReferencesAsync(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<DateTime>());
@@ -96,7 +96,7 @@ namespace eDoxa.Arena.UnitTests.Services.LeagueOfLegends
                     }
                 );
 
-            var service = new Arena.Services.LeagueOfLegends.LeagueOfLegendsMatchService(new HttpClient(mockHttpMessageHandler.Object), It.IsAny<string>());
+            var service = new Arena.Services.LeagueOfLegends.LeagueOfLegendsService(new HttpClient(mockHttpMessageHandler.Object), It.IsAny<string>());
 
             // Act
             var match = await service.GetMatchAsync(It.IsAny<string>());

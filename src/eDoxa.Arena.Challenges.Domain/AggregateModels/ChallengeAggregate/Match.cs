@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Domain.Aggregate;
 
@@ -24,13 +23,13 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
     {
         private readonly HashSet<Stat> _stats = new HashSet<Stat>();
 
-        public Match(GameMatchId gameMatchId, IDateTimeProvider synchronizedAt)
+        public Match(GameReference gameReference, IDateTimeProvider synchronizedAt)
         {
-            GameMatchId = gameMatchId;
+            GameReference = gameReference;
             SynchronizedAt = synchronizedAt.DateTime;
         }
 
-        public GameMatchId GameMatchId { get; }
+        public GameReference GameReference { get; }
 
         public DateTime SynchronizedAt { get; }
 

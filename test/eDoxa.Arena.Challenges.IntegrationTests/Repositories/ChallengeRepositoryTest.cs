@@ -16,9 +16,9 @@ using AutoMapper;
 
 using Bogus;
 
+using eDoxa.Arena.Challenges.Api.Application.Fakers;
+using eDoxa.Arena.Challenges.Api.Application.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.Fakers;
-using eDoxa.Arena.Challenges.Domain.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.Infrastructure.Repositories;
 using eDoxa.Arena.Challenges.IntegrationTests.Helpers;
@@ -209,7 +209,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
                     challenge.Timeline.State.Should().Be(ChallengeState.InProgress);
                 }
 
-                var match1 = new Match(new GameMatchId(Guid.NewGuid()), new UtcNowDateTimeProvider());
+                var match1 = new Match(new GameReference(Guid.NewGuid()), new UtcNowDateTimeProvider());
 
                 match1.SnapshotStats(fakeChallenge.Scoring, Faker.Match().Stats(ChallengeGame.LeagueOfLegends));
 
@@ -243,7 +243,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
                     challenge.Timeline.State.Should().Be(ChallengeState.InProgress);
                 }
 
-                var match2 = new Match(new GameMatchId(Guid.NewGuid()), new UtcNowDateTimeProvider());
+                var match2 = new Match(new GameReference(Guid.NewGuid()), new UtcNowDateTimeProvider());
 
                 match2.SnapshotStats(fakeChallenge.Scoring, Faker.Match().Stats(ChallengeGame.LeagueOfLegends));
 
