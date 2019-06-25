@@ -125,7 +125,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             return true;
         }
 
-        protected bool CanRegister(Participant participant)
+        private bool CanRegister(Participant participant)
         {
             return new RegisterParticipantValidator(participant.UserId).Validate(this).IsValid;
         }

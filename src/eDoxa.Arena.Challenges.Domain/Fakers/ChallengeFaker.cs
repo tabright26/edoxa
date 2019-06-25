@@ -91,6 +91,11 @@ namespace eDoxa.Arena.Challenges.Domain.Fakers
 
                         challenge.Synchronize(new FakeDateTimeProvider(synchronizedAt));
 
+                        if (state == ChallengeState.Ended || state == ChallengeState.Closed)
+                        {
+                            challenge.Start(new FakeDateTimeProvider(startedAt - duration));
+                        }
+
                         if (state == ChallengeState.Closed)
                         {
                             challenge.Close(new FakeDateTimeProvider(closedAt));

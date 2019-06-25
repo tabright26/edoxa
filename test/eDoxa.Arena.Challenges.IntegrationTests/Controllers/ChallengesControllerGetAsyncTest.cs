@@ -15,14 +15,15 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api;
 using eDoxa.Arena.Challenges.Api.ViewModels;
+using eDoxa.Arena.Challenges.Domain.Abstractions.Repositories;
 using eDoxa.Arena.Challenges.Domain.Fakers;
 using eDoxa.Arena.Challenges.Infrastructure;
-using eDoxa.Arena.Challenges.Infrastructure.Extensions;
 using eDoxa.Seedwork.Testing.TestServer;
 using eDoxa.Seedwork.Testing.TestServer.Extensions;
 
 using FluentAssertions;
 
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
@@ -31,31 +32,28 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
     public sealed class ChallengesControllerGetAsyncTest
     {
         private HttpClient _httpClient;
-        private ChallengesDbContext _dbContext;
+        private TestServer _testServer;
 
         public async Task<HttpResponseMessage> ExecuteAsync()
         {
             return await _httpClient.GetAsync("api/challenges");
         }
-
+        
         [TestInitialize]
         public async Task TestInitialize()
         {
             var factory = new CustomWebApplicationFactory<ChallengesDbContext, Startup>();
-
             _httpClient = factory.CreateClient();
-
-            _dbContext = factory.DbContext;
-
+            _testServer = factory.Server;
             await this.TestCleanup();
         }
 
         [TestCleanup]
         public async Task TestCleanup()
         {
-            _dbContext.Challenges.RemoveRange(_dbContext.Challenges);
-
-            await _dbContext.SaveChangesAsync();
+            var context = _testServer.GetService<ChallengesDbContext>();
+            context.Challenges.RemoveRange(context.Challenges);
+            await context.SaveChangesAsync();
         }
 
         [TestMethod]
@@ -75,10 +73,11 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         public async Task The_response_http_should_have_exactly_the_same_number_of_fake_challenges_added_to_the_database(int count)
         {
             // Arrange
+            var challengeRepository = _testServer.GetService<IChallengeRepository>();
             var challengeFaker = new ChallengeFaker();
-            var challenges = challengeFaker.GenerateModels(count);
-            _dbContext.Challenges.AddRange(challenges);
-            await _dbContext.SaveChangesAsync();
+            var challenges = challengeFaker.Generate(count);
+            challengeRepository.Create(challenges);
+            await challengeRepository.CommitAsync();
 
             // Act
             var response = await this.ExecuteAsync();
@@ -96,11 +95,12 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         public async Task Fake_challenge_with_same_seed_should_be_equivalent(int seed)
         {
             // Arrange
+            var challengeRepository = _testServer.GetService<IChallengeRepository>();
             var challengeFaker = new ChallengeFaker();
             challengeFaker.UseSeed(seed);
-            var challenge = challengeFaker.GenerateModel();
-            _dbContext.Challenges.Add(challenge);
-            await _dbContext.SaveChangesAsync();
+            var challenge = challengeFaker.Generate();
+            challengeRepository.Create(challenge);
+            await challengeRepository.CommitAsync();
 
             // Act
             var response = await this.ExecuteAsync();
@@ -110,7 +110,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
             var challengeViewModel = (await response.DeserializeAsync<ChallengeViewModel[]>()).First();
             challengeFaker = new ChallengeFaker();
             challengeFaker.UseSeed(seed);
-            challenge = challengeFaker.GenerateModel();
+            challenge = challengeFaker.Generate();
             challengeViewModel.Id.Should().Be(challenge.Id);
         }
     }

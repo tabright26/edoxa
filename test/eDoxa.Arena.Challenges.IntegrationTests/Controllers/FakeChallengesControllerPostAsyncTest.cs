@@ -16,9 +16,9 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api;
 using eDoxa.Arena.Challenges.Api.Application.Commands;
+using eDoxa.Arena.Challenges.Domain.Abstractions.Repositories;
 using eDoxa.Arena.Challenges.Domain.Fakers;
 using eDoxa.Arena.Challenges.Infrastructure;
-using eDoxa.Arena.Challenges.Infrastructure.Extensions;
 using eDoxa.Seedwork.Application.Http;
 using eDoxa.Seedwork.Testing.TestServer;
 using eDoxa.Seedwork.Testing.TestServer.Extensions;
@@ -27,6 +27,7 @@ using FluentAssertions;
 
 using IdentityModel;
 
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
@@ -35,32 +36,29 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
     public sealed class FakeChallengesControllerPostAsyncTest
     {
         private HttpClient _httpClient;
-        private ChallengesDbContext _dbContext;
+        private TestServer _testServer;
 
         public async Task<HttpResponseMessage> ExecuteAsync(FakeChallengesCommand command)
         {
             return await _httpClient.DefaultRequestHeaders(new[] {new Claim(JwtClaimTypes.Subject, Guid.NewGuid().ToString())})
                 .PostAsync("api/fake/challenges", new JsonContent(command));
         }
-
+        
         [TestInitialize]
         public async Task TestInitialize()
         {
             var factory = new CustomWebApplicationFactory<ChallengesDbContext, Startup>();
-
             _httpClient = factory.CreateClient();
-
-            _dbContext = factory.DbContext;
-
+            _testServer = factory.Server;
             await this.TestCleanup();
         }
 
         [TestCleanup]
         public async Task TestCleanup()
         {
-            _dbContext.Challenges.RemoveRange(_dbContext.Challenges);
-
-            await _dbContext.SaveChangesAsync();
+            var context = _testServer.GetService<ChallengesDbContext>();
+            context.Challenges.RemoveRange(context.Challenges);
+            await context.SaveChangesAsync();
         }
 
         [DataRow(2, 100)]
@@ -85,11 +83,12 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         public async Task ShouldBeBadRequest(int count, int seed)
         {
             // Arrange
+            var challengeRepository = _testServer.GetService<IChallengeRepository>();
             var challengeFaker = new ChallengeFaker();
             challengeFaker.UseSeed(seed);
-            var challenges = challengeFaker.GenerateModels(count);
-            _dbContext.Challenges.AddRange(challenges);
-            await _dbContext.SaveChangesAsync();
+            var challenges = challengeFaker.Generate(count);
+            challengeRepository.Create(challenges);
+            await challengeRepository.CommitAsync();
             var command = new FakeChallengesCommand(count, seed);
 
             // Act

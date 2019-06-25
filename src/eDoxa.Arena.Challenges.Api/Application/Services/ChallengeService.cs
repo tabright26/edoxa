@@ -19,6 +19,7 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Fakers;
 using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Common.ValueObjects;
+using eDoxa.Seedwork.Domain.Extensions;
 
 namespace eDoxa.Arena.Challenges.Api.Application.Services
 {
@@ -51,26 +52,13 @@ namespace eDoxa.Arena.Challenges.Api.Application.Services
             await _challengeRepository.CommitAsync(cancellationToken);
         }
 
-        public async Task CloseAsync(CancellationToken cancellationToken = default)
+        public async Task CloseAsync(IDateTimeProvider closedAt, CancellationToken cancellationToken = default)
         {
-            //var specification = SpecificationFactory.Instance.Create<Challenge>().And(new ChallengeOfStateSpecification(ChallengeState.Ended));
+            var challenges = await _challengeRepository.FindChallengesAsync(null, ChallengeState.Ended);
 
-            //var challenges = await _challengeRepository.FindChallengesAsync(specification);
+            challenges.ForEach(challenge => challenge.Close(closedAt));
 
-            //challenges.ForEach(
-            //    challenge => challenge.TryClose(
-            //        async () =>
-            //        {
-            //            await challenge.SynchronizeAsync(_matchReferencesFactory, _matchStatsFactory);
-
-            //            challenge.DistributeParticipantPrizes();
-            //        }
-            //    )
-            //);
-
-            //await _challengeRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
-
-            await Task.CompletedTask;
+            await _challengeRepository.CommitAsync(cancellationToken);
         }
 
         public async Task FakeChallengesAsync(

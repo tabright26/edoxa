@@ -17,11 +17,11 @@ using Bogus;
 using eDoxa.Arena.Challenges.Api;
 using eDoxa.Arena.Challenges.Api.Application.Commands;
 using eDoxa.Arena.Challenges.Api.Extensions;
+using eDoxa.Arena.Challenges.Domain.Abstractions.Repositories;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Fakers;
 using eDoxa.Arena.Challenges.Domain.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Infrastructure;
-using eDoxa.Arena.Challenges.Infrastructure.Extensions;
 using eDoxa.Seedwork.Application.Http;
 using eDoxa.Seedwork.Common.Extensions;
 using eDoxa.Seedwork.Common.ValueObjects;
@@ -30,6 +30,7 @@ using eDoxa.Seedwork.Testing.TestServer.Extensions;
 
 using IdentityModel;
 
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
@@ -38,7 +39,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
     public sealed class ChallengeParticipantsControllerPostAsyncTest
     {
         private HttpClient _httpClient;
-        private ChallengesDbContext _dbContext;
+        private TestServer _testServer;
 
         public async Task<HttpResponseMessage> ExecuteAsync(UserId userId, GameAccountId gameAccountId, RegisterParticipantCommand command)
         {
@@ -52,25 +53,22 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
                 )
                 .PostAsync($"api/challenges/{command.ChallengeId}/participants", new JsonContent(command));
         }
-
+        
         [TestInitialize]
         public async Task TestInitialize()
         {
             var factory = new CustomWebApplicationFactory<ChallengesDbContext, Startup>();
-
             _httpClient = factory.CreateClient();
-
-            _dbContext = factory.DbContext;
-
+            _testServer = factory.Server;
             await this.TestCleanup();
         }
 
         [TestCleanup]
         public async Task TestCleanup()
         {
-            _dbContext.Challenges.RemoveRange(_dbContext.Challenges);
-
-            await _dbContext.SaveChangesAsync();
+            var context = _testServer.GetService<ChallengesDbContext>();
+            context.Challenges.RemoveRange(context.Challenges);
+            await context.SaveChangesAsync();
         }
 
         [TestMethod]
@@ -79,11 +77,12 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
             // Arrange
             var faker = new Faker();
             var userId = faker.UserId();
+            var challengeRepository = _testServer.GetService<IChallengeRepository>();
             var challengeFaker = new ChallengeFaker(ChallengeGame.LeagueOfLegends, ChallengeState.Inscription);
             challengeFaker.UseSeed(1);
-            var challenge = challengeFaker.GenerateModel();
-            _dbContext.Challenges.Add(challenge);
-            await _dbContext.SaveChangesAsync();
+            var challenge = challengeFaker.Generate();
+            challengeRepository.Create(challenge);
+            await challengeRepository.CommitAsync();
 
             // Act
             var response = await this.ExecuteAsync(

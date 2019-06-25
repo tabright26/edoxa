@@ -16,10 +16,10 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api;
 using eDoxa.Arena.Challenges.Api.ViewModels;
+using eDoxa.Arena.Challenges.Domain.Abstractions.Repositories;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Fakers;
 using eDoxa.Arena.Challenges.Infrastructure;
-using eDoxa.Arena.Challenges.Infrastructure.Extensions;
 using eDoxa.Seedwork.Security.Constants;
 using eDoxa.Seedwork.Testing.TestServer;
 using eDoxa.Seedwork.Testing.TestServer.Extensions;
@@ -28,6 +28,7 @@ using FluentAssertions;
 
 using IdentityModel;
 
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
@@ -36,7 +37,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
     public sealed class ParticipantMatchesControllerGetAsyncTest
     {
         private HttpClient _httpClient;
-        private ChallengesDbContext _dbContext;
+        private TestServer _testServer;
 
         public async Task<HttpResponseMessage> ExecuteAsync(ParticipantId participantId)
         {
@@ -51,30 +52,28 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         public async Task TestInitialize()
         {
             var factory = new CustomWebApplicationFactory<ChallengesDbContext, Startup>();
-
             _httpClient = factory.CreateClient();
-
-            _dbContext = factory.DbContext;
-
+            _testServer = factory.Server;
             await this.TestCleanup();
         }
 
         [TestCleanup]
         public async Task TestCleanup()
         {
-            _dbContext.Challenges.RemoveRange(_dbContext.Challenges);
-
-            await _dbContext.SaveChangesAsync();
+            var context = _testServer.GetService<ChallengesDbContext>();
+            context.Challenges.RemoveRange(context.Challenges);
+            await context.SaveChangesAsync();
         }
 
         [TestMethod]
         public async Task ShouldBeOk()
         {
             // Arrange
+            var challengeRepository = _testServer.GetService<IChallengeRepository>();
             var challengeFaker = new ChallengeFaker(state: ChallengeState.Ended);
-            var challenge = challengeFaker.GenerateModel();
-            _dbContext.Challenges.Add(challenge);
-            await _dbContext.SaveChangesAsync();
+            var challenge = challengeFaker.Generate();
+            challengeRepository.Create(challenge);
+            await challengeRepository.CommitAsync();
             var participant = challenge.Participants.First();
 
             // Act

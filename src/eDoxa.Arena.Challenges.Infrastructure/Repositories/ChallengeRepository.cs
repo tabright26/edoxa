@@ -95,7 +95,19 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
         {
             var challenges = await this.FindChallengeModelsAsync(game?.Value, state?.Value);
 
-            return challenges.Select(challenge => _mapper.Map<IChallenge>(challenge)).ToList();
+            return challenges.Select(
+                    challengeModel =>
+                    {
+                        var challenge = _mapper.Map<IChallenge>(challengeModel);
+
+                        _materializedObjects[challenge] = challengeModel;
+
+                        _materializedIds[challenge.Id] = challenge;
+
+                        return challenge;
+                    }
+                )
+                .ToList();
         }
 
         public async Task<IReadOnlyCollection<IChallenge>> FindChallengesAsync(ISpecification<IChallenge> specification)

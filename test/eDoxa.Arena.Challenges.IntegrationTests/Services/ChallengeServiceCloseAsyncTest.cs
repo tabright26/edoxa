@@ -1,5 +1,5 @@
-﻿// Filename: ChallengesControllerGetByIdAsyncTest.cs
-// Date Created: 2019-06-13
+﻿// Filename: ChallengeServiceCloseAsyncTest.cs
+// Date Created: 2019-06-24
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,49 +9,38 @@
 // this source code package.
 
 using System;
-using System.Net.Http;
-using System.Security.Claims;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api;
-using eDoxa.Arena.Challenges.Api.ViewModels;
+using eDoxa.Arena.Challenges.Api.Application.Abstractions.Services;
+using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Arena.Challenges.Domain.Abstractions.Repositories;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Fakers;
+using eDoxa.Arena.Challenges.Domain.Fakers.Providers;
 using eDoxa.Arena.Challenges.Infrastructure;
-using eDoxa.Seedwork.Security.Constants;
+using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Testing.TestServer;
 using eDoxa.Seedwork.Testing.TestServer.Extensions;
 
 using FluentAssertions;
 
-using IdentityModel;
-
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
+namespace eDoxa.Arena.Challenges.IntegrationTests.Services
 {
     [TestClass]
-    public sealed class ChallengesControllerGetByIdAsyncTest
+    public sealed class ChallengeServiceCloseAsyncTest
     {
-        private HttpClient _httpClient;
         private TestServer _testServer;
-
-        public async Task<HttpResponseMessage> ExecuteAsync(ChallengeId challengeId)
-        {
-            return await _httpClient
-                .DefaultRequestHeaders(
-                    new[] {new Claim(JwtClaimTypes.Subject, Guid.NewGuid().ToString()), new Claim(JwtClaimTypes.Role, CustomRoles.Administrator)}
-                )
-                .GetAsync($"api/challenges/{challengeId}");
-        }
 
         [TestInitialize]
         public async Task TestInitialize()
         {
             var factory = new CustomWebApplicationFactory<ChallengesDbContext, Startup>();
-            _httpClient = factory.CreateClient();
+            factory.CreateClient();
             _testServer = factory.Server;
             await this.TestCleanup();
         }
@@ -64,24 +53,31 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
             await context.SaveChangesAsync();
         }
 
-        [TestMethod]
-        public async Task ShouldBeOk()
+        [DataRow(5, 1)]
+        [DataRow(6, 2)]
+        [DataRow(7, 4)]
+        [DataRow(8, 8)]
+        [DataTestMethod]
+        public async Task ShouldBeValid(int count, int seed)
         {
             // Arrange
+            var challengeFaker = new ChallengeFaker(state: ChallengeState.Ended);
+            challengeFaker.UseSeed(seed);
+            var challenges = challengeFaker.Generate(count) as IEnumerable<IChallenge>;
             var challengeRepository = _testServer.GetService<IChallengeRepository>();
-            var challengeFaker = new ChallengeFaker(state: ChallengeState.Closed);
-            var challenge = challengeFaker.Generate();
-            challengeRepository.Create(challenge);
+            challengeRepository.Create(challenges);
             await challengeRepository.CommitAsync();
+            var challengeService = _testServer.GetService<IChallengeService>();
+            var closedAt = new FakeDateTimeProvider(DateTime.UtcNow);
 
             // Act
-            var response = await this.ExecuteAsync(ChallengeId.FromGuid(challenge.Id));
+            await challengeService.CloseAsync(closedAt);
 
-            // Assert
-            response.EnsureSuccessStatusCode();
-            var challengeViewModel = await response.DeserializeAsync<ChallengeViewModel>();
-            challengeViewModel.Should().NotBeNull();
-            challengeViewModel?.Id.Should().Be(challenge.Id);
+            // Arrange
+            challengeRepository = _testServer.GetService<IChallengeRepository>();
+            challenges = await challengeRepository.FindChallengesAsync(null, ChallengeState.Closed);
+            challenges.Should().HaveCount(count);
+            challenges.ForEach(challenge => challenge.Timeline.ClosedAt.Should().Be(closedAt.DateTime));
         }
     }
 }

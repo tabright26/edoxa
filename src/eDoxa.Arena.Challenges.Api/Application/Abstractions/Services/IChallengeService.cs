@@ -13,6 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Common.ValueObjects;
 
 namespace eDoxa.Arena.Challenges.Api.Application.Abstractions.Services
@@ -35,7 +36,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Abstractions.Services
             CancellationToken cancellationToken = default
         );
 
-        Task CloseAsync(CancellationToken cancellationToken = default);
+        Task CloseAsync(IDateTimeProvider closedAt, CancellationToken cancellationToken = default);
 
         Task SynchronizeAsync(ChallengeGame game, CancellationToken cancellationToken = default);
     }
