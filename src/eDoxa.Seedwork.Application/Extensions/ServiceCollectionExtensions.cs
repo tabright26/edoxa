@@ -96,7 +96,11 @@ namespace eDoxa.Seedwork.Application.Extensions
 
             builder.AddControllersAsServices();
 
-            builder.AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+            builder.AddJsonOptions(options =>
+            {
+                options.SerializerSettings.DateFormatString = "yyyy'-'MM'-'dd'T'HH':'mm':'ss";
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            });
 
             builder.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

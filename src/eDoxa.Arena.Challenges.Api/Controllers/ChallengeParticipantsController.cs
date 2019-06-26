@@ -12,10 +12,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Api.Application.Abstractions;
 using eDoxa.Arena.Challenges.Api.Application.Commands;
-using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Domain.Queries;
+using eDoxa.Arena.Challenges.Domain.ViewModels;
 using eDoxa.Commands.Extensions;
 
 using MediatR;
@@ -50,6 +50,7 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         /// </summary>
         [HttpGet]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<ParticipantViewModel>))]
+        [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync(ChallengeId challengeId)
         {
             var participants = await _participantQuery.FindChallengeParticipantsAsync(challengeId);
@@ -66,12 +67,12 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         ///     Register a participant to a challenge.
         /// </summary>
         [HttpPost]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ParticipantViewModel))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         public async Task<IActionResult> PostAsync(ChallengeId challengeId)
         {
-            var participant = await _mediator.SendCommandAsync(new RegisterParticipantCommand(challengeId));
+            await _mediator.SendCommandAsync(new RegisterParticipantCommand(challengeId));
 
-            return this.Ok(participant);
+            return this.Ok("Participant as been registered.");
         }
     }
 }

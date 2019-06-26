@@ -10,8 +10,9 @@
 
 using AutoMapper;
 
-using eDoxa.Arena.Challenges.Api.ViewModels;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
+using eDoxa.Arena.Challenges.Api.Profiles.Resolvers;
+using eDoxa.Arena.Challenges.Domain.ViewModels;
+using eDoxa.Arena.Challenges.Infrastructure.Models;
 
 namespace eDoxa.Arena.Challenges.Api.Profiles
 {
@@ -19,11 +20,11 @@ namespace eDoxa.Arena.Challenges.Api.Profiles
     {
         public StatProfile()
         {
-            this.CreateMap<Stat, StatViewModel>()
-                .ForMember(stat => stat.Name, config => config.MapFrom(stat => stat.Name.ToString()))
-                .ForMember(stat => stat.Value, config => config.MapFrom<double>(stat => stat.Value))
-                .ForMember(stat => stat.Weighting, config => config.MapFrom<float>(stat => stat.Weighting))
-                .ForMember(stat => stat.Score, config => config.MapFrom<decimal>(stat => stat.Score));
+            this.CreateMap<StatModel, StatViewModel>()
+                .ForMember(stat => stat.Name, config => config.MapFrom(stat => stat.Name))
+                .ForMember(stat => stat.Value, config => config.MapFrom(stat => stat.Value))
+                .ForMember(stat => stat.Weighting, config => config.MapFrom(stat => stat.Weighting))
+                .ForMember(stat => stat.Score, config => config.MapFrom<StatScoreResolver>());
         }
     }
 }

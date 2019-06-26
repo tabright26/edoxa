@@ -1,5 +1,5 @@
 ﻿// Filename: RegisterParticipantCommandHandlerTest.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-09
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,7 +9,6 @@
 // this source code package.
 
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,17 +16,12 @@ using AutoMapper;
 
 using eDoxa.Arena.Challenges.Api.Application.Commands;
 using eDoxa.Arena.Challenges.Api.Application.Commands.Handlers;
-using eDoxa.Arena.Challenges.Api.ViewModels;
-using eDoxa.Arena.Challenges.Domain.Abstractions.Services;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
-using eDoxa.Arena.Challenges.Domain.Fakers;
+using eDoxa.Arena.Challenges.Domain.Services;
+using eDoxa.Arena.Challenges.Domain.ViewModels;
 using eDoxa.Arena.Challenges.UnitTests.Extensions;
 using eDoxa.Commands.Extensions;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.ValueObjects;
-
-using FluentAssertions;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -39,7 +33,6 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Commands.Handlers
     [TestClass]
     public sealed class RegisterParticipantCommandHandlerTest
     {
-        private ChallengeFaker _challengeFaker;
         private Mock<IChallengeService> _mockChallengeService;
         private Mock<IHttpContextAccessor> _mockHttpContextAccessor;
         private Mock<IMapper> _mockMapper;
@@ -47,7 +40,6 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Commands.Handlers
         [TestInitialize]
         public void TestInitialize()
         {
-            _challengeFaker = new ChallengeFaker(Game.LeagueOfLegends);
             _mockChallengeService = new Mock<IChallengeService>();
             _mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
             _mockHttpContextAccessor.SetupClaims();
@@ -62,22 +54,30 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Commands.Handlers
                     mock => mock.RegisterParticipantAsync(
                         It.IsAny<ChallengeId>(),
                         It.IsAny<UserId>(),
-                        It.IsAny<Func<Game, UserGameReference>>(),
+                        It.IsAny<Func<ChallengeGame, GameAccountId>>(),
                         It.IsAny<CancellationToken>()
                     )
                 )
-                .ReturnsAsync(_challengeFaker.Generate().Participants.First())
+                .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            _mockMapper.Setup(x => x.Map<ParticipantViewModel>(It.IsAny<Participant>())).Returns(new ParticipantViewModel()).Verifiable();
+            _mockMapper.Setup(mapper => mapper.Map<ParticipantViewModel>(It.IsAny<Participant>())).Returns(new ParticipantViewModel()).Verifiable();
 
-            var handler = new RegisterParticipantCommandHandler(_mockHttpContextAccessor.Object, _mockChallengeService.Object, _mockMapper.Object);
+            var handler = new RegisterParticipantCommandHandler(_mockHttpContextAccessor.Object, _mockChallengeService.Object);
 
             // Act
-            var result = await handler.HandleAsync(new RegisterParticipantCommand(new ChallengeId()));
+            await handler.HandleAsync(new RegisterParticipantCommand(new ChallengeId()));
 
             // Assert
-            result.Should().BeOfType<ParticipantViewModel>();
+            _mockChallengeService.Verify(
+                mock => mock.RegisterParticipantAsync(
+                    It.IsAny<ChallengeId>(),
+                    It.IsAny<UserId>(),
+                    It.IsAny<Func<ChallengeGame, GameAccountId>>(),
+                    It.IsAny<CancellationToken>()
+                ),
+                Times.Once
+            );
         }
     }
 }

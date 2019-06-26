@@ -11,11 +11,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Api.Application.Abstractions;
 using eDoxa.Arena.Challenges.Api.Controllers;
-using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Seedwork.Common.Enumerations;
+using eDoxa.Arena.Challenges.Domain.Queries;
+using eDoxa.Arena.Challenges.Domain.ViewModels;
 
 using FluentAssertions;
 
@@ -45,7 +44,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
         public async Task FindChallengesAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            _queries.Setup(queries => queries.FindChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()))
+            _queries.Setup(queries => queries.FindChallengesAsync(It.IsAny<ChallengeGame>(), It.IsAny<ChallengeState>()))
                 .ReturnsAsync(
                     new List<ChallengeViewModel>
                     {
@@ -71,7 +70,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
         public async Task GetAsync_ShouldBeNoContentResult()
         {
             // Arrange
-            _queries.Setup(queries => queries.FindChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()))
+            _queries.Setup(queries => queries.FindChallengesAsync(It.IsAny<ChallengeGame>(), It.IsAny<ChallengeState>()))
                 .ReturnsAsync(new List<ChallengeViewModel>())
                 .Verifiable();
 

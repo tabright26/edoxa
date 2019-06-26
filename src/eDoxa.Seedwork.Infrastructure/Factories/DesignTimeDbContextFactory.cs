@@ -10,14 +10,10 @@
 
 using System;
 using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
 
 using eDoxa.Seedwork.Security.Constants;
 
 using JetBrains.Annotations;
-
-using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -69,27 +65,5 @@ namespace eDoxa.Seedwork.Infrastructure.Factories
 
         [CanBeNull]
         public abstract TContext CreateDbContext(string[] args);
-
-        protected class NoMediator : IMediator
-        {
-            [NotNull]
-            public Task Publish([NotNull] object notification, CancellationToken cancellationToken = default)
-            {
-                return Task.CompletedTask;
-            }
-
-            [NotNull]
-            public Task Publish<TNotification>([NotNull] TNotification notification, CancellationToken cancellationToken = default)
-            where TNotification : INotification
-            {
-                return Task.CompletedTask;
-            }
-
-            [ItemNotNull]
-            public async Task<TResponse> Send<TResponse>([NotNull] IRequest<TResponse> request, CancellationToken cancellationToken = default)
-            {
-                return await Task.FromResult(default(TResponse));
-            }
-        }
     }
 }

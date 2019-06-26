@@ -19,7 +19,7 @@ namespace eDoxa.Arena.Extensions
     {
         public static void AddArena(this IServiceCollection services)
         {
-            services.AddSingleton<ILeagueOfLegendsMatchService, FakeLeagueOfLegendsMatchService>();
+            services.AddSingleton<ILeagueOfLegendsService, FakeLeagueOfLegendsService>();
         }
     }
 }

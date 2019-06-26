@@ -12,16 +12,15 @@ using System;
 using System.Linq.Expressions;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Domain.Specifications;
 
 namespace eDoxa.Arena.Challenges.Domain.Specifications
 {
     public sealed class ChallengeForGameSpecification : Specification<Challenge>
     {
-        private readonly Game _game;
+        private readonly ChallengeGame _game;
 
-        public ChallengeForGameSpecification(Game game)
+        public ChallengeForGameSpecification(ChallengeGame game)
         {
             _game = game;
         }

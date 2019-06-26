@@ -1,5 +1,5 @@
 ﻿// Filename: ParticipantPrizes.cs
-// Date Created: 2019-06-05
+// Date Created: 2019-06-12
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,7 +10,6 @@
 
 using System.Collections.Generic;
 
-using eDoxa.Arena.Challenges.Domain.Abstractions;
 using eDoxa.Seedwork.Common.ValueObjects;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate

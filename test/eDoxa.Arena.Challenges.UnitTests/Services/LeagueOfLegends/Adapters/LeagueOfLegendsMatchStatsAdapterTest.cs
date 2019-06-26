@@ -15,29 +15,33 @@ namespace eDoxa.Arena.Challenges.UnitTests.Services.LeagueOfLegends.Adapters
     [TestClass]
     public sealed class LeagueOfLegendsMatchStatsAdapterTest
     {
+        //private static readonly Faker Faker = new Faker();
+
         //[TestMethod]
-        //public void SnapshotParticipantMatch_ShouldBeValid()
+        //public void SnapshotParticipantMatch_ShouldHaveCountOfFive()
         //{
         //    // Arrange
-        //    var matches = StubConvert.DeserializeObject<IEnumerable<LeagueOfLegendsMatchDTO>>(@"Utilities/Stubs/LeagueOfLegends/Matches.json");
+        //    var matches = StubConvert.DeserializeObject<IEnumerable<LeagueOfLegendsMatchDto>>(@"Utilities/Stubs/LeagueOfLegends/Matches.json");
 
-        //    var userId = new UserId();
+        //    var gameAccountId = new GameAccountId("NzH50JS-LCAu0UEY4EMjuS710F_U_8pLfEpNib9X06dD4w");
 
-        //    var externalAccount = new ExternalAccount("NzH50JS-LCAu0UEY4EMjuS710F_U_8pLfEpNib9X06dD4w");
+        //    var challengeFaker = new ChallengeFaker(state: ChallengeState.Inscription);
 
-        //    var challenge = FakeChallengeFactory.CreateChallenge();
+        //    var challenge = challengeFaker.Generate();
 
-        //    challenge.RegisterParticipant(userId, externalAccount);
+        //    var participant = new Participant(Faker.UserId(), gameAccountId, new UtcNowDateTimeProvider());
+
+        //    challenge.Register(participant);
 
         //    foreach (var match in matches)
         //    {
-        //        var adapter = new LeagueOfLegendsMatchStatsAdapter(externalAccount, match);
+        //        var adapter = new LeagueOfLegendsMatchStatsAdapter(gameAccountId, match);
 
-        //         challenge.SnapshotParticipantMatch(challenge.Participants.Single(x => x.UserId == userId), new MatchReference(123123123123),  adapter.MatchStats);
+        //        challenge.SnapshotParticipantMatch(participant, new GameMatchId(match.GameId), adapter.MatchStats, new UtcNowDateTimeProvider());
         //    }
 
         //    // Act => Assert
-        //    challenge.Participants.Single(x => x.UserId == userId).Matches.Should().HaveCount(5);
+        //    participant.Matches.Should().HaveCount(5);
         //}
     }
 }

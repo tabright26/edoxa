@@ -13,8 +13,8 @@ using System.Linq;
 
 using Bogus;
 
+using eDoxa.Arena.Challenges.Api.Application.Fakers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.Fakers;
 using eDoxa.Arena.Challenges.UnitTests.Extensions;
 
 using FluentAssertions;
@@ -31,12 +31,18 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.Fakers
         private static IEnumerable<object[]> ChallengeStates => ChallengeState.GetEnumerations().Select(state => new object[] {state, Faker.Random.Int()});
 
         [TestMethod]
-        public void FakeChallenges_ShouldNotThrow1()
+        public void Generate_FromDifferentFakerWithSameSeed_ShouldBeEquals()
         {
             // Arrange
+            const int seed = 1;
+
             var challengeFaker1 = new ChallengeFaker();
 
+            challengeFaker1.UseSeed(seed);
+
             var challengeFaker2 = new ChallengeFaker();
+
+            challengeFaker2.UseSeed(seed);
 
             // Act
             var challenge1 = challengeFaker1.Generate();
@@ -48,7 +54,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.Fakers
         }
 
         [TestMethod]
-        public void FakeChallenges_ShouldNotThrow2()
+        public void Generate_FromSameFaker_ShouldNotBeEquals()
         {
             // Arrange
             var challengeFaker = new ChallengeFaker();
@@ -64,7 +70,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.Fakers
 
         [DataTestMethod]
         [DynamicData(nameof(ChallengeStates))]
-        public void Generate_ChallengesWithAnyStateGeneratedByAnySeed_ShouldBeValidObjectState(ChallengeState state, int seed)
+        public void Generate_ChallengesWithAnyStateGeneratedByAnySeed_ShouldBeValidState(ChallengeState state, int seed)
         {
             // Arrange
             var challengeFaker = new ChallengeFaker(state: state);
@@ -75,40 +81,11 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.Fakers
             var challenges = challengeFaker.Generate(20);
 
             // Assert
-            challenges.ShouldBeValidObjectState();
+            challenges.AssertStateIsValid();
         }
 
-        [Ignore("This feature is temporairy disabled.")]
-        public void FakeChallenges_ShouldNotThrow3()
-        {
-            // Arrange
-            var challengeFaker = new ChallengeFaker();
-
-            // Act
-            var challenge1 = challengeFaker.Generate();
-
-            //challengeFaker.ParticipantFaker = new ParticipantFaker();
-
-            var challenge2 = challengeFaker.Generate();
-
-            //challengeFaker.ParticipantFaker = new ParticipantFaker();
-
-            var challenge3 = challengeFaker.Generate();
-
-            var participants1 = challenge1.Participants.OrderBy(x => x.Id).ToList();
-
-            var participants2 = challenge2.Participants.OrderBy(x => x.Id).ToList();
-
-            var participants3 = challenge3.Participants.OrderBy(x => x.Id).ToList();
-
-            var r = participants1.Union(participants2).Union(participants3).Distinct().ToList();
-
-            // Assert
-            r.Should().HaveCount(200);
-        }
-
-        [Ignore("This feature is temporairy disabled.")]
-        public void FakeChallenges_ShouldNotThrow4()
+        [TestMethod]
+        public void Generate_ChallengeParticipants_ShouldBeUnique()
         {
             // Arrange
             var challengeFaker = new ChallengeFaker();

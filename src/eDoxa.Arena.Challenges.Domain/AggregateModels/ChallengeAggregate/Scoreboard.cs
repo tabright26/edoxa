@@ -1,5 +1,5 @@
 ﻿// Filename: Scoreboard.cs
-// Date Created: 2019-06-02
+// Date Created: 2019-06-12
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,17 +11,15 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using eDoxa.Arena.Challenges.Domain.Abstractions;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
 using eDoxa.Seedwork.Common.ValueObjects;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class Scoreboard : Dictionary<UserId, Score>, IScoreboard
     {
-        public Scoreboard(IEnumerable<Participant> participants) : base(
-            participants.OrderByDescending(participant => participant.AverageScore)
-                .ToDictionary(participant => participant.UserId, participant => participant.AverageScore)
+        public Scoreboard(IChallenge challenge) : base(
+            challenge.Participants.OrderByDescending(participant => participant.AverageScore(challenge.Setup.BestOf))
+                .ToDictionary(participant => participant.UserId, participant => participant.AverageScore(challenge.Setup.BestOf))
         )
         {
         }

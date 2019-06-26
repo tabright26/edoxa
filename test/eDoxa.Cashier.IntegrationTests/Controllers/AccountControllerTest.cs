@@ -24,6 +24,7 @@ using FluentAssertions;
 
 using IdentityModel;
 
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Cashier.IntegrationTests.Controllers
@@ -31,50 +32,45 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
     [TestClass]
     public sealed class AccountControllerTest
     {
-        private static readonly Claim[] Claims = {new Claim(JwtClaimTypes.Subject, CashierTestConstants.TestUserId.ToString())};
-
         private HttpClient _httpClient;
-        private CashierDbContext _dbContext;
+        private TestServer _testServer;
+
+        public async Task<HttpResponseMessage> ExecuteAsync()
+        {
+            return await _httpClient.DefaultRequestHeaders(new[] { new Claim(JwtClaimTypes.Subject, CashierTestConstants.TestUserId.ToString()) }).GetAsync("api/account/balance/money");
+        }
 
         [TestInitialize]
         public void TestInitialize()
         {
             var factory = new CustomWebApplicationFactory<CashierDbContext, Startup>();
-
             _httpClient = factory.CreateClient();
-
-            _dbContext = factory.DbContext;
+            _testServer = factory.Server;
         }
-
-        public async Task<HttpResponseMessage> Execute()
+        
+        [TestCleanup]
+        public async Task TestCleanup()
         {
-            return await _httpClient.DefaultRequestHeaders(Claims).GetAsync("api/account/balance/money");
+            var context = _testServer.GetService<CashierDbContext>();
+            context.Users.RemoveRange(context.Users);
+            await context.SaveChangesAsync();
         }
 
         [TestMethod]
         public async Task CashierScenario()
         {
-            _dbContext.Users.Add(
-                new User(CashierTestConstants.TestUserId, CashierTestConstants.TestStripeConnectAccountId, CashierTestConstants.TestStripeConnectAccountId)
-            );
+            // Arrange
+            var context = _testServer.GetService<CashierDbContext>();
+            context.Users.Add(new User(CashierTestConstants.TestUserId, CashierTestConstants.TestStripeConnectAccountId, CashierTestConstants.TestStripeConnectAccountId));
+            await context.SaveChangesAsync();
 
-            await _dbContext.SaveChangesAsync();
+            // Act
+            var response = await this.ExecuteAsync();
 
-            var response = await this.Execute();
-
+            // Assert
             response.EnsureSuccessStatusCode();
-
             var balance = await response.DeserializeAsync<BalanceViewModel>();
-
             balance.Should().NotBeNull();
-        }
-
-        [TestCleanup]
-        public async Task TestCleanup()
-        {
-            _dbContext.Users.RemoveRange(_dbContext.Users);
-
-            await _dbContext.SaveChangesAsync();
         }
     }
 }

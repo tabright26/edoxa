@@ -1,5 +1,5 @@
 ﻿// Filename: RegisterParticipantCommandValidatorTest.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-09
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,13 +8,13 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Arena.Challenges.Api.Application.Commands;
 using eDoxa.Arena.Challenges.Api.Application.Commands.Validations;
-using eDoxa.Arena.Challenges.Domain.Abstractions.Repositories;
+using eDoxa.Arena.Challenges.Api.Application.Fakers;
+using eDoxa.Arena.Challenges.Api.Application.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.UnitTests.Extensions;
+using eDoxa.Arena.Challenges.Domain.Queries;
 
-using FluentAssertions;
+using FluentValidation.TestHelper;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -26,27 +26,34 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Commands.Validations
     [TestClass]
     public sealed class RegisterParticipantCommandValidatorTest
     {
+        private Mock<IChallengeQuery> _mockChallengeQuery;
         private Mock<IHttpContextAccessor> _mockHttpContextAccessor;
-        private Mock<IChallengeRepository> _mockChallengeRepository;
 
         [TestInitialize]
         public void TestInitialize()
         {
+            _mockChallengeQuery = new Mock<IChallengeQuery>();
             _mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
-            _mockHttpContextAccessor.SetupClaims();
-            _mockChallengeRepository = new Mock<IChallengeRepository>();
         }
 
         [TestMethod]
-        public void M()
+        public void ShouldBeValidChallengeId()
         {
-            var command = new RegisterParticipantCommand(new ChallengeId());
+            // Arrange
+            var challengeFaker = new ChallengeFaker();
 
-            var validator = new RegisterParticipantCommandValidator(_mockHttpContextAccessor.Object, _mockChallengeRepository.Object);
+            var challengeViewModel = challengeFaker.GenerateViewModel();
 
-            var result = validator.Validate(command);
+            _mockChallengeQuery.Setup(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>()))
+                .ReturnsAsync(challengeViewModel)
+                .Verifiable();
 
-            result.IsValid.Should().BeFalse();
+            var validator = new RegisterParticipantCommandValidator(_mockHttpContextAccessor.Object, _mockChallengeQuery.Object);
+
+            // Assert
+            validator.ShouldNotHaveValidationErrorFor(command => command.ChallengeId, ChallengeId.FromGuid(challengeViewModel.Id));
+
+            _mockChallengeQuery.Verify(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Once);
         }
     }
 }

@@ -8,16 +8,20 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Domain.Abstractions.Repositories;
+using AutoMapper;
+
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
-using eDoxa.Seedwork.Common.Enumerations;
-using eDoxa.Seedwork.Common.ValueObjects;
-using eDoxa.Seedwork.Domain;
+using eDoxa.Arena.Challenges.Domain.Repositories;
+using eDoxa.Arena.Challenges.Infrastructure.Extensions;
+using eDoxa.Arena.Challenges.Infrastructure.Models;
+using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Specifications.Abstractions;
 
 using JetBrains.Annotations;
@@ -28,88 +32,133 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
 {
     public sealed partial class ChallengeRepository
     {
-        private static readonly string NavigationPropertyPath = $"{nameof(Challenge.Participants)}.{nameof(Participant.Matches)}";
+        private const string NavigationPropertyPath = "Participants.Matches";
 
         private readonly ChallengesDbContext _context;
+        private readonly IMapper _mapper;
 
-        public ChallengeRepository(ChallengesDbContext context)
+        private IDictionary<Guid, IChallenge> _materializedIds = new Dictionary<Guid, IChallenge>();
+        private IDictionary<IChallenge, ChallengeModel> _materializedObjects = new Dictionary<IChallenge, ChallengeModel>();
+
+        public ChallengeRepository(ChallengesDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        public IUnitOfWork UnitOfWork => _context;
+        private async Task<IReadOnlyCollection<ChallengeModel>> FindChallengeModelsAsync(int? game = null, int? state = null)
+        {
+            var challenges = from challenge in _context.Challenges.Include(NavigationPropertyPath)
+                             where (game == null || challenge.Game == game) && (state == null || challenge.State == state)
+                             select challenge;
+
+            return await challenges.ToListAsync();
+        }
+
+        [ItemCanBeNull]
+        private async Task<ChallengeModel> FindChallengeModelAsync(Guid challengeId)
+        {
+            var challenges = from challenge in _context.Challenges.Include(NavigationPropertyPath)
+                             where challenge.Id == challengeId
+                             select challenge;
+
+            return await challenges.SingleOrDefaultAsync();
+        }
+
+        private async Task<bool> AnyChallengeModelAsync(Guid challengeId)
+        {
+            var challenges = from challenge in _context.Challenges
+                             where challenge.Id == challengeId
+                             select challenge;
+
+            return await challenges.AnyAsync();
+        }
     }
 
     public sealed partial class ChallengeRepository : IChallengeRepository
     {
-        public void Create(Challenge challenge)
+        public void Create(IEnumerable<IChallenge> challenges)
         {
-            _context.Add(challenge);
+            challenges.ForEach(this.Create);
         }
 
-        public void Create(IEnumerable<Challenge> challenges)
+        public void Create(IChallenge challenge)
         {
-            _context.Challenges.AddRange(challenges);
+            var challengeModel = _mapper.Map<ChallengeModel>(challenge);
+
+            _context.Challenges.Add(challengeModel);
+
+            _materializedObjects[challenge] = challengeModel;
         }
 
-        public async Task<Challenge> FindChallengeAsync(ChallengeId challengeId)
+        public async Task<IReadOnlyCollection<IChallenge>> FindChallengesAsync(ChallengeGame game = null, ChallengeState state = null)
         {
-            return await _context.Challenges.Include(NavigationPropertyPath).Where(challenge => challenge.Id == challengeId).SingleOrDefaultAsync();
+            var challenges = await this.FindChallengeModelsAsync(game?.Value, state?.Value);
+
+            return challenges.Select(
+                    challengeModel =>
+                    {
+                        var challenge = _mapper.Map<IChallenge>(challengeModel);
+
+                        _materializedObjects[challenge] = challengeModel;
+
+                        _materializedIds[challenge.Id] = challenge;
+
+                        return challenge;
+                    }
+                )
+                .ToList();
         }
 
-        public async Task<IReadOnlyCollection<Challenge>> FindChallengesAsync(Game game = null, ChallengeState state = null)
+        public async Task<IReadOnlyCollection<IChallenge>> FindChallengesAsync(ISpecification<IChallenge> specification)
         {
-            var challenges = await _context.Challenges.Include(NavigationPropertyPath).ToListAsync();
+            var challenges = await this.FindChallengeModelsAsync();
 
-            return challenges.Where(challenge => challenge.Game.HasFilter(game) && challenge.Timeline.State.HasFilter(state)).ToList();
-        }
-
-        public async Task<IReadOnlyCollection<Challenge>> FindChallengesAsync(ISpecification<Challenge> specification)
-        {
-            var challenges = await _context.Challenges.Include(NavigationPropertyPath).ToListAsync();
-
-            return challenges.Where(specification.IsSatisfiedBy).ToList();
-        }
-
-        public async Task<IReadOnlyCollection<Challenge>> FindUserChallengeHistoryAsNoTrackingAsync(
-            UserId userId,
-            Game game = null,
-            ChallengeState state = null
-        )
-        {
-            //var challenges = from challenge in _context.Challenges.AsNoTracking().Include(NavigationPropertyPath).AsExpandable()
-            //                 let participants = _context.Participants.Where(participant => participant.UserId == userId)
-            //                 where challenge.Game.HasFilter(game) &&
-            //                       challenge.Timeline.State.HasFilter(state) &&
-            //                       participants.Any(participant => participant.Challenge.Id == challenge.Id)
-            //                 select challenge;
-
-            //return await challenges.ToListAsync();
-
-            var challenges = await this.FindChallengesAsNoTrackingAsync(game, state);
-
-            return challenges.Where(challenge => challenge.Participants.Any(participant => participant.UserId == userId)).ToList();
-        }
-
-        public async Task<IReadOnlyCollection<Challenge>> FindChallengesAsNoTrackingAsync(Game game = null, ChallengeState state = null)
-        {
-            var challenges = await _context.Challenges.AsNoTracking().Include(NavigationPropertyPath).ToListAsync();
-
-            return challenges.Where(challenge => challenge.Game.HasFilter(game) && challenge.Timeline.State.HasFilter(state)).ToList();
+            return challenges.Select(challenge => _mapper.Map<IChallenge>(challenge)).Where(specification.IsSatisfiedBy).ToList();
         }
 
         [ItemCanBeNull]
-        public async Task<Challenge> FindChallengeAsNoTrackingAsync(ChallengeId challengeId)
+        public async Task<IChallenge> FindChallengeAsync(ChallengeId challengeId)
         {
-            return await _context.Challenges.AsNoTracking()
-                .Include(NavigationPropertyPath)
-                .Where(challenge => challenge.Id == challengeId)
-                .SingleOrDefaultAsync();
+            if (_materializedIds.TryGetValue(challengeId, out var challenge))
+            {
+                return challenge;
+            }
+
+            var challengeModel = await this.FindChallengeModelAsync(challengeId);
+
+            if (challengeModel == null)
+            {
+                return null;
+            }
+
+            challenge = _mapper.Map<IChallenge>(challengeModel);
+
+            _materializedObjects[challenge] = challengeModel;
+
+            _materializedIds[challengeId] = challenge;
+
+            return challenge;
         }
 
-        public async Task<bool> ChallengeSeedExistsAsync(int seed)
+        public async Task<bool> AnyChallengeAsync(ChallengeId challengeId)
         {
-            return await _context.Challenges.AnyAsync(challenge => challenge.Seed == seed);
+            return await this.AnyChallengeModelAsync(challengeId);
+        }
+
+        public async Task CommitAsync(CancellationToken cancellationToken = default)
+        {
+            foreach (var (challenge, challengeModel) in _materializedObjects)
+            {
+                _mapper.CopyChanges(challenge, challengeModel);
+            }
+
+            await _context.SaveChangesAsync(cancellationToken);
+
+            foreach (var (challenge, challengeModel) in _materializedObjects)
+            {
+                _materializedIds[challengeModel.Id] = challenge;
+            }
         }
     }
 }

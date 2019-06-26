@@ -1,5 +1,5 @@
 ﻿// Filename: CloseChallengeCommandHandlerTest.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-09
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,9 +13,10 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Application.Commands;
 using eDoxa.Arena.Challenges.Api.Application.Commands.Handlers;
-using eDoxa.Arena.Challenges.Domain.Abstractions.Services;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Commands.Extensions;
+using eDoxa.Seedwork.Common;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -38,7 +39,9 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Commands.Handlers
         public async Task HandleAsync_CompleteCommand_ShouldBeCompletedTask()
         {
             // Arrange
-            _mockChallengeService.Setup(mock => mock.CloseAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask).Verifiable();
+            _mockChallengeService.Setup(mock => mock.CloseAsync(It.IsAny<IDateTimeProvider>(), It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask)
+                .Verifiable();
 
             var handler = new CloseChallengesCommandHandler(_mockChallengeService.Object);
 
@@ -46,7 +49,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Commands.Handlers
             await handler.HandleAsync(new CloseChallengesCommand(new ChallengeId()));
 
             // Assert
-            _mockChallengeService.Verify(mock => mock.CloseAsync(It.IsAny<CancellationToken>()), Times.Once);
+            _mockChallengeService.Verify(mock => mock.CloseAsync(It.IsAny<IDateTimeProvider>(), It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }

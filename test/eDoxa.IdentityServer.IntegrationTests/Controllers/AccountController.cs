@@ -13,7 +13,9 @@ using System.Threading.Tasks;
 
 using eDoxa.Identity.Infrastructure;
 using eDoxa.Seedwork.Testing.TestServer;
+using eDoxa.Seedwork.Testing.TestServer.Extensions;
 
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.IdentityServer.IntegrationTests.Controllers
@@ -22,39 +24,38 @@ namespace eDoxa.IdentityServer.IntegrationTests.Controllers
     public sealed class AccountController
     {
         private HttpClient _httpClient;
-        private IdentityDbContext _dbContext;
+        private TestServer _testServer;
+
+        public async Task<HttpResponseMessage> ExecuteAsync()
+        {
+            return await _httpClient.GetAsync("identity/account/login");
+        }
 
         [TestInitialize]
         public async Task TestInitialize()
         {
             var factory = new CustomWebApplicationFactory<IdentityDbContext, Startup>();
-
             _httpClient = factory.CreateClient();
-
-            _dbContext = factory.DbContext;
-
+            _testServer = factory.Server;
             await this.TestCleanup();
-        }
-
-        public async Task<HttpResponseMessage> Execute()
-        {
-            return await _httpClient.GetAsync("identity/account/login");
-        }
-
-        [TestMethod]
-        public async Task IdentityScenario()
-        {
-            var response = await this.Execute();
-
-            response.EnsureSuccessStatusCode();
         }
 
         [TestCleanup]
         public async Task TestCleanup()
         {
-            _dbContext.Users.RemoveRange(_dbContext.Users);
+            var context = _testServer.GetService<IdentityDbContext>();
+            context.Users.RemoveRange(context.Users);
+            await context.SaveChangesAsync();
+        }
 
-            await _dbContext.SaveChangesAsync();
+        [TestMethod]
+        public async Task IdentityScenario()
+        {
+            // Act
+            var response = await this.ExecuteAsync();
+
+            // Assert
+            response.EnsureSuccessStatusCode();
         }
     }
 }

@@ -23,12 +23,12 @@ namespace eDoxa.Seedwork.Infrastructure
 {
     public abstract class CustomDbContext : DbContext, IUnitOfWork
     {
-        private readonly IMediator _mediator;
-
         protected CustomDbContext(DbContextOptions options, IMediator mediator) : base(options)
         {
-            _mediator = mediator;
+            Mediator = mediator;
         }
+
+        public IMediator Mediator { get; }
 
         public async Task CommitAsync(CancellationToken cancellationToken = default)
         {
@@ -45,7 +45,7 @@ namespace eDoxa.Seedwork.Infrastructure
             {
                 foreach (var domainEvent in entity.DomainEvents)
                 {
-                    await _mediator.PublishDomainEventsAsync(domainEvent);
+                    await Mediator.PublishDomainEventsAsync(domainEvent);
                 }
 
                 entity.ClearDomainEvents();

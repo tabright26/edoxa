@@ -12,6 +12,7 @@ using System.IO;
 using System.Reflection;
 
 using eDoxa.Arena.Challenges.Infrastructure;
+using eDoxa.Seedwork.Infrastructure;
 using eDoxa.Seedwork.Infrastructure.Factories;
 
 using JetBrains.Annotations;

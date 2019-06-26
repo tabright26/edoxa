@@ -13,14 +13,12 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using AutoMapper;
-
 using eDoxa.Arena.Challenges.Api;
-using eDoxa.Arena.Challenges.Api.ViewModels;
+using eDoxa.Arena.Challenges.Api.Application.Fakers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.Fakers;
+using eDoxa.Arena.Challenges.Domain.Repositories;
+using eDoxa.Arena.Challenges.Domain.ViewModels;
 using eDoxa.Arena.Challenges.Infrastructure;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Testing.TestServer;
 using eDoxa.Seedwork.Testing.TestServer.Extensions;
@@ -29,6 +27,7 @@ using FluentAssertions;
 
 using IdentityModel;
 
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
@@ -37,10 +36,9 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
     public sealed class ChallengeHistoryControllerGetAsyncTest
     {
         private HttpClient _httpClient;
-        private ChallengesDbContext _dbContext;
-        private IMapper _mapper;
+        private TestServer _testServer;
 
-        public async Task<HttpResponseMessage> ExecuteAsync(UserId userId, Game game = null, ChallengeState state = null)
+        public async Task<HttpResponseMessage> ExecuteAsync(UserId userId, ChallengeGame game = null, ChallengeState state = null)
         {
             return await _httpClient.DefaultRequestHeaders(new[] {new Claim(JwtClaimTypes.Subject, userId.ToString())})
                 .GetAsync($"api/challenges/history?game={game}&state={state}");
@@ -50,48 +48,38 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         public async Task TestInitialize()
         {
             var factory = new CustomWebApplicationFactory<ChallengesDbContext, Startup>();
-
             _httpClient = factory.CreateClient();
-
-            _dbContext = factory.DbContext;
-
-            _mapper = factory.Mapper;
-
+            _testServer = factory.Server;
             await this.TestCleanup();
         }
 
         [TestCleanup]
         public async Task TestCleanup()
         {
-            _dbContext.Challenges.RemoveRange(_dbContext.Challenges);
-
-            await _dbContext.SaveChangesAsync();
+            var context = _testServer.GetService<ChallengesDbContext>();
+            context.Challenges.RemoveRange(context.Challenges);
+            await context.SaveChangesAsync();
         }
 
         [TestMethod]
-        public async Task T1()
+        public async Task ShouldBeOk()
         {
+            // Arrange
+            var challengeRepository = _testServer.GetService<IChallengeRepository>();
             var challengeFaker = new ChallengeFaker(state: ChallengeState.InProgress);
-
+            challengeFaker.UseSeed(1);
             var challenge = challengeFaker.Generate();
-
-            _dbContext.Challenges.Add(challenge);
-
-            await _dbContext.SaveChangesAsync();
-
+            challengeRepository.Create(challenge);
+            await challengeRepository.CommitAsync();
             var participant = challenge.Participants.First();
 
-            var response = await this.ExecuteAsync(participant.UserId);
+            // Act
+            var response = await this.ExecuteAsync(UserId.FromGuid(participant.UserId));
 
+            // Assert
             response.EnsureSuccessStatusCode();
-
-            var challengeViewModels = await response.DeserializeAsync<ChallengeViewModel[]>();
-
-            var challengeViewModel1 = challengeViewModels.First();
-
-            var challengeViewModel2 = _mapper.Deserialize<ChallengeViewModel>(challenge);
-
-            challengeViewModel1.Should().BeEquivalentTo(challengeViewModel2);
+            var challengeViewModel = (await response.DeserializeAsync<ChallengeViewModel[]>()).First();
+            challengeViewModel.Id.Should().Be(challenge.Id);
         }
     }
 }

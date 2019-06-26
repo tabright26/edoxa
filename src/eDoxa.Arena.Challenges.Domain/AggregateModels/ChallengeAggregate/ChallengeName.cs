@@ -18,6 +18,8 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class ChallengeName : ValueObject
     {
+        private readonly string _name;
+
         public ChallengeName(string name)
         {
             if (string.IsNullOrWhiteSpace(name) || !name.All(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || c == '(' || c == ')'))
@@ -25,19 +27,22 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
                 throw new ArgumentException(nameof(name));
             }
 
-            Value = name;
+            _name = name;
         }
 
-        public string Value { get; private set; }
+        public static implicit operator string(ChallengeName name)
+        {
+            return name._name;
+        }
 
         public override string ToString()
         {
-            return Value;
+            return _name;
         }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
-            yield return Value;
+            yield return _name;
         }
     }
 }

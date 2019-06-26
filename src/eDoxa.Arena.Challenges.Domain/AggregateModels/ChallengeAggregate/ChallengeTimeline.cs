@@ -11,58 +11,68 @@
 using System;
 using System.Collections.Generic;
 
+using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public class ChallengeTimeline : ValueObject
+    public sealed class ChallengeTimeline : ValueObject
     {
-        public ChallengeTimeline(ChallengeDuration duration) : this()
+        public ChallengeTimeline(IDateTimeProvider createdAt, ChallengeDuration duration)
         {
+            CreatedAt = createdAt.DateTime;
             Duration = duration;
-        }
-
-        public ChallengeTimeline(ChallengeDuration duration, DateTime? startedAt) : this(duration)
-        {
-            StartedAt = startedAt;
-        }
-
-        public ChallengeTimeline(ChallengeDuration duration, DateTime? startedAt, DateTime? closedAt) : this(duration, startedAt)
-        {
-            ClosedAt = closedAt;
-        }
-
-        private ChallengeTimeline()
-        {
             StartedAt = null;
             ClosedAt = null;
         }
 
-        public ChallengeDuration Duration { get; private set; }
+        private ChallengeTimeline(
+            DateTime createdAt,
+            ChallengeDuration duration,
+            DateTime? startedAt,
+            DateTime? closedAt
+        ) : this(createdAt, duration, startedAt)
+        {
+            ClosedAt = closedAt;
+        }
 
-        public DateTime? StartedAt { get; private set; }
+        private ChallengeTimeline(DateTime createdAt, ChallengeDuration duration, DateTime? startedAt)
+        {
+            CreatedAt = createdAt;
+            Duration = duration;
+            StartedAt = startedAt;
+        }
 
-        public DateTime? ClosedAt { get; private set; }
+        public DateTime CreatedAt { get; }
+
+        public ChallengeDuration Duration { get; }
+
+        public DateTime? StartedAt { get; }
+
+        public DateTime? ClosedAt { get; }
 
         public DateTime? EndedAt => StartedAt + Duration;
 
-        public ChallengeState State =>
-            ClosedAt != null ? ChallengeState.Closed :
-            EndedAt != null && EndedAt <= DateTime.UtcNow ? ChallengeState.Ended :
-            StartedAt != null ? ChallengeState.InProgress : ChallengeState.Inscription;
+        public ChallengeState State => ChallengeState.From(this);
 
-        public ChallengeTimeline Start()
+        public static implicit operator ChallengeState(ChallengeTimeline timeline)
         {
-            return new ChallengeTimeline(Duration, DateTime.UtcNow);
+            return timeline.State;
         }
 
-        public ChallengeTimeline Close()
+        public ChallengeTimeline Start(IDateTimeProvider startedAt)
         {
-            return new ChallengeTimeline(Duration, StartedAt, DateTime.UtcNow);
+            return new ChallengeTimeline(CreatedAt, Duration, startedAt.DateTime);
+        }
+
+        public ChallengeTimeline Close(IDateTimeProvider closedAt)
+        {
+            return new ChallengeTimeline(CreatedAt, Duration, StartedAt, closedAt.DateTime);
         }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
+            yield return CreatedAt;
             yield return Duration;
             yield return StartedAt;
             yield return EndedAt;

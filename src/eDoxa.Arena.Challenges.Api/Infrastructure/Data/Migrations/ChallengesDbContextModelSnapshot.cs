@@ -3,7 +3,6 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-
 using eDoxa.Arena.Challenges.Infrastructure;
 
 namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
@@ -15,81 +14,64 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("edoxa")
                 .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.Challenge", b =>
+            modelBuilder.Entity("eDoxa.Arena.Challenges.Infrastructure.Models.ChallengeModel", b =>
                 {
                     b.Property<Guid>("Id")
-                        .HasColumnName("Id");
+                        .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnName("CreatedAt");
+                    b.Property<int>("Game");
 
-                    b.Property<int>("Game")
-                        .HasColumnName("Game");
+                    b.Property<string>("Name");
 
-                    b.Property<DateTime?>("LastSync")
-                        .HasColumnName("LastSync");
+                    b.Property<int>("State");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnName("Name");
-
-                    b.Property<int?>("Seed");
+                    b.Property<DateTime?>("SynchronizedAt");
 
                     b.HasKey("Id");
 
                     b.ToTable("Challenge");
                 });
 
-            modelBuilder.Entity("eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate.Match", b =>
+            modelBuilder.Entity("eDoxa.Arena.Challenges.Infrastructure.Models.MatchModel", b =>
                 {
                     b.Property<Guid>("Id")
-                        .HasColumnName("Id");
+                        .ValueGeneratedOnAdd();
 
-                    b.Property<Guid>("ParticipantId")
-                        .HasColumnName("ParticipantId");
+                    b.Property<string>("GameReference");
 
-                    b.Property<string>("Reference")
-                        .IsRequired()
-                        .HasColumnName("Reference");
+                    b.Property<Guid?>("ParticipantId");
 
-                    b.Property<DateTime>("Timestamp")
-                        .HasColumnName("Timestamp");
+                    b.Property<DateTime>("SynchronizedAt");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ParticipantId");
+                    b.HasIndex("GameReference")
+                        .IsUnique()
+                        .HasFilter("[GameReference] IS NOT NULL");
 
-                    b.HasIndex("Reference")
-                        .IsUnique();
+                    b.HasIndex("ParticipantId");
 
                     b.ToTable("Match");
                 });
 
-            modelBuilder.Entity("eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate.Participant", b =>
+            modelBuilder.Entity("eDoxa.Arena.Challenges.Infrastructure.Models.ParticipantModel", b =>
                 {
                     b.Property<Guid>("Id")
-                        .HasColumnName("Id");
+                        .ValueGeneratedOnAdd();
 
-                    b.Property<Guid>("ChallengeId")
-                        .HasColumnName("ChallengeId");
+                    b.Property<Guid?>("ChallengeId");
 
-                    b.Property<DateTime?>("LastSync")
-                        .HasColumnName("LastSync");
+                    b.Property<string>("GameAccountId");
 
-                    b.Property<DateTime>("Timestamp")
-                        .HasColumnName("Timestamp");
+                    b.Property<DateTime>("RegisteredAt");
 
-                    b.Property<string>("UserGameReference")
-                        .IsRequired()
-                        .HasColumnName("UserGameReference");
+                    b.Property<DateTime?>("SynchronizedAt");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnName("UserId");
+                    b.Property<Guid>("UserId");
 
                     b.HasKey("Id");
 
@@ -101,198 +83,135 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
                     b.ToTable("Participant");
                 });
 
-            modelBuilder.Entity("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.Challenge", b =>
+            modelBuilder.Entity("eDoxa.Arena.Challenges.Infrastructure.Models.ChallengeModel", b =>
                 {
-                    b.OwnsMany("eDoxa.Arena.Challenges.Domain.AggregateModels.Bucket", "Buckets", b1 =>
+                    b.OwnsMany("eDoxa.Arena.Challenges.Infrastructure.Models.BucketModel", "Buckets", b1 =>
                         {
-                            b1.Property<Guid>("ChallengeId")
-                                .HasColumnName("ChallengeId");
+                            b1.Property<Guid>("ChallengeId");
 
                             b1.Property<Guid>("Id")
                                 .ValueGeneratedOnAdd();
+
+                            b1.Property<decimal>("PrizeAmount")
+                                .HasColumnType("decimal(10, 2)");
+
+                            b1.Property<int>("PrizeCurrency");
+
+                            b1.Property<int>("Size");
 
                             b1.HasKey("ChallengeId", "Id");
 
                             b1.ToTable("Bucket");
 
-                            b1.HasOne("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.Challenge")
+                            b1.HasOne("eDoxa.Arena.Challenges.Infrastructure.Models.ChallengeModel")
                                 .WithMany("Buckets")
                                 .HasForeignKey("ChallengeId")
                                 .OnDelete(DeleteBehavior.Cascade);
-
-                            b1.OwnsOne("eDoxa.Arena.Challenges.Domain.AggregateModels.BucketSize", "Size", b2 =>
-                                {
-                                    b2.Property<Guid>("BucketChallengeId");
-
-                                    b2.Property<Guid>("BucketId");
-
-                                    b2.Property<int>("Value")
-                                        .HasColumnName("Size");
-
-                                    b2.HasKey("BucketChallengeId", "BucketId");
-
-                                    b2.ToTable("Bucket","edoxa");
-
-                                    b2.HasOne("eDoxa.Arena.Challenges.Domain.AggregateModels.Bucket")
-                                        .WithOne("Size")
-                                        .HasForeignKey("eDoxa.Arena.Challenges.Domain.AggregateModels.BucketSize", "BucketChallengeId", "BucketId")
-                                        .OnDelete(DeleteBehavior.Cascade);
-                                });
-
-                            b1.OwnsOne("eDoxa.Arena.Challenges.Domain.AggregateModels.Prize", "Prize", b2 =>
-                                {
-                                    b2.Property<Guid>("BucketChallengeId");
-
-                                    b2.Property<Guid>("BucketId");
-
-                                    b2.Property<decimal>("Amount")
-                                        .HasColumnName("PrizeAmount");
-
-                                    b2.Property<int>("Type")
-                                        .HasColumnName("PrizeCurrency");
-
-                                    b2.HasKey("BucketChallengeId", "BucketId");
-
-                                    b2.ToTable("Bucket","edoxa");
-
-                                    b2.HasOne("eDoxa.Arena.Challenges.Domain.AggregateModels.Bucket")
-                                        .WithOne("Prize")
-                                        .HasForeignKey("eDoxa.Arena.Challenges.Domain.AggregateModels.Prize", "BucketChallengeId", "BucketId")
-                                        .OnDelete(DeleteBehavior.Cascade);
-                                });
                         });
 
-                    b.OwnsOne("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ChallengeSetup", "Setup", b1 =>
+                    b.OwnsOne("eDoxa.Arena.Challenges.Infrastructure.Models.ChallengeSetupModel", "Setup", b1 =>
                         {
-                            b1.Property<Guid>("ChallengeId");
+                            b1.Property<Guid>("ChallengeModelId");
 
-                            b1.Property<int>("BestOf")
-                                .HasColumnName("BestOf");
+                            b1.Property<int>("BestOf");
 
-                            b1.Property<int>("Entries")
-                                .HasColumnName("Entries");
+                            b1.Property<int>("Entries");
 
-                            b1.Property<int>("PayoutEntries")
-                                .HasColumnName("PayoutEntries");
+                            b1.Property<decimal>("EntryFeeAmount")
+                                .HasColumnType("decimal(10, 2)");
 
-                            b1.HasKey("ChallengeId");
+                            b1.Property<int>("EntryFeeCurrency");
 
-                            b1.ToTable("Setup","edoxa");
+                            b1.Property<int>("PayoutEntries");
 
-                            b1.HasOne("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.Challenge")
+                            b1.HasKey("ChallengeModelId");
+
+                            b1.ToTable("Challenge");
+
+                            b1.HasOne("eDoxa.Arena.Challenges.Infrastructure.Models.ChallengeModel")
                                 .WithOne("Setup")
-                                .HasForeignKey("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ChallengeSetup", "ChallengeId")
+                                .HasForeignKey("eDoxa.Arena.Challenges.Infrastructure.Models.ChallengeSetupModel", "ChallengeModelId")
                                 .OnDelete(DeleteBehavior.Cascade);
-
-                            b1.OwnsOne("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ValueObjects.EntryFee", "EntryFee", b2 =>
-                                {
-                                    b2.Property<Guid>("ChallengeSetupChallengeId");
-
-                                    b2.Property<decimal>("Amount")
-                                        .HasColumnName("EntryFeeAmount");
-
-                                    b2.Property<int>("Type")
-                                        .HasColumnName("EntryFeeCurrency");
-
-                                    b2.HasKey("ChallengeSetupChallengeId");
-
-                                    b2.ToTable("Setup","edoxa");
-
-                                    b2.HasOne("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ChallengeSetup")
-                                        .WithOne("EntryFee")
-                                        .HasForeignKey("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ValueObjects.EntryFee", "ChallengeSetupChallengeId")
-                                        .OnDelete(DeleteBehavior.Cascade);
-                                });
                         });
 
-                    b.OwnsOne("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ChallengeTimeline", "Timeline", b1 =>
+                    b.OwnsOne("eDoxa.Arena.Challenges.Infrastructure.Models.ChallengeTimelineModel", "Timeline", b1 =>
+                        {
+                            b1.Property<Guid>("ChallengeModelId");
+
+                            b1.Property<DateTime?>("ClosedAt");
+
+                            b1.Property<DateTime>("CreatedAt");
+
+                            b1.Property<long>("Duration");
+
+                            b1.Property<DateTime?>("StartedAt");
+
+                            b1.HasKey("ChallengeModelId");
+
+                            b1.ToTable("Challenge");
+
+                            b1.HasOne("eDoxa.Arena.Challenges.Infrastructure.Models.ChallengeModel")
+                                .WithOne("Timeline")
+                                .HasForeignKey("eDoxa.Arena.Challenges.Infrastructure.Models.ChallengeTimelineModel", "ChallengeModelId")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
+
+                    b.OwnsMany("eDoxa.Arena.Challenges.Infrastructure.Models.ScoringItemModel", "ScoringItems", b1 =>
                         {
                             b1.Property<Guid>("ChallengeId");
-
-                            b1.Property<DateTime?>("ClosedAt")
-                                .HasColumnName("ClosedAt");
-
-                            b1.Property<long>("Duration")
-                                .HasColumnName("Duration");
-
-                            b1.Property<DateTime?>("StartedAt")
-                                .HasColumnName("StartedAt");
-
-                            b1.HasKey("ChallengeId");
-
-                            b1.ToTable("Timeline","edoxa");
-
-                            b1.HasOne("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.Challenge")
-                                .WithOne("Timeline")
-                                .HasForeignKey("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ChallengeTimeline", "ChallengeId")
-                                .OnDelete(DeleteBehavior.Cascade);
-                        });
-
-                    b.OwnsMany("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.ScoringItem", "ScoringItems", b1 =>
-                        {
-                            b1.Property<Guid>("ChallengeId")
-                                .HasColumnName("ChallengeId");
 
                             b1.Property<Guid>("Id")
                                 .ValueGeneratedOnAdd();
 
-                            b1.Property<string>("Name")
-                                .IsRequired()
-                                .HasColumnName("Name");
+                            b1.Property<string>("Name");
 
-                            b1.Property<float>("Weighting")
-                                .HasColumnName("Weighting");
+                            b1.Property<float>("Weighting");
 
                             b1.HasKey("ChallengeId", "Id");
 
                             b1.ToTable("ScoringItem");
 
-                            b1.HasOne("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.Challenge")
+                            b1.HasOne("eDoxa.Arena.Challenges.Infrastructure.Models.ChallengeModel")
                                 .WithMany("ScoringItems")
                                 .HasForeignKey("ChallengeId")
                                 .OnDelete(DeleteBehavior.Cascade);
                         });
                 });
 
-            modelBuilder.Entity("eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate.Match", b =>
+            modelBuilder.Entity("eDoxa.Arena.Challenges.Infrastructure.Models.MatchModel", b =>
                 {
-                    b.HasOne("eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate.Participant", "Participant")
+                    b.HasOne("eDoxa.Arena.Challenges.Infrastructure.Models.ParticipantModel", "Participant")
                         .WithMany("Matches")
                         .HasForeignKey("ParticipantId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.OwnsMany("eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate.Stat", "Stats", b1 =>
+                    b.OwnsMany("eDoxa.Arena.Challenges.Infrastructure.Models.StatModel", "Stats", b1 =>
                         {
-                            b1.Property<Guid>("MatchId")
-                                .HasColumnName("MatchId");
+                            b1.Property<Guid>("MatchId");
 
                             b1.Property<Guid>("Id")
                                 .ValueGeneratedOnAdd();
 
-                            b1.Property<string>("Name")
-                                .IsRequired()
-                                .HasColumnName("Name");
+                            b1.Property<string>("Name");
 
-                            b1.Property<double>("Value")
-                                .HasColumnName("Value");
+                            b1.Property<double>("Value");
 
-                            b1.Property<float>("Weighting")
-                                .HasColumnName("Weighting");
+                            b1.Property<float>("Weighting");
 
                             b1.HasKey("MatchId", "Id");
 
                             b1.ToTable("Stat");
 
-                            b1.HasOne("eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate.Match")
+                            b1.HasOne("eDoxa.Arena.Challenges.Infrastructure.Models.MatchModel")
                                 .WithMany("Stats")
                                 .HasForeignKey("MatchId")
                                 .OnDelete(DeleteBehavior.Cascade);
                         });
                 });
 
-            modelBuilder.Entity("eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate.Participant", b =>
+            modelBuilder.Entity("eDoxa.Arena.Challenges.Infrastructure.Models.ParticipantModel", b =>
                 {
-                    b.HasOne("eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.Challenge", "Challenge")
+                    b.HasOne("eDoxa.Arena.Challenges.Infrastructure.Models.ChallengeModel", "Challenge")
                         .WithMany("Participants")
                         .HasForeignKey("ChallengeId")
                         .OnDelete(DeleteBehavior.Cascade);

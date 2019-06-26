@@ -8,9 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Arena.Challenges.Api.Application.Strategies;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
-using eDoxa.Arena.Challenges.Domain.Strategies;
 using eDoxa.Arena.Services.LeagueOfLegends.Dtos;
 
 using FluentAssertions;

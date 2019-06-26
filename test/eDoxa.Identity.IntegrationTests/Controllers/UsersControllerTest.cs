@@ -21,6 +21,7 @@ using eDoxa.Seedwork.Testing.TestServer.Extensions;
 using FluentAssertions;
 
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Identity.IntegrationTests.Controllers
@@ -29,26 +30,28 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
     public sealed class UsersControllerTest
     {
         private HttpClient _httpClient;
-        private IdentityDbContext _dbContext;
+        private TestServer _testServer;
+
+        private async Task<HttpResponseMessage> ExecuteAsync()
+        {
+            return await _httpClient.GetAsync("api/users");
+        }
 
         [TestInitialize]
         public async Task TestInitialize()
         {
             var factory = new CustomWebApplicationFactory<IdentityDbContext, Startup>();
-
             _httpClient = factory.CreateClient();
-
-            _dbContext = factory.DbContext;
-
+            _testServer = factory.Server;
             await this.TestCleanup();
         }
 
         [TestCleanup]
         public async Task TestCleanup()
         {
-            _dbContext.Users.RemoveRange(_dbContext.Users);
-
-            await _dbContext.SaveChangesAsync();
+            var context = _testServer.GetService<IdentityDbContext>();
+            context.Users.RemoveRange(context.Users);
+            await context.SaveChangesAsync();
         }
 
         [TestMethod]
@@ -56,19 +59,16 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
         {
             // Arrange
             var userFaker = new UserFaker();
-
-            _dbContext.AddRange(userFaker.FakeNewUsers(99));
-
-            await _dbContext.SaveChangesAsync();
+            var context = _testServer.GetService<IdentityDbContext>();
+            context.AddRange(userFaker.FakeNewUsers(99));
+            await context.SaveChangesAsync();
 
             // Act
-            var response = await this.Execute();
+            var response = await this.ExecuteAsync();
 
             // Assert
             response.EnsureSuccessStatusCode();
-
             var users = await response.DeserializeAsync<UserViewModel[]>();
-
             users.Should().HaveCount(99);
         }
 
@@ -76,15 +76,10 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
         public async Task ApiUsers_WithNinetyNineUsers_ShouldBeNoContent()
         {
             // Act
-            var response = await this.Execute();
+            var response = await this.ExecuteAsync();
 
             // Assert
             response.StatusCode.Should().Be(StatusCodes.Status204NoContent);
-        }
-
-        private async Task<HttpResponseMessage> Execute()
-        {
-            return await _httpClient.GetAsync("api/users");
         }
     }
 }

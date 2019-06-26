@@ -8,12 +8,9 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Arena.Challenges.Domain.Abstractions.Repositories;
-using eDoxa.Arena.Challenges.Domain.Validators;
+using eDoxa.Arena.Challenges.Domain.Queries;
 using eDoxa.Commands.Abstractions.Validations;
 using eDoxa.Seedwork.Application.Validations.Extensions;
-using eDoxa.Seedwork.Domain.Extensions;
-using eDoxa.Seedwork.Security.Extensions;
 
 using FluentValidation;
 using FluentValidation.Results;
@@ -24,7 +21,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Commands.Validations
 {
     public sealed class RegisterParticipantCommandValidator : CommandValidator<RegisterParticipantCommand>
     {
-        public RegisterParticipantCommandValidator(IHttpContextAccessor httpContextAccessor, IChallengeRepository challengeRepository)
+        public RegisterParticipantCommandValidator(IHttpContextAccessor httpContextAccessor, IChallengeQuery challengeQuery)
         {
             this.EntityId(command => command.ChallengeId)
                 .DependentRules(
@@ -34,7 +31,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Commands.Validations
                             .CustomAsync(
                                 async (command, context, cancellationToken) =>
                                 {
-                                    var challenge = await challengeRepository.FindChallengeAsNoTrackingAsync(command.ChallengeId);
+                                    var challenge = await challengeQuery.FindChallengeAsync(command.ChallengeId);
 
                                     if (challenge == null)
                                     {
@@ -44,21 +41,6 @@ namespace eDoxa.Arena.Challenges.Api.Application.Commands.Validations
                                                 ErrorCode = "NotFound"
                                             }
                                         );
-                                    }
-                                    else
-                                    {
-                                        var userId = httpContextAccessor.GetUserId();
-
-                                        var userGameReference = httpContextAccessor.FuncUserGameReference();
-
-                                        if (userGameReference(challenge.Game) == null)
-                                        {
-                                            context.AddFailure("This user does not provide an external account for the challenge-specific game.");
-                                        }
-                                        else
-                                        {
-                                            new RegisterParticipantValidator(userId).Validate(challenge).Errors.ForEach(context.AddFailure);
-                                        }
                                     }
                                 }
                             );

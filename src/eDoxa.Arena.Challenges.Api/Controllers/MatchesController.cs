@@ -10,9 +10,9 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Api.Application.Abstractions;
-using eDoxa.Arena.Challenges.Api.ViewModels;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Domain.Queries;
+using eDoxa.Arena.Challenges.Domain.ViewModels;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -42,6 +42,7 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         /// </summary>
         [HttpGet("{matchId}")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(MatchViewModel))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetByIdAsync(MatchId matchId)
         {
             var match = await _matchQuery.FindMatchAsync(matchId);

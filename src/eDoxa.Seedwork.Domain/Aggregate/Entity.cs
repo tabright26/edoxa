@@ -8,6 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Collections.Generic;
 
 using JetBrains.Annotations;
@@ -19,18 +20,13 @@ namespace eDoxa.Seedwork.Domain.Aggregate
     {
         private List<IDomainEvent> _domainEvents = new List<IDomainEvent>();
         private int? _requestedHashCode;
-        private TEntityId _id;
 
         protected Entity()
         {
             Id = new TEntityId();
         }
 
-        public virtual TEntityId Id
-        {
-            get => _id;
-            protected set => _id = value;
-        }
+        public virtual TEntityId Id { get; private set; }
 
         public void ClearDomainEvents()
         {
@@ -51,29 +47,27 @@ namespace eDoxa.Seedwork.Domain.Aggregate
 
         public override bool Equals([CanBeNull] object obj)
         {
-            if (!(obj is Entity<TEntityId>))
+            if (!(obj is Entity<TEntityId> entity))
             {
                 return false;
             }
 
-            if (ReferenceEquals(this, obj))
+            if (ReferenceEquals(this, entity))
             {
                 return true;
             }
 
-            if (this.GetType() != obj.GetType())
+            if (this.GetType() != entity.GetType())
             {
                 return false;
             }
 
-            var entity = (Entity<TEntityId>) obj;
-
-            if (entity.IsTransient() || this.IsTransient())
+            if (this.IsTransient() || entity.IsTransient())
             {
                 return false;
             }
 
-            return entity.Id == Id;
+            return Id == entity.Id;
         }
 
         public override int GetHashCode()
@@ -101,6 +95,16 @@ namespace eDoxa.Seedwork.Domain.Aggregate
         public static bool operator !=([CanBeNull] Entity<TEntityId> left, [CanBeNull] Entity<TEntityId> right)
         {
             return !(left == right);
+        }
+
+        public void SetEntityId(TEntityId entityId)
+        {
+            if (entityId.IsTransient())
+            {
+                throw new ArgumentNullException(nameof(entityId));
+            }
+
+            Id = entityId;
         }
     }
 }

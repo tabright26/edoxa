@@ -15,6 +15,7 @@ using System.Reflection;
 using AutoMapper;
 
 using eDoxa.Arena.Challenges.Api.Extensions;
+using eDoxa.Arena.Challenges.Api.Infrastructure;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Extensions;
@@ -74,7 +75,7 @@ namespace eDoxa.Arena.Challenges.Api
 
             services.AddArena();
 
-            return services.Build<Modules>();
+            return services.Build<ApiModule>();
         }
 
         public void Configure(IApplicationBuilder application, IApiVersionDescriptionProvider provider)

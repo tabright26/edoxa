@@ -10,192 +10,203 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Domain.Abstractions;
-using eDoxa.Arena.Challenges.Domain.Abstractions.Factories;
-using eDoxa.Arena.Challenges.Domain.Abstractions.Strategies;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.MatchAggregate;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ParticipantAggregate;
-using eDoxa.Arena.Challenges.Domain.DomainEvents;
-using eDoxa.Arena.Challenges.Domain.Factories;
 using eDoxa.Arena.Challenges.Domain.Validators;
-using eDoxa.Seedwork.Common.Enumerations;
-using eDoxa.Seedwork.Common.ValueObjects;
-using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Domain.Extensions;
+
+using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public class Challenge : Entity<ChallengeId>, IChallenge, IAggregateRoot
+    public partial class Challenge : Entity<ChallengeId>, IChallenge
     {
-        private HashSet<Participant> _participants;
-        private HashSet<ScoringItem> _scoringItems;
-        private List<Bucket> _buckets;
+        private readonly HashSet<Participant> _participants = new HashSet<Participant>();
 
         public Challenge(
-            Game game,
             ChallengeName name,
+            ChallengeGame game,
             ChallengeSetup setup,
-            ChallengeDuration duration,
-            int? seed = null
-        ) : this()
+            ChallengeTimeline timeline,
+            IScoring scoring,
+            IPayout payout
+        )
         {
-            Game = game;
             Name = name;
+            Game = game;
             Setup = setup;
-            Timeline = new ChallengeTimeline(duration);
-            Seed = seed;
-            this.ApplyScoringStrategy(ScoringFactory.Instance.CreateStrategy(this));
-            this.ApplyPayoutStrategy(PayoutFactory.Instance.CreateStrategy(this));
+            Timeline = timeline;
+            Scoring = scoring;
+            Payout = payout;
         }
 
-        private Challenge()
-        {
-            CreatedAt = DateTime.UtcNow;
-            LastSync = null;
-            _scoringItems = new HashSet<ScoringItem>();
-            _participants = new HashSet<Participant>();
-            _buckets = new List<Bucket>();
-        }
+        public ChallengeName Name { get; }
 
-        public IReadOnlyCollection<ScoringItem> ScoringItems => _scoringItems;
+        public ChallengeGame Game { get; }
 
-        public IReadOnlyCollection<Bucket> Buckets => _buckets;
-
-        public int? Seed { get; private set; }
-
-        public DateTime CreatedAt { get; private set; }
-
-        public DateTime? LastSync { get; private set; }
-
-        public Game Game { get; private set; }
-
-        public ChallengeName Name { get; private set; }
-
-        public ChallengeSetup Setup { get; private set; }
+        public ChallengeSetup Setup { get; }
 
         public ChallengeTimeline Timeline { get; private set; }
 
-        public ChallengeState State => Timeline.State;
+        public DateTime? SynchronizedAt { get; private set; }
 
-        public IReadOnlyCollection<Participant> Participants
+        public IScoring Scoring { get; }
+
+        public IPayout Payout { get; }
+
+        public IReadOnlyCollection<Participant> Participants => _participants;
+
+        public IScoreboard Scoreboard => new Scoreboard(this);
+
+        public void Register(Participant participant)
         {
-            get => _participants;
-            private set => _participants = new HashSet<Participant>(value);
-        }
-
-        public IScoring Scoring => new Scoring(ScoringItems);
-
-        public IPayout Payout => new Payout(new Buckets(Buckets));
-
-        public IScoreboard Scoreboard => new Scoreboard(Participants);
-
-        public async Task SynchronizeAsync(IMatchReferencesFactory matchReferencesFactory, IMatchStatsFactory matchStatsFactory)
-        {
-            foreach (var participant in Participants.Where(participant => !participant.HasFinalScore(Timeline))
-                .OrderBy(participant => participant.LastSync)
-                .ToList())
-            {
-                await this.SynchronizeAsync(matchReferencesFactory, matchStatsFactory, participant);
-
-                participant.Sync();
-            }
-
-            LastSync = DateTime.UtcNow;
-        }
-
-        private void ApplyScoringStrategy(IScoringStrategy strategy)
-        {
-            strategy.Scoring.ForEach(stat => _scoringItems.Add(new ScoringItem(stat.Key, stat.Value)));
-        }
-
-        private void ApplyPayoutStrategy(IPayoutStrategy strategy)
-        {
-            strategy.Payout.Buckets.ForEach(bucket => _buckets.Add(bucket));
-        }
-
-        internal bool LastSyncMoreThan(TimeSpan timeSpan)
-        {
-            return LastSync.HasValue && LastSync.Value + timeSpan < DateTime.UtcNow;
-        }
-
-        private async Task SynchronizeAsync(IMatchReferencesFactory matchReferencesFactory, IMatchStatsFactory matchStatsFactory, Participant participant)
-        {
-            var adapter = await matchReferencesFactory.CreateAdapterAsync(Game, participant.UserGameReference, Timeline);
-
-            await this.SynchronizeAsync(adapter.MatchReferences, matchStatsFactory, participant);
-        }
-
-        private async Task SynchronizeAsync(IEnumerable<MatchReference> matchReferences, IMatchStatsFactory matchStatsFactory, Participant participant)
-        {
-            foreach (var matchReference in participant.GetUnsynchronizedMatchReferences(matchReferences))
-            {
-                await this.SnapshotParticipantMatchAsync(participant, matchReference, matchStatsFactory);
-            }
-        }
-
-        private async Task SnapshotParticipantMatchAsync(Participant participant, MatchReference matchReference, IMatchStatsFactory factory)
-        {
-            var adapter = await factory.CreateAdapter(Game, participant.UserGameReference, matchReference);
-
-            this.SnapshotParticipantMatch(participant, matchReference, adapter.MatchStats);
-        }
-
-        internal void SnapshotParticipantMatch(Participant participant, MatchReference matchReference, IMatchStats matchStats)
-        {
-            participant.SnapshotMatch(matchReference, matchStats);
-        }
-
-        public void TryClose(Action closeChallenge)
-        {
-            if (Timeline.State.Equals(ChallengeState.Ended))
-            {
-                Timeline = Timeline.Close();
-
-                closeChallenge();
-            }
-        }
-
-        public void DistributeParticipantPrizes()
-        {
-            this.AddDomainEvent(new ChallengePayoutDomainEvent(Id, Payout.GetParticipantPrizes(Scoreboard)));
-        }
-
-        public Participant RegisterParticipant(UserId userId, UserGameReference userGameReference)
-        {
-            if (!this.CanRegisterParticipant(userId))
+            if (!this.CanRegister(participant))
             {
                 throw new InvalidOperationException();
             }
 
-            var participant = new Participant(this, userId, userGameReference);
-
             _participants.Add(participant);
-
-            this.TryStart();
-
-            return participant;
         }
 
-        private bool CanRegisterParticipant(UserId userId)
+        //public async void Synchronize(IGameMatchIdsFactory gameMatchIdsFactory, IMatchStatsFactory matchStatsFactory, IDateTimeProvider synchronizedAt)
+        //{
+        //    foreach (var participant in Participants.Where(participant => !participant.HasFinalScore(Timeline))
+        //        .OrderBy(participant => participant.SynchronizedAt)
+        //        .ToList())
+        //    {
+        //        await this.SynchronizeAsync(gameMatchIdsFactory, matchStatsFactory, participant, synchronizedAt);
+        //    }
+
+        //    this.Synchronize(synchronizedAt);
+        //}
+
+        public void Start(IDateTimeProvider startedAt)
         {
-            return new RegisterParticipantValidator(userId).Validate(this).IsValid;
+            if (!this.CanStart())
+            {
+                throw new InvalidOperationException();
+            }
+
+            Timeline = Timeline.Start(startedAt);
         }
 
-        internal bool CanStart()
+        public void Close(IDateTimeProvider closedAt)
+        {
+            if (!this.CanClose())
+            {
+                throw new InvalidOperationException();
+            }
+
+            Timeline = Timeline.Close(closedAt);
+        }
+
+        //public void DistributeParticipantPrizes()
+        //{
+        //    this.AddDomainEvent(new ChallengePayoutDomainEvent(Id, Payout.GetParticipantPrizes(Scoreboard)));
+        //}
+
+        public void Synchronize(
+            Func<GameAccountId, DateTime, DateTime, IEnumerable<GameReference>> getParticipantGameReferences,
+            Func<GameAccountId, GameReference, IMatchStats> getParticipantMatchStats,
+            IDateTimeProvider synchronizedAt
+        )
+        {
+        }
+
+        private bool CanStart()
         {
             return Participants.Count == Setup.Entries;
         }
 
-        private void TryStart()
+        private bool CanClose()
         {
-            if (this.CanStart())
-            {
-                Timeline = Timeline.Start();
-            }
+            return true;
+        }
+
+        private bool CanRegister(Participant participant)
+        {
+            return new RegisterParticipantValidator(participant.UserId).Validate(this).IsValid;
+        }
+
+        internal bool SynchronizationMoreThan(TimeSpan timeSpan)
+        {
+            return SynchronizedAt.HasValue && SynchronizedAt.Value + timeSpan < DateTime.UtcNow;
+        }
+
+        //private async Task SynchronizeAsync(
+        //    IGameMatchIdsFactory gameMatchIdsFactory,
+        //    IMatchStatsFactory matchStatsFactory,
+        //    Participant participant,
+        //    IDateTimeProvider synchronizedAt
+        //)
+        //{
+        //    var adapter = await gameMatchIdsFactory.CreateAdapterAsync(Game, participant.GameAccountId, Timeline);
+
+        //    await this.SynchronizeAsync(adapter.GetGameReferences, matchStatsFactory, participant, synchronizedAt);
+        //}
+
+        //private async Task SynchronizeAsync(
+        //    IEnumerable<GameMatchId> matchReferences,
+        //    IMatchStatsFactory matchStatsFactory,
+        //    Participant participant,
+        //    IDateTimeProvider synchronizedAt
+        //)
+        //{
+        //    foreach (var matchReference in participant.GetUnsynchronizedMatchReferences(matchReferences))
+        //    {
+        //        await this.SnapshotParticipantMatchAsync(participant, matchReference, matchStatsFactory, synchronizedAt);
+        //    }
+
+        //    participant.Synchronize(synchronizedAt);
+        //}
+
+        //private async Task SnapshotParticipantMatchAsync(
+        //    Participant participant,
+        //    GameMatchId gameMatchId,
+        //    IMatchStatsFactory factory,
+        //    IDateTimeProvider synchronizedAt
+        //)
+        //{
+        //    var adapter = await factory.CreateAdapter(Game, participant.GameAccountId, gameMatchId);
+
+        //    this.SnapshotParticipantMatch(participant, gameMatchId, adapter.MatchStats, synchronizedAt);
+        //}
+
+        internal void SnapshotParticipantMatch(
+            Participant participant,
+            GameReference gameReference,
+            IMatchStats matchStats,
+            IDateTimeProvider synchronizedAt
+        )
+        {
+            var match = new Match(gameReference, synchronizedAt);
+
+            match.SnapshotStats(Scoring, matchStats);
+
+            participant.Synchronize(match);
+        }
+
+        public void Synchronize(IDateTimeProvider synchronizedAt)
+        {
+            SynchronizedAt = synchronizedAt.DateTime;
+        }
+    }
+
+    public partial class Challenge : IEquatable<IChallenge>
+    {
+        public bool Equals([CanBeNull] IChallenge challenge)
+        {
+            return Id.Equals(challenge?.Id);
+        }
+
+        public sealed override bool Equals([CanBeNull] object obj)
+        {
+            return this.Equals(obj as IChallenge);
+        }
+
+        public sealed override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }
