@@ -1,0 +1,56 @@
+{
+    "ReRoutes": [
+        {
+            "DownstreamPathTemplate": "/api/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "identity.api",
+                    "Port": 80
+                }
+            ],
+            "UpstreamPathTemplate": "/identity/api/{everything}",
+            "UpstreamHttpMethod": [ "DELETE", "POST", "PUT", "GET", "PATCH" ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "IdentityApiKey",
+                "AllowedScopes": []
+            }
+        },
+        {
+            "DownstreamPathTemplate": "/api/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "cashier.api",
+                    "Port": 80
+                }
+            ],
+            "UpstreamPathTemplate": "/cashier/api/{everything}",
+            "UpstreamHttpMethod": [ "DELETE", "POST", "PUT", "GET", "PATCH" ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "CashierApiKey",
+                "AllowedScopes": []
+            }
+        },
+        {
+            "DownstreamPathTemplate": "/api/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "arena.challenges.api",
+                    "Port": 80
+                }
+            ],
+            "UpstreamPathTemplate": "/arena/challenges/api/{everything}",
+            "UpstreamHttpMethod": [ "DELETE", "POST", "PUT", "GET", "PATCH" ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "ArenaChallengesApiKey",
+                "AllowedScopes": []
+            }
+        }
+    ],
+    "GlobalConfiguration": {
+        "RequestIdKey": "OcRequestId",
+        "AdministrationPath": "/administration"
+    }
+}

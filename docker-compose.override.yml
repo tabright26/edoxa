@@ -92,6 +92,24 @@ services:
     ports:
       - "5003:80"
 
+  web.aggregate:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Authority=${URL:-http://localhost}:5000
+      - IdentityServer__Url=http://idsrv
+    ports:
+      - "5100:80"
+
+  web.gateway:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Authority=${URL:-http://localhost}:5000
+      - IdentityServer__Url=http://idsrv
+    ports:
+      - "5200:80"
+    volumes:
+      - ./api/eDoxa.Web.Gateway:/app/ocelot
+
   #web.spa:
   #  environment:
   #    - ASPNETCORE_ENVIRONMENT=Development

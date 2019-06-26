@@ -109,7 +109,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.IdentityServer.UnitTe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.IdentityServer.IntegrationTests", "test\eDoxa.IdentityServer.IntegrationTests\eDoxa.IdentityServer.IntegrationTests.csproj", "{EC0A1781-0BE9-4A2E-A3ED-6D0A5AA5CC78}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Seedwork.Common", "src\eDoxa.Seedwork.Common\eDoxa.Seedwork.Common.csproj", "{BC686F36-3ED9-4D79-9BC5-B01B96329840}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Seedwork.Common", "src\eDoxa.Seedwork.Common\eDoxa.Seedwork.Common.csproj", "{BC686F36-3ED9-4D79-9BC5-B01B96329840}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api Gateways", "Api Gateways", "{84A32CA2-5F8C-48F5-ACC4-FC020127BFA3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Ocelot", "src\eDoxa.Ocelot\eDoxa.Ocelot.csproj", "{7A1A50B6-0866-4C19-BEBD-B91AB10A3EBE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Web.Aggregate", "src\eDoxa.Web.Aggregate\eDoxa.Web.Aggregate.csproj", "{BD2C9951-5E6D-4919-A382-9E2426D2F5BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -261,6 +267,14 @@ Global
 		{BC686F36-3ED9-4D79-9BC5-B01B96329840}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC686F36-3ED9-4D79-9BC5-B01B96329840}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC686F36-3ED9-4D79-9BC5-B01B96329840}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A1A50B6-0866-4C19-BEBD-B91AB10A3EBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A1A50B6-0866-4C19-BEBD-B91AB10A3EBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A1A50B6-0866-4C19-BEBD-B91AB10A3EBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A1A50B6-0866-4C19-BEBD-B91AB10A3EBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD2C9951-5E6D-4919-A382-9E2426D2F5BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD2C9951-5E6D-4919-A382-9E2426D2F5BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD2C9951-5E6D-4919-A382-9E2426D2F5BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD2C9951-5E6D-4919-A382-9E2426D2F5BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -314,6 +328,9 @@ Global
 		{FE66DA33-13C2-4634-B9BE-26C714E6F253} = {7942CE31-3804-446A-845B-0451884BB6B7}
 		{EC0A1781-0BE9-4A2E-A3ED-6D0A5AA5CC78} = {7942CE31-3804-446A-845B-0451884BB6B7}
 		{BC686F36-3ED9-4D79-9BC5-B01B96329840} = {1307B4CE-04FF-4315-BC01-0371760D5C26}
+		{84A32CA2-5F8C-48F5-ACC4-FC020127BFA3} = {EEA9BD6B-DDFF-4580-99D3-0FBBC644FC4D}
+		{7A1A50B6-0866-4C19-BEBD-B91AB10A3EBE} = {84A32CA2-5F8C-48F5-ACC4-FC020127BFA3}
+		{BD2C9951-5E6D-4919-A382-9E2426D2F5BC} = {84A32CA2-5F8C-48F5-ACC4-FC020127BFA3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8BB3B9BB-6C76-478F-982F-E2E084DBDFAC}
