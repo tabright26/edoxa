@@ -8,11 +8,9 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Application.Commands;
-using eDoxa.Arena.Challenges.Domain.ViewModels;
 using eDoxa.Commands.Extensions;
 using eDoxa.Seedwork.Application.Mvc.Filters.Attributes;
 
@@ -46,7 +44,7 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         ///     Fake challenges with a random seed - Development only.
         /// </summary>
         [HttpPost]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<ChallengeViewModel>))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         public async Task<IActionResult> PostAsync([FromBody] FakeChallengesCommand command)
         {
             await _mediator.SendCommandAsync(command);

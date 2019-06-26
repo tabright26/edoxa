@@ -9,6 +9,7 @@
 // this source code package.
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -23,15 +24,30 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Data
 {
     public sealed class PayoutChart
     {
+        private const string FileName = "PayoutChart.csv";
+
+        private static readonly IEnumerable<string> Paths = new[] {"bin/Release/netcoreapp2.2/Data/", "bin/Debug/netcoreapp2.2/Data/", "Data/"};
+
         private static ILookup<PayoutEntries, PayoutRecord> PayoutRecords
         {
             get
             {
-                using (var reader = new StreamReader(Path.Combine(Directory.GetCurrentDirectory(), @"Data\PayoutChart.csv")))
-                using (var csv = new CsvReader(reader))
+                foreach (var path in Paths)
                 {
-                    return csv.GetRecords<PayoutRecord>().ToLookup(payoutRecord => new PayoutEntries(payoutRecord.PayoutEntries), payoutRecord => payoutRecord);
+                    var combinePath = Path.Combine(Directory.GetCurrentDirectory(), path);
+
+                    if (Directory.Exists(combinePath))
+                    {
+                        using (var reader = new StreamReader(combinePath + FileName))
+                        using (var csv = new CsvReader(reader))
+                        {
+                            return csv.GetRecords<PayoutRecord>()
+                                .ToLookup(payoutRecord => new PayoutEntries(payoutRecord.PayoutEntries), payoutRecord => payoutRecord);
+                        }
+                    }
                 }
+
+                throw new IOException(FileName);
             }
         }
 

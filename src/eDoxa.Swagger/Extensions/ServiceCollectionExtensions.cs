@@ -1,5 +1,5 @@
 ﻿// Filename: ServiceCollectionExtensions.cs
-// Date Created: 2019-05-20
+// Date Created: 2019-06-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -86,6 +86,18 @@ namespace eDoxa.Swagger.Extensions
                     options.OperationFilter<CustomOperationFilter>();
 
                     options.DocumentFilter<CustomDocumentFilter>();
+
+                    options.CustomOperationIds(
+                        apiDescription =>
+                        {
+                            if (apiDescription.ActionDescriptor is ControllerActionDescriptor descriptor)
+                            {
+                                return descriptor.ControllerName + descriptor.ActionName;
+                            }
+
+                            return apiDescription.ActionDescriptor.DisplayName;
+                        }
+                    );
 
                     options.TagActionsBy(
                         description =>

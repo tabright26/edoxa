@@ -42,6 +42,7 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         /// </summary>
         [HttpGet("{matchId}")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(MatchViewModel))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetByIdAsync(MatchId matchId)
         {
             var match = await _matchQuery.FindMatchAsync(matchId);

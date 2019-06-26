@@ -14,7 +14,10 @@ using eDoxa.Seedwork.Application.Mvc.Filters.Attributes;
 using eDoxa.Seedwork.Infrastructure.Abstractions;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Arena.Challenges.Api.Controllers
 {
@@ -35,6 +38,7 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         }
 
         [HttpPost("database/reset")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         public async Task<IActionResult> DatabaseResetAsync()
         {
             await _dbContextData.CleanupAsync();
@@ -45,6 +49,7 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         }
 
         [HttpPost("database/cleanup")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         public async Task<IActionResult> DatabaseCleanupAsync()
         {
             await _dbContextData.CleanupAsync();

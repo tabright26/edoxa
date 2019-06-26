@@ -50,6 +50,7 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         /// </summary>
         [HttpGet]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<ParticipantViewModel>))]
+        [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync(ChallengeId challengeId)
         {
             var participants = await _participantQuery.FindChallengeParticipantsAsync(challengeId);
@@ -66,7 +67,7 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         ///     Register a participant to a challenge.
         /// </summary>
         [HttpPost]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ParticipantViewModel))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         public async Task<IActionResult> PostAsync(ChallengeId challengeId)
         {
             await _mediator.SendCommandAsync(new RegisterParticipantCommand(challengeId));
