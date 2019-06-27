@@ -10,9 +10,7 @@
 
 using System.Collections.Generic;
 
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Security.Constants;
-using eDoxa.Seedwork.Security.Extensions;
 
 using IdentityModel;
 
@@ -44,20 +42,6 @@ namespace eDoxa.Seedwork.Security.IdentityServer.Resources
                 new HashSet<string>
                 {
                     CustomClaimTypes.Permission
-                }
-            )
-            {
-            }
-        }
-
-        public sealed class UserGameReference : IdentityResource
-        {
-            public UserGameReference() : base(
-                "games",
-                "Your game(s)",
-                new HashSet<string>
-                {
-                    Game.LeagueOfLegends.GetClaimType()
                 }
             )
             {

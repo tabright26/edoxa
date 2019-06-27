@@ -1,5 +1,5 @@
 ﻿// Filename: CustomApiResources.cs
-// Date Created: 2019-06-08
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -17,10 +17,15 @@ namespace eDoxa.Seedwork.Security.IdentityServer.Resources
 {
     public sealed class CustomApiResources
     {
+        public static readonly ApiResource Identity = new IdentityApi();
+        public static readonly ApiResource Cashier = new CashierApi();
+        public static readonly ApiResource ArenaChallenges = new ChallengeApi();
+        public static readonly ApiResource Aggregator = new WebAggregator();
+
         public sealed class IdentityApi : ApiResource
         {
-            public IdentityApi() : base(
-                "edoxa.identity.api",
+            internal IdentityApi() : base(
+                "identity.api",
                 "eDoxa Identity API",
                 new CustomIdentityResources.Role().UserClaims.Union(new CustomIdentityResources.Permission().UserClaims)
             )
@@ -34,8 +39,8 @@ namespace eDoxa.Seedwork.Security.IdentityServer.Resources
 
         public sealed class CashierApi : ApiResource
         {
-            public CashierApi() : base(
-                "edoxa.cashier.api",
+            internal CashierApi() : base(
+                "cashier.api",
                 "eDoxa Cashier API",
                 new IdentityResources.Profile().UserClaims.Union(
                     new CustomIdentityResources.Role().UserClaims.Union(new CustomIdentityResources.Permission().UserClaims)
@@ -51,15 +56,25 @@ namespace eDoxa.Seedwork.Security.IdentityServer.Resources
 
         public sealed class ChallengeApi : ApiResource
         {
-            public ChallengeApi() : base(
-                "edoxa.challenge.api",
-                "eDoxa Challenge API",
+            internal ChallengeApi() : base(
+                "arena.challenges.api",
+                "eDoxa Arena Challenges API",
                 new IdentityResources.Profile().UserClaims.Union(
-                    new CustomIdentityResources.Role().UserClaims.Union(
-                        new CustomIdentityResources.Permission().UserClaims.Union(new CustomIdentityResources.UserGameReference().UserClaims)
-                    )
+                    new CustomIdentityResources.Role().UserClaims.Union(new CustomIdentityResources.Permission().UserClaims)
                 )
             )
+
+            {
+                ApiSecrets = new HashSet<Secret>
+                {
+                    new Secret("secret".Sha256())
+                };
+            }
+        }
+
+        public sealed class WebAggregator : ApiResource
+        {
+            internal WebAggregator() : base("web.aggregator", "eDoxa Web Aggregator")
             {
                 ApiSecrets = new HashSet<Secret>
                 {

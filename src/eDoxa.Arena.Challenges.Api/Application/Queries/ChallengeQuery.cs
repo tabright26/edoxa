@@ -20,7 +20,7 @@ using eDoxa.Arena.Challenges.Domain.Queries;
 using eDoxa.Arena.Challenges.Domain.ViewModels;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
-using eDoxa.Seedwork.Security.Extensions;
+using eDoxa.Seedwork.Common.Extensions;
 
 using JetBrains.Annotations;
 

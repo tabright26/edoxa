@@ -8,9 +8,18 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Collections.Generic;
+
 using eDoxa.Ocelot.Extensions;
+using eDoxa.Seedwork.Security.Extensions;
+using eDoxa.Seedwork.Security.IdentityServer.Resources;
+
+using HealthChecks.UI.Client;
+
+using IdentityServer4.Models;
 
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,36 +43,44 @@ namespace eDoxa.Ocelot
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHealthChecks(Configuration);
+
             services.AddCors(
-                options =>
-                {
-                    options.AddPolicy("CorsPolicy", builder => builder.AllowAnyMethod().AllowAnyHeader().SetIsOriginAllowed(host => true).AllowCredentials());
-                }
+                options => options.AddPolicy(
+                    "CorsPolicy",
+                    builder => builder.AllowAnyMethod().AllowAnyHeader().AllowCredentials().SetIsOriginAllowed(host => true)
+                )
             );
 
-            services.AddAuthentication()
-                .AddIdentityApiAuthentication("IdentityApiKey", Configuration["IdentityServer:Url"])
-                .AddCashierApiAuthentication("CashierApiKey", Configuration["IdentityServer:Url"])
-                .AddArenaChallengesApiAuthentication("ArenaChallengesApiKey", Configuration["IdentityServer:Url"]);
+            services.AddAuthentication(
+                Configuration,
+                Environment,
+                new Dictionary<string, ApiResource>
+                {
+                    ["IdentityApiKey"] = CustomApiResources.Identity,
+                    ["CashierApiKey"] = CustomApiResources.Cashier,
+                    ["ArenaChallengesApiKey"] = CustomApiResources.ArenaChallenges
+                }
+            );
 
             services.AddOcelot(Configuration);
         }
 
         public void Configure(IApplicationBuilder application)
         {
+            application.UseHealthChecks(
+                "/health",
+                new HealthCheckOptions
+                {
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                }
+            );
+
             if (Environment.IsDevelopment())
             {
                 application.UseDeveloperExceptionPage();
             }
-
-            //application.UseHealthChecks(
-            //    "/health",
-            //    new HealthCheckOptions
-            //    {
-            //        Predicate = _ => true,
-            //        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-            //    }
-            //);
 
             application.UseCors("CorsPolicy");
 

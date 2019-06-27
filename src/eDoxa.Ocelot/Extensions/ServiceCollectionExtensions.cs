@@ -1,5 +1,5 @@
 ﻿// Filename: ServiceCollectionExtensions.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,12 +8,12 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Seedwork.Application.Extensions;
+using System;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace eDoxa.Arena.Challenges.Api.Extensions
+namespace eDoxa.Ocelot.Extensions
 {
     public static class ServiceCollectionExtensions
     {
@@ -21,13 +21,13 @@ namespace eDoxa.Arena.Challenges.Api.Extensions
         {
             var healthChecks = services.AddHealthChecks();
 
-            healthChecks.AddAzureKeyVault(configuration);
+            healthChecks.AddUrlGroup(new Uri(configuration["HealthChecks:Identity:Url"]), "identity-api", tags: new[] {"api"});
 
-            healthChecks.AddSqlServer(configuration);
+            healthChecks.AddUrlGroup(new Uri(configuration["HealthChecks:Cashier:Url"]), "cashier-api", tags: new[] {"api"});
 
-            healthChecks.AddRedis(configuration);
+            healthChecks.AddUrlGroup(new Uri(configuration["HealthChecks:ArenaChallenges:Url"]), "arena-challenges-api", tags: new[] {"api"});
 
-            healthChecks.AddIdentityServer(configuration);
+            healthChecks.AddUrlGroup(new Uri(configuration["HealthChecks:Web:Aggregator:Url"]), "web-aggregator", tags: new[] {"aggregator"});
         }
     }
 }

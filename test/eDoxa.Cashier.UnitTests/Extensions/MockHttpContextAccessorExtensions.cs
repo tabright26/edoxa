@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 
 using eDoxa.Seedwork.Common.Enumerations;
-using eDoxa.Seedwork.Security.Extensions;
+using eDoxa.Seedwork.Common.Extensions;
 
 using IdentityModel;
 

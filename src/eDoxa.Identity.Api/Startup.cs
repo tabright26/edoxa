@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -35,8 +35,6 @@ namespace eDoxa.Identity.Api
 {
     public sealed class Startup
     {
-        private static readonly CustomApiResources.IdentityApi IdentityApi = new CustomApiResources.IdentityApi();
-
         public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {
             Configuration = configuration;
@@ -65,13 +63,13 @@ namespace eDoxa.Identity.Api
 
             services.AddMvcFilters();
 
-            services.AddSwagger(Configuration, Environment, IdentityApi);
+            services.AddSwagger(Configuration, Environment, CustomApiResources.Identity);
 
             services.AddCorsPolicy();
 
             services.AddServiceBus(Configuration);
 
-            services.AddIdentityServerAuthentication(Configuration, Environment, IdentityApi);
+            services.AddAuthentication(Configuration, Environment, CustomApiResources.Identity);
 
             return services.Build<Modules>();
         }
@@ -88,7 +86,7 @@ namespace eDoxa.Identity.Api
 
             application.UseStaticFiles();
 
-            application.UseSwagger(Environment, provider, IdentityApi);
+            application.UseSwagger(Environment, provider, CustomApiResources.Identity);
 
             application.UseMvc();
 

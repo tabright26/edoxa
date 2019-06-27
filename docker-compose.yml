@@ -50,11 +50,11 @@ services:
       - rabbitmq 
       - idsrv
 
-  web.aggregate:
-    image: ${ACR_REGISTRY:-edoxa}/web.aggregate:${ACR_TAG:-latest}
+  web.aggregator:
+    image: ${ACR_REGISTRY:-edoxa}/web.aggregator:${ACR_TAG:-latest}
     build:
       context: .
-      dockerfile: src/eDoxa.Web.Aggregate/Dockerfile
+      dockerfile: src/eDoxa.Web.Aggregator/Dockerfile
     depends_on:
       - mssql
       - rabbitmq 
@@ -75,6 +75,7 @@ services:
       - identity.api
       - cashier.api
       - arena.challenges.api
+      - web.aggregator
 
   #web.spa:
   #  image: ${ACR_REGISTRY:-edoxa}/web.spa:${ACR_TAG:-latest}

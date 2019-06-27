@@ -36,8 +36,6 @@ namespace eDoxa.Arena.Challenges.Api
 {
     public sealed class Startup
     {
-        private static readonly CustomApiResources.ChallengeApi ChallengeApi = new CustomApiResources.ChallengeApi();
-
         public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {
             Configuration = configuration;
@@ -65,13 +63,13 @@ namespace eDoxa.Arena.Challenges.Api
 
             services.AddMvcFilters();
 
-            services.AddSwagger(Configuration, Environment, ChallengeApi);
+            services.AddSwagger(Configuration, Environment, CustomApiResources.ArenaChallenges);
 
             services.AddCorsPolicy();
 
             services.AddServiceBus(Configuration);
 
-            services.AddIdentityServerAuthentication(Configuration, Environment, ChallengeApi);
+            services.AddAuthentication(Configuration, Environment, CustomApiResources.ArenaChallenges);
 
             services.AddArena();
 
@@ -90,7 +88,7 @@ namespace eDoxa.Arena.Challenges.Api
 
             application.UseStaticFiles();
 
-            application.UseSwagger(Environment, provider, ChallengeApi);
+            application.UseSwagger(Environment, provider, CustomApiResources.ArenaChallenges);
 
             application.UseMvc();
 

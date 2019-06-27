@@ -18,7 +18,7 @@ using eDoxa.Cashier.Domain.Abstractions.Services;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Commands.Abstractions.Handlers;
-using eDoxa.Seedwork.Security.Extensions;
+using eDoxa.Seedwork.Common.Extensions;
 
 using JetBrains.Annotations;
 

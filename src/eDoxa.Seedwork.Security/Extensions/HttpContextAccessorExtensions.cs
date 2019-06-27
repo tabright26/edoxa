@@ -8,12 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-
-using eDoxa.Seedwork.Common.ValueObjects;
-
-using IdentityModel;
-
 using JetBrains.Annotations;
 
 using Microsoft.AspNetCore.Http;
@@ -26,11 +20,6 @@ namespace eDoxa.Seedwork.Security.Extensions
         public static string GetClaimOrDefault(this IHttpContextAccessor accessor, string claimType)
         {
             return accessor.HttpContext?.GetClaimOrDefault(claimType);
-        }
-
-        public static UserId GetUserId(this IHttpContextAccessor accessor)
-        {
-            return UserId.Parse(accessor.GetClaimOrDefault(JwtClaimTypes.Subject) ?? throw new NullReferenceException(JwtClaimTypes.Subject));
         }
     }
 }
