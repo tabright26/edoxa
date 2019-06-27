@@ -18,6 +18,7 @@ using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Api.Infrastructure.Data;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.IntegrationEvents.Extensions;
+using eDoxa.Monitoring.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Security.Extensions;

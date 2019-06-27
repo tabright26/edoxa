@@ -20,6 +20,7 @@ using eDoxa.Arena.Challenges.Api.Infrastructure.Data;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Extensions;
 using eDoxa.IntegrationEvents.Extensions;
+using eDoxa.Monitoring.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Security.Extensions;

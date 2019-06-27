@@ -10,6 +10,8 @@
 
 using System;
 
+using eDoxa.Monitoring.Extensions;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -20,6 +22,8 @@ namespace eDoxa.Ocelot.Extensions
         public static void AddHealthChecks(this IServiceCollection services, IConfiguration configuration)
         {
             var healthChecks = services.AddHealthChecks();
+
+            healthChecks.AddIdentityServer(configuration);
 
             healthChecks.AddUrlGroup(new Uri(configuration["HealthChecks:Identity:Url"]), "identity-api", tags: new[] {"api"});
 

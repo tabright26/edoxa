@@ -12,7 +12,7 @@ using System;
 
 using eDoxa.IdentityServer.Infrastructure;
 using eDoxa.IdentityServer.Infrastructure.Services;
-using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Monitoring.Extensions;
 using eDoxa.Seedwork.Security.Constants;
 
 using Microsoft.AspNetCore.Hosting;

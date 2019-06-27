@@ -8,12 +8,10 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using HealthChecks.UI.Client;
+using eDoxa.Monitoring.Extensions;
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.Web.Aggregator
@@ -30,14 +28,7 @@ namespace eDoxa.Web.Aggregator
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseHealthChecks(
-                "/health",
-                new HealthCheckOptions
-                {
-                    Predicate = _ => true,
-                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-                }
-            );
+            app.UseHealthChecks();
 
             if (env.IsDevelopment())
             {

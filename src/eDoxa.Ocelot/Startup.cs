@@ -10,16 +10,15 @@
 
 using System.Collections.Generic;
 
+using eDoxa.Monitoring.Extensions;
 using eDoxa.Ocelot.Extensions;
+using eDoxa.Seedwork.Security.Constants;
 using eDoxa.Seedwork.Security.Extensions;
 using eDoxa.Seedwork.Security.IdentityServer.Resources;
-
-using HealthChecks.UI.Client;
 
 using IdentityServer4.Models;
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -47,8 +46,8 @@ namespace eDoxa.Ocelot
 
             services.AddCors(
                 options => options.AddPolicy(
-                    "CorsPolicy",
-                    builder => builder.AllowAnyMethod().AllowAnyHeader().AllowCredentials().SetIsOriginAllowed(host => true)
+                    CustomPolicies.CorsPolicy,
+                    builder => builder.AllowAnyMethod().AllowAnyHeader().AllowCredentials().SetIsOriginAllowed(_ => true)
                 )
             );
 
@@ -59,7 +58,8 @@ namespace eDoxa.Ocelot
                 {
                     ["IdentityApiKey"] = CustomApiResources.Identity,
                     ["CashierApiKey"] = CustomApiResources.Cashier,
-                    ["ArenaChallengesApiKey"] = CustomApiResources.ArenaChallenges
+                    ["ArenaChallengesApiKey"] = CustomApiResources.ArenaChallenges,
+                    ["WebAggregatorKey"] = CustomApiResources.Aggregator
                 }
             );
 
@@ -68,21 +68,14 @@ namespace eDoxa.Ocelot
 
         public void Configure(IApplicationBuilder application)
         {
-            application.UseHealthChecks(
-                "/health",
-                new HealthCheckOptions
-                {
-                    Predicate = _ => true,
-                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-                }
-            );
+            application.UseHealthChecks();
 
             if (Environment.IsDevelopment())
             {
                 application.UseDeveloperExceptionPage();
             }
 
-            application.UseCors("CorsPolicy");
+            application.UseCorsPolicy();
 
             application.UseOcelot().Wait();
         }
