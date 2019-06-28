@@ -115,11 +115,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api Gateways", "Api Gateway
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Ocelot", "src\eDoxa.Ocelot\eDoxa.Ocelot.csproj", "{7A1A50B6-0866-4C19-BEBD-B91AB10A3EBE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Web.Aggregator", "src\eDoxa.Web.Aggregator\eDoxa.Web.Aggregator.csproj", "{14852A44-8F0A-4962-A355-6C90092849B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Web.Aggregator", "src\eDoxa.Web.Aggregator\eDoxa.Web.Aggregator.csproj", "{14852A44-8F0A-4962-A355-6C90092849B8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Monitoring", "Monitoring", "{9109244E-C5C6-4066-A6EE-643802EF02B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Monitoring", "src\eDoxa.Monitoring\eDoxa.Monitoring.csproj", "{6BF959C7-06B4-4611-9331-A6EA8E8AEC6A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Monitoring", "src\eDoxa.Monitoring\eDoxa.Monitoring.csproj", "{6BF959C7-06B4-4611-9331-A6EA8E8AEC6A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "cli", "cli", "{B28D5099-60AE-4C90-AD6B-023935DCA63D}"
+	ProjectSection(SolutionItems) = preProject
+		cli\docker-compose-integration-tests.ps1 = cli\docker-compose-integration-tests.ps1
+		cli\docker-compose-testing.ps1 = cli\docker-compose-testing.ps1
+		cli\docker-compose-unit-tests.ps1 = cli\docker-compose-unit-tests.ps1
+		cli\docker-remove-containers.ps1 = cli\docker-remove-containers.ps1
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -341,6 +349,7 @@ Global
 		{14852A44-8F0A-4962-A355-6C90092849B8} = {84A32CA2-5F8C-48F5-ACC4-FC020127BFA3}
 		{9109244E-C5C6-4066-A6EE-643802EF02B7} = {2DC678B2-4968-45FA-864C-1B0B5412A044}
 		{6BF959C7-06B4-4611-9331-A6EA8E8AEC6A} = {9109244E-C5C6-4066-A6EE-643802EF02B7}
+		{B28D5099-60AE-4C90-AD6B-023935DCA63D} = {6320F9AE-AC74-456A-869F-5A570C3467AB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8BB3B9BB-6C76-478F-982F-E2E084DBDFAC}

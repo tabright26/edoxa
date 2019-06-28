@@ -18,6 +18,7 @@
       <DependentUpon>docker-compose-testing.yml</DependentUpon>
     </None>
     <None Include="docker-compose-testing.yml" />
+    <None Include="docker-compose.nobuild.yml" />
     <None Include="docker-compose.override.yml">
       <DependentUpon>docker-compose.yml</DependentUpon>
     </None>
