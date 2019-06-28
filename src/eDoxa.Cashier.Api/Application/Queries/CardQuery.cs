@@ -17,7 +17,7 @@ using eDoxa.Cashier.Api.Application.Abstractions;
 using eDoxa.Cashier.Api.ViewModels;
 using eDoxa.Cashier.Domain.Extensions;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Seedwork.Security.Extensions;
+using eDoxa.Seedwork.Common.Extensions;
 using eDoxa.Stripe.Abstractions;
 
 using Microsoft.AspNetCore.Http;

@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Domain.Extensions;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Commands.Abstractions.Handlers;
-using eDoxa.Seedwork.Security.Extensions;
+using eDoxa.Seedwork.Common.Extensions;
 using eDoxa.Stripe.Abstractions;
 
 using Microsoft.AspNetCore.Http;

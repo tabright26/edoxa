@@ -1,5 +1,5 @@
 ﻿// Filename: Config.cs
-// Date Created: 2019-05-03
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -29,27 +29,34 @@ namespace eDoxa.IdentityServer.Infrastructure
 
             yield return new IdentityResources.Profile();
 
-            yield return new CustomIdentityResources.Role();
+            yield return CustomIdentityResources.Roles;
 
-            yield return new CustomIdentityResources.Permission();
+            yield return CustomIdentityResources.Permissions;
         }
 
         public static IEnumerable<ApiResource> GetApiResources()
         {
-            yield return new CustomApiResources.IdentityApi();
+            yield return CustomApiResources.Identity;
 
-            yield return new CustomApiResources.CashierApi();
+            yield return CustomApiResources.Cashier;
 
-            yield return new CustomApiResources.ChallengeApi();
+            yield return CustomApiResources.ArenaChallenges;
+
+            yield return CustomApiResources.Aggregator;
         }
 
         public static IEnumerable<Client> GetClients(IConfiguration configuration)
         {
-            yield return new CustomApiResources.IdentityApi().SwaggerClient(configuration["Identity:Url"]);
+            yield return CustomApiResources.Identity.SwaggerClient(configuration["Identity:Url"]);
 
-            yield return new CustomApiResources.CashierApi().SwaggerClient(configuration["Cashier:Url"]);
+            yield return CustomApiResources.Cashier.SwaggerClient(configuration["Cashier:Url"]);
 
-            yield return new CustomApiResources.ChallengeApi().SwaggerClient(configuration["Challenge:Url"]);
+            yield return CustomApiResources.ArenaChallenges.SwaggerClient(configuration["Challenge:Url"]);
+
+            yield return CustomApiResources.Aggregator.SwaggerClient(
+                configuration["Web:Aggregator:Url"],
+                new[] {CustomApiResources.Cashier, CustomApiResources.Identity, CustomApiResources.ArenaChallenges}
+            );
 
             yield return new Client
             {
@@ -57,19 +64,19 @@ namespace eDoxa.IdentityServer.Infrastructure
                 ClientName = "eDoxa Web Spa",
                 AllowedCorsOrigins = new HashSet<string>
                 {
-                    configuration["WebSpa:Url"],
+                    configuration["Web:Spa:Url"],
                     "http://localhost:5300",
                     "http://127.0.0.1:5300"
                 },
                 PostLogoutRedirectUris = new HashSet<string>
                 {
-                    configuration["WebSpa:Url"],
+                    configuration["Web:Spa:Url"],
                     "http://localhost:5300",
                     "http://127.0.0.1:5300"
                 },
                 RedirectUris = new HashSet<string>
                 {
-                    $"{configuration["WebSpa:Url"]}/callback",
+                    $"{configuration["Web:Spa:Url"]}/callback",
                     "http://localhost:5300/callback",
                     "http://127.0.0.1:5300/callback"
                 },
@@ -85,7 +92,8 @@ namespace eDoxa.IdentityServer.Infrastructure
                     CustomScopes.Permissions,
                     CustomScopes.IdentityApi,
                     CustomScopes.CashierApi,
-                    CustomScopes.ChallengeApi
+                    CustomScopes.ChallengeApi,
+                    CustomScopes.WebAggregator
                 }
             };
         }

@@ -1,5 +1,5 @@
 ﻿// Filename: HealthChecksBuilderExtensions.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -15,7 +15,7 @@ using eDoxa.Seedwork.Security.Constants;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace eDoxa.Seedwork.Application.Extensions
+namespace eDoxa.Monitoring.Extensions
 {
     public static class HealthChecksBuilderExtensions
     {

@@ -16,7 +16,7 @@ using eDoxa.Cashier.Api.Application.Abstractions;
 using eDoxa.Cashier.Api.ViewModels;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Seedwork.Common.Enumerations;
-using eDoxa.Seedwork.Security.Extensions;
+using eDoxa.Seedwork.Common.Extensions;
 
 using JetBrains.Annotations;
 

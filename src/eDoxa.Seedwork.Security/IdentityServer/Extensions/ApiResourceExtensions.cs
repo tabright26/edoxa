@@ -1,5 +1,5 @@
 ﻿// Filename: ApiResourceExtensions.cs
-// Date Created: 2019-06-08
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -26,9 +26,10 @@ namespace eDoxa.Seedwork.Security.IdentityServer.Extensions
             return apiResource.DisplayName + " (Swagger UI)";
         }
 
-        public static Client SwaggerClient(this ApiResource apiResource, string redirectUri)
+        // TODO: To refactor.
+        public static Client SwaggerClient(this ApiResource apiResource, string redirectUri, ApiResource[] allowedScopes = null)
         {
-            return new Client
+            var client = new Client
             {
                 AllowAccessTokensViaBrowser = true,
                 AllowedGrantTypes = GrantTypes.Implicit,
@@ -49,6 +50,16 @@ namespace eDoxa.Seedwork.Security.IdentityServer.Extensions
                     $"{redirectUri}/"
                 }
             };
+
+            if (allowedScopes != null)
+            {
+                foreach (var allowedScope in allowedScopes)
+                {
+                    client.AllowedScopes.Add(allowedScope.Name);
+                }
+            }
+
+            return client;
         }
     }
 }

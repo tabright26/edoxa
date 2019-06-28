@@ -36,7 +36,8 @@ services:
       - Identity__Url=${URL:-http://localhost}:5001
       - Cashier__Url=${URL:-http://localhost}:5002
       - Challenge__Url=${URL:-http://localhost}:5003
-      - WebSpa__Url=${URL:-http://localhost}:5300
+      - Web__Aggregator__Url=${URL:-http://localhost}:5100
+      - Web__Spa__Url=${URL:-http://localhost}:5300
       - IdentityServer__Url=http://idsrv
     ports:
       - "5000:80"
@@ -80,6 +81,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - ConnectionStrings__SqlServer=${MSSQL_CHALLENGE:-Server=mssql;Database=Services.Arena.Challenges;User Id=sa;Password=fnU3Www9TnBDp3MA}      
+      - ConnectionStrings__Redis=${REDIS:-redis}
       - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
       - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
       - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
@@ -91,6 +93,30 @@ services:
       - IdentityServer__Url=http://idsrv
     ports:
       - "5003:80"
+
+  web.aggregator:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - HealthChecks__Identity__Url=http://identity.api/health
+      - HealthChecks__Cashier__Url=http://cashier.api/health
+      - HealthChecks__ArenaChallenges__Url=http://arena.challenges.api/health
+      - Authority=${URL:-http://localhost}:5000
+      - IdentityServer__Url=http://idsrv
+    ports:
+      - "5100:80"
+
+  web.gateway:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development      
+      - HealthChecks__Identity__Url=http://identity.api/health
+      - HealthChecks__Cashier__Url=http://cashier.api/health
+      - HealthChecks__ArenaChallenges__Url=http://arena.challenges.api/health
+      - HealthChecks__Web__Aggregator__Url=http://web.aggregator/health
+      - IdentityServer__Url=http://idsrv
+    ports:
+      - "5200:80"
+    volumes:
+      - ./api/eDoxa.Web.Gateway:/app/ocelot
 
   #web.spa:
   #  environment:
@@ -123,10 +149,14 @@ services:
       - HealthChecks__Endpoints__1__Uri=http://identity.api/health
       - HealthChecks__Endpoints__2__Name=eDoxa Cashier API
       - HealthChecks__Endpoints__2__Uri=http://cashier.api/health
-      - HealthChecks__Endpoints__3__Name=eDoxa Challenge API
-      - HealthChecks__Endpoints__3__Uri=http://challenge.api/health
-      - HealthChecks__Endpoints__4__Name=eDoxa Web Spa
-      - HealthChecks__Endpoints__4__Uri=http://web.spa/health
+      - HealthChecks__Endpoints__3__Name=eDoxa Arena Challenges API
+      - HealthChecks__Endpoints__3__Uri=http://arena.challenges.api/health
+      - HealthChecks__Endpoints__4__Name=eDoxa Web Aggregator
+      - HealthChecks__Endpoints__4__Uri=http://web.aggregator/health
+      - HealthChecks__Endpoints__5__Name=eDoxa Web Gateway
+      - HealthChecks__Endpoints__5__Uri=http://web.gateway/health
+      - HealthChecks__Endpoints__6__Name=eDoxa Web Spa
+      - HealthChecks__Endpoints__6__Uri=http://web.spa/health
       - HealthChecks__EvaluationTimeInSeconds=15
       - HealthChecks__MinimumSecondsBetweenFailureNotifications=60
     ports:

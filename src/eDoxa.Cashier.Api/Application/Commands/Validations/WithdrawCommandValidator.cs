@@ -14,8 +14,8 @@ using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Validators;
 using eDoxa.Commands.Abstractions.Validations;
+using eDoxa.Seedwork.Common.Extensions;
 using eDoxa.Seedwork.Domain.Extensions;
-using eDoxa.Seedwork.Security.Extensions;
 
 using FluentValidation;
 

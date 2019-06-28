@@ -11,7 +11,7 @@
 using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Security.Constants;
 
-namespace eDoxa.Seedwork.Security.Extensions
+namespace eDoxa.Seedwork.Common.Extensions
 {
     public static class GameExtensions
     {

@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Monitoring.Extensions;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,6 +24,8 @@ namespace eDoxa.Arena.Challenges.Api.Extensions
             healthChecks.AddAzureKeyVault(configuration);
 
             healthChecks.AddSqlServer(configuration);
+
+            healthChecks.AddRedis(configuration);
 
             healthChecks.AddIdentityServer(configuration);
         }
