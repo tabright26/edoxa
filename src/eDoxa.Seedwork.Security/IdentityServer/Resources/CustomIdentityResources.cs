@@ -1,5 +1,5 @@
 ﻿// Filename: CustomIdentityResources.cs
-// Date Created: 2019-06-08
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -20,9 +20,12 @@ namespace eDoxa.Seedwork.Security.IdentityServer.Resources
 {
     public sealed class CustomIdentityResources
     {
+        public static readonly Role Roles = new Role();
+        public static readonly Permission Permissions = new Permission();
+
         public sealed class Role : IdentityResource
         {
-            public Role() : base(
+            internal Role() : base(
                 "roles",
                 "Your role(s)",
                 new HashSet<string>
@@ -36,7 +39,7 @@ namespace eDoxa.Seedwork.Security.IdentityServer.Resources
 
         public sealed class Permission : IdentityResource
         {
-            public Permission() : base(
+            internal Permission() : base(
                 "permissions",
                 "Your permission(s)",
                 new HashSet<string>

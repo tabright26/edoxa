@@ -11,9 +11,11 @@
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
+using Serilog;
+
 namespace eDoxa.Web.Aggregator
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
@@ -22,7 +24,8 @@ namespace eDoxa.Web.Aggregator
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
-            return WebHost.CreateDefaultBuilder(args).UseStartup<Startup>();
+            return WebHost.CreateDefaultBuilder<Startup>(args)
+                .UseSerilog((context, loggerConfiguration) => loggerConfiguration.MinimumLevel.Information().Enrich.FromLogContext().WriteTo.Console());
         }
     }
 }

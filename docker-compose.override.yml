@@ -97,6 +97,9 @@ services:
   web.aggregator:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - HealthChecks__Identity__Url=http://identity.api/health
+      - HealthChecks__Cashier__Url=http://cashier.api/health
+      - HealthChecks__ArenaChallenges__Url=http://arena.challenges.api/health
       - Authority=${URL:-http://localhost}:5000
       - IdentityServer__Url=http://idsrv
     ports:

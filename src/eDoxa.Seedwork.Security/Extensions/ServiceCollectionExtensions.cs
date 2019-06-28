@@ -44,7 +44,10 @@ namespace eDoxa.Seedwork.Security.Extensions
             services.AddCors(
                 options =>
                 {
-                    options.AddPolicy(CustomPolicies.CorsPolicy, builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials());
+                    options.AddPolicy(
+                        CustomPolicies.CorsPolicy,
+                        builder => builder.AllowAnyMethod().AllowAnyHeader().AllowCredentials().SetIsOriginAllowed(_ => true)
+                    );
                 }
             );
         }

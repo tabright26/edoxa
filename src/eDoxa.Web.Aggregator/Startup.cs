@@ -9,31 +9,69 @@
 // this source code package.
 
 using eDoxa.Monitoring.Extensions;
+using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Security.Extensions;
+using eDoxa.Seedwork.Security.IdentityServer.Resources;
+using eDoxa.Swagger.Extensions;
+using eDoxa.Web.Aggregator.Extensions;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.Web.Aggregator
 {
     public class Startup
     {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public void ConfigureServices(IServiceCollection services)
+        public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {
-            services.AddHealthChecks();
+            Configuration = configuration;
+            Environment = environment;
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
-            app.UseHealthChecks();
+        private IConfiguration Configuration { get; }
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+        private IHostingEnvironment Environment { get; }
+
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddHealthChecks(Configuration);
+
+            services.AddCorsPolicy();
+
+            services.AddVersioning();
+
+            services.AddMvcFilters();
+
+            services.AddSwagger(
+                Configuration,
+                Environment,
+                CustomApiResources.Aggregator,
+                new[] {CustomApiResources.Identity, CustomApiResources.Cashier, CustomApiResources.ArenaChallenges}
+            );
+
+            services.AddAuthentication(Configuration, Environment, CustomApiResources.Aggregator);
+
+            services.AddServices();
+        }
+
+        public void Configure(IApplicationBuilder application, IApiVersionDescriptionProvider provider)
+        {
+            application.UseHealthChecks();
+
+            application.UseCorsPolicy();
+
+            application.UseCustomExceptionHandler();
+
+            application.UseAuthentication(Environment);
+
+            application.UseStaticFiles();
+
+            application.UseSwagger(Environment, provider, CustomApiResources.Aggregator);
+
+            application.UseMvc();
         }
     }
 }

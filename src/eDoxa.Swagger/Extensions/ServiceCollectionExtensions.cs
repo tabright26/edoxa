@@ -35,7 +35,8 @@ namespace eDoxa.Swagger.Extensions
             this IServiceCollection services,
             IConfiguration configuration,
             IHostingEnvironment environment,
-            ApiResource apiResource
+            ApiResource apiResource,
+            ApiResource[] apiScopes = null
         )
         {
             if (!environment.IsDevelopment())
@@ -68,20 +69,28 @@ namespace eDoxa.Swagger.Extensions
 
                     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{assembly.GetName().Name}.xml"));
 
-                    options.AddSecurityDefinition(
-                        "oauth2",
-                        new OAuth2Scheme
+                    var authScheme = new OAuth2Scheme
+                    {
+                        Type = "oauth2",
+                        Flow = "implicit",
+                        AuthorizationUrl = authority + "/connect/authorize",
+                        TokenUrl = authority + "/connect/token",
+                        Scopes = new Dictionary<string, string>
                         {
-                            Type = "oauth2",
-                            Flow = "implicit",
-                            AuthorizationUrl = authority + "/connect/authorize",
-                            TokenUrl = authority + "/connect/token",
-                            Scopes = new Dictionary<string, string>
-                            {
-                                [apiResource.Name] = apiResource.DisplayName
-                            }
+                            [apiResource.Name] = apiResource.DisplayName
                         }
-                    );
+                    };
+
+                    // TODO: To refactor.
+                    if (apiScopes != null)
+                    {
+                        foreach (var scope in apiScopes)
+                        {
+                            authScheme.Scopes.Add(scope.Name, scope.DisplayName);
+                        }
+                    }
+
+                    options.AddSecurityDefinition("oauth2", authScheme);
 
                     options.OperationFilter<CustomOperationFilter>();
 

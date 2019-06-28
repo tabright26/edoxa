@@ -29,9 +29,9 @@ namespace eDoxa.IdentityServer.Infrastructure
 
             yield return new IdentityResources.Profile();
 
-            yield return new CustomIdentityResources.Role();
+            yield return CustomIdentityResources.Roles;
 
-            yield return new CustomIdentityResources.Permission();
+            yield return CustomIdentityResources.Permissions;
         }
 
         public static IEnumerable<ApiResource> GetApiResources()
@@ -53,7 +53,10 @@ namespace eDoxa.IdentityServer.Infrastructure
 
             yield return CustomApiResources.ArenaChallenges.SwaggerClient(configuration["Challenge:Url"]);
 
-            yield return CustomApiResources.Aggregator.SwaggerClient(configuration["Web:Aggregator:Url"]);
+            yield return CustomApiResources.Aggregator.SwaggerClient(
+                configuration["Web:Aggregator:Url"],
+                new[] {CustomApiResources.Cashier, CustomApiResources.Identity, CustomApiResources.ArenaChallenges}
+            );
 
             yield return new Client
             {
@@ -89,7 +92,8 @@ namespace eDoxa.IdentityServer.Infrastructure
                     CustomScopes.Permissions,
                     CustomScopes.IdentityApi,
                     CustomScopes.CashierApi,
-                    CustomScopes.ChallengeApi
+                    CustomScopes.ChallengeApi,
+                    CustomScopes.WebAggregator
                 }
             };
         }

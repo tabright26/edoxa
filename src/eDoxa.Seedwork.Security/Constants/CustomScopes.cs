@@ -1,5 +1,5 @@
 ﻿// Filename: CustomScopes.cs
-// Date Created: 2019-06-08
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -14,10 +14,11 @@ namespace eDoxa.Seedwork.Security.Constants
 {
     public static class CustomScopes
     {
-        public static readonly string Roles = new CustomIdentityResources.Role().Name;
-        public static readonly string Permissions = new CustomIdentityResources.Permission().Name;
-        public static readonly string IdentityApi = new CustomApiResources.IdentityApi().Name;
-        public static readonly string CashierApi = new CustomApiResources.CashierApi().Name;
-        public static readonly string ChallengeApi = new CustomApiResources.ChallengeApi().Name;
+        public static readonly string Roles = CustomIdentityResources.Roles.Name;
+        public static readonly string Permissions = CustomIdentityResources.Permissions.Name;
+        public static readonly string IdentityApi = CustomApiResources.Identity.Name;
+        public static readonly string CashierApi = CustomApiResources.Cashier.Name;
+        public static readonly string ChallengeApi = CustomApiResources.ArenaChallenges.Name;
+        public static readonly string WebAggregator = CustomApiResources.Aggregator.Name;
     }
 }

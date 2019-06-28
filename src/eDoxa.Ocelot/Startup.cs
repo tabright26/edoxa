@@ -12,7 +12,6 @@ using System.Collections.Generic;
 
 using eDoxa.Monitoring.Extensions;
 using eDoxa.Ocelot.Extensions;
-using eDoxa.Seedwork.Security.Constants;
 using eDoxa.Seedwork.Security.Extensions;
 using eDoxa.Seedwork.Security.IdentityServer.Resources;
 
@@ -44,12 +43,7 @@ namespace eDoxa.Ocelot
         {
             services.AddHealthChecks(Configuration);
 
-            services.AddCors(
-                options => options.AddPolicy(
-                    CustomPolicies.CorsPolicy,
-                    builder => builder.AllowAnyMethod().AllowAnyHeader().AllowCredentials().SetIsOriginAllowed(_ => true)
-                )
-            );
+            services.AddCorsPolicy();
 
             services.AddAuthentication(
                 Configuration,
