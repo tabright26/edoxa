@@ -12,8 +12,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api;
+using eDoxa.Identity.Api.Application.Fakers;
 using eDoxa.Identity.Api.ViewModels;
-using eDoxa.Identity.Domain.Fakers;
 using eDoxa.Identity.Infrastructure;
 using eDoxa.Seedwork.Testing.TestServer;
 using eDoxa.Seedwork.Testing.TestServer.Extensions;
@@ -58,9 +58,9 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
         public async Task ApiUsers_WithNinetyNineUsers_ShouldHaveCountOfNinetyNine()
         {
             // Arrange
-            var userFaker = new UserFaker();
+            var userFaker = new UserFaker(1);
             var context = _testServer.GetService<IdentityDbContext>();
-            context.AddRange(userFaker.FakeNewUsers(99));
+            context.AddRange(userFaker.FakeTestUsers(99));
             await context.SaveChangesAsync();
 
             // Act

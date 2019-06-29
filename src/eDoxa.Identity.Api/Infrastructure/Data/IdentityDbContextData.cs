@@ -11,9 +11,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Domain.Fakers;
+using eDoxa.Identity.Api.Application.Fakers;
 using eDoxa.Identity.Infrastructure;
-using eDoxa.Seedwork.Common.Extensions;
 using eDoxa.Seedwork.Infrastructure.Abstractions;
 
 using Microsoft.AspNetCore.Hosting;
@@ -49,8 +48,6 @@ namespace eDoxa.Identity.Api.Infrastructure.Data
                     await _context.SaveChangesAsync();
 
                     _logger.LogInformation("The roles being populated:");
-
-                    _logger.LogInformation(roles.DumbAsJson());
                 }
                 else
                 {
@@ -59,21 +56,19 @@ namespace eDoxa.Identity.Api.Infrastructure.Data
 
                 if (!_context.Users.Any())
                 {
-                    var userFaker = new UserFaker();
+                    var userFaker = new UserFaker(1);
 
                     var adminUser = userFaker.FakeAdminUser();
 
                     _context.Users.Add(adminUser);
 
-                    var newUsers = userFaker.FakeNewUsers(99);
+                    var testUsers = userFaker.FakeTestUsers();
 
-                    _context.AddRange(newUsers);
+                    _context.AddRange(testUsers);
 
                     await _context.SaveChangesAsync();
 
                     _logger.LogInformation("The users being populated:");
-
-                    _logger.LogInformation(adminUser.DumbAsJson());
                 }
                 else
                 {

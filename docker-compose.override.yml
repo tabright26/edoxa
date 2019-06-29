@@ -58,6 +58,8 @@ services:
       - IdentityServer__Url=http://idsrv
     ports:
       - "5001:80"
+    volumes:
+      - ./data:/app/Resources
 
   cashier.api:
     environment:
@@ -75,6 +77,8 @@ services:
       - IdentityServer__Url=http://idsrv
     ports:
       - "5002:80"
+    volumes:
+      - ./data:/app/Resources
 
   arena.challenges.api:
     environment:
@@ -93,6 +97,8 @@ services:
       - IdentityServer__Url=http://idsrv
     ports:
       - "5003:80"
+    volumes:
+      - ./data:/app/Resources
 
   web.aggregator:
     environment:

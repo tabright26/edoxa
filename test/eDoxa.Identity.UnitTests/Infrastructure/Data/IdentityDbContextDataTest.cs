@@ -10,7 +10,7 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Identity.UnitTests.Application.Data
+namespace eDoxa.Identity.UnitTests.Infrastructure.Data
 {
     [TestClass]
     public sealed class IdentityDbContextDataTest

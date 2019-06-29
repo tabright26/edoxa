@@ -1,5 +1,5 @@
-﻿// Filename: UserFakerTest.cs
-// Date Created: 2019-06-09
+﻿// Filename: RoleFakerTest.cs
+// Date Created: 2019-06-10
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,33 +10,31 @@
 
 using System;
 
-using eDoxa.Identity.Domain.Fakers;
+using eDoxa.Identity.Api.Application.Fakers;
 using eDoxa.Seedwork.Common.Extensions;
 
 using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Identity.UnitTests.Application.Data.Fakers
+namespace eDoxa.Identity.UnitTests.Application.Fakers
 {
     [TestClass]
-    public class UserFakerTest
+    public sealed class RoleFakerTest
     {
         [TestMethod]
-        public void FakeNewUsers_ShouldNotThrow()
+        public void FakeRoles_ShouldNotThrow()
         {
             // Arrange
-            var userFaker = new UserFaker();
+            var roleFaker = new RoleFaker();
 
             // Act
             var action = new Action(
                 () =>
                 {
-                    var users = userFaker.FakeNewUsers(99);
+                    var roles = roleFaker.FakeRoles();
 
-                    Console.WriteLine(users.DumbAsJson());
-
-                    users.Should().HaveCount(99);
+                    Console.WriteLine(roles.DumbAsJson());
                 }
             );
 
@@ -45,18 +43,18 @@ namespace eDoxa.Identity.UnitTests.Application.Data.Fakers
         }
 
         [TestMethod]
-        public void FakeNewUser_ShouldNotThrow()
+        public void FakeAdminRole_ShouldNotThrow()
         {
             // Arrange
-            var userFaker = new UserFaker();
+            var roleFaker = new RoleFaker();
 
             // Act
             var action = new Action(
                 () =>
                 {
-                    var user = userFaker.FakeNewUser();
+                    var role = roleFaker.FakeAdminRole();
 
-                    Console.WriteLine(user.DumbAsJson());
+                    Console.WriteLine(role.DumbAsJson());
                 }
             );
 
@@ -65,18 +63,18 @@ namespace eDoxa.Identity.UnitTests.Application.Data.Fakers
         }
 
         [TestMethod]
-        public void FakeAdminUser_ShouldNotThrow()
+        public void FakeChallengerRole_ShouldNotThrow()
         {
             // Arrange
-            var userFaker = new UserFaker();
+            var roleFaker = new RoleFaker();
 
             // Act
             var action = new Action(
                 () =>
                 {
-                    var user = userFaker.FakeAdminUser();
+                    var role = roleFaker.FakeChallengerRole();
 
-                    Console.WriteLine(user.DumbAsJson());
+                    Console.WriteLine(role.DumbAsJson());
                 }
             );
 

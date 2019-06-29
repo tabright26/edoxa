@@ -14,4 +14,9 @@
     <ProjectReference Include="..\eDoxa.Seedwork.Security\eDoxa.Seedwork.Security.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="..\..\data\PayoutCharts.csv" Link="Resources\PayoutCharts.csv" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\data\TestUserIds.csv" Link="Resources\TestUserIds.csv" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>
