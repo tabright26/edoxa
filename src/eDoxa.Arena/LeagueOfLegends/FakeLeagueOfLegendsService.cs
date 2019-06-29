@@ -1,5 +1,5 @@
-﻿// Filename: FakeLeagueOfLegendsMatchService.cs
-// Date Created: 2019-06-08
+﻿// Filename: FakeLeagueOfLegendsService.cs
+// Date Created: 2019-06-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,20 +11,32 @@
 using System;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Services.LeagueOfLegends.Abstractions;
-using eDoxa.Arena.Services.LeagueOfLegends.Dtos;
+using Bogus;
 
-namespace eDoxa.Arena.Services.LeagueOfLegends
+using eDoxa.Arena.LeagueOfLegends.Abstractions;
+using eDoxa.Arena.LeagueOfLegends.Dtos;
+
+namespace eDoxa.Arena.LeagueOfLegends
 {
     public sealed class FakeLeagueOfLegendsService : ILeagueOfLegendsService
     {
+        private readonly Random _random = new Random();
+
         public Task<LeagueOfLegendsMatchReferenceDto[]> GetMatchReferencesAsync(string accountId, DateTime endTime, DateTime beginTime)
         {
-            return Task.FromResult(new LeagueOfLegendsMatchReferenceDto[] { });
+            var faker = new Faker<LeagueOfLegendsMatchReferenceDto>();
+
+            //return Task.FromResult(faker.Generate(_random.Next(0, 10)).ToArray());
+
+            return Task.FromResult(Array.Empty<LeagueOfLegendsMatchReferenceDto>());
         }
 
         public Task<LeagueOfLegendsMatchDto> GetMatchAsync(string gameId)
         {
+            var faker = new Faker<LeagueOfLegendsMatchDto>();
+
+            //return Task.FromResult(faker.Generate());
+
             return Task.FromResult(new LeagueOfLegendsMatchDto());
         }
     }

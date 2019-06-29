@@ -1,5 +1,5 @@
-﻿// Filename: LeagueOfLegendsMatchService.cs
-// Date Created: 2019-06-07
+﻿// Filename: LeagueOfLegendsService.cs
+// Date Created: 2019-06-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,21 +13,19 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 
-using eDoxa.Arena.Services.LeagueOfLegends.Abstractions;
-using eDoxa.Arena.Services.LeagueOfLegends.Dtos;
+using eDoxa.Arena.LeagueOfLegends.Abstractions;
+using eDoxa.Arena.LeagueOfLegends.Dtos;
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Arena.Services.LeagueOfLegends
+namespace eDoxa.Arena.LeagueOfLegends
 {
-    public sealed class LeagueOfLegendsService : ILeagueOfLegendsService
+    internal sealed class LeagueOfLegendsService : ILeagueOfLegendsService
     {
         private readonly HttpClient _httpClient;
 
-        public LeagueOfLegendsService(HttpClient httpClient, string apiKey)
+        public LeagueOfLegendsService(HttpClient httpClient)
         {
-            httpClient.DefaultRequestHeaders.Add("X-Riot-Token", apiKey);
-
             _httpClient = httpClient;
         }
 

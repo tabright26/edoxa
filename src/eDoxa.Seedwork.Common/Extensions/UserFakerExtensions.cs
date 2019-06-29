@@ -18,6 +18,7 @@ using eDoxa.Seedwork.Common.ValueObjects;
 
 namespace eDoxa.Seedwork.Common.Extensions
 {
+    // TODO: To refactor.
     public static class UserFakerExtensions
     {
         private static ICollection<Guid> _testUserIds = DataResources.TestUserIds.OrderBy(testUserId => testUserId).ToList();

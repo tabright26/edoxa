@@ -1,5 +1,5 @@
 ﻿// Filename: ServiceCollectionExtensions.cs
-// Date Created: 2019-06-07
+// Date Created: 2019-06-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,18 +8,18 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Arena.Services.LeagueOfLegends;
-using eDoxa.Arena.Services.LeagueOfLegends.Abstractions;
+using eDoxa.Arena.LeagueOfLegends.Extensions;
 
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.Arena.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddArena(this IServiceCollection services)
+        public static void AddArena(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddSingleton<ILeagueOfLegendsService, FakeLeagueOfLegendsService>();
+            services.AddLeagueOfLegends(configuration);
         }
     }
 }

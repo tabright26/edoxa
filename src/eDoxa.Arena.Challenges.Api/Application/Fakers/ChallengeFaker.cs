@@ -29,13 +29,13 @@ namespace eDoxa.Arena.Challenges.Api.Application.Fakers
             this.CustomInstantiator(
                 faker =>
                 {
-                    game = faker.Challenge().Game(game);
+                    var fakeGame = faker.Challenge().Game(game);
 
-                    state = faker.Challenge().State(state);
+                    var fakeState = faker.Challenge().State(state);
 
                     var setup = faker.Challenge().Setup(entryFeeCurrency);
 
-                    var scoring = new ScoringFactory().CreateInstance(game).Scoring;
+                    var scoring = new ScoringFactory().CreateInstance(fakeGame).Scoring;
 
                     var payout = new PayoutFactory().CreateInstance().GetPayout(setup.PayoutEntries, setup.EntryFee);
 
@@ -55,7 +55,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Fakers
 
                     var challenge = new Challenge(
                         faker.Challenge().Name(),
-                        game,
+                        fakeGame,
                         setup,
                         new ChallengeTimeline(new FakeDateTimeProvider(createdAt), duration),
                         scoring,
@@ -64,26 +64,26 @@ namespace eDoxa.Arena.Challenges.Api.Application.Fakers
 
                     challenge.SetEntityId(faker.Challenge().Id());
 
-                    var participantFaker = new ParticipantFaker(game, createdAt, startedAt);
+                    var participantFaker = new ParticipantFaker(fakeGame, createdAt, startedAt);
 
                     participantFaker.UseSeed(faker.Random.Int());
 
-                    var participants = participantFaker.Generate(this.ParticipantCount(state, setup.Entries));
+                    var participants = participantFaker.Generate(this.ParticipantCount(fakeState, setup.Entries));
 
                     participants.ForEach(participant => challenge.Register(participant));
 
-                    if (state != ChallengeState.Inscription)
+                    if (fakeState != ChallengeState.Inscription)
                     {
                         challenge.Start(new FakeDateTimeProvider(startedAt));
 
                         participants.ForEach(
                             participant =>
                             {
-                                var matchFaker = new MatchFaker(game, scoring, synchronizedAt);
+                                var matchFaker = new MatchFaker(fakeGame, scoring, synchronizedAt);
 
                                 matchFaker.UseSeed(faker.Random.Int());
 
-                                var matches = matchFaker.Generate(this.MatchCount(state, setup.BestOf));
+                                var matches = matchFaker.Generate(this.MatchCount(fakeState, setup.BestOf));
 
                                 matches.ForEach(participant.Snapshot);
                             }
@@ -91,12 +91,12 @@ namespace eDoxa.Arena.Challenges.Api.Application.Fakers
 
                         challenge.Synchronize(new FakeDateTimeProvider(synchronizedAt));
 
-                        if (state == ChallengeState.Ended || state == ChallengeState.Closed)
+                        if (fakeState == ChallengeState.Ended || fakeState == ChallengeState.Closed)
                         {
                             challenge.Start(new FakeDateTimeProvider(startedAt - duration));
                         }
 
-                        if (state == ChallengeState.Closed)
+                        if (fakeState == ChallengeState.Closed)
                         {
                             challenge.Close(new FakeDateTimeProvider(closedAt));
                         }

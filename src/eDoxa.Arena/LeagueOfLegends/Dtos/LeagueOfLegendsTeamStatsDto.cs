@@ -1,5 +1,5 @@
 ﻿// Filename: LeagueOfLegendsTeamStatsDto.cs
-// Date Created: 2019-06-07
+// Date Created: 2019-06-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,7 +10,7 @@
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Arena.Services.LeagueOfLegends.Dtos
+namespace eDoxa.Arena.LeagueOfLegends.Dtos
 {
     [JsonObject]
     public class LeagueOfLegendsTeamStatsDto

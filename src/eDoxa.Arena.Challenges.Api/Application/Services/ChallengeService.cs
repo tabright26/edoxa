@@ -19,7 +19,6 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Factories;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Domain.Services;
-using eDoxa.Arena.Challenges.Domain.Specifications;
 using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Domain.Extensions;
@@ -93,9 +92,14 @@ namespace eDoxa.Arena.Challenges.Api.Application.Services
             await _challengeRepository.CommitAsync(cancellationToken);
         }
 
-        public async Task SynchronizeAsync(IDateTimeProvider synchronizedAt, ChallengeGame game, CancellationToken cancellationToken = default)
+        public async Task SynchronizeAsync(
+            IDateTimeProvider synchronizedAt,
+            ChallengeGame game,
+            CancellationToken cancellationToken = default
+        )
         {
-            var specification = SpecificationFactory.Instance.Create<IChallenge>().And(new LastSynchronizationMoreThanSpecification(TimeSpan.FromMinutes(30)));
+            var specification = SpecificationFactory.Instance.Create<IChallenge>();
+                //.And(new LastSynchronizationMoreThanSpecification(synchronizationInterval));
 
             var challenges = await _challengeRepository.FindChallengesAsync(game, ChallengeState.InProgress);
 

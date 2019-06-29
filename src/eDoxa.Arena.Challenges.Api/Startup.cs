@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -23,6 +23,7 @@ using eDoxa.IntegrationEvents.Extensions;
 using eDoxa.Monitoring.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
+using eDoxa.Seedwork.Security.Constants;
 using eDoxa.Seedwork.Security.Extensions;
 using eDoxa.Seedwork.Security.IdentityServer.Resources;
 using eDoxa.Swagger.Extensions;
@@ -62,6 +63,14 @@ namespace eDoxa.Arena.Challenges.Api
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+            services.AddDistributedRedisCache(
+                options =>
+                {
+                    options.Configuration = Configuration.GetConnectionString(CustomConnectionStrings.Redis);
+                    options.InstanceName = Environment.ApplicationName;
+                }
+            );
+
             services.AddMvcFilters();
 
             services.AddSwagger(Configuration, Environment, CustomApiResources.ArenaChallenges);
@@ -72,7 +81,7 @@ namespace eDoxa.Arena.Challenges.Api
 
             services.AddAuthentication(Configuration, Environment, CustomApiResources.ArenaChallenges);
 
-            services.AddArena();
+            services.AddArena(Configuration);
 
             return services.Build<ApiModule>();
         }

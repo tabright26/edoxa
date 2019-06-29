@@ -14,24 +14,24 @@ using System.Threading.Tasks;
 using eDoxa.Arena.Challenges.Domain.Adapters;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Services.LeagueOfLegends.Abstractions;
+using eDoxa.Arena.LeagueOfLegends.Abstractions;
 
 namespace eDoxa.Arena.Challenges.Api.Application.Adapters
 {
     public sealed class LeagueOfLegendsMatchStatsAdapter : IMatchStatsAdapter
     {
-        private readonly ILeagueOfLegendsService _leagueOfLegendsService;
+        private readonly ILeagueOfLegendsProxy _leagueOfLegendsProxy;
 
-        public LeagueOfLegendsMatchStatsAdapter(ILeagueOfLegendsService leagueOfLegendsService)
+        public LeagueOfLegendsMatchStatsAdapter(ILeagueOfLegendsProxy leagueOfLegendsProxy)
         {
-            _leagueOfLegendsService = leagueOfLegendsService;
+            _leagueOfLegendsProxy = leagueOfLegendsProxy;
         }
 
         public ChallengeGame Game => ChallengeGame.LeagueOfLegends;
 
         public async Task<IMatchStats> GetMatchStatsAsync(GameAccountId gameAccountId, GameReference gameReference)
         {
-            var match = await _leagueOfLegendsService.GetMatchAsync(gameReference.ToString());
+            var match = await _leagueOfLegendsProxy.GetMatchAsync(gameReference.ToString());
 
             var participantId = match.ParticipantIdentities.Single(participantIdentity => participantIdentity.Player.AccountId == gameAccountId.ToString())
                 .ParticipantId;

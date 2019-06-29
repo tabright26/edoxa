@@ -16,7 +16,8 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Services.LeagueOfLegends.Dtos;
+using eDoxa.Arena.LeagueOfLegends;
+using eDoxa.Arena.LeagueOfLegends.Dtos;
 using eDoxa.Arena.UnitTests.Utilities.Stubs;
 
 using FluentAssertions;
@@ -57,7 +58,7 @@ namespace eDoxa.Arena.UnitTests.Services.LeagueOfLegends
                     }
                 );
 
-            var service = new Arena.Services.LeagueOfLegends.LeagueOfLegendsService(new HttpClient(mockHttpMessageHandler.Object), It.IsAny<string>());
+            var service = new LeagueOfLegendsService(new HttpClient(mockHttpMessageHandler.Object));
 
             // Act
             var matchReferences = await service.GetMatchReferencesAsync(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<DateTime>());
@@ -96,7 +97,7 @@ namespace eDoxa.Arena.UnitTests.Services.LeagueOfLegends
                     }
                 );
 
-            var service = new Arena.Services.LeagueOfLegends.LeagueOfLegendsService(new HttpClient(mockHttpMessageHandler.Object), It.IsAny<string>());
+            var service = new LeagueOfLegendsService(new HttpClient(mockHttpMessageHandler.Object));
 
             // Act
             var match = await service.GetMatchAsync(It.IsAny<string>());

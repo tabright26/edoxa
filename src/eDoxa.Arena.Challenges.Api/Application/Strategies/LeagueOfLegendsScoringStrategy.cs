@@ -11,7 +11,7 @@
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Strategies;
-using eDoxa.Arena.Services.LeagueOfLegends.Dtos;
+using eDoxa.Arena.LeagueOfLegends.Dtos;
 
 namespace eDoxa.Arena.Challenges.Api.Application.Strategies
 {
