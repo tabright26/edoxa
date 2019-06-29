@@ -31,7 +31,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.ConverterTypes
 
             var stats = context.Mapper.Map<ICollection<Stat>>(source.Stats);
 
-            match.SnapshotStats(new Scoring(stats), new MatchStats(stats));
+            match.Snapshot(new MatchStats(stats), new Scoring(stats));
 
             return match;
         }

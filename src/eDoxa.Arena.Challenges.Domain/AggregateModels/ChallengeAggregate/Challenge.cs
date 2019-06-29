@@ -1,5 +1,5 @@
 ﻿// Filename: Challenge.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -68,17 +68,10 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             _participants.Add(participant);
         }
 
-        //public async void Synchronize(IGameMatchIdsFactory gameMatchIdsFactory, IMatchStatsFactory matchStatsFactory, IDateTimeProvider synchronizedAt)
-        //{
-        //    foreach (var participant in Participants.Where(participant => !participant.HasFinalScore(Timeline))
-        //        .OrderBy(participant => participant.SynchronizedAt)
-        //        .ToList())
-        //    {
-        //        await this.SynchronizeAsync(gameMatchIdsFactory, matchStatsFactory, participant, synchronizedAt);
-        //    }
-
-        //    this.Synchronize(synchronizedAt);
-        //}
+        private bool CanRegister(Participant participant)
+        {
+            return new RegisterParticipantValidator(participant.UserId).Validate(this).IsValid;
+        }
 
         public void Start(IDateTimeProvider startedAt)
         {
@@ -88,6 +81,11 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             }
 
             Timeline = Timeline.Start(startedAt);
+        }
+
+        private bool CanStart()
+        {
+            return Participants.Count == Setup.Entries;
         }
 
         public void Close(IDateTimeProvider closedAt)
@@ -100,56 +98,55 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             Timeline = Timeline.Close(closedAt);
         }
 
-        //public void DistributeParticipantPrizes()
-        //{
-        //    this.AddDomainEvent(new ChallengePayoutDomainEvent(Id, Payout.GetParticipantPrizes(Scoreboard)));
-        //}
-
-        public void Synchronize(
-            Func<GameAccountId, DateTime, DateTime, IEnumerable<GameReference>> getParticipantGameReferences,
-            Func<GameAccountId, GameReference, IMatchStats> getParticipantMatchStats,
-            IDateTimeProvider synchronizedAt
-        )
-        {
-        }
-
-        private bool CanStart()
-        {
-            return Participants.Count == Setup.Entries;
-        }
-
         private bool CanClose()
         {
             return Timeline == ChallengeState.Ended;
         }
 
-        private bool CanRegister(Participant participant)
-        {
-            return new RegisterParticipantValidator(participant.UserId).Validate(this).IsValid;
-        }
-
-        internal bool SynchronizationMoreThan(TimeSpan timeSpan)
-        {
-            return SynchronizedAt.HasValue && SynchronizedAt.Value + timeSpan < DateTime.UtcNow;
-        }
-
-        internal void SnapshotParticipantMatch(
-            Participant participant,
-            GameReference gameReference,
-            IMatchStats matchStats,
+        public void Synchronize(
+            Func<GameAccountId, DateTime, DateTime, IEnumerable<GameReference>> getGameReferences,
+            Func<GameAccountId, GameReference, IMatchStats> getMatchStats,
             IDateTimeProvider synchronizedAt
         )
         {
-            var match = new Match(gameReference, synchronizedAt);
+            if (!this.CanSynchronize())
+            {
+                throw new InvalidOperationException();
+            }
 
-            match.SnapshotStats(Scoring, matchStats);
+            foreach (var participant in Participants)
+            {
+                var gameReferences = getGameReferences(
+                    participant.GameAccountId,
+                    Timeline.StartedAt ?? throw new InvalidOperationException(),
+                    Timeline.EndedAt ?? throw new InvalidOperationException()
+                );
 
-            participant.Synchronize(match);
+                foreach (var gameReference in participant.GetUnsynchronizedMatchReferences(gameReferences))
+                {
+                    var match = new Match(gameReference, synchronizedAt);
+
+                    var matchStats = getMatchStats(participant.GameAccountId, gameReference);
+
+                    match.Snapshot(matchStats, Scoring);
+
+                    participant.Snapshot(match);
+                }
+
+                participant.Synchronize(synchronizedAt);
+            }
+
+            this.Synchronize(synchronizedAt);
         }
 
         public void Synchronize(IDateTimeProvider synchronizedAt)
         {
             SynchronizedAt = synchronizedAt.DateTime;
+        }
+
+        private bool CanSynchronize()
+        {
+            return Timeline != ChallengeState.Inscription && Timeline.EndedAt > SynchronizedAt;
         }
     }
 

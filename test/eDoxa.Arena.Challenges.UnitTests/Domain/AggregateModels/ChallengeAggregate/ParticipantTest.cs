@@ -44,8 +44,8 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
 
             // Act
             var match = new Match(gameId, new UtcNowDateTimeProvider());
-            match.SnapshotStats(challenge.Scoring, stats);
-            participant.Synchronize(match);
+            match.Snapshot(stats, challenge.Scoring);
+            participant.Snapshot(match);
 
             // Assert
             participant.Matches.Should().NotBeEmpty();

@@ -58,7 +58,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             return SynchronizedAt.HasValue && SynchronizedAt.Value >= timeline.EndedAt;
         }
 
-        public void Synchronize(Match match)
+        public void Snapshot(Match match)
         {
             _matches.Add(match);
         }

@@ -211,7 +211,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
 
                 var match1 = new Match(new GameReference(Guid.NewGuid()), new UtcNowDateTimeProvider());
 
-                match1.SnapshotStats(fakeChallenge.Scoring, Faker.Match().Stats(ChallengeGame.LeagueOfLegends));
+                match1.Snapshot(Faker.Match().Stats(ChallengeGame.LeagueOfLegends), fakeChallenge.Scoring);
 
                 using (var context = factory.CreateContext())
                 {
@@ -221,7 +221,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
 
                     var participant = challenge.Participants.Single(p => p == participant1);
 
-                    participant.Synchronize(match1);
+                    participant.Snapshot(match1);
 
                     participant.Synchronize(new UtcNowDateTimeProvider());
 
@@ -245,7 +245,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
 
                 var match2 = new Match(new GameReference(Guid.NewGuid()), new UtcNowDateTimeProvider());
 
-                match2.SnapshotStats(fakeChallenge.Scoring, Faker.Match().Stats(ChallengeGame.LeagueOfLegends));
+                match2.Snapshot(Faker.Match().Stats(ChallengeGame.LeagueOfLegends), fakeChallenge.Scoring);
 
                 using (var context = factory.CreateContext())
                 {
@@ -255,7 +255,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
 
                     var participant = challenge.Participants.Single(p => p == participant1);
 
-                    participant.Synchronize(match2);
+                    participant.Snapshot(match2);
 
                     participant.Synchronize(new UtcNowDateTimeProvider());
 

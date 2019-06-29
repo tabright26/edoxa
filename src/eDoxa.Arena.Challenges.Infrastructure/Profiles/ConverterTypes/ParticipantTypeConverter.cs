@@ -37,7 +37,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.ConverterTypes
 
             var matches = context.Mapper.Map<ICollection<Match>>(source.Matches);
 
-            matches.ForEach(match => participant.Synchronize(match));
+            matches.ForEach(match => participant.Snapshot(match));
 
             if (source.SynchronizedAt.HasValue)
             {

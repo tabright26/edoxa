@@ -30,7 +30,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Fakers
 
                     match.SetEntityId(faker.Match().Id());
 
-                    match.SnapshotStats(scoring, faker.Match().Stats(game));
+                    match.Snapshot(faker.Match().Stats(game), scoring);
 
                     return match;
                 }

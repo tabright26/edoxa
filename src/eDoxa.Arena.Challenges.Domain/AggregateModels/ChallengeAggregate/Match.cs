@@ -37,7 +37,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public Score TotalScore => new MatchScore(this);
 
-        public void SnapshotStats(IScoring scoring, IMatchStats stats)
+        public void Snapshot(IMatchStats stats, IScoring scoring)
         {
             // TODO: To refactor.
             for (var index = 0; index < scoring.Count; index++)

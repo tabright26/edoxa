@@ -12,22 +12,23 @@ using System;
 using System.Linq.Expressions;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Specifications;
 
 namespace eDoxa.Arena.Challenges.Domain.Specifications
 {
-    public sealed class ChallengeSynchronizationMoreThanSpecification : Specification<Challenge>
+    public sealed class LastSynchronizationMoreThanSpecification : Specification<Challenge>
     {
-        private readonly TimeSpan _timeSpan;
+        private readonly TimeSpan _synchronizationInterval;
 
-        public ChallengeSynchronizationMoreThanSpecification(TimeSpan timeSpan)
+        public LastSynchronizationMoreThanSpecification(TimeSpan synchronizationInterval)
         {
-            _timeSpan = timeSpan;
+            _synchronizationInterval = synchronizationInterval;
         }
 
         public override Expression<Func<Challenge, bool>> ToExpression()
         {
-            return challenge => challenge.SynchronizationMoreThan(_timeSpan);
+            return challenge => challenge.LastSynchronizationMoreThan(_synchronizationInterval);
         }
     }
 }
