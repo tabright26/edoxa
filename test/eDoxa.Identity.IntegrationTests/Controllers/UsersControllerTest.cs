@@ -58,7 +58,8 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
         public async Task ApiUsers_WithNinetyNineUsers_ShouldHaveCountOfNinetyNine()
         {
             // Arrange
-            var userFaker = new UserFaker(1);
+            var userFaker = new UserFaker();
+            userFaker.UseSeed(1);
             var context = _testServer.GetService<IdentityDbContext>();
             context.AddRange(userFaker.FakeTestUsers(99));
             await context.SaveChangesAsync();

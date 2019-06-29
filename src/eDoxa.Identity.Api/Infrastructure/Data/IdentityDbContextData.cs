@@ -56,7 +56,9 @@ namespace eDoxa.Identity.Api.Infrastructure.Data
 
                 if (!_context.Users.Any())
                 {
-                    var userFaker = new UserFaker(1);
+                    var userFaker = new UserFaker();
+
+                    userFaker.UseSeed(1);
 
                     var adminUser = userFaker.FakeAdminUser();
 

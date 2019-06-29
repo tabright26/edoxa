@@ -27,20 +27,23 @@ namespace eDoxa.Identity.UnitTests.Application.Fakers
         public void FakeTestUsers_ShouldHaveCountOfThousand()
         {
             // Arrange
-            var userFaker = new UserFaker(1);
+            var userFaker = new UserFaker();
+            userFaker.UseSeed(1);
 
             // Act
-            var users = userFaker.FakeTestUsers();
+            var users = userFaker.FakeTestUsers().ToList();
 
             // Assert
-            users.Distinct().Should().HaveCount(1000);
+            users.Select(user => user.Id).Distinct().Should().HaveCount(1000);
+            users.Select(user => user.UserName).Distinct().Should().HaveCount(1000);
         }
 
         [TestMethod]
         public void FakeTestUsers_ShouldNotThrow()
         {
             // Arrange
-            var userFaker = new UserFaker(1);
+            var userFaker = new UserFaker();
+            userFaker.UseSeed(1);
 
             // Act
             var action = new Action(
@@ -62,7 +65,8 @@ namespace eDoxa.Identity.UnitTests.Application.Fakers
         public void FakeTestUser_ShouldNotThrow()
         {
             // Arrange
-            var userFaker = new UserFaker(1);
+            var userFaker = new UserFaker();
+            userFaker.UseSeed(1);
 
             // Act
             var action = new Action(
@@ -82,7 +86,8 @@ namespace eDoxa.Identity.UnitTests.Application.Fakers
         public void FakeAdminUser_ShouldNotThrow()
         {
             // Arrange
-            var userFaker = new UserFaker(1);
+            var userFaker = new UserFaker();
+            userFaker.UseSeed(1);
 
             // Act
             var action = new Action(

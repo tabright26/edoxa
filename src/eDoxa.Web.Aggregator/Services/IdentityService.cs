@@ -1,5 +1,5 @@
-﻿// Filename: ArenaChallengesService.cs
-// Date Created: 2019-06-27
+﻿// Filename: IdentityService.cs
+// Date Created: 2019-06-28
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -16,21 +16,20 @@ using Newtonsoft.Json;
 
 namespace eDoxa.Web.Aggregator.Services
 {
-    public class ArenaChallengesService : IArenaChallengesService
+    public sealed class IdentityService : IIdentityService
     {
         private readonly HttpClient _httpClient;
 
-        public ArenaChallengesService(HttpClient httpClient)
+        public IdentityService(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
 
-        public async Task<IReadOnlyCollection<dynamic>> FetchChallengesAsync()
+        public async Task<IReadOnlyCollection<dynamic>> FetchUsersAsync()
         {
-            // TODO: Create an option class with all the URLs.
-            var challenges = await _httpClient.GetStringAsync("http://192.168.0.100:5003/api/challenges");
+            var users = await _httpClient.GetStringAsync("http://192.168.0.100:5001/api/users");
 
-            return JsonConvert.DeserializeObject<IReadOnlyCollection<dynamic>>(challenges);
+            return JsonConvert.DeserializeObject<IReadOnlyCollection<dynamic>>(users);
         }
     }
 }

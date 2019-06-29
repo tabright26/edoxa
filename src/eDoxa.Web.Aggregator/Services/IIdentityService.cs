@@ -1,5 +1,5 @@
-﻿// Filename: IArenaChallengesService.cs
-// Date Created: 2019-06-27
+﻿// Filename: IIdentityService.cs
+// Date Created: 2019-06-28
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,9 +13,8 @@ using System.Threading.Tasks;
 
 namespace eDoxa.Web.Aggregator.Services
 {
-    public interface IArenaChallengesService
+    public interface IIdentityService
     {
-        // TODO: Replace the dynamic type resolution with DTO objects.
-        Task<IReadOnlyCollection<dynamic>> FetchChallengesAsync();
+        Task<IReadOnlyCollection<dynamic>> FetchUsersAsync();
     }
 }

@@ -24,10 +24,8 @@ namespace eDoxa.Identity.Api.Application.Fakers
         private const string TestUser = "test";
         private const string AdminUser = "admin";
 
-        public UserFaker(int seed)
+        public UserFaker()
         {
-            this.UseSeed(seed);
-
             this.RuleSet(
                 TestUser,
                 ruleSet =>
@@ -40,7 +38,7 @@ namespace eDoxa.Identity.Api.Application.Fakers
                             var lastName = faker.Name.LastName();
 
                             var user = new User(
-                                faker.Internet.UserName(firstName, lastName),
+                                faker.Internet.UserName(),
                                 faker.Internet.Email(firstName, lastName),
                                 new PersonalName(firstName, lastName),
                                 new BirthDate(faker.Date.Past(18))

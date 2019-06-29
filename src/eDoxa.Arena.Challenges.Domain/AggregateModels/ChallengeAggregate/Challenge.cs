@@ -120,7 +120,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         private bool CanClose()
         {
-            return true;
+            return Timeline == ChallengeState.Ended;
         }
 
         private bool CanRegister(Participant participant)
@@ -132,45 +132,6 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         {
             return SynchronizedAt.HasValue && SynchronizedAt.Value + timeSpan < DateTime.UtcNow;
         }
-
-        //private async Task SynchronizeAsync(
-        //    IGameMatchIdsFactory gameMatchIdsFactory,
-        //    IMatchStatsFactory matchStatsFactory,
-        //    Participant participant,
-        //    IDateTimeProvider synchronizedAt
-        //)
-        //{
-        //    var adapter = await gameMatchIdsFactory.CreateAdapterAsync(Game, participant.GameAccountId, Timeline);
-
-        //    await this.SynchronizeAsync(adapter.GetGameReferences, matchStatsFactory, participant, synchronizedAt);
-        //}
-
-        //private async Task SynchronizeAsync(
-        //    IEnumerable<GameMatchId> matchReferences,
-        //    IMatchStatsFactory matchStatsFactory,
-        //    Participant participant,
-        //    IDateTimeProvider synchronizedAt
-        //)
-        //{
-        //    foreach (var matchReference in participant.GetUnsynchronizedMatchReferences(matchReferences))
-        //    {
-        //        await this.SnapshotParticipantMatchAsync(participant, matchReference, matchStatsFactory, synchronizedAt);
-        //    }
-
-        //    participant.Synchronize(synchronizedAt);
-        //}
-
-        //private async Task SnapshotParticipantMatchAsync(
-        //    Participant participant,
-        //    GameMatchId gameMatchId,
-        //    IMatchStatsFactory factory,
-        //    IDateTimeProvider synchronizedAt
-        //)
-        //{
-        //    var adapter = await factory.CreateAdapter(Game, participant.GameAccountId, gameMatchId);
-
-        //    this.SnapshotParticipantMatch(participant, gameMatchId, adapter.MatchStats, synchronizedAt);
-        //}
 
         internal void SnapshotParticipantMatch(
             Participant participant,

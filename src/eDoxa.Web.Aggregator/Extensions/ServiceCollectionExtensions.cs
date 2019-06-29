@@ -1,5 +1,5 @@
 ﻿// Filename: ServiceCollectionExtensions.cs
-// Date Created: 2019-06-27
+// Date Created: 2019-06-28
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -38,6 +38,11 @@ namespace eDoxa.Web.Aggregator.Extensions
         public static void AddServices(this IServiceCollection services)
         {
             services.AddTransient<HttpAuthorizationDelegatingHandler>();
+
+            services.AddHttpClient<IIdentityService, IdentityService>()
+                .AddHttpMessageHandler<HttpAuthorizationDelegatingHandler>()
+                .AddPolicyHandler(HttpPolicies.GetRetryPolicy())
+                .AddPolicyHandler(HttpPolicies.GetCircuitBreakerPolicy());
 
             services.AddHttpClient<IArenaChallengesService, ArenaChallengesService>()
                 .AddHttpMessageHandler<HttpAuthorizationDelegatingHandler>()

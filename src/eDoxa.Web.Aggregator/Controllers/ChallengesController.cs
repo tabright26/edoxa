@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengesController.cs
-// Date Created: 2019-06-27
+// Date Created: 2019-06-28
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -30,10 +30,12 @@ namespace eDoxa.Web.Aggregator.Controllers
     public class ChallengesController : ControllerBase
     {
         private readonly IArenaChallengesService _arenaChallengesService;
+        private readonly IIdentityService _identityService;
 
-        public ChallengesController(IArenaChallengesService arenaChallengesService)
+        public ChallengesController(IArenaChallengesService arenaChallengesService, IIdentityService identityService)
         {
             _arenaChallengesService = arenaChallengesService;
+            _identityService = identityService;
         }
 
         /// <summary>
@@ -44,11 +46,21 @@ namespace eDoxa.Web.Aggregator.Controllers
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync()
         {
-            var challenges = await _arenaChallengesService.FetchChallenges();
+            var challenges = await _arenaChallengesService.FetchChallengesAsync();
 
             if (!challenges.Any())
             {
                 return this.NoContent();
+            }
+
+            var users = await _identityService.FetchUsersAsync();
+
+            foreach (var challenge in challenges)
+            {
+                foreach (var participant in challenge.participants)
+                {
+                    participant.userName = users.SingleOrDefault(user => user.id == participant.userId)?.userName ?? "Inaccessible username";
+                }
             }
 
             return this.Ok(challenges);

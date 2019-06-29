@@ -20,7 +20,7 @@ namespace eDoxa.Identity.Api.ViewModels
         [JsonProperty("id")]
         public Guid Id { get; set; }
 
-        [JsonProperty("username")]
+        [JsonProperty("userName")]
         public string UserName { get; set; }
     }
 }
