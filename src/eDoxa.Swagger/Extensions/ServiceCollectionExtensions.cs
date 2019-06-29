@@ -1,5 +1,5 @@
 ﻿// Filename: ServiceCollectionExtensions.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -35,8 +35,7 @@ namespace eDoxa.Swagger.Extensions
             this IServiceCollection services,
             IConfiguration configuration,
             IHostingEnvironment environment,
-            ApiResource apiResource,
-            ApiResource[] apiScopes = null
+            ApiResource apiResource
         )
         {
             if (!environment.IsDevelopment())
@@ -69,28 +68,20 @@ namespace eDoxa.Swagger.Extensions
 
                     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{assembly.GetName().Name}.xml"));
 
-                    var authScheme = new OAuth2Scheme
-                    {
-                        Type = "oauth2",
-                        Flow = "implicit",
-                        AuthorizationUrl = authority + "/connect/authorize",
-                        TokenUrl = authority + "/connect/token",
-                        Scopes = new Dictionary<string, string>
+                    options.AddSecurityDefinition(
+                        "oauth2",
+                        new OAuth2Scheme
                         {
-                            [apiResource.Name] = apiResource.DisplayName
+                            Type = "oauth2",
+                            Flow = "implicit",
+                            AuthorizationUrl = authority + "/connect/authorize",
+                            TokenUrl = authority + "/connect/token",
+                            Scopes = new Dictionary<string, string>
+                            {
+                                [apiResource.Name] = apiResource.DisplayName
+                            }
                         }
-                    };
-
-                    // TODO: To refactor.
-                    if (apiScopes != null)
-                    {
-                        foreach (var scope in apiScopes)
-                        {
-                            authScheme.Scopes.Add(scope.Name, scope.DisplayName);
-                        }
-                    }
-
-                    options.AddSecurityDefinition("oauth2", authScheme);
+                    );
 
                     options.OperationFilter<CustomOperationFilter>();
 

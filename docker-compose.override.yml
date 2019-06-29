@@ -36,7 +36,6 @@ services:
       - Identity__Url=${URL:-http://localhost}:5001
       - Cashier__Url=${URL:-http://localhost}:5002
       - Challenge__Url=${URL:-http://localhost}:5003
-      - Web__Aggregator__Url=${URL:-http://localhost}:5100
       - Web__Spa__Url=${URL:-http://localhost}:5300
       - IdentityServer__Url=http://idsrv
     ports:
@@ -100,24 +99,12 @@ services:
     volumes:
       - ./data:/app/Resources
 
-  web.aggregator:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - HealthChecks__Identity__Url=http://identity.api/health
-      - HealthChecks__Cashier__Url=http://cashier.api/health
-      - HealthChecks__ArenaChallenges__Url=http://arena.challenges.api/health
-      - Authority=${URL:-http://localhost}:5000
-      - IdentityServer__Url=http://idsrv
-    ports:
-      - "5100:80"
-
   web.gateway:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development      
       - HealthChecks__Identity__Url=http://identity.api/health
       - HealthChecks__Cashier__Url=http://cashier.api/health
       - HealthChecks__ArenaChallenges__Url=http://arena.challenges.api/health
-      - HealthChecks__Web__Aggregator__Url=http://web.aggregator/health
       - IdentityServer__Url=http://idsrv
     ports:
       - "5200:80"
@@ -157,12 +144,10 @@ services:
       - HealthChecks__Endpoints__2__Uri=http://cashier.api/health
       - HealthChecks__Endpoints__3__Name=eDoxa Arena Challenges API
       - HealthChecks__Endpoints__3__Uri=http://arena.challenges.api/health
-      - HealthChecks__Endpoints__4__Name=eDoxa Web Aggregator
-      - HealthChecks__Endpoints__4__Uri=http://web.aggregator/health
-      - HealthChecks__Endpoints__5__Name=eDoxa Web Gateway
-      - HealthChecks__Endpoints__5__Uri=http://web.gateway/health
-      - HealthChecks__Endpoints__6__Name=eDoxa Web Spa
-      - HealthChecks__Endpoints__6__Uri=http://web.spa/health
+      - HealthChecks__Endpoints__4__Name=eDoxa Web Gateway
+      - HealthChecks__Endpoints__4__Uri=http://web.gateway/health
+      - HealthChecks__Endpoints__5__Name=eDoxa Web Spa
+      - HealthChecks__Endpoints__5__Uri=http://web.spa/health
       - HealthChecks__EvaluationTimeInSeconds=15
       - HealthChecks__MinimumSecondsBetweenFailureNotifications=60
     ports:

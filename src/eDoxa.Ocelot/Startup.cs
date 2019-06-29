@@ -52,8 +52,7 @@ namespace eDoxa.Ocelot
                 {
                     ["IdentityApiKey"] = CustomApiResources.Identity,
                     ["CashierApiKey"] = CustomApiResources.Cashier,
-                    ["ArenaChallengesApiKey"] = CustomApiResources.ArenaChallenges,
-                    ["WebAggregatorKey"] = CustomApiResources.Aggregator
+                    ["ArenaChallengesApiKey"] = CustomApiResources.ArenaChallenges
                 }
             );
 

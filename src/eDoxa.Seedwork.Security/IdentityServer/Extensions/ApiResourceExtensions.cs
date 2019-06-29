@@ -26,10 +26,9 @@ namespace eDoxa.Seedwork.Security.IdentityServer.Extensions
             return apiResource.DisplayName + " (Swagger UI)";
         }
 
-        // TODO: To refactor.
-        public static Client SwaggerClient(this ApiResource apiResource, string redirectUri, ApiResource[] allowedScopes = null)
+        public static Client SwaggerClient(this ApiResource apiResource, string redirectUri)
         {
-            var client = new Client
+            return new Client
             {
                 AllowAccessTokensViaBrowser = true,
                 AllowedGrantTypes = GrantTypes.Implicit,
@@ -50,16 +49,6 @@ namespace eDoxa.Seedwork.Security.IdentityServer.Extensions
                     $"{redirectUri}/"
                 }
             };
-
-            if (allowedScopes != null)
-            {
-                foreach (var allowedScope in allowedScopes)
-                {
-                    client.AllowedScopes.Add(allowedScope.Name);
-                }
-            }
-
-            return client;
         }
     }
 }

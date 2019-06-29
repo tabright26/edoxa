@@ -20,7 +20,6 @@ namespace eDoxa.Seedwork.Security.IdentityServer.Resources
         public static readonly ApiResource Identity = new IdentityApi();
         public static readonly ApiResource Cashier = new CashierApi();
         public static readonly ApiResource ArenaChallenges = new ChallengeApi();
-        public static readonly ApiResource Aggregator = new WebAggregator();
 
         public sealed class IdentityApi : ApiResource
         {
@@ -64,17 +63,6 @@ namespace eDoxa.Seedwork.Security.IdentityServer.Resources
                 )
             )
 
-            {
-                ApiSecrets = new HashSet<Secret>
-                {
-                    new Secret("secret".Sha256())
-                };
-            }
-        }
-
-        public sealed class WebAggregator : ApiResource
-        {
-            internal WebAggregator() : base("web.aggregator", "eDoxa Web Aggregator")
             {
                 ApiSecrets = new HashSet<Secret>
                 {

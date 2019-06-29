@@ -30,8 +30,6 @@ namespace eDoxa.Ocelot.Extensions
             healthChecks.AddUrlGroup(new Uri(configuration["HealthChecks:Cashier:Url"]), "cashier-api", tags: new[] {"api"});
 
             healthChecks.AddUrlGroup(new Uri(configuration["HealthChecks:ArenaChallenges:Url"]), "arena-challenges-api", tags: new[] {"api"});
-
-            healthChecks.AddUrlGroup(new Uri(configuration["HealthChecks:Web:Aggregator:Url"]), "web-aggregator", tags: new[] {"aggregator"});
         }
     }
 }

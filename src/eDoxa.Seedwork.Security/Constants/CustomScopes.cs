@@ -19,6 +19,5 @@ namespace eDoxa.Seedwork.Security.Constants
         public static readonly string IdentityApi = CustomApiResources.Identity.Name;
         public static readonly string CashierApi = CustomApiResources.Cashier.Name;
         public static readonly string ChallengeApi = CustomApiResources.ArenaChallenges.Name;
-        public static readonly string WebAggregator = CustomApiResources.Aggregator.Name;
     }
 }
