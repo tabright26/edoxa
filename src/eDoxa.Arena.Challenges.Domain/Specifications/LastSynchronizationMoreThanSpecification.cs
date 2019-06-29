@@ -11,13 +11,13 @@
 using System;
 using System.Linq.Expressions;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Specifications;
 
 namespace eDoxa.Arena.Challenges.Domain.Specifications
 {
-    public sealed class LastSynchronizationMoreThanSpecification : Specification<Challenge>
+    public sealed class LastSynchronizationMoreThanSpecification : Specification<IChallenge>
     {
         private readonly TimeSpan _synchronizationInterval;
 
@@ -26,7 +26,7 @@ namespace eDoxa.Arena.Challenges.Domain.Specifications
             _synchronizationInterval = synchronizationInterval;
         }
 
-        public override Expression<Func<Challenge, bool>> ToExpression()
+        public override Expression<Func<IChallenge, bool>> ToExpression()
         {
             return challenge => challenge.LastSynchronizationMoreThan(_synchronizationInterval);
         }

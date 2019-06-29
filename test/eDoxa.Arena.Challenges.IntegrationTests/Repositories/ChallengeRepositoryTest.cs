@@ -223,8 +223,6 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
 
                     participant.Snapshot(match1);
 
-                    participant.Synchronize(new UtcNowDateTimeProvider());
-
                     await repository.CommitAsync();
                 }
 
@@ -256,8 +254,6 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
                     var participant = challenge.Participants.Single(p => p == participant1);
 
                     participant.Snapshot(match2);
-
-                    participant.Synchronize(new UtcNowDateTimeProvider());
 
                     await repository.CommitAsync();
                 }

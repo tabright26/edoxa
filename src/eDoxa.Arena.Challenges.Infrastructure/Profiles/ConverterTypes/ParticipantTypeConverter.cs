@@ -39,11 +39,6 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.ConverterTypes
 
             matches.ForEach(match => participant.Snapshot(match));
 
-            if (source.SynchronizedAt.HasValue)
-            {
-                participant.Synchronize(new PersistentDateTimeProvider(source.SynchronizedAt.Value));
-            }
-
             return participant;
         }
     }

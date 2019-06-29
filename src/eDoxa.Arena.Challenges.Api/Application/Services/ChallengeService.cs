@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeService.cs
-// Date Created: 2019-06-20
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,17 +9,21 @@
 // this source code package.
 
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Application.Fakers;
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Factories;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Domain.Services;
+using eDoxa.Arena.Challenges.Domain.Specifications;
 using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Domain.Extensions;
+using eDoxa.Seedwork.Domain.Specifications;
 
 namespace eDoxa.Arena.Challenges.Api.Application.Services
 {
@@ -91,25 +95,24 @@ namespace eDoxa.Arena.Challenges.Api.Application.Services
 
         public async Task SynchronizeAsync(IDateTimeProvider synchronizedAt, ChallengeGame game, CancellationToken cancellationToken = default)
         {
-            //var specification = SpecificationFactory.Instance.Create<Challenge>()
-            //    .And(new ChallengeForGameSpecification(game))
-            //    .And(new ChallengeLastSyncMoreThanSpecification(TimeSpan.FromHours(1)))
-            //    .And(new ChallengeOfStateSpecification(ChallengeState.Inscription).Not());
+            var specification = SpecificationFactory.Instance.Create<IChallenge>().And(new LastSynchronizationMoreThanSpecification(TimeSpan.FromMinutes(30)));
+
+            var challenges = await _challengeRepository.FindChallengesAsync(game, ChallengeState.InProgress);
 
             var gameReferencesAdapter = _gameReferencesFactory.CreateInstance(game);
 
             var matchStatsAdapter = _matchStatsFactory.CreateInstance(game);
 
-            foreach (var challenge in await _challengeRepository.FindChallengesAsync(game))
+            foreach (var challenge in challenges.Where(specification.IsSatisfiedBy).OrderByDescending(challenge => challenge.SynchronizedAt))
             {
                 challenge.Synchronize(
                     (gameAccountId, startedAt, closedAt) => gameReferencesAdapter.GetGameReferencesAsync(gameAccountId, startedAt, closedAt).Result,
                     (gameAccountId, gameReference) => matchStatsAdapter.GetMatchStatsAsync(gameAccountId, gameReference).Result,
                     synchronizedAt
                 );
-            }
 
-            await _challengeRepository.CommitAsync(cancellationToken);
+                await _challengeRepository.CommitAsync(cancellationToken);
+            }
         }
     }
 }

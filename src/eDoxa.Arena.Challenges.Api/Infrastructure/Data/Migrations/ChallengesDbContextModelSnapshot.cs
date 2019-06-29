@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+
 using eDoxa.Arena.Challenges.Infrastructure;
 
 namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
@@ -68,8 +69,6 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
                     b.Property<string>("GameAccountId");
 
                     b.Property<DateTime>("RegisteredAt");
-
-                    b.Property<DateTime?>("SynchronizedAt");
 
                     b.Property<Guid>("UserId");
 

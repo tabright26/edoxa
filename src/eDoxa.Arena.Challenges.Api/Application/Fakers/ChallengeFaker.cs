@@ -86,8 +86,6 @@ namespace eDoxa.Arena.Challenges.Api.Application.Fakers
                                 var matches = matchFaker.Generate(this.MatchCount(state, setup.BestOf));
 
                                 matches.ForEach(participant.Snapshot);
-
-                                participant.Synchronize(new FakeDateTimeProvider(synchronizedAt));
                             }
                         );
 

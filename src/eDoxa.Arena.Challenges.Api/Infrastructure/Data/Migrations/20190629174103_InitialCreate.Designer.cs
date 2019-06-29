@@ -10,7 +10,7 @@ using eDoxa.Arena.Challenges.Infrastructure;
 namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ChallengesDbContext))]
-    [Migration("20190625215026_InitialCreate")]
+    [Migration("20190629174103_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -71,8 +71,6 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
                     b.Property<string>("GameAccountId");
 
                     b.Property<DateTime>("RegisteredAt");
-
-                    b.Property<DateTime?>("SynchronizedAt");
 
                     b.Property<Guid>("UserId");
 

@@ -118,11 +118,13 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             {
                 var gameReferences = getGameReferences(
                     participant.GameAccountId,
-                    Timeline.StartedAt ?? throw new InvalidOperationException(),
-                    Timeline.EndedAt ?? throw new InvalidOperationException()
+                    // ReSharper disable once PossibleInvalidOperationException
+                    Timeline.StartedAt.Value,
+                    // ReSharper disable once PossibleInvalidOperationException
+                    Timeline.EndedAt.Value
                 );
 
-                foreach (var gameReference in participant.GetUnsynchronizedMatchReferences(gameReferences))
+                foreach (var gameReference in participant.GetUnsynchronizedGameReferences(gameReferences))
                 {
                     var match = new Match(gameReference, synchronizedAt);
 
@@ -132,8 +134,6 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
                     participant.Snapshot(match);
                 }
-
-                participant.Synchronize(synchronizedAt);
             }
 
             this.Synchronize(synchronizedAt);

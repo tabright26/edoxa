@@ -29,7 +29,6 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             UserId = userId;
             GameAccountId = gameAccountId;
             RegisteredAt = registeredAt.DateTime;
-            SynchronizedAt = null;
         }
 
         public UserId UserId { get; }
@@ -38,7 +37,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public DateTime RegisteredAt { get; }
 
-        public DateTime? SynchronizedAt { get; private set; }
+        public DateTime? SynchronizedAt => _matches.Select(match => match.SynchronizedAt).Cast<DateTime?>().DefaultIfEmpty().Max();
 
         public IReadOnlyCollection<Match> Matches => _matches;
 
@@ -53,24 +52,14 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             return matchCount >= bestOf;
         }
 
-        public bool HasFinalScore(ChallengeTimeline timeline)
-        {
-            return SynchronizedAt.HasValue && SynchronizedAt.Value >= timeline.EndedAt;
-        }
-
         public void Snapshot(Match match)
         {
             _matches.Add(match);
         }
 
-        public IEnumerable<GameReference> GetUnsynchronizedMatchReferences(IEnumerable<GameReference> gameReferences)
+        public IEnumerable<GameReference> GetUnsynchronizedGameReferences(IEnumerable<GameReference> gameReferences)
         {
             return gameReferences.Where(gameReference => Matches.All(match => match.GameReference != gameReference));
-        }
-
-        public void Synchronize(IDateTimeProvider synchronizedAt)
-        {
-            SynchronizedAt = synchronizedAt.DateTime;
         }
     }
 

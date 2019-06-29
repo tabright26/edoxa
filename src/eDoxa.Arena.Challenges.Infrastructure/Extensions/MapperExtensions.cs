@@ -41,8 +41,6 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Extensions
 
         private static void CopyChanges(this IMapper mapper, Participant participant, ParticipantModel participantModel)
         {
-            participantModel.SynchronizedAt = participant.SynchronizedAt;
-
             var matches = participant.Matches.Where(match => participantModel.Matches.All(matchModel => matchModel.Id != match.Id));
 
             mapper.Map<ICollection<MatchModel>>(matches).ForEach(match => participantModel.Matches.Add(match));
