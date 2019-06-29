@@ -15,7 +15,6 @@ using System.Linq;
 using Bogus;
 
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
-using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Common.Extensions;
 
 namespace eDoxa.Identity.Api.Application.Fakers
@@ -101,27 +100,19 @@ namespace eDoxa.Identity.Api.Application.Fakers
             );
         }
 
-        public IEnumerable<User> FakeTestUsers(int count)
+        public IEnumerable<User> FakeTestUsers(int count = 1000)
         {
+            UserFakerExtensions.ResetUserIds();
+
             return this.Generate(count, TestUser).ToList();
-        }
-
-        public IEnumerable<User> FakeTestUsers()
-        {
-            return DataResources.TestUserIds.Select(this.FakeTestUser).ToList();
-        }
-
-        private User FakeTestUser(Guid userId)
-        {
-            var user = this.Generate(TestUser);
-
-            user.Id = userId;
-
-            return user;
         }
 
         public User FakeTestUser()
         {
+            UserFakerExtensions.ResetUserIds();
+
+            this.UseSeed(FakerHub.Random.Int());
+
             return this.Generate(TestUser);
         }
 

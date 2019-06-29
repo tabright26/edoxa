@@ -18,6 +18,8 @@ using eDoxa.Arena.Challenges.Api.Application.Fakers.Providers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Common.Extensions;
 
+using JetBrains.Annotations;
+
 namespace eDoxa.Arena.Challenges.Api.Application.Fakers
 {
     public sealed class ChallengeFaker : Faker<Challenge>
@@ -115,6 +117,14 @@ namespace eDoxa.Arena.Challenges.Api.Application.Fakers
         private int MatchCount(ChallengeState state, BestOf bestOf)
         {
             return state != ChallengeState.Inscription ? FakerHub.Random.Int(1, bestOf + 3) : 0;
+        }
+
+        [NotNull]
+        public override Challenge Generate(string ruleSets = null)
+        {
+            UserFakerExtensions.ResetUserIds();
+
+            return base.Generate(ruleSets);
         }
     }
 }
