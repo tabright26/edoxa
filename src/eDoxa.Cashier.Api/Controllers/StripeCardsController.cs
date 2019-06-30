@@ -49,7 +49,12 @@ namespace eDoxa.Cashier.Api.Controllers
         {
             var cards = await _cardQuery.GetCardsAsync();
 
-            return cards.Select(this.Ok).Cast<IActionResult>().DefaultIfEmpty(this.NoContent()).Single();
+            if (!cards.Any())
+            {
+                return this.NoContent();
+            }
+
+            return this.Ok(cards);
         }
 
         /// <summary>

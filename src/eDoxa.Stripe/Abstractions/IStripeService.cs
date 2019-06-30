@@ -1,5 +1,5 @@
 ﻿// Filename: IStripeService.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -31,6 +31,8 @@ namespace eDoxa.Stripe.Abstractions
             int day,
             CancellationToken cancellationToken = default
         );
+
+        Task<bool> AccountIsVerified(StripeConnectAccountId connectAccountId, CancellationToken cancellationToken = default);
 
         Task VerifyAccountAsync(
             StripeConnectAccountId connectAccountId,

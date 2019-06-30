@@ -13,7 +13,9 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Application.Commands;
 using eDoxa.Cashier.Api.Controllers;
+using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Seedwork.Testing.TestConstructor;
+using eDoxa.Stripe.Abstractions;
 using eDoxa.Stripe.Data.Fakers;
 
 using FluentAssertions;
@@ -32,17 +34,21 @@ namespace eDoxa.Cashier.UnitTests.Controllers
     public sealed class StripeAccountControllerTest
     {
         private Mock<IMediator> _mockMediator;
+        private Mock<IUserRepository> _mockUserRepository;
+        private Mock<IStripeService> _mockStripeService;
 
         [TestInitialize]
         public void TestInitialize()
         {
             _mockMediator = new Mock<IMediator>();
+            _mockUserRepository = new Mock<IUserRepository>();
+            _mockStripeService = new Mock<IStripeService>();
         }
 
         [TestMethod]
         public void Constructor_Tests()
         {
-            TestConstructor<StripeAccountController>.ForParameters(typeof(IMediator))
+            TestConstructor<StripeAccountController>.ForParameters(typeof(IMediator), typeof(IUserRepository), typeof(IStripeService))
                 .WithClassName("StripeAccountController")
                 .WithClassAttributes(
                     typeof(AuthorizeAttribute),
@@ -65,10 +71,10 @@ namespace eDoxa.Cashier.UnitTests.Controllers
 
             _mockMediator.Setup(mock => mock.Send(It.IsAny<VerifyAccountCommand>(), It.IsAny<CancellationToken>())).Returns(Unit.Task).Verifiable();
 
-            var controller = new StripeAccountController(_mockMediator.Object);
+            var controller = new StripeAccountController(_mockMediator.Object, _mockUserRepository.Object, _mockStripeService.Object);
 
             // Act
-            var result = await controller.VerifyAccountAsync(
+            var result = await controller.PatchAsync(
                 new VerifyAccountCommand(
                     address.Line1,
                     address.Line2,

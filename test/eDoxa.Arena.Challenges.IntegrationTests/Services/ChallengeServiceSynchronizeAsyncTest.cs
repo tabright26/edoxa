@@ -53,14 +53,14 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Services
             await context.SaveChangesAsync();
         }
 
-        [TestMethod]
-        public async Task Test()
-        {
-            // Arrange
-            var testServer = TestServerHelper.CreateTestServer<ChallengesDbContext>();
+        //[TestMethod]
+        //public async Task Test()
+        //{
+        //    // Arrange
+        //    var testServer = TestServerHelper.CreateTestServer<ChallengesDbContext>();
 
 
-        }
+        //}
 
         [TestMethod]
         public async Task T1()

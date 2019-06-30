@@ -1,5 +1,5 @@
 ﻿// Filename: StripeBankAccountController.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,7 +11,9 @@
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Application.Commands;
+using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Commands.Extensions;
+using eDoxa.Seedwork.Common.Extensions;
 using eDoxa.Stripe.Filters.Attributes;
 
 using MediatR;
@@ -30,10 +32,31 @@ namespace eDoxa.Cashier.Api.Controllers
     public sealed class StripeBankAccountController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly IUserRepository _userRepository;
 
-        public StripeBankAccountController(IMediator mediator)
+        public StripeBankAccountController(IMediator mediator, IUserRepository userRepository)
         {
             _mediator = mediator;
+            _userRepository = userRepository;
+        }
+
+        /// <summary>
+        ///     Has a bank account.
+        /// </summary>
+        [HttpGet]
+        public async Task<IActionResult> GetAsync()
+        {
+            var userId = HttpContext.GetUserId();
+
+            // TODO: To refactor.
+            var user = await _userRepository.GetUserAsNoTrackingAsync(userId);
+
+            if (user == null)
+            {
+                return this.NotFound("User not found.");
+            }
+
+            return this.Ok(user.HasBankAccount());
         }
 
         /// <summary>

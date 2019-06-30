@@ -11,8 +11,12 @@
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Application.Commands;
+using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Commands.Extensions;
+using eDoxa.Seedwork.Common.Extensions;
+using eDoxa.Stripe.Abstractions;
 using eDoxa.Stripe.Filters.Attributes;
+using eDoxa.Stripe.Models;
 
 using MediatR;
 
@@ -30,18 +34,43 @@ namespace eDoxa.Cashier.Api.Controllers
     public sealed class StripeAccountController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly IUserRepository _userRepository;
+        private readonly IStripeService _stripeService;
 
-        public StripeAccountController(IMediator mediator)
+        public StripeAccountController(IMediator mediator, IUserRepository userRepository, IStripeService stripeService)
         {
             _mediator = mediator;
+            _userRepository = userRepository;
+            _stripeService = stripeService;
+        }
+
+        /// <summary>
+        ///     Check if the user's Stripe account is verified.
+        /// </summary>
+        [HttpGet("verify")]
+        public async Task<IActionResult> GetAsync()
+        {
+            var userId = HttpContext.GetUserId();
+
+            // TODO: To refactor.
+            var user = await _userRepository.GetUserAsNoTrackingAsync(userId);
+
+            if (user == null)
+            {
+                return this.NotFound("User not found.");
+            }
+
+            var isVerified = await _stripeService.AccountIsVerified(new StripeConnectAccountId(user.ConnectAccountId));
+
+            return this.Ok(isVerified);
         }
 
         /// <summary>
         ///     Verify the Stripe account
         /// </summary>
         [StripeResourceFilter]
-        [HttpPatch("verify", Name = nameof(VerifyAccountAsync))]
-        public async Task<IActionResult> VerifyAccountAsync([FromBody] VerifyAccountCommand command)
+        [HttpPatch("verify")]
+        public async Task<IActionResult> PatchAsync([FromBody] VerifyAccountCommand command)
         {
             await _mediator.SendCommandAsync(command);
 

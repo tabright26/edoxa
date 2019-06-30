@@ -1,5 +1,5 @@
 ﻿// Filename: User.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -43,6 +43,11 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
         public string BankAccountId { get; private set; }
 
         public Account Account { get; private set; }
+
+        public bool HasBankAccount()
+        {
+            return BankAccountId != null;
+        }
 
         public void AddBankAccount(string bankAccountId)
         {

@@ -1,5 +1,5 @@
 ﻿// Filename: StripeService.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -96,6 +96,13 @@ namespace eDoxa.Stripe.Services
             var account = await _accountService.CreateAsync(options, cancellationToken: cancellationToken);
 
             return new StripeConnectAccountId(account.Id);
+        }
+
+        public async Task<bool> AccountIsVerified(StripeConnectAccountId connectAccountId, CancellationToken cancellationToken = default)
+        {
+            var account = await _accountService.GetAsync(connectAccountId.ToString(), cancellationToken: cancellationToken);
+
+            return account.DetailsSubmitted;
         }
 
         public async Task VerifyAccountAsync(

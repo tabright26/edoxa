@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Application.Commands;
 using eDoxa.Cashier.Api.Controllers;
+using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Seedwork.Testing.TestConstructor;
 
 using FluentAssertions;
@@ -31,17 +32,19 @@ namespace eDoxa.Cashier.UnitTests.Controllers
     public sealed class StripeBankAccountControllerTest
     {
         private Mock<IMediator> _mockMediator;
+        private Mock<IUserRepository> _mockUserRepository;
 
         [TestInitialize]
         public void TestInitialize()
         {
             _mockMediator = new Mock<IMediator>();
+            _mockUserRepository = new Mock<IUserRepository>();
         }
 
         [TestMethod]
         public void Constructor_Tests()
         {
-            TestConstructor<StripeBankAccountController>.ForParameters(typeof(IMediator))
+            TestConstructor<StripeBankAccountController>.ForParameters(typeof(IMediator), typeof(IUserRepository))
                 .WithClassName("StripeBankAccountController")
                 .WithClassAttributes(
                     typeof(AuthorizeAttribute),
@@ -60,7 +63,7 @@ namespace eDoxa.Cashier.UnitTests.Controllers
             // Arrange
             _mockMediator.Setup(mock => mock.Send(It.IsAny<CreateBankAccountCommand>(), It.IsAny<CancellationToken>())).Returns(Unit.Task).Verifiable();
 
-            var controller = new StripeBankAccountController(_mockMediator.Object);
+            var controller = new StripeBankAccountController(_mockMediator.Object, _mockUserRepository.Object);
 
             // Act
             var result = await controller.CreateBankAccountAsync(new CreateBankAccountCommand("qwe23rwr2r12rqwe123qwsda241qweasd"));
@@ -77,7 +80,7 @@ namespace eDoxa.Cashier.UnitTests.Controllers
             // Arrange
             _mockMediator.Setup(mock => mock.Send(It.IsAny<DeleteBankAccountCommand>(), It.IsAny<CancellationToken>())).Returns(Unit.Task).Verifiable();
 
-            var controller = new StripeBankAccountController(_mockMediator.Object);
+            var controller = new StripeBankAccountController(_mockMediator.Object, _mockUserRepository.Object);
 
             // Act
             var result = await controller.DeleteBankAccountAsync();
