@@ -15,7 +15,7 @@ namespace eDoxa.Seedwork.Testing.TestServer.Extensions
 {
     public static class TestServerExtensions
     {
-        public static void MigrateDbContext<TDbContext>(this Microsoft.AspNetCore.TestHost.TestServer testServer)
+        public static void EnsureCreated<TDbContext>(this Microsoft.AspNetCore.TestHost.TestServer testServer)
         where TDbContext : DbContext
         {
             using (var scope = testServer.Host.Services.CreateScope())

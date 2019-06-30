@@ -33,7 +33,7 @@ namespace eDoxa.Seedwork.Testing.TestServer
         {
             var server = base.CreateServer(builder);
 
-            server.MigrateDbContext<TDbContext>();
+            server.EnsureCreated<TDbContext>();
 
             return server;
         }

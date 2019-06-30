@@ -20,6 +20,7 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.Infrastructure;
+using eDoxa.Arena.Challenges.IntegrationTests.Helpers;
 using eDoxa.Seedwork.Testing.TestServer;
 using eDoxa.Seedwork.Testing.TestServer.Extensions;
 
@@ -50,6 +51,15 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Services
             var context = _testServer.GetService<ChallengesDbContext>();
             context.Challenges.RemoveRange(context.Challenges);
             await context.SaveChangesAsync();
+        }
+
+        [TestMethod]
+        public async Task Test()
+        {
+            // Arrange
+            var testServer = TestServerHelper.CreateTestServer<ChallengesDbContext>();
+
+
         }
 
         [TestMethod]
