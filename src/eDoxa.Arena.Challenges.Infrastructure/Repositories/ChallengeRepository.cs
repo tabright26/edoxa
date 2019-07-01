@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeRepository.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -22,9 +22,10 @@ using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Infrastructure.Extensions;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
 using eDoxa.Seedwork.Domain.Extensions;
-using eDoxa.Seedwork.Domain.Specifications.Abstractions;
 
 using JetBrains.Annotations;
+
+using LinqKit;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -32,13 +33,10 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
 {
     public sealed partial class ChallengeRepository
     {
-        private const string NavigationPropertyPath = "Participants.Matches";
-
-        private readonly ChallengesDbContext _context;
+        private readonly IDictionary<Guid, IChallenge> _materializedIds = new Dictionary<Guid, IChallenge>();
+        private readonly IDictionary<IChallenge, ChallengeModel> _materializedObjects = new Dictionary<IChallenge, ChallengeModel>();
         private readonly IMapper _mapper;
-
-        private IDictionary<Guid, IChallenge> _materializedIds = new Dictionary<Guid, IChallenge>();
-        private IDictionary<IChallenge, ChallengeModel> _materializedObjects = new Dictionary<IChallenge, ChallengeModel>();
+        private readonly ChallengesDbContext _context;
 
         public ChallengeRepository(ChallengesDbContext context, IMapper mapper)
         {
@@ -46,9 +44,11 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
             _mapper = mapper;
         }
 
-        private async Task<IReadOnlyCollection<ChallengeModel>> FindChallengeModelsAsync(int? game = null, int? state = null)
+        private async Task<IReadOnlyCollection<ChallengeModel>> FetchChallengeModelsAsync(int? game = null, int? state = null)
         {
-            var challenges = from challenge in _context.Challenges.Include(NavigationPropertyPath)
+            var challenges = from challenge in _context.Challenges.Include(challenge => challenge.Participants)
+                                 .ThenInclude(participant => participant.Matches)
+                                 .AsExpandable()
                              where (game == null || challenge.Game == game) && (state == null || challenge.State == state)
                              select challenge;
 
@@ -58,7 +58,9 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
         [ItemCanBeNull]
         private async Task<ChallengeModel> FindChallengeModelAsync(Guid challengeId)
         {
-            var challenges = from challenge in _context.Challenges.Include(NavigationPropertyPath)
+            var challenges = from challenge in _context.Challenges.Include(challenge => challenge.Participants)
+                                 .ThenInclude(participant => participant.Matches)
+                                 .AsExpandable()
                              where challenge.Id == challengeId
                              select challenge;
 
@@ -67,7 +69,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
 
         private async Task<bool> AnyChallengeModelAsync(Guid challengeId)
         {
-            var challenges = from challenge in _context.Challenges
+            var challenges = from challenge in _context.Challenges.AsExpandable()
                              where challenge.Id == challengeId
                              select challenge;
 
@@ -91,9 +93,9 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
             _materializedObjects[challenge] = challengeModel;
         }
 
-        public async Task<IReadOnlyCollection<IChallenge>> FindChallengesAsync(ChallengeGame game = null, ChallengeState state = null)
+        public async Task<IReadOnlyCollection<IChallenge>> FetchChallengesAsync(ChallengeGame game = null, ChallengeState state = null)
         {
-            var challenges = await this.FindChallengeModelsAsync(game?.Value, state?.Value);
+            var challenges = await this.FetchChallengeModelsAsync(game?.Value, state?.Value);
 
             return challenges.Select(
                     challengeModel =>
@@ -108,13 +110,6 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
                     }
                 )
                 .ToList();
-        }
-
-        public async Task<IReadOnlyCollection<IChallenge>> FindChallengesAsync(ISpecification<IChallenge> specification)
-        {
-            var challenges = await this.FindChallengeModelsAsync();
-
-            return challenges.Select(challenge => _mapper.Map<IChallenge>(challenge)).Where(specification.IsSatisfiedBy).ToList();
         }
 
         [ItemCanBeNull]

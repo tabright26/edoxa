@@ -79,7 +79,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Services
 
             // Arrange
             challengeRepository = _testServer.GetService<IChallengeRepository>();
-            challenges = await challengeRepository.FindChallengesAsync(null, ChallengeState.InProgress);
+            challenges = await challengeRepository.FetchChallengesAsync(null, ChallengeState.InProgress);
             challenges.Should().HaveCount(5);
         }
     }

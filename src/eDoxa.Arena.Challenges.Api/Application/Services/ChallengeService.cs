@@ -57,7 +57,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Services
 
         public async Task CloseAsync(IDateTimeProvider closedAt, CancellationToken cancellationToken = default)
         {
-            var challenges = await _challengeRepository.FindChallengesAsync(null, ChallengeState.Ended);
+            var challenges = await _challengeRepository.FetchChallengesAsync(null, ChallengeState.Ended);
 
             challenges.ForEach(challenge => challenge.Close(closedAt));
 
@@ -101,7 +101,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Services
             var specification = SpecificationFactory.Instance.Create<IChallenge>();
                 //.And(new LastSynchronizationMoreThanSpecification(synchronizationInterval));
 
-            var challenges = await _challengeRepository.FindChallengesAsync(game, ChallengeState.InProgress);
+            var challenges = await _challengeRepository.FetchChallengesAsync(game, ChallengeState.InProgress);
 
             var gameReferencesAdapter = _gameReferencesFactory.CreateInstance(game);
 

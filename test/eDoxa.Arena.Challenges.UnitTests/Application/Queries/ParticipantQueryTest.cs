@@ -29,7 +29,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
     public sealed class ParticipantQueryTest
     {
         private static IEnumerable<object[]> DataQueryParameters =>
-            ChallengeGame.GetEnumerations().SelectMany(game => ChallengeState.GetEnumerations().Select(state => new object[] { game, state })).ToList();
+            ChallengeGame.GetEnumerations().SelectMany(game => ChallengeState.GetEnumerations().Select(state => new object[] {game, state})).ToList();
 
         [DataTestMethod]
         [DynamicData(nameof(DataQueryParameters))]

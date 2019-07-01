@@ -21,12 +21,12 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Strategies
     [TestClass]
     public sealed class LeagueOfLegendsScoringStrategyTest
     {
+        [DataTestMethod]
         [DataRow(nameof(LeagueOfLegendsParticipantStatsDto.Kills), 4)]
         [DataRow(nameof(LeagueOfLegendsParticipantStatsDto.Deaths), -3)]
         [DataRow(nameof(LeagueOfLegendsParticipantStatsDto.Assists), 3)]
         [DataRow(nameof(LeagueOfLegendsParticipantStatsDto.TotalDamageDealtToChampions), 0.0008F)]
         [DataRow(nameof(LeagueOfLegendsParticipantStatsDto.TotalHeal), 0.0015F)]
-        [DataTestMethod]
         public void Scoring_Strategy_ShouldContain(string key, float value)
         {
             // Act

@@ -1,5 +1,5 @@
 ﻿// Filename: PayoutConverter.cs
-// Date Created: 2019-06-21
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,6 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Collections.Generic;
 using System.Linq;
 
 using AutoMapper;
@@ -18,25 +19,25 @@ using eDoxa.Arena.Challenges.Infrastructure.Models;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Arena.Challenges.Api.Profiles.Converters
+namespace eDoxa.Arena.Challenges.Api.Application.Profiles.Converters
 {
-    internal sealed class PayoutConverter : IValueConverter<ChallengeModel, PayoutViewModel>
+    internal sealed class PayoutConverter : IValueConverter<ICollection<BucketModel>, PayoutViewModel>
     {
         [NotNull]
-        public PayoutViewModel Convert([NotNull] ChallengeModel challenge, [NotNull] ResolutionContext context)
+        public PayoutViewModel Convert([NotNull] ICollection<BucketModel> bucketModels, [NotNull] ResolutionContext context)
         {
             return new PayoutViewModel
             {
                 PrizePool = new PrizePoolViewModel
                 {
-                    Amount = challenge.Buckets.Sum(bucket => bucket.Size * bucket.PrizeAmount),
-                    Currency = Currency.FromValue(challenge.Buckets.First().PrizeCurrency).Name
+                    Currency = Currency.FromValue(bucketModels.First().PrizeCurrency).Name,
+                    Amount = bucketModels.Sum(bucketModel => bucketModel.Size * bucketModel.PrizeAmount)
                 },
-                Buckets = challenge.Buckets.Select(
-                        bucket => new BucketViewModel
+                Buckets = bucketModels.Select(
+                        bucketModel => new BucketViewModel
                         {
-                            Size = bucket.Size,
-                            Prize = bucket.PrizeAmount
+                            Size = bucketModel.Size,
+                            Prize = bucketModel.PrizeAmount
                         }
                     )
                     .ToArray()

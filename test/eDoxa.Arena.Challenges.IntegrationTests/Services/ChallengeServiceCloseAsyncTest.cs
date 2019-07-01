@@ -75,7 +75,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Services
 
             // Arrange
             challengeRepository = _testServer.GetService<IChallengeRepository>();
-            challenges = await challengeRepository.FindChallengesAsync(null, ChallengeState.Closed);
+            challenges = await challengeRepository.FetchChallengesAsync(null, ChallengeState.Closed);
             challenges.Should().HaveCount(count);
             challenges.ForEach(challenge => challenge.Timeline.ClosedAt.Should().Be(closedAt.DateTime));
         }

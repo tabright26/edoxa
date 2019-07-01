@@ -1,5 +1,5 @@
 // Filename: MatchStatsTest.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -25,16 +25,14 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
     [TestClass]
     public sealed class MatchStatsTest
     {
-        private static readonly Faker Faker = new Faker();
-
-        private static IEnumerable<object[]> ChallengeGames => ChallengeGame.GetEnumerations().Select(game => new object[] { game });
+        private static IEnumerable<object[]> GameDataSets => ChallengeGame.GetEnumerations().Select(game => new object[] {game});
 
         [DataTestMethod]
-        [DynamicData(nameof(ChallengeGames))]
+        [DynamicData(nameof(GameDataSets))]
         public void Stats_ShouldBeAssignableToType(ChallengeGame game)
         {
             // Arrange
-            var stats = Faker.Match().Stats(game);
+            var stats = new Faker().Match().Stats(game);
 
             // Act
             var type = typeof(Dictionary<StatName, StatValue>);

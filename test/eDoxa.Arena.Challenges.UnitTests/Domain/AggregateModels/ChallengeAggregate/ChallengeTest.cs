@@ -1,5 +1,5 @@
 // Filename: ChallengeTest.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,8 +8,19 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Arena.Challenges.Api.Application.Fakers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+using eDoxa.Arena.Challenges.Api.Application.Factories;
+using eDoxa.Arena.Challenges.Api.Application.Strategies;
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Seedwork.Common;
+using eDoxa.Seedwork.Common.Extensions;
+using eDoxa.Seedwork.Domain.Aggregate;
+
+using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -18,12 +29,63 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
     [TestClass]
     public sealed class ChallengeTest
     {
-        private ChallengeFaker _challengeFaker;
+        private static IEnumerable<object[]> ChallengeDataSets =>
+            ChallengeGame.GetEnumerations()
+                .SelectMany(
+                    game => ValueObject.GetValues<ChallengeDuration>()
+                        .SelectMany(
+                            duration => ValueObject.GetValues<PayoutEntries>()
+                                .SelectMany(
+                                    payoutEntries => ValueObject.GetValues<BestOf>()
+                                        .SelectMany(
+                                            bestOf => EntryFee.GetValues()
+                                                .Select(
+                                                    entryFee => new object[]
+                                                    {
+                                                        new ChallengeName(nameof(Challenge)),
+                                                        game,
+                                                        new ChallengeSetup(bestOf, payoutEntries, entryFee),
+                                                        new ChallengeTimeline(new UtcNowDateTimeProvider(), duration),
+                                                        new ScoringFactory().CreateInstance(game).Scoring,
+                                                        new PayoutFactory(new PayoutStrategy()).CreateInstance().GetPayout(payoutEntries, entryFee)
+                                                    }
+                                                )
+                                        )
+                                )
+                        )
+                );
 
-        [TestInitialize]
-        public void TestInitialize()
+        [DataTestMethod]
+        [DynamicData(nameof(ChallengeDataSets))]
+        public void Constructor_ShouldNotThrow(
+            ChallengeName name,
+            ChallengeGame game,
+            ChallengeSetup setup,
+            ChallengeTimeline timeline,
+            IScoring scoring,
+            IPayout payout
+        )
         {
-            _challengeFaker = new ChallengeFaker(state: ChallengeState.Inscription);
+            // Arrange
+            var action = new Action(
+                () =>
+                {
+                    // Act
+                    var challenge = new Challenge(
+                        name,
+                        game,
+                        setup,
+                        timeline,
+                        scoring,
+                        payout
+                    );
+
+                    challenge.DumbAsJson(true);
+                }
+            );
+
+            // Assert
+            action.Should().NotThrow();
         }
 
         //[TestMethod]

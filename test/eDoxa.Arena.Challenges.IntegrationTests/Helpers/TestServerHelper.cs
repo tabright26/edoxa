@@ -23,12 +23,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Helpers
 
             hostBuilder.UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Startup)).Location));
 
-            hostBuilder.ConfigureAppConfiguration(configuration =>
-                {
-                    
-                    configuration.AddJsonFile($"appsettings..json", false).AddEnvironmentVariables();
-                }
-            );
+            hostBuilder.ConfigureAppConfiguration(configuration => configuration.AddJsonFile("appsettings.Testing.json", false).AddEnvironmentVariables());
 
             hostBuilder.UseStartup<Startup>();
 

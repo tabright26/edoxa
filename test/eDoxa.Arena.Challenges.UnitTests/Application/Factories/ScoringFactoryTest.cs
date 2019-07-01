@@ -27,9 +27,9 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Factories
     [TestClass]
     public sealed class ScoringFactoryTest
     {
-        private static IEnumerable<object[]> DataChallengeGames => ChallengeGame.GetEnumerations().Select(game => new object[] {game}).ToList();
+        private static IEnumerable<object[]> GameDataSets => ChallengeGame.GetEnumerations().Select(game => new object[] {game}).ToList();
 
-        private static IEnumerable<object[]> DataScoringStrategies =>
+        private static IEnumerable<object[]> ScoringStrategyDataSets =>
             Assembly.GetAssembly(typeof(Startup))
                 .GetTypes()
                 .Where(type => typeof(IScoringStrategy).IsAssignableFrom(type) && type.IsInterface == false)
@@ -38,7 +38,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Factories
                 .ToList();
 
         [DataTestMethod]
-        [DynamicData(nameof(DataScoringStrategies))]
+        [DynamicData(nameof(ScoringStrategyDataSets))]
         public void CreateInstance_FromDependencyInjection_ShouldBeStrategy(IScoringStrategy strategy)
         {
             // Arrange
@@ -52,7 +52,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Factories
         }
 
         [DataTestMethod]
-        [DynamicData(nameof(DataChallengeGames))]
+        [DynamicData(nameof(GameDataSets))]
         public void CreateInstance_FromReflection_ShouldBeGame(ChallengeGame game)
         {
             // Arrange

@@ -1,5 +1,5 @@
 ﻿// Filename: MatchProfile.cs
-// Date Created: 2019-06-07
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,11 +10,11 @@
 
 using AutoMapper;
 
-using eDoxa.Arena.Challenges.Api.Profiles.Resolvers;
+using eDoxa.Arena.Challenges.Api.Application.Profiles.Resolvers;
 using eDoxa.Arena.Challenges.Domain.ViewModels;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
 
-namespace eDoxa.Arena.Challenges.Api.Profiles
+namespace eDoxa.Arena.Challenges.Api.Application.Profiles
 {
     internal sealed class MatchProfile : Profile
     {

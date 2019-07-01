@@ -1,5 +1,5 @@
 // Filename: StatTest.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,10 +8,16 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
+using Bogus;
+
+using eDoxa.Arena.Challenges.Api.Application.Factories;
+using eDoxa.Arena.Challenges.Api.Application.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.LeagueOfLegends.Dtos;
+using eDoxa.Seedwork.Common;
 
 using FluentAssertions;
 
@@ -22,29 +28,29 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
     [TestClass]
     public sealed class StatTest
     {
-        private static IEnumerable<object[]> Data
-        {
-            get
-            {
-                yield return new object[] {new StatName(nameof(LeagueOfLegendsParticipantStatsDto.Kills)), new StatValue(457000), new StatWeighting(0.00015F)};
-                yield return new object[] {new StatName(nameof(LeagueOfLegendsParticipantStatsDto.Assists)), new StatValue(0.1F), new StatWeighting(1)};
+        private static IEnumerable<object[]> StatDataSets =>
+            ChallengeGame.GetEnumerations()
+                .SelectMany(
+                    game =>
+                    {
+                        var stats = new Faker().Match().Stats(game);
 
-                yield return new object[]
-                {
-                    new StatName(nameof(LeagueOfLegendsParticipantStatsDto.Deaths)), new StatValue(457342424L), new StatWeighting(0.77F)
-                };
+                        var factory = new ScoringFactory();
 
-                yield return new object[]
-                {
-                    new StatName(nameof(LeagueOfLegendsParticipantStatsDto.TotalDamageDealtToChampions)), new StatValue(0.25D), new StatWeighting(100)
-                };
+                        var strategy = factory.CreateInstance(game);
 
-                yield return new object[] {new StatName(nameof(LeagueOfLegendsParticipantStatsDto.TotalHeal)), new StatValue(85), new StatWeighting(-3)};
-            }
-        }
+                        var match = new Match(new GameReference(Guid.NewGuid()), new UtcNowDateTimeProvider());
 
-        [DynamicData(nameof(Data))]
+                        match.Snapshot(stats, strategy.Scoring);
+
+                        return match.Stats;
+                    }
+                )
+                .Select(stat => new object[] {stat.Name, stat.Value, stat.Weighting})
+                .ToList();
+
         [DataTestMethod]
+        [DynamicData(nameof(StatDataSets))]
         public void Contructor_Tests(StatName name, StatValue value, StatWeighting weighting)
         {
             // Act

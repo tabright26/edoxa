@@ -1,5 +1,5 @@
-﻿// Filename: StatScoreResolver.cs
-// Date Created: 2019-06-21
+﻿// Filename: MatchScoreResolver.cs
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
+using System.Linq;
 
 using AutoMapper;
 
@@ -17,18 +17,18 @@ using eDoxa.Arena.Challenges.Infrastructure.Models;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Arena.Challenges.Api.Profiles.Resolvers
+namespace eDoxa.Arena.Challenges.Api.Application.Profiles.Resolvers
 {
-    internal sealed class StatScoreResolver : IValueResolver<StatModel, StatViewModel, decimal>
+    internal sealed class MatchScoreResolver : IValueResolver<MatchModel, MatchViewModel, decimal>
     {
         public decimal Resolve(
-            [NotNull] StatModel source,
-            [NotNull] StatViewModel destination,
-            decimal destMember,
+            [NotNull] MatchModel matchModel,
+            [NotNull] MatchViewModel matchViewModel,
+            decimal totalScore,
             [NotNull] ResolutionContext context
         )
         {
-            return Convert.ToDecimal(source.Value * source.Weighting);
+            return matchModel.Stats.Sum(stat => context.Mapper.Map<StatViewModel>(stat).Score);
         }
     }
 }

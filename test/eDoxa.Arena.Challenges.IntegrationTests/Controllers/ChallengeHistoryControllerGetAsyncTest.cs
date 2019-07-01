@@ -65,10 +65,10 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         public async Task ShouldBeOk()
         {
             // Arrange
-            var challengeRepository = _testServer.GetService<IChallengeRepository>();
             var challengeFaker = new ChallengeFaker(state: ChallengeState.InProgress);
             challengeFaker.UseSeed(1);
             var challenge = challengeFaker.Generate();
+            var challengeRepository = _testServer.GetService<IChallengeRepository>();
             challengeRepository.Create(challenge);
             await challengeRepository.CommitAsync();
             var participant = challenge.Participants.First();

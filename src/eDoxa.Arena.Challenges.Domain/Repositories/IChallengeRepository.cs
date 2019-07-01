@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Seedwork.Domain.Specifications.Abstractions;
 
 using JetBrains.Annotations;
 
@@ -26,9 +25,7 @@ namespace eDoxa.Arena.Challenges.Domain.Repositories
 
         void Create(IChallenge challenge);
 
-        Task<IReadOnlyCollection<IChallenge>> FindChallengesAsync(ChallengeGame game = null, ChallengeState state = null);
-
-        Task<IReadOnlyCollection<IChallenge>> FindChallengesAsync(ISpecification<IChallenge> specification);
+        Task<IReadOnlyCollection<IChallenge>> FetchChallengesAsync(ChallengeGame game = null, ChallengeState state = null);
 
         [ItemCanBeNull]
         Task<IChallenge> FindChallengeAsync(ChallengeId challengeId);

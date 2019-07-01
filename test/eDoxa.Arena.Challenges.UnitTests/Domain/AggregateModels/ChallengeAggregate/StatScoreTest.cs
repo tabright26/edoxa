@@ -1,5 +1,5 @@
 // Filename: StatScoreTest.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -22,7 +22,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
     [TestClass]
     public sealed class StatScoreTest
     {
-        private static IEnumerable<object[]> Data
+        private static IEnumerable<object[]> StatScoreDataSets
         {
             get
             {
@@ -50,7 +50,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
             }
         }
 
-        [DynamicData(nameof(Data))]
+        [DynamicData(nameof(StatScoreDataSets))]
         [DataTestMethod]
         public void Constructor_Tests(
             StatName name,

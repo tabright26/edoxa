@@ -1,5 +1,5 @@
 ﻿// Filename: Participant.cs
-// Date Created: 2019-06-20
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -41,23 +41,18 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public IReadOnlyCollection<Match> Matches => _matches;
 
-        [CanBeNull]
-        public Score AverageScore(BestOf bestOf)
-        {
-            return HasAverageScore(Matches.Count, bestOf) ? new ParticipantScore(this, bestOf) : null;
-        }
-
-        public static bool HasAverageScore(int matchCount, int bestOf)
-        {
-            return matchCount >= bestOf;
-        }
-
         public void Snapshot(Match match)
         {
             _matches.Add(match);
         }
 
-        public IEnumerable<GameReference> GetUnsynchronizedGameReferences(IEnumerable<GameReference> gameReferences)
+        [CanBeNull]
+        public Score AverageScore(BestOf bestOf)
+        {
+            return Matches.Count >= bestOf ? new ParticipantScore(this, bestOf) : null;
+        }
+
+        internal IEnumerable<GameReference> GetUnsynchronizedGameReferences(IEnumerable<GameReference> gameReferences)
         {
             return gameReferences.Where(gameReference => Matches.All(match => match.GameReference != gameReference));
         }
