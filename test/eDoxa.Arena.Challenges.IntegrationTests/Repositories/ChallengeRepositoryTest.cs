@@ -12,16 +12,14 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-using AutoMapper;
-
 using Bogus;
 
 using eDoxa.Arena.Challenges.Api.Application.Fakers;
 using eDoxa.Arena.Challenges.Api.Application.Fakers.Extensions;
+using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.Infrastructure.Repositories;
-using eDoxa.Arena.Challenges.IntegrationTests.Helpers;
 using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Infrastructure.Factories;
@@ -35,7 +33,6 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
     [TestClass]
     public sealed class ChallengeRepositoryTest
     {
-        private static readonly IMapper Mapper = MapperBuilder.CreateMapper();
         private static readonly Faker Faker = new Faker();
 
         [TestMethod]
@@ -51,7 +48,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
             {
                 using (var context = factory.CreateContext())
                 {
-                    var repository = new ChallengeRepository(context, Mapper);
+                    var repository = new ChallengeRepository(context, MapperExtensions.Mapper);
 
                     repository.Create(challenge);
 
@@ -60,7 +57,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
 
                 using (var context = factory.CreateContext())
                 {
-                    var repository = new ChallengeRepository(context, Mapper);
+                    var repository = new ChallengeRepository(context, MapperExtensions.Mapper);
 
                     var challenges = await repository.FindChallengesAsync();
 
@@ -134,7 +131,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
             {
                 using (var context = factory.CreateContext())
                 {
-                    var repository = new ChallengeRepository(context, Mapper);
+                    var repository = new ChallengeRepository(context, MapperExtensions.Mapper);
 
                     repository.Create(fakeChallenge);
 
@@ -143,7 +140,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
 
                 using (var context = factory.CreateContext())
                 {
-                    var repository = new ChallengeRepository(context, Mapper);
+                    var repository = new ChallengeRepository(context, MapperExtensions.Mapper);
 
                     var challenge = await repository.FindChallengeAsync(fakeChallenge.Id);
 
@@ -156,7 +153,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
 
                 using (var context = factory.CreateContext())
                 {
-                    var repository = new ChallengeRepository(context, Mapper);
+                    var repository = new ChallengeRepository(context, MapperExtensions.Mapper);
 
                     var challenge = await repository.FindChallengeAsync(fakeChallenge.Id);
 
@@ -169,7 +166,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
 
                 using (var context = factory.CreateContext())
                 {
-                    var repository = new ChallengeRepository(context, Mapper);
+                    var repository = new ChallengeRepository(context, MapperExtensions.Mapper);
 
                     var challenge = await repository.FindChallengeAsync(fakeChallenge.Id);
 
@@ -180,7 +177,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
 
                 using (var context = factory.CreateContext())
                 {
-                    var repository = new ChallengeRepository(context, Mapper);
+                    var repository = new ChallengeRepository(context, MapperExtensions.Mapper);
 
                     var challenge = await repository.FindChallengeAsync(fakeChallenge.Id);
 
@@ -200,7 +197,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
 
                 using (var context = factory.CreateContext())
                 {
-                    var repository = new ChallengeRepository(context, Mapper);
+                    var repository = new ChallengeRepository(context, MapperExtensions.Mapper);
 
                     var challenge = await repository.FindChallengeAsync(fakeChallenge.Id);
 
@@ -215,7 +212,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
 
                 using (var context = factory.CreateContext())
                 {
-                    var repository = new ChallengeRepository(context, Mapper);
+                    var repository = new ChallengeRepository(context, MapperExtensions.Mapper);
 
                     var challenge = await repository.FindChallengeAsync(fakeChallenge.Id);
 
@@ -228,7 +225,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
 
                 using (var context = factory.CreateContext())
                 {
-                    var repository = new ChallengeRepository(context, Mapper);
+                    var repository = new ChallengeRepository(context, MapperExtensions.Mapper);
 
                     var challenge = await repository.FindChallengeAsync(fakeChallenge.Id);
 
@@ -247,7 +244,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
 
                 using (var context = factory.CreateContext())
                 {
-                    var repository = new ChallengeRepository(context, Mapper);
+                    var repository = new ChallengeRepository(context, MapperExtensions.Mapper);
 
                     var challenge = await repository.FindChallengeAsync(fakeChallenge.Id);
 
@@ -260,7 +257,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
 
                 using (var context = factory.CreateContext())
                 {
-                    var repository = new ChallengeRepository(context, Mapper);
+                    var repository = new ChallengeRepository(context, MapperExtensions.Mapper);
 
                     var challenge = await repository.FindChallengeAsync(fakeChallenge.Id);
 

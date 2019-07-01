@@ -56,7 +56,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
             var challenge = challengeFaker.Generate();
 
             _mockHttpContextAccessor.Setup(accessor => accessor.HttpContext.User.Claims)
-                .Returns(new[] { new Claim(JwtClaimTypes.Subject, challenge.Participants.First().UserId.ToString()) });
+                .Returns(new[] {new Claim(JwtClaimTypes.Subject, challenge.Participants.First().UserId.ToString())});
 
             using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
             {
