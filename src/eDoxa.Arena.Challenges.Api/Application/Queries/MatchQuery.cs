@@ -23,6 +23,8 @@ using eDoxa.Arena.Challenges.Infrastructure.Models;
 
 using JetBrains.Annotations;
 
+using LinqKit;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Arena.Challenges.Api.Application.Queries
@@ -41,7 +43,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Queries
 
         private async Task<IReadOnlyCollection<MatchModel>> FindParticipantMatchesAsNoTrackingAsync(Guid participantId)
         {
-            var matches = from match in Matches.Include(match => match.Participant)
+            var matches = from match in Matches.Include(match => match.Participant).AsExpandable()
                           where match.Participant.Id == participantId
                           select match;
 
@@ -50,7 +52,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Queries
 
         private async Task<MatchModel> FindMatchAsNoTrackingAsync(Guid matchId)
         {
-            var matches = from match in Matches
+            var matches = from match in Matches.AsExpandable()
                           where match.Id == matchId
                           select match;
 

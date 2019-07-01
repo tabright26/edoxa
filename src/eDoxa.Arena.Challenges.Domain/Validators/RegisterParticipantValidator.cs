@@ -8,8 +8,9 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Linq;
+
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.Specifications;
 using eDoxa.Seedwork.Common.ValueObjects;
 
 using FluentValidation;
@@ -21,12 +22,12 @@ namespace eDoxa.Arena.Challenges.Domain.Validators
         public RegisterParticipantValidator(UserId userId)
         {
             this.RuleFor(challenge => challenge)
-                .Must(new UserIsNotRegisteredSpecification(userId).IsSatisfiedBy)
+                .Must(challenge => challenge.Participants.All(participant => participant.UserId != userId))
                 .WithMessage("The user already is registered.");
 
             this.RuleFor(challenge => challenge)
-                .Must(new ChallengeRegisterIsAvailableSpecification().IsSatisfiedBy)
-                .WithMessage("Challenge register is available.");
+                .Must(challenge => challenge.Participants.Count < challenge.Setup.Entries)
+                .WithMessage("Challenge register is not available.");
         }
     }
 }

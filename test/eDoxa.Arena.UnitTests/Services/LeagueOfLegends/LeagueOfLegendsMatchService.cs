@@ -39,7 +39,7 @@ namespace eDoxa.Arena.UnitTests.Services.LeagueOfLegends
         {
             // Arrange
             var matchReferencesDTO =
-                StubConvert.DeserializeObject<IEnumerable<LeagueOfLegendsMatchReferenceDto>>(@"Utilities/Stubs/LeagueOfLegends/MatchReferences.json");
+                JsonFileConvert.DeserializeObject<IEnumerable<LeagueOfLegendsMatchReferenceDto>>(@"Utilities/Stubs/LeagueOfLegends/MatchReferences.json");
 
             var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
 
@@ -78,7 +78,7 @@ namespace eDoxa.Arena.UnitTests.Services.LeagueOfLegends
         public async Task GetMatchAsync_ShouldBeOkObjectResult(long gameId)
         {
             // Arrange
-            var matches = StubConvert.DeserializeObject<IEnumerable<LeagueOfLegendsMatchDto>>(@"Utilities/Stubs/LeagueOfLegends/Matches.json");
+            var matches = JsonFileConvert.DeserializeObject<IEnumerable<LeagueOfLegendsMatchDto>>(@"Utilities/Stubs/LeagueOfLegends/Matches.json");
 
             var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
 

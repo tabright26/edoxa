@@ -1,5 +1,5 @@
-﻿// Filename: StubConvert.cs
-// Date Created: 2019-06-01
+﻿// Filename: JsonFileConvert.cs
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,22 +10,20 @@
 
 using System;
 using System.IO;
-using System.Runtime.InteropServices;
 
 using Newtonsoft.Json;
 
 namespace eDoxa.Arena.UnitTests.Utilities.Stubs
 {
-    public static class StubConvert
+    public static class JsonFileConvert
     {
         public static T DeserializeObject<T>(string path)
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                path = path.Replace("/", @"\");
-            }
+            path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
 
-            return JsonConvert.DeserializeObject<T>(File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + path));
+            var json = File.ReadAllText(path);
+
+            return JsonConvert.DeserializeObject<T>(json);
         }
     }
 }

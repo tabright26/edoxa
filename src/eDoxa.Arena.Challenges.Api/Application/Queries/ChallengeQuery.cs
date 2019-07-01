@@ -24,6 +24,8 @@ using eDoxa.Seedwork.Common.Extensions;
 
 using JetBrains.Annotations;
 
+using LinqKit;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
@@ -47,7 +49,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Queries
 
         private async Task<IReadOnlyCollection<ChallengeModel>> FindUserChallengeHistoryAsNoTrackingAsync(Guid userId, int? game = null, int? state = null)
         {
-            var challenges = from challenge in Challenges.Include(NavigationPropertyPath)
+            var challenges = from challenge in Challenges.Include(NavigationPropertyPath).AsExpandable()
                              where challenge.Participants.Any(participant => participant.UserId == userId) &&
                                    (game == null || challenge.Game == game) &&
                                    (state == null || challenge.State == state)
@@ -58,7 +60,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Queries
 
         private async Task<IReadOnlyCollection<ChallengeModel>> FindChallengesAsNoTrackingAsync(int? game = null, int? state = null)
         {
-            var challenges = from challenge in Challenges.Include(NavigationPropertyPath)
+            var challenges = from challenge in Challenges.Include(NavigationPropertyPath).AsExpandable()
                              where (game == null || challenge.Game == game) && (state == null || challenge.State == state)
                              select challenge;
 
@@ -68,7 +70,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Queries
         [ItemCanBeNull]
         private async Task<ChallengeModel> FindChallengeAsNoTrackingAsync(Guid challengeId)
         {
-            var challenges = from challenge in Challenges.Include(NavigationPropertyPath)
+            var challenges = from challenge in Challenges.Include(NavigationPropertyPath).AsExpandable()
                              where challenge.Id == challengeId
                              select challenge;
 

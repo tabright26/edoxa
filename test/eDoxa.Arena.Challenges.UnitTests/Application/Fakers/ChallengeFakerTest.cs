@@ -14,6 +14,7 @@ using System.Linq;
 using Bogus;
 
 using eDoxa.Arena.Challenges.Api.Application.Fakers;
+using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.UnitTests.Extensions;
 
@@ -45,6 +46,19 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Fakers
 
             // Assert
             challenges.AssertStateIsValid();
+        }
+
+        [TestMethod]
+        public void ChallengeViewModel_Mapping_ShouldBeValid()
+        {
+            // Arrange
+            var challengeFaker = new ChallengeFaker();
+
+            // Act
+            var challenge = challengeFaker.Generate().ToViewModel();
+
+            // Assert
+            challenge.AssertMappingIsValid();
         }
 
         [DataTestMethod]

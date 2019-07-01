@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Reflection;
-using System.Text;
 
 using eDoxa.Arena.Challenges.Api;
 using eDoxa.Seedwork.Security.Hosting;

@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengePayoutDomainEventTest.cs
-// Date Created: 2019-06-09
+// Date Created: 2019-06-30
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,6 +9,7 @@
 // this source code package.
 
 using System.Threading.Tasks;
+
 using eDoxa.Arena.Challenges.Api.Application.DomainEvents.Extensions;
 using eDoxa.Arena.Challenges.Api.Application.DomainEvents.Handlers;
 using eDoxa.Arena.Challenges.Api.Application.Fakers;
@@ -21,7 +22,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
 
-namespace eDoxa.Arena.Challenges.UnitTests.Application.DomainEventHandlers
+namespace eDoxa.Arena.Challenges.UnitTests.Application.DomainEvents.Handlers
 {
     [TestClass]
     public sealed class ChallengePayoutDomainEventTest
@@ -41,7 +42,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.DomainEventHandlers
         {
             // Arranges
             var challenge = _challengeFaker.Generate();
-            
+
             _mockIntegrationEventService.Setup(mock => mock.PublishAsync(It.IsAny<ChallengePayoutIntegrationEvent>())).Returns(Task.CompletedTask).Verifiable();
 
             var handler = new ChallengePayoutDomainEventHandler(_mockIntegrationEventService.Object);

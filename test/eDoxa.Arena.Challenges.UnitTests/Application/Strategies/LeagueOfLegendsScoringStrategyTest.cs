@@ -1,5 +1,5 @@
 ﻿// Filename: LeagueOfLegendsScoringStrategyTest.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-30
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -16,7 +16,7 @@ using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Arena.Challenges.UnitTests.Services.LeagueOfLegends.Strategies
+namespace eDoxa.Arena.Challenges.UnitTests.Application.Strategies
 {
     [TestClass]
     public sealed class LeagueOfLegendsScoringStrategyTest
@@ -27,7 +27,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Services.LeagueOfLegends.Strategies
         [DataRow(nameof(LeagueOfLegendsParticipantStatsDto.TotalDamageDealtToChampions), 0.0008F)]
         [DataRow(nameof(LeagueOfLegendsParticipantStatsDto.TotalHeal), 0.0015F)]
         [DataTestMethod]
-        public void Scoring_Default_ShouldContain(string key, float value)
+        public void Scoring_Strategy_ShouldContain(string key, float value)
         {
             // Act
             var strategy = new LeagueOfLegendsScoringStrategy();
