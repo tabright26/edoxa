@@ -13,7 +13,7 @@ using System.Text;
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Seedwork.Application.Http
+namespace eDoxa.Seedwork.Testing
 {
     public sealed class JsonContent : StringContent
     {

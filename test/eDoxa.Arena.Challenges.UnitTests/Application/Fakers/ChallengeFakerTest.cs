@@ -29,12 +29,12 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Fakers
     {
         private static readonly Faker Faker = new Faker();
 
-        private static IEnumerable<object[]> Data =>
+        private static IEnumerable<object[]> ChallengeFakerDataSets =>
             ChallengeGame.GetEnumerations()
                 .SelectMany(game => ChallengeState.GetEnumerations().Select(state => new object[] {game, state, Faker.Random.Int()}));
 
         [DataTestMethod]
-        [DynamicData(nameof(Data))]
+        [DynamicData(nameof(ChallengeFakerDataSets))]
         public void Generate_ChallengesWithAnyStateGeneratedByAnySeed_ShouldBeValidState(ChallengeGame game, ChallengeState state, int seed)
         {
             // Arrange

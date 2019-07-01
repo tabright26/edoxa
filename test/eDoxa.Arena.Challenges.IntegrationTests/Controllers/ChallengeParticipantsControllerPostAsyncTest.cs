@@ -22,9 +22,9 @@ using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Infrastructure;
-using eDoxa.Seedwork.Application.Http;
 using eDoxa.Seedwork.Common.Extensions;
 using eDoxa.Seedwork.Common.ValueObjects;
+using eDoxa.Seedwork.Testing;
 using eDoxa.Seedwork.Testing.TestServer;
 using eDoxa.Seedwork.Testing.TestServer.Extensions;
 

@@ -8,20 +8,12 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-using System.Linq;
 using System.Threading.Tasks;
 
-using Bogus;
-
 using eDoxa.Arena.Challenges.Api.Application.Fakers;
-using eDoxa.Arena.Challenges.Api.Application.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Api.Extensions;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.Infrastructure.Repositories;
-using eDoxa.Seedwork.Common;
-using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Infrastructure.Factories;
 
 using FluentAssertions;
@@ -33,8 +25,6 @@ namespace eDoxa.Arena.Challenges.UnitTests.Repositories
     [TestClass]
     public sealed class ChallengeRepositoryTest
     {
-        private static readonly Faker Faker = new Faker();
-
         [TestMethod]
         public async Task Create_Challenge_ShouldNotBeNull()
         {
@@ -93,200 +83,6 @@ namespace eDoxa.Arena.Challenges.UnitTests.Repositories
                     var challenges = await repository.FetchChallengesAsync();
 
                     challenges.Should().NotBeNull();
-                }
-            }
-        }
-
-        //[DataRow(2)]
-        //[DataRow(5)]
-        //[DataRow(10)]
-        //[DataTestMethod]
-        //public async Task Create_Challenges_ShouldHaveCount(int count)
-        //{
-        //    var challengeFaker = new ChallengeFaker();
-
-        //    using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
-        //    {
-        //        using (var context = factory.CreateContext())
-        //        {
-        //            var repository = new ChallengeRepository(context, Mapper);
-
-        //            repository.Create(challengeFaker.Generate(count));
-
-        //            await repository.UnitOfWork.CommitAsync();
-        //        }
-
-        //        using (var context = factory.CreateContext())
-        //        {
-        //            var repository = new ChallengeRepository(context, Mapper);
-
-        //            var challenges = await repository.FindChallengesAsync();
-
-        //            challenges.Should().HaveCount(count);
-
-        //            challenges.ShouldBeValidObjectState();
-
-        //            //var challengesAsNoTracking = await repository.FindChallengesAsNoTrackingAsync();
-
-        //            //challengesAsNoTracking.Should().HaveCount(count);
-
-        //            //challengesAsNoTracking.ShouldBeValidObjectState();
-
-        //            //challengesAsNoTracking.Should().BeEquivalentTo(challenges);
-        //        }
-        //    }
-        //}
-
-        [TestMethod]
-        public async Task Update_Challenge_ShouldNotBeNull()
-        {
-            var challengeFaker = new ChallengeFaker(state: ChallengeState.Inscription);
-
-            challengeFaker.UseSeed(1);
-
-            var fakeChallenge = challengeFaker.Generate();
-
-            using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
-            {
-                using (var context = factory.CreateContext())
-                {
-                    var repository = new ChallengeRepository(context, MapperExtensions.Mapper);
-
-                    repository.Create(fakeChallenge);
-
-                    await repository.CommitAsync();
-                }
-
-                using (var context = factory.CreateContext())
-                {
-                    var repository = new ChallengeRepository(context, MapperExtensions.Mapper);
-
-                    var challenge = await repository.FindChallengeAsync(fakeChallenge.Id);
-
-                    challenge.Should().Be(fakeChallenge);
-
-                    challenge.Timeline.State.Should().Be(ChallengeState.Inscription);
-                }
-
-                var participant1 = new Participant(new UserId(), new GameAccountId(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider());
-
-                using (var context = factory.CreateContext())
-                {
-                    var repository = new ChallengeRepository(context, MapperExtensions.Mapper);
-
-                    var challenge = await repository.FindChallengeAsync(fakeChallenge.Id);
-
-                    challenge.Register(participant1);
-
-                    await repository.CommitAsync();
-
-                    challenge.Timeline.State.Should().Be(ChallengeState.Inscription);
-                }
-
-                using (var context = factory.CreateContext())
-                {
-                    var repository = new ChallengeRepository(context, MapperExtensions.Mapper);
-
-                    var challenge = await repository.FindChallengeAsync(fakeChallenge.Id);
-
-                    challenge.Participants.Should().Contain(participant1);
-
-                    challenge.Timeline.State.Should().Be(ChallengeState.Inscription);
-                }
-
-                using (var context = factory.CreateContext())
-                {
-                    var repository = new ChallengeRepository(context, MapperExtensions.Mapper);
-
-                    var challenge = await repository.FindChallengeAsync(fakeChallenge.Id);
-
-                    var participantCount = challenge.Setup.Entries - challenge.Participants.Count;
-
-                    for (var index = 0; index < participantCount; index++)
-                    {
-                        challenge.Register(new Participant(new UserId(), new GameAccountId(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider()));
-                    }
-
-                    challenge.Start(new UtcNowDateTimeProvider());
-
-                    await repository.CommitAsync();
-
-                    challenge.Timeline.State.Should().Be(ChallengeState.InProgress);
-                }
-
-                using (var context = factory.CreateContext())
-                {
-                    var repository = new ChallengeRepository(context, MapperExtensions.Mapper);
-
-                    var challenge = await repository.FindChallengeAsync(fakeChallenge.Id);
-
-                    challenge.Participants.Should().HaveCount(challenge.Setup.Entries);
-
-                    challenge.Timeline.State.Should().Be(ChallengeState.InProgress);
-                }
-
-                var match1 = new Match(new GameReference(Guid.NewGuid()), new UtcNowDateTimeProvider());
-
-                match1.Snapshot(Faker.Match().Stats(ChallengeGame.LeagueOfLegends), fakeChallenge.Scoring);
-
-                using (var context = factory.CreateContext())
-                {
-                    var repository = new ChallengeRepository(context, MapperExtensions.Mapper);
-
-                    var challenge = await repository.FindChallengeAsync(fakeChallenge.Id);
-
-                    var participant = challenge.Participants.Single(p => p == participant1);
-
-                    participant.Snapshot(match1);
-
-                    await repository.CommitAsync();
-                }
-
-                using (var context = factory.CreateContext())
-                {
-                    var repository = new ChallengeRepository(context, MapperExtensions.Mapper);
-
-                    var challenge = await repository.FindChallengeAsync(fakeChallenge.Id);
-
-                    var participant = challenge.Participants.Single(p => p == participant1);
-
-                    participant.Matches.Should().Contain(match1);
-
-                    participant.SynchronizedAt.Should().NotBeNull();
-
-                    challenge.Timeline.State.Should().Be(ChallengeState.InProgress);
-                }
-
-                var match2 = new Match(new GameReference(Guid.NewGuid()), new UtcNowDateTimeProvider());
-
-                match2.Snapshot(Faker.Match().Stats(ChallengeGame.LeagueOfLegends), fakeChallenge.Scoring);
-
-                using (var context = factory.CreateContext())
-                {
-                    var repository = new ChallengeRepository(context, MapperExtensions.Mapper);
-
-                    var challenge = await repository.FindChallengeAsync(fakeChallenge.Id);
-
-                    var participant = challenge.Participants.Single(p => p == participant1);
-
-                    participant.Snapshot(match2);
-
-                    await repository.CommitAsync();
-                }
-
-                using (var context = factory.CreateContext())
-                {
-                    var repository = new ChallengeRepository(context, MapperExtensions.Mapper);
-
-                    var challenge = await repository.FindChallengeAsync(fakeChallenge.Id);
-
-                    var participant = challenge.Participants.Single(p => p == participant1);
-
-                    participant.Matches.Should().BeEquivalentTo(match1, match2);
-
-                    participant.SynchronizedAt.Should().NotBeNull();
-
-                    challenge.Timeline.State.Should().Be(ChallengeState.InProgress);
                 }
             }
         }

@@ -8,6 +8,15 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Collections.Generic;
+using System.Linq;
+
+using eDoxa.Arena.Challenges.Api.Application.Fakers;
+using eDoxa.Arena.Challenges.Api.Extensions;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+
+using FluentAssertions;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Application.Profiles.Resolvers
@@ -15,9 +24,27 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Profiles.Resolvers
     [TestClass]
     public sealed class MatchScoreResolverTest
     {
-        [TestMethod]
-        public void Resolve()
+        private static IEnumerable<object[]> GameDataSets => ChallengeGame.GetEnumerations().Select(game => new object[] {game}).ToList();
+
+        [DataTestMethod]
+        [DynamicData(nameof(GameDataSets))]
+        public void Resolve_MatchViewModel_ShouldBeMatchScore(ChallengeGame game)
         {
+            // Arrange
+            var challengeFaker = new ChallengeFaker(game, ChallengeState.Closed);
+            var fakeChallenge = challengeFaker.Generate();
+
+            // Act
+            var challengeViewModel = fakeChallenge.ToViewModel();
+
+            // Assert
+            foreach (var match in fakeChallenge.Participants.SelectMany(participant => participant.Matches))
+            {
+                var matchViewModel = challengeViewModel.Participants.SelectMany(participantViewModel => participantViewModel.Matches)
+                    .First(viewModel => viewModel.Id == match.Id);
+
+                matchViewModel.TotalScore.Should().Be(match.TotalScore);
+            }
         }
     }
 }
