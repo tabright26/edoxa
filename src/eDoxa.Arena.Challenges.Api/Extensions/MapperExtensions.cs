@@ -42,26 +42,6 @@ namespace eDoxa.Arena.Challenges.Api.Extensions
             return Mapper.Map<ChallengeModel>(challenge);
         }
 
-        public static IReadOnlyCollection<ParticipantModel> ToModels(this IEnumerable<Participant> participants)
-        {
-            return Mapper.Map<IReadOnlyCollection<ParticipantModel>>(participants);
-        }
-
-        public static ParticipantModel ToModel(this Participant participant)
-        {
-            return Mapper.Map<ParticipantModel>(participant);
-        }
-
-        public static IReadOnlyCollection<MatchModel> ToModels(this IEnumerable<Match> matches)
-        {
-            return Mapper.Map<IReadOnlyCollection<MatchModel>>(matches);
-        }
-
-        public static MatchModel ToModel(this Match match)
-        {
-            return Mapper.Map<MatchModel>(match);
-        }
-
         public static IReadOnlyCollection<ChallengeViewModel> ToViewModels(this IEnumerable<Challenge> challenges)
         {
             return Mapper.Map<IReadOnlyCollection<ChallengeViewModel>>(challenges.ToModels());
@@ -70,26 +50,6 @@ namespace eDoxa.Arena.Challenges.Api.Extensions
         public static ChallengeViewModel ToViewModel(this Challenge challenge)
         {
             return Mapper.Map<ChallengeViewModel>(challenge.ToModel());
-        }
-
-        public static IReadOnlyCollection<ParticipantViewModel> ToViewModels(this IEnumerable<Participant> participants)
-        {
-            return Mapper.Map<IReadOnlyCollection<ParticipantViewModel>>(participants.ToModels());
-        }
-
-        public static ParticipantViewModel ToViewModel(this Participant participant)
-        {
-            return Mapper.Map<ParticipantViewModel>(participant.ToModel());
-        }
-
-        public static IReadOnlyCollection<MatchViewModel> ToViewModels(this IEnumerable<Match> matches)
-        {
-            return Mapper.Map<IReadOnlyCollection<MatchViewModel>>(matches.ToModels());
-        }
-
-        public static MatchViewModel ToViewModel(this Match match)
-        {
-            return Mapper.Map<MatchViewModel>(match.ToModel());
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeQuery.cs
-// Date Created: 2019-06-24
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -33,8 +33,6 @@ namespace eDoxa.Arena.Challenges.Api.Application.Queries
 {
     public sealed partial class ChallengeQuery
     {
-        private const string NavigationPropertyPath = "Participants.Matches";
-
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IMapper _mapper;
 
@@ -49,7 +47,9 @@ namespace eDoxa.Arena.Challenges.Api.Application.Queries
 
         private async Task<IReadOnlyCollection<ChallengeModel>> FindUserChallengeHistoryAsNoTrackingAsync(Guid userId, int? game = null, int? state = null)
         {
-            var challenges = from challenge in Challenges.Include(NavigationPropertyPath).AsExpandable()
+            var challenges = from challenge in Challenges.Include(challenge => challenge.Participants)
+                                 .ThenInclude(participant => participant.Matches)
+                                 .AsExpandable()
                              where challenge.Participants.Any(participant => participant.UserId == userId) &&
                                    (game == null || challenge.Game == game) &&
                                    (state == null || challenge.State == state)
@@ -60,7 +60,9 @@ namespace eDoxa.Arena.Challenges.Api.Application.Queries
 
         private async Task<IReadOnlyCollection<ChallengeModel>> FindChallengesAsNoTrackingAsync(int? game = null, int? state = null)
         {
-            var challenges = from challenge in Challenges.Include(NavigationPropertyPath).AsExpandable()
+            var challenges = from challenge in Challenges.Include(challenge => challenge.Participants)
+                                 .ThenInclude(participant => participant.Matches)
+                                 .AsExpandable()
                              where (game == null || challenge.Game == game) && (state == null || challenge.State == state)
                              select challenge;
 
@@ -70,7 +72,9 @@ namespace eDoxa.Arena.Challenges.Api.Application.Queries
         [ItemCanBeNull]
         private async Task<ChallengeModel> FindChallengeAsNoTrackingAsync(Guid challengeId)
         {
-            var challenges = from challenge in Challenges.Include(NavigationPropertyPath).AsExpandable()
+            var challenges = from challenge in Challenges.Include(challenge => challenge.Participants)
+                                 .ThenInclude(participant => participant.Matches)
+                                 .AsExpandable()
                              where challenge.Id == challengeId
                              select challenge;
 

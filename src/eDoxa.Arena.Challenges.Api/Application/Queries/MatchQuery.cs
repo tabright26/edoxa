@@ -1,5 +1,5 @@
 ﻿// Filename: MatchQuery.cs
-// Date Created: 2019-06-24
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -52,7 +52,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Queries
 
         private async Task<MatchModel> FindMatchAsNoTrackingAsync(Guid matchId)
         {
-            var matches = from match in Matches.AsExpandable()
+            var matches = from match in Matches.Include(match => match.Participant).AsExpandable()
                           where match.Id == matchId
                           select match;
 

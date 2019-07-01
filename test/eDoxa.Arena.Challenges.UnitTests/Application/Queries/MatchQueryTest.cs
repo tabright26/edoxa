@@ -41,6 +41,8 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
 
             var challenge = challengeFaker.Generate();
 
+            var challengeViewModel = challenge.ToViewModel();
+
             using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
             {
                 using (var context = factory.CreateContext())
@@ -54,11 +56,11 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
                 {
                     var matchQuery = new MatchQuery(context, MapperExtensions.Mapper);
 
-                    foreach (var participant in challenge.Participants)
+                    foreach (var participant in challengeViewModel.Participants)
                     {
-                        var matchViewModels = await matchQuery.FindParticipantMatchesAsync(participant.Id);
+                        var matchViewModels = await matchQuery.FindParticipantMatchesAsync(ParticipantId.FromGuid(participant.Id));
 
-                        matchViewModels.Should().BeEquivalentTo(participant.Matches.ToViewModels());
+                        matchViewModels.Should().BeEquivalentTo(participant.Matches.ToList());
                     }
                 }
             }
@@ -74,6 +76,8 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
 
             var challenge = challengeFaker.Generate();
 
+            var challengeViewModel = challenge.ToViewModel();
+
             using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
             {
                 using (var context = factory.CreateContext())
@@ -87,11 +91,11 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
                 {
                     var matchQuery = new MatchQuery(context, MapperExtensions.Mapper);
 
-                    foreach (var match in challenge.Participants.SelectMany(participant => participant.Matches).ToList())
+                    foreach (var match in challengeViewModel.Participants.SelectMany(participant => participant.Matches).ToList())
                     {
-                        var matchViewModel = await matchQuery.FindMatchAsync(match.Id);
+                        var matchViewModel = await matchQuery.FindMatchAsync(MatchId.FromGuid(match.Id));
 
-                        matchViewModel.Should().BeEquivalentTo(match.ToViewModel());
+                        matchViewModel.Should().BeEquivalentTo(match);
                     }
                 }
             }
