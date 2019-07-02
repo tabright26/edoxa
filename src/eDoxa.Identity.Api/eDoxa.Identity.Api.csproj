@@ -2,10 +2,10 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp2.2</TargetFramework>
-        <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <AssemblyName>eDoxa.Identity.Api</AssemblyName>
         <RootNamespace>eDoxa.Identity.Api</RootNamespace>
+        <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -38,7 +38,6 @@
         <ProjectReference Include="..\eDoxa.Identity.Infrastructure\eDoxa.Identity.Infrastructure.csproj" />
         <ProjectReference Include="..\eDoxa.Monitoring\eDoxa.Monitoring.csproj" />
         <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
-        <ProjectReference Include="..\eDoxa.Swagger\eDoxa.Swagger.csproj" />
     </ItemGroup>
 
     <ItemGroup>

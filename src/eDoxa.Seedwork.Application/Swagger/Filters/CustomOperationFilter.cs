@@ -22,7 +22,7 @@ using Microsoft.AspNetCore.Http;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace eDoxa.Swagger.Filters
+namespace eDoxa.Seedwork.Application.Swagger.Filters
 {
     public sealed class CustomOperationFilter : IOperationFilter
     {
@@ -57,16 +57,6 @@ namespace eDoxa.Swagger.Filters
                                 Description = HttpStatusCode.Forbidden.ToString()
                             }
                         );
-
-                        //operation.Parameters.Add(
-                        //    new NonBodyParameter
-                        //    {
-                        //        Name = HeaderNames.Authorization,
-                        //        In = "header",
-                        //        Required = true,
-                        //        Type = "string"
-                        //    }
-                        //);
 
                         operation.Security = new List<IDictionary<string, IEnumerable<string>>>
                         {

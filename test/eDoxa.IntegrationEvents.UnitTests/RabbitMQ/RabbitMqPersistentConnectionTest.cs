@@ -12,15 +12,12 @@ using System;
 
 using eDoxa.IntegrationEvents.Exceptions;
 using eDoxa.IntegrationEvents.RabbitMQ;
-using eDoxa.Seedwork.Testing.Extensions;
+using eDoxa.Seedwork.Testing.Mocks;
 
 using FluentAssertions;
 
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using Moq;
 
 using RabbitMQ.Client;
 using RabbitMQ.Client.Exceptions;
@@ -30,12 +27,11 @@ namespace eDoxa.IntegrationEvents.UnitTests.RabbitMQ
     [TestClass]
     public sealed class RabbitMqPersistentConnectionTest
     {
-        private Mock<ILogger<RabbitMqPersistentConnection>> _mockLogger;
+        private MockLogger<RabbitMqPersistentConnection> _mockLogger;
 
         public RabbitMqPersistentConnectionTest()
         {
-            _mockLogger = new Mock<ILogger<RabbitMqPersistentConnection>>();
-            _mockLogger.AnySetup();
+            _mockLogger = new MockLogger<RabbitMqPersistentConnection>();
         }
 
         [Ignore("Must be transferred to an integration test project because it requires external dependencies (RabbitMQ).")]

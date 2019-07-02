@@ -15,14 +15,11 @@ using Autofac.Core;
 using Autofac.Extensions.DependencyInjection;
 
 using eDoxa.Seedwork.Application.Mvc.Filters;
-using eDoxa.Seedwork.Application.Versioning;
-using eDoxa.Seedwork.Security.Constants;
 
 using FluentValidation.AspNetCore;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.DependencyInjection;
 
 using Newtonsoft.Json;
@@ -31,23 +28,6 @@ namespace eDoxa.Seedwork.Application.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        private const string GroupNameFormat = "'v'VV";
-
-        public static void AddVersioning(this IServiceCollection services)
-        {
-            services.AddApiVersioning(
-                options =>
-                {
-                    options.ApiVersionReader = new HeaderApiVersionReader(CustomHeaderNames.Version);
-                    options.AssumeDefaultVersionWhenUnspecified = true;
-                    options.DefaultApiVersion = new DefaultApiVersion();
-                    options.ReportApiVersions = true;
-                }
-            );
-
-            services.AddVersionedApiExplorer(options => options.GroupNameFormat = GroupNameFormat);
-        }
-
         public static IServiceProvider Build<TModule>(this IServiceCollection services)
         where TModule : IModule, new()
         {

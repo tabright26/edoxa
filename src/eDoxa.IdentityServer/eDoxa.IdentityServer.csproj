@@ -2,9 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <UserSecretsId>aspnet-eDoxa.IdentityServer-7B9AC347-9798-4B86-A4C7-9A2FD6BCFAB4</UserSecretsId>
+    <AssemblyName>eDoxa.IdentityServer</AssemblyName>
+    <RootNamespace>eDoxa.IdentityServer</RootNamespace>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <UserSecretsId>aspnet-eDoxa.IdentityServer-7B9AC347-9798-4B86-A4C7-9A2FD6BCFAB4</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,14 +21,12 @@
     <PackageReference Include="Serilog" Version="2.8.0" />
   </ItemGroup>
 
-
   <ItemGroup>
     <ProjectReference Include="..\eDoxa.Identity.Infrastructure\eDoxa.Identity.Infrastructure.csproj" />
     <ProjectReference Include="..\eDoxa.IntegrationEvents\eDoxa.IntegrationEvents.csproj" />
     <ProjectReference Include="..\eDoxa.Monitoring\eDoxa.Monitoring.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
   </ItemGroup>
-
 
   <ItemGroup>
     <Content Update="appsettings.Testing.json">

@@ -1,5 +1,5 @@
-﻿// Filename: MockExtensions.cs
-// Date Created: 2019-06-08
+﻿// Filename: MockLogger.cs
+// Date Created: 2019-07-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -15,13 +15,13 @@ using Microsoft.Extensions.Logging.Internal;
 
 using Moq;
 
-namespace eDoxa.Seedwork.Testing.Extensions
+namespace eDoxa.Seedwork.Testing.Mocks
 {
-    public static class MockExtensions
+    public sealed class MockLogger<T> : Mock<ILogger<T>>
     {
-        public static void AnySetup<T>(this Mock<ILogger<T>> mock)
+        public MockLogger()
         {
-            mock.Setup(
+            this.Setup(
                 logger => logger.Log(
                     It.IsAny<LogLevel>(),
                     It.IsAny<EventId>(),

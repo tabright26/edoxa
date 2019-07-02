@@ -15,7 +15,7 @@ using JetBrains.Annotations;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace eDoxa.Swagger.Filters
+namespace eDoxa.Seedwork.Application.Swagger.Filters
 {
     public sealed class CustomDocumentFilter : IDocumentFilter
     {

@@ -14,7 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-using eDoxa.Swagger.Filters;
+using eDoxa.Seedwork.Application.Swagger.Filters;
 
 using IdentityServer4.Models;
 
@@ -27,7 +27,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Swashbuckle.AspNetCore.Swagger;
 
-namespace eDoxa.Swagger.Extensions
+namespace eDoxa.Seedwork.Application.Swagger.Extensions
 {
     public static class ServiceCollectionExtensions
     {

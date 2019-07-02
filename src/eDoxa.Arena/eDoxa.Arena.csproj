@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AssemblyName>eDoxa.Arena</AssemblyName>
+    <RootNamespace>eDoxa.Arena</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

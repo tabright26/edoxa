@@ -10,22 +10,14 @@
 
 using System.Collections.Generic;
 
+using eDoxa.Seedwork.Application.Swagger.Extensions;
+
 using IdentityServer4.Models;
 
-namespace eDoxa.Seedwork.Security.IdentityServer.Extensions
+namespace eDoxa.IdentityServer.Extensions
 {
     public static class ApiResourceExtensions
     {
-        public static string SwaggerClientId(this ApiResource apiResource)
-        {
-            return apiResource.Name + ".swagger";
-        }
-
-        public static string SwaggerClientName(this ApiResource apiResource)
-        {
-            return apiResource.DisplayName + " (Swagger UI)";
-        }
-
         public static Client SwaggerClient(this ApiResource apiResource, string redirectUri)
         {
             return new Client

@@ -1,5 +1,5 @@
 ﻿// Filename: SwaggerGenOptionsExtensions.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -18,7 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace eDoxa.Swagger.Extensions
+namespace eDoxa.Seedwork.Application.Swagger.Extensions
 {
     internal static class SwaggerGenOptionsExtensions
     {

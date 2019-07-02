@@ -24,7 +24,7 @@ using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Seedwork.Common.Extensions;
 using eDoxa.Seedwork.Common.ValueObjects;
-using eDoxa.Seedwork.Testing;
+using eDoxa.Seedwork.Testing.Helpers;
 using eDoxa.Seedwork.Testing.TestServer;
 using eDoxa.Seedwork.Testing.TestServer.Extensions;
 
