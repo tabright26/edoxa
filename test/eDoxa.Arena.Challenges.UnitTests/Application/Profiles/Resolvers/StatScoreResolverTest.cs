@@ -47,7 +47,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Profiles.Resolvers
                 {
                     var statViewModel = matchViewModel.Stats.First(viewModel => viewModel.Name == stat.Name);
 
-                    statViewModel.Score.Should().Be(stat.Score);
+                    statViewModel.Score.Should().Be(stat.Score.ToDecimal());
                 }
             }
         }

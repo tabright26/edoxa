@@ -63,10 +63,10 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
             var stat = new Stat(name, value, weighting);
 
             // Act
-            decimal statScore = new StatScore(stat);
+            var statScore = new StatScore(stat);
 
             // Assert
-            statScore.Should().Be(score);
+            score.Should().Be(statScore.ToDecimal());
         }
     }
 }

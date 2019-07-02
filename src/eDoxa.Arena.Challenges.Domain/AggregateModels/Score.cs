@@ -27,11 +27,6 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels
             _score = score;
         }
 
-        public static implicit operator decimal(Score score)
-        {
-            return score._score;
-        }
-
         public override string ToString()
         {
             return _score.ToString(CultureInfo.InvariantCulture);
@@ -41,13 +36,23 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels
         {
             yield return _score;
         }
+
+        public decimal ToDecimal()
+        {
+            return _score;
+        }
     }
 
-    public abstract partial class Score : IComparable
+    public abstract partial class Score : IComparable, IComparable<Score>
     {
         public int CompareTo([CanBeNull] object obj)
         {
-            return _score.CompareTo(((Score) obj)?._score);
+            return this.CompareTo(obj as Score);
+        }
+
+        public int CompareTo([CanBeNull] Score other)
+        {
+            return _score.CompareTo(other?._score);
         }
     }
 }

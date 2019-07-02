@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Monitoring.Extensions;
+using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security.Constants;
 
 using Microsoft.AspNetCore.Mvc;

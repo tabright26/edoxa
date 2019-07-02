@@ -42,7 +42,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Profiles.Resolvers
             {
                 var participantViewModel = challengeViewModel.Participants.Single(viewModel => viewModel.Id == participant.Id);
 
-                participantViewModel.AverageScore.Should().Be(participant.AverageScore(challenge.Setup.BestOf));
+                participantViewModel.AverageScore.Should().Be(participant.AverageScore(challenge.Setup.BestOf)?.ToDecimal());
             }
         }
     }

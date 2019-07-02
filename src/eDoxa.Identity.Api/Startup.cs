@@ -20,10 +20,10 @@ using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Infrastructure;
 using eDoxa.IntegrationEvents.Extensions;
-using eDoxa.Monitoring.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Swagger.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
+using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security.Extensions;
 using eDoxa.Seedwork.Security.IdentityServer.Resources;
 

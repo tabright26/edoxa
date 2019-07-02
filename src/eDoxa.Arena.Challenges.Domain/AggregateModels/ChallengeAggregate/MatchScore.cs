@@ -14,7 +14,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class MatchScore : Score
     {
-        internal MatchScore(Match match) : base(match.Stats.Sum(stat => stat.Score))
+        internal MatchScore(Match match) : base(match.Stats.Sum(stat => stat.Score.ToDecimal()))
         {
         }
     }

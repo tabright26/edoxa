@@ -15,7 +15,7 @@ using eDoxa.Seedwork.Security.Constants;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace eDoxa.Monitoring.Extensions
+namespace eDoxa.Seedwork.Monitoring.Extensions
 {
     public static class HealthChecksBuilderExtensions
     {

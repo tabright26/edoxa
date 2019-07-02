@@ -43,7 +43,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Profiles.Resolvers
                 var matchViewModel = challengeViewModel.Participants.SelectMany(participantViewModel => participantViewModel.Matches)
                     .First(viewModel => viewModel.Id == match.Id);
 
-                matchViewModel.TotalScore.Should().Be(match.TotalScore);
+                matchViewModel.TotalScore.Should().Be(match.TotalScore.ToDecimal());
             }
         }
     }

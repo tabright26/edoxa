@@ -15,7 +15,7 @@ using System.Net.Http;
 using Polly;
 using Polly.Extensions.Http;
 
-namespace eDoxa.Monitoring
+namespace eDoxa.Seedwork.Monitoring
 {
     public static class HttpPolicies
     {

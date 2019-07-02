@@ -17,9 +17,9 @@ using eDoxa.Identity.Infrastructure;
 using eDoxa.IdentityServer.Extensions;
 using eDoxa.IdentityServer.Infrastructure.Factories;
 using eDoxa.IntegrationEvents.Extensions;
-using eDoxa.Monitoring.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
+using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security.Extensions;
 
 using Microsoft.AspNetCore.Builder;

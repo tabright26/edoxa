@@ -13,7 +13,7 @@ using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
-namespace eDoxa.Monitoring.Extensions
+namespace eDoxa.Seedwork.Monitoring.Extensions
 {
     public static class ApplicationBuilderExtensions
     {
