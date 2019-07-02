@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Cashier.Api.Application.Abstractions;
-using eDoxa.Cashier.Api.ViewModels;
+using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Domain.ViewModels;
 using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.Extensions;
 

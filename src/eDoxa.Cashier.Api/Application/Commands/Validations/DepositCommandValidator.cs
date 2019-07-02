@@ -10,11 +10,11 @@
 
 using System.Linq;
 
-using eDoxa.Cashier.Api.ViewModels;
+using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.Domain.Extensions;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Validators;
+using eDoxa.Cashier.Domain.ViewModels;
 using eDoxa.Commands.Abstractions.Validations;
 using eDoxa.Seedwork.Application.Validations.Extensions;
 using eDoxa.Seedwork.Common.Enumerations;

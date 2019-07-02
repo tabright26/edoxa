@@ -13,9 +13,9 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Application.Commands;
 using eDoxa.Cashier.Api.Application.Commands.Handlers;
-using eDoxa.Cashier.Domain.Fakers;
+using eDoxa.Cashier.Api.Application.Fakers;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.UnitTests.Extensions;
+using eDoxa.Cashier.UnitTests.Helpers.Mocks;
 using eDoxa.Commands.Extensions;
 using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Testing.TestConstructor;
@@ -33,16 +33,15 @@ namespace eDoxa.Cashier.UnitTests.Application.Commands.Handlers
     [TestClass]
     public sealed class VerifyAccountCommandHandlerTest
     {
-        private Mock<IHttpContextAccessor> _mockHttpContextAccessor;
+        private MockHttpContextAccessor _mockHttpContextAccessor;
         private Mock<IStripeService> _mockStripeService;
         private Mock<IUserRepository> _mockUserRepository;
 
         [TestInitialize]
         public void TestInitialize()
         {
+            _mockHttpContextAccessor = new MockHttpContextAccessor();
             _mockStripeService = new Mock<IStripeService>();
-            _mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
-            _mockHttpContextAccessor.SetupClaims();
             _mockUserRepository = new Mock<IUserRepository>();
         }
 

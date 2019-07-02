@@ -13,8 +13,8 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api;
-using eDoxa.Cashier.Api.ViewModels;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
+using eDoxa.Cashier.Domain.ViewModels;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.IntegrationTests.Helpers;
 using eDoxa.Seedwork.Testing.TestServer;

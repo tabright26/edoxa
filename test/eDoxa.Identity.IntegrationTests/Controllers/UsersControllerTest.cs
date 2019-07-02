@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Identity.Api;
 using eDoxa.Identity.Api.Application.Fakers;
-using eDoxa.Identity.Api.ViewModels;
+using eDoxa.Identity.Domain.ViewModels;
 using eDoxa.Identity.Infrastructure;
 using eDoxa.Seedwork.Testing.TestServer;
 using eDoxa.Seedwork.Testing.TestServer.Extensions;

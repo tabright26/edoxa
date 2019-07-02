@@ -10,7 +10,6 @@
 
 using eDoxa.Arena.Challenges.Infrastructure.Configurations;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
-using eDoxa.Seedwork.Infrastructure;
 
 using JetBrains.Annotations;
 
@@ -25,11 +24,6 @@ namespace eDoxa.Arena.Challenges.Infrastructure
         public ChallengesDbContext(DbContextOptions<ChallengesDbContext> options, IMediator mediator) : base(options)
         {
             Mediator = mediator;
-        }
-
-        public ChallengesDbContext(DbContextOptions<ChallengesDbContext> options) : base(options)
-        {
-            Mediator = new NoMediator();
         }
 
         public IMediator Mediator { get; }

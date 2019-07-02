@@ -12,9 +12,9 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Application.Commands;
+using eDoxa.Cashier.Api.Application.Fakers;
 using eDoxa.Cashier.Api.IntegrationEvents;
 using eDoxa.Cashier.Api.IntegrationEvents.Handlers;
-using eDoxa.Cashier.Domain.Fakers;
 using eDoxa.Seedwork.Testing.TestConstructor;
 using eDoxa.Stripe.Data.Fakers;
 

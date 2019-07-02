@@ -13,11 +13,11 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using eDoxa.Cashier.Api.Application.Fakers;
 using eDoxa.Cashier.Api.Application.Queries;
-using eDoxa.Cashier.Api.ViewModels;
-using eDoxa.Cashier.Domain.Fakers;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.UnitTests.Extensions;
+using eDoxa.Cashier.Domain.ViewModels;
+using eDoxa.Cashier.UnitTests.Helpers.Mocks;
 using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Testing.TestConstructor;
 using eDoxa.Stripe.Abstractions;
@@ -37,7 +37,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Queries
     [TestClass]
     public sealed class StripeCardQueriesTest
     {
-        private Mock<IHttpContextAccessor> _mockHttpContextAccessor;
+        private MockHttpContextAccessor _mockHttpContextAccessor;
         private Mock<IMapper> _mockMapper;
         private Mock<IStripeService> _mockStripeService;
         private Mock<IUserRepository> _mockUserRepository;
@@ -45,9 +45,8 @@ namespace eDoxa.Cashier.UnitTests.Application.Queries
         [TestInitialize]
         public void TestInitialize()
         {
+            _mockHttpContextAccessor = new MockHttpContextAccessor();
             _mockStripeService = new Mock<IStripeService>();
-            _mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
-            _mockHttpContextAccessor.SetupClaims();
             _mockMapper = new Mock<IMapper>();
             _mockUserRepository = new Mock<IUserRepository>();
         }

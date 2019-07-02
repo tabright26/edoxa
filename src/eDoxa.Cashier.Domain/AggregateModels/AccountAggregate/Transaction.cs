@@ -10,7 +10,6 @@
 
 using System;
 
-using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate

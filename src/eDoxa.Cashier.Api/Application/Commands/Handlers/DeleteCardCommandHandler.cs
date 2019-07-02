@@ -11,7 +11,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Domain.Extensions;
+using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Seedwork.Common.Extensions;

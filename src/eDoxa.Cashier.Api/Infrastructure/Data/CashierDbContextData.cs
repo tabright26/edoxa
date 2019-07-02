@@ -11,7 +11,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Domain.Fakers;
+using eDoxa.Cashier.Api.Application.Fakers;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Seedwork.Infrastructure.Abstractions;
 

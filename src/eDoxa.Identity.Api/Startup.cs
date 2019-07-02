@@ -14,6 +14,7 @@ using System.Reflection;
 using AutoMapper;
 
 using eDoxa.Identity.Api.Extensions;
+using eDoxa.Identity.Api.Infrastructure;
 using eDoxa.Identity.Api.Infrastructure.Data;
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
@@ -72,7 +73,7 @@ namespace eDoxa.Identity.Api
 
             services.AddAuthentication(Configuration, Environment, CustomApiResources.Identity);
 
-            return services.Build<Modules>();
+            return services.Build<ApiModule>();
         }
 
         public void Configure(IApplicationBuilder application, IApiVersionDescriptionProvider provider)

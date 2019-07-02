@@ -19,11 +19,10 @@ using eDoxa.Arena.Challenges.Api.Application.Commands.Handlers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.Domain.ViewModels;
-using eDoxa.Arena.Challenges.UnitTests.Extensions;
+using eDoxa.Arena.Challenges.UnitTests.Helpers.Mocks;
 using eDoxa.Commands.Extensions;
 using eDoxa.Seedwork.Common.ValueObjects;
 
-using Microsoft.AspNetCore.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
@@ -34,15 +33,14 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Commands.Handlers
     public sealed class RegisterParticipantCommandHandlerTest
     {
         private Mock<IChallengeService> _mockChallengeService;
-        private Mock<IHttpContextAccessor> _mockHttpContextAccessor;
+        private MockHttpContextAccessor _mockHttpContextAccessor;
         private Mock<IMapper> _mockMapper;
 
         [TestInitialize]
         public void TestInitialize()
         {
             _mockChallengeService = new Mock<IChallengeService>();
-            _mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
-            _mockHttpContextAccessor.SetupClaims();
+            _mockHttpContextAccessor = new MockHttpContextAccessor();
             _mockMapper = new Mock<IMapper>();
         }
 

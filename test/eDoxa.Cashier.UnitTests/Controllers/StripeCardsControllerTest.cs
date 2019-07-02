@@ -12,10 +12,10 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Application.Abstractions;
 using eDoxa.Cashier.Api.Application.Commands;
 using eDoxa.Cashier.Api.Controllers;
-using eDoxa.Cashier.Api.ViewModels;
+using eDoxa.Cashier.Domain.Queries;
+using eDoxa.Cashier.Domain.ViewModels;
 using eDoxa.Seedwork.Testing.TestConstructor;
 using eDoxa.Stripe.Data.Fakers;
 using eDoxa.Stripe.Extensions;

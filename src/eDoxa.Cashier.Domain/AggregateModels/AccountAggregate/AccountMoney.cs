@@ -11,7 +11,6 @@
 using System;
 using System.Linq;
 
-using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate.Transactions;
 using eDoxa.Cashier.Domain.Validators;
 using eDoxa.Seedwork.Common.Enumerations;

@@ -10,7 +10,6 @@
 
 using System.Collections.Generic;
 
-using eDoxa.Cashier.Domain.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Domain.Aggregate;
 

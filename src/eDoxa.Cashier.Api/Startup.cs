@@ -15,6 +15,7 @@ using System.Reflection;
 using AutoMapper;
 
 using eDoxa.Cashier.Api.Extensions;
+using eDoxa.Cashier.Api.Infrastructure;
 using eDoxa.Cashier.Api.Infrastructure.Data;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.IntegrationEvents.Extensions;
@@ -77,7 +78,7 @@ namespace eDoxa.Cashier.Api
 
             services.AddStripe();
 
-            return services.Build<Modules>();
+            return services.Build<ApiModule>();
         }
 
         public void Configure(IApplicationBuilder application, IApiVersionDescriptionProvider provider)

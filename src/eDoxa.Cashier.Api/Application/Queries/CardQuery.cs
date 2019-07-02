@@ -13,10 +13,10 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Cashier.Api.Application.Abstractions;
-using eDoxa.Cashier.Api.ViewModels;
-using eDoxa.Cashier.Domain.Extensions;
+using eDoxa.Cashier.Api.Extensions;
+using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Domain.ViewModels;
 using eDoxa.Seedwork.Common.Extensions;
 using eDoxa.Stripe.Abstractions;
 
