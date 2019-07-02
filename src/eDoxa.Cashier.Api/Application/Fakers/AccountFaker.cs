@@ -1,5 +1,5 @@
 ﻿// Filename: AccountFaker.cs
-// Date Created: 2019-06-09
+// Date Created: 2019-07-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,13 +8,13 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Common.Abstactions;
 
 namespace eDoxa.Cashier.Api.Application.Fakers
 {
-    public sealed class AccountFaker : CustomFaker<Account>
+    public sealed class AccountFaker : CustomFaker<IAccount>
     {
         private const string NewAccount = nameof(NewAccount);
         private const string AdminAccount = nameof(AdminAccount);
@@ -23,23 +23,21 @@ namespace eDoxa.Cashier.Api.Application.Fakers
 
         public AccountFaker()
         {
-            this.RuleSet(
-                NewAccount,
-                ruleSet =>
+            this.CustomInstantiator(
+                faker =>
                 {
-                    ruleSet.RuleFor(account => account.Id, faker => AccountId.FromGuid(faker.Random.Guid()));
+                    var account = new Account();
 
-                    ruleSet.FinishWith(
-                        (faker, account) =>
-                        {
-                            var transactions = _transactionFaker.FakePositiveTransactions(faker.Random.Int(0, 5));
+                    account.SetEntityId(AccountId.FromGuid(faker.Random.Guid()));
 
-                            foreach (var transaction in transactions)
-                            {
-                                account.CreateTransaction(transaction);
-                            }
-                        }
-                    );
+                    var transactions = _transactionFaker.Generate(faker.Random.Int(0, 5), TransactionFaker.PositiveTransaction);
+
+                    foreach (var transaction in transactions)
+                    {
+                        account.CreateTransaction(transaction);
+                    }
+
+                    return account;
                 }
             );
 
@@ -47,29 +45,28 @@ namespace eDoxa.Cashier.Api.Application.Fakers
                 AdminAccount,
                 ruleSet =>
                 {
-                    ruleSet.RuleFor(account => account.Id, _ => AccountId.Parse("707b2535-ed60-4797-92a0-4dacd8d51f6c"));
+                    ruleSet.CustomInstantiator(
+                        faker =>
+                        {
+                            var account = new Account();
+
+                            account.SetEntityId(AccountId.Parse("707b2535-ed60-4797-92a0-4dacd8d51f6c"));
+
+                            return account;
+                        }
+                    );
                 }
             );
         }
 
-        public Account FakeNewAccount()
+        public IAccount FakeNewAccount()
         {
             return this.Generate(NewAccount);
         }
 
-        public Account FakeNewAccount(User user)
-        {
-            return this.RuleFor(account => account.User, user).Generate(NewAccount);
-        }
-
-        public Account FakeAdminAccount()
+        public IAccount FakeAdminAccount()
         {
             return this.Generate(AdminAccount);
-        }
-
-        public Account FakeAdminAccount(User user)
-        {
-            return this.RuleFor(account => account.User, user).Generate(AdminAccount);
         }
     }
 }

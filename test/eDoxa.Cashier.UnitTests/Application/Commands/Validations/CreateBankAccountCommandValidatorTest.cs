@@ -9,7 +9,7 @@
 // this source code package.
 
 using eDoxa.Cashier.Api.Application.Commands.Validations;
-using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Seedwork.Testing.TestConstructor;
 
 using Microsoft.AspNetCore.Http;
@@ -23,7 +23,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Commands.Validations
         [TestMethod]
         public void Constructor_Tests()
         {
-            TestConstructor<CreateBankAccountCommandValidator>.ForParameters(typeof(IHttpContextAccessor), typeof(IUserRepository))
+            TestConstructor<CreateBankAccountCommandValidator>.ForParameters(typeof(IHttpContextAccessor), typeof(IUserQuery))
                 .WithClassName("CreateBankAccountCommandValidator")
                 .Assert();
         }

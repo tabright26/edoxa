@@ -27,10 +27,8 @@ namespace eDoxa.Cashier.Domain.AggregateModels
 
         TransactionDescription Description { get; }
 
-        TransactionFailure Failure { get; }
+        void MarkAsSucceded();
 
-        void Complete();
-
-        void Fail(string message);
+        void MarkAsFailed();
     }
 }

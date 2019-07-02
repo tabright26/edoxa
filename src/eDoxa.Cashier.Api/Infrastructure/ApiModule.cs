@@ -1,5 +1,5 @@
-﻿// Filename: Modules.cs
-// Date Created: 2019-06-01
+﻿// Filename: ApiModule.cs
+// Date Created: 2019-07-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -30,27 +30,22 @@ namespace eDoxa.Cashier.Api.Infrastructure
         protected override void Load([NotNull] ContainerBuilder builder)
         {
             base.Load(builder);
-
             builder.RegisterModule<DomainEventModule>();
-
             builder.RegisterModule<CommandModule>();
-
             builder.RegisterModule<IntegrationEventModule<CashierDbContext>>();
 
             // Repositories
             builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerLifetimeScope();
-
             builder.RegisterType<AccountRepository>().As<IAccountRepository>().InstancePerLifetimeScope();
-
-            // Services
-            builder.RegisterType<AccountService>().As<IAccountService>().InstancePerLifetimeScope();
 
             // Queries
             builder.RegisterType<CardQuery>().As<ICardQuery>().InstancePerLifetimeScope();
-
-            builder.RegisterType<BalanceQuery>().As<IBalanceQuery>().InstancePerLifetimeScope();
-
+            builder.RegisterType<UserQuery>().As<IUserQuery>().InstancePerLifetimeScope();
+            builder.RegisterType<AccountQuery>().As<IAccountQuery>().InstancePerLifetimeScope();
             builder.RegisterType<TransactionQuery>().As<ITransactionQuery>().InstancePerLifetimeScope();
+
+            // Services
+            builder.RegisterType<AccountService>().As<IAccountService>().InstancePerLifetimeScope();
         }
     }
 }

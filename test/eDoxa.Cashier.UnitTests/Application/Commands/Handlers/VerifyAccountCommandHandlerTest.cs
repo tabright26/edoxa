@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Api.Application.Commands;
 using eDoxa.Cashier.Api.Application.Commands.Handlers;
 using eDoxa.Cashier.Api.Application.Fakers;
-using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.UnitTests.Helpers.Mocks;
 using eDoxa.Commands.Extensions;
 using eDoxa.Seedwork.Common.ValueObjects;
@@ -35,20 +35,20 @@ namespace eDoxa.Cashier.UnitTests.Application.Commands.Handlers
     {
         private MockHttpContextAccessor _mockHttpContextAccessor;
         private Mock<IStripeService> _mockStripeService;
-        private Mock<IUserRepository> _mockUserRepository;
+        private Mock<IUserQuery> _mockUserQuery;
 
         [TestInitialize]
         public void TestInitialize()
         {
             _mockHttpContextAccessor = new MockHttpContextAccessor();
             _mockStripeService = new Mock<IStripeService>();
-            _mockUserRepository = new Mock<IUserRepository>();
+            _mockUserQuery = new Mock<IUserQuery>();
         }
 
         [TestMethod]
         public void Constructor_Tests()
         {
-            TestConstructor<VerifyAccountCommandHandler>.ForParameters(typeof(IStripeService), typeof(IHttpContextAccessor), typeof(IUserRepository))
+            TestConstructor<VerifyAccountCommandHandler>.ForParameters(typeof(IStripeService), typeof(IHttpContextAccessor), typeof(IUserQuery))
                 .WithClassName("VerifyAccountCommandHandler")
                 .Assert();
         }
@@ -74,7 +74,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Commands.Handlers
 
             var user = userFaker.FakeNewUser();
 
-            _mockUserRepository.Setup(mock => mock.GetUserAsNoTrackingAsync(It.IsAny<UserId>())).ReturnsAsync(user).Verifiable();
+            _mockUserQuery.Setup(userQuery => userQuery.FindUserAsync(It.IsAny<UserId>())).ReturnsAsync(user).Verifiable();
 
             _mockStripeService.Setup(
                     mock => mock.VerifyAccountAsync(
@@ -90,7 +90,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Commands.Handlers
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var handler = new VerifyAccountCommandHandler(_mockStripeService.Object, _mockHttpContextAccessor.Object, _mockUserRepository.Object);
+            var handler = new VerifyAccountCommandHandler(_mockStripeService.Object, _mockHttpContextAccessor.Object, _mockUserQuery.Object);
 
             // Act
             await handler.HandleAsync(command);

@@ -1,5 +1,5 @@
 ﻿// Filename: TransactionFaker.cs
-// Date Created: 2019-06-14
+// Date Created: 2019-07-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,18 +8,19 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Collections.Generic;
+using System;
 using System.Linq;
 
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
+using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Common.Abstactions;
 
 namespace eDoxa.Cashier.Api.Application.Fakers
 {
     public sealed class TransactionFaker : CustomFaker<Transaction>
     {
-        private const string PositiveTransaction = nameof(PositiveTransaction);
-        private const string NegativeTransaction = nameof(NegativeTransaction);
+        public const string PositiveTransaction = nameof(PositiveTransaction);
+        public const string NegativeTransaction = nameof(NegativeTransaction);
 
         private readonly Currency[] _currencies =
         {
@@ -41,25 +42,18 @@ namespace eDoxa.Cashier.Api.Application.Fakers
 
         public TransactionFaker()
         {
-            this.StrictMode(true);
-
             this.RuleSet(
                 PositiveTransaction,
                 ruleSet =>
                 {
-                    ruleSet.RuleFor(transaction => transaction.Id, faker => TransactionId.FromGuid(faker.Random.Guid()));
-
-                    ruleSet.RuleFor(transaction => transaction.Timestamp, faker => faker.Date.Recent());
-
-                    ruleSet.RuleFor(transaction => transaction.Currency, faker => faker.PickRandom(_currencies));
-
-                    ruleSet.RuleFor(
-                        transaction => transaction.Type,
-                        (faker, transaction) =>
+                    ruleSet.CustomInstantiator(
+                        faker =>
                         {
+                            var currency = faker.PickRandom(_currencies);
+
                             var types = TransactionType.GetEnumerations().ToList();
 
-                            if (transaction.Currency is Money)
+                            if (currency is Money)
                             {
                                 types.Remove(TransactionType.Reward);
                             }
@@ -68,27 +62,33 @@ namespace eDoxa.Cashier.Api.Application.Fakers
 
                             types.Remove(TransactionType.Withdraw);
 
-                            return faker.PickRandom(types);
+                            var transaction = new Transaction(
+                                currency,
+                                new TransactionDescription(faker.Lorem.Sentence()),
+                                faker.PickRandom(types),
+                                new FakeDataTimeProvider(faker.Date.Recent())
+                            );
+
+                            transaction.SetEntityId(TransactionId.FromGuid(faker.Random.Guid()));
+
+                            var statuses = TransactionStatus.GetEnumerations().ToList();
+
+                            statuses.Remove(TransactionStatus.Pending);
+
+                            var status = faker.PickRandom(statuses);
+
+                            if (status == TransactionStatus.Succeded)
+                            {
+                                transaction.MarkAsSucceded();
+                            }
+
+                            if (status == TransactionStatus.Failed)
+                            {
+                                transaction.MarkAsFailed();
+                            }
+
+                            return transaction;
                         }
-                    );
-
-                    ruleSet.RuleFor(
-                        transaction => transaction.Status,
-                        (faker, transaction) =>
-                        {
-                            var status = TransactionStatus.GetEnumerations().ToList();
-
-                            status.Remove(TransactionStatus.Pending);
-
-                            return faker.PickRandom(status);
-                        }
-                    );
-
-                    ruleSet.RuleFor(transaction => transaction.Description, faker => new TransactionDescription(faker.Lorem.Sentence()));
-
-                    ruleSet.RuleFor(
-                        transaction => transaction.Failure,
-                        (faker, transaction) => transaction.Status == TransactionStatus.Failed ? new TransactionFailure(faker.Lorem.Sentence()) : null
                     );
                 }
             );
@@ -97,19 +97,14 @@ namespace eDoxa.Cashier.Api.Application.Fakers
                 NegativeTransaction,
                 ruleSet =>
                 {
-                    ruleSet.RuleFor(transaction => transaction.Id, faker => TransactionId.FromGuid(faker.Random.Guid()));
-
-                    ruleSet.RuleFor(transaction => transaction.Timestamp, faker => faker.Date.Recent());
-
-                    ruleSet.RuleFor(transaction => transaction.Currency, faker => -faker.PickRandom(_currencies));
-
-                    ruleSet.RuleFor(
-                        transaction => transaction.Type,
-                        (faker, transaction) =>
+                    ruleSet.CustomInstantiator(
+                        faker =>
                         {
+                            var currency = faker.PickRandom(_currencies);
+
                             var types = TransactionType.GetEnumerations().ToList();
 
-                            if (transaction.Currency is Token)
+                            if (currency is Token)
                             {
                                 types.Remove(TransactionType.Withdraw);
                             }
@@ -120,50 +115,46 @@ namespace eDoxa.Cashier.Api.Application.Fakers
 
                             types.Remove(TransactionType.Payout);
 
-                            return faker.PickRandom(types);
+                            var transaction = new Transaction(
+                                currency,
+                                new TransactionDescription(faker.Lorem.Sentence()),
+                                faker.PickRandom(types),
+                                new FakeDataTimeProvider(faker.Date.Recent())
+                            );
+
+                            transaction.SetEntityId(TransactionId.FromGuid(faker.Random.Guid()));
+
+                            var statuses = TransactionStatus.GetEnumerations().ToList();
+
+                            statuses.Remove(TransactionStatus.Pending);
+
+                            var status = faker.PickRandom(statuses);
+
+                            if (status == TransactionStatus.Succeded)
+                            {
+                                transaction.MarkAsSucceded();
+                            }
+
+                            if (status == TransactionStatus.Failed)
+                            {
+                                transaction.MarkAsFailed();
+                            }
+
+                            return transaction;
                         }
-                    );
-
-                    ruleSet.RuleFor(
-                        transaction => transaction.Status,
-                        (faker, transaction) =>
-                        {
-                            var status = TransactionStatus.GetEnumerations().ToList();
-
-                            status.Remove(TransactionStatus.Pending);
-
-                            return faker.PickRandom(status);
-                        }
-                    );
-
-                    ruleSet.RuleFor(transaction => transaction.Description, faker => new TransactionDescription(faker.Lorem.Sentence()));
-
-                    ruleSet.RuleFor(
-                        transaction => transaction.Failure,
-                        (faker, transaction) => transaction.Status == TransactionStatus.Failed ? new TransactionFailure(faker.Lorem.Sentence()) : null
                     );
                 }
             );
         }
 
-        public List<Transaction> FakePositiveTransactions(int count)
+        private sealed class FakeDataTimeProvider : IDateTimeProvider
         {
-            return this.Generate(count, PositiveTransaction);
-        }
+            public FakeDataTimeProvider(DateTime dateTime)
+            {
+                DateTime = dateTime;
+            }
 
-        public Transaction FakePositiveTransaction()
-        {
-            return this.Generate(PositiveTransaction);
-        }
-
-        public List<Transaction> FakeNegativeTransactions(int count)
-        {
-            return this.Generate(count, NegativeTransaction);
-        }
-
-        public Transaction FakeNegativeTransaction()
-        {
-            return this.Generate(NegativeTransaction);
+            public DateTime DateTime { get; }
         }
     }
 }

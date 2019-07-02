@@ -11,7 +11,7 @@
 using AutoMapper;
 
 using eDoxa.Cashier.Api.Application.Queries;
-using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Infrastructure;
 using eDoxa.Seedwork.Testing.TestConstructor;
 
 using Microsoft.AspNetCore.Http;
@@ -25,7 +25,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Queries
         [TestMethod]
         public void Constructor_Tests()
         {
-            TestConstructor<TransactionQuery>.ForParameters(typeof(IAccountRepository), typeof(IHttpContextAccessor), typeof(IMapper))
+            TestConstructor<TransactionQuery>.ForParameters(typeof(CashierDbContext), typeof(IHttpContextAccessor), typeof(IMapper))
                 .WithClassName("TransactionQuery")
                 .Assert();
         }

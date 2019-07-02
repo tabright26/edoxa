@@ -17,6 +17,7 @@ using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
+using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Seedwork.Common.Abstactions;
@@ -28,55 +29,61 @@ namespace eDoxa.Cashier.Api.Application.Services
     public sealed class AccountService : IAccountService
     {
         private readonly IAccountRepository _accountRepository;
+        private readonly IUserQuery _userQuery;
         private readonly IStripeService _stripeService;
 
-        public AccountService(IAccountRepository accountRepository, IStripeService stripeService)
+        public AccountService(IAccountRepository accountRepository, IUserQuery userQuery, IStripeService stripeService)
         {
             _accountRepository = accountRepository;
+            _userQuery = userQuery;
             _stripeService = stripeService;
         }
 
         public async Task<ITransaction> WithdrawAsync(UserId userId, Money money, CancellationToken cancellationToken = default)
         {
-            var account = await _accountRepository.GetAccountAsync(userId);
+            var user = await _userQuery.FindUserAsync(userId);
+
+            var account = await _accountRepository.FindUserAccountAsync(userId);
 
             var accountMoney = new AccountMoney(account);
 
             var transaction = accountMoney.Withdraw(money);
 
-            await _accountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+            await _accountRepository.CommitAsync(cancellationToken);
 
             try
             {
                 await _stripeService.CreateTransferAsync(
-                    account.User.GetConnectAccountId(),
+                    user.GetConnectAccountId(),
                     new Price(money).ToCents(),
                     transaction.Id,
                     transaction.Description.ToString(),
                     cancellationToken
                 );
 
-                transaction = accountMoney.CompleteTransaction(transaction);
+                transaction.MarkAsSucceded();
 
-                await _accountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+                await _accountRepository.CommitAsync(cancellationToken);
 
                 return transaction as Transaction;
             }
             catch (Exception exception)
             {
-                transaction = accountMoney.FailureTransaction(transaction, exception.Message);
+                transaction.MarkAsFailed();
 
-                await _accountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+                await _accountRepository.CommitAsync(cancellationToken);
 
                 ExceptionDispatchInfo.Capture(exception.InnerException).Throw();
 
-                throw new InvalidOperationException(transaction.Failure.ToString(), exception);
+                throw new InvalidOperationException(transaction.ToString(), exception);
             }
         }
 
         public async Task<ITransaction> DepositAsync(UserId userId, ICurrency currency, CancellationToken cancellationToken = default)
         {
-            var account = await _accountRepository.GetAccountAsync(userId);
+            var user = await _userQuery.FindUserAsync(userId);
+
+            var account = await _accountRepository.FindUserAccountAsync(userId);
 
             switch (currency)
             {
@@ -84,14 +91,14 @@ namespace eDoxa.Cashier.Api.Application.Services
                 {
                     var moneyAccount = new AccountMoney(account);
 
-                    return await this.DepositAsync(account.User, moneyAccount, money, cancellationToken);
+                    return await this.DepositAsync(user, moneyAccount, money, cancellationToken);
                 }
 
                 case Token token:
                 {
                     var tokenAccount = new AccountToken(account);
 
-                    return await this.DepositAsync(account.User, tokenAccount, token, cancellationToken);
+                    return await this.DepositAsync(user, tokenAccount, token, cancellationToken);
                 }
 
                 default:
@@ -111,7 +118,7 @@ namespace eDoxa.Cashier.Api.Application.Services
         {
             var transaction = account.Deposit(currency);
 
-            await _accountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+            await _accountRepository.CommitAsync(cancellationToken);
 
             try
             {
@@ -123,21 +130,21 @@ namespace eDoxa.Cashier.Api.Application.Services
                     cancellationToken
                 );
 
-                transaction = account.CompleteTransaction(transaction);
+                transaction.MarkAsSucceded();
 
-                await _accountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+                await _accountRepository.CommitAsync(cancellationToken);
 
                 return transaction as Transaction;
             }
             catch (Exception exception)
             {
-                transaction = account.FailureTransaction(transaction, exception.Message);
+                transaction.MarkAsFailed();
 
-                await _accountRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+                await _accountRepository.CommitAsync(cancellationToken);
 
                 ExceptionDispatchInfo.Capture(exception.InnerException).Throw();
 
-                throw new InvalidOperationException(transaction.Failure.ToString());
+                throw new InvalidOperationException(transaction.ToString());
             }
         }
     }

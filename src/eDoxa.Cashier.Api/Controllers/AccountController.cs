@@ -1,5 +1,5 @@
 ﻿// Filename: AccountController.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,6 +11,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Application.Commands;
+using eDoxa.Cashier.Api.Infrastructure.Queries.Extensions;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Commands.Extensions;
 using eDoxa.Seedwork.Common.Enumerations;
@@ -30,12 +31,12 @@ namespace eDoxa.Cashier.Api.Controllers
     [ApiExplorerSettings(GroupName = "Account")]
     public sealed class AccountController : ControllerBase
     {
-        private readonly IBalanceQuery _balanceQuery;
+        private readonly IAccountQuery _accountQuery;
         private readonly IMediator _mediator;
 
-        public AccountController(IBalanceQuery balanceQuery, IMediator mediator)
+        public AccountController(IAccountQuery accountQuery, IMediator mediator)
         {
-            _balanceQuery = balanceQuery;
+            _accountQuery = accountQuery;
             _mediator = mediator;
         }
 
@@ -45,14 +46,14 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpGet("balance/{currency}", Name = nameof(GetBalanceAsync))]
         public async Task<IActionResult> GetBalanceAsync(CurrencyType currency)
         {
-            var balance = await _balanceQuery.GetBalanceAsync(currency);
+            var balanceViewModel = await _accountQuery.FindUserBalanceViewModelAsync(currency);
 
-            if (balance == null)
+            if (balanceViewModel == null)
             {
                 return this.NotFound($"Account balance for currency {currency} not found.");
             }
 
-            return this.Ok(balance);
+            return this.Ok(balanceViewModel);
         }
 
         /// <summary>

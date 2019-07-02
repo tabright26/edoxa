@@ -1,5 +1,5 @@
 ﻿// Filename: AccountControllerTest.cs
-// Date Created: 2019-06-06
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
+using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.ViewModels;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.IntegrationTests.Helpers;
@@ -37,17 +38,19 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
         public async Task<HttpResponseMessage> ExecuteAsync()
         {
-            return await _httpClient.DefaultRequestHeaders(new[] { new Claim(JwtClaimTypes.Subject, CashierTestConstants.TestUserId.ToString()) }).GetAsync("api/account/balance/money");
+            return await _httpClient.DefaultRequestHeaders(new[] {new Claim(JwtClaimTypes.Subject, CashierTestConstants.TestUserId.ToString())})
+                .GetAsync("api/account/balance/money");
         }
 
         [TestInitialize]
-        public void TestInitialize()
+        public async Task TestInitialize()
         {
             var factory = new CustomWebApplicationFactory<CashierDbContext, Startup>();
             _httpClient = factory.CreateClient();
             _testServer = factory.Server;
+            await this.TestCleanup();
         }
-        
+
         [TestCleanup]
         public async Task TestCleanup()
         {
@@ -60,9 +63,14 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
         public async Task CashierScenario()
         {
             // Arrange
-            var context = _testServer.GetService<CashierDbContext>();
-            context.Users.Add(new User(CashierTestConstants.TestUserId, CashierTestConstants.TestStripeConnectAccountId, CashierTestConstants.TestStripeConnectAccountId));
-            await context.SaveChangesAsync();
+            var userRepository = _testServer.GetService<IUserRepository>();
+            var user = new User(
+                CashierTestConstants.TestUserId,
+                CashierTestConstants.TestStripeConnectAccountId,
+                CashierTestConstants.TestStripeConnectAccountId
+            );
+            userRepository.Create(user);
+            await userRepository.CommitAsync();
 
             // Act
             var response = await this.ExecuteAsync();

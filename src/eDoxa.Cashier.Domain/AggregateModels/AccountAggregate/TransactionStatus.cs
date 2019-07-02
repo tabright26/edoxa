@@ -18,7 +18,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
     public sealed class TransactionStatus : Enumeration<TransactionStatus>
     {
         public static readonly TransactionStatus Pending = new TransactionStatus(1 << 0, nameof(Pending));
-        public static readonly TransactionStatus Completed = new TransactionStatus(1 << 1, nameof(Completed));
+        public static readonly TransactionStatus Succeded = new TransactionStatus(1 << 1, nameof(Succeded));
         public static readonly TransactionStatus Failed = new TransactionStatus(1 << 2, nameof(Failed));
 
         public TransactionStatus()

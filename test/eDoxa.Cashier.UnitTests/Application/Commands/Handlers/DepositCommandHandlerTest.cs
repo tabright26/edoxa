@@ -19,7 +19,7 @@ using eDoxa.Cashier.Api.Application.Fakers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate.Transactions;
-using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.Domain.ViewModels;
 using eDoxa.Cashier.UnitTests.Helpers.Mocks;
@@ -43,7 +43,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Commands.Handlers
     {
         private MockHttpContextAccessor _mockHttpContextAccessor;
         private Mock<IAccountService> _mockMoneyAccountService;
-        private Mock<IUserRepository> _mockUserRepository;
+        private Mock<IUserQuery> _mockUserQuery;
         private Mock<IMapper> _mockMapper;
 
         [TestInitialize]
@@ -51,14 +51,14 @@ namespace eDoxa.Cashier.UnitTests.Application.Commands.Handlers
         {
             _mockHttpContextAccessor = new MockHttpContextAccessor();
             _mockMoneyAccountService = new Mock<IAccountService>();
-            _mockUserRepository = new Mock<IUserRepository>();
+            _mockUserQuery = new Mock<IUserQuery>();
             _mockMapper = new Mock<IMapper>();
         }
 
         [TestMethod]
         public void Constructor_Tests()
         {
-            TestConstructor<DepositCommandHandler>.ForParameters(typeof(IHttpContextAccessor), typeof(IAccountService), typeof(IUserRepository), typeof(IMapper))
+            TestConstructor<DepositCommandHandler>.ForParameters(typeof(IHttpContextAccessor), typeof(IAccountService), typeof(IUserQuery), typeof(IMapper))
                 .WithClassName("DepositCommandHandler")
                 .Assert();
         }
@@ -73,18 +73,18 @@ namespace eDoxa.Cashier.UnitTests.Application.Commands.Handlers
 
             var user = userFaker.FakeNewUser();
 
-            _mockUserRepository.Setup(mock => mock.GetUserAsNoTrackingAsync(It.IsAny<UserId>())).ReturnsAsync(user).Verifiable();
+            _mockUserQuery.Setup(userQuery => userQuery.FindUserAsync(It.IsAny<UserId>())).ReturnsAsync(user).Verifiable();
 
-            _mockMoneyAccountService.Setup(mock => mock.DepositAsync(It.IsAny<UserId>(), It.IsAny<ICurrency>(), It.IsAny<CancellationToken>()))
+            _mockMoneyAccountService.Setup(accountService => accountService.DepositAsync(It.IsAny<UserId>(), It.IsAny<ICurrency>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new MoneyDepositTransaction(Money.Ten))
                 .Verifiable();
 
-            _mockMapper.Setup(x => x.Map<TransactionViewModel>(It.IsAny<ITransaction>())).Returns(new TransactionViewModel()).Verifiable();
+            _mockMapper.Setup(mapper => mapper.Map<TransactionViewModel>(It.IsAny<ITransaction>())).Returns(new TransactionViewModel()).Verifiable();
 
             var handler = new DepositCommandHandler(
                 _mockHttpContextAccessor.Object,
                 _mockMoneyAccountService.Object,
-                _mockUserRepository.Object,
+                _mockUserQuery.Object,
                 _mockMapper.Object
             );
 
@@ -94,7 +94,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Commands.Handlers
             // Assert
             result.Should().BeOfType<TransactionViewModel>();
 
-            _mockMoneyAccountService.Verify(mock => mock.DepositAsync(It.IsAny<UserId>(), It.IsAny<ICurrency>(), It.IsAny<CancellationToken>()), Times.Once);
+            _mockMoneyAccountService.Verify(accountService => accountService.DepositAsync(It.IsAny<UserId>(), It.IsAny<ICurrency>(), It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }

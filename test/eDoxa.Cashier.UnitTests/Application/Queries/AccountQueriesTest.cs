@@ -8,13 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using AutoMapper;
-
-using eDoxa.Cashier.Api.Application.Queries;
-using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Seedwork.Testing.TestConstructor;
-
-using Microsoft.AspNetCore.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Cashier.UnitTests.Application.Queries
@@ -22,10 +15,5 @@ namespace eDoxa.Cashier.UnitTests.Application.Queries
     [TestClass]
     public sealed class AccountQueriesTest
     {
-        [TestMethod]
-        public void Constructor_Tests()
-        {
-            TestConstructor<BalanceQuery>.ForParameters(typeof(IAccountRepository), typeof(IHttpContextAccessor), typeof(IMapper)).WithClassName("BalanceQuery").Assert();
-        }
     }
 }

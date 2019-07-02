@@ -12,6 +12,7 @@ using AutoMapper;
 
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.ViewModels;
+using eDoxa.Seedwork.Common.Abstactions;
 
 namespace eDoxa.Cashier.Api.Application.Profiles
 {
@@ -19,11 +20,11 @@ namespace eDoxa.Cashier.Api.Application.Profiles
     {
         public CurrencyProfile()
         {
-            this.CreateMap<Currency, CurrencyViewModel>()
+            this.CreateMap<ICurrency, CurrencyViewModel>()
                 .ForMember(currency => currency.Type, config => config.MapFrom(currency => currency.Type))
                 .ForMember(currency => currency.Amount, config => config.MapFrom(currency => currency.Amount));
 
-            this.CreateMap<CurrencyViewModel, Currency>().ConvertUsing(currency => Currency.Convert(currency.Amount, currency.Type));
+            this.CreateMap<CurrencyViewModel, ICurrency>().ConvertUsing(currency => Currency.Convert(currency.Amount, currency.Type));
         }
     }
 }

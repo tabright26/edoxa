@@ -9,7 +9,7 @@
 // this source code package.
 
 using eDoxa.Cashier.Api.Application.Commands.Validations;
-using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Seedwork.Testing.TestConstructor;
 using eDoxa.Stripe.Abstractions;
 
@@ -25,7 +25,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Commands.Validations
         public void Constructor_Tests()
         {
             TestConstructor<DepositCommandValidator>
-                .ForParameters(typeof(IHttpContextAccessor), typeof(IAccountRepository), typeof(IUserRepository), typeof(IStripeService))
+                .ForParameters(typeof(IHttpContextAccessor), typeof(IAccountQuery), typeof(IUserQuery), typeof(IStripeService))
                 .WithClassName("DepositCommandValidator")
                 .Assert();
         }

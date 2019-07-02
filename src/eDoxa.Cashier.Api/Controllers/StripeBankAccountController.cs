@@ -11,7 +11,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Application.Commands;
-using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Commands.Extensions;
 using eDoxa.Seedwork.Common.Extensions;
 using eDoxa.Stripe.Filters.Attributes;
@@ -32,12 +32,12 @@ namespace eDoxa.Cashier.Api.Controllers
     public sealed class StripeBankAccountController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly IUserRepository _userRepository;
+        private readonly IUserQuery _userQuery;
 
-        public StripeBankAccountController(IMediator mediator, IUserRepository userRepository)
+        public StripeBankAccountController(IMediator mediator, IUserQuery userQuery)
         {
             _mediator = mediator;
-            _userRepository = userRepository;
+            _userQuery = userQuery;
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace eDoxa.Cashier.Api.Controllers
             var userId = HttpContext.GetUserId();
 
             // TODO: To refactor.
-            var user = await _userRepository.GetUserAsNoTrackingAsync(userId);
+            var user = await _userQuery.FindUserAsync(userId);
 
             if (user == null)
             {

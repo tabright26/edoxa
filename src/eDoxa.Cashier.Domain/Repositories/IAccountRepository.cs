@@ -8,24 +8,21 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Seedwork.Common.Enumerations;
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Seedwork.Common.ValueObjects;
-using eDoxa.Seedwork.Domain;
+
+using JetBrains.Annotations;
 
 namespace eDoxa.Cashier.Domain.Repositories
 {
-    public interface IAccountRepository : IRepository<Account>
+    public interface IAccountRepository
     {
-        Task<Account> GetAccountAsync(UserId userId);
+        [ItemCanBeNull]
+        Task<IAccount> FindUserAccountAsync(UserId userId);
 
-        Task<Account> GetAccountAsNoTrackingAsync(UserId userId);
-
-        Task<Balance> GetBalanceAsNoTrackingAsync(UserId userId, CurrencyType currency);
-
-        Task<IReadOnlyCollection<Transaction>> GetTransactionsAsNoTrackingAsync(UserId userId);
+        Task CommitAsync(CancellationToken cancellationToken = default);
     }
 }

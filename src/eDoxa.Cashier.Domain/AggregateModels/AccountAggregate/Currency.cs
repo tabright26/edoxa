@@ -1,5 +1,5 @@
 ﻿// Filename: Currency.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -32,9 +32,19 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
         {
         }
 
+        public decimal Amount { get; private set; }
+
         public CurrencyType Type { get; private set; }
 
-        public decimal Amount { get; private set; }
+        public static implicit operator decimal(Currency currency)
+        {
+            return currency.Amount;
+        }
+
+        public static implicit operator Price(Currency currency)
+        {
+            return new Price(currency);
+        }
 
         public static Currency operator -(Currency currency)
         {
@@ -43,16 +53,6 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
                 Amount = currency.Amount,
                 Type = currency.Type
             };
-        }
-
-        public static implicit operator Price(Currency currency)
-        {
-            return new Price(currency);
-        }
-
-        public static implicit operator decimal(Currency currency)
-        {
-            return currency.Amount;
         }
 
         [CanBeNull]
@@ -73,8 +73,8 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 
         protected override IEnumerable<object> GetAtomicValues()
         {
-            yield return Type;
             yield return Amount;
+            yield return Type;
         }
 
         public override string ToString()

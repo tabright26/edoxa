@@ -10,7 +10,6 @@
 
 using System;
 
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Validators;
 using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Domain;
@@ -22,27 +21,20 @@ namespace eDoxa.Cashier.Domain.AggregateModels.UserAggregate
 {
     public sealed class User : Entity<UserId>, IAggregateRoot
     {
-        public User(UserId userId, string connectAccountId, string customerId) : this()
+        public User(UserId userId, string connectAccountId, string customerId)
         {
             ConnectAccountId = connectAccountId;
             CustomerId = customerId;
-            Account = new Account(this);
+            BankAccountId = null;
             this.SetEntityId(userId);
         }
 
-        private User()
-        {
-            BankAccountId = null;
-        }
+        public string ConnectAccountId { get; }
 
-        public string ConnectAccountId { get; private set; }
-
-        public string CustomerId { get; private set; }
+        public string CustomerId { get; }
 
         [CanBeNull]
         public string BankAccountId { get; private set; }
-
-        public Account Account { get; private set; }
 
         public bool HasBankAccount()
         {

@@ -1,5 +1,5 @@
 ﻿// Filename: Balance.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -18,9 +18,9 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
     public sealed class Balance : ValueObject
     {
-        public Balance(IReadOnlyCollection<Transaction> transactions, CurrencyType currencyType)
+        public Balance(IReadOnlyCollection<ITransaction> transactions, CurrencyType currencyType)
         {
-            Available = transactions.Where(transaction => transaction.Currency.Type == currencyType && transaction.Status == TransactionStatus.Completed)
+            Available = transactions.Where(transaction => transaction.Currency.Type == currencyType && transaction.Status == TransactionStatus.Succeded)
                 .Sum(transaction => transaction.Currency.Amount);
 
             Pending = transactions.Where(transaction => transaction.Currency.Type == currencyType && transaction.Status == TransactionStatus.Pending)

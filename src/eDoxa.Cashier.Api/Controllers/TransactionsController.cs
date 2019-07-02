@@ -1,5 +1,5 @@
 ﻿// Filename: TransactionsController.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,6 +11,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Api.Infrastructure.Queries.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Seedwork.Common.Enumerations;
@@ -41,14 +42,14 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpGet(Name = nameof(GetTransactionsAsync))]
         public async Task<IActionResult> GetTransactionsAsync(CurrencyType currency = null, TransactionType type = null, TransactionStatus status = null)
         {
-            var transactions = await _transactionQuery.GetTransactionsAsync(currency, type, status);
+            var transactionViewModels = await _transactionQuery.FindUserTransactionViewModelsAsync(currency, type, status);
 
-            if (!transactions.Any())
+            if (!transactionViewModels.Any())
             {
                 return this.NoContent();
             }
 
-            return this.Ok(transactions);
+            return this.Ok(transactionViewModels);
         }
     }
 }

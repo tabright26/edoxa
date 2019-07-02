@@ -8,13 +8,14 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 using AutoMapper;
 
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.Domain.ViewModels;
 using eDoxa.Commands.Abstractions.Handlers;
@@ -30,19 +31,19 @@ namespace eDoxa.Cashier.Api.Application.Commands.Handlers
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IAccountService _accountService;
-        private readonly IUserRepository _userRepository;
+        private readonly IUserQuery _userQuery;
         private readonly IMapper _mapper;
 
         public DepositCommandHandler(
             IHttpContextAccessor httpContextAccessor,
             IAccountService accountService,
-            IUserRepository userRepository,
+            IUserQuery userQuery,
             IMapper mapper
         )
         {
             _httpContextAccessor = httpContextAccessor;
             _accountService = accountService;
-            _userRepository = userRepository;
+            _userQuery = userQuery;
             _mapper = mapper;
         }
 
@@ -51,7 +52,12 @@ namespace eDoxa.Cashier.Api.Application.Commands.Handlers
         {
             var userId = _httpContextAccessor.GetUserId();
 
-            var user = await _userRepository.GetUserAsNoTrackingAsync(userId);
+            var user = await _userQuery.FindUserAsync(userId);
+
+            if (user == null)
+            {
+                throw new NullReferenceException("User not found.");
+            }
 
             var transaction = await _accountService.DepositAsync(user.Id, _mapper.Map<Currency>(command.Currency), cancellationToken);
 

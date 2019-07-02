@@ -38,13 +38,13 @@ namespace eDoxa.Cashier.Api.Application.Commands.Handlers
         {
             var userId = _httpContextAccessor.GetUserId();
 
-            var user = await _userRepository.GetUserAsync(userId);
+            var user = await _userRepository.FindUserAsync(userId);
 
             await _stripeService.DeleteBankAccountAsync(user.GetConnectAccountId(), user.GetBankAccountId(), cancellationToken);
 
             user.RemoveBankAccount();
 
-            await _userRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+            await _userRepository.CommitAsync(cancellationToken);
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿// Filename: TransactionDescription.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -21,7 +21,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
             Text = text;
         }
 
-        public string Text { get; private set; }
+        public string Text { get; }
 
         protected override IEnumerable<object> GetAtomicValues()
         {

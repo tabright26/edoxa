@@ -32,7 +32,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Fakers
             var action = new Action(
                 () =>
                 {
-                    var transactions = transactionFaker.FakePositiveTransactions(10);
+                    var transactions = transactionFaker.Generate(10, TransactionFaker.PositiveTransaction);
 
                     Console.WriteLine(transactions.DumbAsJson());
 
@@ -54,7 +54,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Fakers
             var action = new Action(
                 () =>
                 {
-                    var transaction = transactionFaker.FakePositiveTransaction();
+                    var transaction = transactionFaker.Generate(TransactionFaker.PositiveTransaction);
 
                     Console.WriteLine(transaction.DumbAsJson());
                 }
@@ -74,7 +74,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Fakers
             var action = new Action(
                 () =>
                 {
-                    var transactions = transactionFaker.FakeNegativeTransactions(10);
+                    var transactions = transactionFaker.Generate(10, TransactionFaker.NegativeTransaction);
 
                     Console.WriteLine(transactions.DumbAsJson());
 
@@ -96,7 +96,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Fakers
             var action = new Action(
                 () =>
                 {
-                    var transaction = transactionFaker.FakeNegativeTransaction();
+                    var transaction = transactionFaker.Generate(TransactionFaker.NegativeTransaction);
 
                     Console.WriteLine(transaction.DumbAsJson());
                 }

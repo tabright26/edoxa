@@ -12,19 +12,19 @@ using System;
 using System.Collections.Generic;
 
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Common.Abstactions;
+using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Cashier.Domain.AggregateModels
 {
     public interface IAccount : IEntity<AccountId>, IAggregateRoot
     {
-        User User { get; }
+        IReadOnlyCollection<ITransaction> Transactions { get; }
 
-        IReadOnlyCollection<Transaction> Transactions { get; }
+        void CreateTransaction(ITransaction transaction);
 
-        void CreateTransaction(Transaction transaction);
+        Balance GetBalanceFor(CurrencyType currency);
     }
 
     public interface IAccount<in TCurrency>
@@ -39,9 +39,5 @@ namespace eDoxa.Cashier.Domain.AggregateModels
         ITransaction Charge(TCurrency amount);
 
         ITransaction Payout(TCurrency amount);
-
-        ITransaction CompleteTransaction(ITransaction transaction);
-
-        ITransaction FailureTransaction(ITransaction transaction, string message);
     }
 }

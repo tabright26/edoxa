@@ -1,5 +1,5 @@
 ﻿// Filename: CashierDbContextData.cs
-// Date Created: 2019-06-14
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Application.Fakers;
+using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Seedwork.Infrastructure.Abstractions;
 
@@ -23,14 +24,21 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
     internal sealed class CashierDbContextData : IDbContextData
     {
         private readonly CashierDbContext _context;
+        private readonly IUserRepository _userRepository;
         private readonly ILogger<CashierDbContextData> _logger;
         private readonly IHostingEnvironment _environment;
 
-        public CashierDbContextData(ILogger<CashierDbContextData> logger, IHostingEnvironment environment, CashierDbContext context)
+        public CashierDbContextData(
+            ILogger<CashierDbContextData> logger,
+            IHostingEnvironment environment,
+            CashierDbContext context,
+            IUserRepository userRepository
+        )
         {
             _logger = logger;
             _environment = environment;
             _context = context;
+            _userRepository = userRepository;
         }
 
         public async Task SeedAsync()
@@ -43,9 +51,9 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
 
                     var user = userFaker.FakeAdminUser();
 
-                    _context.Users.Add(user);
+                    _userRepository.Create(user);
 
-                    await _context.CommitAsync();
+                    await _userRepository.CommitAsync();
 
                     _logger.LogInformation("The user's being populated.");
                 }

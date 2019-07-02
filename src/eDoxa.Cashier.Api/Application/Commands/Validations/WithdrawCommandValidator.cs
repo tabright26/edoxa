@@ -11,7 +11,7 @@
 using System.Linq;
 
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Validators;
 using eDoxa.Commands.Abstractions.Validations;
 using eDoxa.Seedwork.Common.Extensions;
@@ -25,7 +25,7 @@ namespace eDoxa.Cashier.Api.Application.Commands.Validations
 {
     public sealed class WithdrawCommandValidator : CommandValidator<WithdrawCommand>
     {
-        public WithdrawCommandValidator(IHttpContextAccessor httpContextAccessor, IAccountRepository accountRepository)
+        public WithdrawCommandValidator(IHttpContextAccessor httpContextAccessor, IAccountQuery accountQuery)
         {
             var amounts = new[] {Money.Fifty, Money.OneHundred, Money.TwoHundred};
 
@@ -43,7 +43,7 @@ namespace eDoxa.Cashier.Api.Application.Commands.Validations
                                 {
                                     var userId = httpContextAccessor.GetUserId();
 
-                                    var account = await accountRepository.GetAccountAsNoTrackingAsync(userId);
+                                    var account = await accountQuery.FindUserAccountAsync(userId);
 
                                     var accountMoney = new AccountMoney(account);
 

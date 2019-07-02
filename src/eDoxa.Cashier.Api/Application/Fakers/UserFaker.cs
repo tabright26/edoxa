@@ -1,5 +1,5 @@
 ﻿// Filename: UserFaker.cs
-// Date Created: 2019-06-09
+// Date Created: 2019-07-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -23,8 +23,6 @@ namespace eDoxa.Cashier.Api.Application.Fakers
         private const string NewUser = nameof(NewUser);
         private const string AdminUser = nameof(AdminUser);
 
-        private readonly AccountFaker _accountFaker = new AccountFaker();
-
         public UserFaker()
         {
             this.RuleSet(
@@ -41,8 +39,6 @@ namespace eDoxa.Cashier.Api.Application.Fakers
                             return new User(faker.UserId(), connectAccountId.ToString(), customerId.ToString());
                         }
                     );
-
-                    ruleSet.RuleFor(user => user.Account, (faker, user) => _accountFaker.FakeNewAccount(user));
 
                     ruleSet.FinishWith(
                         (faker, user) =>
@@ -71,8 +67,6 @@ namespace eDoxa.Cashier.Api.Application.Fakers
                             return new User(userId, connectAccountId.ToString(), customerId.ToString());
                         }
                     );
-
-                    ruleSet.RuleFor(user => user.Account, (faker, user) => _accountFaker.FakeAdminAccount(user));
 
                     ruleSet.FinishWith(
                         (faker, user) =>

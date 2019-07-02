@@ -1,5 +1,5 @@
-﻿// Filename: IBalanceQuery.cs
-// Date Created: 2019-07-01
+﻿// Filename: IUserQuery.cs
+// Date Created: 2019-07-02
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,16 +10,20 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Domain.ViewModels;
-using eDoxa.Seedwork.Common.Enumerations;
+using AutoMapper;
+
+using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
+using eDoxa.Seedwork.Common.ValueObjects;
 
 using JetBrains.Annotations;
 
 namespace eDoxa.Cashier.Domain.Queries
 {
-    public interface IBalanceQuery
+    public interface IUserQuery
     {
+        IMapper Mapper { get; }
+
         [ItemCanBeNull]
-        Task<BalanceViewModel> GetBalanceAsync(CurrencyType currencyType);
+        Task<User> FindUserAsync(UserId userId);
     }
 }

@@ -12,7 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Extensions;
-using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Seedwork.Common.Extensions;
 using eDoxa.Stripe.Abstractions;
@@ -25,20 +25,20 @@ namespace eDoxa.Cashier.Api.Application.Commands.Handlers
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IStripeService _stripeService;
-        private readonly IUserRepository _userRepository;
+        private readonly IUserQuery _userQuery;
 
-        public VerifyAccountCommandHandler(IStripeService stripeService, IHttpContextAccessor httpContextAccessor, IUserRepository userRepository)
+        public VerifyAccountCommandHandler(IStripeService stripeService, IHttpContextAccessor httpContextAccessor, IUserQuery userQuery)
         {
             _stripeService = stripeService;
             _httpContextAccessor = httpContextAccessor;
-            _userRepository = userRepository;
+            _userQuery = userQuery;
         }
 
         protected override async Task Handle(VerifyAccountCommand command, CancellationToken cancellationToken)
         {
             var userId = _httpContextAccessor.GetUserId();
 
-            var user = await _userRepository.GetUserAsNoTrackingAsync(userId);
+            var user = await _userQuery.FindUserAsync(userId);
 
             await _stripeService.VerifyAccountAsync(
                 user.GetConnectAccountId(),

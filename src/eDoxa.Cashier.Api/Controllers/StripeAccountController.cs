@@ -1,5 +1,5 @@
 ﻿// Filename: StripeAccountController.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,7 +11,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Application.Commands;
-using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Commands.Extensions;
 using eDoxa.Seedwork.Common.Extensions;
 using eDoxa.Stripe.Abstractions;
@@ -34,13 +34,13 @@ namespace eDoxa.Cashier.Api.Controllers
     public sealed class StripeAccountController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly IUserRepository _userRepository;
+        private readonly IUserQuery _userQuery;
         private readonly IStripeService _stripeService;
 
-        public StripeAccountController(IMediator mediator, IUserRepository userRepository, IStripeService stripeService)
+        public StripeAccountController(IMediator mediator, IUserQuery userQuery, IStripeService stripeService)
         {
             _mediator = mediator;
-            _userRepository = userRepository;
+            _userQuery = userQuery;
             _stripeService = stripeService;
         }
 
@@ -53,7 +53,7 @@ namespace eDoxa.Cashier.Api.Controllers
             var userId = HttpContext.GetUserId();
 
             // TODO: To refactor.
-            var user = await _userRepository.GetUserAsNoTrackingAsync(userId);
+            var user = await _userQuery.FindUserAsync(userId);
 
             if (user == null)
             {

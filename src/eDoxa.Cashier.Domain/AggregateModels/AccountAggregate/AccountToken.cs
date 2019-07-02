@@ -33,7 +33,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
                 .Where(
                     transaction => transaction.Currency.Type == CurrencyType.Token &&
                                    transaction.Type == TransactionType.Deposit &&
-                                   transaction.Status == TransactionStatus.Completed
+                                   transaction.Status == TransactionStatus.Succeded
                 )
                 .OrderByDescending(transaction => transaction)
                 .FirstOrDefault()
@@ -81,20 +81,6 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
             var transaction = new TokenRewardTransaction(amount);
 
             _account.CreateTransaction(transaction);
-
-            return transaction;
-        }
-
-        public ITransaction CompleteTransaction(ITransaction transaction)
-        {
-            transaction.Complete();
-
-            return transaction;
-        }
-
-        public ITransaction FailureTransaction(ITransaction transaction, string message)
-        {
-            transaction.Fail(message);
 
             return transaction;
         }

@@ -12,7 +12,7 @@ using System.Linq;
 
 using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Validators;
 using eDoxa.Cashier.Domain.ViewModels;
 using eDoxa.Commands.Abstractions.Validations;
@@ -33,8 +33,8 @@ namespace eDoxa.Cashier.Api.Application.Commands.Validations
     {
         public DepositCommandValidator(
             IHttpContextAccessor httpContextAccessor,
-            IAccountRepository accountRepository,
-            IUserRepository userRepository,
+            IAccountQuery accountQuery,
+            IUserQuery userQuery,
             IStripeService stripeService
         )
         {
@@ -50,7 +50,7 @@ namespace eDoxa.Cashier.Api.Application.Commands.Validations
                                 {
                                     var userId = httpContextAccessor.GetUserId();
 
-                                    var account = await accountRepository.GetAccountAsNoTrackingAsync(userId);
+                                    var account = await accountQuery.FindUserAccountAsync(userId);
 
                                     if (command.Currency.Type == CurrencyType.Money)
                                     {
@@ -80,7 +80,7 @@ namespace eDoxa.Cashier.Api.Application.Commands.Validations
                                         }
                                     }
 
-                                    var user = await userRepository.GetUserAsNoTrackingAsync(userId);
+                                    var user = await userQuery.FindUserAsync(userId);
 
                                     var customer = await stripeService.GetCustomerAsync(user.GetCustomerId(), cancellationToken);
 

@@ -11,6 +11,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Stripe.Abstractions;
@@ -43,9 +44,11 @@ namespace eDoxa.Cashier.Api.Application.Commands.Handlers
 
             var customerId = await _stripeService.CreateCustomerAsync(command.UserId, connectAccountId, command.Email, cancellationToken);
 
-            _userRepository.Create(command.UserId, connectAccountId.ToString(), customerId.ToString());
+            var user = new User(command.UserId, connectAccountId.ToString(), customerId.ToString());
 
-            await _userRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+            _userRepository.Create(user);
+
+            await _userRepository.CommitAsync(cancellationToken);
         }
     }
 }

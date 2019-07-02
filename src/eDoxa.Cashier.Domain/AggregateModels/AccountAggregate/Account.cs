@@ -1,5 +1,5 @@
 ﻿// Filename: Account.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,34 +8,42 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Collections.Generic;
 
-using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
+using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
     public sealed class Account : Entity<AccountId>, IAccount
     {
-        private HashSet<Transaction> _transactions;
+        private HashSet<ITransaction> _transactions = new HashSet<ITransaction>();
 
-        public Account(User user) : this()
-        {
-            User = user;
-        }
+        public IReadOnlyCollection<ITransaction> Transactions => _transactions;
 
-        public Account()
-        {
-            _transactions = new HashSet<Transaction>();
-        }
-
-        public User User { get; private set; }
-
-        public IReadOnlyCollection<Transaction> Transactions => _transactions;
-
-        public void CreateTransaction(Transaction transaction)
+        public void CreateTransaction(ITransaction transaction)
         {
             _transactions.Add(transaction);
+        }
+
+        public Balance GetBalanceFor(CurrencyType currency)
+        {
+            if (currency == CurrencyType.Money)
+            {
+                var accountMoney = new AccountMoney(this);
+
+                return accountMoney.Balance;
+            }
+
+            if (currency == CurrencyType.Token)
+            {
+                var accountToken = new AccountToken(this);
+
+                return accountToken.Balance;
+            }
+
+            throw new ArgumentException(nameof(currency));
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿// Filename: TokenRewardTransaction.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,11 +8,18 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Seedwork.Common;
+
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate.Transactions
 {
     public sealed class TokenRewardTransaction : Transaction
     {
-        public TokenRewardTransaction(Token amount) : base(amount, new TransactionDescription(nameof(TokenRewardTransaction)), TransactionType.Reward)
+        public TokenRewardTransaction(Token currency) : base(
+            currency,
+            new TransactionDescription(nameof(TokenRewardTransaction)),
+            TransactionType.Reward,
+            new UtcNowDateTimeProvider()
+        )
         {
         }
     }

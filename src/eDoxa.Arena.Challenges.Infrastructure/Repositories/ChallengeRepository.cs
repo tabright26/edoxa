@@ -19,7 +19,6 @@ using AutoMapper;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Repositories;
-using eDoxa.Arena.Challenges.Infrastructure.Extensions;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
 using eDoxa.Seedwork.Domain.Extensions;
 
@@ -145,7 +144,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
         {
             foreach (var (challenge, challengeModel) in _materializedObjects)
             {
-                _mapper.CopyChanges(challenge, challengeModel);
+                this.CopyChanges(challenge, challengeModel);
             }
 
             await _context.SaveChangesAsync(cancellationToken);
@@ -154,6 +153,33 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
             {
                 _materializedIds[challengeModel.Id] = challenge;
             }
+        }
+
+        private void CopyChanges(IChallenge challenge, ChallengeModel challengeModel)
+        {
+            challengeModel.State = challenge.Timeline.State.Value;
+
+            challengeModel.SynchronizedAt = challenge.SynchronizedAt;
+
+            challengeModel.Timeline.StartedAt = challenge.Timeline.StartedAt;
+
+            challengeModel.Timeline.ClosedAt = challenge.Timeline.ClosedAt;
+
+            challengeModel.Participants.ForEach(
+                participantModel => this.CopyChanges(challenge.Participants.Single(participant => participant.Id == participantModel.Id), participantModel)
+            );
+
+            var participants =
+                challenge.Participants.Where(participant => challengeModel.Participants.All(participantModel => participantModel.Id != participant.Id));
+
+            _mapper.Map<ICollection<ParticipantModel>>(participants).ForEach(participant => challengeModel.Participants.Add(participant));
+        }
+
+        private void CopyChanges(Participant participant, ParticipantModel participantModel)
+        {
+            var matches = participant.Matches.Where(match => participantModel.Matches.All(matchModel => matchModel.Id != match.Id));
+
+            _mapper.Map<ICollection<MatchModel>>(matches).ForEach(match => participantModel.Matches.Add(match));
         }
     }
 }

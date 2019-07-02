@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Validators;
 using eDoxa.Commands.Abstractions.Validations;
 using eDoxa.Seedwork.Common.Extensions;
@@ -22,7 +22,7 @@ namespace eDoxa.Cashier.Api.Application.Commands.Validations
 {
     public class DeleteBankAccountCommandValidator : CommandValidator<DeleteBankAccountCommand>
     {
-        public DeleteBankAccountCommandValidator(IHttpContextAccessor httpContextAccessor, IUserRepository userRepository)
+        public DeleteBankAccountCommandValidator(IHttpContextAccessor httpContextAccessor, IUserQuery userQuery)
         {
             this.RuleFor(command => command)
                 .CustomAsync(
@@ -30,7 +30,7 @@ namespace eDoxa.Cashier.Api.Application.Commands.Validations
                     {
                         var userId = httpContextAccessor.GetUserId();
 
-                        var user = await userRepository.GetUserAsNoTrackingAsync(userId);
+                        var user = await userQuery.FindUserAsync(userId);
 
                         new RemoveBankAccountValidator().Validate(user).Errors.ForEach(context.AddFailure);
                     }

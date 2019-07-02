@@ -15,10 +15,10 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Api.Application.Commands;
 using eDoxa.Cashier.Api.Application.Commands.Handlers;
 using eDoxa.Cashier.Api.Application.Fakers;
+using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.UnitTests.Helpers.Mocks;
 using eDoxa.Commands.Extensions;
-using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Testing.TestConstructor;
 using eDoxa.Stripe.Abstractions;
 using eDoxa.Stripe.Data.Fakers;
@@ -61,9 +61,9 @@ namespace eDoxa.Cashier.UnitTests.Application.Commands.Handlers
 
             var person = personFaker.FakePerson();
 
-            _mockUserRepository.Setup(mock => mock.Create(It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<string>())).Verifiable();
+            _mockUserRepository.Setup(mock => mock.Create(It.IsAny<User>())).Verifiable();
 
-            _mockUserRepository.Setup(mock => mock.UnitOfWork.CommitAndDispatchDomainEventsAsync(It.IsAny<CancellationToken>()))
+            _mockUserRepository.Setup(mock => mock.CommitAsync(It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 

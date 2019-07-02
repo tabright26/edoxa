@@ -40,13 +40,13 @@ namespace eDoxa.Cashier.Api.Application.Commands.Handlers
         {
             var userId = _httpContextAccessor.GetUserId();
 
-            var user = await _userRepository.GetUserAsync(userId);
+            var user = await _userRepository.FindUserAsync(userId);
 
             var bankAccountId = await _stripeService.CreateBankAccountAsync(user.GetConnectAccountId(), command.ExternalAccountTokenId, cancellationToken);
 
             user.AddBankAccount(bankAccountId.ToString());
 
-            await _userRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+            await _userRepository.CommitAsync(cancellationToken);
         }
     }
 }

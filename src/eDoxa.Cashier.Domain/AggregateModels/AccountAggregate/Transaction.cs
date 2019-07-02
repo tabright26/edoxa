@@ -1,5 +1,5 @@
 ﻿// Filename: Transaction.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,48 +10,45 @@
 
 using System;
 
+using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
     public class Transaction : Entity<TransactionId>, ITransaction
     {
-        protected Transaction(Currency amount, TransactionDescription description, TransactionType type) : this()
+        public Transaction(
+            Currency currency,
+            TransactionDescription description,
+            TransactionType type,
+            IDateTimeProvider provider
+        )
         {
-            Currency = amount;
+            Timestamp = provider.DateTime;
+            Currency = currency;
             Description = description;
             Type = type;
-        }
-
-        public Transaction()
-        {
-            Timestamp = DateTime.UtcNow;
             Status = TransactionStatus.Pending;
-            Failure = null;
         }
 
-        public Currency Currency { get; private set; }
+        public DateTime Timestamp { get; }
 
-        public DateTime Timestamp { get; private set; }
+        public Currency Currency { get; }
 
-        public TransactionType Type { get; private set; }
+        public TransactionDescription Description { get; }
+
+        public TransactionType Type { get; }
 
         public TransactionStatus Status { get; private set; }
 
-        public TransactionDescription Description { get; private set; }
-
-        public TransactionFailure Failure { get; private set; }
-
-        public void Complete()
+        public void MarkAsSucceded()
         {
-            Status = TransactionStatus.Completed;
+            Status = TransactionStatus.Succeded;
         }
 
-        public void Fail(string message)
+        public void MarkAsFailed()
         {
             Status = TransactionStatus.Failed;
-
-            Failure = new TransactionFailure(message);
         }
     }
 }

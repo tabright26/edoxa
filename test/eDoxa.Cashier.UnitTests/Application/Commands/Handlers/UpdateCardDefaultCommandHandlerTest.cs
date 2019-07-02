@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Api.Application.Commands;
 using eDoxa.Cashier.Api.Application.Commands.Handlers;
 using eDoxa.Cashier.Api.Application.Fakers;
-using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.UnitTests.Helpers.Mocks;
 using eDoxa.Commands.Extensions;
 using eDoxa.Seedwork.Common.ValueObjects;
@@ -36,20 +36,20 @@ namespace eDoxa.Cashier.UnitTests.Application.Commands.Handlers
     {
         private MockHttpContextAccessor _mockHttpContextAccessor;
         private MockStripeService _mockStripeService;
-        private Mock<IUserRepository> _mockUserRepository;
+        private Mock<IUserQuery> _mockUserQuery;
 
         [TestInitialize]
         public void TestInitialize()
         {
             _mockStripeService = new MockStripeService();
             _mockHttpContextAccessor = new MockHttpContextAccessor();
-            _mockUserRepository = new Mock<IUserRepository>();
+            _mockUserQuery = new Mock<IUserQuery>();
         }
 
         [TestMethod]
         public void Constructor_Tests()
         {
-            TestConstructor<UpdateCardDefaultCommandHandler>.ForParameters(typeof(IHttpContextAccessor), typeof(IStripeService), typeof(IUserRepository))
+            TestConstructor<UpdateCardDefaultCommandHandler>.ForParameters(typeof(IHttpContextAccessor), typeof(IStripeService), typeof(IUserQuery))
                 .WithClassName("UpdateCardDefaultCommandHandler")
                 .Assert();
         }
@@ -66,9 +66,9 @@ namespace eDoxa.Cashier.UnitTests.Application.Commands.Handlers
 
             var user = userFaker.FakeNewUser();
 
-            _mockUserRepository.Setup(mock => mock.GetUserAsNoTrackingAsync(It.IsAny<UserId>())).ReturnsAsync(user).Verifiable();
+            _mockUserQuery.Setup(userQuery => userQuery.FindUserAsync(It.IsAny<UserId>())).ReturnsAsync(user).Verifiable();
 
-            var handler = new UpdateCardDefaultCommandHandler(_mockHttpContextAccessor.Object, _mockStripeService.Object, _mockUserRepository.Object);
+            var handler = new UpdateCardDefaultCommandHandler(_mockHttpContextAccessor.Object, _mockStripeService.Object, _mockUserQuery.Object);
 
             // Act
             await handler.HandleAsync(new UpdateCardDefaultCommand(card.ToStripeId()));

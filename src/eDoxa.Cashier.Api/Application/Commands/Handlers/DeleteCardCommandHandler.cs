@@ -12,7 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Extensions;
-using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Seedwork.Common.Extensions;
 using eDoxa.Stripe.Abstractions;
@@ -25,20 +25,20 @@ namespace eDoxa.Cashier.Api.Application.Commands.Handlers
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IStripeService _stripeService;
-        private readonly IUserRepository _userRepository;
+        private readonly IUserQuery _userQuery;
 
-        public DeleteCardCommandHandler(IHttpContextAccessor httpContextAccessor, IStripeService stripeService, IUserRepository userRepository)
+        public DeleteCardCommandHandler(IHttpContextAccessor httpContextAccessor, IStripeService stripeService, IUserQuery userQuery)
         {
             _httpContextAccessor = httpContextAccessor;
             _stripeService = stripeService;
-            _userRepository = userRepository;
+            _userQuery = userQuery;
         }
 
         protected override async Task Handle(DeleteCardCommand command, CancellationToken cancellationToken)
         {
             var userId = _httpContextAccessor.GetUserId();
 
-            var user = await _userRepository.GetUserAsNoTrackingAsync(userId);
+            var user = await _userQuery.FindUserAsync(userId);
 
             await _stripeService.DeleteCardAsync(user.GetCustomerId(), command.StripeCardId, cancellationToken);
         }
