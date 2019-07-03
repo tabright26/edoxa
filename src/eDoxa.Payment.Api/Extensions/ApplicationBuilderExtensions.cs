@@ -1,5 +1,5 @@
 ﻿// Filename: ApplicationBuilderExtensions.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-07-02
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,14 +8,14 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Cashier.Api.IntegrationEvents;
-using eDoxa.Cashier.Api.IntegrationEvents.Handlers;
 using eDoxa.IntegrationEvents;
+using eDoxa.Payment.Api.IntegrationEvents;
+using eDoxa.Payment.Api.IntegrationEvents.Handlers;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace eDoxa.Cashier.Api.Extensions
+namespace eDoxa.Payment.Api.Extensions
 {
     public static class ApplicationBuilderExtensions
     {
@@ -23,11 +23,9 @@ namespace eDoxa.Cashier.Api.Extensions
         {
             var service = application.ApplicationServices.GetRequiredService<IEventBusService>();
 
-            service.Subscribe<UserCreatedIntegrationEvent, UserCreatedIntegrationEventHandler>();
+            service.Subscribe<PaymentDepositedIntegrationEvent, PaymentDepositedIntegrationEventHandler>();
 
-            service.Subscribe<TransactionSuccededIntegrationEvent, TransactionSuccededIntegrationEventHandler>();
-
-            service.Subscribe<TransactionFailedIntegrationEvent, TransactionFailedIntegrationEventHandler>();
+            service.Subscribe<PaymentWithdrawnIntegrationEvent, PaymentWithdrawnIntegrationEventHandler>();
         }
     }
 }

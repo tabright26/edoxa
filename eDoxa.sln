@@ -119,7 +119,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "cli", "cli", "{B28D5099-60A
 		cli\docker-remove-containers.ps1 = cli\docker-remove-containers.ps1
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Seedwork.Monitoring", "src\eDoxa.Seedwork.Monitoring\eDoxa.Seedwork.Monitoring.csproj", "{3AB9C9A8-2B81-4F4D-85F5-FCE0FAFADF4A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Seedwork.Monitoring", "src\eDoxa.Seedwork.Monitoring\eDoxa.Seedwork.Monitoring.csproj", "{3AB9C9A8-2B81-4F4D-85F5-FCE0FAFADF4A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Payment", "Payment", "{9050415E-2E9D-4737-8D81-A938CD4D1D80}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Payment.Api", "src\eDoxa.Payment.Api\eDoxa.Payment.Api.csproj", "{30352CEE-05ED-47C3-B832-B45E600E9718}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -275,6 +279,10 @@ Global
 		{3AB9C9A8-2B81-4F4D-85F5-FCE0FAFADF4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3AB9C9A8-2B81-4F4D-85F5-FCE0FAFADF4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3AB9C9A8-2B81-4F4D-85F5-FCE0FAFADF4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30352CEE-05ED-47C3-B832-B45E600E9718}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30352CEE-05ED-47C3-B832-B45E600E9718}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30352CEE-05ED-47C3-B832-B45E600E9718}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30352CEE-05ED-47C3-B832-B45E600E9718}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -330,6 +338,8 @@ Global
 		{7A1A50B6-0866-4C19-BEBD-B91AB10A3EBE} = {84A32CA2-5F8C-48F5-ACC4-FC020127BFA3}
 		{B28D5099-60AE-4C90-AD6B-023935DCA63D} = {6320F9AE-AC74-456A-869F-5A570C3467AB}
 		{3AB9C9A8-2B81-4F4D-85F5-FCE0FAFADF4A} = {1307B4CE-04FF-4315-BC01-0371760D5C26}
+		{9050415E-2E9D-4737-8D81-A938CD4D1D80} = {7942CE31-3804-446A-845B-0451884BB6B7}
+		{30352CEE-05ED-47C3-B832-B45E600E9718} = {9050415E-2E9D-4737-8D81-A938CD4D1D80}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8BB3B9BB-6C76-478F-982F-E2E084DBDFAC}
