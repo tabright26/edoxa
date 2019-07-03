@@ -17,7 +17,7 @@ using eDoxa.Seedwork.Common.Enumerations;
 namespace eDoxa.Cashier.Api.Application.Commands
 {
     [DataContract]
-    public sealed class DepositCommand : Command<TransactionViewModel>
+    public sealed class DepositCommand : Command
     {
         public DepositCommand(decimal amount, CurrencyType type)
         {

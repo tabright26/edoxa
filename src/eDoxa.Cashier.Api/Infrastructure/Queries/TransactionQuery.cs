@@ -31,7 +31,7 @@ using LinqKit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
-namespace eDoxa.Cashier.Api.Application.Queries
+namespace eDoxa.Cashier.Api.Infrastructure.Queries
 {
     public sealed partial class TransactionQuery
     {

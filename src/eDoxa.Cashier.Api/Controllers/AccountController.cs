@@ -62,20 +62,20 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpPost("deposit", Name = nameof(DepositAsync))]
         public async Task<IActionResult> DepositAsync([FromBody] DepositCommand command)
         {
-            var transaction = await _mediator.SendCommandAsync(command);
+            await _mediator.SendCommandAsync(command);
 
-            return this.Ok(transaction);
+            return this.Ok("Processing the deposit transaction...");
         }
 
         /// <summary>
-        ///     Withdraw money from the account.
+        ///     Withdrawal money from the account.
         /// </summary>
-        [HttpPost("withdraw", Name = nameof(WithdrawAsync))]
-        public async Task<IActionResult> WithdrawAsync([FromBody] WithdrawCommand command)
+        [HttpPost("withdrawal", Name = nameof(WithdrawalAsync))]
+        public async Task<IActionResult> WithdrawalAsync([FromBody] WithdrawalCommand command)
         {
-            var transaction = await _mediator.SendCommandAsync(command);
+            await _mediator.SendCommandAsync(command);
 
-            return this.Ok(transaction);
+            return this.Ok("Processing the withdrawal transaction...");
         }
     }
 }

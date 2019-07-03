@@ -17,7 +17,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate.Transactions
         public MoneyWithdrawTransaction(Money amount) : base(
             -amount,
             new TransactionDescription(nameof(MoneyWithdrawTransaction)),
-            TransactionType.Withdraw,
+            TransactionType.Withdrawal,
             new UtcNowDateTimeProvider()
         )
         {

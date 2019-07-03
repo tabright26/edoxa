@@ -60,7 +60,7 @@ namespace eDoxa.Cashier.Api.Application.Fakers
 
                             types.Remove(TransactionType.Charge);
 
-                            types.Remove(TransactionType.Withdraw);
+                            types.Remove(TransactionType.Withdrawal);
 
                             var transaction = new Transaction(
                                 currency,
@@ -106,7 +106,7 @@ namespace eDoxa.Cashier.Api.Application.Fakers
 
                             if (currency is Token)
                             {
-                                types.Remove(TransactionType.Withdraw);
+                                types.Remove(TransactionType.Withdrawal);
                             }
 
                             types.Remove(TransactionType.Deposit);

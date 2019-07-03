@@ -26,7 +26,7 @@ using LinqKit;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace eDoxa.Cashier.Api.Application.Queries
+namespace eDoxa.Cashier.Api.Infrastructure.Queries
 {
     public sealed partial class UserQuery
     {

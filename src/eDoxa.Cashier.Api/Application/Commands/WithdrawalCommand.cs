@@ -1,5 +1,5 @@
-﻿// Filename: WithdrawCommand.cs
-// Date Created: 2019-06-08
+﻿// Filename: WithdrawalCommand.cs
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,15 +10,14 @@
 
 using System.Runtime.Serialization;
 
-using eDoxa.Cashier.Domain.ViewModels;
 using eDoxa.Commands.Abstractions;
 
 namespace eDoxa.Cashier.Api.Application.Commands
 {
     [DataContract]
-    public sealed class WithdrawCommand : Command<TransactionViewModel>
+    public sealed class WithdrawalCommand : Command
     {
-        public WithdrawCommand(decimal amount)
+        public WithdrawalCommand(decimal amount)
         {
             Amount = amount;
         }

@@ -23,9 +23,9 @@ using Microsoft.AspNetCore.Http;
 
 namespace eDoxa.Cashier.Api.Application.Commands.Validations
 {
-    public sealed class WithdrawCommandValidator : CommandValidator<WithdrawCommand>
+    public sealed class WithdrawalCommandValidator : CommandValidator<WithdrawalCommand>
     {
-        public WithdrawCommandValidator(IHttpContextAccessor httpContextAccessor, IAccountQuery accountQuery)
+        public WithdrawalCommandValidator(IHttpContextAccessor httpContextAccessor, IAccountQuery accountQuery)
         {
             var amounts = new[] {Money.Fifty, Money.OneHundred, Money.TwoHundred};
 
@@ -47,7 +47,7 @@ namespace eDoxa.Cashier.Api.Application.Commands.Validations
 
                                     var accountMoney = new AccountMoney(account);
 
-                                    new WithdrawMoneyValidator(new Money(command.Amount)).Validate(accountMoney).Errors.ForEach(context.AddFailure);
+                                    new WithdrawalMoneyValidator(new Money(command.Amount)).Validate(accountMoney).Errors.ForEach(context.AddFailure);
                                 }
                             );
                     }

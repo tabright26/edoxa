@@ -13,6 +13,7 @@ using System;
 using eDoxa.IntegrationEvents.Extensions;
 using eDoxa.Payment.Api.Extensions;
 using eDoxa.Payment.Api.Infrastructure;
+using eDoxa.Payment.Api.Providers.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Monitoring.Extensions;
 
@@ -37,7 +38,11 @@ namespace eDoxa.Payment.Api
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.AddOptions();
+
             services.AddHealthChecks(Configuration);
+
+            services.AddProviders(Configuration);
 
             services.AddServiceBus(Configuration);
 
@@ -52,6 +57,8 @@ namespace eDoxa.Payment.Api
             {
                 application.UseDeveloperExceptionPage();
             }
+
+            application.UseProviders(Configuration);
 
             application.UseIntegrationEventSubscriptions();
         }

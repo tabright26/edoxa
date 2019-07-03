@@ -1,5 +1,5 @@
-﻿// Filename: WithdrawCommandHandler.cs
-// Date Created: 2019-06-08
+﻿// Filename: WithdrawalCommandHandler.cs
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,12 +12,9 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-using AutoMapper;
-
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Services;
-using eDoxa.Cashier.Domain.ViewModels;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Seedwork.Common.Extensions;
 
@@ -27,28 +24,20 @@ using Microsoft.AspNetCore.Http;
 
 namespace eDoxa.Cashier.Api.Application.Commands.Handlers
 {
-    public sealed class WithdrawCommandHandler : ICommandHandler<WithdrawCommand, TransactionViewModel>
+    public sealed class WithdrawalCommandHandler : AsyncCommandHandler<WithdrawalCommand>
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IAccountService _accountService;
         private readonly IUserQuery _userQuery;
-        private readonly IMapper _mapper;
 
-        public WithdrawCommandHandler(
-            IHttpContextAccessor httpContextAccessor,
-            IAccountService accountService,
-            IUserQuery userQuery,
-            IMapper mapper
-        )
+        public WithdrawalCommandHandler(IHttpContextAccessor httpContextAccessor, IAccountService accountService, IUserQuery userQuery)
         {
             _httpContextAccessor = httpContextAccessor;
             _accountService = accountService;
             _userQuery = userQuery;
-            _mapper = mapper;
         }
 
-        [ItemNotNull]
-        public async Task<TransactionViewModel> Handle([NotNull] WithdrawCommand command, CancellationToken cancellationToken)
+        protected override async Task Handle([NotNull] WithdrawalCommand command, CancellationToken cancellationToken)
         {
             var userId = _httpContextAccessor.GetUserId();
 
@@ -59,9 +48,7 @@ namespace eDoxa.Cashier.Api.Application.Commands.Handlers
                 throw new NullReferenceException("User not found.");
             }
 
-            var transaction = await _accountService.WithdrawAsync(user.Id, new Money(command.Amount), cancellationToken);
-
-            return _mapper.Map<TransactionViewModel>(transaction);
+            await _accountService.WithdrawalAsync(user, new Money(command.Amount), cancellationToken);
         }
     }
 }

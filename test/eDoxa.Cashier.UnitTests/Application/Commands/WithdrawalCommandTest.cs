@@ -18,12 +18,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace eDoxa.Cashier.UnitTests.Application.Commands
 {
     [TestClass]
-    public sealed class WithdrawCommandTest
+    public sealed class WithdrawalCommandTest
     {
         [TestMethod]
         public void Constructor_Tests()
         {
-            TestConstructor<WithdrawCommand>.ForParameters(typeof(decimal)).WithClassName("WithdrawCommand").WithClassAttributes(typeof(DataContractAttribute)).Assert();
+            TestConstructor<WithdrawalCommand>.ForParameters(typeof(decimal)).WithClassName("WithdrawalCommand").WithClassAttributes(typeof(DataContractAttribute)).Assert();
         }
     }
 }

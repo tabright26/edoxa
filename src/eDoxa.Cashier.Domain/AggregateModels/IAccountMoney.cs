@@ -18,6 +18,6 @@ namespace eDoxa.Cashier.Domain.AggregateModels
     {
         DateTime? LastWithdraw { get; }
 
-        ITransaction Withdraw(Money amount);
+        ITransaction Withdrawal(Money amount);
     }
 }

@@ -10,8 +10,8 @@
 
 using Autofac;
 
-using eDoxa.Cashier.Api.Application.Queries;
 using eDoxa.Cashier.Api.Application.Services;
+using eDoxa.Cashier.Api.Infrastructure.Queries;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services;
@@ -37,6 +37,7 @@ namespace eDoxa.Cashier.Api.Infrastructure
             // Repositories
             builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerLifetimeScope();
             builder.RegisterType<AccountRepository>().As<IAccountRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<TransactionRepository>().As<ITransactionRepository>().InstancePerLifetimeScope();
 
             // Queries
             builder.RegisterType<CardQuery>().As<ICardQuery>().InstancePerLifetimeScope();

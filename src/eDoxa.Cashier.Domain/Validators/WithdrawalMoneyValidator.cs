@@ -15,9 +15,9 @@ using FluentValidation;
 
 namespace eDoxa.Cashier.Domain.Validators
 {
-    public class WithdrawMoneyValidator : AbstractValidator<AccountMoney>
+    public class WithdrawalMoneyValidator : AbstractValidator<AccountMoney>
     {
-        public WithdrawMoneyValidator(Money money)
+        public WithdrawalMoneyValidator(Money money)
         {
             //this.RuleFor(account => account.User).Must(new HasBankAccountSpecification().IsSatisfiedBy).WithMessage("A bank account is required to withdrawal.");
 
@@ -25,7 +25,7 @@ namespace eDoxa.Cashier.Domain.Validators
 
             this.RuleFor(account => account)
                 .Must(new WeeklyMoneyWithdrawUnavailableSpecification().Not().IsSatisfiedBy)
-                .WithMessage(account => $"Withdraw unavailable until {account.LastWithdraw?.AddDays(7)}");
+                .WithMessage(account => $"Withdrawal unavailable until {account.LastWithdraw?.AddDays(7)}");
         }
     }
 }

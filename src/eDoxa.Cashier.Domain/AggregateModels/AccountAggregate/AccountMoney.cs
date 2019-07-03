@@ -43,7 +43,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
             _account.Transactions
                 .Where(
                     transaction => transaction.Currency.Type == CurrencyType.Money &&
-                                   transaction.Type == TransactionType.Withdraw &&
+                                   transaction.Type == TransactionType.Withdrawal &&
                                    transaction.Status == TransactionStatus.Succeded
                 )
                 .OrderByDescending(transaction => transaction.Timestamp)
@@ -87,7 +87,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
             return transaction;
         }
 
-        public ITransaction Withdraw(Money amount)
+        public ITransaction Withdrawal(Money amount)
         {
             if (!this.CanWithdraw(amount))
             {
@@ -113,7 +113,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 
         private bool CanWithdraw(Money money)
         {
-            return new WithdrawMoneyValidator(money).Validate(this).IsValid;
+            return new WithdrawalMoneyValidator(money).Validate(this).IsValid;
         }
     }
 }

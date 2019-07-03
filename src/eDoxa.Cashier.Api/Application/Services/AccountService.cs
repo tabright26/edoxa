@@ -1,5 +1,5 @@
 ﻿// Filename: AccountService.cs
-// Date Created: 2019-06-08
+// Date Created: 2019-07-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,81 +9,53 @@
 // this source code package.
 
 using System;
-using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Extensions;
+using eDoxa.Cashier.Api.IntegrationEvents;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
-using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services;
+using eDoxa.IntegrationEvents;
 using eDoxa.Seedwork.Common.Abstactions;
-using eDoxa.Seedwork.Common.ValueObjects;
-using eDoxa.Stripe.Abstractions;
 
 namespace eDoxa.Cashier.Api.Application.Services
 {
     public sealed class AccountService : IAccountService
     {
         private readonly IAccountRepository _accountRepository;
-        private readonly IUserQuery _userQuery;
-        private readonly IStripeService _stripeService;
+        private readonly IIntegrationEventService _integrationEventService;
 
-        public AccountService(IAccountRepository accountRepository, IUserQuery userQuery, IStripeService stripeService)
+        public AccountService(IAccountRepository accountRepository, IIntegrationEventService integrationEventService)
         {
             _accountRepository = accountRepository;
-            _userQuery = userQuery;
-            _stripeService = stripeService;
+            _integrationEventService = integrationEventService;
         }
 
-        public async Task<ITransaction> WithdrawAsync(UserId userId, Money money, CancellationToken cancellationToken = default)
+        public async Task WithdrawalAsync(User user, Money money, CancellationToken cancellationToken = default)
         {
-            var user = await _userQuery.FindUserAsync(userId);
+            var account = new AccountMoney(await _accountRepository.FindUserAccountAsync(user.Id));
 
-            var account = await _accountRepository.FindUserAccountAsync(userId);
-
-            var accountMoney = new AccountMoney(account);
-
-            var transaction = accountMoney.Withdraw(money);
+            var transaction = account.Withdrawal(money);
 
             await _accountRepository.CommitAsync(cancellationToken);
 
-            try
-            {
-                await _stripeService.CreateTransferAsync(
-                    user.GetConnectAccountId(),
-                    new Price(money).ToCents(),
+            await _integrationEventService.PublishAsync(
+                new WithdrawalProcessedIntegrationEvent(
                     transaction.Id,
-                    transaction.Description.ToString(),
-                    cancellationToken
-                );
-
-                transaction.MarkAsSucceded();
-
-                await _accountRepository.CommitAsync(cancellationToken);
-
-                return transaction as Transaction;
-            }
-            catch (Exception exception)
-            {
-                transaction.MarkAsFailed();
-
-                await _accountRepository.CommitAsync(cancellationToken);
-
-                ExceptionDispatchInfo.Capture(exception.InnerException).Throw();
-
-                throw new InvalidOperationException(transaction.ToString(), exception);
-            }
+                    transaction.Description.Text,
+                    user.GetConnectAccountId().Value,
+                    new Price(money).ToCents()
+                )
+            );
         }
 
-        public async Task<ITransaction> DepositAsync(UserId userId, ICurrency currency, CancellationToken cancellationToken = default)
+        public async Task DepositAsync(User user, ICurrency currency, CancellationToken cancellationToken = default)
         {
-            var user = await _userQuery.FindUserAsync(userId);
-
-            var account = await _accountRepository.FindUserAccountAsync(userId);
+            var account = await _accountRepository.FindUserAccountAsync(user.Id);
 
             switch (currency)
             {
@@ -91,14 +63,18 @@ namespace eDoxa.Cashier.Api.Application.Services
                 {
                     var moneyAccount = new AccountMoney(account);
 
-                    return await this.DepositAsync(user, moneyAccount, money, cancellationToken);
+                    await this.DepositAsync(user, moneyAccount, money, cancellationToken);
+
+                    break;
                 }
 
                 case Token token:
                 {
                     var tokenAccount = new AccountToken(account);
 
-                    return await this.DepositAsync(user, tokenAccount, token, cancellationToken);
+                    await this.DepositAsync(user, tokenAccount, token, cancellationToken);
+
+                    break;
                 }
 
                 default:
@@ -108,7 +84,7 @@ namespace eDoxa.Cashier.Api.Application.Services
             }
         }
 
-        private async Task<ITransaction> DepositAsync<TCurrency>(
+        private async Task DepositAsync<TCurrency>(
             User user,
             IAccount<TCurrency> account,
             TCurrency currency,
@@ -120,32 +96,9 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             await _accountRepository.CommitAsync(cancellationToken);
 
-            try
-            {
-                await _stripeService.CreateInvoiceAsync(
-                    user.GetCustomerId(),
-                    new Price(currency).ToCents(),
-                    transaction.Id,
-                    transaction.Description.ToString(),
-                    cancellationToken
-                );
-
-                transaction.MarkAsSucceded();
-
-                await _accountRepository.CommitAsync(cancellationToken);
-
-                return transaction as Transaction;
-            }
-            catch (Exception exception)
-            {
-                transaction.MarkAsFailed();
-
-                await _accountRepository.CommitAsync(cancellationToken);
-
-                ExceptionDispatchInfo.Capture(exception.InnerException).Throw();
-
-                throw new InvalidOperationException(transaction.ToString());
-            }
+            await _integrationEventService.PublishAsync(
+                new DepositProcessedIntegrationEvent(transaction.Id, transaction.Description.Text, user.GetCustomerId().Value, new Price(currency).ToCents())
+            );
         }
     }
 }

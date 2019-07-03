@@ -14,7 +14,7 @@ using eDoxa.IntegrationEvents;
 
 namespace eDoxa.Payment.Api.IntegrationEvents
 {
-    public class TransactionFailedIntegrationEvent : IntegrationEvent
+    internal sealed class TransactionFailedIntegrationEvent : IntegrationEvent
     {
         public TransactionFailedIntegrationEvent(Guid transactionId)
         {

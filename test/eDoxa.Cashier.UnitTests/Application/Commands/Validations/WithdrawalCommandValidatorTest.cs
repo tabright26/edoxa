@@ -18,13 +18,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace eDoxa.Cashier.UnitTests.Application.Commands.Validations
 {
     [TestClass]
-    public sealed class WithdrawCommandValidatorTest
+    public sealed class WithdrawalCommandValidatorTest
     {
         [TestMethod]
         public void Constructor_Tests()
         {
-            TestConstructor<WithdrawCommandValidator>.ForParameters(typeof(IHttpContextAccessor), typeof(IAccountQuery))
-                .WithClassName("WithdrawCommandValidator")
+            TestConstructor<WithdrawalCommandValidator>.ForParameters(typeof(IHttpContextAccessor), typeof(IAccountQuery))
+                .WithClassName("WithdrawalCommandValidator")
                 .Assert();
         }
     }

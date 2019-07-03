@@ -11,6 +11,7 @@
 using eDoxa.Cashier.Api.Application.Services;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.IntegrationEvents;
 using eDoxa.Seedwork.Testing.TestConstructor;
 using eDoxa.Stripe.Abstractions;
 
@@ -24,7 +25,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
         [TestMethod]
         public void Constructor_Tests()
         {
-            TestConstructor<AccountService>.ForParameters(typeof(IAccountRepository), typeof(IUserQuery), typeof(IStripeService)).WithClassName("AccountService").Assert();
+            TestConstructor<AccountService>.ForParameters(typeof(IAccountRepository),typeof(IIntegrationEventService)).WithClassName("AccountService").Assert();
         }
     }
 }

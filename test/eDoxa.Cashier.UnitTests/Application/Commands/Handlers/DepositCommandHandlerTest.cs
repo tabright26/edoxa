@@ -17,8 +17,7 @@ using eDoxa.Cashier.Api.Application.Commands;
 using eDoxa.Cashier.Api.Application.Commands.Handlers;
 using eDoxa.Cashier.Api.Application.Fakers;
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate.Transactions;
+using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.Domain.ViewModels;
@@ -29,7 +28,7 @@ using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Testing.TestConstructor;
 
-using FluentAssertions;
+using MediatR;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -75,9 +74,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Commands.Handlers
 
             _mockUserQuery.Setup(userQuery => userQuery.FindUserAsync(It.IsAny<UserId>())).ReturnsAsync(user).Verifiable();
 
-            _mockMoneyAccountService.Setup(accountService => accountService.DepositAsync(It.IsAny<UserId>(), It.IsAny<ICurrency>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new MoneyDepositTransaction(Money.Ten))
-                .Verifiable();
+            _mockMoneyAccountService.Setup(accountService => accountService.DepositAsync(It.IsAny<User>(), It.IsAny<ICurrency>(), It.IsAny<CancellationToken>())).Returns(Unit.Task).Verifiable();
 
             _mockMapper.Setup(mapper => mapper.Map<TransactionViewModel>(It.IsAny<ITransaction>())).Returns(new TransactionViewModel()).Verifiable();
 
@@ -89,12 +86,10 @@ namespace eDoxa.Cashier.UnitTests.Application.Commands.Handlers
             );
 
             // Act
-            var result = await handler.HandleAsync(command);
+            await handler.HandleAsync(command);
 
             // Assert
-            result.Should().BeOfType<TransactionViewModel>();
-
-            _mockMoneyAccountService.Verify(accountService => accountService.DepositAsync(It.IsAny<UserId>(), It.IsAny<ICurrency>(), It.IsAny<CancellationToken>()), Times.Once);
+            _mockMoneyAccountService.Verify(accountService => accountService.DepositAsync(It.IsAny<User>(), It.IsAny<ICurrency>(), It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }

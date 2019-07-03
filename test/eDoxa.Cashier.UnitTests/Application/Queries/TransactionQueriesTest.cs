@@ -10,7 +10,7 @@
 
 using AutoMapper;
 
-using eDoxa.Cashier.Api.Application.Queries;
+using eDoxa.Cashier.Api.Infrastructure.Queries;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Seedwork.Testing.TestConstructor;
 
