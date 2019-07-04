@@ -11,17 +11,10 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using AutoMapper;
-
 using eDoxa.Cashier.Api.Application.Commands;
 using eDoxa.Cashier.Api.Application.Commands.Handlers;
-using eDoxa.Cashier.Api.Application.Fakers;
-using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
-using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Services;
-using eDoxa.Cashier.Domain.ViewModels;
 using eDoxa.Cashier.UnitTests.Helpers.Mocks;
 using eDoxa.Commands.Extensions;
 using eDoxa.Seedwork.Common.ValueObjects;
@@ -40,23 +33,19 @@ namespace eDoxa.Cashier.UnitTests.Application.Commands.Handlers
     public sealed class WithdrawalCommandHandlerTest
     {
         private MockHttpContextAccessor _mockHttpContextAccessor;
-        private Mock<IAccountService> _mockMoneyAccountService;
-        private Mock<IUserQuery> _mockUserQuery;
-        private Mock<IMapper> _mockMapper;
+        private Mock<IAccountService> _mockAccountService;
 
         [TestInitialize]
         public void TestInitialize()
         {
             _mockHttpContextAccessor = new MockHttpContextAccessor();
-            _mockMoneyAccountService = new Mock<IAccountService>();
-            _mockUserQuery = new Mock<IUserQuery>();
-            _mockMapper = new Mock<IMapper>();
+            _mockAccountService = new Mock<IAccountService>();
         }
 
         [TestMethod]
         public void Constructor_Tests()
         {
-            TestConstructor<WithdrawalCommandHandler>.ForParameters(typeof(IHttpContextAccessor), typeof(IAccountService), typeof(IUserQuery))
+            TestConstructor<WithdrawalCommandHandler>.ForParameters(typeof(IHttpContextAccessor), typeof(IAccountService))
                 .WithClassName("WithdrawalCommandHandler")
                 .Assert();
         }
@@ -66,24 +55,14 @@ namespace eDoxa.Cashier.UnitTests.Application.Commands.Handlers
         {
             // Arrange
             var command = new WithdrawalCommand(Money.Fifty.Amount);
-
-            var userFaker = new UserFaker();
-
-            var user = userFaker.FakeNewUser();
-
-            _mockUserQuery.Setup(userQuery => userQuery.FindUserAsync(It.IsAny<UserId>())).ReturnsAsync(user).Verifiable();
-
-            _mockMoneyAccountService.Setup(accountService => accountService.WithdrawalAsync(It.IsAny<User>(), It.IsAny<Money>(), It.IsAny<CancellationToken>())).Returns(Unit.Task).Verifiable();
-
-            _mockMapper.Setup(mapper => mapper.Map<TransactionViewModel>(It.IsAny<ITransaction>())).Returns(new TransactionViewModel()).Verifiable();
-
-            var handler = new WithdrawalCommandHandler(_mockHttpContextAccessor.Object, _mockMoneyAccountService.Object, _mockUserQuery.Object);
+            _mockAccountService.Setup(accountService => accountService.WithdrawalAsync(It.IsAny<string>(), It.IsAny<UserId>(), It.IsAny<Money>(), It.IsAny<CancellationToken>())).Returns(Unit.Task).Verifiable();
+            var handler = new WithdrawalCommandHandler(_mockHttpContextAccessor.Object, _mockAccountService.Object);
 
             // Act
             await handler.HandleAsync(command);
 
             // Assert
-            _mockMoneyAccountService.Verify(accountService => accountService.WithdrawalAsync(It.IsAny<User>(), It.IsAny<Money>(), It.IsAny<CancellationToken>()), Times.Once);
+            _mockAccountService.Verify(accountService => accountService.WithdrawalAsync(It.IsAny<string>(), It.IsAny<UserId>(), It.IsAny<Money>(), It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }

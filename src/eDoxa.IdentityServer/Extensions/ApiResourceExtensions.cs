@@ -31,6 +31,7 @@ namespace eDoxa.IdentityServer.Extensions
                 AccessTokenType = AccessTokenType.Reference,
                 ClientId = apiResource.SwaggerClientId(),
                 ClientName = apiResource.SwaggerClientName(),
+                UpdateAccessTokenClaimsOnRefresh = true,
                 RequireConsent = false,
                 RedirectUris = new HashSet<string>
                 {

@@ -16,6 +16,7 @@ using Bogus;
 
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Common.Extensions;
+using eDoxa.Seedwork.Security.Constants;
 
 namespace eDoxa.Identity.Api.Application.Fakers
 {
@@ -92,6 +93,14 @@ namespace eDoxa.Identity.Api.Application.Fakers
                             var roles = roleFaker.FakeRoles();
 
                             return roles.Select(role => new UserRole(user.Id, role.Id)).ToList();
+                        }
+                    );
+
+                    ruleSet.FinishWith(
+                        (faker, user) =>
+                        {
+                            user.Claims.Add(new UserClaim(user.Id, CustomClaimTypes.StripeCustomerId, "cus_F5L8mRzm6YN5ma"));
+                            user.Claims.Add(new UserClaim(user.Id, CustomClaimTypes.StripeConnectAccountId, "acct_1EbASfAPhMnJQouG"));
                         }
                     );
                 }

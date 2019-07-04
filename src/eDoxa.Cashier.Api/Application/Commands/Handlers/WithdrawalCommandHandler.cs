@@ -8,12 +8,11 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Seedwork.Common.Extensions;
@@ -28,27 +27,20 @@ namespace eDoxa.Cashier.Api.Application.Commands.Handlers
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IAccountService _accountService;
-        private readonly IUserQuery _userQuery;
 
-        public WithdrawalCommandHandler(IHttpContextAccessor httpContextAccessor, IAccountService accountService, IUserQuery userQuery)
+        public WithdrawalCommandHandler(IHttpContextAccessor httpContextAccessor, IAccountService accountService)
         {
             _httpContextAccessor = httpContextAccessor;
             _accountService = accountService;
-            _userQuery = userQuery;
         }
 
         protected override async Task Handle([NotNull] WithdrawalCommand command, CancellationToken cancellationToken)
         {
             var userId = _httpContextAccessor.GetUserId();
 
-            var user = await _userQuery.FindUserAsync(userId);
+            var connectAccountId = _httpContextAccessor.GetConnectAccountId();
 
-            if (user == null)
-            {
-                throw new NullReferenceException("User not found.");
-            }
-
-            await _accountService.WithdrawalAsync(user, new Money(command.Amount), cancellationToken);
+            await _accountService.WithdrawalAsync(connectAccountId, userId, new Money(command.Amount), cancellationToken);
         }
     }
 }

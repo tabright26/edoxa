@@ -8,20 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using eDoxa.Arena.Challenges.Api.Application.Factories;
-using eDoxa.Arena.Challenges.Api.Application.Strategies;
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Seedwork.Common;
-using eDoxa.Seedwork.Common.Extensions;
-using eDoxa.Seedwork.Domain.Aggregate;
-
-using FluentAssertions;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggregate
@@ -29,64 +15,64 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
     [TestClass]
     public sealed class ChallengeTest
     {
-        private static IEnumerable<object[]> ChallengeDataSets =>
-            ChallengeGame.GetEnumerations()
-                .SelectMany(
-                    game => ValueObject.GetValues<ChallengeDuration>()
-                        .SelectMany(
-                            duration => ValueObject.GetValues<PayoutEntries>()
-                                .SelectMany(
-                                    payoutEntries => ValueObject.GetValues<BestOf>()
-                                        .SelectMany(
-                                            bestOf => EntryFee.GetValues()
-                                                .Select(
-                                                    entryFee => new object[]
-                                                    {
-                                                        new ChallengeName(nameof(Challenge)),
-                                                        game,
-                                                        new ChallengeSetup(bestOf, payoutEntries, entryFee),
-                                                        new ChallengeTimeline(new UtcNowDateTimeProvider(), duration),
-                                                        new ScoringFactory().CreateInstance(game).Scoring,
-                                                        new PayoutFactory(new PayoutStrategy()).CreateInstance().GetPayout(payoutEntries, entryFee)
-                                                    }
-                                                )
-                                        )
-                                )
-                        )
-                );
+        //private static IEnumerable<object[]> ChallengeDataSets =>
+        //    ChallengeGame.GetEnumerations()
+        //        .SelectMany(
+        //            game => ValueObject.GetValues<ChallengeDuration>()
+        //                .SelectMany(
+        //                    duration => ValueObject.GetValues<PayoutEntries>()
+        //                        .SelectMany(
+        //                            payoutEntries => ValueObject.GetValues<BestOf>()
+        //                                .SelectMany(
+        //                                    bestOf => EntryFee.GetValues()
+        //                                        .Select(
+        //                                            entryFee => new object[]
+        //                                            {
+        //                                                new ChallengeName(nameof(Challenge)),
+        //                                                game,
+        //                                                new ChallengeSetup(bestOf, payoutEntries, entryFee),
+        //                                                new ChallengeTimeline(new UtcNowDateTimeProvider(), duration),
+        //                                                new ScoringFactory().CreateInstance(game).Scoring,
+        //                                                new PayoutFactory(new PayoutStrategy()).CreateInstance().GetPayout(payoutEntries, entryFee)
+        //                                            }
+        //                                        )
+        //                                )
+        //                        )
+        //                )
+        //        );
 
-        [DataTestMethod]
-        [DynamicData(nameof(ChallengeDataSets))]
-        public void Constructor_ShouldNotThrow(
-            ChallengeName name,
-            ChallengeGame game,
-            ChallengeSetup setup,
-            ChallengeTimeline timeline,
-            IScoring scoring,
-            IPayout payout
-        )
-        {
-            // Arrange
-            var action = new Action(
-                () =>
-                {
-                    // Act
-                    var challenge = new Challenge(
-                        name,
-                        game,
-                        setup,
-                        timeline,
-                        scoring,
-                        payout
-                    );
+        //[DataTestMethod]
+        //[DynamicData(nameof(ChallengeDataSets))]
+        //public void Constructor_ShouldNotThrow(
+        //    ChallengeName name,
+        //    ChallengeGame game,
+        //    ChallengeSetup setup,
+        //    ChallengeTimeline timeline,
+        //    IScoring scoring,
+        //    IPayout payout
+        //)
+        //{
+        //    // Arrange
+        //    var action = new Action(
+        //        () =>
+        //        {
+        //            // Act
+        //            var challenge = new Challenge(
+        //                name,
+        //                game,
+        //                setup,
+        //                timeline,
+        //                scoring,
+        //                payout
+        //            );
 
-                    challenge.DumbAsJson(true);
-                }
-            );
+        //            challenge.DumbAsJson(true);
+        //        }
+        //    );
 
-            // Assert
-            action.Should().NotThrow();
-        }
+        //    // Assert
+        //    action.Should().NotThrow();
+        //}
 
         //[TestMethod]
         //public void RegisterParticipant_IntoEmptyCollection_ShouldNotBeEmpty()

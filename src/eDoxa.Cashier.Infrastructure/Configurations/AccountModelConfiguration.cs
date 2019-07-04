@@ -8,8 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-
 using eDoxa.Cashier.Infrastructure.Models;
 
 using JetBrains.Annotations;
@@ -27,7 +25,7 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
 
             builder.Property(account => account.Id).IsRequired();
 
-            builder.Property<Guid>("UserId").IsRequired();
+            builder.Property(account => account.UserId).IsRequired();
 
             builder.HasMany(account => account.Transactions).WithOne(transaction => transaction.Account).IsRequired().OnDelete(DeleteBehavior.Cascade);
 

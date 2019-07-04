@@ -25,16 +25,12 @@ using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security.Extensions;
 using eDoxa.Seedwork.Security.IdentityServer.Resources;
-using eDoxa.Stripe.Extensions;
-using eDoxa.Stripe.Filters;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
-using Stripe;
 
 namespace eDoxa.Cashier.Api
 {
@@ -45,7 +41,6 @@ namespace eDoxa.Cashier.Api
             Configuration = configuration;
             Environment = environment;
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-            StripeConfiguration.SetApiKey(configuration["StripeConfiguration:ApiKey"]);
         }
 
         private IHostingEnvironment Environment { get; }
@@ -66,7 +61,7 @@ namespace eDoxa.Cashier.Api
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            services.AddMvcFilters(filters => filters.Add<StripeExceptionFilter>());
+            services.AddMvcFilters();
 
             services.AddSwagger(Configuration, Environment, CustomApiResources.Cashier);
 
@@ -75,8 +70,6 @@ namespace eDoxa.Cashier.Api
             services.AddServiceBus(Configuration);
 
             services.AddAuthentication(Configuration, Environment, CustomApiResources.Cashier);
-
-            services.AddStripe();
 
             return services.Build<ApiModule>();
         }

@@ -39,8 +39,8 @@ namespace eDoxa.Cashier.Api.Controllers
         /// <summary>
         ///     Get transactions by currency, type and status.
         /// </summary>
-        [HttpGet(Name = nameof(GetTransactionsAsync))]
-        public async Task<IActionResult> GetTransactionsAsync(CurrencyType currency = null, TransactionType type = null, TransactionStatus status = null)
+        [HttpGet]
+        public async Task<IActionResult> GetAsync(CurrencyType currency = null, TransactionType type = null, TransactionStatus status = null)
         {
             var transactionViewModels = await _transactionQuery.FindUserTransactionViewModelsAsync(currency, type, status);
 

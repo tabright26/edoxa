@@ -33,9 +33,7 @@ namespace eDoxa.Cashier.Infrastructure
         }
 
         public IMediator Mediator { get; }
-
-        public DbSet<UserModel> Users => this.Set<UserModel>();
-
+        
         public DbSet<AccountModel> Accounts => this.Set<AccountModel>();
 
         public DbSet<TransactionModel> Transactions => this.Set<TransactionModel>();
@@ -43,8 +41,6 @@ namespace eDoxa.Cashier.Infrastructure
         protected override void OnModelCreating([NotNull] ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
-            builder.ApplyConfiguration(new UserModelConfiguration());
 
             builder.ApplyConfiguration(new AccountModelConfiguration());
 

@@ -24,7 +24,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
     internal sealed class CashierDbContextData : IDbContextData
     {
         private readonly CashierDbContext _context;
-        private readonly IUserRepository _userRepository;
+        private readonly IAccountRepository _accountRepository;
         private readonly ILogger<CashierDbContextData> _logger;
         private readonly IHostingEnvironment _environment;
 
@@ -32,28 +32,28 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
             ILogger<CashierDbContextData> logger,
             IHostingEnvironment environment,
             CashierDbContext context,
-            IUserRepository userRepository
+            IAccountRepository accountRepository
         )
         {
             _logger = logger;
             _environment = environment;
             _context = context;
-            _userRepository = userRepository;
+            _accountRepository = accountRepository;
         }
 
         public async Task SeedAsync()
         {
             if (_environment.IsDevelopment())
             {
-                if (!_context.Users.Any())
+                if (!_context.Accounts.Any())
                 {
-                    var userFaker = new UserFaker();
+                    var accountFaker = new AccountFaker();
 
-                    var user = userFaker.FakeAdminUser();
+                    var adminAccount = accountFaker.FakeAdminAccount();
 
-                    _userRepository.Create(user);
+                    _accountRepository.Create(adminAccount);
 
-                    await _userRepository.CommitAsync();
+                    await _accountRepository.CommitAsync();
 
                     _logger.LogInformation("The user's being populated.");
                 }
@@ -68,7 +68,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
         {
             if (!_environment.IsProduction())
             {
-                _context.Users.RemoveRange(_context.Users);
+                _context.Accounts.RemoveRange(_context.Accounts);
 
                 await _context.SaveChangesAsync();
             }

@@ -8,14 +8,13 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 using AutoMapper;
 
+using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Seedwork.Common.Extensions;
@@ -30,19 +29,16 @@ namespace eDoxa.Cashier.Api.Application.Commands.Handlers
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IAccountService _accountService;
-        private readonly IUserQuery _userQuery;
         private readonly IMapper _mapper;
 
         public DepositCommandHandler(
             IHttpContextAccessor httpContextAccessor,
             IAccountService accountService,
-            IUserQuery userQuery,
             IMapper mapper
         )
         {
             _httpContextAccessor = httpContextAccessor;
             _accountService = accountService;
-            _userQuery = userQuery;
             _mapper = mapper;
         }
 
@@ -50,14 +46,9 @@ namespace eDoxa.Cashier.Api.Application.Commands.Handlers
         {
             var userId = _httpContextAccessor.GetUserId();
 
-            var user = await _userQuery.FindUserAsync(userId);
+            var customerId = _httpContextAccessor.GetCustomerId();
 
-            if (user == null)
-            {
-                throw new NullReferenceException("User not found.");
-            }
-
-            await _accountService.DepositAsync(user, _mapper.Map<Currency>(command.Currency), cancellationToken);
+            await _accountService.DepositAsync(customerId, userId, _mapper.Map<Currency>(command.Currency), cancellationToken);
         }
     }
 }

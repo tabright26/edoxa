@@ -13,7 +13,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api;
-using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.ViewModels;
 using eDoxa.Cashier.Infrastructure;
@@ -55,7 +55,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
         public async Task TestCleanup()
         {
             var context = _testServer.GetService<CashierDbContext>();
-            context.Users.RemoveRange(context.Users);
+            context.Accounts.RemoveRange(context.Accounts);
             await context.SaveChangesAsync();
         }
 
@@ -63,14 +63,10 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
         public async Task CashierScenario()
         {
             // Arrange
-            var userRepository = _testServer.GetService<IUserRepository>();
-            var user = new User(
-                CashierTestConstants.TestUserId,
-                CashierTestConstants.TestStripeConnectAccountId,
-                CashierTestConstants.TestStripeConnectAccountId
-            );
-            userRepository.Create(user);
-            await userRepository.CommitAsync();
+            var accountRepository = _testServer.GetService<IAccountRepository>();
+            var account = new Account(CashierTestConstants.TestUserId);
+            accountRepository.Create(account);
+            await accountRepository.CommitAsync();
 
             // Act
             var response = await this.ExecuteAsync();

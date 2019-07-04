@@ -31,11 +31,11 @@ namespace eDoxa.Identity.Api.Extensions
 
             service.Subscribe<RoleDeletedIntegrationEvent, RoleDeletedIntegrationEventHandler>();
 
-            service.Subscribe<UserClaimAddedIntegrationEvent, UserClaimAddedIntegrationEventHandler>();
+            service.Subscribe<UserClaimsAddedIntegrationEvent, UserClaimsAddedIntegrationEventHandler>();
 
-            service.Subscribe<UserClaimRemovedIntegrationEvent, UserClaimRemovedIntegrationEventHandler>();
+            service.Subscribe<UserClaimsRemovedIntegrationEvent, UserClaimsRemovedIntegrationEventHandler>();
 
-            service.Subscribe<UserClaimReplacedIntegrationEvent, UserClaimReplacedIntegrationEventHandler>();
+            service.Subscribe<UserClaimsReplacedIntegrationEvent, UserClaimsReplacedIntegrationEventHandler>();
 
             service.Subscribe<UserRoleAddedIntegrationEvent, UserRoleAddedIntegrationEventHandler>();
 

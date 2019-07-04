@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 
 using eDoxa.Seedwork.Common.Enumerations;
+using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
@@ -19,6 +20,13 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
     public sealed class Account : Entity<AccountId>, IAccount
     {
         private HashSet<ITransaction> _transactions = new HashSet<ITransaction>();
+
+        public Account(UserId userId)
+        {
+            UserId = userId;
+        }
+
+        public UserId UserId { get; }
 
         public IReadOnlyCollection<ITransaction> Transactions => _transactions;
 

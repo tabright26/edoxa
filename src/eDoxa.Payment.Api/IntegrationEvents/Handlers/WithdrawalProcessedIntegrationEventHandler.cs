@@ -8,16 +8,12 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.IntegrationEvents;
-using eDoxa.Payment.Api.Providers.Stripe;
+using eDoxa.Payment.Api.Providers.Stripe.Abstractions;
 
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 using Stripe;
 
@@ -27,20 +23,17 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
     {
         private readonly ILogger<WithdrawalProcessedIntegrationEventHandler> _logger;
         private readonly IEventBusService _eventBusService;
-        private readonly TransferService _transferService;
-        private readonly StripeOptions _stripeOptions;
+        private readonly IStripeService _stripeService;
 
         public WithdrawalProcessedIntegrationEventHandler(
             ILogger<WithdrawalProcessedIntegrationEventHandler> logger,
             IEventBusService eventBusService,
-            IOptionsSnapshot<StripeOptions> options,
-            TransferService transferService
+            IStripeService stripeService
         )
         {
             _logger = logger;
             _eventBusService = eventBusService;
-            _stripeOptions = options.Value;
-            _transferService = transferService;
+            _stripeService = stripeService;
         }
 
         public async Task Handle(WithdrawalProcessedIntegrationEvent integrationEvent)
@@ -49,7 +42,7 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
             {
                 _logger.LogInformation($"Processing {nameof(WithdrawalProcessedIntegrationEvent)}...");
 
-                await this.StripeWithdrawalAsync(
+                await _stripeService.CreateTransferAsync(
                     integrationEvent.TransactionId,
                     integrationEvent.TransactionDescription,
                     integrationEvent.ConnectAccountId,
@@ -70,29 +63,6 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
 
                 _logger.LogInformation($"Published {nameof(TransactionFailedIntegrationEvent)}.");
             }
-        }
-
-        private async Task StripeWithdrawalAsync(
-            Guid transactionId,
-            string transactionDescription,
-            string connectAccountId,
-            long amount,
-            CancellationToken cancellationToken = default
-        )
-        {
-            var options = new TransferCreateOptions
-            {
-                Destination = connectAccountId,
-                Currency = _stripeOptions.Currency,
-                Amount = amount,
-                Description = transactionDescription,
-                Metadata = new Dictionary<string, string>
-                {
-                    ["TransactionId"] = transactionId.ToString()
-                }
-            };
-
-            await _transferService.CreateAsync(options, cancellationToken: cancellationToken);
         }
     }
 }

@@ -50,8 +50,8 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries
         [ItemCanBeNull]
         private async Task<AccountModel> FindUserAccountModelAsync(Guid userId)
         {
-            var accounts = from account in Accounts.Include(account => account.User).Include(account => account.Transactions).AsExpandable()
-                           where account.User.Id == userId
+            var accounts = from account in Accounts.Include(account => account.Transactions).AsExpandable()
+                           where account.UserId == userId
                            select account;
 
             return await accounts.SingleOrDefaultAsync();

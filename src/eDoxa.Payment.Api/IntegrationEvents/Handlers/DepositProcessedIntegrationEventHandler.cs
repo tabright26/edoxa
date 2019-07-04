@@ -8,16 +8,12 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.IntegrationEvents;
-using eDoxa.Payment.Api.Providers.Stripe;
+using eDoxa.Payment.Api.Providers.Stripe.Abstractions;
 
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 using Stripe;
 
@@ -27,23 +23,17 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
     {
         private readonly ILogger<DepositProcessedIntegrationEventHandler> _logger;
         private readonly IEventBusService _eventBusService;
-        private readonly StripeOptions _stripeOptions;
-        private readonly InvoiceService _invoiceService;
-        private readonly InvoiceItemService _invoiceItemService;
+        private readonly IStripeService _stripeService;
 
         public DepositProcessedIntegrationEventHandler(
             ILogger<DepositProcessedIntegrationEventHandler> logger,
             IEventBusService eventBusService,
-            IOptionsSnapshot<StripeOptions> options,
-            InvoiceService invoiceService,
-            InvoiceItemService invoiceItemService
+            IStripeService stripeService
         )
         {
             _logger = logger;
             _eventBusService = eventBusService;
-            _stripeOptions = options.Value;
-            _invoiceService = invoiceService;
-            _invoiceItemService = invoiceItemService;
+            _stripeService = stripeService;
         }
 
         public async Task Handle(DepositProcessedIntegrationEvent integrationEvent)
@@ -52,7 +42,7 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
             {
                 _logger.LogInformation($"Processing {nameof(DepositProcessedIntegrationEvent)}...");
 
-                await this.StripeDepositAsync(
+                await _stripeService.CreateInvoiceAsync(
                     integrationEvent.TransactionId,
                     integrationEvent.TransactionDescription,
                     integrationEvent.CustomerId,
@@ -73,64 +63,6 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
 
                 _logger.LogInformation($"Published {nameof(TransactionFailedIntegrationEvent)}.");
             }
-        }
-
-        private async Task StripeDepositAsync(
-            Guid transactionId,
-            string transactionDescription,
-            string customerId,
-            long amount,
-            CancellationToken cancellationToken = default
-        )
-        {
-            await this.CreateInvoiceItemAsync(
-                transactionId,
-                transactionDescription,
-                customerId,
-                amount,
-                cancellationToken
-            );
-
-            await this.CreateInvoiceAsync(transactionId, customerId, cancellationToken);
-        }
-
-        private async Task CreateInvoiceItemAsync(
-            Guid transactionId,
-            string transactionDescription,
-            string customerId,
-            long amount,
-            CancellationToken cancellationToken = default
-        )
-        {
-            var options = new InvoiceItemCreateOptions
-            {
-                CustomerId = customerId,
-                Currency = _stripeOptions.Currency,
-                Amount = amount,
-                Description = transactionDescription,
-                TaxRates = _stripeOptions.TaxRateIds,
-                Metadata = new Dictionary<string, string>
-                {
-                    ["TransactionId"] = transactionId.ToString()
-                }
-            };
-
-            await _invoiceItemService.CreateAsync(options, cancellationToken: cancellationToken);
-        }
-
-        private async Task CreateInvoiceAsync(Guid transactionId, string customerId, CancellationToken cancellationToken = default)
-        {
-            var options = new InvoiceCreateOptions
-            {
-                CustomerId = customerId,
-                AutoAdvance = true,
-                Metadata = new Dictionary<string, string>
-                {
-                    ["TransactionId"] = transactionId.ToString()
-                }
-            };
-
-            await _invoiceService.CreateAsync(options, cancellationToken: cancellationToken);
         }
     }
 }

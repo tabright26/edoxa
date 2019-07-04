@@ -9,11 +9,9 @@
 // this source code package.
 
 using eDoxa.Cashier.Api.Application.Services;
-using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.IntegrationEvents;
 using eDoxa.Seedwork.Testing.TestConstructor;
-using eDoxa.Stripe.Abstractions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

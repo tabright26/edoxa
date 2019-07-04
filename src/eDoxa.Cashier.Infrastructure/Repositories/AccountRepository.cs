@@ -46,8 +46,8 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
         [ItemCanBeNull]
         private async Task<AccountModel> FindUserAccountModelAsync(Guid userId)
         {
-            var accounts = from account in _context.Accounts.Include(account => account.User).Include(account => account.Transactions).AsExpandable()
-                           where account.User.Id == userId
+            var accounts = from account in _context.Accounts.Include(account => account.Transactions).AsExpandable()
+                           where account.UserId == userId
                            select account;
 
             return await accounts.SingleOrDefaultAsync();
@@ -56,6 +56,15 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
 
     public sealed partial class AccountRepository : IAccountRepository
     {
+        public void Create(IAccount account)
+        {
+            var accountModel = _mapper.Map<AccountModel>(account);
+
+            _context.Accounts.Add(accountModel);
+
+            _materializedObjects[account] = accountModel;
+        }
+
         [ItemCanBeNull]
         public async Task<IAccount> FindUserAccountAsync(UserId userId)
         {
@@ -91,7 +100,7 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
 
             foreach (var (account, accountModel) in _materializedObjects)
             {
-                _materializedIds[accountModel.User.Id] = account;
+                _materializedIds[accountModel.UserId] = account;
             }
         }
 

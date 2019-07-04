@@ -17,7 +17,7 @@ namespace eDoxa.Cashier.Infrastructure.Models
     {
         public Guid Id { get; set; }
 
-        public UserModel User { get; set; }
+        public Guid UserId { get; set; }
 
         public ICollection<TransactionModel> Transactions { get; set; }
     }

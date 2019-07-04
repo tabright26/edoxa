@@ -11,6 +11,8 @@
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Seedwork.Common.Abstactions;
+using eDoxa.Seedwork.Common.Extensions;
+using eDoxa.Seedwork.Common.ValueObjects;
 
 namespace eDoxa.Cashier.Api.Application.Fakers
 {
@@ -26,7 +28,7 @@ namespace eDoxa.Cashier.Api.Application.Fakers
             this.CustomInstantiator(
                 faker =>
                 {
-                    var account = new Account();
+                    var account = new Account(faker.UserId());
 
                     account.SetEntityId(AccountId.FromGuid(faker.Random.Guid()));
 
@@ -48,7 +50,7 @@ namespace eDoxa.Cashier.Api.Application.Fakers
                     ruleSet.CustomInstantiator(
                         faker =>
                         {
-                            var account = new Account();
+                            var account = new Account(UserId.Parse("e4655fe0-affd-4323-b022-bdb2ebde6091"));
 
                             account.SetEntityId(AccountId.Parse("707b2535-ed60-4797-92a0-4dacd8d51f6c"));
 

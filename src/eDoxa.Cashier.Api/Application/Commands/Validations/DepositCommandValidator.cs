@@ -10,7 +10,6 @@
 
 using System.Linq;
 
-using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Validators;
@@ -20,8 +19,6 @@ using eDoxa.Seedwork.Application.Validations.Extensions;
 using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.Extensions;
 using eDoxa.Seedwork.Domain.Extensions;
-using eDoxa.Stripe.Abstractions;
-using eDoxa.Stripe.Validators;
 
 using FluentValidation;
 
@@ -31,12 +28,7 @@ namespace eDoxa.Cashier.Api.Application.Commands.Validations
 {
     public sealed class DepositCommandValidator : CommandValidator<DepositCommand>
     {
-        public DepositCommandValidator(
-            IHttpContextAccessor httpContextAccessor,
-            IAccountQuery accountQuery,
-            IUserQuery userQuery,
-            IStripeService stripeService
-        )
+        public DepositCommandValidator(IHttpContextAccessor httpContextAccessor, IAccountQuery accountQuery)
         {
             this.RuleFor(command => command.Currency)
                 .NotNull()
@@ -79,12 +71,6 @@ namespace eDoxa.Cashier.Api.Application.Commands.Validations
                                             return;
                                         }
                                     }
-
-                                    var user = await userQuery.FindUserAsync(userId);
-
-                                    var customer = await stripeService.GetCustomerAsync(user.GetCustomerId(), cancellationToken);
-
-                                    new StripeCustomerValidator().Validate(customer).Errors.ForEach(context.AddFailure);
                                 }
                             );
                     }

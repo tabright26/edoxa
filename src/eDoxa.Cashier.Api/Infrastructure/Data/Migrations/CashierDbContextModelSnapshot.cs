@@ -28,9 +28,6 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
                     b.ToTable("Account");
                 });
 
@@ -60,32 +57,6 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
                     b.HasIndex("AccountId");
 
                     b.ToTable("Transaction");
-                });
-
-            modelBuilder.Entity("eDoxa.Cashier.Infrastructure.Models.UserModel", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("BankAccountId");
-
-                    b.Property<string>("ConnectAccountId")
-                        .IsRequired();
-
-                    b.Property<string>("CustomerId")
-                        .IsRequired();
-
-                    b.HasKey("Id");
-
-                    b.ToTable("User");
-                });
-
-            modelBuilder.Entity("eDoxa.Cashier.Infrastructure.Models.AccountModel", b =>
-                {
-                    b.HasOne("eDoxa.Cashier.Infrastructure.Models.UserModel", "User")
-                        .WithOne("Account")
-                        .HasForeignKey("eDoxa.Cashier.Infrastructure.Models.AccountModel", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("eDoxa.Cashier.Infrastructure.Models.TransactionModel", b =>

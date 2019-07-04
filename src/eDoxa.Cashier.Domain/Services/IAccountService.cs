@@ -12,15 +12,15 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Common.Abstactions;
+using eDoxa.Seedwork.Common.ValueObjects;
 
 namespace eDoxa.Cashier.Domain.Services
 {
     public interface IAccountService
     {
-        Task DepositAsync(User user, ICurrency currency, CancellationToken cancellationToken = default);
+        Task DepositAsync(string customerId, UserId userId, ICurrency currency, CancellationToken cancellationToken = default);
 
-        Task WithdrawalAsync(User user, Money money, CancellationToken cancellationToken = default);
+        Task WithdrawalAsync(string connectAccountId, UserId userId, Money money, CancellationToken cancellationToken = default);
     }
 }

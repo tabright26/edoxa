@@ -16,6 +16,7 @@ namespace eDoxa.Seedwork.Security.Constants
     {
         public static readonly string Roles = CustomIdentityResources.Roles.Name;
         public static readonly string Permissions = CustomIdentityResources.Permissions.Name;
+        public static readonly string Stripe = CustomIdentityResources.Stripe.Name;
         public static readonly string IdentityApi = CustomApiResources.Identity.Name;
         public static readonly string CashierApi = CustomApiResources.Cashier.Name;
         public static readonly string ChallengeApi = CustomApiResources.ArenaChallenges.Name;

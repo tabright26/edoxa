@@ -23,6 +23,8 @@ namespace eDoxa.Payment.Api.Extensions
         {
             var service = application.ApplicationServices.GetRequiredService<IEventBusService>();
 
+            service.Subscribe<UserCreatedIntegrationEvent, UserCreatedIntegrationEventHandler>();
+
             service.Subscribe<DepositProcessedIntegrationEvent, DepositProcessedIntegrationEventHandler>();
 
             service.Subscribe<WithdrawalProcessedIntegrationEvent, WithdrawalProcessedIntegrationEventHandler>();

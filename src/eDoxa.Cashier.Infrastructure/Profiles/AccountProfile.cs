@@ -26,8 +26,8 @@ namespace eDoxa.Cashier.Infrastructure.Profiles
 
             this.CreateMap<IAccount, AccountModel>()
                 .ForMember(account => account.Id, config => config.MapFrom<Guid>(account => account.Id))
-                .ForMember(account => account.Transactions, config => config.MapFrom(account => account.Transactions))
-                .ForMember(account => account.User, config => config.Ignore());
+                .ForMember(account => account.UserId, config => config.MapFrom<Guid>(account => account.UserId))
+                .ForMember(account => account.Transactions, config => config.MapFrom(account => account.Transactions));
         }
     }
 }

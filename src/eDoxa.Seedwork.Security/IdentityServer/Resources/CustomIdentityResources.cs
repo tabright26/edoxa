@@ -20,12 +20,13 @@ namespace eDoxa.Seedwork.Security.IdentityServer.Resources
 {
     public sealed class CustomIdentityResources
     {
-        public static readonly Role Roles = new Role();
-        public static readonly Permission Permissions = new Permission();
+        public static readonly RoleIdentityResource Roles = new RoleIdentityResource();
+        public static readonly PermissionIdentityResource Permissions = new PermissionIdentityResource();
+        public static readonly StripeIdentityResource Stripe = new StripeIdentityResource();
 
-        public sealed class Role : IdentityResource
+        public sealed class RoleIdentityResource : IdentityResource
         {
-            internal Role() : base(
+            internal RoleIdentityResource() : base(
                 "roles",
                 "Your role(s)",
                 new HashSet<string>
@@ -37,14 +38,29 @@ namespace eDoxa.Seedwork.Security.IdentityServer.Resources
             }
         }
 
-        public sealed class Permission : IdentityResource
+        public sealed class PermissionIdentityResource : IdentityResource
         {
-            internal Permission() : base(
+            internal PermissionIdentityResource() : base(
                 "permissions",
                 "Your permission(s)",
                 new HashSet<string>
                 {
                     CustomClaimTypes.Permission
+                }
+            )
+            {
+            }
+        }
+
+        public sealed class StripeIdentityResource : IdentityResource
+        {
+            internal StripeIdentityResource() : base(
+                "stripe",
+                "Stripe",
+                new HashSet<string>
+                {
+                    CustomClaimTypes.StripeConnectAccountId,
+                    CustomClaimTypes.StripeCustomerId
                 }
             )
             {

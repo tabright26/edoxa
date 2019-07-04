@@ -15,6 +15,7 @@ using AutoMapper;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Infrastructure.Models;
+using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Domain.Extensions;
 
 using JetBrains.Annotations;
@@ -26,7 +27,7 @@ namespace eDoxa.Cashier.Infrastructure.Profiles.ConverterTypes
         [NotNull]
         public IAccount Convert([NotNull] AccountModel source, [NotNull] IAccount destination, [NotNull] ResolutionContext context)
         {
-            var account = new Account();
+            var account = new Account(UserId.FromGuid(source.UserId));
 
             account.SetEntityId(AccountId.FromGuid(source.Id));
 

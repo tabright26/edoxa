@@ -14,7 +14,13 @@ namespace eDoxa.Payment.Api.Providers.Stripe
 {
     public sealed class StripeOptions
     {
+        public string Country { get; set; }
+
         public string Currency { get; set; }
+
+        public string BusinessType { get; set; }
+
+        public string AccountType { get; set; }
 
         public List<string> TaxRateIds { get; set; }
     }

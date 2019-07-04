@@ -55,8 +55,8 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries
             int? status = null
         )
         {
-            var transactions = from transaction in Transactions.Include(account => account.Account).ThenInclude(account => account.User).AsExpandable()
-                               where transaction.Account.User.Id == userId &&
+            var transactions = from transaction in Transactions.Include(account => account.Account).AsExpandable()
+                               where transaction.Account.UserId == userId &&
                                      (currency == null || transaction.Currency == currency) &&
                                      (type == null || transaction.Type == type) &&
                                      (status == null || transaction.Status == status)

@@ -1,5 +1,5 @@
 ﻿// Filename: TransactionsControllerTest.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -64,7 +64,13 @@ namespace eDoxa.Cashier.UnitTests.Controllers
             var transactionFaker = new TransactionFaker();
 
             _mockTransactionQuery
-                .Setup(transactionQuery => transactionQuery.FindUserTransactionsAsync(It.IsAny<CurrencyType>(), It.IsAny<TransactionType>(), It.IsAny<TransactionStatus>()))
+                .Setup(
+                    transactionQuery => transactionQuery.FindUserTransactionsAsync(
+                        It.IsAny<CurrencyType>(),
+                        It.IsAny<TransactionType>(),
+                        It.IsAny<TransactionStatus>()
+                    )
+                )
                 .ReturnsAsync(transactionFaker.Generate(5, TransactionFaker.PositiveTransaction))
                 .Verifiable();
 
@@ -73,13 +79,17 @@ namespace eDoxa.Cashier.UnitTests.Controllers
             var controller = new TransactionsController(_mockTransactionQuery.Object);
 
             // Act
-            var result = await controller.GetTransactionsAsync();
+            var result = await controller.GetAsync();
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
             _mockTransactionQuery.Verify(
-                transactionQuery => transactionQuery.FindUserTransactionsAsync(It.IsAny<CurrencyType>(), It.IsAny<TransactionType>(), It.IsAny<TransactionStatus>()),
+                transactionQuery => transactionQuery.FindUserTransactionsAsync(
+                    It.IsAny<CurrencyType>(),
+                    It.IsAny<TransactionType>(),
+                    It.IsAny<TransactionStatus>()
+                ),
                 Times.Once
             );
         }
@@ -89,7 +99,13 @@ namespace eDoxa.Cashier.UnitTests.Controllers
         {
             // Arrange
             _mockTransactionQuery
-                .Setup(transactionQuery => transactionQuery.FindUserTransactionsAsync(It.IsAny<CurrencyType>(), It.IsAny<TransactionType>(), It.IsAny<TransactionStatus>()))
+                .Setup(
+                    transactionQuery => transactionQuery.FindUserTransactionsAsync(
+                        It.IsAny<CurrencyType>(),
+                        It.IsAny<TransactionType>(),
+                        It.IsAny<TransactionStatus>()
+                    )
+                )
                 .ReturnsAsync(new Collection<ITransaction>())
                 .Verifiable();
 
@@ -98,13 +114,17 @@ namespace eDoxa.Cashier.UnitTests.Controllers
             var controller = new TransactionsController(_mockTransactionQuery.Object);
 
             // Act
-            var result = await controller.GetTransactionsAsync();
+            var result = await controller.GetAsync();
 
             // Assert
             result.Should().BeOfType<NoContentResult>();
 
             _mockTransactionQuery.Verify(
-                transactionQuery => transactionQuery.FindUserTransactionsAsync(It.IsAny<CurrencyType>(), It.IsAny<TransactionType>(), It.IsAny<TransactionStatus>()),
+                transactionQuery => transactionQuery.FindUserTransactionsAsync(
+                    It.IsAny<CurrencyType>(),
+                    It.IsAny<TransactionType>(),
+                    It.IsAny<TransactionStatus>()
+                ),
                 Times.Once
             );
         }

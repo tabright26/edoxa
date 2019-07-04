@@ -29,19 +29,15 @@ namespace eDoxa.Cashier.Api.Infrastructure
     {
         protected override void Load([NotNull] ContainerBuilder builder)
         {
-            base.Load(builder);
             builder.RegisterModule<DomainEventModule>();
             builder.RegisterModule<CommandModule>();
             builder.RegisterModule<IntegrationEventModule<CashierDbContext>>();
 
             // Repositories
-            builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerLifetimeScope();
             builder.RegisterType<AccountRepository>().As<IAccountRepository>().InstancePerLifetimeScope();
             builder.RegisterType<TransactionRepository>().As<ITransactionRepository>().InstancePerLifetimeScope();
 
             // Queries
-            builder.RegisterType<CardQuery>().As<ICardQuery>().InstancePerLifetimeScope();
-            builder.RegisterType<UserQuery>().As<IUserQuery>().InstancePerLifetimeScope();
             builder.RegisterType<AccountQuery>().As<IAccountQuery>().InstancePerLifetimeScope();
             builder.RegisterType<TransactionQuery>().As<ITransactionQuery>().InstancePerLifetimeScope();
 

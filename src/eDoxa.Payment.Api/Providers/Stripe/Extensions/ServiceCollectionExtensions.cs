@@ -8,6 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Payment.Api.Providers.Stripe.Abstractions;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -21,11 +23,17 @@ namespace eDoxa.Payment.Api.Providers.Stripe.Extensions
         {
             services.Configure<StripeOptions>(configuration.GetSection("Providers:Stripe"));
 
+            services.AddTransient<AccountService>();
+
+            services.AddTransient<CustomerService>();
+
             services.AddTransient<InvoiceService>();
 
             services.AddTransient<InvoiceItemService>();
 
             services.AddTransient<TransferService>();
+
+            services.AddTransient<IStripeService, StripeService>();
         }
     }
 }
