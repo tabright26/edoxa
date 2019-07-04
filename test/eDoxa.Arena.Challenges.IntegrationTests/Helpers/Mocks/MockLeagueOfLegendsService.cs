@@ -14,9 +14,9 @@ using System.Threading.Tasks;
 using eDoxa.Arena.LeagueOfLegends.Abstractions;
 using eDoxa.Arena.LeagueOfLegends.Dtos;
 
-namespace eDoxa.Arena.LeagueOfLegends
+namespace eDoxa.Arena.Challenges.IntegrationTests.Helpers.Mocks
 {
-    public sealed class FakeLeagueOfLegendsService : ILeagueOfLegendsService
+    public sealed class MockLeagueOfLegendsService : ILeagueOfLegendsService
     {
         public Task<LeagueOfLegendsMatchReferenceDto[]> GetMatchReferencesAsync(string accountId, DateTime endTime, DateTime beginTime)
         {

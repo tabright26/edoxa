@@ -1,5 +1,5 @@
 ﻿// Filename: HttpResponseMessageExtensions.cs
-// Date Created: 2019-06-08
+// Date Created: 2019-07-04
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -15,7 +15,7 @@ using JetBrains.Annotations;
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Seedwork.Testing.TestServer.Extensions
+namespace eDoxa.Seedwork.Testing.Extensions
 {
     public static class HttpResponseMessageExtensions
     {
@@ -24,14 +24,7 @@ namespace eDoxa.Seedwork.Testing.TestServer.Extensions
         {
             var content = await response.Content.ReadAsStringAsync();
 
-            return JsonConvert.DeserializeObject<T>(
-                content,
-                new JsonSerializerSettings
-                {
-                    DateFormatString = "yyyy'-'MM'-'dd'T'HH':'mm':'ss",
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                }
-            );
+            return JsonConvert.DeserializeObject<T>(content);
         }
     }
 }

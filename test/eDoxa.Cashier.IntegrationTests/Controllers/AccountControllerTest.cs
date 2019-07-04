@@ -18,8 +18,7 @@ using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.ViewModels;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.IntegrationTests.Helpers;
-using eDoxa.Seedwork.Testing.TestServer;
-using eDoxa.Seedwork.Testing.TestServer.Extensions;
+using eDoxa.Seedwork.Testing.Extensions;
 
 using FluentAssertions;
 
@@ -45,7 +44,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
         [TestInitialize]
         public async Task TestInitialize()
         {
-            var factory = new CustomWebApplicationFactory<CashierDbContext, Startup>();
+            var factory = new WebApplicationFactory<Startup>();
             _httpClient = factory.CreateClient();
             _testServer = factory.Server;
             await this.TestCleanup();
@@ -54,19 +53,29 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
         [TestCleanup]
         public async Task TestCleanup()
         {
-            var context = _testServer.GetService<CashierDbContext>();
-            context.Accounts.RemoveRange(context.Accounts);
-            await context.SaveChangesAsync();
+            await _testServer.UsingScopeAsync(
+                async scope =>
+                {
+                    var context = scope.GetService<CashierDbContext>();
+                    context.Accounts.RemoveRange(context.Accounts);
+                    await context.SaveChangesAsync();
+                }
+            );
         }
 
         [TestMethod]
         public async Task CashierScenario()
         {
             // Arrange
-            var accountRepository = _testServer.GetService<IAccountRepository>();
-            var account = new Account(CashierTestConstants.TestUserId);
-            accountRepository.Create(account);
-            await accountRepository.CommitAsync();
+            await _testServer.UsingScopeAsync(
+                async scope =>
+                {
+                    var accountRepository = scope.GetService<IAccountRepository>();
+                    var account = new Account(CashierTestConstants.TestUserId);
+                    accountRepository.Create(account);
+                    await accountRepository.CommitAsync();
+                }
+            );
 
             // Act
             var response = await this.ExecuteAsync();

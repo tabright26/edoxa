@@ -1,5 +1,5 @@
 ﻿// Filename: HttpClientExtensions.cs
-// Date Created: 2019-06-08
+// Date Created: 2019-07-04
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -15,7 +15,7 @@ using System.Security.Claims;
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Seedwork.Testing.TestServer.Extensions
+namespace eDoxa.Seedwork.Testing.Extensions
 {
     public static class HttpClientExtensions
     {

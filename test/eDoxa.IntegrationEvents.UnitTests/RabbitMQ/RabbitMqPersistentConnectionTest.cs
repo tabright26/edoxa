@@ -12,7 +12,7 @@ using System;
 
 using eDoxa.IntegrationEvents.Exceptions;
 using eDoxa.IntegrationEvents.RabbitMQ;
-using eDoxa.Seedwork.Testing.Mocks;
+using eDoxa.Seedwork.Testing.Helpers.Mocks;
 
 using FluentAssertions;
 

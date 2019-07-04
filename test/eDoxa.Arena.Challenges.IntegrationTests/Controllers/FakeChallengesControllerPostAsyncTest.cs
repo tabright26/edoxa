@@ -1,5 +1,5 @@
 ﻿// Filename: FakeChallengesControllerPostAsyncTest.cs
-// Date Created: 2019-06-12
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -14,14 +14,13 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Api;
 using eDoxa.Arena.Challenges.Api.Application.Commands;
 using eDoxa.Arena.Challenges.Api.Application.Fakers;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Infrastructure;
+using eDoxa.Arena.Challenges.IntegrationTests.Helpers;
+using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Helpers;
-using eDoxa.Seedwork.Testing.TestServer;
-using eDoxa.Seedwork.Testing.TestServer.Extensions;
 
 using FluentAssertions;
 
@@ -43,11 +42,11 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
             return await _httpClient.DefaultRequestHeaders(new[] {new Claim(JwtClaimTypes.Subject, Guid.NewGuid().ToString())})
                 .PostAsync("api/fake/challenges", new JsonContent(command));
         }
-        
+
         [TestInitialize]
         public async Task TestInitialize()
         {
-            var factory = new CustomWebApplicationFactory<ChallengesDbContext, Startup>();
+            var factory = new WebApplicationFactory<TestStartup>();
             _httpClient = factory.CreateClient();
             _testServer = factory.Server;
             await this.TestCleanup();
@@ -56,9 +55,14 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         [TestCleanup]
         public async Task TestCleanup()
         {
-            var context = _testServer.GetService<ChallengesDbContext>();
-            context.Challenges.RemoveRange(context.Challenges);
-            await context.SaveChangesAsync();
+            await _testServer.UsingScopeAsync(
+                async scope =>
+                {
+                    var context = scope.GetService<ChallengesDbContext>();
+                    context.Challenges.RemoveRange(context.Challenges);
+                    await context.SaveChangesAsync();
+                }
+            );
         }
 
         [DataRow(2, 100)]
@@ -83,12 +87,19 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         public async Task ShouldBeBadRequest(int count, int seed)
         {
             // Arrange
-            var challengeRepository = _testServer.GetService<IChallengeRepository>();
             var challengeFaker = new ChallengeFaker();
             challengeFaker.UseSeed(seed);
             var challenges = challengeFaker.Generate(count);
-            challengeRepository.Create(challenges);
-            await challengeRepository.CommitAsync();
+
+            await _testServer.UsingScopeAsync(
+                async scope =>
+                {
+                    var challengeRepository = scope.GetService<IChallengeRepository>();
+                    challengeRepository.Create(challenges);
+                    await challengeRepository.CommitAsync();
+                }
+            );
+
             var command = new FakeChallengesCommand(count, seed);
 
             // Act

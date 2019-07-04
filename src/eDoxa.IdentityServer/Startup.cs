@@ -30,7 +30,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.IdentityServer
 {
-    public sealed class Startup
+    public class Startup
     {
         public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {

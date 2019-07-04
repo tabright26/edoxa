@@ -36,7 +36,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.Arena.Challenges.Api
 {
-    public sealed class Startup
+    public class Startup
     {
         public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {
@@ -45,9 +45,9 @@ namespace eDoxa.Arena.Challenges.Api
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         }
 
-        private IHostingEnvironment Environment { get; }
+        protected IHostingEnvironment Environment { get; }
 
-        private IConfiguration Configuration { get; }
+        protected IConfiguration Configuration { get; }
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
@@ -83,7 +83,7 @@ namespace eDoxa.Arena.Challenges.Api
 
             services.AddArena(Configuration);
 
-            return services.Build<ApiModule>();
+            return this.BuildModule(services);
         }
 
         public void Configure(IApplicationBuilder application, IApiVersionDescriptionProvider provider)
@@ -103,6 +103,11 @@ namespace eDoxa.Arena.Challenges.Api
             application.UseMvc();
 
             application.UseIntegrationEventSubscriptions();
+        }
+ 
+        protected virtual IServiceProvider BuildModule(IServiceCollection services)
+        {
+            return services.Build<ApiModule>();
         }
     }
 }

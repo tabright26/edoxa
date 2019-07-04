@@ -35,8 +35,6 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure
     {
         protected override void Load([NotNull] ContainerBuilder builder)
         {
-            base.Load(builder);
-
             builder.RegisterModule<DomainEventModule>();
             builder.RegisterModule<CommandModule>();
             builder.RegisterModule<IntegrationEventModule<ChallengesDbContext>>();
