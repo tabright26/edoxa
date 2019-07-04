@@ -15,7 +15,7 @@ using eDoxa.Seedwork.Testing;
 namespace eDoxa.Cashier.IntegrationTests.Helpers
 {
     internal sealed class WebApplicationFactory<TStartup> : WebApplicationFactory<CashierDbContext, TStartup, Program>
-    where TStartup : class
+    where TStartup : TestStartup
     {
     }
 }

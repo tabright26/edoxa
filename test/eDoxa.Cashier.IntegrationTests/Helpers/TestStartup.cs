@@ -10,16 +10,14 @@
 
 using System;
 
-using eDoxa.Arena.Challenges.Api;
-using eDoxa.Arena.Challenges.IntegrationTests.Helpers.Mocks;
-using eDoxa.Arena.LeagueOfLegends.Abstractions;
+using eDoxa.Cashier.Api;
 using eDoxa.Seedwork.Application.Extensions;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace eDoxa.Arena.Challenges.IntegrationTests.Helpers
+namespace eDoxa.Cashier.IntegrationTests.Helpers
 {
     internal class TestStartup : Startup
     {
@@ -29,8 +27,6 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Helpers
 
         protected override IServiceProvider BuildModule(IServiceCollection services)
         {
-            services.AddTransient<ILeagueOfLegendsService, MockLeagueOfLegendsService>();
-
             return services.Build<TestModule>();
         }
     }

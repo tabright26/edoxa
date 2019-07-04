@@ -34,7 +34,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.Cashier.Api
 {
-    public sealed class Startup
+    public class Startup
     {
         public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {
@@ -71,7 +71,7 @@ namespace eDoxa.Cashier.Api
 
             services.AddAuthentication(Configuration, Environment, CustomApiResources.Cashier);
 
-            return services.Build<ApiModule>();
+            return this.BuildModule(services);
         }
 
         public void Configure(IApplicationBuilder application, IApiVersionDescriptionProvider provider)
@@ -91,6 +91,11 @@ namespace eDoxa.Cashier.Api
             application.UseMvc();
 
             application.UseIntegrationEventSubscriptions();
+        }
+
+        protected virtual IServiceProvider BuildModule(IServiceCollection services)
+        {
+            return services.Build<ApiModule>();
         }
     }
 }

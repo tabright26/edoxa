@@ -60,43 +60,35 @@ namespace eDoxa.Cashier.UnitTests.Controllers
         {
             // Arrange
             var accountFaker = new AccountFaker();
-
             var account = accountFaker.Generate();
-
             _mockAccountQuery.Setup(mediator => mediator.FindUserBalanceAsync(It.IsAny<CurrencyType>()))
                 .ReturnsAsync(account.GetBalanceFor(CurrencyType.Money))
                 .Verifiable();
-
             _mockAccountQuery.SetupGet(accountQuery => accountQuery.Mapper).Returns(MapperExtensions.Mapper);
-
             var controller = new AccountBalanceController(_mockAccountQuery.Object);
 
             // Act
-            var result = await controller.GetByCurrencyAsync(null);
+            var result = await controller.GetByCurrencyAsync(CurrencyType.Money);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
-
             _mockAccountQuery.Verify(accountQuery => accountQuery.FindUserBalanceAsync(It.IsAny<CurrencyType>()), Times.Once);
         }
 
         [TestMethod]
-        public async Task GetBalanceAsync_ShouldBeOfTypeNotFoundObjectResult()
+        public async Task GetBalanceAsync_ShouldBeOfTypeBadRequestObjectResult()
         {
             // Arrange
             _mockAccountQuery.Setup(accountQuery => accountQuery.FindUserBalanceAsync(It.IsAny<CurrencyType>())).ReturnsAsync((Balance) null).Verifiable();
-
             _mockAccountQuery.SetupGet(accountQuery => accountQuery.Mapper).Returns(MapperExtensions.Mapper);
-
             var controller = new AccountBalanceController(_mockAccountQuery.Object);
 
             // Act
             var result = await controller.GetByCurrencyAsync(null);
 
             // Assert
-            result.Should().BeOfType<NotFoundObjectResult>();
-
-            _mockAccountQuery.Verify(accountQuery => accountQuery.FindUserBalanceAsync(It.IsAny<CurrencyType>()), Times.Once);
+            result.Should().BeOfType<BadRequestObjectResult>();
+            _mockAccountQuery.Verify(accountQuery => accountQuery.FindUserBalanceAsync(It.IsAny<CurrencyType>()), Times.Never);
         }
     }
 }

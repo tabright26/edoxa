@@ -18,7 +18,6 @@ namespace eDoxa.Cashier.Api.Application.Fakers
 {
     public sealed class AccountFaker : CustomFaker<IAccount>
     {
-        private const string NewAccount = nameof(NewAccount);
         private const string AdminAccount = nameof(AdminAccount);
 
         private readonly TransactionFaker _transactionFaker = new TransactionFaker();
@@ -59,11 +58,6 @@ namespace eDoxa.Cashier.Api.Application.Fakers
                     );
                 }
             );
-        }
-
-        public IAccount FakeNewAccount()
-        {
-            return this.Generate(NewAccount);
         }
 
         public IAccount FakeAdminAccount()

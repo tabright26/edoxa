@@ -32,7 +32,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Fakers
             var action = new Action(
                 () =>
                 {
-                    var account = accountFaker.FakeNewAccount();
+                    var account = accountFaker.Generate();
 
                     Console.WriteLine(account.DumbAsJson());
                 }

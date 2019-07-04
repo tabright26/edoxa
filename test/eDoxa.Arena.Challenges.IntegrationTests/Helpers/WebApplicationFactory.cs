@@ -15,7 +15,7 @@ using eDoxa.Seedwork.Testing;
 namespace eDoxa.Arena.Challenges.IntegrationTests.Helpers
 {
     internal sealed class WebApplicationFactory<TStartup> : WebApplicationFactory<ChallengesDbContext, TStartup, Program>
-    where TStartup : class
+    where TStartup : TestStartup
     {
     }
 }

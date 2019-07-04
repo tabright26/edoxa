@@ -8,16 +8,21 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Infrastructure.Queries.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Queries;
+using eDoxa.Cashier.Domain.ViewModels;
 using eDoxa.Seedwork.Common.Enumerations;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Cashier.Api.Controllers
 {
@@ -40,6 +45,8 @@ namespace eDoxa.Cashier.Api.Controllers
         ///     Get transactions by currency, type and status.
         /// </summary>
         [HttpGet]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<TransactionViewModel>))]
+        [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync(CurrencyType currency = null, TransactionType type = null, TransactionStatus status = null)
         {
             var transactionViewModels = await _transactionQuery.FindUserTransactionViewModelsAsync(currency, type, status);

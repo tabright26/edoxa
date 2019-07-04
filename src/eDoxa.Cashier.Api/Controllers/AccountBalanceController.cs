@@ -12,10 +12,14 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Infrastructure.Queries.Extensions;
 using eDoxa.Cashier.Domain.Queries;
+using eDoxa.Cashier.Domain.ViewModels;
 using eDoxa.Seedwork.Common.Enumerations;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Cashier.Api.Controllers
 {
@@ -38,8 +42,16 @@ namespace eDoxa.Cashier.Api.Controllers
         ///     Get account balance by currency.
         /// </summary>
         [HttpGet("{currency}")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(BalanceViewModel))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetByCurrencyAsync(CurrencyType currency)
         {
+            if (!CurrencyType.HasEnumeration(currency))
+            {
+                return this.BadRequest("The currency is invalid");
+            }
+
             var balanceViewModel = await _accountQuery.FindUserBalanceViewModelAsync(currency);
 
             if (balanceViewModel == null)

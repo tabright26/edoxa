@@ -10,13 +10,13 @@
 
 using Autofac;
 
-using eDoxa.Arena.Challenges.Api.Infrastructure;
-using eDoxa.Arena.Challenges.IntegrationTests.Helpers.Mocks;
+using eDoxa.Cashier.Api.Infrastructure;
+using eDoxa.Cashier.IntegrationTests.Helpers.Mocks;
 using eDoxa.IntegrationEvents;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Arena.Challenges.IntegrationTests.Helpers
+namespace eDoxa.Cashier.IntegrationTests.Helpers
 {
     internal sealed class TestModule : Module
     {

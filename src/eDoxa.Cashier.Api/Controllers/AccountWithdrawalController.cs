@@ -16,7 +16,10 @@ using eDoxa.Commands.Extensions;
 using MediatR;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Cashier.Api.Controllers
 {
@@ -39,6 +42,8 @@ namespace eDoxa.Cashier.Api.Controllers
         ///     Withdrawal money from the account.
         /// </summary>
         [HttpPost]
+        [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> PostAsync([FromBody] WithdrawalCommand command)
         {
             await _mediator.SendCommandAsync(command);

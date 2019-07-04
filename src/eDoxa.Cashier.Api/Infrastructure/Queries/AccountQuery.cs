@@ -81,21 +81,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries
         {
             var account = await this.FindUserAccountAsync(userId);
 
-            if (currency == CurrencyType.Money)
-            {
-                var accountMoney = new AccountMoney(account);
-
-                return accountMoney.Balance;
-            }
-
-            if (currency == CurrencyType.Token)
-            {
-                var accountToken = new AccountToken(account);
-
-                return accountToken.Balance;
-            }
-
-            throw new ArgumentException(nameof(currency));
+            return account?.GetBalanceFor(currency);
         }
 
         [ItemCanBeNull]

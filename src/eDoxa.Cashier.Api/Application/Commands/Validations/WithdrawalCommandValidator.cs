@@ -18,6 +18,7 @@ using eDoxa.Seedwork.Common.Extensions;
 using eDoxa.Seedwork.Domain.Extensions;
 
 using FluentValidation;
+using FluentValidation.Results;
 
 using Microsoft.AspNetCore.Http;
 
@@ -44,6 +45,13 @@ namespace eDoxa.Cashier.Api.Application.Commands.Validations
                                     var userId = httpContextAccessor.GetUserId();
 
                                     var account = await accountQuery.FindUserAccountAsync(userId);
+
+                                    if (account == null)
+                                    {
+                                        context.AddFailure(new ValidationFailure(string.Empty, "User account not found.") { ErrorCode = StatusCodes.Status404NotFound.ToString() });
+                                        
+                                        return;
+                                    }
 
                                     var accountMoney = new AccountMoney(account);
 
