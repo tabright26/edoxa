@@ -19,7 +19,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels
     {
         DateTime Timestamp { get; }
 
-        Currency Currency { get; }
+        ICurrency Currency { get; }
 
         TransactionType Type { get; }
 

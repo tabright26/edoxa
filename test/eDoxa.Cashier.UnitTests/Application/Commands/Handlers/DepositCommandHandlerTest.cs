@@ -15,13 +15,11 @@ using AutoMapper;
 
 using eDoxa.Cashier.Api.Application.Commands;
 using eDoxa.Cashier.Api.Application.Commands.Handlers;
+using eDoxa.Cashier.Api.ViewModels;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Services;
-using eDoxa.Cashier.Domain.ViewModels;
 using eDoxa.Cashier.UnitTests.Helpers.Mocks;
 using eDoxa.Commands.Extensions;
-using eDoxa.Seedwork.Common.Abstactions;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Testing.TestConstructor;
 
@@ -61,7 +59,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Commands.Handlers
         public async Task HandleAsync_DepositMoneyCommand_ShouldBeOfTypeEither()
         {
             // Arrange
-            var command = new DepositCommand(10, CurrencyType.Money);
+            var command = new DepositCommand(10, Currency.Money);
 
             _mockMoneyAccountService
                 .Setup(

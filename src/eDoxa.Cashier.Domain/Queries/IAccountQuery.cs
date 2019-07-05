@@ -14,7 +14,6 @@ using AutoMapper;
 
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.ValueObjects;
 
 using JetBrains.Annotations;
@@ -32,9 +31,9 @@ namespace eDoxa.Cashier.Domain.Queries
         Task<IAccount> FindUserAccountAsync();
 
         [ItemCanBeNull]
-        Task<Balance> FindUserBalanceAsync(UserId userId, CurrencyType currency);
+        Task<Balance> FindUserBalanceAsync(UserId userId, Currency currency);
 
         [ItemCanBeNull]
-        Task<Balance> FindUserBalanceAsync(CurrencyType currency);
+        Task<Balance> FindUserBalanceAsync(Currency currency);
     }
 }

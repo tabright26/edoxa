@@ -14,7 +14,7 @@ using AutoMapper;
 
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Infrastructure.Models;
-using eDoxa.Cashier.Infrastructure.Profiles.ConverterTypes;
+using eDoxa.Cashier.Infrastructure.Profiles.Converters;
 
 namespace eDoxa.Cashier.Infrastructure.Profiles
 {
@@ -22,7 +22,7 @@ namespace eDoxa.Cashier.Infrastructure.Profiles
     {
         public AccountProfile()
         {
-            this.CreateMap<AccountModel, IAccount>().ConvertUsing(new AccountTypeConverter());
+            this.CreateMap<AccountModel, IAccount>().ConvertUsing(new AccountConverter());
 
             this.CreateMap<IAccount, AccountModel>()
                 .ForMember(account => account.Id, config => config.MapFrom<Guid>(account => account.Id))

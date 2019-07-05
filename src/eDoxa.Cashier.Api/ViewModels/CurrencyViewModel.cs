@@ -8,17 +8,17 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Seedwork.Common.Enumerations;
+using eDoxa.Cashier.Domain.AggregateModels;
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Cashier.Domain.ViewModels
+namespace eDoxa.Cashier.Api.ViewModels
 {
     [JsonObject]
     public class CurrencyViewModel
     {
-        [JsonProperty("type")]
-        public CurrencyType Type { get; set; }
+        [JsonProperty("currency")]
+        public Currency Type { get; set; }
 
         [JsonProperty("amount")]
         public decimal Amount { get; set; }

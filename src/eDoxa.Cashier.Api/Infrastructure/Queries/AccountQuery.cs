@@ -19,7 +19,6 @@ using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.Infrastructure.Models;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.Extensions;
 using eDoxa.Seedwork.Common.ValueObjects;
 
@@ -77,7 +76,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries
         }
 
         [ItemCanBeNull]
-        public async Task<Balance> FindUserBalanceAsync(UserId userId, CurrencyType currency)
+        public async Task<Balance> FindUserBalanceAsync(UserId userId, Currency currency)
         {
             var account = await this.FindUserAccountAsync(userId);
 
@@ -85,7 +84,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries
         }
 
         [ItemCanBeNull]
-        public async Task<Balance> FindUserBalanceAsync(CurrencyType currency)
+        public async Task<Balance> FindUserBalanceAsync(Currency currency)
         {
             var userId = _httpContextAccessor.GetUserId();
 

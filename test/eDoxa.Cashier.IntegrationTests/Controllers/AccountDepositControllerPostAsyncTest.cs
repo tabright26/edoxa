@@ -18,7 +18,6 @@ using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.IntegrationTests.Helpers;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Security.Constants;
 using eDoxa.Seedwork.Testing.Extensions;
@@ -85,8 +84,8 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            var response = await this.ExecuteAsync(account.UserId, "cus_test", new DepositCommand(Money.Fifty, CurrencyType.Money));
-
+            var response = await this.ExecuteAsync(account.UserId, "cus_test", new DepositCommand(Money.Fifty, Currency.Money));
+            
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(StatusCodes.Status200OK);
@@ -110,7 +109,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            var response = await this.ExecuteAsync(account.UserId, "cus_test", new DepositCommand(Token.FiftyThousand, CurrencyType.Token));
+            var response = await this.ExecuteAsync(account.UserId, "cus_test", new DepositCommand(Token.FiftyThousand, Currency.Token));
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -135,7 +134,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            var response = await this.ExecuteAsync(account.UserId, "cus_test", new DepositCommand(2.5M, CurrencyType.Money));
+            var response = await this.ExecuteAsync(account.UserId, "cus_test", new DepositCommand(2.5M, Currency.Money));
 
             // Assert
             response.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
@@ -157,7 +156,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            var response = await this.ExecuteAsync(account.UserId, "cus_test", new DepositCommand(2500M, CurrencyType.Token));
+            var response = await this.ExecuteAsync(account.UserId, "cus_test", new DepositCommand(2500M, Currency.Token));
 
             // Assert
             response.StatusCode.Should().Be(StatusCodes.Status400BadRequest);

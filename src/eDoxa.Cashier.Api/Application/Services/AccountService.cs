@@ -18,7 +18,6 @@ using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.IntegrationEvents;
-using eDoxa.Seedwork.Common.Abstactions;
 using eDoxa.Seedwork.Common.ValueObjects;
 
 namespace eDoxa.Cashier.Api.Application.Services
@@ -89,7 +88,7 @@ namespace eDoxa.Cashier.Api.Application.Services
             TCurrency currency,
             CancellationToken cancellationToken = default
         )
-        where TCurrency : Currency
+        where TCurrency : ICurrency
         {
             var transaction = account.Deposit(currency);
 

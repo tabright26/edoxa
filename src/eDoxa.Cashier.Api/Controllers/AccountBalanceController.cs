@@ -11,9 +11,9 @@
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Infrastructure.Queries.Extensions;
+using eDoxa.Cashier.Api.ViewModels;
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Queries;
-using eDoxa.Cashier.Domain.ViewModels;
-using eDoxa.Seedwork.Common.Enumerations;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -45,9 +45,9 @@ namespace eDoxa.Cashier.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(BalanceViewModel))]
         [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetByCurrencyAsync(CurrencyType currency)
+        public async Task<IActionResult> GetByCurrencyAsync(Currency currency)
         {
-            if (!CurrencyType.HasEnumeration(currency))
+            if (!Currency.HasEnumeration(currency))
             {
                 return this.BadRequest("The currency is invalid");
             }

@@ -8,13 +8,11 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Seedwork.Common.Enumerations;
-
-namespace eDoxa.Seedwork.Common.Abstactions
+namespace eDoxa.Cashier.Domain.AggregateModels
 {
     public interface ICurrency
     {
-        CurrencyType Type { get; }
+        Currency Type { get; }
 
         decimal Amount { get; }
     }

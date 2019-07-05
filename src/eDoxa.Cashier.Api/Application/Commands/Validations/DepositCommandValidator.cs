@@ -10,14 +10,13 @@
 
 using System.Linq;
 
+using eDoxa.Cashier.Api.ViewModels;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Validators;
-using eDoxa.Cashier.Domain.ViewModels;
 using eDoxa.Commands.Abstractions.Validations;
 using eDoxa.Seedwork.Application.Validations.Extensions;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.Extensions;
 using eDoxa.Seedwork.Domain.Extensions;
 
@@ -45,7 +44,7 @@ namespace eDoxa.Cashier.Api.Application.Commands.Validations
 
                                     var account = await accountQuery.FindUserAccountAsync(userId);
 
-                                    if (command.Currency.Type == CurrencyType.Money)
+                                    if (command.Currency.Type == Currency.Money)
                                     {
                                         var moneyAccount = new AccountMoney(account);
 
@@ -59,7 +58,7 @@ namespace eDoxa.Cashier.Api.Application.Commands.Validations
                                         }
                                     }
 
-                                    if (command.Currency.Type == CurrencyType.Token)
+                                    if (command.Currency.Type == Currency.Token)
                                     {
                                         var tokenAccount = new AccountToken(account);
 
@@ -87,7 +86,7 @@ namespace eDoxa.Cashier.Api.Application.Commands.Validations
                         () =>
                         {
                             this.When(
-                                currency => currency.Type == CurrencyType.Money,
+                                currency => currency.Type == Currency.Money,
                                 () =>
                                 {
                                     var amounts = new[]
@@ -108,7 +107,7 @@ namespace eDoxa.Cashier.Api.Application.Commands.Validations
                             );
 
                             this.When(
-                                currency => currency.Type == CurrencyType.Token,
+                                currency => currency.Type == Currency.Token,
                                 () =>
                                 {
                                     var amounts = new[]

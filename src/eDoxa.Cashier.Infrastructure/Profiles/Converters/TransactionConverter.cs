@@ -1,4 +1,4 @@
-﻿// Filename: TransactionTypeConverter.cs
+﻿// Filename: TransactionConverter.cs
 // Date Created: 2019-07-01
 // 
 // ================================================
@@ -16,19 +16,18 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Infrastructure.Models;
 using eDoxa.Seedwork.Common;
-using eDoxa.Seedwork.Common.Enumerations;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Cashier.Infrastructure.Profiles.ConverterTypes
+namespace eDoxa.Cashier.Infrastructure.Profiles.Converters
 {
-    internal sealed class TransactionTypeConverter : ITypeConverter<TransactionModel, ITransaction>
+    internal sealed class TransactionConverter : ITypeConverter<TransactionModel, ITransaction>
     {
         [NotNull]
         public ITransaction Convert([NotNull] TransactionModel source, [NotNull] ITransaction destination, [NotNull] ResolutionContext context)
         {
             var transaction = new Transaction(
-                Convert(source.Amount, CurrencyType.FromValue(source.Currency)),
+                Convert(source.Amount, Currency.FromValue(source.Currency)),
                 new TransactionDescription(source.Description),
                 TransactionType.FromValue(source.Type),
                 new TimestampDateTimeProvider(source.Timestamp)
@@ -51,9 +50,9 @@ namespace eDoxa.Cashier.Infrastructure.Profiles.ConverterTypes
             return transaction;
         }
 
-        private static Currency Convert(decimal amount, CurrencyType currencyType)
+        private static ICurrency Convert(decimal amount, Currency currency)
         {
-            if (currencyType == CurrencyType.Money)
+            if (currency == Currency.Money)
             {
                 return new Money(amount);
             }

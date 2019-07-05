@@ -10,9 +10,6 @@
 
 using System;
 
-using eDoxa.Seedwork.Common.Abstactions;
-using eDoxa.Seedwork.Common.Enumerations;
-
 namespace eDoxa.Cashier.Domain.AggregateModels
 {
     public sealed class Price
@@ -25,12 +22,12 @@ namespace eDoxa.Cashier.Domain.AggregateModels
         {
             Money money = null;
 
-            if (currency.Type == CurrencyType.Money)
+            if (currency.Type == Currency.Money)
             {
                 money = new Money(currency.Amount);
             }
 
-            if (currency.Type == CurrencyType.Token)
+            if (currency.Type == Currency.Token)
             {
                 money = new Money(currency.Amount / TokenToMoneyFactor);
             }

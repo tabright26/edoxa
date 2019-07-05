@@ -15,12 +15,12 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Application.Fakers;
+using eDoxa.Cashier.Api.ViewModels;
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.Domain.ViewModels;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.IntegrationTests.Helpers;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Testing.Extensions;
 
@@ -40,11 +40,11 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
         private HttpClient _httpClient;
         private TestServer _testServer;
 
-        public static IEnumerable<object[]> ValidCurrencyDataSets => CurrencyType.GetEnumerations().Select(currency => new object[] {currency}).ToList();
+        public static IEnumerable<object[]> ValidCurrencyDataSets => Currency.GetEnumerations().Select(currency => new object[] {currency}).ToList();
 
-        public static IEnumerable<object[]> InvalidCurrencyDataSets => new[] {new object[] {CurrencyType.All}, new object[] {new CurrencyType()}};
+        public static IEnumerable<object[]> InvalidCurrencyDataSets => new[] {new object[] { Currency.All}, new object[] {new Currency()}};
 
-        public async Task<HttpResponseMessage> ExecuteAsync(UserId userId, CurrencyType currency)
+        public async Task<HttpResponseMessage> ExecuteAsync(UserId userId, Currency currency)
         {
             return await _httpClient.DefaultRequestHeaders(new[] {new Claim(JwtClaimTypes.Subject, userId.ToString())})
                 .GetAsync($"api/account/balance/{currency}");
@@ -74,7 +74,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
         [DataTestMethod]
         [DynamicData(nameof(ValidCurrencyDataSets))]
-        public async Task ShouldHaveNoAvailableFundsAndNoPendingFunds(CurrencyType currency)
+        public async Task ShouldHaveNoAvailableFundsAndNoPendingFunds(Currency currency)
         {
             // Arrange
             var account = new Account(new UserId());
@@ -103,7 +103,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
         [DataTestMethod]
         [DynamicData(nameof(ValidCurrencyDataSets))]
-        public async Task ShouldHaveAvailableFundsAndPendingFunds(CurrencyType currency)
+        public async Task ShouldHaveAvailableFundsAndPendingFunds(Currency currency)
         {
             // Arrange
             var accountFaker = new AccountFaker();
@@ -135,7 +135,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
         [DataTestMethod]
         [DynamicData(nameof(ValidCurrencyDataSets))]
-        public async Task UserWithoutAccount_ShouldBeNotFound(CurrencyType currency)
+        public async Task UserWithoutAccount_ShouldBeNotFound(Currency currency)
         {
             // Act
             var response = await this.ExecuteAsync(new UserId(), currency);
@@ -146,7 +146,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
         [DataTestMethod]
         [DynamicData(nameof(InvalidCurrencyDataSets))]
-        public async Task InvalidCurrency_ShouldBeBadRequest(CurrencyType currency)
+        public async Task InvalidCurrency_ShouldBeBadRequest(Currency currency)
         {
             var accountFaker = new AccountFaker();
             accountFaker.UseSeed(1);

@@ -14,9 +14,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.ValueObjects;
 
 namespace eDoxa.Cashier.Domain.Queries
@@ -27,13 +25,13 @@ namespace eDoxa.Cashier.Domain.Queries
 
         Task<IReadOnlyCollection<ITransaction>> FindUserTransactionsAsync(
             UserId userId,
-            CurrencyType currency = null,
+            Currency currency = null,
             TransactionType type = null,
             TransactionStatus status = null
         );
 
         Task<IReadOnlyCollection<ITransaction>> FindUserTransactionsAsync(
-            CurrencyType currency = null,
+            Currency currency = null,
             TransactionType type = null,
             TransactionStatus status = null
         );

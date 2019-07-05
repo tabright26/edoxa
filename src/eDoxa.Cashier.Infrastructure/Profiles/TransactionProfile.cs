@@ -14,7 +14,7 @@ using AutoMapper;
 
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Infrastructure.Models;
-using eDoxa.Cashier.Infrastructure.Profiles.ConverterTypes;
+using eDoxa.Cashier.Infrastructure.Profiles.Converters;
 
 namespace eDoxa.Cashier.Infrastructure.Profiles
 {
@@ -22,7 +22,7 @@ namespace eDoxa.Cashier.Infrastructure.Profiles
     {
         public TransactionProfile()
         {
-            this.CreateMap<TransactionModel, ITransaction>().ConvertUsing(new TransactionTypeConverter());
+            this.CreateMap<TransactionModel, ITransaction>().ConvertUsing(new TransactionConverter());
 
             this.CreateMap<ITransaction, TransactionModel>()
                 .ForMember(user => user.Id, config => config.MapFrom<Guid>(user => user.Id))

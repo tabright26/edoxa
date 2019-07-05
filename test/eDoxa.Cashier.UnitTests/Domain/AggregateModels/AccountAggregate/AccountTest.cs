@@ -12,8 +12,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.ValueObjects;
 
 using FluentAssertions;
@@ -25,13 +25,13 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
     [TestClass]
     public sealed class AccountTest
     {
-        public static IEnumerable<object[]> ValidCurrencyDataSets => CurrencyType.GetEnumerations().Select(currency => new object[] {currency});
+        public static IEnumerable<object[]> ValidCurrencyDataSets => Currency.GetEnumerations().Select(currency => new object[] {currency});
 
-        public static IEnumerable<object[]> InvalidCurrencyDataSets => new[] {new object[] {new CurrencyType()}, new object[] {CurrencyType.All}};
+        public static IEnumerable<object[]> InvalidCurrencyDataSets => new[] {new object[] {new Currency()}, new object[] { Currency.All}};
 
         [DataTestMethod]
         [DynamicData(nameof(ValidCurrencyDataSets))]
-        public void GetBalanceFor_ValidCurrency_ShouldThrowArgumentException(CurrencyType currency)
+        public void GetBalanceFor_ValidCurrency_ShouldThrowArgumentException(Currency currency)
         {
             var account = new Account(new UserId());
 
@@ -42,7 +42,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
 
         [DataTestMethod]
         [DynamicData(nameof(InvalidCurrencyDataSets))]
-        public void GetBalanceFor_InvalidCurrency_ShouldThrowArgumentException(CurrencyType currency)
+        public void GetBalanceFor_InvalidCurrency_ShouldThrowArgumentException(Currency currency)
         {
             var account = new Account(new UserId());
 

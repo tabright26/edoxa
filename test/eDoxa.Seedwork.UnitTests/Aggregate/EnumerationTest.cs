@@ -27,7 +27,7 @@ namespace eDoxa.Seedwork.UnitTests.Aggregate
         public void Enumeration_GetTypes_ShouldContainAssembliesEnumerationTypes()
         {
             // Arrange
-            var expectedEnumerationTypes = new[] {typeof(CurrencyType), typeof(Game), typeof(MockEnumeration)};
+            var expectedEnumerationTypes = new[] {typeof(Game), typeof(MockEnumeration)};
 
             // Act
             var enumerationTypes = Enumeration.GetTypes();

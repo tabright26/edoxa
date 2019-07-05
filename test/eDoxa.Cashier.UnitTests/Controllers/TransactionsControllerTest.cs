@@ -14,11 +14,9 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Api.Application.Fakers;
 using eDoxa.Cashier.Api.Controllers;
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.UnitTests.Helpers.Extensions;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Testing.TestConstructor;
 
 using FluentAssertions;
@@ -67,7 +65,7 @@ namespace eDoxa.Cashier.UnitTests.Controllers
             _mockTransactionQuery
                 .Setup(
                     transactionQuery => transactionQuery.FindUserTransactionsAsync(
-                        It.IsAny<CurrencyType>(),
+                        It.IsAny<Currency>(),
                         It.IsAny<TransactionType>(),
                         It.IsAny<TransactionStatus>()
                     )
@@ -87,7 +85,7 @@ namespace eDoxa.Cashier.UnitTests.Controllers
 
             _mockTransactionQuery.Verify(
                 transactionQuery => transactionQuery.FindUserTransactionsAsync(
-                    It.IsAny<CurrencyType>(),
+                    It.IsAny<Currency>(),
                     It.IsAny<TransactionType>(),
                     It.IsAny<TransactionStatus>()
                 ),
@@ -102,7 +100,7 @@ namespace eDoxa.Cashier.UnitTests.Controllers
             _mockTransactionQuery
                 .Setup(
                     transactionQuery => transactionQuery.FindUserTransactionsAsync(
-                        It.IsAny<CurrencyType>(),
+                        It.IsAny<Currency>(),
                         It.IsAny<TransactionType>(),
                         It.IsAny<TransactionStatus>()
                     )
@@ -122,7 +120,7 @@ namespace eDoxa.Cashier.UnitTests.Controllers
 
             _mockTransactionQuery.Verify(
                 transactionQuery => transactionQuery.FindUserTransactionsAsync(
-                    It.IsAny<CurrencyType>(),
+                    It.IsAny<Currency>(),
                     It.IsAny<TransactionType>(),
                     It.IsAny<TransactionStatus>()
                 ),

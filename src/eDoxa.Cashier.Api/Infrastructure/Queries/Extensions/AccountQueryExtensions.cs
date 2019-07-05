@@ -10,10 +10,10 @@
 
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Api.ViewModels;
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Queries;
-using eDoxa.Cashier.Domain.ViewModels;
 using eDoxa.Cashier.Infrastructure.Models;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.ValueObjects;
 
 using JetBrains.Annotations;
@@ -39,7 +39,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries.Extensions
         }
 
         [ItemCanBeNull]
-        public static async Task<BalanceViewModel> FindUserBalanceViewModelAsync(this IAccountQuery accountQuery, UserId userId, CurrencyType currency)
+        public static async Task<BalanceViewModel> FindUserBalanceViewModelAsync(this IAccountQuery accountQuery, UserId userId, Currency currency)
         {
             var balance = await accountQuery.FindUserBalanceAsync(userId, currency);
 
@@ -47,7 +47,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries.Extensions
         }
 
         [ItemCanBeNull]
-        public static async Task<BalanceViewModel> FindUserBalanceViewModelAsync(this IAccountQuery accountQuery, CurrencyType currency)
+        public static async Task<BalanceViewModel> FindUserBalanceViewModelAsync(this IAccountQuery accountQuery, Currency currency)
         {
             var balance = await accountQuery.FindUserBalanceAsync(currency);
 

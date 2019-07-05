@@ -13,7 +13,6 @@ using System.Linq;
 
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Validators;
-using eDoxa.Seedwork.Common.Enumerations;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
@@ -26,12 +25,12 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
             _account = account;
         }
 
-        public Balance Balance => new Balance(_account.Transactions, CurrencyType.Token);
+        public Balance Balance => new Balance(_account.Transactions, Currency.Token);
 
         public DateTime? LastDeposit =>
             _account.Transactions
                 .Where(
-                    transaction => transaction.Currency.Type == CurrencyType.Token &&
+                    transaction => transaction.Currency.Type == Currency.Token &&
                                    transaction.Type == TransactionType.Deposit &&
                                    transaction.Status == TransactionStatus.Succeded
                 )

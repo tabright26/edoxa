@@ -10,8 +10,8 @@
 
 using System.Collections.Generic;
 
+using eDoxa.Cashier.Api.ViewModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.Domain.ViewModels;
 using eDoxa.Seedwork.Domain.Extensions;
 
 using FluentAssertions;
@@ -42,7 +42,7 @@ namespace eDoxa.Cashier.UnitTests.Helpers.Extensions
 
             transaction.Amount.Should().BeGreaterOrEqualTo(decimal.Zero);
 
-            transaction.CurrencyType.Should().NotBeNull();
+            transaction.Currency.Should().NotBeNull();
 
             transaction.Type.Should().NotBeNull();
 

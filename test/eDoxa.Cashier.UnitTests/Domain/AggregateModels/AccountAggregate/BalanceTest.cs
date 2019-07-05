@@ -14,7 +14,6 @@ using System.Linq;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
-using eDoxa.Seedwork.Common.Enumerations;
 
 using FluentAssertions;
 
@@ -32,10 +31,10 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
             var transactions = CreateTransactions().ToList();
 
             // Act
-            var balance = new Balance(transactions, CurrencyType.Money);
+            var balance = new Balance(transactions, Currency.Money);
 
             // Assert
-            balance.Currency.Should().Be(CurrencyType.Money);
+            balance.Currency.Should().Be(Currency.Money);
             balance.Available.Should().Be(Money.Fifty);
             balance.Pending.Should().Be(Money.Ten);
         }
@@ -47,10 +46,10 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
             var transactions = CreateTransactions().ToList();
 
             // Act
-            var balance = new Balance(transactions, CurrencyType.Token);
+            var balance = new Balance(transactions, Currency.Token);
 
             // Assert
-            balance.Currency.Should().Be(CurrencyType.Token);
+            balance.Currency.Should().Be(Currency.Token);
             balance.Available.Should().Be(Token.FiftyThousand);
             balance.Pending.Should().Be(decimal.Zero);
         }

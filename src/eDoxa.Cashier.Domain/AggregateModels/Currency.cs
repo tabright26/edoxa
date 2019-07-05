@@ -8,83 +8,24 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
+using System.ComponentModel;
 
-using eDoxa.Seedwork.Common.Abstactions;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Domain.Aggregate;
-
-using JetBrains.Annotations;
 
 namespace eDoxa.Cashier.Domain.AggregateModels
 {
-    public class Currency : ValueObject, ICurrency
+    [TypeConverter(typeof(EnumerationTypeConverter))]
+    public sealed class Currency : Enumeration<Currency>
     {
-        protected Currency(decimal amount, CurrencyType type) : this()
-        {
-            Type = type;
-            Amount = amount;
-        }
+        public static readonly Currency Money = new Currency(1 << 0, nameof(Money));
+        public static readonly Currency Token = new Currency(1 << 1, nameof(Token));
 
-        private Currency()
+        public Currency()
         {
         }
 
-        public decimal Amount { get; private set; }
-
-        public CurrencyType Type { get; private set; }
-
-        public static implicit operator decimal(Currency currency)
+        private Currency(int value, string name) : base(value, name)
         {
-            return currency.Amount;
-        }
-
-        public static implicit operator Price(Currency currency)
-        {
-            return new Price(currency);
-        }
-
-        public static Currency operator -(Currency currency)
-        {
-            return new Currency
-            {
-                Amount = currency.Amount,
-                Type = currency.Type
-            };
-        }
-
-        [CanBeNull]
-        public static Currency Convert(decimal amount, CurrencyType type)
-        {
-            if (type == CurrencyType.Money)
-            {
-                return new Money(amount);
-            }
-
-            if (type == CurrencyType.Token)
-            {
-                return new Token(amount);
-            }
-
-            throw new ArgumentException(nameof(type));
-        }
-
-        protected override IEnumerable<object> GetAtomicValues()
-        {
-            yield return Amount;
-            yield return Type;
-        }
-
-        public override string ToString()
-        {
-            if (Type == CurrencyType.Money)
-            {
-                return $"${Amount}";
-            }
-
-            return Amount.ToString(CultureInfo.InvariantCulture);
         }
     }
 }

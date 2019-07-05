@@ -46,11 +46,11 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
         [ItemCanBeNull]
         private async Task<AccountModel> FindUserAccountModelAsync(Guid userId)
         {
-            var accounts = from account in _context.Accounts.Include(account => account.Transactions).AsExpandable()
-                           where account.UserId == userId
-                           select account;
+            var accountModels = from account in _context.Accounts.Include(account => account.Transactions).AsExpandable()
+                                where account.UserId == userId
+                                select account;
 
-            return await accounts.SingleOrDefaultAsync();
+            return await accountModels.SingleOrDefaultAsync();
         }
     }
 
@@ -106,7 +106,8 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
 
         private void CopyChanges(IAccount account, AccountModel accountModel)
         {
-            var transactions = account.Transactions.Where(transaction => accountModel.Transactions.All(transactionModel => transactionModel.Id != transaction.Id));
+            var transactions =
+                account.Transactions.Where(transaction => accountModel.Transactions.All(transactionModel => transactionModel.Id != transaction.Id));
 
             _mapper.Map<ICollection<TransactionModel>>(transactions).ForEach(transaction => accountModel.Transactions.Add(transaction));
         }

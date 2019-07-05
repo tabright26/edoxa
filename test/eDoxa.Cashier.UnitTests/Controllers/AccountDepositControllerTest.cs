@@ -14,8 +14,6 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Api.Application.Commands;
 using eDoxa.Cashier.Api.Controllers;
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Testing.TestConstructor;
 
 using FluentAssertions;
@@ -66,7 +64,7 @@ namespace eDoxa.Cashier.UnitTests.Controllers
             var controller = new AccountDepositController(_mockMediator.Object);
 
             // Act
-            var result = await controller.PostAsync(new DepositCommand(Money.Fifty.Amount, CurrencyType.Money));
+            var result = await controller.PostAsync(new DepositCommand(Money.Fifty.Amount, Currency.Money));
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();

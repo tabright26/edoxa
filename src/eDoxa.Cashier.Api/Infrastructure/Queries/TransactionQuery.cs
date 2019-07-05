@@ -16,12 +16,10 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.Infrastructure.Models;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.Extensions;
 using eDoxa.Seedwork.Common.ValueObjects;
 
@@ -71,7 +69,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries
     public sealed partial class TransactionQuery : ITransactionQuery
     {
         public async Task<IReadOnlyCollection<ITransaction>> FindUserTransactionsAsync(
-            CurrencyType currency = null,
+            Currency currency = null,
             TransactionType type = null,
             TransactionStatus status = null
         )
@@ -83,7 +81,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries
 
         public async Task<IReadOnlyCollection<ITransaction>> FindUserTransactionsAsync(
             UserId userId,
-            CurrencyType currency = null,
+            Currency currency = null,
             TransactionType type = null,
             TransactionStatus status = null
         )

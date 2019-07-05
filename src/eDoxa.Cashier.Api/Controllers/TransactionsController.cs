@@ -13,11 +13,10 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Infrastructure.Queries.Extensions;
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
+using eDoxa.Cashier.Api.ViewModels;
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Queries;
-using eDoxa.Cashier.Domain.ViewModels;
-using eDoxa.Seedwork.Common.Enumerations;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -48,7 +47,7 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpGet]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<TransactionViewModel>))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> GetAsync(CurrencyType currency = null, TransactionType type = null, TransactionStatus status = null)
+        public async Task<IActionResult> GetAsync(Currency currency = null, TransactionType type = null, TransactionStatus status = null)
         {
             var transactionViewModels = await _transactionQuery.FindUserTransactionViewModelsAsync(currency, type, status);
 

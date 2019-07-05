@@ -11,12 +11,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
+using eDoxa.Cashier.Api.ViewModels;
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Queries;
-using eDoxa.Cashier.Domain.ViewModels;
 using eDoxa.Cashier.Infrastructure.Models;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.ValueObjects;
 
 namespace eDoxa.Cashier.Api.Infrastructure.Queries.Extensions
@@ -26,7 +25,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries.Extensions
         public static async Task<IReadOnlyCollection<TransactionModel>> FindUserTransactionModelsAsync(
             this ITransactionQuery transactionQuery,
             UserId userId,
-            CurrencyType currency = null,
+            Currency currency = null,
             TransactionType type = null,
             TransactionStatus status = null
         )
@@ -38,7 +37,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries.Extensions
 
         public static async Task<IReadOnlyCollection<TransactionModel>> FindUserTransactionModelsAsync(
             this ITransactionQuery transactionQuery,
-            CurrencyType currency = null,
+            Currency currency = null,
             TransactionType type = null,
             TransactionStatus status = null
         )
@@ -51,7 +50,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries.Extensions
         public static async Task<IReadOnlyCollection<TransactionViewModel>> FindUserTransactionViewModelsAsync(
             this ITransactionQuery transactionQuery,
             UserId userId,
-            CurrencyType currency = null,
+            Currency currency = null,
             TransactionType type = null,
             TransactionStatus status = null
         )
@@ -63,7 +62,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries.Extensions
 
         public static async Task<IReadOnlyCollection<TransactionViewModel>> FindUserTransactionViewModelsAsync(
             this ITransactionQuery transactionQuery,
-            CurrencyType currency = null,
+            Currency currency = null,
             TransactionType type = null,
             TransactionStatus status = null
         )

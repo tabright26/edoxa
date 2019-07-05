@@ -12,7 +12,6 @@ using System;
 using System.Linq;
 
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Common.Abstactions;
@@ -24,7 +23,7 @@ namespace eDoxa.Cashier.Api.Application.Fakers
         public const string PositiveTransaction = nameof(PositiveTransaction);
         public const string NegativeTransaction = nameof(NegativeTransaction);
 
-        private readonly Currency[] _currencies =
+        private readonly ICurrency[] _currencies =
         {
             Money.Five,
             Money.Ten,

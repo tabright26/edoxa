@@ -12,10 +12,10 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Application.Fakers;
 using eDoxa.Cashier.Api.Controllers;
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.UnitTests.Helpers.Extensions;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Testing.TestConstructor;
 
 using FluentAssertions;
@@ -61,25 +61,25 @@ namespace eDoxa.Cashier.UnitTests.Controllers
             // Arrange
             var accountFaker = new AccountFaker();
             var account = accountFaker.Generate();
-            _mockAccountQuery.Setup(mediator => mediator.FindUserBalanceAsync(It.IsAny<CurrencyType>()))
-                .ReturnsAsync(account.GetBalanceFor(CurrencyType.Money))
+            _mockAccountQuery.Setup(mediator => mediator.FindUserBalanceAsync(It.IsAny<Currency>()))
+                .ReturnsAsync(account.GetBalanceFor(Currency.Money))
                 .Verifiable();
             _mockAccountQuery.SetupGet(accountQuery => accountQuery.Mapper).Returns(MapperExtensions.Mapper);
             var controller = new AccountBalanceController(_mockAccountQuery.Object);
 
             // Act
-            var result = await controller.GetByCurrencyAsync(CurrencyType.Money);
+            var result = await controller.GetByCurrencyAsync(Currency.Money);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
-            _mockAccountQuery.Verify(accountQuery => accountQuery.FindUserBalanceAsync(It.IsAny<CurrencyType>()), Times.Once);
+            _mockAccountQuery.Verify(accountQuery => accountQuery.FindUserBalanceAsync(It.IsAny<Currency>()), Times.Once);
         }
 
         [TestMethod]
         public async Task GetBalanceAsync_ShouldBeOfTypeBadRequestObjectResult()
         {
             // Arrange
-            _mockAccountQuery.Setup(accountQuery => accountQuery.FindUserBalanceAsync(It.IsAny<CurrencyType>())).ReturnsAsync((Balance) null).Verifiable();
+            _mockAccountQuery.Setup(accountQuery => accountQuery.FindUserBalanceAsync(It.IsAny<Currency>())).ReturnsAsync((Balance) null).Verifiable();
             _mockAccountQuery.SetupGet(accountQuery => accountQuery.Mapper).Returns(MapperExtensions.Mapper);
             var controller = new AccountBalanceController(_mockAccountQuery.Object);
 
@@ -88,7 +88,7 @@ namespace eDoxa.Cashier.UnitTests.Controllers
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
-            _mockAccountQuery.Verify(accountQuery => accountQuery.FindUserBalanceAsync(It.IsAny<CurrencyType>()), Times.Never);
+            _mockAccountQuery.Verify(accountQuery => accountQuery.FindUserBalanceAsync(It.IsAny<Currency>()), Times.Never);
         }
     }
 }

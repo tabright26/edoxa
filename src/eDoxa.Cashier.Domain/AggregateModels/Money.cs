@@ -8,11 +8,13 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Seedwork.Common.Enumerations;
+using System.Collections.Generic;
+
+using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Cashier.Domain.AggregateModels
 {
-    public sealed class Money : Currency
+    public sealed class Money : ValueObject, ICurrency
     {
         public static readonly Money Five = new Money(5);
         public static readonly Money Ten = new Money(10);
@@ -23,18 +25,35 @@ namespace eDoxa.Cashier.Domain.AggregateModels
         public static readonly Money TwoHundred = new Money(200);
         public static readonly Money FiveHundred = new Money(500);
 
-        public Money(decimal amount) : base(amount, CurrencyType.Money)
+        public Money(decimal amount)
         {
+            Type = Currency.Money;
+            Amount = amount;
         }
 
-        public static Money operator -(Money token)
+        public Currency Type { get; }
+
+        public decimal Amount { get; }
+
+        public static implicit operator decimal(Money money)
         {
-            return new Money(-token.Amount);
+            return money.Amount;
         }
 
+        public static Money operator -(Money money)
+        {
+            return new Money(-money.Amount);
+        }
+        
         public override string ToString()
         {
             return Amount.ToString("$##.##");
+        }
+
+        protected override IEnumerable<object> GetAtomicValues()
+        {
+            yield return Type;
+            yield return Amount;
         }
 
         public long ToCents()

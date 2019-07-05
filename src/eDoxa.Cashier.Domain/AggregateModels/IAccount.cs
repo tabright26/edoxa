@@ -12,8 +12,6 @@ using System;
 using System.Collections.Generic;
 
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Seedwork.Common.Abstactions;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Domain;
 
@@ -27,7 +25,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels
 
         void CreateTransaction(ITransaction transaction);
 
-        Balance GetBalanceFor(CurrencyType currency);
+        Balance GetBalanceFor(Currency currency);
     }
 
     public interface IAccount<in TCurrency>

@@ -10,14 +10,13 @@
 
 using System;
 
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
-using eDoxa.Seedwork.Common.Enumerations;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace eDoxa.Cashier.Domain.ViewModels
+namespace eDoxa.Cashier.Api.ViewModels
 {
     [JsonObject]
     public class TransactionViewModel
@@ -29,11 +28,11 @@ namespace eDoxa.Cashier.Domain.ViewModels
         [JsonConverter(typeof(UnixDateTimeConverter))]
         public DateTime Timestamp { get; set; }
 
+        [JsonProperty("currency")]
+        public Currency Currency { get; set; }
+
         [JsonProperty("amount")]
         public decimal Amount { get; set; }
-
-        [JsonProperty("currency")]
-        public CurrencyType CurrencyType { get; set; }
 
         [JsonProperty("description")]
         public string Description { get; set; }

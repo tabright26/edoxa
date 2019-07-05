@@ -15,7 +15,6 @@ using AutoMapper;
 
 using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Commands.Abstractions.Handlers;
 using eDoxa.Seedwork.Common.Extensions;
@@ -49,7 +48,7 @@ namespace eDoxa.Cashier.Api.Application.Commands.Handlers
 
             var customerId = _httpContextAccessor.GetCustomerId();
 
-            await _accountService.DepositAsync(customerId, userId, _mapper.Map<Currency>(command.Currency), cancellationToken);
+            await _accountService.DepositAsync(customerId, userId, _mapper.Map<ICurrency>(command.Currency), cancellationToken);
         }
     }
 }

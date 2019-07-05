@@ -13,13 +13,13 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Application.Fakers;
+using eDoxa.Cashier.Api.ViewModels;
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.Domain.ViewModels;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.IntegrationTests.Helpers;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Testing.Extensions;
 
@@ -41,7 +41,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
         public async Task<HttpResponseMessage> ExecuteAsync(
             UserId userId,
-            CurrencyType currency = null,
+            Currency currency = null,
             TransactionType type = null,
             TransactionStatus status = null
         )

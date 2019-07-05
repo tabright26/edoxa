@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Domain.Aggregate;
 
@@ -37,16 +36,16 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
             _transactions.Add(transaction);
         }
 
-        public Balance GetBalanceFor(CurrencyType currency)
+        public Balance GetBalanceFor(Currency currency)
         {
-            if (currency == CurrencyType.Money)
+            if (currency == Currency.Money)
             {
                 var accountMoney = new AccountMoney(this);
 
                 return accountMoney.Balance;
             }
 
-            if (currency == CurrencyType.Token)
+            if (currency == Currency.Token)
             {
                 var accountToken = new AccountToken(this);
 

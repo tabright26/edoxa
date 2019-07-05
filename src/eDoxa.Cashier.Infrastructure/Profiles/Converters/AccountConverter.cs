@@ -1,4 +1,4 @@
-﻿// Filename: AccountTypeConverter.cs
+﻿// Filename: AccountConverter.cs
 // Date Created: 2019-07-01
 // 
 // ================================================
@@ -20,9 +20,9 @@ using eDoxa.Seedwork.Domain.Extensions;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Cashier.Infrastructure.Profiles.ConverterTypes
+namespace eDoxa.Cashier.Infrastructure.Profiles.Converters
 {
-    internal sealed class AccountTypeConverter : ITypeConverter<AccountModel, IAccount>
+    internal sealed class AccountConverter : ITypeConverter<AccountModel, IAccount>
     {
         [NotNull]
         public IAccount Convert([NotNull] AccountModel source, [NotNull] IAccount destination, [NotNull] ResolutionContext context)
