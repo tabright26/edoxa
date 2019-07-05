@@ -10,8 +10,8 @@
 
 using System.Collections.Generic;
 
-using eDoxa.Monitoring.Extensions;
 using eDoxa.Ocelot.Extensions;
+using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security.Extensions;
 using eDoxa.Seedwork.Security.IdentityServer.Resources;
 

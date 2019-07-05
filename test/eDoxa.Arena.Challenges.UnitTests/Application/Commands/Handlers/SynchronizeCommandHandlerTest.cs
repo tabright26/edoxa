@@ -1,5 +1,5 @@
 ﻿// Filename: SynchronizeCommandHandlerTest.cs
-// Date Created: 2019-06-09
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,7 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -50,7 +49,10 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Commands.Handlers
             await handler.HandleAsync(new SynchronizeChallengesCommand(new ChallengeId()));
 
             // Assert
-            _mockChallengeService.Verify(mock => mock.SynchronizeAsync(It.IsAny<IDateTimeProvider>(), It.IsAny<ChallengeGame>(), It.IsAny<CancellationToken>()), Times.Once);
+            _mockChallengeService.Verify(
+                mock => mock.SynchronizeAsync(It.IsAny<IDateTimeProvider>(), It.IsAny<ChallengeGame>(), It.IsAny<CancellationToken>()),
+                Times.Once
+            );
         }
     }
 }

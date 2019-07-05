@@ -11,15 +11,15 @@
 using System.Runtime.Serialization;
 
 using eDoxa.Cashier.Api.ViewModels;
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Commands.Abstractions;
-using eDoxa.Seedwork.Common.Enumerations;
 
 namespace eDoxa.Cashier.Api.Application.Commands
 {
     [DataContract]
-    public sealed class DepositCommand : Command<TransactionViewModel>
+    public sealed class DepositCommand : Command
     {
-        public DepositCommand(decimal amount, CurrencyType type)
+        public DepositCommand(decimal amount, Currency type)
         {
             Currency = new CurrencyViewModel
             {

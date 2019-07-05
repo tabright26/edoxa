@@ -21,11 +21,8 @@ namespace eDoxa.Arena.LeagueOfLegends.Extensions
         {
             services.Configure<LeagueOfLegendsOptions>(options => options.RiotToken = configuration["Arena:LeagueOfLegends:ApiKey"]);
             services.AddTransient<LeagueOfLegendsDelegatingHandler>();
-
-            // TODO: Should be injected from integration tests.
-            services.AddTransient<ILeagueOfLegendsService, FakeLeagueOfLegendsService>();
             // TODO: Must adding HttpPolicies.
-            //services.AddHttpClient<ILeagueOfLegendsService, LeagueOfLegendsService>().AddHttpMessageHandler<LeagueOfLegendsDelegatingHandler>();
+            services.AddHttpClient<ILeagueOfLegendsService, LeagueOfLegendsService>().AddHttpMessageHandler<LeagueOfLegendsDelegatingHandler>();
             services.AddSingleton<ILeagueOfLegendsProxy, LeagueOfLegendsProxy>();
         }
     }

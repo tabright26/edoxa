@@ -1,5 +1,5 @@
 ﻿// Filename: CurrencyViewModel.cs
-// Date Created: 2019-06-08
+// Date Created: 2019-07-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Seedwork.Common.Enumerations;
+using eDoxa.Cashier.Domain.AggregateModels;
 
 using Newtonsoft.Json;
 
@@ -17,8 +17,8 @@ namespace eDoxa.Cashier.Api.ViewModels
     [JsonObject]
     public class CurrencyViewModel
     {
-        [JsonProperty("type")]
-        public CurrencyType Type { get; set; }
+        [JsonProperty("currency")]
+        public Currency Type { get; set; }
 
         [JsonProperty("amount")]
         public decimal Amount { get; set; }

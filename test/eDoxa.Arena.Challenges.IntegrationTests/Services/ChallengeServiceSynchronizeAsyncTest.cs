@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Api;
 using eDoxa.Arena.Challenges.Api.Application.Fakers;
 using eDoxa.Arena.Challenges.Api.Application.Fakers.Providers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
@@ -21,8 +20,7 @@ using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.IntegrationTests.Helpers;
-using eDoxa.Seedwork.Testing.TestServer;
-using eDoxa.Seedwork.Testing.TestServer.Extensions;
+using eDoxa.Seedwork.Testing.Extensions;
 
 using FluentAssertions;
 
@@ -39,7 +37,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Services
         [TestInitialize]
         public async Task TestInitialize()
         {
-            var factory = new CustomWebApplicationFactory<ChallengesDbContext, Startup>();
+            var factory = new WebApplicationFactory<TestStartup>();
             factory.CreateClient();
             _testServer = factory.Server;
             await this.TestCleanup();
@@ -48,19 +46,15 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Services
         [TestCleanup]
         public async Task TestCleanup()
         {
-            var context = _testServer.GetService<ChallengesDbContext>();
-            context.Challenges.RemoveRange(context.Challenges);
-            await context.SaveChangesAsync();
+            await _testServer.UsingScopeAsync(
+                async scope =>
+                {
+                    var context = scope.GetService<ChallengesDbContext>();
+                    context.Challenges.RemoveRange(context.Challenges);
+                    await context.SaveChangesAsync();
+                }
+            );
         }
-
-        //[TestMethod]
-        //public async Task Test()
-        //{
-        //    // Arrange
-        //    var testServer = TestServerHelper.CreateTestServer<ChallengesDbContext>();
-
-
-        //}
 
         [TestMethod]
         public async Task T1()
@@ -69,19 +63,35 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Services
             var challengeFaker = new ChallengeFaker(ChallengeGame.LeagueOfLegends, ChallengeState.InProgress);
             challengeFaker.UseSeed(1);
             var challenges = challengeFaker.Generate(5) as IEnumerable<IChallenge>;
-            var challengeRepository = _testServer.GetService<IChallengeRepository>();
-            challengeRepository.Create(challenges);
-            await challengeRepository.CommitAsync();
-            var challengeService = _testServer.GetService<IChallengeService>();
-            var synchronizedAt = new FakeDateTimeProvider(DateTime.UtcNow);
+
+            await _testServer.UsingScopeAsync(
+                async scope =>
+                {
+                    var challengeRepository = scope.GetService<IChallengeRepository>();
+                    challengeRepository.Create(challenges);
+                    await challengeRepository.CommitAsync();
+                }
+            );
 
             // Act
-            await challengeService.SynchronizeAsync(synchronizedAt, ChallengeGame.LeagueOfLegends);
+            await _testServer.UsingScopeAsync(
+                async scope =>
+                {
+                    var challengeService = scope.GetService<IChallengeService>();
+                    var synchronizedAt = new FakeDateTimeProvider(DateTime.UtcNow);
+                    await challengeService.SynchronizeAsync(synchronizedAt, ChallengeGame.LeagueOfLegends);
+                }
+            );
 
             // Arrange
-            challengeRepository = _testServer.GetService<IChallengeRepository>();
-            challenges = await challengeRepository.FindChallengesAsync(null, ChallengeState.InProgress);
-            challenges.Should().HaveCount(5);
+            await _testServer.UsingScopeAsync(
+                async scope =>
+                {
+                    var challengeRepository = scope.GetService<IChallengeRepository>();
+                    challenges = await challengeRepository.FetchChallengesAsync(null, ChallengeState.InProgress);
+                    challenges.Should().HaveCount(5);
+                }
+            );
         }
     }
 }

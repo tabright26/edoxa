@@ -1,5 +1,5 @@
 ﻿// Filename: AccountMoney.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,10 +11,8 @@
 using System;
 using System.Linq;
 
-using eDoxa.Cashier.Domain.Abstractions;
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate.Transactions;
+using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Validators;
-using eDoxa.Seedwork.Common.Enumerations;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
@@ -27,27 +25,27 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
             _account = account;
         }
 
-        public Balance Balance => new Balance(_account.Transactions, CurrencyType.Money);
+        public Balance Balance => new Balance(_account.Transactions, Currency.Money);
 
         public DateTime? LastDeposit =>
             _account.Transactions
                 .Where(
-                    transaction => transaction.Currency.Type == CurrencyType.Money &&
+                    transaction => transaction.Currency.Type == Currency.Money &&
                                    transaction.Type == TransactionType.Deposit &&
-                                   transaction.Status == TransactionStatus.Completed
+                                   transaction.Status == TransactionStatus.Succeded
                 )
-                .OrderByDescending(transaction => transaction)
+                .OrderByDescending(transaction => transaction.Timestamp)
                 .FirstOrDefault()
                 ?.Timestamp;
 
         public DateTime? LastWithdraw =>
             _account.Transactions
                 .Where(
-                    transaction => transaction.Currency.Type == CurrencyType.Money &&
-                                   transaction.Type == TransactionType.Withdraw &&
-                                   transaction.Status == TransactionStatus.Completed
+                    transaction => transaction.Currency.Type == Currency.Money &&
+                                   transaction.Type == TransactionType.Withdrawal &&
+                                   transaction.Status == TransactionStatus.Succeded
                 )
-                .OrderByDescending(transaction => transaction)
+                .OrderByDescending(transaction => transaction.Timestamp)
                 .FirstOrDefault()
                 ?.Timestamp;
 
@@ -88,7 +86,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
             return transaction;
         }
 
-        public ITransaction Withdraw(Money amount)
+        public ITransaction Withdrawal(Money amount)
         {
             if (!this.CanWithdraw(amount))
             {
@@ -98,20 +96,6 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
             var transaction = new MoneyWithdrawTransaction(amount);
 
             _account.CreateTransaction(transaction);
-
-            return transaction;
-        }
-
-        public ITransaction CompleteTransaction(ITransaction transaction)
-        {
-            transaction.Complete();
-
-            return transaction;
-        }
-
-        public ITransaction FailureTransaction(ITransaction transaction, string message)
-        {
-            transaction.Fail(message);
 
             return transaction;
         }
@@ -128,7 +112,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 
         private bool CanWithdraw(Money money)
         {
-            return new WithdrawMoneyValidator(money).Validate(this).IsValid;
+            return new WithdrawalMoneyValidator(money).Validate(this).IsValid;
         }
     }
 }

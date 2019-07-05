@@ -8,6 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using AutoMapper;
+
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.Infrastructure.Repositories;
 using eDoxa.Seedwork.Testing.TestConstructor;
@@ -22,7 +24,7 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Repositories
         [TestMethod]
         public void Constructor_Tests()
         {
-            TestConstructor<AccountRepository>.ForParameters(typeof(CashierDbContext)).WithClassName("AccountRepository").Assert();
+            TestConstructor<AccountRepository>.ForParameters(typeof(CashierDbContext), typeof(IMapper)).WithClassName("AccountRepository").Assert();
         }
     }
 }

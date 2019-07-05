@@ -20,13 +20,13 @@ using eDoxa.Arena.Challenges.Api.Infrastructure.Data;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Extensions;
 using eDoxa.IntegrationEvents.Extensions;
-using eDoxa.Monitoring.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Application.Swagger.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
+using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security.Constants;
 using eDoxa.Seedwork.Security.Extensions;
 using eDoxa.Seedwork.Security.IdentityServer.Resources;
-using eDoxa.Swagger.Extensions;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,7 +36,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.Arena.Challenges.Api
 {
-    public sealed class Startup
+    public class Startup
     {
         public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {
@@ -45,9 +45,9 @@ namespace eDoxa.Arena.Challenges.Api
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         }
 
-        private IHostingEnvironment Environment { get; }
+        protected IHostingEnvironment Environment { get; }
 
-        private IConfiguration Configuration { get; }
+        protected IConfiguration Configuration { get; }
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
@@ -83,7 +83,7 @@ namespace eDoxa.Arena.Challenges.Api
 
             services.AddArena(Configuration);
 
-            return services.Build<ApiModule>();
+            return this.BuildModule(services);
         }
 
         public void Configure(IApplicationBuilder application, IApiVersionDescriptionProvider provider)
@@ -103,6 +103,11 @@ namespace eDoxa.Arena.Challenges.Api
             application.UseMvc();
 
             application.UseIntegrationEventSubscriptions();
+        }
+ 
+        protected virtual IServiceProvider BuildModule(IServiceCollection services)
+        {
+            return services.Build<ApiModule>();
         }
     }
 }

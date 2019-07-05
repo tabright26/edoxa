@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>eDoxa.Commands</AssemblyName>
+    <RootNamespace>eDoxa.Commands</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

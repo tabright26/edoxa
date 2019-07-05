@@ -11,41 +11,28 @@
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Commands.Abstractions.Handlers;
-using eDoxa.Stripe.Abstractions;
 
 namespace eDoxa.Cashier.Api.Application.Commands.Handlers
 {
     public sealed class CreateUserCommandHandler : AsyncCommandHandler<CreateUserCommand>
     {
-        private readonly IStripeService _stripeService;
-        private readonly IUserRepository _userRepository;
+        private readonly IAccountRepository _accountRepository;
 
-        public CreateUserCommandHandler(IStripeService stripeService, IUserRepository userRepository)
+        public CreateUserCommandHandler(IAccountRepository accountRepository)
         {
-            _stripeService = stripeService;
-            _userRepository = userRepository;
+            _accountRepository = accountRepository;
         }
 
         protected override async Task Handle(CreateUserCommand command, CancellationToken cancellationToken)
         {
-            var connectAccountId = await _stripeService.CreateAccountAsync(
-                command.UserId,
-                command.Email,
-                command.FirstName,
-                command.LastName,
-                command.Year,
-                command.Month,
-                command.Day,
-                cancellationToken
-            );
+            var account = new Account(command.UserId);
 
-            var customerId = await _stripeService.CreateCustomerAsync(command.UserId, connectAccountId, command.Email, cancellationToken);
+            _accountRepository.Create(account);
 
-            _userRepository.Create(command.UserId, connectAccountId.ToString(), customerId.ToString());
-
-            await _userRepository.UnitOfWork.CommitAndDispatchDomainEventsAsync(cancellationToken);
+            await _accountRepository.CommitAsync(cancellationToken);
         }
     }
 }

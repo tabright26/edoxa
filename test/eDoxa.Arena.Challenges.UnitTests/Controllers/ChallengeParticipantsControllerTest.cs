@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeParticipantsControllerTest.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -89,9 +89,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
         public async Task PostAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            _mediator.Setup(mediator => mediator.Send(It.IsAny<RegisterParticipantCommand>(), It.IsAny<CancellationToken>()))
-                .Returns(Unit.Task)
-                .Verifiable();
+            _mediator.Setup(mediator => mediator.Send(It.IsAny<RegisterParticipantCommand>(), It.IsAny<CancellationToken>())).Returns(Unit.Task).Verifiable();
 
             var controller = new ChallengeParticipantsController(_queries.Object, _mediator.Object);
 

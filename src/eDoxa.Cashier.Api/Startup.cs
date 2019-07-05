@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -15,17 +15,16 @@ using System.Reflection;
 using AutoMapper;
 
 using eDoxa.Cashier.Api.Extensions;
+using eDoxa.Cashier.Api.Infrastructure;
 using eDoxa.Cashier.Api.Infrastructure.Data;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.IntegrationEvents.Extensions;
-using eDoxa.Monitoring.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Application.Swagger.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
+using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security.Extensions;
 using eDoxa.Seedwork.Security.IdentityServer.Resources;
-using eDoxa.Stripe.Extensions;
-using eDoxa.Stripe.Filters;
-using eDoxa.Swagger.Extensions;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -33,18 +32,15 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using Stripe;
-
 namespace eDoxa.Cashier.Api
 {
-    public sealed class Startup
+    public class Startup
     {
         public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {
             Configuration = configuration;
             Environment = environment;
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-            StripeConfiguration.SetApiKey(configuration["StripeConfiguration:ApiKey"]);
         }
 
         private IHostingEnvironment Environment { get; }
@@ -65,7 +61,7 @@ namespace eDoxa.Cashier.Api
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            services.AddMvcFilters(filters => filters.Add<StripeExceptionFilter>());
+            services.AddMvcFilters();
 
             services.AddSwagger(Configuration, Environment, CustomApiResources.Cashier);
 
@@ -75,9 +71,7 @@ namespace eDoxa.Cashier.Api
 
             services.AddAuthentication(Configuration, Environment, CustomApiResources.Cashier);
 
-            services.AddStripe();
-
-            return services.Build<Modules>();
+            return this.BuildModule(services);
         }
 
         public void Configure(IApplicationBuilder application, IApiVersionDescriptionProvider provider)
@@ -97,6 +91,11 @@ namespace eDoxa.Cashier.Api
             application.UseMvc();
 
             application.UseIntegrationEventSubscriptions();
+        }
+
+        protected virtual IServiceProvider BuildModule(IServiceCollection services)
+        {
+            return services.Build<ApiModule>();
         }
     }
 }

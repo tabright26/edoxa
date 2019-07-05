@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengesControllerGetByIdAsyncTest.cs
-// Date Created: 2019-06-13
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,15 +13,14 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Api;
 using eDoxa.Arena.Challenges.Api.Application.Fakers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Domain.ViewModels;
 using eDoxa.Arena.Challenges.Infrastructure;
+using eDoxa.Arena.Challenges.IntegrationTests.Helpers;
 using eDoxa.Seedwork.Security.Constants;
-using eDoxa.Seedwork.Testing.TestServer;
-using eDoxa.Seedwork.Testing.TestServer.Extensions;
+using eDoxa.Seedwork.Testing.Extensions;
 
 using FluentAssertions;
 
@@ -50,7 +49,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         [TestInitialize]
         public async Task TestInitialize()
         {
-            var factory = new CustomWebApplicationFactory<ChallengesDbContext, Startup>();
+            var factory = new WebApplicationFactory<TestStartup>();
             _httpClient = factory.CreateClient();
             _testServer = factory.Server;
             await this.TestCleanup();
@@ -59,20 +58,31 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         [TestCleanup]
         public async Task TestCleanup()
         {
-            var context = _testServer.GetService<ChallengesDbContext>();
-            context.Challenges.RemoveRange(context.Challenges);
-            await context.SaveChangesAsync();
+            await _testServer.UsingScopeAsync(
+                async scope =>
+                {
+                    var context = scope.GetService<ChallengesDbContext>();
+                    context.Challenges.RemoveRange(context.Challenges);
+                    await context.SaveChangesAsync();
+                }
+            );
         }
 
         [TestMethod]
         public async Task ShouldBeOk()
         {
             // Arrange
-            var challengeRepository = _testServer.GetService<IChallengeRepository>();
             var challengeFaker = new ChallengeFaker(state: ChallengeState.Closed);
             var challenge = challengeFaker.Generate();
-            challengeRepository.Create(challenge);
-            await challengeRepository.CommitAsync();
+
+            await _testServer.UsingScopeAsync(
+                async scope =>
+                {
+                    var challengeRepository = scope.GetService<IChallengeRepository>();
+                    challengeRepository.Create(challenge);
+                    await challengeRepository.CommitAsync();
+                }
+            );
 
             // Act
             var response = await this.ExecuteAsync(ChallengeId.FromGuid(challenge.Id));

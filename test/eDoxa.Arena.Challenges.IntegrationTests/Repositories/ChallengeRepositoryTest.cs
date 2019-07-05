@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeRepositoryTest.cs
-// Date Created: 2019-06-21
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,22 +12,21 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-using AutoMapper;
-
 using Bogus;
 
 using eDoxa.Arena.Challenges.Api.Application.Fakers;
 using eDoxa.Arena.Challenges.Api.Application.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Infrastructure;
-using eDoxa.Arena.Challenges.Infrastructure.Repositories;
 using eDoxa.Arena.Challenges.IntegrationTests.Helpers;
 using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Common.ValueObjects;
-using eDoxa.Seedwork.Infrastructure.Factories;
+using eDoxa.Seedwork.Testing.Extensions;
 
 using FluentAssertions;
 
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
@@ -35,244 +34,180 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
     [TestClass]
     public sealed class ChallengeRepositoryTest
     {
-        private static readonly IMapper Mapper = MapperBuilder.CreateMapper();
-        private static readonly Faker Faker = new Faker();
+        private TestServer _testServer;
 
-        [TestMethod]
-        public async Task Create_Challenge_ShouldNotBeNull()
+        [TestInitialize]
+        public async Task TestInitialize()
         {
-            var challengeFaker = new ChallengeFaker();
-
-            challengeFaker.UseSeed(1);
-
-            var challenge = challengeFaker.Generate();
-
-            using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
-            {
-                using (var context = factory.CreateContext())
-                {
-                    var repository = new ChallengeRepository(context, Mapper);
-
-                    repository.Create(challenge);
-
-                    await repository.CommitAsync();
-                }
-
-                using (var context = factory.CreateContext())
-                {
-                    var repository = new ChallengeRepository(context, Mapper);
-
-                    var challenges = await repository.FindChallengesAsync();
-
-                    challenges.Should().NotBeNull();
-
-                    //challenge.Should().NotBeNull();
-
-                    //challenge.ShouldBeValidObjectState();
-
-                    //var challengeAsNoTracking = await repository.FindChallengeAsync(challenge.Id);
-
-                    //challengeAsNoTracking.Should().NotBeNull();
-
-                    //challengeAsNoTracking.ShouldBeValidObjectState();
-
-                    //challengeAsNoTracking.Should().BeEquivalentTo(challenge);
-                }
-            }
+            var factory = new WebApplicationFactory<TestStartup>();
+            factory.CreateClient();
+            _testServer = factory.Server;
+            await this.TestCleanup();
         }
 
-        //[DataRow(2)]
-        //[DataRow(5)]
-        //[DataRow(10)]
-        //[DataTestMethod]
-        //public async Task Create_Challenges_ShouldHaveCount(int count)
-        //{
-        //    var challengeFaker = new ChallengeFaker();
-
-        //    using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
-        //    {
-        //        using (var context = factory.CreateContext())
-        //        {
-        //            var repository = new ChallengeRepository(context, Mapper);
-
-        //            repository.Create(challengeFaker.Generate(count));
-
-        //            await repository.UnitOfWork.CommitAsync();
-        //        }
-
-        //        using (var context = factory.CreateContext())
-        //        {
-        //            var repository = new ChallengeRepository(context, Mapper);
-
-        //            var challenges = await repository.FindChallengesAsync();
-
-        //            challenges.Should().HaveCount(count);
-
-        //            challenges.ShouldBeValidObjectState();
-
-        //            //var challengesAsNoTracking = await repository.FindChallengesAsNoTrackingAsync();
-
-        //            //challengesAsNoTracking.Should().HaveCount(count);
-
-        //            //challengesAsNoTracking.ShouldBeValidObjectState();
-
-        //            //challengesAsNoTracking.Should().BeEquivalentTo(challenges);
-        //        }
-        //    }
-        //}
-
-        [TestMethod]
-        public async Task Update_Challenge_ShouldNotBeNull()
+        [TestCleanup]
+        public async Task TestCleanup()
         {
+            await _testServer.UsingScopeAsync(
+                async scope =>
+                {
+                    var context = scope.GetService<ChallengesDbContext>();
+                    context.Challenges.RemoveRange(context.Challenges);
+                    await context.SaveChangesAsync();
+                }
+            );
+        }
+
+        [DataTestMethod]
+        [DataRow(56239561)]
+        [DataRow(78754231)]
+        [DataRow(89785671)]
+        public async Task Scenario_ChallengeStateIsValid_ShouldBeTrue(int seed)
+        {
+            // Arrange
+            var faker = new Faker();
             var challengeFaker = new ChallengeFaker(state: ChallengeState.Inscription);
-
-            challengeFaker.UseSeed(1);
-
+            challengeFaker.UseSeed(seed);
             var fakeChallenge = challengeFaker.Generate();
 
-            using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
-            {
-                using (var context = factory.CreateContext())
+            await _testServer.UsingScopeAsync(
+                async scope =>
                 {
-                    var repository = new ChallengeRepository(context, Mapper);
-
-                    repository.Create(fakeChallenge);
-
-                    await repository.CommitAsync();
+                    var challengeRepository = scope.GetService<IChallengeRepository>();
+                    challengeRepository.Create(fakeChallenge);
+                    await challengeRepository.CommitAsync();
                 }
+            );
 
-                using (var context = factory.CreateContext())
+            // Assert
+
+            await _testServer.UsingScopeAsync(
+                async scope =>
                 {
-                    var repository = new ChallengeRepository(context, Mapper);
-
-                    var challenge = await repository.FindChallengeAsync(fakeChallenge.Id);
-
-                    challenge.Should().Be(fakeChallenge);
-
-                    challenge.Timeline.State.Should().Be(ChallengeState.Inscription);
+                    var challengeRepository = scope.GetService<IChallengeRepository>();
+                    var challenge = await challengeRepository.FindChallengeAsync(fakeChallenge.Id);
+                    challenge.Should().NotBeNull();
+                    challenge?.Should().Be(fakeChallenge);
+                    challenge?.Timeline.State.Should().Be(ChallengeState.Inscription);
                 }
+            );
 
-                var participant1 = new Participant(new UserId(), new GameAccountId(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider());
+            var participant1 = new Participant(new UserId(), new GameAccountId(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider());
 
-                using (var context = factory.CreateContext())
+            // Act
+            await _testServer.UsingScopeAsync(
+                async scope =>
                 {
-                    var repository = new ChallengeRepository(context, Mapper);
-
-                    var challenge = await repository.FindChallengeAsync(fakeChallenge.Id);
-
-                    challenge.Register(participant1);
-
-                    await repository.CommitAsync();
-
-                    challenge.Timeline.State.Should().Be(ChallengeState.Inscription);
+                    var challengeRepository = scope.GetService<IChallengeRepository>();
+                    var challenge = await challengeRepository.FindChallengeAsync(fakeChallenge.Id);
+                    challenge.Should().NotBeNull();
+                    challenge?.Register(participant1);
+                    await challengeRepository.CommitAsync();
                 }
+            );
 
-                using (var context = factory.CreateContext())
+            // Assert
+            await _testServer.UsingScopeAsync(
+                async scope =>
                 {
-                    var repository = new ChallengeRepository(context, Mapper);
-
-                    var challenge = await repository.FindChallengeAsync(fakeChallenge.Id);
-
-                    challenge.Participants.Should().Contain(participant1);
-
-                    challenge.Timeline.State.Should().Be(ChallengeState.Inscription);
+                    var challengeRepository = scope.GetService<IChallengeRepository>();
+                    var challenge = await challengeRepository.FindChallengeAsync(fakeChallenge.Id);
+                    challenge.Should().NotBeNull();
+                    challenge?.Participants.Should().Contain(participant1);
+                    challenge?.Timeline.State.Should().Be(ChallengeState.Inscription);
                 }
+            );
 
-                using (var context = factory.CreateContext())
+            // Act
+            await _testServer.UsingScopeAsync(
+                async scope =>
                 {
-                    var repository = new ChallengeRepository(context, Mapper);
+                    var challengeRepository = scope.GetService<IChallengeRepository>();
+                    var challenge = await challengeRepository.FindChallengeAsync(fakeChallenge.Id);
+                    challenge.Should().NotBeNull();
+                    var entries = challenge?.Setup.Entries - challenge?.Participants.Count;
 
-                    var challenge = await repository.FindChallengeAsync(fakeChallenge.Id);
-
-                    var participantCount = challenge.Setup.Entries - challenge.Participants.Count;
-
-                    for (var index = 0; index < participantCount; index++)
+                    for (var index = 0; index < entries; index++)
                     {
-                        challenge.Register(new Participant(new UserId(), new GameAccountId(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider()));
+                        challenge?.Register(new Participant(new UserId(), new GameAccountId(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider()));
                     }
 
-                    challenge.Start(new UtcNowDateTimeProvider());
-
-                    await repository.CommitAsync();
-
-                    challenge.Timeline.State.Should().Be(ChallengeState.InProgress);
+                    challenge?.Start(new UtcNowDateTimeProvider());
+                    await challengeRepository.CommitAsync();
                 }
+            );
 
-                using (var context = factory.CreateContext())
+            // Assert
+            await _testServer.UsingScopeAsync(
+                async scope =>
                 {
-                    var repository = new ChallengeRepository(context, Mapper);
-
-                    var challenge = await repository.FindChallengeAsync(fakeChallenge.Id);
-
-                    challenge.Participants.Should().HaveCount(challenge.Setup.Entries);
-
-                    challenge.Timeline.State.Should().Be(ChallengeState.InProgress);
+                    var challengeRepository = scope.GetService<IChallengeRepository>();
+                    var challenge = await challengeRepository.FindChallengeAsync(fakeChallenge.Id);
+                    challenge.Should().NotBeNull();
+                    challenge?.Participants.Should().HaveCount(challenge.Setup.Entries);
+                    challenge?.Timeline.State.Should().Be(ChallengeState.InProgress);
                 }
+            );
 
-                var match1 = new Match(new GameReference(Guid.NewGuid()), new UtcNowDateTimeProvider());
+            var match1 = new Match(new GameReference(Guid.NewGuid()), new UtcNowDateTimeProvider());
+            match1.Snapshot(faker.Match().Stats(ChallengeGame.LeagueOfLegends), fakeChallenge.Scoring);
 
-                match1.Snapshot(Faker.Match().Stats(ChallengeGame.LeagueOfLegends), fakeChallenge.Scoring);
-
-                using (var context = factory.CreateContext())
+            // Act
+            await _testServer.UsingScopeAsync(
+                async scope =>
                 {
-                    var repository = new ChallengeRepository(context, Mapper);
-
-                    var challenge = await repository.FindChallengeAsync(fakeChallenge.Id);
-
-                    var participant = challenge.Participants.Single(p => p == participant1);
-
-                    participant.Snapshot(match1);
-
-                    await repository.CommitAsync();
+                    var challengeRepository = scope.GetService<IChallengeRepository>();
+                    var challenge = await challengeRepository.FindChallengeAsync(fakeChallenge.Id);
+                    challenge.Should().NotBeNull();
+                    var participant = challenge?.Participants.Single(p => p == participant1);
+                    participant?.Snapshot(match1);
+                    await challengeRepository.CommitAsync();
                 }
+            );
 
-                using (var context = factory.CreateContext())
+            // Assert
+            await _testServer.UsingScopeAsync(
+                async scope =>
                 {
-                    var repository = new ChallengeRepository(context, Mapper);
-
-                    var challenge = await repository.FindChallengeAsync(fakeChallenge.Id);
-
-                    var participant = challenge.Participants.Single(p => p == participant1);
-
-                    participant.Matches.Should().Contain(match1);
-
-                    participant.SynchronizedAt.Should().NotBeNull();
-
-                    challenge.Timeline.State.Should().Be(ChallengeState.InProgress);
+                    var challengeRepository = scope.GetService<IChallengeRepository>();
+                    var challenge = await challengeRepository.FindChallengeAsync(fakeChallenge.Id);
+                    challenge.Should().NotBeNull();
+                    var participant = challenge?.Participants.Single(p => p == participant1);
+                    participant?.Matches.Should().Contain(match1);
+                    participant?.SynchronizedAt.Should().NotBeNull();
+                    challenge?.Timeline.State.Should().Be(ChallengeState.InProgress);
                 }
+            );
 
-                var match2 = new Match(new GameReference(Guid.NewGuid()), new UtcNowDateTimeProvider());
+            var match2 = new Match(new GameReference(Guid.NewGuid()), new UtcNowDateTimeProvider());
+            match2.Snapshot(faker.Match().Stats(ChallengeGame.LeagueOfLegends), fakeChallenge.Scoring);
 
-                match2.Snapshot(Faker.Match().Stats(ChallengeGame.LeagueOfLegends), fakeChallenge.Scoring);
-
-                using (var context = factory.CreateContext())
+            // Act
+            await _testServer.UsingScopeAsync(
+                async scope =>
                 {
-                    var repository = new ChallengeRepository(context, Mapper);
-
-                    var challenge = await repository.FindChallengeAsync(fakeChallenge.Id);
-
-                    var participant = challenge.Participants.Single(p => p == participant1);
-
-                    participant.Snapshot(match2);
-
-                    await repository.CommitAsync();
+                    var challengeRepository = scope.GetService<IChallengeRepository>();
+                    var challenge = await challengeRepository.FindChallengeAsync(fakeChallenge.Id);
+                    challenge.Should().NotBeNull();
+                    var participant = challenge?.Participants.Single(p => p == participant1);
+                    participant?.Snapshot(match2);
+                    await challengeRepository.CommitAsync();
                 }
+            );
 
-                using (var context = factory.CreateContext())
+            // Assert
+            await _testServer.UsingScopeAsync(
+                async scope =>
                 {
-                    var repository = new ChallengeRepository(context, Mapper);
-
-                    var challenge = await repository.FindChallengeAsync(fakeChallenge.Id);
-
-                    var participant = challenge.Participants.Single(p => p == participant1);
-
-                    participant.Matches.Should().BeEquivalentTo(match1, match2);
-
-                    participant.SynchronizedAt.Should().NotBeNull();
-
-                    challenge.Timeline.State.Should().Be(ChallengeState.InProgress);
+                    var challengeRepository = scope.GetService<IChallengeRepository>();
+                    var challenge = await challengeRepository.FindChallengeAsync(fakeChallenge.Id);
+                    challenge.Should().NotBeNull();
+                    var participant = challenge?.Participants.Single(p => p == participant1);
+                    participant?.Matches.Should().BeEquivalentTo(match1, match2);
+                    participant?.SynchronizedAt.Should().NotBeNull();
+                    challenge?.Timeline.State.Should().Be(ChallengeState.InProgress);
                 }
-            }
+            );
         }
     }
 }

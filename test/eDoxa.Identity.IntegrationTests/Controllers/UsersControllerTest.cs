@@ -1,5 +1,5 @@
 ﻿// Filename: UsersControllerTest.cs
-// Date Created: 2019-06-06
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,10 +13,10 @@ using System.Threading.Tasks;
 
 using eDoxa.Identity.Api;
 using eDoxa.Identity.Api.Application.Fakers;
-using eDoxa.Identity.Api.ViewModels;
+using eDoxa.Identity.Domain.ViewModels;
 using eDoxa.Identity.Infrastructure;
-using eDoxa.Seedwork.Testing.TestServer;
-using eDoxa.Seedwork.Testing.TestServer.Extensions;
+using eDoxa.Identity.IntegrationTests.Helpers;
+using eDoxa.Seedwork.Testing.Extensions;
 
 using FluentAssertions;
 
@@ -40,7 +40,7 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
         [TestInitialize]
         public async Task TestInitialize()
         {
-            var factory = new CustomWebApplicationFactory<IdentityDbContext, Startup>();
+            var factory = new WebApplicationFactory<Startup>();
             _httpClient = factory.CreateClient();
             _testServer = factory.Server;
             await this.TestCleanup();
@@ -49,9 +49,14 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
         [TestCleanup]
         public async Task TestCleanup()
         {
-            var context = _testServer.GetService<IdentityDbContext>();
-            context.Users.RemoveRange(context.Users);
-            await context.SaveChangesAsync();
+            await _testServer.UsingScopeAsync(
+                async scope =>
+                {
+                    var context = scope.GetService<IdentityDbContext>();
+                    context.Users.RemoveRange(context.Users);
+                    await context.SaveChangesAsync();
+                }
+            );
         }
 
         [TestMethod]
@@ -60,9 +65,16 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
             // Arrange
             var userFaker = new UserFaker();
             userFaker.UseSeed(1);
-            var context = _testServer.GetService<IdentityDbContext>();
-            context.AddRange(userFaker.FakeTestUsers(99));
-            await context.SaveChangesAsync();
+            var fakeUsers = userFaker.FakeTestUsers(99);
+
+            await _testServer.UsingScopeAsync(
+                async scope =>
+                {
+                    var context = scope.GetService<IdentityDbContext>();
+                    context.AddRange(fakeUsers);
+                    await context.SaveChangesAsync();
+                }
+            );
 
             // Act
             var response = await this.ExecuteAsync();

@@ -1,5 +1,5 @@
 // Filename: MatchTest.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -27,22 +27,19 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
     [TestClass]
     public sealed class MatchTest
     {
-        private static readonly Faker Faker = new Faker();
-
-        private static IEnumerable<object[]> ChallengeGames => ChallengeGame.GetEnumerations().Select(game => new object[] { game });
+        private static IEnumerable<object[]> GameDataSets => ChallengeGame.GetEnumerations().Select(game => new object[] {game});
 
         [DataTestMethod]
-        [DynamicData(nameof(ChallengeGames))]
-        public void SnapshotStats_Stats_ShouldHaveCountOfScoring(ChallengeGame game)
+        [DynamicData(nameof(GameDataSets))]
+        public void Snapshot_Stats_ShouldHaveCountOfScoring(ChallengeGame game)
         {
             // Arrange
+            var faker = new Faker();
             var scoring = new ScoringFactory().CreateInstance(game).Scoring;
-
-            var stats = Faker.Match().Stats(game);
+            var stats = faker.Match().Stats(game);
+            var match = new Match(faker.Match().GameId(game), new UtcNowDateTimeProvider());
 
             // Act
-            var match = new Match(Faker.Match().GameId(game), new UtcNowDateTimeProvider());
-
             match.Snapshot(stats, scoring);
 
             // Assert

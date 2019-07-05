@@ -1,5 +1,5 @@
 ﻿// Filename: AccountToken.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,10 +11,8 @@
 using System;
 using System.Linq;
 
-using eDoxa.Cashier.Domain.Abstractions;
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate.Transactions;
+using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Validators;
-using eDoxa.Seedwork.Common.Enumerations;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
@@ -27,14 +25,14 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
             _account = account;
         }
 
-        public Balance Balance => new Balance(_account.Transactions, CurrencyType.Token);
+        public Balance Balance => new Balance(_account.Transactions, Currency.Token);
 
         public DateTime? LastDeposit =>
             _account.Transactions
                 .Where(
-                    transaction => transaction.Currency.Type == CurrencyType.Token &&
+                    transaction => transaction.Currency.Type == Currency.Token &&
                                    transaction.Type == TransactionType.Deposit &&
-                                   transaction.Status == TransactionStatus.Completed
+                                   transaction.Status == TransactionStatus.Succeded
                 )
                 .OrderByDescending(transaction => transaction)
                 .FirstOrDefault()
@@ -82,20 +80,6 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
             var transaction = new TokenRewardTransaction(amount);
 
             _account.CreateTransaction(transaction);
-
-            return transaction;
-        }
-
-        public ITransaction CompleteTransaction(ITransaction transaction)
-        {
-            transaction.Complete();
-
-            return transaction;
-        }
-
-        public ITransaction FailureTransaction(ITransaction transaction, string message)
-        {
-            transaction.Fail(message);
 
             return transaction;
         }

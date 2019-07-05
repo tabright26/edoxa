@@ -1,5 +1,5 @@
 ﻿// Filename: AccountRepository.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,15 +8,23 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
+using AutoMapper;
+
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Seedwork.Common.Enumerations;
+using eDoxa.Cashier.Infrastructure.Models;
 using eDoxa.Seedwork.Common.ValueObjects;
-using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Extensions;
+
+using JetBrains.Annotations;
+
+using LinqKit;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -24,51 +32,84 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
 {
     public sealed partial class AccountRepository
     {
+        private readonly IDictionary<Guid, IAccount> _materializedIds = new Dictionary<Guid, IAccount>();
+        private readonly IDictionary<IAccount, AccountModel> _materializedObjects = new Dictionary<IAccount, AccountModel>();
         private readonly CashierDbContext _context;
+        private readonly IMapper _mapper;
 
-        public AccountRepository(CashierDbContext context)
+        public AccountRepository(CashierDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        public IUnitOfWork UnitOfWork => _context;
+        [ItemCanBeNull]
+        private async Task<AccountModel> FindUserAccountModelAsync(Guid userId)
+        {
+            var accountModels = from account in _context.Accounts.Include(account => account.Transactions).AsExpandable()
+                                where account.UserId == userId
+                                select account;
+
+            return await accountModels.SingleOrDefaultAsync();
+        }
     }
 
     public sealed partial class AccountRepository : IAccountRepository
     {
-        public async Task<Account> GetAccountAsync(UserId userId)
+        public void Create(IAccount account)
         {
-            return await _context.Accounts.Include(account => account.User)
-                .Include(account => account.Transactions)
-                .Where(account => account.User.Id == userId)
-                .SingleOrDefaultAsync();
+            var accountModel = _mapper.Map<AccountModel>(account);
+
+            _context.Accounts.Add(accountModel);
+
+            _materializedObjects[account] = accountModel;
         }
 
-        public async Task<Account> GetAccountAsNoTrackingAsync(UserId userId)
+        [ItemCanBeNull]
+        public async Task<IAccount> FindUserAccountAsync(UserId userId)
         {
-            return await _context.Accounts.AsNoTracking()
-                .Include(account => account.User)
-                .Include(account => account.Transactions)
-                .Where(account => account.User.Id == userId)
-                .SingleOrDefaultAsync();
+            if (_materializedIds.TryGetValue(userId, out var account))
+            {
+                return account;
+            }
+
+            var accountModel = await this.FindUserAccountModelAsync(userId);
+
+            if (accountModel == null)
+            {
+                return null;
+            }
+
+            account = _mapper.Map<IAccount>(accountModel);
+
+            _materializedObjects[account] = accountModel;
+
+            _materializedIds[userId] = account;
+
+            return account;
         }
 
-        public async Task<Balance> GetBalanceAsNoTrackingAsync(UserId userId, CurrencyType currency)
+        public async Task CommitAsync(CancellationToken cancellationToken = default)
         {
-            var transactions = await this.GetTransactionsAsNoTrackingAsync(userId);
+            foreach (var (account, accountModel) in _materializedObjects)
+            {
+                this.CopyChanges(account, accountModel);
+            }
 
-            return new Balance(transactions, currency);
+            await _context.SaveChangesAsync(cancellationToken);
+
+            foreach (var (account, accountModel) in _materializedObjects)
+            {
+                _materializedIds[accountModel.UserId] = account;
+            }
         }
 
-        public async Task<IReadOnlyCollection<Transaction>> GetTransactionsAsNoTrackingAsync(UserId userId)
+        private void CopyChanges(IAccount account, AccountModel accountModel)
         {
-            var account = await _context.Accounts.AsNoTracking()
-                .Include(x => x.User)
-                .Include(x => x.Transactions)
-                .Where(x => x.User.Id == userId)
-                .SingleOrDefaultAsync();
+            var transactions =
+                account.Transactions.Where(transaction => accountModel.Transactions.All(transactionModel => transactionModel.Id != transaction.Id));
 
-            return account.Transactions;
+            _mapper.Map<ICollection<TransactionModel>>(transactions).ForEach(transaction => accountModel.Transactions.Add(transaction));
         }
     }
 }

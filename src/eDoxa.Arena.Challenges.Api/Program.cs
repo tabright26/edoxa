@@ -23,7 +23,7 @@ using Serilog;
 
 namespace eDoxa.Arena.Challenges.Api
 {
-    public static class Program
+    public class Program
     {
         public static int Main(string[] args)
         {

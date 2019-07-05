@@ -11,9 +11,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Application.Abstractions;
 using eDoxa.Identity.Api.Controllers;
-using eDoxa.Identity.Api.ViewModels;
+using eDoxa.Identity.Domain.Queries;
+using eDoxa.Identity.Domain.ViewModels;
 
 using FluentAssertions;
 

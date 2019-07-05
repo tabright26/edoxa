@@ -13,8 +13,8 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Identity.Api.Application.Abstractions;
-using eDoxa.Identity.Api.ViewModels;
+using eDoxa.Identity.Domain.Queries;
+using eDoxa.Identity.Domain.ViewModels;
 using eDoxa.Identity.Infrastructure;
 
 using Microsoft.EntityFrameworkCore;

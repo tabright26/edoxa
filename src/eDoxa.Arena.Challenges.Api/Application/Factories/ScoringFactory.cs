@@ -26,7 +26,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Factories
         public ScoringFactory(IEnumerable<IScoringStrategy> strategies = null)
         {
             _strategies = strategies?.ToDictionary(strategie => strategie.Game) ??
-                          Assembly.GetExecutingAssembly()
+                          Assembly.GetAssembly(typeof(Startup))
                               .GetTypes()
                               .Where(type => typeof(IScoringStrategy).IsAssignableFrom(type) && type.IsInterface == false)
                               .Select(type => Activator.CreateInstance(type) as IScoringStrategy)

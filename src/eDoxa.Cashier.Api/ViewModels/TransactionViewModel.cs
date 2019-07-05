@@ -1,5 +1,5 @@
 ﻿// Filename: TransactionViewModel.cs
-// Date Created: 2019-06-08
+// Date Created: 2019-07-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,8 +10,8 @@
 
 using System;
 
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Seedwork.Common.Enumerations;
+using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -28,11 +28,11 @@ namespace eDoxa.Cashier.Api.ViewModels
         [JsonConverter(typeof(UnixDateTimeConverter))]
         public DateTime Timestamp { get; set; }
 
+        [JsonProperty("currency")]
+        public Currency Currency { get; set; }
+
         [JsonProperty("amount")]
         public decimal Amount { get; set; }
-
-        [JsonProperty("currency")]
-        public CurrencyType CurrencyType { get; set; }
 
         [JsonProperty("description")]
         public string Description { get; set; }

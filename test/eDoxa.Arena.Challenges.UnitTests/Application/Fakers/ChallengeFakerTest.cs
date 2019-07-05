@@ -14,8 +14,9 @@ using System.Linq;
 using Bogus;
 
 using eDoxa.Arena.Challenges.Api.Application.Fakers;
+using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.UnitTests.Extensions;
+using eDoxa.Arena.Challenges.UnitTests.Helpers.Extensions;
 
 using FluentAssertions;
 
@@ -28,12 +29,12 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Fakers
     {
         private static readonly Faker Faker = new Faker();
 
-        private static IEnumerable<object[]> Data =>
+        private static IEnumerable<object[]> ChallengeFakerDataSets =>
             ChallengeGame.GetEnumerations()
                 .SelectMany(game => ChallengeState.GetEnumerations().Select(state => new object[] {game, state, Faker.Random.Int()}));
 
         [DataTestMethod]
-        [DynamicData(nameof(Data))]
+        [DynamicData(nameof(ChallengeFakerDataSets))]
         public void Generate_ChallengesWithAnyStateGeneratedByAnySeed_ShouldBeValidState(ChallengeGame game, ChallengeState state, int seed)
         {
             // Arrange
@@ -45,6 +46,19 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Fakers
 
             // Assert
             challenges.AssertStateIsValid();
+        }
+
+        [TestMethod]
+        public void ChallengeViewModel_Mapping_ShouldBeValid()
+        {
+            // Arrange
+            var challengeFaker = new ChallengeFaker();
+
+            // Act
+            var challenge = challengeFaker.Generate().ToViewModel();
+
+            // Assert
+            challenge.AssertMappingIsValid();
         }
 
         [DataTestMethod]

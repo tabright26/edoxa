@@ -15,6 +15,9 @@ namespace eDoxa.Arena.Challenges.Domain.Strategies
 {
     public interface IScoringStrategy
     {
+        /// <summary>
+        ///     Discriminator.
+        /// </summary>
         ChallengeGame Game { get; }
 
         IScoring Scoring { get; }

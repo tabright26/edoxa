@@ -8,22 +8,14 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Collections.Generic;
 using System.Linq;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class ParticipantScore : Score
     {
-        internal ParticipantScore(Participant participant, BestOf bestOf) : base(
-            Resolve(participant.Matches.Select(match => (decimal) match.TotalScore), bestOf)
-        )
+        internal ParticipantScore(Participant participant, BestOf bestOf) : base(participant.Matches.OrderByDescending(match => match.TotalScore).Take(bestOf).Average(match => match.TotalScore.ToDecimal()))
         {
-        }
-
-        public static decimal Resolve(IEnumerable<decimal> totalScores, int bestOf)
-        {
-            return totalScores.OrderByDescending(totalScore => totalScore).Take(bestOf).Average(totalScore => totalScore);
         }
     }
 }

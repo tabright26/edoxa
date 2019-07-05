@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeHistoryControllerTest.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -15,13 +15,11 @@ using eDoxa.Arena.Challenges.Api.Controllers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
 using eDoxa.Arena.Challenges.Domain.ViewModels;
-using eDoxa.Arena.Challenges.UnitTests.Extensions;
 
 using FluentAssertions;
 
 using MediatR;
 
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -33,7 +31,6 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
     public sealed class ChallengeHistoryControllerTest
     {
         private Mock<IMediator> _mediator;
-        private Mock<IHttpContextAccessor> _mockUserInfoService;
         private Mock<IChallengeQuery> _queries;
 
         [TestInitialize]
@@ -41,8 +38,6 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
         {
             _queries = new Mock<IChallengeQuery>();
             _mediator = new Mock<IMediator>();
-            _mockUserInfoService = new Mock<IHttpContextAccessor>();
-            _mockUserInfoService.SetupClaims();
         }
 
         [TestMethod]

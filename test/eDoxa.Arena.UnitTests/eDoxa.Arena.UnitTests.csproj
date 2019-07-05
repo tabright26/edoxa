@@ -2,22 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-
-    <IsPackable>false</IsPackable>
-
     <AssemblyName>eDoxa.Arena.UnitTests</AssemblyName>
-
     <RootNamespace>eDoxa.Arena.UnitTests</RootNamespace>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Content Include="Utilities\Stubs\LeagueOfLegends\Matches.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Utilities\Stubs\LeagueOfLegends\MatchReferences.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.1" />
@@ -28,6 +16,15 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\eDoxa.Arena\eDoxa.Arena.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Seedwork.Testing\eDoxa.Seedwork.Testing.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Helpers\Stubs\LeagueOfLegends\Matches.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Helpers\Stubs\LeagueOfLegends\MatchReferences.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

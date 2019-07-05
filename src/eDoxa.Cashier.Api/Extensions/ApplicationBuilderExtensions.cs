@@ -24,6 +24,10 @@ namespace eDoxa.Cashier.Api.Extensions
             var service = application.ApplicationServices.GetRequiredService<IEventBusService>();
 
             service.Subscribe<UserCreatedIntegrationEvent, UserCreatedIntegrationEventHandler>();
+
+            service.Subscribe<TransactionSuccededIntegrationEvent, TransactionSuccededIntegrationEventHandler>();
+
+            service.Subscribe<TransactionFailedIntegrationEvent, TransactionFailedIntegrationEventHandler>();
         }
     }
 }

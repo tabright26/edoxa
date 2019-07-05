@@ -10,8 +10,8 @@
 
 using System.Collections.Generic;
 
+using eDoxa.IdentityServer.Extensions;
 using eDoxa.Seedwork.Security.Constants;
-using eDoxa.Seedwork.Security.IdentityServer.Extensions;
 using eDoxa.Seedwork.Security.IdentityServer.Resources;
 
 using IdentityServer4;
@@ -32,6 +32,8 @@ namespace eDoxa.IdentityServer.Infrastructure
             yield return CustomIdentityResources.Roles;
 
             yield return CustomIdentityResources.Permissions;
+
+            yield return CustomIdentityResources.Stripe;
         }
 
         public static IEnumerable<ApiResource> GetApiResources()
@@ -76,6 +78,7 @@ namespace eDoxa.IdentityServer.Infrastructure
                 AccessTokenType = AccessTokenType.Reference,
                 RequireConsent = false,
                 AllowAccessTokensViaBrowser = true,
+                UpdateAccessTokenClaimsOnRefresh = true,
                 AllowedGrantTypes = GrantTypes.Implicit,
                 AllowedScopes = new HashSet<string>
                 {
@@ -83,6 +86,7 @@ namespace eDoxa.IdentityServer.Infrastructure
                     IdentityServerConstants.StandardScopes.Profile,
                     CustomScopes.Roles,
                     CustomScopes.Permissions,
+                    CustomScopes.Stripe,
                     CustomScopes.IdentityApi,
                     CustomScopes.CashierApi,
                     CustomScopes.ChallengeApi

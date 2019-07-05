@@ -11,17 +11,14 @@
 using System.Linq;
 
 using eDoxa.Cashier.Api.ViewModels;
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.Domain.Extensions;
-using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Validators;
 using eDoxa.Commands.Abstractions.Validations;
 using eDoxa.Seedwork.Application.Validations.Extensions;
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.Extensions;
 using eDoxa.Seedwork.Domain.Extensions;
-using eDoxa.Stripe.Abstractions;
-using eDoxa.Stripe.Validators;
 
 using FluentValidation;
 
@@ -31,12 +28,7 @@ namespace eDoxa.Cashier.Api.Application.Commands.Validations
 {
     public sealed class DepositCommandValidator : CommandValidator<DepositCommand>
     {
-        public DepositCommandValidator(
-            IHttpContextAccessor httpContextAccessor,
-            IAccountRepository accountRepository,
-            IUserRepository userRepository,
-            IStripeService stripeService
-        )
+        public DepositCommandValidator(IHttpContextAccessor httpContextAccessor, IAccountQuery accountQuery)
         {
             this.RuleFor(command => command.Currency)
                 .NotNull()
@@ -50,9 +42,9 @@ namespace eDoxa.Cashier.Api.Application.Commands.Validations
                                 {
                                     var userId = httpContextAccessor.GetUserId();
 
-                                    var account = await accountRepository.GetAccountAsNoTrackingAsync(userId);
+                                    var account = await accountQuery.FindUserAccountAsync(userId);
 
-                                    if (command.Currency.Type == CurrencyType.Money)
+                                    if (command.Currency.Type == Currency.Money)
                                     {
                                         var moneyAccount = new AccountMoney(account);
 
@@ -66,7 +58,7 @@ namespace eDoxa.Cashier.Api.Application.Commands.Validations
                                         }
                                     }
 
-                                    if (command.Currency.Type == CurrencyType.Token)
+                                    if (command.Currency.Type == Currency.Token)
                                     {
                                         var tokenAccount = new AccountToken(account);
 
@@ -79,12 +71,6 @@ namespace eDoxa.Cashier.Api.Application.Commands.Validations
                                             return;
                                         }
                                     }
-
-                                    var user = await userRepository.GetUserAsNoTrackingAsync(userId);
-
-                                    var customer = await stripeService.GetCustomerAsync(user.GetCustomerId(), cancellationToken);
-
-                                    new StripeCustomerValidator().Validate(customer).Errors.ForEach(context.AddFailure);
                                 }
                             );
                     }
@@ -100,7 +86,7 @@ namespace eDoxa.Cashier.Api.Application.Commands.Validations
                         () =>
                         {
                             this.When(
-                                currency => currency.Type == CurrencyType.Money,
+                                currency => currency.Type == Currency.Money,
                                 () =>
                                 {
                                     var amounts = new[]
@@ -121,7 +107,7 @@ namespace eDoxa.Cashier.Api.Application.Commands.Validations
                             );
 
                             this.When(
-                                currency => currency.Type == CurrencyType.Token,
+                                currency => currency.Type == Currency.Token,
                                 () =>
                                 {
                                     var amounts = new[]

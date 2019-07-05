@@ -37,12 +37,12 @@ services:
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp      
 
-  stripe.unit-tests:
-    image: ${ACR_REGISTRY:-edoxa}/stripe.unit-tests:${ACR_TAG:-latest}
+  payment.unit-tests:
+    image: ${ACR_REGISTRY:-edoxa}/payment.unit-tests:${ACR_TAG:-latest}
     build:
       context: .
-      dockerfile: test/eDoxa.Stripe.UnitTests/Dockerfile
-    entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Stripe.UnitTestResults.trx
+      dockerfile: test/eDoxa.Payment.UnitTests/Dockerfile
+    entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Payment.UnitTestResults.trx
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
       

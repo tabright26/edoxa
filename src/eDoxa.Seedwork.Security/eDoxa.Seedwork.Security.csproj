@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>eDoxa.Seedwork.Security</AssemblyName>
+    <RootNamespace>eDoxa.Seedwork.Security</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

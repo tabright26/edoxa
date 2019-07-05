@@ -26,7 +26,7 @@ namespace eDoxa.Seedwork.Security.IdentityServer.Resources
             internal IdentityApi() : base(
                 "identity.api",
                 "eDoxa Identity API",
-                new CustomIdentityResources.Role().UserClaims.Union(new CustomIdentityResources.Permission().UserClaims)
+                CustomIdentityResources.Roles.UserClaims.Union(CustomIdentityResources.Permissions.UserClaims)
             )
             {
                 ApiSecrets = new HashSet<Secret>
@@ -41,9 +41,7 @@ namespace eDoxa.Seedwork.Security.IdentityServer.Resources
             internal CashierApi() : base(
                 "cashier.api",
                 "eDoxa Cashier API",
-                new IdentityResources.Profile().UserClaims.Union(
-                    new CustomIdentityResources.Role().UserClaims.Union(new CustomIdentityResources.Permission().UserClaims)
-                )
+                CustomIdentityResources.Roles.UserClaims.Union(CustomIdentityResources.Permissions.UserClaims.Union(CustomIdentityResources.Stripe.UserClaims))
             )
             {
                 ApiSecrets = new HashSet<Secret>
@@ -58,9 +56,7 @@ namespace eDoxa.Seedwork.Security.IdentityServer.Resources
             internal ChallengeApi() : base(
                 "arena.challenges.api",
                 "eDoxa Arena Challenges API",
-                new IdentityResources.Profile().UserClaims.Union(
-                    new CustomIdentityResources.Role().UserClaims.Union(new CustomIdentityResources.Permission().UserClaims)
-                )
+                CustomIdentityResources.Roles.UserClaims.Union(CustomIdentityResources.Permissions.UserClaims)
             )
 
             {

@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>eDoxa.Seedwork.Common</AssemblyName>
+    <RootNamespace>eDoxa.Seedwork.Common</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,8 +17,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="..\..\data\PayoutCharts.csv" Link="Resources\PayoutCharts.csv" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="..\..\data\TestUserIds.csv" Link="Resources\TestUserIds.csv" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\data\PayoutCharts.csv" Link="Resources\PayoutCharts.csv"
+             CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\data\TestUserIds.csv" Link="Resources\TestUserIds.csv"
+             CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

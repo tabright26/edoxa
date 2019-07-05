@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengesControllerGetAsyncTest.cs
-// Date Created: 2019-06-07
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,13 +13,12 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Api;
 using eDoxa.Arena.Challenges.Api.Application.Fakers;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Domain.ViewModels;
 using eDoxa.Arena.Challenges.Infrastructure;
-using eDoxa.Seedwork.Testing.TestServer;
-using eDoxa.Seedwork.Testing.TestServer.Extensions;
+using eDoxa.Arena.Challenges.IntegrationTests.Helpers;
+using eDoxa.Seedwork.Testing.Extensions;
 
 using FluentAssertions;
 
@@ -38,11 +37,11 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         {
             return await _httpClient.GetAsync("api/challenges");
         }
-        
+
         [TestInitialize]
         public async Task TestInitialize()
         {
-            var factory = new CustomWebApplicationFactory<ChallengesDbContext, Startup>();
+            var factory = new WebApplicationFactory<TestStartup>();
             _httpClient = factory.CreateClient();
             _testServer = factory.Server;
             await this.TestCleanup();
@@ -51,9 +50,14 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         [TestCleanup]
         public async Task TestCleanup()
         {
-            var context = _testServer.GetService<ChallengesDbContext>();
-            context.Challenges.RemoveRange(context.Challenges);
-            await context.SaveChangesAsync();
+            await _testServer.UsingScopeAsync(
+                async scope =>
+                {
+                    var context = scope.GetService<ChallengesDbContext>();
+                    context.Challenges.RemoveRange(context.Challenges);
+                    await context.SaveChangesAsync();
+                }
+            );
         }
 
         [TestMethod]
@@ -73,11 +77,17 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         public async Task The_response_http_should_have_exactly_the_same_number_of_fake_challenges_added_to_the_database(int count)
         {
             // Arrange
-            var challengeRepository = _testServer.GetService<IChallengeRepository>();
             var challengeFaker = new ChallengeFaker();
             var challenges = challengeFaker.Generate(count);
-            challengeRepository.Create(challenges);
-            await challengeRepository.CommitAsync();
+
+            await _testServer.UsingScopeAsync(
+                async scope =>
+                {
+                    var challengeRepository = scope.GetService<IChallengeRepository>();
+                    challengeRepository.Create(challenges);
+                    await challengeRepository.CommitAsync();
+                }
+            );
 
             // Act
             var response = await this.ExecuteAsync();
@@ -95,12 +105,18 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         public async Task Fake_challenge_with_same_seed_should_be_equivalent(int seed)
         {
             // Arrange
-            var challengeRepository = _testServer.GetService<IChallengeRepository>();
             var challengeFaker = new ChallengeFaker();
             challengeFaker.UseSeed(seed);
             var challenge = challengeFaker.Generate();
-            challengeRepository.Create(challenge);
-            await challengeRepository.CommitAsync();
+
+            await _testServer.UsingScopeAsync(
+                async scope =>
+                {
+                    var challengeRepository = scope.GetService<IChallengeRepository>();
+                    challengeRepository.Create(challenge);
+                    await challengeRepository.CommitAsync();
+                }
+            );
 
             // Act
             var response = await this.ExecuteAsync();

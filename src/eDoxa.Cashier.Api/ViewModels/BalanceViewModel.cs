@@ -1,5 +1,5 @@
 ﻿// Filename: BalanceViewModel.cs
-// Date Created: 2019-06-08
+// Date Created: 2019-07-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Seedwork.Common.Enumerations;
+using eDoxa.Cashier.Domain.AggregateModels;
 
 using Newtonsoft.Json;
 
@@ -18,7 +18,7 @@ namespace eDoxa.Cashier.Api.ViewModels
     public class BalanceViewModel
     {
         [JsonProperty("currency")]
-        public CurrencyType CurrencyType { get; set; }
+        public Currency Currency { get; set; }
 
         [JsonProperty("available")]
         public decimal Available { get; set; }

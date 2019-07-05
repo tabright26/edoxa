@@ -1,5 +1,5 @@
 ﻿// Filename: TransactionsController.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,15 +8,21 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Application.Abstractions;
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Seedwork.Common.Enumerations;
+using eDoxa.Cashier.Api.Infrastructure.Queries.Extensions;
+using eDoxa.Cashier.Api.ViewModels;
+using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
+using eDoxa.Cashier.Domain.Queries;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Cashier.Api.Controllers
 {
@@ -38,17 +44,19 @@ namespace eDoxa.Cashier.Api.Controllers
         /// <summary>
         ///     Get transactions by currency, type and status.
         /// </summary>
-        [HttpGet(Name = nameof(GetTransactionsAsync))]
-        public async Task<IActionResult> GetTransactionsAsync(CurrencyType currency = null, TransactionType type = null, TransactionStatus status = null)
+        [HttpGet]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<TransactionViewModel>))]
+        [SwaggerResponse(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> GetAsync(Currency currency = null, TransactionType type = null, TransactionStatus status = null)
         {
-            var transactions = await _transactionQuery.GetTransactionsAsync(currency, type, status);
+            var transactionViewModels = await _transactionQuery.FindUserTransactionViewModelsAsync(currency, type, status);
 
-            if (!transactions.Any())
+            if (!transactionViewModels.Any())
             {
                 return this.NoContent();
             }
 
-            return this.Ok(transactions);
+            return this.Ok(transactionViewModels);
         }
     }
 }

@@ -10,7 +10,7 @@
 
 using System;
 
-using eDoxa.Monitoring.Extensions;
+using eDoxa.Seedwork.Monitoring.Extensions;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
