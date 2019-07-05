@@ -1,8 +1,8 @@
-﻿// Filename: Price.cs
-// Date Created: 2019-06-01
+// Filename: Price.cs
+// Date Created: 2019-07-04
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright � 2019, eDoxa. All rights reserved.
 // 
 // This file is subject to the terms and conditions
 // defined in file 'LICENSE.md', which is part of
@@ -13,7 +13,7 @@ using System;
 using eDoxa.Seedwork.Common.Abstactions;
 using eDoxa.Seedwork.Common.Enumerations;
 
-namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
+namespace eDoxa.Cashier.Domain.AggregateModels
 {
     public sealed class Price
     {

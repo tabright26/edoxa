@@ -18,7 +18,7 @@ namespace eDoxa.Cashier.Domain.ViewModels
     public class BalanceViewModel
     {
         [JsonProperty("currency")]
-        public CurrencyType CurrencyType { get; set; }
+        public CurrencyType Currency { get; set; }
 
         [JsonProperty("available")]
         public decimal Available { get; set; }

@@ -11,7 +11,9 @@
 using System;
 using System.Linq;
 
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Common.Abstactions;
 

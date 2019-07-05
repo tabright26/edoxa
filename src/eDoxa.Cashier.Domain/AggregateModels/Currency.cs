@@ -1,5 +1,5 @@
 ﻿// Filename: Currency.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-07-04
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -18,7 +18,7 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
+namespace eDoxa.Cashier.Domain.AggregateModels
 {
     public class Currency : ValueObject, ICurrency
     {

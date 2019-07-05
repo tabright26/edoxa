@@ -1,5 +1,5 @@
 ﻿// Filename: TransactionId.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-07-04
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,7 +12,7 @@ using System.ComponentModel;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
-namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
+namespace eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate
 {
     [TypeConverter(typeof(EntityIdTypeConverter))]
     public sealed class TransactionId : EntityId<TransactionId>

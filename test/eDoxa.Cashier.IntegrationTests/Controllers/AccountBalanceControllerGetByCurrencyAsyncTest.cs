@@ -96,7 +96,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             response.StatusCode.Should().Be(StatusCodes.Status200OK);
             var balanceViewModel = await response.DeserializeAsync<BalanceViewModel>();
             balanceViewModel.Should().NotBeNull();
-            balanceViewModel?.CurrencyType.Should().Be(currency);
+            balanceViewModel?.Currency.Should().Be(currency);
             balanceViewModel?.Available.Should().Be(decimal.Zero);
             balanceViewModel?.Pending.Should().Be(decimal.Zero);
         }
@@ -128,7 +128,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             response.StatusCode.Should().Be(StatusCodes.Status200OK);
             var balanceViewModel = await response.DeserializeAsync<BalanceViewModel>();
             balanceViewModel.Should().NotBeNull();
-            balanceViewModel?.CurrencyType.Should().Be(currency);
+            balanceViewModel?.Currency.Should().Be(currency);
             balanceViewModel?.Available.Should().Be(balance.Available);
             balanceViewModel?.Pending.Should().Be(balance.Pending);
         }

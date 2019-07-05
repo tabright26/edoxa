@@ -1,5 +1,5 @@
 ﻿// Filename: IAccountMoney.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-07-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,8 +9,6 @@
 // this source code package.
 
 using System;
-
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 
 namespace eDoxa.Cashier.Domain.AggregateModels
 {

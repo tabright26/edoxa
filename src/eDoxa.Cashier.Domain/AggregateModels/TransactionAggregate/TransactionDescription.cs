@@ -1,5 +1,5 @@
 ﻿// Filename: TransactionDescription.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-07-04
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,7 +12,7 @@ using System.Collections.Generic;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
-namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
+namespace eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate
 {
     public sealed class TransactionDescription : ValueObject
     {

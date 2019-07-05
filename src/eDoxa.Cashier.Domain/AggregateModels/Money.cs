@@ -1,5 +1,5 @@
 ﻿// Filename: Money.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-07-04
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,7 +10,7 @@
 
 using eDoxa.Seedwork.Common.Enumerations;
 
-namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
+namespace eDoxa.Cashier.Domain.AggregateModels
 {
     public sealed class Money : Currency
     {

@@ -10,7 +10,7 @@
 
 using AutoMapper;
 
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.ViewModels;
 using eDoxa.Seedwork.Common.Abstactions;
 

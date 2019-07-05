@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Domain.Aggregate;
 
@@ -18,33 +19,33 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
     public sealed class Balance : ValueObject
     {
-        public Balance(IReadOnlyCollection<ITransaction> transactions, CurrencyType currencyType)
+        public Balance(IReadOnlyCollection<ITransaction> transactions, CurrencyType currency)
         {
-            Available = transactions.Where(transaction => transaction.Currency.Type == currencyType && transaction.Status == TransactionStatus.Succeded)
+            Available = transactions.Where(transaction => transaction.Currency.Type == currency && transaction.Status == TransactionStatus.Succeded)
                 .Sum(transaction => transaction.Currency.Amount);
 
-            Pending = transactions.Where(transaction => transaction.Currency.Type == currencyType && transaction.Status == TransactionStatus.Pending)
+            Pending = transactions.Where(transaction => transaction.Currency.Type == currency && transaction.Status == TransactionStatus.Pending)
                 .Sum(transaction => transaction.Currency.Amount);
 
-            CurrencyType = currencyType;
+            Currency = currency;
         }
 
         public decimal Available { get; }
 
         public decimal Pending { get; }
 
-        public CurrencyType CurrencyType { get; }
+        public CurrencyType Currency { get; }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
             yield return Available;
             yield return Pending;
-            yield return CurrencyType;
+            yield return Currency;
         }
 
         public override string ToString()
         {
-            return CurrencyType.ToString();
+            return Currency.ToString();
         }
     }
 }

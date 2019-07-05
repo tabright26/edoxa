@@ -1,5 +1,5 @@
 ﻿// Filename: TokenChargeTransaction.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-07-04
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,7 +10,7 @@
 
 using eDoxa.Seedwork.Common;
 
-namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate.Transactions
+namespace eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate
 {
     public sealed class TokenChargeTransaction : Transaction
     {

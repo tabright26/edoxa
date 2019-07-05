@@ -8,13 +8,13 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
+using eDoxa.Cashier.Domain.AggregateModels;
 
 using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
+namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels
 {
     [TestClass]
     public sealed class MoneyTest

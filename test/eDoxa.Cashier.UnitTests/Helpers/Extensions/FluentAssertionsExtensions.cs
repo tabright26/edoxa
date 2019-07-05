@@ -53,7 +53,7 @@ namespace eDoxa.Cashier.UnitTests.Helpers.Extensions
         {
             balance.Should().NotBeNull();
 
-            balance.CurrencyType.Should().NotBeNull();
+            balance.Currency.Should().NotBeNull();
 
             balance.Available.Should().BeGreaterOrEqualTo(decimal.Zero);
 

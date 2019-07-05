@@ -1,5 +1,5 @@
-﻿// Filename: TokenPayoutTransaction.cs
-// Date Created: 2019-06-25
+﻿// Filename: TokenDepositTransaction.cs
+// Date Created: 2019-07-04
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,14 +10,14 @@
 
 using eDoxa.Seedwork.Common;
 
-namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate.Transactions
+namespace eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate
 {
-    public sealed class TokenPayoutTransaction : Transaction
+    public sealed class TokenDepositTransaction : Transaction
     {
-        public TokenPayoutTransaction(Token currency) : base(
+        public TokenDepositTransaction(Token currency) : base(
             currency,
-            new TransactionDescription(nameof(TokenPayoutTransaction)),
-            TransactionType.Payout,
+            new TransactionDescription(nameof(TokenDepositTransaction)),
+            TransactionType.Deposit,
             new UtcNowDateTimeProvider()
         )
         {

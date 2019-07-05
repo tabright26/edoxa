@@ -11,6 +11,7 @@
 using System;
 
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Seedwork.Common.Enumerations;
 
 using Newtonsoft.Json;

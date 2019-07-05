@@ -20,7 +20,7 @@ namespace eDoxa.Cashier.Api.Application.Profiles
         public BalanceProfile()
         {
             this.CreateMap<Balance, BalanceViewModel>()
-                .ForMember(balance => balance.CurrencyType, config => config.MapFrom(balance => balance.CurrencyType))
+                .ForMember(balance => balance.Currency, config => config.MapFrom(balance => balance.Currency))
                 .ForMember(balance => balance.Available, config => config.MapFrom(balance => balance.Available))
                 .ForMember(balance => balance.Pending, config => config.MapFrom(balance => balance.Pending));
         }
