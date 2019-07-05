@@ -15,9 +15,11 @@ using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Domain.Aggregate;
 
+using JetBrains.Annotations;
+
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
-    public sealed class Account : Entity<AccountId>, IAccount
+    public sealed partial class Account : Entity<AccountId>, IAccount
     {
         private HashSet<ITransaction> _transactions = new HashSet<ITransaction>();
 
@@ -52,6 +54,24 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
             }
 
             throw new ArgumentException(nameof(currency));
+        }
+    }
+
+    public partial class Account : IEquatable<IAccount>
+    {
+        public bool Equals([CanBeNull] IAccount account)
+        {
+            return Id.Equals(account?.Id);
+        }
+
+        public override bool Equals([CanBeNull] object obj)
+        {
+            return this.Equals(obj as IAccount);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }

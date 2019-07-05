@@ -8,6 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Threading.Tasks;
 
 using eDoxa.IntegrationEvents;
@@ -58,6 +59,14 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
             catch (StripeException exception)
             {
                 _logger.LogError(exception, exception.StripeError.ToJson());
+
+                _eventBusService.Publish(new TransactionFailedIntegrationEvent(integrationEvent.TransactionId));
+
+                _logger.LogInformation($"Published {nameof(TransactionFailedIntegrationEvent)}.");
+            }
+            catch (Exception exception)
+            {
+                _logger.LogCritical(exception, $"Another exception type that {nameof(StripeException)} occurred.");
 
                 _eventBusService.Publish(new TransactionFailedIntegrationEvent(integrationEvent.TransactionId));
 

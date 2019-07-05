@@ -13,9 +13,11 @@ using System;
 using eDoxa.Seedwork.Common;
 using eDoxa.Seedwork.Domain.Aggregate;
 
+using JetBrains.Annotations;
+
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
-    public class Transaction : Entity<TransactionId>, ITransaction
+    public partial class Transaction : Entity<TransactionId>, ITransaction
     {
         public Transaction(
             Currency currency,
@@ -43,12 +45,36 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 
         public void MarkAsSucceded()
         {
-            Status = TransactionStatus.Succeded;
+            if (Status == TransactionStatus.Pending)
+            {
+                Status = TransactionStatus.Succeded;
+            }
         }
 
         public void MarkAsFailed()
         {
-            Status = TransactionStatus.Failed;
+            if (Status == TransactionStatus.Pending)
+            {
+                Status = TransactionStatus.Failed;
+            }
+        }
+    }
+
+    public partial class Transaction : IEquatable<ITransaction>
+    {
+        public bool Equals([CanBeNull] ITransaction transaction)
+        {
+            return Id.Equals(transaction?.Id);
+        }
+
+        public sealed override bool Equals([CanBeNull] object obj)
+        {
+            return this.Equals(obj as ITransaction);
+        }
+
+        public sealed override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }
