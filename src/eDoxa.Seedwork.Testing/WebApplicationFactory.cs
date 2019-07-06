@@ -27,24 +27,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.Seedwork.Testing
 {
-    public class WebApplicationFactory<TDbContext, TStartup, TProgram> : WebApplicationFactory<TProgram>
+    public class WebApplicationFactory<TDbContext, TStartup, TProgram> : WebApplicationFactory<TStartup, TProgram>
     where TDbContext : DbContext
     where TStartup : class
     where TProgram : class
     {
-        protected override void ConfigureWebHost([NotNull] IWebHostBuilder builder)
-        {
-            builder.UseEnvironment(EnvironmentNames.Testing);
-
-            builder.UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(TProgram)).Location));
-        }
-
-        [NotNull]
-        protected override IWebHostBuilder CreateWebHostBuilder()
-        {
-            return WebHost.CreateDefaultBuilder<TStartup>(Array.Empty<string>()).UseAzureKeyVault().UseSerilog();
-        }
-
         [NotNull]
         protected override TestServer CreateServer([NotNull] IWebHostBuilder builder)
         {
@@ -60,6 +47,24 @@ namespace eDoxa.Seedwork.Testing
             }
 
             return server;
+        }
+    }
+
+    public class WebApplicationFactory<TStartup, TProgram> : WebApplicationFactory<TProgram>
+    where TStartup : class
+    where TProgram : class
+    {
+        protected override void ConfigureWebHost([NotNull] IWebHostBuilder builder)
+        {
+            builder.UseEnvironment(EnvironmentNames.Testing);
+
+            builder.UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(TProgram)).Location));
+        }
+
+        [NotNull]
+        protected override IWebHostBuilder CreateWebHostBuilder()
+        {
+            return WebHost.CreateDefaultBuilder<TStartup>(Array.Empty<string>()).UseAzureKeyVault().UseSerilog();
         }
     }
 }

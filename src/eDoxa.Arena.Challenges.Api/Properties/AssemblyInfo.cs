@@ -12,3 +12,4 @@ using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("eDoxa.Arena.Challenges.UnitTests")]
 [assembly: InternalsVisibleTo("eDoxa.Arena.Challenges.IntegrationTests")]
+[assembly: InternalsVisibleTo("eDoxa.FunctionalTests")]

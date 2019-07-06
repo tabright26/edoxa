@@ -10,5 +10,6 @@
 
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("eDoxa.Payment.UnitTests")]
+[assembly: InternalsVisibleTo("eDoxa.Identity.UnitTests")]
+[assembly: InternalsVisibleTo("eDoxa.Identity.IntegrationTests")]
 [assembly: InternalsVisibleTo("eDoxa.FunctionalTests")]

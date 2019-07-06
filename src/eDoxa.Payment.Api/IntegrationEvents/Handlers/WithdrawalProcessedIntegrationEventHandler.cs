@@ -58,7 +58,7 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
             }
             catch (StripeException exception)
             {
-                _logger.LogError(exception, exception.StripeError.ToJson());
+                _logger.LogError(exception, exception.StripeError?.ToJson());
 
                 _eventBusService.Publish(new TransactionFailedIntegrationEvent(integrationEvent.TransactionId));
 
