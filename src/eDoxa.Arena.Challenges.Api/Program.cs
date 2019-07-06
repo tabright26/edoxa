@@ -35,9 +35,9 @@ namespace eDoxa.Arena.Challenges.Api
 
                 Log.Information("Applying {Application} context migrations...");
 
-                host.MigrateDbContext<ChallengesDbContext>();
+                host.MigrateDbContextWithRetryPolicy<ChallengesDbContext>();
 
-                host.MigrateDbContext<IntegrationEventDbContext>();
+                host.MigrateDbContextWithRetryPolicy<IntegrationEventDbContext>();
 
                 Log.Information("Starting {Application} web host...");
 

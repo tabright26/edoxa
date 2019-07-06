@@ -20,7 +20,6 @@ using eDoxa.FunctionalTests.Services.Payment.Helpers;
 using eDoxa.FunctionalTests.Services.Payment.Helpers.Startups;
 using eDoxa.IntegrationEvents;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Infrastructure.Abstractions;
 using eDoxa.Seedwork.Testing.Extensions;
 
 using FluentAssertions;
@@ -44,13 +43,7 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
             using (var paymentWebApplication = new TestPaymentWebApplicationFactory<TransactionStatusSuccededTestPaymentStartup>())
             using (paymentWebApplication.CreateClient())
             {
-                await cashierTestServer.UsingScopeAsync(
-                    async scope =>
-                    {
-                        var cashierDbContextData = scope.GetService<IDbContextData>();
-                        await cashierDbContextData.CleanupAsync();
-                    }
-                );
+                await cashierTestServer.CleanupDbContextAsync();
 
                 var accountFaker = new AccountFaker();
                 accountFaker.UseSeed(1);
@@ -95,13 +88,7 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
             using (var paymentWebApplication = new TestPaymentWebApplicationFactory<TransactionStatusFailedTestPaymentStartup>())
             using (paymentWebApplication.CreateClient())
             {
-                await cashierTestServer.UsingScopeAsync(
-                    async scope =>
-                    {
-                        var cashierDbContextData = scope.GetService<IDbContextData>();
-                        await cashierDbContextData.CleanupAsync();
-                    }
-                );
+                await cashierTestServer.CleanupDbContextAsync();
 
                 var accountFaker = new AccountFaker();
                 accountFaker.UseSeed(1);

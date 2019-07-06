@@ -18,7 +18,7 @@ namespace eDoxa.Seedwork.Infrastructure.Extensions
 {
     internal static class MediatorExtensions
     {
-        public static Task PublishDomainEventsAsync<TDomainEvent>(this IMediator mediator, TDomainEvent domainEvent)
+        public static Task PublishDomainEventAsync<TDomainEvent>(this IMediator mediator, TDomainEvent domainEvent)
         where TDomainEvent : IDomainEvent
         {
             return mediator.Publish(domainEvent);

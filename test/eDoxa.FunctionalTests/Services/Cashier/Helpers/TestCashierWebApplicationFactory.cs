@@ -1,4 +1,4 @@
-﻿// Filename: CashierWebApplicationFactory.cs
+﻿// Filename: TestCashierWebApplicationFactory.cs
 // Date Created: 2019-07-05
 // 
 // ================================================
@@ -18,6 +18,7 @@ using eDoxa.IntegrationEvents.Infrastructure;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Security.AzureKeyVault.Extensions;
 using eDoxa.Seedwork.Security.Hosting;
+using eDoxa.Seedwork.Testing.Extensions;
 
 using JetBrains.Annotations;
 
@@ -25,8 +26,6 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.FunctionalTests.Services.Cashier.Helpers
 {
@@ -50,19 +49,9 @@ namespace eDoxa.FunctionalTests.Services.Cashier.Helpers
         {
             var server = base.CreateServer(builder);
 
-            using (var scope = server.Host.Services.CreateScope())
-            {
-                var cashierDbContext = scope.GetService<CashierDbContext>();
+            server.EnsureCreatedDbContext<CashierDbContext>();
 
-                cashierDbContext.Database.EnsureCreated();
-            }
-
-            using (var scope = server.Host.Services.CreateScope())
-            {
-                var cashierDbContext = scope.GetService<IntegrationEventDbContext>();
-
-                cashierDbContext.Database.Migrate();
-            }
+            server.MigrateDbContext<IntegrationEventDbContext>();
 
             return server;
         }

@@ -35,9 +35,9 @@ namespace eDoxa.Identity.Api
 
                 Log.Information("Applying {Application} context migrations...");
 
-                host.MigrateDbContext<IdentityDbContext>();
+                host.MigrateDbContextWithRetryPolicy<IdentityDbContext>();
 
-                host.MigrateDbContext<IntegrationEventDbContext>();
+                host.MigrateDbContextWithRetryPolicy<IntegrationEventDbContext>();
 
                 Log.Information("Starting {Application} web host...");
 

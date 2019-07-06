@@ -17,6 +17,7 @@ using eDoxa.Cashier.Infrastructure;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Security.AzureKeyVault.Extensions;
 using eDoxa.Seedwork.Security.Hosting;
+using eDoxa.Seedwork.Testing.Extensions;
 
 using JetBrains.Annotations;
 
@@ -24,7 +25,6 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.Cashier.IntegrationTests.Helpers
 {
@@ -47,12 +47,7 @@ namespace eDoxa.Cashier.IntegrationTests.Helpers
         {
             var server = base.CreateServer(builder);
 
-            using (var scope = server.Host.Services.CreateScope())
-            {
-                var cashierDbContext = scope.GetService<CashierDbContext>();
-
-                cashierDbContext.Database.EnsureCreated();
-            }
+            server.EnsureCreatedDbContext<CashierDbContext>();
 
             return server;
         }

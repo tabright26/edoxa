@@ -29,7 +29,7 @@ namespace eDoxa.Cashier.Infrastructure
 
         public CashierDbContext(DbContextOptions<CashierDbContext> options) : base(options)
         {
-            Mediator = new NoMediator();
+            Mediator = new FakeMediator();
         }
 
         public IMediator Mediator { get; }

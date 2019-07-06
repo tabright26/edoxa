@@ -1,5 +1,5 @@
 ﻿// Filename: AccountBalanceControllerGetByCurrencyAsyncTest.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-07-05
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -19,7 +19,6 @@ using eDoxa.Cashier.Api.ViewModels;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.IntegrationTests.Helpers;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Common.ValueObjects;
@@ -43,7 +42,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
         public static IEnumerable<object[]> ValidCurrencyDataSets => Currency.GetEnumerations().Select(currency => new object[] {currency}).ToList();
 
-        public static IEnumerable<object[]> InvalidCurrencyDataSets => new[] {new object[] { Currency.All}, new object[] {new Currency()}};
+        public static IEnumerable<object[]> InvalidCurrencyDataSets => new[] {new object[] {Currency.All}, new object[] {new Currency()}};
 
         public async Task<HttpResponseMessage> ExecuteAsync(UserId userId, Currency currency)
         {
@@ -63,14 +62,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
         [TestCleanup]
         public async Task TestCleanup()
         {
-            await _testServer.UsingScopeAsync(
-                async scope =>
-                {
-                    var context = scope.GetService<CashierDbContext>();
-                    context.Accounts.RemoveRange(context.Accounts);
-                    await context.SaveChangesAsync();
-                }
-            );
+            await _testServer.CleanupDbContextAsync();
         }
 
         [DataTestMethod]

@@ -29,7 +29,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure
 
         public ChallengesDbContext(DbContextOptions<ChallengesDbContext> options) : base(options)
         {
-            Mediator = new NoMediator();
+            Mediator = new FakeMediator();
         }
 
         public IMediator Mediator { get; }

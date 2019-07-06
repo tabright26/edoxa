@@ -1,5 +1,5 @@
 ﻿// Filename: AccountRepositoryTest.cs
-// Date Created: 2019-07-04
+// Date Created: 2019-07-05
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -15,7 +15,6 @@ using eDoxa.Cashier.Api.Application.Fakers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.IntegrationTests.Helpers;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
@@ -44,14 +43,7 @@ namespace eDoxa.Cashier.IntegrationTests.Infrastructure.Repositories
         [TestCleanup]
         public async Task TestCleanup()
         {
-            await _testServer.UsingScopeAsync(
-                async scope =>
-                {
-                    var context = scope.GetService<CashierDbContext>();
-                    context.Accounts.RemoveRange(context.Accounts);
-                    await context.SaveChangesAsync();
-                }
-            );
+            await _testServer.CleanupDbContextAsync();
         }
 
         [DataTestMethod]

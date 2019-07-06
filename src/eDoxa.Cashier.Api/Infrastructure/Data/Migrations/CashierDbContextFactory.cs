@@ -28,7 +28,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
         [NotNull]
         public override CashierDbContext CreateDbContext(string[] args)
         {
-            return new CashierDbContext(Options, new NoMediator());
+            return new CashierDbContext(Options, new FakeMediator());
         }
     }
 }

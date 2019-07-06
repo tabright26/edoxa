@@ -49,14 +49,7 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
         [TestCleanup]
         public async Task TestCleanup()
         {
-            await _testServer.UsingScopeAsync(
-                async scope =>
-                {
-                    var context = scope.GetService<IdentityDbContext>();
-                    context.Users.RemoveRange(context.Users);
-                    await context.SaveChangesAsync();
-                }
-            );
+            await _testServer.CleanupDbContextAsync();
         }
 
         [TestMethod]

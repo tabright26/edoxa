@@ -17,7 +17,7 @@ using MediatR;
 
 namespace eDoxa.Seedwork.Infrastructure
 {
-    public sealed class NoMediator : IMediator
+    public sealed class FakeMediator : IMediator
     {
         [NotNull]
         public Task Publish([NotNull] object notification, CancellationToken cancellationToken = default)

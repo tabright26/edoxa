@@ -1,5 +1,5 @@
-﻿// Filename: WebApplicationFactory.cs
-// Date Created: 2019-07-04
+﻿// Filename: TestIdentityServerWebApplicationFactory.cs
+// Date Created: 2019-07-05
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -16,6 +16,7 @@ using eDoxa.Identity.Infrastructure;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Security.AzureKeyVault.Extensions;
 using eDoxa.Seedwork.Security.Hosting;
+using eDoxa.Seedwork.Testing.Extensions;
 
 using JetBrains.Annotations;
 
@@ -23,7 +24,6 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.IdentityServer.IntegrationTests.Helpers
 {
@@ -46,12 +46,7 @@ namespace eDoxa.IdentityServer.IntegrationTests.Helpers
         {
             var server = base.CreateServer(builder);
 
-            using (var scope = server.Host.Services.CreateScope())
-            {
-                var identityDbContext = scope.GetService<IdentityDbContext>();
-
-                identityDbContext.Database.EnsureCreated();
-            }
+            server.EnsureCreatedDbContext<IdentityDbContext>();
 
             return server;
         }

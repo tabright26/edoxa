@@ -18,7 +18,6 @@ using eDoxa.Arena.Challenges.Api.Application.Fakers;
 using eDoxa.Arena.Challenges.Api.Application.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Repositories;
-using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.IntegrationTests.Helpers;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Common;
@@ -49,14 +48,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
         [TestCleanup]
         public async Task TestCleanup()
         {
-            await _testServer.UsingScopeAsync(
-                async scope =>
-                {
-                    var context = scope.GetService<ChallengesDbContext>();
-                    context.Challenges.RemoveRange(context.Challenges);
-                    await context.SaveChangesAsync();
-                }
-            );
+            await _testServer.CleanupDbContextAsync();
         }
 
         [DataTestMethod]
