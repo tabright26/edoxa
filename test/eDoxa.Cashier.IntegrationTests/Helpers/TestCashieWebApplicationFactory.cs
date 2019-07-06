@@ -1,4 +1,4 @@
-﻿// Filename: ArenaChallengesWebApplicationFactory.cs
+﻿// Filename: TestCashieWebApplicationFactory.cs
 // Date Created: 2019-07-05
 // 
 // ================================================
@@ -12,12 +12,11 @@ using System;
 using System.IO;
 using System.Reflection;
 
-using eDoxa.Arena.Challenges.Infrastructure;
-using eDoxa.IntegrationEvents.Infrastructure;
+using eDoxa.Cashier.Api;
+using eDoxa.Cashier.Infrastructure;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Security.AzureKeyVault.Extensions;
 using eDoxa.Seedwork.Security.Hosting;
-using eDoxa.Seedwork.Testing.Extensions;
 
 using JetBrains.Annotations;
 
@@ -25,19 +24,16 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
 
-namespace eDoxa.FunctionalTests.Services.Arena.Challenges.Helpers
+namespace eDoxa.Cashier.IntegrationTests.Helpers
 {
-    public sealed class ArenaChallengesWebApplicationFactory<TStartup> : WebApplicationFactory<Program>
-    where TStartup : ArenaChallengesStartup
+    internal sealed class TestCashieWebApplicationFactory<TStartup> : WebApplicationFactory<Program>
+    where TStartup : TestCashierStartup
     {
         protected override void ConfigureWebHost([NotNull] IWebHostBuilder builder)
         {
-            builder.UseEnvironment(EnvironmentNames.Testing)
-                .UseContentRoot(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(TStartup)).Location), "Services/Arena/Challenges"));
+            builder.UseEnvironment(EnvironmentNames.Testing).UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(TStartup)).Location));
         }
 
         [NotNull]
@@ -53,16 +49,9 @@ namespace eDoxa.FunctionalTests.Services.Arena.Challenges.Helpers
 
             using (var scope = server.Host.Services.CreateScope())
             {
-                var cashierDbContext = scope.GetService<ChallengesDbContext>();
+                var cashierDbContext = scope.GetService<CashierDbContext>();
 
                 cashierDbContext.Database.EnsureCreated();
-            }
-
-            using (var scope = server.Host.Services.CreateScope())
-            {
-                var cashierDbContext = scope.GetService<IntegrationEventDbContext>();
-
-                cashierDbContext.Database.Migrate();
             }
 
             return server;

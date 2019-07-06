@@ -10,19 +10,19 @@
 
 using Autofac;
 
-using eDoxa.Cashier.Api.Infrastructure;
-using eDoxa.Cashier.IntegrationTests.Helpers.Mocks;
+using eDoxa.Arena.Challenges.Api.Infrastructure;
+using eDoxa.Arena.Challenges.IntegrationTests.Helpers.Mocks;
 using eDoxa.IntegrationEvents;
 
 using JetBrains.Annotations;
 
-namespace eDoxa.Cashier.IntegrationTests.Helpers
+namespace eDoxa.Arena.Challenges.IntegrationTests.Helpers
 {
-    internal sealed class TestModule : Module
+    internal sealed class TestArenaChallengesModule : Module
     {
         protected override void Load([NotNull] ContainerBuilder builder)
         {
-            builder.RegisterModule<ApiModule>();
+            builder.RegisterModule<ArenaChallengesModule>();
 
             builder.RegisterType<MockIntegrationEventService>().As<IIntegrationEventService>().InstancePerDependency();
         }

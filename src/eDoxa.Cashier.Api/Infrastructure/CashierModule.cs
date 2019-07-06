@@ -25,7 +25,7 @@ using JetBrains.Annotations;
 
 namespace eDoxa.Cashier.Api.Infrastructure
 {
-    public sealed class ApiModule : Module
+    public sealed class CashierModule : Module
     {
         protected override void Load([NotNull] ContainerBuilder builder)
         {

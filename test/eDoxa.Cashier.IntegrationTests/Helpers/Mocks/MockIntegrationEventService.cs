@@ -1,5 +1,5 @@
 ﻿// Filename: MockIntegrationEventService.cs
-// Date Created: 2019-07-04
+// Date Created: 2019-07-05
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -16,9 +16,9 @@ namespace eDoxa.Cashier.IntegrationTests.Helpers.Mocks
 {
     public sealed class MockIntegrationEventService : IIntegrationEventService
     {
-        public async Task PublishAsync(IntegrationEvent integrationEvent)
+        public Task PublishAsync(IntegrationEvent integrationEvent)
         {
-            await Task.CompletedTask;
+            return Task.CompletedTask;
         }
     }
 }

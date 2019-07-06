@@ -25,8 +25,8 @@ using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace eDoxa.FunctionalTests.Services.Payment.Helpers
 {
-    public sealed class PaymentWebApplicationFactory<TStartup> : WebApplicationFactory<Program>
-    where TStartup : PaymentStartup
+    public sealed class TestPaymentWebApplicationFactory<TStartup> : WebApplicationFactory<Program>
+    where TStartup : TestPaymentStartup
     {
         protected override void ConfigureWebHost([NotNull] IWebHostBuilder builder)
         {

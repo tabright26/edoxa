@@ -1,5 +1,5 @@
-﻿// Filename: IdentityWebApplicationFactory.cs
-// Date Created: 2019-07-05
+﻿// Filename: WebApplicationFactory.cs
+// Date Created: 2019-07-04
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -14,11 +14,9 @@ using System.Reflection;
 
 using eDoxa.Identity.Api;
 using eDoxa.Identity.Infrastructure;
-using eDoxa.IntegrationEvents.Infrastructure;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Security.AzureKeyVault.Extensions;
 using eDoxa.Seedwork.Security.Hosting;
-using eDoxa.Seedwork.Testing.Extensions;
 
 using JetBrains.Annotations;
 
@@ -26,18 +24,16 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace eDoxa.FunctionalTests.Services.Identity.Helpers
+namespace eDoxa.Identity.IntegrationTests.Helpers
 {
-    internal sealed class IdentityWebApplicationFactory<TStartup> : WebApplicationFactory<Program>
-    where TStartup : IdentityStartup
+    internal sealed class TestIdentityWebApplicationFactory<TStartup> : WebApplicationFactory<Program>
+    where TStartup : TestIdentityStartup
     {
         protected override void ConfigureWebHost([NotNull] IWebHostBuilder builder)
         {
-            builder.UseEnvironment(EnvironmentNames.Testing)
-                .UseContentRoot(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(TStartup)).Location), "Services/Identity"));
+            builder.UseEnvironment(EnvironmentNames.Testing).UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(TStartup)).Location));
         }
 
         [NotNull]
@@ -53,16 +49,9 @@ namespace eDoxa.FunctionalTests.Services.Identity.Helpers
 
             using (var scope = server.Host.Services.CreateScope())
             {
-                var cashierDbContext = scope.GetService<IdentityDbContext>();
+                var identityDbContext = scope.GetService<IdentityDbContext>();
 
-                cashierDbContext.Database.EnsureCreated();
-            }
-
-            using (var scope = server.Host.Services.CreateScope())
-            {
-                var cashierDbContext = scope.GetService<IntegrationEventDbContext>();
-
-                cashierDbContext.Database.Migrate();
+                identityDbContext.Database.EnsureCreated();
             }
 
             return server;

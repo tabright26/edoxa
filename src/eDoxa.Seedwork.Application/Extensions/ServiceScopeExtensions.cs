@@ -10,7 +10,7 @@
 
 using Microsoft.Extensions.DependencyInjection;
 
-namespace eDoxa.Seedwork.Testing.Extensions
+namespace eDoxa.Seedwork.Application.Extensions
 {
     public static class ServiceScopeExtensions
     {

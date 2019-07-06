@@ -1,4 +1,4 @@
-﻿// Filename: PaymentStartup.cs
+﻿// Filename: ArenaChallengesStartup.cs
 // Date Created: 2019-07-05
 // 
 // ================================================
@@ -8,16 +8,16 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Payment.Api;
+using eDoxa.Arena.Challenges.Api;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
-namespace eDoxa.FunctionalTests.Services.Payment.Helpers
+namespace eDoxa.FunctionalTests.Services.Arena.Challenges.Helpers
 {
-    public class PaymentStartup : Startup
+    public class TestArenaChallengesStartup : Startup
     {
-        public PaymentStartup(IConfiguration configuration, IHostingEnvironment environment) : base(configuration, environment)
+        public TestArenaChallengesStartup(IConfiguration configuration, IHostingEnvironment environment) : base(configuration, environment)
         {
         }
     }

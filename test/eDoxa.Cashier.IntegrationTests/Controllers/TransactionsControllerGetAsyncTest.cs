@@ -20,6 +20,7 @@ using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.IntegrationTests.Helpers;
+using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Testing.Extensions;
 
@@ -53,7 +54,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
         [TestInitialize]
         public async Task TestInitialize()
         {
-            var factory = new WebApplicationFactory<TestStartup>();
+            var factory = new TestCashieWebApplicationFactory<TestCashierStartup>();
             _httpClient = factory.CreateClient();
             _testServer = factory.Server;
             await this.TestCleanup();

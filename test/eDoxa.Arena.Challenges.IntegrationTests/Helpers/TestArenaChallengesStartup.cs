@@ -21,9 +21,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Helpers
 {
-    internal class TestStartup : Startup
+    internal class TestArenaChallengesStartup : Startup
     {
-        public TestStartup(IConfiguration configuration, IHostingEnvironment environment) : base(configuration, environment)
+        public TestArenaChallengesStartup(IConfiguration configuration, IHostingEnvironment environment) : base(configuration, environment)
         {
         }
 
@@ -31,7 +31,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Helpers
         {
             services.AddTransient<ILeagueOfLegendsService, MockLeagueOfLegendsService>();
 
-            return services.Build<TestModule>();
+            return services.Build<TestArenaChallengesModule>();
         }
     }
 }

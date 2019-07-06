@@ -1,5 +1,5 @@
-﻿// Filename: TestStartup.cs
-// Date Created: 2019-07-04
+﻿// Filename: TestCashierStartup.cs
+// Date Created: 2019-07-05
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -19,15 +19,15 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.Cashier.IntegrationTests.Helpers
 {
-    internal class TestStartup : Startup
+    internal class TestCashierStartup : Startup
     {
-        public TestStartup(IConfiguration configuration, IHostingEnvironment environment) : base(configuration, environment)
+        public TestCashierStartup(IConfiguration configuration, IHostingEnvironment environment) : base(configuration, environment)
         {
         }
 
         protected override IServiceProvider BuildModule(IServiceCollection services)
         {
-            return services.Build<TestModule>();
+            return services.Build<TestCashierModule>();
         }
     }
 }

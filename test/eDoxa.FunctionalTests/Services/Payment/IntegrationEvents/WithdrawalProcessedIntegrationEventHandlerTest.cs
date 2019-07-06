@@ -19,6 +19,7 @@ using eDoxa.FunctionalTests.Services.Cashier.Helpers;
 using eDoxa.FunctionalTests.Services.Payment.Helpers;
 using eDoxa.FunctionalTests.Services.Payment.Helpers.Startups;
 using eDoxa.IntegrationEvents;
+using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Abstractions;
 using eDoxa.Seedwork.Testing.Extensions;
 
@@ -37,10 +38,10 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
         [TestMethod]
         public async Task TransactionStatus_ShouldBeSucceded()
         {
-            using (var cashierWebApplication = new CashierWebApplicationFactory<CashierStartup>())
+            using (var cashierWebApplication = new TestCashierWebApplicationFactory<TestCashierStartup>())
             using (cashierWebApplication.CreateClient())
             using (var cashierTestServer = cashierWebApplication.Server)
-            using (var paymentWebApplication = new PaymentWebApplicationFactory<TransactionStatusSuccededPaymentStartup>())
+            using (var paymentWebApplication = new TestPaymentWebApplicationFactory<TransactionStatusSuccededTestPaymentStartup>())
             using (paymentWebApplication.CreateClient())
             {
                 await cashierTestServer.UsingScopeAsync(
@@ -88,10 +89,10 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
         [TestMethod]
         public async Task TransactionStatus_ShouldBeFailed()
         {
-            using (var cashierWebApplication = new CashierWebApplicationFactory<CashierStartup>())
+            using (var cashierWebApplication = new TestCashierWebApplicationFactory<TestCashierStartup>())
             using (cashierWebApplication.CreateClient())
             using (var cashierTestServer = cashierWebApplication.Server)
-            using (var paymentWebApplication = new PaymentWebApplicationFactory<TransactionStatusFailedPaymentStartup>())
+            using (var paymentWebApplication = new TestPaymentWebApplicationFactory<TransactionStatusFailedTestPaymentStartup>())
             using (paymentWebApplication.CreateClient())
             {
                 await cashierTestServer.UsingScopeAsync(

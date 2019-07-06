@@ -1,4 +1,4 @@
-﻿// Filename: TransactionStatusFailedPaymentStartup.cs
+﻿// Filename: TransactionStatusSuccededPaymentStartup.cs
 // Date Created: 2019-07-05
 // 
 // ================================================
@@ -18,13 +18,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using Stripe;
-
 namespace eDoxa.FunctionalTests.Services.Payment.Helpers.Startups
 {
-    internal sealed class TransactionStatusFailedPaymentStartup : PaymentStartup
+    internal sealed class TransactionStatusSuccededTestPaymentStartup : TestPaymentStartup
     {
-        public TransactionStatusFailedPaymentStartup(IConfiguration configuration, IHostingEnvironment environment) : base(configuration, environment)
+        public TransactionStatusSuccededTestPaymentStartup(IConfiguration configuration, IHostingEnvironment environment) : base(configuration, environment)
         {
         }
 
@@ -48,7 +46,7 @@ namespace eDoxa.FunctionalTests.Services.Payment.Helpers.Startups
                 CancellationToken cancellationToken = default
             )
             {
-                throw new StripeException();
+                return Task.FromResult("acct_test");
             }
 
             public Task<string> CreateCustomerAsync(
@@ -58,7 +56,7 @@ namespace eDoxa.FunctionalTests.Services.Payment.Helpers.Startups
                 CancellationToken cancellationToken = default
             )
             {
-                throw new StripeException();
+                return Task.FromResult("cus_test");
             }
 
             public Task CreateInvoiceAsync(
@@ -69,7 +67,7 @@ namespace eDoxa.FunctionalTests.Services.Payment.Helpers.Startups
                 CancellationToken cancellationToken = default
             )
             {
-                throw new StripeException();
+                return Task.CompletedTask;
             }
 
             public Task CreateTransferAsync(
@@ -80,7 +78,7 @@ namespace eDoxa.FunctionalTests.Services.Payment.Helpers.Startups
                 CancellationToken cancellationToken = default
             )
             {
-                throw new StripeException();
+                return Task.CompletedTask;
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿// Filename: CashierStartup.cs
+﻿// Filename: IdentityStartup.cs
 // Date Created: 2019-07-05
 // 
 // ================================================
@@ -8,16 +8,16 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Cashier.Api;
+using eDoxa.Identity.Api;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
-namespace eDoxa.FunctionalTests.Services.Cashier.Helpers
+namespace eDoxa.FunctionalTests.Services.Identity.Helpers
 {
-    public class CashierStartup : Startup
+    internal class TestIdentityStartup : Startup
     {
-        public CashierStartup(IConfiguration configuration, IHostingEnvironment environment) : base(configuration, environment)
+        public TestIdentityStartup(IConfiguration configuration, IHostingEnvironment environment) : base(configuration, environment)
         {
         }
     }

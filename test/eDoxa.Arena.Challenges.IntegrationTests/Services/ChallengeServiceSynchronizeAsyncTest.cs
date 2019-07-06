@@ -20,6 +20,7 @@ using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.IntegrationTests.Helpers;
+using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 
 using FluentAssertions;
@@ -37,7 +38,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Services
         [TestInitialize]
         public async Task TestInitialize()
         {
-            var factory = new WebApplicationFactory<TestStartup>();
+            var factory = new TestArenaChallengesWebApplicationFactory<TestArenaChallengesStartup>();
             factory.CreateClient();
             _testServer = factory.Server;
             await this.TestCleanup();

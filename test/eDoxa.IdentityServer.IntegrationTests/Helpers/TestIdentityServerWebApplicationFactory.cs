@@ -12,6 +12,7 @@ using System;
 using System.IO;
 using System.Reflection;
 
+using eDoxa.Identity.Infrastructure;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Security.AzureKeyVault.Extensions;
 using eDoxa.Seedwork.Security.Hosting;
@@ -22,16 +23,24 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace eDoxa.Seedwork.Testing
+namespace eDoxa.IdentityServer.IntegrationTests.Helpers
 {
-    public class WebApplicationFactory<TDbContext, TStartup, TProgram> : WebApplicationFactory<TStartup, TProgram>
-    where TDbContext : DbContext
+    public sealed class TestIdentityServerWebApplicationFactory<TStartup> : WebApplicationFactory<Program>
     where TStartup : class
-    where TProgram : class
     {
+        protected override void ConfigureWebHost([NotNull] IWebHostBuilder builder)
+        {
+            builder.UseEnvironment(EnvironmentNames.Testing).UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(TStartup)).Location));
+        }
+
+        [NotNull]
+        protected override IWebHostBuilder CreateWebHostBuilder()
+        {
+            return WebHost.CreateDefaultBuilder<TStartup>(Array.Empty<string>()).UseAzureKeyVault().UseSerilog();
+        }
+
         [NotNull]
         protected override TestServer CreateServer([NotNull] IWebHostBuilder builder)
         {
@@ -39,32 +48,12 @@ namespace eDoxa.Seedwork.Testing
 
             using (var scope = server.Host.Services.CreateScope())
             {
-                var provider = scope.ServiceProvider;
+                var identityDbContext = scope.GetService<IdentityDbContext>();
 
-                var context = provider.GetService<TDbContext>();
-
-                context.Database.EnsureCreated();
+                identityDbContext.Database.EnsureCreated();
             }
 
             return server;
-        }
-    }
-
-    public class WebApplicationFactory<TStartup, TProgram> : WebApplicationFactory<TProgram>
-    where TStartup : class
-    where TProgram : class
-    {
-        protected override void ConfigureWebHost([NotNull] IWebHostBuilder builder)
-        {
-            builder.UseEnvironment(EnvironmentNames.Testing);
-
-            builder.UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(TProgram)).Location));
-        }
-
-        [NotNull]
-        protected override IWebHostBuilder CreateWebHostBuilder()
-        {
-            return WebHost.CreateDefaultBuilder<TStartup>(Array.Empty<string>()).UseAzureKeyVault().UseSerilog();
         }
     }
 }

@@ -20,20 +20,20 @@ namespace eDoxa.Seedwork.Testing.Extensions
 {
     public static class TestServerExtensions
     {
-        public static async Task UsingScopeAsync(this TestServer testServer, Func<IServiceScope, Task> serviceScope)
+        public static async Task UsingScopeAsync(this TestServer testServer, Func<IServiceScope, Task> executeAsync)
         {
             using (var scope = testServer.Host.Services.CreateScope())
             {
-                await serviceScope(scope);
+                await executeAsync(scope);
             }
         }
 
         [ItemNotNull]
-        public static async Task<TResult> UsingScopeAsync<TResult>(this TestServer testServer, Func<IServiceScope, Task<TResult>> serviceScope)
+        public static async Task<TResult> UsingScopeAsync<TResult>(this TestServer testServer, Func<IServiceScope, Task<TResult>> executeAsync)
         {
             using (var scope = testServer.Host.Services.CreateScope())
             {
-                return await serviceScope(scope);
+                return await executeAsync(scope);
             }
         }
     }

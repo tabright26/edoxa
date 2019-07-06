@@ -31,7 +31,7 @@ using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Api.Infrastructure
 {
-    public sealed class ApiModule : Module
+    public sealed class ArenaChallengesModule : Module
     {
         protected override void Load([NotNull] ContainerBuilder builder)
         {

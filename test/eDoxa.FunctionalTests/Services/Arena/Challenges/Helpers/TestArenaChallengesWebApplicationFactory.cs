@@ -1,4 +1,4 @@
-﻿// Filename: CashierWebApplicationFactory.cs
+﻿// Filename: ArenaChallengesWebApplicationFactory.cs
 // Date Created: 2019-07-05
 // 
 // ================================================
@@ -12,13 +12,11 @@ using System;
 using System.IO;
 using System.Reflection;
 
-using eDoxa.Cashier.Api;
-using eDoxa.Cashier.Infrastructure;
+using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.IntegrationEvents.Infrastructure;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Security.AzureKeyVault.Extensions;
 using eDoxa.Seedwork.Security.Hosting;
-using eDoxa.Seedwork.Testing.Extensions;
 
 using JetBrains.Annotations;
 
@@ -28,16 +26,17 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.VisualStudio.TestPlatform.TestHost;
 
-namespace eDoxa.FunctionalTests.Services.Cashier.Helpers
+namespace eDoxa.FunctionalTests.Services.Arena.Challenges.Helpers
 {
-    public sealed class CashierWebApplicationFactory<TStartup> : WebApplicationFactory<Program>
-    where TStartup : CashierStartup
+    public sealed class TestArenaChallengesWebApplicationFactory<TStartup> : WebApplicationFactory<Program>
+    where TStartup : TestArenaChallengesStartup
     {
         protected override void ConfigureWebHost([NotNull] IWebHostBuilder builder)
         {
             builder.UseEnvironment(EnvironmentNames.Testing)
-                .UseContentRoot(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(TStartup)).Location), "Services/Cashier"));
+                .UseContentRoot(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(TStartup)).Location), "Services/Arena/Challenges"));
         }
 
         [NotNull]
@@ -53,7 +52,7 @@ namespace eDoxa.FunctionalTests.Services.Cashier.Helpers
 
             using (var scope = server.Host.Services.CreateScope())
             {
-                var cashierDbContext = scope.GetService<CashierDbContext>();
+                var cashierDbContext = scope.GetService<ChallengesDbContext>();
 
                 cashierDbContext.Database.EnsureCreated();
             }

@@ -1,5 +1,5 @@
-﻿// Filename: ArenaChallengesStartup.cs
-// Date Created: 2019-07-05
+﻿// Filename: TestIdentityStartup.cs
+// Date Created: 2019-07-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,16 +8,16 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Arena.Challenges.Api;
+using eDoxa.Identity.Api;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
-namespace eDoxa.FunctionalTests.Services.Arena.Challenges.Helpers
+namespace eDoxa.Identity.IntegrationTests.Helpers
 {
-    public class ArenaChallengesStartup : Startup
+    public class TestIdentityStartup : Startup
     {
-        public ArenaChallengesStartup(IConfiguration configuration, IHostingEnvironment environment) : base(configuration, environment)
+        public TestIdentityStartup(IConfiguration configuration, IHostingEnvironment environment) : base(configuration, environment)
         {
         }
     }
