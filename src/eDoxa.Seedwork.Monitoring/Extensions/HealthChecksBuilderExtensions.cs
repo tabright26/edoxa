@@ -1,5 +1,5 @@
 ﻿// Filename: HealthChecksBuilderExtensions.cs
-// Date Created: 2019-06-27
+// Date Created: 2019-07-05
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,8 +9,11 @@
 // this source code package.
 
 using System;
+using System.Collections.Generic;
 
 using eDoxa.Seedwork.Security.Constants;
+
+using JetBrains.Annotations;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -53,6 +56,19 @@ namespace eDoxa.Seedwork.Monitoring.Extensions
         public static void AddRedis(this IHealthChecksBuilder builder, IConfiguration configuration)
         {
             builder.AddRedis(configuration.GetConnectionString(CustomConnectionStrings.Redis), "redis", tags: new[] {"cache"});
+        }
+
+        public static void AddUrlGroup(
+            this IHealthChecksBuilder builder,
+            [CanBeNull] string uriString,
+            string name,
+            IEnumerable<string> tags
+        )
+        {
+            if (uriString != null)
+            {
+                builder.AddUrlGroup(new Uri(uriString), name, tags: tags);
+            }
         }
     }
 }

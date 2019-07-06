@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Commands.Abstractions.Handlers;
-using eDoxa.Seedwork.Common.Extensions;
 
 using Microsoft.AspNetCore.Http;
 

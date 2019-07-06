@@ -15,13 +15,12 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.Infrastructure.Models;
-using eDoxa.Seedwork.Common.Extensions;
-using eDoxa.Seedwork.Common.ValueObjects;
 
 using JetBrains.Annotations;
 

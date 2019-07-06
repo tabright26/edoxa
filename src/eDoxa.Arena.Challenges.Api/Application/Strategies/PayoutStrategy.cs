@@ -12,13 +12,13 @@ using System;
 using System.IO;
 using System.Linq;
 
-using Castle.Core.Internal;
-
 using CsvHelper;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Strategies;
+
+using IdentityServer4.Extensions;
 
 namespace eDoxa.Arena.Challenges.Api.Application.Strategies
 {

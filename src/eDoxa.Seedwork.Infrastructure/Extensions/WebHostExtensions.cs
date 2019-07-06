@@ -1,5 +1,5 @@
 ﻿// Filename: WebHostExtensions.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,8 +10,6 @@
 
 using System;
 using System.Data.SqlClient;
-
-using eDoxa.Seedwork.Infrastructure.Abstractions;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;

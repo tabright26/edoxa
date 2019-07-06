@@ -15,7 +15,6 @@ using AutoMapper;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Infrastructure.Models;
-using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Domain.Extensions;
 
 using JetBrains.Annotations;

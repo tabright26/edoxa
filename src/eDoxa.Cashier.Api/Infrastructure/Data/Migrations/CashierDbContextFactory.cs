@@ -12,7 +12,6 @@ using System.IO;
 using System.Reflection;
 
 using eDoxa.Cashier.Infrastructure;
-using eDoxa.Seedwork.Infrastructure;
 using eDoxa.Seedwork.Infrastructure.Factories;
 
 using JetBrains.Annotations;
@@ -28,7 +27,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
         [NotNull]
         public override CashierDbContext CreateDbContext(string[] args)
         {
-            return new CashierDbContext(Options, new FakeMediator());
+            return new CashierDbContext(Options);
         }
     }
 }

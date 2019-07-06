@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using eDoxa.Arena.Challenges.Api.Application.Fakers;
 using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Infrastructure;
-using eDoxa.Seedwork.Infrastructure.Abstractions;
+using eDoxa.Seedwork.Infrastructure;
 
 using Microsoft.AspNetCore.Hosting;
 

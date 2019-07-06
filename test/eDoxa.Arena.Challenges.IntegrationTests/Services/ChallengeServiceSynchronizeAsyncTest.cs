@@ -13,13 +13,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Application.Fakers;
-using eDoxa.Arena.Challenges.Api.Application.Fakers.Providers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.IntegrationTests.Helpers;
 using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Testing.Extensions;
 
 using FluentAssertions;
@@ -71,7 +71,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Services
                 async scope =>
                 {
                     var challengeService = scope.GetService<IChallengeService>();
-                    var synchronizedAt = new FakeDateTimeProvider(DateTime.UtcNow);
+                    var synchronizedAt = new DateTimeProvider(DateTime.UtcNow);
                     await challengeService.SynchronizeAsync(synchronizedAt, ChallengeGame.LeagueOfLegends);
                 }
             );

@@ -10,8 +10,6 @@
 
 using System.Collections.Generic;
 
-using eDoxa.Seedwork.Common.ValueObjects;
-
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels
 {
     public interface IScoreboard : IReadOnlyDictionary<UserId, Score>

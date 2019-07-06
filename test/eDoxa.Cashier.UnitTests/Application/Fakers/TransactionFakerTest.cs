@@ -8,10 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-
 using eDoxa.Cashier.Api.Application.Fakers;
-using eDoxa.Seedwork.Common.Extensions;
 
 using FluentAssertions;
 
@@ -29,19 +26,10 @@ namespace eDoxa.Cashier.UnitTests.Application.Fakers
             var transactionFaker = new TransactionFaker();
 
             // Act
-            var action = new Action(
-                () =>
-                {
-                    var transactions = transactionFaker.Generate(10, TransactionFaker.PositiveTransaction);
-
-                    Console.WriteLine(transactions.DumbAsJson());
-
-                    transactions.Should().HaveCount(10);
-                }
-            );
-
+            var transactions = transactionFaker.Generate(10, TransactionFaker.PositiveTransaction);
+            
             // Assert
-            action.Should().NotThrow();
+            transactions.Should().HaveCount(10);
         }
 
         [TestMethod]
@@ -51,17 +39,10 @@ namespace eDoxa.Cashier.UnitTests.Application.Fakers
             var transactionFaker = new TransactionFaker();
 
             // Act
-            var action = new Action(
-                () =>
-                {
-                    var transaction = transactionFaker.Generate(TransactionFaker.PositiveTransaction);
-
-                    Console.WriteLine(transaction.DumbAsJson());
-                }
-            );
+            var transaction = transactionFaker.Generate(TransactionFaker.PositiveTransaction);
 
             // Assert
-            action.Should().NotThrow();
+            transaction.Should().NotBeNull();
         }
 
         [TestMethod]
@@ -71,19 +52,10 @@ namespace eDoxa.Cashier.UnitTests.Application.Fakers
             var transactionFaker = new TransactionFaker();
 
             // Act
-            var action = new Action(
-                () =>
-                {
-                    var transactions = transactionFaker.Generate(10, TransactionFaker.NegativeTransaction);
-
-                    Console.WriteLine(transactions.DumbAsJson());
-
-                    transactions.Should().HaveCount(10);
-                }
-            );
-
+            var transactions = transactionFaker.Generate(10, TransactionFaker.NegativeTransaction);
+            
             // Assert
-            action.Should().NotThrow();
+            transactions.Should().HaveCount(10);
         }
 
         [TestMethod]
@@ -93,17 +65,10 @@ namespace eDoxa.Cashier.UnitTests.Application.Fakers
             var transactionFaker = new TransactionFaker();
 
             // Act
-            var action = new Action(
-                () =>
-                {
-                    var transaction = transactionFaker.Generate(TransactionFaker.NegativeTransaction);
-
-                    Console.WriteLine(transaction.DumbAsJson());
-                }
-            );
+            var transaction = transactionFaker.Generate(TransactionFaker.NegativeTransaction);
 
             // Assert
-            action.Should().NotThrow();
+            transaction.Should().NotBeNull();
         }
     }
 }

@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 
-using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 using JetBrains.Annotations;

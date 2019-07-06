@@ -10,7 +10,9 @@
 
 using System;
 
-namespace eDoxa.Seedwork.Common
+using eDoxa.Seedwork.Domain;
+
+namespace eDoxa.Cashier.Domain
 {
     public sealed class UtcNowDateTimeProvider : IDateTimeProvider
     {

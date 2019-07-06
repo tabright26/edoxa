@@ -8,8 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Commands.Abstractions;
-using eDoxa.Seedwork.Common.ValueObjects;
 
 namespace eDoxa.Cashier.Api.Application.Commands
 {

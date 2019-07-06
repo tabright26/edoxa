@@ -14,11 +14,10 @@ using System.Linq;
 
 using Bogus;
 
-using eDoxa.Arena.Challenges.Api.Application.Fakers.DataSets;
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
+using eDoxa.Identity.Domain.AggregateModels;
 using eDoxa.Seedwork.Common;
 
-namespace eDoxa.Arena.Challenges.Api.Application.Fakers.Extensions
+namespace eDoxa.Identity.Api.Application.Fakers.Extensions
 {
     public static class FakerExtensions
     {
@@ -41,31 +40,6 @@ namespace eDoxa.Arena.Challenges.Api.Application.Fakers.Extensions
         public static void ResetUserIds()
         {
             _testUserIds = DataResources.TestUserIds.OrderBy(testUserId => testUserId).ToList();
-        }
-
-        public static ChallengeDataSet Challenge(this Faker faker)
-        {
-            return new ChallengeDataSet(faker);
-        }
-
-        public static ChallengeTimelineDataSet Timeline(this Faker faker)
-        {
-            return new ChallengeTimelineDataSet(faker);
-        }
-
-        public static ChallengeSetupDataSet Setup(this Faker faker)
-        {
-            return new ChallengeSetupDataSet(faker);
-        }
-
-        public static MatchDataSet Match(this Faker faker)
-        {
-            return new MatchDataSet(faker);
-        }
-
-        public static ParticipantDataSet Participant(this Faker faker)
-        {
-            return new ParticipantDataSet(faker);
         }
     }
 }

@@ -13,9 +13,8 @@ using System;
 using Bogus;
 
 using eDoxa.Arena.Challenges.Api.Application.Fakers.Extensions;
-using eDoxa.Arena.Challenges.Api.Application.Fakers.Providers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Seedwork.Common.Extensions;
+using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Api.Application.Fakers
 {
@@ -29,7 +28,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Fakers
                     var participant = new Participant(
                         faker.UserId(),
                         faker.Participant().GameAccountId(game),
-                        new FakeDateTimeProvider(FakerHub.Date.Between(createdAt, startedAt))
+                        new DateTimeProvider(FakerHub.Date.Between(createdAt, startedAt))
                     );
 
                     participant.SetEntityId(faker.Participant().Id());

@@ -1,5 +1,5 @@
 ﻿// Filename: ApplicationBuilderExtensions.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -22,11 +22,8 @@ namespace eDoxa.Cashier.Api.Extensions
         public static void UseIntegrationEventSubscriptions(this IApplicationBuilder application)
         {
             var service = application.ApplicationServices.GetRequiredService<IEventBusService>();
-
             service.Subscribe<UserCreatedIntegrationEvent, UserCreatedIntegrationEventHandler>();
-
             service.Subscribe<TransactionSuccededIntegrationEvent, TransactionSuccededIntegrationEventHandler>();
-
             service.Subscribe<TransactionFailedIntegrationEvent, TransactionFailedIntegrationEventHandler>();
         }
     }

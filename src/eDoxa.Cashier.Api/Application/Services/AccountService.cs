@@ -18,7 +18,6 @@ using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.IntegrationEvents;
-using eDoxa.Seedwork.Common.ValueObjects;
 
 namespace eDoxa.Cashier.Api.Application.Services
 {

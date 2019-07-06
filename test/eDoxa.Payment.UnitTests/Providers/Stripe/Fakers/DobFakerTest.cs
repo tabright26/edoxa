@@ -8,10 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-
 using eDoxa.Payment.Api.Providers.Stripe.Fakers;
-using eDoxa.Seedwork.Common.Extensions;
 
 using FluentAssertions;
 
@@ -29,17 +26,10 @@ namespace eDoxa.Payment.UnitTests.Providers.Stripe.Fakers
             var dobFaker = new DobFaker();
 
             // Act
-            var action = new Action(
-                () =>
-                {
-                    var dob = dobFaker.FakeDob();
-
-                    Console.WriteLine(dob.DumbAsJson());
-                }
-            );
+            var dob = dobFaker.FakeDob();
 
             // Assert
-            action.Should().NotThrow();
+            dob.Should().NotBeNull();
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿// Filename: ServiceCollectionExtensions.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,7 +11,6 @@
 using System;
 using System.Reflection;
 
-using eDoxa.Seedwork.Infrastructure.Abstractions;
 using eDoxa.Seedwork.Security.Constants;
 
 using Microsoft.EntityFrameworkCore;

@@ -1,5 +1,5 @@
 ﻿// Filename: IAccount.cs
-// Date Created: 2019-07-01
+// Date Created: 2019-07-05
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Cashier.Domain.AggregateModels

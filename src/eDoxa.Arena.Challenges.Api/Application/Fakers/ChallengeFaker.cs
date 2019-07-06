@@ -14,9 +14,9 @@ using Bogus;
 
 using eDoxa.Arena.Challenges.Api.Application.Factories;
 using eDoxa.Arena.Challenges.Api.Application.Fakers.Extensions;
-using eDoxa.Arena.Challenges.Api.Application.Fakers.Providers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Common.Extensions;
+using eDoxa.Seedwork.Domain.Aggregate;
 
 using JetBrains.Annotations;
 
@@ -57,7 +57,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Fakers
                         faker.Challenge().Name(),
                         fakeGame,
                         setup,
-                        new ChallengeTimeline(new FakeDateTimeProvider(createdAt), duration),
+                        new ChallengeTimeline(new DateTimeProvider(createdAt), duration),
                         scoring,
                         payout
                     );
@@ -74,7 +74,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Fakers
 
                     if (fakeState != ChallengeState.Inscription)
                     {
-                        challenge.Start(new FakeDateTimeProvider(startedAt));
+                        challenge.Start(new DateTimeProvider(startedAt));
 
                         participants.ForEach(
                             participant =>
@@ -89,16 +89,16 @@ namespace eDoxa.Arena.Challenges.Api.Application.Fakers
                             }
                         );
 
-                        challenge.Synchronize(new FakeDateTimeProvider(synchronizedAt));
+                        challenge.Synchronize(new DateTimeProvider(synchronizedAt));
 
                         if (fakeState == ChallengeState.Ended || fakeState == ChallengeState.Closed)
                         {
-                            challenge.Start(new FakeDateTimeProvider(startedAt - duration));
+                            challenge.Start(new DateTimeProvider(startedAt - duration));
                         }
 
                         if (fakeState == ChallengeState.Closed)
                         {
-                            challenge.Close(new FakeDateTimeProvider(closedAt));
+                            challenge.Close(new DateTimeProvider(closedAt));
                         }
                     }
 
@@ -120,7 +120,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Fakers
         [NotNull]
         public override Challenge Generate(string ruleSets = null)
         {
-            UserFakerExtensions.ResetUserIds();
+            FakerExtensions.ResetUserIds();
 
             return base.Generate(ruleSets);
         }

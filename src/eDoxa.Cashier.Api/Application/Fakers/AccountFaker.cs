@@ -8,17 +8,17 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using Bogus;
+
+using eDoxa.Cashier.Api.Application.Fakers.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Seedwork.Common.Abstactions;
-using eDoxa.Seedwork.Common.Extensions;
-using eDoxa.Seedwork.Common.ValueObjects;
 
 namespace eDoxa.Cashier.Api.Application.Fakers
 {
-    public sealed class AccountFaker : CustomFaker<IAccount>
+    public sealed class AccountFaker : Faker<IAccount>
     {
-        private const string AdminAccount = nameof(AdminAccount);
+        public const string AdminAccount = nameof(AdminAccount);
 
         private readonly TransactionFaker _transactionFaker = new TransactionFaker();
 
@@ -30,6 +30,8 @@ namespace eDoxa.Cashier.Api.Application.Fakers
                     var account = new Account(faker.UserId());
 
                     account.SetEntityId(AccountId.FromGuid(faker.Random.Guid()));
+
+                    _transactionFaker.UseSeed(faker.Random.Int());
 
                     var transactions = _transactionFaker.Generate(faker.Random.Int(0, 5), TransactionFaker.PositiveTransaction);
 
@@ -58,11 +60,6 @@ namespace eDoxa.Cashier.Api.Application.Fakers
                     );
                 }
             );
-        }
-
-        public IAccount FakeAdminAccount()
-        {
-            return this.Generate(AdminAccount);
         }
     }
 }

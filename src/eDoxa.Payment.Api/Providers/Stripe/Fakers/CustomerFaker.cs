@@ -8,13 +8,13 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Seedwork.Common.Abstactions;
+using Bogus;
 
 using Stripe;
 
 namespace eDoxa.Payment.Api.Providers.Stripe.Fakers
 {
-    public sealed class CustomerFaker : CustomFaker<Customer>
+    public sealed class CustomerFaker : Faker<Customer>
     {
         private readonly ShippingFaker _shippingFaker = new ShippingFaker();
 

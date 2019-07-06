@@ -16,12 +16,12 @@ using AutoMapper;
 
 using eDoxa.Arena.Challenges.Api.Application.Commands;
 using eDoxa.Arena.Challenges.Api.Application.Commands.Handlers;
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.Domain.ViewModels;
 using eDoxa.Arena.Challenges.UnitTests.Helpers.Mocks;
 using eDoxa.Commands.Extensions;
-using eDoxa.Seedwork.Common.ValueObjects;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

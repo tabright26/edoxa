@@ -1,5 +1,5 @@
-﻿// Filename: FakeDateTimeProvider.cs
-// Date Created: 2019-06-25
+﻿// Filename: UtcNowDateTimeProvider.cs
+// Date Created: 2019-07-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,17 +10,17 @@
 
 using System;
 
-using eDoxa.Seedwork.Common;
+using eDoxa.Seedwork.Domain;
 
-namespace eDoxa.Arena.Challenges.Api.Application.Fakers.Providers
+namespace eDoxa.Arena.Challenges.Domain
 {
-    public sealed class FakeDateTimeProvider : IDateTimeProvider
+    public sealed class UtcNowDateTimeProvider : IDateTimeProvider
     {
         private readonly DateTime _dateTime;
 
-        public FakeDateTimeProvider(DateTime dateTime)
+        public UtcNowDateTimeProvider()
         {
-            _dateTime = dateTime;
+            _dateTime = DateTime.UtcNow;
         }
 
         public DateTime DateTime => _dateTime;

@@ -14,12 +14,12 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Application.Fakers;
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Domain.ViewModels;
 using eDoxa.Arena.Challenges.IntegrationTests.Helpers;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Testing.Extensions;
 
 using FluentAssertions;

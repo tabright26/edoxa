@@ -20,7 +20,6 @@ using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.IntegrationTests.Helpers;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Testing.Extensions;
 
 using FluentAssertions;

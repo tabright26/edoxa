@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 
 using eDoxa.Arena.Challenges.Domain.Validators;
-using eDoxa.Seedwork.Common;
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 using JetBrains.Annotations;

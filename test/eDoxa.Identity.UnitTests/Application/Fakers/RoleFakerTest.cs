@@ -8,10 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-
 using eDoxa.Identity.Api.Application.Fakers;
-using eDoxa.Seedwork.Common.Extensions;
 
 using FluentAssertions;
 
@@ -29,17 +26,10 @@ namespace eDoxa.Identity.UnitTests.Application.Fakers
             var roleFaker = new RoleFaker();
 
             // Act
-            var action = new Action(
-                () =>
-                {
-                    var roles = roleFaker.FakeRoles();
-
-                    Console.WriteLine(roles.DumbAsJson());
-                }
-            );
+            var roles = roleFaker.FakeRoles();
 
             // Assert
-            action.Should().NotThrow();
+            roles.Should().NotBeNull();
         }
 
         [TestMethod]
@@ -49,17 +39,10 @@ namespace eDoxa.Identity.UnitTests.Application.Fakers
             var roleFaker = new RoleFaker();
 
             // Act
-            var action = new Action(
-                () =>
-                {
-                    var role = roleFaker.FakeAdminRole();
-
-                    Console.WriteLine(role.DumbAsJson());
-                }
-            );
+            var role = roleFaker.FakeAdminRole();
 
             // Assert
-            action.Should().NotThrow();
+            role.Should().NotBeNull();
         }
 
         [TestMethod]
@@ -69,17 +52,10 @@ namespace eDoxa.Identity.UnitTests.Application.Fakers
             var roleFaker = new RoleFaker();
 
             // Act
-            var action = new Action(
-                () =>
-                {
-                    var role = roleFaker.FakeChallengerRole();
-
-                    Console.WriteLine(role.DumbAsJson());
-                }
-            );
+            var role = roleFaker.FakeChallengerRole();
 
             // Assert
-            action.Should().NotThrow();
+            role.Should().NotBeNull();
         }
     }
 }

@@ -71,7 +71,8 @@ services:
       - AzureServiceBus__Enable=${ASB_ENABLE:-false}
       - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq}
       - ServiceBus__RetryCount=${ASB_RETRYCOUNT:-5}
-      - ServiceBus__Subscription=Cashier      
+      - ServiceBus__Subscription=Cashier
+      - HealthChecks__Payment__Url=http://payment.api/health
       - Authority=${URL:-http://localhost}:5000
       - IdentityServer__Url=http://idsrv
     ports:

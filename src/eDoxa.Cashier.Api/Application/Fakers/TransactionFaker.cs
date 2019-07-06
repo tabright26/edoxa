@@ -11,14 +11,15 @@
 using System;
 using System.Linq;
 
+using Bogus;
+
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
-using eDoxa.Seedwork.Common;
-using eDoxa.Seedwork.Common.Abstactions;
+using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Cashier.Api.Application.Fakers
 {
-    public sealed class TransactionFaker : CustomFaker<Transaction>
+    public sealed class TransactionFaker : Faker<Transaction>
     {
         public const string PositiveTransaction = nameof(PositiveTransaction);
         public const string NegativeTransaction = nameof(NegativeTransaction);

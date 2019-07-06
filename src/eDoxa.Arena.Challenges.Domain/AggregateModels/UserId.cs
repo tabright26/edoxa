@@ -1,5 +1,5 @@
-﻿// Filename: IParticipantPrizes.cs
-// Date Created: 2019-06-25
+﻿// Filename: UserId.cs
+// Date Created: 2019-06-08
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,13 +8,14 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Collections.Generic;
+using System.ComponentModel;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels
 {
-    public interface IParticipantPrizes : IReadOnlyDictionary<UserId, Prize>
+    [TypeConverter(typeof(EntityIdTypeConverter))]
+    public sealed class UserId : EntityId<UserId>
     {
     }
 }

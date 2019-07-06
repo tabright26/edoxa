@@ -16,8 +16,8 @@ using AutoMapper;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
+using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Extensions;
-using eDoxa.Seedwork.Infrastructure;
 
 using JetBrains.Annotations;
 
@@ -32,7 +32,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.ConverterTypes
                 new ChallengeName(source.Name),
                 ChallengeGame.FromValue(source.Game),
                 context.Mapper.Map<ChallengeSetup>(source.Setup),
-                new ChallengeTimeline(new PersistentDateTimeProvider(source.Timeline.CreatedAt), new ChallengeDuration(TimeSpan.FromTicks(source.Timeline.Duration))),
+                new ChallengeTimeline(new DateTimeProvider(source.Timeline.CreatedAt), new ChallengeDuration(TimeSpan.FromTicks(source.Timeline.Duration))),
                 context.Mapper.Map<IScoring>(source.ScoringItems),
                 context.Mapper.Map<IPayout>(source.Buckets)
             );
@@ -45,17 +45,17 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.ConverterTypes
 
             if (source.Timeline.StartedAt.HasValue)
             {
-                challenge.Start(new PersistentDateTimeProvider(source.Timeline.StartedAt.Value));
+                challenge.Start(new DateTimeProvider(source.Timeline.StartedAt.Value));
             }
 
             if (source.SynchronizedAt.HasValue)
             {
-                challenge.Synchronize(new PersistentDateTimeProvider(source.SynchronizedAt.Value));
+                challenge.Synchronize(new DateTimeProvider(source.SynchronizedAt.Value));
             }
 
             if (source.Timeline.ClosedAt.HasValue)
             {
-                challenge.Close(new PersistentDateTimeProvider(source.Timeline.ClosedAt.Value));
+                challenge.Close(new DateTimeProvider(source.Timeline.ClosedAt.Value));
             }
 
             return challenge;

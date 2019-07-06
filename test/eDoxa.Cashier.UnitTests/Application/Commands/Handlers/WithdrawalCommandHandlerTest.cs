@@ -17,7 +17,6 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.UnitTests.Helpers.Mocks;
 using eDoxa.Commands.Extensions;
-using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Testing.TestConstructor;
 
 using MediatR;

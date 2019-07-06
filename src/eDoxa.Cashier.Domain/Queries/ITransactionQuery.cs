@@ -15,7 +15,6 @@ using AutoMapper;
 
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
-using eDoxa.Seedwork.Common.ValueObjects;
 
 namespace eDoxa.Cashier.Domain.Queries
 {

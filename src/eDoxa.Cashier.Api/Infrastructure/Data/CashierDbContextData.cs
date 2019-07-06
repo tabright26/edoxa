@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Api.Application.Fakers;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Infrastructure;
-using eDoxa.Seedwork.Infrastructure.Abstractions;
+using eDoxa.Seedwork.Infrastructure;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
@@ -49,7 +49,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
                 {
                     var accountFaker = new AccountFaker();
 
-                    var adminAccount = accountFaker.FakeAdminAccount();
+                    var adminAccount = accountFaker.Generate(AccountFaker.AdminAccount);
 
                     _accountRepository.Create(adminAccount);
 

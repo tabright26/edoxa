@@ -1,5 +1,5 @@
-﻿// Filename: UserFakerExtensions.cs
-// Date Created: 2019-06-25
+﻿// Filename: FakerExtensions.cs
+// Date Created: 2019-07-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -14,12 +14,12 @@ using System.Linq;
 
 using Bogus;
 
-using eDoxa.Seedwork.Common.ValueObjects;
+using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Seedwork.Common;
 
-namespace eDoxa.Seedwork.Common.Extensions
+namespace eDoxa.Cashier.Api.Application.Fakers.Extensions
 {
-    // TODO: To refactor.
-    public static class UserFakerExtensions
+    public static class FakerExtensions
     {
         private static ICollection<Guid> _testUserIds = DataResources.TestUserIds.OrderBy(testUserId => testUserId).ToList();
 
@@ -34,7 +34,7 @@ namespace eDoxa.Seedwork.Common.Extensions
 
             _testUserIds.Remove(testUserId);
 
-            return ValueObjects.UserId.FromGuid(testUserId);
+            return Domain.AggregateModels.UserId.FromGuid(testUserId);
         }
 
         public static void ResetUserIds()

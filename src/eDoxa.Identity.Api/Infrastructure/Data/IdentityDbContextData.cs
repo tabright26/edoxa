@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Application.Fakers;
 using eDoxa.Identity.Infrastructure;
-using eDoxa.Seedwork.Infrastructure.Abstractions;
+using eDoxa.Seedwork.Infrastructure;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;

@@ -16,7 +16,6 @@ using eDoxa.Cashier.Api.Application.Commands.Handlers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Commands.Extensions;
-using eDoxa.Seedwork.Common.ValueObjects;
 using eDoxa.Seedwork.Testing.TestConstructor;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;

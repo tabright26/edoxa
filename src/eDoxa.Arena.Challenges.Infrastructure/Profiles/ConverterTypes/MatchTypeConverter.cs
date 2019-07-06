@@ -14,7 +14,7 @@ using AutoMapper;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
-using eDoxa.Seedwork.Infrastructure;
+using eDoxa.Seedwork.Domain.Aggregate;
 
 using JetBrains.Annotations;
 
@@ -25,7 +25,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.ConverterTypes
         [NotNull]
         public Match Convert([NotNull] MatchModel source, [NotNull] Match destination, [NotNull] ResolutionContext context)
         {
-            var match = new Match(source.GameReference, new PersistentDateTimeProvider(source.SynchronizedAt));
+            var match = new Match(source.GameReference, new DateTimeProvider(source.SynchronizedAt));
 
             match.SetEntityId(MatchId.FromGuid(source.Id));
 

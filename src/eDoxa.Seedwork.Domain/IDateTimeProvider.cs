@@ -1,5 +1,5 @@
-﻿// Filename: IDbContextData.cs
-// Date Created: 2019-06-01
+﻿// Filename: IDateTimeProvider.cs
+// Date Created: 2019-07-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,14 +8,12 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Threading.Tasks;
+using System;
 
-namespace eDoxa.Seedwork.Infrastructure.Abstractions
+namespace eDoxa.Seedwork.Domain
 {
-    public interface IDbContextData
+    public interface IDateTimeProvider
     {
-        Task SeedAsync();
-
-        Task CleanupAsync();
+        DateTime DateTime { get; }
     }
 }
