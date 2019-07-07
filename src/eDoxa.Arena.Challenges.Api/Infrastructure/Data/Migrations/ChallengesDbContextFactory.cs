@@ -12,7 +12,6 @@ using System.IO;
 using System.Reflection;
 
 using eDoxa.Arena.Challenges.Infrastructure;
-using eDoxa.Seedwork.Infrastructure;
 using eDoxa.Seedwork.Infrastructure.Factories;
 
 using JetBrains.Annotations;
@@ -28,7 +27,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
         [NotNull]
         public override ChallengesDbContext CreateDbContext(string[] args)
         {
-            return new ChallengesDbContext(Options, new NoMediator());
+            return new ChallengesDbContext(Options);
         }
     }
 }

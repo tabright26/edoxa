@@ -17,7 +17,7 @@ namespace eDoxa.Arena.LeagueOfLegends.Extensions
 {
     internal static class ServiceCollectionExtensions
     {
-        internal static void AddLeagueOfLegends(this IServiceCollection services, IConfiguration configuration)
+        internal static void AddLeagueOfLegendsServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<LeagueOfLegendsOptions>(options => options.RiotToken = configuration["Arena:LeagueOfLegends:ApiKey"]);
             services.AddTransient<LeagueOfLegendsDelegatingHandler>();

@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Identity.Infrastructure;
 using eDoxa.IdentityServer.IntegrationTests.Helpers;
+using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 
 using Microsoft.AspNetCore.TestHost;
@@ -34,7 +35,7 @@ namespace eDoxa.IdentityServer.IntegrationTests.Controllers
         [TestInitialize]
         public async Task TestInitialize()
         {
-            var factory = new WebApplicationFactory<Startup>();
+            var factory = new TestIdentityServerWebApplicationFactory<Startup>();
             _httpClient = factory.CreateClient();
             _testServer = factory.Server;
             await this.TestCleanup();

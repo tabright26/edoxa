@@ -70,7 +70,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
                 throw new InvalidOperationException();
             }
 
-            var transaction = new MoneyChargeTransaction(-amount);
+            var transaction = new MoneyChargeTransaction(amount);
 
             _account.CreateTransaction(transaction);
 

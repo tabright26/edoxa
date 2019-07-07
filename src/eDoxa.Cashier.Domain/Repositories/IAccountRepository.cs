@@ -12,7 +12,6 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Seedwork.Common.ValueObjects;
 
 using JetBrains.Annotations;
 

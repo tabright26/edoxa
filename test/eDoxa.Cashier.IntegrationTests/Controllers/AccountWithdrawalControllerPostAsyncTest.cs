@@ -1,5 +1,5 @@
 ﻿// Filename: AccountWithdrawalControllerPostAsyncTest.cs
-// Date Created: 2019-07-04
+// Date Created: 2019-07-05
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -17,9 +17,8 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.IntegrationTests.Helpers;
-using eDoxa.Seedwork.Common.ValueObjects;
+using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Security.Constants;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Helpers;
@@ -52,7 +51,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
         [TestInitialize]
         public async Task TestInitialize()
         {
-            var factory = new WebApplicationFactory<TestStartup>();
+            var factory = new TestCashieWebApplicationFactory<TestCashierStartup>();
             _httpClient = factory.CreateClient();
             _testServer = factory.Server;
             await this.TestCleanup();
@@ -61,14 +60,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
         [TestCleanup]
         public async Task TestCleanup()
         {
-            await _testServer.UsingScopeAsync(
-                async scope =>
-                {
-                    var context = scope.GetService<CashierDbContext>();
-                    context.Accounts.RemoveRange(context.Accounts);
-                    await context.SaveChangesAsync();
-                }
-            );
+            await _testServer.CleanupDbContextAsync();
         }
 
         [TestMethod]

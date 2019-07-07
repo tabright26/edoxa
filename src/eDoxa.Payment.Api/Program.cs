@@ -20,7 +20,7 @@ using Serilog;
 
 namespace eDoxa.Payment.Api
 {
-    public static class Program
+    public class Program
     {
         public static int Main(string[] args)
         {

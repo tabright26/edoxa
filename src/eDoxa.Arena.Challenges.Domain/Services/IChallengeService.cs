@@ -12,9 +12,9 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Seedwork.Common;
-using eDoxa.Seedwork.Common.ValueObjects;
+using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Arena.Challenges.Domain.Services
 {
@@ -29,15 +29,10 @@ namespace eDoxa.Arena.Challenges.Domain.Services
             CancellationToken cancellationToken = default
         );
 
-        Task RegisterParticipantAsync(
-            ChallengeId challengeId,
-            UserId userId,
-            Func<ChallengeGame, GameAccountId> funcUserGameReference,
-            CancellationToken cancellationToken = default
-        );
+        Task RegisterParticipantAsync(ChallengeId challengeId, UserId userId, IDateTimeProvider registeredAt, CancellationToken cancellationToken = default);
+
+        Task SynchronizeAsync(ChallengeGame game, TimeSpan interval, IDateTimeProvider synchronizedAt, CancellationToken cancellationToken = default);
 
         Task CloseAsync(IDateTimeProvider closedAt, CancellationToken cancellationToken = default);
-
-        Task SynchronizeAsync(IDateTimeProvider synchronizedAt, ChallengeGame game, CancellationToken cancellationToken = default);
     }
 }

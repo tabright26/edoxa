@@ -30,7 +30,7 @@ namespace eDoxa.IntegrationEvents.RabbitMQ
 {
     public class RabbitMqEventBusService : IEventBusService
     {
-        private const string Exchange = "edoxa.rabbitmq.broker";
+        private const string Exchange = "rabbitmq";
         private const string LifetimeScopeTag = Exchange;
 
         private readonly int _retryCount;

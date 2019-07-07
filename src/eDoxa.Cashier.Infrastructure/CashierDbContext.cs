@@ -10,11 +10,8 @@
 
 using eDoxa.Cashier.Infrastructure.Configurations;
 using eDoxa.Cashier.Infrastructure.Models;
-using eDoxa.Seedwork.Infrastructure;
 
 using JetBrains.Annotations;
-
-using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -22,17 +19,9 @@ namespace eDoxa.Cashier.Infrastructure
 {
     public sealed class CashierDbContext : DbContext
     {
-        public CashierDbContext(DbContextOptions<CashierDbContext> options, IMediator mediator) : base(options)
-        {
-            Mediator = mediator;
-        }
-
         public CashierDbContext(DbContextOptions<CashierDbContext> options) : base(options)
         {
-            Mediator = new NoMediator();
         }
-
-        public IMediator Mediator { get; }
         
         public DbSet<AccountModel> Accounts => this.Set<AccountModel>();
 

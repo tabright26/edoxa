@@ -8,6 +8,17 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+using eDoxa.Arena.Challenges.Api.Application.Fakers;
+using eDoxa.Arena.Challenges.Domain;
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+
+using FluentAssertions;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggregate
@@ -74,58 +85,74 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
         //    action.Should().NotThrow();
         //}
 
-        //[TestMethod]
-        //public void RegisterParticipant_IntoEmptyCollection_ShouldNotBeEmpty()
-        //{
-        //    // Arrange
-        //    var challenge = _challengeFaker.Generate();
+        [TestMethod]
+        public void Register_Participant_ShouldBeRegistered()
+        {
+            // Arrange
+            var challengeFaker = new ChallengeFaker(state: ChallengeState.Inscription);
+            challengeFaker.UseSeed(85256956);
+            var challenge = challengeFaker.Generate();
+            var participantCount = challenge.Participants.Count;
 
-        //    var participantCount = challenge.Participants.Count;
+            // Act
+            challenge.Register(new Participant(new UserId(), new GameAccountId(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider()));
 
-        //    // Act
-        //    challenge.Register(new Participant(new UserId(), new GameAccountId(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider()));
+            // Assert
+            challenge.Participants.Should().HaveCount(participantCount + 1);
+        }
 
-        //    // Assert
-        //    challenge.Participants.Should().HaveCount(participantCount + 1);
-        //}
+        private static IEnumerable<object[]> ChallengeStateDataSets => ChallengeState.GetEnumerations().Where(state => state != ChallengeState.Inscription).Select(state => new object[] {state}).ToList();
 
-        //[TestMethod]
-        //public void RegisterParticipant_WhoAlreadyExist_ShouldThrowInvalidOperationException()
-        //{
-        //    // Arrange
-        //    var challenge = _challengeFaker.Generate();
+        [DataTestMethod]
+        [DynamicData(nameof(ChallengeStateDataSets))]
+        public void Register_ChallengeStateNotInscription_ShouldThrowInvalidOperationException(ChallengeState state)
+        {
+            // Arrange
+            var challengeFaker = new ChallengeFaker(state: state);
+            challengeFaker.UseSeed(78536956);
+            var challenge = challengeFaker.Generate();
 
-        //    // Act
-        //    var action = new Action(
-        //        () => challenge.Register(
-        //            new Participant(challenge.Participants.First().UserId, new GameAccountId(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider())
-        //        )
-        //    );
+            // Act
+            var action = new Action(() => challenge.Register(new Participant(new UserId(), new GameAccountId(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider())));
 
-        //    // Act => Assert
-        //    action.Should().Throw<InvalidOperationException>();
-        //}
+            // Assert
+            action.Should().Throw<InvalidOperationException>();
+        }
 
-        //[TestMethod]
-        //public void RegisterParticipant_WithEntriesFull_ShouldThrowInvalidOperationException()
-        //{
-        //    // Arrange
-        //    var challenge = _challengeFaker.Generate();
+        [TestMethod]
+        public void Register_RegisteredParticipant_ShouldThrowInvalidOperationException()
+        {
+            // Arrange
+            var challengeFaker = new ChallengeFaker(state: ChallengeState.Inscription);
+            challengeFaker.UseSeed(48536956);
+            var challenge = challengeFaker.Generate();
 
-        //    var participantCount = challenge.Setup.Entries - challenge.Participants.Count;
+            // Act
+            var action = new Action(() => challenge.Register(new Participant(challenge.Participants.First().UserId, new GameAccountId(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider())));
 
-        //    for (var index = 0; index < participantCount; index++)
-        //    {
-        //        challenge.Register(new Participant(new UserId(), new GameAccountId(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider()));
-        //    }
+            // Assert
+            action.Should().Throw<InvalidOperationException>();
+        }
 
-        //    // Act
-        //    var action = new Action(
-        //        () => challenge.Register(new Participant(new UserId(), new GameAccountId(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider()))
-        //    );
+        [TestMethod]
+        public void Register_WhenInscriptionFulfilled_ShouldThrowInvalidOperationException()
+        {
+            // Arrange
+            var challengeFaker = new ChallengeFaker(state: ChallengeState.Inscription);
+            challengeFaker.UseSeed(43897896);
+            var challenge = challengeFaker.Generate();
+            var participantCount = challenge.Setup.Entries - challenge.Participants.Count;
 
-        //    // Assert
-        //    action.Should().Throw<InvalidOperationException>();
-        //}
+            for (var index = 0; index < participantCount; index++)
+            {
+                challenge.Register(new Participant(new UserId(), new GameAccountId(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider()));
+            }
+
+            // Act
+            var action = new Action(() => challenge.Register(new Participant(new UserId(), new GameAccountId(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider())));
+
+            // Assert
+            action.Should().Throw<InvalidOperationException>();
+        }
     }
 }

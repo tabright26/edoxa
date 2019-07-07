@@ -13,9 +13,9 @@ using System;
 using Bogus;
 
 using eDoxa.Arena.Challenges.Api.Application.Fakers.Extensions;
-using eDoxa.Arena.Challenges.Api.Application.Fakers.Providers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Api.Application.Fakers
 {
@@ -26,7 +26,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Fakers
             this.CustomInstantiator(
                 faker =>
                 {
-                    var match = new Match(faker.Match().GameId(game), new FakeDateTimeProvider(synchronizedAt));
+                    var match = new Match(faker.Match().GameId(game), new DateTimeProvider(synchronizedAt));
 
                     match.SetEntityId(faker.Match().Id());
 

@@ -1,5 +1,5 @@
-﻿// Filename: FakeLeagueOfLegendsService.cs
-// Date Created: 2019-06-29
+﻿// Filename: MockLeagueOfLegendsService.cs
+// Date Created: 2019-07-05
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.

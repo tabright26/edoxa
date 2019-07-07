@@ -15,9 +15,9 @@ using System.Linq;
 using Bogus;
 
 using eDoxa.Arena.Challenges.Api.Application.Fakers.Extensions;
-using eDoxa.Arena.Challenges.Api.Application.Fakers.Providers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Common.Extensions;
+using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Api.Application.Fakers.DataSets
 {
@@ -63,21 +63,21 @@ namespace eDoxa.Arena.Challenges.Api.Application.Fakers.DataSets
 
             var created = Faker.Date.Recent(1, DateTime.UtcNow.DateKeepHours());
 
-            var timeline = new ChallengeTimeline(new FakeDateTimeProvider(created), duration);
+            var timeline = new ChallengeTimeline(new DateTimeProvider(created), duration);
 
             if (state == ChallengeState.InProgress)
             {
-                timeline = timeline.Start(new FakeDateTimeProvider(DateTime.UtcNow.DateKeepHours()));
+                timeline = timeline.Start(new DateTimeProvider(DateTime.UtcNow.DateKeepHours()));
             }
 
             if (state == ChallengeState.Ended)
             {
-                timeline = timeline.Start(new FakeDateTimeProvider(DateTime.UtcNow.DateKeepHours().Subtract(duration)));
+                timeline = timeline.Start(new DateTimeProvider(DateTime.UtcNow.DateKeepHours().Subtract(duration)));
             }
 
             if (state == ChallengeState.Closed)
             {
-                timeline = timeline.Close(new FakeDateTimeProvider(DateTime.UtcNow.DateKeepHours()));
+                timeline = timeline.Close(new DateTimeProvider(DateTime.UtcNow.DateKeepHours()));
             }
 
             return timeline;

@@ -11,11 +11,11 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api;
 using eDoxa.Identity.Api.Application.Fakers;
 using eDoxa.Identity.Domain.ViewModels;
 using eDoxa.Identity.Infrastructure;
 using eDoxa.Identity.IntegrationTests.Helpers;
+using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 
 using FluentAssertions;
@@ -40,7 +40,7 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
         [TestInitialize]
         public async Task TestInitialize()
         {
-            var factory = new WebApplicationFactory<Startup>();
+            var factory = new TestIdentityWebApplicationFactory<TestIdentityStartup>();
             _httpClient = factory.CreateClient();
             _testServer = factory.Server;
             await this.TestCleanup();
@@ -49,14 +49,7 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
         [TestCleanup]
         public async Task TestCleanup()
         {
-            await _testServer.UsingScopeAsync(
-                async scope =>
-                {
-                    var context = scope.GetService<IdentityDbContext>();
-                    context.Users.RemoveRange(context.Users);
-                    await context.SaveChangesAsync();
-                }
-            );
+            await _testServer.CleanupDbContextAsync();
         }
 
         [TestMethod]

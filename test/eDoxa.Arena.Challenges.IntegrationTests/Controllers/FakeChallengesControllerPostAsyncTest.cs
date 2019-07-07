@@ -17,8 +17,8 @@ using System.Threading.Tasks;
 using eDoxa.Arena.Challenges.Api.Application.Commands;
 using eDoxa.Arena.Challenges.Api.Application.Fakers;
 using eDoxa.Arena.Challenges.Domain.Repositories;
-using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.IntegrationTests.Helpers;
+using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Helpers;
 
@@ -46,7 +46,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         [TestInitialize]
         public async Task TestInitialize()
         {
-            var factory = new WebApplicationFactory<TestStartup>();
+            var factory = new TestArenaChallengesWebApplicationFactory<TestArenaChallengesStartup>();
             _httpClient = factory.CreateClient();
             _testServer = factory.Server;
             await this.TestCleanup();
@@ -55,14 +55,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         [TestCleanup]
         public async Task TestCleanup()
         {
-            await _testServer.UsingScopeAsync(
-                async scope =>
-                {
-                    var context = scope.GetService<ChallengesDbContext>();
-                    context.Challenges.RemoveRange(context.Challenges);
-                    await context.SaveChangesAsync();
-                }
-            );
+            await _testServer.CleanupDbContextAsync();
         }
 
         [DataRow(2, 100)]

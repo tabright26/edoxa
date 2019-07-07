@@ -67,12 +67,7 @@ namespace eDoxa.Seedwork.Application.Extensions
                 }
             );
 
-            builder.AddFluentValidation(
-                config =>
-                {
-                    config.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
-                }
-            );
+            builder.AddFluentValidation(config => config.RunDefaultMvcValidationAfterFluentValidationExecutes = false);
 
             builder.AddControllersAsServices();
 

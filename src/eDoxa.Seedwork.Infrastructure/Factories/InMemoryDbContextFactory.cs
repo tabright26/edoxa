@@ -1,5 +1,5 @@
 ﻿// Filename: InMemoryDbContextFactory.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,12 +11,8 @@
 using System;
 using System.Data.Common;
 
-using MediatR;
-
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-
-using Moq;
 
 namespace eDoxa.Seedwork.Infrastructure.Factories
 {
@@ -54,13 +50,6 @@ namespace eDoxa.Seedwork.Infrastructure.Factories
 
         private TDbContext CreateInstance()
         {
-            if (typeof(TDbContext).BaseType == typeof(CustomDbContext))
-            {
-                var mediator = new Mock<IMediator>();
-
-                return (TDbContext) Activator.CreateInstance(typeof(TDbContext), this.CreateOptions(), mediator.Object);
-            }
-
             return (TDbContext) Activator.CreateInstance(typeof(TDbContext), this.CreateOptions());
         }
 

@@ -11,3 +11,4 @@
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("eDoxa.Payment.UnitTests")]
+[assembly: InternalsVisibleTo("eDoxa.FunctionalTests")]

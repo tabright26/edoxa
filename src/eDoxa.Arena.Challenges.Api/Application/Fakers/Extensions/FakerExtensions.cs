@@ -8,14 +8,41 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 using Bogus;
 
 using eDoxa.Arena.Challenges.Api.Application.Fakers.DataSets;
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
+using eDoxa.Seedwork.Common;
 
 namespace eDoxa.Arena.Challenges.Api.Application.Fakers.Extensions
 {
     public static class FakerExtensions
     {
+        private static ICollection<Guid> _testUserIds = DataResources.TestUserIds.OrderBy(testUserId => testUserId).ToList();
+
+        public static UserId UserId(this Faker faker)
+        {
+            if (!_testUserIds.Any())
+            {
+                throw new ApplicationException("There is no longer any test user ID available.");
+            }
+
+            var testUserId = faker.PickRandom(_testUserIds);
+
+            _testUserIds.Remove(testUserId);
+
+            return Domain.AggregateModels.UserId.FromGuid(testUserId);
+        }
+
+        public static void ResetUserIds()
+        {
+            _testUserIds = DataResources.TestUserIds.OrderBy(testUserId => testUserId).ToList();
+        }
+
         public static ChallengeDataSet Challenge(this Faker faker)
         {
             return new ChallengeDataSet(faker);

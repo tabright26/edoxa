@@ -46,7 +46,7 @@ namespace eDoxa.Payment.Api
 
             services.AddServiceBus(Configuration);
 
-            return services.Build<ApiModule>();
+            return this.BuildModule(services);
         }
 
         public void Configure(IApplicationBuilder application)
@@ -61,6 +61,12 @@ namespace eDoxa.Payment.Api
             application.UseProviders(Configuration);
 
             application.UseIntegrationEventSubscriptions();
+        }
+
+        // TODO: Required by integration and functional tests.
+        protected virtual IServiceProvider BuildModule(IServiceCollection services)
+        {
+            return services.Build<ApiModule>();
         }
     }
 }

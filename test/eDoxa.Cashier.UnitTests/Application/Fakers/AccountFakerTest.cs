@@ -8,10 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
-
 using eDoxa.Cashier.Api.Application.Fakers;
-using eDoxa.Seedwork.Common.Extensions;
 
 using FluentAssertions;
 
@@ -29,17 +26,10 @@ namespace eDoxa.Cashier.UnitTests.Application.Fakers
             var accountFaker = new AccountFaker();
 
             // Act
-            var action = new Action(
-                () =>
-                {
-                    var account = accountFaker.Generate();
-
-                    Console.WriteLine(account.DumbAsJson());
-                }
-            );
+            var account = accountFaker.Generate();
 
             // Assert
-            action.Should().NotThrow();
+            account.Should().NotBeNull();
         }
 
         [TestMethod]
@@ -49,17 +39,10 @@ namespace eDoxa.Cashier.UnitTests.Application.Fakers
             var accountFaker = new AccountFaker();
 
             // Act
-            var action = new Action(
-                () =>
-                {
-                    var account = accountFaker.FakeAdminAccount();
-
-                    Console.WriteLine(account.DumbAsJson());
-                }
-            );
+            var account = accountFaker.Generate(AccountFaker.AdminAccount);
 
             // Assert
-            action.Should().NotThrow();
+            account.Should().NotBeNull();
         }
     }
 }

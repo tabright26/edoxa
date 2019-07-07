@@ -1,5 +1,5 @@
 ﻿// Filename: HttpContextAccessorExtensions.cs
-// Date Created: 2019-06-21
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,23 +10,20 @@
 
 using System;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Seedwork.Security.Extensions;
 
 using Microsoft.AspNetCore.Http;
+
+using static IdentityModel.JwtClaimTypes;
 
 namespace eDoxa.Arena.Challenges.Api.Extensions
 {
     public static class HttpContextAccessorExtensions
     {
-        public static Func<ChallengeGame, GameAccountId> FuncUserGameReference(this IHttpContextAccessor accessor)
+        public static UserId GetUserId(this IHttpContextAccessor accessor)
         {
-            return game =>
-            {
-                var userGameReference = accessor.GetClaimOrDefault(game.GetClaimType());
-
-                return userGameReference != null ? new GameAccountId(userGameReference) : null;
-            };
+            return UserId.Parse(accessor.GetClaimOrDefault(Subject) ?? throw new ArgumentNullException(Subject));
         }
     }
 }

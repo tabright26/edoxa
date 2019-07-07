@@ -10,12 +10,12 @@
 
 using System.Linq;
 
+using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Validators;
 using eDoxa.Commands.Abstractions.Validations;
-using eDoxa.Seedwork.Common.Extensions;
 using eDoxa.Seedwork.Domain.Extensions;
 
 using FluentValidation;

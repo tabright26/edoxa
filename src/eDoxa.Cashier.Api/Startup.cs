@@ -93,9 +93,10 @@ namespace eDoxa.Cashier.Api
             application.UseIntegrationEventSubscriptions();
         }
 
+        // TODO: Required by integration and functional tests.
         protected virtual IServiceProvider BuildModule(IServiceCollection services)
         {
-            return services.Build<ApiModule>();
+            return services.Build<CashierModule>();
         }
     }
 }

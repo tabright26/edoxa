@@ -10,8 +10,8 @@
 
 using System.Linq;
 
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Seedwork.Common.ValueObjects;
 
 using FluentValidation;
 

@@ -14,7 +14,6 @@ using eDoxa.Cashier.Api.ViewModels;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Infrastructure.Models;
-using eDoxa.Seedwork.Common.ValueObjects;
 
 using JetBrains.Annotations;
 

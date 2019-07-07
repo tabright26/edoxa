@@ -35,7 +35,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.Identity.Api
 {
-    public sealed class Startup
+    public class Startup
     {
         public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {
@@ -73,7 +73,7 @@ namespace eDoxa.Identity.Api
 
             services.AddAuthentication(Configuration, Environment, CustomApiResources.Identity);
 
-            return services.Build<ApiModule>();
+            return this.BuildModule(services);
         }
 
         public void Configure(IApplicationBuilder application, IApiVersionDescriptionProvider provider)
@@ -93,6 +93,12 @@ namespace eDoxa.Identity.Api
             application.UseMvc();
 
             application.UseIntegrationEventSubscriptions();
+        }
+
+        // TODO: Required by integration and functional tests.
+        protected virtual IServiceProvider BuildModule(IServiceCollection services)
+        {
+            return services.Build<IdentityModule>();
         }
     }
 }

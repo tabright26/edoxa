@@ -1,5 +1,5 @@
 ﻿// Filename: DepositProcessedIntegrationEventHandler.cs
-// Date Created: 2019-07-02
+// Date Created: 2019-07-05
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -58,7 +58,7 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
             }
             catch (StripeException exception)
             {
-                _logger.LogError(exception, exception.StripeError.ToJson());
+                _logger.LogError(exception, exception.StripeError?.ToJson());
 
                 _eventBusService.Publish(new TransactionFailedIntegrationEvent(integrationEvent.TransactionId));
 

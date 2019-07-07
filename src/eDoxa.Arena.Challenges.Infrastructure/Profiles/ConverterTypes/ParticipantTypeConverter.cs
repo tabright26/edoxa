@@ -12,11 +12,11 @@ using System.Collections.Generic;
 
 using AutoMapper;
 
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
-using eDoxa.Seedwork.Common.ValueObjects;
+using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Extensions;
-using eDoxa.Seedwork.Infrastructure;
 
 using JetBrains.Annotations;
 
@@ -30,7 +30,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.ConverterTypes
             var participant = new Participant(
                 UserId.FromGuid(source.UserId),
                 new GameAccountId(source.GameAccountId),
-                new PersistentDateTimeProvider(source.RegisteredAt)
+                new DateTimeProvider(source.RegisteredAt)
             );
 
             participant.SetEntityId(ParticipantId.FromGuid(source.Id));

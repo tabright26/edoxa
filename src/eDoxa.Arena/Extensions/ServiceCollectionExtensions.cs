@@ -17,9 +17,9 @@ namespace eDoxa.Arena.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddArena(this IServiceCollection services, IConfiguration configuration)
+        public static void AddArenaServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddLeagueOfLegends(configuration);
+            services.AddLeagueOfLegendsServices(configuration);
         }
     }
 }

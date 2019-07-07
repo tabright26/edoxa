@@ -8,11 +8,9 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Linq;
 
 using eDoxa.Identity.Api.Application.Fakers;
-using eDoxa.Seedwork.Common.Extensions;
 
 using FluentAssertions;
 
@@ -46,19 +44,10 @@ namespace eDoxa.Identity.UnitTests.Application.Fakers
             userFaker.UseSeed(1);
 
             // Act
-            var action = new Action(
-                () =>
-                {
-                    var users = userFaker.FakeTestUsers(99).ToList();
-
-                    Console.WriteLine(users.DumbAsJson());
-
-                    users.Should().HaveCount(99);
-                }
-            );
+            var users = userFaker.FakeTestUsers(99).ToList();
 
             // Assert
-            action.Should().NotThrow();
+            users.Should().HaveCount(99);
         }
 
         [TestMethod]
@@ -69,17 +58,10 @@ namespace eDoxa.Identity.UnitTests.Application.Fakers
             userFaker.UseSeed(1);
 
             // Act
-            var action = new Action(
-                () =>
-                {
-                    var user = userFaker.FakeTestUser();
-
-                    Console.WriteLine(user.DumbAsJson());
-                }
-            );
+            var user = userFaker.FakeTestUser();
 
             // Assert
-            action.Should().NotThrow();
+            user.Should().NotBeNull();
         }
 
         [TestMethod]
@@ -90,17 +72,10 @@ namespace eDoxa.Identity.UnitTests.Application.Fakers
             userFaker.UseSeed(1);
 
             // Act
-            var action = new Action(
-                () =>
-                {
-                    var user = userFaker.FakeAdminUser();
-
-                    Console.WriteLine(user.DumbAsJson());
-                }
-            );
+            var user = userFaker.FakeAdminUser();
 
             // Assert
-            action.Should().NotThrow();
+            user.Should().NotBeNull();
         }
     }
 }

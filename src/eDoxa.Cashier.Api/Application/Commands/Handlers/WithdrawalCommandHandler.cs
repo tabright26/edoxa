@@ -15,7 +15,6 @@ using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Commands.Abstractions.Handlers;
-using eDoxa.Seedwork.Common.Extensions;
 
 using JetBrains.Annotations;
 

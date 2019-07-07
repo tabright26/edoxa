@@ -11,7 +11,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Seedwork.Application.Mvc.Filters.Attributes;
-using eDoxa.Seedwork.Infrastructure.Abstractions;
+using eDoxa.Seedwork.Infrastructure;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
