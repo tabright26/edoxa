@@ -47,5 +47,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels
             Func<GameAccountId, GameReference, IMatchStats> getMatchStats,
             IDateTimeProvider synchronizedAt
         );
+
+        bool IsInscriptionCompleted();
     }
 }

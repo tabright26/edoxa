@@ -14,15 +14,12 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Application.Fakers;
-using eDoxa.Arena.Challenges.Domain;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Factories;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Extensions;
-using eDoxa.Seedwork.Domain.Specifications;
 
 namespace eDoxa.Arena.Challenges.Api.Application.Services
 {
@@ -31,37 +28,19 @@ namespace eDoxa.Arena.Challenges.Api.Application.Services
         private readonly IChallengeRepository _challengeRepository;
         private readonly IGameReferencesFactory _gameReferencesFactory;
         private readonly IMatchStatsFactory _matchStatsFactory;
+        private readonly IIdentityService _identityService;
 
-        public ChallengeService(IChallengeRepository challengeRepository, IGameReferencesFactory gameReferencesFactory, IMatchStatsFactory matchStatsFactory)
+        public ChallengeService(
+            IChallengeRepository challengeRepository,
+            IGameReferencesFactory gameReferencesFactory,
+            IMatchStatsFactory matchStatsFactory,
+            IIdentityService identityService
+        )
         {
             _challengeRepository = challengeRepository;
             _gameReferencesFactory = gameReferencesFactory;
             _matchStatsFactory = matchStatsFactory;
-        }
-
-        public async Task RegisterParticipantAsync(
-            ChallengeId challengeId,
-            UserId userId,
-            Func<ChallengeGame, GameAccountId> funcUserGameReference,
-            CancellationToken cancellationToken = default
-        )
-        {
-            var challenge = await _challengeRepository.FindChallengeAsync(challengeId);
-
-            var userGameReference = funcUserGameReference(challenge.Game);
-
-            challenge.Register(new Participant(userId, userGameReference, new UtcNowDateTimeProvider()));
-
-            await _challengeRepository.CommitAsync(cancellationToken);
-        }
-
-        public async Task CloseAsync(IDateTimeProvider closedAt, CancellationToken cancellationToken = default)
-        {
-            var challenges = await _challengeRepository.FetchChallengesAsync(null, ChallengeState.Ended);
-
-            challenges.ForEach(challenge => challenge.Close(closedAt));
-
-            await _challengeRepository.CommitAsync(cancellationToken);
+            _identityService = identityService;
         }
 
         public async Task FakeChallengesAsync(
@@ -92,31 +71,70 @@ namespace eDoxa.Arena.Challenges.Api.Application.Services
             await _challengeRepository.CommitAsync(cancellationToken);
         }
 
-        public async Task SynchronizeAsync(
-            IDateTimeProvider synchronizedAt,
-            ChallengeGame game,
+        public async Task RegisterParticipantAsync(
+            ChallengeId challengeId,
+            UserId userId,
+            IDateTimeProvider registeredAt,
             CancellationToken cancellationToken = default
         )
         {
-            var specification = SpecificationFactory.Instance.Create<IChallenge>();
-                //.And(new LastSynchronizationMoreThanSpecification(synchronizationInterval));
+            var challenge = await _challengeRepository.FindChallengeAsync(challengeId) ?? throw new InvalidOperationException();
 
+            // TODO: Need validation via the resource filter.
+            var gameAccountId = await _identityService.GetGameAccountIdAsync(userId, challenge.Game) ?? throw new InvalidOperationException();
+
+            challenge.Register(new Participant(userId, gameAccountId, registeredAt));
+
+            if (challenge.IsInscriptionCompleted())
+            {
+                challenge.Start(registeredAt);
+            }
+
+            await _challengeRepository.CommitAsync(cancellationToken);
+        }
+
+        public async Task SynchronizeAsync(
+            ChallengeGame game,
+            TimeSpan interval,
+            IDateTimeProvider synchronizedAt,
+            CancellationToken cancellationToken = default
+        )
+        {
             var challenges = await _challengeRepository.FetchChallengesAsync(game, ChallengeState.InProgress);
 
-            var gameReferencesAdapter = _gameReferencesFactory.CreateInstance(game);
-
-            var matchStatsAdapter = _matchStatsFactory.CreateInstance(game);
-
-            foreach (var challenge in challenges.Where(specification.IsSatisfiedBy).OrderByDescending(challenge => challenge.SynchronizedAt))
+            foreach (var challenge in challenges.Where(challenge => challenge.SynchronizedAt + interval <= synchronizedAt.DateTime).OrderByDescending(challenge => challenge.SynchronizedAt))
             {
-                challenge.Synchronize(
-                    (gameAccountId, startedAt, closedAt) => gameReferencesAdapter.GetGameReferencesAsync(gameAccountId, startedAt, closedAt).Result,
-                    (gameAccountId, gameReference) => matchStatsAdapter.GetMatchStatsAsync(gameAccountId, gameReference).Result,
-                    synchronizedAt
-                );
+                this.Synchronize(challenge, synchronizedAt);
 
                 await _challengeRepository.CommitAsync(cancellationToken);
             }
+        }
+
+        public async Task CloseAsync(IDateTimeProvider closedAt, CancellationToken cancellationToken = default)
+        {
+            var challenges = await _challengeRepository.FetchChallengesAsync(null, ChallengeState.Ended);
+
+            foreach (var challenge in challenges.OrderByDescending(challenge => challenge.Timeline.EndedAt))
+            {
+                this.Synchronize(challenge, closedAt);
+
+                challenge.Close(closedAt);
+
+                await _challengeRepository.CommitAsync(cancellationToken);
+            }
+        }
+
+        private void Synchronize(IChallenge challenge, IDateTimeProvider synchronizedAt)
+        {
+            var gameReferencesAdapter = _gameReferencesFactory.CreateInstance(challenge.Game);
+
+            var matchStatsAdapter = _matchStatsFactory.CreateInstance(challenge.Game);
+
+            challenge.Synchronize(
+                (gameAccountId, startedAt, closedAt) => gameReferencesAdapter.GetGameReferencesAsync(gameAccountId, startedAt, closedAt).Result,
+                (gameAccountId, gameReference) => matchStatsAdapter.GetMatchStatsAsync(gameAccountId, gameReference).Result,
+                synchronizedAt
+            );
         }
     }
 }

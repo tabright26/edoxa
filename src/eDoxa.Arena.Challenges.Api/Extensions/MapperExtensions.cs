@@ -22,6 +22,7 @@ namespace eDoxa.Arena.Challenges.Api.Extensions
 {
     public static class MapperExtensions
     {
+        // TODO: Must be refactor.
         public static IMapper Mapper
         {
             get

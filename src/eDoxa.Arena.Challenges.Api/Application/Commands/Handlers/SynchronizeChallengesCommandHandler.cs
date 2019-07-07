@@ -8,6 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,7 +32,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Commands.Handlers
 
         protected override async Task Handle([NotNull] SynchronizeChallengesCommand command, CancellationToken cancellationToken)
         {
-            await _challengeService.SynchronizeAsync(new UtcNowDateTimeProvider(), ChallengeGame.LeagueOfLegends, cancellationToken);
+            await _challengeService.SynchronizeAsync(ChallengeGame.LeagueOfLegends, TimeSpan.FromHours(1), new UtcNowDateTimeProvider(), cancellationToken);
         }
     }
 }

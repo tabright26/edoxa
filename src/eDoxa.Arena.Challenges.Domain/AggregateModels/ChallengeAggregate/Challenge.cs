@@ -68,9 +68,9 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             _participants.Add(participant);
         }
 
-        private bool CanRegister(Participant participant)
+        public bool IsInscriptionCompleted()
         {
-            return new RegisterParticipantValidator(participant.UserId).Validate(this).IsValid;
+            return Participants.Count >= Setup.Entries;
         }
 
         public void Start(IDateTimeProvider startedAt)
@@ -83,11 +83,6 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             Timeline = Timeline.Start(startedAt);
         }
 
-        private bool CanStart()
-        {
-            return Participants.Count == Setup.Entries;
-        }
-
         public void Close(IDateTimeProvider closedAt)
         {
             if (!this.CanClose())
@@ -96,11 +91,6 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             }
 
             Timeline = Timeline.Close(closedAt);
-        }
-
-        private bool CanClose()
-        {
-            return Timeline == ChallengeState.Ended;
         }
 
         public void Synchronize(
@@ -118,8 +108,10 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             {
                 var gameReferences = getGameReferences(
                     participant.GameAccountId,
+
                     // ReSharper disable once PossibleInvalidOperationException
                     Timeline.StartedAt.Value,
+
                     // ReSharper disable once PossibleInvalidOperationException
                     Timeline.EndedAt.Value
                 );
@@ -139,14 +131,30 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             this.Synchronize(synchronizedAt);
         }
 
+        private bool CanRegister(Participant participant)
+        {
+            return new RegisterParticipantValidator(participant.UserId).Validate(this).IsValid;
+        }
+
+        private bool CanStart()
+        {
+            return Participants.Count == Setup.Entries;
+        }
+
+        private bool CanClose()
+        {
+            return Timeline == ChallengeState.Ended;
+        }
+
         public void Synchronize(IDateTimeProvider synchronizedAt)
         {
             SynchronizedAt = synchronizedAt.DateTime;
         }
 
+        // TODO: Must be verified.
         private bool CanSynchronize()
         {
-            return Timeline != ChallengeState.Inscription && Timeline.EndedAt > SynchronizedAt;
+            return Timeline != ChallengeState.Inscription && Timeline != ChallengeState.Closed;
         }
     }
 

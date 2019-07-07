@@ -14,15 +14,19 @@ using System.Reflection;
 
 using AutoMapper;
 
+using eDoxa.Arena.Challenges.Api.Application.DelegatingHandlers;
+using eDoxa.Arena.Challenges.Api.Application.Services;
 using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Api.Infrastructure;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data;
+using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Extensions;
 using eDoxa.IntegrationEvents.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Swagger.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
+using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security.Constants;
 using eDoxa.Seedwork.Security.Extensions;
@@ -81,7 +85,14 @@ namespace eDoxa.Arena.Challenges.Api
 
             services.AddAuthentication(Configuration, Environment, CustomApiResources.ArenaChallenges);
 
-            services.AddArena(Configuration);
+            services.AddTransient<IdentityDelegatingHandler>();
+
+            services.AddHttpClient<IIdentityService, IdentityService>()
+                .AddHttpMessageHandler<IdentityDelegatingHandler>()
+                .AddPolicyHandler(HttpPolicies.GetRetryPolicy())
+                .AddPolicyHandler(HttpPolicies.GetCircuitBreakerPolicy());
+
+            services.AddArenaServices(Configuration);
 
             return this.BuildModule(services);
         }

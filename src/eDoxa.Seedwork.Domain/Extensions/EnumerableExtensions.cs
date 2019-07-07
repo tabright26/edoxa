@@ -16,9 +16,9 @@ namespace eDoxa.Seedwork.Domain.Extensions
 {
     public static class EnumerableExtensions
     {
-        public static void ForEach<T>(this IEnumerable<T> collection, Action<T> action)
+        public static void ForEach<T>(this IEnumerable<T> collection, Action<T> execute)
         {
-            collection.ToList().ForEach(action);
+            collection.ToList().ForEach(execute);
         }
     }
 }

@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Extensions;
+using eDoxa.Arena.Challenges.Domain;
 using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Commands.Abstractions.Handlers;
 
@@ -34,7 +35,9 @@ namespace eDoxa.Arena.Challenges.Api.Application.Commands.Handlers
         {
             var userId = _httpContextAccessor.GetUserId();
 
-            await _challengeService.RegisterParticipantAsync(command.ChallengeId, userId, _httpContextAccessor.FuncUserGameReference(), cancellationToken);
+            var registeredAt = new UtcNowDateTimeProvider();
+
+            await _challengeService.RegisterParticipantAsync(command.ChallengeId, userId, registeredAt, cancellationToken);
         }
     }
 }

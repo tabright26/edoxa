@@ -11,7 +11,6 @@
 using System;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Security.Extensions;
 
 using Microsoft.AspNetCore.Http;
@@ -25,16 +24,6 @@ namespace eDoxa.Arena.Challenges.Api.Extensions
         public static UserId GetUserId(this IHttpContextAccessor accessor)
         {
             return UserId.Parse(accessor.GetClaimOrDefault(Subject) ?? throw new ArgumentNullException(Subject));
-        }
-
-        public static Func<ChallengeGame, GameAccountId> FuncUserGameReference(this IHttpContextAccessor accessor)
-        {
-            return game =>
-            {
-                var userGameReference = accessor.GetClaimOrDefault(game.GetClaimType());
-
-                return userGameReference != null ? new GameAccountId(userGameReference) : null;
-            };
         }
     }
 }

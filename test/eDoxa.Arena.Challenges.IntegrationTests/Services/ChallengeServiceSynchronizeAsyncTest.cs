@@ -72,7 +72,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Services
                 {
                     var challengeService = scope.GetService<IChallengeService>();
                     var synchronizedAt = new DateTimeProvider(DateTime.UtcNow);
-                    await challengeService.SynchronizeAsync(synchronizedAt, ChallengeGame.LeagueOfLegends);
+                    await challengeService.SynchronizeAsync(ChallengeGame.LeagueOfLegends, TimeSpan.Zero, synchronizedAt);
                 }
             );
 

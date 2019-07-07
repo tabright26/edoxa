@@ -8,6 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -39,7 +40,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Commands.Handlers
         public async Task HandleAsync_SynchronizeCommand_ShouldBeCompletedTask()
         {
             // Arrange
-            _mockChallengeService.Setup(mock => mock.SynchronizeAsync(It.IsAny<IDateTimeProvider>(), It.IsAny<ChallengeGame>(), It.IsAny<CancellationToken>()))
+            _mockChallengeService.Setup(mock => mock.SynchronizeAsync(It.IsAny<ChallengeGame>(), It.IsAny<TimeSpan>(), It.IsAny<IDateTimeProvider>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
@@ -50,7 +51,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Commands.Handlers
 
             // Assert
             _mockChallengeService.Verify(
-                mock => mock.SynchronizeAsync(It.IsAny<IDateTimeProvider>(), It.IsAny<ChallengeGame>(), It.IsAny<CancellationToken>()),
+                mock => mock.SynchronizeAsync(It.IsAny<ChallengeGame>(), It.IsAny<TimeSpan>(), It.IsAny<IDateTimeProvider>(), It.IsAny<CancellationToken>()),
                 Times.Once
             );
         }
