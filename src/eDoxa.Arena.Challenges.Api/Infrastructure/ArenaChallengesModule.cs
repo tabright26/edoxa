@@ -56,13 +56,13 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure
 
             // Adapters
             builder.RegisterType<LeagueOfLegendsGameReferencesAdapter>().As<IGameReferencesAdapter>();
-            builder.RegisterType<LeagueOfLegendsMatchStatsAdapter>().As<IMatchStatsAdapter>();
+            builder.RegisterType<LeagueOfLegendsMatchAdapter>().As<IMatchAdapter>();
 
             // Factories
             builder.RegisterType<PayoutFactory>().As<IPayoutFactory>().SingleInstance();
             builder.RegisterType<ScoringFactory>().As<IScoringFactory>().SingleInstance();
             builder.RegisterType<GameReferencesFactory>().As<IGameReferencesFactory>().SingleInstance();
-            builder.RegisterType<MatchStatsFactory>().As<IMatchStatsFactory>().SingleInstance();
+            builder.RegisterType<MatchFactory>().As<IMatchFactory>().SingleInstance();
         }
     }
 }

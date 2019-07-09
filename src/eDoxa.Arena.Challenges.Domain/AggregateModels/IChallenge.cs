@@ -44,7 +44,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels
 
         void Synchronize(
             Func<GameAccountId, DateTime, DateTime, IEnumerable<GameReference>> getGameReferences,
-            Func<GameAccountId, GameReference, IMatchStats> getMatchStats,
+            Func<GameAccountId, GameReference, IScoring, IMatch> getMatch,
             IDateTimeProvider synchronizedAt
         );
 

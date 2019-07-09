@@ -1,5 +1,5 @@
-﻿// Filename: MatchStats.cs
-// Date Created: 2019-06-20
+﻿// Filename: GameStats.cs
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,17 +13,13 @@ using System.Linq;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed class MatchStats : Dictionary<StatName, StatValue>, IMatchStats
+    public sealed class GameStats : Dictionary<StatName, StatValue>, IGameStats
     {
-        public MatchStats(object stats) : base(
+        public GameStats(object stats) : base(
             stats.GetType()
                 .GetProperties()
                 .ToDictionary(propertyInfo => new StatName(propertyInfo), propertyInfo => new StatValue(propertyInfo.GetValue(stats)))
         )
-        {
-        }
-
-        public MatchStats(IEnumerable<Stat> stats) : base(stats.ToDictionary(stat => stat.Name, stat => stat.Value))
         {
         }
     }

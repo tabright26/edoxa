@@ -19,18 +19,16 @@ using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Api.Application.Fakers
 {
-    internal sealed class MatchFaker : Faker<Match>
+    internal sealed class MatchFaker : Faker<IMatch>
     {
         public MatchFaker(ChallengeGame game, IScoring scoring, DateTime synchronizedAt)
         {
             this.CustomInstantiator(
                 faker =>
                 {
-                    var match = new Match(faker.Match().GameId(game), new DateTimeProvider(synchronizedAt));
+                    var match = new StatMatch(scoring.Map(faker.Match().Stats(game)), faker.Match().GameReference(game), new DateTimeProvider(synchronizedAt));
 
                     match.SetEntityId(faker.Match().Id());
-
-                    match.Snapshot(faker.Match().Stats(game), scoring);
 
                     return match;
                 }

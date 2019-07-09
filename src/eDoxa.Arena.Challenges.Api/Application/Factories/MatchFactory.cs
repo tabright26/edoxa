@@ -1,4 +1,4 @@
-﻿// Filename: MatchStatsFactory.cs
+﻿// Filename: MatchFactory.cs
 // Date Created: 2019-06-25
 // 
 // ================================================
@@ -18,20 +18,20 @@ using eDoxa.Arena.Challenges.Domain.Factories;
 
 namespace eDoxa.Arena.Challenges.Api.Application.Factories
 {
-    public sealed class MatchStatsFactory : IMatchStatsFactory
+    public sealed class MatchFactory : IMatchFactory
     {
-        private readonly IDictionary<ChallengeGame, IMatchStatsAdapter> _adapters;
+        private readonly IDictionary<ChallengeGame, IMatchAdapter> _adapters;
 
-        public MatchStatsFactory(IEnumerable<IMatchStatsAdapter> adapters)
+        public MatchFactory(IEnumerable<IMatchAdapter> adapters)
         {
             _adapters = adapters.ToDictionary(adapter => adapter.Game);
         }
 
-        public IMatchStatsAdapter CreateInstance(ChallengeGame game)
+        public IMatchAdapter CreateInstance(ChallengeGame game)
         {
             if (!_adapters.TryGetValue(game, out var adapter))
             {
-                throw new NotSupportedException($"The game '{game}' does not have an implementation of {nameof(IMatchStatsAdapter)} registered as a service.");
+                throw new NotSupportedException($"The game '{game}' does not have an implementation of {nameof(IMatchAdapter)} registered as a service.");
             }
 
             return adapter;

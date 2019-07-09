@@ -1,4 +1,4 @@
-﻿// Filename: IMatchStatsFactory.cs
+﻿// Filename: IMatchFactory.cs
 // Date Created: 2019-06-25
 // 
 // ================================================
@@ -13,8 +13,8 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.Factories
 {
-    public interface IMatchStatsFactory
+    public interface IMatchFactory
     {
-        IMatchStatsAdapter CreateInstance(ChallengeGame game);
+        IMatchAdapter CreateInstance(ChallengeGame game);
     }
 }

@@ -12,6 +12,7 @@ using System.Collections.Generic;
 
 using AutoMapper;
 
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
 using eDoxa.Seedwork.Domain.Aggregate;
@@ -20,18 +21,16 @@ using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.ConverterTypes
 {
-    internal sealed class MatchTypeConverter : ITypeConverter<MatchModel, Match>
+    internal sealed class MatchTypeConverter : ITypeConverter<MatchModel, IMatch>
     {
         [NotNull]
-        public Match Convert([NotNull] MatchModel source, [NotNull] Match destination, [NotNull] ResolutionContext context)
+        public IMatch Convert([NotNull] MatchModel source, [NotNull] IMatch destination, [NotNull] ResolutionContext context)
         {
-            var match = new Match(source.GameReference, new DateTimeProvider(source.SynchronizedAt));
-
-            match.SetEntityId(MatchId.FromGuid(source.Id));
-
             var stats = context.Mapper.Map<ICollection<Stat>>(source.Stats);
 
-            match.Snapshot(new MatchStats(stats), new Scoring(stats));
+            var match = new StatMatch(stats, source.GameReference, new DateTimeProvider(source.SynchronizedAt));
+
+            match.SetEntityId(MatchId.FromGuid(source.Id));
 
             return match;
         }

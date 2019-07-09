@@ -1,4 +1,4 @@
-﻿// Filename: LeagueOfLegendsMatchStatsAdapterTest.cs
+﻿// Filename: LeagueOfLegendsMatchAdapterTest.cs
 // Date Created: 2019-06-30
 // 
 // ================================================
@@ -13,6 +13,8 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Application.Adapters;
+using eDoxa.Arena.Challenges.Api.Application.Fakers;
+using eDoxa.Arena.Challenges.Domain;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.LeagueOfLegends.Abstractions;
 using eDoxa.Arena.LeagueOfLegends.Dtos;
@@ -27,7 +29,7 @@ using Moq;
 namespace eDoxa.Arena.Challenges.UnitTests.Application.Adapters
 {
     [TestClass]
-    public sealed class LeagueOfLegendsMatchStatsAdapterTest
+    public sealed class LeagueOfLegendsMatchAdapterTest
     {
         private Mock<ILeagueOfLegendsProxy> _mockLeagueOfLegendsProxy;
 
@@ -45,9 +47,15 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Adapters
         }
 
         [TestMethod]
-        public async Task GetMatchStatsAsync()
+        public async Task GetMatchAsync()
         {
             // Arrange
+            var challengeFaker = new ChallengeFaker(ChallengeGame.LeagueOfLegends, ChallengeState.InProgress);
+            challengeFaker.UseSeed(24788394);
+            var challenge = challengeFaker.Generate();
+
+            var synchronizedAt = new UtcNowDateTimeProvider();
+
             var gameReference = new GameReference(StubMatch.GameId);
 
             var gameAccountId = StubMatch.ParticipantIdentities
@@ -58,14 +66,15 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Adapters
                 .ParticipantId;
 
             var stats = StubMatch.Participants.Single(participant => participant.ParticipantId == participantId).Stats;
-            var matchStatsAdapter = new LeagueOfLegendsMatchStatsAdapter(_mockLeagueOfLegendsProxy.Object);
+            var matchAdapter = new LeagueOfLegendsMatchAdapter(_mockLeagueOfLegendsProxy.Object);
 
             // Act
-            var matchStats = await matchStatsAdapter.GetMatchStatsAsync(gameAccountId, gameReference);
+            var match = await matchAdapter.GetMatchAsync(gameAccountId, gameReference, challenge.Scoring, synchronizedAt);
 
             // Assert
-            matchStatsAdapter.Game.Should().Be(ChallengeGame.LeagueOfLegends);
-            matchStats.Should().BeEquivalentTo(new MatchStats(stats));
+            var expectedMatch = new StatMatch(challenge.Scoring.Map(new GameStats(stats)), gameReference, synchronizedAt);
+            matchAdapter.Game.Should().Be(ChallengeGame.LeagueOfLegends);
+            match.Stats.Should().BeEquivalentTo(expectedMatch.Stats);
             _mockLeagueOfLegendsProxy.Verify(leagueOfLegendsProxy => leagueOfLegendsProxy.GetMatchAsync(It.IsNotNull<string>()), Times.Once);
         }
     }

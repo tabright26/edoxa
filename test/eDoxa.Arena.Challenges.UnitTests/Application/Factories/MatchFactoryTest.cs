@@ -1,4 +1,4 @@
-﻿// Filename: MatchStatsFactoryTest.cs
+﻿// Filename: MatchFactoryTest.cs
 // Date Created: 2019-06-30
 // 
 // ================================================
@@ -26,7 +26,7 @@ using Moq;
 namespace eDoxa.Arena.Challenges.UnitTests.Application.Factories
 {
     [TestClass]
-    public sealed class MatchStatsFactoryTest
+    public sealed class MatchFactoryTest
     {
         private Mock<ILeagueOfLegendsProxy> _mockLeagueOfLegendsProxy;
 
@@ -37,33 +37,33 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Factories
         }
 
         [TestMethod]
-        public void CreateInstance_FromDependencyInjection_ShouldBeLeagueOfLegendsMatchStatsAdapter()
+        public void CreateInstance_FromDependencyInjection_ShouldBeLeagueOfLegendsMatchAdapter()
         {
             // Arrange
-            var leagueOfLegendsMatchStatsAdapter = new LeagueOfLegendsMatchStatsAdapter(_mockLeagueOfLegendsProxy.Object);
+            var leagueOfLegendsMatchAdapter = new LeagueOfLegendsMatchAdapter(_mockLeagueOfLegendsProxy.Object);
 
-            var matchStatsAdapters = new List<IMatchStatsAdapter>
+            var matchAdapters = new List<IMatchAdapter>
             {
-                leagueOfLegendsMatchStatsAdapter
+                leagueOfLegendsMatchAdapter
             };
 
-            var matchStatsFactory = new MatchStatsFactory(matchStatsAdapters);
+            var matchFactory = new MatchFactory(matchAdapters);
 
             // Act
-            var matchStatsAdapter = matchStatsFactory.CreateInstance(ChallengeGame.LeagueOfLegends);
+            var matchAdapter = matchFactory.CreateInstance(ChallengeGame.LeagueOfLegends);
 
             // Assert
-            matchStatsAdapter.Should().Be(leagueOfLegendsMatchStatsAdapter);
+            matchAdapter.Should().Be(leagueOfLegendsMatchAdapter);
         }
 
         [TestMethod]
         public void CreateInstance_WithoutAdapter_ShouldThrowNotSupportedException()
         {
             // Arrange
-            var matchStatsFactory = new MatchStatsFactory(Array.Empty<IMatchStatsAdapter>());
+            var matchFactory = new MatchFactory(Array.Empty<IMatchAdapter>());
 
             // Act
-            var action = new Action(() => matchStatsFactory.CreateInstance(ChallengeGame.LeagueOfLegends));
+            var action = new Action(() => matchFactory.CreateInstance(ChallengeGame.LeagueOfLegends));
 
             // Assert
             action.Should().Throw<NotSupportedException>();

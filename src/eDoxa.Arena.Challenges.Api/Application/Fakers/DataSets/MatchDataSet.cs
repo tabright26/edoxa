@@ -36,7 +36,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Fakers.DataSets
             return Faker.Date.Soon(1, startedAt);
         }
 
-        public GameReference GameId(ChallengeGame game)
+        public GameReference GameReference(ChallengeGame game)
         {
             if (game == ChallengeGame.LeagueOfLegends)
             {
@@ -46,11 +46,11 @@ namespace eDoxa.Arena.Challenges.Api.Application.Fakers.DataSets
             throw new ArgumentNullException(nameof(game));
         }
 
-        public IMatchStats Stats(ChallengeGame game)
+        public IGameStats Stats(ChallengeGame game)
         {
             if (game == ChallengeGame.LeagueOfLegends)
             {
-                return new MatchStats(
+                return new GameStats(
                     new
                     {
                         Kills = Faker.Random.Int(0, 40),

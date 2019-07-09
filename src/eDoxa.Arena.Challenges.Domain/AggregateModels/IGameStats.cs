@@ -1,4 +1,4 @@
-﻿// Filename: IScoring.cs
+﻿// Filename: IGameStats.cs
 // Date Created: 2019-06-25
 // 
 // ================================================
@@ -14,8 +14,7 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels
 {
-    public interface IScoring : IReadOnlyDictionary<StatName, StatWeighting>
+    public interface IGameStats : IReadOnlyDictionary<StatName, StatValue>
     {
-        IEnumerable<Stat> Map(IGameStats stats);
     }
 }

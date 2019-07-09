@@ -39,12 +39,11 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
             var challengeFaker = new ChallengeFaker(game);
             var challenge = challengeFaker.Generate();
             var participant = challenge.Participants.First();
-            var gameId = Faker.Match().GameId(game);
+            var gameReference = Faker.Match().GameReference(game);
             var stats = Faker.Match().Stats(game);
+            var match = new StatMatch(challenge.Scoring.Map(stats), gameReference, new UtcNowDateTimeProvider());
 
             // Act
-            var match = new Match(gameId, new UtcNowDateTimeProvider());
-            match.Snapshot(stats, challenge.Scoring);
             participant.Snapshot(match);
 
             // Assert

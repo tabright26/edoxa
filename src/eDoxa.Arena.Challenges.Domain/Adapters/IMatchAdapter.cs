@@ -1,4 +1,4 @@
-﻿// Filename: IMatchStatsAdapter.cs
+﻿// Filename: IMatchAdapter.cs
 // Date Created: 2019-06-25
 // 
 // ================================================
@@ -12,16 +12,17 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Arena.Challenges.Domain.Adapters
 {
-    public interface IMatchStatsAdapter
+    public interface IMatchAdapter
     {
         /// <summary>
         ///     Discriminator.
         /// </summary>
         ChallengeGame Game { get; }
 
-        Task<IMatchStats> GetMatchStatsAsync(GameAccountId gameAccountId, GameReference gameReference);
+        Task<IMatch> GetMatchAsync(GameAccountId gameAccountId, GameReference gameReference, IScoring scoring, IDateTimeProvider synchronizedAt);
     }
 }

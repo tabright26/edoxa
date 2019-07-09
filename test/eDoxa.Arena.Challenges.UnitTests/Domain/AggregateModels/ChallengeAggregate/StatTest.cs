@@ -28,7 +28,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
     [TestClass]
     public sealed class StatTest
     {
-        private static IEnumerable<object[]> StatDataSets =>
+        private static IEnumerable<object[]> StatPropsDataSets =>
             ChallengeGame.GetEnumerations()
                 .SelectMany(
                     game =>
@@ -39,9 +39,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
 
                         var strategy = factory.CreateInstance(game);
 
-                        var match = new Match(new GameReference(Guid.NewGuid()), new UtcNowDateTimeProvider());
-
-                        match.Snapshot(stats, strategy.Scoring);
+                        var match = new StatMatch(strategy.Scoring.Map(stats), new GameReference(Guid.NewGuid()), new UtcNowDateTimeProvider());
 
                         return match.Stats;
                     }
@@ -50,7 +48,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
                 .ToList();
 
         [DataTestMethod]
-        [DynamicData(nameof(StatDataSets))]
+        [DynamicData(nameof(StatPropsDataSets))]
         public void Contructor_Tests(StatName name, StatValue value, StatWeighting weighting)
         {
             // Act

@@ -27,19 +27,19 @@ namespace eDoxa.Arena.Challenges.Api.Application.Services
     {
         private readonly IChallengeRepository _challengeRepository;
         private readonly IGameReferencesFactory _gameReferencesFactory;
-        private readonly IMatchStatsFactory _matchStatsFactory;
+        private readonly IMatchFactory _matchFactory;
         private readonly IIdentityService _identityService;
 
         public ChallengeService(
             IChallengeRepository challengeRepository,
             IGameReferencesFactory gameReferencesFactory,
-            IMatchStatsFactory matchStatsFactory,
+            IMatchFactory matchFactory,
             IIdentityService identityService
         )
         {
             _challengeRepository = challengeRepository;
             _gameReferencesFactory = gameReferencesFactory;
-            _matchStatsFactory = matchStatsFactory;
+            _matchFactory = matchFactory;
             _identityService = identityService;
         }
 
@@ -102,7 +102,8 @@ namespace eDoxa.Arena.Challenges.Api.Application.Services
         {
             var challenges = await _challengeRepository.FetchChallengesAsync(game, ChallengeState.InProgress);
 
-            foreach (var challenge in challenges.Where(challenge => challenge.SynchronizedAt + interval <= synchronizedAt.DateTime).OrderByDescending(challenge => challenge.SynchronizedAt))
+            foreach (var challenge in challenges.Where(challenge => challenge.SynchronizedAt + interval <= synchronizedAt.DateTime)
+                .OrderByDescending(challenge => challenge.SynchronizedAt))
             {
                 this.Synchronize(challenge, synchronizedAt);
 
@@ -128,11 +129,11 @@ namespace eDoxa.Arena.Challenges.Api.Application.Services
         {
             var gameReferencesAdapter = _gameReferencesFactory.CreateInstance(challenge.Game);
 
-            var matchStatsAdapter = _matchStatsFactory.CreateInstance(challenge.Game);
+            var matchAdapter = _matchFactory.CreateInstance(challenge.Game);
 
             challenge.Synchronize(
                 (gameAccountId, startedAt, closedAt) => gameReferencesAdapter.GetGameReferencesAsync(gameAccountId, startedAt, closedAt).Result,
-                (gameAccountId, gameReference) => matchStatsAdapter.GetMatchStatsAsync(gameAccountId, gameReference).Result,
+                (gameAccountId, gameReference, scoring) => matchAdapter.GetMatchAsync(gameAccountId, gameReference, scoring, synchronizedAt).Result,
                 synchronizedAt
             );
         }
