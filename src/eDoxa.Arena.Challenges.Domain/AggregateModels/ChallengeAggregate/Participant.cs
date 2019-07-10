@@ -46,7 +46,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         }
 
         [CanBeNull]
-        public Score AverageScore(BestOf bestOf)
+        public Score ComputeScore(BestOf bestOf)
         {
             return Matches.Count >= bestOf ? new ParticipantScore(this, bestOf) : null;
         }

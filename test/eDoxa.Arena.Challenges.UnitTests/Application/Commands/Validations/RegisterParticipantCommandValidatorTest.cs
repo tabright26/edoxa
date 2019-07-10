@@ -10,7 +10,6 @@
 
 using eDoxa.Arena.Challenges.Api.Application.Commands.Validations;
 using eDoxa.Arena.Challenges.Api.Application.Fakers;
-using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
 
@@ -42,7 +41,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Commands.Validations
             // Arrange
             var challengeFaker = new ChallengeFaker();
 
-            var challengeViewModel = challengeFaker.Generate().ToViewModel();
+            var challengeViewModel = challengeFaker.Generate();
 
             _mockChallengeQuery.Setup(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>()))
                 .ReturnsAsync(challengeViewModel)

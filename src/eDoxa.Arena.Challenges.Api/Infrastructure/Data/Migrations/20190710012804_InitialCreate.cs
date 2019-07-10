@@ -1,4 +1,11 @@
-﻿using System;
+﻿// Filename: 20190710012804_InitialCreate.cs
+// Date Created: 2019-07-09
+// 
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+
+using System;
+
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
@@ -8,176 +15,198 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Challenge",
-                columns: table => new
+                "Challenge",
+                table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
+                    Id = table.Column<Guid>(),
                     Name = table.Column<string>(nullable: true),
-                    Game = table.Column<int>(nullable: false),
-                    State = table.Column<int>(nullable: false),
+                    Game = table.Column<int>(),
+                    State = table.Column<int>(),
                     SynchronizedAt = table.Column<DateTime>(nullable: true),
-                    Setup_BestOf = table.Column<int>(nullable: false),
-                    Setup_Entries = table.Column<int>(nullable: false),
-                    Setup_PayoutEntries = table.Column<int>(nullable: false),
-                    Setup_EntryFeeCurrency = table.Column<int>(nullable: false),
-                    Setup_EntryFeeAmount = table.Column<decimal>(type: "decimal(11, 2)", nullable: false),
-                    Timeline_CreatedAt = table.Column<DateTime>(nullable: false),
-                    Timeline_Duration = table.Column<long>(nullable: false),
+                    Setup_BestOf = table.Column<int>(),
+                    Setup_Entries = table.Column<int>(),
+                    Setup_PayoutEntries = table.Column<int>(),
+                    Setup_EntryFeeCurrency = table.Column<int>(),
+                    Setup_EntryFeeAmount = table.Column<decimal>("decimal(11, 2)"),
+                    Timeline_CreatedAt = table.Column<DateTime>(),
+                    Timeline_Duration = table.Column<long>(),
                     Timeline_StartedAt = table.Column<DateTime>(nullable: true),
                     Timeline_ClosedAt = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Challenge", x => x.Id);
-                });
+                }
+            );
 
             migrationBuilder.CreateTable(
-                name: "Bucket",
-                columns: table => new
+                "Bucket",
+                table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    ChallengeId = table.Column<Guid>(nullable: false),
-                    Size = table.Column<int>(nullable: false),
-                    PrizeCurrency = table.Column<int>(nullable: false),
-                    PrizeAmount = table.Column<decimal>(type: "decimal(11, 2)", nullable: false)
+                    Id = table.Column<Guid>(),
+                    ChallengeId = table.Column<Guid>(),
+                    Size = table.Column<int>(),
+                    PrizeCurrency = table.Column<int>(),
+                    PrizeAmount = table.Column<decimal>("decimal(11, 2)")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Bucket", x => new { x.ChallengeId, x.Id });
+                    table.PrimaryKey(
+                        "PK_Bucket",
+                        x => new
+                        {
+                            x.ChallengeId,
+                            x.Id
+                        }
+                    );
+
                     table.ForeignKey(
-                        name: "FK_Bucket_Challenge_ChallengeId",
-                        column: x => x.ChallengeId,
-                        principalTable: "Challenge",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        "FK_Bucket_Challenge_ChallengeId",
+                        x => x.ChallengeId,
+                        "Challenge",
+                        "Id",
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
-                name: "Participant",
-                columns: table => new
+                "Participant",
+                table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    RegisteredAt = table.Column<DateTime>(nullable: false),
+                    Id = table.Column<Guid>(),
+                    RegisteredAt = table.Column<DateTime>(),
                     GameAccountId = table.Column<string>(nullable: true),
-                    UserId = table.Column<Guid>(nullable: false),
+                    UserId = table.Column<Guid>(),
                     ChallengeId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Participant", x => x.Id);
+
                     table.ForeignKey(
-                        name: "FK_Participant_Challenge_ChallengeId",
-                        column: x => x.ChallengeId,
-                        principalTable: "Challenge",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        "FK_Participant_Challenge_ChallengeId",
+                        x => x.ChallengeId,
+                        "Challenge",
+                        "Id",
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
-                name: "ScoringItem",
-                columns: table => new
+                "ScoringItem",
+                table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    ChallengeId = table.Column<Guid>(nullable: false),
+                    Id = table.Column<Guid>(),
+                    ChallengeId = table.Column<Guid>(),
                     Name = table.Column<string>(nullable: true),
-                    Weighting = table.Column<float>(nullable: false)
+                    Weighting = table.Column<float>()
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ScoringItem", x => new { x.ChallengeId, x.Id });
+                    table.PrimaryKey(
+                        "PK_ScoringItem",
+                        x => new
+                        {
+                            x.ChallengeId,
+                            x.Id
+                        }
+                    );
+
                     table.ForeignKey(
-                        name: "FK_ScoringItem_Challenge_ChallengeId",
-                        column: x => x.ChallengeId,
-                        principalTable: "Challenge",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        "FK_ScoringItem_Challenge_ChallengeId",
+                        x => x.ChallengeId,
+                        "Challenge",
+                        "Id",
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
-                name: "Match",
-                columns: table => new
+                "Match",
+                table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    SynchronizedAt = table.Column<DateTime>(nullable: false),
+                    Id = table.Column<Guid>(),
+                    SynchronizedAt = table.Column<DateTime>(),
                     GameReference = table.Column<string>(nullable: true),
-                    TotalScore = table.Column<decimal>(type: "decimal(38, 20)", nullable: false),
+                    TotalScore = table.Column<decimal>("decimal(38, 20)"),
                     ParticipantId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Match", x => x.Id);
+
                     table.ForeignKey(
-                        name: "FK_Match_Participant_ParticipantId",
-                        column: x => x.ParticipantId,
-                        principalTable: "Participant",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        "FK_Match_Participant_ParticipantId",
+                        x => x.ParticipantId,
+                        "Participant",
+                        "Id",
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
-                name: "Stat",
-                columns: table => new
+                "Stat",
+                table => new
                 {
-                    MatchId = table.Column<Guid>(nullable: false),
-                    Id = table.Column<Guid>(nullable: false),
+                    MatchId = table.Column<Guid>(),
+                    Id = table.Column<Guid>(),
                     Name = table.Column<string>(nullable: true),
-                    Value = table.Column<double>(nullable: false),
-                    Weighting = table.Column<float>(nullable: false)
+                    Value = table.Column<double>(),
+                    Weighting = table.Column<float>()
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Stat", x => new { x.MatchId, x.Id });
+                    table.PrimaryKey(
+                        "PK_Stat",
+                        x => new
+                        {
+                            x.MatchId,
+                            x.Id
+                        }
+                    );
+
                     table.ForeignKey(
-                        name: "FK_Stat_Match_MatchId",
-                        column: x => x.MatchId,
-                        principalTable: "Match",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        "FK_Stat_Match_MatchId",
+                        x => x.MatchId,
+                        "Match",
+                        "Id",
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateIndex(
-                name: "IX_Match_GameReference",
-                table: "Match",
-                column: "GameReference",
+                "IX_Match_GameReference",
+                "Match",
+                "GameReference",
                 unique: true,
-                filter: "[GameReference] IS NOT NULL");
+                filter: "[GameReference] IS NOT NULL"
+            );
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Match_ParticipantId",
-                table: "Match",
-                column: "ParticipantId");
+            migrationBuilder.CreateIndex("IX_Match_ParticipantId", "Match", "ParticipantId");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Participant_ChallengeId",
-                table: "Participant",
-                column: "ChallengeId");
+            migrationBuilder.CreateIndex("IX_Participant_ChallengeId", "Participant", "ChallengeId");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Participant_Id_UserId",
-                table: "Participant",
-                columns: new[] { "Id", "UserId" },
-                unique: true);
+            migrationBuilder.CreateIndex("IX_Participant_Id_UserId", "Participant", new[] {"Id", "UserId"}, unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Bucket");
+            migrationBuilder.DropTable("Bucket");
 
-            migrationBuilder.DropTable(
-                name: "ScoringItem");
+            migrationBuilder.DropTable("ScoringItem");
 
-            migrationBuilder.DropTable(
-                name: "Stat");
+            migrationBuilder.DropTable("Stat");
 
-            migrationBuilder.DropTable(
-                name: "Match");
+            migrationBuilder.DropTable("Match");
 
-            migrationBuilder.DropTable(
-                name: "Participant");
+            migrationBuilder.DropTable("Participant");
 
-            migrationBuilder.DropTable(
-                name: "Challenge");
+            migrationBuilder.DropTable("Challenge");
         }
     }
 }

@@ -8,13 +8,16 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
+using eDoxa.Arena.Challenges.Api.Application.Fakers;
 using eDoxa.Arena.Challenges.Api.Controllers;
+using eDoxa.Arena.Challenges.Api.Extensions;
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
-using eDoxa.Arena.Challenges.Domain.ViewModels;
+using eDoxa.Arena.Challenges.UnitTests.Helpers.Extensions;
 
 using FluentAssertions;
 
@@ -37,6 +40,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
         public void TestInitialize()
         {
             _queries = new Mock<IChallengeQuery>();
+            _queries.SetupGet(matchQuery => matchQuery.Mapper).Returns(MapperExtensions.Mapper);
             _mediator = new Mock<IMediator>();
         }
 
@@ -44,13 +48,12 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
         public async Task FindChallengesAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            _queries.Setup(queries => queries.FindChallengesAsync(It.IsAny<ChallengeGame>(), It.IsAny<ChallengeState>()))
-                .ReturnsAsync(
-                    new List<ChallengeViewModel>
-                    {
-                        new ChallengeViewModel()
-                    }
-                )
+            var challengeFaker = new ChallengeFaker();
+            challengeFaker.UseSeed(27852992);
+            var challenges = challengeFaker.Generate(2);
+
+            _queries.Setup(queries => queries.FetchChallengesAsync(It.IsAny<ChallengeGame>(), It.IsAny<ChallengeState>()))
+                .ReturnsAsync(challenges)
                 .Verifiable();
 
             var controller = new ChallengesController(_queries.Object);
@@ -70,8 +73,8 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
         public async Task GetAsync_ShouldBeNoContentResult()
         {
             // Arrange
-            _queries.Setup(queries => queries.FindChallengesAsync(It.IsAny<ChallengeGame>(), It.IsAny<ChallengeState>()))
-                .ReturnsAsync(new List<ChallengeViewModel>())
+            _queries.Setup(queries => queries.FetchChallengesAsync(It.IsAny<ChallengeGame>(), It.IsAny<ChallengeState>()))
+                .ReturnsAsync(new Collection<IChallenge>())
                 .Verifiable();
 
             var controller = new ChallengesController(_queries.Object);
@@ -91,7 +94,11 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
         public async Task GetByIdAsync_ShouldBeOkObjectResult()
         {
             // Arrange        
-            _queries.Setup(queries => queries.FindChallengeAsync(It.IsAny<ChallengeId>())).ReturnsAsync(new ChallengeViewModel()).Verifiable();
+            var challengeFaker = new ChallengeFaker();
+            challengeFaker.UseSeed(27852992);
+            var challenge = challengeFaker.Generate();
+
+            _queries.Setup(queries => queries.FindChallengeAsync(It.IsAny<ChallengeId>())).ReturnsAsync(challenge).Verifiable();
 
             var controller = new ChallengesController(_queries.Object);
 
@@ -110,7 +117,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
         public async Task GetByIdAsync_ShouldBeNotFoundObjectResult()
         {
             // Arrange
-            _queries.Setup(queries => queries.FindChallengeAsync(It.IsAny<ChallengeId>())).ReturnsAsync((ChallengeViewModel) null).Verifiable();
+            _queries.Setup(queries => queries.FindChallengeAsync(It.IsAny<ChallengeId>())).ReturnsAsync((IChallenge) null).Verifiable();
 
             var controller = new ChallengesController(_queries.Object);
 

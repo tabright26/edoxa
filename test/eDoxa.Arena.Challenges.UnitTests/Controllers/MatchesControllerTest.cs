@@ -8,12 +8,16 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Linq;
 using System.Threading.Tasks;
 
+using eDoxa.Arena.Challenges.Api.Application.Fakers;
 using eDoxa.Arena.Challenges.Api.Controllers;
+using eDoxa.Arena.Challenges.Api.Extensions;
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
-using eDoxa.Arena.Challenges.Domain.ViewModels;
+using eDoxa.Arena.Challenges.UnitTests.Helpers.Extensions;
 
 using FluentAssertions;
 
@@ -36,6 +40,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
         public void TestInitialize()
         {
             _queries = new Mock<IMatchQuery>();
+            _queries.SetupGet(matchQuery => matchQuery.Mapper).Returns(MapperExtensions.Mapper);
             _mediator = new Mock<IMediator>();
         }
 
@@ -43,7 +48,14 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
         public async Task GetByIdAsync_ShouldBeOkObjectResult()
         {
             // Arrange        
-            _queries.Setup(queries => queries.FindMatchAsync(It.IsAny<MatchId>())).ReturnsAsync(new MatchViewModel()).Verifiable();
+            var challengeFaker = new ChallengeFaker(state: ChallengeState.InProgress);
+            challengeFaker.UseSeed(89572992);
+            var challenge = challengeFaker.Generate();
+            var participants = challenge.Participants;
+            var participant = participants.First();
+            var matches = participant.Matches;
+            
+            _queries.Setup(queries => queries.FindMatchAsync(It.IsAny<MatchId>())).ReturnsAsync(matches.First()).Verifiable();
 
             var controller = new MatchesController(_queries.Object);
 
@@ -60,7 +72,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
         public async Task GetByIdAsync_ShouldBeNotFoundObjectResult()
         {
             // Arrange
-            _queries.Setup(queries => queries.FindMatchAsync(It.IsAny<MatchId>())).ReturnsAsync((MatchViewModel) null).Verifiable();
+            _queries.Setup(queries => queries.FindMatchAsync(It.IsAny<MatchId>())).ReturnsAsync((IMatch) null).Verifiable();
 
             var controller = new MatchesController(_queries.Object);
 

@@ -12,9 +12,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions;
+using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
-using eDoxa.Arena.Challenges.Domain.ViewModels;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -47,14 +48,14 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync(ParticipantId participantId)
         {
-            var matches = await _query.FindParticipantMatchesAsync(participantId);
+            var matchViewModels = await _query.FetchParticipantMatchViewModelsAsync(participantId);
 
-            if (!matches.Any())
+            if (!matchViewModels.Any())
             {
                 return this.NoContent();
             }
 
-            return this.Ok(matches);
+            return this.Ok(matchViewModels);
         }
     }
 }

@@ -10,9 +10,10 @@
 
 using System.Threading.Tasks;
 
+using eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions;
+using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
-using eDoxa.Arena.Challenges.Domain.ViewModels;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -45,14 +46,14 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetByIdAsync(ParticipantId participantId)
         {
-            var participant = await _query.FindParticipantAsync(participantId);
+            var participantViewModel = await _query.FindParticipantViewModelAsync(participantId);
 
-            if (participant == null)
+            if (participantViewModel == null)
             {
                 return this.NotFound("Participant not found.");
             }
 
-            return this.Ok(participant);
+            return this.Ok(participantViewModel);
         }
     }
 }

@@ -14,6 +14,7 @@ using Bogus;
 
 using eDoxa.Arena.Challenges.Api.Application.Factories;
 using eDoxa.Arena.Challenges.Api.Application.Fakers.Extensions;
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Common.Extensions;
 using eDoxa.Seedwork.Domain.Aggregate;
@@ -22,7 +23,7 @@ using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Api.Application.Fakers
 {
-    public sealed class ChallengeFaker : Faker<Challenge>
+    public sealed class ChallengeFaker : Faker<IChallenge>
     {
         public ChallengeFaker(ChallengeGame game = null, ChallengeState state = null, Currency entryFeeCurrency = null)
         {
@@ -118,7 +119,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Fakers
         }
 
         [NotNull]
-        public override Challenge Generate(string ruleSets = null)
+        public override IChallenge Generate(string ruleSets = null)
         {
             FakerExtensions.ResetUserIds();
 

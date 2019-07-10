@@ -3,18 +3,17 @@
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
+using eDoxa.Arena.Challenges.Api.Application.Fakers;
 using eDoxa.Arena.Challenges.Api.Controllers;
+using eDoxa.Arena.Challenges.Api.Extensions;
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
-using eDoxa.Arena.Challenges.Domain.ViewModels;
+using eDoxa.Arena.Challenges.UnitTests.Helpers.Extensions;
 
 using FluentAssertions;
 
@@ -30,30 +29,30 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
     [TestClass]
     public sealed class ChallengeHistoryControllerTest
     {
-        private Mock<IMediator> _mediator;
-        private Mock<IChallengeQuery> _queries;
+        private Mock<IMediator> _mockMediator;
+        private Mock<IChallengeQuery> _mockChallengeQuery;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            _queries = new Mock<IChallengeQuery>();
-            _mediator = new Mock<IMediator>();
+            _mockChallengeQuery = new Mock<IChallengeQuery>();
+            _mockChallengeQuery.SetupGet(challengeQuery => challengeQuery.Mapper).Returns(MapperExtensions.Mapper);
+            _mockMediator = new Mock<IMediator>();
         }
 
         [TestMethod]
         public async Task GetAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            _queries.Setup(queries => queries.FindUserChallengeHistoryAsync(It.IsAny<ChallengeGame>(), It.IsAny<ChallengeState>()))
-                .ReturnsAsync(
-                    new List<ChallengeViewModel>
-                    {
-                        new ChallengeViewModel()
-                    }
-                )
+            var challengeFaker = new ChallengeFaker();
+            challengeFaker.UseSeed(48392992);
+            var challenges = challengeFaker.Generate(2);
+
+            _mockChallengeQuery.Setup(challengeQuery => challengeQuery.FetchUserChallengeHistoryAsync(It.IsAny<ChallengeGame>(), It.IsAny<ChallengeState>()))
+                .ReturnsAsync(challenges)
                 .Verifiable();
 
-            var controller = new ChallengeHistoryController(_queries.Object);
+            var controller = new ChallengeHistoryController(_mockChallengeQuery.Object);
 
             // Act
             var result = await controller.GetAsync();
@@ -61,20 +60,20 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            _queries.Verify();
+            _mockChallengeQuery.Verify();
 
-            _mediator.VerifyNoOtherCalls();
+            _mockMediator.VerifyNoOtherCalls();
         }
 
         [TestMethod]
         public async Task GetAsync_ShouldBeNoContentResult()
         {
             // Arrange
-            _queries.Setup(queries => queries.FindUserChallengeHistoryAsync(It.IsAny<ChallengeGame>(), It.IsAny<ChallengeState>()))
-                .ReturnsAsync(new List<ChallengeViewModel>())
+            _mockChallengeQuery.Setup(queries => queries.FetchUserChallengeHistoryAsync(It.IsAny<ChallengeGame>(), It.IsAny<ChallengeState>()))
+                .ReturnsAsync(new Collection<IChallenge>())
                 .Verifiable();
 
-            var controller = new ChallengeHistoryController(_queries.Object);
+            var controller = new ChallengeHistoryController(_mockChallengeQuery.Object);
 
             // Act
             var result = await controller.GetAsync();
@@ -82,9 +81,9 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
             // Assert
             result.Should().BeOfType<NoContentResult>();
 
-            _queries.Verify();
+            _mockChallengeQuery.Verify();
 
-            _mediator.VerifyNoOtherCalls();
+            _mockMediator.VerifyNoOtherCalls();
         }
     }
 }

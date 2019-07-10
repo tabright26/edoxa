@@ -48,6 +48,8 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels
             IDateTimeProvider synchronizedAt
         );
 
+        void Synchronize(IDateTimeProvider synchronizedAt);
+
         bool IsInscriptionCompleted();
     }
 }

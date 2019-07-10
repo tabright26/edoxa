@@ -12,9 +12,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.ViewModels;
 using eDoxa.Seedwork.Domain.Extensions;
 
 using FluentAssertions;
@@ -126,7 +126,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Helpers.Extensions
         public static void AssertMappingIsValid(this MatchViewModel match)
         {
             match.Id.Should().NotBeEmpty();
-            match.TotalScore.Should().BeGreaterOrEqualTo(decimal.Zero);
+            match.Score.Should().BeGreaterOrEqualTo(decimal.Zero);
             match.Stats.AssertMappingIsValid();
         }
 

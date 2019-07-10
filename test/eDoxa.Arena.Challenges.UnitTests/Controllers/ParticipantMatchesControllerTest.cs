@@ -8,13 +8,17 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 
+using eDoxa.Arena.Challenges.Api.Application.Fakers;
 using eDoxa.Arena.Challenges.Api.Controllers;
+using eDoxa.Arena.Challenges.Api.Extensions;
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
-using eDoxa.Arena.Challenges.Domain.ViewModels;
+using eDoxa.Arena.Challenges.UnitTests.Helpers.Extensions;
 
 using FluentAssertions;
 
@@ -37,6 +41,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
         public void TestInitialize()
         {
             _queries = new Mock<IMatchQuery>();
+            _queries.SetupGet(matchQuery => matchQuery.Mapper).Returns(MapperExtensions.Mapper);
             _mediator = new Mock<IMediator>();
         }
 
@@ -44,13 +49,15 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
         public async Task GetAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            _queries.Setup(queries => queries.FindParticipantMatchesAsync(It.IsAny<ParticipantId>()))
-                .ReturnsAsync(
-                    new List<MatchViewModel>
-                    {
-                        new MatchViewModel()
-                    }
-                )
+            var challengeFaker = new ChallengeFaker(state: ChallengeState.InProgress);
+            challengeFaker.UseSeed(95632852);
+            var challenge = challengeFaker.Generate();
+            var participants = challenge.Participants;
+            var participant = participants.First();
+            var matches = participant.Matches;
+
+            _queries.Setup(queries => queries.FetchParticipantMatchesAsync(It.IsAny<ParticipantId>()))
+                .ReturnsAsync(matches)
                 .Verifiable();
 
             var controller = new ParticipantMatchesController(_queries.Object);
@@ -70,7 +77,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
         public async Task GetAsync_ShouldBeNoContentResult()
         {
             // Arrange
-            _queries.Setup(queries => queries.FindParticipantMatchesAsync(It.IsAny<ParticipantId>())).ReturnsAsync(new List<MatchViewModel>()).Verifiable();
+            _queries.Setup(queries => queries.FetchParticipantMatchesAsync(It.IsAny<ParticipantId>())).ReturnsAsync(new Collection<IMatch>()).Verifiable();
 
             var controller = new ParticipantMatchesController(_queries.Object);
 

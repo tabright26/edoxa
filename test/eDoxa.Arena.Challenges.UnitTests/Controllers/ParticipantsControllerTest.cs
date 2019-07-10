@@ -8,12 +8,15 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Linq;
 using System.Threading.Tasks;
 
+using eDoxa.Arena.Challenges.Api.Application.Fakers;
 using eDoxa.Arena.Challenges.Api.Controllers;
+using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
-using eDoxa.Arena.Challenges.Domain.ViewModels;
+using eDoxa.Arena.Challenges.UnitTests.Helpers.Extensions;
 
 using FluentAssertions;
 
@@ -36,6 +39,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
         public void TestInitialize()
         {
             _queries = new Mock<IParticipantQuery>();
+            _queries.SetupGet(matchQuery => matchQuery.Mapper).Returns(MapperExtensions.Mapper);
             _mediator = new Mock<IMediator>();
         }
 
@@ -43,7 +47,12 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
         public async Task GetByIdAsync_ShouldBeOkObjectResult()
         {
             // Arrange        
-            _queries.Setup(queries => queries.FindParticipantAsync(It.IsAny<ParticipantId>())).ReturnsAsync(new ParticipantViewModel()).Verifiable();
+            var challengeFaker = new ChallengeFaker(state: ChallengeState.InProgress);
+            challengeFaker.UseSeed(95632852);
+            var challenge = challengeFaker.Generate();
+            var participants = challenge.Participants;
+            
+            _queries.Setup(queries => queries.FindParticipantAsync(It.IsAny<ParticipantId>())).ReturnsAsync(participants.First()).Verifiable();
 
             var controller = new ParticipantsController(_queries.Object);
 
@@ -62,7 +71,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Controllers
         public async Task GetByIdAsync_ShouldBeNotFoundObjectResult()
         {
             // Arrange
-            _queries.Setup(queries => queries.FindParticipantAsync(It.IsAny<ParticipantId>())).ReturnsAsync((ParticipantViewModel) null).Verifiable();
+            _queries.Setup(queries => queries.FindParticipantAsync(It.IsAny<ParticipantId>())).ReturnsAsync((Participant) null).Verifiable();
 
             var controller = new ParticipantsController(_queries.Object);
 

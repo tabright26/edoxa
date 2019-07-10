@@ -13,9 +13,10 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Application.Commands;
+using eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions;
+using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
-using eDoxa.Arena.Challenges.Domain.ViewModels;
 using eDoxa.Commands.Extensions;
 
 using MediatR;
@@ -53,14 +54,14 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync(ChallengeId challengeId)
         {
-            var participants = await _participantQuery.FindChallengeParticipantsAsync(challengeId);
+            var participantViewModels = await _participantQuery.FetchChallengeParticipantViewModelsAsync(challengeId);
 
-            if (!participants.Any())
+            if (!participantViewModels.Any())
             {
                 return this.NoContent();
             }
 
-            return this.Ok(participants);
+            return this.Ok(participantViewModels);
         }
 
         /// <summary>
