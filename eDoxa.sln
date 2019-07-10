@@ -119,7 +119,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Payment.Api", "src\eD
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Payment.UnitTests", "test\eDoxa.Payment.UnitTests\eDoxa.Payment.UnitTests.csproj", "{6DA0CBD7-AF86-4939-B71B-EC1B16D72237}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.FunctionalTests", "test\eDoxa.FunctionalTests\eDoxa.FunctionalTests.csproj", "{6E693495-8076-4FD8-9330-FE580EFED715}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.FunctionalTests", "test\eDoxa.FunctionalTests\eDoxa.FunctionalTests.csproj", "{6E693495-8076-4FD8-9330-FE580EFED715}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

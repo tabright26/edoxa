@@ -1,5 +1,5 @@
 ﻿// Filename: DepositProcessedIntegrationEventHandlerTest.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-07-07
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -34,24 +34,36 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
     [TestClass]
     public sealed class DepositProcessedIntegrationEventHandlerTest
     {
+        private TestServer _cashierTestServer;
+
+        [TestInitialize]
+        public async Task TestInitialize()
+        {
+            var cashierWebApplication = new TestCashierWebApplicationFactory<TestCashierStartup>();
+            cashierWebApplication.CreateClient();
+            _cashierTestServer = cashierWebApplication.Server;
+            await this.TestCleanup();
+        }
+
+        [TestCleanup]
+        public async Task TestCleanup()
+        {
+            await _cashierTestServer.CleanupDbContextAsync();
+        }
+
         [TestMethod]
         public async Task TransactionStatus_ShouldBeSucceded()
         {
-            using (var cashierWebApplication = new TestCashierWebApplicationFactory<TestCashierStartup>())
-            using (cashierWebApplication.CreateClient())
-            using (var cashierTestServer = cashierWebApplication.Server)
             using (var paymentWebApplication = new TestPaymentWebApplicationFactory<TransactionStatusSuccededTestPaymentStartup>())
             using (paymentWebApplication.CreateClient())
             {
-                await cashierTestServer.CleanupDbContextAsync();
-
                 var accountFaker = new AccountFaker();
-                accountFaker.UseSeed(1);
+                accountFaker.UseSeed(23345667);
                 var account = accountFaker.Generate();
                 var moneyDepositTransaction = new MoneyDepositTransaction(Money.Fifty);
                 account?.CreateTransaction(moneyDepositTransaction);
 
-                await cashierTestServer.UsingScopeAsync(
+                await _cashierTestServer.UsingScopeAsync(
                     async scope =>
                     {
                         var accountRepository = scope.GetService<IAccountRepository>();
@@ -60,7 +72,7 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
                     }
                 );
 
-                await cashierTestServer.UsingScopeAsync(
+                await _cashierTestServer.UsingScopeAsync(
                     async scope =>
                     {
                         var integrationEventService = scope.GetService<IIntegrationEventService>();
@@ -71,7 +83,7 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
                     }
                 );
 
-                var transaction = await TryGetPublishedTransaction(moneyDepositTransaction.Id, cashierTestServer);
+                var transaction = await this.TryGetPublishedTransaction(moneyDepositTransaction.Id);
 
                 transaction.Should().NotBeNull();
 
@@ -82,21 +94,16 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
         [TestMethod]
         public async Task TransactionStatus_ShouldBeFailed()
         {
-            using (var cashierWebApplication = new TestCashierWebApplicationFactory<TestCashierStartup>())
-            using (cashierWebApplication.CreateClient())
-            using (var cashierTestServer = cashierWebApplication.Server)
             using (var paymentWebApplication = new TestPaymentWebApplicationFactory<TransactionStatusFailedTestPaymentStartup>())
             using (paymentWebApplication.CreateClient())
             {
-                await cashierTestServer.CleanupDbContextAsync();
-
                 var accountFaker = new AccountFaker();
-                accountFaker.UseSeed(1);
+                accountFaker.UseSeed(23568904);
                 var account = accountFaker.Generate();
                 var moneyDepositTransaction = new MoneyDepositTransaction(Money.Fifty);
                 account?.CreateTransaction(moneyDepositTransaction);
 
-                await cashierTestServer.UsingScopeAsync(
+                await _cashierTestServer.UsingScopeAsync(
                     async scope =>
                     {
                         var accountRepository = scope.GetService<IAccountRepository>();
@@ -105,7 +112,7 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
                     }
                 );
 
-                await cashierTestServer.UsingScopeAsync(
+                await _cashierTestServer.UsingScopeAsync(
                     async scope =>
                     {
                         var integrationEventService = scope.GetService<IIntegrationEventService>();
@@ -116,7 +123,7 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
                     }
                 );
 
-                var transaction = await TryGetPublishedTransaction(moneyDepositTransaction.Id, cashierTestServer);
+                var transaction = await this.TryGetPublishedTransaction(moneyDepositTransaction.Id);
 
                 transaction.Should().NotBeNull();
 
@@ -125,13 +132,13 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
         }
 
         [ItemCanBeNull]
-        private static async Task<ITransaction> TryGetPublishedTransaction(TransactionId transactionId, TestServer cashierTestServer)
+        private async Task<ITransaction> TryGetPublishedTransaction(TransactionId transactionId)
         {
             var counter = 0;
 
             while (counter < 20)
             {
-                var transaction = await cashierTestServer.UsingScopeAsync(
+                var transaction = await _cashierTestServer.UsingScopeAsync(
                     async scope =>
                     {
                         var transactionRepository = scope.GetService<ITransactionRepository>();
