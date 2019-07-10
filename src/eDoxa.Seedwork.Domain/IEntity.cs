@@ -21,9 +21,11 @@ namespace eDoxa.Seedwork.Domain
         void ClearDomainEvents();
     }
 
-    public interface IEntity<out TEntityId> : IEntity
+    public interface IEntity<TEntityId> : IEntity
     where TEntityId : EntityId<TEntityId>, new()
     {
         TEntityId Id { get; }
+
+        void SetEntityId(TEntityId entityId);
     }
 }

@@ -1,12 +1,8 @@
 ﻿// Filename: MatchModel.cs
-// Date Created: 2019-06-18
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.Collections.Generic;
@@ -20,6 +16,8 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Models
         public DateTime SynchronizedAt { get; set; }
 
         public string GameReference { get; set; }
+
+        public decimal TotalScore { get; set; }
 
         public ParticipantModel Participant { get; set; }
 

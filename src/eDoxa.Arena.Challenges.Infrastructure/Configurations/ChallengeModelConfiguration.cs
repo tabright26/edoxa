@@ -1,12 +1,8 @@
 ﻿// Filename: ChallengeModelConfiguration.cs
-// Date Created: 2019-06-18
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 
@@ -27,7 +23,13 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
 
             builder.Property(challenge => challenge.Id);
 
-            builder.OwnsOne(challenge => challenge.Setup);
+            builder.OwnsOne(
+                challenge => challenge.Setup,
+                challengeSetup =>
+                {
+                    challengeSetup.Property(setup => setup.EntryFeeAmount).HasColumnType("decimal(11, 2)");
+                }
+            );
 
             builder.OwnsOne(challenge => challenge.Timeline);
 
@@ -52,6 +54,8 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                     challengeStats.ToTable("Bucket");
 
                     challengeStats.HasForeignKey("ChallengeId");
+
+                    challengeStats.Property(bucket => bucket.PrizeAmount).HasColumnType("decimal(11, 2)");
 
                     challengeStats.Property<Guid>("Id").ValueGeneratedOnAdd();
 

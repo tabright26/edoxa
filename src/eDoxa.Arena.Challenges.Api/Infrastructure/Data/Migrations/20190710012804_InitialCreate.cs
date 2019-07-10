@@ -20,7 +20,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
                     Setup_Entries = table.Column<int>(nullable: false),
                     Setup_PayoutEntries = table.Column<int>(nullable: false),
                     Setup_EntryFeeCurrency = table.Column<int>(nullable: false),
-                    Setup_EntryFeeAmount = table.Column<decimal>(type: "decimal(10, 2)", nullable: false),
+                    Setup_EntryFeeAmount = table.Column<decimal>(type: "decimal(11, 2)", nullable: false),
                     Timeline_CreatedAt = table.Column<DateTime>(nullable: false),
                     Timeline_Duration = table.Column<long>(nullable: false),
                     Timeline_StartedAt = table.Column<DateTime>(nullable: true),
@@ -39,7 +39,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
                     ChallengeId = table.Column<Guid>(nullable: false),
                     Size = table.Column<int>(nullable: false),
                     PrizeCurrency = table.Column<int>(nullable: false),
-                    PrizeAmount = table.Column<decimal>(type: "decimal(10, 2)", nullable: false)
+                    PrizeAmount = table.Column<decimal>(type: "decimal(11, 2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -100,6 +100,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     SynchronizedAt = table.Column<DateTime>(nullable: false),
                     GameReference = table.Column<string>(nullable: true),
+                    TotalScore = table.Column<decimal>(type: "decimal(38, 20)", nullable: false),
                     ParticipantId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>

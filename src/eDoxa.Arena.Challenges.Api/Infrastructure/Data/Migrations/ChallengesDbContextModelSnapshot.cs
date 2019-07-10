@@ -48,6 +48,9 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
 
                     b.Property<DateTime>("SynchronizedAt");
 
+                    b.Property<decimal>("TotalScore")
+                        .HasColumnType("decimal(38, 20)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("GameReference")
@@ -92,7 +95,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
                                 .ValueGeneratedOnAdd();
 
                             b1.Property<decimal>("PrizeAmount")
-                                .HasColumnType("decimal(10, 2)");
+                                .HasColumnType("decimal(11, 2)");
 
                             b1.Property<int>("PrizeCurrency");
 
@@ -117,7 +120,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
                             b1.Property<int>("Entries");
 
                             b1.Property<decimal>("EntryFeeAmount")
-                                .HasColumnType("decimal(10, 2)");
+                                .HasColumnType("decimal(11, 2)");
 
                             b1.Property<int>("EntryFeeCurrency");
 

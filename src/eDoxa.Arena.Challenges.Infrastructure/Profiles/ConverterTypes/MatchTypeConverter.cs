@@ -1,12 +1,8 @@
 ﻿// Filename: MatchTypeConverter.cs
-// Date Created: 2019-06-21
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.Collections.Generic;
 
@@ -16,6 +12,8 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
 using eDoxa.Seedwork.Domain.Aggregate;
+
+using IdentityServer4.Extensions;
 
 using JetBrains.Annotations;
 
@@ -28,11 +26,23 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.ConverterTypes
         {
             var stats = context.Mapper.Map<ICollection<Stat>>(source.Stats);
 
-            var match = new StatMatch(stats, source.GameReference, new DateTimeProvider(source.SynchronizedAt));
+            var match = Convert(source, stats);
 
             match.SetEntityId(MatchId.FromGuid(source.Id));
 
             return match;
+        }
+
+        private static IMatch Convert(MatchModel source, ICollection<Stat> stats)
+        {
+            var synchronizedAt = new DateTimeProvider(source.SynchronizedAt);
+
+            if (stats.IsNullOrEmpty())
+            {
+                return new GameMatch(new GameScore(source.TotalScore), source.GameReference, synchronizedAt);
+            }
+
+            return new StatMatch(stats, source.GameReference, synchronizedAt);
         }
     }
 }
