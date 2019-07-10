@@ -22,7 +22,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels
 
         GameReference GameReference { get; }
 
-        Score TotalScore { get; }
+        Score Score { get; }
 
         IReadOnlyCollection<Stat> Stats { get; }
     }

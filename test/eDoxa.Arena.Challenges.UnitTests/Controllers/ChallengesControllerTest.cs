@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Application.Fakers;
 using eDoxa.Arena.Challenges.Api.Controllers;
-using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;

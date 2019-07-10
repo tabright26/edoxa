@@ -23,8 +23,6 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
 
             builder.Property(match => match.Id);
 
-            builder.Property(match => match.TotalScore).HasColumnType("decimal(38, 20)");
-
             builder.OwnsMany(
                 match => match.Stats,
                 matchStats =>

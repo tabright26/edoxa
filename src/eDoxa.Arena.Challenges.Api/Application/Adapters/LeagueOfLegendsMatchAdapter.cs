@@ -39,7 +39,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Adapters
         {
             var stats = await this.GetGameStatsAsync(gameAccountId, gameReference);
 
-            var match = new StatMatch(scoring.Map(stats), gameReference, synchronizedAt);
+            var match = new StatMatch(scoring, stats, gameReference, synchronizedAt);
 
             return match;
         }

@@ -8,15 +8,13 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Collections.Generic;
-
 using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class StatMatch : Match
     {
-        public StatMatch(IEnumerable<Stat> stats, GameReference gameReference, IDateTimeProvider synchronizedAt) : base(stats, gameReference, synchronizedAt)
+        public StatMatch(IScoring scoring, IGameStats stats, GameReference gameReference, IDateTimeProvider synchronizedAt) : base(scoring.Map(stats), gameReference, synchronizedAt)
         {
         }
     }

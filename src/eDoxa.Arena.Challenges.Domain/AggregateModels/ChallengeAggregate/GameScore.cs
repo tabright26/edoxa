@@ -12,8 +12,11 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class GameScore : Score
     {
-        public GameScore(decimal score) : base(score)
+        public GameScore(ChallengeGame game, decimal score) : base(score)
         {
+            Game = game;
         }
+
+        public ChallengeGame Game { get; }
     }
 }

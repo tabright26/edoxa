@@ -17,8 +17,6 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Models
 
         public string GameReference { get; set; }
 
-        public decimal TotalScore { get; set; }
-
         public ParticipantModel Participant { get; set; }
 
         public ICollection<StatModel> Stats { get; set; }

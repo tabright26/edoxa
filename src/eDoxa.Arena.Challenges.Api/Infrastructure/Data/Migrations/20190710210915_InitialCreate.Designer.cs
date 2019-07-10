@@ -10,7 +10,7 @@ using eDoxa.Arena.Challenges.Infrastructure;
 namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ChallengesDbContext))]
-    [Migration("20190710012804_InitialCreate")]
+    [Migration("20190710210915_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,9 +49,6 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
                     b.Property<Guid?>("ParticipantId");
 
                     b.Property<DateTime>("SynchronizedAt");
-
-                    b.Property<decimal>("TotalScore")
-                        .HasColumnType("decimal(38, 20)");
 
                     b.HasKey("Id");
 

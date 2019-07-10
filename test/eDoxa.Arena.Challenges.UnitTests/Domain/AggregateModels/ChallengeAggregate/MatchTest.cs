@@ -39,7 +39,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
             var stats = faker.Match().Stats(game);
             
             // Act
-            var match = new StatMatch(scoring.Map(stats), faker.Match().GameReference(game), new UtcNowDateTimeProvider());
+            var match = new StatMatch(scoring, stats, faker.Match().GameReference(game), new UtcNowDateTimeProvider());
 
             // Assert
             match.Stats.Should().HaveCount(scoring.Count);

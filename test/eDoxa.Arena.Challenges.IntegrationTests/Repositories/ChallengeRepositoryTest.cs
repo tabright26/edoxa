@@ -142,7 +142,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
                 }
             );
 
-            var match1 = new StatMatch(fakeChallenge.Scoring.Map(faker.Match().Stats(ChallengeGame.LeagueOfLegends)), new GameReference(Guid.NewGuid()), new UtcNowDateTimeProvider());
+            var match1 = new StatMatch(fakeChallenge.Scoring, faker.Match().Stats(ChallengeGame.LeagueOfLegends), new GameReference(Guid.NewGuid()), new UtcNowDateTimeProvider());
 
             // Act
             await _testServer.UsingScopeAsync(
@@ -171,7 +171,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
                 }
             );
 
-            var match2 = new GameMatch(new GameScore(23847883M), new GameReference(Guid.NewGuid()), new UtcNowDateTimeProvider());
+            var match2 = new GameMatch(new GameScore(fakeChallenge.Game, 23847883M), new GameReference(Guid.NewGuid()), new UtcNowDateTimeProvider());
 
             // Act
             await _testServer.UsingScopeAsync(

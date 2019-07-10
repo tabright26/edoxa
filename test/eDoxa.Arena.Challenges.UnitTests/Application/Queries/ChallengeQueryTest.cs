@@ -10,7 +10,6 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Application.Fakers;
-using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Queries;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure;

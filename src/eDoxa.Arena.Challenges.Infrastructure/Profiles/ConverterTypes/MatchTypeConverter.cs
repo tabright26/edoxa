@@ -5,6 +5,7 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
+using System.Linq;
 
 using AutoMapper;
 
@@ -13,8 +14,6 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
 using eDoxa.Seedwork.Domain.Aggregate;
 
-using IdentityServer4.Extensions;
-
 using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.ConverterTypes
@@ -22,27 +21,31 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.ConverterTypes
     internal sealed class MatchTypeConverter : ITypeConverter<MatchModel, IMatch>
     {
         [NotNull]
-        public IMatch Convert([NotNull] MatchModel source, [NotNull] IMatch destination, [NotNull] ResolutionContext context)
+        public IMatch Convert([NotNull] MatchModel matchModel, [NotNull] IMatch destination, [NotNull] ResolutionContext context)
         {
-            var stats = context.Mapper.Map<ICollection<Stat>>(source.Stats);
+            var stats = context.Mapper.Map<ICollection<Stat>>(matchModel.Stats);
 
-            var match = Convert(source, stats);
+            var match = Convert(matchModel, stats);
 
-            match.SetEntityId(MatchId.FromGuid(source.Id));
+            match.SetEntityId(MatchId.FromGuid(matchModel.Id));
 
             return match;
         }
 
-        private static IMatch Convert(MatchModel source, ICollection<Stat> stats)
+        private static IMatch Convert(MatchModel matchModel, ICollection<Stat> stats)
         {
-            var synchronizedAt = new DateTimeProvider(source.SynchronizedAt);
+            var synchronizedAt = new DateTimeProvider(matchModel.SynchronizedAt);
 
-            if (stats.IsNullOrEmpty())
+            if (stats.Count == 1)
             {
-                return new GameMatch(new GameScore(source.TotalScore), source.GameReference, synchronizedAt);
+                var stat = stats.Single();
+
+                var score = new GameScore(ChallengeGame.FromName(stat.Name), new decimal(stat.Value));
+
+                return new GameMatch(score, matchModel.GameReference, synchronizedAt);
             }
 
-            return new StatMatch(stats, source.GameReference, synchronizedAt);
+            return new StatMatch(new Scoring(stats), new GameStats(stats), matchModel.GameReference, synchronizedAt);
         }
     }
 }

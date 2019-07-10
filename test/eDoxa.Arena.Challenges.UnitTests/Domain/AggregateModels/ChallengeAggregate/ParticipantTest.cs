@@ -41,7 +41,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
             var participant = challenge.Participants.First();
             var gameReference = Faker.Match().GameReference(game);
             var stats = Faker.Match().Stats(game);
-            var match = new StatMatch(challenge.Scoring.Map(stats), gameReference, new UtcNowDateTimeProvider());
+            var match = new StatMatch(challenge.Scoring, stats, gameReference, new UtcNowDateTimeProvider());
 
             // Act
             participant.Snapshot(match);

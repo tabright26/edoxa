@@ -39,7 +39,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
 
                         var strategy = factory.CreateInstance(game);
 
-                        var match = new StatMatch(strategy.Scoring.Map(stats), new GameReference(Guid.NewGuid()), new UtcNowDateTimeProvider());
+                        var match = new StatMatch(strategy.Scoring, stats, new GameReference(Guid.NewGuid()), new UtcNowDateTimeProvider());
 
                         return match.Stats;
                     }

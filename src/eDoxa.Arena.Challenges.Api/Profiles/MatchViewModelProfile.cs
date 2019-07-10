@@ -20,7 +20,7 @@ namespace eDoxa.Arena.Challenges.Api.Profiles
             this.CreateMap<IMatch, MatchViewModel>()
                 .ForMember(match => match.Id, config => config.MapFrom<Guid>(match => match.Id))
                 .ForMember(match => match.SynchronizedAt, config => config.MapFrom(match => match.SynchronizedAt))
-                .ForMember(match => match.Score, config => config.MapFrom(match => match.TotalScore.ToDecimal()))
+                .ForMember(match => match.Score, config => config.MapFrom(match => match.Score.ToDecimal()))
                 .ForMember(match => match.ParticipantId, config => config.Ignore())
                 .ForMember(match => match.Stats, config => config.MapFrom(match => match.Stats));
         }

@@ -3,10 +3,6 @@
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.Collections.Generic;
@@ -20,23 +16,11 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public abstract partial class Match : Entity<MatchId>, IMatch
     {
-        private readonly HashSet<Stat> _stats = new HashSet<Stat>();
+        private readonly HashSet<Stat> _stats;
 
-        [CanBeNull]
-        private readonly GameScore _gameScore;
-
-        protected Match(IEnumerable<Stat> stats, GameReference gameReference, IDateTimeProvider synchronizedAt) : this(gameReference, synchronizedAt)
+        protected Match(IEnumerable<Stat> stats, GameReference gameReference, IDateTimeProvider synchronizedAt)
         {
             _stats = new HashSet<Stat>(stats);
-        }
-
-        protected Match(GameScore gameScore, GameReference gameReference, IDateTimeProvider synchronizedAt) : this(gameReference, synchronizedAt)
-        {
-            _gameScore = gameScore;
-        }
-
-        private Match(GameReference gameReference, IDateTimeProvider synchronizedAt)
-        {
             SynchronizedAt = synchronizedAt.DateTime;
             GameReference = gameReference;
         }
@@ -45,7 +29,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public GameReference GameReference { get; }
 
-        public Score TotalScore => (Score) _gameScore ?? new MatchScore(this);
+        public Score Score => new MatchScore(this);
 
         public IReadOnlyCollection<Stat> Stats => _stats;
     }

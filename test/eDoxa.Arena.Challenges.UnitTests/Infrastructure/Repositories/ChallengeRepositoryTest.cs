@@ -11,7 +11,6 @@
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Application.Fakers;
-using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.Infrastructure.Repositories;
 using eDoxa.Arena.Challenges.UnitTests.Helpers.Extensions;

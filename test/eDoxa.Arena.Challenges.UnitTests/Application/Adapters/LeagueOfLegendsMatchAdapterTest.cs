@@ -72,7 +72,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Adapters
             var match = await matchAdapter.GetMatchAsync(gameAccountId, gameReference, challenge.Scoring, synchronizedAt);
 
             // Assert
-            var expectedMatch = new StatMatch(challenge.Scoring.Map(new GameStats(stats)), gameReference, synchronizedAt);
+            var expectedMatch = new StatMatch(challenge.Scoring, new GameStats(stats), gameReference, synchronizedAt);
             matchAdapter.Game.Should().Be(ChallengeGame.LeagueOfLegends);
             match.Stats.Should().BeEquivalentTo(expectedMatch.Stats);
             _mockLeagueOfLegendsProxy.Verify(leagueOfLegendsProxy => leagueOfLegendsProxy.GetMatchAsync(It.IsNotNull<string>()), Times.Once);

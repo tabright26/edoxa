@@ -26,7 +26,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Fakers
             this.CustomInstantiator(
                 faker =>
                 {
-                    var match = new StatMatch(scoring.Map(faker.Match().Stats(game)), faker.Match().GameReference(game), new DateTimeProvider(synchronizedAt));
+                    var match = new StatMatch(scoring, faker.Match().Stats(game), faker.Match().GameReference(game), new DateTimeProvider(synchronizedAt));
 
                     match.SetEntityId(faker.Match().Id());
 

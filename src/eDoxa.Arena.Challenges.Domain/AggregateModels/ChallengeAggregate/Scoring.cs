@@ -3,10 +3,6 @@
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +11,14 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class Scoring : Dictionary<StatName, StatWeighting>, IScoring
     {
+        public Scoring(IEnumerable<Stat> stats) : base(stats.ToDictionary(stat => stat.Name, stat => stat.Weighting))
+        {
+        }
+
+        public Scoring()
+        {
+        }
+
         public IEnumerable<Stat> Map(IGameStats stats)
         {
             for (var index = 0; index < Count; index++)
