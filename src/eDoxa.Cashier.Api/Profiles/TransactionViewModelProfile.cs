@@ -1,12 +1,8 @@
-// Filename: TransactionProfile.cs
-// Date Created: 2019-07-01
+// Filename: TransactionViewModelProfile.cs
+// Date Created: 2019-07-10
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using AutoMapper;
 
@@ -15,9 +11,9 @@ using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 
 namespace eDoxa.Cashier.Api.Profiles
 {
-    internal sealed class TransactionProfile : Profile
+    internal sealed class TransactionViewModelProfile : Profile
     {
-        public TransactionProfile()
+        public TransactionViewModelProfile()
         {
             this.CreateMap<ITransaction, TransactionViewModel>()
                 .ForMember(transaction => transaction.Id, config => config.MapFrom(transaction => transaction.Id.ToGuid()))

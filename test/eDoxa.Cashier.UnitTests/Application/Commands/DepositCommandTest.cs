@@ -11,7 +11,6 @@
 using System.Runtime.Serialization;
 
 using eDoxa.Cashier.Api.Application.Commands;
-using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Seedwork.Testing.TestConstructor;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -24,7 +23,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Commands
         [TestMethod]
         public void Constructor_Tests()
         {
-            TestConstructor<DepositCommand>.ForParameters(typeof(decimal), typeof(Currency))
+            TestConstructor<DepositCommand>.ForParameters(typeof(string), typeof(decimal))
                 .WithClassName("DepositCommand")
                 .WithClassAttributes(typeof(DataContractAttribute))
                 .Assert();

@@ -26,5 +26,5 @@
   <ItemGroup>
     <ProjectReference Include="..\eDoxa.Seedwork.Security\eDoxa.Seedwork.Security.csproj" />
   </ItemGroup>
-    
+
 </Project>

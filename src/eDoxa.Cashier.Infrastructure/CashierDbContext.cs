@@ -3,10 +3,6 @@
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using eDoxa.Cashier.Infrastructure.Configurations;
 using eDoxa.Cashier.Infrastructure.Models;
@@ -22,10 +18,12 @@ namespace eDoxa.Cashier.Infrastructure
         public CashierDbContext(DbContextOptions<CashierDbContext> options) : base(options)
         {
         }
-        
+
         public DbSet<AccountModel> Accounts => this.Set<AccountModel>();
 
         public DbSet<TransactionModel> Transactions => this.Set<TransactionModel>();
+
+        public DbSet<ChallengeModel> Challenges => this.Set<ChallengeModel>();
 
         protected override void OnModelCreating([NotNull] ModelBuilder builder)
         {
@@ -34,6 +32,8 @@ namespace eDoxa.Cashier.Infrastructure
             builder.ApplyConfiguration(new AccountModelConfiguration());
 
             builder.ApplyConfiguration(new TransactionModelConfiguration());
+
+            builder.ApplyConfiguration(new ChallengeModelConfiguration());
         }
     }
 }

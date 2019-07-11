@@ -64,7 +64,7 @@ namespace eDoxa.Cashier.UnitTests.Controllers
             var controller = new AccountDepositController(_mockMediator.Object);
 
             // Act
-            var result = await controller.PostAsync(new DepositCommand(Money.Fifty.Amount, Currency.Money));
+            var result = await controller.PostAsync(new DepositCommand(Currency.Money.Name, Money.Fifty));
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();

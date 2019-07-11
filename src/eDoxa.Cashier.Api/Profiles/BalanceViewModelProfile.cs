@@ -1,12 +1,8 @@
-// Filename: BalanceProfile.cs
-// Date Created: 2019-07-01
+// Filename: BalanceViewModelProfile.cs
+// Date Created: 2019-07-10
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using AutoMapper;
 
@@ -15,9 +11,9 @@ using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 
 namespace eDoxa.Cashier.Api.Profiles
 {
-    internal sealed class BalanceProfile : Profile
+    internal sealed class BalanceViewModelProfile : Profile
     {
-        public BalanceProfile()
+        public BalanceViewModelProfile()
         {
             this.CreateMap<Balance, BalanceViewModel>()
                 .ForMember(balance => balance.Currency, config => config.MapFrom(balance => balance.Currency))

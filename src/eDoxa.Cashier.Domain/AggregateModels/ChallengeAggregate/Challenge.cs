@@ -14,10 +14,13 @@ namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
 {
     public partial class Challenge : Entity<ChallengeId>, IChallenge
     {
-        public Challenge(IPayout payout)
+        public Challenge(EntryFee entryFee, IPayout payout)
         {
+            EntryFee = entryFee;
             Payout = payout;
         }
+
+        public EntryFee EntryFee { get; }
 
         public IPayout Payout { get; }
     }

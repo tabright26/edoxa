@@ -23,9 +23,11 @@ namespace eDoxa.Cashier.Api.Application.Fakers
             this.CustomInstantiator(
                 faker =>
                 {
-                    var payout = new PayoutFactory().CreateInstance().GetPayout(PayoutEntries.Ten, MoneyEntryFee.Five);
+                    var entryFee = MoneyEntryFee.Five;
 
-                    var challenge = new Challenge(payout);
+                    var payout = new PayoutFactory().CreateInstance().GetPayout(PayoutEntries.Ten, entryFee);
+
+                    var challenge = new Challenge(entryFee, payout);
 
                     challenge.SetEntityId(faker.Challenge().Id());
                     

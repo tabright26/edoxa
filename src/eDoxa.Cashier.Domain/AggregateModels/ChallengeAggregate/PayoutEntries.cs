@@ -5,6 +5,7 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
+using System.Linq;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
@@ -26,6 +27,11 @@ namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
         public static readonly PayoutEntries OneHundred = new PayoutEntries(100);
 
         private readonly int _payoutEntries;
+
+        public PayoutEntries(IBuckets buckets)
+        {
+            _payoutEntries = buckets.Sum(bucket => bucket.Size);
+        }
 
         public PayoutEntries(int payoutEntries)
         {

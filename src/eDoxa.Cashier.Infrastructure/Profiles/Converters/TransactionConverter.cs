@@ -1,21 +1,15 @@
 ﻿// Filename: TransactionConverter.cs
-// Date Created: 2019-07-01
+// Date Created: 2019-07-05
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
-
-using System;
 
 using AutoMapper;
 
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Infrastructure.Models;
-using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Providers;
 
 using JetBrains.Annotations;
 
@@ -30,7 +24,7 @@ namespace eDoxa.Cashier.Infrastructure.Profiles.Converters
                 Convert(source.Amount, Currency.FromValue(source.Currency)),
                 new TransactionDescription(source.Description),
                 TransactionType.FromValue(source.Type),
-                new TimestampDateTimeProvider(source.Timestamp)
+                new DateTimeProvider(source.Timestamp)
             );
 
             transaction.SetEntityId(TransactionId.FromGuid(source.Id));
@@ -58,18 +52,6 @@ namespace eDoxa.Cashier.Infrastructure.Profiles.Converters
             }
 
             return new Token(amount);
-        }
-
-        private sealed class TimestampDateTimeProvider : IDateTimeProvider
-        {
-            private DateTime _timestamp;
-
-            public TimestampDateTimeProvider(DateTime timestamp)
-            {
-                _timestamp = timestamp;
-            }
-
-            public DateTime DateTime => _timestamp;
         }
     }
 }

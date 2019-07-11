@@ -10,14 +10,14 @@ using eDoxa.Cashier.Infrastructure;
 namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(CashierDbContext))]
-    [Migration("20190703220414_InitialCreate")]
+    [Migration("20190711194145_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
+                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -31,6 +31,21 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Account");
+                });
+
+            modelBuilder.Entity("eDoxa.Cashier.Infrastructure.Models.ChallengeModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<decimal>("EntryFeeAmount")
+                        .HasColumnType("decimal(11, 2)");
+
+                    b.Property<int>("EntryFeeCurrency");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Challenge");
                 });
 
             modelBuilder.Entity("eDoxa.Cashier.Infrastructure.Models.TransactionModel", b =>
@@ -59,6 +74,33 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
                     b.HasIndex("AccountId");
 
                     b.ToTable("Transaction");
+                });
+
+            modelBuilder.Entity("eDoxa.Cashier.Infrastructure.Models.ChallengeModel", b =>
+                {
+                    b.OwnsMany("eDoxa.Cashier.Infrastructure.Models.BucketModel", "Buckets", b1 =>
+                        {
+                            b1.Property<Guid>("ChallengeId");
+
+                            b1.Property<Guid>("Id")
+                                .ValueGeneratedOnAdd();
+
+                            b1.Property<decimal>("PrizeAmount")
+                                .HasColumnType("decimal(11, 2)");
+
+                            b1.Property<int>("PrizeCurrency");
+
+                            b1.Property<int>("Size");
+
+                            b1.HasKey("ChallengeId", "Id");
+
+                            b1.ToTable("Bucket");
+
+                            b1.HasOne("eDoxa.Cashier.Infrastructure.Models.ChallengeModel")
+                                .WithMany("Buckets")
+                                .HasForeignKey("ChallengeId")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
                 });
 
             modelBuilder.Entity("eDoxa.Cashier.Infrastructure.Models.TransactionModel", b =>

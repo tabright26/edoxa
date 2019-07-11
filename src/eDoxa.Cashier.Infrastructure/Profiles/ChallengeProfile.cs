@@ -1,10 +1,8 @@
-﻿// Filename: PayoutProfile.cs
-// Date Created: 2019-07-10
+﻿// Filename: ChallengeProfile.cs
+// Date Created: 2019-07-11
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-
-using System.Collections.Generic;
 
 using AutoMapper;
 
@@ -14,11 +12,11 @@ using eDoxa.Cashier.Infrastructure.Profiles.Converters;
 
 namespace eDoxa.Cashier.Infrastructure.Profiles
 {
-    internal sealed class PayoutProfile : Profile
+    internal sealed class ChallengeProfile : Profile
     {
-        public PayoutProfile()
+        public ChallengeProfile()
         {
-            this.CreateMap<ICollection<BucketModel>, IPayout>().ConvertUsing(new PayoutConverter());
+            this.CreateMap<ChallengeModel, IChallenge>().ConvertUsing(new ChallengeConverter());
         }
     }
 }

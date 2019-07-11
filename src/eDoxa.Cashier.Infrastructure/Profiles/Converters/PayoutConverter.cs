@@ -1,12 +1,8 @@
-﻿// Filename: PayoutTypeConverter.cs
-// Date Created: 2019-06-22
+﻿// Filename: PayoutConverter.cs
+// Date Created: 2019-07-10
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.Collections.Generic;
 using System.Linq;
@@ -21,14 +17,14 @@ using JetBrains.Annotations;
 
 namespace eDoxa.Cashier.Infrastructure.Profiles.Converters
 {
-    internal sealed class PayoutTypeConverter : ITypeConverter<ICollection<BucketModel>, IPayout>
+    internal sealed class PayoutConverter : ITypeConverter<ICollection<BucketModel>, IPayout>
     {
         [NotNull]
-        public IPayout Convert([NotNull] ICollection<BucketModel> source, [NotNull] IPayout destination, [NotNull] ResolutionContext context)
+        public IPayout Convert([NotNull] ICollection<BucketModel> bucketModels, [NotNull] IPayout destination, [NotNull] ResolutionContext context)
         {
             return new Payout(
                 new Buckets(
-                    source.Select(
+                    bucketModels.Select(
                         bucket => new Bucket(new Prize(bucket.PrizeAmount, Currency.FromValue(bucket.PrizeCurrency)), new BucketSize(bucket.Size))
                     )
                 )

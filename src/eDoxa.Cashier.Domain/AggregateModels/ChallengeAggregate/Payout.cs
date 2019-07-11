@@ -12,18 +12,30 @@ namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class Payout : ValueObject, IPayout
     {
-        private readonly IBuckets _buckets;
-
         public Payout(IBuckets buckets)
         {
-            _buckets = buckets;
+            Buckets = buckets;
         }
 
-        public PrizePool PrizePool => new PrizePool(_buckets);
+        public IBuckets Buckets { get; }
+
+        public PayoutEntries Entries => new PayoutEntries(Buckets);
+
+        public PrizePool PrizePool => new PrizePool(Buckets);
+
+        public override string ToString()
+        {
+            return Buckets.ToString();
+        }
+
+        protected override IEnumerable<object> GetAtomicValues()
+        {
+            yield return Buckets;
+            yield return Entries;
+            yield return PrizePool;
+        }
 
         //private IBuckets IndividualBuckets => new Buckets(_buckets.SelectMany(bucket => bucket.AsIndividualBuckets()).OrderByDescending(bucket => bucket.Prize));
-
-        public IBuckets Buckets => _buckets;
 
         //public IParticipantPrizes GetParticipantPrizes(IScoreboard scoreboard)
         //{
@@ -46,16 +58,5 @@ namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
         //{
         //    return scoreboard.IsValidScore(index) ? IndividualBuckets.PrizeAtOrDefault(index) : null;
         //}
-
-        protected override IEnumerable<object> GetAtomicValues()
-        {
-            yield return PrizePool;
-            yield return Buckets;
-        }
-
-        public override string ToString()
-        {
-            return Buckets.ToString();
-        }
     }
 }
