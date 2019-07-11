@@ -3,14 +3,11 @@
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.Collections.Generic;
 
+using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 using JetBrains.Annotations;
@@ -39,14 +36,14 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
         {
             if (currency == Currency.Money)
             {
-                var accountMoney = new AccountMoney(this);
+                var accountMoney = new MoneyAccount(this);
 
                 return accountMoney.Balance;
             }
 
             if (currency == Currency.Token)
             {
-                var accountToken = new AccountToken(this);
+                var accountToken = new TokenAccount(this);
 
                 return accountToken.Balance;
             }

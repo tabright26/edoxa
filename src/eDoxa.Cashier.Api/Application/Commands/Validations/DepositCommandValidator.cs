@@ -46,7 +46,7 @@ namespace eDoxa.Cashier.Api.Application.Commands.Validations
 
                                     if (command.Currency.Type == Currency.Money)
                                     {
-                                        var moneyAccount = new AccountMoney(account);
+                                        var moneyAccount = new MoneyAccount(account);
 
                                         var errors = new DepositMoneyValidator().Validate(moneyAccount).Errors;
 
@@ -60,7 +60,7 @@ namespace eDoxa.Cashier.Api.Application.Commands.Validations
 
                                     if (command.Currency.Type == Currency.Token)
                                     {
-                                        var tokenAccount = new AccountToken(account);
+                                        var tokenAccount = new TokenAccount(account);
 
                                         var errors = new DepositTokenValidator().Validate(tokenAccount).Errors;
 

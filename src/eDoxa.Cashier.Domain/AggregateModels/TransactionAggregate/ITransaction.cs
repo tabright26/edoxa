@@ -1,25 +1,22 @@
 ﻿// Filename: ITransaction.cs
-// Date Created: 2019-07-01
+// Date Created: 2019-07-10
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 
-using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Seedwork.Domain;
 
-namespace eDoxa.Cashier.Domain.AggregateModels
+namespace eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate
 {
     public interface ITransaction : IEntity<TransactionId>
     {
         DateTime Timestamp { get; }
 
         ICurrency Currency { get; }
+
+        Price Price { get; }
 
         TransactionType Type { get; }
 

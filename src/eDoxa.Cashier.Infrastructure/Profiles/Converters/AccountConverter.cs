@@ -12,8 +12,8 @@ using System.Collections.Generic;
 
 using AutoMapper;
 
-using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Infrastructure.Models;
 using eDoxa.Seedwork.Domain.Extensions;
 

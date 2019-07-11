@@ -1,12 +1,8 @@
-﻿// Filename: AccountMoney.cs
+﻿// Filename: MoneyAccount.cs
 // Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.Linq;
@@ -16,11 +12,11 @@ using eDoxa.Cashier.Domain.Validators;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
-    public class AccountMoney : IAccountMoney
+    public class MoneyAccount : IMoneyAccount
     {
         private readonly IAccount _account;
 
-        public AccountMoney(IAccount account)
+        public MoneyAccount(IAccount account)
         {
             _account = account;
         }

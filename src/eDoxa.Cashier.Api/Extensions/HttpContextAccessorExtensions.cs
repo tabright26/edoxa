@@ -10,7 +10,7 @@
 
 using System;
 
-using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Seedwork.Security.Extensions;
 
 using JetBrains.Annotations;

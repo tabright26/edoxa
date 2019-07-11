@@ -17,7 +17,7 @@ using eDoxa.Seedwork.Domain.Specifications;
 
 namespace eDoxa.Cashier.Domain.Specifications
 {
-    public sealed class InsufficientTokenSpecification : Specification<AccountToken>
+    public sealed class InsufficientTokenSpecification : Specification<TokenAccount>
     {
         private readonly Token _token;
 
@@ -26,7 +26,7 @@ namespace eDoxa.Cashier.Domain.Specifications
             _token = token;
         }
 
-        public override Expression<Func<AccountToken, bool>> ToExpression()
+        public override Expression<Func<TokenAccount, bool>> ToExpression()
         {
             return account => account.Balance.Available < _token;
         }

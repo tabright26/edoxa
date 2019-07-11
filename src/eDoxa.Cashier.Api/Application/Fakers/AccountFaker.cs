@@ -11,7 +11,6 @@
 using Bogus;
 
 using eDoxa.Cashier.Api.Application.Fakers.Extensions;
-using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 
 namespace eDoxa.Cashier.Api.Application.Fakers

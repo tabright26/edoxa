@@ -16,7 +16,6 @@ using Bogus;
 
 using eDoxa.Arena.Challenges.Api.Application.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Seedwork.Common.Extensions;
 using eDoxa.Seedwork.Domain.Providers;
 
 namespace eDoxa.Arena.Challenges.Api.Application.Fakers.DataSets
@@ -47,7 +46,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Fakers.DataSets
 
         public DateTime CreatedAt(DateTime? startedAt, IEnumerable<DateTime> participantRegistrations)
         {
-            return Faker.Date.Recent(1, startedAt.HasValue ? participantRegistrations.Min() : DateTime.UtcNow.DateKeepHours());
+            return Faker.Date.Recent(1, startedAt.HasValue ? participantRegistrations.Min() : DateTime.UtcNow.Date);
         }
 
         public ChallengeState State(ChallengeState state = null)
@@ -61,23 +60,23 @@ namespace eDoxa.Arena.Challenges.Api.Application.Fakers.DataSets
 
             var duration = Faker.Timeline().Duration();
 
-            var created = Faker.Date.Recent(1, DateTime.UtcNow.DateKeepHours());
+            var created = Faker.Date.Recent(1, DateTime.UtcNow.Date);
 
             var timeline = new ChallengeTimeline(new DateTimeProvider(created), duration);
 
             if (state == ChallengeState.InProgress)
             {
-                timeline = timeline.Start(new DateTimeProvider(DateTime.UtcNow.DateKeepHours()));
+                timeline = timeline.Start(new DateTimeProvider(DateTime.UtcNow.Date));
             }
 
             if (state == ChallengeState.Ended)
             {
-                timeline = timeline.Start(new DateTimeProvider(DateTime.UtcNow.DateKeepHours().Subtract(duration)));
+                timeline = timeline.Start(new DateTimeProvider(DateTime.UtcNow.Date.Subtract(duration)));
             }
 
             if (state == ChallengeState.Closed)
             {
-                timeline = timeline.Close(new DateTimeProvider(DateTime.UtcNow.DateKeepHours()));
+                timeline = timeline.Close(new DateTimeProvider(DateTime.UtcNow.Date));
             }
 
             return timeline;

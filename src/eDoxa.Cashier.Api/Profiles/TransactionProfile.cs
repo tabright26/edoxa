@@ -11,7 +11,7 @@
 using AutoMapper;
 
 using eDoxa.Cashier.Api.ViewModels;
-using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 
 namespace eDoxa.Cashier.Api.Profiles
 {

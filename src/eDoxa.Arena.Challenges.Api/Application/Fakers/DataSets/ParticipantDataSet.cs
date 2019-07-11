@@ -13,7 +13,6 @@ using System;
 using Bogus;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Seedwork.Common.Extensions;
 
 namespace eDoxa.Arena.Challenges.Api.Application.Fakers.DataSets
 {
@@ -33,7 +32,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Fakers.DataSets
 
         public DateTime RegisteredAt(ChallengeState state, DateTime? startedAt)
         {
-            return state != ChallengeState.Inscription ? Faker.Date.Recent(1, startedAt) : Faker.Date.Soon(1, DateTime.UtcNow.DateKeepHours());
+            return state != ChallengeState.Inscription ? Faker.Date.Recent(1, startedAt) : Faker.Date.Soon(1, DateTime.UtcNow.Date);
         }
 
         public GameAccountId GameAccountId(ChallengeGame game)

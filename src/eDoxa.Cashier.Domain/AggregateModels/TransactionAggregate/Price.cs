@@ -1,16 +1,12 @@
 // Filename: Price.cs
-// Date Created: 2019-07-04
+// Date Created: 2019-07-10
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 
-namespace eDoxa.Cashier.Domain.AggregateModels
+namespace eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate
 {
     public sealed class Price
     {
@@ -24,12 +20,12 @@ namespace eDoxa.Cashier.Domain.AggregateModels
 
             if (currency.Type == Currency.Money)
             {
-                money = new Money(currency.Amount);
+                money = new Money(Math.Abs(currency.Amount));
             }
 
             if (currency.Type == Currency.Token)
             {
-                money = new Money(currency.Amount / TokenToMoneyFactor);
+                money = new Money(Math.Abs(currency.Amount) / TokenToMoneyFactor);
             }
 
             _money = money ?? throw new ArgumentException(nameof(currency));

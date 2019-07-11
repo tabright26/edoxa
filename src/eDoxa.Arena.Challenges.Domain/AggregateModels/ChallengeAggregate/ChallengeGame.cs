@@ -10,7 +10,6 @@
 
 using System.ComponentModel;
 
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
@@ -18,13 +17,13 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
     [TypeConverter(typeof(EnumerationTypeConverter))]
     public sealed class ChallengeGame : Enumeration<ChallengeGame>
     {
-        public static readonly ChallengeGame LeagueOfLegends = new ChallengeGame(Game.LeagueOfLegends);
+        public static readonly ChallengeGame LeagueOfLegends = new ChallengeGame(1 << 0, nameof(LeagueOfLegends));
 
         public ChallengeGame()
         {
         }
 
-        private ChallengeGame(Game game) : base(game.Value, game.Name)
+        private ChallengeGame(int value, string name) : base(value, name)
         {
         }
     }

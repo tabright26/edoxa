@@ -1,20 +1,16 @@
 ﻿// Filename: IAccount.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-07-10
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.Collections.Generic;
 
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Seedwork.Domain;
 
-namespace eDoxa.Cashier.Domain.AggregateModels
+namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
     public interface IAccount : IEntity<AccountId>, IAggregateRoot
     {

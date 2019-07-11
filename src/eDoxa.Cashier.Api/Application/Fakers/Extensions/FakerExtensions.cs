@@ -11,7 +11,7 @@ using System.Linq;
 using Bogus;
 
 using eDoxa.Cashier.Api.Application.Fakers.DataSets;
-using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Seedwork.Common;
 
 namespace eDoxa.Cashier.Api.Application.Fakers.Extensions
@@ -31,7 +31,7 @@ namespace eDoxa.Cashier.Api.Application.Fakers.Extensions
 
             _testUserIds.Remove(testUserId);
 
-            return Domain.AggregateModels.UserId.FromGuid(testUserId);
+            return Domain.AggregateModels.AccountAggregate.UserId.FromGuid(testUserId);
         }
 
         public static ChallengeDataSet Challenge(this Faker faker)

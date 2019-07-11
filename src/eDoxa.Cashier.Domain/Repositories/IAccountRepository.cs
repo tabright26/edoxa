@@ -11,7 +11,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 
 using JetBrains.Annotations;
 

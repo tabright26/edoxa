@@ -16,7 +16,6 @@ using eDoxa.Arena.Challenges.Api.Application.Factories;
 using eDoxa.Arena.Challenges.Api.Application.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Seedwork.Common.Extensions;
 using eDoxa.Seedwork.Domain.Providers;
 
 using JetBrains.Annotations;
@@ -38,11 +37,11 @@ namespace eDoxa.Arena.Challenges.Api.Application.Fakers
 
                     var duration = faker.Timeline().Duration();
 
-                    var utcNow = DateTime.UtcNow.DateKeepHours();
+                    var utcNowDate = DateTime.UtcNow.Date;
 
-                    var createdAt = faker.Date.Recent(1, utcNow);
+                    var createdAt = faker.Date.Recent(1, utcNowDate);
 
-                    var startedAt = faker.Date.Between(createdAt, utcNow);
+                    var startedAt = faker.Date.Between(createdAt, utcNowDate);
 
                     var endedAt = startedAt + duration;
 

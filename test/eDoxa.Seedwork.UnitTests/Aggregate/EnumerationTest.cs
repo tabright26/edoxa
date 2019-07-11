@@ -11,7 +11,6 @@
 using System;
 using System.ComponentModel;
 
-using eDoxa.Seedwork.Common.Enumerations;
 using eDoxa.Seedwork.Domain.Aggregate;
 
 using FluentAssertions;
@@ -27,7 +26,7 @@ namespace eDoxa.Seedwork.UnitTests.Aggregate
         public void Enumeration_GetTypes_ShouldContainAssembliesEnumerationTypes()
         {
             // Arrange
-            var expectedEnumerationTypes = new[] {typeof(Game), typeof(MockEnumeration)};
+            var expectedEnumerationTypes = new[] {typeof(MockEnumeration)};
 
             // Act
             var enumerationTypes = Enumeration.GetTypes();
