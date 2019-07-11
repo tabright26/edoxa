@@ -1,14 +1,9 @@
 ﻿// Filename: Entries.cs
-// Date Created: 2019-06-20
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
-using System;
 using System.Collections.Generic;
 
 using eDoxa.Seedwork.Domain.Aggregate;
@@ -17,11 +12,20 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class Entries : ValueObject
     {
-        private readonly int _entries;
+        public static readonly Entries Two = new Entries(2);
+        public static readonly Entries Four = new Entries(4);
+        public static readonly Entries Six = new Entries(6);
+        public static readonly Entries Eight = new Entries(8);
+        public static readonly Entries Ten = new Entries(10);
+        public static readonly Entries Twenty = new Entries(20);
+        public static readonly Entries Thirty = new Entries(30);
+        public static readonly Entries Forty = new Entries(40);
+        public static readonly Entries Fifty = new Entries(50);
+        public static readonly Entries OneHundred = new Entries(100);
+        public static readonly Entries OneHundredFifty = new Entries(150);
+        public static readonly Entries TwoHundred = new Entries(200);
 
-        public Entries(PayoutEntries payoutEntries) : this(Convert.ToInt32(payoutEntries * 2))
-        {
-        }
+        private readonly int _entries;
 
         public Entries(int entries)
         {

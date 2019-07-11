@@ -23,14 +23,6 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
 
             builder.Property(challenge => challenge.Id);
 
-            builder.OwnsOne(
-                challenge => challenge.Setup,
-                challengeSetup =>
-                {
-                    challengeSetup.Property(setup => setup.EntryFeeAmount).HasColumnType("decimal(11, 2)");
-                }
-            );
-
             builder.OwnsOne(challenge => challenge.Timeline);
 
             builder.OwnsMany(
@@ -47,21 +39,21 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                 }
             );
 
-            builder.OwnsMany(
-                challenge => challenge.Buckets,
-                challengeStats =>
-                {
-                    challengeStats.ToTable("Bucket");
+            //builder.OwnsMany(
+            //    challenge => challenge.Buckets,
+            //    challengeStats =>
+            //    {
+            //        challengeStats.ToTable("Bucket");
 
-                    challengeStats.HasForeignKey("ChallengeId");
+            //        challengeStats.HasForeignKey("ChallengeId");
 
-                    challengeStats.Property(bucket => bucket.PrizeAmount).HasColumnType("decimal(11, 2)");
+            //        challengeStats.Property(bucket => bucket.PrizeAmount).HasColumnType("decimal(11, 2)");
 
-                    challengeStats.Property<Guid>("Id").ValueGeneratedOnAdd();
+            //        challengeStats.Property<Guid>("Id").ValueGeneratedOnAdd();
 
-                    challengeStats.HasKey("ChallengeId", "Id");
-                }
-            );
+            //        challengeStats.HasKey("ChallengeId", "Id");
+            //    }
+            //);
 
             builder.HasMany(challenge => challenge.Participants).WithOne(participant => participant.Challenge).OnDelete(DeleteBehavior.Cascade);
 

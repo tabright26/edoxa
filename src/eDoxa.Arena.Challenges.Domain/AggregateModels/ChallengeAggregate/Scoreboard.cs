@@ -1,12 +1,8 @@
 ﻿// Filename: Scoreboard.cs
-// Date Created: 2019-06-12
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.Collections.Generic;
 using System.Linq;
@@ -16,8 +12,8 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
     public sealed class Scoreboard : Dictionary<UserId, Score>, IScoreboard
     {
         public Scoreboard(IChallenge challenge) : base(
-            challenge.Participants.OrderByDescending(participant => participant.ComputeScore(challenge.Setup.BestOf))
-                .ToDictionary(participant => participant.UserId, participant => participant.ComputeScore(challenge.Setup.BestOf))
+            challenge.Participants.OrderByDescending(participant => participant.ComputeScore(challenge.BestOf))
+                .ToDictionary(participant => participant.UserId, participant => participant.ComputeScore(challenge.BestOf))
         )
         {
         }

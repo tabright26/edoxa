@@ -19,8 +19,8 @@ using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.IntegrationTests.Helpers;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Extensions;
+using eDoxa.Seedwork.Domain.Providers;
 using eDoxa.Seedwork.Testing.Extensions;
 
 using FluentAssertions;

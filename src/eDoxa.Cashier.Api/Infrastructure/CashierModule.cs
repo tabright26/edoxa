@@ -10,11 +10,15 @@
 
 using Autofac;
 
+using eDoxa.Cashier.Api.Application.Factories;
 using eDoxa.Cashier.Api.Application.Services;
+using eDoxa.Cashier.Api.Application.Strategies;
 using eDoxa.Cashier.Api.Infrastructure.Queries;
+using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services;
+using eDoxa.Cashier.Domain.Strategies;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.Infrastructure.Repositories;
 using eDoxa.Commands;
@@ -43,6 +47,12 @@ namespace eDoxa.Cashier.Api.Infrastructure
 
             // Services
             builder.RegisterType<AccountService>().As<IAccountService>().InstancePerLifetimeScope();
+
+            // Strategies
+            builder.RegisterType<PayoutStrategy>().As<IPayoutStrategy>();
+
+            // Factories
+            builder.RegisterType<PayoutFactory>().As<IPayoutFactory>().SingleInstance();
         }
     }
 }

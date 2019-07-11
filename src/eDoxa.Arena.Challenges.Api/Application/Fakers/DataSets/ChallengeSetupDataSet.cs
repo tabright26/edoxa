@@ -8,8 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Linq;
-
 using Bogus;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
@@ -31,31 +29,31 @@ namespace eDoxa.Arena.Challenges.Api.Application.Fakers.DataSets
             return Faker.PickRandom(ValueObject.GetValues<BestOf>());
         }
 
-        public PayoutEntries PayoutEntries()
+        public Entries Entries()
         {
-            return Faker.PickRandom(ValueObject.GetValues<PayoutEntries>());
+            return Faker.PickRandom(ValueObject.GetValues<Entries>());
         }
 
-        public EntryFee EntryFee(Currency entryFeeCurrency = null)
-        {
-            var moneyEntryFees = ValueObject.GetValues<MoneyEntryFee>().ToList();
+        //public EntryFee EntryFee(Currency entryFeeCurrency = null)
+        //{
+        //    var moneyEntryFees = ValueObject.GetValues<MoneyEntryFee>().ToList();
 
-            var tokenEntryFees = ValueObject.GetValues<TokenEntryFee>().ToList();
+        //    var tokenEntryFees = ValueObject.GetValues<TokenEntryFee>().ToList();
 
-            if (entryFeeCurrency != null)
-            {
-                if (entryFeeCurrency == Currency.Money)
-                {
-                    Faker.PickRandom(moneyEntryFees);
-                }
+        //    if (entryFeeCurrency != null)
+        //    {
+        //        if (entryFeeCurrency == Currency.Money)
+        //        {
+        //            Faker.PickRandom(moneyEntryFees);
+        //        }
 
-                if (entryFeeCurrency == Currency.Token)
-                {
-                    Faker.PickRandom(tokenEntryFees);
-                }
-            }
+        //        if (entryFeeCurrency == Currency.Token)
+        //        {
+        //            Faker.PickRandom(tokenEntryFees);
+        //        }
+        //    }
 
-            return Faker.PickRandom(moneyEntryFees.Cast<EntryFee>().Union(tokenEntryFees));
-        }
+        //    return Faker.PickRandom(moneyEntryFees.Cast<EntryFee>().Union(tokenEntryFees));
+        //}
     }
 }

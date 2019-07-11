@@ -34,7 +34,6 @@ namespace eDoxa.Arena.Challenges.Api.Application.Commands.Handlers
                 command.Seed,
                 command.Game,
                 command.State,
-                command.EntryFeeCurrency,
                 cancellationToken
             );
         }

@@ -30,7 +30,6 @@ namespace eDoxa.Arena.Challenges.UnitTests.Helpers.Extensions
 
         public static void AssertStateIsValid(this IChallenge challenge)
         {
-            challenge.Payout.Buckets.Should().NotBeNullOrEmpty();
             challenge.Game.Should().Should().NotBe(ChallengeGame.All);
             challenge.Game.Should().Should().NotBe(new ChallengeGame());
             challenge.Timeline.State.Should().NotBe(ChallengeState.All);
@@ -91,19 +90,12 @@ namespace eDoxa.Arena.Challenges.UnitTests.Helpers.Extensions
             challenge.State.Should().NotBeNullOrWhiteSpace();
             challenge.State.Should().NotBe(new ChallengeState().Name);
             challenge.State.Should().NotBe(ChallengeState.All.Name);
-            challenge.Setup.Should().NotBeNull();
+            challenge.Should().NotBeNull();
             challenge.Timeline.Should().NotBeNull();
             challenge.Timeline.CreatedAt.Should().BeBefore(DateTime.UtcNow);
             challenge.Scoring.Should().NotBeNull();
             challenge.Scoring.Should().NotBeEmpty();
-            challenge.Payout.AssertMappingIsValid();
             challenge.Participants.AssertMappingIsValid();
-        }
-
-        public static void AssertMappingIsValid(this PayoutViewModel payout)
-        {
-            payout.Should().NotBeNull();
-            payout.Buckets.Should().NotBeNullOrEmpty();
         }
 
         public static void AssertMappingIsValid(this IEnumerable<ParticipantViewModel> participants)

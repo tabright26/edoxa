@@ -39,7 +39,7 @@ namespace eDoxa.Arena.Challenges.Api.Profiles.Resolvers
 
                 var participantViewModel = context.Mapper.Map<ParticipantViewModel>(participant);
 
-                participantViewModel.Score = participant.ComputeScore(challenge.Setup.BestOf)?.ToDecimal();
+                participantViewModel.Score = participant.ComputeScore(challenge.BestOf)?.ToDecimal();
 
                 participantViewModel.ChallengeId = challenge.Id;
 

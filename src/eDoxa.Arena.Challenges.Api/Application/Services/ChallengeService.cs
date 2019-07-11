@@ -48,11 +48,10 @@ namespace eDoxa.Arena.Challenges.Api.Application.Services
             int seed,
             ChallengeGame game = null,
             ChallengeState state = null,
-            Currency entryFeeCurrency = null,
             CancellationToken cancellationToken = default
         )
         {
-            var challengeFaker = new ChallengeFaker(game, state, entryFeeCurrency);
+            var challengeFaker = new ChallengeFaker(game, state);
 
             challengeFaker.UseSeed(seed);
 

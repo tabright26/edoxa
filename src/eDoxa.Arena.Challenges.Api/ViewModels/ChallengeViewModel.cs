@@ -26,6 +26,12 @@ namespace eDoxa.Arena.Challenges.Api.ViewModels
         [JsonProperty("state")]
         public string State { get; set; }
 
+        [JsonProperty("bestOf")]
+        public int BestOf { get; set; }
+
+        [JsonProperty("entries")]
+        public int Entries { get; set; }
+
         [JsonProperty("synchronizedAt")]
         [JsonConverter(typeof(UnixDateTimeConverter))]
         public DateTime? SynchronizedAt { get; set; }
@@ -33,14 +39,8 @@ namespace eDoxa.Arena.Challenges.Api.ViewModels
         [JsonProperty("timeline")]
         public ChallengeTimelineViewModel Timeline { get; set; }
 
-        [JsonProperty("setup")]
-        public ChallengeSetupViewModel Setup { get; set; }
-
         [JsonProperty("scoring")]
         public ScoringViewModel Scoring { get; set; }
-
-        [JsonProperty("payout")]
-        public PayoutViewModel Payout { get; set; }
 
         [JsonProperty("participants")]
         public ParticipantViewModel[] Participants { get; set; }

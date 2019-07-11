@@ -27,7 +27,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Commands.Validations
 
             this.OptionalEnumeration(command => command.State);
 
-            this.OptionalEnumeration(command => command.EntryFeeCurrency);
+            //this.OptionalEnumeration(command => command.EntryFeeCurrency);
         }
     }
 }

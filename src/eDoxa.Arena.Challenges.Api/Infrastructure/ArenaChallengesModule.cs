@@ -47,7 +47,6 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure
             builder.RegisterType<ChallengeService>().As<IChallengeService>().InstancePerLifetimeScope();
 
             // Strategies
-            builder.RegisterType<PayoutStrategy>().As<IPayoutStrategy>();
             builder.RegisterType<LeagueOfLegendsScoringStrategy>().As<IScoringStrategy>();
 
             // Adapters
@@ -55,7 +54,6 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure
             builder.RegisterType<LeagueOfLegendsMatchAdapter>().As<IMatchAdapter>();
 
             // Factories
-            builder.RegisterType<PayoutFactory>().As<IPayoutFactory>().SingleInstance();
             builder.RegisterType<ScoringFactory>().As<IScoringFactory>().SingleInstance();
             builder.RegisterType<GameReferencesFactory>().As<IGameReferencesFactory>().SingleInstance();
             builder.RegisterType<MatchFactory>().As<IMatchFactory>().SingleInstance();

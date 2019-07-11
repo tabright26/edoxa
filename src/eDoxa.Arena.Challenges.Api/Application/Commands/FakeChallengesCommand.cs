@@ -23,7 +23,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Commands
             int seed,
             ChallengeGame game = null,
             ChallengeState state = null,
-            Currency entryFeeCurrency = null
+            string entryFeeCurrency = null
         ) : this()
         {
             Count = count;
@@ -51,6 +51,6 @@ namespace eDoxa.Arena.Challenges.Api.Application.Commands
         public ChallengeState State { get; private set; }
 
         [DataMember(Name = "entryFeeCurrency", IsRequired = false)]
-        public Currency EntryFeeCurrency { get; private set; }
+        public string EntryFeeCurrency { get; private set; }
     }
 }

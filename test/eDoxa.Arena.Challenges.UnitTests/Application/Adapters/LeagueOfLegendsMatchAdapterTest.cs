@@ -14,11 +14,11 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Application.Adapters;
 using eDoxa.Arena.Challenges.Api.Application.Fakers;
-using eDoxa.Arena.Challenges.Domain;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.LeagueOfLegends.Abstractions;
 using eDoxa.Arena.LeagueOfLegends.Dtos;
 using eDoxa.Arena.UnitTests.Helpers;
+using eDoxa.Seedwork.Domain.Providers;
 
 using FluentAssertions;
 

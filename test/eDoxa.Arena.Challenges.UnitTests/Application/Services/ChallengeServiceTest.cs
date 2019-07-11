@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Application.Fakers;
 using eDoxa.Arena.Challenges.Api.Application.Services;
-using eDoxa.Arena.Challenges.Domain;
 using eDoxa.Arena.Challenges.Domain.Adapters;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
@@ -19,6 +18,7 @@ using eDoxa.Arena.Challenges.Domain.Factories;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Providers;
 
 using FluentAssertions;
 
@@ -52,7 +52,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Services
             var challengeFaker = new ChallengeFaker(state: ChallengeState.Inscription);
             challengeFaker.UseSeed(39042334);
             var challenge = challengeFaker.Generate();
-            var participantCount = challenge.Setup.Entries - challenge.Participants.Count;
+            var participantCount = challenge.Entries - challenge.Participants.Count;
             participantCount -= 1;
 
             for (var index = 0; index < participantCount; index++)

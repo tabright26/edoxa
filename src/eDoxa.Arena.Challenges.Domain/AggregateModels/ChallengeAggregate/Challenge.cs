@@ -3,10 +3,6 @@
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.Collections.Generic;
@@ -26,37 +22,37 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         public Challenge(
             ChallengeName name,
             ChallengeGame game,
-            ChallengeSetup setup,
+            BestOf bestOf,
+            Entries entries,
             ChallengeTimeline timeline,
-            IScoring scoring,
-            IPayout payout
+            IScoring scoring
         )
         {
             Name = name;
             Game = game;
-            Setup = setup;
+            BestOf = bestOf;
+            Entries = entries;
             Timeline = timeline;
             Scoring = scoring;
-            Payout = payout;
         }
 
         public ChallengeName Name { get; }
 
         public ChallengeGame Game { get; }
 
-        public ChallengeSetup Setup { get; }
-
         public ChallengeTimeline Timeline { get; private set; }
 
         public DateTime? SynchronizedAt { get; private set; }
 
+        public BestOf BestOf { get; }
+
+        public Entries Entries { get; }
+
         public IScoring Scoring { get; }
 
-        public IPayout Payout { get; }
+        public IScoreboard Scoreboard => new Scoreboard(this);
 
         public IReadOnlyCollection<Participant> Participants => _participants;
-
-        public IScoreboard Scoreboard => new Scoreboard(this);
 
         public void Register(Participant participant)
         {
@@ -70,7 +66,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public bool IsInscriptionCompleted()
         {
-            return Participants.Count >= Setup.Entries;
+            return Participants.Count >= Entries;
         }
 
         public void Start(IDateTimeProvider startedAt)
@@ -127,6 +123,11 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             this.Synchronize(synchronizedAt);
         }
 
+        public void Synchronize(IDateTimeProvider synchronizedAt)
+        {
+            SynchronizedAt = synchronizedAt.DateTime;
+        }
+
         private bool CanRegister(Participant participant)
         {
             return new RegisterParticipantValidator(participant.UserId).Validate(this).IsValid;
@@ -134,17 +135,12 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         private bool CanStart()
         {
-            return Participants.Count == Setup.Entries;
+            return Participants.Count == Entries;
         }
 
         private bool CanClose()
         {
             return Timeline == ChallengeState.Ended;
-        }
-
-        public void Synchronize(IDateTimeProvider synchronizedAt)
-        {
-            SynchronizedAt = synchronizedAt.DateTime;
         }
 
         // TODO: Must be verified.

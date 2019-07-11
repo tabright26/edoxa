@@ -17,7 +17,7 @@ using eDoxa.Arena.Challenges.Api.Application.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Common.Extensions;
-using eDoxa.Seedwork.Domain.Aggregate;
+using eDoxa.Seedwork.Domain.Providers;
 
 using JetBrains.Annotations;
 
@@ -25,7 +25,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Fakers
 {
     public sealed class ChallengeFaker : Faker<IChallenge>
     {
-        public ChallengeFaker(ChallengeGame game = null, ChallengeState state = null, Currency entryFeeCurrency = null)
+        public ChallengeFaker(ChallengeGame game = null, ChallengeState state = null)
         {
             this.CustomInstantiator(
                 faker =>
@@ -34,11 +34,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Fakers
 
                     var fakeState = faker.Challenge().State(state);
 
-                    var setup = faker.Challenge().Setup(entryFeeCurrency);
-
                     var scoring = new ScoringFactory().CreateInstance(fakeGame).Scoring;
-
-                    var payout = new PayoutFactory().CreateInstance().GetPayout(setup.PayoutEntries, setup.EntryFee);
 
                     var duration = faker.Timeline().Duration();
 
@@ -57,10 +53,10 @@ namespace eDoxa.Arena.Challenges.Api.Application.Fakers
                     var challenge = new Challenge(
                         faker.Challenge().Name(),
                         fakeGame,
-                        setup,
+                        faker.Setup().BestOf(),
+                        faker.Setup().Entries(),
                         new ChallengeTimeline(new DateTimeProvider(createdAt), duration),
-                        scoring,
-                        payout
+                        scoring
                     );
 
                     challenge.SetEntityId(faker.Challenge().Id());
@@ -69,7 +65,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Fakers
 
                     participantFaker.UseSeed(faker.Random.Int());
 
-                    var participants = participantFaker.Generate(this.ParticipantCount(fakeState, setup.Entries));
+                    var participants = participantFaker.Generate(this.ParticipantCount(fakeState, challenge.Entries));
 
                     participants.ForEach(participant => challenge.Register(participant));
 
@@ -84,7 +80,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Fakers
 
                                 matchFaker.UseSeed(faker.Random.Int());
 
-                                var matches = matchFaker.Generate(this.MatchCount(fakeState, setup.BestOf));
+                                var matches = matchFaker.Generate(this.MatchCount(fakeState, challenge.BestOf));
 
                                 matches.ForEach(participant.Snapshot);
                             }

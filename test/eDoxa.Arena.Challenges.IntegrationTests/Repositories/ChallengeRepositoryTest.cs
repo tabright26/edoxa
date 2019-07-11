@@ -16,12 +16,12 @@ using Bogus;
 
 using eDoxa.Arena.Challenges.Api.Application.Fakers;
 using eDoxa.Arena.Challenges.Api.Application.Fakers.Extensions;
-using eDoxa.Arena.Challenges.Domain;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.IntegrationTests.Helpers;
 using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Domain.Providers;
 using eDoxa.Seedwork.Testing.Extensions;
 
 using FluentAssertions;
@@ -118,7 +118,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
                     var challengeRepository = scope.GetService<IChallengeRepository>();
                     var challenge = await challengeRepository.FindChallengeAsync(fakeChallenge.Id);
                     challenge.Should().NotBeNull();
-                    var entries = challenge?.Setup.Entries - challenge?.Participants.Count;
+                    var entries = challenge?.Entries - challenge?.Participants.Count;
 
                     for (var index = 0; index < entries; index++)
                     {
@@ -137,7 +137,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
                     var challengeRepository = scope.GetService<IChallengeRepository>();
                     var challenge = await challengeRepository.FindChallengeAsync(fakeChallenge.Id);
                     challenge.Should().NotBeNull();
-                    challenge?.Participants.Should().HaveCount(challenge.Setup.Entries);
+                    challenge?.Participants.Should().HaveCount(challenge.Entries);
                     challenge?.Timeline.State.Should().Be(ChallengeState.InProgress);
                 }
             );

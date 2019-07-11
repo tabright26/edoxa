@@ -1,12 +1,8 @@
 ﻿// Filename: FakerExtensions.cs
-// Date Created: 2019-07-06
+// Date Created: 2019-07-07
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.Collections.Generic;
@@ -14,6 +10,7 @@ using System.Linq;
 
 using Bogus;
 
+using eDoxa.Cashier.Api.Application.Fakers.DataSets;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Seedwork.Common;
 
@@ -37,9 +34,14 @@ namespace eDoxa.Cashier.Api.Application.Fakers.Extensions
             return Domain.AggregateModels.UserId.FromGuid(testUserId);
         }
 
-        public static void ResetUserIds()
+        public static ChallengeDataSet Challenge(this Faker faker)
         {
-            _testUserIds = DataResources.TestUserIds.OrderBy(testUserId => testUserId).ToList();
+            return new ChallengeDataSet(faker);
+        }
+
+        public static ChallengeSetupDataSet Setup(this Faker faker)
+        {
+            return new ChallengeSetupDataSet(faker);
         }
     }
 }

@@ -24,6 +24,10 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("BestOf");
+
+                    b.Property<int>("Entries");
+
                     b.Property<int>("Game");
 
                     b.Property<string>("Name");
@@ -84,55 +88,6 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("eDoxa.Arena.Challenges.Infrastructure.Models.ChallengeModel", b =>
                 {
-                    b.OwnsMany("eDoxa.Arena.Challenges.Infrastructure.Models.BucketModel", "Buckets", b1 =>
-                        {
-                            b1.Property<Guid>("ChallengeId");
-
-                            b1.Property<Guid>("Id")
-                                .ValueGeneratedOnAdd();
-
-                            b1.Property<decimal>("PrizeAmount")
-                                .HasColumnType("decimal(11, 2)");
-
-                            b1.Property<int>("PrizeCurrency");
-
-                            b1.Property<int>("Size");
-
-                            b1.HasKey("ChallengeId", "Id");
-
-                            b1.ToTable("Bucket");
-
-                            b1.HasOne("eDoxa.Arena.Challenges.Infrastructure.Models.ChallengeModel")
-                                .WithMany("Buckets")
-                                .HasForeignKey("ChallengeId")
-                                .OnDelete(DeleteBehavior.Cascade);
-                        });
-
-                    b.OwnsOne("eDoxa.Arena.Challenges.Infrastructure.Models.ChallengeSetupModel", "Setup", b1 =>
-                        {
-                            b1.Property<Guid>("ChallengeModelId");
-
-                            b1.Property<int>("BestOf");
-
-                            b1.Property<int>("Entries");
-
-                            b1.Property<decimal>("EntryFeeAmount")
-                                .HasColumnType("decimal(11, 2)");
-
-                            b1.Property<int>("EntryFeeCurrency");
-
-                            b1.Property<int>("PayoutEntries");
-
-                            b1.HasKey("ChallengeModelId");
-
-                            b1.ToTable("Challenge");
-
-                            b1.HasOne("eDoxa.Arena.Challenges.Infrastructure.Models.ChallengeModel")
-                                .WithOne("Setup")
-                                .HasForeignKey("eDoxa.Arena.Challenges.Infrastructure.Models.ChallengeSetupModel", "ChallengeModelId")
-                                .OnDelete(DeleteBehavior.Cascade);
-                        });
-
                     b.OwnsOne("eDoxa.Arena.Challenges.Infrastructure.Models.ChallengeTimelineModel", "Timeline", b1 =>
                         {
                             b1.Property<Guid>("ChallengeModelId");

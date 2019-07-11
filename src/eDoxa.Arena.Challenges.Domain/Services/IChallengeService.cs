@@ -25,7 +25,6 @@ namespace eDoxa.Arena.Challenges.Domain.Services
             int seed,
             ChallengeGame game = null,
             ChallengeState state = null,
-            Currency entryFeeCurrency = null,
             CancellationToken cancellationToken = default
         );
 

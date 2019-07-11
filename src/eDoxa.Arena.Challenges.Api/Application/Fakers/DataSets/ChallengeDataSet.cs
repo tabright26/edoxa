@@ -17,7 +17,7 @@ using Bogus;
 using eDoxa.Arena.Challenges.Api.Application.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Common.Extensions;
-using eDoxa.Seedwork.Domain.Aggregate;
+using eDoxa.Seedwork.Domain.Providers;
 
 namespace eDoxa.Arena.Challenges.Api.Application.Fakers.DataSets
 {
@@ -81,11 +81,6 @@ namespace eDoxa.Arena.Challenges.Api.Application.Fakers.DataSets
             }
 
             return timeline;
-        }
-
-        public ChallengeSetup Setup(Currency entryFeeCurrency = null)
-        {
-            return new ChallengeSetup(Faker.Setup().BestOf(), Faker.Setup().PayoutEntries(), Faker.Setup().EntryFee(entryFeeCurrency));
         }
     }
 }
