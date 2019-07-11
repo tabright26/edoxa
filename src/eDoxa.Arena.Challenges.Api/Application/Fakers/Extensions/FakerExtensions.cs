@@ -16,13 +16,13 @@ using Bogus;
 
 using eDoxa.Arena.Challenges.Api.Application.Fakers.DataSets;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
-using eDoxa.Seedwork.Common;
+using eDoxa.Seedwork.Infrastructure.Storage;
 
 namespace eDoxa.Arena.Challenges.Api.Application.Fakers.Extensions
 {
     public static class FakerExtensions
     {
-        private static ICollection<Guid> _testUserIds = DataResources.TestUserIds.OrderBy(testUserId => testUserId).ToList();
+        private static ICollection<Guid> _testUserIds = CsvStorage.TestUsers.OrderBy(testUserId => testUserId).ToList();
 
         public static UserId UserId(this Faker faker)
         {
@@ -40,7 +40,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Fakers.Extensions
 
         public static void ResetUserIds()
         {
-            _testUserIds = DataResources.TestUserIds.OrderBy(testUserId => testUserId).ToList();
+            _testUserIds = CsvStorage.TestUsers.OrderBy(testUserId => testUserId).ToList();
         }
 
         public static ChallengeDataSet Challenge(this Faker faker)

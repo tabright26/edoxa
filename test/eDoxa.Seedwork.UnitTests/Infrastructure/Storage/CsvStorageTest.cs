@@ -8,25 +8,25 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Seedwork.Common;
+using eDoxa.Seedwork.Infrastructure.Storage;
 
 using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Seedwork.UnitTests.Common
+namespace eDoxa.Seedwork.UnitTests.Infrastructure.Storage
 {
     [TestClass]
-    public sealed class DataResourcesTest
+    public sealed class CsvStorageTest
     {
         [TestMethod]
-        public void TestUserIds_ShouldHaveCountThousand()
+        public void TestUsers_ShouldHaveCountThousand()
         {
             // Act
-            var testUserIds = DataResources.TestUserIds;
+            var testUsers = CsvStorage.TestUsers;
 
             // Assert
-            testUserIds.Should().HaveCount(1000);
+            testUsers.Should().HaveCount(1000);
         }
     }
 }

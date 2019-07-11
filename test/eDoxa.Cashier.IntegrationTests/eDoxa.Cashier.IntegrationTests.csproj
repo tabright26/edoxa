@@ -18,7 +18,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\eDoxa.Arena.Challenges.Domain\eDoxa.Arena.Challenges.Domain.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Cashier.Api\eDoxa.Cashier.Api.csproj" />
-    <ProjectReference Include="..\..\src\eDoxa.Seedwork.Common\eDoxa.Seedwork.Common.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Seedwork.Testing\eDoxa.Seedwork.Testing.csproj" />
   </ItemGroup>
 

@@ -15,31 +15,31 @@ using System.Linq;
 using Bogus;
 
 using eDoxa.Identity.Domain.AggregateModels;
-using eDoxa.Seedwork.Common;
+using eDoxa.Seedwork.Infrastructure.Storage;
 
 namespace eDoxa.Identity.Api.Application.Fakers.Extensions
 {
     public static class FakerExtensions
     {
-        private static ICollection<Guid> _testUserIds = DataResources.TestUserIds.OrderBy(testUserId => testUserId).ToList();
+        private static ICollection<Guid> _testUsers = CsvStorage.TestUsers.OrderBy(testUserId => testUserId).ToList();
 
         public static UserId UserId(this Faker faker)
         {
-            if (!_testUserIds.Any())
+            if (!_testUsers.Any())
             {
                 throw new ApplicationException("There is no longer any test user ID available.");
             }
 
-            var testUserId = faker.PickRandom(_testUserIds);
+            var testUserId = faker.PickRandom(_testUsers);
 
-            _testUserIds.Remove(testUserId);
+            _testUsers.Remove(testUserId);
 
             return Domain.AggregateModels.UserId.FromGuid(testUserId);
         }
 
         public static void ResetUserIds()
         {
-            _testUserIds = DataResources.TestUserIds.OrderBy(testUserId => testUserId).ToList();
+            _testUsers = CsvStorage.TestUsers.OrderBy(testUserId => testUserId).ToList();
         }
     }
 }
