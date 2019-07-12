@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Storage;
 using eDoxa.Arena.Challenges.Domain.Repositories;
-using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Seedwork.Infrastructure;
 
