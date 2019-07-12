@@ -3,15 +3,11 @@
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Application.Fakers;
+using eDoxa.Identity.Api.Infrastructure.Data.Fakers;
 using eDoxa.Identity.Domain.ViewModels;
 using eDoxa.Identity.Infrastructure;
 using eDoxa.Identity.IntegrationTests.Helpers;

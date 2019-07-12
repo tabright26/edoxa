@@ -1,12 +1,8 @@
 ﻿// Filename: AccountTest.cs
-// Date Created: 2019-07-04
+// Date Created: 2019-07-05
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.Collections.Generic;
@@ -26,7 +22,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
     {
         public static IEnumerable<object[]> ValidCurrencyDataSets => Currency.GetEnumerations().Select(currency => new object[] {currency});
 
-        public static IEnumerable<object[]> InvalidCurrencyDataSets => new[] {new object[] {new Currency()}, new object[] { Currency.All}};
+        public static IEnumerable<object[]> InvalidCurrencyDataSets => new[] {new object[] {new Currency()}, new object[] {Currency.All}};
 
         [DataTestMethod]
         [DynamicData(nameof(ValidCurrencyDataSets))]

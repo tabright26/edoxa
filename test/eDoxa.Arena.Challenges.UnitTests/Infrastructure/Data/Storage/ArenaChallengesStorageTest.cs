@@ -31,16 +31,16 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Data.Storage
         }
 
         [TestMethod]
-        public void TestUserIds_ShouldHaveCountOfThousandRecords()
+        public void TestUsers_ShouldHaveCountOfThousandRecords()
         {
             // Arrange
             const int recordCount = 1000;
 
             // Act
-            var testUserIds = ArenaChallengesStorage.TestUserIds.ToList();
+            var testUsers = ArenaChallengesStorage.TestUsers.ToList();
 
             // Assert
-            testUserIds.Should().HaveCount(recordCount);
+            testUsers.Should().HaveCount(recordCount);
         }
     }
 }

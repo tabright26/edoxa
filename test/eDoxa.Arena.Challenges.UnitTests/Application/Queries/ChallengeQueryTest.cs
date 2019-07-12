@@ -9,7 +9,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Api.Application.Fakers;
+using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Queries;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure;
@@ -103,7 +103,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
                     var challengeQuery = new ChallengeQuery(context, MapperExtensions.Mapper, _mockHttpContextAccessor.Object);
 
                     var challenges = await challengeQuery.FetchChallengesAsync(game, state);
-                    
+
                     challenges.Should().HaveCount(fakeChallenges.Count(challenge => challenge.Game == game && challenge.Timeline == state));
                 }
             }

@@ -15,6 +15,7 @@ using eDoxa.Cashier.Api.Application.Factories;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 
 namespace eDoxa.Cashier.Api.Infrastructure.Data.Storage
 {
@@ -22,6 +23,32 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Storage
     {
         private const string TestUsersFilePath = "Infrastructure/Data/Storage/TestFiles/TestUsers.csv";
         private const string TestChallengesFilePath = "Infrastructure/Data/Storage/TestFiles/TestChallenges.csv";
+
+        public static IReadOnlyCollection<User> TestUsers => Users.OrderBy(user => user.Id).ToList();
+
+        private static IEnumerable<User> Users
+        {
+            get
+            {
+                var path = Path.Combine(Directory.GetCurrentDirectory(), TestUsersFilePath);
+
+                using (var reader = new StreamReader(path))
+                using (var csv = new CsvReader(reader))
+                {
+                    var records = csv.GetRecords(
+                        new
+                        {
+                            Id = default(Guid)
+                        }
+                    );
+
+                    foreach (var record in records)
+                    {
+                        yield return new User(UserId.FromGuid(record.Id));
+                    }
+                }
+            }
+        }
 
         public static IEnumerable<IChallenge> TestChallenges
         {
@@ -60,30 +87,6 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Storage
                         challenge.SetEntityId(ChallengeId.FromGuid(record.Id));
 
                         yield return challenge;
-                    }
-                }
-            }
-        }
-
-        public static IEnumerable<UserId> TestUserIds
-        {
-            get
-            {
-                var path = Path.Combine(Directory.GetCurrentDirectory(), TestUsersFilePath);
-
-                using (var reader = new StreamReader(path))
-                using (var csv = new CsvReader(reader))
-                {
-                    var records = csv.GetRecords(
-                        new
-                        {
-                            Id = default(Guid)
-                        }
-                    );
-
-                    foreach (var record in records)
-                    {
-                        yield return UserId.FromGuid(record.Id);
                     }
                 }
             }

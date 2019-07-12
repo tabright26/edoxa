@@ -1,10 +1,8 @@
-﻿// Filename: StorageAccessorTest.cs
+﻿// Filename: CashierStorageTest.cs
 // Date Created: 2019-07-12
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-
-using System.Linq;
 
 using eDoxa.Cashier.Api.Infrastructure.Data.Storage;
 
@@ -24,7 +22,7 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Storage
             const int recordCount = 40;
 
             // Act
-            var testChallenges = CashierStorage.TestChallenges.ToList();
+            var testChallenges = CashierStorage.TestChallenges;
 
             // Assert
             testChallenges.Should().HaveCount(recordCount);
@@ -37,10 +35,10 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Storage
             const int recordCount = 1000;
 
             // Act
-            var testUserIds = CashierStorage.TestUserIds.ToList();
+            var testUsers = CashierStorage.TestUsers;
 
             // Assert
-            testUserIds.Should().HaveCount(recordCount);
+            testUsers.Should().HaveCount(recordCount);
         }
     }
 }

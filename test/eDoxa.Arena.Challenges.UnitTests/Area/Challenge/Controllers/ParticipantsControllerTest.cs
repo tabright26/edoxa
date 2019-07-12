@@ -1,18 +1,14 @@
 ﻿// Filename: ParticipantsControllerTest.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-07-12
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Api.Application.Fakers;
 using eDoxa.Arena.Challenges.Api.Area.Challenge.Controllers;
+using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
 using eDoxa.Arena.Challenges.UnitTests.Helpers.Extensions;
@@ -50,7 +46,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Area.Challenge.Controllers
             challengeFaker.UseSeed(95632852);
             var challenge = challengeFaker.Generate();
             var participants = challenge.Participants;
-            
+
             _queries.Setup(queries => queries.FindParticipantAsync(It.IsAny<ParticipantId>())).ReturnsAsync(participants.First()).Verifiable();
 
             var controller = new ParticipantsController(_queries.Object);

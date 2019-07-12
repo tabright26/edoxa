@@ -3,10 +3,6 @@
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.Threading;
 using System.Threading.Tasks;
@@ -50,11 +46,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Commands.Handlers
             var handler = new CreateUserCommandHandler(_mockAccountRepository.Object);
 
             // Act
-            await handler.HandleAsync(
-                new CreateUserCommand(
-                    new UserId()
-                )
-            );
+            await handler.HandleAsync(new CreateUserCommand(new UserId()));
 
             // Assert
             _mockAccountRepository.Verify(mock => mock.Create(It.IsAny<IAccount>()), Times.Once);

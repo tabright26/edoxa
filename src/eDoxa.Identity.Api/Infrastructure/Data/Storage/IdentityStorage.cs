@@ -1,4 +1,4 @@
-﻿// Filename: StorageAccessor.cs
+﻿// Filename: IdentityStorage.cs
 // Date Created: 2019-07-11
 // 
 // ================================================
@@ -7,10 +7,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 using CsvHelper;
 
-using eDoxa.Identity.Domain.AggregateModels;
+using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 
 namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
 {
@@ -18,7 +19,9 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
     {
         private const string TestUsersFilePath = "Infrastructure/Data/Storage/TestFiles/TestUsers.csv";
 
-        public static IEnumerable<UserId> TestUserIds
+        public static IReadOnlyCollection<User> TestUsers => Users.OrderBy(user => user.Id).ToList();
+
+        private static IEnumerable<User> Users
         {
             get
             {
@@ -27,11 +30,19 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
                 using (var reader = new StreamReader(path))
                 using (var csv = new CsvReader(reader))
                 {
-                    var records = csv.GetRecords<dynamic>();
+                    var records = csv.GetRecords(
+                        new
+                        {
+                            Id = default(Guid)
+                        }
+                    );
 
                     foreach (var record in records)
                     {
-                        yield return UserId.FromGuid(Guid.Parse(record.Id));
+                        yield return new User
+                        {
+                            Id = record.Id
+                        };
                     }
                 }
             }

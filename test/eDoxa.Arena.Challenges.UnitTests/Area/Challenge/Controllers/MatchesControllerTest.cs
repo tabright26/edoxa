@@ -1,18 +1,14 @@
 ﻿// Filename: MatchesControllerTest.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-07-12
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Api.Application.Fakers;
 using eDoxa.Arena.Challenges.Api.Area.Challenge.Controllers;
+using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
@@ -53,7 +49,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Area.Challenge.Controllers
             var participants = challenge.Participants;
             var participant = participants.First();
             var matches = participant.Matches;
-            
+
             _queries.Setup(queries => queries.FindMatchAsync(It.IsAny<MatchId>())).ReturnsAsync(matches.First()).Verifiable();
 
             var controller = new MatchesController(_queries.Object);

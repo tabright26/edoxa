@@ -1,19 +1,15 @@
 ﻿// Filename: LeagueOfLegendsMatchAdapterTest.cs
-// Date Created: 2019-06-30
+// Date Created: 2019-07-05
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Application.Adapters;
-using eDoxa.Arena.Challenges.Api.Application.Fakers;
+using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.LeagueOfLegends.Abstractions;
 using eDoxa.Arena.LeagueOfLegends.Dtos;

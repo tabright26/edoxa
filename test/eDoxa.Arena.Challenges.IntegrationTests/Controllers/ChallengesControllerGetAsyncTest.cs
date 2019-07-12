@@ -3,17 +3,13 @@
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Api.Application.Fakers;
+using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.IntegrationTests.Helpers;

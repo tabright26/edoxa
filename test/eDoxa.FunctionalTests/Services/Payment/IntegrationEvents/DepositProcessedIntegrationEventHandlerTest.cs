@@ -10,7 +10,7 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Application.Fakers;
+using eDoxa.Cashier.Api.Infrastructure.Data.Fakers;
 using eDoxa.Cashier.Api.IntegrationEvents;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;

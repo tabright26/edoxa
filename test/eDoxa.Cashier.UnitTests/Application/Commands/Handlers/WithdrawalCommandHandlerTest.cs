@@ -1,12 +1,8 @@
-﻿// Filename: WithdrawCommandHandlerTest.cs
-// Date Created: 2019-06-01
+﻿// Filename: WithdrawalCommandHandlerTest.cs
+// Date Created: 2019-07-05
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.Threading;
 using System.Threading.Tasks;
@@ -55,14 +51,24 @@ namespace eDoxa.Cashier.UnitTests.Application.Commands.Handlers
         {
             // Arrange
             var command = new WithdrawalCommand(Money.Fifty.Amount);
-            _mockAccountService.Setup(accountService => accountService.WithdrawalAsync(It.IsAny<string>(), It.IsAny<UserId>(), It.IsAny<Money>(), It.IsAny<CancellationToken>())).Returns(Unit.Task).Verifiable();
+
+            _mockAccountService
+                .Setup(
+                    accountService => accountService.WithdrawalAsync(It.IsAny<string>(), It.IsAny<UserId>(), It.IsAny<Money>(), It.IsAny<CancellationToken>())
+                )
+                .Returns(Unit.Task)
+                .Verifiable();
+
             var handler = new WithdrawalCommandHandler(_mockHttpContextAccessor.Object, _mockAccountService.Object);
 
             // Act
             await handler.HandleAsync(command);
 
             // Assert
-            _mockAccountService.Verify(accountService => accountService.WithdrawalAsync(It.IsAny<string>(), It.IsAny<UserId>(), It.IsAny<Money>(), It.IsAny<CancellationToken>()), Times.Once);
+            _mockAccountService.Verify(
+                accountService => accountService.WithdrawalAsync(It.IsAny<string>(), It.IsAny<UserId>(), It.IsAny<Money>(), It.IsAny<CancellationToken>()),
+                Times.Once
+            );
         }
     }
 }

@@ -18,16 +18,16 @@ namespace eDoxa.Identity.UnitTests.Infrastructure.Data.Storage
     public sealed class IdentityStorageTest
     {
         [TestMethod]
-        public void TestUserIds_ShouldHaveCountOfThousandRecords()
+        public void TestUsers_ShouldHaveCountOfThousandRecords()
         {
             // Arrange
             const int recordCount = 1000;
 
             // Act
-            var testUserIds = IdentityStorage.TestUserIds.ToList();
+            var testUsers = IdentityStorage.TestUsers.ToList();
 
             // Assert
-            testUserIds.Should().HaveCount(recordCount);
+            testUsers.Should().HaveCount(recordCount);
         }
     }
 }

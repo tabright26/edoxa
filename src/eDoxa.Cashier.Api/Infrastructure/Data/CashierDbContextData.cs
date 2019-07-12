@@ -7,7 +7,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Application.Fakers;
+using eDoxa.Cashier.Api.Infrastructure.Data.Fakers;
 using eDoxa.Cashier.Api.Infrastructure.Data.Storage;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Infrastructure;

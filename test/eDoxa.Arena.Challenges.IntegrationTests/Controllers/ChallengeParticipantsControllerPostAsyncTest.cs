@@ -3,10 +3,6 @@
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.Net.Http;
@@ -16,8 +12,8 @@ using System.Threading.Tasks;
 using Bogus;
 
 using eDoxa.Arena.Challenges.Api.Application.Commands;
-using eDoxa.Arena.Challenges.Api.Application.Fakers;
-using eDoxa.Arena.Challenges.Api.Application.Fakers.Extensions;
+using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
+using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Repositories;
@@ -71,7 +67,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         {
             // Arrange
             var faker = new Faker();
-            var userId = faker.UserId();
+            var userId = faker.User().Id();
             var challengeFaker = new ChallengeFaker(ChallengeGame.LeagueOfLegends, ChallengeState.Inscription);
             challengeFaker.UseSeed(1);
             var challenge = challengeFaker.Generate();

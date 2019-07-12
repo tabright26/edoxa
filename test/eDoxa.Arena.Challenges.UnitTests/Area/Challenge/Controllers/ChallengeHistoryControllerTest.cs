@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeHistoryControllerTest.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-07-12
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -7,8 +7,8 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Api.Application.Fakers;
 using eDoxa.Arena.Challenges.Api.Area.Challenge.Controllers;
+using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;

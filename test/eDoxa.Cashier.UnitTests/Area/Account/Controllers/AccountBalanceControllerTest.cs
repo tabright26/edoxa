@@ -1,17 +1,13 @@
 ﻿// Filename: AccountBalanceControllerTest.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-07-12
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Application.Fakers;
 using eDoxa.Cashier.Api.Area.Account.Controllers;
+using eDoxa.Cashier.Api.Infrastructure.Data.Fakers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Queries;
@@ -61,9 +57,11 @@ namespace eDoxa.Cashier.UnitTests.Area.Account.Controllers
             // Arrange
             var accountFaker = new AccountFaker();
             var account = accountFaker.Generate();
+
             _mockAccountQuery.Setup(mediator => mediator.FindUserBalanceAsync(It.IsAny<Currency>()))
                 .ReturnsAsync(account.GetBalanceFor(Currency.Money))
                 .Verifiable();
+
             _mockAccountQuery.SetupGet(accountQuery => accountQuery.Mapper).Returns(MapperExtensions.Mapper);
             var controller = new AccountBalanceController(_mockAccountQuery.Object);
 

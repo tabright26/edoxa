@@ -1,18 +1,14 @@
 // Filename: ChallengeTest.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-07-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using eDoxa.Arena.Challenges.Api.Application.Fakers;
+using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Domain.Providers;
@@ -26,6 +22,9 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
     [TestClass]
     public sealed class ChallengeTest
     {
+        private static IEnumerable<object[]> ChallengeStateDataSets =>
+            ChallengeState.GetEnumerations().Where(state => state != ChallengeState.Inscription).Select(state => new object[] {state}).ToList();
+
         //private static IEnumerable<object[]> ChallengeDataSets =>
         //    ChallengeGame.GetEnumerations()
         //        .SelectMany(
@@ -101,8 +100,6 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
             challenge.Participants.Should().HaveCount(participantCount + 1);
         }
 
-        private static IEnumerable<object[]> ChallengeStateDataSets => ChallengeState.GetEnumerations().Where(state => state != ChallengeState.Inscription).Select(state => new object[] {state}).ToList();
-
         [DataTestMethod]
         [DynamicData(nameof(ChallengeStateDataSets))]
         public void Register_ChallengeStateNotInscription_ShouldThrowInvalidOperationException(ChallengeState state)
@@ -113,7 +110,9 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
             var challenge = challengeFaker.Generate();
 
             // Act
-            var action = new Action(() => challenge.Register(new Participant(new UserId(), new GameAccountId(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider())));
+            var action = new Action(
+                () => challenge.Register(new Participant(new UserId(), new GameAccountId(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider()))
+            );
 
             // Assert
             action.Should().Throw<InvalidOperationException>();
@@ -128,7 +127,11 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
             var challenge = challengeFaker.Generate();
 
             // Act
-            var action = new Action(() => challenge.Register(new Participant(challenge.Participants.First().UserId, new GameAccountId(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider())));
+            var action = new Action(
+                () => challenge.Register(
+                    new Participant(challenge.Participants.First().UserId, new GameAccountId(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider())
+                )
+            );
 
             // Assert
             action.Should().Throw<InvalidOperationException>();
@@ -149,7 +152,9 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
             }
 
             // Act
-            var action = new Action(() => challenge.Register(new Participant(new UserId(), new GameAccountId(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider())));
+            var action = new Action(
+                () => challenge.Register(new Participant(new UserId(), new GameAccountId(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider()))
+            );
 
             // Assert
             action.Should().Throw<InvalidOperationException>();

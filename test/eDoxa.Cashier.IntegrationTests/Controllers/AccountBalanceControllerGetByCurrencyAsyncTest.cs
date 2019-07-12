@@ -3,10 +3,6 @@
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +10,7 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Application.Fakers;
+using eDoxa.Cashier.Api.Infrastructure.Data.Fakers;
 using eDoxa.Cashier.Api.ViewModels;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
@@ -39,13 +35,13 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
         private HttpClient _httpClient;
         private TestServer _testServer;
 
-        public static IEnumerable<object[]> ValidCurrencyDataSets => Currency.GetEnumerations().Select(currency => new object[] { currency }).ToList();
+        public static IEnumerable<object[]> ValidCurrencyDataSets => Currency.GetEnumerations().Select(currency => new object[] {currency}).ToList();
 
-        public static IEnumerable<object[]> InvalidCurrencyDataSets => new[] { new object[] { Currency.All }, new object[] { new Currency() } };
+        public static IEnumerable<object[]> InvalidCurrencyDataSets => new[] {new object[] {Currency.All}, new object[] {new Currency()}};
 
         public async Task<HttpResponseMessage> ExecuteAsync(UserId userId, Currency currency)
         {
-            return await _httpClient.DefaultRequestHeaders(new[] { new Claim(JwtClaimTypes.Subject, userId.ToString()) })
+            return await _httpClient.DefaultRequestHeaders(new[] {new Claim(JwtClaimTypes.Subject, userId.ToString())})
                 .GetAsync($"api/account/balance/{currency}");
         }
 

@@ -1,12 +1,8 @@
 // Filename: MatchTest.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-07-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +10,7 @@ using System.Linq;
 using Bogus;
 
 using eDoxa.Arena.Challenges.Api.Application.Factories;
-using eDoxa.Arena.Challenges.Api.Application.Fakers.Extensions;
+using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Domain.Providers;
 
@@ -36,10 +32,10 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
             // Arrange
             var faker = new Faker();
             var scoring = new ScoringFactory().CreateInstance(game).Scoring;
-            var stats = faker.Match().Stats(game);
-            
+            var stats = faker.Game().Stats(game);
+
             // Act
-            var match = new StatMatch(scoring, stats, faker.Match().GameReference(game), new UtcNowDateTimeProvider());
+            var match = new StatMatch(scoring, stats, faker.Game().Reference(game), new UtcNowDateTimeProvider());
 
             // Assert
             match.Stats.Should().HaveCount(scoring.Count);
