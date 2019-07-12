@@ -8,14 +8,13 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Linq;
 
 using Bogus;
 
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
-using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Providers;
 
 namespace eDoxa.Cashier.Api.Application.Fakers
 {
@@ -68,7 +67,7 @@ namespace eDoxa.Cashier.Api.Application.Fakers
                                 currency,
                                 new TransactionDescription(faker.Lorem.Sentence()),
                                 faker.PickRandom(types),
-                                new FakeDataTimeProvider(faker.Date.Recent())
+                                new DateTimeProvider(faker.Date.Recent())
                             );
 
                             transaction.SetEntityId(TransactionId.FromGuid(faker.Random.Guid()));
@@ -121,7 +120,7 @@ namespace eDoxa.Cashier.Api.Application.Fakers
                                 currency,
                                 new TransactionDescription(faker.Lorem.Sentence()),
                                 faker.PickRandom(types),
-                                new FakeDataTimeProvider(faker.Date.Recent())
+                                new DateTimeProvider(faker.Date.Recent())
                             );
 
                             transaction.SetEntityId(TransactionId.FromGuid(faker.Random.Guid()));
@@ -147,16 +146,6 @@ namespace eDoxa.Cashier.Api.Application.Fakers
                     );
                 }
             );
-        }
-
-        private sealed class FakeDataTimeProvider : IDateTimeProvider
-        {
-            public FakeDataTimeProvider(DateTime dateTime)
-            {
-                DateTime = dateTime;
-            }
-
-            public DateTime DateTime { get; }
         }
     }
 }

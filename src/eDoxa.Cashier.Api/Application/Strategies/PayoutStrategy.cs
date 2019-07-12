@@ -1,12 +1,8 @@
 ﻿// Filename: PayoutStrategy.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-07-10
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.IO;
@@ -23,40 +19,37 @@ namespace eDoxa.Cashier.Api.Application.Strategies
 {
     public sealed class PayoutStrategy : IPayoutStrategy
     {
-        private const string FileName = "PayoutCharts.csv";
+        private const string PayoutFilePath = "Infrastructure/Data/Storage/SourceFiles/Payouts.csv";
 
-        private static ILookup<PayoutEntries, PayoutChart> PayoutCharts
+        private static ILookup<PayoutEntries, Record> Payouts
         {
             get
             {
-                using (var streamReader = new StreamReader(Path.Combine(Directory.GetCurrentDirectory(), $"Resources/{FileName}")))
+                using (var streamReader = new StreamReader(Path.Combine(Directory.GetCurrentDirectory(), PayoutFilePath)))
                 using (var csvReader = new CsvReader(streamReader))
                 {
-                    return csvReader.GetRecords<PayoutChart>()
-                        .ToLookup(payoutChart => new PayoutEntries(payoutChart.PayoutEntries), payoutChart => payoutChart);
+                    return csvReader.GetRecords<Record>().ToLookup(record => new PayoutEntries(record.PayoutEntries), record => record);
                 }
             }
         }
 
-        public IPayout GetPayout(PayoutEntries payoutEntries, EntryFee entryFee)
+        public IPayout GetPayout(PayoutEntries entries, EntryFee entryFee)
         {
-            var payoutRecords = PayoutCharts[payoutEntries].ToList();
+            var records = Payouts[entries].ToList();
 
-            if (payoutRecords.IsNullOrEmpty())
+            if (records.IsNullOrEmpty())
             {
-                throw new NotSupportedException($"Payout entries value ({payoutEntries}) is not supported.");
+                throw new NotSupportedException($"Payout entries value ({entries}) is not supported.");
             }
 
             var prize = entryFee.GetLowestPrize();
 
-            return new Payout(
-                new Buckets(
-                    payoutRecords.Select(payoutRecord => new Bucket(prize.ApplyFactor(payoutRecord.PrizeFactor), new BucketSize(payoutRecord.BucketSize)))
-                )
-            );
+            var buckets = new Buckets(records.Select(record => new Bucket(prize.ApplyFactor(record.PrizeFactor), new BucketSize(record.BucketSize))));
+
+            return new Payout(buckets);
         }
 
-        private class PayoutChart
+        private sealed class Record
         {
             public int PayoutEntries { get; set; }
 

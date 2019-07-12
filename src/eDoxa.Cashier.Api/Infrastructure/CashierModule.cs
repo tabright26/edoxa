@@ -38,10 +38,12 @@ namespace eDoxa.Cashier.Api.Infrastructure
             builder.RegisterModule<IntegrationEventModule<CashierDbContext>>();
 
             // Repositories
+            builder.RegisterType<ChallengeRepository>().As<IChallengeRepository>().InstancePerLifetimeScope();
             builder.RegisterType<AccountRepository>().As<IAccountRepository>().InstancePerLifetimeScope();
             builder.RegisterType<TransactionRepository>().As<ITransactionRepository>().InstancePerLifetimeScope();
 
             // Queries
+            builder.RegisterType<ChallengeQuery>().As<IChallengeQuery>().InstancePerLifetimeScope();
             builder.RegisterType<AccountQuery>().As<IAccountQuery>().InstancePerLifetimeScope();
             builder.RegisterType<TransactionQuery>().As<ITransactionQuery>().InstancePerLifetimeScope();
 

@@ -14,14 +14,14 @@ using System.Linq;
 
 using Bogus;
 
+using eDoxa.Identity.Api.Infrastructure.Data.Storage;
 using eDoxa.Identity.Domain.AggregateModels;
-using eDoxa.Seedwork.Infrastructure.Storage;
 
 namespace eDoxa.Identity.Api.Application.Fakers.Extensions
 {
     public static class FakerExtensions
     {
-        private static ICollection<Guid> _testUsers = CsvStorage.TestUsers.OrderBy(testUserId => testUserId).ToList();
+        private static ICollection<UserId> _testUsers = IdentityStorage.TestUserIds.OrderBy(testUserId => testUserId).ToList();
 
         public static UserId UserId(this Faker faker)
         {
@@ -34,12 +34,12 @@ namespace eDoxa.Identity.Api.Application.Fakers.Extensions
 
             _testUsers.Remove(testUserId);
 
-            return Domain.AggregateModels.UserId.FromGuid(testUserId);
+            return testUserId;
         }
 
         public static void ResetUserIds()
         {
-            _testUsers = CsvStorage.TestUsers.OrderBy(testUserId => testUserId).ToList();
+            _testUsers = IdentityStorage.TestUserIds.OrderBy(testUserId => testUserId).ToList();
         }
     }
 }

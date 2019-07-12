@@ -14,6 +14,6 @@ namespace eDoxa.Cashier.Domain.Strategies
 {
     public interface IPayoutStrategy
     {
-        IPayout GetPayout(PayoutEntries payoutEntries, EntryFee entryFee);
+        IPayout GetPayout(PayoutEntries entries, EntryFee entryFee);
     }
 }

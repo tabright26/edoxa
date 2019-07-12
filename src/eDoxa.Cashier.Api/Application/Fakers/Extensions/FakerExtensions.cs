@@ -11,14 +11,14 @@ using System.Linq;
 using Bogus;
 
 using eDoxa.Cashier.Api.Application.Fakers.DataSets;
+using eDoxa.Cashier.Api.Infrastructure.Data.Storage;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Seedwork.Infrastructure.Storage;
 
 namespace eDoxa.Cashier.Api.Application.Fakers.Extensions
 {
     public static class FakerExtensions
     {
-        private static ICollection<Guid> _testUserIds = CsvStorage.TestUsers.OrderBy(testUserId => testUserId).ToList();
+        private static ICollection<UserId> _testUserIds = CashierStorage.TestUserIds.OrderBy(testUserId => testUserId).ToList();
 
         public static UserId UserId(this Faker faker)
         {

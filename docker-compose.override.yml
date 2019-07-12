@@ -58,7 +58,8 @@ services:
     ports:
       - "5001:80"
     volumes:
-      - ./data:/app/Resources
+      - ./data/Identity/SourceFiles:/app/Infrastructure/Data/Storage/SourceFiles
+      - ./data/Identity/TestFiles:/app/Infrastructure/Data/Storage/TestFiles
 
   cashier.api:
     environment:
@@ -78,7 +79,8 @@ services:
     ports:
       - "5002:80"
     volumes:
-      - ./data:/app/Resources
+      - ./data/Cashier/SourceFiles:/app/Infrastructure/Data/Storage/SourceFiles
+      - ./data/Cashier/TestFiles:/app/Infrastructure/Data/Storage/TestFiles
 
   arena.challenges.api:
     environment:
@@ -98,7 +100,8 @@ services:
     ports:
       - "5003:80"
     volumes:
-      - ./data:/app/Resources
+      - ./data/Arena/Challenges/SourceFiles:/app/Infrastructure/Data/Storage/SourceFiles
+      - ./data/Arena/Challenges/TestFiles:/app/Infrastructure/Data/Storage/TestFiles
 
   payment.api:
     environment:

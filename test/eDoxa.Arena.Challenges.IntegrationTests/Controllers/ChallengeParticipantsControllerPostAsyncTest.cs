@@ -29,6 +29,8 @@ using eDoxa.Seedwork.Testing.Helpers;
 
 using IdentityModel;
 
+using JetBrains.Annotations;
+
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
@@ -110,6 +112,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
                     return Task.FromResult(true);
                 }
 
+                [ItemNotNull]
                 public Task<GameAccountId> GetGameAccountIdAsync(UserId userId, ChallengeGame game)
                 {
                     return Task.FromResult(new GameAccountId(Guid.NewGuid().ToString()));
