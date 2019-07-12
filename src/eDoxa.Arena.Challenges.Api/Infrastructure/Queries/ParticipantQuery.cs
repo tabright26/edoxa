@@ -26,7 +26,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Queries
 {
     public sealed partial class ParticipantQuery
     {
-        public ParticipantQuery(ChallengesDbContext context, IMapper mapper)
+        public ParticipantQuery(ArenaChallengesDbContext context, IMapper mapper)
         {
             Mapper = mapper;
             Participants = context.Participants.AsNoTracking();

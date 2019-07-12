@@ -22,7 +22,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Helpers.Extensions
                 var configuration = new MapperConfiguration(
                     config =>
                     {
-                        config.AddProfiles(Assembly.GetAssembly(typeof(ChallengesDbContext)));
+                        config.AddProfiles(Assembly.GetAssembly(typeof(ArenaChallengesDbContext)));
                         config.AddProfiles(Assembly.GetAssembly(typeof(Startup)));
                     }
                 );

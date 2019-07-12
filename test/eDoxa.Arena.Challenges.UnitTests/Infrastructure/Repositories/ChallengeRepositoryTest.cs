@@ -34,7 +34,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Repositories
 
             var fakeChallenge = challengeFaker.Generate();
 
-            using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
+            using (var factory = new InMemoryDbContextFactory<ArenaChallengesDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {
@@ -65,7 +65,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Repositories
 
             var fakeChallenges = challengeFaker.Generate(5);
 
-            using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
+            using (var factory = new InMemoryDbContextFactory<ArenaChallengesDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {

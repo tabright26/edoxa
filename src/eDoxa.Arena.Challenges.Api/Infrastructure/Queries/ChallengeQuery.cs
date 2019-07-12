@@ -31,11 +31,11 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Queries
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ChallengeQuery(ChallengesDbContext challengesDbContext, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+        public ChallengeQuery(ArenaChallengesDbContext arenaChallengesDbContext, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             Mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
-            Challenges = challengesDbContext.Challenges.AsNoTracking();
+            Challenges = arenaChallengesDbContext.Challenges.AsNoTracking();
         }
 
         private IQueryable<ChallengeModel> Challenges { get; }

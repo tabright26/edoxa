@@ -33,7 +33,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure
         {
             builder.RegisterModule<DomainEventModule>();
             builder.RegisterModule<CommandModule>();
-            builder.RegisterModule<IntegrationEventModule<ChallengesDbContext>>();
+            builder.RegisterModule<IntegrationEventModule<ArenaChallengesDbContext>>();
 
             // Repositories
             builder.RegisterType<ChallengeRepository>().As<IChallengeRepository>().InstancePerLifetimeScope();

@@ -14,16 +14,16 @@ using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
 {
-    internal sealed class ChallengesDbContextFactory : DesignTimeDbContextFactory<ChallengesDbContext>
+    internal sealed class ArenaChallengesDbContextFactory : DesignTimeDbContextFactory<ArenaChallengesDbContext>
     {
         protected override string BasePath => Directory.GetCurrentDirectory();
 
         protected override Assembly MigrationsAssembly => Assembly.GetAssembly(typeof(Startup));
 
         [NotNull]
-        public override ChallengesDbContext CreateDbContext(string[] args)
+        public override ArenaChallengesDbContext CreateDbContext(string[] args)
         {
-            return new ChallengesDbContext(Options);
+            return new ArenaChallengesDbContext(Options);
         }
     }
 }

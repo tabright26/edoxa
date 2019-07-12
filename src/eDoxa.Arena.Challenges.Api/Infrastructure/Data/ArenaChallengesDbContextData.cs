@@ -17,13 +17,13 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data
 {
-    public sealed class ChallengesDbContextData : IDbContextData
+    public sealed class ArenaChallengesDbContextData : IDbContextData
     {
-        private readonly ChallengesDbContext _context;
+        private readonly ArenaChallengesDbContext _context;
         private readonly IHostingEnvironment _environment;
         private readonly IChallengeRepository _challengeRepository;
 
-        public ChallengesDbContextData(ChallengesDbContext context, IHostingEnvironment environment, IChallengeRepository challengeRepository)
+        public ArenaChallengesDbContextData(ArenaChallengesDbContext context, IHostingEnvironment environment, IChallengeRepository challengeRepository)
         {
             _context = context;
             _environment = environment;

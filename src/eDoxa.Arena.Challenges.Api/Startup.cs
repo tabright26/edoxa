@@ -61,7 +61,7 @@ namespace eDoxa.Arena.Challenges.Api
 
             services.AddIntegrationEventDbContext(Configuration, Assembly.GetAssembly(typeof(Startup)));
 
-            services.AddDbContext<ChallengesDbContext, ChallengesDbContextData>(Configuration, Assembly.GetAssembly(typeof(Startup)));
+            services.AddDbContext<ArenaChallengesDbContext, ArenaChallengesDbContextData>(Configuration, Assembly.GetAssembly(typeof(Startup)));
 
             services.AddVersioning();
 

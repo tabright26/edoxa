@@ -17,9 +17,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Arena.Challenges.Infrastructure
 {
-    public sealed class ChallengesDbContext : DbContext
+    public sealed class ArenaChallengesDbContext : DbContext
     {
-        public ChallengesDbContext(DbContextOptions<ChallengesDbContext> options) : base(options)
+        public ArenaChallengesDbContext(DbContextOptions<ArenaChallengesDbContext> options) : base(options)
         {
         }
 

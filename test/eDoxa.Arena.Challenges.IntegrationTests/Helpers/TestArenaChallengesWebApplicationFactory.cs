@@ -47,7 +47,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Helpers
         {
             var server = base.CreateServer(builder);
 
-            server.EnsureCreatedDbContext<ChallengesDbContext>();
+            server.EnsureCreatedDbContext<ArenaChallengesDbContext>();
 
             return server;
         }

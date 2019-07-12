@@ -27,7 +27,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Queries
 {
     public sealed partial class MatchQuery
     {
-        public MatchQuery(ChallengesDbContext context, IMapper mapper)
+        public MatchQuery(ArenaChallengesDbContext context, IMapper mapper)
         {
             Mapper = mapper;
             Matches = context.Matches.AsNoTracking();

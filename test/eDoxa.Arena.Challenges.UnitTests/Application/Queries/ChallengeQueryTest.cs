@@ -55,7 +55,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
             _mockHttpContextAccessor.Setup(accessor => accessor.HttpContext.User.Claims)
                 .Returns(new[] {new Claim(JwtClaimTypes.Subject, challenge.Participants.First().UserId.ToString())});
 
-            using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
+            using (var factory = new InMemoryDbContextFactory<ArenaChallengesDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {
@@ -87,7 +87,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
 
             var fakeChallenges = challengeFaker.Generate(4);
 
-            using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
+            using (var factory = new InMemoryDbContextFactory<ArenaChallengesDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {
@@ -119,7 +119,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
 
             var challenge = challengeFaker.Generate();
 
-            using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
+            using (var factory = new InMemoryDbContextFactory<ArenaChallengesDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {
