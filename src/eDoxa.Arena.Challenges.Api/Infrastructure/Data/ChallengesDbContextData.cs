@@ -7,6 +7,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 
+using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Storage;
+using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Seedwork.Infrastructure;
@@ -19,13 +21,13 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data
     {
         private readonly ChallengesDbContext _context;
         private readonly IHostingEnvironment _environment;
-        private readonly IChallengeService _challengeService;
+        private readonly IChallengeRepository _challengeRepository;
 
-        public ChallengesDbContextData(ChallengesDbContext context, IHostingEnvironment environment, IChallengeService challengeService)
+        public ChallengesDbContextData(ChallengesDbContext context, IHostingEnvironment environment, IChallengeRepository challengeRepository)
         {
             _context = context;
             _environment = environment;
-            _challengeService = challengeService;
+            _challengeRepository = challengeRepository;
         }
 
         public async Task SeedAsync()
@@ -34,7 +36,11 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data
             {
                 if (!_context.Challenges.Any())
                 {
-                    await _challengeService.FakeChallengesAsync(10, 23434503);
+                    var challenges = ArenaChallengesStorage.TestChallenges.ToList();
+
+                    _challengeRepository.Create(challenges);
+
+                    await _challengeRepository.CommitAsync();
                 }
             }
         }

@@ -18,6 +18,19 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Data.Storage
     public sealed class ArenaChallengesStorageTest
     {
         [TestMethod]
+        public void TestChallenges_ShouldHaveCountOfFortyRecords()
+        {
+            // Arrange
+            const int recordCount = 40;
+
+            // Act
+            var testChallenges = ArenaChallengesStorage.TestChallenges.ToList();
+
+            // Assert
+            testChallenges.Should().HaveCount(recordCount);
+        }
+
+        [TestMethod]
         public void TestUserIds_ShouldHaveCountOfThousandRecords()
         {
             // Arrange

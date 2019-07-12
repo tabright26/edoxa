@@ -120,7 +120,7 @@ services:
 
   payment.api:
     image: ${ACR_REGISTRY:-edoxa}/payment.api:${ACR_TAG:-latest}
-        environment:
+    environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}      
