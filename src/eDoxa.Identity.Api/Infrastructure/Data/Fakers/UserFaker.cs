@@ -11,6 +11,7 @@ using System.Linq;
 using Bogus;
 
 using eDoxa.Identity.Api.Infrastructure.Data.Fakers.Extensions;
+using eDoxa.Identity.Domain.AggregateModels;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Security.Constants;
 
@@ -18,8 +19,8 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Fakers
 {
     public sealed class UserFaker : Faker<User>
     {
-        private const string TestUser = "test";
-        private const string AdminUser = "admin";
+        private const string TestUser = "TEST_USER";
+        private const string AdminUser = "ADMIN_USER";
 
         public UserFaker()
         {
@@ -34,26 +35,37 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Fakers
 
                             var lastName = faker.Name.LastName();
 
-                            var user = new User(
-                                faker.Internet.UserName(),
-                                faker.Internet.Email(firstName, lastName),
-                                new PersonalName(firstName, lastName),
-                                new BirthDate(faker.Date.Past(18))
-                            );
+                            var gamertag = new Gamertag(faker.Internet.UserName());
+
+                            var email = new Email(faker.Internet.Email(firstName, lastName));
+
+                            if (faker.Random.Bool())
+                            {
+                                email.Confirm();
+                            }
+
+                            var personalName = new PersonalName(firstName, lastName);
+
+                            var birthDate = new BirthDate(faker.Date.Past(18));
+
+                            var user = new User(gamertag, email, birthDate, personalName);
+
+                            user.SetEntityId(faker.User().Id());
 
                             user.HashPassword("Pass@word1");
+
+                            var phone = new Phone(faker.Phone.PhoneNumber("##########"));
+
+                            if (faker.Random.Bool())
+                            {
+                                phone.Confirm();
+                            }
+
+                            user.LinkPhone(phone);
 
                             return user;
                         }
                     );
-
-                    ruleSet.RuleFor(user => user.Id, faker => faker.User().Id());
-
-                    ruleSet.RuleFor(user => user.EmailConfirmed, faker => faker.Random.Bool());
-
-                    ruleSet.RuleFor(user => user.PhoneNumber, faker => faker.Phone.PhoneNumber("##########"));
-
-                    ruleSet.RuleFor(user => user.PhoneNumberConfirmed, faker => faker.Random.Bool());
                 }
             );
 
@@ -64,39 +76,39 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Fakers
                     ruleSet.CustomInstantiator(
                         _ =>
                         {
-                            var user = new User("Administrator", "admin@edoxa.gg", new PersonalName("eDoxa", "Admin"), new BirthDate(1970, 1, 1));
+                            var gamertag = new Gamertag("Administrator");
+
+                            var email = new Email("admin@edoxa.gg");
+
+                            email.Confirm();
+
+                            var birthDate = new BirthDate(1970, 1, 1);
+
+                            var personalName = new PersonalName("eDoxa", "Admin");
+
+                            var user = new User(gamertag, email, birthDate, personalName);
+
+                            user.SetEntityId(UserId.FromGuid(Guid.Parse("e4655fe0-affd-4323-b022-bdb2ebde6091")));
 
                             user.HashPassword("Pass@word1");
 
-                            return user;
-                        }
-                    );
+                            var phone = new Phone("0000000000");
 
-                    ruleSet.RuleFor(user => user.Id, Guid.Parse("e4655fe0-affd-4323-b022-bdb2ebde6091"));
+                            phone.Confirm();
 
-                    ruleSet.RuleFor(user => user.EmailConfirmed, true);
+                            user.LinkPhone(phone);
 
-                    ruleSet.RuleFor(user => user.PhoneNumber, "0000000000");
-
-                    ruleSet.RuleFor(user => user.PhoneNumberConfirmed, true);
-
-                    ruleSet.RuleFor(
-                        user => user.Roles,
-                        (faker, user) =>
-                        {
                             var roleFaker = new RoleFaker();
 
                             var roles = roleFaker.FakeRoles();
 
-                            return roles.Select(role => new UserRole(user.Id, role.Id)).ToList();
-                        }
-                    );
+                            roles.ForEach(user.AddRole);
 
-                    ruleSet.FinishWith(
-                        (faker, user) =>
-                        {
-                            user.Claims.Add(new UserClaim(user.Id, CustomClaimTypes.StripeCustomerId, "cus_F5L8mRzm6YN5ma"));
-                            user.Claims.Add(new UserClaim(user.Id, CustomClaimTypes.StripeConnectAccountId, "acct_1EbASfAPhMnJQouG"));
+                            user.AddClaim(new Claim(CustomClaimTypes.StripeCustomerId, "cus_F5L8mRzm6YN5ma"));
+
+                            user.AddClaim(new Claim(CustomClaimTypes.StripeConnectAccountId, "acct_1EbASfAPhMnJQouG"));
+
+                            return user;
                         }
                     );
                 }

@@ -39,7 +39,7 @@ namespace eDoxa.Identity.Api.Area.User.Controllers
         [HttpGet(Name = nameof(FindUsersAsync))]
         public async Task<IActionResult> FindUsersAsync()
         {
-            var users = await _userQuery.FindUsersAsync();
+            var users = await _userQuery.FetchUsersAsync();
 
             if (!users.Any())
             {

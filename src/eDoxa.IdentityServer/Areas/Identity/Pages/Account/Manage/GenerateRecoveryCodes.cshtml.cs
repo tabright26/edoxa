@@ -12,7 +12,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
+using eDoxa.Identity.Infrastructure.Models;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -23,10 +23,10 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account.Manage
 {
     public class GenerateRecoveryCodesModel : PageModel
     {
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<UserModel> _userManager;
         private readonly ILogger<GenerateRecoveryCodesModel> _logger;
 
-        public GenerateRecoveryCodesModel(UserManager<User> userManager, ILogger<GenerateRecoveryCodesModel> logger)
+        public GenerateRecoveryCodesModel(UserManager<UserModel> userManager, ILogger<GenerateRecoveryCodesModel> logger)
         {
             _userManager = userManager;
             _logger = logger;

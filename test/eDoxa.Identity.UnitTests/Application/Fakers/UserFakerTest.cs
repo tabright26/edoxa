@@ -29,7 +29,7 @@ namespace eDoxa.Identity.UnitTests.Application.Fakers
 
             // Assert
             users.Select(user => user.Id).Distinct().Should().HaveCount(1000);
-            users.Select(user => user.UserName).Distinct().Should().HaveCount(1000);
+            users.Select(user => user.Gamertag).Distinct().Should().HaveCount(1000);
         }
 
         [TestMethod]

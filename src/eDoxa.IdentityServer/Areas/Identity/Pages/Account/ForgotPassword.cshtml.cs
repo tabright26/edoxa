@@ -12,7 +12,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
+using eDoxa.Identity.Infrastructure.Models;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -25,10 +25,10 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class ForgotPasswordModel : PageModel
     {
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<UserModel> _userManager;
         private readonly IEmailSender _emailSender;
 
-        public ForgotPasswordModel(UserManager<User> userManager, IEmailSender emailSender)
+        public ForgotPasswordModel(UserManager<UserModel> userManager, IEmailSender emailSender)
         {
             _userManager = userManager;
             _emailSender = emailSender;

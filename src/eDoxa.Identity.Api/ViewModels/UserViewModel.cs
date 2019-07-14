@@ -12,7 +12,7 @@ using System;
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Identity.Domain.ViewModels
+namespace eDoxa.Identity.Api.ViewModels
 {
     [JsonObject]
     public class UserViewModel
@@ -20,7 +20,7 @@ namespace eDoxa.Identity.Domain.ViewModels
         [JsonProperty("id")]
         public Guid Id { get; set; }
 
-        [JsonProperty("userName")]
-        public string UserName { get; set; }
+        [JsonProperty("gamertag")]
+        public string Gamertag { get; set; }
     }
 }

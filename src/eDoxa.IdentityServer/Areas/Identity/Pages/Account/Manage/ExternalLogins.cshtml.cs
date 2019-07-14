@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
+using eDoxa.Identity.Infrastructure.Models;
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
@@ -24,10 +24,10 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account.Manage
 {
     public class ExternalLoginsModel : PageModel
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<UserModel> _userManager;
+        private readonly SignInManager<UserModel> _signInManager;
 
-        public ExternalLoginsModel(UserManager<User> userManager, SignInManager<User> signInManager)
+        public ExternalLoginsModel(UserManager<UserModel> userManager, SignInManager<UserModel> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;

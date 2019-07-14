@@ -4,12 +4,13 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Area.User.Controllers;
+using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Domain.Queries;
-using eDoxa.Identity.Domain.ViewModels;
 
 using FluentAssertions;
 
@@ -35,11 +36,11 @@ namespace eDoxa.Identity.UnitTests.Area.User.Controllers
         public async Task FindUsersAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            _mockUserQueries.Setup(service => service.FindUsersAsync())
+            _mockUserQueries.Setup(service => service.FetchUsersAsync())
                 .ReturnsAsync(
-                    new List<UserViewModel>
+                    new List<Domain.AggregateModels.UserAggregate.User>
                     {
-                        new UserViewModel()
+                        new Domain.AggregateModels.UserAggregate.User(new Gamertag("Gamertag"), new Email("Address"), new BirthDate(DateTime.UnixEpoch), new PersonalName("FirstName", "LastName"))
                     }
                 )
                 .Verifiable();
@@ -57,7 +58,7 @@ namespace eDoxa.Identity.UnitTests.Area.User.Controllers
         public async Task FindUsersAsync_ShouldBeNoContentObjectResult()
         {
             // Arrange
-            _mockUserQueries.Setup(queries => queries.FindUsersAsync()).ReturnsAsync(new List<UserViewModel>()).Verifiable();
+            _mockUserQueries.Setup(queries => queries.FetchUsersAsync()).ReturnsAsync(new List<Domain.AggregateModels.UserAggregate.User>()).Verifiable();
 
             var controller = new UsersController(_mockUserQueries.Object);
 

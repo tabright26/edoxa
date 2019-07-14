@@ -20,14 +20,6 @@ namespace eDoxa.Arena.Challenges.Domain.Services
 {
     public interface IChallengeService
     {
-        Task FakeChallengesAsync(
-            int count,
-            int seed,
-            ChallengeGame game = null,
-            ChallengeState state = null,
-            CancellationToken cancellationToken = default
-        );
-
         Task RegisterParticipantAsync(ChallengeId challengeId, UserId userId, IDateTimeProvider registeredAt, CancellationToken cancellationToken = default);
 
         Task SynchronizeAsync(ChallengeGame game, TimeSpan interval, IDateTimeProvider synchronizedAt, CancellationToken cancellationToken = default);

@@ -1,61 +1,39 @@
 ﻿// Filename: BirthDate.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-07-12
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.Collections.Generic;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
-using IdentityModel;
-
 namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
 {
     public sealed class BirthDate : ValueObject
     {
-        private int _day;
-        private int _month;
-        private int _year;
+        private readonly DateTime _birthDate;
 
         public BirthDate(int year, int month, int day)
         {
-            _year = year;
-            _month = month;
-            _day = day;
+            _birthDate = new DateTime(year, month, day);
         }
 
-        public BirthDate(DateTime dateTime)
+        public BirthDate(DateTime birthDate)
         {
-            _year = dateTime.Year;
-            _month = dateTime.Month;
-            _day = dateTime.Day;
+            _birthDate = birthDate;
         }
 
-        public int Year => _year;
+        public int Year => _birthDate.Year;
 
-        public int Month => _month;
+        public int Month => _birthDate.Month;
 
-        public int Day => _day;
+        public int Day => _birthDate.Day;
 
-        public UserClaim ToClaim(Guid userId)
+        public static implicit operator DateTime(BirthDate birthDate)
         {
-            return new UserClaim(userId, JwtClaimTypes.BirthDate, this.ToString());
-        }
-
-        public DateTime ToDate()
-        {
-            return new DateTime(_year, _month, _day);
-        }
-
-        public override string ToString()
-        {
-            return this.ToDate().ToString("yyyy-MM-dd");
+            return birthDate._birthDate;
         }
 
         public static IEnumerable<int> Years()
@@ -80,6 +58,11 @@ namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
             {
                 yield return index;
             }
+        }
+
+        public override string ToString()
+        {
+            return _birthDate.ToString("yyyy-MM-dd");
         }
 
         protected override IEnumerable<object> GetAtomicValues()

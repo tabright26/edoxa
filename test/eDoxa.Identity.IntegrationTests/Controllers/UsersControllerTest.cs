@@ -8,7 +8,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Infrastructure.Data.Fakers;
-using eDoxa.Identity.Domain.ViewModels;
+using eDoxa.Identity.Api.ViewModels;
 using eDoxa.Identity.Infrastructure;
 using eDoxa.Identity.IntegrationTests.Helpers;
 using eDoxa.Seedwork.Application.Extensions;

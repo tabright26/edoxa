@@ -1,33 +1,41 @@
 ﻿// Filename: Role.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-07-12
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
-using System;
 using System.Collections.Generic;
 
-using Microsoft.AspNetCore.Identity;
+using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Identity.Domain.AggregateModels.RoleAggregate
 {
-    public sealed class Role : IdentityRole<Guid>
+    public sealed class Role : Entity<RoleId>
     {
-        public Role(string roleName) : this()
+        private readonly HashSet<Permission> _permissions = new HashSet<Permission>();
+
+        public Role(string name)
         {
-            Name = roleName;
-            NormalizedName = roleName.ToUpperInvariant();
+            Name = name;
         }
 
-        private Role()
+        public string Name { get; }
+
+        public IReadOnlyCollection<Permission> Permissions => _permissions;
+
+        public static implicit operator string(Role role)
         {
-            Claims = new HashSet<RoleClaim>();
+            return role.Name;
         }
 
-        public ICollection<RoleClaim> Claims { get; set; }
+        public void AddClaim(Permission permission)
+        {
+            _permissions.Add(permission);
+        }
+
+        public void RemoveClaim(Permission permission)
+        {
+            _permissions.Remove(permission);
+        }
     }
 }

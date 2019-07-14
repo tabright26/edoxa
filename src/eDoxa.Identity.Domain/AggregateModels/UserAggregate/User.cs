@@ -1,72 +1,84 @@
 ﻿// Filename: User.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-07-12
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
-using System;
 using System.Collections.Generic;
 
-using eDoxa.Seedwork.Domain.Extensions;
-
-using Microsoft.AspNetCore.Identity;
+using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
+using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
 {
-    public sealed class User : IdentityUser<Guid>
+    public sealed class User : Entity<UserId>
     {
+        private readonly HashSet<Role> _roles = new HashSet<Role>();
+        private readonly HashSet<Claim> _claims = new HashSet<Claim>();
+
         public User(
-            string username,
-            string email,
+            Gamertag gamertag,
+            Email email,
+            BirthDate birthDate,
             PersonalName personalName,
-            BirthDate birthDate
-        ) : this()
+            HashedPassword password
+        ) : this(gamertag, email, birthDate, personalName)
         {
+            Password = password;
+        }
+
+        public User(
+            Gamertag gamertag,
+            Email email,
+            BirthDate birthDate,
+            PersonalName personalName
+        )
+        {
+            Gamertag = gamertag;
             Email = email;
-            NormalizedEmail = email.ToUpperInvariant();
-            UserName = username;
-            NormalizedUserName = username.ToUpperInvariant();
-            personalName.ToClaims(Id).ForEach(claim => Claims.Add(claim));
-            Claims.Add(birthDate.ToClaim(Id));
+            BirthDate = birthDate;
+            PersonalName = personalName;
         }
 
-        public User()
+        public Gamertag Gamertag { get; }
+
+        public Email Email { get; }
+
+        public PersonalName PersonalName { get; }
+
+        public BirthDate BirthDate { get; }
+
+        public Phone Phone { get; private set; }
+
+        public Password Password { get; private set; }
+
+        public IReadOnlyCollection<Role> Roles => _roles;
+
+        public IReadOnlyCollection<Claim> Claims => _claims;
+
+        public void AddClaim(Claim claim)
         {
-            Roles = new HashSet<UserRole>();
-            Claims = new HashSet<UserClaim>();
-            Logins = new HashSet<UserLogin>();
-            Tokens = new HashSet<UserToken>();
+            _claims.Add(claim);
         }
 
-        public ICollection<UserRole> Roles { get; set; }
+        public void RemoveClaim(Claim claim)
+        {
+            _claims.Remove(claim);
+        }
 
-        public ICollection<UserClaim> Claims { get; set; }
+        public void AddRole(Role role)
+        {
+            _roles.Add(role);
+        }
 
-        public ICollection<UserLogin> Logins { get; set; }
-
-        public ICollection<UserToken> Tokens { get; set; }
+        public void LinkPhone(Phone phone)
+        {
+            Phone = phone;
+        }
 
         public void HashPassword(string password)
         {
-            this.UpdateSecurityStamp();
-
-            var hasher = new PasswordHasher<User>();
-
-            PasswordHash = hasher.HashPassword(this, password);
-        }
-
-        private void UpdateSecurityStamp()
-        {
-            SecurityStamp = Guid.NewGuid().ToString("D");
-        }
-
-        public void AddRole(Guid roleId)
-        {
-            Roles.Add(new UserRole(Id, roleId));
+            Password = new HashPassword(this, password);
         }
     }
 }

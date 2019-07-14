@@ -11,7 +11,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
+using eDoxa.Identity.Infrastructure.Models;
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -25,11 +25,11 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
-        private readonly SignInManager<User> _signInManager;
-        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<UserModel> _signInManager;
+        private readonly UserManager<UserModel> _userManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<User> signInManager, UserManager<User> userManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<UserModel> signInManager, UserManager<UserModel> userManager, ILogger<LoginModel> logger)
         {
             _signInManager = signInManager;
             _userManager = userManager;

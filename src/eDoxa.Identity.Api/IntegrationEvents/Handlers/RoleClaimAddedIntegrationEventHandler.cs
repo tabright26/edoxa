@@ -11,7 +11,7 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
+using eDoxa.Identity.Infrastructure.Models;
 using eDoxa.IntegrationEvents;
 
 using Microsoft.AspNetCore.Identity;
@@ -20,9 +20,9 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Handlers
 {
     public class RoleClaimAddedIntegrationEventHandler : IIntegrationEventHandler<RoleClaimAddedIntegrationEvent>
     {
-        private readonly RoleManager<Role> _roleManager;
+        private readonly RoleManager<RoleModel> _roleManager;
 
-        public RoleClaimAddedIntegrationEventHandler(RoleManager<Role> roleManager)
+        public RoleClaimAddedIntegrationEventHandler(RoleManager<RoleModel> roleManager)
         {
             _roleManager = roleManager;
         }

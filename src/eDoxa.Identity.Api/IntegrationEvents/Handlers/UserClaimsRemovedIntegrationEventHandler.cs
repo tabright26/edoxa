@@ -11,7 +11,7 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
+using eDoxa.Identity.Infrastructure.Models;
 using eDoxa.IntegrationEvents;
 
 using Microsoft.AspNetCore.Identity;
@@ -20,9 +20,9 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Handlers
 {
     public class UserClaimsRemovedIntegrationEventHandler : IIntegrationEventHandler<UserClaimsRemovedIntegrationEvent>
     {
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<UserModel> _userManager;
 
-        public UserClaimsRemovedIntegrationEventHandler(UserManager<User> userManager)
+        public UserClaimsRemovedIntegrationEventHandler(UserManager<UserModel> userManager)
         {
             _userManager = userManager;
         }

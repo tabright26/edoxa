@@ -12,7 +12,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
+using AutoMapper;
+
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
+using eDoxa.Identity.Infrastructure.Models;
 using eDoxa.IdentityServer.IntegrationEvents;
 using eDoxa.IntegrationEvents;
 
@@ -28,21 +31,24 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
     public class ExternalLoginModel : PageModel
     {
         private readonly IEventBusService _eventBusService;
+        private readonly IMapper _mapper;
         private readonly ILogger<ExternalLoginModel> _logger;
-        private readonly SignInManager<User> _signInManager;
-        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<UserModel> _signInManager;
+        private readonly UserManager<UserModel> _userManager;
 
         public ExternalLoginModel(
-            SignInManager<User> signInManager,
-            UserManager<User> userManager,
+            SignInManager<UserModel> signInManager,
+            UserManager<UserModel> userManager,
             ILogger<ExternalLoginModel> logger,
-            IEventBusService eventBusService
+            IEventBusService eventBusService,
+            IMapper mapper
         )
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _logger = logger;
             _eventBusService = eventBusService;
+            _mapper = mapper;
         }
 
         [BindProperty] public InputModel Input { get; set; }
@@ -163,12 +169,15 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
 
                 // TODO: Add BirthDate inputs.
                 var birthDate = new BirthDate(1995, 05, 06);
-                var user = new User(Input.Username, Input.Email, personalName, birthDate);
-                var result = await _userManager.CreateAsync(user);
+                var email = new Email(Input.Email);
+                var gamertag = new Gamertag(Input.Username);
+                var user = new User(gamertag, email, birthDate, personalName);
+                var userModel = _mapper.Map<UserModel>(user);
+                var result = await _userManager.CreateAsync(userModel);
 
                 if (result.Succeeded)
                 {
-                    result = await _userManager.AddLoginAsync(user, info);
+                    result = await _userManager.AddLoginAsync(userModel, info);
 
                     if (result.Succeeded)
                     {
@@ -176,8 +185,8 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
 
                         _eventBusService.Publish(
                             new UserCreatedIntegrationEvent(
-                                user.Id,
-                                user.Email,
+                                userModel.Id,
+                                userModel.Email,
                                 personalName.FirstName,
                                 personalName.LastName,
                                 birthDate.Year,
@@ -186,7 +195,7 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
                             )
                         );
 
-                        await _signInManager.SignInAsync(user, false);
+                        await _signInManager.SignInAsync(userModel, false);
 
                         return this.LocalRedirect(returnUrl);
                     }

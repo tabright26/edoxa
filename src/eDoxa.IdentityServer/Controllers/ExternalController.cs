@@ -15,7 +15,7 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
+using eDoxa.Identity.Infrastructure.Models;
 using eDoxa.IdentityServer.Infrastructure.Attributes;
 using eDoxa.IdentityServer.ViewModels;
 
@@ -39,12 +39,12 @@ namespace eDoxa.IdentityServer.Controllers
     {
         private readonly IEventService _events;
         private readonly IIdentityServerInteractionService _interaction;
-        private readonly SignInManager<User> _signInManager;
-        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<UserModel> _signInManager;
+        private readonly UserManager<UserModel> _userManager;
 
         public ExternalController(
-            UserManager<User> userManager,
-            SignInManager<User> signInManager,
+            UserManager<UserModel> userManager,
+            SignInManager<UserModel> signInManager,
             IIdentityServerInteractionService interaction,
             IEventService events
         )
@@ -201,7 +201,7 @@ namespace eDoxa.IdentityServer.Controllers
             return this.Challenge(AccountOptions.WindowsAuthenticationSchemeName);
         }
 
-        private async Task<(User user, string provider, string providerUserId, IEnumerable<Claim> claims)> FindUserFromExternalProviderAsync(
+        private async Task<(UserModel user, string provider, string providerUserId, IEnumerable<Claim> claims)> FindUserFromExternalProviderAsync(
             AuthenticateResult result
         )
         {
@@ -226,7 +226,7 @@ namespace eDoxa.IdentityServer.Controllers
             return (user, provider, providerUserId, claims);
         }
 
-        private async Task<User> AutoProvisionUserAsync(string provider, string providerUserId, IEnumerable<Claim> claims)
+        private async Task<UserModel> AutoProvisionUserAsync(string provider, string providerUserId, IEnumerable<Claim> claims)
         {
             // create a list of claims that we want to transfer into our store
             var filtered = new List<Claim>();
@@ -268,7 +268,7 @@ namespace eDoxa.IdentityServer.Controllers
                 filtered.Add(new Claim(JwtClaimTypes.Email, email));
             }
 
-            var user = new User
+            var user = new UserModel
             {
                 UserName = Guid.NewGuid().ToString()
             };

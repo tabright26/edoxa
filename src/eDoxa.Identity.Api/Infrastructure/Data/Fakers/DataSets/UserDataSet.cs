@@ -10,7 +10,6 @@ using System.Linq;
 using Bogus;
 
 using eDoxa.Identity.Api.Infrastructure.Data.Storage;
-using eDoxa.Identity.Domain.AggregateModels;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 
 namespace eDoxa.Identity.Api.Infrastructure.Data.Fakers.DataSets

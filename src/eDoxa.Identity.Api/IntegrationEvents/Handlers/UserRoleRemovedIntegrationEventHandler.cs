@@ -10,7 +10,7 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
+using eDoxa.Identity.Infrastructure.Models;
 using eDoxa.IntegrationEvents;
 
 using Microsoft.AspNetCore.Identity;
@@ -19,9 +19,9 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Handlers
 {
     public class UserRoleRemovedIntegrationEventHandler : IIntegrationEventHandler<UserRoleRemovedIntegrationEvent>
     {
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<UserModel> _userManager;
 
-        public UserRoleRemovedIntegrationEventHandler(UserManager<User> userManager)
+        public UserRoleRemovedIntegrationEventHandler(UserManager<UserModel> userManager)
         {
             _userManager = userManager;
         }

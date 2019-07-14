@@ -33,16 +33,47 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
                     var records = csv.GetRecords(
                         new
                         {
-                            Id = default(Guid)
+                            Id = default(Guid),
+                            Gamertag = default(string),
+                            Email = default(string),
+                            EmailConfirmed = default(bool),
+                            Phone = default(string),
+                            PhoneConfirmed = default(bool),
+                            BirthDate = default(DateTime),
+                            FirstName = default(string),
+                            LastName = default(string)
                         }
                     );
 
                     foreach (var record in records)
                     {
-                        yield return new User
+                        var gamertag = new Gamertag(record.Gamertag);
+
+                        var email = new Email(record.Email);
+
+                        if (record.EmailConfirmed)
                         {
-                            Id = record.Id
-                        };
+                            email.Confirm();
+                        }
+
+                        var personalName = new PersonalName(record.FirstName, record.LastName);
+
+                        var birthDate = new BirthDate(record.BirthDate);
+
+                        var user = new User(gamertag, email, birthDate, personalName);
+
+                        user.SetEntityId(UserId.FromGuid(record.Id));
+
+                        var phone = new Phone(record.Phone);
+
+                        if (record.PhoneConfirmed)
+                        {
+                            phone.Confirm();
+                        }
+
+                        user.LinkPhone(phone);
+
+                        yield return user;
                     }
                 }
             }

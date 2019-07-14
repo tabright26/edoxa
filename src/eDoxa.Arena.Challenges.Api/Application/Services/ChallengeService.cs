@@ -9,7 +9,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Factories;
@@ -37,33 +36,6 @@ namespace eDoxa.Arena.Challenges.Api.Application.Services
             _gameReferencesFactory = gameReferencesFactory;
             _matchFactory = matchFactory;
             _identityService = identityService;
-        }
-
-        public async Task FakeChallengesAsync(
-            int count,
-            int seed,
-            ChallengeGame game = null,
-            ChallengeState state = null,
-            CancellationToken cancellationToken = default
-        )
-        {
-            var challengeFaker = new ChallengeFaker(game, state);
-
-            challengeFaker.UseSeed(seed);
-
-            var challenges = challengeFaker.Generate(count);
-
-            foreach (var challenge in challenges)
-            {
-                if (await _challengeRepository.AnyChallengeAsync(challenge.Id))
-                {
-                    throw new InvalidOperationException("This seed was already used.");
-                }
-            }
-
-            _challengeRepository.Create(challenges);
-
-            await _challengeRepository.CommitAsync(cancellationToken);
         }
 
         public async Task RegisterParticipantAsync(

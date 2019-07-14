@@ -14,7 +14,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
+using eDoxa.Identity.Infrastructure.Models;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -26,11 +26,11 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account.Manage
     public class EnableAuthenticatorModel : PageModel
     {
         private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<UserModel> _userManager;
         private readonly ILogger<EnableAuthenticatorModel> _logger;
         private readonly UrlEncoder _urlEncoder;
 
-        public EnableAuthenticatorModel(UserManager<User> userManager, ILogger<EnableAuthenticatorModel> logger, UrlEncoder urlEncoder)
+        public EnableAuthenticatorModel(UserManager<UserModel> userManager, ILogger<EnableAuthenticatorModel> logger, UrlEncoder urlEncoder)
         {
             _userManager = userManager;
             _logger = logger;
@@ -110,20 +110,20 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account.Manage
             return this.RedirectToPage("./TwoFactorAuthentication");
         }
 
-        private async Task LoadSharedKeyAndQrCodeUriAsync(User user)
+        private async Task LoadSharedKeyAndQrCodeUriAsync(UserModel userModel)
         {
             // Load the authenticator key & QR code URI to display on the form
-            var unformattedKey = await _userManager.GetAuthenticatorKeyAsync(user);
+            var unformattedKey = await _userManager.GetAuthenticatorKeyAsync(userModel);
 
             if (string.IsNullOrEmpty(unformattedKey))
             {
-                await _userManager.ResetAuthenticatorKeyAsync(user);
-                unformattedKey = await _userManager.GetAuthenticatorKeyAsync(user);
+                await _userManager.ResetAuthenticatorKeyAsync(userModel);
+                unformattedKey = await _userManager.GetAuthenticatorKeyAsync(userModel);
             }
 
             SharedKey = this.FormatKey(unformattedKey);
 
-            var email = await _userManager.GetEmailAsync(user);
+            var email = await _userManager.GetEmailAsync(userModel);
             AuthenticatorUri = this.GenerateQrCodeUri(email, unformattedKey);
         }
 

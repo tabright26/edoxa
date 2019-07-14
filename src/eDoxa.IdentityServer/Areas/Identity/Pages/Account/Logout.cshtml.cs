@@ -10,7 +10,7 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
+using eDoxa.Identity.Infrastructure.Models;
 
 using IdentityServer4.Services;
 
@@ -25,11 +25,11 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class LogoutModel : PageModel
     {
-        private readonly SignInManager<User> _signInManager;
+        private readonly SignInManager<UserModel> _signInManager;
         private readonly ILogger<LogoutModel> _logger;
         private readonly IIdentityServerInteractionService _identityServerInteractionService;
 
-        public LogoutModel(SignInManager<User> signInManager, ILogger<LogoutModel> logger, IIdentityServerInteractionService identityServerInteractionService)
+        public LogoutModel(SignInManager<UserModel> signInManager, ILogger<LogoutModel> logger, IIdentityServerInteractionService identityServerInteractionService)
         {
             _signInManager = signInManager;
             _logger = logger;

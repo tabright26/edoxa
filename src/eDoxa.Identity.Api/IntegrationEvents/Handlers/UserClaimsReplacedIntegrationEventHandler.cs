@@ -12,7 +12,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
+using eDoxa.Identity.Infrastructure.Models;
 using eDoxa.IntegrationEvents;
 
 using Microsoft.AspNetCore.Identity;
@@ -21,9 +21,9 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Handlers
 {
     public sealed class UserClaimsReplacedIntegrationEventHandler : IIntegrationEventHandler<UserClaimsReplacedIntegrationEvent>
     {
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<UserModel> _userManager;
 
-        public UserClaimsReplacedIntegrationEventHandler(UserManager<User> userManager)
+        public UserClaimsReplacedIntegrationEventHandler(UserManager<UserModel> userManager)
         {
             _userManager = userManager;
         }

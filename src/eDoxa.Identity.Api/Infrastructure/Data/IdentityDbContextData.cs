@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Infrastructure.Data.Fakers;
+using eDoxa.Identity.Domain.Repositories;
 using eDoxa.Identity.Infrastructure;
 using eDoxa.Seedwork.Infrastructure;
 
@@ -21,12 +22,22 @@ namespace eDoxa.Identity.Api.Infrastructure.Data
         private readonly ILogger<IdentityDbContextData> _logger;
         private readonly IHostingEnvironment _environment;
         private readonly IdentityDbContext _context;
+        private readonly IUserRepository _userRepository;
+        private readonly IRoleRepository _roleRepository;
 
-        public IdentityDbContextData(ILogger<IdentityDbContextData> logger, IHostingEnvironment environment, IdentityDbContext context)
+        public IdentityDbContextData(
+            ILogger<IdentityDbContextData> logger,
+            IHostingEnvironment environment,
+            IdentityDbContext context,
+            IUserRepository userRepository,
+            IRoleRepository roleRepository
+        )
         {
             _logger = logger;
             _environment = environment;
             _context = context;
+            _userRepository = userRepository;
+            _roleRepository = roleRepository;
         }
 
         public async Task SeedAsync()
@@ -39,9 +50,9 @@ namespace eDoxa.Identity.Api.Infrastructure.Data
 
                     var roles = roleFaker.FakeRoles();
 
-                    roles.ForEach(role => _context.Roles.Add(role));
+                    _roleRepository.Create(roles);
 
-                    await _context.SaveChangesAsync();
+                    await _roleRepository.CommitAsync();
 
                     _logger.LogInformation("The roles being populated:");
                 }
@@ -54,19 +65,19 @@ namespace eDoxa.Identity.Api.Infrastructure.Data
                 {
                     var userFaker = new UserFaker();
 
-                    userFaker.UseSeed(1);
+                    userFaker.UseSeed(85963658);
 
                     var adminUser = userFaker.FakeAdminUser();
 
-                    _context.Users.Add(adminUser);
+                    _userRepository.Create(adminUser);
 
                     var testUsers = userFaker.FakeTestUsers();
 
-                    _context.AddRange(testUsers);
+                    _userRepository.Create(testUsers);
 
-                    await _context.SaveChangesAsync();
+                    await _userRepository.CommitAsync();
 
-                    _logger.LogInformation("The users being populated:");
+                    _logger.LogInformation("The users being populated...");
                 }
                 else
                 {
@@ -80,6 +91,8 @@ namespace eDoxa.Identity.Api.Infrastructure.Data
             if (!_environment.IsProduction())
             {
                 _context.Users.RemoveRange(_context.Users);
+
+                _context.Roles.RemoveRange(_context.Roles);
 
                 await _context.SaveChangesAsync();
             }

@@ -1,6 +1,6 @@
-﻿@using eDoxa.Identity.Domain.AggregateModels.UserAggregate
+﻿@using eDoxa.Identity.Infrastructure.Models
 @using Microsoft.AspNetCore.Identity
-@inject SignInManager<User> SignInManager
+@inject SignInManager<UserModel> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }

@@ -11,9 +11,10 @@
 using System;
 using System.Reflection;
 
-using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
-using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
+using AutoMapper;
+
 using eDoxa.Identity.Infrastructure;
+using eDoxa.Identity.Infrastructure.Models;
 using eDoxa.IdentityServer.Extensions;
 using eDoxa.IdentityServer.Infrastructure.Factories;
 using eDoxa.IntegrationEvents.Extensions;
@@ -54,11 +55,13 @@ namespace eDoxa.IdentityServer
 
             services.AddDataProtection(Configuration);
 
-            services.AddIdentity<User, Role, IdentityDbContext, CustomUserClaimsPrincipalFactory>(Environment);
+            services.AddIdentity<UserModel, RoleModel, IdentityDbContext, CustomUserClaimsPrincipalFactory>(Environment);
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddIdentityServer<User>(Configuration, Environment);
+            services.AddIdentityServer<UserModel>(Configuration, Environment);
 
             services.AddServiceBus(Configuration);
 

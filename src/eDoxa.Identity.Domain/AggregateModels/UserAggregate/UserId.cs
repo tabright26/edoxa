@@ -1,18 +1,14 @@
 ﻿// Filename: UserId.cs
-// Date Created: 2019-07-06
+// Date Created: 2019-07-12
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.ComponentModel;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
-namespace eDoxa.Identity.Domain.AggregateModels
+namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
 {
     [TypeConverter(typeof(EntityIdTypeConverter))]
     public sealed class UserId : EntityId<UserId>

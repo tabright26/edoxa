@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Domain.Queries;
-using eDoxa.Identity.Domain.ViewModels;
 using eDoxa.Identity.Infrastructure;
 
 using Microsoft.EntityFrameworkCore;
@@ -31,11 +31,11 @@ namespace eDoxa.Identity.Api.Infrastructure.Queries
 
     public sealed partial class UserQuery : IUserQuery
     {
-        public async Task<IReadOnlyCollection<UserViewModel>> FindUsersAsync()
+        public async Task<IReadOnlyCollection<User>> FetchUsersAsync()
         {
             var users = await _context.Users.AsNoTracking().ToListAsync();
 
-            return _mapper.Map<IReadOnlyCollection<UserViewModel>>(users);
+            return _mapper.Map<IReadOnlyCollection<User>>(users);
         }
     }
 }

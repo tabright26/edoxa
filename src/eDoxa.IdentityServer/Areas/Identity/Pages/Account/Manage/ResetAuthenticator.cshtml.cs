@@ -10,7 +10,7 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
+using eDoxa.Identity.Infrastructure.Models;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -21,11 +21,11 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account.Manage
 {
     public class ResetAuthenticatorModel : PageModel
     {
-        private readonly SignInManager<User> _signInManager;
-        private UserManager<User> _userManager;
+        private readonly SignInManager<UserModel> _signInManager;
+        private UserManager<UserModel> _userManager;
         private ILogger<ResetAuthenticatorModel> _logger;
 
-        public ResetAuthenticatorModel(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<ResetAuthenticatorModel> logger)
+        public ResetAuthenticatorModel(UserManager<UserModel> userManager, SignInManager<UserModel> signInManager, ILogger<ResetAuthenticatorModel> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;

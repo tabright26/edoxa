@@ -30,10 +30,10 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Fakers
                     ruleSet.RuleFor(role => role.Id, Guid.Parse("6349E9F9-4799-4100-9A1D-34F79CF480D4"));
 
                     ruleSet.RuleFor(
-                        role => role.Claims,
-                        (faker, role) => new List<RoleClaim>
+                        role => role.Permissions,
+                        (faker, role) => new List<Permission>
                         {
-                            new RoleClaim(role.Id, CustomClaimTypes.Permission, "*")
+                            new Permission("*")
                         }
                     );
                 }
@@ -48,11 +48,11 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Fakers
                     ruleSet.RuleFor(role => role.Id, Guid.Parse("0FC7B6DF-69CE-443D-B127-D4A8CC4B7361"));
 
                     ruleSet.RuleFor(
-                        role => role.Claims,
-                        (faker, role) => new List<RoleClaim>
+                        role => role.Permissions,
+                        (faker, role) => new List<Permission>
                         {
-                            new RoleClaim(role.Id, CustomClaimTypes.Permission, "challenge.read"),
-                            new RoleClaim(role.Id, CustomClaimTypes.Permission, "challenge.register")
+                            new Permission("challenge.read"),
+                            new Permission("challenge.register")
                         }
                     );
                 }

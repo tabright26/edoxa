@@ -15,7 +15,10 @@ using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
+using AutoMapper;
+
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
+using eDoxa.Identity.Infrastructure.Models;
 using eDoxa.IdentityServer.IntegrationEvents;
 using eDoxa.IntegrationEvents;
 
@@ -34,16 +37,18 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
     {
         private readonly IEmailSender _emailSender;
         private readonly IEventBusService _eventBusService;
+        private readonly IMapper _mapper;
         private readonly ILogger<RegisterModel> _logger;
-        private readonly SignInManager<User> _signInManager;
-        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<UserModel> _signInManager;
+        private readonly UserManager<UserModel> _userManager;
 
         public RegisterModel(
-            UserManager<User> userManager,
-            SignInManager<User> signInManager,
+            UserManager<UserModel> userManager,
+            SignInManager<UserModel> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            IEventBusService eventBusService
+            IEventBusService eventBusService,
+            IMapper mapper
         )
         {
             _userManager = userManager;
@@ -51,6 +56,7 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _eventBusService = eventBusService;
+            _mapper = mapper;
         }
 
         [BindProperty] public InputModel Input { get; set; }
@@ -78,8 +84,11 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
             {
                 var personalName = new PersonalName(Input.FirstName, Input.LastName);
                 var birthDate = new BirthDate(Input.Year, Input.Month, Input.Day);
-                var user = new User(Input.UserName, Input.Email, personalName, birthDate);
-                var result = await _userManager.CreateAsync(user, Input.Password);
+                var email = new Email(Input.Email);
+                var gamertag = new Gamertag(Input.UserName);
+                var user = new User(gamertag, email, birthDate, personalName);
+                var userModel = _mapper.Map<UserModel>(user);
+                var result = await _userManager.CreateAsync(userModel, Input.Password);
 
                 if (result.Succeeded)
                 {
@@ -87,8 +96,8 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
 
                     _eventBusService.Publish(
                         new UserCreatedIntegrationEvent(
-                            user.Id,
-                            user.Email,
+                            userModel.Id,
+                            userModel.Email,
                             personalName.FirstName,
                             personalName.LastName,
                             birthDate.Year,
@@ -97,7 +106,7 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
                         )
                     );
 
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(userModel);
 
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
@@ -116,7 +125,7 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>."
                     );
 
-                    await _signInManager.SignInAsync(user, false);
+                    await _signInManager.SignInAsync(userModel, false);
 
                     return this.LocalRedirect(returnUrl);
                 }

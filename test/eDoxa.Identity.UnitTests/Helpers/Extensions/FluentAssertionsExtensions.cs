@@ -6,7 +6,7 @@
 
 using System.Collections.Generic;
 
-using eDoxa.Identity.Domain.ViewModels;
+using eDoxa.Identity.Api.ViewModels;
 using eDoxa.Seedwork.Domain.Extensions;
 
 using FluentAssertions;
