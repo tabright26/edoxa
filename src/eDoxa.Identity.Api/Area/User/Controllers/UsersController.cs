@@ -8,7 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,9 +15,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using eDoxa.Identity.Api.ViewModels;
-using eDoxa.Identity.Domain.Queries;
 using eDoxa.Identity.Infrastructure.Models;
-using eDoxa.Seedwork.Domain;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

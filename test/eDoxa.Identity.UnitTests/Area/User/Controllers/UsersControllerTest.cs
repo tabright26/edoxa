@@ -4,20 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
-using AutoMapper;
-
-using eDoxa.Identity.Api.Area.User.Controllers;
-using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
-using eDoxa.Identity.Domain.Queries;
-using eDoxa.Identity.UnitTests.Helpers.Extensions;
-
-using FluentAssertions;
-
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
@@ -27,14 +13,6 @@ namespace eDoxa.Identity.UnitTests.Area.User.Controllers
     [TestClass]
     public sealed class UsersControllerTest
     {
-        private Mock<IUserQuery> _mockUserQueries;
-
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            _mockUserQueries = new Mock<IUserQuery>();
-        }
-
         //[TestMethod]
         //public async Task FindUsersAsync_ShouldBeOkObjectResult()
         //{

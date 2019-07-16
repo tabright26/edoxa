@@ -1,20 +1,14 @@
 ﻿// Filename: ExternalLogin.cshtml.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using AutoMapper;
-
-using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Infrastructure.Models;
 using eDoxa.IdentityServer.IntegrationEvents;
 using eDoxa.IntegrationEvents;
@@ -31,7 +25,6 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
     public class ExternalLoginModel : PageModel
     {
         private readonly IEventBusService _eventBusService;
-        private readonly IMapper _mapper;
         private readonly ILogger<ExternalLoginModel> _logger;
         private readonly SignInManager<UserModel> _signInManager;
         private readonly UserManager<UserModel> _userManager;
@@ -40,15 +33,13 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
             SignInManager<UserModel> signInManager,
             UserManager<UserModel> userManager,
             ILogger<ExternalLoginModel> logger,
-            IEventBusService eventBusService,
-            IMapper mapper
+            IEventBusService eventBusService
         )
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _logger = logger;
             _eventBusService = eventBusService;
-            _mapper = mapper;
         }
 
         [BindProperty] public InputModel Input { get; set; }
@@ -165,14 +156,15 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var personalName = new PersonalName(Input.FirstName, Input.LastName);
+                var birthDate = new DateTime(1995, 05, 06);
 
-                // TODO: Add BirthDate inputs.
-                var birthDate = new BirthDate(1995, 05, 06);
-                var email = new Email(Input.Email);
-                var gamertag = new Gamertag(Input.Username);
-                var user = new User(gamertag, email, birthDate, personalName);
-                var userModel = _mapper.Map<UserModel>(user);
+                var userModel = new UserModel
+                {
+                    Id = Guid.NewGuid(),
+                    Email = Input.Email,
+                    UserName = Input.Username
+                };
+
                 var result = await _userManager.CreateAsync(userModel);
 
                 if (result.Succeeded)
@@ -187,8 +179,8 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
                             new UserCreatedIntegrationEvent(
                                 userModel.Id,
                                 userModel.Email,
-                                personalName.FirstName,
-                                personalName.LastName,
+                                Input.FirstName,
+                                Input.LastName,
                                 birthDate.Year,
                                 birthDate.Month,
                                 birthDate.Day

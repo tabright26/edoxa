@@ -6,8 +6,6 @@
 
 using Autofac;
 
-using eDoxa.Identity.Api.Infrastructure.Queries;
-using eDoxa.Identity.Domain.Queries;
 using eDoxa.Identity.Infrastructure;
 using eDoxa.IntegrationEvents;
 using eDoxa.Seedwork.Application.DomainEvents;
@@ -20,14 +18,8 @@ namespace eDoxa.Identity.Api.Infrastructure
     {
         protected override void Load([NotNull] ContainerBuilder builder)
         {
-            base.Load(builder);
-
             builder.RegisterModule<DomainEventModule>();
-
             builder.RegisterModule<IntegrationEventModule<IdentityDbContext>>();
-
-            // Queries
-            builder.RegisterType<UserQuery>().As<IUserQuery>().InstancePerLifetimeScope();
         }
     }
 }

@@ -8,16 +8,13 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Collections.Generic;
+using System;
 using System.ComponentModel.DataAnnotations;
-using System.Globalization;
-using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Infrastructure.Models;
 using eDoxa.IdentityServer.IntegrationEvents;
 using eDoxa.IntegrationEvents;
@@ -27,7 +24,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 
 namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
@@ -63,13 +59,13 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
 
         public string ReturnUrl { get; set; }
 
-        public IEnumerable<SelectListItem> Years { get; set; } =
-            BirthDate.Years().Select(year => new SelectListItem(year.ToString(), year.ToString())).OrderByDescending(item => item.Value);
+        //public IEnumerable<SelectListItem> Years { get; set; } =
+        //    BirthDate.Years().Select(year => new SelectListItem(year.ToString(), year.ToString())).OrderByDescending(item => item.Value);
 
-        public IEnumerable<SelectListItem> Months { get; set; } =
-            BirthDate.Months().Select(month => new SelectListItem(DateTimeFormatInfo.CurrentInfo.GetMonthName(month), month.ToString()));
+        //public IEnumerable<SelectListItem> Months { get; set; } =
+        //    BirthDate.Months().Select(month => new SelectListItem(DateTimeFormatInfo.CurrentInfo.GetMonthName(month), month.ToString()));
 
-        public IEnumerable<SelectListItem> Days { get; set; } = BirthDate.Days().Select(day => new SelectListItem(day.ToString(), day.ToString()));
+        //public IEnumerable<SelectListItem> Days { get; set; } = BirthDate.Days().Select(day => new SelectListItem(day.ToString(), day.ToString()));
 
         public void OnGet(string returnUrl = null)
         {
@@ -82,12 +78,13 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var personalName = new PersonalName(Input.FirstName, Input.LastName);
-                var birthDate = new BirthDate(Input.Year, Input.Month, Input.Day);
-                var email = new Email(Input.Email);
-                var gamertag = new Gamertag(Input.UserName);
-                var user = new User(gamertag, email, birthDate, personalName);
-                var userModel = _mapper.Map<UserModel>(user);
+                var userModel = new UserModel
+                {
+                    Id = Guid.NewGuid(),
+                    Email = Input.Email,
+                    UserName = Input.UserName
+                };
+
                 var result = await _userManager.CreateAsync(userModel, Input.Password);
 
                 if (result.Succeeded)
@@ -98,11 +95,11 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
                         new UserCreatedIntegrationEvent(
                             userModel.Id,
                             userModel.Email,
-                            personalName.FirstName,
-                            personalName.LastName,
-                            birthDate.Year,
-                            birthDate.Month,
-                            birthDate.Day
+                            Input.FirstName,
+                            Input.LastName,
+                            Input.Year,
+                            Input.Month,
+                            Input.Day
                         )
                     );
 
@@ -113,7 +110,7 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
                         null,
                         new
                         {
-                            userId = user.Id,
+                            userId = userModel.Id,
                             code
                         },
                         Request.Scheme
