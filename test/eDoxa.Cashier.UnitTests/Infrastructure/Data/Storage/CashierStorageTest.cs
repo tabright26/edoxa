@@ -4,7 +4,10 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
+
 using eDoxa.Cashier.Api.Infrastructure.Data.Storage;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 
 using FluentAssertions;
 
@@ -16,7 +19,7 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Storage
     public sealed class CashierStorageTest
     {
         [TestMethod]
-        public void TestChallenges_ShouldHaveCountOfFortyRecords()
+        public void TestChallenges_ShouldHaveRecordCountOfForty()
         {
             // Arrange
             const int recordCount = 40;
@@ -29,7 +32,7 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Storage
         }
 
         [TestMethod]
-        public void TestUserIds_ShouldHaveCountOfThousandRecords()
+        public void TestUsers_ShouldHaveRecordCountOfThousand()
         {
             // Arrange
             const int recordCount = 1000;
@@ -39,6 +42,16 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Storage
 
             // Assert
             testUsers.Should().HaveCount(recordCount);
+        }
+
+        [TestMethod]
+        public void TestAdmin_ShouldBeTestAdminId()
+        {
+            // Act
+            var testAdmin = CashierStorage.TestAdmin;
+
+            // Assert
+            testAdmin.Id.Should().Be(UserId.FromGuid(Guid.Parse("e4655fe0-affd-4323-b022-bdb2ebde6091")));
         }
     }
 }

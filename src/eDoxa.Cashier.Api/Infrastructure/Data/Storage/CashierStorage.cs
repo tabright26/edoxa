@@ -24,70 +24,68 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Storage
         private const string TestUsersFilePath = "Infrastructure/Data/Storage/TestFiles/TestUsers.csv";
         private const string TestChallengesFilePath = "Infrastructure/Data/Storage/TestFiles/TestChallenges.csv";
 
-        public static IReadOnlyCollection<User> TestUsers => Users.OrderBy(user => user.Id).ToList();
+        public static IReadOnlyCollection<IChallenge> TestChallenges => GetTestChallenges().ToList();
 
-        private static IEnumerable<User> Users
+        public static IReadOnlyCollection<User> TestUsers => GetTestUsers().ToList();
+
+        public static User TestAdmin => GetTestUsers().ToList().First();
+
+        private static IEnumerable<User> GetTestUsers()
         {
-            get
-            {
-                var path = Path.Combine(Directory.GetCurrentDirectory(), TestUsersFilePath);
+            var path = Path.Combine(Directory.GetCurrentDirectory(), TestUsersFilePath);
 
-                using (var reader = new StreamReader(path))
-                using (var csv = new CsvReader(reader))
-                {
-                    var records = csv.GetRecords(
+            using (var reader = new StreamReader(path))
+            using (var csv = new CsvReader(reader))
+            {
+                var records = csv.GetRecords(
                         new
                         {
                             Id = default(Guid)
                         }
-                    );
+                    ).ToList();
 
-                    foreach (var record in records)
-                    {
-                        yield return new User(UserId.FromGuid(record.Id));
-                    }
+                foreach (var record in records)
+                {
+                    yield return new User(UserId.FromGuid(record.Id));
                 }
             }
         }
 
-        public static IEnumerable<IChallenge> TestChallenges
+        private static IEnumerable<IChallenge> GetTestChallenges()
         {
-            get
+            var payoutFactory = new PayoutFactory();
+            var payoutStrategy = payoutFactory.CreateInstance();
+            var path = Path.Combine(Directory.GetCurrentDirectory(), TestChallengesFilePath);
+
+            using (var reader = new StreamReader(path))
+            using (var csv = new CsvReader(reader))
             {
-                var payoutFactory = new PayoutFactory();
-                var payoutStrategy = payoutFactory.CreateInstance();
-                var path = Path.Combine(Directory.GetCurrentDirectory(), TestChallengesFilePath);
+                var records = csv.GetRecords(
+                        new
+                        {
+                            Id = default(Guid),
+                            EntryFeeCurrency = default(int),
+                            EntryFeeAmount = default(decimal),
+                            PayoutEntries = default(int)
+                        }
+                    )
+                    .ToList();
 
-                using (var reader = new StreamReader(path))
-                using (var csv = new CsvReader(reader))
+                foreach (var record in records)
                 {
-                    var records = csv.GetRecords(
-                            new
-                            {
-                                Id = default(Guid),
-                                EntryFeeCurrency = default(int),
-                                EntryFeeAmount = default(decimal),
-                                PayoutEntries = default(int)
-                            }
-                        )
-                        .ToList();
+                    var payoutEntries = new PayoutEntries(record.PayoutEntries);
 
-                    foreach (var record in records)
-                    {
-                        var payoutEntries = new PayoutEntries(record.PayoutEntries);
+                    var currency = Currency.FromValue(record.EntryFeeCurrency);
 
-                        var currency = Currency.FromValue(record.EntryFeeCurrency);
+                    var entryFee = new EntryFee(record.EntryFeeAmount, currency);
 
-                        var entryFee = new EntryFee(record.EntryFeeAmount, currency);
+                    var payout = payoutStrategy.GetPayout(payoutEntries, entryFee);
 
-                        var payout = payoutStrategy.GetPayout(payoutEntries, entryFee);
+                    var challenge = new Challenge(entryFee, payout);
 
-                        var challenge = new Challenge(entryFee, payout);
+                    challenge.SetEntityId(ChallengeId.FromGuid(record.Id));
 
-                        challenge.SetEntityId(ChallengeId.FromGuid(record.Id));
-
-                        yield return challenge;
-                    }
+                    yield return challenge;
                 }
             }
         }

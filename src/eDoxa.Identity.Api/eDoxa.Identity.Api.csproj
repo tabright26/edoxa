@@ -47,7 +47,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="..\..\data\Identity\TestFiles\TestUsers.csv" Link="Infrastructure\Data\Storage\TestFiles\TestUsers.csv" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\data\Identity\SourceFiles\Roles.csv"
+             Link="Infrastructure\Data\Storage\SourceFiles\Roles.csv" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\data\Identity\SourceFiles\RoleClaims.csv"
+             Link="Infrastructure\Data\Storage\SourceFiles\RoleClaims.csv" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\data\Identity\TestFiles\TestUsers.csv"
+             Link="Infrastructure\Data\Storage\TestFiles\TestUsers.csv" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\data\Identity\TestFiles\TestUserClaims.csv"
+             Link="Infrastructure\Data\Storage\TestFiles\TestUserClaims.csv" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\data\Identity\TestFiles\TestUserRoles.csv"
+             Link="Infrastructure\Data\Storage\TestFiles\TestUserRoles.csv" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

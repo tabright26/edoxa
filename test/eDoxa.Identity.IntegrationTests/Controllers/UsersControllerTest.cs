@@ -4,12 +4,13 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Infrastructure.Data.Fakers;
+using eDoxa.Identity.Api.Infrastructure.Data.Storage;
 using eDoxa.Identity.Api.ViewModels;
-using eDoxa.Identity.Infrastructure;
+using eDoxa.Identity.Infrastructure.Models;
 using eDoxa.Identity.IntegrationTests.Helpers;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
@@ -17,6 +18,7 @@ using eDoxa.Seedwork.Testing.Extensions;
 using FluentAssertions;
 
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -52,16 +54,15 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
         public async Task ApiUsers_WithNinetyNineUsers_ShouldHaveCountOfNinetyNine()
         {
             // Arrange
-            var userFaker = new UserFaker();
-            userFaker.UseSeed(1);
-            var fakeUsers = userFaker.FakeTestUsers(99);
-
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var context = scope.GetService<IdentityDbContext>();
-                    context.AddRange(fakeUsers);
-                    await context.SaveChangesAsync();
+                    var userManager = scope.GetService<UserManager<UserModel>>();
+
+                    foreach (var testUser in IdentityStorage.TestUsers.Take(100).ToList())
+                    {
+                        await userManager.CreateAsync(testUser);
+                    }
                 }
             );
 
@@ -71,7 +72,7 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
             // Assert
             response.EnsureSuccessStatusCode();
             var users = await response.DeserializeAsync<UserViewModel[]>();
-            users.Should().HaveCount(99);
+            users.Should().HaveCount(100);
         }
 
         [TestMethod]

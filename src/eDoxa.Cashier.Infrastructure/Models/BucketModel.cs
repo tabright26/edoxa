@@ -4,11 +4,9 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Seedwork.Infrastructure;
-
 namespace eDoxa.Cashier.Infrastructure.Models
 {
-    public class BucketModel : PersistentObject
+    public class BucketModel
     {
         public int Size { get; set; }
 

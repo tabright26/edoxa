@@ -8,13 +8,22 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using AutoMapper;
+
+using eDoxa.Identity.Api.ViewModels;
 using eDoxa.Identity.Domain.Queries;
+using eDoxa.Identity.Infrastructure.Models;
+using eDoxa.Seedwork.Domain;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Identity.Api.Area.User.Controllers
 {
@@ -26,11 +35,13 @@ namespace eDoxa.Identity.Api.Area.User.Controllers
     [ApiExplorerSettings(GroupName = "User")]
     public class UsersController : ControllerBase
     {
-        private readonly IUserQuery _userQuery;
+        private readonly UserManager<UserModel> _userManager;
+        private readonly IMapper _mapper;
 
-        public UsersController(IUserQuery userQuery)
+        public UsersController(UserManager<UserModel> userManager, IMapper mapper)
         {
-            _userQuery = userQuery;
+            _userManager = userManager;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -39,14 +50,14 @@ namespace eDoxa.Identity.Api.Area.User.Controllers
         [HttpGet(Name = nameof(FindUsersAsync))]
         public async Task<IActionResult> FindUsersAsync()
         {
-            var users = await _userQuery.FetchUsersAsync();
+            var users = await _userManager.Users.ToListAsync();
 
             if (!users.Any())
             {
                 return this.NoContent();
             }
 
-            return this.Ok(users);
+            return this.Ok(_mapper.Map<IEnumerable<UserViewModel>>(users));
         }
     }
 }

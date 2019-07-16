@@ -4,9 +4,11 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
 using System.Linq;
 
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Storage;
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
 
 using FluentAssertions;
 
@@ -18,7 +20,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Data.Storage
     public sealed class ArenaChallengesStorageTest
     {
         [TestMethod]
-        public void TestChallenges_ShouldHaveCountOfFortyRecords()
+        public void TestChallenges_ShouldHaveRecordCountOfForty()
         {
             // Arrange
             const int recordCount = 40;
@@ -31,7 +33,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Data.Storage
         }
 
         [TestMethod]
-        public void TestUsers_ShouldHaveCountOfThousandRecords()
+        public void TestUsers_ShouldHaveRecordCountOfThousand()
         {
             // Arrange
             const int recordCount = 1000;
@@ -41,6 +43,16 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Data.Storage
 
             // Assert
             testUsers.Should().HaveCount(recordCount);
+        }
+
+        [TestMethod]
+        public void TestAdmin_ShouldBeTestAdminId()
+        {
+            // Act
+            var testAdmin = ArenaChallengesStorage.TestAdmin;
+
+            // Assert
+            testAdmin.Id.Should().Be(UserId.FromGuid(Guid.Parse("e4655fe0-affd-4323-b022-bdb2ebde6091")));
         }
     }
 }

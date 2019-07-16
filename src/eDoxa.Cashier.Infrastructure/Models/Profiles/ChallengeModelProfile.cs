@@ -9,7 +9,6 @@ using System;
 using AutoMapper;
 
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Cashier.Infrastructure.Models.Profiles.Converters;
 
 namespace eDoxa.Cashier.Infrastructure.Models.Profiles
 {
@@ -21,7 +20,7 @@ namespace eDoxa.Cashier.Infrastructure.Models.Profiles
                 .ForMember(challenge => challenge.Id, config => config.MapFrom<Guid>(challenge => challenge.Id))
                 .ForMember(challenge => challenge.EntryFeeCurrency, config => config.MapFrom(challenge => challenge.EntryFee.Currency.Value))
                 .ForMember(challenge => challenge.EntryFeeAmount, config => config.MapFrom(challenge => challenge.EntryFee.Amount))
-                .ForMember(challenge => challenge.Buckets, config => config.ConvertUsing(new BucketModelsConverter(), challenge => challenge.Payout));
+                .ForMember(challenge => challenge.Buckets, config => config.MapFrom(challenge => challenge.Payout.Buckets));
         }
     }
 }
