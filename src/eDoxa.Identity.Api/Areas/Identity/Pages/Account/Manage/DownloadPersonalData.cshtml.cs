@@ -14,8 +14,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using eDoxa.Seedwork.Security;
-using eDoxa.Seedwork.Security.Models;
+using eDoxa.Identity.Api.Application.Managers;
+using eDoxa.Identity.Api.Models;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

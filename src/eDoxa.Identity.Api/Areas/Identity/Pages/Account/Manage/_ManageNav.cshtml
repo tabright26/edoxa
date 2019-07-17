@@ -1,4 +1,4 @@
-﻿@using eDoxa.Seedwork.Security
+﻿@using eDoxa.Identity.Api.Application.Managers
 @inject CustomSignInManager SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();

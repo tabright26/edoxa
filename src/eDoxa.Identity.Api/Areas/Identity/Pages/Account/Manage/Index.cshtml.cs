@@ -13,7 +13,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
-using eDoxa.Seedwork.Security;
+using eDoxa.Identity.Api.Application.Managers;
 
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;

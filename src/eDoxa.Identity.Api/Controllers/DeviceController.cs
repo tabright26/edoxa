@@ -1,18 +1,14 @@
 // Filename: DeviceController.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-07-17
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Infrastructure.Attributes;
+using eDoxa.Identity.Api.Application.Attributes;
 using eDoxa.Identity.Api.ViewModels;
 
 using IdentityServer4;
@@ -21,6 +17,8 @@ using IdentityServer4.Extensions;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
+
+using JetBrains.Annotations;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -189,6 +187,7 @@ namespace eDoxa.Identity.Api.Controllers
             return result;
         }
 
+        [ItemCanBeNull]
         private async Task<DeviceAuthorizationViewModel> BuildViewModelAsync(string userCode, DeviceAuthorizationInputModel model = null)
         {
             var request = await _interaction.GetAuthorizationContextAsync(userCode);
@@ -219,7 +218,7 @@ namespace eDoxa.Identity.Api.Controllers
 
         private DeviceAuthorizationViewModel CreateConsentViewModel(
             string userCode,
-            DeviceAuthorizationInputModel model,
+            [CanBeNull] DeviceAuthorizationInputModel model,
             Client client,
             Resources resources
         )

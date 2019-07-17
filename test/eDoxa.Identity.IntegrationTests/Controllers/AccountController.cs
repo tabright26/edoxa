@@ -7,9 +7,9 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 
+using eDoxa.Identity.Api.Infrastructure;
 using eDoxa.Identity.IntegrationTests.Helpers;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Security;
 using eDoxa.Seedwork.Testing.Extensions;
 
 using Microsoft.AspNetCore.TestHost;

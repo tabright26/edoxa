@@ -15,10 +15,10 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using eDoxa.Identity.Api.Application.Managers;
 using eDoxa.Identity.Api.IntegrationEvents;
+using eDoxa.Identity.Api.Models;
 using eDoxa.IntegrationEvents;
-using eDoxa.Seedwork.Security;
-using eDoxa.Seedwork.Security.Models;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.UI.Services;

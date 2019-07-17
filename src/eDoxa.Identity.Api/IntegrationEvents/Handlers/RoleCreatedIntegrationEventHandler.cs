@@ -6,9 +6,9 @@
 
 using System.Threading.Tasks;
 
+using eDoxa.Identity.Api.Application.Managers;
+using eDoxa.Identity.Api.Models;
 using eDoxa.IntegrationEvents;
-using eDoxa.Seedwork.Security;
-using eDoxa.Seedwork.Security.Models;
 
 namespace eDoxa.Identity.Api.IntegrationEvents.Handlers
 {

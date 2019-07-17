@@ -14,8 +14,8 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
-using eDoxa.Seedwork.Security;
-using eDoxa.Seedwork.Security.Models;
+using eDoxa.Identity.Api.Application.Managers;
+using eDoxa.Identity.Api.Models;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

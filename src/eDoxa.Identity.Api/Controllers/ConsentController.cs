@@ -1,18 +1,14 @@
 // Filename: ConsentController.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-07-17
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.Linq;
 using System.Threading.Tasks;
 
+using eDoxa.Identity.Api.Application.Attributes;
 using eDoxa.Identity.Api.Extensions;
-using eDoxa.Identity.Api.Infrastructure.Attributes;
 using eDoxa.Identity.Api.ViewModels;
 
 using IdentityServer4;
@@ -21,6 +17,8 @@ using IdentityServer4.Extensions;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
+
+using JetBrains.Annotations;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -114,12 +112,12 @@ namespace eDoxa.Identity.Api.Controllers
         /*****************************************/
         /* helper APIs for the ConsentController */
         /*****************************************/
-        private async Task<ProcessConsentResult> ProcessConsent(ConsentInputModel model)
+        private async Task<ProcessConsentResult> ProcessConsent([CanBeNull] ConsentInputModel model)
         {
             var result = new ProcessConsentResult();
 
             // validate return url is still valid
-            var request = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
+            var request = await _interaction.GetAuthorizationContextAsync(model?.ReturnUrl);
 
             if (request == null)
             {
@@ -189,7 +187,7 @@ namespace eDoxa.Identity.Api.Controllers
             else
             {
                 // we need to redisplay the consent UI
-                result.ViewModel = await this.BuildViewModelAsync(model.ReturnUrl, model);
+                result.ViewModel = await this.BuildViewModelAsync(model?.ReturnUrl, model);
             }
 
             return result;
@@ -234,7 +232,7 @@ namespace eDoxa.Identity.Api.Controllers
         }
 
         private ConsentViewModel CreateConsentViewModel(
-            ConsentInputModel model,
+            [CanBeNull] ConsentInputModel model,
             string returnUrl,
             AuthorizationRequest request,
             Client client,

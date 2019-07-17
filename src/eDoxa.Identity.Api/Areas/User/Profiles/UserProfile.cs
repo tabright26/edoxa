@@ -7,7 +7,7 @@
 using AutoMapper;
 
 using eDoxa.Identity.Api.Areas.User.ViewModels;
-using eDoxa.Seedwork.Security.Models;
+using eDoxa.Identity.Api.Models;
 
 namespace eDoxa.Identity.Api.Areas.User.Profiles
 {

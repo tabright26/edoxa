@@ -7,9 +7,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 
+using eDoxa.Identity.Api.Application.Managers;
 using eDoxa.Identity.Api.Infrastructure.Data.Storage;
 using eDoxa.Seedwork.Infrastructure;
-using eDoxa.Seedwork.Security;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;

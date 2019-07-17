@@ -11,7 +11,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-using eDoxa.Seedwork.Security;
+using eDoxa.Identity.Api.Application.Managers;
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;

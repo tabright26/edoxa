@@ -14,8 +14,8 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using eDoxa.Identity.Api.Application.Managers;
 using eDoxa.Identity.Api.Areas.User.ViewModels;
-using eDoxa.Seedwork.Security;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

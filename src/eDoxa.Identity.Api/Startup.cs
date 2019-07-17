@@ -21,7 +21,6 @@ using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Swagger.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring.Extensions;
-using eDoxa.Seedwork.Security;
 using eDoxa.Seedwork.Security.Extensions;
 using eDoxa.Seedwork.Security.Hosting.Extensions;
 using eDoxa.Seedwork.Security.IdentityServer.Resources;

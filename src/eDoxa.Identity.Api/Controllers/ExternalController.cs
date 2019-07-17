@@ -1,12 +1,8 @@
 // Filename: ExternalController.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-07-17
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.Collections.Generic;
@@ -15,10 +11,10 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Infrastructure.Attributes;
+using eDoxa.Identity.Api.Application.Attributes;
+using eDoxa.Identity.Api.Application.Managers;
+using eDoxa.Identity.Api.Models;
 using eDoxa.Identity.Api.ViewModels;
-using eDoxa.Seedwork.Security;
-using eDoxa.Seedwork.Security.Models;
 
 using IdentityModel;
 
@@ -116,7 +112,7 @@ namespace eDoxa.Identity.Api.Controllers
                 // this might be where you might initiate a custom workflow for user registration
                 // in this sample we don't show how that would be done, as our sample implementation
                 // simply auto-provisions new external user
-                user = await this.AutoProvisionUserAsync(provider, providerUserId, claims);
+                user = await this.AutoProvisionUserAsync(provider, providerUserId, new List<Claim>(claims));
             }
 
             // this allows us to collect any additonal claims or properties
@@ -227,7 +223,7 @@ namespace eDoxa.Identity.Api.Controllers
             return (user, provider, providerUserId, claims);
         }
 
-        private async Task<UserModel> AutoProvisionUserAsync(string provider, string providerUserId, IEnumerable<Claim> claims)
+        private async Task<UserModel> AutoProvisionUserAsync(string provider, string providerUserId, IReadOnlyCollection<Claim> claims)
         {
             // create a list of claims that we want to transfer into our store
             var filtered = new List<Claim>();
@@ -313,9 +309,9 @@ namespace eDoxa.Identity.Api.Controllers
             }
 
             // if the external provider issued an id_token, we'll keep it for signout
-            var id_token = externalResult.Properties.GetTokenValue("id_token");
+            var idToken = externalResult.Properties.GetTokenValue("id_token");
 
-            if (id_token != null)
+            if (idToken != null)
             {
                 localSignInProps.StoreTokens(
                     new[]
@@ -323,7 +319,7 @@ namespace eDoxa.Identity.Api.Controllers
                         new AuthenticationToken
                         {
                             Name = "id_token",
-                            Value = id_token
+                            Value = idToken
                         }
                     }
                 );
