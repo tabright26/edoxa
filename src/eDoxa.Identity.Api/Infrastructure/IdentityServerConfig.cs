@@ -51,7 +51,7 @@ namespace eDoxa.Identity.Api.Infrastructure
 
             yield return CustomApiResources.Cashier.SwaggerClient(configuration["Cashier:Url"]);
 
-            yield return CustomApiResources.ArenaChallenges.SwaggerClient(configuration["Challenge:Url"]);
+            yield return CustomApiResources.ArenaChallenges.SwaggerClient(configuration["Arena:Challenges:Url"]);
 
             yield return new Client
             {
