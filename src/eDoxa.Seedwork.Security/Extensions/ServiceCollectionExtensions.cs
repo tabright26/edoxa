@@ -28,7 +28,7 @@ namespace eDoxa.Seedwork.Security.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddIdentity(this IServiceCollection services, IHostingEnvironment environment)
+        public static void AddCustomIdentity(this IServiceCollection services, IHostingEnvironment environment)
         {
             services.AddIdentity<UserModel, RoleModel>(
                     options =>
@@ -47,18 +47,22 @@ namespace eDoxa.Seedwork.Security.Extensions
                         options.Lockout.MaxFailedAccessAttempts = 5;
 
                         // User settings
-                        options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_";
+                        options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_#";
                         options.User.RequireUniqueEmail = true;
 
                         // Claims settings
                         options.ClaimsIdentity.SecurityStampClaimType = CustomClaimTypes.SecurityStamp;
 
                         // SignIn settings
-                        if (environment.IsProduction())
-                        {
-                            options.SignIn.RequireConfirmedEmail = true;
-                            options.SignIn.RequireConfirmedPhoneNumber = true;
-                        }
+                        options.SignIn.RequireConfirmedPhoneNumber = false;
+                        options.SignIn.RequireConfirmedEmail = environment.IsProduction();
+
+                        // Tokens settings
+                        options.Tokens.AuthenticatorTokenProvider = CustomTokenProviders.Authenticator;
+                        options.Tokens.ChangeEmailTokenProvider = CustomTokenProviders.ChangeEmail;
+                        options.Tokens.ChangePhoneNumberTokenProvider = CustomTokenProviders.ChangePhoneNumber;
+                        options.Tokens.EmailConfirmationTokenProvider = CustomTokenProviders.EmailConfirmation;
+                        options.Tokens.PasswordResetTokenProvider = CustomTokenProviders.PasswordReset;
                     }
                 )
                 .AddEntityFrameworkStores<IdentityDbContext>()
@@ -68,17 +72,26 @@ namespace eDoxa.Seedwork.Security.Extensions
                 .AddUserManager<CustomUserManager>()
                 .AddUserValidator<CustomUserValidator>()
                 .AddDefaultTokenProviders()
+                .AddTokenProvider<CustomAuthenticatorTokenProvider>(CustomTokenProviders.Authenticator)
+                .AddTokenProvider<CustomChangeEmailTokenProvider>(CustomTokenProviders.ChangeEmail)
+                .AddTokenProvider<CustomChangePhoneNumberTokenProvider>(CustomTokenProviders.ChangePhoneNumber)
+                .AddTokenProvider<CustomEmailConfirmationTokenProvider>(CustomTokenProviders.EmailConfirmation)
+                .AddTokenProvider<CustomPasswordResetTokenProvider>(CustomTokenProviders.PasswordReset)
                 .AddDefaultUI(UIFramework.Bootstrap4);
 
             services.AddScoped<CustomUserManager>();
             services.AddScoped<CustomSignInManager>();
             services.AddScoped<CustomRoleManager>();
+            services.Configure<CustomAuthenticatorTokenProviderOptions>(options => options.TokenLifespan = TimeSpan.FromHours(1));
+            services.Configure<CustomChangeEmailTokenProviderOptions>(options => options.TokenLifespan = TimeSpan.FromDays(1));
+            services.Configure<CustomChangePhoneNumberTokenProviderOptions>(options => options.TokenLifespan = TimeSpan.FromDays(1));
+            services.Configure<CustomEmailConfirmationTokenProviderOptions>(options => options.TokenLifespan = TimeSpan.FromDays(2));
+            services.Configure<CustomPasswordResetTokenProviderOptions>(options => options.TokenLifespan = TimeSpan.FromHours(2));
         }
 
-        public static void AddIdentityServer<TUser>(this IServiceCollection services, IConfiguration configuration, IHostingEnvironment environment)
-        where TUser : IdentityUser<Guid>
+        public static void AddCustomIdentityServer(this IServiceCollection services, IConfiguration configuration)
         {
-            var builder = services.AddIdentityServer(
+            services.AddIdentityServer(
                     options =>
                     {
                         options.IssuerUri = configuration.GetValue<string>("IdentityServer:Url");
@@ -99,13 +112,9 @@ namespace eDoxa.Seedwork.Security.Extensions
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryClients(Config.GetClients(configuration))
-                .AddProfileService<CustomProfileService<TUser>>()
-                .AddAspNetIdentity<TUser>();
-
-            if (environment.IsDevelopment())
-            {
-                builder.AddCorsPolicyService<CustomCorsPolicyService>();
-            }
+                .AddProfileService<CustomProfileService<UserModel>>()
+                .AddAspNetIdentity<UserModel>()
+                .AddCorsPolicyService<CustomCorsPolicyService>();
         }
 
         public static void AddCookiePolicy(this IServiceCollection services)

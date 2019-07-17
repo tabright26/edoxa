@@ -55,7 +55,7 @@ namespace eDoxa.Identity.Api
 
             services.AddDbContext<IdentityDbContext, IdentityDbContextData>(Configuration, Assembly.GetAssembly(typeof(Startup)));
 
-            services.AddIdentity(Environment);
+            services.AddCustomIdentity(Environment);
 
             services.AddVersioning();
 

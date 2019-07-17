@@ -20,7 +20,6 @@ using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security;
 using eDoxa.Seedwork.Security.Extensions;
-using eDoxa.Seedwork.Security.Models;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -54,13 +53,13 @@ namespace eDoxa.IdentityServer
 
             services.AddDataProtection(Configuration);
 
-            services.AddIdentity(Environment);
+            services.AddCustomIdentity(Environment);
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddIdentityServer<UserModel>(Configuration, Environment);
+            services.AddCustomIdentityServer(Configuration);
 
             services.AddServiceBus(Configuration);
 
