@@ -9,7 +9,7 @@ using System.Reflection;
 using AutoMapper;
 
 using eDoxa.Identity.Api;
-using eDoxa.Identity.Infrastructure;
+using eDoxa.Seedwork.Security;
 
 namespace eDoxa.Identity.UnitTests.Helpers.Extensions
 {

@@ -1,4 +1,4 @@
-﻿// Filename: UserRoleModel.cs
+﻿// Filename: UserClaimModel.cs
 // Date Created: 2019-07-16
 // 
 // ================================================
@@ -8,9 +8,9 @@ using System;
 
 using Microsoft.AspNetCore.Identity;
 
-namespace eDoxa.Identity.Infrastructure.Models
+namespace eDoxa.Seedwork.Security.Models
 {
-    public class UserRoleModel : IdentityUserRole<Guid>
+    public class UserClaimModel : IdentityUserClaim<Guid>
     {
     }
 }

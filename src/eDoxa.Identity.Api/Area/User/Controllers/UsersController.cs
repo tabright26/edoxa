@@ -15,10 +15,9 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using eDoxa.Identity.Api.ViewModels;
-using eDoxa.Identity.Infrastructure.Models;
+using eDoxa.Seedwork.Security;
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,10 +31,10 @@ namespace eDoxa.Identity.Api.Area.User.Controllers
     [ApiExplorerSettings(GroupName = "User")]
     public class UsersController : ControllerBase
     {
-        private readonly UserManager<UserModel> _userManager;
+        private readonly CustomUserManager _userManager;
         private readonly IMapper _mapper;
 
-        public UsersController(UserManager<UserModel> userManager, IMapper mapper)
+        public UsersController(CustomUserManager userManager, IMapper mapper)
         {
             _userManager = userManager;
             _mapper = mapper;

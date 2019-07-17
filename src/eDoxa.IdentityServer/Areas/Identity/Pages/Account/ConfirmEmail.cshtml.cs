@@ -11,12 +11,11 @@
 using System;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Infrastructure.Models;
+using eDoxa.Seedwork.Security;
 
 using JetBrains.Annotations;
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -25,9 +24,9 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class ConfirmEmailModel : PageModel
     {
-        private readonly UserManager<UserModel> _userManager;
+        private readonly CustomUserManager _userManager;
 
-        public ConfirmEmailModel(UserManager<UserModel> userManager)
+        public ConfirmEmailModel(CustomUserManager userManager)
         {
             _userManager = userManager;
         }

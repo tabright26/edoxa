@@ -7,13 +7,13 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Infrastructure.Models;
+using eDoxa.Seedwork.Security.Models;
 
 using JetBrains.Annotations;
 
 using Microsoft.AspNetCore.Identity;
 
-namespace eDoxa.Identity.Infrastructure.Validators
+namespace eDoxa.Seedwork.Security
 {
     public sealed class CustomUserValidator : IUserValidator<UserModel>
     {

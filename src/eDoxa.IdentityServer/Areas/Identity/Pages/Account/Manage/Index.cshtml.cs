@@ -13,9 +13,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Infrastructure.Models;
+using eDoxa.Seedwork.Security;
 
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -24,11 +23,11 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account.Manage
 {
     public class IndexModel : PageModel
     {
-        private readonly UserManager<UserModel> _userManager;
-        private readonly SignInManager<UserModel> _signInManager;
+        private readonly CustomUserManager _userManager;
+        private readonly CustomSignInManager _signInManager;
         private readonly IEmailSender _emailSender;
 
-        public IndexModel(UserManager<UserModel> userManager, SignInManager<UserModel> signInManager, IEmailSender emailSender)
+        public IndexModel(CustomUserManager userManager, CustomSignInManager signInManager, IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;

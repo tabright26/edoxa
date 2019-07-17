@@ -12,18 +12,16 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Infrastructure.Models;
 using eDoxa.IntegrationEvents;
-
-using Microsoft.AspNetCore.Identity;
+using eDoxa.Seedwork.Security;
 
 namespace eDoxa.Identity.Api.IntegrationEvents.Handlers
 {
     public sealed class UserClaimsReplacedIntegrationEventHandler : IIntegrationEventHandler<UserClaimsReplacedIntegrationEvent>
     {
-        private readonly UserManager<UserModel> _userManager;
+        private readonly CustomUserManager _userManager;
 
-        public UserClaimsReplacedIntegrationEventHandler(UserManager<UserModel> userManager)
+        public UserClaimsReplacedIntegrationEventHandler(CustomUserManager userManager)
         {
             _userManager = userManager;
         }

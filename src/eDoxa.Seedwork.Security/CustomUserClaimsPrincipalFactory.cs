@@ -7,7 +7,7 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Infrastructure.Models;
+using eDoxa.Seedwork.Security.Models;
 
 using IdentityModel;
 
@@ -16,13 +16,13 @@ using JetBrains.Annotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 
-namespace eDoxa.IdentityServer.Infrastructure.Factories
+namespace eDoxa.Seedwork.Security
 {
     public sealed class CustomUserClaimsPrincipalFactory : UserClaimsPrincipalFactory<UserModel, RoleModel>
     {
         public CustomUserClaimsPrincipalFactory(
-            UserManager<UserModel> userManager,
-            RoleManager<RoleModel> roleManager,
+            CustomUserManager userManager,
+            CustomRoleManager roleManager,
             IOptions<IdentityOptions> options
         ) : base(userManager, roleManager, options)
         {

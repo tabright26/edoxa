@@ -6,14 +6,14 @@
 
 using System;
 
-using eDoxa.Identity.Infrastructure.Models;
+using eDoxa.Seedwork.Security.Models;
 
 using JetBrains.Annotations;
 
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace eDoxa.Identity.Infrastructure
+namespace eDoxa.Seedwork.Security
 {
     public sealed class IdentityDbContext : IdentityDbContext<UserModel, RoleModel, Guid, UserClaimModel, UserRoleModel, UserLoginModel, RoleClaimModel,
         UserTokenModel>

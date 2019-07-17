@@ -1,6 +1,5 @@
-﻿@using eDoxa.Identity.Infrastructure.Models
-@using Microsoft.AspNetCore.Identity
-@inject SignInManager<UserModel> SignInManager
+﻿@using eDoxa.Seedwork.Security
+@inject CustomSignInManager SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }

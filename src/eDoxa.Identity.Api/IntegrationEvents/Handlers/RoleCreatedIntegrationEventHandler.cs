@@ -6,18 +6,17 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Infrastructure.Models;
 using eDoxa.IntegrationEvents;
-
-using Microsoft.AspNetCore.Identity;
+using eDoxa.Seedwork.Security;
+using eDoxa.Seedwork.Security.Models;
 
 namespace eDoxa.Identity.Api.IntegrationEvents.Handlers
 {
     public class RoleCreatedIntegrationEventHandler : IIntegrationEventHandler<RoleCreatedIntegrationEvent>
     {
-        private readonly RoleManager<RoleModel> _roleManager;
+        private readonly CustomRoleManager _roleManager;
 
-        public RoleCreatedIntegrationEventHandler(RoleManager<RoleModel> roleManager)
+        public RoleCreatedIntegrationEventHandler(CustomRoleManager roleManager)
         {
             _roleManager = roleManager;
         }

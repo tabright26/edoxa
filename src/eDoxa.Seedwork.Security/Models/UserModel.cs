@@ -8,7 +8,7 @@ using System;
 
 using Microsoft.AspNetCore.Identity;
 
-namespace eDoxa.Identity.Infrastructure.Models
+namespace eDoxa.Seedwork.Security.Models
 {
     public class UserModel : IdentityUser<Guid>
     {

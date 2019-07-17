@@ -11,9 +11,8 @@
 using System;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Infrastructure.Models;
+using eDoxa.Seedwork.Security;
 
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -22,10 +21,10 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account.Manage
 {
     public class Disable2faModel : PageModel
     {
-        private readonly UserManager<UserModel> _userManager;
+        private readonly CustomUserManager _userManager;
         private readonly ILogger<Disable2faModel> _logger;
 
-        public Disable2faModel(UserManager<UserModel> userManager, ILogger<Disable2faModel> logger)
+        public Disable2faModel(CustomUserManager userManager, ILogger<Disable2faModel> logger)
         {
             _userManager = userManager;
             _logger = logger;

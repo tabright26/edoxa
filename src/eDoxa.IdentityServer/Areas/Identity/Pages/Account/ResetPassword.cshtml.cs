@@ -11,10 +11,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Infrastructure.Models;
+using eDoxa.Seedwork.Security;
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -23,9 +22,9 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class ResetPasswordModel : PageModel
     {
-        private readonly UserManager<UserModel> _userManager;
+        private readonly CustomUserManager _userManager;
 
-        public ResetPasswordModel(UserManager<UserModel> userManager)
+        public ResetPasswordModel(CustomUserManager userManager)
         {
             _userManager = userManager;
         }

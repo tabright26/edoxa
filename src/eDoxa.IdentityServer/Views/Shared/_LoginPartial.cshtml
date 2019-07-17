@@ -1,8 +1,7 @@
-@using eDoxa.Identity.Infrastructure.Models
+@using eDoxa.Seedwork.Security
 @using IdentityModel
-@using Microsoft.AspNetCore.Identity
-@inject SignInManager<UserModel> SignInManager
-@inject UserManager<UserModel> UserManager
+@inject CustomSignInManager SignInManager
+@inject CustomUserManager UserManager
 @if (SignInManager.IsSignedIn(User) && !(ViewData["signed-out"] is bool))
 {
     <ul class="navbar-nav mr-auto">

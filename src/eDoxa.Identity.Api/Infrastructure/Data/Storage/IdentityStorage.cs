@@ -11,7 +11,7 @@ using System.Linq;
 
 using CsvHelper;
 
-using eDoxa.Identity.Infrastructure.Models;
+using eDoxa.Seedwork.Security.Models;
 
 namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
 {

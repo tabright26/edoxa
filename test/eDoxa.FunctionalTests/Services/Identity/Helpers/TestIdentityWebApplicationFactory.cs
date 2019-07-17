@@ -13,9 +13,9 @@ using System.IO;
 using System.Reflection;
 
 using eDoxa.Identity.Api;
-using eDoxa.Identity.Infrastructure;
 using eDoxa.IntegrationEvents.Infrastructure;
 using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Security;
 using eDoxa.Seedwork.Security.AzureKeyVault.Extensions;
 using eDoxa.Seedwork.Security.Hosting;
 using eDoxa.Seedwork.Testing.Extensions;

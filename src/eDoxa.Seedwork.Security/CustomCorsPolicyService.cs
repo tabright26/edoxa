@@ -12,7 +12,7 @@ using IdentityServer4.Services;
 
 using Microsoft.Extensions.Logging;
 
-namespace eDoxa.IdentityServer.Infrastructure.Services
+namespace eDoxa.Seedwork.Security
 {
     internal sealed class CustomCorsPolicyService : DefaultCorsPolicyService
     {

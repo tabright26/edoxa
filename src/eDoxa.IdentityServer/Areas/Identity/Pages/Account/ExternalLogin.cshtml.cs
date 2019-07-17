@@ -9,12 +9,12 @@ using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Infrastructure.Models;
 using eDoxa.IdentityServer.IntegrationEvents;
 using eDoxa.IntegrationEvents;
+using eDoxa.Seedwork.Security;
+using eDoxa.Seedwork.Security.Models;
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -26,12 +26,12 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
     {
         private readonly IEventBusService _eventBusService;
         private readonly ILogger<ExternalLoginModel> _logger;
-        private readonly SignInManager<UserModel> _signInManager;
-        private readonly UserManager<UserModel> _userManager;
+        private readonly CustomSignInManager _signInManager;
+        private readonly CustomUserManager _userManager;
 
         public ExternalLoginModel(
-            SignInManager<UserModel> signInManager,
-            UserManager<UserModel> userManager,
+            CustomSignInManager signInManager,
+            CustomUserManager userManager,
             ILogger<ExternalLoginModel> logger,
             IEventBusService eventBusService
         )

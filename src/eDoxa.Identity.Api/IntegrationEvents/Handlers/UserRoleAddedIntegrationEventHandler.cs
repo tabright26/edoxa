@@ -10,18 +10,16 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Infrastructure.Models;
 using eDoxa.IntegrationEvents;
-
-using Microsoft.AspNetCore.Identity;
+using eDoxa.Seedwork.Security;
 
 namespace eDoxa.Identity.Api.IntegrationEvents.Handlers
 {
     public class UserRoleAddedIntegrationEventHandler : IIntegrationEventHandler<UserRoleAddedIntegrationEvent>
     {
-        private readonly UserManager<UserModel> _userManager;
+        private readonly CustomUserManager _userManager;
 
-        public UserRoleAddedIntegrationEventHandler(UserManager<UserModel> userManager)
+        public UserRoleAddedIntegrationEventHandler(CustomUserManager userManager)
         {
             _userManager = userManager;
         }

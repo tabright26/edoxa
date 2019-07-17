@@ -31,4 +31,8 @@
     <PackageReference Include="IdentityServer4.EntityFramework.Storage" Version="2.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\eDoxa.Seedwork.Domain\eDoxa.Seedwork.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -22,23 +22,14 @@ namespace eDoxa.Identity.Api.Extensions
         public static void UseIntegrationEventSubscriptions(this IApplicationBuilder application)
         {
             var service = application.ApplicationServices.GetRequiredService<IEventBusService>();
-
             service.Subscribe<RoleClaimAddedIntegrationEvent, RoleClaimAddedIntegrationEventHandler>();
-
             service.Subscribe<RoleClaimRemovedIntegrationEvent, RoleClaimRemovedIntegrationEventHandler>();
-
             service.Subscribe<RoleCreatedIntegrationEvent, RoleCreatedIntegrationEventHandler>();
-
             service.Subscribe<RoleDeletedIntegrationEvent, RoleDeletedIntegrationEventHandler>();
-
             service.Subscribe<UserClaimsAddedIntegrationEvent, UserClaimsAddedIntegrationEventHandler>();
-
             service.Subscribe<UserClaimsRemovedIntegrationEvent, UserClaimsRemovedIntegrationEventHandler>();
-
             service.Subscribe<UserClaimsReplacedIntegrationEvent, UserClaimsReplacedIntegrationEventHandler>();
-
             service.Subscribe<UserRoleAddedIntegrationEvent, UserRoleAddedIntegrationEventHandler>();
-
             service.Subscribe<UserRoleRemovedIntegrationEvent, UserRoleRemovedIntegrationEventHandler>();
         }
     }

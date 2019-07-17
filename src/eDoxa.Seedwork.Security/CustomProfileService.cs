@@ -22,7 +22,7 @@ using JetBrains.Annotations;
 
 using Microsoft.AspNetCore.Identity;
 
-namespace eDoxa.IdentityServer.Infrastructure.Services
+namespace eDoxa.Seedwork.Security
 {
     internal sealed class CustomProfileService<TUser> : IProfileService
     where TUser : IdentityUser<Guid>

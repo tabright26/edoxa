@@ -11,8 +11,8 @@
 using System.IO;
 using System.Reflection;
 
-using eDoxa.Identity.Infrastructure;
 using eDoxa.Seedwork.Infrastructure.Factories;
+using eDoxa.Seedwork.Security;
 
 using JetBrains.Annotations;
 

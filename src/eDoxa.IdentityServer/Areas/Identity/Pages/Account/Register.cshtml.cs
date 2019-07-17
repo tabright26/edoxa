@@ -15,12 +15,12 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Identity.Infrastructure.Models;
 using eDoxa.IdentityServer.IntegrationEvents;
 using eDoxa.IntegrationEvents;
+using eDoxa.Seedwork.Security;
+using eDoxa.Seedwork.Security.Models;
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -35,12 +35,12 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account
         private readonly IEventBusService _eventBusService;
         private readonly IMapper _mapper;
         private readonly ILogger<RegisterModel> _logger;
-        private readonly SignInManager<UserModel> _signInManager;
-        private readonly UserManager<UserModel> _userManager;
+        private readonly CustomSignInManager _signInManager;
+        private readonly CustomUserManager _userManager;
 
         public RegisterModel(
-            UserManager<UserModel> userManager,
-            SignInManager<UserModel> signInManager,
+            CustomUserManager userManager,
+            CustomSignInManager signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
             IEventBusService eventBusService,

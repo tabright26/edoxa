@@ -15,9 +15,10 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Infrastructure.Models;
 using eDoxa.IdentityServer.Infrastructure.Attributes;
 using eDoxa.IdentityServer.ViewModels;
+using eDoxa.Seedwork.Security;
+using eDoxa.Seedwork.Security.Models;
 
 using IdentityModel;
 
@@ -39,12 +40,12 @@ namespace eDoxa.IdentityServer.Controllers
     {
         private readonly IEventService _events;
         private readonly IIdentityServerInteractionService _interaction;
-        private readonly SignInManager<UserModel> _signInManager;
-        private readonly UserManager<UserModel> _userManager;
+        private readonly CustomSignInManager _signInManager;
+        private readonly CustomUserManager _userManager;
 
         public ExternalController(
-            UserManager<UserModel> userManager,
-            SignInManager<UserModel> signInManager,
+            CustomUserManager userManager,
+            CustomSignInManager signInManager,
             IIdentityServerInteractionService interaction,
             IEventService events
         )

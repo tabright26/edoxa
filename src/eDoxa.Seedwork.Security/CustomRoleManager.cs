@@ -6,12 +6,12 @@
 
 using System.Collections.Generic;
 
-using eDoxa.Identity.Infrastructure.Models;
+using eDoxa.Seedwork.Security.Models;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 
-namespace eDoxa.Identity.Infrastructure.Managers
+namespace eDoxa.Seedwork.Security
 {
     public sealed class CustomRoleManager : RoleManager<RoleModel>
     {

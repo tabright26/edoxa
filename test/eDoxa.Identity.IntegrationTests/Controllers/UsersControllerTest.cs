@@ -10,15 +10,14 @@ using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Infrastructure.Data.Storage;
 using eDoxa.Identity.Api.ViewModels;
-using eDoxa.Identity.Infrastructure.Models;
 using eDoxa.Identity.IntegrationTests.Helpers;
 using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Security;
 using eDoxa.Seedwork.Testing.Extensions;
 
 using FluentAssertions;
 
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -57,7 +56,7 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var userManager = scope.GetService<UserManager<UserModel>>();
+                    var userManager = scope.GetService<CustomUserManager>();
 
                     foreach (var testUser in IdentityStorage.TestUsers.Take(100).ToList())
                     {

@@ -6,9 +6,9 @@
 
 using Autofac;
 
-using eDoxa.Identity.Infrastructure;
 using eDoxa.IntegrationEvents;
 using eDoxa.Seedwork.Application.DomainEvents;
+using eDoxa.Seedwork.Security;
 
 using JetBrains.Annotations;
 

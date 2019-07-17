@@ -10,9 +10,8 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Infrastructure.Models;
+using eDoxa.Seedwork.Security;
 
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -21,10 +20,10 @@ namespace eDoxa.IdentityServer.Areas.Identity.Pages.Account.Manage
 {
     public class PersonalDataModel : PageModel
     {
-        private readonly UserManager<UserModel> _userManager;
+        private readonly CustomUserManager _userManager;
         private readonly ILogger<PersonalDataModel> _logger;
 
-        public PersonalDataModel(UserManager<UserModel> userManager, ILogger<PersonalDataModel> logger)
+        public PersonalDataModel(CustomUserManager userManager, ILogger<PersonalDataModel> logger)
         {
             _userManager = userManager;
             _logger = logger;

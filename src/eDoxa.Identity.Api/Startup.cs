@@ -16,13 +16,12 @@ using AutoMapper;
 using eDoxa.Identity.Api.Extensions;
 using eDoxa.Identity.Api.Infrastructure;
 using eDoxa.Identity.Api.Infrastructure.Data;
-using eDoxa.Identity.Infrastructure;
-using eDoxa.Identity.Infrastructure.Models;
 using eDoxa.IntegrationEvents.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Swagger.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring.Extensions;
+using eDoxa.Seedwork.Security;
 using eDoxa.Seedwork.Security.Extensions;
 using eDoxa.Seedwork.Security.IdentityServer.Resources;
 
@@ -56,7 +55,7 @@ namespace eDoxa.Identity.Api
 
             services.AddDbContext<IdentityDbContext, IdentityDbContextData>(Configuration, Assembly.GetAssembly(typeof(Startup)));
 
-            services.AddIdentityCore<UserModel, RoleModel, IdentityDbContext>();
+            services.AddIdentity(Environment);
 
             services.AddVersioning();
 

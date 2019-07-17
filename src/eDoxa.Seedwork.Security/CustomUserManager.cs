@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Infrastructure.Models;
+using eDoxa.Seedwork.Security.Models;
 
 using JetBrains.Annotations;
 
@@ -18,7 +18,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace eDoxa.Identity.Infrastructure.Managers
+namespace eDoxa.Seedwork.Security
 {
     public sealed class CustomUserManager : UserManager<UserModel>
     {
@@ -86,10 +86,7 @@ namespace eDoxa.Identity.Infrastructure.Managers
 
         private async Task<IReadOnlyCollection<int>> GetExistingTags(string userName)
         {
-            return await Users.Where(user => user.UserName.Contains(userName))
-                .Select(user => user.UserName.Split('#', StringSplitOptions.None).Last())
-                .Cast<int>()
-                .ToListAsync();
+            return await Users.Where(user => user.UserName.Contains(userName)).Select(user => user.UserName.Split('#').Last()).Cast<int>().ToListAsync();
         }
     }
 }

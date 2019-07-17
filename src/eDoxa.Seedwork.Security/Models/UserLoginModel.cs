@@ -1,4 +1,4 @@
-﻿// Filename: UserTokenModel.cs
+﻿// Filename: UserLoginModel.cs
 // Date Created: 2019-07-16
 // 
 // ================================================
@@ -8,9 +8,9 @@ using System;
 
 using Microsoft.AspNetCore.Identity;
 
-namespace eDoxa.Identity.Infrastructure.Models
+namespace eDoxa.Seedwork.Security.Models
 {
-    public class UserTokenModel : IdentityUserToken<Guid>
+    public class UserLoginModel : IdentityUserLogin<Guid>
     {
     }
 }

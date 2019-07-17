@@ -10,8 +10,8 @@
 
 using System.Collections.Generic;
 
-using eDoxa.IdentityServer.Extensions;
 using eDoxa.Seedwork.Security.Constants;
+using eDoxa.Seedwork.Security.Extensions;
 using eDoxa.Seedwork.Security.IdentityServer.Resources;
 
 using IdentityServer4;
@@ -19,7 +19,7 @@ using IdentityServer4.Models;
 
 using Microsoft.Extensions.Configuration;
 
-namespace eDoxa.IdentityServer.Infrastructure
+namespace eDoxa.Seedwork.Security
 {
     public static class Config
     {

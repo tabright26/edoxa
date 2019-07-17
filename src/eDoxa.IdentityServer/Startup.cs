@@ -13,15 +13,14 @@ using System.Reflection;
 
 using AutoMapper;
 
-using eDoxa.Identity.Infrastructure;
-using eDoxa.Identity.Infrastructure.Models;
 using eDoxa.IdentityServer.Extensions;
-using eDoxa.IdentityServer.Infrastructure.Factories;
 using eDoxa.IntegrationEvents.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring.Extensions;
+using eDoxa.Seedwork.Security;
 using eDoxa.Seedwork.Security.Extensions;
+using eDoxa.Seedwork.Security.Models;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -55,7 +54,7 @@ namespace eDoxa.IdentityServer
 
             services.AddDataProtection(Configuration);
 
-            services.AddIdentity<UserModel, RoleModel, IdentityDbContext, CustomUserClaimsPrincipalFactory>(Environment);
+            services.AddIdentity(Environment);
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

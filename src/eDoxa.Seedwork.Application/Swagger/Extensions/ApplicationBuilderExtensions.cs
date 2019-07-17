@@ -8,6 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Seedwork.Security.Extensions;
+
 using IdentityServer4.Models;
 
 using Microsoft.AspNetCore.Builder;

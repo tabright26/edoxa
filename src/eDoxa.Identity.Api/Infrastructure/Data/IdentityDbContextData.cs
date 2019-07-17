@@ -9,12 +9,10 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Infrastructure.Data.Storage;
-using eDoxa.Identity.Infrastructure;
-using eDoxa.Identity.Infrastructure.Models;
 using eDoxa.Seedwork.Infrastructure;
+using eDoxa.Seedwork.Security;
 
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Identity.Api.Infrastructure.Data
@@ -24,15 +22,15 @@ namespace eDoxa.Identity.Api.Infrastructure.Data
         private readonly ILogger<IdentityDbContextData> _logger;
         private readonly IHostingEnvironment _environment;
         private readonly IdentityDbContext _context;
-        private readonly UserManager<UserModel> _userManager;
-        private readonly RoleManager<RoleModel> _roleManager;
+        private readonly CustomUserManager _userManager;
+        private readonly CustomRoleManager _roleManager;
 
         public IdentityDbContextData(
             ILogger<IdentityDbContextData> logger,
             IHostingEnvironment environment,
             IdentityDbContext context,
-            UserManager<UserModel> userManager,
-            RoleManager<RoleModel> roleManager
+            CustomUserManager userManager,
+            CustomRoleManager roleManager
         )
         {
             _logger = logger;

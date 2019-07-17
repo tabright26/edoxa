@@ -12,10 +12,10 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Infrastructure.Models;
 using eDoxa.IdentityServer.Extensions;
 using eDoxa.IdentityServer.Infrastructure.Attributes;
 using eDoxa.IdentityServer.ViewModels;
+using eDoxa.Seedwork.Security;
 
 using IdentityModel;
 
@@ -28,7 +28,6 @@ using IdentityServer4.Stores;
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eDoxa.IdentityServer.Controllers
@@ -41,12 +40,12 @@ namespace eDoxa.IdentityServer.Controllers
         private readonly IEventService _events;
         private readonly IIdentityServerInteractionService _interaction;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
-        private readonly SignInManager<UserModel> _signInManager;
-        private readonly UserManager<UserModel> _userManager;
+        private readonly CustomSignInManager _signInManager;
+        private readonly CustomUserManager _userManager;
 
         public AccountController(
-            UserManager<UserModel> userManager,
-            SignInManager<UserModel> signInManager,
+            CustomUserManager userManager,
+            CustomSignInManager signInManager,
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
             IAuthenticationSchemeProvider schemeProvider,
