@@ -97,8 +97,6 @@ namespace eDoxa.Identity.Api
 
             //application.UseCustomExceptionHandler();
 
-            
-
             application.UseHttpsRedirection();
             application.UseStaticFiles();
             application.UseForwardedHeaders();
@@ -115,13 +113,7 @@ namespace eDoxa.Identity.Api
 
             application.UseSwagger(Environment, provider, CustomApiResources.Identity);
 
-            application.UseMvc(
-                routes =>
-                {
-                    routes.MapRoute("identity", "{area=Identity}/{controller=Home}/{action=Index}/{id?}");
-                    routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
-                }
-            );
+            application.UseMvcWithDefaultRoute();
 
             application.UseIntegrationEventSubscriptions();
         }

@@ -21,7 +21,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace eDoxa.Identity.Api.Infrastructure
 {
-    public static class Config
+    public static class IdentityServerConfig
     {
         public static IEnumerable<IdentityResource> GetIdentityResources()
         {

@@ -9,7 +9,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Application.Managers;
-using eDoxa.Identity.Api.Areas.User.ViewModels;
+using eDoxa.Identity.Api.Areas.Users.ViewModels;
 using eDoxa.Identity.Api.Infrastructure.Data.Storage;
 using eDoxa.Identity.IntegrationTests.Helpers;
 using eDoxa.Seedwork.Application.Extensions;

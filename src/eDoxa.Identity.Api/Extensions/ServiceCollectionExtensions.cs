@@ -103,10 +103,10 @@ namespace eDoxa.Identity.Api.Extensions
                 .AddTokenProvider<CustomPasswordResetTokenProvider>(CustomTokenProviders.PasswordReset)
                 .AddDefaultUI(UIFramework.Bootstrap4);
 
+            services.ConfigureTokenProviders();
             services.AddScoped<CustomUserManager>();
             services.AddScoped<CustomSignInManager>();
             services.AddScoped<CustomRoleManager>();
-            services.ConfigureTokenProviders();
         }
 
         public static void AddCustomIdentityServer(this IServiceCollection services, IConfiguration configuration)
@@ -115,26 +115,24 @@ namespace eDoxa.Identity.Api.Extensions
                     options =>
                     {
                         options.IssuerUri = configuration.GetValue<string>("IdentityServer:Url");
-
                         options.Authentication.CookieLifetime = TimeSpan.FromHours(2);
-
-                        options.Events.RaiseErrorEvents = true;
                         options.Events.RaiseInformationEvents = true;
-                        options.Events.RaiseFailureEvents = true;
                         options.Events.RaiseSuccessEvents = true;
-
+                        options.Events.RaiseFailureEvents = true;
+                        options.Events.RaiseErrorEvents = true;
                         options.UserInteraction.LoginUrl = "/Account/Login";
+                        options.UserInteraction.LoginReturnUrlParameter = "returnUrl";
                         options.UserInteraction.LogoutUrl = "/Account/Logout";
                     }
                 )
                 .AddDeveloperSigningCredential()
                 .AddInMemoryPersistedGrants()
-                .AddInMemoryIdentityResources(Config.GetIdentityResources())
-                .AddInMemoryApiResources(Config.GetApiResources())
-                .AddInMemoryClients(Config.GetClients(configuration))
+                .AddInMemoryIdentityResources(IdentityServerConfig.GetIdentityResources())
+                .AddInMemoryApiResources(IdentityServerConfig.GetApiResources())
+                .AddInMemoryClients(IdentityServerConfig.GetClients(configuration))
+                .AddCorsPolicyService<CustomCorsPolicyService>()
                 .AddProfileService<CustomProfileService<UserModel>>()
-                .AddAspNetIdentity<UserModel>()
-                .AddCorsPolicyService<CustomCorsPolicyService>();
+                .AddAspNetIdentity<UserModel>();
         }
     }
 }

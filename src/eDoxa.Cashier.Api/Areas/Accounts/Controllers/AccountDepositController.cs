@@ -1,4 +1,4 @@
-﻿// Filename: AccountWithdrawalController.cs
+﻿// Filename: AccountDepositController.cs
 // Date Created: 2019-07-03
 // 
 // ================================================
@@ -21,34 +21,34 @@ using Microsoft.AspNetCore.Mvc;
 
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace eDoxa.Cashier.Api.Areas.Account.Controllers
+namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
 {
     [Authorize]
     [ApiController]
     [ApiVersion("1.0")]
     [Produces("application/json")]
-    [Route("api/account/withdrawal")]
+    [Route("api/account/deposit")]
     [ApiExplorerSettings(GroupName = "Account")]
-    public sealed class AccountWithdrawalController : ControllerBase
+    public sealed class AccountDepositController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public AccountWithdrawalController(IMediator mediator)
+        public AccountDepositController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
         /// <summary>
-        ///     Withdrawal money from the account.
+        ///     Deposit currency on the account.
         /// </summary>
         [HttpPost]
         [SwaggerResponse(StatusCodes.Status200OK)]
         [SwaggerResponse(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> PostAsync([FromBody] WithdrawalCommand command)
+        public async Task<IActionResult> PostAsync([FromBody] DepositCommand command)
         {
             await _mediator.SendCommandAsync(command);
 
-            return this.Ok("Processing the withdrawal transaction...");
+            return this.Ok("Processing the deposit transaction...");
         }
     }
 }

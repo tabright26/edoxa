@@ -23,7 +23,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace eDoxa.Arena.Challenges.Api.Areas.Challenge.Controllers
+namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers
 {
     [Authorize]
     [ApiController]

@@ -12,7 +12,7 @@ using System;
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Identity.Api.Areas.User.ViewModels
+namespace eDoxa.Identity.Api.Areas.Users.ViewModels
 {
     [JsonObject]
     public class UserViewModel

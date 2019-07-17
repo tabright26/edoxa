@@ -21,7 +21,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace eDoxa.Cashier.Api.Areas.Account.Controllers
+namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
 {
     [Authorize]
     [ApiController]

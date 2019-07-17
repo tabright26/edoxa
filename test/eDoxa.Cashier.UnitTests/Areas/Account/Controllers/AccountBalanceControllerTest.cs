@@ -6,7 +6,7 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Areas.Account.Controllers;
+using eDoxa.Cashier.Api.Areas.Accounts.Controllers;
 using eDoxa.Cashier.Api.Infrastructure.Data.Fakers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;

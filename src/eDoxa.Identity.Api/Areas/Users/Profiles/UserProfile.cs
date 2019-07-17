@@ -6,10 +6,10 @@
 
 using AutoMapper;
 
-using eDoxa.Identity.Api.Areas.User.ViewModels;
+using eDoxa.Identity.Api.Areas.Users.ViewModels;
 using eDoxa.Identity.Api.Models;
 
-namespace eDoxa.Identity.Api.Areas.User.Profiles
+namespace eDoxa.Identity.Api.Areas.Users.Profiles
 {
     internal sealed class UserProfile : Profile
     {

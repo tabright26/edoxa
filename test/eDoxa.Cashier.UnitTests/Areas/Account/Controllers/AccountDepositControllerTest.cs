@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Application.Commands;
-using eDoxa.Cashier.Api.Areas.Account.Controllers;
+using eDoxa.Cashier.Api.Areas.Accounts.Controllers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Seedwork.Testing.TestConstructor;
 

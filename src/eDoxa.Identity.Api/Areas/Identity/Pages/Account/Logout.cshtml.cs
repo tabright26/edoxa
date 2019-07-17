@@ -8,51 +8,53 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Threading.Tasks;
-
-using eDoxa.Identity.Api.Application.Managers;
-
-using IdentityServer4.Services;
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class LogoutModel : PageModel
     {
-        private readonly CustomSignInManager _signInManager;
-        private readonly ILogger<LogoutModel> _logger;
-        private readonly IIdentityServerInteractionService _identityServerInteractionService;
+        //private readonly CustomSignInManager _signInManager;
+        //private readonly ILogger<LogoutModel> _logger;
+        //private readonly IIdentityServerInteractionService _identityServerInteractionService;
 
-        public LogoutModel(CustomSignInManager signInManager, ILogger<LogoutModel> logger, IIdentityServerInteractionService identityServerInteractionService)
+        //public LogoutModel(CustomSignInManager signInManager, ILogger<LogoutModel> logger, IIdentityServerInteractionService identityServerInteractionService)
+        //{
+        //    _signInManager = signInManager;
+        //    _logger = logger;
+        //    _identityServerInteractionService = identityServerInteractionService;
+        //}
+
+        public IActionResult OnGet(string returnUrl = null)
         {
-            _signInManager = signInManager;
-            _logger = logger;
-            _identityServerInteractionService = identityServerInteractionService;
+            return this.RedirectToAction(
+                "Logout",
+                "Account",
+                new
+                {
+                    area = "",
+                    returnUrl
+                }
+            );
         }
 
-        public void OnGet()
-        {
-        }
+        //public async Task<IActionResult> OnPost(string returnUrl = null)
+        //{
+        //    await _identityServerInteractionService.RevokeTokensForCurrentSessionAsync();
 
-        public async Task<IActionResult> OnPost(string returnUrl = null)
-        {
-            await _identityServerInteractionService.RevokeTokensForCurrentSessionAsync();
+        //    await _signInManager.SignOutAsync();
 
-            await _signInManager.SignOutAsync();
+        //    _logger.LogInformation("User logged out.");
 
-            _logger.LogInformation("User logged out.");
+        //    if (returnUrl != null)
+        //    {
+        //        return this.LocalRedirect(returnUrl);
+        //    }
 
-            if (returnUrl != null)
-            {
-                return this.LocalRedirect(returnUrl);
-            }
-
-            return this.Page();
-        }
+        //    return this.Page();
+        //}
     }
 }

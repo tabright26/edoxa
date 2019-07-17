@@ -17,7 +17,7 @@ namespace eDoxa.Identity.Api.Infrastructure
     public sealed class IdentityDbContext : IdentityDbContext<UserModel, RoleModel, Guid, UserClaimModel, UserRoleModel, UserLoginModel, RoleClaimModel,
         UserTokenModel>
     {
-        public IdentityDbContext(DbContextOptions<IdentityDbContext> options) : base((DbContextOptions) options)
+        public IdentityDbContext(DbContextOptions<IdentityDbContext> options) : base(options)
         {
         }
 

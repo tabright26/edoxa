@@ -8,42 +8,35 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
-using eDoxa.Identity.Api.Application.Managers;
-
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
-        private readonly CustomSignInManager _signInManager;
-        private readonly CustomUserManager _userManager;
-        private readonly ILogger<LoginModel> _logger;
+        //private readonly CustomSignInManager _signInManager;
+        //private readonly CustomUserManager _userManager;
+        //private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(CustomSignInManager signInManager, CustomUserManager userManager, ILogger<LoginModel> logger)
-        {
-            _signInManager = signInManager;
-            _userManager = userManager;
-            _logger = logger;
-        }
+        //public LoginModel(CustomSignInManager signInManager, CustomUserManager userManager, ILogger<LoginModel> logger)
+        //{
+        //    _signInManager = signInManager;
+        //    _userManager = userManager;
+        //    _logger = logger;
+        //}
 
-        [BindProperty]
-        public InputModel Input { get; set; }
+        //[BindProperty]
+        //public InputModel Input { get; set; }
 
-        public IList<AuthenticationScheme> ExternalLogins { get; set; }
+        //public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
-        public string ReturnUrl { get; set; }
+        //public string ReturnUrl { get; set; }
 
-        [TempData]
-        public string ErrorMessage { get; set; }
+        //[TempData]
+        //public string ErrorMessage { get; set; }
 
         public IActionResult OnGet(string returnUrl = null)
         {
@@ -72,64 +65,64 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
             //ReturnUrl = returnUrl;
         }
 
-        public IActionResult OnPost(string returnUrl = null)
-        {
-            return this.RedirectToAction(
-                "Login",
-                "Account",
-                new
-                {
-                    area = "",
-                    returnUrl
-                }
-            );
+        //public IActionResult OnPost(string returnUrl = null)
+        //{
+        //    return this.RedirectToAction(
+        //        "Login",
+        //        "Account",
+        //        new
+        //        {
+        //            area = "",
+        //            returnUrl
+        //        }
+        //    );
 
-            //returnUrl = returnUrl ?? Url.Content("~/");
+        //    //returnUrl = returnUrl ?? Url.Content("~/");
 
-            //if (ModelState.IsValid)
-            //{
-            //    var usr = await _userManager.Users.SingleOrDefaultAsync(user => user.Email == Input.Email);
+        //    //if (ModelState.IsValid)
+        //    //{
+        //    //    var usr = await _userManager.Users.SingleOrDefaultAsync(user => user.Email == Input.Email);
 
-            //    // This doesn't count login failures towards account lockout
-            //    // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-            //    var result = await _signInManager.PasswordSignInAsync(usr.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: true);
-            //    if (result.Succeeded)
-            //    {
-            //        _logger.LogInformation("User logged in.");
-            //        return this.LocalRedirect(returnUrl);
-            //    }
-            //    if (result.RequiresTwoFactor)
-            //    {
-            //        return this.RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
-            //    }
-            //    if (result.IsLockedOut)
-            //    {
-            //        _logger.LogWarning("User account locked out.");
-            //        return this.RedirectToPage("./Lockout");
-            //    }
-            //    else
-            //    {
-            //        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-            //        return this.Page();
-            //    }
-            //}
+        //    //    // This doesn't count login failures towards account lockout
+        //    //    // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+        //    //    var result = await _signInManager.PasswordSignInAsync(usr.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: true);
+        //    //    if (result.Succeeded)
+        //    //    {
+        //    //        _logger.LogInformation("User logged in.");
+        //    //        return this.LocalRedirect(returnUrl);
+        //    //    }
+        //    //    if (result.RequiresTwoFactor)
+        //    //    {
+        //    //        return this.RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
+        //    //    }
+        //    //    if (result.IsLockedOut)
+        //    //    {
+        //    //        _logger.LogWarning("User account locked out.");
+        //    //        return this.RedirectToPage("./Lockout");
+        //    //    }
+        //    //    else
+        //    //    {
+        //    //        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+        //    //        return this.Page();
+        //    //    }
+        //    //}
 
-            //// If we got this far, something failed, redisplay form
-            //return this.Page();
-        }
+        //    //// If we got this far, something failed, redisplay form
+        //    //return this.Page();
+        //}
 
-        public class InputModel
-        {
-            [Required]
-            [EmailAddress]
-            public string Email { get; set; }
+        //public class InputModel
+        //{
+        //    [Required]
+        //    [EmailAddress]
+        //    public string Email { get; set; }
 
-            [Required]
-            [DataType(DataType.Password)]
-            public string Password { get; set; }
+        //    [Required]
+        //    [DataType(DataType.Password)]
+        //    public string Password { get; set; }
 
-            [Display(Name = "Remember me?")]
-            public bool RememberMe { get; set; }
-        }
+        //    [Display(Name = "Remember me?")]
+        //    public bool RememberMe { get; set; }
+        //}
     }
 }

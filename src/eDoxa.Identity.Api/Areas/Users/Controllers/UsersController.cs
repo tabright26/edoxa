@@ -15,13 +15,13 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using eDoxa.Identity.Api.Application.Managers;
-using eDoxa.Identity.Api.Areas.User.ViewModels;
+using eDoxa.Identity.Api.Areas.Users.ViewModels;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace eDoxa.Identity.Api.Areas.User.Controllers
+namespace eDoxa.Identity.Api.Areas.Users.Controllers
 {
     [Authorize]
     [ApiController]

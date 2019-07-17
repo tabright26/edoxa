@@ -7,7 +7,7 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Areas.Transaction.Controllers;
+using eDoxa.Cashier.Api.Areas.Transactions.Controllers;
 using eDoxa.Cashier.Api.Infrastructure.Data.Fakers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;

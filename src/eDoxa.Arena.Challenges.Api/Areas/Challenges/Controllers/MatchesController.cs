@@ -1,4 +1,4 @@
-﻿// Filename: ParticipantsController.cs
+﻿// Filename: MatchesController.cs
 // Date Created: 2019-06-01
 // 
 // ================================================
@@ -21,39 +21,39 @@ using Microsoft.AspNetCore.Mvc;
 
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace eDoxa.Arena.Challenges.Api.Areas.Challenge.Controllers
+namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers
 {
     [Authorize]
     [ApiController]
     [ApiVersion("1.0")]
     [Produces("application/json")]
-    [Route("api/participants")]
-    [ApiExplorerSettings(GroupName = "Participant")]
-    public class ParticipantsController : ControllerBase
+    [Route("api/matches")]
+    [ApiExplorerSettings(GroupName = "Match")]
+    public class MatchesController : ControllerBase
     {
-        private readonly IParticipantQuery _query;
+        private readonly IMatchQuery _matchQuery;
 
-        public ParticipantsController(IParticipantQuery query)
+        public MatchesController(IMatchQuery matchQuery)
         {
-            _query = query;
+            _matchQuery = matchQuery;
         }
 
         /// <summary>
-        ///     Find a participant.
+        ///     Find a match.
         /// </summary>
-        [HttpGet("{participantId}")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ParticipantViewModel))]
+        [HttpGet("{matchId}")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(MatchViewModel))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
-        public async Task<IActionResult> GetByIdAsync(ParticipantId participantId)
+        public async Task<IActionResult> GetByIdAsync(MatchId matchId)
         {
-            var participantViewModel = await _query.FindParticipantViewModelAsync(participantId);
+            var matchViewModel = await _matchQuery.FindMatchViewModelAsync(matchId);
 
-            if (participantViewModel == null)
+            if (matchViewModel == null)
             {
-                return this.NotFound("Participant not found.");
+                return this.NotFound("Match not found.");
             }
 
-            return this.Ok(participantViewModel);
+            return this.Ok(matchViewModel);
         }
     }
 }

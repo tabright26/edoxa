@@ -1,7 +1,3 @@
-@using eDoxa.Identity.Api.Application
-@using eDoxa.Identity.Api.Application.Managers
-@using eDoxa.Seedwork.Security
-@using IdentityModel
 @inject CustomSignInManager SignInManager
 @inject CustomUserManager UserManager
 @if (SignInManager.IsSignedIn(User) && !(ViewData["signed-out"] is bool))
