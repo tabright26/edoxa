@@ -23,9 +23,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="compilerconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap-custom.css" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AspNet.Security.OAuth.BattleNet" Version="2.1.0" />
     <PackageReference Include="AspNet.Security.OAuth.Twitch" Version="2.1.0" />
     <PackageReference Include="AspNet.Security.OpenId.Steam" Version="2.1.0" />
+    <PackageReference Include="BuildWebCompiler" Version="1.12.405" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.7.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OAuth" Version="2.2.0" />
@@ -52,6 +61,10 @@
     <Content Include="..\..\data\Identity\TestFiles\TestUsers.csv" Link="Infrastructure\Data\Storage\TestFiles\TestUsers.csv" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="..\..\data\Identity\TestFiles\TestUserClaims.csv" Link="Infrastructure\Data\Storage\TestFiles\TestUserClaims.csv" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="..\..\data\Identity\TestFiles\TestUserRoles.csv" Link="Infrastructure\Data\Storage\TestFiles\TestUserRoles.csv" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="compilerconfig.json" />
   </ItemGroup>
 
 </Project>

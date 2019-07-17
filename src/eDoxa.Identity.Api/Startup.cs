@@ -23,7 +23,9 @@ using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security;
 using eDoxa.Seedwork.Security.Extensions;
+using eDoxa.Seedwork.Security.Hosting.Extensions;
 using eDoxa.Seedwork.Security.IdentityServer.Resources;
+using eDoxa.Seedwork.Security.Middlewares;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -49,11 +51,15 @@ namespace eDoxa.Identity.Api
         {
             services.AddHealthChecks(Configuration);
 
+            services.AddCookiePolicy();
+
             services.AddEntityFrameworkSqlServer();
 
             services.AddIntegrationEventDbContext(Configuration, Assembly.GetAssembly(typeof(Startup)));
 
             services.AddDbContext<IdentityDbContext, IdentityDbContextData>(Configuration, Assembly.GetAssembly(typeof(Startup)));
+
+            services.AddDataProtection(Configuration);
 
             services.AddCustomIdentity(Environment);
 
@@ -67,6 +73,8 @@ namespace eDoxa.Identity.Api
 
             services.AddCorsPolicy();
 
+            services.AddCustomIdentityServer(Configuration);
+
             services.AddServiceBus(Configuration);
 
             services.AddAuthentication(Configuration, Environment, CustomApiResources.Identity);
@@ -78,17 +86,43 @@ namespace eDoxa.Identity.Api
         {
             application.UseHealthChecks();
 
-            application.UseCorsPolicy();
+            if (Environment.IsDevelopment())
+            {
+                application.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                application.UseExceptionHandler("/Home/Error");
+                application.UseHsts();
+            }
 
-            application.UseCustomExceptionHandler();
+            //application.UseCustomExceptionHandler();
 
-            application.UseAuthentication(Environment);
+            
 
+            application.UseHttpsRedirection();
             application.UseStaticFiles();
+            application.UseForwardedHeaders();
+            application.UseCookiePolicy();
+
+            if (Environment.IsTesting())
+            {
+                application.UseMiddleware<TestAuthenticationMiddleware>();
+            }
+            else
+            {
+                application.UseIdentityServer();
+            }
 
             application.UseSwagger(Environment, provider, CustomApiResources.Identity);
 
-            application.UseMvc();
+            application.UseMvc(
+                routes =>
+                {
+                    routes.MapRoute("identity", "{area=Identity}/{controller=Home}/{action=Index}/{id?}");
+                    routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
+                }
+            );
 
             application.UseIntegrationEventSubscriptions();
         }

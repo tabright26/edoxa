@@ -8,8 +8,8 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
+using eDoxa.Identity.Api.Areas.User.ViewModels;
 using eDoxa.Identity.Api.Infrastructure.Data.Storage;
-using eDoxa.Identity.Api.ViewModels;
 using eDoxa.Identity.IntegrationTests.Helpers;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Security;

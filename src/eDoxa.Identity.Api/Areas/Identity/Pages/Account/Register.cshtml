@@ -1,0 +1,121 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="row">
+    <div class="col-md-5 offset-md-6">
+        <div class="bg-dark card mb-3 mt-5 text-white">
+            <h3 class="card-header">Create a new account.</h3>
+            <div class="card-body pt-2">
+                <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label asp-for="Input.FirstName" class="col-form-label col-form-label-sm">
+                                </label>
+                                <input asp-for="Input.FirstName" class="form-control form-control-sm"/>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label asp-for="Input.LastName" class="col-form-label col-form-label-sm">
+                                </label>
+                                <input asp-for="Input.LastName" class="form-control form-control-sm"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.Email" class="col-form-label col-form-label-sm">
+                        </label>
+                        <input asp-for="Input.Email" class="form-control form-control-sm"/>
+                    </div>
+                    <hr class="border-white mb-1"/>
+                    <div class="form-group">
+                        <label asp-for="Input.UserName" class="col-form-label col-form-label-sm">
+                        </label>
+                        <input asp-for="Input.UserName" class="form-control form-control-sm"/>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.Password" class="col-form-label col-form-label-sm">
+                        </label>
+                        <input asp-for="Input.Password" class="form-control form-control-sm"/>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.ConfirmPassword" class="col-form-label col-form-label-sm">
+                        </label>
+                        <input asp-for="Input.ConfirmPassword" class="form-control form-control-sm"/>
+                    </div>
+                    @*<hr class="border-white"/>
+                    <div class="form-group row">
+                        <label class="col-3 col-form-label col-form-label-sm">Birthdate</label>
+                        <div class="col-9">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <select asp-for="Input.Year" asp-items="Model.Years" class="form-control form-control-sm">
+                                        <option selected="selected" value="">
+                                            - Year -
+                                        </option>
+                                    </select>
+                                </div>
+                                <select asp-for="Input.Month" asp-items="Model.Months" class="form-control form-control-sm">
+                                    <option selected="selected" value="">
+                                        - Month -
+                                    </option>
+                                </select>
+                                <div class="input-group-append">
+                                    <select asp-for="Input.Day" asp-items="Model.Days" class="form-control form-control-sm">
+                                        <option selected="selected" value="">
+                                            - Day -
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>*@
+                    <hr class="border-white"/>
+                    <div class="custom-control custom-checkbox mb-3">
+                        <input asp-for="Input.TermsOfService" type="checkbox" class="custom-control-input" id="termsOfService">
+                        <label class="custom-control-label" for="termsOfService">I have read and agree to the <a href="#">terms of service</a></label>
+                    </div>
+                    <hr class="border-white"/>
+                    <button class="btn btn-block btn-primary" type="submit">
+                        Register
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<div class="row">
+    <div class="col-md-4">
+        <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <h4>Create a new account.</h4>
+            <hr />
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Input.Email"></label>
+                <input asp-for="Input.Email" class="form-control" />
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Password"></label>
+                <input asp-for="Input.Password" class="form-control" />
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.ConfirmPassword"></label>
+                <input asp-for="Input.ConfirmPassword" class="form-control" />
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+    </div>
+</div>*@
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+}

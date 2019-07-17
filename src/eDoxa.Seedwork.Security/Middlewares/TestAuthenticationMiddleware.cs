@@ -25,7 +25,7 @@ using Newtonsoft.Json;
 
 namespace eDoxa.Seedwork.Security.Middlewares
 {
-    internal sealed class TestAuthenticationMiddleware
+    public sealed class TestAuthenticationMiddleware
     {
         private readonly RequestDelegate _next;
 

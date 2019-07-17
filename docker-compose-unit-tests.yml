@@ -10,15 +10,6 @@ services:
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp      
 
-  idsrv.unit-tests:
-    image: ${ACR_REGISTRY:-edoxa}/idsrv.unit-tests:${ACR_TAG:-latest}
-    build:
-      context: .
-      dockerfile: test/eDoxa.IdentityServer.UnitTests/Dockerfile
-    entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.IdentityServer.UnitTestResults.trx
-    volumes:
-      - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp      
-           
   identity.unit-tests:
     image: ${ACR_REGISTRY:-edoxa}/identity.unit-tests:${ACR_TAG:-latest}
     build:

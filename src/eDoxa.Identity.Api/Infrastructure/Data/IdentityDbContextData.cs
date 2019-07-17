@@ -5,7 +5,6 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Infrastructure.Data.Storage;
@@ -60,7 +59,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data
 
                     foreach (var roleClaim in roleClaims)
                     {
-                        await _roleManager.AddClaimAsync(role, new Claim(roleClaim.ClaimType, roleClaim.ClaimValue));
+                        await _roleManager.AddClaimAsync(role, roleClaim.ToClaim());
                     }
                 }
 
@@ -77,11 +76,11 @@ namespace eDoxa.Identity.Api.Infrastructure.Data
                 {
                     foreach (var testUser in testUsers)
                     {
-                        await _userManager.CreateAsync(testUser);
+                        await _userManager.CreateAsync(testUser, "Pass@word1");
 
                         foreach (var testUserClaim in testUserClaims.Where(userClaimModel => userClaimModel.UserId == testUser.Id))
                         {
-                            await _userManager.AddClaimAsync(testUser, new Claim(testUserClaim.ClaimType, testUserClaim.ClaimValue));
+                            await _userManager.AddClaimAsync(testUser, testUserClaim.ToClaim());
                         }
 
                         foreach (var testUserRole in testUserRoles.Where(userRoleModel => userRoleModel.UserId == testUser.Id))

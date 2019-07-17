@@ -18,18 +18,6 @@ services:
       - "15672:15672"
       - "5672:5672"
 
-  idsrv.integration-tests:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Testing
-      - ASPNETCORE_URLS=http://+:80
-      - ConnectionStrings__SqlServer=Server=mssql.integration-tests;Database=Services.Identity;User Id=sa;Password=fnU3Www9TnBDp3MA
-      - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
-      - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
-      - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
-      - AzureServiceBus__Enable=${ASB_ENABLE:-false}
-      - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq.integration-tests}
-      - ServiceBus__Subscription=IdentityServer
-
   identity.integration-tests:
     environment:
       - ASPNETCORE_ENVIRONMENT=Testing

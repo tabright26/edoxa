@@ -24,7 +24,7 @@ namespace eDoxa.Identity.Api.Extensions
 
             healthChecks.AddSqlServer(configuration);
 
-            healthChecks.AddIdentityServer(configuration);
+            healthChecks.AddRedis(configuration);
         }
 
         public static void AddVersioning(this IServiceCollection services)

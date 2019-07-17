@@ -13,7 +13,6 @@ using System.Reflection;
 
 using AutoMapper;
 
-using eDoxa.IdentityServer.Extensions;
 using eDoxa.IntegrationEvents.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;

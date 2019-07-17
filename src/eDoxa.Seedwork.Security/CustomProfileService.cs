@@ -1,18 +1,13 @@
 ﻿// Filename: CustomProfileService.cs
-// Date Created: 2019-05-03
+// Date Created: 2019-07-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Security.Constants;
 
 using IdentityServer4.Models;
@@ -42,7 +37,10 @@ namespace eDoxa.Seedwork.Security
 
             var principal = await _userClaimsPrincipalFactory.CreateAsync(user);
 
-            principal.Claims.ForEach(claim => context.IssuedClaims.Add(claim));
+            foreach (var claim in principal.Claims)
+            {
+                context.IssuedClaims.Add(claim);
+            }
         }
 
         public async Task IsActiveAsync([NotNull] IsActiveContext context)
