@@ -1,5 +1,5 @@
 ﻿// Filename: IdentityDbContext.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-07-17
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,6 +9,7 @@ using System;
 using eDoxa.Identity.Api.Models;
 
 using JetBrains.Annotations;
+
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,16 +22,41 @@ namespace eDoxa.Identity.Api.Infrastructure
         {
         }
 
-        protected override void OnModelCreating([NotNull] ModelBuilder builder)
+        public DbSet<UserGameProviderModel> Games => this.Set<UserGameProviderModel>();
+
+        protected override void OnModelCreating([NotNull] ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(builder);
-            builder.Entity<UserModel>().ToTable("User");
-            builder.Entity<UserClaimModel>().ToTable("UserClaim");
-            builder.Entity<UserLoginModel>().ToTable("UserLogin");
-            builder.Entity<UserTokenModel>().ToTable("UserToken");
-            builder.Entity<UserRoleModel>().ToTable("UserRole");
-            builder.Entity<RoleModel>().ToTable("Role");
-            builder.Entity<RoleClaimModel>().ToTable("RoleClaim");
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<UserModel>(
+                builder =>
+                {
+                    builder.HasMany<UserGameProviderModel>().WithOne().HasForeignKey(userGame => userGame.UserId).IsRequired();
+                    builder.ToTable("User");
+                }
+            );
+
+            modelBuilder.Entity<UserClaimModel>().ToTable("UserClaim");
+            modelBuilder.Entity<UserLoginModel>().ToTable("UserLogin");
+            modelBuilder.Entity<UserTokenModel>().ToTable("UserToken");
+            modelBuilder.Entity<UserRoleModel>().ToTable("UserRole");
+            modelBuilder.Entity<RoleModel>().ToTable("Role");
+            modelBuilder.Entity<RoleClaimModel>().ToTable("RoleClaim");
+
+            modelBuilder.Entity<UserGameProviderModel>(
+                builder =>
+                {
+                    builder.HasKey(
+                        userGame => new
+                        {
+                            userGame.GameProvider,
+                            userGame.ProviderKey
+                        }
+                    );
+
+                    builder.ToTable("UserGameProvider");
+                }
+            );
         }
     }
 }

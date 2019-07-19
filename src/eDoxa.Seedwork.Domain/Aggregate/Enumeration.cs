@@ -67,7 +67,7 @@ namespace eDoxa.Seedwork.Domain.Aggregate
 
         public int CompareTo([CanBeNull] object other)
         {
-            return Value.CompareTo((other as TEnumeration)?.Value);
+            return string.Compare(Name, (other as TEnumeration)?.Name, StringComparison.Ordinal);
         }
 
         public override string ToString()

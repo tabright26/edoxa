@@ -34,6 +34,8 @@ namespace eDoxa.Identity.Api.Infrastructure
             yield return CustomIdentityResources.Permissions;
 
             yield return CustomIdentityResources.Stripe;
+
+            yield return CustomIdentityResources.Games;
         }
 
         public static IEnumerable<ApiResource> GetApiResources()
@@ -73,12 +75,16 @@ namespace eDoxa.Identity.Api.Infrastructure
                 {
                     $"{configuration["Web:Spa:Url"]}/callback",
                     "http://localhost:5300/callback",
-                    "http://127.0.0.1:5300/callback"
+                    "http://127.0.0.1:5300/callback",
+                    $"{configuration["Web:Spa:Url"]}/silent_renew.html",
+                    "http://localhost:5300/silent_renew.html",
+                    "http://127.0.0.1:5300/silent_renew.html"
                 },
                 AccessTokenType = AccessTokenType.Reference,
                 RequireConsent = false,
                 AllowAccessTokensViaBrowser = true,
                 UpdateAccessTokenClaimsOnRefresh = true,
+                AccessTokenLifetime = 100,
                 AllowedGrantTypes = GrantTypes.Implicit,
                 AllowedScopes = new HashSet<string>
                 {
@@ -87,10 +93,12 @@ namespace eDoxa.Identity.Api.Infrastructure
                     CustomScopes.Roles,
                     CustomScopes.Permissions,
                     CustomScopes.Stripe,
+                    CustomScopes.Games,
                     CustomScopes.IdentityApi,
                     CustomScopes.CashierApi,
-                    CustomScopes.ChallengeApi
-                }
+                    CustomScopes.ArenaChallengesApi
+                },
+                
             };
         }
     }

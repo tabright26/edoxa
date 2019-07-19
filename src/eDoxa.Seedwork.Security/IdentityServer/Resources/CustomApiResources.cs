@@ -26,7 +26,7 @@ namespace eDoxa.Seedwork.Security.IdentityServer.Resources
             internal IdentityApi() : base(
                 "identity.api",
                 "eDoxa Identity API",
-                CustomIdentityResources.Roles.UserClaims.Union(CustomIdentityResources.Permissions.UserClaims)
+                CustomIdentityResources.Roles.UserClaims.Union(CustomIdentityResources.Permissions.UserClaims).Union(CustomIdentityResources.Games.UserClaims)
             )
             {
                 ApiSecrets = new HashSet<Secret>

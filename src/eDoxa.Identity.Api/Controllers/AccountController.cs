@@ -25,6 +25,7 @@ using IdentityServer4.Stores;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace eDoxa.Identity.Api.Controllers
 {
@@ -34,6 +35,7 @@ namespace eDoxa.Identity.Api.Controllers
     {
         private readonly IClientStore _clientStore;
         private readonly IEventService _events;
+        private readonly IConfiguration _configuration;
         private readonly IIdentityServerInteractionService _interaction;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
         private readonly CustomSignInManager _signInManager;
@@ -45,7 +47,8 @@ namespace eDoxa.Identity.Api.Controllers
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
             IAuthenticationSchemeProvider schemeProvider,
-            IEventService events
+            IEventService events,
+            IConfiguration configuration
         )
         {
             _userManager = userManager;
@@ -54,6 +57,7 @@ namespace eDoxa.Identity.Api.Controllers
             _clientStore = clientStore;
             _schemeProvider = schemeProvider;
             _events = events;
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -366,7 +370,7 @@ namespace eDoxa.Identity.Api.Controllers
             var vm = new LoggedOutViewModel
             {
                 AutomaticRedirectAfterSignOut = AccountOptions.AutomaticRedirectAfterSignOut,
-                PostLogoutRedirectUri = logout?.PostLogoutRedirectUri ?? Url.Action("Index", "Home"),
+                PostLogoutRedirectUri = logout?.PostLogoutRedirectUri ?? _configuration["Web:Spa:Url"],
                 ClientName = string.IsNullOrEmpty(logout?.ClientName) ? logout?.ClientId : logout?.ClientName,
                 SignOutIframeUrl = logout?.SignOutIFrameUrl,
                 LogoutId = logoutId

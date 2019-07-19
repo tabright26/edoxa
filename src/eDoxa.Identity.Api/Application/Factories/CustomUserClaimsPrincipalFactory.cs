@@ -1,5 +1,5 @@
 ﻿// Filename: CustomUserClaimsPrincipalFactory.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-07-17
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -7,10 +7,9 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 
+using eDoxa.Identity.Api.Application.Factories.Extensions;
 using eDoxa.Identity.Api.Application.Managers;
 using eDoxa.Identity.Api.Models;
-
-using IdentityModel;
 
 using JetBrains.Annotations;
 
@@ -21,26 +20,25 @@ namespace eDoxa.Identity.Api.Application.Factories
 {
     public sealed class CustomUserClaimsPrincipalFactory : UserClaimsPrincipalFactory<UserModel, RoleModel>
     {
-        public CustomUserClaimsPrincipalFactory(
-            CustomUserManager userManager,
-            CustomRoleManager roleManager,
-            IOptions<IdentityOptions> options
-        ) : base(userManager, roleManager, options)
+        public CustomUserClaimsPrincipalFactory(CustomUserManager userManager, CustomRoleManager roleManager, IOptions<IdentityOptions> options) : base(
+            userManager,
+            roleManager,
+            options
+        )
         {
+            UserManager = userManager;
         }
 
+        private new CustomUserManager UserManager { get; }
+
         [ItemNotNull]
-        protected override async Task<ClaimsIdentity> GenerateClaimsAsync([NotNull] UserModel userModel)
+        protected override async Task<ClaimsIdentity> GenerateClaimsAsync([NotNull] UserModel user)
         {
-            var identity = await base.GenerateClaimsAsync(userModel);
+            var identity = await base.GenerateClaimsAsync(user);
 
-            identity.AddClaim(new Claim(JwtClaimTypes.BirthDate, userModel.BirthDate.ToString("yyyy-MM-dd")));
+            identity.IncludeCustomClaims(user);
 
-            identity.AddClaim(new Claim(JwtClaimTypes.GivenName, userModel.FirstName));
-
-            identity.AddClaim(new Claim(JwtClaimTypes.FamilyName, userModel.LastName));
-
-            identity.AddClaim(new Claim(JwtClaimTypes.Name, $"{userModel.FirstName} {userModel.LastName}"));
+            identity.IncludeGameProviderClaims(await UserManager.GetGameProvidersAsync(user));
 
             return identity;
         }

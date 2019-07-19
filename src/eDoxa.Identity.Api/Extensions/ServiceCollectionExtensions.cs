@@ -9,6 +9,7 @@ using System;
 using eDoxa.Identity.Api.Application.Factories;
 using eDoxa.Identity.Api.Application.Managers;
 using eDoxa.Identity.Api.Application.Services;
+using eDoxa.Identity.Api.Application.Stores;
 using eDoxa.Identity.Api.Application.TokenProviders;
 using eDoxa.Identity.Api.Application.TokenProviders.Extenisons;
 using eDoxa.Identity.Api.Application.Validators;
@@ -93,6 +94,7 @@ namespace eDoxa.Identity.Api.Extensions
                 .AddClaimsPrincipalFactory<CustomUserClaimsPrincipalFactory>()
                 .AddSignInManager<CustomSignInManager>()
                 .AddRoleManager<CustomRoleManager>()
+                .AddUserStore<CustomUserStore>()
                 .AddUserManager<CustomUserManager>()
                 .AddUserValidator<CustomUserValidator>()
                 .AddDefaultTokenProviders()
@@ -104,6 +106,7 @@ namespace eDoxa.Identity.Api.Extensions
                 .AddDefaultUI(UIFramework.Bootstrap4);
 
             services.ConfigureTokenProviders();
+            services.AddScoped<CustomUserStore>();
             services.AddScoped<CustomUserManager>();
             services.AddScoped<CustomSignInManager>();
             services.AddScoped<CustomRoleManager>();
