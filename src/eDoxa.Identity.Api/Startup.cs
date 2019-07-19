@@ -48,6 +48,8 @@ namespace eDoxa.Identity.Api
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.Configure<IdentityApiOptions>(Configuration);
+
             services.AddHealthChecks(Configuration);
 
             services.AddCookiePolicy();

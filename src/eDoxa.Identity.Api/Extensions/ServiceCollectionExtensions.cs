@@ -5,6 +5,7 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
+using System.Linq;
 
 using eDoxa.Identity.Api.Application.Factories;
 using eDoxa.Identity.Api.Application.Managers;

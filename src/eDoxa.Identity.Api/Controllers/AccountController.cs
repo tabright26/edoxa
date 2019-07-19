@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using eDoxa.Identity.Api.Application.Attributes;
 using eDoxa.Identity.Api.Application.Managers;
 using eDoxa.Identity.Api.Extensions;
+using eDoxa.Identity.Api.Infrastructure;
 using eDoxa.Identity.Api.ViewModels;
 
 using IdentityModel;
@@ -26,6 +27,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace eDoxa.Identity.Api.Controllers
 {
@@ -35,7 +37,7 @@ namespace eDoxa.Identity.Api.Controllers
     {
         private readonly IClientStore _clientStore;
         private readonly IEventService _events;
-        private readonly IConfiguration _configuration;
+        private readonly IdentityApiOptions _options;
         private readonly IIdentityServerInteractionService _interaction;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
         private readonly CustomSignInManager _signInManager;
@@ -48,7 +50,7 @@ namespace eDoxa.Identity.Api.Controllers
             IClientStore clientStore,
             IAuthenticationSchemeProvider schemeProvider,
             IEventService events,
-            IConfiguration configuration
+            IOptionsMonitor<IdentityApiOptions> accessor
         )
         {
             _userManager = userManager;
@@ -57,7 +59,7 @@ namespace eDoxa.Identity.Api.Controllers
             _clientStore = clientStore;
             _schemeProvider = schemeProvider;
             _events = events;
-            _configuration = configuration;
+            _options = accessor.CurrentValue;
         }
 
         /// <summary>
@@ -370,7 +372,7 @@ namespace eDoxa.Identity.Api.Controllers
             var vm = new LoggedOutViewModel
             {
                 AutomaticRedirectAfterSignOut = AccountOptions.AutomaticRedirectAfterSignOut,
-                PostLogoutRedirectUri = logout?.PostLogoutRedirectUri ?? _configuration["Web:Spa:Url"],
+                PostLogoutRedirectUri = logout?.PostLogoutRedirectUri ?? _options.Web.Spa.Url,
                 ClientName = string.IsNullOrEmpty(logout?.ClientName) ? logout?.ClientId : logout?.ClientName,
                 SignOutIframeUrl = logout?.SignOutIFrameUrl,
                 LogoutId = logoutId
