@@ -8,14 +8,14 @@ namespace eDoxa.Identity.Api.Application
 {
     public sealed class UserGameProviderInfo
     {
-        public UserGameProviderInfo(GameProvider gameProvider, string providerKey)
+        public UserGameProviderInfo(Game game, string playerId)
         {
-            GameProvider = gameProvider;
-            ProviderKey = providerKey;
+            Game = game;
+            PlayerId = playerId;
         }
 
-        public GameProvider GameProvider { get; }
+        public Game Game { get; }
 
-        public string ProviderKey { get; }
+        public string PlayerId { get; }
     }
 }

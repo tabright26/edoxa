@@ -1,4 +1,4 @@
-﻿// Filename: UserModel.cs
+﻿// Filename: Role.cs
 // Date Created: 2019-07-17
 // 
 // ================================================
@@ -10,12 +10,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace eDoxa.Identity.Api.Models
 {
-    public class UserModel : IdentityUser<Guid>
+    public class Role : IdentityRole<Guid>
     {
-        public string FirstName { get; set; }
-
-        public string LastName { get; set; }
-
-        public DateTime BirthDate { get; set; }
     }
 }

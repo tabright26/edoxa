@@ -13,11 +13,11 @@ using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Identity.Api.Application.Managers
 {
-    public sealed class CustomRoleManager : RoleManager<RoleModel>
+    public sealed class CustomRoleManager : RoleManager<Role>
     {
         public CustomRoleManager(
-            IRoleStore<RoleModel> store,
-            IEnumerable<IRoleValidator<RoleModel>> roleValidators,
+            IRoleStore<Role> store,
+            IEnumerable<IRoleValidator<Role>> roleValidators,
             ILookupNormalizer keyNormalizer,
             IdentityErrorDescriber errors,
             ILogger<CustomRoleManager> logger

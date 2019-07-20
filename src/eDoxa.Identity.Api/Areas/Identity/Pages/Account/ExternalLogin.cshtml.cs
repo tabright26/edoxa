@@ -158,18 +158,18 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
             {
                 var birthDate = new DateTime(1995, 05, 06);
 
-                var userModel = new UserModel
+                var user = new User
                 {
                     Id = Guid.NewGuid(),
                     Email = Input.Email,
                     UserName = Input.Username
                 };
 
-                var result = await _userManager.CreateAsync(userModel);
+                var result = await _userManager.CreateAsync(user);
 
                 if (result.Succeeded)
                 {
-                    result = await _userManager.AddLoginAsync(userModel, info);
+                    result = await _userManager.AddLoginAsync(user, info);
 
                     if (result.Succeeded)
                     {
@@ -177,8 +177,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
 
                         _eventBusService.Publish(
                             new UserCreatedIntegrationEvent(
-                                userModel.Id,
-                                userModel.Email,
+                                user.Id,
+                                user.Email,
                                 Input.FirstName,
                                 Input.LastName,
                                 birthDate.Year,
@@ -187,7 +187,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
                             )
                         );
 
-                        await _signInManager.SignInAsync(userModel, false);
+                        await _signInManager.SignInAsync(user, false);
 
                         return this.LocalRedirect(returnUrl);
                     }

@@ -78,14 +78,14 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var userModel = new UserModel
+                var user = new User
                 {
                     Id = Guid.NewGuid(),
                     Email = Input.Email,
                     UserName = Input.UserName
                 };
 
-                var result = await _userManager.CreateAsync(userModel, Input.Password);
+                var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
                 {
@@ -93,8 +93,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
 
                     _eventBusService.Publish(
                         new UserCreatedIntegrationEvent(
-                            userModel.Id,
-                            userModel.Email,
+                            user.Id,
+                            user.Email,
                             Input.FirstName,
                             Input.LastName,
                             Input.Year,
@@ -103,14 +103,14 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
                         )
                     );
 
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(userModel);
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
                         null,
                         new
                         {
-                            userId = userModel.Id,
+                            userId = user.Id,
                             code
                         },
                         Request.Scheme
@@ -122,7 +122,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>."
                     );
 
-                    await _signInManager.SignInAsync(userModel, false);
+                    await _signInManager.SignInAsync(user, false);
 
                     return this.LocalRedirect(returnUrl);
                 }

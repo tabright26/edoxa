@@ -1,4 +1,4 @@
-﻿// Filename: GameModel.cs
+﻿// Filename: UserGameProvider.cs
 // Date Created: 2019-07-17
 // 
 // ================================================
@@ -8,11 +8,11 @@ using System;
 
 namespace eDoxa.Identity.Api.Models
 {
-    public class UserGameProviderModel
+    public class UserGameProvider
     {
-        public int GameProvider { get; set; }
+        public int Game { get; set; }
 
-        public string ProviderKey { get; set; }
+        public string PlayerId { get; set; }
 
         public Guid UserId { get; set; }
     }

@@ -110,20 +110,20 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
             return this.RedirectToPage("./TwoFactorAuthentication");
         }
 
-        private async Task LoadSharedKeyAndQrCodeUriAsync(UserModel userModel)
+        private async Task LoadSharedKeyAndQrCodeUriAsync(User user)
         {
             // Load the authenticator key & QR code URI to display on the form
-            var unformattedKey = await _userManager.GetAuthenticatorKeyAsync(userModel);
+            var unformattedKey = await _userManager.GetAuthenticatorKeyAsync(user);
 
             if (string.IsNullOrEmpty(unformattedKey))
             {
-                await _userManager.ResetAuthenticatorKeyAsync(userModel);
-                unformattedKey = await _userManager.GetAuthenticatorKeyAsync(userModel);
+                await _userManager.ResetAuthenticatorKeyAsync(user);
+                unformattedKey = await _userManager.GetAuthenticatorKeyAsync(user);
             }
 
             SharedKey = this.FormatKey(unformattedKey);
 
-            var email = await _userManager.GetEmailAsync(userModel);
+            var email = await _userManager.GetEmailAsync(user);
             AuthenticatorUri = this.GenerateQrCodeUri(email, unformattedKey);
         }
 

@@ -23,19 +23,19 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
         private const string TestUserClaimsFilePath = "Infrastructure/Data/Storage/TestFiles/TestUserClaims.csv";
         private const string TestUserRolesFilePath = "Infrastructure/Data/Storage/TestFiles/TestUserRoles.csv";
 
-        public static IReadOnlyCollection<RoleModel> Roles => GetRoles().ToList();
+        public static IReadOnlyCollection<Role> Roles => GetRoles().ToList();
 
-        public static IReadOnlyCollection<RoleClaimModel> RoleClaims => GetRoleClaims().ToList();
+        public static IReadOnlyCollection<RoleClaim> RoleClaims => GetRoleClaims().ToList();
 
-        public static UserModel TestAdmin => GetTestUsers().First();
+        public static User TestAdmin => GetTestUsers().First();
 
-        public static IReadOnlyCollection<UserModel> TestUsers => GetTestUsers().ToList();
+        public static IReadOnlyCollection<User> TestUsers => GetTestUsers().ToList();
 
-        public static IReadOnlyCollection<UserClaimModel> TestUserClaims => GetTestUserClaims().ToList();
+        public static IReadOnlyCollection<UserClaim> TestUserClaims => GetTestUserClaims().ToList();
 
-        public static IReadOnlyCollection<UserRoleModel> TestUserRoles => GetTestUserRoles().ToList();
+        public static IReadOnlyCollection<UserRole> TestUserRoles => GetTestUserRoles().ToList();
 
-        private static IEnumerable<UserClaimModel> GetTestUserClaims()
+        private static IEnumerable<UserClaim> GetTestUserClaims()
         {
             var path = Path.Combine(Directory.GetCurrentDirectory(), TestUserClaimsFilePath);
 
@@ -54,7 +54,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
 
                 foreach (var record in records)
                 {
-                    yield return new UserClaimModel
+                    yield return new UserClaim
                     {
                         Id = record.Id,
                         ClaimType = record.ClaimType,
@@ -65,7 +65,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
             }
         }
 
-        private static IEnumerable<RoleModel> GetRoles()
+        private static IEnumerable<Role> GetRoles()
         {
             var path = Path.Combine(Directory.GetCurrentDirectory(), RolesFilePath);
 
@@ -83,7 +83,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
 
                 foreach (var record in records)
                 {
-                    yield return new RoleModel
+                    yield return new Role
                     {
                         Id = record.Id,
                         Name = record.Name,
@@ -93,7 +93,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
             }
         }
 
-        private static IEnumerable<RoleClaimModel> GetRoleClaims()
+        private static IEnumerable<RoleClaim> GetRoleClaims()
         {
             var path = Path.Combine(Directory.GetCurrentDirectory(), RoleClaimsFilePath);
 
@@ -112,7 +112,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
 
                 foreach (var record in records)
                 {
-                    yield return new RoleClaimModel
+                    yield return new RoleClaim
                     {
                         Id = record.Id,
                         ClaimType = record.ClaimType,
@@ -123,7 +123,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
             }
         }
 
-        private static IEnumerable<UserModel> GetTestUsers()
+        private static IEnumerable<User> GetTestUsers()
         {
             var path = Path.Combine(Directory.GetCurrentDirectory(), TestUsersFilePath);
 
@@ -145,7 +145,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
 
                 foreach (var record in records)
                 {
-                    yield return new UserModel
+                    yield return new User
                     {
                         Id = record.Id,
                         UserName = record.Gamertag,
@@ -159,7 +159,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
             }
         }
 
-        private static IEnumerable<UserRoleModel> GetTestUserRoles()
+        private static IEnumerable<UserRole> GetTestUserRoles()
         {
             var path = Path.Combine(Directory.GetCurrentDirectory(), TestUserRolesFilePath);
 
@@ -176,7 +176,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
 
                 foreach (var record in records)
                 {
-                    yield return new UserRoleModel
+                    yield return new UserRole
                     {
                         RoleId = record.RoleId,
                         UserId = record.UserId

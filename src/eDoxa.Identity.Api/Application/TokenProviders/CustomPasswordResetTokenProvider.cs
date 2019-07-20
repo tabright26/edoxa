@@ -13,7 +13,7 @@ using Microsoft.Extensions.Options;
 
 namespace eDoxa.Identity.Api.Application.TokenProviders
 {
-    public sealed class CustomPasswordResetTokenProvider : DataProtectorTokenProvider<UserModel>
+    public sealed class CustomPasswordResetTokenProvider : DataProtectorTokenProvider<User>
     {
         public CustomPasswordResetTokenProvider(
             IDataProtectionProvider dataProtectionProvider,

@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Application.Extensions;
+using eDoxa.Identity.Api.Application.Describers;
 using eDoxa.Identity.Api.Application.Stores;
 using eDoxa.Identity.Api.Models;
 
@@ -22,18 +22,18 @@ using Microsoft.Extensions.Options;
 
 namespace eDoxa.Identity.Api.Application.Managers
 {
-    public sealed class CustomUserManager : UserManager<UserModel>
+    public sealed class CustomUserManager : UserManager<User>
     {
         private static readonly Random Random = new Random();
 
         public CustomUserManager(
             CustomUserStore store,
             IOptions<IdentityOptions> optionsAccessor,
-            IPasswordHasher<UserModel> passwordHasher,
-            IEnumerable<IUserValidator<UserModel>> userValidators,
-            IEnumerable<IPasswordValidator<UserModel>> passwordValidators,
+            IPasswordHasher<User> passwordHasher,
+            IEnumerable<IUserValidator<User>> userValidators,
+            IEnumerable<IPasswordValidator<User>> passwordValidators,
             ILookupNormalizer keyNormalizer,
-            IdentityErrorDescriber errors,
+            CustomIdentityErrorDescriber errors,
             IServiceProvider services,
             ILogger<CustomUserManager> logger
         ) : base(
@@ -48,10 +48,13 @@ namespace eDoxa.Identity.Api.Application.Managers
             logger
         )
         {
+            ErrorDescriber = errors;
             Store = store;
         }
 
         private new CustomUserStore Store { get; }
+
+        private new CustomIdentityErrorDescriber ErrorDescriber { get; }
 
         private static int GenerateUniqueTag(IReadOnlyCollection<int> tags)
         {
@@ -80,13 +83,13 @@ namespace eDoxa.Identity.Api.Application.Managers
 
         [NotNull]
         [ItemNotNull]
-        public override async Task<IdentityResult> SetUserNameAsync([NotNull] UserModel userModel, [NotNull] string userName)
+        public override async Task<IdentityResult> SetUserNameAsync([NotNull] User user, [NotNull] string userName)
         {
             var tags = await this.GetExistingTagsAsync(userName);
 
             var tag = tags.Any() ? GenerateUniqueTag(tags) : GenerateTag();
 
-            return await base.SetUserNameAsync(userModel, BuildGamertag(userName, tag));
+            return await base.SetUserNameAsync(user, BuildGamertag(userName, tag));
         }
 
         private async Task<IReadOnlyCollection<int>> GetExistingTagsAsync(string userName)
@@ -97,7 +100,7 @@ namespace eDoxa.Identity.Api.Application.Managers
                 .ToListAsync();
         }
 
-        public async Task<IdentityResult> AddGameProviderAsync(UserModel user, UserGameProviderInfo gameProvider)
+        public async Task<IdentityResult> AddGameProviderAsync(User user, UserGameProviderInfo gameProvider)
         {
             this.ThrowIfDisposed();
 
@@ -111,19 +114,19 @@ namespace eDoxa.Identity.Api.Application.Managers
                 throw new ArgumentNullException(nameof(user));
             }
 
-            if (await this.HasGameProviderAlreadyLinkedAsync(user, gameProvider.GameProvider))
+            if (await this.HasGameProviderAlreadyLinkedAsync(user, gameProvider.Game))
             {
                 var userId = await this.GetUserIdAsync(user);
 
                 Logger.LogWarning(
                     4,
-                    $"{nameof(this.AddGameProviderAsync)} for user {userId} failed because it has already been linked to {gameProvider.GameProvider} game provider."
+                    $"{nameof(this.AddGameProviderAsync)} for user {userId} failed because it has already been linked to {gameProvider.Game} game provider."
                 );
 
                 return IdentityResult.Failed(ErrorDescriber.GameProviderAlreadyLinked());
             }
 
-            if (await this.FindByGameProviderAsync(gameProvider.GameProvider, gameProvider.ProviderKey) != null)
+            if (await this.FindByGameProviderAsync(gameProvider.Game, gameProvider.PlayerId) != null)
             {
                 var userId = await this.GetUserIdAsync(user);
 
@@ -139,13 +142,13 @@ namespace eDoxa.Identity.Api.Application.Managers
             return await this.UpdateUserAsync(user);
         }
 
-        public async Task<IdentityResult> RemoveGameProviderAsync(UserModel user, GameProvider gameProvider)
+        public async Task<IdentityResult> RemoveGameProviderAsync(User user, Game game)
         {
             this.ThrowIfDisposed();
 
-            if (gameProvider == null)
+            if (game == null)
             {
-                throw new ArgumentNullException(nameof(gameProvider));
+                throw new ArgumentNullException(nameof(game));
             }
 
             if (user == null)
@@ -153,16 +156,16 @@ namespace eDoxa.Identity.Api.Application.Managers
                 throw new ArgumentNullException(nameof(user));
             }
 
-            if (!await this.HasGameProviderAlreadyLinkedAsync(user, gameProvider))
+            if (!await this.HasGameProviderAlreadyLinkedAsync(user, game))
             {
                 var userId = await this.GetUserIdAsync(user);
 
-                Logger.LogWarning(4, $"{nameof(this.RemoveGameProviderAsync)} for user {userId} failed because the {gameProvider} game provider is unlinked.");
+                Logger.LogWarning(4, $"{nameof(this.RemoveGameProviderAsync)} for user {userId} failed because the {game} game provider is unlinked.");
 
                 return IdentityResult.Failed(ErrorDescriber.GameProviderUnlinked());
             }
 
-            await Store.RemoveGameProviderAsync(user, gameProvider.Value, CancellationToken);
+            await Store.RemoveGameProviderAsync(user, game.Value, CancellationToken);
 
             await this.UpdateSecurityStampAsync(user);
 
@@ -170,24 +173,24 @@ namespace eDoxa.Identity.Api.Application.Managers
         }
 
         [ItemCanBeNull]
-        public Task<UserModel> FindByGameProviderAsync(GameProvider gameProvider, string providerKey)
+        public Task<User> FindByGameProviderAsync(Game game, string playerId)
         {
             this.ThrowIfDisposed();
 
-            if (gameProvider == null)
+            if (game == null)
             {
-                throw new ArgumentNullException(nameof(gameProvider));
+                throw new ArgumentNullException(nameof(game));
             }
 
-            if (providerKey == null)
+            if (playerId == null)
             {
-                throw new ArgumentNullException(nameof(providerKey));
+                throw new ArgumentNullException(nameof(playerId));
             }
 
-            return Store.FindByGameProviderAsync(gameProvider.Value, providerKey, CancellationToken);
+            return Store.FindByGameProviderAsync(game.Value, playerId, CancellationToken);
         }
 
-        public async Task<IList<UserGameProviderInfo>> GetGameProvidersAsync(UserModel user)
+        public async Task<IList<UserGameProviderInfo>> GetGameProvidersAsync(User user)
         {
             this.ThrowIfDisposed();
 
@@ -199,30 +202,30 @@ namespace eDoxa.Identity.Api.Application.Managers
             return await Store.GetGameProvidersAsync(user, CancellationToken);
         }
 
-        public async Task<IList<UserGameProviderLinkInfo>> GetGameProviderLinksAsync(UserModel user)
+        public async Task<IList<UserGameProviderLinkInfo>> GetGameProviderLinksAsync(User user)
         {
             var gameProviderInfos = await this.GetGameProvidersAsync(user);
 
-            return GameProvider.GetEnumerations()
+            return Game.GetEnumerations()
                 .Select(
-                    gameProvider =>
+                    game =>
                     {
                         return new UserGameProviderLinkInfo
                         {
-                            GameProvider = gameProvider,
-                            IsLinked = gameProviderInfos.SingleOrDefault(provider => provider.GameProvider == gameProvider) != null
+                            Game = game,
+                            IsLinked = gameProviderInfos.SingleOrDefault(provider => provider.Game == game) != null
                         };
                     }
                 )
-                .OrderBy(gameProvider => gameProvider.GameProvider)
+                .OrderBy(gameProviderLink => gameProviderLink.Game)
                 .ToList();
         }
 
-        private async Task<bool> HasGameProviderAlreadyLinkedAsync(UserModel user, GameProvider gameProvider)
+        private async Task<bool> HasGameProviderAlreadyLinkedAsync(User user, Game game)
         {
             var gameProviderLinks = await this.GetGameProviderLinksAsync(user);
 
-            return gameProviderLinks.Single(gameProviderLink => gameProviderLink.GameProvider == gameProvider).IsLinked;
+            return gameProviderLinks.Single(gameProviderLink => gameProviderLink.Game == game).IsLinked;
         }
     }
 }

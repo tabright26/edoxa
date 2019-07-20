@@ -13,7 +13,7 @@ using Microsoft.Extensions.Options;
 
 namespace eDoxa.Identity.Api.Application.TokenProviders
 {
-    public sealed class CustomChangePhoneNumberTokenProvider : DataProtectorTokenProvider<UserModel>
+    public sealed class CustomChangePhoneNumberTokenProvider : DataProtectorTokenProvider<User>
     {
         public CustomChangePhoneNumberTokenProvider(
             IDataProtectionProvider dataProtectionProvider,

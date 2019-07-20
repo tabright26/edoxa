@@ -5,8 +5,8 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
-using System.Linq;
 
+using eDoxa.Identity.Api.Application.Describers;
 using eDoxa.Identity.Api.Application.Factories;
 using eDoxa.Identity.Api.Application.Managers;
 using eDoxa.Identity.Api.Application.Services;
@@ -56,7 +56,7 @@ namespace eDoxa.Identity.Api.Extensions
 
         public static void AddCustomIdentity(this IServiceCollection services, IHostingEnvironment environment)
         {
-            services.AddIdentity<UserModel, RoleModel>(
+            services.AddIdentity<User, Role>(
                     options =>
                     {
                         // Password settings
@@ -107,6 +107,7 @@ namespace eDoxa.Identity.Api.Extensions
                 .AddDefaultUI(UIFramework.Bootstrap4);
 
             services.ConfigureTokenProviders();
+            services.AddSingleton<CustomIdentityErrorDescriber>();
             services.AddScoped<CustomUserStore>();
             services.AddScoped<CustomUserManager>();
             services.AddScoped<CustomSignInManager>();
@@ -135,8 +136,8 @@ namespace eDoxa.Identity.Api.Extensions
                 .AddInMemoryApiResources(IdentityServerConfig.GetApiResources())
                 .AddInMemoryClients(IdentityServerConfig.GetClients(configuration))
                 .AddCorsPolicyService<CustomCorsPolicyService>()
-                .AddProfileService<CustomProfileService<UserModel>>()
-                .AddAspNetIdentity<UserModel>();
+                .AddProfileService<CustomProfileService<User>>()
+                .AddAspNetIdentity<User>();
         }
     }
 }

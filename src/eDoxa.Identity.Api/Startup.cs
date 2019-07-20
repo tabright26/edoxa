@@ -3,10 +3,6 @@
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.Reflection;
@@ -79,13 +75,15 @@ namespace eDoxa.Identity.Api
             services.AddServiceBus(Configuration);
 
             services.AddAuthentication(Configuration, Environment, CustomApiResources.Identity);
-
+            
             return this.BuildModule(services);
         }
 
         public void Configure(IApplicationBuilder application, IApiVersionDescriptionProvider provider)
         {
             application.UseHealthChecks();
+
+            application.UseCorsPolicy();
 
             if (Environment.IsDevelopment())
             {

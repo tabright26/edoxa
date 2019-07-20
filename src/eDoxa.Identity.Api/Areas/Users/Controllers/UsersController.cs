@@ -17,18 +17,20 @@ using AutoMapper;
 using eDoxa.Identity.Api.Application.Managers;
 using eDoxa.Identity.Api.Areas.Users.ViewModels;
 
+using IdentityServer4.AccessTokenValidation;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Identity.Api.Areas.Users.Controllers
 {
-    [Authorize]
     [ApiController]
     [ApiVersion("1.0")]
     [Produces("application/json")]
     [Route("api/users")]
     [ApiExplorerSettings(GroupName = "User")]
+    [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
     public class UsersController : ControllerBase
     {
         private readonly CustomUserManager _userManager;

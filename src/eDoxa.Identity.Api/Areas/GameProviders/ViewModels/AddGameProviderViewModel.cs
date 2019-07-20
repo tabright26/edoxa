@@ -11,12 +11,12 @@ namespace eDoxa.Identity.Api.Areas.GameProviders.ViewModels
     [DataContract]
     public class AddGameProviderViewModel
     {
-        public AddGameProviderViewModel(string providerKey)
+        public AddGameProviderViewModel(string playerId)
         {
-            ProviderKey = providerKey;
+            PlayerId = playerId;
         }
 
-        [DataMember(Name = "providerKey")]
-        public string ProviderKey { get; private set; }
+        [DataMember(Name = "playerId")]
+        public string PlayerId { get; private set; }
     }
 }

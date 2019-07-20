@@ -14,12 +14,12 @@ using Microsoft.Extensions.Options;
 
 namespace eDoxa.Identity.Api.Application.Managers
 {
-    public sealed class CustomSignInManager : SignInManager<UserModel>
+    public sealed class CustomSignInManager : SignInManager<User>
     {
         public CustomSignInManager(
             CustomUserManager userManager,
             IHttpContextAccessor contextAccessor,
-            IUserClaimsPrincipalFactory<UserModel> claimsFactory,
+            IUserClaimsPrincipalFactory<User> claimsFactory,
             IOptions<IdentityOptions> optionsAccessor,
             ILogger<CustomSignInManager> logger,
             IAuthenticationSchemeProvider schemes

@@ -18,7 +18,7 @@ using Microsoft.Extensions.Options;
 
 namespace eDoxa.Identity.Api.Application.Factories
 {
-    public sealed class CustomUserClaimsPrincipalFactory : UserClaimsPrincipalFactory<UserModel, RoleModel>
+    public sealed class CustomUserClaimsPrincipalFactory : UserClaimsPrincipalFactory<User, Role>
     {
         public CustomUserClaimsPrincipalFactory(CustomUserManager userManager, CustomRoleManager roleManager, IOptions<IdentityOptions> options) : base(
             userManager,
@@ -32,7 +32,7 @@ namespace eDoxa.Identity.Api.Application.Factories
         private new CustomUserManager UserManager { get; }
 
         [ItemNotNull]
-        protected override async Task<ClaimsIdentity> GenerateClaimsAsync([NotNull] UserModel user)
+        protected override async Task<ClaimsIdentity> GenerateClaimsAsync([NotNull] User user)
         {
             var identity = await base.GenerateClaimsAsync(user);
 

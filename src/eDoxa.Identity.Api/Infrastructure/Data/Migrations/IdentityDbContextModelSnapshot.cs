@@ -17,26 +17,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("eDoxa.Identity.Api.Models.RoleClaimModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("ClaimType");
-
-                    b.Property<string>("ClaimValue");
-
-                    b.Property<Guid>("RoleId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("RoleClaim");
-                });
-
-            modelBuilder.Entity("eDoxa.Identity.Api.Models.RoleModel", b =>
+            modelBuilder.Entity("eDoxa.Identity.Api.Models.Role", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -60,7 +41,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                     b.ToTable("Role");
                 });
 
-            modelBuilder.Entity("eDoxa.Identity.Api.Models.UserClaimModel", b =>
+            modelBuilder.Entity("eDoxa.Identity.Api.Models.RoleClaim", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -70,48 +51,16 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
 
                     b.Property<string>("ClaimValue");
 
-                    b.Property<Guid>("UserId");
+                    b.Property<Guid>("RoleId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("RoleId");
 
-                    b.ToTable("UserClaim");
+                    b.ToTable("RoleClaim");
                 });
 
-            modelBuilder.Entity("eDoxa.Identity.Api.Models.UserGameProviderModel", b =>
-                {
-                    b.Property<int>("GameProvider");
-
-                    b.Property<string>("ProviderKey");
-
-                    b.Property<Guid>("UserId");
-
-                    b.HasKey("GameProvider", "ProviderKey");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserGameProvider");
-                });
-
-            modelBuilder.Entity("eDoxa.Identity.Api.Models.UserLoginModel", b =>
-                {
-                    b.Property<string>("LoginProvider");
-
-                    b.Property<string>("ProviderKey");
-
-                    b.Property<string>("ProviderDisplayName");
-
-                    b.Property<Guid>("UserId");
-
-                    b.HasKey("LoginProvider", "ProviderKey");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserLogin");
-                });
-
-            modelBuilder.Entity("eDoxa.Identity.Api.Models.UserModel", b =>
+            modelBuilder.Entity("eDoxa.Identity.Api.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -168,7 +117,58 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("eDoxa.Identity.Api.Models.UserRoleModel", b =>
+            modelBuilder.Entity("eDoxa.Identity.Api.Models.UserClaim", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ClaimType");
+
+                    b.Property<string>("ClaimValue");
+
+                    b.Property<Guid>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserClaim");
+                });
+
+            modelBuilder.Entity("eDoxa.Identity.Api.Models.UserGameProvider", b =>
+                {
+                    b.Property<int>("Game");
+
+                    b.Property<string>("PlayerId");
+
+                    b.Property<Guid>("UserId");
+
+                    b.HasKey("Game", "PlayerId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserGameProvider");
+                });
+
+            modelBuilder.Entity("eDoxa.Identity.Api.Models.UserLogin", b =>
+                {
+                    b.Property<string>("LoginProvider");
+
+                    b.Property<string>("ProviderKey");
+
+                    b.Property<string>("ProviderDisplayName");
+
+                    b.Property<Guid>("UserId");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserLogin");
+                });
+
+            modelBuilder.Entity("eDoxa.Identity.Api.Models.UserRole", b =>
                 {
                     b.Property<Guid>("UserId");
 
@@ -181,7 +181,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                     b.ToTable("UserRole");
                 });
 
-            modelBuilder.Entity("eDoxa.Identity.Api.Models.UserTokenModel", b =>
+            modelBuilder.Entity("eDoxa.Identity.Api.Models.UserToken", b =>
                 {
                     b.Property<Guid>("UserId");
 
@@ -196,54 +196,54 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                     b.ToTable("UserToken");
                 });
 
-            modelBuilder.Entity("eDoxa.Identity.Api.Models.RoleClaimModel", b =>
+            modelBuilder.Entity("eDoxa.Identity.Api.Models.RoleClaim", b =>
                 {
-                    b.HasOne("eDoxa.Identity.Api.Models.RoleModel")
+                    b.HasOne("eDoxa.Identity.Api.Models.Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("eDoxa.Identity.Api.Models.UserClaimModel", b =>
+            modelBuilder.Entity("eDoxa.Identity.Api.Models.UserClaim", b =>
                 {
-                    b.HasOne("eDoxa.Identity.Api.Models.UserModel")
+                    b.HasOne("eDoxa.Identity.Api.Models.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("eDoxa.Identity.Api.Models.UserGameProviderModel", b =>
+            modelBuilder.Entity("eDoxa.Identity.Api.Models.UserGameProvider", b =>
                 {
-                    b.HasOne("eDoxa.Identity.Api.Models.UserModel")
+                    b.HasOne("eDoxa.Identity.Api.Models.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("eDoxa.Identity.Api.Models.UserLoginModel", b =>
+            modelBuilder.Entity("eDoxa.Identity.Api.Models.UserLogin", b =>
                 {
-                    b.HasOne("eDoxa.Identity.Api.Models.UserModel")
+                    b.HasOne("eDoxa.Identity.Api.Models.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("eDoxa.Identity.Api.Models.UserRoleModel", b =>
+            modelBuilder.Entity("eDoxa.Identity.Api.Models.UserRole", b =>
                 {
-                    b.HasOne("eDoxa.Identity.Api.Models.RoleModel")
+                    b.HasOne("eDoxa.Identity.Api.Models.Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("eDoxa.Identity.Api.Models.UserModel")
+                    b.HasOne("eDoxa.Identity.Api.Models.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("eDoxa.Identity.Api.Models.UserTokenModel", b =>
+            modelBuilder.Entity("eDoxa.Identity.Api.Models.UserToken", b =>
                 {
-                    b.HasOne("eDoxa.Identity.Api.Models.UserModel")
+                    b.HasOne("eDoxa.Identity.Api.Models.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

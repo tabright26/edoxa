@@ -8,7 +8,7 @@ namespace eDoxa.Identity.Api.Application
 {
     public class UserGameProviderLinkInfo
     {
-        public GameProvider GameProvider { get; set; }
+        public Game Game { get; set; }
 
         public bool IsLinked { get; set; }
     }

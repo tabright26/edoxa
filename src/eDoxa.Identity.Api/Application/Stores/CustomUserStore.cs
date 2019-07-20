@@ -20,16 +20,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Identity.Api.Application.Stores
 {
-    public class CustomUserStore : Microsoft.AspNetCore.Identity.EntityFrameworkCore.UserStore<UserModel, RoleModel, IdentityDbContext, Guid, UserClaimModel,
-        UserRoleModel, UserLoginModel, UserTokenModel, RoleClaimModel>
+    public class CustomUserStore : Microsoft.AspNetCore.Identity.EntityFrameworkCore.UserStore<User, Role, IdentityDbContext, Guid, UserClaim,
+        UserRole, UserLogin, UserToken, RoleClaim>
     {
         public CustomUserStore(IdentityDbContext context, IdentityErrorDescriber describer = null) : base(context, describer)
         {
         }
 
-        private DbSet<UserGameProviderModel> UserGameProviders => Context.Set<UserGameProviderModel>();
+        private DbSet<UserGameProvider> UserGameProviders => Context.Set<UserGameProvider>();
 
-        public virtual Task AddGameProviderAsync(UserModel user, UserGameProviderInfo gameProvider, CancellationToken cancellationToken = default)
+        public virtual Task AddGameProviderAsync(User user, UserGameProviderInfo gameProvider, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -50,7 +50,7 @@ namespace eDoxa.Identity.Api.Application.Stores
             return Task.FromResult(false);
         }
 
-        public async Task RemoveGameProviderAsync(UserModel user, int gameProviderValue, CancellationToken cancellationToken = default)
+        public async Task RemoveGameProviderAsync(User user, int gameValue, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -61,39 +61,39 @@ namespace eDoxa.Identity.Api.Application.Stores
                 throw new ArgumentNullException(nameof(user));
             }
 
-            var gameProviderModel = await this.FindUserGameProviderAsync(user.Id, gameProviderValue, cancellationToken);
+            var gameProvider = await this.FindUserGameProviderAsync(user.Id, gameValue, cancellationToken);
 
-            if (gameProviderModel == null)
+            if (gameProvider == null)
             {
                 return;
             }
 
-            UserGameProviders.Remove(gameProviderModel);
+            UserGameProviders.Remove(gameProvider);
         }
 
         [ItemCanBeNull]
-        public Task<UserGameProviderModel> FindUserGameProviderAsync(Guid userId, int gameProviderValue, CancellationToken cancellationToken = default)
+        public Task<UserGameProvider> FindUserGameProviderAsync(Guid userId, int gameValue, CancellationToken cancellationToken = default)
         {
             return UserGameProviders.SingleOrDefaultAsync(
-                gameProvider => gameProvider.UserId == userId && gameProvider.GameProvider == gameProviderValue,
+                gameProvider => gameProvider.UserId == userId && gameProvider.Game == gameValue,
                 cancellationToken
             );
         }
 
         [ItemCanBeNull]
-        protected Task<UserGameProviderModel> FindUserGameProviderAsync(
-            int gameProviderValue,
-            string providerKey,
+        protected Task<UserGameProvider> FindUserGameProviderAsync(
+            int gameValue,
+            string playerId,
             CancellationToken cancellationToken = default
         )
         {
             return UserGameProviders.SingleOrDefaultAsync(
-                gameProvider => gameProvider.GameProvider == gameProviderValue && gameProvider.ProviderKey == providerKey,
+                gameProvider => gameProvider.Game == gameValue && gameProvider.PlayerId == playerId,
                 cancellationToken
             );
         }
 
-        public async Task<IList<UserGameProviderInfo>> GetGameProvidersAsync(UserModel user, CancellationToken cancellationToken = default)
+        public async Task<IList<UserGameProviderInfo>> GetGameProvidersAsync(User user, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -105,18 +105,18 @@ namespace eDoxa.Identity.Api.Application.Stores
             }
 
             return await UserGameProviders.Where(gameProvider => gameProvider.UserId.Equals(user.Id))
-                .Select(gameProvider => new UserGameProviderInfo(GameProvider.FromValue(gameProvider.GameProvider), gameProvider.ProviderKey))
+                .Select(gameProvider => new UserGameProviderInfo(Game.FromValue(gameProvider.Game), gameProvider.PlayerId))
                 .ToListAsync(cancellationToken);
         }
 
         [ItemCanBeNull]
-        public async Task<UserModel> FindByGameProviderAsync(int gameProviderValue, string providerKey, CancellationToken cancellationToken = default)
+        public async Task<User> FindByGameProviderAsync(int gameValue, string playerId, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
             this.ThrowIfDisposed();
 
-            var gameProvider = await this.FindUserGameProviderAsync(gameProviderValue, providerKey, cancellationToken);
+            var gameProvider = await this.FindUserGameProviderAsync(gameValue, playerId, cancellationToken);
 
             if (gameProvider != null)
             {
@@ -126,13 +126,13 @@ namespace eDoxa.Identity.Api.Application.Stores
             return default;
         }
 
-        protected UserGameProviderModel CreateUserGameProvider(UserModel user, UserGameProviderInfo gameProvider)
+        protected UserGameProvider CreateUserGameProvider(User user, UserGameProviderInfo gameProvider)
         {
-            return new UserGameProviderModel
+            return new UserGameProvider
             {
                 UserId = user.Id,
-                GameProvider = gameProvider.GameProvider.Value,
-                ProviderKey = gameProvider.ProviderKey
+                Game = gameProvider.Game.Value,
+                PlayerId = gameProvider.PlayerId
             };
         }
     }

@@ -15,42 +15,42 @@ using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Identity.Api.Infrastructure
 {
-    public sealed class IdentityDbContext : IdentityDbContext<UserModel, RoleModel, Guid, UserClaimModel, UserRoleModel, UserLoginModel, RoleClaimModel,
-        UserTokenModel>
+    public sealed class IdentityDbContext : IdentityDbContext<User, Role, Guid, UserClaim, UserRole, UserLogin, RoleClaim,
+        UserToken>
     {
         public IdentityDbContext(DbContextOptions<IdentityDbContext> options) : base(options)
         {
         }
 
-        public DbSet<UserGameProviderModel> Games => this.Set<UserGameProviderModel>();
+        public DbSet<UserGameProvider> Games => this.Set<UserGameProvider>();
 
         protected override void OnModelCreating([NotNull] ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<UserModel>(
+            modelBuilder.Entity<User>(
                 builder =>
                 {
-                    builder.HasMany<UserGameProviderModel>().WithOne().HasForeignKey(userGame => userGame.UserId).IsRequired();
+                    builder.HasMany<UserGameProvider>().WithOne().HasForeignKey(userGame => userGame.UserId).IsRequired();
                     builder.ToTable("User");
                 }
             );
 
-            modelBuilder.Entity<UserClaimModel>().ToTable("UserClaim");
-            modelBuilder.Entity<UserLoginModel>().ToTable("UserLogin");
-            modelBuilder.Entity<UserTokenModel>().ToTable("UserToken");
-            modelBuilder.Entity<UserRoleModel>().ToTable("UserRole");
-            modelBuilder.Entity<RoleModel>().ToTable("Role");
-            modelBuilder.Entity<RoleClaimModel>().ToTable("RoleClaim");
+            modelBuilder.Entity<UserClaim>().ToTable("UserClaim");
+            modelBuilder.Entity<UserLogin>().ToTable("UserLogin");
+            modelBuilder.Entity<UserToken>().ToTable("UserToken");
+            modelBuilder.Entity<UserRole>().ToTable("UserRole");
+            modelBuilder.Entity<Role>().ToTable("Role");
+            modelBuilder.Entity<RoleClaim>().ToTable("RoleClaim");
 
-            modelBuilder.Entity<UserGameProviderModel>(
+            modelBuilder.Entity<UserGameProvider>(
                 builder =>
                 {
                     builder.HasKey(
-                        userGame => new
+                        gameProvider => new
                         {
-                            userGame.GameProvider,
-                            userGame.ProviderKey
+                            GameProvider = gameProvider.Game,
+                            gameProvider.PlayerId
                         }
                     );
 

@@ -13,7 +13,7 @@ using Microsoft.Extensions.Options;
 
 namespace eDoxa.Identity.Api.Application.TokenProviders
 {
-    public sealed class CustomAuthenticatorTokenProvider : DataProtectorTokenProvider<UserModel>
+    public sealed class CustomAuthenticatorTokenProvider : DataProtectorTokenProvider<User>
     {
         public CustomAuthenticatorTokenProvider(
             IDataProtectionProvider dataProtectionProvider,

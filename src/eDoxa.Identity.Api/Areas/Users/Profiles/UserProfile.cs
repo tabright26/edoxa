@@ -15,7 +15,7 @@ namespace eDoxa.Identity.Api.Areas.Users.Profiles
     {
         public UserProfile()
         {
-            this.CreateMap<UserModel, UserViewModel>()
+            this.CreateMap<User, UserViewModel>()
                 .ForMember(user => user.Id, config => config.MapFrom(user => user.Id))
                 .ForMember(user => user.Gamertag, config => config.MapFrom(user => user.UserName));
         }

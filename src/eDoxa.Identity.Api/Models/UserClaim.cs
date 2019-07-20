@@ -1,4 +1,4 @@
-﻿// Filename: UserClaimModel.cs
+﻿// Filename: UserClaim.cs
 // Date Created: 2019-07-17
 // 
 // ================================================
@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace eDoxa.Identity.Api.Models
 {
-    public class UserClaimModel : IdentityUserClaim<Guid>
+    public class UserClaim : IdentityUserClaim<Guid>
     {
     }
 }

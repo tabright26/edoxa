@@ -84,7 +84,7 @@ namespace eDoxa.Identity.Api.Infrastructure
                 RequireConsent = false,
                 AllowAccessTokensViaBrowser = true,
                 UpdateAccessTokenClaimsOnRefresh = true,
-                AccessTokenLifetime = 100,
+                AccessTokenLifetime = 3600,
                 AllowedGrantTypes = GrantTypes.Implicit,
                 AllowedScopes = new HashSet<string>
                 {

@@ -1,5 +1,5 @@
-﻿// Filename: 20190718224150_InitialCreate.cs
-// Date Created: 2019-07-18
+﻿// Filename: 20190720002147_InitialCreate.cs
+// Date Created: 2019-07-19
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -109,8 +109,8 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                 "UserGameProvider",
                 table => new
                 {
-                    GameProvider = table.Column<int>(),
-                    ProviderKey = table.Column<string>(),
+                    Game = table.Column<int>(),
+                    PlayerId = table.Column<string>(),
                     UserId = table.Column<Guid>()
                 },
                 constraints: table =>
@@ -119,8 +119,8 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                         "PK_UserGameProvider",
                         x => new
                         {
-                            x.GameProvider,
-                            x.ProviderKey
+                            x.Game,
+                            x.PlayerId
                         }
                     );
 

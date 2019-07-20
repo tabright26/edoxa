@@ -26,7 +26,7 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Handlers
             if (!await _roleManager.RoleExistsAsync(integrationEvent.RoleName))
             {
                 await _roleManager.CreateAsync(
-                    new RoleModel
+                    new Role
                     {
                         Name = integrationEvent.RoleName
                     }

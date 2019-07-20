@@ -15,11 +15,11 @@ using Microsoft.AspNetCore.Identity;
 
 namespace eDoxa.Identity.Api.Application.Validators
 {
-    public sealed class CustomUserValidator : IUserValidator<UserModel>
+    public sealed class CustomUserValidator : IUserValidator<User>
     {
         [NotNull]
         [ItemNotNull]
-        public Task<IdentityResult> ValidateAsync([NotNull] UserManager<UserModel> manager, [NotNull] UserModel user)
+        public Task<IdentityResult> ValidateAsync([NotNull] UserManager<User> manager, [NotNull] User user)
         {
             if (user.UserName.Count(c => c == '#') > 1)
             {

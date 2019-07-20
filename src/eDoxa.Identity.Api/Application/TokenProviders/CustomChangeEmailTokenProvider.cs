@@ -13,7 +13,7 @@ using Microsoft.Extensions.Options;
 
 namespace eDoxa.Identity.Api.Application.TokenProviders
 {
-    public sealed class CustomChangeEmailTokenProvider : DataProtectorTokenProvider<UserModel>
+    public sealed class CustomChangeEmailTokenProvider : DataProtectorTokenProvider<User>
     {
         public CustomChangeEmailTokenProvider(IDataProtectionProvider dataProtectionProvider, IOptions<CustomChangeEmailTokenProviderOptions> options) : base(
             dataProtectionProvider,

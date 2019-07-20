@@ -198,7 +198,7 @@ namespace eDoxa.Identity.Api.Controllers
             return this.Challenge(AccountOptions.WindowsAuthenticationSchemeName);
         }
 
-        private async Task<(UserModel user, string provider, string providerUserId, IEnumerable<Claim> claims)> FindUserFromExternalProviderAsync(
+        private async Task<(User user, string provider, string providerUserId, IEnumerable<Claim> claims)> FindUserFromExternalProviderAsync(
             AuthenticateResult result
         )
         {
@@ -223,7 +223,7 @@ namespace eDoxa.Identity.Api.Controllers
             return (user, provider, providerUserId, claims);
         }
 
-        private async Task<UserModel> AutoProvisionUserAsync(string provider, string providerUserId, IReadOnlyCollection<Claim> claims)
+        private async Task<User> AutoProvisionUserAsync(string provider, string providerUserId, IReadOnlyCollection<Claim> claims)
         {
             // create a list of claims that we want to transfer into our store
             var filtered = new List<Claim>();
@@ -265,7 +265,7 @@ namespace eDoxa.Identity.Api.Controllers
                 filtered.Add(new Claim(JwtClaimTypes.Email, email));
             }
 
-            var user = new UserModel
+            var user = new User
             {
                 UserName = Guid.NewGuid().ToString()
             };

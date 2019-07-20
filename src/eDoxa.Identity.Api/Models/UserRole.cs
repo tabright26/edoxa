@@ -1,4 +1,4 @@
-﻿// Filename: UserTokenModel.cs
+﻿// Filename: UserRole.cs
 // Date Created: 2019-07-17
 // 
 // ================================================
@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace eDoxa.Identity.Api.Models
 {
-    public class UserTokenModel : IdentityUserToken<Guid>
+    public class UserRole : IdentityUserRole<Guid>
     {
     }
 }
