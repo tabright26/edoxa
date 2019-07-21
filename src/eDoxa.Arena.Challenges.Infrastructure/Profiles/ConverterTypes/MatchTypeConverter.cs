@@ -1,39 +1,51 @@
 ﻿// Filename: MatchTypeConverter.cs
-// Date Created: 2019-06-21
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.Collections.Generic;
+using System.Linq;
 
 using AutoMapper;
 
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
-using eDoxa.Seedwork.Domain.Aggregate;
+using eDoxa.Seedwork.Domain.Providers;
 
 using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.ConverterTypes
 {
-    internal sealed class MatchTypeConverter : ITypeConverter<MatchModel, Match>
+    internal sealed class MatchTypeConverter : ITypeConverter<MatchModel, IMatch>
     {
         [NotNull]
-        public Match Convert([NotNull] MatchModel source, [NotNull] Match destination, [NotNull] ResolutionContext context)
+        public IMatch Convert([NotNull] MatchModel matchModel, [NotNull] IMatch destination, [NotNull] ResolutionContext context)
         {
-            var match = new Match(source.GameReference, new DateTimeProvider(source.SynchronizedAt));
+            var stats = context.Mapper.Map<ICollection<Stat>>(matchModel.Stats);
 
-            match.SetEntityId(MatchId.FromGuid(source.Id));
+            var match = Convert(matchModel, stats);
 
-            var stats = context.Mapper.Map<ICollection<Stat>>(source.Stats);
-
-            match.Snapshot(new MatchStats(stats), new Scoring(stats));
+            match.SetEntityId(MatchId.FromGuid(matchModel.Id));
 
             return match;
+        }
+
+        private static IMatch Convert(MatchModel matchModel, ICollection<Stat> stats)
+        {
+            var synchronizedAt = new DateTimeProvider(matchModel.SynchronizedAt);
+
+            if (stats.Count == 1)
+            {
+                var stat = stats.Single();
+
+                var score = new GameScore(ChallengeGame.FromName(stat.Name), new decimal(stat.Value));
+
+                return new GameMatch(score, matchModel.GameReference, synchronizedAt);
+            }
+
+            return new StatMatch(new Scoring(stats), new GameStats(stats), matchModel.GameReference, synchronizedAt);
         }
     }
 }

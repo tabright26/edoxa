@@ -23,15 +23,15 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Models
 
         public int State { get; set; }
 
-        public DateTime? SynchronizedAt { get; set; }
+        public int BestOf { get; set; }
 
-        public ChallengeSetupModel Setup { get; set; }
+        public int Entries { get; set; }
+
+        public DateTime? SynchronizedAt { get; set; }
 
         public ChallengeTimelineModel Timeline { get; set; }
 
         public ICollection<ScoringItemModel> ScoringItems { get; set; }
-
-        public ICollection<BucketModel> Buckets { get; set; }
 
         public ICollection<ParticipantModel> Participants { get; set; }
     }

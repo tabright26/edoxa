@@ -1,17 +1,12 @@
 ﻿// Filename: DepositCommandHandler.cs
-// Date Created: 2019-06-08
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
+using System;
 using System.Threading;
 using System.Threading.Tasks;
-
-using AutoMapper;
 
 using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels;
@@ -28,17 +23,11 @@ namespace eDoxa.Cashier.Api.Application.Commands.Handlers
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IAccountService _accountService;
-        private readonly IMapper _mapper;
 
-        public DepositCommandHandler(
-            IHttpContextAccessor httpContextAccessor,
-            IAccountService accountService,
-            IMapper mapper
-        )
+        public DepositCommandHandler(IHttpContextAccessor httpContextAccessor, IAccountService accountService)
         {
             _httpContextAccessor = httpContextAccessor;
             _accountService = accountService;
-            _mapper = mapper;
         }
 
         protected override async Task Handle([NotNull] DepositCommand command, CancellationToken cancellationToken)
@@ -47,7 +36,23 @@ namespace eDoxa.Cashier.Api.Application.Commands.Handlers
 
             var customerId = _httpContextAccessor.GetCustomerId();
 
-            await _accountService.DepositAsync(customerId, userId, _mapper.Map<ICurrency>(command.Currency), cancellationToken);
+            await _accountService.DepositAsync(customerId, userId, MapCurrency(command.Currency, command.Amount), cancellationToken);
+        }
+
+        // TODO: Must be Currency static method...
+        private static ICurrency MapCurrency(string currency, decimal amount)
+        {
+            if (Currency.FromName(currency) == Currency.Money)
+            {
+                return new Money(amount);
+            }
+
+            if (Currency.FromName(currency) == Currency.Token)
+            {
+                return new Token(amount);
+            }
+
+            throw new InvalidOperationException();
         }
     }
 }

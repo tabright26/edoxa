@@ -35,9 +35,9 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
         private readonly IDictionary<Guid, IChallenge> _materializedIds = new Dictionary<Guid, IChallenge>();
         private readonly IDictionary<IChallenge, ChallengeModel> _materializedObjects = new Dictionary<IChallenge, ChallengeModel>();
         private readonly IMapper _mapper;
-        private readonly ChallengesDbContext _context;
+        private readonly ArenaChallengesDbContext _context;
 
-        public ChallengeRepository(ChallengesDbContext context, IMapper mapper)
+        public ChallengeRepository(ArenaChallengesDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

@@ -1,18 +1,14 @@
 ﻿// Filename: IdentityDbContextData.cs
-// Date Created: 2019-06-14
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Application.Fakers;
-using eDoxa.Identity.Infrastructure;
+using eDoxa.Identity.Api.Areas.Identity.Services;
+using eDoxa.Identity.Api.Infrastructure.Data.Storage;
 using eDoxa.Seedwork.Infrastructure;
 
 using Microsoft.AspNetCore.Hosting;
@@ -25,52 +21,75 @@ namespace eDoxa.Identity.Api.Infrastructure.Data
         private readonly ILogger<IdentityDbContextData> _logger;
         private readonly IHostingEnvironment _environment;
         private readonly IdentityDbContext _context;
+        private readonly CustomUserManager _userManager;
+        private readonly CustomRoleManager _roleManager;
 
-        public IdentityDbContextData(ILogger<IdentityDbContextData> logger, IHostingEnvironment environment, IdentityDbContext context)
+        public IdentityDbContextData(
+            ILogger<IdentityDbContextData> logger,
+            IHostingEnvironment environment,
+            IdentityDbContext context,
+            CustomUserManager userManager,
+            CustomRoleManager roleManager
+        )
         {
             _logger = logger;
             _environment = environment;
             _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         public async Task SeedAsync()
         {
+            var roles = IdentityStorage.Roles;
+
+            var roleClaims = IdentityStorage.RoleClaims;
+
+            var testUsers = IdentityStorage.TestUsers;
+
+            var testUserClaims = IdentityStorage.TestUserClaims;
+
+            var testUserRoles = IdentityStorage.TestUserRoles;
+
+            if (!_roleManager.Roles.Any())
+            {
+                foreach (var role in roles)
+                {
+                    await _roleManager.CreateAsync(role);
+
+                    foreach (var roleClaim in roleClaims)
+                    {
+                        await _roleManager.AddClaimAsync(role, roleClaim.ToClaim());
+                    }
+                }
+
+                _logger.LogInformation("The roles being populated:");
+            }
+            else
+            {
+                _logger.LogInformation("The roles already populated.");
+            }
+
             if (_environment.IsDevelopment())
             {
-                if (!_context.Roles.Any())
+                if (!_userManager.Users.Any())
                 {
-                    var roleFaker = new RoleFaker();
+                    foreach (var testUser in testUsers)
+                    {
+                        await _userManager.CreateAsync(testUser, "Pass@word1");
 
-                    var roles = roleFaker.FakeRoles();
+                        foreach (var testUserClaim in testUserClaims.Where(userClaimModel => userClaimModel.UserId == testUser.Id))
+                        {
+                            await _userManager.AddClaimAsync(testUser, testUserClaim.ToClaim());
+                        }
 
-                    roles.ForEach(role => _context.Roles.Add(role));
+                        foreach (var testUserRole in testUserRoles.Where(userRoleModel => userRoleModel.UserId == testUser.Id))
+                        {
+                            await _userManager.AddToRoleAsync(testUser, roles.Single(roleModel => roleModel.Id == testUserRole.RoleId).Name);
+                        }
+                    }
 
-                    await _context.SaveChangesAsync();
-
-                    _logger.LogInformation("The roles being populated:");
-                }
-                else
-                {
-                    _logger.LogInformation("The roles already populated.");
-                }
-
-                if (!_context.Users.Any())
-                {
-                    var userFaker = new UserFaker();
-
-                    userFaker.UseSeed(1);
-
-                    var adminUser = userFaker.FakeAdminUser();
-
-                    _context.Users.Add(adminUser);
-
-                    var testUsers = userFaker.FakeTestUsers();
-
-                    _context.AddRange(testUsers);
-
-                    await _context.SaveChangesAsync();
-
-                    _logger.LogInformation("The users being populated:");
+                    _logger.LogInformation("The users being populated...");
                 }
                 else
                 {
@@ -84,6 +103,8 @@ namespace eDoxa.Identity.Api.Infrastructure.Data
             if (!_environment.IsProduction())
             {
                 _context.Users.RemoveRange(_context.Users);
+
+                _context.Roles.RemoveRange(_context.Roles);
 
                 await _context.SaveChangesAsync();
             }

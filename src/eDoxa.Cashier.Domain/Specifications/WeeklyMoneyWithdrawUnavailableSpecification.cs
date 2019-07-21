@@ -16,9 +16,9 @@ using eDoxa.Seedwork.Domain.Specifications;
 
 namespace eDoxa.Cashier.Domain.Specifications
 {
-    public sealed class WeeklyMoneyWithdrawUnavailableSpecification : Specification<AccountMoney>
+    public sealed class WeeklyMoneyWithdrawUnavailableSpecification : Specification<MoneyAccount>
     {
-        public override Expression<Func<AccountMoney, bool>> ToExpression()
+        public override Expression<Func<MoneyAccount, bool>> ToExpression()
         {
             return account => account.LastWithdraw.HasValue && account.LastWithdraw.Value.AddDays(7) >= DateTime.UtcNow;
         }

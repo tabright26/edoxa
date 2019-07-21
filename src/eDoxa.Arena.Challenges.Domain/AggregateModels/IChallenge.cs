@@ -3,10 +3,6 @@
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.Collections.Generic;
@@ -22,15 +18,15 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels
 
         ChallengeGame Game { get; }
 
-        ChallengeSetup Setup { get; }
+        BestOf BestOf { get; }
+
+        Entries Entries { get; }
 
         ChallengeTimeline Timeline { get; }
 
         DateTime? SynchronizedAt { get; }
 
         IScoring Scoring { get; }
-
-        IPayout Payout { get; }
 
         IScoreboard Scoreboard { get; }
 
@@ -44,9 +40,11 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels
 
         void Synchronize(
             Func<GameAccountId, DateTime, DateTime, IEnumerable<GameReference>> getGameReferences,
-            Func<GameAccountId, GameReference, IMatchStats> getMatchStats,
+            Func<GameAccountId, GameReference, IScoring, IMatch> getMatch,
             IDateTimeProvider synchronizedAt
         );
+
+        void Synchronize(IDateTimeProvider synchronizedAt);
 
         bool IsInscriptionCompleted();
     }

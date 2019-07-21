@@ -11,8 +11,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using AutoMapper;
+
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.ViewModels;
 
 using JetBrains.Annotations;
 
@@ -20,11 +22,15 @@ namespace eDoxa.Arena.Challenges.Domain.Queries
 {
     public interface IChallengeQuery
     {
-        Task<IReadOnlyCollection<ChallengeViewModel>> FindUserChallengeHistoryAsync(ChallengeGame game = null, ChallengeState state = null);
+        IMapper Mapper { get; }
 
-        Task<IReadOnlyCollection<ChallengeViewModel>> FindChallengesAsync(ChallengeGame game = null, ChallengeState state = null);
+        Task<IReadOnlyCollection<IChallenge>> FetchUserChallengeHistoryAsync(UserId userId, ChallengeGame game = null, ChallengeState state = null);
+
+        Task<IReadOnlyCollection<IChallenge>> FetchUserChallengeHistoryAsync(ChallengeGame game = null, ChallengeState state = null);
+
+        Task<IReadOnlyCollection<IChallenge>> FetchChallengesAsync(ChallengeGame game = null, ChallengeState state = null);
 
         [ItemCanBeNull]
-        Task<ChallengeViewModel> FindChallengeAsync(ChallengeId challengeId);
+        Task<IChallenge> FindChallengeAsync(ChallengeId challengeId);
     }
 }

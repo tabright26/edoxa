@@ -26,7 +26,7 @@ namespace eDoxa.Arena.Challenges.Domain.Validators
                 .WithMessage("The user already is registered.");
 
             this.RuleFor(challenge => challenge)
-                .Must(challenge => challenge.Participants.Count < challenge.Setup.Entries)
+                .Must(challenge => challenge.Participants.Count < challenge.Entries)
                 .WithMessage("Challenge register is not available.");
         }
     }

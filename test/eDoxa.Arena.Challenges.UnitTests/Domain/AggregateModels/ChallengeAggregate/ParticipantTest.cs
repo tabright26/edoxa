@@ -1,22 +1,18 @@
 // Filename: ParticipantTest.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-07-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.Collections.Generic;
 using System.Linq;
 
 using Bogus;
 
-using eDoxa.Arena.Challenges.Api.Application.Fakers;
-using eDoxa.Arena.Challenges.Api.Application.Fakers.Extensions;
-using eDoxa.Arena.Challenges.Domain;
+using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
+using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Seedwork.Domain.Providers;
 
 using FluentAssertions;
 
@@ -39,12 +35,11 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
             var challengeFaker = new ChallengeFaker(game);
             var challenge = challengeFaker.Generate();
             var participant = challenge.Participants.First();
-            var gameId = Faker.Match().GameId(game);
-            var stats = Faker.Match().Stats(game);
+            var gameReference = Faker.Game().Reference(game);
+            var stats = Faker.Game().Stats(game);
+            var match = new StatMatch(challenge.Scoring, stats, gameReference, new UtcNowDateTimeProvider());
 
             // Act
-            var match = new Match(gameId, new UtcNowDateTimeProvider());
-            match.Snapshot(stats, challenge.Scoring);
             participant.Snapshot(match);
 
             // Assert

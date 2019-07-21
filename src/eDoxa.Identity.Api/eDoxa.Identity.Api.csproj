@@ -1,49 +1,70 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-    <PropertyGroup>
-        <TargetFramework>netcoreapp2.2</TargetFramework>
-        <AssemblyName>eDoxa.Identity.Api</AssemblyName>
-        <RootNamespace>eDoxa.Identity.Api</RootNamespace>
-        <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AssemblyName>eDoxa.Identity.Api</AssemblyName>
+    <RootNamespace>eDoxa.Identity.Api</RootNamespace>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-        <NoWarn>1591;1701;1702</NoWarn>
-        <DocumentationFile>bin\Debug\netcoreapp2.2\eDoxa.Identity.Api.xml</DocumentationFile>
-        <OutputPath>bin\Debug\</OutputPath>
-        <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
-    </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1591;1701;1702</NoWarn>
+    <DocumentationFile>bin\Debug\netcoreapp2.2\eDoxa.Identity.Api.xml</DocumentationFile>
+    <OutputPath>bin\Debug\</OutputPath>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+  </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-        <NoWarn>1591;1701;1702</NoWarn>
-        <DocumentationFile>bin\Release\netcoreapp2.2\eDoxa.Identity.Api.xml</DocumentationFile>
-        <OutputPath>bin\Release\</OutputPath>
-        <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
-    </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn>1591;1701;1702</NoWarn>
+    <DocumentationFile>bin\Release\netcoreapp2.2\eDoxa.Identity.Api.xml</DocumentationFile>
+    <OutputPath>bin\Release\</OutputPath>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+  </PropertyGroup>
 
-    <ItemGroup>
-        <PackageReference Include="AspNet.Security.OAuth.BattleNet" Version="2.1.0" />
-        <PackageReference Include="AspNet.Security.OAuth.Twitch" Version="2.1.0" />
-        <PackageReference Include="AspNet.Security.OpenId.Steam" Version="2.1.0" />
-        <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.7.0" />
-        <PackageReference Include="Microsoft.AspNetCore.App" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.OAuth" Version="2.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
-        <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
-        <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
-    </ItemGroup>
+  <ItemGroup>
+    <Content Remove="compilerconfig.json" />
+  </ItemGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\eDoxa.Identity.Infrastructure\eDoxa.Identity.Infrastructure.csproj" />
-        <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
-        <ProjectReference Include="..\eDoxa.Seedwork.Monitoring\eDoxa.Seedwork.Monitoring.csproj" />
-    </ItemGroup>
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap-custom.css" />
+  </ItemGroup>
 
-    <ItemGroup>
-        <Content Update="appsettings.Testing.json">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AspNet.Security.OAuth.BattleNet" Version="2.1.0" />
+    <PackageReference Include="AspNet.Security.OAuth.Twitch" Version="2.1.0" />
+    <PackageReference Include="AspNet.Security.OpenId.Steam" Version="2.1.0" />
+    <PackageReference Include="BuildWebCompiler" Version="1.12.405" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.7.1" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OAuth" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\eDoxa.IntegrationEvents\eDoxa.IntegrationEvents.csproj" />
+    <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
+    <ProjectReference Include="..\eDoxa.Seedwork.Monitoring\eDoxa.Seedwork.Monitoring.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.Testing.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\..\data\Identity\SourceFiles\Roles.csv" Link="Infrastructure\Data\Storage\SourceFiles\Roles.csv" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\data\Identity\SourceFiles\RoleClaims.csv" Link="Infrastructure\Data\Storage\SourceFiles\RoleClaims.csv" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\data\Identity\TestFiles\TestUsers.csv" Link="Infrastructure\Data\Storage\TestFiles\TestUsers.csv" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\data\Identity\TestFiles\TestUserClaims.csv" Link="Infrastructure\Data\Storage\TestFiles\TestUserClaims.csv" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\data\Identity\TestFiles\TestUserRoles.csv" Link="Infrastructure\Data\Storage\TestFiles\TestUserRoles.csv" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="compilerconfig.json" />
+  </ItemGroup>
 
 </Project>

@@ -3,10 +3,6 @@
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.Collections.Generic;
 
@@ -18,7 +14,6 @@ using IdentityServer4.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -28,17 +23,6 @@ namespace eDoxa.Seedwork.Security.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddCookiePolicy(this IServiceCollection services)
-        {
-            services.Configure<CookiePolicyOptions>(
-                options =>
-                {
-                    options.CheckConsentNeeded = context => true;
-                    options.MinimumSameSitePolicy = SameSiteMode.None;
-                }
-            );
-        }
-
         public static void AddCorsPolicy(this IServiceCollection services)
         {
             services.AddCors(

@@ -3,23 +3,19 @@
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Api.Application.Fakers;
+using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.IntegrationTests.Helpers;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Domain.Aggregate;
+using eDoxa.Seedwork.Domain.Providers;
 using eDoxa.Seedwork.Testing.Extensions;
 
 using FluentAssertions;

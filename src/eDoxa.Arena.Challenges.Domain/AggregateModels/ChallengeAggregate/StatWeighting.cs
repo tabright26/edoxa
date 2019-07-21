@@ -16,6 +16,8 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class StatWeighting : ValueObject
     {
+        public static readonly StatWeighting None = new StatWeighting(1F);
+
         private readonly float _weighting;
 
         public StatWeighting(float weighting)

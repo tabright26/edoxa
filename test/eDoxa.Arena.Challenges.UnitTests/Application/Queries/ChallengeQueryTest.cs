@@ -3,21 +3,18 @@
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Api.Application.Fakers;
-using eDoxa.Arena.Challenges.Api.Application.Queries;
-using eDoxa.Arena.Challenges.Api.Extensions;
+using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
+using eDoxa.Arena.Challenges.Api.Infrastructure.Queries;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure;
+using eDoxa.Arena.Challenges.Infrastructure.Repositories;
+using eDoxa.Arena.Challenges.UnitTests.Helpers.Extensions;
 using eDoxa.Seedwork.Infrastructure.Factories;
 
 using FluentAssertions;
@@ -47,7 +44,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
 
         [DataTestMethod]
         [DynamicData(nameof(DataQueryParameters))]
-        public async Task FindUserChallengeHistoryAsync(ChallengeGame game, ChallengeState state)
+        public async Task FetchUserChallengeHistoryAsync(ChallengeGame game, ChallengeState state)
         {
             var challengeFaker = new ChallengeFaker(game, state);
 
@@ -58,56 +55,56 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
             _mockHttpContextAccessor.Setup(accessor => accessor.HttpContext.User.Claims)
                 .Returns(new[] {new Claim(JwtClaimTypes.Subject, challenge.Participants.First().UserId.ToString())});
 
-            using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
+            using (var factory = new InMemoryDbContextFactory<ArenaChallengesDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {
-                    context.Challenges.Add(challenge.ToModel());
+                    var challengeRepository = new ChallengeRepository(context, MapperExtensions.Mapper);
 
-                    await context.SaveChangesAsync();
+                    challengeRepository.Create(challenge);
+
+                    await challengeRepository.CommitAsync();
                 }
 
                 using (var context = factory.CreateContext())
                 {
                     var challengeQuery = new ChallengeQuery(context, MapperExtensions.Mapper, _mockHttpContextAccessor.Object);
 
-                    var challengeViewModels = await challengeQuery.FindUserChallengeHistoryAsync(game, state);
+                    var challengeViewModels = await challengeQuery.FetchUserChallengeHistoryAsync(game, state);
 
-                    challengeViewModels.Single().Should().BeEquivalentTo(challenge.ToViewModel());
+                    challengeViewModels.Single().Should().Be(challenge);
                 }
             }
         }
 
         [DataTestMethod]
         [DynamicData(nameof(DataQueryParameters))]
-        public async Task FindChallengesAsync(ChallengeGame game, ChallengeState state)
+        public async Task FetchChallengesAsync(ChallengeGame game, ChallengeState state)
         {
             var challengeFaker = new ChallengeFaker();
 
             challengeFaker.UseSeed(84936374);
 
-            var challenges = challengeFaker.Generate(4);
+            var fakeChallenges = challengeFaker.Generate(4);
 
-            using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
+            using (var factory = new InMemoryDbContextFactory<ArenaChallengesDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {
-                    context.Challenges.AddRange(challenges.ToModels());
+                    var challengeRepository = new ChallengeRepository(context, MapperExtensions.Mapper);
 
-                    await context.SaveChangesAsync();
+                    challengeRepository.Create(fakeChallenges);
+
+                    await challengeRepository.CommitAsync();
                 }
 
                 using (var context = factory.CreateContext())
                 {
                     var challengeQuery = new ChallengeQuery(context, MapperExtensions.Mapper, _mockHttpContextAccessor.Object);
 
-                    var challengeViewModels = await challengeQuery.FindChallengesAsync(game, state);
+                    var challenges = await challengeQuery.FetchChallengesAsync(game, state);
 
-                    challenges = challenges.Where(challenge => challenge.Game == game && challenge.Timeline == state).ToList();
-
-                    challengeViewModels.Should().HaveCount(challenges.Count);
-
-                    challengeViewModels.Should().BeEquivalentTo(challenges.ToViewModels());
+                    challenges.Should().HaveCount(fakeChallenges.Count(challenge => challenge.Game == game && challenge.Timeline == state));
                 }
             }
         }
@@ -122,13 +119,15 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
 
             var challenge = challengeFaker.Generate();
 
-            using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
+            using (var factory = new InMemoryDbContextFactory<ArenaChallengesDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {
-                    context.Challenges.Add(challenge.ToModel());
+                    var challengeRepository = new ChallengeRepository(context, MapperExtensions.Mapper);
 
-                    await context.SaveChangesAsync();
+                    challengeRepository.Create(challenge);
+
+                    await challengeRepository.CommitAsync();
                 }
 
                 using (var context = factory.CreateContext())
@@ -137,7 +136,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
 
                     var challengeViewModel = await challengeQuery.FindChallengeAsync(challenge.Id);
 
-                    challengeViewModel.Should().BeEquivalentTo(challenge.ToViewModel());
+                    challengeViewModel.Should().Be(challenge);
                 }
             }
         }

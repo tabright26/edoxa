@@ -1,20 +1,16 @@
 ﻿// Filename: FluentAssertionsExtensions.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-07-05
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.ViewModels;
 using eDoxa.Seedwork.Domain.Extensions;
 
 using FluentAssertions;
@@ -30,7 +26,6 @@ namespace eDoxa.Arena.Challenges.UnitTests.Helpers.Extensions
 
         public static void AssertStateIsValid(this IChallenge challenge)
         {
-            challenge.Payout.Buckets.Should().NotBeNullOrEmpty();
             challenge.Game.Should().Should().NotBe(ChallengeGame.All);
             challenge.Game.Should().Should().NotBe(new ChallengeGame());
             challenge.Timeline.State.Should().NotBe(ChallengeState.All);
@@ -91,19 +86,12 @@ namespace eDoxa.Arena.Challenges.UnitTests.Helpers.Extensions
             challenge.State.Should().NotBeNullOrWhiteSpace();
             challenge.State.Should().NotBe(new ChallengeState().Name);
             challenge.State.Should().NotBe(ChallengeState.All.Name);
-            challenge.Setup.Should().NotBeNull();
+            challenge.Should().NotBeNull();
             challenge.Timeline.Should().NotBeNull();
             challenge.Timeline.CreatedAt.Should().BeBefore(DateTime.UtcNow);
             challenge.Scoring.Should().NotBeNull();
             challenge.Scoring.Should().NotBeEmpty();
-            challenge.Payout.AssertMappingIsValid();
             challenge.Participants.AssertMappingIsValid();
-        }
-
-        public static void AssertMappingIsValid(this PayoutViewModel payout)
-        {
-            payout.Should().NotBeNull();
-            payout.Buckets.Should().NotBeNullOrEmpty();
         }
 
         public static void AssertMappingIsValid(this IEnumerable<ParticipantViewModel> participants)
@@ -126,7 +114,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Helpers.Extensions
         public static void AssertMappingIsValid(this MatchViewModel match)
         {
             match.Id.Should().NotBeEmpty();
-            match.TotalScore.Should().BeGreaterOrEqualTo(decimal.Zero);
+            match.Score.Should().BeGreaterOrEqualTo(decimal.Zero);
             match.Stats.AssertMappingIsValid();
         }
 

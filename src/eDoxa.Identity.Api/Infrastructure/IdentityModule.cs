@@ -1,18 +1,11 @@
-﻿// Filename: Modules.cs
-// Date Created: 2019-06-01
+﻿// Filename: IdentityModule.cs
+// Date Created: 2019-07-07
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using Autofac;
 
-using eDoxa.Identity.Api.Application.Queries;
-using eDoxa.Identity.Domain.Queries;
-using eDoxa.Identity.Infrastructure;
 using eDoxa.IntegrationEvents;
 using eDoxa.Seedwork.Application.DomainEvents;
 
@@ -24,14 +17,8 @@ namespace eDoxa.Identity.Api.Infrastructure
     {
         protected override void Load([NotNull] ContainerBuilder builder)
         {
-            base.Load(builder);
-
             builder.RegisterModule<DomainEventModule>();
-
             builder.RegisterModule<IntegrationEventModule<IdentityDbContext>>();
-
-            // Queries
-            builder.RegisterType<UserQuery>().As<IUserQuery>().InstancePerLifetimeScope();
         }
     }
 }

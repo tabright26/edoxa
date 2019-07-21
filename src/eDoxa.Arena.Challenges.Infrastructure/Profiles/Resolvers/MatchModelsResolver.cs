@@ -12,6 +12,7 @@ using System.Collections.Generic;
 
 using AutoMapper;
 
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
 using eDoxa.Seedwork.Domain.Extensions;
@@ -20,13 +21,13 @@ using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.Resolvers
 {
-    internal sealed class MatchModelsResolver : IMemberValueResolver<Participant, ParticipantModel, IReadOnlyCollection<Match>, ICollection<MatchModel>>
+    internal sealed class MatchModelsResolver : IMemberValueResolver<Participant, ParticipantModel, IReadOnlyCollection<IMatch>, ICollection<MatchModel>>
     {
         [NotNull]
         public ICollection<MatchModel> Resolve(
             [NotNull] Participant source,
             [NotNull] ParticipantModel destination,
-            [NotNull] IReadOnlyCollection<Match> sourceMember,
+            [NotNull] IReadOnlyCollection<IMatch> sourceMember,
             [NotNull] ICollection<MatchModel> destMember,
             [NotNull] ResolutionContext context
         )

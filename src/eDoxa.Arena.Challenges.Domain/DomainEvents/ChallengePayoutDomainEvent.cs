@@ -8,22 +8,18 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Seedwork.Domain;
-
 namespace eDoxa.Arena.Challenges.Domain.DomainEvents
 {
-    public sealed class ChallengePayoutDomainEvent : IDomainEvent
-    {
-        public ChallengePayoutDomainEvent(ChallengeId challengeId, IParticipantPrizes participantPrizes)
-        {
-            ChallengeId = challengeId;
-            ParticipantPrizes = participantPrizes;
-        }
+    //public sealed class ChallengePayoutDomainEvent : IDomainEvent
+    //{
+    //    public ChallengePayoutDomainEvent(ChallengeId challengeId, IParticipantPrizes participantPrizes)
+    //    {
+    //        ChallengeId = challengeId;
+    //        ParticipantPrizes = participantPrizes;
+    //    }
 
-        public ChallengeId ChallengeId { get; private set; }
+    //    public ChallengeId ChallengeId { get; private set; }
 
-        public IParticipantPrizes ParticipantPrizes { get; private set; }
-    }
+    //    public IParticipantPrizes ParticipantPrizes { get; private set; }
+    //}
 }

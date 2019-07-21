@@ -22,7 +22,22 @@ namespace eDoxa.Seedwork.Security.IdentityServer.Resources
     {
         public static readonly RoleIdentityResource Roles = new RoleIdentityResource();
         public static readonly PermissionIdentityResource Permissions = new PermissionIdentityResource();
+        public static readonly GameIdentityResource Games = new GameIdentityResource();
         public static readonly StripeIdentityResource Stripe = new StripeIdentityResource();
+
+        public sealed class GameIdentityResource : IdentityResource
+        {
+            internal GameIdentityResource() : base(
+                "games",
+                "Your game(s)",
+                new HashSet<string>
+                {
+                    "games"
+                }
+            )
+            {
+            }
+        }
 
         public sealed class RoleIdentityResource : IdentityResource
         {

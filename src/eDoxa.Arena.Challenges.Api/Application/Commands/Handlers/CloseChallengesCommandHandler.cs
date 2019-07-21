@@ -11,9 +11,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Domain;
 using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Commands.Abstractions.Handlers;
+using eDoxa.Seedwork.Domain.Providers;
 
 using JetBrains.Annotations;
 

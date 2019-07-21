@@ -3,29 +3,20 @@
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
+using AutoMapper;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
+using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Infrastructure.Models;
+using eDoxa.Seedwork.Domain.Extensions;
+using JetBrains.Annotations;
+using LinqKit;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-
-using AutoMapper;
-
-using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.Infrastructure.Models;
-using eDoxa.Seedwork.Domain.Extensions;
-
-using JetBrains.Annotations;
-
-using LinqKit;
-
-using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Cashier.Infrastructure.Repositories
 {

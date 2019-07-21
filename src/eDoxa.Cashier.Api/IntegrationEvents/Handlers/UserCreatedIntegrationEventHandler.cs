@@ -11,7 +11,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Application.Commands;
-using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.IntegrationEvents;
 
 using MediatR;

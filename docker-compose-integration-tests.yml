@@ -10,19 +10,6 @@ services:
   rabbitmq.integration-tests:
     image: rabbitmq:latest
 
-  idsrv.integration-tests:
-    image: ${ACR_REGISTRY:-edoxa}/idsrv.integration-tests:${ACR_TAG:-latest}
-    build:
-      context: .
-      dockerfile: test/eDoxa.IdentityServer.IntegrationTests/Dockerfile
-    entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.IdentityServer.IntegrationTestResults.trx
-    volumes:
-      - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp   
-    depends_on:
-      - mssql.integration-tests
-      - redis.integration-tests
-      - rabbitmq.integration-tests
-
   identity.integration-tests:
     image: ${ACR_REGISTRY:-edoxa}/identity.integration-tests:${ACR_TAG:-latest}
     build:

@@ -1,12 +1,8 @@
 ﻿// Filename: ApplicationBuilderExtensions.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using eDoxa.Identity.Api.IntegrationEvents;
 using eDoxa.Identity.Api.IntegrationEvents.Handlers;
@@ -21,25 +17,16 @@ namespace eDoxa.Identity.Api.Extensions
     {
         public static void UseIntegrationEventSubscriptions(this IApplicationBuilder application)
         {
-            var service = application.ApplicationServices.GetRequiredService<IEventBusService>();
-
-            service.Subscribe<RoleClaimAddedIntegrationEvent, RoleClaimAddedIntegrationEventHandler>();
-
-            service.Subscribe<RoleClaimRemovedIntegrationEvent, RoleClaimRemovedIntegrationEventHandler>();
-
-            service.Subscribe<RoleCreatedIntegrationEvent, RoleCreatedIntegrationEventHandler>();
-
-            service.Subscribe<RoleDeletedIntegrationEvent, RoleDeletedIntegrationEventHandler>();
-
-            service.Subscribe<UserClaimsAddedIntegrationEvent, UserClaimsAddedIntegrationEventHandler>();
-
-            service.Subscribe<UserClaimsRemovedIntegrationEvent, UserClaimsRemovedIntegrationEventHandler>();
-
-            service.Subscribe<UserClaimsReplacedIntegrationEvent, UserClaimsReplacedIntegrationEventHandler>();
-
-            service.Subscribe<UserRoleAddedIntegrationEvent, UserRoleAddedIntegrationEventHandler>();
-
-            service.Subscribe<UserRoleRemovedIntegrationEvent, UserRoleRemovedIntegrationEventHandler>();
+            var eventBusService = application.ApplicationServices.GetRequiredService<IEventBusService>();
+            eventBusService.Subscribe<RoleClaimAddedIntegrationEvent, RoleClaimAddedIntegrationEventHandler>();
+            eventBusService.Subscribe<RoleClaimRemovedIntegrationEvent, RoleClaimRemovedIntegrationEventHandler>();
+            eventBusService.Subscribe<RoleCreatedIntegrationEvent, RoleCreatedIntegrationEventHandler>();
+            eventBusService.Subscribe<RoleDeletedIntegrationEvent, RoleDeletedIntegrationEventHandler>();
+            eventBusService.Subscribe<UserClaimsAddedIntegrationEvent, UserClaimsAddedIntegrationEventHandler>();
+            eventBusService.Subscribe<UserClaimsRemovedIntegrationEvent, UserClaimsRemovedIntegrationEventHandler>();
+            eventBusService.Subscribe<UserClaimsReplacedIntegrationEvent, UserClaimsReplacedIntegrationEventHandler>();
+            eventBusService.Subscribe<UserRoleAddedIntegrationEvent, UserRoleAddedIntegrationEventHandler>();
+            eventBusService.Subscribe<UserRoleRemovedIntegrationEvent, UserRoleRemovedIntegrationEventHandler>();
         }
     }
 }

@@ -21,7 +21,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public partial class Participant : Entity<ParticipantId>
     {
-        private readonly HashSet<Match> _matches = new HashSet<Match>();
+        private readonly HashSet<IMatch> _matches = new HashSet<IMatch>();
 
         public Participant(UserId userId, GameAccountId gameAccountId, IDateTimeProvider registeredAt)
         {
@@ -38,15 +38,15 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public DateTime? SynchronizedAt => _matches.Select(match => match.SynchronizedAt).Cast<DateTime?>().DefaultIfEmpty().Max();
 
-        public IReadOnlyCollection<Match> Matches => _matches;
+        public IReadOnlyCollection<IMatch> Matches => _matches;
 
-        public void Snapshot(Match match)
+        public void Snapshot(IMatch match)
         {
             _matches.Add(match);
         }
 
         [CanBeNull]
-        public Score AverageScore(BestOf bestOf)
+        public Score ComputeScore(BestOf bestOf)
         {
             return Matches.Count >= bestOf ? new ParticipantScore(this, bestOf) : null;
         }

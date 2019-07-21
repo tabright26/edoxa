@@ -1,23 +1,17 @@
 ﻿// Filename: DepositCommandValidator.cs
-// Date Created: 2019-06-08
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.Linq;
 
 using eDoxa.Cashier.Api.Extensions;
-using eDoxa.Cashier.Api.ViewModels;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Validators;
 using eDoxa.Commands.Abstractions.Validations;
-using eDoxa.Seedwork.Application.Validations.Extensions;
 using eDoxa.Seedwork.Domain.Extensions;
 
 using FluentValidation;
@@ -32,7 +26,53 @@ namespace eDoxa.Cashier.Api.Application.Commands.Validations
         {
             this.RuleFor(command => command.Currency)
                 .NotNull()
-                .SetValidator(new CurrencyDepositValidator())
+                .DependentRules(
+                    () =>
+                    {
+                        this.When(
+                            command => Currency.FromName(command.Currency) == Currency.Money,
+                            () =>
+                            {
+                                var amounts = new[]
+                                {
+                                    Money.Ten,
+                                    Money.Twenty,
+                                    Money.Fifty,
+                                    Money.OneHundred,
+                                    Money.FiveHundred
+                                };
+
+                                this.RuleFor(command => command.Amount)
+                                    .Must(amount => amounts.Any(money => money.Amount == amount))
+                                    .WithMessage(
+                                        $"The amount of {nameof(Money)} is invalid. These are valid amounts: [{string.Join(", ", amounts.Select(amount => amount.Amount))}]."
+                                    );
+                            }
+                        );
+
+                        this.When(
+                            command => Currency.FromName(command.Currency) == Currency.Token,
+                            () =>
+                            {
+                                var amounts = new[]
+                                {
+                                    Token.FiftyThousand,
+                                    Token.OneHundredThousand,
+                                    Token.TwoHundredFiftyThousand,
+                                    Token.FiveHundredThousand,
+                                    Token.OneMillion,
+                                    Token.FiveMillions
+                                };
+
+                                this.RuleFor(command => command.Amount)
+                                    .Must(amount => amounts.Any(token => token.Amount == amount))
+                                    .WithMessage(
+                                        $"The amount of {nameof(Token)} is invalid. These are valid amounts: [{string.Join(", ", amounts.Select(amount => amount.Amount))}]."
+                                    );
+                            }
+                        );
+                    }
+                )
                 .DependentRules(
                     () =>
                     {
@@ -44,9 +84,9 @@ namespace eDoxa.Cashier.Api.Application.Commands.Validations
 
                                     var account = await accountQuery.FindUserAccountAsync(userId);
 
-                                    if (command.Currency.Type == Currency.Money)
+                                    if (command.Currency == Currency.Money.Name)
                                     {
-                                        var moneyAccount = new AccountMoney(account);
+                                        var moneyAccount = new MoneyAccount(account);
 
                                         var errors = new DepositMoneyValidator().Validate(moneyAccount).Errors;
 
@@ -58,78 +98,21 @@ namespace eDoxa.Cashier.Api.Application.Commands.Validations
                                         }
                                     }
 
-                                    if (command.Currency.Type == Currency.Token)
+                                    if (command.Currency == Currency.Token.Name)
                                     {
-                                        var tokenAccount = new AccountToken(account);
+                                        var tokenAccount = new TokenAccount(account);
 
                                         var errors = new DepositTokenValidator().Validate(tokenAccount).Errors;
 
                                         if (errors.Any())
                                         {
                                             errors.ForEach(context.AddFailure);
-
-                                            return;
                                         }
                                     }
                                 }
                             );
                     }
                 );
-        }
-
-        private sealed class CurrencyDepositValidator : AbstractValidator<CurrencyViewModel>
-        {
-            public CurrencyDepositValidator()
-            {
-                this.Enumeration(currency => currency.Type)
-                    .DependentRules(
-                        () =>
-                        {
-                            this.When(
-                                currency => currency.Type == Currency.Money,
-                                () =>
-                                {
-                                    var amounts = new[]
-                                    {
-                                        Money.Ten,
-                                        Money.Twenty,
-                                        Money.Fifty,
-                                        Money.OneHundred,
-                                        Money.FiveHundred
-                                    };
-
-                                    this.RuleFor(command => command.Amount)
-                                        .Must(amount => amounts.Any(money => money.Amount == amount))
-                                        .WithMessage(
-                                            $"The amount of {nameof(Money)} is invalid. These are valid amounts: [{string.Join(", ", amounts.Select(amount => amount.Amount))}]."
-                                        );
-                                }
-                            );
-
-                            this.When(
-                                currency => currency.Type == Currency.Token,
-                                () =>
-                                {
-                                    var amounts = new[]
-                                    {
-                                        Token.FiftyThousand,
-                                        Token.OneHundredThousand,
-                                        Token.TwoHundredFiftyThousand,
-                                        Token.FiveHundredThousand,
-                                        Token.OneMillion,
-                                        Token.FiveMillions
-                                    };
-
-                                    this.RuleFor(command => command.Amount)
-                                        .Must(amount => amounts.Any(token => token.Amount == amount))
-                                        .WithMessage(
-                                            $"The amount of {nameof(Token)} is invalid. These are valid amounts: [{string.Join(", ", amounts.Select(amount => amount.Amount))}]."
-                                        );
-                                }
-                            );
-                        }
-                    );
-            }
         }
     }
 }

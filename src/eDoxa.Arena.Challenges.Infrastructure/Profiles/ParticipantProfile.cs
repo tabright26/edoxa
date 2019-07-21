@@ -13,6 +13,7 @@ using System.Collections.Generic;
 
 using AutoMapper;
 
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
 using eDoxa.Arena.Challenges.Infrastructure.Profiles.ConverterTypes;
@@ -33,7 +34,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Profiles
                 .ForMember(participant => participant.UserId, config => config.MapFrom<Guid>(participant => participant.UserId))
                 .ForMember(
                     participant => participant.Matches,
-                    config => config.MapFrom<MatchModelsResolver, IReadOnlyCollection<Match>>(participant => participant.Matches)
+                    config => config.MapFrom<MatchModelsResolver, IReadOnlyCollection<IMatch>>(participant => participant.Matches)
                 )
                 .ForMember(participant => participant.Challenge, config => config.Ignore());
         }

@@ -1,19 +1,15 @@
 ﻿// Filename: ChallengeRepositoryTest.cs
-// Date Created: 2019-06-21
+// Date Created: 2019-07-05
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Api.Application.Fakers;
-using eDoxa.Arena.Challenges.Api.Extensions;
+using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.Infrastructure.Repositories;
+using eDoxa.Arena.Challenges.UnitTests.Helpers.Extensions;
 using eDoxa.Seedwork.Infrastructure.Factories;
 
 using FluentAssertions;
@@ -34,7 +30,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Repositories
 
             var fakeChallenge = challengeFaker.Generate();
 
-            using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
+            using (var factory = new InMemoryDbContextFactory<ArenaChallengesDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {
@@ -65,7 +61,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Repositories
 
             var fakeChallenges = challengeFaker.Generate(5);
 
-            using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
+            using (var factory = new InMemoryDbContextFactory<ArenaChallengesDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {

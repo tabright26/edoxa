@@ -3,15 +3,12 @@
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Application.Fakers;
+using eDoxa.Cashier.Api.Infrastructure.Data.Fakers;
+using eDoxa.Cashier.Api.Infrastructure.Data.Storage;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Seedwork.Infrastructure;
@@ -25,6 +22,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
     {
         private readonly CashierDbContext _context;
         private readonly IAccountRepository _accountRepository;
+        private readonly IChallengeRepository _challengeRepository;
         private readonly ILogger<CashierDbContextData> _logger;
         private readonly IHostingEnvironment _environment;
 
@@ -32,13 +30,15 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
             ILogger<CashierDbContextData> logger,
             IHostingEnvironment environment,
             CashierDbContext context,
-            IAccountRepository accountRepository
+            IAccountRepository accountRepository,
+            IChallengeRepository challengeRepository
         )
         {
             _logger = logger;
             _environment = environment;
             _context = context;
             _accountRepository = accountRepository;
+            _challengeRepository = challengeRepository;
         }
 
         public async Task SeedAsync()
@@ -62,6 +62,22 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
                     _logger.LogInformation("The user's already populated.");
                 }
             }
+
+            if (_environment.IsDevelopment())
+            {
+                if (!_context.Challenges.Any())
+                {
+                    _challengeRepository.Create(CashierStorage.TestChallenges);
+
+                    await _challengeRepository.CommitAsync();
+
+                    _logger.LogInformation("The challenge's being populated.");
+                }
+                else
+                {
+                    _logger.LogInformation("The challenge's already populated.");
+                }
+            }
         }
 
         public async Task CleanupAsync()
@@ -69,6 +85,8 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
             if (!_environment.IsProduction())
             {
                 _context.Accounts.RemoveRange(_context.Accounts);
+
+                _context.Challenges.RemoveRange(_context.Challenges);
 
                 await _context.SaveChangesAsync();
             }

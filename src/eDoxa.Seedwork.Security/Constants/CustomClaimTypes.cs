@@ -14,7 +14,7 @@ namespace eDoxa.Seedwork.Security.Constants
     {
         public const string SecurityStamp = "security_stamp";
         public const string Permission = "permission";
-        public const string Game = "game";
+        public const string Games = "games";
         public const string StripeCustomerId = "stripe:customerId";
         public const string StripeConnectAccountId = "stripe:connectAccountId";
     }

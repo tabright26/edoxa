@@ -9,7 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="2.2.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />
     <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
   </ItemGroup>
@@ -18,7 +18,6 @@
     <ProjectReference Include="..\..\src\eDoxa.Arena.Challenges.Api\eDoxa.Arena.Challenges.Api.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Cashier.API\eDoxa.Cashier.Api.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Identity.Api\eDoxa.Identity.Api.csproj" />
-    <ProjectReference Include="..\..\src\eDoxa.IdentityServer\eDoxa.IdentityServer.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Payment.Api\eDoxa.Payment.Api.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Seedwork.Testing\eDoxa.Seedwork.Testing.csproj" />
   </ItemGroup>

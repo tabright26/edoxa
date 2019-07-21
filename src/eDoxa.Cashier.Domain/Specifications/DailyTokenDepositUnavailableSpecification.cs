@@ -16,9 +16,9 @@ using eDoxa.Seedwork.Domain.Specifications;
 
 namespace eDoxa.Cashier.Domain.Specifications
 {
-    public sealed class DailyTokenDepositUnavailableSpecification : Specification<AccountToken>
+    public sealed class DailyTokenDepositUnavailableSpecification : Specification<TokenAccount>
     {
-        public override Expression<Func<AccountToken, bool>> ToExpression()
+        public override Expression<Func<TokenAccount, bool>> ToExpression()
         {
             return account => account.LastDeposit.HasValue && account.LastDeposit.Value.AddDays(1) >= DateTime.UtcNow;
         }

@@ -1,0 +1,45 @@
+@using System.Security.Claims
+@using eDoxa.Identity.Api.Areas.Identity.Services
+@inject CustomSignInManager SignInManager
+@inject CustomUserManager UserManager
+@if (SignInManager.IsSignedIn(User) && !(ViewData["signed-out"] is bool))
+{
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item dropdown">
+            <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="navbarDropdown" role="button">
+                <i class="fas fa-user fa-fw"></i>
+                @if (User.HasClaim(claim => claim.Type == JwtClaimTypes.PreferredUserName))
+                {
+                    @User.FindFirstValue(JwtClaimTypes.PreferredUserName)
+                }
+                else
+                {
+                    @User.FindFirstValue(JwtClaimTypes.Email)
+                }
+            </a>
+            <div aria-labelledby="navbarDropdown" class="dropdown-menu">
+                <a asp-area="Identity" asp-page="/Account/Manage/Index" class="dropdown-item">
+                    <i class="fas fa-cog fa-fw"></i>
+                    Account configuration
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">
+                    <i class="fas fa-sign-out-alt fa-fw"></i>
+                    Logout
+                </a>
+            </div>
+        </li>
+    </ul>
+}
+else
+{
+    <div class="form-inline">
+        <a asp-area="Identity" asp-page="/Account/Register" class="nav-link text-white" title="Register">
+            Register
+        </a>
+        <a asp-area="" asp-controller="Account" asp-action="Login" class="btn btn-primary btn-sm" title="Login">
+            <i class="fas fa-sign-in-alt fa-fw"></i>
+            Login
+        </a>
+    </div>
+}

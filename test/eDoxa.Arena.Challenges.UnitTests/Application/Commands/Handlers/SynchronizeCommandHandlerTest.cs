@@ -3,10 +3,6 @@
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.Threading;
@@ -40,7 +36,10 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Commands.Handlers
         public async Task HandleAsync_SynchronizeCommand_ShouldBeCompletedTask()
         {
             // Arrange
-            _mockChallengeService.Setup(mock => mock.SynchronizeAsync(It.IsAny<ChallengeGame>(), It.IsAny<TimeSpan>(), It.IsAny<IDateTimeProvider>(), It.IsAny<CancellationToken>()))
+            _mockChallengeService
+                .Setup(
+                    mock => mock.SynchronizeAsync(It.IsAny<ChallengeGame>(), It.IsAny<TimeSpan>(), It.IsAny<IDateTimeProvider>(), It.IsAny<CancellationToken>())
+                )
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 

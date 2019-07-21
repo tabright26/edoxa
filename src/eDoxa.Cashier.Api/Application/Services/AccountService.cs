@@ -34,7 +34,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
         public async Task WithdrawalAsync(string connectAccountId, UserId userId, Money money, CancellationToken cancellationToken = default)
         {
-            var account = new AccountMoney(await _accountRepository.FindUserAccountAsync(userId));
+            var account = new MoneyAccount(await _accountRepository.FindUserAccountAsync(userId));
 
             var transaction = account.Withdrawal(money);
 
@@ -45,7 +45,7 @@ namespace eDoxa.Cashier.Api.Application.Services
                     transaction.Id,
                     transaction.Description.Text,
                     connectAccountId,
-                    new Price(money).ToCents()
+                    transaction.Price.ToCents()
                 )
             );
         }
@@ -58,7 +58,7 @@ namespace eDoxa.Cashier.Api.Application.Services
             {
                 case Money money:
                 {
-                    var moneyAccount = new AccountMoney(account);
+                    var moneyAccount = new MoneyAccount(account);
 
                     await this.DepositAsync(customerId, moneyAccount, money, cancellationToken);
 
@@ -67,7 +67,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
                 case Token token:
                 {
-                    var tokenAccount = new AccountToken(account);
+                    var tokenAccount = new TokenAccount(account);
 
                     await this.DepositAsync(customerId, tokenAccount, token, cancellationToken);
 
@@ -94,7 +94,7 @@ namespace eDoxa.Cashier.Api.Application.Services
             await _accountRepository.CommitAsync(cancellationToken);
 
             await _integrationEventService.PublishAsync(
-                new DepositProcessedIntegrationEvent(transaction.Id, transaction.Description.Text, customerId, new Price(currency).ToCents())
+                new DepositProcessedIntegrationEvent(transaction.Id, transaction.Description.Text, customerId, transaction.Price.ToCents())
             );
         }
     }

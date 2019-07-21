@@ -15,7 +15,7 @@ using FluentValidation;
 
 namespace eDoxa.Cashier.Domain.Validators
 {
-    public class DepositTokenValidator : AbstractValidator<AccountToken>
+    public class DepositTokenValidator : AbstractValidator<TokenAccount>
     {
         public DepositTokenValidator()
         {

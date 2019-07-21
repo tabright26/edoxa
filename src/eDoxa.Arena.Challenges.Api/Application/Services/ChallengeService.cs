@@ -3,17 +3,12 @@
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Api.Application.Fakers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Factories;
@@ -27,48 +22,20 @@ namespace eDoxa.Arena.Challenges.Api.Application.Services
     {
         private readonly IChallengeRepository _challengeRepository;
         private readonly IGameReferencesFactory _gameReferencesFactory;
-        private readonly IMatchStatsFactory _matchStatsFactory;
+        private readonly IMatchFactory _matchFactory;
         private readonly IIdentityService _identityService;
 
         public ChallengeService(
             IChallengeRepository challengeRepository,
             IGameReferencesFactory gameReferencesFactory,
-            IMatchStatsFactory matchStatsFactory,
+            IMatchFactory matchFactory,
             IIdentityService identityService
         )
         {
             _challengeRepository = challengeRepository;
             _gameReferencesFactory = gameReferencesFactory;
-            _matchStatsFactory = matchStatsFactory;
+            _matchFactory = matchFactory;
             _identityService = identityService;
-        }
-
-        public async Task FakeChallengesAsync(
-            int count,
-            int seed,
-            ChallengeGame game = null,
-            ChallengeState state = null,
-            Currency entryFeeCurrency = null,
-            CancellationToken cancellationToken = default
-        )
-        {
-            var challengeFaker = new ChallengeFaker(game, state, entryFeeCurrency);
-
-            challengeFaker.UseSeed(seed);
-
-            var challenges = challengeFaker.Generate(count);
-
-            foreach (var challenge in challenges)
-            {
-                if (await _challengeRepository.AnyChallengeAsync(challenge.Id))
-                {
-                    throw new InvalidOperationException("This seed was already used.");
-                }
-            }
-
-            _challengeRepository.Create(challenges);
-
-            await _challengeRepository.CommitAsync(cancellationToken);
         }
 
         public async Task RegisterParticipantAsync(
@@ -102,7 +69,8 @@ namespace eDoxa.Arena.Challenges.Api.Application.Services
         {
             var challenges = await _challengeRepository.FetchChallengesAsync(game, ChallengeState.InProgress);
 
-            foreach (var challenge in challenges.Where(challenge => challenge.SynchronizedAt + interval <= synchronizedAt.DateTime).OrderByDescending(challenge => challenge.SynchronizedAt))
+            foreach (var challenge in challenges.Where(challenge => challenge.SynchronizedAt + interval <= synchronizedAt.DateTime)
+                .OrderByDescending(challenge => challenge.SynchronizedAt))
             {
                 this.Synchronize(challenge, synchronizedAt);
 
@@ -128,11 +96,11 @@ namespace eDoxa.Arena.Challenges.Api.Application.Services
         {
             var gameReferencesAdapter = _gameReferencesFactory.CreateInstance(challenge.Game);
 
-            var matchStatsAdapter = _matchStatsFactory.CreateInstance(challenge.Game);
+            var matchAdapter = _matchFactory.CreateInstance(challenge.Game);
 
             challenge.Synchronize(
                 (gameAccountId, startedAt, closedAt) => gameReferencesAdapter.GetGameReferencesAsync(gameAccountId, startedAt, closedAt).Result,
-                (gameAccountId, gameReference) => matchStatsAdapter.GetMatchStatsAsync(gameAccountId, gameReference).Result,
+                (gameAccountId, gameReference, scoring) => matchAdapter.GetMatchAsync(gameAccountId, gameReference, scoring, synchronizedAt).Result,
                 synchronizedAt
             );
         }

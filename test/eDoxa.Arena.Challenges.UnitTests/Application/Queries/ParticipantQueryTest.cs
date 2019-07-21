@@ -1,22 +1,19 @@
 ﻿// Filename: ParticipantQueryTest.cs
-// Date Created: 2019-06-30
+// Date Created: 2019-07-05
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Api.Application.Fakers;
-using eDoxa.Arena.Challenges.Api.Application.Queries;
-using eDoxa.Arena.Challenges.Api.Extensions;
+using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
+using eDoxa.Arena.Challenges.Api.Infrastructure.Queries;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure;
+using eDoxa.Arena.Challenges.Infrastructure.Repositories;
+using eDoxa.Arena.Challenges.UnitTests.Helpers.Extensions;
 using eDoxa.Seedwork.Infrastructure.Factories;
 
 using FluentAssertions;
@@ -41,24 +38,24 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
 
             var challenge = challengeFaker.Generate();
 
-            var challengeViewModel = challenge.ToViewModel();
-
-            using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
+            using (var factory = new InMemoryDbContextFactory<ArenaChallengesDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {
-                    context.Challenges.Add(challenge.ToModel());
+                    var challengeRepository = new ChallengeRepository(context, MapperExtensions.Mapper);
 
-                    await context.SaveChangesAsync();
+                    challengeRepository.Create(challenge);
+
+                    await challengeRepository.CommitAsync();
                 }
 
                 using (var context = factory.CreateContext())
                 {
                     var participantQuery = new ParticipantQuery(context, MapperExtensions.Mapper);
 
-                    var participantViewModels = await participantQuery.FindChallengeParticipantsAsync(challenge.Id);
+                    var participantViewModels = await participantQuery.FetchChallengeParticipantsAsync(challenge.Id);
 
-                    participantViewModels.Should().BeEquivalentTo(challengeViewModel.Participants.ToList());
+                    participantViewModels.Should().BeEquivalentTo(challenge.Participants.ToList());
                 }
             }
         }
@@ -73,22 +70,22 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
 
             var challenge = challengeFaker.Generate();
 
-            var challengeViewModel = challenge.ToViewModel();
-
-            using (var factory = new InMemoryDbContextFactory<ChallengesDbContext>())
+            using (var factory = new InMemoryDbContextFactory<ArenaChallengesDbContext>())
             {
                 using (var context = factory.CreateContext())
                 {
-                    context.Challenges.Add(challenge.ToModel());
+                    var challengeRepository = new ChallengeRepository(context, MapperExtensions.Mapper);
 
-                    await context.SaveChangesAsync();
+                    challengeRepository.Create(challenge);
+
+                    await challengeRepository.CommitAsync();
                 }
 
                 using (var context = factory.CreateContext())
                 {
                     var participantQuery = new ParticipantQuery(context, MapperExtensions.Mapper);
 
-                    foreach (var participant in challengeViewModel.Participants)
+                    foreach (var participant in challenge.Participants)
                     {
                         var participantViewModel = await participantQuery.FindParticipantAsync(ParticipantId.FromGuid(participant.Id));
 

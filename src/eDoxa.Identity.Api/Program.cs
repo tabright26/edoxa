@@ -10,7 +10,7 @@
 
 using System;
 
-using eDoxa.Identity.Infrastructure;
+using eDoxa.Identity.Api.Infrastructure;
 using eDoxa.IntegrationEvents.Infrastructure;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;

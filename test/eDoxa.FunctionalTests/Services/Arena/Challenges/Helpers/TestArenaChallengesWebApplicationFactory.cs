@@ -49,7 +49,7 @@ namespace eDoxa.FunctionalTests.Services.Arena.Challenges.Helpers
         {
             var server = base.CreateServer(builder);
 
-            server.EnsureCreatedDbContext<ChallengesDbContext>();
+            server.EnsureCreatedDbContext<ArenaChallengesDbContext>();
 
             server.MigrateDbContext<IntegrationEventDbContext>();
 

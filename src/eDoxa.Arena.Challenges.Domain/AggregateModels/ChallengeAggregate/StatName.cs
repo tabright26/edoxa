@@ -31,6 +31,11 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             _name = name;
         }
 
+        public StatName(ChallengeGame game)
+        {
+            _name = game.Name;
+        }
+
         public int CompareTo([CanBeNull] object obj)
         {
             return string.Compare(_name, ((StatName) obj)?._name, StringComparison.OrdinalIgnoreCase);

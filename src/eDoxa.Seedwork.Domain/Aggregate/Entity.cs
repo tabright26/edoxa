@@ -1,12 +1,8 @@
 ﻿// Filename: Entity.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.Collections.Generic;
@@ -97,11 +93,18 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             return !(left == right);
         }
 
+        public void SetEntityId(Guid id)
+        {
+            var entityId = EntityId<TEntityId>.FromGuid(id);
+
+            this.SetEntityId(entityId);
+        }
+
         public void SetEntityId(TEntityId entityId)
         {
             if (entityId.IsTransient())
             {
-                throw new ArgumentNullException(nameof(entityId));
+                throw new ArgumentException(nameof(entityId));
             }
 
             Id = entityId;

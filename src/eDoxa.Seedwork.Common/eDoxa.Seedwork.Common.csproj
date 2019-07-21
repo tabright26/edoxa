@@ -6,21 +6,4 @@
     <RootNamespace>eDoxa.Seedwork.Common</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Bogus" Version="27.0.1" />
-    <PackageReference Include="CsvHelper" Version="12.1.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\eDoxa.Seedwork.Domain\eDoxa.Seedwork.Domain.csproj" />
-    <ProjectReference Include="..\eDoxa.Seedwork.Security\eDoxa.Seedwork.Security.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="..\..\data\PayoutCharts.csv" Link="Resources\PayoutCharts.csv"
-             CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="..\..\data\TestUserIds.csv" Link="Resources\TestUserIds.csv"
-             CopyToOutputDirectory="PreserveNewest" />
-  </ItemGroup>
-
 </Project>

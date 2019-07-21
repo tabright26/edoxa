@@ -10,8 +10,6 @@
 
 using System.Runtime.Serialization;
 
-using eDoxa.Cashier.Api.ViewModels;
-using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Commands.Abstractions;
 
 namespace eDoxa.Cashier.Api.Application.Commands
@@ -19,16 +17,16 @@ namespace eDoxa.Cashier.Api.Application.Commands
     [DataContract]
     public sealed class DepositCommand : Command
     {
-        public DepositCommand(decimal amount, Currency type)
+        public DepositCommand(string currency, decimal amount)
         {
-            Currency = new CurrencyViewModel
-            {
-                Amount = amount,
-                Type = type
-            };
+            Currency = currency;
+            Amount = amount;
         }
 
         [DataMember(Name = "currency")]
-        public CurrencyViewModel Currency { get; private set; }
+        public string Currency { get; private set; }
+
+        [DataMember(Name = "amount")]
+        public decimal Amount { get; private set; }
     }
 }

@@ -16,5 +16,6 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels
 {
     public interface IScoring : IReadOnlyDictionary<StatName, StatWeighting>
     {
+        IEnumerable<Stat> Map(IGameStats stats);
     }
 }

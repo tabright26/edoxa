@@ -1,12 +1,8 @@
 ﻿// Filename: Scoring.cs
-// Date Created: 2019-06-12
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +17,29 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public Scoring()
         {
+        }
+
+        public IEnumerable<Stat> Map(IGameStats stats)
+        {
+            for (var index = 0; index < Count; index++)
+            {
+                var item = this.ElementAt(index);
+
+                var name = item.Key;
+
+                if (!stats.ContainsKey(name))
+                {
+                    continue;
+                }
+
+                var value = stats[name];
+
+                var weighting = item.Value;
+
+                var stat = new Stat(name, value, weighting);
+
+                yield return stat;
+            }
         }
     }
 }

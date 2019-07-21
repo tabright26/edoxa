@@ -15,8 +15,8 @@ using AutoMapper;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
-using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Extensions;
+using eDoxa.Seedwork.Domain.Providers;
 
 using JetBrains.Annotations;
 
@@ -35,7 +35,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.ConverterTypes
 
             participant.SetEntityId(ParticipantId.FromGuid(source.Id));
 
-            var matches = context.Mapper.Map<ICollection<Match>>(source.Matches);
+            var matches = context.Mapper.Map<ICollection<IMatch>>(source.Matches);
 
             matches.ForEach(match => participant.Snapshot(match));
 

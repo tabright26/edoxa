@@ -3,10 +3,6 @@
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.Net.Http;
 using System.Security.Claims;
@@ -76,7 +72,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            var response = await this.ExecuteAsync(account.UserId, "cus_test", new DepositCommand(Money.Fifty, Currency.Money));
+            var response = await this.ExecuteAsync(account.UserId, "cus_test", new DepositCommand(Currency.Money.Name, Money.Fifty));
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -101,7 +97,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            var response = await this.ExecuteAsync(account.UserId, "cus_test", new DepositCommand(Token.FiftyThousand, Currency.Token));
+            var response = await this.ExecuteAsync(account.UserId, "cus_test", new DepositCommand(Currency.Token.Name, Token.TwoHundredFiftyThousand));
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -126,7 +122,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            var response = await this.ExecuteAsync(account.UserId, "cus_test", new DepositCommand(2.5M, Currency.Money));
+            var response = await this.ExecuteAsync(account.UserId, "cus_test", new DepositCommand(Currency.Money.Name, 2.5M));
 
             // Assert
             response.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
@@ -148,7 +144,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            var response = await this.ExecuteAsync(account.UserId, "cus_test", new DepositCommand(2500M, Currency.Token));
+            var response = await this.ExecuteAsync(account.UserId, "cus_test", new DepositCommand(Currency.Token.Name, 2500M));
 
             // Assert
             response.StatusCode.Should().Be(StatusCodes.Status400BadRequest);

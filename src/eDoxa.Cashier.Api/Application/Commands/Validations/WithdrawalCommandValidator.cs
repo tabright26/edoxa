@@ -54,7 +54,7 @@ namespace eDoxa.Cashier.Api.Application.Commands.Validations
                                         return;
                                     }
 
-                                    var accountMoney = new AccountMoney(account);
+                                    var accountMoney = new MoneyAccount(account);
 
                                     new WithdrawalMoneyValidator(new Money(command.Amount)).Validate(accountMoney).Errors.ForEach(context.AddFailure);
                                 }
