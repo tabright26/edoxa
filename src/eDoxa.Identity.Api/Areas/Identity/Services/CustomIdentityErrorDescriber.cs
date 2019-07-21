@@ -6,9 +6,9 @@
 
 using Microsoft.AspNetCore.Identity;
 
-namespace eDoxa.Identity.Api.Application.Describers
+namespace eDoxa.Identity.Api.Areas.Identity.Services
 {
-    public class CustomIdentityErrorDescriber : IdentityErrorDescriber
+    public class CustomIdentityErrorDescriber : Microsoft.AspNetCore.Identity.IdentityErrorDescriber
     {
         public IdentityError GameProviderAlreadyLinked()
         {
@@ -34,6 +34,15 @@ namespace eDoxa.Identity.Api.Application.Describers
             {
                 Code = nameof(this.GameProviderUnlinked),
                 Description = "The user game provider is unlinked."
+            };
+        }
+
+        public IdentityError InvalidUserName()
+        {
+            return new IdentityError
+            {
+                Code = nameof(InvalidUserName),
+                Description = "The hashtag (#) character is not allowed in the user name."
             };
         }
     }

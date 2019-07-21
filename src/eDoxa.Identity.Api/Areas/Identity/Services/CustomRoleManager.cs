@@ -11,7 +11,7 @@ using eDoxa.Identity.Api.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 
-namespace eDoxa.Identity.Api.Application.Managers
+namespace eDoxa.Identity.Api.Areas.Identity.Services
 {
     public sealed class CustomRoleManager : RoleManager<Role>
     {
@@ -19,7 +19,7 @@ namespace eDoxa.Identity.Api.Application.Managers
             IRoleStore<Role> store,
             IEnumerable<IRoleValidator<Role>> roleValidators,
             ILookupNormalizer keyNormalizer,
-            IdentityErrorDescriber errors,
+            CustomIdentityErrorDescriber errors,
             ILogger<CustomRoleManager> logger
         ) : base(
             store,

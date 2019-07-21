@@ -9,7 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Application.Attributes;
-using eDoxa.Identity.Api.Application.Managers;
+using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Extensions;
 using eDoxa.Identity.Api.Infrastructure;
 using eDoxa.Identity.Api.ViewModels;
@@ -134,7 +134,7 @@ namespace eDoxa.Identity.Api.Controllers
 
                 if (user != null)
                 {
-                    var result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, true);
+                    var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, true);
 
                     if (result.Succeeded)
                     {

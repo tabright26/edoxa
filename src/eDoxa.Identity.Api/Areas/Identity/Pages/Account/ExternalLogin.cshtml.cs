@@ -1,18 +1,15 @@
 ﻿// Filename: ExternalLogin.cshtml.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-07-17
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Application.Managers;
-using eDoxa.Identity.Api.IntegrationEvents;
+using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Models;
-using eDoxa.IntegrationEvents;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,22 +21,15 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class ExternalLoginModel : PageModel
     {
-        private readonly IEventBusService _eventBusService;
         private readonly ILogger<ExternalLoginModel> _logger;
         private readonly CustomSignInManager _signInManager;
         private readonly CustomUserManager _userManager;
 
-        public ExternalLoginModel(
-            CustomSignInManager signInManager,
-            CustomUserManager userManager,
-            ILogger<ExternalLoginModel> logger,
-            IEventBusService eventBusService
-        )
+        public ExternalLoginModel(CustomSignInManager signInManager, CustomUserManager userManager, ILogger<ExternalLoginModel> logger)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _logger = logger;
-            _eventBusService = eventBusService;
         }
 
         [BindProperty] public InputModel Input { get; set; }
@@ -156,13 +146,9 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var birthDate = new DateTime(1995, 05, 06);
-
                 var user = new User
                 {
-                    Id = Guid.NewGuid(),
-                    Email = Input.Email,
-                    UserName = Input.Username
+                    Email = Input.Email
                 };
 
                 var result = await _userManager.CreateAsync(user);
@@ -174,18 +160,6 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
                     if (result.Succeeded)
                     {
                         _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
-
-                        _eventBusService.Publish(
-                            new UserCreatedIntegrationEvent(
-                                user.Id,
-                                user.Email,
-                                Input.FirstName,
-                                Input.LastName,
-                                birthDate.Year,
-                                birthDate.Month,
-                                birthDate.Day
-                            )
-                        );
 
                         await _signInManager.SignInAsync(user, false);
 
@@ -207,12 +181,6 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            public string Username { get; set; }
-
-            public string FirstName { get; set; }
-
-            public string LastName { get; set; }
-
             [Required] [EmailAddress]
             public string Email { get; set; }
         }

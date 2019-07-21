@@ -4,18 +4,18 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Identity.Api.Application.TokenProviders.Options;
+using eDoxa.Identity.Api.Areas.Identity.TokenProviders.Options;
 using eDoxa.Identity.Api.Models;
 
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 
-namespace eDoxa.Identity.Api.Application.TokenProviders
+namespace eDoxa.Identity.Api.Areas.Identity.TokenProviders
 {
-    public sealed class CustomChangeEmailTokenProvider : DataProtectorTokenProvider<User>
+    public sealed class ChangeEmailTokenProvider : DataProtectorTokenProvider<User>
     {
-        public CustomChangeEmailTokenProvider(IDataProtectionProvider dataProtectionProvider, IOptions<CustomChangeEmailTokenProviderOptions> options) : base(
+        public ChangeEmailTokenProvider(IDataProtectionProvider dataProtectionProvider, IOptions<ChangeEmailTokenProviderOptions> options) : base(
             dataProtectionProvider,
             options
         )

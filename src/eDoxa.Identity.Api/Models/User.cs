@@ -16,6 +16,6 @@ namespace eDoxa.Identity.Api.Models
 
         public string LastName { get; set; }
 
-        public DateTime BirthDate { get; set; }
+        public DateTime? BirthDate { get; set; }
     }
 }

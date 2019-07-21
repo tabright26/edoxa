@@ -4,11 +4,10 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Seedwork.Security.Constants;
+using eDoxa.Identity.Api.Areas.Identity.Services;
 
 using IdentityServer4.Models;
 using IdentityServer4.Services;
@@ -16,26 +15,30 @@ using IdentityServer4.Services;
 using JetBrains.Annotations;
 
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 
 namespace eDoxa.Identity.Api.Application.Services
 {
-    internal sealed class CustomProfileService<TUser> : IProfileService
-    where TUser : IdentityUser<Guid>
+    internal sealed class CustomProfileService : IProfileService
     {
-        private readonly IUserClaimsPrincipalFactory<TUser> _userClaimsPrincipalFactory;
-        private readonly UserManager<TUser> _userManager;
-
-        public CustomProfileService(IUserClaimsPrincipalFactory<TUser> userClaimsPrincipalFactory, UserManager<TUser> userManager)
+        public CustomProfileService(CustomUserClaimsPrincipalFactory principalFactory, CustomUserManager userManager, IOptions<IdentityOptions> optionsAccessor)
         {
-            _userClaimsPrincipalFactory = userClaimsPrincipalFactory;
-            _userManager = userManager;
+            PrincipalFactory = principalFactory;
+            UserManager = userManager;
+            Options = optionsAccessor.Value;
         }
+
+        private CustomUserClaimsPrincipalFactory PrincipalFactory { get; }
+
+        private CustomUserManager UserManager { get; }
+
+        private IdentityOptions Options { get; }
 
         public async Task GetProfileDataAsync([NotNull] ProfileDataRequestContext context)
         {
-            var user = await _userManager.GetUserAsync(context.Subject);
+            var user = await UserManager.GetUserAsync(context.Subject);
 
-            var principal = await _userClaimsPrincipalFactory.CreateAsync(user);
+            var principal = await PrincipalFactory.CreateAsync(user);
 
             foreach (var claim in principal.Claims)
             {
@@ -45,19 +48,19 @@ namespace eDoxa.Identity.Api.Application.Services
 
         public async Task IsActiveAsync([NotNull] IsActiveContext context)
         {
-            var user = await _userManager.GetUserAsync(context.Subject);
+            var user = await UserManager.GetUserAsync(context.Subject);
 
             if (user != null)
             {
-                context.IsActive = !await _userManager.IsLockedOutAsync(user);
+                context.IsActive = !await UserManager.IsLockedOutAsync(user);
 
-                if (_userManager.SupportsUserSecurityStamp)
+                if (UserManager.SupportsUserSecurityStamp)
                 {
-                    var claims = await _userManager.GetClaimsAsync(user);
+                    var claims = await UserManager.GetClaimsAsync(user);
 
-                    var securityStamp = claims.SingleOrDefault(claim => claim.Type == CustomClaimTypes.SecurityStamp)?.Value;
+                    var securityStamp = claims.SingleOrDefault(claim => claim.Type == Options.ClaimsIdentity.SecurityStampClaimType)?.Value;
 
-                    context.IsActive = securityStamp != await _userManager.GetSecurityStampAsync(user);
+                    context.IsActive = securityStamp != await UserManager.GetSecurityStampAsync(user);
                 }
             }
             else

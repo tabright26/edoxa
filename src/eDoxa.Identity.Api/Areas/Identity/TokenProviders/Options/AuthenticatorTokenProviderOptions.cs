@@ -6,9 +6,9 @@
 
 using Microsoft.AspNetCore.Identity;
 
-namespace eDoxa.Identity.Api.Application.TokenProviders.Options
+namespace eDoxa.Identity.Api.Areas.Identity.TokenProviders.Options
 {
-    public sealed class CustomAuthenticatorTokenProviderOptions : DataProtectionTokenProviderOptions
+    public sealed class AuthenticatorTokenProviderOptions : DataProtectionTokenProviderOptions
     {
     }
 }

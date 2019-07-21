@@ -15,8 +15,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Identity.Api.Infrastructure
 {
-    public sealed class IdentityDbContext : IdentityDbContext<User, Role, Guid, UserClaim, UserRole, UserLogin, RoleClaim,
-        UserToken>
+    public sealed class IdentityDbContext : IdentityDbContext<User, Role, Guid, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>
     {
         public IdentityDbContext(DbContextOptions<IdentityDbContext> options) : base(options)
         {
@@ -31,6 +30,11 @@ namespace eDoxa.Identity.Api.Infrastructure
             modelBuilder.Entity<User>(
                 builder =>
                 {
+                    builder.Property(user => user.Email).IsRequired();
+                    builder.Property(user => user.NormalizedEmail).IsRequired();
+                    builder.Property(user => user.FirstName).IsRequired(false);
+                    builder.Property(user => user.LastName).IsRequired(false);
+                    builder.Property(user => user.BirthDate).IsRequired(false);
                     builder.HasMany<UserGameProvider>().WithOne().HasForeignKey(userGame => userGame.UserId).IsRequired();
                     builder.ToTable("User");
                 }
@@ -49,7 +53,7 @@ namespace eDoxa.Identity.Api.Infrastructure
                     builder.HasKey(
                         gameProvider => new
                         {
-                            GameProvider = gameProvider.Game,
+                            gameProvider.Game,
                             gameProvider.PlayerId
                         }
                     );

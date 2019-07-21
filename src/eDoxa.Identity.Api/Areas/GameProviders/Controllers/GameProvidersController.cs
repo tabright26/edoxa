@@ -7,8 +7,8 @@
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Application;
-using eDoxa.Identity.Api.Application.Managers;
 using eDoxa.Identity.Api.Areas.GameProviders.ViewModels;
+using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Extensions;
 
 using IdentityServer4.AccessTokenValidation;
@@ -60,7 +60,7 @@ namespace eDoxa.Identity.Api.Areas.GameProviders.Controllers
                     return this.NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
                 }
 
-                var result = await _userManager.AddGameProviderAsync(user, new UserGameProviderInfo(game, model.PlayerId));
+                var result = await _userManager.AddGameProviderAsync(user, new UserGameProviderInfo(game.Name, model.PlayerId));
 
                 if (result.Succeeded)
                 {

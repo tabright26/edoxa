@@ -54,7 +54,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
         //        return this.LocalRedirect(returnUrl);
         //    }
 
-        //    return this.Page();
+        //    return this.RedirectToPage();
         //}
     }
 }

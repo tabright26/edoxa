@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Identity.Api.Application.Managers;
+using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Areas.Users.ViewModels;
 
 using IdentityServer4.AccessTokenValidation;

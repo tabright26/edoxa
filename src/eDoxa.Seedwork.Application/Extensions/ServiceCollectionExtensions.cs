@@ -19,7 +19,6 @@ using eDoxa.Seedwork.Application.Mvc.Filters;
 using FluentValidation.AspNetCore;
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 
 using Newtonsoft.Json;
@@ -56,18 +55,16 @@ namespace eDoxa.Seedwork.Application.Extensions
             return new AutofacServiceProvider(builder.Build());
         }
 
-        public static void AddMvcFilters(this IServiceCollection services, Action<FilterCollection> action = null)
+        public static void AddMvcFilters(this IServiceCollection services)
         {
             var builder = services.AddMvc(
                 options =>
                 {
-                    action?.Invoke(options.Filters);
-
                     options.Filters.Add<ValidationExceptionFilter>();
                 }
             );
 
-            builder.AddFluentValidation(config => config.RunDefaultMvcValidationAfterFluentValidationExecutes = false);
+            builder.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             builder.AddControllersAsServices();
 
@@ -77,7 +74,7 @@ namespace eDoxa.Seedwork.Application.Extensions
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
 
-            builder.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            builder.AddFluentValidation(config => config.RunDefaultMvcValidationAfterFluentValidationExecutes = false);
         }
     }
 }

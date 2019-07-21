@@ -12,14 +12,14 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace eDoxa.Identity.Api.Application.Managers
+namespace eDoxa.Identity.Api.Areas.Identity.Services
 {
     public sealed class CustomSignInManager : SignInManager<User>
     {
         public CustomSignInManager(
             CustomUserManager userManager,
             IHttpContextAccessor contextAccessor,
-            IUserClaimsPrincipalFactory<User> claimsFactory,
+            CustomUserClaimsPrincipalFactory claimsFactory,
             IOptions<IdentityOptions> optionsAccessor,
             ILogger<CustomSignInManager> logger,
             IAuthenticationSchemeProvider schemes
