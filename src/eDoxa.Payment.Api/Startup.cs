@@ -26,15 +26,15 @@ namespace eDoxa.Payment.Api
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration, IHostingEnvironment environment)
+        public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
         {
             Configuration = configuration;
-            Environment = environment;
+            HostingEnvironment = hostingEnvironment;
         }
 
         public IConfiguration Configuration { get; }
 
-        public IHostingEnvironment Environment { get; }
+        public IHostingEnvironment HostingEnvironment { get; }
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
@@ -53,7 +53,7 @@ namespace eDoxa.Payment.Api
         {
             application.UseHealthChecks();
 
-            if (Environment.IsDevelopment())
+            if (HostingEnvironment.IsDevelopment())
             {
                 application.UseDeveloperExceptionPage();
             }

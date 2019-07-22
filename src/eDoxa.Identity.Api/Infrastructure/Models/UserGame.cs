@@ -1,16 +1,16 @@
-﻿// Filename: UserGameProvider.cs
-// Date Created: 2019-07-17
+﻿// Filename: UserGame.cs
+// Date Created: 2019-07-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
 
-namespace eDoxa.Identity.Api.Models
+namespace eDoxa.Identity.Api.Infrastructure.Models
 {
-    public class UserGameProvider
+    public class UserGame
     {
-        public int Game { get; set; }
+        public int Value { get; set; }
 
         public string PlayerId { get; set; }
 

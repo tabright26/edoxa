@@ -8,7 +8,7 @@ using System;
 
 using Microsoft.AspNetCore.Identity;
 
-namespace eDoxa.Identity.Api.Models
+namespace eDoxa.Identity.Api.Infrastructure.Models
 {
     public class UserToken : IdentityUserToken<Guid>
     {

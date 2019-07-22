@@ -12,9 +12,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{7942CE31-3804-446A-845B-0451884BB6B7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{2DC678B2-4968-45FA-864C-1B0B5412A044}"
-	ProjectSection(SolutionItems) = preProject
-		test\eDoxa.Identity.IntegrationTests\Dockerfile = test\eDoxa.Identity.IntegrationTests\Dockerfile
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{3799662A-7D24-4FE0-B23F-38281CA1D84E}"
 EndProject

@@ -18,8 +18,8 @@ namespace eDoxa.Seedwork.Security.Constants
         public static readonly string Permissions = CustomIdentityResources.Permissions.Name;
         public static readonly string Stripe = CustomIdentityResources.Stripe.Name;
         public static readonly string Games = CustomIdentityResources.Games.Name;
-        public static readonly string IdentityApi = CustomApiResources.Identity.Name;
-        public static readonly string CashierApi = CustomApiResources.Cashier.Name;
-        public static readonly string ArenaChallengesApi = CustomApiResources.ArenaChallenges.Name;
+        public static readonly string IdentityApi = CustomApiResources.IdentityApi.Name;
+        public static readonly string CashierApi = CustomApiResources.CashierApi.Name;
+        public static readonly string ArenaChallengesApi = CustomApiResources.ArenaChallengesApi.Name;
     }
 }

@@ -40,20 +40,20 @@ namespace eDoxa.Identity.Api.Infrastructure
 
         public static IEnumerable<ApiResource> GetApiResources()
         {
-            yield return CustomApiResources.Identity;
+            yield return CustomApiResources.IdentityApi;
 
-            yield return CustomApiResources.Cashier;
+            yield return CustomApiResources.CashierApi;
 
-            yield return CustomApiResources.ArenaChallenges;
+            yield return CustomApiResources.ArenaChallengesApi;
         }
 
         public static IEnumerable<Client> GetClients(IConfiguration configuration)
         {
-            yield return CustomApiResources.Identity.SwaggerClient(configuration["Identity:Url"]);
+            yield return CustomApiResources.IdentityApi.SwaggerClient(configuration["Identity:Url"]);
 
-            yield return CustomApiResources.Cashier.SwaggerClient(configuration["Cashier:Url"]);
+            yield return CustomApiResources.CashierApi.SwaggerClient(configuration["Cashier:Url"]);
 
-            yield return CustomApiResources.ArenaChallenges.SwaggerClient(configuration["Arena:Challenges:Url"]);
+            yield return CustomApiResources.ArenaChallengesApi.SwaggerClient(configuration["Arena:Challenges:Url"]);
 
             yield return new Client
             {

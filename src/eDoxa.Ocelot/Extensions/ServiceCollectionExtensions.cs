@@ -20,13 +20,8 @@ namespace eDoxa.Ocelot.Extensions
         public static void AddHealthChecks(this IServiceCollection services, IConfiguration configuration)
         {
             var healthChecks = services.AddHealthChecks();
-
-            healthChecks.AddIdentityServer(configuration);
-
             healthChecks.AddUrlGroup(configuration["HealthChecks:Identity:Url"], "identity-api", new[] {"api"});
-
             healthChecks.AddUrlGroup(configuration["HealthChecks:Cashier:Url"], "cashier-api", new[] {"api"});
-
             healthChecks.AddUrlGroup(configuration["HealthChecks:ArenaChallenges:Url"], "arena-challenges-api", new[] {"api"});
         }
     }

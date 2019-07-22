@@ -1,5 +1,5 @@
 ﻿// Filename: CustomUserStore.cs
-// Date Created: 2019-07-17
+// Date Created: 2019-07-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,8 +10,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Application;
-using eDoxa.Identity.Api.Models;
+using eDoxa.Identity.Api.Infrastructure.Models;
 
 using JetBrains.Annotations;
 
@@ -22,7 +21,8 @@ using IdentityDbContext = eDoxa.Identity.Api.Infrastructure.IdentityDbContext;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Services
 {
-    public class CustomUserStore : UserStore<User, Role, IdentityDbContext, Guid, UserClaim, UserRole, UserLogin, UserToken, RoleClaim>
+    public class CustomUserStore : UserStore<User, Role, IdentityDbContext, Guid, UserClaim, UserRole,
+        UserLogin, UserToken, RoleClaim>
     {
         private static readonly Random Random = new Random();
 
@@ -30,7 +30,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
         {
         }
 
-        private DbSet<UserGameProvider> UserGameProviders => Context.Set<UserGameProvider>();
+        private DbSet<UserGame> UserGames => Context.Set<UserGame>();
 
         private static int EnsureUniqueTag(IReadOnlyCollection<int> tags)
         {
@@ -78,7 +78,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             await base.SetUserNameAsync(user, FormatUserName(userName, tag), cancellationToken);
         }
 
-        public virtual Task AddGameProviderAsync(User user, UserGameProviderInfo gameProvider, CancellationToken cancellationToken = default)
+        public virtual Task AddGameAsync(User user, string gameName, string playerId, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -89,17 +89,27 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            if (gameProvider == null)
+            if (string.IsNullOrWhiteSpace(gameName))
             {
-                throw new ArgumentNullException(nameof(gameProvider));
+                throw new ArgumentNullException(nameof(gameName));
             }
 
-            UserGameProviders.Add(this.CreateUserGameProvider(user, gameProvider));
+            if (string.IsNullOrWhiteSpace(playerId))
+            {
+                throw new ArgumentNullException(nameof(playerId));
+            }
+
+            UserGames.Add(new UserGame
+            {
+                Value = Game.FromName(gameName).Value,
+                PlayerId = playerId,
+                UserId = user.Id
+            });
 
             return Task.FromResult(false);
         }
 
-        public async Task RemoveGameProviderAsync(User user, int gameValue, CancellationToken cancellationToken = default)
+        public async Task RemoveGameAsync(User user, int gameValue, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -110,32 +120,29 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            var gameProvider = await this.FindUserGameProviderAsync(user.Id, gameValue, cancellationToken);
+            var game = await this.FindUserGameAsync(user.Id, gameValue, cancellationToken);
 
-            if (gameProvider == null)
+            if (game == null)
             {
                 return;
             }
 
-            UserGameProviders.Remove(gameProvider);
+            UserGames.Remove(game);
         }
 
         [ItemCanBeNull]
-        public Task<UserGameProvider> FindUserGameProviderAsync(Guid userId, int gameValue, CancellationToken cancellationToken = default)
+        public Task<UserGame> FindUserGameAsync(Guid userId, int gameValue, CancellationToken cancellationToken = default)
         {
-            return UserGameProviders.SingleOrDefaultAsync(gameProvider => gameProvider.UserId == userId && gameProvider.Game == gameValue, cancellationToken);
+            return UserGames.SingleOrDefaultAsync(game => game.UserId == userId && game.Value == gameValue, cancellationToken);
         }
 
         [ItemCanBeNull]
-        protected Task<UserGameProvider> FindUserGameProviderAsync(int gameValue, string playerId, CancellationToken cancellationToken = default)
+        protected Task<UserGame> FindUserGameAsync(int gameValue, string playerId, CancellationToken cancellationToken = default)
         {
-            return UserGameProviders.SingleOrDefaultAsync(
-                gameProvider => gameProvider.Game == gameValue && gameProvider.PlayerId == playerId,
-                cancellationToken
-            );
+            return UserGames.SingleOrDefaultAsync(game => game.Value == gameValue && game.PlayerId == playerId, cancellationToken);
         }
 
-        public async Task<IList<UserGameProviderInfo>> GetGameProvidersAsync(User user, CancellationToken cancellationToken = default)
+        public async Task<IList<UserGame>> GetGamesAsync(User user, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -146,36 +153,24 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return await UserGameProviders.Where(gameProvider => gameProvider.UserId.Equals(user.Id))
-                .Select(game => new UserGameProviderInfo(Game.FromValue(game.Game).Name, game.PlayerId))
-                .ToListAsync(cancellationToken);
+            return await UserGames.Where(game => game.UserId.Equals(user.Id)).ToListAsync(cancellationToken);
         }
 
         [ItemCanBeNull]
-        public async Task<User> FindByGameProviderAsync(int gameValue, string playerId, CancellationToken cancellationToken = default)
+        public async Task<User> FindByGameAsync(int gameValue, string playerId, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
             this.ThrowIfDisposed();
 
-            var gameProvider = await this.FindUserGameProviderAsync(gameValue, playerId, cancellationToken);
+            var game = await this.FindUserGameAsync(gameValue, playerId, cancellationToken);
 
-            if (gameProvider != null)
+            if (game != null)
             {
-                return await this.FindUserAsync(gameProvider.UserId, cancellationToken);
+                return await this.FindUserAsync(game.UserId, cancellationToken);
             }
 
             return default;
-        }
-
-        protected UserGameProvider CreateUserGameProvider(User user, UserGameProviderInfo gameProvider)
-        {
-            return new UserGameProvider
-            {
-                UserId = user.Id,
-                Game = Game.FromName(gameProvider.Name).Value,
-                PlayerId = gameProvider.PlayerId
-            };
         }
 
         [ItemCanBeNull]

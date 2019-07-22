@@ -90,7 +90,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 
         private sealed class IdentityServiceTestArenaChallengesStartup : TestArenaChallengesStartup
         {
-            public IdentityServiceTestArenaChallengesStartup(IConfiguration configuration, IHostingEnvironment environment) : base(configuration, environment)
+            public IdentityServiceTestArenaChallengesStartup(IConfiguration configuration, IHostingEnvironment hostingEnvironment) : base(configuration, hostingEnvironment)
             {
             }
 

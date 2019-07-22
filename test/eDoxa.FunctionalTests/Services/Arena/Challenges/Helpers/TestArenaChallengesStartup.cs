@@ -17,7 +17,7 @@ namespace eDoxa.FunctionalTests.Services.Arena.Challenges.Helpers
 {
     public class TestArenaChallengesStartup : Startup
     {
-        public TestArenaChallengesStartup(IConfiguration configuration, IHostingEnvironment environment) : base(configuration, environment)
+        public TestArenaChallengesStartup(IConfiguration configuration, IHostingEnvironment hostingEnvironment) : base(configuration, hostingEnvironment)
         {
         }
     }

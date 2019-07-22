@@ -23,15 +23,15 @@ namespace eDoxa.Web.Spa
 {
     public sealed class Startup
     {
-        public Startup(IConfiguration configuration, IHostingEnvironment environment)
+        public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
         {
             Configuration = configuration;
-            Environment = environment;
+            HostingEnvironment = hostingEnvironment;
         }
 
-        private IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; }
 
-        private IHostingEnvironment Environment { get; }
+        public IHostingEnvironment HostingEnvironment { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -55,7 +55,7 @@ namespace eDoxa.Web.Spa
         {
             application.UseHealthChecks();
 
-            if (Environment.IsDevelopment())
+            if (HostingEnvironment.IsDevelopment())
             {
                 application.UseDeveloperExceptionPage();
             }
@@ -74,7 +74,7 @@ namespace eDoxa.Web.Spa
                 {
                     builder.Options.SourcePath = "ClientApp";
 
-                    if (Environment.IsDevelopment())
+                    if (HostingEnvironment.IsDevelopment())
                     {
                         builder.UseReactDevelopmentServer("start");
                     }

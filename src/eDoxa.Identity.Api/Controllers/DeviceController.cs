@@ -8,7 +8,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Application.Attributes;
+using eDoxa.Identity.Api.Attributes;
 using eDoxa.Identity.Api.ViewModels;
 
 using IdentityServer4;

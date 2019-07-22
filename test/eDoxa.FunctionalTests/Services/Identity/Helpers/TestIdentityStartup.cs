@@ -17,7 +17,7 @@ namespace eDoxa.FunctionalTests.Services.Identity.Helpers
 {
     internal class TestIdentityStartup : Startup
     {
-        public TestIdentityStartup(IConfiguration configuration, IHostingEnvironment environment) : base(configuration, environment)
+        public TestIdentityStartup(IConfiguration configuration, IHostingEnvironment hostingEnvironment) : base(configuration, hostingEnvironment)
         {
         }
     }

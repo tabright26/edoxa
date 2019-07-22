@@ -1,12 +1,8 @@
 ﻿// Filename: UsersController.cs
-// Date Created: 2019-06-08
+// Date Created: 2019-07-22
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +11,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using eDoxa.Identity.Api.Areas.Identity.Services;
-using eDoxa.Identity.Api.Areas.Users.ViewModels;
+using eDoxa.Identity.Api.Areas.Identity.ViewModels;
 
 using IdentityServer4.AccessTokenValidation;
 
@@ -23,13 +19,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace eDoxa.Identity.Api.Areas.Users.Controllers
+namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 {
     [ApiController]
     [ApiVersion("1.0")]
     [Produces("application/json")]
     [Route("api/users")]
-    [ApiExplorerSettings(GroupName = "User")]
+    [ApiExplorerSettings(GroupName = "Users")]
     [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
     public class UsersController : ControllerBase
     {

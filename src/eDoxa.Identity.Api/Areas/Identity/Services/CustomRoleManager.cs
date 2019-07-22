@@ -1,12 +1,12 @@
 ﻿// Filename: CustomRoleManager.cs
-// Date Created: 2019-07-17
+// Date Created: 2019-07-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
 
-using eDoxa.Identity.Api.Models;
+using eDoxa.Identity.Api.Infrastructure.Models;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;

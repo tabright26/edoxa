@@ -17,7 +17,7 @@ using JetBrains.Annotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 
-namespace eDoxa.Identity.Api.Application.Services
+namespace eDoxa.Identity.Api.Services
 {
     internal sealed class CustomProfileService : IProfileService
     {

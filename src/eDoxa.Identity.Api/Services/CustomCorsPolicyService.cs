@@ -9,7 +9,7 @@ using IdentityServer4.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace eDoxa.Identity.Api.Application.Services
+namespace eDoxa.Identity.Api.Services
 {
     internal sealed class CustomCorsPolicyService : DefaultCorsPolicyService
     {

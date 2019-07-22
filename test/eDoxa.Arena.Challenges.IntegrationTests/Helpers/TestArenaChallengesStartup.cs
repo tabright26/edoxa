@@ -19,7 +19,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Helpers
 {
     internal class TestArenaChallengesStartup : Startup
     {
-        public TestArenaChallengesStartup(IConfiguration configuration, IHostingEnvironment environment) : base(configuration, environment)
+        public TestArenaChallengesStartup(IConfiguration configuration, IHostingEnvironment hostingEnvironment) : base(configuration, hostingEnvironment)
         {
         }
 

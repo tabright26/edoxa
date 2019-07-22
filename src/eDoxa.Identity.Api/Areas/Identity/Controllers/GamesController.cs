@@ -1,34 +1,35 @@
-﻿// Filename: GameProvidersController.cs
-// Date Created: 2019-07-17
+﻿// Filename: GamesController.cs
+// Date Created: 2019-07-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Application;
-using eDoxa.Identity.Api.Areas.GameProviders.ViewModels;
+using eDoxa.Identity.Api.Areas.Identity.Extensions;
 using eDoxa.Identity.Api.Areas.Identity.Services;
+using eDoxa.Identity.Api.Areas.Identity.ViewModels;
 using eDoxa.Identity.Api.Extensions;
+using eDoxa.Identity.Api.Infrastructure.Models;
 
 using IdentityServer4.AccessTokenValidation;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace eDoxa.Identity.Api.Areas.GameProviders.Controllers
+namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 {
     [ApiController]
     [ApiVersion("1.0")]
     [Produces("application/json")]
-    [Route("api/game-providers")]
-    [ApiExplorerSettings(GroupName = "Game Providers")]
+    [Route("api/games")]
+    [ApiExplorerSettings(GroupName = "Games")]
     [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
-    public sealed class GameProvidersController : ControllerBase
+    public sealed class GamesController : ControllerBase
     {
         private readonly CustomUserManager _userManager;
 
-        public GameProvidersController(CustomUserManager userManager)
+        public GamesController(CustomUserManager userManager)
         {
             _userManager = userManager;
         }
@@ -43,13 +44,13 @@ namespace eDoxa.Identity.Api.Areas.GameProviders.Controllers
                 return this.NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            var gameProviderLinks = await _userManager.GetGameProviderLinksAsync(user);
+            var gameViewModels = await _userManager.GetGameViewModelsAsync(user);
 
-            return this.Ok(gameProviderLinks);
+            return this.Ok(gameViewModels);
         }
 
         [HttpPost("{game}")]
-        public async Task<IActionResult> PostAsync(Game game, [FromBody] AddGameProviderViewModel model)
+        public async Task<IActionResult> PostAsync(Game game, [FromBody] AddGameViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -60,11 +61,11 @@ namespace eDoxa.Identity.Api.Areas.GameProviders.Controllers
                     return this.NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
                 }
 
-                var result = await _userManager.AddGameProviderAsync(user, new UserGameProviderInfo(game.Name, model.PlayerId));
+                var result = await _userManager.AddGameAsync(user, game.Name, model.PlayerId);
 
                 if (result.Succeeded)
                 {
-                    return this.Ok($"The user's game provider for {game} has been added.");
+                    return this.Ok($"The user's {game} playerId has been added.");
                 }
 
                 ModelState.Bind(result);
@@ -85,11 +86,11 @@ namespace eDoxa.Identity.Api.Areas.GameProviders.Controllers
                     return this.NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
                 }
 
-                var result = await _userManager.RemoveGameProviderAsync(user, game);
+                var result = await _userManager.RemoveGameAsync(user, game);
 
                 if (result.Succeeded)
                 {
-                    return this.Ok($"The user's game provider for {game} has been removed.");
+                    return this.Ok($"The user's {game} playerId has been removed.");
                 }
 
                 ModelState.Bind(result);

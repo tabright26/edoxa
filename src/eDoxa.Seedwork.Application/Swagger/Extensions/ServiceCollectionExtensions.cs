@@ -1,15 +1,13 @@
 ﻿// Filename: ServiceCollectionExtensions.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-07-05
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -31,6 +29,49 @@ namespace eDoxa.Seedwork.Application.Swagger.Extensions
 {
     public static class ServiceCollectionExtensions
     {
+        public static bool IsValid<T>(this T data)
+        {
+            if (data == null)
+            {
+                throw new ArgumentNullException(nameof(data));
+            }
+
+            var validationResult = new List<ValidationResult>();
+
+            var result = Validator.TryValidateObject(data, new ValidationContext(data), validationResult, false);
+
+            if (!result)
+            {
+                foreach (var item in validationResult)
+                {
+                    Debug.WriteLine($"ERROR::{item.MemberNames}:{item.ErrorMessage}");
+                }
+            }
+
+            return result;
+        }
+
+        public static AppSettings ConfigureBusinessServices(this IServiceCollection services, IConfiguration configuration)
+        {
+            var appSettingsSection = configuration.GetSection(nameof(AppSettings));
+
+            if (appSettingsSection == null)
+            {
+                throw new Exception("No appsettings section has been found");
+            }
+
+            var appSettings = appSettingsSection.Get<AppSettings>();
+
+            if (!appSettings.IsValid())
+            {
+                throw new Exception("No valid settings.");
+            }
+
+            services.Configure<AppSettings>(appSettingsSection);
+
+            return appSettings;
+        }
+
         public static void AddSwagger(
             this IServiceCollection services,
             IConfiguration configuration,

@@ -5,19 +5,19 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
+using System.IO;
 using System.Reflection;
 
 using AutoMapper;
 
-using eDoxa.Identity.Api.Areas.Identity.Extensions;
-using eDoxa.Identity.Api.Areas.Identity.Services;
-using eDoxa.Identity.Api.Areas.Identity.Validators;
 using eDoxa.Identity.Api.Extensions;
 using eDoxa.Identity.Api.Infrastructure;
 using eDoxa.Identity.Api.Infrastructure.Data;
-using eDoxa.Identity.Api.Models;
+using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Identity.Api.Services;
 using eDoxa.IntegrationEvents.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Application.Swagger;
 using eDoxa.Seedwork.Application.Swagger.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring.Extensions;
@@ -29,14 +29,11 @@ using eDoxa.Seedwork.Security.Middlewares;
 
 using FluentValidation.AspNetCore;
 
-using IdentityModel;
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -46,29 +43,25 @@ namespace eDoxa.Identity.Api
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration, IHostingEnvironment environment)
+        public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
         {
             Configuration = configuration;
-            Environment = environment;
+            HostingEnvironment = hostingEnvironment;
         }
 
-        private IHostingEnvironment Environment { get; }
+        public IConfiguration Configuration { get; }
 
-        private IConfiguration Configuration { get; }
+        public IHostingEnvironment HostingEnvironment { get; }
+
+        private AppSettings AppSettings { get; set; }
+
+        private string XmlCommentsFilePath => Path.Combine(AppContext.BaseDirectory, $"{typeof(Startup).GetTypeInfo().Assembly.GetName().Name}.xml");
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.Configure<IdentityApiOptions>(Configuration);
 
             services.AddHealthChecks(Configuration);
-
-            services.Configure<CookiePolicyOptions>(
-                options =>
-                {
-                    options.CheckConsentNeeded = _ => true;
-                    options.MinimumSameSitePolicy = SameSiteMode.None;
-                }
-            );
 
             services.AddEntityFrameworkSqlServer();
 
@@ -78,108 +71,71 @@ namespace eDoxa.Identity.Api
 
             services.AddDataProtection(Configuration);
 
-            //services.AddScoped<IUserValidator<User>, EmailValidator>();
-            services.AddScoped<IUserValidator<User>, UserNameValidator>();
-            //services.AddScoped<IUserValidator<User>, PhoneNumberValidator>();
+            services.AddVersionedApiExplorer(options => options.GroupNameFormat = "'v'VV");
 
-            services.AddIdentity<User, Role>(
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
+                .AddControllersAsServices()
+                .AddRazorPagesOptions(
                     options =>
                     {
-                        options.Password.RequireDigit = true;
-                        options.Password.RequiredLength = 8;
-                        options.Password.RequiredUniqueChars = 1;
-                        options.Password.RequireLowercase = true;
-                        options.Password.RequireNonAlphanumeric = true;
-                        options.Password.RequireUppercase = true;
-
-                        options.Lockout.AllowedForNewUsers = true;
-                        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-                        options.Lockout.MaxFailedAccessAttempts = 5;
-
-                        options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_#";
-                        options.User.RequireUniqueEmail = true;
-
-                        options.ClaimsIdentity.UserIdClaimType = JwtClaimTypes.Subject;
-                        options.ClaimsIdentity.UserNameClaimType = JwtClaimTypes.Name;
-                        options.ClaimsIdentity.RoleClaimType = JwtClaimTypes.Role;
-                        options.ClaimsIdentity.SecurityStampClaimType = CustomClaimTypes.SecurityStamp;
-
-                        options.SignIn.RequireConfirmedPhoneNumber = false;
-                        options.SignIn.RequireConfirmedEmail = Environment.IsProduction();
-
-                        options.Tokens.AuthenticatorTokenProvider = CustomTokenProviders.Authenticator;
-                        options.Tokens.ChangeEmailTokenProvider = CustomTokenProviders.ChangeEmail;
-                        options.Tokens.ChangePhoneNumberTokenProvider = CustomTokenProviders.ChangePhoneNumber;
-                        options.Tokens.EmailConfirmationTokenProvider = CustomTokenProviders.EmailConfirmation;
-                        options.Tokens.PasswordResetTokenProvider = CustomTokenProviders.PasswordReset;
+                        options.AllowAreas = true;
+                        options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage");
+                        options.Conventions.AuthorizeAreaPage("Identity", "/Account/Logout");
                     }
                 )
-                .AddEntityFrameworkStores<IdentityDbContext>()
-                .AddUserStore<CustomUserStore>()
-                .AddTokenProviders(
-                    options =>
-                    {
-                        options.Authenticator.TokenLifespan = TimeSpan.FromHours(1);
-                        options.ChangeEmail.TokenLifespan = TimeSpan.FromDays(1);
-                        options.ChangePhoneNumber.TokenLifespan = TimeSpan.FromDays(1);
-                        options.EmailConfirmation.TokenLifespan = TimeSpan.FromDays(2);
-                        options.PasswordReset.TokenLifespan = TimeSpan.FromHours(2);
-                    }
-                )
-                .AddClaimsPrincipalFactory<CustomUserClaimsPrincipalFactory>()
-                .AddUserManager<CustomUserManager>()
-                .AddUserValidator<UserNameValidator>()
-                .AddSignInManager<CustomSignInManager>()
-                .AddRoleManager<CustomRoleManager>()
-                .BuildCustomServices();
+                .AddFluentValidation(config => config.RunDefaultMvcValidationAfterFluentValidationExecutes = false);
 
-            //services.ConfigureApplicationCookie(
-            //    options =>
-            //    {
-            //        options.LoginPath = "/Identity/Account/Login";
-            //        options.LogoutPath = "/Identity/Account/Logout";
-            //        options.AccessDeniedPath = "/Identity/Account/AccessDenied";
-            //    }
-            //);
+            services.AddApiVersioning(
+                options =>
+                {
+                    options.ReportApiVersions = true;
+                    options.AssumeDefaultVersionWhenUnspecified = true;
+                    options.DefaultApiVersion = new ApiVersion(1, 0);
+                    options.ApiVersionReader = new HeaderApiVersionReader(CustomHeaderNames.Version);
+                }
+            );
 
-            //services.Configure<PasswordHasherOptions>(
-            //    option =>
-            //    {
-            //        option.CompatibilityMode = PasswordHasherCompatibilityMode.IdentityV3;
-            //        option.IterationCount = 100000;
-            //    }
-            //);
-
-            services.AddVersioning();
+            AppSettings = services.ConfigureBusinessServices(Configuration);
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            services.AddMvcFilters();
+            if (AppSettings.IsValid())
+            {
+                if (AppSettings.Swagger.Enabled)
+                {
+                    services.AddSwagger(Configuration, HostingEnvironment, CustomApiResources.IdentityApi);
+                }
+            }
 
-            //services.AddMvc()
-            //    .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-            //    .AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
-            //    .AddControllersAsServices()
-            //    .AddRazorPagesOptions(
-            //        options =>
-            //        {
-            //            options.AllowAreas = true;
-            //            options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage");
-            //            options.Conventions.AuthorizeAreaPage("Identity", "/Account/Logout");
-            //        }
-            //    ).AddFluentValidation(config => config.RunDefaultMvcValidationAfterFluentValidationExecutes = false);
+            services.AddIdentityServer(
+                    options =>
+                    {
+                        options.IssuerUri = Configuration.GetValue<string>("IdentityServer:Url");
+                        options.Authentication.CookieLifetime = TimeSpan.FromHours(2);
+                        options.Events.RaiseInformationEvents = true;
+                        options.Events.RaiseSuccessEvents = true;
+                        options.Events.RaiseFailureEvents = true;
+                        options.Events.RaiseErrorEvents = true;
+                        options.UserInteraction.LoginUrl = "/Account/Login";
+                        options.UserInteraction.LoginReturnUrlParameter = "returnUrl";
+                        options.UserInteraction.LogoutUrl = "/Account/Logout";
+                    }
+                )
+                .AddDeveloperSigningCredential()
+                .AddInMemoryPersistedGrants()
+                .AddInMemoryIdentityResources(IdentityServerConfig.GetIdentityResources())
+                .AddInMemoryApiResources(IdentityServerConfig.GetApiResources())
+                .AddInMemoryClients(IdentityServerConfig.GetClients(Configuration))
+                .AddCorsPolicyService<CustomCorsPolicyService>()
+                .AddProfileService<CustomProfileService>()
+                .AddAspNetIdentity<User>()
+                .BuildCustomServices();
 
-
-
-            services.AddSwagger(Configuration, Environment, CustomApiResources.Identity);
-
-            services.AddCorsPolicy();
-
-            services.AddCustomIdentityServer(Configuration);
+            services.AddAuthentication(Configuration, HostingEnvironment, CustomApiResources.IdentityApi);
 
             services.AddServiceBus(Configuration);
-
-            services.AddAuthentication(Configuration, Environment, CustomApiResources.Identity);
 
             return this.BuildModule(services);
         }
@@ -188,9 +144,7 @@ namespace eDoxa.Identity.Api
         {
             application.UseHealthChecks();
 
-            application.UseCorsPolicy();
-
-            if (Environment.IsDevelopment())
+            if (HostingEnvironment.IsDevelopment())
             {
                 application.UseDeveloperExceptionPage();
             }
@@ -207,7 +161,7 @@ namespace eDoxa.Identity.Api
             application.UseForwardedHeaders();
             application.UseCookiePolicy();
 
-            if (Environment.IsTesting())
+            if (HostingEnvironment.IsTesting())
             {
                 application.UseMiddleware<TestAuthenticationMiddleware>();
             }
@@ -216,7 +170,7 @@ namespace eDoxa.Identity.Api
                 application.UseIdentityServer();
             }
 
-            application.UseSwagger(Environment, provider, CustomApiResources.Identity);
+            application.UseSwagger(HostingEnvironment, provider, CustomApiResources.IdentityApi);
 
             application.UseMvcWithDefaultRoute();
 

@@ -8,7 +8,7 @@ using JetBrains.Annotations;
 
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace eDoxa.Identity.Api.Application.Attributes
+namespace eDoxa.Identity.Api.Attributes
 {
     public sealed class SecurityHeadersAttribute : ActionFilterAttribute
     {

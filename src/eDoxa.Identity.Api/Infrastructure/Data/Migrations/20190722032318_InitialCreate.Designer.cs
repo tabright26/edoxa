@@ -10,7 +10,7 @@ using eDoxa.Identity.Api.Infrastructure;
 namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(IdentityDbContext))]
-    [Migration("20190720201645_InitialCreate")]
+    [Migration("20190722032318_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -142,19 +142,19 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                     b.ToTable("UserClaim");
                 });
 
-            modelBuilder.Entity("eDoxa.Identity.Api.Models.UserGameProvider", b =>
+            modelBuilder.Entity("eDoxa.Identity.Api.Models.UserGame", b =>
                 {
-                    b.Property<int>("Game");
+                    b.Property<int>("Value");
 
                     b.Property<string>("PlayerId");
 
                     b.Property<Guid>("UserId");
 
-                    b.HasKey("Game", "PlayerId");
+                    b.HasKey("Value", "PlayerId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserGameProvider");
+                    b.ToTable("UserGame");
                 });
 
             modelBuilder.Entity("eDoxa.Identity.Api.Models.UserLogin", b =>
@@ -218,7 +218,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("eDoxa.Identity.Api.Models.UserGameProvider", b =>
+            modelBuilder.Entity("eDoxa.Identity.Api.Models.UserGame", b =>
                 {
                     b.HasOne("eDoxa.Identity.Api.Models.User")
                         .WithMany()

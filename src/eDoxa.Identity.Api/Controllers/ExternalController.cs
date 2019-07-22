@@ -11,9 +11,9 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Application.Attributes;
 using eDoxa.Identity.Api.Areas.Identity.Services;
-using eDoxa.Identity.Api.Models;
+using eDoxa.Identity.Api.Attributes;
+using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Identity.Api.ViewModels;
 
 using IdentityModel;

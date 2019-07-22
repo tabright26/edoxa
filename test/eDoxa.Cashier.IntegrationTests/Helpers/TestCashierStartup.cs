@@ -17,7 +17,7 @@ namespace eDoxa.Cashier.IntegrationTests.Helpers
 {
     internal class TestCashierStartup : Startup
     {
-        public TestCashierStartup(IConfiguration configuration, IHostingEnvironment environment) : base(configuration, environment)
+        public TestCashierStartup(IConfiguration configuration, IHostingEnvironment hostingEnvironment) : base(configuration, hostingEnvironment)
         {
         }
 

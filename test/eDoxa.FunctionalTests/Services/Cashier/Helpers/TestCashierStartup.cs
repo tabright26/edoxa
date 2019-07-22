@@ -17,7 +17,7 @@ namespace eDoxa.FunctionalTests.Services.Cashier.Helpers
 {
     public class TestCashierStartup : Startup
     {
-        public TestCashierStartup(IConfiguration configuration, IHostingEnvironment environment) : base(configuration, environment)
+        public TestCashierStartup(IConfiguration configuration, IHostingEnvironment hostingEnvironment) : base(configuration, hostingEnvironment)
         {
         }
     }

@@ -1,4 +1,4 @@
-﻿// Filename: UserRole.cs
+﻿// Filename: Role.cs
 // Date Created: 2019-07-17
 // 
 // ================================================
@@ -8,9 +8,9 @@ using System;
 
 using Microsoft.AspNetCore.Identity;
 
-namespace eDoxa.Identity.Api.Models
+namespace eDoxa.Identity.Api.Infrastructure.Models
 {
-    public class UserRole : IdentityUserRole<Guid>
+    public class Role : IdentityRole<Guid>
     {
     }
 }

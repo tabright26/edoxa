@@ -29,15 +29,15 @@ namespace eDoxa.Ocelot
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration, IHostingEnvironment environment)
+        public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
         {
             Configuration = configuration;
-            Environment = environment;
+            HostingEnvironment = hostingEnvironment;
         }
 
-        private IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; }
 
-        private IHostingEnvironment Environment { get; }
+        public IHostingEnvironment HostingEnvironment { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -47,12 +47,12 @@ namespace eDoxa.Ocelot
 
             services.AddAuthentication(
                 Configuration,
-                Environment,
+                HostingEnvironment,
                 new Dictionary<string, ApiResource>
                 {
-                    ["IdentityApiKey"] = CustomApiResources.Identity,
-                    ["CashierApiKey"] = CustomApiResources.Cashier,
-                    ["ArenaChallengesApiKey"] = CustomApiResources.ArenaChallenges
+                    ["IdentityApiKey"] = CustomApiResources.IdentityApi,
+                    ["CashierApiKey"] = CustomApiResources.CashierApi,
+                    ["ArenaChallengesApiKey"] = CustomApiResources.ArenaChallengesApi
                 }
             );
 
@@ -63,7 +63,7 @@ namespace eDoxa.Ocelot
         {
             application.UseHealthChecks();
 
-            if (Environment.IsDevelopment())
+            if (HostingEnvironment.IsDevelopment())
             {
                 application.UseDeveloperExceptionPage();
             }

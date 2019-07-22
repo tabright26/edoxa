@@ -6,7 +6,7 @@
 
 using System;
 
-using eDoxa.Identity.Api.Models;
+using eDoxa.Identity.Api.Infrastructure.Models;
 
 using JetBrains.Annotations;
 
@@ -21,7 +21,7 @@ namespace eDoxa.Identity.Api.Infrastructure
         {
         }
 
-        public DbSet<UserGameProvider> Games => this.Set<UserGameProvider>();
+        public DbSet<UserGame> UserGames => this.Set<UserGame>();
 
         protected override void OnModelCreating([NotNull] ModelBuilder modelBuilder)
         {
@@ -35,7 +35,7 @@ namespace eDoxa.Identity.Api.Infrastructure
                     builder.Property(user => user.FirstName).IsRequired(false);
                     builder.Property(user => user.LastName).IsRequired(false);
                     builder.Property(user => user.BirthDate).IsRequired(false);
-                    builder.HasMany<UserGameProvider>().WithOne().HasForeignKey(userGame => userGame.UserId).IsRequired();
+                    builder.HasMany<UserGame>().WithOne().HasForeignKey(userGame => userGame.UserId).IsRequired();
                     builder.ToTable("User");
                 }
             );
@@ -47,18 +47,18 @@ namespace eDoxa.Identity.Api.Infrastructure
             modelBuilder.Entity<Role>().ToTable("Role");
             modelBuilder.Entity<RoleClaim>().ToTable("RoleClaim");
 
-            modelBuilder.Entity<UserGameProvider>(
+            modelBuilder.Entity<UserGame>(
                 builder =>
                 {
                     builder.HasKey(
-                        gameProvider => new
+                        userGame => new
                         {
-                            gameProvider.Game,
-                            gameProvider.PlayerId
+                            userGame.Value,
+                            userGame.PlayerId
                         }
                     );
 
-                    builder.ToTable("UserGameProvider");
+                    builder.ToTable("UserGame");
                 }
             );
         }

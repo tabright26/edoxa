@@ -1,17 +1,17 @@
-﻿// Filename: AddGameProviderViewModel.cs
-// Date Created: 2019-07-17
+﻿// Filename: AddGameViewModel.cs
+// Date Created: 2019-07-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Runtime.Serialization;
 
-namespace eDoxa.Identity.Api.Areas.GameProviders.ViewModels
+namespace eDoxa.Identity.Api.Areas.Identity.ViewModels
 {
     [DataContract]
-    public class AddGameProviderViewModel
+    public class AddGameViewModel
     {
-        public AddGameProviderViewModel(string playerId)
+        public AddGameViewModel(string playerId)
         {
             PlayerId = playerId;
         }

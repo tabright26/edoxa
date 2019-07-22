@@ -19,27 +19,6 @@ namespace eDoxa.Identity.Api.Areas.Identity.Extensions
 {
     public static class IdentityBuilderExtensions
     {
-        public static IdentityBuilder AddTokenProviders(this IdentityBuilder builder, Action<TokenProviderOptions> options)
-        {
-            builder.AddDefaultTokenProviders();
-            builder.AddTokenProvider<AuthenticatorTokenProvider>(CustomTokenProviders.Authenticator);
-            builder.AddTokenProvider<ChangeEmailTokenProvider>(CustomTokenProviders.ChangeEmail);
-            builder.AddTokenProvider<ChangePhoneNumberTokenProvider>(CustomTokenProviders.ChangePhoneNumber);
-            builder.AddTokenProvider<EmailConfirmationTokenProvider>(CustomTokenProviders.EmailConfirmation);
-            builder.AddTokenProvider<PasswordResetTokenProvider>(CustomTokenProviders.PasswordReset);
-
-            var services = builder.Services;
-            var tokenProviderOptions = new TokenProviderOptions();
-            options(tokenProviderOptions);
-            services.Configure<AuthenticatorTokenProviderOptions>(x => x.TokenLifespan = tokenProviderOptions.Authenticator.TokenLifespan);
-            services.Configure<ChangeEmailTokenProviderOptions>(x => x.TokenLifespan = tokenProviderOptions.ChangeEmail.TokenLifespan);
-            services.Configure<ChangePhoneNumberTokenProviderOptions>(x => x.TokenLifespan = tokenProviderOptions.ChangePhoneNumber.TokenLifespan);
-            services.Configure<EmailConfirmationTokenProviderOptions>(x => x.TokenLifespan = tokenProviderOptions.EmailConfirmation.TokenLifespan);
-            services.Configure<PasswordResetTokenProviderOptions>(x => x.TokenLifespan = tokenProviderOptions.PasswordReset.TokenLifespan);
-
-            return builder;
-        }
-
         public static void BuildCustomServices(this IdentityBuilder builder)
         {
             var services = builder.Services;
@@ -50,6 +29,33 @@ namespace eDoxa.Identity.Api.Areas.Identity.Extensions
             services.AddScoped<CustomUserManager>();
             services.AddScoped<CustomSignInManager>();
             services.AddScoped<CustomRoleManager>();
+        }
+
+        public static IdentityBuilder AddTokenProviders(this IdentityBuilder builder, Action<TokenProviderOptions> options)
+        {
+            builder.AddDefaultTokenProviders();
+
+            builder.AddTokenProvider<AuthenticatorTokenProvider>(CustomTokenProviders.Authenticator);
+            builder.AddTokenProvider<ChangeEmailTokenProvider>(CustomTokenProviders.ChangeEmail);
+            builder.AddTokenProvider<ChangePhoneNumberTokenProvider>(CustomTokenProviders.ChangePhoneNumber);
+            builder.AddTokenProvider<EmailConfirmationTokenProvider>(CustomTokenProviders.EmailConfirmation);
+            builder.AddTokenProvider<PasswordResetTokenProvider>(CustomTokenProviders.PasswordReset);
+
+            builder.AddTokenProviderOptions(options);
+
+            return builder;
+        }
+
+        private static void AddTokenProviderOptions(this IdentityBuilder builder, Action<TokenProviderOptions> options)
+        {
+            var services = builder.Services;
+            var tokenProviderOptions = new TokenProviderOptions();
+            options(tokenProviderOptions);
+            services.Configure<AuthenticatorTokenProviderOptions>(x => x.TokenLifespan = tokenProviderOptions.Authenticator.TokenLifespan);
+            services.Configure<ChangeEmailTokenProviderOptions>(x => x.TokenLifespan = tokenProviderOptions.ChangeEmail.TokenLifespan);
+            services.Configure<ChangePhoneNumberTokenProviderOptions>(x => x.TokenLifespan = tokenProviderOptions.ChangePhoneNumber.TokenLifespan);
+            services.Configure<EmailConfirmationTokenProviderOptions>(x => x.TokenLifespan = tokenProviderOptions.EmailConfirmation.TokenLifespan);
+            services.Configure<PasswordResetTokenProviderOptions>(x => x.TokenLifespan = tokenProviderOptions.PasswordReset.TokenLifespan);
         }
     }
 }
