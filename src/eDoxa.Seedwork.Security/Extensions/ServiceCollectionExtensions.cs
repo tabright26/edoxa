@@ -66,7 +66,7 @@ namespace eDoxa.Seedwork.Security.Extensions
                     apiResource.Key,
                     options =>
                     {
-                        options.Authority = configuration.GetValue<string>("IdentityServer:Url");
+                        options.Authority = configuration.GetValue<string>("AppSettings:Authority:PrivateUrl");
                         options.ApiName = apiResource.Value.Name;
                         options.ApiSecret = "secret";
                         options.RequireHttpsMetadata = environment.IsProduction();
@@ -82,7 +82,7 @@ namespace eDoxa.Seedwork.Security.Extensions
             ApiResource apiResource
         )
         {
-            var authority = configuration.GetValue<string>("IdentityServer:Url");
+            var authority = configuration.GetValue<string>("AppSettings:Authority:PrivateUrl");
 
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication(

@@ -36,25 +36,6 @@ namespace eDoxa.Cashier.Api.Infrastructure
             builder.RegisterModule<DomainEventModule>();
             builder.RegisterModule<CommandModule>();
             builder.RegisterModule<IntegrationEventModule<CashierDbContext>>();
-
-            // Repositories
-            builder.RegisterType<ChallengeRepository>().As<IChallengeRepository>().InstancePerLifetimeScope();
-            builder.RegisterType<AccountRepository>().As<IAccountRepository>().InstancePerLifetimeScope();
-            builder.RegisterType<TransactionRepository>().As<ITransactionRepository>().InstancePerLifetimeScope();
-
-            // Queries
-            builder.RegisterType<ChallengeQuery>().As<IChallengeQuery>().InstancePerLifetimeScope();
-            builder.RegisterType<AccountQuery>().As<IAccountQuery>().InstancePerLifetimeScope();
-            builder.RegisterType<TransactionQuery>().As<ITransactionQuery>().InstancePerLifetimeScope();
-
-            // Services
-            builder.RegisterType<AccountService>().As<IAccountService>().InstancePerLifetimeScope();
-
-            // Strategies
-            builder.RegisterType<PayoutStrategy>().As<IPayoutStrategy>();
-
-            // Factories
-            builder.RegisterType<PayoutFactory>().As<IPayoutFactory>().SingleInstance();
         }
     }
 }

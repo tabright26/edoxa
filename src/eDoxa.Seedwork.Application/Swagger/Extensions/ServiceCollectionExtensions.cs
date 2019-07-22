@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -16,7 +15,6 @@ using eDoxa.Seedwork.Application.Swagger.Filters;
 
 using IdentityServer4.Models;
 
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Controllers;
@@ -24,11 +22,53 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using Swashbuckle.AspNetCore.Swagger;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace eDoxa.Seedwork.Application.Swagger.Extensions
 {
     public static class ServiceCollectionExtensions
     {
+        public static void AddSecurityDefinition(this SwaggerGenOptions options, AppSettings appSettings)
+        {
+            options.AddSecurityDefinition(
+                "oauth2",
+                new OAuth2Scheme
+                {
+                    Type = "oauth2",
+                    Flow = "implicit",
+                    AuthorizationUrl = $"{appSettings.Authority.PublicUrl}/connect/authorize",
+                    TokenUrl = $"{appSettings.Authority.PublicUrl}/connect/token",
+                    Scopes = new Dictionary<string, string>
+                    {
+                        [appSettings.ApiResource.Name] = appSettings.ApiResource.DisplayName
+                    }
+                }
+            );
+        }
+
+        public static Info CreateInfoForApiVersion(this ApiVersionDescription description, AppSettings appSettings)
+        {
+            var info = new Info
+            {
+                Title = appSettings.ApiResource.DisplayName,
+                Version = description.GroupName,
+                Description = appSettings.ApiResource?.Description,
+                Contact = new Contact
+                {
+                    Name = "Francis Quenneville",
+                    Email = "francis@edoxa.gg"
+                },
+                TermsOfService = "eDoxa"
+            };
+
+            if (description.IsDeprecated)
+            {
+                info.Description += " This API version has been deprecated.";
+            }
+
+            return info;
+        }
+
         public static bool IsValid<T>(this T data)
         {
             if (data == null)
@@ -51,16 +91,18 @@ namespace eDoxa.Seedwork.Application.Swagger.Extensions
             return result;
         }
 
-        public static AppSettings ConfigureBusinessServices(this IServiceCollection services, IConfiguration configuration)
+        public static AppSettings ConfigureBusinessServices(this IServiceCollection services, IConfiguration configuration, ApiResource apiResource)
         {
             var appSettingsSection = configuration.GetSection(nameof(AppSettings));
 
             if (appSettingsSection == null)
             {
-                throw new Exception("No appsettings section has been found");
+                throw new Exception($"No {nameof(AppSettings)} section has been found.");
             }
 
             var appSettings = appSettingsSection.Get<AppSettings>();
+
+            appSettings.ApiResource = apiResource;
 
             if (!appSettings.IsValid())
             {
@@ -72,97 +114,47 @@ namespace eDoxa.Seedwork.Application.Swagger.Extensions
             return appSettings;
         }
 
-        public static void AddSwagger(
-            this IServiceCollection services,
-            IConfiguration configuration,
-            IHostingEnvironment environment,
-            ApiResource apiResource
-        )
+        public static void AddFilters(this SwaggerGenOptions options)
         {
-            if (!environment.IsDevelopment())
-            {
-                return;
-            }
+            options.DescribeAllEnumerationsAsStrings();
 
-            var authority = configuration["Authority"];
+            options.OperationFilter<CustomOperationFilter>();
 
-            var assembly = Assembly.GetCallingAssembly();
+            options.DocumentFilter<CustomDocumentFilter>();
 
-            services.AddSwaggerGen(
-                options =>
+            options.CustomOperationIds(
+                description =>
                 {
-                    options.DescribeAllEnumerationsAsStrings();
-
-                    var provider = services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
-
-                    foreach (var description in provider.ApiVersionDescriptions)
+                    if (description.ActionDescriptor is ControllerActionDescriptor descriptor)
                     {
-                        options.SwaggerDoc(
-                            description.GroupName,
-                            new Info
-                            {
-                                Title = apiResource.DisplayName,
-                                Version = description.ApiVersion.ToString()
-                            }
+                        return descriptor.ControllerName + descriptor.ActionName;
+                    }
+
+                    return description.ActionDescriptor.DisplayName;
+                }
+            );
+
+            options.TagActionsBy(
+                description =>
+                {
+                    if (description.ActionDescriptor is ControllerActionDescriptor descriptor)
+                    {
+                        var tags = descriptor.ControllerTypeInfo.GetCustomAttributes<ApiExplorerSettingsAttribute>()
+                            .Where(attribute => !attribute.IgnoreApi)
+                            .Select(attribute => attribute.GroupName)
+                            .ToList();
+
+                        if (tags.Any())
+                        {
+                            return tags;
+                        }
+
+                        throw new Exception(
+                            $"Each controller must have the attribute: {nameof(ApiExplorerSettingsAttribute)}. The attribute is missing for the controller: {descriptor.ControllerName}."
                         );
                     }
 
-                    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{assembly.GetName().Name}.xml"));
-
-                    options.AddSecurityDefinition(
-                        "oauth2",
-                        new OAuth2Scheme
-                        {
-                            Type = "oauth2",
-                            Flow = "implicit",
-                            AuthorizationUrl = authority + "/connect/authorize",
-                            TokenUrl = authority + "/connect/token",
-                            Scopes = new Dictionary<string, string>
-                            {
-                                [apiResource.Name] = apiResource.DisplayName
-                            }
-                        }
-                    );
-
-                    options.OperationFilter<CustomOperationFilter>();
-
-                    options.DocumentFilter<CustomDocumentFilter>();
-
-                    options.CustomOperationIds(
-                        apiDescription =>
-                        {
-                            if (apiDescription.ActionDescriptor is ControllerActionDescriptor descriptor)
-                            {
-                                return descriptor.ControllerName + descriptor.ActionName;
-                            }
-
-                            return apiDescription.ActionDescriptor.DisplayName;
-                        }
-                    );
-
-                    options.TagActionsBy(
-                        description =>
-                        {
-                            if (description.ActionDescriptor is ControllerActionDescriptor descriptor)
-                            {
-                                var tags = descriptor.ControllerTypeInfo.GetCustomAttributes<ApiExplorerSettingsAttribute>()
-                                    .Where(attribute => !attribute.IgnoreApi)
-                                    .Select(attribute => attribute.GroupName)
-                                    .ToList();
-
-                                if (tags.Any())
-                                {
-                                    return tags;
-                                }
-
-                                throw new Exception(
-                                    $"Each controller must have the attribute: {nameof(ApiExplorerSettingsAttribute)}. The attribute is missing for the controller: {descriptor.ControllerName}."
-                                );
-                            }
-
-                            return Array.Empty<string>();
-                        }
-                    );
+                    return Array.Empty<string>();
                 }
             );
         }

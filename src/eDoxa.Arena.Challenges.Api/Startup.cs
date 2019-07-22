@@ -15,13 +15,23 @@ using System.Reflection;
 
 using AutoMapper;
 
+using eDoxa.Arena.Challenges.Api.Application.Adapters;
 using eDoxa.Arena.Challenges.Api.Application.DelegatingHandlers;
+using eDoxa.Arena.Challenges.Api.Application.Factories;
 using eDoxa.Arena.Challenges.Api.Application.Services;
+using eDoxa.Arena.Challenges.Api.Application.Strategies;
 using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Api.Infrastructure;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data;
+using eDoxa.Arena.Challenges.Api.Infrastructure.Queries;
+using eDoxa.Arena.Challenges.Domain.Adapters;
+using eDoxa.Arena.Challenges.Domain.Factories;
+using eDoxa.Arena.Challenges.Domain.Queries;
+using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Domain.Services;
+using eDoxa.Arena.Challenges.Domain.Strategies;
 using eDoxa.Arena.Challenges.Infrastructure;
+using eDoxa.Arena.Challenges.Infrastructure.Repositories;
 using eDoxa.Arena.Extensions;
 using eDoxa.IntegrationEvents.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
@@ -32,7 +42,6 @@ using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security.Constants;
 using eDoxa.Seedwork.Security.Extensions;
-using eDoxa.Seedwork.Security.IdentityServer.Resources;
 
 using FluentValidation.AspNetCore;
 
@@ -46,10 +55,14 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Newtonsoft.Json;
 
+using static eDoxa.Seedwork.Security.IdentityServer.Resources.CustomApiResources;
+
 namespace eDoxa.Arena.Challenges.Api
 {
     public class Startup
     {
+        private static readonly string XmlCommentsFilePath = Path.Combine(AppContext.BaseDirectory, $"{typeof(Startup).GetTypeInfo().Assembly.GetName().Name}.xml");
+
         public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
         {
             Configuration = configuration;
@@ -63,11 +76,11 @@ namespace eDoxa.Arena.Challenges.Api
 
         private AppSettings AppSettings { get; set; }
 
-        private string XmlCommentsFilePath => Path.Combine(AppContext.BaseDirectory, $"{typeof(Startup).GetTypeInfo().Assembly.GetName().Name}.xml");
-
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddHealthChecks(Configuration);
+
+            services.AddCorsPolicy();
 
             services.AddEntityFrameworkSqlServer();
 
@@ -101,7 +114,7 @@ namespace eDoxa.Arena.Challenges.Api
                 }
             );
 
-            AppSettings = services.ConfigureBusinessServices(Configuration);
+            AppSettings = services.ConfigureBusinessServices(Configuration, ArenaChallengesApi);
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -109,15 +122,27 @@ namespace eDoxa.Arena.Challenges.Api
             {
                 if (AppSettings.Swagger.Enabled)
                 {
-                    services.AddSwagger(Configuration, HostingEnvironment, CustomApiResources.ArenaChallengesApi);
+                    services.AddSwaggerGen(options =>
+                    {
+                        var provider = services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
+
+                        foreach (var description in provider.ApiVersionDescriptions)
+                        {
+                            options.SwaggerDoc(description.GroupName, description.CreateInfoForApiVersion(AppSettings));
+                        }
+
+                        options.IncludeXmlComments(XmlCommentsFilePath);
+
+                        options.AddSecurityDefinition(AppSettings);
+
+                        options.AddFilters();
+                    });
                 }
             }
 
-            services.AddCorsPolicy();
-
             services.AddServiceBus(Configuration);
 
-            services.AddAuthentication(Configuration, HostingEnvironment, CustomApiResources.ArenaChallengesApi);
+            services.AddAuthentication(Configuration, HostingEnvironment, ArenaChallengesApi);
 
             services.AddTransient<IdentityDelegatingHandler>();
 
@@ -127,6 +152,29 @@ namespace eDoxa.Arena.Challenges.Api
                 .AddPolicyHandler(HttpPolicies.GetCircuitBreakerPolicy());
 
             services.AddArenaServices(Configuration);
+
+            // Repositories
+            services.AddScoped<IChallengeRepository, ChallengeRepository>();
+
+            // Queries
+            services.AddScoped<IChallengeQuery, ChallengeQuery>();
+            services.AddScoped<IParticipantQuery, ParticipantQuery>();
+            services.AddScoped<IMatchQuery, MatchQuery>();
+
+            // Services
+            services.AddScoped<IChallengeService, ChallengeService>();
+
+            // Strategies
+            services.AddTransient<IScoringStrategy, LeagueOfLegendsScoringStrategy>();
+
+            // Adapters
+            services.AddTransient<IGameReferencesAdapter, LeagueOfLegendsGameReferencesAdapter>();
+            services.AddTransient<IMatchAdapter, LeagueOfLegendsMatchAdapter>();
+
+            // Factories
+            services.AddSingleton<IScoringFactory, ScoringFactory>();
+            services.AddSingleton<IGameReferencesFactory, GameReferencesFactory>();
+            services.AddSingleton<IMatchFactory, MatchFactory>();
 
             return this.BuildModule(services);
         }
@@ -141,9 +189,31 @@ namespace eDoxa.Arena.Challenges.Api
 
             application.UseAuthentication(HostingEnvironment);
 
-            application.UseStaticFiles();
+            if (AppSettings.IsValid())
+            {
+                if (AppSettings.Swagger.Enabled)
+                {
+                    application.UseSwagger();
 
-            application.UseSwagger(HostingEnvironment, provider, CustomApiResources.ArenaChallengesApi);
+                    application.UseSwaggerUI(options =>
+                    {
+                        foreach (var description in provider.ApiVersionDescriptions)
+                        {
+                            options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
+                        }
+
+                        options.RoutePrefix = string.Empty;
+
+                        options.OAuthClientId(AppSettings.ApiResource.SwaggerClientId());
+
+                        options.OAuthAppName(AppSettings.ApiResource.SwaggerClientName());
+
+                        options.DefaultModelExpandDepth(0);
+
+                        options.DefaultModelsExpandDepth(-1);
+                    });
+                }
+            }
 
             application.UseMvc();
 

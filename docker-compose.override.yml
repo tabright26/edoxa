@@ -32,12 +32,12 @@ services:
       - ServiceBus__RetryCount=${ASB_RETRYCOUNT:-5}
       - ServiceBus__Subscription=Identity
       - AzureKubernetesService__Enable=${AKS_ENABLE:-false}
-      - Authority=${URL:-http://localhost}:5000
+      - AppSettings__Authority__PublicUrl=${URL:-http://localhost}:5000
       - Identity__Url=${URL:-http://localhost}:5000
       - Cashier__Url=${URL:-http://localhost}:5002
       - Arena__Challenges__Url=${URL:-http://localhost}:5003
       - Web__Spa__Url=${URL:-http://localhost}:5300
-      - IdentityServer__Url=http://identity.api
+      - AppSettings__Authority__PrivateUrl=http://identity.api
     ports:
       - "5000:80"
     volumes:
@@ -71,8 +71,8 @@ services:
       - ServiceBus__RetryCount=${ASB_RETRYCOUNT:-5}
       - ServiceBus__Subscription=Cashier
       - HealthChecks__Payment__Url=http://payment.api/health
-      - Authority=${URL:-http://localhost}:5000
-      - IdentityServer__Url=http://identity.api
+      - AppSettings__Authority__PublicUrl=${URL:-http://localhost}:5000
+      - AppSettings__Authority__PrivateUrl=http://identity.api
     ports:
       - "5002:80"
     volumes:
@@ -92,8 +92,8 @@ services:
       - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq}
       - ServiceBus__RetryCount=${ASB_RETRYCOUNT:-5}
       - ServiceBus__Subscription=Arena.Challenges
-      - Authority=${URL:-http://localhost}:5000
-      - IdentityServer__Url=http://identity.api
+      - AppSettings__Authority__PublicUrl=${URL:-http://localhost}:5000
+      - AppSettings__Authority__PrivateUrl=http://identity.api
     ports:
       - "5003:80"
     volumes:
@@ -106,7 +106,7 @@ services:
       - HealthChecks__Identity__Url=http://identity.api/health
       - HealthChecks__Cashier__Url=http://cashier.api/health
       - HealthChecks__ArenaChallenges__Url=http://arena.challenges.api/health
-      - IdentityServer__Url=http://identity.api
+      - AppSettings__Authority__PrivateUrl=http://identity.api
     ports:
       - "5200:80"
     volumes:
@@ -121,8 +121,8 @@ services:
   #    - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
   #    - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
   #    - AzureKubernetesService__Enable=${AKS_ENABLE:-false}
-  #    - Authority=${URL:-http://localhost}:5000  
-  #    - IdentityServer__Url=${URL:-http://localhost}:5000
+  #    - AppSettings__Authority__PublicUrl=${URL:-http://localhost}:5000  
+  #    - AppSettings__Authority__PrivateUrl=${URL:-http://localhost}:5000
   #    - Identity__Url=${URL:-http://localhost}:5001
   #    - Cashier__Url=${URL:-http://localhost}:5002
   #    - Challenge__Url=${URL:-http://localhost}:5003

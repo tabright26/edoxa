@@ -3,10 +3,6 @@
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -15,10 +11,20 @@ using System.Reflection;
 
 using AutoMapper;
 
+using eDoxa.Cashier.Api.Application.Factories;
+using eDoxa.Cashier.Api.Application.Services;
+using eDoxa.Cashier.Api.Application.Strategies;
 using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Api.Infrastructure;
 using eDoxa.Cashier.Api.Infrastructure.Data;
+using eDoxa.Cashier.Api.Infrastructure.Queries;
+using eDoxa.Cashier.Domain.Factories;
+using eDoxa.Cashier.Domain.Queries;
+using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Domain.Services;
+using eDoxa.Cashier.Domain.Strategies;
 using eDoxa.Cashier.Infrastructure;
+using eDoxa.Cashier.Infrastructure.Repositories;
 using eDoxa.IntegrationEvents.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Swagger;
@@ -27,7 +33,6 @@ using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security.Constants;
 using eDoxa.Seedwork.Security.Extensions;
-using eDoxa.Seedwork.Security.IdentityServer.Resources;
 
 using FluentValidation.AspNetCore;
 
@@ -41,10 +46,17 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Newtonsoft.Json;
 
+using static eDoxa.Seedwork.Security.IdentityServer.Resources.CustomApiResources;
+
 namespace eDoxa.Cashier.Api
 {
     public class Startup
     {
+        private static readonly string XmlCommentsFilePath = Path.Combine(
+            AppContext.BaseDirectory,
+            $"{typeof(Startup).GetTypeInfo().Assembly.GetName().Name}.xml"
+        );
+
         public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
         {
             Configuration = configuration;
@@ -58,11 +70,11 @@ namespace eDoxa.Cashier.Api
 
         private AppSettings AppSettings { get; set; }
 
-        private string XmlCommentsFilePath => Path.Combine(AppContext.BaseDirectory, $"{typeof(Startup).GetTypeInfo().Assembly.GetName().Name}.xml");
-
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddHealthChecks(Configuration);
+
+            services.AddCorsPolicy();
 
             services.AddEntityFrameworkSqlServer();
 
@@ -88,7 +100,7 @@ namespace eDoxa.Cashier.Api
                 }
             );
 
-            AppSettings = services.ConfigureBusinessServices(Configuration);
+            AppSettings = services.ConfigureBusinessServices(Configuration, CashierApi);
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -96,15 +108,48 @@ namespace eDoxa.Cashier.Api
             {
                 if (AppSettings.Swagger.Enabled)
                 {
-                    services.AddSwagger(Configuration, HostingEnvironment, CustomApiResources.CashierApi);
+                    services.AddSwaggerGen(
+                        options =>
+                        {
+                            var provider = services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
+
+                            foreach (var description in provider.ApiVersionDescriptions)
+                            {
+                                options.SwaggerDoc(description.GroupName, description.CreateInfoForApiVersion(AppSettings));
+                            }
+
+                            options.IncludeXmlComments(XmlCommentsFilePath);
+
+                            options.AddSecurityDefinition(AppSettings);
+
+                            options.AddFilters();
+                        }
+                    );
                 }
             }
 
-            services.AddCorsPolicy();
-
             services.AddServiceBus(Configuration);
 
-            services.AddAuthentication(Configuration, HostingEnvironment, CustomApiResources.CashierApi);
+            services.AddAuthentication(Configuration, HostingEnvironment, CashierApi);
+
+            // Repositories
+            services.AddScoped<IChallengeRepository, ChallengeRepository>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<ITransactionRepository, TransactionRepository>();
+
+            // Queries
+            services.AddScoped<IChallengeQuery, ChallengeQuery>();
+            services.AddScoped<IAccountQuery, AccountQuery>();
+            services.AddScoped<ITransactionQuery, TransactionQuery>();
+
+            // Services
+            services.AddScoped<IAccountService, AccountService>();
+
+            // Strategies
+            services.AddTransient<IPayoutStrategy, PayoutStrategy>();
+
+            // Factories
+            services.AddSingleton<IPayoutFactory, PayoutFactory>();
 
             return this.BuildModule(services);
         }
@@ -119,9 +164,33 @@ namespace eDoxa.Cashier.Api
 
             application.UseAuthentication(HostingEnvironment);
 
-            application.UseStaticFiles();
+            if (AppSettings.IsValid())
+            {
+                if (AppSettings.Swagger.Enabled)
+                {
+                    application.UseSwagger();
 
-            application.UseSwagger(HostingEnvironment, provider, CustomApiResources.CashierApi);
+                    application.UseSwaggerUI(
+                        options =>
+                        {
+                            foreach (var description in provider.ApiVersionDescriptions)
+                            {
+                                options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
+                            }
+
+                            options.RoutePrefix = string.Empty;
+
+                            options.OAuthClientId(AppSettings.ApiResource.SwaggerClientId());
+
+                            options.OAuthAppName(AppSettings.ApiResource.SwaggerClientName());
+
+                            options.DefaultModelExpandDepth(0);
+
+                            options.DefaultModelsExpandDepth(-1);
+                        }
+                    );
+                }
+            }
 
             application.UseMvc();
 

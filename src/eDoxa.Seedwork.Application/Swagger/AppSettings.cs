@@ -1,4 +1,4 @@
-﻿// Filename: ApiSettings.cs
+﻿// Filename: AppSettings.cs
 // Date Created: 2019-07-22
 // 
 // ================================================
@@ -6,23 +6,29 @@
 
 using System.ComponentModel.DataAnnotations;
 
+using IdentityServer4.Models;
+
 namespace eDoxa.Seedwork.Application.Swagger
 {
     public class AppSettings
     {
         [Required]
-        public Api Api { get; set; }
+        public Authority Authority { get; set; }
+
+        [Required]
+        public ApiResource ApiResource { get; set; }
 
         [Required]
         public Swagger Swagger { get; set; }
     }
 
-    public class Api
+    public class Authority
     {
         [Required]
-        public string Title { get; set; }
+        public string PrivateUrl { get; set; }
 
-        public string Description { get; set; }
+        [Required]
+        public string PublicUrl { get; set; }
     }
 
     public class Swagger

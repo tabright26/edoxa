@@ -34,29 +34,6 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure
             builder.RegisterModule<DomainEventModule>();
             builder.RegisterModule<CommandModule>();
             builder.RegisterModule<IntegrationEventModule<ArenaChallengesDbContext>>();
-
-            // Repositories
-            builder.RegisterType<ChallengeRepository>().As<IChallengeRepository>().InstancePerLifetimeScope();
-
-            // Queries
-            builder.RegisterType<ChallengeQuery>().As<IChallengeQuery>().InstancePerLifetimeScope();
-            builder.RegisterType<ParticipantQuery>().As<IParticipantQuery>().InstancePerLifetimeScope();
-            builder.RegisterType<MatchQuery>().As<IMatchQuery>().InstancePerLifetimeScope();
-
-            // Services
-            builder.RegisterType<ChallengeService>().As<IChallengeService>().InstancePerLifetimeScope();
-
-            // Strategies
-            builder.RegisterType<LeagueOfLegendsScoringStrategy>().As<IScoringStrategy>();
-
-            // Adapters
-            builder.RegisterType<LeagueOfLegendsGameReferencesAdapter>().As<IGameReferencesAdapter>();
-            builder.RegisterType<LeagueOfLegendsMatchAdapter>().As<IMatchAdapter>();
-
-            // Factories
-            builder.RegisterType<ScoringFactory>().As<IScoringFactory>().SingleInstance();
-            builder.RegisterType<GameReferencesFactory>().As<IGameReferencesFactory>().SingleInstance();
-            builder.RegisterType<MatchFactory>().As<IMatchFactory>().SingleInstance();
         }
     }
 }

@@ -50,7 +50,7 @@ namespace eDoxa.Seedwork.Monitoring.Extensions
 
         public static void AddIdentityServer(this IHealthChecksBuilder builder, IConfiguration configuration)
         {
-            builder.AddIdentityServer(new Uri(configuration["IdentityServer:Url"]), "identity-server", tags: new[] {"idsrv"});
+            builder.AddIdentityServer(new Uri(configuration["AppSettings:Authority:PrivateUrl"]), "identity-server", tags: new[] {"idsrv"});
         }
 
         public static void AddRedis(this IHealthChecksBuilder builder, IConfiguration configuration)
