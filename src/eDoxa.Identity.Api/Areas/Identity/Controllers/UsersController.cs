@@ -41,6 +41,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         /// <summary>
         ///     Find users.
         /// </summary>
+        [AllowAnonymous]
         [HttpGet(Name = nameof(FindUsersAsync))]
         public async Task<IActionResult> FindUsersAsync()
         {

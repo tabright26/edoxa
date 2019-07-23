@@ -3,10 +3,6 @@
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -61,7 +57,10 @@ namespace eDoxa.Arena.Challenges.Api
 {
     public class Startup
     {
-        private static readonly string XmlCommentsFilePath = Path.Combine(AppContext.BaseDirectory, $"{typeof(Startup).GetTypeInfo().Assembly.GetName().Name}.xml");
+        private static readonly string XmlCommentsFilePath = Path.Combine(
+            AppContext.BaseDirectory,
+            $"{typeof(Startup).GetTypeInfo().Assembly.GetName().Name}.xml"
+        );
 
         public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
         {
@@ -122,25 +121,25 @@ namespace eDoxa.Arena.Challenges.Api
             {
                 if (AppSettings.Swagger.Enabled)
                 {
-                    services.AddSwaggerGen(options =>
-                    {
-                        var provider = services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
-
-                        foreach (var description in provider.ApiVersionDescriptions)
+                    services.AddSwaggerGen(
+                        options =>
                         {
-                            options.SwaggerDoc(description.GroupName, description.CreateInfoForApiVersion(AppSettings));
+                            var provider = services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
+
+                            foreach (var description in provider.ApiVersionDescriptions)
+                            {
+                                options.SwaggerDoc(description.GroupName, description.CreateInfoForApiVersion(AppSettings));
+                            }
+
+                            options.IncludeXmlComments(XmlCommentsFilePath);
+
+                            options.AddSecurityDefinition(AppSettings);
+
+                            options.AddFilters();
                         }
-
-                        options.IncludeXmlComments(XmlCommentsFilePath);
-
-                        options.AddSecurityDefinition(AppSettings);
-
-                        options.AddFilters();
-                    });
+                    );
                 }
             }
-
-            services.AddServiceBus(Configuration);
 
             services.AddAuthentication(Configuration, HostingEnvironment, ArenaChallengesApi);
 
@@ -176,6 +175,8 @@ namespace eDoxa.Arena.Challenges.Api
             services.AddSingleton<IGameReferencesFactory, GameReferencesFactory>();
             services.AddSingleton<IMatchFactory, MatchFactory>();
 
+            services.AddServiceBus(Configuration);
+
             return this.BuildModule(services);
         }
 
@@ -195,23 +196,25 @@ namespace eDoxa.Arena.Challenges.Api
                 {
                     application.UseSwagger();
 
-                    application.UseSwaggerUI(options =>
-                    {
-                        foreach (var description in provider.ApiVersionDescriptions)
+                    application.UseSwaggerUI(
+                        options =>
                         {
-                            options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
+                            foreach (var description in provider.ApiVersionDescriptions)
+                            {
+                                options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
+                            }
+
+                            options.RoutePrefix = string.Empty;
+
+                            options.OAuthClientId(AppSettings.ApiResource.SwaggerClientId());
+
+                            options.OAuthAppName(AppSettings.ApiResource.SwaggerClientName());
+
+                            options.DefaultModelExpandDepth(0);
+
+                            options.DefaultModelsExpandDepth(-1);
                         }
-
-                        options.RoutePrefix = string.Empty;
-
-                        options.OAuthClientId(AppSettings.ApiResource.SwaggerClientId());
-
-                        options.OAuthAppName(AppSettings.ApiResource.SwaggerClientName());
-
-                        options.DefaultModelExpandDepth(0);
-
-                        options.DefaultModelsExpandDepth(-1);
-                    });
+                    );
                 }
             }
 

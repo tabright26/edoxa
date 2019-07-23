@@ -128,8 +128,6 @@ namespace eDoxa.Cashier.Api
                 }
             }
 
-            services.AddServiceBus(Configuration);
-
             services.AddAuthentication(Configuration, HostingEnvironment, CashierApi);
 
             // Repositories
@@ -150,6 +148,8 @@ namespace eDoxa.Cashier.Api
 
             // Factories
             services.AddSingleton<IPayoutFactory, PayoutFactory>();
+
+            services.AddServiceBus(Configuration);
 
             return this.BuildModule(services);
         }

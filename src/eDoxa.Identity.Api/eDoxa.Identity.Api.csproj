@@ -23,14 +23,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="compilerconfig.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap-custom.css" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AspNet.Security.OAuth.BattleNet" Version="2.1.0" />
     <PackageReference Include="AspNet.Security.OAuth.Twitch" Version="2.1.0" />
     <PackageReference Include="AspNet.Security.OpenId.Steam" Version="2.1.0" />
@@ -45,6 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\eDoxa.Commands\eDoxa.Commands.csproj" />
     <ProjectReference Include="..\eDoxa.IntegrationEvents\eDoxa.IntegrationEvents.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Monitoring\eDoxa.Seedwork.Monitoring.csproj" />
@@ -62,10 +55,6 @@
     <Content Include="..\..\data\Identity\TestFiles\TestUsers.csv" Link="Infrastructure\Data\Storage\TestFiles\TestUsers.csv" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="..\..\data\Identity\TestFiles\TestUserClaims.csv" Link="Infrastructure\Data\Storage\TestFiles\TestUserClaims.csv" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="..\..\data\Identity\TestFiles\TestUserRoles.csv" Link="Infrastructure\Data\Storage\TestFiles\TestUserRoles.csv" CopyToOutputDirectory="PreserveNewest" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="compilerconfig.json" />
   </ItemGroup>
 
 </Project>

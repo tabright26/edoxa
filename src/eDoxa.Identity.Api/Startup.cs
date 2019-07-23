@@ -10,6 +10,9 @@ using System.Reflection;
 
 using AutoMapper;
 
+using eDoxa.Identity.Api.Areas.Identity.Extensions;
+using eDoxa.Identity.Api.Areas.Identity.Services;
+using eDoxa.Identity.Api.Areas.Identity.Validators;
 using eDoxa.Identity.Api.Extensions;
 using eDoxa.Identity.Api.Infrastructure;
 using eDoxa.Identity.Api.Infrastructure.Data;
@@ -28,8 +31,12 @@ using eDoxa.Seedwork.Security.Middlewares;
 
 using FluentValidation.AspNetCore;
 
+using IdentityModel;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Versioning;
@@ -44,7 +51,10 @@ namespace eDoxa.Identity.Api
 {
     public class Startup
     {
-        private static readonly string XmlCommentsFilePath = Path.Combine(AppContext.BaseDirectory, $"{typeof(Startup).GetTypeInfo().Assembly.GetName().Name}.xml");
+        private static readonly string XmlCommentsFilePath = Path.Combine(
+            AppContext.BaseDirectory,
+            $"{typeof(Startup).GetTypeInfo().Assembly.GetName().Name}.xml"
+        );
 
         public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
         {
@@ -64,13 +74,86 @@ namespace eDoxa.Identity.Api
 
             services.AddHealthChecks(Configuration);
 
+            services.AddDataProtection(Configuration);
+
             services.AddEntityFrameworkSqlServer();
 
             services.AddIntegrationEventDbContext(Configuration, Assembly.GetAssembly(typeof(Startup)));
 
             services.AddDbContext<IdentityDbContext, IdentityDbContextData>(Configuration, Assembly.GetAssembly(typeof(Startup)));
 
-            services.AddDataProtection(Configuration);
+            services.Configure<CookiePolicyOptions>(
+                options =>
+                {
+                    options.CheckConsentNeeded = _ => true;
+                    options.MinimumSameSitePolicy = SameSiteMode.None;
+                }
+            );
+
+            services.AddScoped<IUserValidator<User>, EmailValidator>();
+            services.AddScoped<IUserValidator<User>, PhoneNumberValidator>();
+            services.AddScoped<IUserValidator<User>, UserNameValidator>();
+
+            services.AddIdentity<User, Role>(
+                    options =>
+                    {
+                        options.Password.RequireDigit = true;
+                        options.Password.RequiredLength = 8;
+                        options.Password.RequiredUniqueChars = 1;
+                        options.Password.RequireLowercase = true;
+                        options.Password.RequireNonAlphanumeric = true;
+                        options.Password.RequireUppercase = true;
+
+                        options.Lockout.AllowedForNewUsers = true;
+                        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                        options.Lockout.MaxFailedAccessAttempts = 5;
+
+                        options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_#";
+                        options.User.RequireUniqueEmail = true;
+
+                        options.ClaimsIdentity.UserIdClaimType = JwtClaimTypes.Subject;
+                        options.ClaimsIdentity.UserNameClaimType = JwtClaimTypes.Name;
+                        options.ClaimsIdentity.RoleClaimType = JwtClaimTypes.Role;
+                        options.ClaimsIdentity.SecurityStampClaimType = CustomClaimTypes.SecurityStamp;
+
+                        options.SignIn.RequireConfirmedPhoneNumber = false;
+                        options.SignIn.RequireConfirmedEmail = HostingEnvironment.IsProduction();
+
+                        options.Tokens.AuthenticatorTokenProvider = CustomTokenProviders.Authenticator;
+                        options.Tokens.ChangeEmailTokenProvider = CustomTokenProviders.ChangeEmail;
+                        options.Tokens.ChangePhoneNumberTokenProvider = CustomTokenProviders.ChangePhoneNumber;
+                        options.Tokens.EmailConfirmationTokenProvider = CustomTokenProviders.EmailConfirmation;
+                        options.Tokens.PasswordResetTokenProvider = CustomTokenProviders.PasswordReset;
+                    }
+                )
+                .AddEntityFrameworkStores<IdentityDbContext>()
+                .AddUserStore<CustomUserStore>()
+                .AddTokenProviders(
+                    options =>
+                    {
+                        options.Authenticator.TokenLifespan = TimeSpan.FromHours(1);
+                        options.ChangeEmail.TokenLifespan = TimeSpan.FromDays(1);
+                        options.ChangePhoneNumber.TokenLifespan = TimeSpan.FromDays(1);
+                        options.EmailConfirmation.TokenLifespan = TimeSpan.FromDays(2);
+                        options.PasswordReset.TokenLifespan = TimeSpan.FromHours(2);
+                    }
+                )
+                .AddClaimsPrincipalFactory<CustomUserClaimsPrincipalFactory>()
+                .AddUserManager<CustomUserManager>()
+                .AddUserValidator<EmailValidator>()
+                .AddUserValidator<PhoneNumberValidator>()
+                .AddUserValidator<UserNameValidator>()
+                .AddSignInManager<CustomSignInManager>()
+                .AddRoleManager<CustomRoleManager>()
+                .BuildCustomServices();
+
+            services.Configure<PasswordHasherOptions>(
+                option =>
+                {
+                    option.CompatibilityMode = PasswordHasherCompatibilityMode.IdentityV3;
+                    option.IterationCount = HostingEnvironment.IsProduction() ? 100000 : 1;
+                }
+            );
 
             services.AddVersionedApiExplorer(options => options.GroupNameFormat = "'v'VV");
 
@@ -106,21 +189,23 @@ namespace eDoxa.Identity.Api
             {
                 if (AppSettings.Swagger.Enabled)
                 {
-                    services.AddSwaggerGen(options =>
-                    {
-                        var provider = services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
-
-                        foreach (var description in provider.ApiVersionDescriptions)
+                    services.AddSwaggerGen(
+                        options =>
                         {
-                            options.SwaggerDoc(description.GroupName, description.CreateInfoForApiVersion(AppSettings));
+                            var provider = services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
+
+                            foreach (var description in provider.ApiVersionDescriptions)
+                            {
+                                options.SwaggerDoc(description.GroupName, description.CreateInfoForApiVersion(AppSettings));
+                            }
+
+                            options.IncludeXmlComments(XmlCommentsFilePath);
+
+                            options.AddSecurityDefinition(AppSettings);
+
+                            options.AddFilters();
                         }
-
-                        options.IncludeXmlComments(XmlCommentsFilePath);
-
-                        options.AddSecurityDefinition(AppSettings);
-
-                        options.AddFilters();
-                    });
+                    );
                 }
             }
 
@@ -191,23 +276,25 @@ namespace eDoxa.Identity.Api
                 {
                     application.UseSwagger();
 
-                    application.UseSwaggerUI(options =>
-                    {
-                        foreach (var description in provider.ApiVersionDescriptions)
+                    application.UseSwaggerUI(
+                        options =>
                         {
-                            options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
+                            foreach (var description in provider.ApiVersionDescriptions)
+                            {
+                                options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
+                            }
+
+                            options.RoutePrefix = string.Empty;
+
+                            options.OAuthClientId(AppSettings.ApiResource.SwaggerClientId());
+
+                            options.OAuthAppName(AppSettings.ApiResource.SwaggerClientName());
+
+                            options.DefaultModelExpandDepth(0);
+
+                            options.DefaultModelsExpandDepth(-1);
                         }
-
-                        options.RoutePrefix = string.Empty;
-
-                        options.OAuthClientId(AppSettings.ApiResource.SwaggerClientId());
-
-                        options.OAuthAppName(AppSettings.ApiResource.SwaggerClientName());
-
-                        options.DefaultModelExpandDepth(0);
-
-                        options.DefaultModelsExpandDepth(-1);
-                    });
+                    );
                 }
             }
 
