@@ -8,8 +8,12 @@ using System;
 using System.IO;
 using System.Reflection;
 
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+
 using AutoMapper;
 
+using eDoxa.Commands;
 using eDoxa.Identity.Api.Areas.Identity.Extensions;
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Areas.Identity.Validators;
@@ -18,7 +22,9 @@ using eDoxa.Identity.Api.Infrastructure;
 using eDoxa.Identity.Api.Infrastructure.Data;
 using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Identity.Api.Services;
+using eDoxa.IntegrationEvents;
 using eDoxa.IntegrationEvents.Extensions;
+using eDoxa.Seedwork.Application.DomainEvents;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Swagger;
 using eDoxa.Seedwork.Application.Swagger.Extensions;
@@ -60,13 +66,14 @@ namespace eDoxa.Identity.Api
         {
             Configuration = configuration;
             HostingEnvironment = hostingEnvironment;
+            AppSettings = configuration.TryGetAppSettings(IdentityApi);
         }
 
         public IConfiguration Configuration { get; }
 
         public IHostingEnvironment HostingEnvironment { get; }
 
-        private AppSettings AppSettings { get; set; }
+        private AppSettings AppSettings { get; }
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
@@ -181,8 +188,6 @@ namespace eDoxa.Identity.Api
                 }
             );
 
-            AppSettings = services.ConfigureBusinessServices(Configuration, IdentityApi);
-
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             if (AppSettings.IsValid())
@@ -238,6 +243,21 @@ namespace eDoxa.Identity.Api
             services.AddServiceBus(Configuration);
 
             return this.BuildModule(services);
+        }
+
+        private IServiceProvider CreateContainer(IServiceCollection services)
+        {
+            var builder = new ContainerBuilder();
+
+            builder.RegisterModule<DomainEventModule>();
+            
+            builder.RegisterModule<IntegrationEventModule<IdentityDbContext>>();
+
+            builder.RegisterModule<IdentityModule>();
+
+            builder.Populate(services);
+
+            return new AutofacServiceProvider(builder.Build());
         }
 
         public void Configure(IApplicationBuilder application, IApiVersionDescriptionProvider provider)

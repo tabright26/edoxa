@@ -9,10 +9,14 @@ using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Reflection;
 
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+
 using AutoMapper;
 
 using eDoxa.Arena.Challenges.Api.Application.Adapters;
 using eDoxa.Arena.Challenges.Api.Application.DelegatingHandlers;
+using eDoxa.Arena.Challenges.Api.Application.DomainEvents;
 using eDoxa.Arena.Challenges.Api.Application.Factories;
 using eDoxa.Arena.Challenges.Api.Application.Services;
 using eDoxa.Arena.Challenges.Api.Application.Strategies;
@@ -29,6 +33,8 @@ using eDoxa.Arena.Challenges.Domain.Strategies;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.Infrastructure.Repositories;
 using eDoxa.Arena.Extensions;
+using eDoxa.Commands;
+using eDoxa.IntegrationEvents;
 using eDoxa.IntegrationEvents.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Swagger;
@@ -66,6 +72,7 @@ namespace eDoxa.Arena.Challenges.Api
         {
             Configuration = configuration;
             HostingEnvironment = hostingEnvironment;
+            AppSettings = configuration.TryGetAppSettings(ArenaChallengesApi);
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         }
 
@@ -73,7 +80,7 @@ namespace eDoxa.Arena.Challenges.Api
 
         public IHostingEnvironment HostingEnvironment { get; }
 
-        private AppSettings AppSettings { get; set; }
+        private AppSettings AppSettings { get; }
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
@@ -112,8 +119,6 @@ namespace eDoxa.Arena.Challenges.Api
                     options.ApiVersionReader = new HeaderApiVersionReader(CustomHeaderNames.Version);
                 }
             );
-
-            AppSettings = services.ConfigureBusinessServices(Configuration, ArenaChallengesApi);
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -178,6 +183,23 @@ namespace eDoxa.Arena.Challenges.Api
             services.AddServiceBus(Configuration);
 
             return this.BuildModule(services);
+        }
+
+        private IServiceProvider CreateContainer(IServiceCollection services)
+        { 
+            var builder = new ContainerBuilder();
+
+            builder.RegisterModule<DomainEventModule>();
+
+            builder.RegisterModule<CommandModule>();
+
+            builder.RegisterModule<IntegrationEventModule<ArenaChallengesDbContext>>();
+
+            builder.RegisterModule<ArenaChallengesModule>();
+
+            builder.Populate(services);
+
+            return new AutofacServiceProvider(builder.Build());
         }
 
         public void Configure(IApplicationBuilder application, IApiVersionDescriptionProvider provider)

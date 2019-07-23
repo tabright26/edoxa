@@ -91,6 +91,27 @@ namespace eDoxa.Seedwork.Application.Swagger.Extensions
             return result;
         }
 
+        public static AppSettings TryGetAppSettings(this IConfiguration configuration, ApiResource apiResource)
+        {
+            var appSettingsSection = configuration.GetSection(nameof(AppSettings));
+
+            if (appSettingsSection == null)
+            {
+                throw new Exception($"No {nameof(AppSettings)} section has been found.");
+            }
+
+            var appSettings = appSettingsSection.Get<AppSettings>();
+
+            appSettings.ApiResource = apiResource;
+
+            if (!appSettings.IsValid())
+            {
+                throw new Exception("No valid settings.");
+            }
+
+            return appSettings;
+        }
+
         public static AppSettings ConfigureBusinessServices(this IServiceCollection services, IConfiguration configuration, ApiResource apiResource)
         {
             var appSettingsSection = configuration.GetSection(nameof(AppSettings));
