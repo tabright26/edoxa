@@ -10,11 +10,6 @@
 
 using Autofac;
 
-using eDoxa.Cashier.Infrastructure;
-using eDoxa.Commands;
-using eDoxa.IntegrationEvents;
-using eDoxa.Seedwork.Application.DomainEvents;
-
 using JetBrains.Annotations;
 
 namespace eDoxa.Cashier.Api.Infrastructure
@@ -23,9 +18,6 @@ namespace eDoxa.Cashier.Api.Infrastructure
     {
         protected override void Load([NotNull] ContainerBuilder builder)
         {
-            builder.RegisterModule<DomainEventModule>();
-            builder.RegisterModule<CommandModule>();
-            builder.RegisterModule<IntegrationEventModule<CashierDbContext>>();
         }
     }
 }

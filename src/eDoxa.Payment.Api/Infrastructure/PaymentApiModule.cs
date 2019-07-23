@@ -18,7 +18,7 @@ using JetBrains.Annotations;
 
 namespace eDoxa.Payment.Api.Infrastructure
 {
-    internal sealed class ApiModule : Module
+    internal sealed class PaymentApiModule : Module
     {
         protected override void Load([NotNull] ContainerBuilder builder)
         {

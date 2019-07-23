@@ -13,7 +13,6 @@ using Autofac.Extensions.DependencyInjection;
 
 using AutoMapper;
 
-using eDoxa.Commands;
 using eDoxa.Identity.Api.Areas.Identity.Extensions;
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Areas.Identity.Validators;
@@ -61,6 +60,11 @@ namespace eDoxa.Identity.Api
             AppContext.BaseDirectory,
             $"{typeof(Startup).GetTypeInfo().Assembly.GetName().Name}.xml"
         );
+
+        public static Action<ContainerBuilder> ConfigureContainer = builder =>
+        {
+            // Required for testing.
+        };
 
         public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
         {
@@ -244,22 +248,7 @@ namespace eDoxa.Identity.Api
 
             return this.BuildModule(services);
         }
-
-        private IServiceProvider CreateContainer(IServiceCollection services)
-        {
-            var builder = new ContainerBuilder();
-
-            builder.RegisterModule<DomainEventModule>();
-            
-            builder.RegisterModule<IntegrationEventModule<IdentityDbContext>>();
-
-            builder.RegisterModule<IdentityModule>();
-
-            builder.Populate(services);
-
-            return new AutofacServiceProvider(builder.Build());
-        }
-
+        
         public void Configure(IApplicationBuilder application, IApiVersionDescriptionProvider provider)
         {
             application.UseHealthChecks();
@@ -323,10 +312,27 @@ namespace eDoxa.Identity.Api
             application.UseIntegrationEventSubscriptions();
         }
 
+        private IServiceProvider CreateContainer(IServiceCollection services)
+        {
+            var builder = new ContainerBuilder();
+
+            builder.RegisterModule<DomainEventModule>();
+
+            builder.RegisterModule<IntegrationEventModule<IdentityDbContext>>();
+
+            builder.RegisterModule<IdentityApiModule>();
+
+            ConfigureContainer(builder);
+
+            builder.Populate(services);
+
+            return new AutofacServiceProvider(builder.Build());
+        }
+
         // TODO: Required by integration and functional tests.
         protected virtual IServiceProvider BuildModule(IServiceCollection services)
         {
-            return services.Build<IdentityModule>();
+            return services.Build<IdentityApiModule>();
         }
     }
 }

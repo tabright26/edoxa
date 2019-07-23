@@ -1,14 +1,13 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-07-02
+// Date Created: 2019-07-05
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
+
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 
 using eDoxa.IntegrationEvents.Extensions;
 using eDoxa.Payment.Api.Extensions;
@@ -26,6 +25,11 @@ namespace eDoxa.Payment.Api
 {
     public class Startup
     {
+        public static Action<ContainerBuilder> ConfigureContainer = builder =>
+        {
+            // Required for testing.
+        };
+
         public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
         {
             Configuration = configuration;
@@ -48,7 +52,7 @@ namespace eDoxa.Payment.Api
 
             return this.BuildModule(services);
         }
-
+        
         public void Configure(IApplicationBuilder application)
         {
             application.UseHealthChecks();
@@ -63,10 +67,23 @@ namespace eDoxa.Payment.Api
             application.UseIntegrationEventSubscriptions();
         }
 
+        private IServiceProvider CreateContainer(IServiceCollection services)
+        {
+            var builder = new ContainerBuilder();
+
+            builder.RegisterModule<PaymentApiModule>();
+
+            ConfigureContainer(builder);
+
+            builder.Populate(services);
+
+            return new AutofacServiceProvider(builder.Build());
+        }
+
         // TODO: Required by integration and functional tests.
         protected virtual IServiceProvider BuildModule(IServiceCollection services)
         {
-            return services.Build<ApiModule>();
+            return services.Build<PaymentApiModule>();
         }
     }
 }

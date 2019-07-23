@@ -6,19 +6,14 @@
 
 using Autofac;
 
-using eDoxa.IntegrationEvents;
-using eDoxa.Seedwork.Application.DomainEvents;
-
 using JetBrains.Annotations;
 
 namespace eDoxa.Identity.Api.Infrastructure
 {
-    public sealed class IdentityModule : Module
+    public sealed class IdentityApiModule : Module
     {
         protected override void Load([NotNull] ContainerBuilder builder)
         {
-            builder.RegisterModule<DomainEventModule>();
-            builder.RegisterModule<IntegrationEventModule<IdentityDbContext>>();
         }
     }
 }

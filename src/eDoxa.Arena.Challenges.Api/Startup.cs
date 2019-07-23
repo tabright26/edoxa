@@ -68,6 +68,11 @@ namespace eDoxa.Arena.Challenges.Api
             $"{typeof(Startup).GetTypeInfo().Assembly.GetName().Name}.xml"
         );
 
+        public static Action<ContainerBuilder> ConfigureContainer = builder =>
+        {
+            // Required for testing.
+        };
+
         public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
         {
             Configuration = configuration;
@@ -186,7 +191,7 @@ namespace eDoxa.Arena.Challenges.Api
         }
 
         private IServiceProvider CreateContainer(IServiceCollection services)
-        { 
+        {
             var builder = new ContainerBuilder();
 
             builder.RegisterModule<DomainEventModule>();
@@ -196,6 +201,8 @@ namespace eDoxa.Arena.Challenges.Api
             builder.RegisterModule<IntegrationEventModule<ArenaChallengesDbContext>>();
 
             builder.RegisterModule<ArenaChallengesModule>();
+
+            ConfigureContainer(builder);
 
             builder.Populate(services);
 

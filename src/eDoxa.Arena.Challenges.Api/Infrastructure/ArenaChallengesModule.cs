@@ -6,11 +6,6 @@
 
 using Autofac;
 
-using eDoxa.Arena.Challenges.Api.Application.DomainEvents;
-using eDoxa.Arena.Challenges.Infrastructure;
-using eDoxa.Commands;
-using eDoxa.IntegrationEvents;
-
 using JetBrains.Annotations;
 
 namespace eDoxa.Arena.Challenges.Api.Infrastructure
@@ -19,9 +14,6 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure
     {
         protected override void Load([NotNull] ContainerBuilder builder)
         {
-            builder.RegisterModule<DomainEventModule>();
-            builder.RegisterModule<CommandModule>();
-            builder.RegisterModule<IntegrationEventModule<ArenaChallengesDbContext>>();
         }
     }
 }

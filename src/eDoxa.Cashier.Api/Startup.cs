@@ -63,6 +63,11 @@ namespace eDoxa.Cashier.Api
             $"{typeof(Startup).GetTypeInfo().Assembly.GetName().Name}.xml"
         );
 
+        public static Action<ContainerBuilder> ConfigureContainer = builder =>
+        {
+            // Required for testing.
+        };
+
         public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
         {
             Configuration = configuration;
@@ -159,23 +164,6 @@ namespace eDoxa.Cashier.Api
             return this.BuildModule(services);
         }
 
-        private IServiceProvider CreateContainer(IServiceCollection services)
-        {
-            var builder = new ContainerBuilder();
-
-            builder.RegisterModule<DomainEventModule>();
-
-            builder.RegisterModule<CommandModule>();
-
-            builder.RegisterModule<IntegrationEventModule<CashierDbContext>>();
-
-            builder.RegisterModule<CashierModule>();
-
-            builder.Populate(services);
-
-            return new AutofacServiceProvider(builder.Build());
-        }
-
         public void Configure(IApplicationBuilder application, IApiVersionDescriptionProvider provider)
         {
             application.UseHealthChecks();
@@ -217,6 +205,25 @@ namespace eDoxa.Cashier.Api
             application.UseMvc();
 
             application.UseIntegrationEventSubscriptions();
+        }
+
+        private IServiceProvider CreateContainer(IServiceCollection services)
+        {
+            var builder = new ContainerBuilder();
+
+            builder.RegisterModule<DomainEventModule>();
+
+            builder.RegisterModule<CommandModule>();
+
+            builder.RegisterModule<IntegrationEventModule<CashierDbContext>>();
+
+            builder.RegisterModule<CashierModule>();
+
+            ConfigureContainer(builder);
+
+            builder.Populate(services);
+
+            return new AutofacServiceProvider(builder.Build());
         }
 
         // TODO: Required by integration and functional tests.
