@@ -41,8 +41,7 @@ services:
     ports:
       - "5000:80"
     volumes:
-      - ./data/Identity/SourceFiles:/app/Infrastructure/Data/Storage/SourceFiles
-      - ./data/Identity/TestFiles:/app/Infrastructure/Data/Storage/TestFiles
+      - ./src/eDoxa.Identity.Api/Infrastructure/Data/Storage:/app/Infrastructure/Data/Storage
 
   payment.api:
     environment:
@@ -76,8 +75,7 @@ services:
     ports:
       - "5002:80"
     volumes:
-      - ./data/Cashier/SourceFiles:/app/Infrastructure/Data/Storage/SourceFiles
-      - ./data/Cashier/TestFiles:/app/Infrastructure/Data/Storage/TestFiles       
+      - ./src/eDoxa.Cashier.Api/Infrastructure/Data/Storage:/app/Infrastructure/Data/Storage
 
   arena.challenges.api:
     environment:
@@ -97,8 +95,7 @@ services:
     ports:
       - "5003:80"
     volumes:
-      - ./data/Arena/Challenges/SourceFiles:/app/Infrastructure/Data/Storage/SourceFiles
-      - ./data/Arena/Challenges/TestFiles:/app/Infrastructure/Data/Storage/TestFiles
+      - ./src/eDoxa.Arena.Challenges.Api/Infrastructure/Data/Storage:/app/Infrastructure/Data/Storage
 
   web.gateway:
     environment:

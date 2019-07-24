@@ -39,14 +39,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="appsettings.Testing.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Update="appsettings.Testing.json" CopyToOutputDirectory="Always" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="..\..\data\Arena\Challenges\TestFiles\TestUsers.csv" Link="Infrastructure\Data\Storage\TestFiles\TestUsers.csv" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="..\..\data\Arena\Challenges\TestFiles\TestChallenges.csv" Link="Infrastructure\Data\Storage\TestFiles\TestChallenges.csv" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Infrastructure\Data\Storage\TestFiles\TestUsers.csv" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Infrastructure\Data\Storage\TestFiles\TestChallenges.csv" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

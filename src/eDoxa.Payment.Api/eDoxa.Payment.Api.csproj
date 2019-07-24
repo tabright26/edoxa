@@ -23,9 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="appsettings.Testing.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Update="appsettings.Testing.json" CopyToOutputDirectory="Always" />
   </ItemGroup>
 
 </Project>
