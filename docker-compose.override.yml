@@ -107,7 +107,7 @@ services:
     ports:
       - "5200:80"
     volumes:
-      - ./api/eDoxa.Web.Gateway:/app/ocelot
+      - ./src/eDoxa.Ocelot:/app
 
   #web.spa:
   #  environment:

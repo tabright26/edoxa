@@ -8,8 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.IO;
-
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -32,7 +30,7 @@ namespace eDoxa.Ocelot
             var builder = WebHost.CreateDefaultBuilder(args);
 
             builder.ConfigureServices(services => services.AddSingleton(builder))
-                .ConfigureAppConfiguration(configurationBuilder => configurationBuilder.AddJsonFile(Path.Combine("ocelot", "configuration.json")))
+                .ConfigureAppConfiguration(configurationBuilder => configurationBuilder.AddJsonFile("ocelot.json", false, true))
                 .UseStartup<Startup>()
                 .ConfigureLogging(
                     (context, loggingbuilder) =>
