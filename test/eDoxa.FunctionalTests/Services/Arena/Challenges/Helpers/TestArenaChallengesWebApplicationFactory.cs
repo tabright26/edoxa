@@ -12,36 +12,37 @@ using System;
 using System.IO;
 using System.Reflection;
 
+using Autofac;
+
+using eDoxa.Arena.Challenges.Api;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.IntegrationEvents.Infrastructure;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Security.AzureKeyVault.Extensions;
 using eDoxa.Seedwork.Security.Hosting;
 using eDoxa.Seedwork.Testing.Extensions;
+using eDoxa.Seedwork.Testing.Helpers;
 
 using JetBrains.Annotations;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
 
 namespace eDoxa.FunctionalTests.Services.Arena.Challenges.Helpers
 {
-    public sealed class TestArenaChallengesWebApplicationFactory<TStartup> : WebApplicationFactory<Program>
-    where TStartup : TestArenaChallengesStartup
+    public class TestArenaChallengesWebApplicationFactory : CustomWebApplicationFactory<Program>
     {
         protected override void ConfigureWebHost([NotNull] IWebHostBuilder builder)
         {
             builder.UseEnvironment(EnvironmentNames.Testing)
-                .UseContentRoot(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(TStartup)).Location), "Services/Arena/Challenges"));
+                .UseContentRoot(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Startup)).Location), "Services/Arena/Challenges"));
         }
 
         [NotNull]
         protected override IWebHostBuilder CreateWebHostBuilder()
         {
-            return WebHost.CreateDefaultBuilder<TStartup>(Array.Empty<string>()).UseAzureKeyVault().UseSerilog();
+            return WebHost.CreateDefaultBuilder<Startup>(Array.Empty<string>()).UseAzureKeyVault().UseSerilog();
         }
 
         [NotNull]
@@ -54,6 +55,11 @@ namespace eDoxa.FunctionalTests.Services.Arena.Challenges.Helpers
             server.MigrateDbContext<IntegrationEventDbContext>();
 
             return server;
+        }
+
+        public override void WithContainerBuilder(Action<ContainerBuilder> builder)
+        {
+            Startup.ConfigureContainerBuilder += builder;
         }
     }
 }

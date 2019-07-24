@@ -13,7 +13,6 @@ using eDoxa.IntegrationEvents.Extensions;
 using eDoxa.Payment.Api.Extensions;
 using eDoxa.Payment.Api.Infrastructure;
 using eDoxa.Payment.Api.Providers.Extensions;
-using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Monitoring.Extensions;
 
 using Microsoft.AspNetCore.Builder;
@@ -23,9 +22,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.Payment.Api
 {
-    public class Startup
+    public sealed class Startup
     {
-        public static Action<ContainerBuilder> ConfigureContainer = builder =>
+        public static Action<ContainerBuilder> ConfigureContainerBuilder = builder =>
         {
             // Required for testing.
         };
@@ -50,7 +49,7 @@ namespace eDoxa.Payment.Api
 
             services.AddServiceBus(Configuration);
 
-            return this.BuildModule(services);
+            return CreateContainer(services);
         }
         
         public void Configure(IApplicationBuilder application)
@@ -67,23 +66,17 @@ namespace eDoxa.Payment.Api
             application.UseIntegrationEventSubscriptions();
         }
 
-        private IServiceProvider CreateContainer(IServiceCollection services)
+        private static IServiceProvider CreateContainer(IServiceCollection services)
         {
             var builder = new ContainerBuilder();
 
             builder.RegisterModule<PaymentApiModule>();
 
-            ConfigureContainer(builder);
-
             builder.Populate(services);
 
+            ConfigureContainerBuilder(builder);
+            
             return new AutofacServiceProvider(builder.Build());
-        }
-
-        // TODO: Required by integration and functional tests.
-        protected virtual IServiceProvider BuildModule(IServiceCollection services)
-        {
-            return services.Build<PaymentApiModule>();
         }
     }
 }

@@ -24,7 +24,6 @@ using eDoxa.Identity.Api.Services;
 using eDoxa.IntegrationEvents;
 using eDoxa.IntegrationEvents.Extensions;
 using eDoxa.Seedwork.Application.DomainEvents;
-using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Swagger;
 using eDoxa.Seedwork.Application.Swagger.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
@@ -54,14 +53,14 @@ using static eDoxa.Seedwork.Security.IdentityServer.Resources.CustomApiResources
 
 namespace eDoxa.Identity.Api
 {
-    public class Startup
+    public sealed class Startup
     {
         private static readonly string XmlCommentsFilePath = Path.Combine(
             AppContext.BaseDirectory,
             $"{typeof(Startup).GetTypeInfo().Assembly.GetName().Name}.xml"
         );
 
-        public static Action<ContainerBuilder> ConfigureContainer = builder =>
+        public static Action<ContainerBuilder> ConfigureContainerBuilder = builder =>
         {
             // Required for testing.
         };
@@ -246,7 +245,7 @@ namespace eDoxa.Identity.Api
 
             services.AddServiceBus(Configuration);
 
-            return this.BuildModule(services);
+            return CreateContainer(services);
         }
         
         public void Configure(IApplicationBuilder application, IApiVersionDescriptionProvider provider)
@@ -312,7 +311,7 @@ namespace eDoxa.Identity.Api
             application.UseIntegrationEventSubscriptions();
         }
 
-        private IServiceProvider CreateContainer(IServiceCollection services)
+        private static IServiceProvider CreateContainer(IServiceCollection services)
         {
             var builder = new ContainerBuilder();
 
@@ -322,17 +321,11 @@ namespace eDoxa.Identity.Api
 
             builder.RegisterModule<IdentityApiModule>();
 
-            ConfigureContainer(builder);
-
             builder.Populate(services);
 
-            return new AutofacServiceProvider(builder.Build());
-        }
+            ConfigureContainerBuilder(builder);
 
-        // TODO: Required by integration and functional tests.
-        protected virtual IServiceProvider BuildModule(IServiceCollection services)
-        {
-            return services.Build<IdentityApiModule>();
+            return new AutofacServiceProvider(builder.Build());
         }
     }
 }

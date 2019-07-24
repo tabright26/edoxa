@@ -56,14 +56,14 @@ using static eDoxa.Seedwork.Security.IdentityServer.Resources.CustomApiResources
 
 namespace eDoxa.Cashier.Api
 {
-    public class Startup
+    public sealed class Startup
     {
         private static readonly string XmlCommentsFilePath = Path.Combine(
             AppContext.BaseDirectory,
             $"{typeof(Startup).GetTypeInfo().Assembly.GetName().Name}.xml"
         );
 
-        public static Action<ContainerBuilder> ConfigureContainer = builder =>
+        public static Action<ContainerBuilder> ConfigureContainerBuilder = builder =>
         {
             // Required for testing.
         };
@@ -161,7 +161,7 @@ namespace eDoxa.Cashier.Api
 
             services.AddServiceBus(Configuration);
 
-            return this.BuildModule(services);
+            return CreateContainer(services);
         }
 
         public void Configure(IApplicationBuilder application, IApiVersionDescriptionProvider provider)
@@ -207,7 +207,7 @@ namespace eDoxa.Cashier.Api
             application.UseIntegrationEventSubscriptions();
         }
 
-        private IServiceProvider CreateContainer(IServiceCollection services)
+        private static IServiceProvider CreateContainer(IServiceCollection services)
         {
             var builder = new ContainerBuilder();
 
@@ -219,17 +219,11 @@ namespace eDoxa.Cashier.Api
 
             builder.RegisterModule<CashierModule>();
 
-            ConfigureContainer(builder);
-
             builder.Populate(services);
 
-            return new AutofacServiceProvider(builder.Build());
-        }
+            ConfigureContainerBuilder(builder);
 
-        // TODO: Required by integration and functional tests.
-        protected virtual IServiceProvider BuildModule(IServiceCollection services)
-        {
-            return services.Build<CashierModule>();
+            return new AutofacServiceProvider(builder.Build());
         }
     }
 }

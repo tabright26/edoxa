@@ -1,12 +1,8 @@
-﻿// Filename: TestCashierWebApplicationFactory.cs
-// Date Created: 2019-07-05
+﻿// Filename: TestCashieWebApplicationFactory.cs
+// Date Created: 2019-07-07
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.IO;
@@ -16,7 +12,8 @@ using Autofac;
 
 using eDoxa.Cashier.Api;
 using eDoxa.Cashier.Infrastructure;
-using eDoxa.IntegrationEvents.Infrastructure;
+using eDoxa.Cashier.IntegrationTests.Helpers.Mocks;
+using eDoxa.IntegrationEvents;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Security.AzureKeyVault.Extensions;
 using eDoxa.Seedwork.Security.Hosting;
@@ -29,13 +26,21 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 
-namespace eDoxa.FunctionalTests.Services.Cashier.Helpers
+namespace eDoxa.Cashier.IntegrationTests.Helpers
 {
-    public class TestCashierWebApplicationFactory : CustomWebApplicationFactory<Program>
+    public class CashieWebApplicationFactory : CustomWebApplicationFactory<Program>
     {
+        public CashieWebApplicationFactory()
+        {
+            Startup.ConfigureContainerBuilder += builder =>
+            {
+                builder.RegisterType<MockIntegrationEventService>().As<IIntegrationEventService>().InstancePerDependency();
+            };
+        }
+
         protected override void ConfigureWebHost([NotNull] IWebHostBuilder builder)
         {
-            builder.UseEnvironment(EnvironmentNames.Testing).UseContentRoot(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Startup)).Location), "Services/Cashier"));
+            builder.UseEnvironment(EnvironmentNames.Testing).UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Startup)).Location));
         }
 
         [NotNull]
@@ -50,8 +55,6 @@ namespace eDoxa.FunctionalTests.Services.Cashier.Helpers
             var server = base.CreateServer(builder);
 
             server.EnsureCreatedDbContext<CashierDbContext>();
-
-            server.MigrateDbContext<IntegrationEventDbContext>();
 
             return server;
         }

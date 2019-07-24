@@ -16,29 +16,25 @@ using eDoxa.Seedwork.Testing.Extensions;
 
 using FluentAssertions;
 
-using Microsoft.AspNetCore.TestHost;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Cashier.IntegrationTests.Infrastructure.Repositories
 {
     [TestClass]
-    public sealed class TransactionRepositoryTest
+    public sealed class TransactionRepositoryTest : CashieWebApplicationFactory
     {
-        private TestServer _testServer;
-
         [TestInitialize]
         public async Task TestInitialize()
         {
-            var factory = new TestCashieWebApplicationFactory<TestCashierStartup>();
-            factory.CreateClient();
-            _testServer = factory.Server;
+            this.CreateClient();
+
             await this.TestCleanup();
         }
 
         [TestCleanup]
         public async Task TestCleanup()
         {
-            await _testServer.CleanupDbContextAsync();
+            await Server.CleanupDbContextAsync();
         }
 
         [DataTestMethod]
@@ -54,7 +50,7 @@ namespace eDoxa.Cashier.IntegrationTests.Infrastructure.Repositories
             var moneyDepositTransaction = new MoneyDepositTransaction(Money.Fifty);
             fakeAccount?.CreateTransaction(moneyDepositTransaction);
 
-            await _testServer.UsingScopeAsync(
+            await Server.UsingScopeAsync(
                 async scope =>
                 {
                     var accountRepository = scope.GetService<IAccountRepository>();
@@ -63,7 +59,7 @@ namespace eDoxa.Cashier.IntegrationTests.Infrastructure.Repositories
                 }
             );
 
-            await _testServer.UsingScopeAsync(
+            await Server.UsingScopeAsync(
                 async scope =>
                 {
                     var accountRepository = scope.GetService<ITransactionRepository>();
@@ -74,7 +70,7 @@ namespace eDoxa.Cashier.IntegrationTests.Infrastructure.Repositories
                 }
             );
 
-            await _testServer.UsingScopeAsync(
+            await Server.UsingScopeAsync(
                 async scope =>
                 {
                     var accountRepository = scope.GetService<ITransactionRepository>();
@@ -86,7 +82,7 @@ namespace eDoxa.Cashier.IntegrationTests.Infrastructure.Repositories
                 }
             );
 
-            await _testServer.UsingScopeAsync(
+            await Server.UsingScopeAsync(
                 async scope =>
                 {
                     var accountRepository = scope.GetService<ITransactionRepository>();
@@ -97,7 +93,7 @@ namespace eDoxa.Cashier.IntegrationTests.Infrastructure.Repositories
                 }
             );
 
-            await _testServer.UsingScopeAsync(
+            await Server.UsingScopeAsync(
                 async scope =>
                 {
                     var accountRepository = scope.GetService<ITransactionRepository>();
@@ -109,7 +105,7 @@ namespace eDoxa.Cashier.IntegrationTests.Infrastructure.Repositories
                 }
             );
 
-            await _testServer.UsingScopeAsync(
+            await Server.UsingScopeAsync(
                 async scope =>
                 {
                     var accountRepository = scope.GetService<ITransactionRepository>();
@@ -134,7 +130,7 @@ namespace eDoxa.Cashier.IntegrationTests.Infrastructure.Repositories
             var moneyDepositTransaction = new MoneyDepositTransaction(Money.Fifty);
             fakeAccount?.CreateTransaction(moneyDepositTransaction);
 
-            await _testServer.UsingScopeAsync(
+            await Server.UsingScopeAsync(
                 async scope =>
                 {
                     var accountRepository = scope.GetService<IAccountRepository>();
@@ -143,7 +139,7 @@ namespace eDoxa.Cashier.IntegrationTests.Infrastructure.Repositories
                 }
             );
 
-            await _testServer.UsingScopeAsync(
+            await Server.UsingScopeAsync(
                 async scope =>
                 {
                     var accountRepository = scope.GetService<ITransactionRepository>();
@@ -154,7 +150,7 @@ namespace eDoxa.Cashier.IntegrationTests.Infrastructure.Repositories
                 }
             );
 
-            await _testServer.UsingScopeAsync(
+            await Server.UsingScopeAsync(
                 async scope =>
                 {
                     var accountRepository = scope.GetService<ITransactionRepository>();
@@ -166,7 +162,7 @@ namespace eDoxa.Cashier.IntegrationTests.Infrastructure.Repositories
                 }
             );
 
-            await _testServer.UsingScopeAsync(
+            await Server.UsingScopeAsync(
                 async scope =>
                 {
                     var accountRepository = scope.GetService<ITransactionRepository>();
@@ -177,7 +173,7 @@ namespace eDoxa.Cashier.IntegrationTests.Infrastructure.Repositories
                 }
             );
 
-            await _testServer.UsingScopeAsync(
+            await Server.UsingScopeAsync(
                 async scope =>
                 {
                     var accountRepository = scope.GetService<ITransactionRepository>();
@@ -189,7 +185,7 @@ namespace eDoxa.Cashier.IntegrationTests.Infrastructure.Repositories
                 }
             );
 
-            await _testServer.UsingScopeAsync(
+            await Server.UsingScopeAsync(
                 async scope =>
                 {
                     var accountRepository = scope.GetService<ITransactionRepository>();

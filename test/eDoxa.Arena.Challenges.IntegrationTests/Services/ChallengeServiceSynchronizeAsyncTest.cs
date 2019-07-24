@@ -20,29 +20,25 @@ using eDoxa.Seedwork.Testing.Extensions;
 
 using FluentAssertions;
 
-using Microsoft.AspNetCore.TestHost;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Services
 {
     [TestClass]
-    public sealed class ChallengeServiceSynchronizeAsyncTest
+    public sealed class ChallengeServiceSynchronizeAsyncTest : ArenaChallengesWebApplicationFactory
     {
-        private TestServer _testServer;
-
         [TestInitialize]
         public async Task TestInitialize()
         {
-            var factory = new TestArenaChallengesWebApplicationFactory<TestArenaChallengesStartup>();
-            factory.CreateClient();
-            _testServer = factory.Server;
+            this.CreateClient();
+            
             await this.TestCleanup();
         }
 
         [TestCleanup]
         public async Task TestCleanup()
         {
-            await _testServer.CleanupDbContextAsync();
+            await Server.CleanupDbContextAsync();
         }
 
         [TestMethod]
@@ -53,7 +49,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Services
             challengeFaker.UseSeed(1);
             var challenges = challengeFaker.Generate(5) as IEnumerable<IChallenge>;
 
-            await _testServer.UsingScopeAsync(
+            await Server.UsingScopeAsync(
                 async scope =>
                 {
                     var challengeRepository = scope.GetService<IChallengeRepository>();
@@ -63,7 +59,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Services
             );
 
             // Act
-            await _testServer.UsingScopeAsync(
+            await Server.UsingScopeAsync(
                 async scope =>
                 {
                     var challengeService = scope.GetService<IChallengeService>();
@@ -73,7 +69,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Services
             );
 
             // Arrange
-            await _testServer.UsingScopeAsync(
+            await Server.UsingScopeAsync(
                 async scope =>
                 {
                     var challengeRepository = scope.GetService<IChallengeRepository>();

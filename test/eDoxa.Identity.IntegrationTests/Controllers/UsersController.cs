@@ -18,16 +18,14 @@ using eDoxa.Seedwork.Testing.Extensions;
 using FluentAssertions;
 
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.TestHost;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Identity.IntegrationTests.Controllers
 {
     [TestClass]
-    public sealed class UsersControllerTest
+    public sealed class UsersController : IdentityWebApplicationFactory
     {
         private HttpClient _httpClient;
-        private TestServer _testServer;
 
         private async Task<HttpResponseMessage> ExecuteAsync()
         {
@@ -37,23 +35,22 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
         [TestInitialize]
         public async Task TestInitialize()
         {
-            var factory = new TestIdentityWebApplicationFactory<TestIdentityStartup>();
-            _httpClient = factory.CreateClient();
-            _testServer = factory.Server;
+            _httpClient = this.CreateClient();
+
             await this.TestCleanup();
         }
 
         [TestCleanup]
         public async Task TestCleanup()
         {
-            await _testServer.CleanupDbContextAsync();
+            await Server.CleanupDbContextAsync();
         }
 
         [TestMethod]
         public async Task ApiUsers_WithNinetyNineUsers_ShouldHaveCountOfNinetyNine()
         {
             // Arrange
-            await _testServer.UsingScopeAsync(
+            await Server.UsingScopeAsync(
                 async scope =>
                 {
                     var userManager = scope.GetService<CustomUserManager>();

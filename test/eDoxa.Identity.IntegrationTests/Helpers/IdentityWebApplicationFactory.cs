@@ -1,4 +1,4 @@
-﻿// Filename: TestCashieWebApplicationFactory.cs
+﻿// Filename: TestIdentityWebApplicationFactory.cs
 // Date Created: 2019-07-07
 // 
 // ================================================
@@ -8,34 +8,35 @@ using System;
 using System.IO;
 using System.Reflection;
 
-using eDoxa.Cashier.Api;
-using eDoxa.Cashier.Infrastructure;
+using Autofac;
+
+using eDoxa.Identity.Api;
+using eDoxa.Identity.Api.Infrastructure;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Security.AzureKeyVault.Extensions;
 using eDoxa.Seedwork.Security.Hosting;
 using eDoxa.Seedwork.Testing.Extensions;
+using eDoxa.Seedwork.Testing.Helpers;
 
 using JetBrains.Annotations;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 
-namespace eDoxa.Cashier.IntegrationTests.Helpers
+namespace eDoxa.Identity.IntegrationTests.Helpers
 {
-    internal sealed class TestCashieWebApplicationFactory<TStartup> : WebApplicationFactory<Program>
-    where TStartup : TestCashierStartup
+    public class IdentityWebApplicationFactory : CustomWebApplicationFactory<Program>
     {
         protected override void ConfigureWebHost([NotNull] IWebHostBuilder builder)
         {
-            builder.UseEnvironment(EnvironmentNames.Testing).UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(TStartup)).Location));
+            builder.UseEnvironment(EnvironmentNames.Testing).UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Startup)).Location));
         }
 
         [NotNull]
         protected override IWebHostBuilder CreateWebHostBuilder()
         {
-            return WebHost.CreateDefaultBuilder<TStartup>(Array.Empty<string>()).UseAzureKeyVault().UseSerilog();
+            return WebHost.CreateDefaultBuilder<Startup>(Array.Empty<string>()).UseAzureKeyVault().UseSerilog();
         }
 
         [NotNull]
@@ -43,9 +44,14 @@ namespace eDoxa.Cashier.IntegrationTests.Helpers
         {
             var server = base.CreateServer(builder);
 
-            server.EnsureCreatedDbContext<CashierDbContext>();
+            server.EnsureCreatedDbContext<IdentityDbContext>();
 
             return server;
+        }
+
+        public override void WithContainerBuilder(Action<ContainerBuilder> builder)
+        {
+            Startup.ConfigureContainerBuilder += builder;
         }
     }
 }

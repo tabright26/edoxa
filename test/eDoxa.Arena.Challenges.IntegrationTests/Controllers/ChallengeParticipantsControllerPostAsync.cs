@@ -9,6 +9,8 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
+using Autofac;
+
 using Bogus;
 
 using eDoxa.Arena.Challenges.Api.Application.Commands;
@@ -25,21 +27,16 @@ using eDoxa.Seedwork.Testing.Helpers;
 
 using IdentityModel;
 
-using JetBrains.Annotations;
-
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using Moq;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 {
     [TestClass]
-    public sealed class ChallengeParticipantsControllerPostAsyncTest
+    public sealed class ChallengeParticipantsControllerPostAsync : ArenaChallengesWebApplicationFactory
     {
         private HttpClient _httpClient;
-        private TestServer _testServer;
 
         public async Task<HttpResponseMessage> ExecuteAsync(UserId userId, RegisterParticipantCommand command)
         {
@@ -47,32 +44,32 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
                 .PostAsync($"api/challenges/{command.ChallengeId}/participants", new JsonContent(command));
         }
 
-        [TestInitialize]
-        public async Task TestInitialize()
-        {
-            var factory = new TestArenaChallengesWebApplicationFactory<IdentityServiceTestArenaChallengesStartup>();
-            _httpClient = factory.CreateClient();
-            _testServer = factory.Server;
-            await this.TestCleanup();
-        }
-
-        [TestCleanup]
-        public async Task TestCleanup()
-        {
-            await _testServer.CleanupDbContextAsync();
-        }
-
         [TestMethod]
         public async Task ShouldBeOk()
         {
             // Arrange
+            this.WithContainerBuilder(
+                builder =>
+                {
+                    var mock = new Mock<IIdentityService>();
+
+                    mock.Setup(identityService => identityService.HasGameAccountIdAsync(It.IsAny<UserId>(), It.IsAny<ChallengeGame>())).ReturnsAsync(true);
+
+                    mock.Setup(identityService => identityService.GetGameAccountIdAsync(It.IsAny<UserId>(), It.IsAny<ChallengeGame>()))
+                        .ReturnsAsync(new GameAccountId(Guid.NewGuid().ToString()));
+
+                    builder.RegisterInstance(mock.Object).As<IIdentityService>();
+                }
+            );
+            _httpClient = this.CreateClient();
+            await Server.CleanupDbContextAsync();
             var faker = new Faker();
             var userId = faker.User().Id();
             var challengeFaker = new ChallengeFaker(ChallengeGame.LeagueOfLegends, ChallengeState.Inscription);
             challengeFaker.UseSeed(1);
             var challenge = challengeFaker.Generate();
 
-            await _testServer.UsingScopeAsync(
+            await Server.UsingScopeAsync(
                 async scope =>
                 {
                     var challengeRepository = scope.GetService<IChallengeRepository>();
@@ -86,34 +83,6 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 
             // Assert
             response.EnsureSuccessStatusCode();
-        }
-
-        private sealed class IdentityServiceTestArenaChallengesStartup : TestArenaChallengesStartup
-        {
-            public IdentityServiceTestArenaChallengesStartup(IConfiguration configuration, IHostingEnvironment hostingEnvironment) : base(configuration, hostingEnvironment)
-            {
-            }
-
-            protected override IServiceProvider BuildModule(IServiceCollection services)
-            {
-                services.AddTransient<IIdentityService, MockIdentityService>();
-
-                return base.BuildModule(services);
-            }
-
-            private sealed class MockIdentityService : IIdentityService
-            {
-                public Task<bool> HasGameAccountIdAsync(UserId userId, ChallengeGame game)
-                {
-                    return Task.FromResult(true);
-                }
-
-                [ItemNotNull]
-                public Task<GameAccountId> GetGameAccountIdAsync(UserId userId, ChallengeGame game)
-                {
-                    return Task.FromResult(new GameAccountId(Guid.NewGuid().ToString()));
-                }
-            }
         }
     }
 }
