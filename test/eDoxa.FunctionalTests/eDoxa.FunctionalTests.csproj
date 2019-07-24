@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\eDoxa.Arena.Challenges.Api\eDoxa.Arena.Challenges.Api.csproj" />
-    <ProjectReference Include="..\..\src\eDoxa.Cashier.API\eDoxa.Cashier.Api.csproj" />
+    <ProjectReference Include="..\..\src\eDoxa.Cashier.Api\eDoxa.Cashier.Api.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Identity.Api\eDoxa.Identity.Api.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Payment.Api\eDoxa.Payment.Api.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Seedwork.Testing\eDoxa.Seedwork.Testing.csproj" />

@@ -9,6 +9,10 @@
     <DockerServiceName>identity.api</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="docker-compose-functional-tests.override.yml">
+      <DependentUpon>docker-compose-functional-tests.yml</DependentUpon>
+    </None>
+    <None Include="docker-compose-functional-tests.yml" />
     <None Include="docker-compose-integration-tests.override.yml">
       <DependentUpon>docker-compose-integration-tests.yml</DependentUpon>
     </None>

@@ -20,6 +20,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6320F9AE-AC74-456A-869F-5A570C3467AB}"
 	ProjectSection(SolutionItems) = preProject
 		.env = .env
+		cli\docker-compose-functional-tests.ps1 = cli\docker-compose-functional-tests.ps1
+		cli\docker-compose-integration-tests.ps1 = cli\docker-compose-integration-tests.ps1
+		cli\docker-compose-testing.ps1 = cli\docker-compose-testing.ps1
+		cli\docker-compose-unit-tests.ps1 = cli\docker-compose-unit-tests.ps1
+		cli\docker-remove-containers.ps1 = cli\docker-remove-containers.ps1
 		global.json = global.json
 	EndProjectSection
 EndProject
@@ -82,14 +87,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.IntegrationEvents.UnitTests", "test\eDoxa.IntegrationEvents.UnitTests\eDoxa.IntegrationEvents.UnitTests.csproj", "{99EE9A07-855A-44B3-B8C7-D826F0EC8E86}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Identity.Api", "src\eDoxa.Identity.Api\eDoxa.Identity.Api.csproj", "{C086BE95-0D95-4DA4-A93F-88F085508D3B}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "cli", "cli", "{B28D5099-60AE-4C90-AD6B-023935DCA63D}"
-	ProjectSection(SolutionItems) = preProject
-		cli\docker-compose-integration-tests.ps1 = cli\docker-compose-integration-tests.ps1
-		cli\docker-compose-testing.ps1 = cli\docker-compose-testing.ps1
-		cli\docker-compose-unit-tests.ps1 = cli\docker-compose-unit-tests.ps1
-		cli\docker-remove-containers.ps1 = cli\docker-remove-containers.ps1
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Seedwork.Monitoring", "src\eDoxa.Seedwork.Monitoring\eDoxa.Seedwork.Monitoring.csproj", "{3AB9C9A8-2B81-4F4D-85F5-FCE0FAFADF4A}"
 EndProject
@@ -274,7 +271,6 @@ Global
 		{5EA0B762-5DA6-431A-93D5-22773D3D5474} = {11FD099D-9A2B-4AD5-8829-4337D54E5B6D}
 		{99EE9A07-855A-44B3-B8C7-D826F0EC8E86} = {11FD099D-9A2B-4AD5-8829-4337D54E5B6D}
 		{C086BE95-0D95-4DA4-A93F-88F085508D3B} = {3799662A-7D24-4FE0-B23F-38281CA1D84E}
-		{B28D5099-60AE-4C90-AD6B-023935DCA63D} = {6320F9AE-AC74-456A-869F-5A570C3467AB}
 		{3AB9C9A8-2B81-4F4D-85F5-FCE0FAFADF4A} = {1307B4CE-04FF-4315-BC01-0371760D5C26}
 		{9050415E-2E9D-4737-8D81-A938CD4D1D80} = {7942CE31-3804-446A-845B-0451884BB6B7}
 		{30352CEE-05ED-47C3-B832-B45E600E9718} = {9050415E-2E9D-4737-8D81-A938CD4D1D80}

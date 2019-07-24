@@ -5,9 +5,15 @@ FROM mcr.microsoft.com/dotnet/core/sdk:2.2-stretch AS build
 WORKDIR /tmp
 COPY . .
 WORKDIR /tmp/src/eDoxa.Arena.Challenges.Api
+RUN dotnet publish -c Release -o /app
+
+FROM build AS unit-tests
+WORKDIR /tmp/test/eDoxa.Arena.Challenges.UnitTests
+
+FROM build AS integration-tests
+WORKDIR /tmp/test/eDoxa.Arena.Challenges.IntegrationTests
 
 FROM build AS publish
-RUN dotnet publish -c Release -o /app
 
 FROM base AS final
 WORKDIR /app

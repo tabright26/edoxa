@@ -15,6 +15,7 @@ services:
     build:
       context: .
       dockerfile: test/eDoxa.Identity.UnitTests/Dockerfile
+      target: unit-tests
     entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Identity.UnitTestResults.trx
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
@@ -24,6 +25,7 @@ services:
     build:
       context: .
       dockerfile: test/eDoxa.Cashier.UnitTests/Dockerfile
+      target: unit-tests
     entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Cashier.UnitTestResults.trx
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp      
@@ -33,6 +35,7 @@ services:
     build:
       context: .
       dockerfile: test/eDoxa.Payment.UnitTests/Dockerfile
+      target: unit-tests
     entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Payment.UnitTestResults.trx
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
@@ -42,6 +45,7 @@ services:
     build:
       context: .
       dockerfile: test/eDoxa.Arena.Challenges.UnitTests/Dockerfile
+      target: unit-tests
     entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Arena.Challenges.UnitTestResults.trx
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp      

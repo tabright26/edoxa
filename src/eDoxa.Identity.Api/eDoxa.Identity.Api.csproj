@@ -26,7 +26,6 @@
     <PackageReference Include="AspNet.Security.OAuth.BattleNet" Version="2.1.0" />
     <PackageReference Include="AspNet.Security.OAuth.Twitch" Version="2.1.0" />
     <PackageReference Include="AspNet.Security.OpenId.Steam" Version="2.1.0" />
-    <PackageReference Include="BuildWebCompiler" Version="1.12.405" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.7.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OAuth" Version="2.2.0" />
@@ -45,6 +44,11 @@
 
   <ItemGroup>
     <Content Update="appsettings.Testing.json" CopyToOutputDirectory="Always" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="compilerconfig.json" CopyToOutputDirectory="Always" />
+    <Content Update="compilerconfig.json.defaults" CopyToOutputDirectory="Always" />
   </ItemGroup>
 
   <ItemGroup>

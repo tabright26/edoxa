@@ -1,0 +1,24 @@
+version: '3.7'
+
+services:
+  mssql.functional-tests:
+    image: microsoft/mssql-server-linux:latest
+
+  redis.functional-tests:
+    image: redis:latest
+
+  rabbitmq.functional-tests:
+    image: rabbitmq:latest
+
+  functional-tests:
+    image: ${ACR_REGISTRY:-edoxa}/functional-tests:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: test/eDoxa.FunctionalTests/Dockerfile
+    entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.FunctionalTestResults.trx
+    volumes:
+      - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp   
+    depends_on:
+      - mssql.functional-tests
+      - redis.functional-tests
+      - rabbitmq.functional-tests

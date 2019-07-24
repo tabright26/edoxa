@@ -14,7 +14,8 @@ services:
     image: ${ACR_REGISTRY:-edoxa}/identity.integration-tests:${ACR_TAG:-latest}
     build:
       context: .
-      dockerfile: test/eDoxa.Identity.IntegrationTests/Dockerfile
+      dockerfile: src/eDoxa.Identity.Api/Dockerfile
+      target: integration-tests
     entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Identity.IntegrationTestResults.trx
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp   
@@ -27,7 +28,8 @@ services:
     image: ${ACR_REGISTRY:-edoxa}/cashier.integration-tests:${ACR_TAG:-latest}
     build:
       context: .
-      dockerfile: test/eDoxa.Cashier.IntegrationTests/Dockerfile
+      dockerfile: src/eDoxa.Cashier.Api/Dockerfile
+      target: integration-tests
     entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Cashier.IntegrationTestResults.trx
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp   
@@ -40,7 +42,8 @@ services:
     image: ${ACR_REGISTRY:-edoxa}/arena.challenges.integration-tests:${ACR_TAG:-latest}
     build:
       context: .
-      dockerfile: test/eDoxa.Arena.Challenges.IntegrationTests/Dockerfile
+      dockerfile: src/eDoxa.Arena.Challenges.Api/Dockerfile
+      target: integration-tests
     entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Arena.Challenges.IntegrationTestResults.trx
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp   
