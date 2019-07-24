@@ -11,9 +11,9 @@ using System.Reflection;
 using Autofac;
 
 using eDoxa.Arena.Challenges.Api;
+using eDoxa.Arena.Challenges.Api.Games.LeagueOfLegends.Abstractions;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.IntegrationTests.Helpers.Mocks;
-using eDoxa.Arena.LeagueOfLegends.Abstractions;
 using eDoxa.IntegrationEvents;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Security.AzureKeyVault.Extensions;

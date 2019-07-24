@@ -7,6 +7,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Helpers\Stubs\LeagueOfLegends\Matches.json" />
+    <None Remove="Helpers\Stubs\LeagueOfLegends\MatchReferences.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Helpers\Stubs\LeagueOfLegends\Matches.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Helpers\Stubs\LeagueOfLegends\MatchReferences.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />
     <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
@@ -15,7 +29,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\eDoxa.Arena.Challenges.Api\eDoxa.Arena.Challenges.Api.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Seedwork.Testing\eDoxa.Seedwork.Testing.csproj" />
-    <ProjectReference Include="..\eDoxa.Arena.UnitTests\eDoxa.Arena.UnitTests.csproj" />
   </ItemGroup>
 
 </Project>

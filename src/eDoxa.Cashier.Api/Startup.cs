@@ -217,7 +217,7 @@ namespace eDoxa.Cashier.Api
 
             builder.RegisterModule<IntegrationEventModule<CashierDbContext>>();
 
-            builder.RegisterModule<CashierModule>();
+            builder.RegisterModule<CashierApiModule>();
 
             builder.Populate(services);
 

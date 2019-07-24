@@ -37,15 +37,6 @@ services:
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
       
-  arena.unit-tests:
-    image: ${ACR_REGISTRY:-edoxa}/arena.unit-tests:${ACR_TAG:-latest}
-    build:
-      context: .
-      dockerfile: test/eDoxa.Arena.UnitTests/Dockerfile
-    entrypoint: dotnet test --logger:trx;LogFileName=/var/tmp/eDoxa.Arena.UnitTestResults.trx
-    volumes:
-      - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
-      
   arena.challenges.unit-tests:
     image: ${ACR_REGISTRY:-edoxa}/arena.challenges.unit-tests:${ACR_TAG:-latest}
     build:

@@ -21,6 +21,7 @@ using eDoxa.Arena.Challenges.Api.Application.Factories;
 using eDoxa.Arena.Challenges.Api.Application.Services;
 using eDoxa.Arena.Challenges.Api.Application.Strategies;
 using eDoxa.Arena.Challenges.Api.Extensions;
+using eDoxa.Arena.Challenges.Api.Games.Extensions;
 using eDoxa.Arena.Challenges.Api.Infrastructure;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Queries;
@@ -32,7 +33,6 @@ using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.Domain.Strategies;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.Infrastructure.Repositories;
-using eDoxa.Arena.Extensions;
 using eDoxa.Commands;
 using eDoxa.IntegrationEvents;
 using eDoxa.IntegrationEvents.Extensions;
@@ -243,7 +243,7 @@ namespace eDoxa.Arena.Challenges.Api
 
             builder.RegisterModule<IntegrationEventModule<ArenaChallengesDbContext>>();
 
-            builder.RegisterModule<ArenaChallengesModule>();
+            builder.RegisterModule<ArenaChallengesApiModule>();
 
             builder.Populate(services);
 
