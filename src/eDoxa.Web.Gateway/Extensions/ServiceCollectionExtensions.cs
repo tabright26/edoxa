@@ -13,7 +13,7 @@ using eDoxa.Seedwork.Monitoring.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace eDoxa.Ocelot.Extensions
+namespace eDoxa.Web.Gateway.Extensions
 {
     public static class ServiceCollectionExtensions
     {

@@ -107,7 +107,7 @@ services:
     ports:
       - "5200:80"
     volumes:
-      - ./src/eDoxa.Ocelot:/app
+      - ./src/eDoxa.Web.Gateway:/app
 
   #web.spa:
   #  environment:
@@ -146,7 +146,7 @@ services:
       - HealthChecks__Endpoints__4__Uri=http://web.gateway/health
       - HealthChecks__Endpoints__5__Name=eDoxa Web Spa
       - HealthChecks__Endpoints__5__Uri=http://web.spa/health
-      - HealthChecks__EvaluationTimeInSeconds=15
-      - HealthChecks__MinimumSecondsBetweenFailureNotifications=60
+      - HealthChecks__EvaluationTimeInSeconds=60
+      - HealthChecks__MinimumSecondsBetweenFailureNotifications=300
     ports:
       - "5500:80"

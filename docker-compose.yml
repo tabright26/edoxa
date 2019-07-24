@@ -55,7 +55,7 @@ services:
     image: ${ACR_REGISTRY:-edoxa}/web.gateway:${ACR_TAG:-latest}
     build:
       context: .
-      dockerfile: src/eDoxa.Ocelot/Dockerfile
+      dockerfile: src/eDoxa.Web.Gateway/Dockerfile
     depends_on:
       - mssql
       - rabbitmq 
