@@ -22,7 +22,7 @@ namespace eDoxa.Cashier.Api.Extensions
             var healthChecks = services.AddHealthChecks();
             healthChecks.AddAzureKeyVault(appSettings);
             healthChecks.AddIdentityServer(appSettings);
-            healthChecks.AddSqlServer(appSettings.ConnectionStrings.SqlServer);
+            healthChecks.AddSqlServer(appSettings.ConnectionStrings);
             healthChecks.AddUrlGroup(appSettings.HealthChecks.PaymentUrl, "payment-api", new[] { "api" });
         }
     }

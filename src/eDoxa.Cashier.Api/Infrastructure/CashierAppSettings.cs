@@ -15,8 +15,7 @@ namespace eDoxa.Cashier.Api.Infrastructure
 {
     public class CashierAppSettings : IHasAzureKeyVaultAppSettings,
                                       IHasApiResourceAppSettings,
-                                      IHasServiceBusAppSettings,
-                                      IHasConnectionStringsAppSettings
+                                      IHasServiceBusAppSettings
     {
         [Required]
         public HealthChecksOptions HealthChecks { get; set; }
@@ -45,5 +44,11 @@ namespace eDoxa.Cashier.Api.Infrastructure
     {
         [Required]
         public string PaymentUrl { get; set; }
+    }
+
+    public class ConnectionStrings : IHasSqlServerConnectionString
+    {
+        [Required]
+        public string SqlServer { get; set; }
     }
 }

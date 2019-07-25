@@ -30,9 +30,9 @@ namespace eDoxa.Seedwork.Monitoring.Extensions
             );
         }
 
-        public static void AddSqlServer(this IHealthChecksBuilder builder, string connectionString)
+        public static void AddSqlServer(this IHealthChecksBuilder builder, IHasSqlServerConnectionString connectionString)
         {
-            builder.AddSqlServer(connectionString, name: "microsoft-sql-server", tags: new[] {"mssql", "sql", "sql-server"});
+            builder.AddSqlServer(connectionString.SqlServer, name: "microsoft-sql-server", tags: new[] {"mssql", "sql", "sql-server"});
         }
 
         public static void AddIdentityServer(this IHealthChecksBuilder builder, IHasAuthorityAppSettings appSettings)
@@ -40,9 +40,9 @@ namespace eDoxa.Seedwork.Monitoring.Extensions
             builder.AddIdentityServer(new Uri(appSettings.Authority.PrivateUrl), "identity-server", tags: new[] {"idsrv"});
         }
 
-        public static void AddRedis(this IHealthChecksBuilder builder, string connectionString)
+        public static void AddRedis(this IHealthChecksBuilder builder, IHasRedisConnectionString connectionString)
         {
-            builder.AddRedis(connectionString, "redis", tags: new[] {"cache"});
+            builder.AddRedis(connectionString.Redis, "redis", tags: new[] {"cache"});
         }
 
         public static void AddUrlGroup(

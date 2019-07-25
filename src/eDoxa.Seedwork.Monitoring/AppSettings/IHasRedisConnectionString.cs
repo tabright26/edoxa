@@ -1,4 +1,4 @@
-﻿// Filename: IHasConnectionStringsAppSettings.cs
+﻿// Filename: IHasRedisConnectionString.cs
 // Date Created: 2019-07-25
 // 
 // ================================================
@@ -6,8 +6,8 @@
 
 namespace eDoxa.Seedwork.Monitoring.AppSettings
 {
-    public interface IHasConnectionStringsAppSettings
+    public interface IHasRedisConnectionString
     {
-        ConnectionStrings ConnectionStrings { get; set; }
+        string Redis { get; set; }
     }
 }

@@ -17,8 +17,8 @@ namespace eDoxa.Identity.Api.Extensions
         {
             var healthChecks = services.AddHealthChecks();
             healthChecks.AddAzureKeyVault(appSettings);
-            healthChecks.AddSqlServer(appSettings.ConnectionStrings.SqlServer);
-            healthChecks.AddRedis(appSettings.ConnectionStrings.Redis);
+            healthChecks.AddSqlServer(appSettings.ConnectionStrings);
+            healthChecks.AddRedis(appSettings.ConnectionStrings);
         }
     }
 }

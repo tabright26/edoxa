@@ -15,8 +15,7 @@ namespace eDoxa.Identity.Api.Infrastructure
 {
     public class IdentityAppSettings : IHasAzureKeyVaultAppSettings,
                                        IHasApiResourceAppSettings,
-                                       IHasServiceBusAppSettings,
-                                       IHasConnectionStringsAppSettings
+                                       IHasServiceBusAppSettings
     {
         [Required]
         public IdentityServerOptions IdentityServer { get; set; }
@@ -50,5 +49,14 @@ namespace eDoxa.Identity.Api.Infrastructure
         public string ArenaChallengesUrl { get; set; }
 
         public WebOptions Web { get; set; }
+    }
+
+    public class ConnectionStrings : IHasSqlServerConnectionString, IHasRedisConnectionString
+    {
+        [Required]
+        public string SqlServer { get; set; }
+
+        [Required]
+        public string Redis { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿// Filename: ConnectionStrings.cs
+﻿// Filename: IHasSqlServerConnectionString.cs
 // Date Created: 2019-07-25
 // 
 // ================================================
@@ -6,10 +6,8 @@
 
 namespace eDoxa.Seedwork.Monitoring.AppSettings
 {
-    public class ConnectionStrings
+    public interface IHasSqlServerConnectionString
     {
-        public string SqlServer { get; set; }
-
-        public string Redis { get; set; }
+        string SqlServer { get; set; }
     }
 }

@@ -15,8 +15,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure
 {
     public class ArenaChallengesAppSettings : IHasAzureKeyVaultAppSettings,
                                               IHasApiResourceAppSettings,
-                                              IHasServiceBusAppSettings,
-                                              IHasConnectionStringsAppSettings
+                                              IHasServiceBusAppSettings
     {
         public bool SwaggerEnabled { get; set; }
 
@@ -36,5 +35,14 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure
 
         [Required]
         public ServiceBusOptions ServiceBus { get; set; }
+    }
+
+    public class ConnectionStrings : IHasSqlServerConnectionString, IHasRedisConnectionString
+    {
+        [Required]
+        public string SqlServer { get; set; }
+
+        [Required]
+        public string Redis { get; set; }
     }
 }
