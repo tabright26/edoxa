@@ -1,4 +1,4 @@
-﻿// Filename: TestCashieWebApplicationFactory.cs
+﻿// Filename: CashierWebApplicationFactory.cs
 // Date Created: 2019-07-07
 // 
 // ================================================
@@ -12,9 +12,8 @@ using Autofac;
 
 using eDoxa.Cashier.Api;
 using eDoxa.Cashier.Infrastructure;
-using eDoxa.Cashier.IntegrationTests.Helpers.Mocks;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.IntegrationEvents;
+using eDoxa.Seedwork.IntegrationEvents.Infrastructure;
 using eDoxa.Seedwork.Security.AzureKeyVault.Extensions;
 using eDoxa.Seedwork.Security.Hosting;
 using eDoxa.Seedwork.Testing.Extensions;
@@ -25,22 +24,19 @@ using JetBrains.Annotations;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.Configuration;
 
-namespace eDoxa.Cashier.IntegrationTests.Helpers
+namespace eDoxa.FunctionalTests.Services.Cashier.Helpers
 {
-    public class CashieWebApplicationFactory : CustomWebApplicationFactory<Program>
+    public class CashierWebApplicationFactory : CustomWebApplicationFactory<Program>
     {
-        public CashieWebApplicationFactory()
-        {
-            Startup.ConfigureContainerBuilder += builder =>
-            {
-                builder.RegisterType<MockIntegrationEventService>().As<IIntegrationEventService>().InstancePerDependency();
-            };
-        }
-
         protected override void ConfigureWebHost([NotNull] IWebHostBuilder builder)
         {
-            builder.UseEnvironment(EnvironmentNames.Testing).UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Startup)).Location));
+            builder.UseEnvironment(EnvironmentNames.Testing)
+                .UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(CashierWebApplicationFactory)).Location))
+                .ConfigureAppConfiguration(
+                    configure => configure.AddJsonFile(Path.Combine("Services/Cashier", "appsettings.json"), false).AddEnvironmentVariables()
+                );
         }
 
         [NotNull]
@@ -55,6 +51,8 @@ namespace eDoxa.Cashier.IntegrationTests.Helpers
             var server = base.CreateServer(builder);
 
             server.EnsureCreatedDbContext<CashierDbContext>();
+
+            server.MigrateDbContext<IntegrationEventDbContext>();
 
             return server;
         }

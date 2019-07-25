@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Services\Arena\Challenges\appsettings.json" />
+    <None Remove="Services\Cashier\appsettings.json" />
+    <None Remove="Services\Identity\appsettings.json" />
+    <None Remove="Services\Payment\Helpers\appsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="2.2.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
@@ -23,17 +30,21 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="..\..\src\eDoxa.Arena.Challenges.Api\appsettings.Testing.json" Link="Services\Arena\Challenges\appsettings.Testing.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="Services\Arena\Challenges\appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Include="..\..\src\eDoxa.Cashier.Api\appsettings.Testing.json" Link="Services\Cashier\appsettings.Testing.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="Services\Cashier\appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Include="..\..\src\eDoxa.Identity.Api\appsettings.Testing.json" Link="Services\Identity\appsettings.Testing.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="Services\Identity\appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Include="..\..\src\eDoxa.Payment.Api\appsettings.Testing.json" Link="Services\Payment\appsettings.Testing.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="Services\Payment\appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
   </ItemGroup>
 

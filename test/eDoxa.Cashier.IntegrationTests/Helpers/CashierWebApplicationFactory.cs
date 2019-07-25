@@ -1,12 +1,8 @@
-﻿// Filename: TestArenaChallengesWebApplicationFactory.cs
-// Date Created: 2019-07-05
+﻿// Filename: TestCashieWebApplicationFactory.cs
+// Date Created: 2019-07-07
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.IO;
@@ -14,10 +10,11 @@ using System.Reflection;
 
 using Autofac;
 
-using eDoxa.Arena.Challenges.Api;
-using eDoxa.Arena.Challenges.Infrastructure;
+using eDoxa.Cashier.Api;
+using eDoxa.Cashier.Infrastructure;
+using eDoxa.Cashier.IntegrationTests.Helpers.Mocks;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.IntegrationEvents.Infrastructure;
+using eDoxa.Seedwork.IntegrationEvents;
 using eDoxa.Seedwork.Security.AzureKeyVault.Extensions;
 using eDoxa.Seedwork.Security.Hosting;
 using eDoxa.Seedwork.Testing.Extensions;
@@ -28,15 +25,25 @@ using JetBrains.Annotations;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.Configuration;
 
-namespace eDoxa.FunctionalTests.Services.Arena.Challenges.Helpers
+namespace eDoxa.Cashier.IntegrationTests.Helpers
 {
-    public class TestArenaChallengesWebApplicationFactory : CustomWebApplicationFactory<Program>
+    public class CashierWebApplicationFactory : CustomWebApplicationFactory<Program>
     {
+        public CashierWebApplicationFactory()
+        {
+            Startup.ConfigureContainerBuilder += builder =>
+            {
+                builder.RegisterType<MockIntegrationEventService>().As<IIntegrationEventService>().InstancePerDependency();
+            };
+        }
+
         protected override void ConfigureWebHost([NotNull] IWebHostBuilder builder)
         {
             builder.UseEnvironment(EnvironmentNames.Testing)
-                .UseContentRoot(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Startup)).Location), "Services/Arena/Challenges"));
+                .UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(CashierWebApplicationFactory)).Location))
+                .ConfigureAppConfiguration(configure => configure.AddJsonFile("appsettings.json", false).AddEnvironmentVariables());
         }
 
         [NotNull]
@@ -50,9 +57,7 @@ namespace eDoxa.FunctionalTests.Services.Arena.Challenges.Helpers
         {
             var server = base.CreateServer(builder);
 
-            server.EnsureCreatedDbContext<ArenaChallengesDbContext>();
-
-            server.MigrateDbContext<IntegrationEventDbContext>();
+            server.EnsureCreatedDbContext<CashierDbContext>();
 
             return server;
         }

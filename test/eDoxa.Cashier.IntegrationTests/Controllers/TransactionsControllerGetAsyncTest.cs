@@ -28,7 +28,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace eDoxa.Cashier.IntegrationTests.Controllers
 {
     [TestClass]
-    public sealed class TransactionsControllerGetAsyncTest : CashieWebApplicationFactory
+    public sealed class TransactionsControllerGetAsyncTest : CashierWebApplicationFactory
     {
         private HttpClient _httpClient;
 

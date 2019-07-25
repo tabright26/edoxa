@@ -1,12 +1,8 @@
-﻿// Filename: TestIdentityWebApplicationFactory.cs
-// Date Created: 2019-07-05
+﻿// Filename: ArenaChallengesWebApplicationFactory.cs
+// Date Created: 2019-07-07
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.IO;
@@ -14,8 +10,8 @@ using System.Reflection;
 
 using Autofac;
 
-using eDoxa.Identity.Api;
-using eDoxa.Identity.Api.Infrastructure;
+using eDoxa.Arena.Challenges.Api;
+using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.IntegrationEvents.Infrastructure;
 using eDoxa.Seedwork.Security.AzureKeyVault.Extensions;
@@ -28,15 +24,19 @@ using JetBrains.Annotations;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.Configuration;
 
-namespace eDoxa.FunctionalTests.Services.Identity.Helpers
+namespace eDoxa.FunctionalTests.Services.Arena.Challenges.Helpers
 {
-    internal class TestIdentityWebApplicationFactory : CustomWebApplicationFactory<Program>
+    public class ArenaChallengesWebApplicationFactory : CustomWebApplicationFactory<Program>
     {
         protected override void ConfigureWebHost([NotNull] IWebHostBuilder builder)
         {
             builder.UseEnvironment(EnvironmentNames.Testing)
-                .UseContentRoot(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Startup)).Location), "Services/Identity"));
+                .UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ArenaChallengesWebApplicationFactory)).Location))
+                .ConfigureAppConfiguration(
+                    configure => configure.AddJsonFile(Path.Combine("Services/Arena/Challenges", "appsettings.json"), false).AddEnvironmentVariables()
+                );
         }
 
         [NotNull]
@@ -50,7 +50,7 @@ namespace eDoxa.FunctionalTests.Services.Identity.Helpers
         {
             var server = base.CreateServer(builder);
 
-            server.EnsureCreatedDbContext<IdentityDbContext>();
+            server.EnsureCreatedDbContext<ArenaChallengesDbContext>();
 
             server.MigrateDbContext<IntegrationEventDbContext>();
 

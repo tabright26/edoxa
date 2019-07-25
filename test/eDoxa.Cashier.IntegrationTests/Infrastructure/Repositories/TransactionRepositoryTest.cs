@@ -21,7 +21,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace eDoxa.Cashier.IntegrationTests.Infrastructure.Repositories
 {
     [TestClass]
-    public sealed class TransactionRepositoryTest : CashieWebApplicationFactory
+    public sealed class TransactionRepositoryTest : CashierWebApplicationFactory
     {
         [TestInitialize]
         public async Task TestInitialize()

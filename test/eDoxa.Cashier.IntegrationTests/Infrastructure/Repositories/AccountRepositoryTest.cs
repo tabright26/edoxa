@@ -22,7 +22,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace eDoxa.Cashier.IntegrationTests.Infrastructure.Repositories
 {
     [TestClass]
-    public sealed class AccountRepositoryTest : CashieWebApplicationFactory
+    public sealed class AccountRepositoryTest : CashierWebApplicationFactory
     {
         [TestInitialize]
         public async Task TestInitialize()

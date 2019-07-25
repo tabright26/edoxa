@@ -1,4 +1,4 @@
-﻿// Filename: TestArenaChallengesWebApplicationFactory.cs
+﻿// Filename: ArenaChallengesWebApplicationFactory.cs
 // Date Created: 2019-07-07
 // 
 // ================================================
@@ -26,6 +26,7 @@ using JetBrains.Annotations;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.Configuration;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Helpers
 {
@@ -43,7 +44,9 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Helpers
 
         protected override void ConfigureWebHost([NotNull] IWebHostBuilder builder)
         {
-            builder.UseEnvironment(EnvironmentNames.Testing).UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Startup)).Location));
+            builder.UseEnvironment(EnvironmentNames.Testing)
+                .UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ArenaChallengesWebApplicationFactory)).Location))
+                .ConfigureAppConfiguration(configure => configure.AddJsonFile("appsettings.json", false).AddEnvironmentVariables());
         }
 
         [NotNull]

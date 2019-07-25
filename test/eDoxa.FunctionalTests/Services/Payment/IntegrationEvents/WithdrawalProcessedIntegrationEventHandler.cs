@@ -1,4 +1,4 @@
-﻿// Filename: WithdrawalProcessedIntegrationEventHandlerTest.cs
+﻿// Filename: WithdrawalProcessedIntegrationEventHandler.cs
 // Date Created: 2019-07-07
 // 
 // ================================================
@@ -35,7 +35,7 @@ using Stripe;
 namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
 {
     [TestClass]
-    public sealed class WithdrawalProcessedIntegrationEventHandlerTest : TestCashierWebApplicationFactory
+    public sealed class WithdrawalProcessedIntegrationEventHandler : CashierWebApplicationFactory
     {
         [TestInitialize]
         public async Task TestInitialize()
@@ -54,7 +54,7 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
         [TestMethod]
         public async Task TransactionStatus_ShouldBeSucceded()
         {
-            using (var paymentWebApplication = new TestPaymentWebApplicationFactory())
+            using (var paymentWebApplication = new PaymentWebApplicationFactory())
             {
                 paymentWebApplication.WithContainerBuilder(
                     builder =>
@@ -116,7 +116,7 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
         [TestMethod]
         public async Task TransactionStatus_ShouldBeFailed()
         {
-            using (var paymentWebApplication = new TestPaymentWebApplicationFactory())
+            using (var paymentWebApplication = new PaymentWebApplicationFactory())
             {
                 paymentWebApplication.WithContainerBuilder(
                     builder =>

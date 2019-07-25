@@ -29,7 +29,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace eDoxa.Cashier.IntegrationTests.Controllers
 {
     [TestClass]
-    public sealed class AccountWithdrawalControllerPostAsyncTest : CashieWebApplicationFactory
+    public sealed class AccountWithdrawalControllerPostAsyncTest : CashierWebApplicationFactory
     {
         private HttpClient _httpClient;
 

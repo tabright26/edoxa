@@ -1,12 +1,8 @@
 ﻿// Filename: PaymentWebApplicationFactory.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-07-07
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.IO;
@@ -24,15 +20,19 @@ using JetBrains.Annotations;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 
 namespace eDoxa.FunctionalTests.Services.Payment.Helpers
 {
-    public class TestPaymentWebApplicationFactory : CustomWebApplicationFactory<Program>
+    public class PaymentWebApplicationFactory : CustomWebApplicationFactory<Program>
     {
         protected override void ConfigureWebHost([NotNull] IWebHostBuilder builder)
         {
             builder.UseEnvironment(EnvironmentNames.Testing)
-                .UseContentRoot(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Startup)).Location), "Services/Payment"));
+                .UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(PaymentWebApplicationFactory)).Location))
+                .ConfigureAppConfiguration(
+                    configure => configure.AddJsonFile(Path.Combine("Services/Payment", "appsettings.json"), false).AddEnvironmentVariables()
+                );
         }
 
         [NotNull]

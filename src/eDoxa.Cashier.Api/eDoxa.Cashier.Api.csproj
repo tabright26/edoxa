@@ -37,10 +37,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="appsettings.Testing.json" CopyToOutputDirectory="Always" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="Infrastructure\Data\Storage\SourceFiles\Payouts.csv" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
