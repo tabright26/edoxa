@@ -7,13 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Services\Arena\Challenges\appsettings.json" />
-    <None Remove="Services\Cashier\appsettings.json" />
-    <None Remove="Services\Identity\appsettings.json" />
-    <None Remove="Services\Payment\Helpers\appsettings.json" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="2.2.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
@@ -30,22 +23,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Services\Arena\Challenges\appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="Services\Cashier\appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="Services\Identity\appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="Services\Payment\appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
+    <Content Include="Services\Arena\Challenges\appsettings.json" CopyToOutputDirectory="Always" />
+    <Content Include="Services\Cashier\appsettings.json" CopyToOutputDirectory="Always" />
+    <Content Include="Services\Identity\appsettings.json" CopyToOutputDirectory="Always" />
+    <Content Include="Services\Payment\appsettings.json" CopyToOutputDirectory="Always" />
   </ItemGroup>
 
 </Project>

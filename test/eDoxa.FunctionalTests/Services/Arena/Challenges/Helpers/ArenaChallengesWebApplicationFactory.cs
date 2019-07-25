@@ -33,10 +33,8 @@ namespace eDoxa.FunctionalTests.Services.Arena.Challenges.Helpers
         protected override void ConfigureWebHost([NotNull] IWebHostBuilder builder)
         {
             builder.UseEnvironment(EnvironmentNames.Testing)
-                .UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ArenaChallengesWebApplicationFactory)).Location))
-                .ConfigureAppConfiguration(
-                    configure => configure.AddJsonFile(Path.Combine("Services/Arena/Challenges", "appsettings.json"), false).AddEnvironmentVariables()
-                );
+                .UseContentRoot(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ArenaChallengesWebApplicationFactory)).Location), "Services/Arena/Challenges"))
+                .ConfigureAppConfiguration(configure => configure.AddJsonFile("appsettings.json", false).AddEnvironmentVariables());
         }
 
         [NotNull]

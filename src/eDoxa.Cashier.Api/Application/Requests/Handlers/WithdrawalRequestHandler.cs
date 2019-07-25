@@ -19,12 +19,12 @@ using Microsoft.AspNetCore.Http;
 
 namespace eDoxa.Cashier.Api.Application.Requests.Handlers
 {
-    public sealed class WithdrawalHandler : AsyncRequestHandler<WithdrawalRequest>
+    public sealed class WithdrawalRequestHandler : AsyncRequestHandler<WithdrawalRequest>
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IAccountService _accountService;
 
-        public WithdrawalHandler(IHttpContextAccessor httpContextAccessor, IAccountService accountService)
+        public WithdrawalRequestHandler(IHttpContextAccessor httpContextAccessor, IAccountService accountService)
         {
             _httpContextAccessor = httpContextAccessor;
             _accountService = accountService;

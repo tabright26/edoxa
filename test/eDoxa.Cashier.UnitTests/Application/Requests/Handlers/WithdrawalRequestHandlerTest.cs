@@ -41,7 +41,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Requests.Handlers
         [TestMethod]
         public void Constructor_Tests()
         {
-            TestConstructor<WithdrawalHandler>.ForParameters(typeof(IHttpContextAccessor), typeof(IAccountService))
+            TestConstructor<WithdrawalRequestHandler>.ForParameters(typeof(IHttpContextAccessor), typeof(IAccountService))
                 .WithClassName("WithdrawalRequestHandler")
                 .Assert();
         }
@@ -59,7 +59,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Requests.Handlers
                 .Returns(Unit.Task)
                 .Verifiable();
 
-            var handler = new WithdrawalHandler(_mockHttpContextAccessor.Object, _mockAccountService.Object);
+            var handler = new WithdrawalRequestHandler(_mockHttpContextAccessor.Object, _mockAccountService.Object);
 
             // Act
             await handler.HandleAsync(request);

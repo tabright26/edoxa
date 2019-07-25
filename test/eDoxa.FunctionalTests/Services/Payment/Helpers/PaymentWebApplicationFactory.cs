@@ -29,10 +29,8 @@ namespace eDoxa.FunctionalTests.Services.Payment.Helpers
         protected override void ConfigureWebHost([NotNull] IWebHostBuilder builder)
         {
             builder.UseEnvironment(EnvironmentNames.Testing)
-                .UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(PaymentWebApplicationFactory)).Location))
-                .ConfigureAppConfiguration(
-                    configure => configure.AddJsonFile(Path.Combine("Services/Payment", "appsettings.json"), false).AddEnvironmentVariables()
-                );
+                .UseContentRoot(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(PaymentWebApplicationFactory)).Location), "Services/Payment"))
+                .ConfigureAppConfiguration(configure => configure.AddJsonFile("appsettings.json", false).AddEnvironmentVariables());
         }
 
         [NotNull]

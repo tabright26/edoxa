@@ -33,10 +33,8 @@ namespace eDoxa.FunctionalTests.Services.Cashier.Helpers
         protected override void ConfigureWebHost([NotNull] IWebHostBuilder builder)
         {
             builder.UseEnvironment(EnvironmentNames.Testing)
-                .UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(CashierWebApplicationFactory)).Location))
-                .ConfigureAppConfiguration(
-                    configure => configure.AddJsonFile(Path.Combine("Services/Cashier", "appsettings.json"), false).AddEnvironmentVariables()
-                );
+                .UseContentRoot(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(CashierWebApplicationFactory)).Location), "Services/Cashier"))
+                .ConfigureAppConfiguration(configure => configure.AddJsonFile("appsettings.json", false).AddEnvironmentVariables());
         }
 
         [NotNull]

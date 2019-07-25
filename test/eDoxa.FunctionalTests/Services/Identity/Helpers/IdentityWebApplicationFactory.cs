@@ -33,10 +33,8 @@ namespace eDoxa.FunctionalTests.Services.Identity.Helpers
         protected override void ConfigureWebHost([NotNull] IWebHostBuilder builder)
         {
             builder.UseEnvironment(EnvironmentNames.Testing)
-                .UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(IdentityWebApplicationFactory)).Location))
-                .ConfigureAppConfiguration(
-                    configure => configure.AddJsonFile(Path.Combine("Services/Identity", "appsettings.json"), false).AddEnvironmentVariables()
-                );
+                .UseContentRoot(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(IdentityWebApplicationFactory)).Location), "Services/Identity"))
+                .ConfigureAppConfiguration(configure => configure.AddJsonFile("appsettings.json", false).AddEnvironmentVariables());
         }
 
         [NotNull]
