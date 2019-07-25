@@ -8,7 +8,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Application.Commands;
+using eDoxa.Cashier.Api.Application.Requests;
 using eDoxa.Cashier.Api.IntegrationEvents;
 using eDoxa.Cashier.Api.IntegrationEvents.Handlers;
 using eDoxa.Seedwork.Testing.TestConstructor;
@@ -39,7 +39,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
         }
 
         [TestMethod]
-        public async Task HandleAsync_CreateUserCommand_ShouldBeCompletedTask()
+        public async Task UserCreatedIntegrationEvent_ShouldBeCompletedTask()
         {
             // Arrange
             var integrationEvent = new UserCreatedIntegrationEvent
@@ -47,7 +47,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
                 UserId = Guid.NewGuid()
             };
 
-            _mockMediator.Setup(mock => mock.Send(It.IsAny<CreateUserCommand>(), It.IsAny<CancellationToken>())).Returns(Unit.Task).Verifiable();
+            _mockMediator.Setup(mock => mock.Send(It.IsAny<CreateUserRequest>(), It.IsAny<CancellationToken>())).Returns(Unit.Task).Verifiable();
 
             var handler = new UserCreatedIntegrationEventHandler(_mockMediator.Object);
 
@@ -55,7 +55,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
             await handler.Handle(integrationEvent);
 
             // Assert
-            _mockMediator.Verify(mock => mock.Send(It.IsAny<CreateUserCommand>(), It.IsAny<CancellationToken>()), Times.Once);
+            _mockMediator.Verify(mock => mock.Send(It.IsAny<CreateUserRequest>(), It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }

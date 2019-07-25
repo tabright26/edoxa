@@ -33,7 +33,7 @@ using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.Domain.Strategies;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.Infrastructure.Repositories;
-using eDoxa.Seedwork.Application.Commands;
+using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Swagger.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
@@ -234,7 +234,7 @@ namespace eDoxa.Arena.Challenges.Api
 
             builder.RegisterModule<DomainEventModule>();
 
-            builder.RegisterModule<CommandModule>();
+            builder.RegisterModule<RequestModule>();
 
             builder.RegisterModule<IntegrationEventModule<ArenaChallengesDbContext>>();
 

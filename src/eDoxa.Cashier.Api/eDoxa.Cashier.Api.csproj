@@ -49,10 +49,4 @@
     <Content Include="Infrastructure\Data\Storage\TestFiles\TestChallenges.csv" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="eDoxa.IntegrationEvents">
-      <HintPath>..\eDoxa.IntegrationEvents\bin\Debug\netstandard2.0\eDoxa.IntegrationEvents.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>

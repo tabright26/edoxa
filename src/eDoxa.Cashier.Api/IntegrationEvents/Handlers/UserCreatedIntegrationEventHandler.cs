@@ -10,7 +10,7 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Application.Commands;
+using eDoxa.Cashier.Api.Application.Requests;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Seedwork.IntegrationEvents;
 
@@ -29,7 +29,7 @@ namespace eDoxa.Cashier.Api.IntegrationEvents.Handlers
 
         public async Task Handle(UserCreatedIntegrationEvent integrationEvent)
         {
-            await _mediator.Send(new CreateUserCommand(UserId.FromGuid(integrationEvent.UserId)));
+            await _mediator.Send(new CreateUserRequest(UserId.FromGuid(integrationEvent.UserId)));
         }
     }
 }

@@ -28,7 +28,7 @@ using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.Domain.Strategies;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.Infrastructure.Repositories;
-using eDoxa.Seedwork.Application.Commands;
+using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Application.DomainEvents;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Swagger.Extensions;
@@ -208,7 +208,7 @@ namespace eDoxa.Cashier.Api
 
             builder.RegisterModule<DomainEventModule>();
 
-            builder.RegisterModule<CommandModule>();
+            builder.RegisterModule<RequestModule>();
 
             builder.RegisterModule<IntegrationEventModule<CashierDbContext>>();
 

@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Api.Application.Commands;
+using eDoxa.Arena.Challenges.Api.Application.Requests;
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
@@ -84,7 +84,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenge.Controllers
         public async Task PostAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            _mediator.Setup(mediator => mediator.Send(It.IsAny<RegisterParticipantCommand>(), It.IsAny<CancellationToken>())).Returns(Unit.Task).Verifiable();
+            _mediator.Setup(mediator => mediator.Send(It.IsAny<RegisterParticipantRequest>(), It.IsAny<CancellationToken>())).Returns(Unit.Task).Verifiable();
 
             var controller = new ChallengeParticipantsController(_queries.Object, _mediator.Object);
 

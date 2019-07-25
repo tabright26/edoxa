@@ -13,7 +13,7 @@ using Autofac;
 
 using Bogus;
 
-using eDoxa.Arena.Challenges.Api.Application.Commands;
+using eDoxa.Arena.Challenges.Api.Application.Requests;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
@@ -38,10 +38,10 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
     {
         private HttpClient _httpClient;
 
-        public async Task<HttpResponseMessage> ExecuteAsync(UserId userId, RegisterParticipantCommand command)
+        public async Task<HttpResponseMessage> ExecuteAsync(UserId userId, RegisterParticipantRequest request)
         {
             return await _httpClient.DefaultRequestHeaders(new[] {new Claim(JwtClaimTypes.Subject, userId.ToString())})
-                .PostAsync($"api/challenges/{command.ChallengeId}/participants", new JsonContent(command));
+                .PostAsync($"api/challenges/{request.ChallengeId}/participants", new JsonContent(request));
         }
 
         [TestMethod]
@@ -79,7 +79,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
             );
 
             // Act
-            var response = await this.ExecuteAsync(userId, new RegisterParticipantCommand(ChallengeId.FromGuid(challenge.Id)));
+            var response = await this.ExecuteAsync(userId, new RegisterParticipantRequest(ChallengeId.FromGuid(challenge.Id)));
 
             // Assert
             response.EnsureSuccessStatusCode();

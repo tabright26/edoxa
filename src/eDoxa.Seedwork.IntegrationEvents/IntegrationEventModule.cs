@@ -24,16 +24,8 @@ namespace eDoxa.Seedwork.IntegrationEvents
     {
         protected override void Load([NotNull] ContainerBuilder builder)
         {
-            // Register all the CommandHandler classes (they implement IIntegrationEventHandler) in assembly holding the CommandHandlers.
-            builder.RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies()).AsClosedTypesOf(
-                typeof(IIntegrationEventHandler<>)
-            );
-
-            // Register the IntegrationEventLogger.
-            builder.Register<Func<DbConnection, IIntegrationEventLogRepository>>(
-                context => connection => new IntegrationEventLogRepository(connection)
-            );
-
+            builder.RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies()).AsClosedTypesOf(typeof(IIntegrationEventHandler<>));
+            builder.Register<Func<DbConnection, IIntegrationEventLogRepository>>(context => connection => new IntegrationEventLogRepository(connection));
             builder.RegisterType<IntegrationEventService<TContext>>().As<IIntegrationEventService>().InstancePerDependency();
         }
     }

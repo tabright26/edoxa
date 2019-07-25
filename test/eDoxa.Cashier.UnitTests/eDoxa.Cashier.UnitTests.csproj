@@ -17,8 +17,4 @@
     <ProjectReference Include="..\..\src\eDoxa.Seedwork.Testing\eDoxa.Seedwork.Testing.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Areas\Challenge\Controllers\" />
-  </ItemGroup>
-
 </Project>

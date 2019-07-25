@@ -8,7 +8,7 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Application.Commands;
+using eDoxa.Cashier.Api.Application.Requests;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
@@ -33,13 +33,13 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
     {
         private HttpClient _httpClient;
 
-        public async Task<HttpResponseMessage> ExecuteAsync(UserId userId, string connectAccountId, WithdrawalCommand command)
+        public async Task<HttpResponseMessage> ExecuteAsync(UserId userId, string connectAccountId, WithdrawalRequest request)
         {
             return await _httpClient
                 .DefaultRequestHeaders(
                     new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(CustomClaimTypes.StripeConnectAccountId, connectAccountId)}
                 )
-                .PostAsync("api/account/withdrawal", new JsonContent(command));
+                .PostAsync("api/account/withdrawal", new JsonContent(request));
         }
 
         [TestInitialize]
@@ -86,7 +86,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            var response = await this.ExecuteAsync(account.UserId, "acct_test", new WithdrawalCommand(Money.Fifty));
+            var response = await this.ExecuteAsync(account.UserId, "acct_test", new WithdrawalRequest(Money.Fifty));
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -111,7 +111,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            var response = await this.ExecuteAsync(account.UserId, "acct_test", new WithdrawalCommand(2.5M));
+            var response = await this.ExecuteAsync(account.UserId, "acct_test", new WithdrawalRequest(2.5M));
 
             // Assert
             response.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
@@ -133,7 +133,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            var response = await this.ExecuteAsync(account.UserId, "acct_test", new WithdrawalCommand(Money.Fifty));
+            var response = await this.ExecuteAsync(account.UserId, "acct_test", new WithdrawalRequest(Money.Fifty));
 
             // Assert
             response.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
@@ -143,7 +143,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
         public async Task User_WithoutAccount_ShouldBeStatus404NotFound()
         {
             // Act
-            var response = await this.ExecuteAsync(new UserId(), "acct_test", new WithdrawalCommand(Money.Fifty));
+            var response = await this.ExecuteAsync(new UserId(), "acct_test", new WithdrawalRequest(Money.Fifty));
 
             // Assert
             response.StatusCode.Should().Be(StatusCodes.Status400BadRequest);

@@ -8,7 +8,7 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Application.Commands;
+using eDoxa.Cashier.Api.Application.Requests;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
@@ -32,11 +32,11 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
     {
         private HttpClient _httpClient;
 
-        public async Task<HttpResponseMessage> ExecuteAsync(UserId userId, string customerId, DepositCommand command)
+        public async Task<HttpResponseMessage> ExecuteAsync(UserId userId, string customerId, DepositRequest request)
         {
             return await _httpClient
                 .DefaultRequestHeaders(new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(CustomClaimTypes.StripeCustomerId, customerId)})
-                .PostAsync("api/account/deposit", new JsonContent(command));
+                .PostAsync("api/account/deposit", new JsonContent(request));
         }
 
         [TestInitialize]
@@ -69,7 +69,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            var response = await this.ExecuteAsync(account.UserId, "cus_test", new DepositCommand(Currency.Money.Name, Money.Fifty));
+            var response = await this.ExecuteAsync(account.UserId, "cus_test", new DepositRequest(Currency.Money.Name, Money.Fifty));
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -94,7 +94,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            var response = await this.ExecuteAsync(account.UserId, "cus_test", new DepositCommand(Currency.Token.Name, Token.TwoHundredFiftyThousand));
+            var response = await this.ExecuteAsync(account.UserId, "cus_test", new DepositRequest(Currency.Token.Name, Token.TwoHundredFiftyThousand));
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -119,7 +119,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            var response = await this.ExecuteAsync(account.UserId, "cus_test", new DepositCommand(Currency.Money.Name, 2.5M));
+            var response = await this.ExecuteAsync(account.UserId, "cus_test", new DepositRequest(Currency.Money.Name, 2.5M));
 
             // Assert
             response.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
@@ -141,7 +141,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            var response = await this.ExecuteAsync(account.UserId, "cus_test", new DepositCommand(Currency.Token.Name, 2500M));
+            var response = await this.ExecuteAsync(account.UserId, "cus_test", new DepositRequest(Currency.Token.Name, 2500M));
 
             // Assert
             response.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
