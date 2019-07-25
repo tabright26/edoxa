@@ -36,11 +36,11 @@ namespace eDoxa.Identity.Api.Controllers
     {
         private readonly IClientStore _clientStore;
         private readonly IEventService _events;
-        private readonly IdentityApiOptions _options;
         private readonly IIdentityServerInteractionService _interaction;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
         private readonly CustomSignInManager _signInManager;
         private readonly CustomUserManager _userManager;
+        private readonly IdentityAppSettings _appSettings;
 
         public AccountController(
             CustomUserManager userManager,
@@ -49,7 +49,7 @@ namespace eDoxa.Identity.Api.Controllers
             IClientStore clientStore,
             IAuthenticationSchemeProvider schemeProvider,
             IEventService events,
-            IOptionsMonitor<IdentityApiOptions> accessor
+            IOptionsMonitor<IdentityAppSettings> options
         )
         {
             _userManager = userManager;
@@ -58,7 +58,7 @@ namespace eDoxa.Identity.Api.Controllers
             _clientStore = clientStore;
             _schemeProvider = schemeProvider;
             _events = events;
-            _options = accessor.CurrentValue;
+            _appSettings = options.CurrentValue;
         }
 
         /// <summary>
@@ -371,7 +371,7 @@ namespace eDoxa.Identity.Api.Controllers
             var vm = new LoggedOutViewModel
             {
                 AutomaticRedirectAfterSignOut = AccountOptions.AutomaticRedirectAfterSignOut,
-                PostLogoutRedirectUri = logout?.PostLogoutRedirectUri ?? _options.Web.Spa.Url,
+                PostLogoutRedirectUri = logout?.PostLogoutRedirectUri ?? _appSettings.IdentityServer.Web.SpaUrl,
                 ClientName = string.IsNullOrEmpty(logout?.ClientName) ? logout?.ClientId : logout?.ClientName,
                 SignOutIframeUrl = logout?.SignOutIFrameUrl,
                 LogoutId = logoutId

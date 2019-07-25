@@ -8,22 +8,22 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Cashier.Api.Infrastructure;
 using eDoxa.Seedwork.Monitoring.Extensions;
 
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.Cashier.Api.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddHealthChecks(this IServiceCollection services, IConfiguration configuration)
+        public static void AddHealthChecks(this IServiceCollection services, CashierAppSettings appSettings)
         {
             var healthChecks = services.AddHealthChecks();
-            healthChecks.AddAzureKeyVault(configuration);
-            healthChecks.AddSqlServer(configuration);
-            healthChecks.AddIdentityServer(configuration);
-            healthChecks.AddUrlGroup(configuration["HealthChecks:Payment:Url"], "payment-api", tags: new[] { "api" });
+            healthChecks.AddAzureKeyVault(appSettings);
+            healthChecks.AddIdentityServer(appSettings);
+            healthChecks.AddSqlServer(appSettings.ConnectionStrings.SqlServer);
+            healthChecks.AddUrlGroup(appSettings.HealthChecks.PaymentUrl, "payment-api", new[] { "api" });
         }
     }
 }

@@ -24,7 +24,7 @@ using eDoxa.Identity.Api.Services;
 using eDoxa.IntegrationEvents;
 using eDoxa.IntegrationEvents.Extensions;
 using eDoxa.Seedwork.Application.DomainEvents;
-using eDoxa.Seedwork.Application.Swagger;
+using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Swagger.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring.Extensions;
@@ -69,28 +69,28 @@ namespace eDoxa.Identity.Api
         {
             Configuration = configuration;
             HostingEnvironment = hostingEnvironment;
-            AppSettings = configuration.TryGetAppSettings(IdentityApi);
+            AppSettings = configuration.GetAppSettings<IdentityAppSettings>(IdentityApi);
         }
 
         public IConfiguration Configuration { get; }
 
         public IHostingEnvironment HostingEnvironment { get; }
 
-        private AppSettings AppSettings { get; }
+        private IdentityAppSettings AppSettings { get; }
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.Configure<IdentityApiOptions>(Configuration);
+            services.AddAppSettings<IdentityAppSettings>(Configuration);
 
-            services.AddHealthChecks(Configuration);
+            services.AddHealthChecks(AppSettings);
 
             services.AddDataProtection(Configuration);
 
             services.AddEntityFrameworkSqlServer();
 
-            services.AddIntegrationEventDbContext(Configuration, Assembly.GetAssembly(typeof(Startup)));
+            services.AddIntegrationEventDbContext(AppSettings.ConnectionStrings.SqlServer, Assembly.GetAssembly(typeof(Startup)));
 
-            services.AddDbContext<IdentityDbContext, IdentityDbContextData>(Configuration, Assembly.GetAssembly(typeof(Startup)));
+            services.AddDbContext<IdentityDbContext, IdentityDbContextData>(AppSettings.ConnectionStrings.SqlServer, Assembly.GetAssembly(typeof(Startup)));
 
             services.Configure<CookiePolicyOptions>(
                 options =>
@@ -193,28 +193,25 @@ namespace eDoxa.Identity.Api
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            if (AppSettings.IsValid())
+            if (AppSettings.SwaggerEnabled)
             {
-                if (AppSettings.Swagger.Enabled)
-                {
-                    services.AddSwaggerGen(
-                        options =>
+                services.AddSwaggerGen(
+                    options =>
+                    {
+                        var provider = services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
+
+                        foreach (var description in provider.ApiVersionDescriptions)
                         {
-                            var provider = services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
-
-                            foreach (var description in provider.ApiVersionDescriptions)
-                            {
-                                options.SwaggerDoc(description.GroupName, description.CreateInfoForApiVersion(AppSettings));
-                            }
-
-                            options.IncludeXmlComments(XmlCommentsFilePath);
-
-                            options.AddSecurityDefinition(AppSettings);
-
-                            options.AddFilters();
+                            options.SwaggerDoc(description.GroupName, description.CreateInfoForApiVersion(AppSettings));
                         }
-                    );
-                }
+
+                        options.IncludeXmlComments(XmlCommentsFilePath);
+
+                        options.AddSecurityDefinition(AppSettings);
+
+                        options.AddFilters();
+                    }
+                );
             }
 
             services.AddIdentityServer(
@@ -235,15 +232,15 @@ namespace eDoxa.Identity.Api
                 .AddInMemoryPersistedGrants()
                 .AddInMemoryIdentityResources(IdentityServerConfig.GetIdentityResources())
                 .AddInMemoryApiResources(IdentityServerConfig.GetApiResources())
-                .AddInMemoryClients(IdentityServerConfig.GetClients(Configuration))
+                .AddInMemoryClients(IdentityServerConfig.GetClients(AppSettings))
                 .AddCorsPolicyService<CustomCorsPolicyService>()
                 .AddProfileService<CustomProfileService>()
                 .AddAspNetIdentity<User>()
                 .BuildCustomServices();
 
-            services.AddAuthentication(Configuration, HostingEnvironment, IdentityApi);
+            services.AddAuthentication(HostingEnvironment, AppSettings);
 
-            services.AddServiceBus(Configuration);
+            services.AddServiceBus(AppSettings);
 
             return CreateContainer(services);
         }
@@ -278,32 +275,29 @@ namespace eDoxa.Identity.Api
                 application.UseIdentityServer();
             }
 
-            if (AppSettings.IsValid())
+            if (AppSettings.SwaggerEnabled)
             {
-                if (AppSettings.Swagger.Enabled)
-                {
-                    application.UseSwagger();
+                application.UseSwagger();
 
-                    application.UseSwaggerUI(
-                        options =>
+                application.UseSwaggerUI(
+                    options =>
+                    {
+                        foreach (var description in provider.ApiVersionDescriptions)
                         {
-                            foreach (var description in provider.ApiVersionDescriptions)
-                            {
-                                options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
-                            }
-
-                            options.RoutePrefix = string.Empty;
-
-                            options.OAuthClientId(AppSettings.ApiResource.SwaggerClientId());
-
-                            options.OAuthAppName(AppSettings.ApiResource.SwaggerClientName());
-
-                            options.DefaultModelExpandDepth(0);
-
-                            options.DefaultModelsExpandDepth(-1);
+                            options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
                         }
-                    );
-                }
+
+                        options.RoutePrefix = string.Empty;
+
+                        options.OAuthClientId(AppSettings.ApiResource.SwaggerClientId());
+
+                        options.OAuthAppName(AppSettings.ApiResource.SwaggerClientName());
+
+                        options.DefaultModelExpandDepth(0);
+
+                        options.DefaultModelsExpandDepth(-1);
+                    }
+                );
             }
 
             application.UseMvcWithDefaultRoute();

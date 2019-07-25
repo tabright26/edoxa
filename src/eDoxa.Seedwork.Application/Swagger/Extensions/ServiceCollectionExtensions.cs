@@ -6,19 +6,15 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
 using eDoxa.Seedwork.Application.Swagger.Filters;
-
-using IdentityServer4.Models;
+using eDoxa.Seedwork.Monitoring.AppSettings;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Controllers;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using Swashbuckle.AspNetCore.Swagger;
@@ -28,7 +24,7 @@ namespace eDoxa.Seedwork.Application.Swagger.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddSecurityDefinition(this SwaggerGenOptions options, AppSettings appSettings)
+        public static void AddSecurityDefinition(this SwaggerGenOptions options, IHasApiResourceAppSettings appSettings)
         {
             options.AddSecurityDefinition(
                 "oauth2",
@@ -46,7 +42,7 @@ namespace eDoxa.Seedwork.Application.Swagger.Extensions
             );
         }
 
-        public static Info CreateInfoForApiVersion(this ApiVersionDescription description, AppSettings appSettings)
+        public static Info CreateInfoForApiVersion(this ApiVersionDescription description, IHasApiResourceAppSettings appSettings)
         {
             var info = new Info
             {
@@ -67,72 +63,6 @@ namespace eDoxa.Seedwork.Application.Swagger.Extensions
             }
 
             return info;
-        }
-
-        public static bool IsValid<T>(this T data)
-        {
-            if (data == null)
-            {
-                throw new ArgumentNullException(nameof(data));
-            }
-
-            var validationResult = new List<ValidationResult>();
-
-            var result = Validator.TryValidateObject(data, new ValidationContext(data), validationResult, false);
-
-            if (!result)
-            {
-                foreach (var item in validationResult)
-                {
-                    Debug.WriteLine($"ERROR::{item.MemberNames}:{item.ErrorMessage}");
-                }
-            }
-
-            return result;
-        }
-
-        public static AppSettings TryGetAppSettings(this IConfiguration configuration, ApiResource apiResource)
-        {
-            var appSettingsSection = configuration.GetSection(nameof(AppSettings));
-
-            if (appSettingsSection == null)
-            {
-                throw new Exception($"No {nameof(AppSettings)} section has been found.");
-            }
-
-            var appSettings = appSettingsSection.Get<AppSettings>();
-
-            appSettings.ApiResource = apiResource;
-
-            if (!appSettings.IsValid())
-            {
-                throw new Exception("No valid settings.");
-            }
-
-            return appSettings;
-        }
-
-        public static AppSettings ConfigureBusinessServices(this IServiceCollection services, IConfiguration configuration, ApiResource apiResource)
-        {
-            var appSettingsSection = configuration.GetSection(nameof(AppSettings));
-
-            if (appSettingsSection == null)
-            {
-                throw new Exception($"No {nameof(AppSettings)} section has been found.");
-            }
-
-            var appSettings = appSettingsSection.Get<AppSettings>();
-
-            appSettings.ApiResource = apiResource;
-
-            if (!appSettings.IsValid())
-            {
-                throw new Exception("No valid settings.");
-            }
-
-            services.Configure<AppSettings>(appSettingsSection);
-
-            return appSettings;
         }
 
         public static void AddFilters(this SwaggerGenOptions options)

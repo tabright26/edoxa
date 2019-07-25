@@ -9,10 +9,10 @@ using System;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 
-using eDoxa.IntegrationEvents.Extensions;
 using eDoxa.Payment.Api.Extensions;
 using eDoxa.Payment.Api.Infrastructure;
 using eDoxa.Payment.Api.Providers.Extensions;
+using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Monitoring.Extensions;
 
 using Microsoft.AspNetCore.Builder;
@@ -33,21 +33,24 @@ namespace eDoxa.Payment.Api
         {
             Configuration = configuration;
             HostingEnvironment = hostingEnvironment;
+            AppSettings = configuration.GetAppSettings<PaymentAppSettings>();
         }
 
         public IConfiguration Configuration { get; }
 
         public IHostingEnvironment HostingEnvironment { get; }
 
+        public PaymentAppSettings AppSettings { get; }
+
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
 
-            services.AddHealthChecks(Configuration);
+            services.AddHealthChecks(AppSettings);
 
             services.AddProviders(Configuration);
 
-            services.AddServiceBus(Configuration);
+            services.AddServiceBus(AppSettings);
 
             return CreateContainer(services);
         }

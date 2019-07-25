@@ -8,19 +8,19 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Payment.Api.Infrastructure;
 using eDoxa.Seedwork.Monitoring.Extensions;
 
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.Payment.Api.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddHealthChecks(this IServiceCollection services, IConfiguration configuration)
+        public static void AddHealthChecks(this IServiceCollection services, PaymentAppSettings appSettings)
         {
             var healthChecks = services.AddHealthChecks();
-            healthChecks.AddAzureKeyVault(configuration);
+            healthChecks.AddAzureKeyVault(appSettings);
         }
     }
 }

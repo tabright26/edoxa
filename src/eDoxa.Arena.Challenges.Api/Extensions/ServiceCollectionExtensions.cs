@@ -8,22 +8,22 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Arena.Challenges.Api.Infrastructure;
 using eDoxa.Seedwork.Monitoring.Extensions;
 
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.Arena.Challenges.Api.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddHealthChecks(this IServiceCollection services, IConfiguration configuration)
+        public static void AddHealthChecks(this IServiceCollection services, ArenaChallengesAppSettings appSettings)
         {
             var healthChecks = services.AddHealthChecks();
-            healthChecks.AddAzureKeyVault(configuration);
-            healthChecks.AddSqlServer(configuration);
-            healthChecks.AddRedis(configuration);
-            healthChecks.AddIdentityServer(configuration);
+            healthChecks.AddAzureKeyVault(appSettings);
+            healthChecks.AddIdentityServer(appSettings);
+            healthChecks.AddSqlServer(appSettings.ConnectionStrings.SqlServer);
+            healthChecks.AddRedis(appSettings.ConnectionStrings.Redis);
         }
     }
 }

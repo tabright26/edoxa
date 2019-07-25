@@ -4,21 +4,21 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using eDoxa.Identity.Api.Infrastructure;
 using eDoxa.Seedwork.Monitoring.Extensions;
 
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.Identity.Api.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddHealthChecks(this IServiceCollection services, IConfiguration configuration)
+        public static void AddHealthChecks(this IServiceCollection services, IdentityAppSettings appSettings)
         {
             var healthChecks = services.AddHealthChecks();
-            healthChecks.AddAzureKeyVault(configuration);
-            healthChecks.AddSqlServer(configuration);
-            healthChecks.AddRedis(configuration);
+            healthChecks.AddAzureKeyVault(appSettings);
+            healthChecks.AddSqlServer(appSettings.ConnectionStrings.SqlServer);
+            healthChecks.AddRedis(appSettings.ConnectionStrings.Redis);
         }
     }
 }

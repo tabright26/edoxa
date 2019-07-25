@@ -12,8 +12,8 @@ using System.Collections.Generic;
 
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security.Extensions;
-using eDoxa.Seedwork.Security.IdentityServer.Resources;
 using eDoxa.Web.Gateway.Extensions;
+using eDoxa.Web.Gateway.Infrastructure;
 
 using IdentityServer4.Models;
 
@@ -25,6 +25,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 
+using static eDoxa.Seedwork.Security.IdentityServer.Resources.CustomApiResources;
+
 namespace eDoxa.Web.Gateway
 {
     public class Startup
@@ -33,26 +35,29 @@ namespace eDoxa.Web.Gateway
         {
             Configuration = configuration;
             HostingEnvironment = hostingEnvironment;
+            AppSettings = configuration.GetAppSettings<WebGatewayAppSettings>();
         }
 
         public IConfiguration Configuration { get; }
 
         public IHostingEnvironment HostingEnvironment { get; }
 
+        public WebGatewayAppSettings AppSettings { get; set; }
+
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddHealthChecks(Configuration);
+            services.AddHealthChecks(AppSettings);
 
             services.AddCorsPolicy();
 
             services.AddAuthentication(
-                Configuration,
                 HostingEnvironment,
+                AppSettings,
                 new Dictionary<string, ApiResource>
                 {
-                    ["IdentityApiKey"] = CustomApiResources.IdentityApi,
-                    ["CashierApiKey"] = CustomApiResources.CashierApi,
-                    ["ArenaChallengesApiKey"] = CustomApiResources.ArenaChallengesApi
+                    ["IdentityApiKey"] = IdentityApi,
+                    ["CashierApiKey"] = CashierApi,
+                    ["ArenaChallengesApiKey"] = ArenaChallengesApi
                 }
             );
 

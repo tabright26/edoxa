@@ -11,22 +11,19 @@
 using System;
 using System.Reflection;
 
-using eDoxa.Seedwork.Security.Constants;
-
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.Seedwork.Infrastructure.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddDbContext<TDbContext>(this IServiceCollection services, IConfiguration configuration, Assembly assembly)
+        public static void AddDbContext<TDbContext>(this IServiceCollection services, string connectionString, Assembly assembly)
         where TDbContext : DbContext
         {
             services.AddDbContext<TDbContext>(
                 options => options.UseSqlServer(
-                    configuration.GetConnectionString(CustomConnectionStrings.SqlServer),
+                    connectionString,
                     sqlServerOptions =>
                     {
                         sqlServerOptions.MigrationsAssembly(assembly.GetName().Name);
@@ -36,11 +33,11 @@ namespace eDoxa.Seedwork.Infrastructure.Extensions
             );
         }
 
-        public static void AddDbContext<TDbContext, TDbContextData>(this IServiceCollection services, IConfiguration configuration, Assembly assembly)
+        public static void AddDbContext<TDbContext, TDbContextData>(this IServiceCollection services, string connectionString, Assembly assembly)
         where TDbContext : DbContext
         where TDbContextData : class, IDbContextData
         {
-            services.AddDbContext<TDbContext>(configuration, assembly);
+            services.AddDbContext<TDbContext>(connectionString, assembly);
 
             services.AddScoped<IDbContextData, TDbContextData>();
         }

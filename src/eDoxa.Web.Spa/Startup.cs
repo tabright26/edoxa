@@ -11,6 +11,7 @@
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security.Extensions;
 using eDoxa.Web.Spa.Extensions;
+using eDoxa.Web.Spa.Infrastructure;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,15 +28,18 @@ namespace eDoxa.Web.Spa
         {
             Configuration = configuration;
             HostingEnvironment = hostingEnvironment;
+            AppSettings = configuration.GetAppSettings<WebSpaAppSettings>();
         }
 
         public IConfiguration Configuration { get; }
 
         public IHostingEnvironment HostingEnvironment { get; }
 
+        public WebSpaAppSettings AppSettings { get; }
+
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddHealthChecks(Configuration);
+            services.AddHealthChecks(AppSettings);
 
             services.AddDataProtection(Configuration);
 

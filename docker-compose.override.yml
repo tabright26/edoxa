@@ -27,17 +27,17 @@ services:
       - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
       - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
       - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
-      - AzureServiceBus__Enable=${ASB_ENABLE:-false}
+      - AzureServiceBusEnabled=${ASB_ENABLE:-false}
       - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq}
       - ServiceBus__RetryCount=${ASB_RETRYCOUNT:-5}
-      - ServiceBus__Subscription=Identity
-      - AzureKubernetesService__Enable=${AKS_ENABLE:-false}
-      - AppSettings__Authority__PublicUrl=${URL:-http://localhost}:5000
-      - Identity__Url=${URL:-http://localhost}:5000
-      - Cashier__Url=${URL:-http://localhost}:5002
-      - Arena__Challenges__Url=${URL:-http://localhost}:5003
-      - Web__Spa__Url=${URL:-http://localhost}:5300
-      - AppSettings__Authority__PrivateUrl=http://identity.api
+      - ServiceBus__SubscriptionName=Identity
+      - AzureKubernetesServiceEnabled=${AKS_ENABLE:-false}
+      - Authority__PrivateUrl=http://identity.api
+      - Authority__PublicUrl=${URL:-http://localhost}:5000
+      - IdentityServer__IdentityUrl=${URL:-http://localhost}:5000
+      - IdentityServer__CashierUrl=${URL:-http://localhost}:5002
+      - IdentityServer__ArenaChallengesUrl=${URL:-http://localhost}:5003
+      - IdentityServer__Web__SpaUrl=${URL:-http://localhost}:5300      
     ports:
       - "5000:80"
     volumes:
@@ -50,10 +50,10 @@ services:
       - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}      
       - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
       - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
-      - AzureServiceBus__Enable=${ASB_ENABLE:-false}
+      - AzureServiceBusEnabled=${ASB_ENABLE:-false}
       - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq}
       - ServiceBus__RetryCount=${ASB_RETRYCOUNT:-5}
-      - ServiceBus__Subscription=Payment
+      - ServiceBus__SubscriptionName=Payment
     ports:
       - "5001:80"
 
@@ -65,13 +65,13 @@ services:
       - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}      
       - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
       - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
-      - AzureServiceBus__Enable=${ASB_ENABLE:-false}
+      - AzureServiceBusEnabled=${ASB_ENABLE:-false}
       - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq}
       - ServiceBus__RetryCount=${ASB_RETRYCOUNT:-5}
-      - ServiceBus__Subscription=Cashier
-      - HealthChecks__Payment__Url=http://payment.api/health
-      - AppSettings__Authority__PublicUrl=${URL:-http://localhost}:5000
-      - AppSettings__Authority__PrivateUrl=http://identity.api
+      - ServiceBus__SubscriptionName=Cashier
+      - HealthChecks__PaymentUrl=http://payment.api/health
+      - Authority__PrivateUrl=http://identity.api
+      - Authority__PublicUrl=${URL:-http://localhost}:5000      
     ports:
       - "5002:80"
     volumes:
@@ -86,12 +86,12 @@ services:
       - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
       - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
       - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
-      - AzureServiceBus__Enable=${ASB_ENABLE:-false}
+      - AzureServiceBusEnabled=${ASB_ENABLE:-false}
       - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq}
       - ServiceBus__RetryCount=${ASB_RETRYCOUNT:-5}
-      - ServiceBus__Subscription=Arena.Challenges
-      - AppSettings__Authority__PublicUrl=${URL:-http://localhost}:5000
-      - AppSettings__Authority__PrivateUrl=http://identity.api
+      - ServiceBus__SubscriptionName=Arena.Challenges
+      - Authority__PrivateUrl=http://identity.api
+      - Authority__PublicUrl=${URL:-http://localhost}:5000
     ports:
       - "5003:80"
     volumes:
@@ -100,10 +100,11 @@ services:
   web.gateway:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development      
-      - HealthChecks__Identity__Url=http://identity.api/health
-      - HealthChecks__Cashier__Url=http://cashier.api/health
-      - HealthChecks__ArenaChallenges__Url=http://arena.challenges.api/health
-      - AppSettings__Authority__PrivateUrl=http://identity.api
+      - HealthChecks__IdentityUrl=http://identity.api/health
+      - HealthChecks__CashierUrl=http://cashier.api/health
+      - HealthChecks__ArenaChallengesUrl=http://arena.challenges.api/health      
+      - Authority__PrivateUrl=http://identity.api
+      - Authority__PublicUrl=${URL:-http://localhost}:5000
     ports:
       - "5200:80"
     volumes:
@@ -117,9 +118,9 @@ services:
   #    - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
   #    - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
   #    - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
-  #    - AzureKubernetesService__Enable=${AKS_ENABLE:-false}
-  #    - AppSettings__Authority__PublicUrl=${URL:-http://localhost}:5000  
-  #    - AppSettings__Authority__PrivateUrl=${URL:-http://localhost}:5000
+  #    - AzureKubernetesServiceEnabled=${AKS_ENABLE:-false}
+  #    - Authority__PublicUrl=${URL:-http://localhost}:5000  
+  #    - Authority__PrivateUrl=${URL:-http://localhost}:5000
   #    - Identity__Url=${URL:-http://localhost}:5001
   #    - Cashier__Url=${URL:-http://localhost}:5002
   #    - Challenge__Url=${URL:-http://localhost}:5003
