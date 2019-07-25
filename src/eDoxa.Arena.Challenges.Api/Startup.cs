@@ -14,25 +14,15 @@ using Autofac.Extensions.DependencyInjection;
 
 using AutoMapper;
 
-using eDoxa.Arena.Challenges.Api.Application.Adapters;
 using eDoxa.Arena.Challenges.Api.Application.DelegatingHandlers;
 using eDoxa.Arena.Challenges.Api.Application.DomainEvents;
-using eDoxa.Arena.Challenges.Api.Application.Factories;
 using eDoxa.Arena.Challenges.Api.Application.Services;
-using eDoxa.Arena.Challenges.Api.Application.Strategies;
 using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Api.Games.Extensions;
 using eDoxa.Arena.Challenges.Api.Infrastructure;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data;
-using eDoxa.Arena.Challenges.Api.Infrastructure.Queries;
-using eDoxa.Arena.Challenges.Domain.Adapters;
-using eDoxa.Arena.Challenges.Domain.Factories;
-using eDoxa.Arena.Challenges.Domain.Queries;
-using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Domain.Services;
-using eDoxa.Arena.Challenges.Domain.Strategies;
 using eDoxa.Arena.Challenges.Infrastructure;
-using eDoxa.Arena.Challenges.Infrastructure.Repositories;
 using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Swagger.Extensions;
@@ -158,30 +148,8 @@ namespace eDoxa.Arena.Challenges.Api
                 .AddPolicyHandler(HttpPolicies.GetRetryPolicy())
                 .AddPolicyHandler(HttpPolicies.GetCircuitBreakerPolicy());
 
+            // TODO: Add to autofac module.
             services.AddArenaServices(Configuration);
-
-            // Repositories
-            services.AddScoped<IChallengeRepository, ChallengeRepository>();
-
-            // Queries
-            services.AddScoped<IChallengeQuery, ChallengeQuery>();
-            services.AddScoped<IParticipantQuery, ParticipantQuery>();
-            services.AddScoped<IMatchQuery, MatchQuery>();
-
-            // Services
-            services.AddScoped<IChallengeService, ChallengeService>();
-
-            // Strategies
-            services.AddTransient<IScoringStrategy, LeagueOfLegendsScoringStrategy>();
-
-            // Adapters
-            services.AddTransient<IGameReferencesAdapter, LeagueOfLegendsGameReferencesAdapter>();
-            services.AddTransient<IMatchAdapter, LeagueOfLegendsMatchAdapter>();
-
-            // Factories
-            services.AddSingleton<IScoringFactory, ScoringFactory>();
-            services.AddSingleton<IGameReferencesFactory, GameReferencesFactory>();
-            services.AddSingleton<IMatchFactory, MatchFactory>();
 
             services.AddServiceBus(AppSettings);
 

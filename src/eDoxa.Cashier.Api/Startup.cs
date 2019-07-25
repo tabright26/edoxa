@@ -14,20 +14,10 @@ using Autofac.Extensions.DependencyInjection;
 
 using AutoMapper;
 
-using eDoxa.Cashier.Api.Application.Factories;
-using eDoxa.Cashier.Api.Application.Services;
-using eDoxa.Cashier.Api.Application.Strategies;
 using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Api.Infrastructure;
 using eDoxa.Cashier.Api.Infrastructure.Data;
-using eDoxa.Cashier.Api.Infrastructure.Queries;
-using eDoxa.Cashier.Domain.Factories;
-using eDoxa.Cashier.Domain.Queries;
-using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.Domain.Services;
-using eDoxa.Cashier.Domain.Strategies;
 using eDoxa.Cashier.Infrastructure;
-using eDoxa.Cashier.Infrastructure.Repositories;
 using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Application.DomainEvents;
 using eDoxa.Seedwork.Application.Extensions;
@@ -137,25 +127,6 @@ namespace eDoxa.Cashier.Api
             }
 
             services.AddAuthentication(HostingEnvironment, AppSettings);
-
-            // Repositories
-            services.AddScoped<IChallengeRepository, ChallengeRepository>();
-            services.AddScoped<IAccountRepository, AccountRepository>();
-            services.AddScoped<ITransactionRepository, TransactionRepository>();
-
-            // Queries
-            services.AddScoped<IChallengeQuery, ChallengeQuery>();
-            services.AddScoped<IAccountQuery, AccountQuery>();
-            services.AddScoped<ITransactionQuery, TransactionQuery>();
-
-            // Services
-            services.AddScoped<IAccountService, AccountService>();
-
-            // Strategies
-            services.AddTransient<IPayoutStrategy, PayoutStrategy>();
-
-            // Factories
-            services.AddSingleton<IPayoutFactory, PayoutFactory>();
 
             services.AddServiceBus(AppSettings);
 
