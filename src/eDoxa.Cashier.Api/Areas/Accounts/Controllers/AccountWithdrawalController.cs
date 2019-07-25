@@ -11,7 +11,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Application.Commands;
-using eDoxa.Commands.Extensions;
+using eDoxa.Seedwork.Application.Commands.Extensions;
 
 using MediatR;
 

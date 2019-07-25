@@ -2,12 +2,12 @@
 
 using System;
 
-using eDoxa.IntegrationEvents.Infrastructure;
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+
+using eDoxa.Seedwork.IntegrationEvents.Infrastructure;
 
 namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations.IntegrationEvent
 {
@@ -24,26 +24,26 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations.IntegrationEvent
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("eDoxa.IntegrationEvents.IntegrationEventLogEntry", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("Created");
+                b.Property<DateTime>("Created");
 
-                    b.Property<string>("JsonObject")
-                        .IsRequired();
+                b.Property<string>("JsonObject")
+                    .IsRequired();
 
-                    b.Property<int>("PublishAttempted");
+                b.Property<int>("PublishAttempted");
 
-                    b.Property<int>("State");
+                b.Property<int>("State");
 
-                    b.Property<string>("TypeFullName")
-                        .IsRequired();
+                b.Property<string>("TypeFullName")
+                    .IsRequired();
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("Log","dbo");
-                });
+                b.ToTable("Log", "dbo");
+            });
 #pragma warning restore 612, 618
         }
     }

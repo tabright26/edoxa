@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Commands.Abstractions.Handlers;
+using eDoxa.Seedwork.Application.Commands.Abstractions.Handlers;
 
 namespace eDoxa.Cashier.Api.Application.Commands.Handlers
 {

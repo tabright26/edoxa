@@ -6,7 +6,7 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.IntegrationEvents;
+using eDoxa.Seedwork.IntegrationEvents;
 
 namespace eDoxa.Cashier.IntegrationTests.Helpers.Mocks
 {

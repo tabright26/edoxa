@@ -16,8 +16,8 @@ using Autofac;
 
 using eDoxa.Identity.Api;
 using eDoxa.Identity.Api.Infrastructure;
-using eDoxa.IntegrationEvents.Infrastructure;
 using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.IntegrationEvents.Infrastructure;
 using eDoxa.Seedwork.Security.AzureKeyVault.Extensions;
 using eDoxa.Seedwork.Security.Hosting;
 using eDoxa.Seedwork.Testing.Extensions;

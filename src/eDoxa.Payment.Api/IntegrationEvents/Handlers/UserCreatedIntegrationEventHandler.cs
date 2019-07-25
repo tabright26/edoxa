@@ -11,8 +11,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using eDoxa.IntegrationEvents;
 using eDoxa.Payment.Api.Providers.Stripe.Abstractions;
+using eDoxa.Seedwork.IntegrationEvents;
 using eDoxa.Seedwork.Security.Constants;
 
 using Microsoft.Extensions.Logging;

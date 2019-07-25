@@ -13,7 +13,7 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.UnitTests.Helpers.Mocks;
-using eDoxa.Commands.Extensions;
+using eDoxa.Seedwork.Application.Commands.Extensions;
 using eDoxa.Seedwork.Testing.TestConstructor;
 
 using MediatR;

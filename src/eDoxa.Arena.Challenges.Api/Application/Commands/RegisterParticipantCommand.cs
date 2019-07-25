@@ -11,7 +11,7 @@
 using System.Runtime.Serialization;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Commands.Abstractions;
+using eDoxa.Seedwork.Application.Commands.Abstractions;
 
 namespace eDoxa.Arena.Challenges.Api.Application.Commands
 {

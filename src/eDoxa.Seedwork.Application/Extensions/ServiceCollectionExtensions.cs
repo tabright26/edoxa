@@ -8,9 +8,9 @@ using System;
 
 using Autofac;
 
-using eDoxa.IntegrationEvents;
-using eDoxa.IntegrationEvents.Azure;
-using eDoxa.IntegrationEvents.RabbitMQ;
+using eDoxa.Seedwork.IntegrationEvents;
+using eDoxa.Seedwork.IntegrationEvents.Azure;
+using eDoxa.Seedwork.IntegrationEvents.RabbitMQ;
 using eDoxa.Seedwork.Monitoring.AppSettings;
 
 using IdentityServer4.AccessTokenValidation;

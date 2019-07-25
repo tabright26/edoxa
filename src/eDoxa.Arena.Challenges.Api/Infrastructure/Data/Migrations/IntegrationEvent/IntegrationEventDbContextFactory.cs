@@ -7,8 +7,8 @@
 using System.IO;
 using System.Reflection;
 
-using eDoxa.IntegrationEvents.Infrastructure;
 using eDoxa.Seedwork.Infrastructure.Factories;
+using eDoxa.Seedwork.IntegrationEvents.Infrastructure;
 
 using JetBrains.Annotations;
 

@@ -11,7 +11,7 @@
 using System;
 using System.Collections.Generic;
 
-using eDoxa.IntegrationEvents;
+using eDoxa.Seedwork.IntegrationEvents;
 
 namespace eDoxa.Payment.Api.IntegrationEvents
 {

@@ -12,7 +12,7 @@ using System;
 
 using Autofac;
 
-using eDoxa.IntegrationEvents;
+using eDoxa.Seedwork.IntegrationEvents;
 
 using JetBrains.Annotations;
 

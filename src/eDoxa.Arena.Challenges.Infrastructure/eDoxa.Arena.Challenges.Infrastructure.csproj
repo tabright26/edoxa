@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\eDoxa.Arena.Challenges.Domain\eDoxa.Arena.Challenges.Domain.csproj" />
-    <ProjectReference Include="..\eDoxa.IntegrationEvents\eDoxa.IntegrationEvents.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Infrastructure\eDoxa.Seedwork.Infrastructure.csproj" />
   </ItemGroup>
 

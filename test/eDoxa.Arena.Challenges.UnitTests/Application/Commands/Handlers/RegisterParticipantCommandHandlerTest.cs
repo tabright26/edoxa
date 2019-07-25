@@ -13,7 +13,7 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.UnitTests.Helpers.Mocks;
-using eDoxa.Commands.Extensions;
+using eDoxa.Seedwork.Application.Commands.Extensions;
 using eDoxa.Seedwork.Domain;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;

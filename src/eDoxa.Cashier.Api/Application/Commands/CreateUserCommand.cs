@@ -9,7 +9,7 @@
 // this source code package.
 
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Commands.Abstractions;
+using eDoxa.Seedwork.Application.Commands.Abstractions;
 
 namespace eDoxa.Cashier.Api.Application.Commands
 {
