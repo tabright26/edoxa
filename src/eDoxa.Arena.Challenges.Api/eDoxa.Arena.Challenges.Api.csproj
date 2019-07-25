@@ -37,8 +37,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Infrastructure\Data\Storage\TestFiles\TestUsers.csv" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="Infrastructure\Data\Storage\TestFiles\TestChallenges.csv" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Infrastructure\Data\Storage\TestFiles\TestUsers.csv" CopyToOutputDirectory="Always" />
+    <Content Include="Infrastructure\Data\Storage\TestFiles\TestChallenges.csv" CopyToOutputDirectory="Always" />
   </ItemGroup>
 
 </Project>
