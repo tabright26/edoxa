@@ -18,10 +18,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6320F9AE-AC74-456A-869F-5A570C3467AB}"
 	ProjectSection(SolutionItems) = preProject
 		.env = .env
-		cli\docker-compose-functional-tests.ps1 = cli\docker-compose-functional-tests.ps1
-		cli\docker-compose-integration-tests.ps1 = cli\docker-compose-integration-tests.ps1
 		cli\docker-compose-testing.ps1 = cli\docker-compose-testing.ps1
-		cli\docker-compose-unit-tests.ps1 = cli\docker-compose-unit-tests.ps1
 		cli\docker-remove-containers.ps1 = cli\docker-remove-containers.ps1
 		global.json = global.json
 	EndProjectSection
@@ -90,7 +87,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Web.Gateway", "src\eD
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Arena.Challenges.Api.Games", "src\eDoxa.Arena.Challenges.Api.Games\eDoxa.Arena.Challenges.Api.Games.csproj", "{29C291DA-B634-46EA-A676-84C6DB0BE26A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Seedwork.IntegrationEvents", "src\eDoxa.Seedwork.IntegrationEvents\eDoxa.Seedwork.IntegrationEvents.csproj", "{20BAEB10-5A07-48FF-B7D6-9455FBCAC593}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Seedwork.IntegrationEvents", "src\eDoxa.Seedwork.IntegrationEvents\eDoxa.Seedwork.IntegrationEvents.csproj", "{20BAEB10-5A07-48FF-B7D6-9455FBCAC593}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
