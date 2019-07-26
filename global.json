@@ -3,6 +3,6 @@
   "sdk": {
     "architecture": "x64",
     "runtime": "coreclr",
-    "version": "2.2.300"
+    "version": "2.2.401"
   }
 }
