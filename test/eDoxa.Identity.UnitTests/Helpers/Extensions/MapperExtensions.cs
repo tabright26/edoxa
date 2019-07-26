@@ -19,13 +19,7 @@ namespace eDoxa.Identity.UnitTests.Helpers.Extensions
         {
             get
             {
-                var configuration = new MapperConfiguration(
-                    config =>
-                    {
-                        config.AddProfiles(Assembly.GetAssembly(typeof(IdentityDbContext)));
-                        config.AddProfiles(Assembly.GetAssembly(typeof(Startup)));
-                    }
-                );
+                var configuration = new MapperConfiguration(config => config.AddMaps(Assembly.GetAssembly(typeof(IdentityDbContext)), Assembly.GetAssembly(typeof(Startup))));
 
                 configuration.AssertConfigurationIsValid();
 

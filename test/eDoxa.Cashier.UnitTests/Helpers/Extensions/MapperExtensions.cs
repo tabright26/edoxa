@@ -19,13 +19,7 @@ namespace eDoxa.Cashier.UnitTests.Helpers.Extensions
         {
             get
             {
-                var configuration = new MapperConfiguration(
-                    config =>
-                    {
-                        config.AddProfiles(Assembly.GetAssembly(typeof(CashierDbContext)));
-                        config.AddProfiles(Assembly.GetAssembly(typeof(Startup)));
-                    }
-                );
+                var configuration = new MapperConfiguration(config => config.AddMaps(Assembly.GetAssembly(typeof(CashierDbContext)), Assembly.GetAssembly(typeof(Startup))));
 
                 configuration.AssertConfigurationIsValid();
 
