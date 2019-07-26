@@ -1,5 +1,5 @@
 ﻿// Filename: CustomIdentityErrorDescriber.cs
-// Date Created: 2019-07-19
+// Date Created: 2019-07-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,32 +8,32 @@ using Microsoft.AspNetCore.Identity;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Services
 {
-    public class CustomIdentityErrorDescriber : Microsoft.AspNetCore.Identity.IdentityErrorDescriber
+    public class CustomIdentityErrorDescriber : IdentityErrorDescriber
     {
-        public IdentityError GameProviderAlreadyLinked()
+        public IdentityError GameAlreadyLinked()
         {
             return new IdentityError
             {
-                Code = nameof(this.GameProviderAlreadyLinked),
-                Description = "The user's game provider is already linked."
+                Code = nameof(this.GameAlreadyLinked),
+                Description = "The game is already linked to the user."
             };
         }
 
-        public IdentityError GameProviderAlreadyAssociated()
+        public IdentityError GameAlreadyAssociated()
         {
             return new IdentityError
             {
-                Code = nameof(this.GameProviderAlreadyAssociated),
-                Description = "A user with this game provided already exists."
+                Code = nameof(this.GameAlreadyAssociated),
+                Description = "The game is already associated with a user."
             };
         }
 
-        public IdentityError GameProviderUnlinked()
+        public IdentityError GameNotAssociated()
         {
             return new IdentityError
             {
-                Code = nameof(this.GameProviderUnlinked),
-                Description = "The user game provider is unlinked."
+                Code = nameof(this.GameNotAssociated),
+                Description = "The game is not associated with the user."
             };
         }
 

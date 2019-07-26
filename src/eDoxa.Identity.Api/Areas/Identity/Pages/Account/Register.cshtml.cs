@@ -1,5 +1,5 @@
 ﻿// Filename: Register.cshtml.cs
-// Date Created: 2019-07-17
+// Date Created: 2019-07-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,7 +9,7 @@ using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Areas.Identity.Services;
-using eDoxa.Identity.Api.Models;
+using eDoxa.Identity.Api.Infrastructure.Models;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.UI.Services;

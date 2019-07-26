@@ -6,7 +6,7 @@
 
 using System;
 
-using eDoxa.IntegrationEvents;
+using eDoxa.Seedwork.IntegrationEvents;
 
 namespace eDoxa.Identity.Api.IntegrationEvents
 {

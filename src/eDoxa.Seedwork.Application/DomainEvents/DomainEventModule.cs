@@ -22,8 +22,6 @@ namespace eDoxa.Seedwork.Application.DomainEvents
     {
         protected override void Load([NotNull] ContainerBuilder builder)
         {
-            base.Load(builder);
-
             builder.RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies()).AsClosedTypesOf(typeof(IDomainEventHandler<>)).AsImplementedInterfaces();
         }
     }

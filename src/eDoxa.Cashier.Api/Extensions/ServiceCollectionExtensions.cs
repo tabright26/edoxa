@@ -8,44 +8,22 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Cashier.Api.Infrastructure;
 using eDoxa.Seedwork.Monitoring.Extensions;
-using eDoxa.Seedwork.Security.Constants;
 
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Versioning;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.Cashier.Api.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddHealthChecks(this IServiceCollection services, IConfiguration configuration)
+        public static void AddHealthChecks(this IServiceCollection services, CashierAppSettings appSettings)
         {
             var healthChecks = services.AddHealthChecks();
-
-            healthChecks.AddAzureKeyVault(configuration);
-
-            healthChecks.AddSqlServer(configuration);
-
-            healthChecks.AddIdentityServer(configuration);
-
-            healthChecks.AddUrlGroup(configuration["HealthChecks:Payment:Url"], "payment-api", tags: new[] { "api" });
-        }
-
-        public static void AddVersioning(this IServiceCollection services)
-        {
-            services.AddApiVersioning(
-                options =>
-                {
-                    options.ApiVersionReader = new HeaderApiVersionReader(CustomHeaderNames.Version);
-                    options.AssumeDefaultVersionWhenUnspecified = true;
-                    options.DefaultApiVersion = new ApiVersion(1, 0);
-                    options.ReportApiVersions = true;
-                }
-            );
-
-            services.AddVersionedApiExplorer(options => options.GroupNameFormat = "'v'VV");
+            healthChecks.AddAzureKeyVault(appSettings);
+            healthChecks.AddIdentityServer(appSettings);
+            healthChecks.AddSqlServer(appSettings.ConnectionStrings);
+            healthChecks.AddUrlGroup(appSettings.HealthChecks.PaymentUrl, "payment-api", new[] { "api" });
         }
     }
 }

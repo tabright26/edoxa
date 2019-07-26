@@ -17,8 +17,6 @@ using eDoxa.Seedwork.Security.IdentityServer.Resources;
 using IdentityServer4;
 using IdentityServer4.Models;
 
-using Microsoft.Extensions.Configuration;
-
 namespace eDoxa.Identity.Api.Infrastructure
 {
     public static class IdentityServerConfig
@@ -40,20 +38,20 @@ namespace eDoxa.Identity.Api.Infrastructure
 
         public static IEnumerable<ApiResource> GetApiResources()
         {
-            yield return CustomApiResources.Identity;
+            yield return CustomApiResources.IdentityApi;
 
-            yield return CustomApiResources.Cashier;
+            yield return CustomApiResources.CashierApi;
 
-            yield return CustomApiResources.ArenaChallenges;
+            yield return CustomApiResources.ArenaChallengesApi;
         }
 
-        public static IEnumerable<Client> GetClients(IConfiguration configuration)
+        public static IEnumerable<Client> GetClients(IdentityAppSettings appSettings)
         {
-            yield return CustomApiResources.Identity.SwaggerClient(configuration["Identity:Url"]);
+            yield return CustomApiResources.IdentityApi.SwaggerClient(appSettings.IdentityServer.IdentityUrl);
 
-            yield return CustomApiResources.Cashier.SwaggerClient(configuration["Cashier:Url"]);
+            yield return CustomApiResources.CashierApi.SwaggerClient(appSettings.IdentityServer.CashierUrl);
 
-            yield return CustomApiResources.ArenaChallenges.SwaggerClient(configuration["Arena:Challenges:Url"]);
+            yield return CustomApiResources.ArenaChallengesApi.SwaggerClient(appSettings.IdentityServer.ArenaChallengesUrl);
 
             yield return new Client
             {
@@ -61,22 +59,22 @@ namespace eDoxa.Identity.Api.Infrastructure
                 ClientName = "eDoxa Web Spa",
                 AllowedCorsOrigins = new HashSet<string>
                 {
-                    configuration["Web:Spa:Url"],
+                    appSettings.IdentityServer.Web.SpaUrl,
                     "http://localhost:5300",
                     "http://127.0.0.1:5300"
                 },
                 PostLogoutRedirectUris = new HashSet<string>
                 {
-                    configuration["Web:Spa:Url"],
+                    appSettings.IdentityServer.Web.SpaUrl,
                     "http://localhost:5300",
                     "http://127.0.0.1:5300"
                 },
                 RedirectUris = new HashSet<string>
                 {
-                    $"{configuration["Web:Spa:Url"]}/callback",
+                    $"{appSettings.IdentityServer.Web.SpaUrl}/callback",
                     "http://localhost:5300/callback",
                     "http://127.0.0.1:5300/callback",
-                    $"{configuration["Web:Spa:Url"]}/silent_renew.html",
+                    $"{appSettings.IdentityServer.Web.SpaUrl}/silent_renew.html",
                     "http://localhost:5300/silent_renew.html",
                     "http://127.0.0.1:5300/silent_renew.html"
                 },

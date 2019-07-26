@@ -1,5 +1,5 @@
 ﻿// Filename: CustomUserManager.cs
-// Date Created: 2019-07-17
+// Date Created: 2019-07-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,8 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Application;
-using eDoxa.Identity.Api.Models;
+using eDoxa.Identity.Api.Infrastructure.Models;
 
 using JetBrains.Annotations;
 
@@ -52,13 +51,18 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
         private new CustomIdentityErrorDescriber ErrorDescriber { get; }
 
-        public async Task<IdentityResult> AddGameProviderAsync(User user, UserGameProviderInfo gameInfo)
+        public async Task<IdentityResult> AddGameAsync(User user, string gameName, string playerId)
         {
             this.ThrowIfDisposed();
 
-            if (gameInfo == null)
+            if (string.IsNullOrWhiteSpace(gameName))
             {
-                throw new ArgumentNullException(nameof(gameInfo));
+                throw new ArgumentNullException(nameof(gameName));
+            }
+
+            if (string.IsNullOrWhiteSpace(playerId))
+            {
+                throw new ArgumentNullException(nameof(playerId));
             }
 
             if (user == null)
@@ -66,35 +70,35 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            if (await this.HasGameProviderAlreadyLinkedAsync(user, Game.FromName(gameInfo.Name)))
+            if (await this.HasGameAlreadyLinkedAsync(user, Game.FromName(gameName)))
             {
                 var userId = await this.GetUserIdAsync(user);
 
                 Logger.LogWarning(
                     4,
-                    $"{nameof(this.AddGameProviderAsync)} for user {userId} failed because it has already been linked to {gameInfo.Name} game provider."
+                    $"{nameof(this.AddGameAsync)} for user {userId} failed because it has already been linked to {gameName} game provider."
                 );
 
-                return IdentityResult.Failed(ErrorDescriber.GameProviderAlreadyLinked());
+                return IdentityResult.Failed(ErrorDescriber.GameAlreadyLinked());
             }
 
-            if (await this.FindByGameProviderAsync(Game.FromName(gameInfo.Name), gameInfo.PlayerId) != null)
+            if (await this.FindByGameAsync(Game.FromName(gameName), playerId) != null)
             {
                 var userId = await this.GetUserIdAsync(user);
 
-                Logger.LogWarning(4, $"{nameof(this.AddGameProviderAsync)} for user {userId} failed because it was already associated with another user.");
+                Logger.LogWarning(4, $"{nameof(this.AddGameAsync)} for user {userId} failed because it was already associated with another user.");
 
-                return IdentityResult.Failed(ErrorDescriber.GameProviderAlreadyAssociated());
+                return IdentityResult.Failed(ErrorDescriber.GameAlreadyAssociated());
             }
 
-            await Store.AddGameProviderAsync(user, gameInfo, CancellationToken);
+            await Store.AddGameAsync(user, gameName, playerId, CancellationToken);
 
             await this.UpdateSecurityStampAsync(user);
 
             return await this.UpdateUserAsync(user);
         }
 
-        public async Task<IdentityResult> RemoveGameProviderAsync(User user, Game game)
+        public async Task<IdentityResult> RemoveGameAsync(User user, Game game)
         {
             this.ThrowIfDisposed();
 
@@ -108,16 +112,16 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            if (!await this.HasGameProviderAlreadyLinkedAsync(user, game))
+            if (!await this.HasGameAlreadyLinkedAsync(user, game))
             {
                 var userId = await this.GetUserIdAsync(user);
 
-                Logger.LogWarning(4, $"{nameof(this.RemoveGameProviderAsync)} for user {userId} failed because the {game} game provider is unlinked.");
+                Logger.LogWarning(4, $"{nameof(this.RemoveGameAsync)} for user {userId} failed because the {game} game provider is unlinked.");
 
-                return IdentityResult.Failed(ErrorDescriber.GameProviderUnlinked());
+                return IdentityResult.Failed(ErrorDescriber.GameNotAssociated());
             }
 
-            await Store.RemoveGameProviderAsync(user, game.Value, CancellationToken);
+            await Store.RemoveGameAsync(user, game.Value, CancellationToken);
 
             await this.UpdateSecurityStampAsync(user);
 
@@ -125,7 +129,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
         }
 
         [ItemCanBeNull]
-        public Task<User> FindByGameProviderAsync(Game game, string playerId)
+        public Task<User> FindByGameAsync(Game game, string playerId)
         {
             this.ThrowIfDisposed();
 
@@ -139,10 +143,10 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 throw new ArgumentNullException(nameof(playerId));
             }
 
-            return Store.FindByGameProviderAsync(game.Value, playerId, CancellationToken);
+            return Store.FindByGameAsync(game.Value, playerId, CancellationToken);
         }
 
-        public async Task<IList<UserGameProviderInfo>> GetGamesAsync(User user)
+        public async Task<IList<UserGame>> GetGamesAsync(User user)
         {
             this.ThrowIfDisposed();
 
@@ -151,33 +155,14 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return await Store.GetGameProvidersAsync(user, CancellationToken);
+            return await Store.GetGamesAsync(user, CancellationToken);
         }
 
-        public async Task<IList<UserGameProviderLinkInfo>> GetGameProviderLinksAsync(User user)
+        private async Task<bool> HasGameAlreadyLinkedAsync(User user, Game game)
         {
-            var gameInfos = await this.GetGamesAsync(user);
+            var games = await this.GetGamesAsync(user);
 
-            return Game.GetEnumerations()
-                .Select(
-                    game =>
-                    {
-                        return new UserGameProviderLinkInfo
-                        {
-                            Game = game,
-                            IsLinked = gameInfos.SingleOrDefault(gameInfo => gameInfo.Name == game.Name) != null
-                        };
-                    }
-                )
-                .OrderBy(gameProviderLink => gameProviderLink.Game)
-                .ToList();
-        }
-
-        private async Task<bool> HasGameProviderAlreadyLinkedAsync(User user, Game game)
-        {
-            var gameProviderLinks = await this.GetGameProviderLinksAsync(user);
-
-            return gameProviderLinks.Single(gameProviderLink => gameProviderLink.Game == game).IsLinked;
+            return games.SingleOrDefault(userGame => Game.FromValue(userGame.Value).Name == game.Name) != null;
         }
 
         public async Task<string> GetBirthDateAsync(User user)

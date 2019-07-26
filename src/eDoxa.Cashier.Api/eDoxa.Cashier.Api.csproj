@@ -32,24 +32,17 @@
 
   <ItemGroup>
     <ProjectReference Include="..\eDoxa.Cashier.Infrastructure\eDoxa.Cashier.Infrastructure.csproj" />
-    <ProjectReference Include="..\eDoxa.Commands\eDoxa.Commands.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Monitoring\eDoxa.Seedwork.Monitoring.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="appsettings.Testing.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Infrastructure\Data\Storage\SourceFiles\Payouts.csv" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="..\..\data\Cashier\SourceFiles\Payouts.csv" Link="Infrastructure\Data\Storage\SourceFiles\Payouts.csv" CopyToOutputDirectory="PreserveNewest" />
-  </ItemGroup>
-
-    <ItemGroup>
-    <Content Include="..\..\data\Cashier\TestFiles\TestUsers.csv" Link="Infrastructure\Data\Storage\TestFiles\TestUsers.csv" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="..\..\data\Cashier\TestFiles\TestChallenges.csv" Link="Infrastructure\Data\Storage\TestFiles\TestChallenges.csv" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Infrastructure\Data\Storage\TestFiles\TestUsers.csv" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Infrastructure\Data\Storage\TestFiles\TestChallenges.csv" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

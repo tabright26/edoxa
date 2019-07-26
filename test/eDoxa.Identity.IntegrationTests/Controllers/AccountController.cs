@@ -12,16 +12,14 @@ using eDoxa.Identity.IntegrationTests.Helpers;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 
-using Microsoft.AspNetCore.TestHost;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Identity.IntegrationTests.Controllers
 {
     [TestClass]
-    public sealed class AccountController
+    public sealed class AccountController : IdentityWebApplicationFactory
     {
         private HttpClient _httpClient;
-        private TestServer _testServer;
 
         public async Task<HttpResponseMessage> ExecuteAsync()
         {
@@ -31,16 +29,15 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
         [TestInitialize]
         public async Task TestInitialize()
         {
-            var factory = new TestIdentityWebApplicationFactory<TestIdentityStartup>();
-            _httpClient = factory.CreateClient();
-            _testServer = factory.Server;
+            _httpClient = this.CreateClient();
+
             await this.TestCleanup();
         }
 
         [TestCleanup]
         public async Task TestCleanup()
         {
-            await _testServer.UsingScopeAsync(
+            await Server.UsingScopeAsync(
                 async scope =>
                 {
                     var context = scope.GetService<IdentityDbContext>();

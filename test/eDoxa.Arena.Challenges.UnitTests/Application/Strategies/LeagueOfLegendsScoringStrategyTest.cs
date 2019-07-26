@@ -5,8 +5,8 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Arena.Challenges.Api.Application.Strategies;
+using eDoxa.Arena.Challenges.Api.Games.LeagueOfLegends.Dtos;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.LeagueOfLegends.Dtos;
 
 using FluentAssertions;
 

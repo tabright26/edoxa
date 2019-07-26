@@ -10,7 +10,7 @@
 
 using System;
 
-using eDoxa.IntegrationEvents;
+using eDoxa.Seedwork.IntegrationEvents;
 
 namespace eDoxa.Payment.Api.IntegrationEvents
 {

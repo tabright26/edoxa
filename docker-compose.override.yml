@@ -27,22 +27,22 @@ services:
       - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
       - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
       - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
-      - AzureServiceBus__Enable=${ASB_ENABLE:-false}
+      - AzureServiceBusEnabled=${ASB_ENABLE:-false}
       - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq}
       - ServiceBus__RetryCount=${ASB_RETRYCOUNT:-5}
-      - ServiceBus__Subscription=Identity
-      - AzureKubernetesService__Enable=${AKS_ENABLE:-false}
-      - Authority=${URL:-http://localhost}:5000
-      - Identity__Url=${URL:-http://localhost}:5000
-      - Cashier__Url=${URL:-http://localhost}:5002
-      - Arena__Challenges__Url=${URL:-http://localhost}:5003
-      - Web__Spa__Url=${URL:-http://localhost}:5300
-      - IdentityServer__Url=http://identity.api
+      - ServiceBus__SubscriptionName=Identity
+      - AzureKubernetesServiceEnabled=${AKS_ENABLE:-false}
+      - Authority__PrivateUrl=http://identity.api
+      - Authority__PublicUrl=${URL:-http://localhost}:5000
+      - IdentityServer__IdentityUrl=${URL:-http://localhost}:5000
+      - IdentityServer__CashierUrl=${URL:-http://localhost}:5002
+      - IdentityServer__ArenaChallengesUrl=${URL:-http://localhost}:5003
+      - IdentityServer__Web__SpaUrl=${URL:-http://localhost}:5300
+      - SwaggerEnabled=${SwaggerEnabled:-true}
     ports:
       - "5000:80"
     volumes:
-      - ./data/Identity/SourceFiles:/app/Infrastructure/Data/Storage/SourceFiles
-      - ./data/Identity/TestFiles:/app/Infrastructure/Data/Storage/TestFiles
+      - ./src/eDoxa.Identity.Api/Infrastructure/Data/Storage:/app/Infrastructure/Data/Storage
 
   payment.api:
     environment:
@@ -51,10 +51,10 @@ services:
       - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}      
       - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
       - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
-      - AzureServiceBus__Enable=${ASB_ENABLE:-false}
+      - AzureServiceBusEnabled=${ASB_ENABLE:-false}
       - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq}
       - ServiceBus__RetryCount=${ASB_RETRYCOUNT:-5}
-      - ServiceBus__Subscription=Payment
+      - ServiceBus__SubscriptionName=Payment
     ports:
       - "5001:80"
 
@@ -66,18 +66,18 @@ services:
       - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}      
       - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
       - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
-      - AzureServiceBus__Enable=${ASB_ENABLE:-false}
+      - AzureServiceBusEnabled=${ASB_ENABLE:-false}
       - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq}
       - ServiceBus__RetryCount=${ASB_RETRYCOUNT:-5}
-      - ServiceBus__Subscription=Cashier
-      - HealthChecks__Payment__Url=http://payment.api/health
-      - Authority=${URL:-http://localhost}:5000
-      - IdentityServer__Url=http://identity.api
+      - ServiceBus__SubscriptionName=Cashier
+      - HealthChecks__PaymentUrl=http://payment.api/health
+      - Authority__PrivateUrl=http://identity.api
+      - Authority__PublicUrl=${URL:-http://localhost}:5000
+      - SwaggerEnabled=${SwaggerEnabled:-true}
     ports:
       - "5002:80"
     volumes:
-      - ./data/Cashier/SourceFiles:/app/Infrastructure/Data/Storage/SourceFiles
-      - ./data/Cashier/TestFiles:/app/Infrastructure/Data/Storage/TestFiles       
+      - ./src/eDoxa.Cashier.Api/Infrastructure/Data/Storage:/app/Infrastructure/Data/Storage
 
   arena.challenges.api:
     environment:
@@ -88,29 +88,30 @@ services:
       - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
       - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
       - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
-      - AzureServiceBus__Enable=${ASB_ENABLE:-false}
+      - AzureServiceBusEnabled=${ASB_ENABLE:-false}
       - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq}
       - ServiceBus__RetryCount=${ASB_RETRYCOUNT:-5}
-      - ServiceBus__Subscription=Arena.Challenges
-      - Authority=${URL:-http://localhost}:5000
-      - IdentityServer__Url=http://identity.api
+      - ServiceBus__SubscriptionName=Arena.Challenges
+      - Authority__PrivateUrl=http://identity.api
+      - Authority__PublicUrl=${URL:-http://localhost}:5000
+      - SwaggerEnabled=${SwaggerEnabled:-true}
     ports:
       - "5003:80"
     volumes:
-      - ./data/Arena/Challenges/SourceFiles:/app/Infrastructure/Data/Storage/SourceFiles
-      - ./data/Arena/Challenges/TestFiles:/app/Infrastructure/Data/Storage/TestFiles
+      - ./src/eDoxa.Arena.Challenges.Api/Infrastructure/Data/Storage:/app/Infrastructure/Data/Storage
 
   web.gateway:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development      
-      - HealthChecks__Identity__Url=http://identity.api/health
-      - HealthChecks__Cashier__Url=http://cashier.api/health
-      - HealthChecks__ArenaChallenges__Url=http://arena.challenges.api/health
-      - IdentityServer__Url=http://identity.api
+      - HealthChecks__IdentityUrl=http://identity.api/health
+      - HealthChecks__CashierUrl=http://cashier.api/health
+      - HealthChecks__ArenaChallengesUrl=http://arena.challenges.api/health      
+      - Authority__PrivateUrl=http://identity.api
+      - Authority__PublicUrl=${URL:-http://localhost}:5000
     ports:
       - "5200:80"
     volumes:
-      - ./api/eDoxa.Web.Gateway:/app/ocelot
+      - ./src/eDoxa.Web.Gateway:/app
 
   #web.spa:
   #  environment:
@@ -120,9 +121,9 @@ services:
   #    - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
   #    - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
   #    - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
-  #    - AzureKubernetesService__Enable=${AKS_ENABLE:-false}
-  #    - Authority=${URL:-http://localhost}:5000  
-  #    - IdentityServer__Url=${URL:-http://localhost}:5000
+  #    - AzureKubernetesServiceEnabled=${AKS_ENABLE:-false}
+  #    - Authority__PublicUrl=${URL:-http://localhost}:5000  
+  #    - Authority__PrivateUrl=${URL:-http://localhost}:5000
   #    - Identity__Url=${URL:-http://localhost}:5001
   #    - Cashier__Url=${URL:-http://localhost}:5002
   #    - Challenge__Url=${URL:-http://localhost}:5003
@@ -149,7 +150,7 @@ services:
       - HealthChecks__Endpoints__4__Uri=http://web.gateway/health
       - HealthChecks__Endpoints__5__Name=eDoxa Web Spa
       - HealthChecks__Endpoints__5__Uri=http://web.spa/health
-      - HealthChecks__EvaluationTimeInSeconds=15
-      - HealthChecks__MinimumSecondsBetweenFailureNotifications=60
+      - HealthChecks__EvaluationTimeInSeconds=60
+      - HealthChecks__MinimumSecondsBetweenFailureNotifications=300
     ports:
       - "5500:80"

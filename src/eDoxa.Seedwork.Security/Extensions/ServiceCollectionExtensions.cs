@@ -4,16 +4,9 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Collections.Generic;
-
 using eDoxa.Seedwork.Security.Constants;
 
-using IdentityServer4.AccessTokenValidation;
-using IdentityServer4.Models;
-
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -49,51 +42,6 @@ namespace eDoxa.Seedwork.Security.Extensions
                     )
                     .PersistKeysToRedis(ConnectionMultiplexer.Connect(configuration.GetConnectionString(CustomConnectionStrings.Redis)), "data-protection");
             }
-        }
-
-        public static void AddAuthentication(
-            this IServiceCollection services,
-            IConfiguration configuration,
-            IHostingEnvironment environment,
-            IDictionary<string, ApiResource> apiResources
-        )
-        {
-            var builder = services.AddAuthentication();
-
-            foreach (var apiResource in apiResources)
-            {
-                builder.AddIdentityServerAuthentication(
-                    apiResource.Key,
-                    options =>
-                    {
-                        options.Authority = configuration.GetValue<string>("IdentityServer:Url");
-                        options.ApiName = apiResource.Value.Name;
-                        options.ApiSecret = "secret";
-                        options.RequireHttpsMetadata = environment.IsProduction();
-                    }
-                );
-            }
-        }
-
-        public static void AddAuthentication(
-            this IServiceCollection services,
-            IConfiguration configuration,
-            IHostingEnvironment environment,
-            ApiResource apiResource
-        )
-        {
-            var authority = configuration.GetValue<string>("IdentityServer:Url");
-
-            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
-                .AddIdentityServerAuthentication(
-                    options =>
-                    {
-                        options.ApiName = apiResource.Name;
-                        options.Authority = authority;
-                        options.RequireHttpsMetadata = environment.IsProduction();
-                        options.ApiSecret = "secret";
-                    }
-                );
         }
     }
 }

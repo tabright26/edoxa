@@ -14,7 +14,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\eDoxa.Seedwork.IntegrationEvents\eDoxa.Seedwork.IntegrationEvents.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Seedwork.Testing\eDoxa.Seedwork.Testing.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Monitoring\appsettings.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

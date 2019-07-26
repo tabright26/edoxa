@@ -12,12 +12,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Api.Application.Commands;
+using eDoxa.Arena.Challenges.Api.Application.Requests;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions;
 using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
-using eDoxa.Commands.Extensions;
+using eDoxa.Seedwork.Application.Extensions;
 
 using MediatR;
 
@@ -71,7 +71,7 @@ namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         public async Task<IActionResult> PostAsync(ChallengeId challengeId)
         {
-            await _mediator.SendCommandAsync(new RegisterParticipantCommand(challengeId));
+            await _mediator.SendAsync(new RegisterParticipantRequest(challengeId));
 
             return this.Ok("Participant as been registered.");
         }

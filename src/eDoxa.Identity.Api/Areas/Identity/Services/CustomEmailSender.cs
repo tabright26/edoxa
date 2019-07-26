@@ -1,4 +1,4 @@
-﻿// Filename: EmailSender.cs
+﻿// Filename: CustomEmailSender.cs
 // Date Created: 2019-07-21
 // 
 // ================================================

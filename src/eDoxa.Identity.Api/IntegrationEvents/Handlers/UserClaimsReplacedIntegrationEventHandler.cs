@@ -9,7 +9,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Areas.Identity.Services;
-using eDoxa.IntegrationEvents;
+using eDoxa.Seedwork.IntegrationEvents;
 
 namespace eDoxa.Identity.Api.IntegrationEvents.Handlers
 {

@@ -9,23 +9,19 @@
 // this source code package.
 
 using eDoxa.Seedwork.Monitoring.Extensions;
+using eDoxa.Web.Spa.Infrastructure;
 
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.Web.Spa.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddHealthChecks(this IServiceCollection services, IConfiguration configuration)
+        public static void AddHealthChecks(this IServiceCollection services, WebSpaAppSettings appSettings)
         {
             var healthChecks = services.AddHealthChecks();
-
-            healthChecks.AddAzureKeyVault(configuration);
-
-            healthChecks.AddIdentityServer(configuration);
-
-            healthChecks.AddRedis(configuration);
+            healthChecks.AddAzureKeyVault(appSettings);
+            healthChecks.AddIdentityServer(appSettings);
         }
     }
 }

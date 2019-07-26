@@ -11,6 +11,7 @@
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security.Extensions;
 using eDoxa.Web.Spa.Extensions;
+using eDoxa.Web.Spa.Infrastructure;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -23,19 +24,22 @@ namespace eDoxa.Web.Spa
 {
     public sealed class Startup
     {
-        public Startup(IConfiguration configuration, IHostingEnvironment environment)
+        public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
         {
             Configuration = configuration;
-            Environment = environment;
+            HostingEnvironment = hostingEnvironment;
+            AppSettings = configuration.GetAppSettings<WebSpaAppSettings>();
         }
 
-        private IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; }
 
-        private IHostingEnvironment Environment { get; }
+        public IHostingEnvironment HostingEnvironment { get; }
+
+        public WebSpaAppSettings AppSettings { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddHealthChecks(Configuration);
+            services.AddHealthChecks(AppSettings);
 
             services.AddDataProtection(Configuration);
 
@@ -55,7 +59,7 @@ namespace eDoxa.Web.Spa
         {
             application.UseHealthChecks();
 
-            if (Environment.IsDevelopment())
+            if (HostingEnvironment.IsDevelopment())
             {
                 application.UseDeveloperExceptionPage();
             }
@@ -74,7 +78,7 @@ namespace eDoxa.Web.Spa
                 {
                     builder.Options.SourcePath = "ClientApp";
 
-                    if (Environment.IsDevelopment())
+                    if (HostingEnvironment.IsDevelopment())
                     {
                         builder.UseReactDevelopmentServer("start");
                     }

@@ -3,14 +3,14 @@
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Reflection;
+
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 
 using AutoMapper;
 
@@ -18,60 +18,119 @@ using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Api.Infrastructure;
 using eDoxa.Cashier.Api.Infrastructure.Data;
 using eDoxa.Cashier.Infrastructure;
-using eDoxa.IntegrationEvents.Extensions;
+using eDoxa.Seedwork.Application;
+using eDoxa.Seedwork.Application.DomainEvents;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Swagger.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
+using eDoxa.Seedwork.IntegrationEvents;
+using eDoxa.Seedwork.IntegrationEvents.Extensions;
 using eDoxa.Seedwork.Monitoring.Extensions;
+using eDoxa.Seedwork.Security.Constants;
 using eDoxa.Seedwork.Security.Extensions;
-using eDoxa.Seedwork.Security.IdentityServer.Resources;
+
+using FluentValidation.AspNetCore;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+using Newtonsoft.Json;
+
+using static eDoxa.Seedwork.Security.IdentityServer.Resources.CustomApiResources;
+
 namespace eDoxa.Cashier.Api
 {
-    public class Startup
+    public sealed class Startup
     {
-        public Startup(IConfiguration configuration, IHostingEnvironment environment)
+        private static readonly string XmlCommentsFilePath = Path.Combine(
+            AppContext.BaseDirectory,
+            $"{typeof(Startup).GetTypeInfo().Assembly.GetName().Name}.xml"
+        );
+
+        public static Action<ContainerBuilder> ConfigureContainerBuilder = builder =>
+        {
+            // Required for testing.
+        };
+
+        public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
         {
             Configuration = configuration;
-            Environment = environment;
+            HostingEnvironment = hostingEnvironment;
+            AppSettings = configuration.GetAppSettings<CashierAppSettings>(CashierApi);
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         }
 
-        private IHostingEnvironment Environment { get; }
+        public IConfiguration Configuration { get; }
 
-        private IConfiguration Configuration { get; }
+        public IHostingEnvironment HostingEnvironment { get; }
+
+        private CashierAppSettings AppSettings { get; }
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddHealthChecks(Configuration);
+            services.AddAppSettings<CashierAppSettings>(Configuration);
 
-            services.AddEntityFrameworkSqlServer();
-
-            services.AddIntegrationEventDbContext(Configuration, Assembly.GetAssembly(typeof(Startup)));
-
-            services.AddDbContext<CashierDbContext, CashierDbContextData>(Configuration, Assembly.GetAssembly(typeof(Startup)));
-
-            services.AddVersioning();
-
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
-            services.AddMvcFilters();
-
-            services.AddSwagger(Configuration, Environment, CustomApiResources.Cashier);
+            services.AddHealthChecks(AppSettings);
 
             services.AddCorsPolicy();
 
-            services.AddServiceBus(Configuration);
+            services.AddEntityFrameworkSqlServer();
 
-            services.AddAuthentication(Configuration, Environment, CustomApiResources.Cashier);
+            services.AddIntegrationEventDbContext(AppSettings.ConnectionStrings.SqlServer, Assembly.GetAssembly(typeof(Startup)));
 
-            return this.BuildModule(services);
+            services.AddDbContext<CashierDbContext, CashierDbContextData>(AppSettings.ConnectionStrings.SqlServer, Assembly.GetAssembly(typeof(Startup)));
+
+            services.AddVersionedApiExplorer(options => options.GroupNameFormat = "'v'VV");
+
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
+                .AddControllersAsServices()
+                .AddFluentValidation(config => config.RunDefaultMvcValidationAfterFluentValidationExecutes = false);
+
+            services.AddApiVersioning(
+                options =>
+                {
+                    options.ReportApiVersions = true;
+                    options.AssumeDefaultVersionWhenUnspecified = true;
+                    options.DefaultApiVersion = new ApiVersion(1, 0);
+                    options.ApiVersionReader = new HeaderApiVersionReader(CustomHeaderNames.Version);
+                }
+            );
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            if (AppSettings.SwaggerEnabled)
+            {
+                services.AddSwaggerGen(
+                    options =>
+                    {
+                        var provider = services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
+
+                        foreach (var description in provider.ApiVersionDescriptions)
+                        {
+                            options.SwaggerDoc(description.GroupName, description.CreateInfoForApiVersion(AppSettings));
+                        }
+
+                        options.IncludeXmlComments(XmlCommentsFilePath);
+
+                        options.AddSecurityDefinition(AppSettings);
+
+                        options.AddFilters();
+                    }
+                );
+            }
+
+            services.AddAuthentication(HostingEnvironment, AppSettings);
+
+            services.AddServiceBus(AppSettings);
+
+            return CreateContainer(services);
         }
 
         public void Configure(IApplicationBuilder application, IApiVersionDescriptionProvider provider)
@@ -82,21 +141,55 @@ namespace eDoxa.Cashier.Api
 
             application.UseCustomExceptionHandler();
 
-            application.UseAuthentication(Environment);
+            application.UseAuthentication(HostingEnvironment);
 
-            application.UseStaticFiles();
+            if (AppSettings.SwaggerEnabled)
+            {
+                application.UseSwagger();
 
-            application.UseSwagger(Environment, provider, CustomApiResources.Cashier);
+                application.UseSwaggerUI(
+                    options =>
+                    {
+                        foreach (var description in provider.ApiVersionDescriptions)
+                        {
+                            options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
+                        }
+
+                        options.RoutePrefix = string.Empty;
+
+                        options.OAuthClientId(AppSettings.ApiResource.SwaggerClientId());
+
+                        options.OAuthAppName(AppSettings.ApiResource.SwaggerClientName());
+
+                        options.DefaultModelExpandDepth(0);
+
+                        options.DefaultModelsExpandDepth(-1);
+                    }
+                );
+            }
 
             application.UseMvc();
 
             application.UseIntegrationEventSubscriptions();
         }
 
-        // TODO: Required by integration and functional tests.
-        protected virtual IServiceProvider BuildModule(IServiceCollection services)
+        private static IServiceProvider CreateContainer(IServiceCollection services)
         {
-            return services.Build<CashierModule>();
+            var builder = new ContainerBuilder();
+
+            builder.RegisterModule<DomainEventModule>();
+
+            builder.RegisterModule<RequestModule>();
+
+            builder.RegisterModule<IntegrationEventModule<CashierDbContext>>();
+
+            builder.RegisterModule<CashierApiModule>();
+
+            builder.Populate(services);
+
+            ConfigureContainerBuilder(builder);
+
+            return new AutofacServiceProvider(builder.Build());
         }
     }
 }

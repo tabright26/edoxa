@@ -1,5 +1,5 @@
 ﻿// Filename: CustomUserClaimsPrincipalFactory.cs
-// Date Created: 2019-07-17
+// Date Created: 2019-07-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Models;
+using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Seedwork.Security.Constants;
 
 using IdentityModel;
@@ -191,11 +191,13 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
         {
             var games = await UserManager.GetGamesAsync(user);
 
-            var gameInfos = games.ToDictionary(gameInfo => gameInfo.Name, providerInfo => providerInfo.PlayerId);
+            var userGames = games.ToDictionary(userGame => Game.FromValue(userGame.Value).Name, userGame => userGame.PlayerId);
 
-            if (gameInfos.Any())
+            if (userGames.Any())
             {
-                Identity.AddClaim(new Claim(CustomClaimTypes.Games, JsonConvert.SerializeObject(gameInfos, Formatting.Indented), IdentityServerConstants.ClaimValueTypes.Json));
+                Identity.AddClaim(
+                    new Claim(CustomClaimTypes.Games, JsonConvert.SerializeObject(userGames, Formatting.Indented), IdentityServerConstants.ClaimValueTypes.Json)
+                );
             }
         }
     }

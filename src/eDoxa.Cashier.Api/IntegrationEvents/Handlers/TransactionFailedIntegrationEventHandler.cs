@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.IntegrationEvents;
+using eDoxa.Seedwork.IntegrationEvents;
 
 namespace eDoxa.Cashier.Api.IntegrationEvents.Handlers
 {

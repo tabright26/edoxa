@@ -1,0 +1,78 @@
+version: '3.7'
+
+services:
+  mssql.test:
+    image: microsoft/mssql-server-linux:latest
+
+  redis.test:
+    image: redis:latest
+
+  rabbitmq.test:
+    image: rabbitmq:latest
+
+  seedwork.unit-tests:
+    image: ${ACR_REGISTRY:-edoxa}/seedwork.unit-tests:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: test/eDoxa.Seedwork.UnitTests/Dockerfile
+
+  identity.unit-tests:
+    image: ${ACR_REGISTRY:-edoxa}/identity.unit-tests:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/eDoxa.Identity.Api/Dockerfile
+      target: unit-tests
+      
+  identity.integration-tests:
+    image: ${ACR_REGISTRY:-edoxa}/identity.integration-tests:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/eDoxa.Identity.Api/Dockerfile
+      target: integration-tests
+    depends_on:
+      - mssql.test
+      - redis.test
+      - rabbitmq.test
+
+  payment.unit-tests:
+    image: ${ACR_REGISTRY:-edoxa}/payment.unit-tests:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/eDoxa.Payment.Api/Dockerfile
+      target: unit-tests
+
+  cashier.unit-tests:
+    image: ${ACR_REGISTRY:-edoxa}/cashier.unit-tests:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/eDoxa.Cashier.Api/Dockerfile
+      target: unit-tests
+
+  cashier.integration-tests:
+    image: ${ACR_REGISTRY:-edoxa}/cashier.integration-tests:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/eDoxa.Cashier.Api/Dockerfile
+      target: integration-tests
+    depends_on:
+      - mssql.test
+      - redis.test
+      - rabbitmq.test
+      
+  arena.challenges.unit-tests:
+    image: ${ACR_REGISTRY:-edoxa}/arena.challenges.unit-tests:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/eDoxa.Arena.Challenges.Api/Dockerfile
+      target: unit-tests
+
+  arena.challenges.integration-tests:
+    image: ${ACR_REGISTRY:-edoxa}/arena.challenges.integration-tests:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/eDoxa.Arena.Challenges.Api/Dockerfile
+      target: integration-tests
+    depends_on:
+      - mssql.test
+      - redis.test
+      - rabbitmq.test

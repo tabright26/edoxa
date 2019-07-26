@@ -10,8 +10,8 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Application.Commands;
-using eDoxa.Commands.Extensions;
+using eDoxa.Cashier.Api.Application.Requests;
+using eDoxa.Seedwork.Application.Extensions;
 
 using MediatR;
 
@@ -44,9 +44,9 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
         [HttpPost]
         [SwaggerResponse(StatusCodes.Status200OK)]
         [SwaggerResponse(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> PostAsync([FromBody] DepositCommand command)
+        public async Task<IActionResult> PostAsync([FromBody] DepositRequest request)
         {
-            await _mediator.SendCommandAsync(command);
+            await _mediator.SendAsync(request);
 
             return this.Ok("Processing the deposit transaction...");
         }

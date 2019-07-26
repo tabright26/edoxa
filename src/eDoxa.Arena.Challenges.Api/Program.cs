@@ -11,9 +11,9 @@
 using System;
 
 using eDoxa.Arena.Challenges.Infrastructure;
-using eDoxa.IntegrationEvents.Infrastructure;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
+using eDoxa.Seedwork.IntegrationEvents.Infrastructure;
 using eDoxa.Seedwork.Security.AzureKeyVault.Extensions;
 
 using Microsoft.AspNetCore;

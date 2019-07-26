@@ -2,12 +2,12 @@
 
 using System;
 
-using eDoxa.IntegrationEvents.Infrastructure;
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+
+using eDoxa.Seedwork.IntegrationEvents.Infrastructure;
 
 namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations.IntegrationEvent
 {

@@ -7,8 +7,8 @@
 using System;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.LeagueOfLegends.Abstractions;
-using eDoxa.Arena.LeagueOfLegends.Dtos;
+using eDoxa.Arena.Challenges.Api.Games.LeagueOfLegends.Abstractions;
+using eDoxa.Arena.Challenges.Api.Games.LeagueOfLegends.Dtos;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Helpers.Mocks
 {

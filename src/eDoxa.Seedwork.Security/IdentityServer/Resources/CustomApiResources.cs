@@ -17,13 +17,13 @@ namespace eDoxa.Seedwork.Security.IdentityServer.Resources
 {
     public sealed class CustomApiResources
     {
-        public static readonly ApiResource Identity = new IdentityApi();
-        public static readonly ApiResource Cashier = new CashierApi();
-        public static readonly ApiResource ArenaChallenges = new ChallengeApi();
+        public static readonly ApiResource IdentityApi = new IdentityResource();
+        public static readonly ApiResource CashierApi = new CashierResource();
+        public static readonly ApiResource ArenaChallengesApi = new ArenaChallengesResource();
 
-        public sealed class IdentityApi : ApiResource
+        public sealed class IdentityResource : ApiResource
         {
-            internal IdentityApi() : base(
+            internal IdentityResource() : base(
                 "identity.api",
                 "eDoxa Identity API",
                 CustomIdentityResources.Roles.UserClaims.Union(CustomIdentityResources.Permissions.UserClaims).Union(CustomIdentityResources.Games.UserClaims)
@@ -36,9 +36,9 @@ namespace eDoxa.Seedwork.Security.IdentityServer.Resources
             }
         }
 
-        public sealed class CashierApi : ApiResource
+        public sealed class CashierResource : ApiResource
         {
-            internal CashierApi() : base(
+            internal CashierResource() : base(
                 "cashier.api",
                 "eDoxa Cashier API",
                 CustomIdentityResources.Roles.UserClaims.Union(CustomIdentityResources.Permissions.UserClaims.Union(CustomIdentityResources.Stripe.UserClaims))
@@ -51,9 +51,9 @@ namespace eDoxa.Seedwork.Security.IdentityServer.Resources
             }
         }
 
-        public sealed class ChallengeApi : ApiResource
+        public sealed class ArenaChallengesResource : ApiResource
         {
-            internal ChallengeApi() : base(
+            internal ArenaChallengesResource() : base(
                 "arena.challenges.api",
                 "eDoxa Arena Challenges API",
                 CustomIdentityResources.Roles.UserClaims.Union(CustomIdentityResources.Permissions.UserClaims)

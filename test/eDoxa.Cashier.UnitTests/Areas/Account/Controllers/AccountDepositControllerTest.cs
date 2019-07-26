@@ -7,7 +7,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Application.Commands;
+using eDoxa.Cashier.Api.Application.Requests;
 using eDoxa.Cashier.Api.Areas.Accounts.Controllers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Seedwork.Testing.TestConstructor;
@@ -55,17 +55,17 @@ namespace eDoxa.Cashier.UnitTests.Areas.Account.Controllers
         public async Task PostAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
-            _mockMediator.Setup(mock => mock.Send(It.IsAny<DepositCommand>(), It.IsAny<CancellationToken>())).Returns(Unit.Task).Verifiable();
+            _mockMediator.Setup(mock => mock.Send(It.IsAny<DepositRequest>(), It.IsAny<CancellationToken>())).Returns(Unit.Task).Verifiable();
 
             var controller = new AccountDepositController(_mockMediator.Object);
 
             // Act
-            var result = await controller.PostAsync(new DepositCommand(Currency.Money.Name, Money.Fifty));
+            var result = await controller.PostAsync(new DepositRequest(Currency.Money.Name, Money.Fifty));
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            _mockMediator.Verify(mock => mock.Send(It.IsAny<DepositCommand>(), It.IsAny<CancellationToken>()), Times.Once);
+            _mockMediator.Verify(mock => mock.Send(It.IsAny<DepositRequest>(), It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }

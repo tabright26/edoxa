@@ -1,16 +1,14 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-07-02
+// Date Created: 2019-07-05
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 
-using eDoxa.IntegrationEvents.Extensions;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+
 using eDoxa.Payment.Api.Extensions;
 using eDoxa.Payment.Api.Infrastructure;
 using eDoxa.Payment.Api.Providers.Extensions;
@@ -24,36 +22,44 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.Payment.Api
 {
-    public class Startup
+    public sealed class Startup
     {
-        public Startup(IConfiguration configuration, IHostingEnvironment environment)
+        public static Action<ContainerBuilder> ConfigureContainerBuilder = builder =>
+        {
+            // Required for testing.
+        };
+
+        public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
         {
             Configuration = configuration;
-            Environment = environment;
+            HostingEnvironment = hostingEnvironment;
+            AppSettings = configuration.GetAppSettings<PaymentAppSettings>();
         }
 
         public IConfiguration Configuration { get; }
 
-        public IHostingEnvironment Environment { get; }
+        public IHostingEnvironment HostingEnvironment { get; }
+
+        public PaymentAppSettings AppSettings { get; }
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
 
-            services.AddHealthChecks(Configuration);
+            services.AddHealthChecks(AppSettings);
 
             services.AddProviders(Configuration);
 
-            services.AddServiceBus(Configuration);
+            services.AddServiceBus(AppSettings);
 
-            return this.BuildModule(services);
+            return CreateContainer(services);
         }
-
+        
         public void Configure(IApplicationBuilder application)
         {
             application.UseHealthChecks();
 
-            if (Environment.IsDevelopment())
+            if (HostingEnvironment.IsDevelopment())
             {
                 application.UseDeveloperExceptionPage();
             }
@@ -63,10 +69,17 @@ namespace eDoxa.Payment.Api
             application.UseIntegrationEventSubscriptions();
         }
 
-        // TODO: Required by integration and functional tests.
-        protected virtual IServiceProvider BuildModule(IServiceCollection services)
+        private static IServiceProvider CreateContainer(IServiceCollection services)
         {
-            return services.Build<ApiModule>();
+            var builder = new ContainerBuilder();
+
+            builder.RegisterModule<PaymentApiModule>();
+
+            builder.Populate(services);
+
+            ConfigureContainerBuilder(builder);
+            
+            return new AutofacServiceProvider(builder.Build());
         }
     }
 }

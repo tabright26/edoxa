@@ -32,7 +32,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Storage
 
         public static IReadOnlyCollection<User> TestUsers => GetTestUsers().ToList();
 
-        public static User TestAdmin => GetTestUsers().First();
+        public static User TestAdmin => TestUsers.First();
 
         private static IEnumerable<User> GetTestUsers()
         {

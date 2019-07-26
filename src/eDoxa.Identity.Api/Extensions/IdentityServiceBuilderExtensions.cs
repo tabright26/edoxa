@@ -4,7 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Identity.Api.Application.Services;
+using eDoxa.Identity.Api.Services;
 
 using IdentityServer4.Services;
 
