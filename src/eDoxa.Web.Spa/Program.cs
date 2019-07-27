@@ -20,12 +20,14 @@ namespace eDoxa.Web.Spa
     {
         public static void Main(string[] args)
         {
-            var host = CreateWebHostBuilder(args).Build();
+            var builder = CreateWebHostBuilder(args);
+
+            var host = builder.Build();
 
             host.Run();
         }
 
-        private static IWebHostBuilder CreateWebHostBuilder(string[] args)
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             return WebHost.CreateDefaultBuilder<Startup>(args)
                           .ConfigureLogging()

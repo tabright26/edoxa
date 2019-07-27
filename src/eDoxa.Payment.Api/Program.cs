@@ -10,6 +10,8 @@
 
 using System;
 
+using Autofac.Extensions.DependencyInjection;
+
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Security.AzureKeyVault.Extensions;
 
@@ -26,9 +28,11 @@ namespace eDoxa.Payment.Api
         {
             try
             {
+                var builder = CreateWebHostBuilder(args);
+
                 Log.Information("Building {Application} web host...");
 
-                var host = CreateWebHostBuilder(args).Build();
+                var host = builder.Build();
 
                 Log.Information("Starting {Application} web host...");
 
@@ -51,6 +55,7 @@ namespace eDoxa.Payment.Api
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             return WebHost.CreateDefaultBuilder<Startup>(args)
+                .ConfigureServices(services => services.AddAutofac())
                 .CaptureStartupErrors(false)
                 .ConfigureLogging()
                 .UseAzureKeyVault()

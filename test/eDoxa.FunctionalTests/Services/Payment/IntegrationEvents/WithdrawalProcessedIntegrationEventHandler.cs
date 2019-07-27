@@ -1,5 +1,5 @@
 ﻿// Filename: WithdrawalProcessedIntegrationEventHandler.cs
-// Date Created: 2019-07-07
+// Date Created: 2019-07-26
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -26,6 +26,7 @@ using FluentAssertions;
 
 using JetBrains.Annotations;
 
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
@@ -56,23 +57,28 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
         {
             using (var paymentWebApplication = new PaymentWebApplicationFactory())
             {
-                paymentWebApplication.WithContainerBuilder(
+                paymentWebApplication.WithWebHostBuilder(
                     builder =>
                     {
-                        var mock = new Mock<IStripeService>();
+                        builder.ConfigureTestContainer<ContainerBuilder>(
+                            containerBuilder =>
+                            {
+                                var mock = new Mock<IStripeService>();
 
-                        mock.Setup(
-                                stripeService => stripeService.CreateTransferAsync(
-                                    It.IsAny<Guid>(),
-                                    It.IsAny<string>(),
-                                    It.IsAny<string>(),
-                                    It.IsAny<long>(),
-                                    It.IsAny<CancellationToken>()
-                                )
-                            )
-                            .Returns(Task.CompletedTask);
+                                mock.Setup(
+                                        stripeService => stripeService.CreateTransferAsync(
+                                            It.IsAny<Guid>(),
+                                            It.IsAny<string>(),
+                                            It.IsAny<string>(),
+                                            It.IsAny<long>(),
+                                            It.IsAny<CancellationToken>()
+                                        )
+                                    )
+                                    .Returns(Task.CompletedTask);
 
-                        builder.RegisterInstance(mock.Object).As<IStripeService>();
+                                containerBuilder.RegisterInstance(mock.Object).As<IStripeService>();
+                            }
+                        );
                     }
                 );
 
@@ -118,23 +124,28 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
         {
             using (var paymentWebApplication = new PaymentWebApplicationFactory())
             {
-                paymentWebApplication.WithContainerBuilder(
+                paymentWebApplication.WithWebHostBuilder(
                     builder =>
                     {
-                        var mock = new Mock<IStripeService>();
+                        builder.ConfigureTestContainer<ContainerBuilder>(
+                            containerBuilder =>
+                            {
+                                var mock = new Mock<IStripeService>();
 
-                        mock.Setup(
-                                stripeService => stripeService.CreateTransferAsync(
-                                    It.IsAny<Guid>(),
-                                    It.IsAny<string>(),
-                                    It.IsAny<string>(),
-                                    It.IsAny<long>(),
-                                    It.IsAny<CancellationToken>()
-                                )
-                            )
-                            .Throws<StripeException>();
+                                mock.Setup(
+                                        stripeService => stripeService.CreateTransferAsync(
+                                            It.IsAny<Guid>(),
+                                            It.IsAny<string>(),
+                                            It.IsAny<string>(),
+                                            It.IsAny<long>(),
+                                            It.IsAny<CancellationToken>()
+                                        )
+                                    )
+                                    .Throws<StripeException>();
 
-                        builder.RegisterInstance(mock.Object).As<IStripeService>();
+                                containerBuilder.RegisterInstance(mock.Object).As<IStripeService>();
+                            }
+                        );
                     }
                 );
 

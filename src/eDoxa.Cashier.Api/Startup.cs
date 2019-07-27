@@ -10,7 +10,6 @@ using System.IO;
 using System.Reflection;
 
 using Autofac;
-using Autofac.Extensions.DependencyInjection;
 
 using AutoMapper;
 
@@ -52,11 +51,6 @@ namespace eDoxa.Cashier.Api
             $"{typeof(Startup).GetTypeInfo().Assembly.GetName().Name}.xml"
         );
 
-        public static Action<ContainerBuilder> ConfigureContainerBuilder = builder =>
-        {
-            // Required for testing.
-        };
-
         public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
         {
             Configuration = configuration;
@@ -71,7 +65,7 @@ namespace eDoxa.Cashier.Api
 
         private CashierAppSettings AppSettings { get; }
 
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             services.AddAppSettings<CashierAppSettings>(Configuration);
 
@@ -129,8 +123,17 @@ namespace eDoxa.Cashier.Api
             services.AddAuthentication(HostingEnvironment, AppSettings);
 
             services.AddServiceBus(AppSettings);
+        }
 
-            return CreateContainer(services);
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterModule<DomainEventModule>();
+
+            builder.RegisterModule<RequestModule>();
+
+            builder.RegisterModule<IntegrationEventModule<CashierDbContext>>();
+
+            builder.RegisterModule<CashierApiModule>();
         }
 
         public void Configure(IApplicationBuilder application, IApiVersionDescriptionProvider provider)
@@ -171,25 +174,6 @@ namespace eDoxa.Cashier.Api
             application.UseMvc();
 
             application.UseIntegrationEventSubscriptions();
-        }
-
-        private static IServiceProvider CreateContainer(IServiceCollection services)
-        {
-            var builder = new ContainerBuilder();
-
-            builder.RegisterModule<DomainEventModule>();
-
-            builder.RegisterModule<RequestModule>();
-
-            builder.RegisterModule<IntegrationEventModule<CashierDbContext>>();
-
-            builder.RegisterModule<CashierApiModule>();
-
-            builder.Populate(services);
-
-            ConfigureContainerBuilder(builder);
-
-            return new AutofacServiceProvider(builder.Build());
         }
     }
 }

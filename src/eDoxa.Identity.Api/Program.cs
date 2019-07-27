@@ -10,6 +10,8 @@
 
 using System;
 
+using Autofac.Extensions.DependencyInjection;
+
 using eDoxa.Identity.Api.Infrastructure;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
@@ -29,9 +31,11 @@ namespace eDoxa.Identity.Api
         {
             try
             {
+                var builder = CreateWebHostBuilder(args);
+
                 Log.Information("Building {Application} web host...");
 
-                var host = CreateWebHostBuilder(args).Build();
+                var host = builder.Build();
 
                 Log.Information("Applying {Application} context migrations...");
 
@@ -57,9 +61,10 @@ namespace eDoxa.Identity.Api
             }
         }
 
-        private static IWebHostBuilder CreateWebHostBuilder(string[] args)
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             return WebHost.CreateDefaultBuilder<Startup>(args)
+                .ConfigureServices(services => services.AddAutofac())
                 .CaptureStartupErrors(false)
                 .ConfigureLogging()
                 .UseAzureKeyVault()

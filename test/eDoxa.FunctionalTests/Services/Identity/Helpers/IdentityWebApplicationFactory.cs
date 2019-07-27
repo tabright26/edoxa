@@ -1,46 +1,38 @@
 ﻿// Filename: IdentityWebApplicationFactory.cs
-// Date Created: 2019-07-07
+// Date Created: 2019-07-26
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.IO;
 using System.Reflection;
 
-using Autofac;
-
 using eDoxa.Identity.Api;
 using eDoxa.Identity.Api.Infrastructure;
-using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.IntegrationEvents.Infrastructure;
-using eDoxa.Seedwork.Security.AzureKeyVault.Extensions;
 using eDoxa.Seedwork.Security.Hosting;
 using eDoxa.Seedwork.Testing.Extensions;
-using eDoxa.Seedwork.Testing.Helpers;
 
 using JetBrains.Annotations;
 
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 
 namespace eDoxa.FunctionalTests.Services.Identity.Helpers
 {
-    internal class IdentityWebApplicationFactory : CustomWebApplicationFactory<Program>
+    internal class IdentityWebApplicationFactory : WebApplicationFactory<Startup>
     {
         protected override void ConfigureWebHost([NotNull] IWebHostBuilder builder)
         {
-            builder.UseEnvironment(EnvironmentNames.Testing)
-                .UseContentRoot(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(IdentityWebApplicationFactory)).Location), "Services/Identity"))
-                .ConfigureAppConfiguration(configure => configure.AddJsonFile("appsettings.json", false).AddEnvironmentVariables());
-        }
+            builder.UseEnvironment(EnvironmentNames.Testing);
 
-        [NotNull]
-        protected override IWebHostBuilder CreateWebHostBuilder()
-        {
-            return WebHost.CreateDefaultBuilder<Startup>(Array.Empty<string>()).UseAzureKeyVault().UseSerilog();
+            builder.UseContentRoot(
+                Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(IdentityWebApplicationFactory)).Location), "Services/Identity")
+            );
+
+            builder.ConfigureAppConfiguration(configure => configure.AddJsonFile("appsettings.json", false).AddEnvironmentVariables());
         }
 
         [NotNull]
@@ -53,11 +45,6 @@ namespace eDoxa.FunctionalTests.Services.Identity.Helpers
             server.MigrateDbContext<IntegrationEventDbContext>();
 
             return server;
-        }
-
-        public override void WithContainerBuilder(Action<ContainerBuilder> builder)
-        {
-            Startup.ConfigureContainerBuilder += builder;
         }
     }
 }

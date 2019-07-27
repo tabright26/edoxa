@@ -10,7 +10,6 @@ using System.IO;
 using System.Reflection;
 
 using Autofac;
-using Autofac.Extensions.DependencyInjection;
 
 using AutoMapper;
 
@@ -57,11 +56,6 @@ namespace eDoxa.Arena.Challenges.Api
             $"{typeof(Startup).GetTypeInfo().Assembly.GetName().Name}.xml"
         );
 
-        public static Action<ContainerBuilder> ConfigureContainerBuilder = builder =>
-        {
-            // Required for testing.
-        };
-
         public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
         {
             Configuration = configuration;
@@ -76,7 +70,7 @@ namespace eDoxa.Arena.Challenges.Api
 
         public IHostingEnvironment HostingEnvironment { get; }
 
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             services.AddAppSettings<ArenaChallengesAppSettings>(Configuration);
 
@@ -152,8 +146,17 @@ namespace eDoxa.Arena.Challenges.Api
             services.AddArenaServices(Configuration);
 
             services.AddServiceBus(AppSettings);
+        }
 
-            return CreateContainer(services);
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterModule<DomainEventModule>();
+
+            builder.RegisterModule<RequestModule>();
+
+            builder.RegisterModule<IntegrationEventModule<ArenaChallengesDbContext>>();
+
+            builder.RegisterModule<ArenaChallengesApiModule>();
         }
 
         public void Configure(IApplicationBuilder application, IApiVersionDescriptionProvider provider)
@@ -194,25 +197,6 @@ namespace eDoxa.Arena.Challenges.Api
             application.UseMvc();
 
             application.UseIntegrationEventSubscriptions();
-        }
-
-        private static IServiceProvider CreateContainer(IServiceCollection services)
-        {
-            var builder = new ContainerBuilder();
-
-            builder.RegisterModule<DomainEventModule>();
-
-            builder.RegisterModule<RequestModule>();
-
-            builder.RegisterModule<IntegrationEventModule<ArenaChallengesDbContext>>();
-
-            builder.RegisterModule<ArenaChallengesApiModule>();
-
-            builder.Populate(services);
-
-            ConfigureContainerBuilder(builder);
-            
-            return new AutofacServiceProvider(builder.Build());
         }
     }
 }

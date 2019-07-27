@@ -4,10 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
-
 using Autofac;
-using Autofac.Extensions.DependencyInjection;
 
 using eDoxa.Payment.Api.Extensions;
 using eDoxa.Payment.Api.Infrastructure;
@@ -22,13 +19,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.Payment.Api
 {
-    public sealed class Startup
+    public class Startup
     {
-        public static Action<ContainerBuilder> ConfigureContainerBuilder = builder =>
-        {
-            // Required for testing.
-        };
-
         public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
         {
             Configuration = configuration;
@@ -42,7 +34,7 @@ namespace eDoxa.Payment.Api
 
         public PaymentAppSettings AppSettings { get; }
 
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
 
@@ -51,10 +43,13 @@ namespace eDoxa.Payment.Api
             services.AddProviders(Configuration);
 
             services.AddServiceBus(AppSettings);
-
-            return CreateContainer(services);
         }
-        
+
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterModule<PaymentApiModule>();
+        }
+
         public void Configure(IApplicationBuilder application)
         {
             application.UseHealthChecks();
@@ -67,19 +62,6 @@ namespace eDoxa.Payment.Api
             application.UseProviders(Configuration);
 
             application.UseIntegrationEventSubscriptions();
-        }
-
-        private static IServiceProvider CreateContainer(IServiceCollection services)
-        {
-            var builder = new ContainerBuilder();
-
-            builder.RegisterModule<PaymentApiModule>();
-
-            builder.Populate(services);
-
-            ConfigureContainerBuilder(builder);
-            
-            return new AutofacServiceProvider(builder.Build());
         }
     }
 }

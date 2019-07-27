@@ -4,12 +4,9 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
-
-using Autofac;
 
 using Bogus;
 
@@ -19,7 +16,6 @@ using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Repositories;
-using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.IntegrationTests.Helpers;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
@@ -28,8 +24,6 @@ using eDoxa.Seedwork.Testing.Helpers;
 using IdentityModel;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using Moq;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 {
@@ -48,19 +42,6 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         public async Task ShouldBeOk()
         {
             // Arrange
-            this.WithContainerBuilder(
-                builder =>
-                {
-                    var mock = new Mock<IIdentityService>();
-
-                    mock.Setup(identityService => identityService.HasGameAccountIdAsync(It.IsAny<UserId>(), It.IsAny<ChallengeGame>())).ReturnsAsync(true);
-
-                    mock.Setup(identityService => identityService.GetGameAccountIdAsync(It.IsAny<UserId>(), It.IsAny<ChallengeGame>()))
-                        .ReturnsAsync(new GameAccountId(Guid.NewGuid().ToString()));
-
-                    builder.RegisterInstance(mock.Object).As<IIdentityService>();
-                }
-            );
             _httpClient = this.CreateClient();
             await Server.CleanupDbContextAsync();
             var faker = new Faker();

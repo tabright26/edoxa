@@ -1,46 +1,38 @@
 ﻿// Filename: ArenaChallengesWebApplicationFactory.cs
-// Date Created: 2019-07-07
+// Date Created: 2019-07-26
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.IO;
 using System.Reflection;
 
-using Autofac;
-
 using eDoxa.Arena.Challenges.Api;
 using eDoxa.Arena.Challenges.Infrastructure;
-using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.IntegrationEvents.Infrastructure;
-using eDoxa.Seedwork.Security.AzureKeyVault.Extensions;
 using eDoxa.Seedwork.Security.Hosting;
 using eDoxa.Seedwork.Testing.Extensions;
-using eDoxa.Seedwork.Testing.Helpers;
 
 using JetBrains.Annotations;
 
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 
 namespace eDoxa.FunctionalTests.Services.Arena.Challenges.Helpers
 {
-    public class ArenaChallengesWebApplicationFactory : CustomWebApplicationFactory<Program>
+    public class ArenaChallengesWebApplicationFactory : WebApplicationFactory<Startup>
     {
         protected override void ConfigureWebHost([NotNull] IWebHostBuilder builder)
         {
-            builder.UseEnvironment(EnvironmentNames.Testing)
-                .UseContentRoot(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ArenaChallengesWebApplicationFactory)).Location), "Services/Arena/Challenges"))
-                .ConfigureAppConfiguration(configure => configure.AddJsonFile("appsettings.json", false).AddEnvironmentVariables());
-        }
+            builder.UseEnvironment(EnvironmentNames.Testing);
 
-        [NotNull]
-        protected override IWebHostBuilder CreateWebHostBuilder()
-        {
-            return WebHost.CreateDefaultBuilder<Startup>(Array.Empty<string>()).UseAzureKeyVault().UseSerilog();
+            builder.UseContentRoot(
+                Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ArenaChallengesWebApplicationFactory)).Location), "Services/Arena/Challenges")
+            );
+
+            builder.ConfigureAppConfiguration(configure => configure.AddJsonFile("appsettings.json", false).AddEnvironmentVariables());
         }
 
         [NotNull]
@@ -53,11 +45,6 @@ namespace eDoxa.FunctionalTests.Services.Arena.Challenges.Helpers
             server.MigrateDbContext<IntegrationEventDbContext>();
 
             return server;
-        }
-
-        public override void WithContainerBuilder(Action<ContainerBuilder> builder)
-        {
-            Startup.ConfigureContainerBuilder += builder;
         }
     }
 }

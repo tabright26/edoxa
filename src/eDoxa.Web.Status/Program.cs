@@ -25,9 +25,11 @@ namespace eDoxa.Web.Status
         {
             try
             {
+                var builder = CreateWebHostBuilder(args);
+
                 Log.Information("Building {Application} web host...");
 
-                var host = CreateWebHostBuilder(args).Build();
+                var host = builder.Build();
 
                 Log.Information("Starting {Application} web host...");
 
@@ -47,7 +49,7 @@ namespace eDoxa.Web.Status
             }
         }
 
-        private static IWebHostBuilder CreateWebHostBuilder(string[] args)
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             return WebHost.CreateDefaultBuilder<Startup>(args)
                           .CaptureStartupErrors(false)

@@ -1,12 +1,8 @@
 ﻿// Filename: Program.cs
-// Date Created: 2019-06-26
+// Date Created: 2019-06-28
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -22,16 +18,19 @@ namespace eDoxa.Web.Gateway
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            var builder = CreateWebHostBuilder(args);
+
+            var host = builder.Build();
+
+            host.Run();
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
-            var builder = WebHost.CreateDefaultBuilder(args);
+            var builder = WebHost.CreateDefaultBuilder<Startup>(args);
 
             builder.ConfigureServices(services => services.AddSingleton(builder))
                 .ConfigureAppConfiguration(configurationBuilder => configurationBuilder.AddJsonFile("ocelot.json", false, true))
-                .UseStartup<Startup>()
                 .ConfigureLogging(
                     (context, loggingbuilder) =>
                     {

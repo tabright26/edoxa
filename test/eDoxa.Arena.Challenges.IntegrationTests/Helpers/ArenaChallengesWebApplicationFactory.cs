@@ -1,5 +1,5 @@
 ﻿// Filename: ArenaChallengesWebApplicationFactory.cs
-// Date Created: 2019-07-07
+// Date Created: 2019-07-26
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,47 +12,51 @@ using Autofac;
 
 using eDoxa.Arena.Challenges.Api;
 using eDoxa.Arena.Challenges.Api.Games.LeagueOfLegends.Abstractions;
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.IntegrationTests.Helpers.Mocks;
-using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.IntegrationEvents;
-using eDoxa.Seedwork.Security.AzureKeyVault.Extensions;
 using eDoxa.Seedwork.Security.Hosting;
 using eDoxa.Seedwork.Testing.Extensions;
-using eDoxa.Seedwork.Testing.Helpers;
 
 using JetBrains.Annotations;
 
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 
+using Moq;
+
 namespace eDoxa.Arena.Challenges.IntegrationTests.Helpers
 {
-    public class ArenaChallengesWebApplicationFactory : CustomWebApplicationFactory<Program>
+    public class ArenaChallengesWebApplicationFactory : WebApplicationFactory<Startup>
     {
-        public ArenaChallengesWebApplicationFactory()
-        {
-            Startup.ConfigureContainerBuilder += builder =>
-            {
-                builder.RegisterType<MockLeagueOfLegendsService>().As<ILeagueOfLegendsService>().InstancePerDependency();
-
-                builder.RegisterType<MockIntegrationEventService>().As<IIntegrationEventService>().InstancePerDependency();
-            };
-        }
-
         protected override void ConfigureWebHost([NotNull] IWebHostBuilder builder)
         {
-            builder.UseEnvironment(EnvironmentNames.Testing)
-                .UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ArenaChallengesWebApplicationFactory)).Location))
-                .ConfigureAppConfiguration(configure => configure.AddJsonFile("appsettings.json", false).AddEnvironmentVariables());
-        }
+            builder.UseEnvironment(EnvironmentNames.Testing);
 
-        [NotNull]
-        protected override IWebHostBuilder CreateWebHostBuilder()
-        {
-            return WebHost.CreateDefaultBuilder<Startup>(Array.Empty<string>()).UseAzureKeyVault().UseSerilog();
+            builder.UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ArenaChallengesWebApplicationFactory)).Location));
+
+            builder.ConfigureAppConfiguration(configure => configure.AddJsonFile("appsettings.json", false).AddEnvironmentVariables());
+
+            builder.ConfigureTestContainer<ContainerBuilder>(
+                container =>
+                {
+                    container.RegisterType<MockLeagueOfLegendsService>().As<ILeagueOfLegendsService>().InstancePerDependency();
+                    container.RegisterType<MockIntegrationEventService>().As<IIntegrationEventService>().InstancePerDependency();
+                    var mock = new Mock<IIdentityService>();
+
+                    mock.Setup(identityService => identityService.HasGameAccountIdAsync(It.IsAny<UserId>(), It.IsAny<ChallengeGame>())).ReturnsAsync(true);
+
+                    mock.Setup(identityService => identityService.GetGameAccountIdAsync(It.IsAny<UserId>(), It.IsAny<ChallengeGame>()))
+                        .ReturnsAsync(new GameAccountId(Guid.NewGuid().ToString()));
+
+                    container.RegisterInstance(mock.Object).As<IIdentityService>();
+                }
+            );
         }
 
         [NotNull]
@@ -63,11 +67,6 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Helpers
             server.EnsureCreatedDbContext<ArenaChallengesDbContext>();
 
             return server;
-        }
-
-        public override void WithContainerBuilder(Action<ContainerBuilder> builder)
-        {
-            Startup.ConfigureContainerBuilder += builder;
         }
     }
 }

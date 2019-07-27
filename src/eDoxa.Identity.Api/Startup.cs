@@ -9,7 +9,6 @@ using System.IO;
 using System.Reflection;
 
 using Autofac;
-using Autofac.Extensions.DependencyInjection;
 
 using AutoMapper;
 
@@ -60,11 +59,6 @@ namespace eDoxa.Identity.Api
             $"{typeof(Startup).GetTypeInfo().Assembly.GetName().Name}.xml"
         );
 
-        public static Action<ContainerBuilder> ConfigureContainerBuilder = builder =>
-        {
-            // Required for testing.
-        };
-
         public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
         {
             Configuration = configuration;
@@ -78,7 +72,7 @@ namespace eDoxa.Identity.Api
 
         private IdentityAppSettings AppSettings { get; }
 
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             services.AddAppSettings<IdentityAppSettings>(Configuration);
 
@@ -241,10 +235,17 @@ namespace eDoxa.Identity.Api
             services.AddAuthentication(HostingEnvironment, AppSettings);
 
             services.AddServiceBus(AppSettings);
-
-            return CreateContainer(services);
         }
-        
+
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterModule<DomainEventModule>();
+
+            builder.RegisterModule<IntegrationEventModule<IdentityDbContext>>();
+
+            builder.RegisterModule<IdentityApiModule>();
+        }
+
         public void Configure(IApplicationBuilder application, IApiVersionDescriptionProvider provider)
         {
             application.UseHealthChecks();
@@ -303,23 +304,6 @@ namespace eDoxa.Identity.Api
             application.UseMvcWithDefaultRoute();
 
             application.UseIntegrationEventSubscriptions();
-        }
-
-        private static IServiceProvider CreateContainer(IServiceCollection services)
-        {
-            var builder = new ContainerBuilder();
-
-            builder.RegisterModule<DomainEventModule>();
-
-            builder.RegisterModule<IntegrationEventModule<IdentityDbContext>>();
-
-            builder.RegisterModule<IdentityApiModule>();
-
-            builder.Populate(services);
-
-            ConfigureContainerBuilder(builder);
-
-            return new AutofacServiceProvider(builder.Build());
         }
     }
 }
