@@ -55,33 +55,28 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
         [TestMethod]
         public async Task TransactionStatus_ShouldBeSucceded()
         {
-            using (var paymentWebApplication = new PaymentWebApplicationFactory())
-            {
-                paymentWebApplication.WithWebHostBuilder(
-                    builder =>
+            using (var paymentWebApplication = new PaymentWebApplicationFactory().WithWebHostBuilder(
+                builder => builder.ConfigureTestContainer<ContainerBuilder>(
+                    container =>
                     {
-                        builder.ConfigureTestContainer<ContainerBuilder>(
-                            containerBuilder =>
-                            {
-                                var mock = new Mock<IStripeService>();
+                        var mockStripeService = new Mock<IStripeService>();
 
-                                mock.Setup(
-                                        stripeService => stripeService.CreateInvoiceAsync(
-                                            It.IsAny<Guid>(),
-                                            It.IsAny<string>(),
-                                            It.IsAny<string>(),
-                                            It.IsAny<long>(),
-                                            It.IsAny<CancellationToken>()
-                                        )
-                                    )
-                                    .Returns(Task.CompletedTask);
+                        mockStripeService.Setup(
+                                stripeService => stripeService.CreateInvoiceAsync(
+                                    It.IsAny<Guid>(),
+                                    It.IsAny<string>(),
+                                    It.IsAny<string>(),
+                                    It.IsAny<long>(),
+                                    It.IsAny<CancellationToken>()
+                                )
+                            )
+                            .Returns(Task.CompletedTask);
 
-                                containerBuilder.RegisterInstance(mock.Object).As<IStripeService>();
-                            }
-                        );
+                        container.RegisterInstance(mockStripeService.Object).As<IStripeService>();
                     }
-                );
-
+                )
+            ))
+            {
                 using (paymentWebApplication.CreateClient())
                 {
                     var accountFaker = new AccountFaker();
@@ -122,33 +117,28 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
         [TestMethod]
         public async Task TransactionStatus_ShouldBeFailed()
         {
-            using (var paymentWebApplication = new PaymentWebApplicationFactory())
-            {
-                paymentWebApplication.WithWebHostBuilder(
-                    builder =>
+            using (var paymentWebApplication = new PaymentWebApplicationFactory().WithWebHostBuilder(
+                builder => builder.ConfigureTestContainer<ContainerBuilder>(
+                    container =>
                     {
-                        builder.ConfigureTestContainer<ContainerBuilder>(
-                            containerBuilder =>
-                            {
-                                var mock = new Mock<IStripeService>();
+                        var mockStripeService = new Mock<IStripeService>();
 
-                                mock.Setup(
-                                        stripeService => stripeService.CreateInvoiceAsync(
-                                            It.IsAny<Guid>(),
-                                            It.IsAny<string>(),
-                                            It.IsAny<string>(),
-                                            It.IsAny<long>(),
-                                            It.IsAny<CancellationToken>()
-                                        )
-                                    )
-                                    .Throws<StripeException>();
+                        mockStripeService.Setup(
+                                stripeService => stripeService.CreateInvoiceAsync(
+                                    It.IsAny<Guid>(),
+                                    It.IsAny<string>(),
+                                    It.IsAny<string>(),
+                                    It.IsAny<long>(),
+                                    It.IsAny<CancellationToken>()
+                                )
+                            )
+                            .Throws<StripeException>();
 
-                                containerBuilder.RegisterInstance(mock.Object).As<IStripeService>();
-                            }
-                        );
+                        container.RegisterInstance(mockStripeService.Object).As<IStripeService>();
                     }
-                );
-
+                )
+            ))
+            {
                 using (paymentWebApplication.CreateClient())
                 {
                     var accountFaker = new AccountFaker();
