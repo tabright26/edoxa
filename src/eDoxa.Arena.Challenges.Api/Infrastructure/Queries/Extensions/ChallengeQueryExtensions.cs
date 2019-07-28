@@ -13,8 +13,6 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions
 {
     public static class ChallengeQueryExtensions
@@ -53,8 +51,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions
             return challengeQuery.Mapper.Map<IReadOnlyCollection<ChallengeModel>>(challenges);
         }
 
-        [ItemCanBeNull]
-        public static async Task<ChallengeModel> FindChallengeModelAsync(this IChallengeQuery challengeQuery, ChallengeId challengeId)
+        public static async Task<ChallengeModel?> FindChallengeModelAsync(this IChallengeQuery challengeQuery, ChallengeId challengeId)
         {
             var challenge = await challengeQuery.FindChallengeAsync(challengeId);
 
@@ -95,8 +92,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions
             return challengeQuery.Mapper.Map<IReadOnlyCollection<ChallengeViewModel>>(challenges);
         }
 
-        [ItemCanBeNull]
-        public static async Task<ChallengeViewModel> FindChallengeViewModelAsync(this IChallengeQuery challengeQuery, ChallengeId challengeId)
+        public static async Task<ChallengeViewModel?> FindChallengeViewModelAsync(this IChallengeQuery challengeQuery, ChallengeId challengeId)
         {
             var challenge = await challengeQuery.FindChallengeAsync(challengeId);
 

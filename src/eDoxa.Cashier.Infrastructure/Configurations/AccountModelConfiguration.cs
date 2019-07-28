@@ -6,8 +6,6 @@
 
 using eDoxa.Cashier.Infrastructure.Models;
 
-using JetBrains.Annotations;
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -15,7 +13,7 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
 {
     internal sealed class AccountModelConfiguration : IEntityTypeConfiguration<AccountModel>
     {
-        public void Configure([NotNull] EntityTypeBuilder<AccountModel> builder)
+        public void Configure( EntityTypeBuilder<AccountModel> builder)
         {
             builder.ToTable("Account");
 

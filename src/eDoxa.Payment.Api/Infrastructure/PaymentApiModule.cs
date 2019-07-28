@@ -14,13 +14,11 @@ using Autofac;
 
 using eDoxa.Seedwork.IntegrationEvents;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Payment.Api.Infrastructure
 {
     internal sealed class PaymentApiModule : Module
     {
-        protected override void Load([NotNull] ContainerBuilder builder)
+        protected override void Load( ContainerBuilder builder)
         {
             builder.RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies()).AsClosedTypesOf(typeof(IIntegrationEventHandler<>));
         }

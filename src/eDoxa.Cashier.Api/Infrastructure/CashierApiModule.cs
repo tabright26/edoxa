@@ -17,13 +17,11 @@ using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.Domain.Strategies;
 using eDoxa.Cashier.Infrastructure.Repositories;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Cashier.Api.Infrastructure
 {
     public sealed class CashierApiModule : Module
     {
-        protected override void Load([NotNull] ContainerBuilder builder)
+        protected override void Load( ContainerBuilder builder)
         {
             // Repositories
             builder.RegisterType<ChallengeRepository>().As<IChallengeRepository>().InstancePerLifetimeScope();

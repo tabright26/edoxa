@@ -19,7 +19,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.DomainEvents.Handlers
     //        _integrationEventService = integrationEventService;
     //    }
 
-    //    public async Task Handle([NotNull] ChallengePayoutDomainEvent domainEvent, CancellationToken cancellationToken)
+    //    public async Task Handle( ChallengePayoutDomainEvent domainEvent, CancellationToken cancellationToken)
     //    {
     //        await _integrationEventService.PublishAsync(
     //            new ChallengePayoutIntegrationEvent(

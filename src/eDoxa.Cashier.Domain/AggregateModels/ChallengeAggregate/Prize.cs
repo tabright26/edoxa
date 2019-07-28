@@ -10,8 +10,6 @@ using System.Globalization;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed partial class Prize : ValueObject
@@ -67,9 +65,9 @@ namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
 
     public sealed partial class Prize : IComparable
     {
-        public int CompareTo([CanBeNull] object obj)
+        public int CompareTo(object? obj)
         {
-            return Amount.CompareTo(((Prize) obj)?.Amount);
+            return Amount.CompareTo((obj as Prize)?.Amount);
         }
     }
 }

@@ -7,8 +7,6 @@
 using eDoxa.Cashier.Infrastructure.Configurations;
 using eDoxa.Cashier.Infrastructure.Models;
 
-using JetBrains.Annotations;
-
 using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Cashier.Infrastructure
@@ -25,7 +23,7 @@ namespace eDoxa.Cashier.Infrastructure
 
         public DbSet<ChallengeModel> Challenges => this.Set<ChallengeModel>();
 
-        protected override void OnModelCreating([NotNull] ModelBuilder builder)
+        protected override void OnModelCreating( ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 

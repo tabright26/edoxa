@@ -12,8 +12,6 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-using JetBrains.Annotations;
-
 using Microsoft.Extensions.Options;
 
 namespace eDoxa.Arena.Challenges.Api.Games.LeagueOfLegends
@@ -27,9 +25,9 @@ namespace eDoxa.Arena.Challenges.Api.Games.LeagueOfLegends
             _leagueOfLegendsOptions = leagueOfLegendsOptionsAccessor.Value;
         }
 
-        [NotNull]
-        [ItemNotNull]
-        protected override async Task<HttpResponseMessage> SendAsync([NotNull] HttpRequestMessage request, CancellationToken cancellationToken)
+        
+        
+        protected override async Task<HttpResponseMessage> SendAsync( HttpRequestMessage request, CancellationToken cancellationToken)
         {
             request.Headers.Add("X-Riot-Token", _leagueOfLegendsOptions.RiotToken);
 

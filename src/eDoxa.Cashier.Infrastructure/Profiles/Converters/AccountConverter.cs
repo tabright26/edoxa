@@ -13,14 +13,12 @@ using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Infrastructure.Models;
 using eDoxa.Seedwork.Domain.Extensions;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Cashier.Infrastructure.Profiles.Converters
 {
     internal sealed class AccountConverter : ITypeConverter<AccountModel, IAccount>
     {
-        [NotNull]
-        public IAccount Convert([NotNull] AccountModel source, [NotNull] IAccount destination, [NotNull] ResolutionContext context)
+        
+        public IAccount Convert( AccountModel source,  IAccount destination,  ResolutionContext context)
         {
             var account = new Account(UserId.FromGuid(source.UserId));
 

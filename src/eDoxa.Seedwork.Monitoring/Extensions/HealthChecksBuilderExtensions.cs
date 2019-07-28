@@ -9,8 +9,6 @@ using System.Collections.Generic;
 
 using eDoxa.Seedwork.Monitoring.AppSettings;
 
-using JetBrains.Annotations;
-
 using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.Seedwork.Monitoring.Extensions
@@ -47,7 +45,7 @@ namespace eDoxa.Seedwork.Monitoring.Extensions
 
         public static void AddUrlGroup(
             this IHealthChecksBuilder builder,
-            [CanBeNull] string uriString,
+            string? uriString,
             string name,
             IEnumerable<string> tags
         )

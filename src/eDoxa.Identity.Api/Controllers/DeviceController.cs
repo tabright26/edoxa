@@ -18,8 +18,6 @@ using IdentityServer4.Models;
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
 
-using JetBrains.Annotations;
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -187,8 +185,7 @@ namespace eDoxa.Identity.Api.Controllers
             return result;
         }
 
-        [ItemCanBeNull]
-        private async Task<DeviceAuthorizationViewModel> BuildViewModelAsync(string userCode, DeviceAuthorizationInputModel model = null)
+        private async Task<DeviceAuthorizationViewModel?> BuildViewModelAsync(string userCode, DeviceAuthorizationInputModel? model = null)
         {
             var request = await _interaction.GetAuthorizationContextAsync(userCode);
 
@@ -218,7 +215,7 @@ namespace eDoxa.Identity.Api.Controllers
 
         private DeviceAuthorizationViewModel CreateConsentViewModel(
             string userCode,
-            [CanBeNull] DeviceAuthorizationInputModel model,
+            DeviceAuthorizationInputModel? model,
             Client client,
             Resources resources
         )

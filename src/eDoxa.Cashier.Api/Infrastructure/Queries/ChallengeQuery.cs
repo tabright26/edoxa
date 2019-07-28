@@ -15,8 +15,6 @@ using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.Infrastructure.Models;
 
-using JetBrains.Annotations;
-
 using LinqKit;
 
 using Microsoft.EntityFrameworkCore;
@@ -35,8 +33,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries
 
         public IMapper Mapper { get; }
 
-        [ItemCanBeNull]
-        private async Task<ChallengeModel> FindChallengeModelAsync(Guid challengeId)
+        private async Task<ChallengeModel?> FindChallengeModelAsync(Guid challengeId)
         {
             var challenges = from challenge in Challenges.AsExpandable()
                              where challenge.Id == challengeId

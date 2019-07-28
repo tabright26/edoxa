@@ -10,8 +10,6 @@
 
 using eDoxa.Arena.Challenges.Infrastructure.Models;
 
-using JetBrains.Annotations;
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -19,7 +17,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
 {
     internal sealed class ParticipantModelConfiguration : IEntityTypeConfiguration<ParticipantModel>
     {
-        public void Configure([NotNull] EntityTypeBuilder<ParticipantModel> builder)
+        public void Configure( EntityTypeBuilder<ParticipantModel> builder)
         {
             builder.ToTable("Participant");
 

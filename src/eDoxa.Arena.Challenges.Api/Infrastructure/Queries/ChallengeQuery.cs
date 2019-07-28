@@ -18,8 +18,6 @@ using eDoxa.Arena.Challenges.Domain.Queries;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
 
-using JetBrains.Annotations;
-
 using LinqKit;
 
 using Microsoft.AspNetCore.Http;
@@ -66,8 +64,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Queries
             return await challenges.ToListAsync();
         }
 
-        [ItemCanBeNull]
-        private async Task<ChallengeModel> FindChallengeModelAsync(Guid challengeId)
+        private async Task<ChallengeModel?> FindChallengeModelAsync(Guid challengeId)
         {
             var challenges = from challenge in Challenges.Include(challenge => challenge.Participants)
                                  .ThenInclude(participant => participant.Matches)
@@ -102,8 +99,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Queries
             return Mapper.Map<IReadOnlyCollection<IChallenge>>(challengeModels);
         }
 
-        [ItemCanBeNull]
-        public async Task<IChallenge> FindChallengeAsync(ChallengeId challengeId)
+        public async Task<IChallenge?> FindChallengeAsync(ChallengeId challengeId)
         {
             var challengeModel = await this.FindChallengeModelAsync(challengeId);
 

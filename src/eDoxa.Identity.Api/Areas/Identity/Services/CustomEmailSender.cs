@@ -6,16 +6,14 @@
 
 using System.Threading.Tasks;
 
-using JetBrains.Annotations;
-
 using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Services
 {
     public class CustomEmailSender : IEmailSender
     {
-        [NotNull]
-        public Task SendEmailAsync([NotNull] string email, [NotNull] string subject, [NotNull] string htmlMessage)
+        
+        public Task SendEmailAsync( string email,  string subject,  string htmlMessage)
         {
             return Task.CompletedTask; // TODO: Add SendGrid implementation.
         }

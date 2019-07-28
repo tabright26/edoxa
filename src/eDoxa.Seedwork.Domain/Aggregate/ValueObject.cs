@@ -12,18 +12,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Seedwork.Domain.Aggregate
 {
     public abstract class ValueObject
     {
-        public static bool operator ==([CanBeNull] ValueObject left, [CanBeNull] ValueObject right)
+        public static bool operator ==(ValueObject? left, ValueObject? right)
         {
             return !(left is null ^ right is null) && (left is null || left.Equals(right));
         }
 
-        public static bool operator !=([CanBeNull] ValueObject left, [CanBeNull] ValueObject right)
+        public static bool operator !=(ValueObject? left, ValueObject? right)
         {
             return !(left == right);
         }
@@ -39,7 +37,7 @@ namespace eDoxa.Seedwork.Domain.Aggregate
 
         protected abstract IEnumerable<object> GetAtomicValues();
 
-        public sealed override bool Equals([CanBeNull] object obj)
+        public sealed override bool Equals(object? obj)
         {
             if (obj == null || obj.GetType() != this.GetType())
             {

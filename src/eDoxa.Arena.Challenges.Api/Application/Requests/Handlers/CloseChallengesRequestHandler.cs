@@ -10,8 +10,6 @@ using System.Threading.Tasks;
 using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Seedwork.Domain.Providers;
 
-using JetBrains.Annotations;
-
 using MediatR;
 
 namespace eDoxa.Arena.Challenges.Api.Application.Requests.Handlers
@@ -25,7 +23,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Requests.Handlers
             _challengeService = challengeService;
         }
 
-        protected override async Task Handle([NotNull] CloseChallengesRequest request, CancellationToken cancellationToken)
+        protected override async Task Handle( CloseChallengesRequest request, CancellationToken cancellationToken)
         {
             await _challengeService.CloseAsync(new UtcNowDateTimeProvider(), cancellationToken);
         }

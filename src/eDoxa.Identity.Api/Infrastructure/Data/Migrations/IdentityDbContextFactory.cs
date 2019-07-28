@@ -13,8 +13,6 @@ using System.Reflection;
 
 using eDoxa.Seedwork.Infrastructure.Factories;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
 {
     internal sealed class IdentityDbContextFactory : DesignTimeDbContextFactory<IdentityDbContext>
@@ -23,7 +21,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
 
         protected override Assembly MigrationsAssembly => Assembly.GetAssembly(typeof(Startup));
 
-        [NotNull]
+        
         public override IdentityDbContext CreateDbContext(string[] args)
         {
             return new IdentityDbContext(Options);

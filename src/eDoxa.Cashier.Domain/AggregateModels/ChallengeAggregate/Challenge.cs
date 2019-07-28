@@ -8,8 +8,6 @@ using System;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
 {
     public partial class Challenge : Entity<ChallengeId>, IChallenge
@@ -25,14 +23,14 @@ namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
         public IPayout Payout { get; }
     }
 
-    public partial class Challenge : IEquatable<IChallenge>
+    public partial class Challenge : IEquatable<IChallenge?>
     {
-        public bool Equals([CanBeNull] IChallenge challenge)
+        public bool Equals(IChallenge? challenge)
         {
             return Id.Equals(challenge?.Id);
         }
 
-        public sealed override bool Equals([CanBeNull] object obj)
+        public sealed override bool Equals(object? obj)
         {
             return this.Equals(obj as IChallenge);
         }

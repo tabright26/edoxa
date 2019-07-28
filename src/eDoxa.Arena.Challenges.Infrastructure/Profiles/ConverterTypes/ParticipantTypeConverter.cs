@@ -18,14 +18,12 @@ using eDoxa.Arena.Challenges.Infrastructure.Models;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Providers;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.ConverterTypes
 {
     internal sealed class ParticipantTypeConverter : ITypeConverter<ParticipantModel, Participant>
     {
-        [NotNull]
-        public Participant Convert([NotNull] ParticipantModel source, [NotNull] Participant destination, [NotNull] ResolutionContext context)
+        
+        public Participant Convert( ParticipantModel source,  Participant destination,  ResolutionContext context)
         {
             var participant = new Participant(
                 UserId.FromGuid(source.UserId),

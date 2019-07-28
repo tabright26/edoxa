@@ -13,16 +13,13 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Cashier.Domain.Repositories
 {
     public interface IAccountRepository
     {
         void Create(IAccount account);
 
-        [ItemCanBeNull]
-        Task<IAccount> FindUserAccountAsync(UserId userId);
+        Task<IAccount?> FindUserAccountAsync(UserId userId);
 
         Task CommitAsync(CancellationToken cancellationToken = default);
     }

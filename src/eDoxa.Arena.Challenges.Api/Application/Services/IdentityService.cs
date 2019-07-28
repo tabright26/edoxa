@@ -16,8 +16,6 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Services;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Arena.Challenges.Api.Application.Services
 {
     public sealed class IdentityService : IIdentityService
@@ -34,8 +32,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Services
             throw new NotImplementedException();
         }
 
-        [ItemCanBeNull]
-        public Task<GameAccountId> GetGameAccountIdAsync(UserId userId, ChallengeGame game)
+        public Task<GameAccountId?> GetGameAccountIdAsync(UserId userId, ChallengeGame game)
         {
             throw new NotImplementedException();
         }

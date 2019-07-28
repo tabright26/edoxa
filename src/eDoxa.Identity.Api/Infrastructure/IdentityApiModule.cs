@@ -6,13 +6,11 @@
 
 using Autofac;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Identity.Api.Infrastructure
 {
     public sealed class IdentityApiModule : Module
     {
-        protected override void Load([NotNull] ContainerBuilder builder)
+        protected override void Load( ContainerBuilder builder)
         {
         }
     }

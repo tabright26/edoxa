@@ -14,8 +14,6 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Domain.Providers;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers
 {
     public sealed class ChallengeFaker : Faker<IChallenge>
@@ -109,7 +107,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers
             return state != ChallengeState.Inscription ? FakerHub.Random.Int(1, bestOf + 3) : 0;
         }
 
-        [NotNull]
+        
         public override IChallenge Generate(string ruleSets = null)
         {
             FakerHub.User().Reset();

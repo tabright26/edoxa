@@ -10,8 +10,6 @@ using System.Reflection;
 using eDoxa.Payment.Api;
 using eDoxa.Seedwork.Security.Hosting;
 
-using JetBrains.Annotations;
-
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
@@ -20,7 +18,7 @@ namespace eDoxa.FunctionalTests.Services.Payment
 {
     public sealed class PaymentWebApplicationFactory : WebApplicationFactory<Startup>
     {
-        protected override void ConfigureWebHost([NotNull] IWebHostBuilder builder)
+        protected override void ConfigureWebHost( IWebHostBuilder builder)
         {
             builder.UseEnvironment(EnvironmentNames.Testing);
 

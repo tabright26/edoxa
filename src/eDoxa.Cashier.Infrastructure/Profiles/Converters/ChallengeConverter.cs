@@ -10,14 +10,12 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Infrastructure.Models;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Cashier.Infrastructure.Profiles.Converters
 {
     internal sealed class ChallengeConverter : ITypeConverter<ChallengeModel, IChallenge>
     {
-        [NotNull]
-        public IChallenge Convert([NotNull] ChallengeModel source, [NotNull] IChallenge destination, [NotNull] ResolutionContext context)
+        
+        public IChallenge Convert( ChallengeModel source,  IChallenge destination,  ResolutionContext context)
         {
             var entryFee = new EntryFee(source.EntryFeeAmount, Currency.FromValue(source.EntryFeeCurrency));
 

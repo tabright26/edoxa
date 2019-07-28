@@ -7,8 +7,6 @@
 using System;
 using System.Collections.Generic;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Seedwork.Domain.Aggregate
 {
     public abstract class Entity<TEntityId> : IEntity
@@ -41,7 +39,7 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             return Id.IsTransient();
         }
 
-        public override bool Equals([CanBeNull] object obj)
+        public override bool Equals(object? obj)
         {
             if (!(obj is Entity<TEntityId> entity))
             {
@@ -83,12 +81,12 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             return base.GetHashCode();
         }
 
-        public static bool operator ==([CanBeNull] Entity<TEntityId> left, [CanBeNull] Entity<TEntityId> right)
+        public static bool operator ==(Entity<TEntityId>? left, Entity<TEntityId>? right)
         {
             return left?.Equals(right) ?? Equals(right, null);
         }
 
-        public static bool operator !=([CanBeNull] Entity<TEntityId> left, [CanBeNull] Entity<TEntityId> right)
+        public static bool operator !=(Entity<TEntityId>? left, Entity<TEntityId>? right)
         {
             return !(left == right);
         }

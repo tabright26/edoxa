@@ -10,8 +10,6 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 
-using JetBrains.Annotations;
-
 using MediatR;
 
 namespace eDoxa.Cashier.Api.Application.Requests.Handlers
@@ -25,7 +23,7 @@ namespace eDoxa.Cashier.Api.Application.Requests.Handlers
             _accountRepository = accountRepository;
         }
 
-        protected override async Task Handle([NotNull] CreateUserRequest request, CancellationToken cancellationToken)
+        protected override async Task Handle( CreateUserRequest request, CancellationToken cancellationToken)
         {
             var account = new Account(request.UserId);
 

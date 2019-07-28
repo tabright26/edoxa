@@ -23,8 +23,6 @@ using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.Infrastructure.Models;
 
-using JetBrains.Annotations;
-
 using LinqKit;
 
 using Microsoft.AspNetCore.Http;
@@ -46,7 +44,6 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries
 
         private IQueryable<TransactionModel> Transactions { get; }
 
-        [ItemCanBeNull]
         private async Task<IReadOnlyCollection<TransactionModel>> FindTransactionModelAsync(
             Guid userId,
             int? currency = null,

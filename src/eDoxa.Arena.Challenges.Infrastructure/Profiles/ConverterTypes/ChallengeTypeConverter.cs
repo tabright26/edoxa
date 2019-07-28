@@ -19,14 +19,12 @@ using eDoxa.Arena.Challenges.Infrastructure.Models;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Providers;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.ConverterTypes
 {
     internal sealed class ChallengeTypeConverter : ITypeConverter<ChallengeModel, IChallenge>
     {
-        [NotNull]
-        public IChallenge Convert([NotNull] ChallengeModel source, [NotNull] IChallenge destination, [NotNull] ResolutionContext context)
+        
+        public IChallenge Convert( ChallengeModel source,  IChallenge destination,  ResolutionContext context)
         {
             var challenge = new Challenge(
                 new ChallengeName(source.Name),

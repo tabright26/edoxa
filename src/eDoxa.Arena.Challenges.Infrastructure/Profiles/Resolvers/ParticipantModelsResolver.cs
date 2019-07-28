@@ -17,20 +17,18 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
 using eDoxa.Seedwork.Domain.Extensions;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.Resolvers
 {
     internal sealed class
         ParticipantModelsResolver : IMemberValueResolver<IChallenge, ChallengeModel, IReadOnlyCollection<Participant>, ICollection<ParticipantModel>>
     {
-        [NotNull]
+        
         public ICollection<ParticipantModel> Resolve(
-            [NotNull] IChallenge source,
-            [NotNull] ChallengeModel destination,
-            [NotNull] IReadOnlyCollection<Participant> sourceMember,
-            [NotNull] ICollection<ParticipantModel> destMember,
-            [NotNull] ResolutionContext context
+             IChallenge source,
+             ChallengeModel destination,
+             IReadOnlyCollection<Participant> sourceMember,
+             ICollection<ParticipantModel> destMember,
+             ResolutionContext context
         )
         {
             var participants = context.Mapper.Map<ICollection<ParticipantModel>>(sourceMember);

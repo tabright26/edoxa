@@ -13,13 +13,11 @@ using System.Collections.Generic;
 
 using eDoxa.Seedwork.IntegrationEvents;
 
-using JetBrains.Annotations;
-
 using Newtonsoft.Json.Linq;
 
 namespace eDoxa.Seedwork.UnitTests.IntegrationEvents.Mocks
 {
-    internal class MockIntegrationEvent : IntegrationEvent, IEquatable<IntegrationEvent>
+    internal class MockIntegrationEvent : IntegrationEvent, IEquatable<IntegrationEvent?>
     {
         public MockIntegrationEvent()
         {
@@ -31,7 +29,7 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents.Mocks
             Created = created;
         }
 
-        public bool Equals([CanBeNull] IntegrationEvent other)
+        public bool Equals(IntegrationEvent? other)
         {
             if (other == null)
             {
@@ -101,7 +99,7 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents.Mocks
         /// </summary>
         /// <param name="obj">The object to compare with the current object.</param>
         /// <returns>true if the specified object is equal to the current object; otherwise, false.</returns>
-        public override bool Equals([CanBeNull] object obj)
+        public override bool Equals(object? obj)
         {
             return this.Equals(obj as IntegrationEvent);
         }

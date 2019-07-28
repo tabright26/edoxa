@@ -17,14 +17,12 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
 using eDoxa.Seedwork.Domain.Extensions;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.ConverterTypes
 {
     internal sealed class ScoringTypeConverter : ITypeConverter<ICollection<ScoringItemModel>, IScoring>
     {
-        [NotNull]
-        public IScoring Convert([NotNull] ICollection<ScoringItemModel> source, [NotNull] IScoring destination, [NotNull] ResolutionContext context)
+        
+        public IScoring Convert( ICollection<ScoringItemModel> source,  IScoring destination,  ResolutionContext context)
         {
             var scoring = new Scoring();
 

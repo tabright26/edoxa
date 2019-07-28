@@ -13,14 +13,11 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Cashier.Domain.Repositories
 {
     public interface ITransactionRepository
     {
-        [ItemCanBeNull]
-        Task<ITransaction> FindTransactionAsync(TransactionId transactionId);
+        Task<ITransaction?> FindTransactionAsync(TransactionId transactionId);
 
         Task CommitAsync(CancellationToken cancellationToken = default);
     }

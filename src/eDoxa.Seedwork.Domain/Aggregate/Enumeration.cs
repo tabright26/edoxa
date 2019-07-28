@@ -1,12 +1,8 @@
 ﻿// Filename: Enumeration.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.Collections.Generic;
@@ -14,8 +10,6 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-
-using JetBrains.Annotations;
 
 namespace eDoxa.Seedwork.Domain.Aggregate
 {
@@ -65,7 +59,7 @@ namespace eDoxa.Seedwork.Domain.Aggregate
 
         public string Name { get; private set; }
 
-        public int CompareTo([CanBeNull] object other)
+        public int CompareTo(object? other)
         {
             return string.Compare(Name, (other as TEnumeration)?.Name, StringComparison.Ordinal);
         }
@@ -75,22 +69,22 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             return Name;
         }
 
-        public static bool operator ==([CanBeNull] Enumeration<TEnumeration> left, [CanBeNull] Enumeration<TEnumeration> right)
+        public static bool operator ==(Enumeration<TEnumeration>? left, Enumeration<TEnumeration>? right)
         {
             return !(left is null ^ right is null) && (left is null || left.Equals(right));
         }
 
-        public static bool operator !=([CanBeNull] Enumeration<TEnumeration> left, [CanBeNull] Enumeration<TEnumeration> right)
+        public static bool operator !=(Enumeration<TEnumeration>? left, Enumeration<TEnumeration>? right)
         {
             return !(left == right);
         }
 
-        public static TEnumeration FromValue(int value)
+        public static TEnumeration? FromValue(int value)
         {
             return GetEnumerations().SingleOrDefault(enumeration => enumeration.Value == value) ?? None;
         }
 
-        public static TEnumeration FromName([CanBeNull] string name)
+        public static TEnumeration? FromName(string? name)
         {
             return GetEnumerations().SingleOrDefault(enumeration => string.Equals(enumeration.Name, name, StringComparison.InvariantCultureIgnoreCase)) ?? None;
         }
@@ -100,7 +94,7 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             return Enumeration.GetEnumerations(typeof(TEnumeration)).Cast<TEnumeration>().ToList();
         }
 
-        public override bool Equals([CanBeNull] object obj)
+        public override bool Equals(object? obj)
         {
             if (!(obj is TEnumeration enumeration))
             {
@@ -115,30 +109,29 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             return Value.GetHashCode();
         }
 
-        public static bool HasEnumeration([CanBeNull] TEnumeration enumeration)
+        public static bool HasEnumeration(TEnumeration? enumeration)
         {
             return enumeration != null && enumeration != All && enumeration != None && GetEnumerations().Contains(enumeration);
         }
 
-        public bool HasFilter([CanBeNull] TEnumeration enumeration)
+        public bool HasFilter(TEnumeration? enumeration)
         {
             return (Value & (enumeration?.Value ?? All.Value)) != None.Value;
         }
 
         protected sealed class EnumerationTypeConverter : TypeConverter
         {
-            public override bool CanConvertFrom([CanBeNull] ITypeDescriptorContext context, Type sourceType)
+            public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType)
             {
                 return sourceType == typeof(int) || sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
             }
 
-            public override bool CanConvertTo([CanBeNull] ITypeDescriptorContext context, Type destinationType)
+            public override bool CanConvertTo(ITypeDescriptorContext? context, Type destinationType)
             {
                 return destinationType == typeof(int) || destinationType == typeof(string) || base.CanConvertTo(context, destinationType);
             }
 
-            [CanBeNull]
-            public override object ConvertFrom([CanBeNull] ITypeDescriptorContext context, CultureInfo culture, [CanBeNull] object value)
+            public override object? ConvertFrom(ITypeDescriptorContext? context, CultureInfo culture, object? value)
             {
                 switch (value)
                 {
@@ -164,11 +157,10 @@ namespace eDoxa.Seedwork.Domain.Aggregate
                 }
             }
 
-            [CanBeNull]
-            public override object ConvertTo(
-                [CanBeNull] ITypeDescriptorContext context,
-                [NotNull] CultureInfo culture,
-                [CanBeNull] object value,
+            public override object? ConvertTo(
+                ITypeDescriptorContext? context,
+                CultureInfo culture,
+                object? value,
                 Type destinationType
             )
             {

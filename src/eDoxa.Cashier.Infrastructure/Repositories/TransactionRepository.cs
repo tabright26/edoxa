@@ -16,8 +16,6 @@ using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Infrastructure.Models;
 
-using JetBrains.Annotations;
-
 using LinqKit;
 
 using Microsoft.EntityFrameworkCore;
@@ -37,8 +35,7 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
             _mapper = mapper;
         }
 
-        [ItemCanBeNull]
-        public async Task<TransactionModel> FindTransactionModelAsync(Guid transactionId)
+        public async Task<TransactionModel?> FindTransactionModelAsync(Guid transactionId)
         {
             var transactionModels = from transaction in _context.Transactions.AsExpandable()
                                     where transaction.Id == transactionId
@@ -50,8 +47,7 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
 
     public sealed partial class TransactionRepository : ITransactionRepository
     {
-        [ItemCanBeNull]
-        public async Task<ITransaction> FindTransactionAsync(TransactionId transactionId)
+        public async Task<ITransaction?> FindTransactionAsync(TransactionId transactionId)
         {
             if (_materializedIds.TryGetValue(transactionId, out var transaction))
             {

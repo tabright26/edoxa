@@ -10,8 +10,6 @@ using System.Collections.Generic;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Seedwork.Domain.Aggregate;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
     public sealed partial class Account : Entity<AccountId>, IAccount
@@ -52,14 +50,14 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
         }
     }
 
-    public partial class Account : IEquatable<IAccount>
+    public partial class Account : IEquatable<IAccount?>
     {
-        public bool Equals([CanBeNull] IAccount account)
+        public bool Equals(IAccount? account)
         {
             return Id.Equals(account?.Id);
         }
 
-        public override bool Equals([CanBeNull] object obj)
+        public override bool Equals(object? obj)
         {
             return this.Equals(obj as IAccount);
         }

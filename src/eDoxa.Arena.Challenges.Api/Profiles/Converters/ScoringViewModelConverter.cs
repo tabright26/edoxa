@@ -9,14 +9,12 @@ using AutoMapper;
 using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Arena.Challenges.Api.Profiles.Converters
 {
     internal sealed class ScoringViewModelConverter : IValueConverter<IScoring, ScoringViewModel>
     {
-        [NotNull]
-        public ScoringViewModel Convert([NotNull] IScoring scoring, [NotNull] ResolutionContext context)
+        
+        public ScoringViewModel Convert( IScoring scoring,  ResolutionContext context)
         {
             var scoringViewModel = new ScoringViewModel();
 

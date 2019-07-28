@@ -14,8 +14,6 @@ using System.Reflection;
 using eDoxa.Seedwork.Infrastructure.Factories;
 using eDoxa.Seedwork.IntegrationEvents.Infrastructure;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations.IntegrationEvent
 {
     internal sealed class IntegrationEventDbContextFactory : DesignTimeDbContextFactory<IntegrationEventDbContext>
@@ -24,7 +22,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations.IntegrationEvent
 
         protected override Assembly MigrationsAssembly => Assembly.GetAssembly(typeof(Startup));
 
-        [NotNull]
+        
         public override IntegrationEventDbContext CreateDbContext(string[] args)
         {
             return new IntegrationEventDbContext(Options);

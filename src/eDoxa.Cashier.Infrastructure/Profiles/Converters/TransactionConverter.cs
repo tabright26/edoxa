@@ -11,14 +11,12 @@ using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Infrastructure.Models;
 using eDoxa.Seedwork.Domain.Providers;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Cashier.Infrastructure.Profiles.Converters
 {
     internal sealed class TransactionConverter : ITypeConverter<TransactionModel, ITransaction>
     {
-        [NotNull]
-        public ITransaction Convert([NotNull] TransactionModel source, [NotNull] ITransaction destination, [NotNull] ResolutionContext context)
+        
+        public ITransaction Convert( TransactionModel source,  ITransaction destination,  ResolutionContext context)
         {
             var transaction = new Transaction(
                 Convert(source.Amount, Currency.FromValue(source.Currency)),

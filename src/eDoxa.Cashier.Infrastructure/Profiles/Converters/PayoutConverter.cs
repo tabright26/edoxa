@@ -13,14 +13,12 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Infrastructure.Models;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Cashier.Infrastructure.Profiles.Converters
 {
     internal sealed class PayoutConverter : ITypeConverter<ICollection<BucketModel>, IPayout>
     {
-        [NotNull]
-        public IPayout Convert([NotNull] ICollection<BucketModel> bucketModels, [NotNull] IPayout destination, [NotNull] ResolutionContext context)
+        
+        public IPayout Convert( ICollection<BucketModel> bucketModels,  IPayout destination,  ResolutionContext context)
         {
             return new Payout(
                 new Buckets(

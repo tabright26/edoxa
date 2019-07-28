@@ -8,14 +8,11 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Seedwork.UnitTests.IntegrationEvents.Mocks
 {
     internal sealed class MockIntegrationEvent1 : MockIntegrationEvent
     {
-        [CanBeNull]
-        public MockIntegrationEvent1 Clone()
+        public MockIntegrationEvent1? Clone()
         {
             return this.MemberwiseClone() as MockIntegrationEvent1;
         }

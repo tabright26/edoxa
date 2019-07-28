@@ -10,16 +10,13 @@
 
 using System.Linq;
 
-using JetBrains.Annotations;
-
 using Microsoft.AspNetCore.Http;
 
 namespace eDoxa.Seedwork.Security.Extensions
 {
     public static class HttpContextExtensions
     {
-        [CanBeNull]
-        public static string GetClaimOrDefault(this HttpContext httpContext, string claimType)
+        public static string? GetClaimOrDefault(this HttpContext httpContext, string claimType)
         {
             return httpContext.User?.Claims?.SingleOrDefault(claim => claim.Type == claimType)?.Value;
         }

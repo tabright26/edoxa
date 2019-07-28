@@ -14,8 +14,6 @@ using System.Reflection;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class StatName : ValueObject, IComparable
@@ -36,9 +34,9 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             _name = game.Name;
         }
 
-        public int CompareTo([CanBeNull] object obj)
+        public int CompareTo(object? obj)
         {
-            return string.Compare(_name, ((StatName) obj)?._name, StringComparison.OrdinalIgnoreCase);
+            return string.Compare(_name, (obj as StatName)?._name, StringComparison.OrdinalIgnoreCase);
         }
 
         public static implicit operator string(StatName name)

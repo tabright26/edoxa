@@ -1,19 +1,13 @@
 ﻿// Filename: EntityId.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
-
-using JetBrains.Annotations;
 
 namespace eDoxa.Seedwork.Domain.Aggregate
 {
@@ -32,7 +26,7 @@ namespace eDoxa.Seedwork.Domain.Aggregate
 
         protected Guid Value { get; set; }
 
-        public int CompareTo([CanBeNull] object other)
+        public int CompareTo(object? other)
         {
             return Value.CompareTo((other as TEntityId)?.Value);
         }
@@ -80,18 +74,17 @@ namespace eDoxa.Seedwork.Domain.Aggregate
     {
         protected sealed class EntityIdTypeConverter : TypeConverter
         {
-            public override bool CanConvertFrom([CanBeNull] ITypeDescriptorContext context, Type sourceType)
+            public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType)
             {
                 return sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
             }
 
-            public override bool CanConvertTo([CanBeNull] ITypeDescriptorContext context, Type destinationType)
+            public override bool CanConvertTo(ITypeDescriptorContext? context, Type destinationType)
             {
                 return destinationType == typeof(string) || base.CanConvertTo(context, destinationType);
             }
 
-            [CanBeNull]
-            public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, [CanBeNull] object value)
+            public override object? ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object? value)
             {
                 switch (value)
                 {
@@ -112,11 +105,10 @@ namespace eDoxa.Seedwork.Domain.Aggregate
                 }
             }
 
-            [CanBeNull]
-            public override object ConvertTo(
-                [CanBeNull] ITypeDescriptorContext context,
-                [NotNull] CultureInfo culture,
-                [CanBeNull] object value,
+            public override object? ConvertTo(
+                ITypeDescriptorContext? context,
+                CultureInfo culture,
+                object? value,
                 Type destinationType
             )
             {

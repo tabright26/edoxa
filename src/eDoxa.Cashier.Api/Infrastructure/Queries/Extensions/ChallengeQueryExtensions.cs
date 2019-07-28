@@ -11,22 +11,18 @@ using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Infrastructure.Models;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Cashier.Api.Infrastructure.Queries.Extensions
 {
     public static class ChallengeQueryExtensions
     {
-        [ItemCanBeNull]
-        public static async Task<ChallengeModel> FindChallengeModelAsync(this IChallengeQuery challengeQuery, ChallengeId challengeId)
+        public static async Task<ChallengeModel?> FindChallengeModelAsync(this IChallengeQuery challengeQuery, ChallengeId challengeId)
         {
             var challenge = await challengeQuery.FindChallengeAsync(challengeId);
 
             return challengeQuery.Mapper.Map<ChallengeModel>(challenge);
         }
 
-        [ItemCanBeNull]
-        public static async Task<ChallengeViewModel> FindChallengeViewModelAsync(this IChallengeQuery challengeQuery, ChallengeId challengeId)
+        public static async Task<ChallengeViewModel?> FindChallengeViewModelAsync(this IChallengeQuery challengeQuery, ChallengeId challengeId)
         {
             var challenge = await challengeQuery.FindChallengeAsync(challengeId);
 

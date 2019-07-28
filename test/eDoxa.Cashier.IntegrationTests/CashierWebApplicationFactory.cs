@@ -16,8 +16,6 @@ using eDoxa.Seedwork.IntegrationEvents;
 using eDoxa.Seedwork.Security.Hosting;
 using eDoxa.Seedwork.Testing.Extensions;
 
-using JetBrains.Annotations;
-
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -29,7 +27,7 @@ namespace eDoxa.Cashier.IntegrationTests
 {
     public sealed class CashierWebApplicationFactory : WebApplicationFactory<Startup>
     {
-        protected override void ConfigureWebHost([NotNull] IWebHostBuilder builder)
+        protected override void ConfigureWebHost( IWebHostBuilder builder)
         {
             builder.UseEnvironment(EnvironmentNames.Testing);
 
@@ -50,8 +48,8 @@ namespace eDoxa.Cashier.IntegrationTests
             );
         }
 
-        [NotNull]
-        protected override TestServer CreateServer([NotNull] IWebHostBuilder builder)
+        
+        protected override TestServer CreateServer( IWebHostBuilder builder)
         {
             var server = base.CreateServer(builder);
 

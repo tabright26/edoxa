@@ -12,8 +12,6 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Seedwork.Domain.Providers;
 
-using JetBrains.Annotations;
-
 using MediatR;
 
 namespace eDoxa.Arena.Challenges.Api.Application.Requests.Handlers
@@ -27,7 +25,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Requests.Handlers
             _challengeService = challengeService;
         }
 
-        protected override async Task Handle([NotNull] SynchronizeChallengesRequest request, CancellationToken cancellationToken)
+        protected override async Task Handle( SynchronizeChallengesRequest request, CancellationToken cancellationToken)
         {
             await _challengeService.SynchronizeAsync(ChallengeGame.LeagueOfLegends, TimeSpan.FromHours(1), new UtcNowDateTimeProvider(), cancellationToken);
         }

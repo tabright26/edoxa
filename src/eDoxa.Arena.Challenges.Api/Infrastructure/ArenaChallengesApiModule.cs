@@ -19,13 +19,11 @@ using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.Domain.Strategies;
 using eDoxa.Arena.Challenges.Infrastructure.Repositories;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Arena.Challenges.Api.Infrastructure
 {
     public sealed class ArenaChallengesApiModule : Module
     {
-        protected override void Load([NotNull] ContainerBuilder builder)
+        protected override void Load( ContainerBuilder builder)
         {
             // Repositories
             builder.RegisterType<ChallengeRepository>().As<IChallengeRepository>().InstancePerLifetimeScope();

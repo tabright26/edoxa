@@ -15,8 +15,6 @@ using System.Linq;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public partial class Participant : Entity<ParticipantId>
@@ -45,8 +43,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             _matches.Add(match);
         }
 
-        [CanBeNull]
-        public Score ComputeScore(BestOf bestOf)
+        public Score? ComputeScore(BestOf bestOf)
         {
             return Matches.Count >= bestOf ? new ParticipantScore(this, bestOf) : null;
         }
@@ -57,14 +54,14 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         }
     }
 
-    public partial class Participant : IEquatable<Participant>
+    public partial class Participant : IEquatable<Participant?>
     {
-        public bool Equals([CanBeNull] Participant participant)
+        public bool Equals(Participant? participant)
         {
             return Id.Equals(participant?.Id);
         }
 
-        public sealed override bool Equals([CanBeNull] object obj)
+        public sealed override bool Equals(object? obj)
         {
             return this.Equals(obj as Participant);
         }

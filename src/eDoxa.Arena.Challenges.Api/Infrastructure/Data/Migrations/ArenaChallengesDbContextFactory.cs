@@ -10,8 +10,6 @@ using System.Reflection;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Seedwork.Infrastructure.Factories;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
 {
     internal sealed class ArenaChallengesDbContextFactory : DesignTimeDbContextFactory<ArenaChallengesDbContext>
@@ -20,7 +18,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
 
         protected override Assembly MigrationsAssembly => Assembly.GetAssembly(typeof(Startup));
 
-        [NotNull]
+        
         public override ArenaChallengesDbContext CreateDbContext(string[] args)
         {
             return new ArenaChallengesDbContext(Options);

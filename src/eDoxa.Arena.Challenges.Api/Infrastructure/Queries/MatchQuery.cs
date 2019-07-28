@@ -17,8 +17,6 @@ using eDoxa.Arena.Challenges.Domain.Queries;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
 
-using JetBrains.Annotations;
-
 using LinqKit;
 
 using Microsoft.EntityFrameworkCore;
@@ -65,8 +63,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Queries
             return Mapper.Map<IReadOnlyCollection<IMatch>>(matchModels);
         }
 
-        [ItemCanBeNull]
-        public async Task<IMatch> FindMatchAsync(MatchId matchId)
+        public async Task<IMatch?> FindMatchAsync(MatchId matchId)
         {
             var matchModel = await this.FindMatchModelAsync(matchId);
 

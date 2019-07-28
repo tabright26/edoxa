@@ -14,14 +14,12 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
 using eDoxa.Seedwork.Domain.Providers;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.ConverterTypes
 {
     internal sealed class MatchTypeConverter : ITypeConverter<MatchModel, IMatch>
     {
-        [NotNull]
-        public IMatch Convert([NotNull] MatchModel matchModel, [NotNull] IMatch destination, [NotNull] ResolutionContext context)
+        
+        public IMatch Convert( MatchModel matchModel,  IMatch destination,  ResolutionContext context)
         {
             var stats = context.Mapper.Map<ICollection<Stat>>(matchModel.Stats);
 

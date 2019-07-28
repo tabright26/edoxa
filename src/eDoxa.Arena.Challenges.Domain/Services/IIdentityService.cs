@@ -13,15 +13,12 @@ using System.Threading.Tasks;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Arena.Challenges.Domain.Services
 {
     public interface IIdentityService
     {
         Task<bool> HasGameAccountIdAsync(UserId userId, ChallengeGame game);
 
-        [ItemCanBeNull]
-        Task<GameAccountId> GetGameAccountIdAsync(UserId userId, ChallengeGame game);
+        Task<GameAccountId?> GetGameAccountIdAsync(UserId userId, ChallengeGame game);
     }
 }

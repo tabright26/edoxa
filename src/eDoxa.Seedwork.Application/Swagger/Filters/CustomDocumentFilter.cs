@@ -10,8 +10,6 @@
 
 using System.Linq;
 
-using JetBrains.Annotations;
-
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -19,7 +17,7 @@ namespace eDoxa.Seedwork.Application.Swagger.Filters
 {
     public sealed class CustomDocumentFilter : IDocumentFilter
     {
-        public void Apply([NotNull] SwaggerDocument swaggerDoc, [NotNull] DocumentFilterContext context)
+        public void Apply( SwaggerDocument swaggerDoc,  DocumentFilterContext context)
         {
             var paths = swaggerDoc.Paths.OrderBy(path => path.Key).ToList();
 

@@ -9,8 +9,6 @@ using System;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate
 {
     public partial class Transaction : Entity<TransactionId>, ITransaction
@@ -58,14 +56,14 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate
         }
     }
 
-    public partial class Transaction : IEquatable<ITransaction>
+    public partial class Transaction : IEquatable<ITransaction?>
     {
-        public bool Equals([CanBeNull] ITransaction transaction)
+        public bool Equals(ITransaction? transaction)
         {
             return Id.Equals(transaction?.Id);
         }
 
-        public sealed override bool Equals([CanBeNull] object obj)
+        public sealed override bool Equals(object? obj)
         {
             return this.Equals(obj as ITransaction);
         }

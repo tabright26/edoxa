@@ -22,8 +22,6 @@ using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
 using eDoxa.Seedwork.Domain.Extensions;
 
-using JetBrains.Annotations;
-
 using LinqKit;
 
 using Microsoft.EntityFrameworkCore;
@@ -54,8 +52,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
             return await challenges.ToListAsync();
         }
 
-        [ItemCanBeNull]
-        private async Task<ChallengeModel> FindChallengeModelAsync(Guid challengeId)
+        private async Task<ChallengeModel?> FindChallengeModelAsync(Guid challengeId)
         {
             var challenges = from challenge in _context.Challenges.Include(challenge => challenge.Participants)
                                  .ThenInclude(participant => participant.Matches)
@@ -111,8 +108,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
                 .ToList();
         }
 
-        [ItemCanBeNull]
-        public async Task<IChallenge> FindChallengeAsync(ChallengeId challengeId)
+        public async Task<IChallenge?> FindChallengeAsync(ChallengeId challengeId)
         {
             if (_materializedIds.TryGetValue(challengeId, out var challenge))
             {

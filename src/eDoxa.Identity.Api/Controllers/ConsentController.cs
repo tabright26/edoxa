@@ -18,8 +18,6 @@ using IdentityServer4.Models;
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
 
-using JetBrains.Annotations;
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -112,7 +110,7 @@ namespace eDoxa.Identity.Api.Controllers
         /*****************************************/
         /* helper APIs for the ConsentController */
         /*****************************************/
-        private async Task<ProcessConsentResult> ProcessConsent([CanBeNull] ConsentInputModel model)
+        private async Task<ProcessConsentResult> ProcessConsent(ConsentInputModel? model)
         {
             var result = new ProcessConsentResult();
 
@@ -124,7 +122,7 @@ namespace eDoxa.Identity.Api.Controllers
                 return result;
             }
 
-            ConsentResponse grantedConsent = null;
+            ConsentResponse? grantedConsent = null;
 
             // user clicked 'no' - send back the standard 'access_denied' response
             if (model?.Button == "no")
@@ -193,7 +191,7 @@ namespace eDoxa.Identity.Api.Controllers
             return result;
         }
 
-        private async Task<ConsentViewModel> BuildViewModelAsync(string returnUrl, ConsentInputModel model = null)
+        private async Task<ConsentViewModel?> BuildViewModelAsync(string? returnUrl, ConsentInputModel? model = null)
         {
             var request = await _interaction.GetAuthorizationContextAsync(returnUrl);
 
@@ -232,8 +230,8 @@ namespace eDoxa.Identity.Api.Controllers
         }
 
         private ConsentViewModel CreateConsentViewModel(
-            [CanBeNull] ConsentInputModel model,
-            string returnUrl,
+            ConsentInputModel? model,
+            string? returnUrl,
             AuthorizationRequest request,
             Client client,
             Resources resources

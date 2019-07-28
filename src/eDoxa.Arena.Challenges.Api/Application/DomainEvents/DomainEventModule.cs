@@ -14,13 +14,11 @@ using Autofac;
 
 using eDoxa.Arena.Challenges.Api.Application.DomainEvents.Abstractions;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Arena.Challenges.Api.Application.DomainEvents
 {
     public sealed class DomainEventModule : Module
     {
-        protected override void Load([NotNull] ContainerBuilder builder)
+        protected override void Load( ContainerBuilder builder)
         {
             builder.RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies()).AsClosedTypesOf(typeof(IDomainEventHandler<>)).AsImplementedInterfaces();
         }

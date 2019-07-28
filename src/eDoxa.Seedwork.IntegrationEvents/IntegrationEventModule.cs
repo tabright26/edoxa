@@ -13,8 +13,6 @@ using System.Data.Common;
 
 using Autofac;
 
-using JetBrains.Annotations;
-
 using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Seedwork.IntegrationEvents
@@ -22,7 +20,7 @@ namespace eDoxa.Seedwork.IntegrationEvents
     public sealed class IntegrationEventModule<TContext> : Module
     where TContext : DbContext
     {
-        protected override void Load([NotNull] ContainerBuilder builder)
+        protected override void Load( ContainerBuilder builder)
         {
             builder.RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies()).AsClosedTypesOf(typeof(IIntegrationEventHandler<>));
             builder.Register<Func<DbConnection, IIntegrationEventLogRepository>>(context => connection => new IntegrationEventLogRepository(connection));

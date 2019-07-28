@@ -16,14 +16,12 @@ using AutoMapper;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.Converters
 {
     internal sealed class ScoringItemModelsConverter : IValueConverter<IScoring, ICollection<ScoringItemModel>>
     {
-        [NotNull]
-        public ICollection<ScoringItemModel> Convert([NotNull] IScoring sourceMember, [NotNull] ResolutionContext context)
+        
+        public ICollection<ScoringItemModel> Convert( IScoring sourceMember,  ResolutionContext context)
         {
             return sourceMember.Select(
                     scoring => new ScoringItemModel

@@ -10,8 +10,6 @@
 
 using System;
 
-using JetBrains.Annotations;
-
 using Microsoft.AspNetCore.Http;
 
 using Newtonsoft.Json;
@@ -39,8 +37,7 @@ namespace eDoxa.Seedwork.Application
         [JsonProperty("message")]
         public string Message { get; }
 
-        [CanBeNull]
-        public override string ToString()
+        public override string? ToString()
         {
             return JsonConvert.SerializeObject(this);
         }

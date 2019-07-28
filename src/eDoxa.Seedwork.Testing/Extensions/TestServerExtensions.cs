@@ -10,8 +10,6 @@ using System.Threading.Tasks;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure;
 
-using JetBrains.Annotations;
-
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -54,7 +52,7 @@ namespace eDoxa.Seedwork.Testing.Extensions
             await server.Host.UsingScopeAsync(executeAsync);
         }
 
-        [ItemNotNull]
+        
         public static async Task<TResult> UsingScopeAsync<TResult>(this TestServer server, Func<IServiceScope, Task<TResult>> executeAsync)
         {
             return await server.Host.UsingScopeAsync(executeAsync);

@@ -14,8 +14,6 @@ using System.Threading.Tasks;
 
 using FluentValidation;
 
-using JetBrains.Annotations;
-
 using MediatR;
 
 using Microsoft.Extensions.Logging;
@@ -33,8 +31,8 @@ namespace eDoxa.Seedwork.Application.Behaviors
             _logger = logger;
         }
 
-        [ItemNotNull]
-        public async Task<TResult> Handle([NotNull] TRequest request, CancellationToken cancellationToken, [NotNull] RequestHandlerDelegate<TResult> next)
+        
+        public async Task<TResult> Handle( TRequest request, CancellationToken cancellationToken,  RequestHandlerDelegate<TResult> next)
         {
             _logger.LogInformation($"Validating {typeof(TRequest).Name}...");
 

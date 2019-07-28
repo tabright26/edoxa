@@ -11,8 +11,6 @@
 using eDoxa.Arena.Challenges.Infrastructure.Configurations;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
 
-using JetBrains.Annotations;
-
 using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Arena.Challenges.Infrastructure
@@ -29,7 +27,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure
 
         public DbSet<MatchModel> Matches => this.Set<MatchModel>();
 
-        protected override void OnModelCreating([NotNull] ModelBuilder builder)
+        protected override void OnModelCreating( ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 

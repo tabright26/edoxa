@@ -13,14 +13,12 @@ using AutoMapper;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.Converters
 {
     internal sealed class ChallengeTimelineModelConverter : IValueConverter<ChallengeTimeline, ChallengeTimelineModel>
     {
-        [NotNull]
-        public ChallengeTimelineModel Convert([NotNull] ChallengeTimeline sourceMember, [NotNull] ResolutionContext context)
+        
+        public ChallengeTimelineModel Convert( ChallengeTimeline sourceMember,  ResolutionContext context)
         {
             return new ChallengeTimelineModel
             {

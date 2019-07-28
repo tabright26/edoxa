@@ -16,8 +16,6 @@ using IdentityModel;
 
 using IdentityServer4;
 
-using JetBrains.Annotations;
-
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 
@@ -42,8 +40,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
         private ClaimsIdentity Identity { get; set; }
 
-        [ItemNotNull]
-        public async Task<ClaimsPrincipal> CreateAsync([NotNull] User user)
+        
+        public async Task<ClaimsPrincipal> CreateAsync( User user)
         {
             if (user == null)
             {

@@ -4,15 +4,13 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using JetBrains.Annotations;
-
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace eDoxa.Identity.Api.Attributes
 {
     public sealed class SecurityHeadersAttribute : ActionFilterAttribute
     {
-        public override void OnResultExecuting([NotNull] ResultExecutingContext context)
+        public override void OnResultExecuting( ResultExecutingContext context)
         {
             //var result = context.Result;
 

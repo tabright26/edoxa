@@ -14,8 +14,6 @@ using System.Reflection;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Seedwork.Infrastructure.Factories;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
 {
     internal sealed class CashierDbContextFactory : DesignTimeDbContextFactory<CashierDbContext>
@@ -24,7 +22,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
 
         protected override Assembly MigrationsAssembly => Assembly.GetAssembly(typeof(Startup));
 
-        [NotNull]
+        
         public override CashierDbContext CreateDbContext(string[] args)
         {
             return new CashierDbContext(Options);

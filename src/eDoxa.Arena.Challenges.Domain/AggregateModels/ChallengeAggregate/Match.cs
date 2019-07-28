@@ -10,8 +10,6 @@ using System.Collections.Generic;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Aggregate;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public abstract partial class Match : Entity<MatchId>, IMatch
@@ -34,14 +32,14 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         public IReadOnlyCollection<Stat> Stats => _stats;
     }
 
-    public abstract partial class Match : IEquatable<IMatch>
+    public abstract partial class Match : IEquatable<IMatch?>
     {
-        public bool Equals([CanBeNull] IMatch match)
+        public bool Equals(IMatch? match)
         {
             return Id.Equals(match?.Id);
         }
 
-        public sealed override bool Equals([CanBeNull] object obj)
+        public sealed override bool Equals(object? obj)
         {
             return this.Equals(obj as IMatch);
         }

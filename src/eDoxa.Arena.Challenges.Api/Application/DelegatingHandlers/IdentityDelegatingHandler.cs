@@ -12,8 +12,6 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-using JetBrains.Annotations;
-
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 
@@ -30,9 +28,9 @@ namespace eDoxa.Arena.Challenges.Api.Application.DelegatingHandlers
             _httpContextAccesor = httpContextAccesor;
         }
 
-        [NotNull]
-        [ItemNotNull]
-        protected override async Task<HttpResponseMessage> SendAsync([NotNull] HttpRequestMessage request, CancellationToken cancellationToken)
+        
+        
+        protected override async Task<HttpResponseMessage> SendAsync( HttpRequestMessage request, CancellationToken cancellationToken)
         {
             var token = await _httpContextAccesor.HttpContext.GetTokenAsync(TokenTypes.AccessToken);
 

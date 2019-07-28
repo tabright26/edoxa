@@ -6,8 +6,6 @@
 
 using eDoxa.Cashier.Infrastructure.Models;
 
-using JetBrains.Annotations;
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -15,7 +13,7 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
 {
     internal sealed class TransactionModelConfiguration : IEntityTypeConfiguration<TransactionModel>
     {
-        public void Configure([NotNull] EntityTypeBuilder<TransactionModel> builder)
+        public void Configure( EntityTypeBuilder<TransactionModel> builder)
         {
             builder.ToTable("Transaction");
 

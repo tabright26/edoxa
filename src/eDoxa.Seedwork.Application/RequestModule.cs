@@ -17,8 +17,6 @@ using eDoxa.Seedwork.Application.Behaviors;
 
 using FluentValidation;
 
-using JetBrains.Annotations;
-
 using MediatR;
 
 using Module = Autofac.Module;
@@ -27,7 +25,7 @@ namespace eDoxa.Seedwork.Application
 {
     public sealed class RequestModule : Module
     {
-        protected override void Load([NotNull] ContainerBuilder builder)
+        protected override void Load( ContainerBuilder builder)
         {
             builder.RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies()).AsClosedTypesOf(typeof(IRequestHandler<>)).AsImplementedInterfaces();
 

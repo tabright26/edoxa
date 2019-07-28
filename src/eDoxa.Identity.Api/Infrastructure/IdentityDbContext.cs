@@ -8,8 +8,6 @@ using System;
 
 using eDoxa.Identity.Api.Infrastructure.Models;
 
-using JetBrains.Annotations;
-
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,7 +21,7 @@ namespace eDoxa.Identity.Api.Infrastructure
 
         public DbSet<UserGame> UserGames => this.Set<UserGame>();
 
-        protected override void OnModelCreating([NotNull] ModelBuilder modelBuilder)
+        protected override void OnModelCreating( ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 

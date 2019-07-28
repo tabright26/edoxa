@@ -12,8 +12,6 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions
 {
     public static class MatchQueryExtensions
@@ -25,8 +23,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions
             return challengeQuery.Mapper.Map<IReadOnlyCollection<MatchModel>>(matches);
         }
 
-        [ItemCanBeNull]
-        public static async Task<MatchModel> FindMatchModelAsync(this IMatchQuery challengeQuery, MatchId matchId)
+        public static async Task<MatchModel?> FindMatchModelAsync(this IMatchQuery challengeQuery, MatchId matchId)
         {
             var match = await challengeQuery.FindMatchAsync(matchId);
 
@@ -43,8 +40,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions
             return challengeQuery.Mapper.Map<IReadOnlyCollection<MatchViewModel>>(matches);
         }
 
-        [ItemCanBeNull]
-        public static async Task<MatchViewModel> FindMatchViewModelAsync(this IMatchQuery challengeQuery, MatchId matchId)
+        public static async Task<MatchViewModel?> FindMatchViewModelAsync(this IMatchQuery challengeQuery, MatchId matchId)
         {
             var match = await challengeQuery.FindMatchAsync(matchId);
 

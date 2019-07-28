@@ -16,8 +16,6 @@ using AutoMapper;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Arena.Challenges.Domain.Queries
 {
     public interface IChallengeQuery
@@ -30,7 +28,6 @@ namespace eDoxa.Arena.Challenges.Domain.Queries
 
         Task<IReadOnlyCollection<IChallenge>> FetchChallengesAsync(ChallengeGame game = null, ChallengeState state = null);
 
-        [ItemCanBeNull]
-        Task<IChallenge> FindChallengeAsync(ChallengeId challengeId);
+        Task<IChallenge?> FindChallengeAsync(ChallengeId challengeId);
     }
 }

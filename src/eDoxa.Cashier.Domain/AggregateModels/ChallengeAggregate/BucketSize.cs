@@ -9,8 +9,6 @@ using System.Collections.Generic;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed partial class BucketSize : ValueObject
@@ -47,9 +45,9 @@ namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
 
     public sealed partial class BucketSize : IComparable
     {
-        public int CompareTo([CanBeNull] object obj)
+        public int CompareTo(object? obj)
         {
-            return _bucketSize.CompareTo(((BucketSize) obj)?._bucketSize);
+            return _bucketSize.CompareTo((obj as BucketSize)?._bucketSize);
         }
     }
 }

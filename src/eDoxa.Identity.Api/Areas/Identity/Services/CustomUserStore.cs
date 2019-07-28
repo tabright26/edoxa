@@ -12,8 +12,6 @@ using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Infrastructure.Models;
 
-using JetBrains.Annotations;
-
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -64,10 +62,10 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             return users.Select(user => user.NormalizedUserName.Split('#').Last()).Select(tag => Convert.ToInt32(tag)).ToList();
         }
 
-        [NotNull]
+        
         public override async Task SetUserNameAsync(
-            [NotNull] User user,
-            [NotNull] string userName,
+             User user,
+             string userName,
             CancellationToken cancellationToken = new CancellationToken()
         )
         {
@@ -130,16 +128,14 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             UserGames.Remove(game);
         }
 
-        [ItemCanBeNull]
-        public Task<UserGame> FindUserGameAsync(Guid userId, int gameValue, CancellationToken cancellationToken = default)
+        public async Task<UserGame?> FindUserGameAsync(Guid userId, int gameValue, CancellationToken cancellationToken = default)
         {
-            return UserGames.SingleOrDefaultAsync(game => game.UserId == userId && game.Value == gameValue, cancellationToken);
+            return await UserGames.SingleOrDefaultAsync(game => game.UserId == userId && game.Value == gameValue, cancellationToken);
         }
 
-        [ItemCanBeNull]
-        protected Task<UserGame> FindUserGameAsync(int gameValue, string playerId, CancellationToken cancellationToken = default)
+        protected async Task<UserGame?> FindUserGameAsync(int gameValue, string playerId, CancellationToken cancellationToken = default)
         {
-            return UserGames.SingleOrDefaultAsync(game => game.Value == gameValue && game.PlayerId == playerId, cancellationToken);
+            return await UserGames.SingleOrDefaultAsync(game => game.Value == gameValue && game.PlayerId == playerId, cancellationToken);
         }
 
         public async Task<IList<UserGame>> GetGamesAsync(User user, CancellationToken cancellationToken = default)
@@ -156,8 +152,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             return await UserGames.Where(game => game.UserId.Equals(user.Id)).ToListAsync(cancellationToken);
         }
 
-        [ItemCanBeNull]
-        public async Task<User> FindByGameAsync(int gameValue, string playerId, CancellationToken cancellationToken = default)
+        public async Task<User?> FindByGameAsync(int gameValue, string playerId, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -173,8 +168,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             return default;
         }
 
-        [ItemCanBeNull]
-        public Task<string> GetBirthDateAsync(User user, CancellationToken cancellationToken)
+        public Task<string?> GetBirthDateAsync(User user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -188,8 +182,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             return Task.FromResult(user.BirthDate?.ToString("yyyy-MM-dd"));
         }
 
-        [ItemCanBeNull]
-        public Task<string> GetFirstNameAsync(User user, CancellationToken cancellationToken)
+        public Task<string?> GetFirstNameAsync(User user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -203,8 +196,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             return Task.FromResult(user.FirstName);
         }
 
-        [ItemCanBeNull]
-        public Task<string> GetLastNameAsync(User user, CancellationToken cancellationToken)
+        public Task<string?> GetLastNameAsync(User user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -218,8 +210,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             return Task.FromResult(user.LastName);
         }
 
-        [ItemCanBeNull]
-        public Task<string> GetNameAsync(User user, CancellationToken cancellationToken)
+        public Task<string?> GetNameAsync(User user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 

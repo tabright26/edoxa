@@ -11,8 +11,6 @@
 using System;
 using System.Threading.Tasks;
 
-using JetBrains.Annotations;
-
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -36,7 +34,7 @@ namespace eDoxa.Seedwork.Testing.Extensions
             }
         }
 
-        [ItemNotNull]
+        
         public static async Task<TResult> UsingScopeAsync<TResult>(this IWebHost host, Func<IServiceScope, Task<TResult>> executeAsync)
         {
             using (var scope = host.CreateScope())

@@ -11,8 +11,6 @@ using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Services;
 
-using JetBrains.Annotations;
-
 using MediatR;
 
 using Microsoft.AspNetCore.Http;
@@ -30,7 +28,7 @@ namespace eDoxa.Cashier.Api.Application.Requests.Handlers
             _accountService = accountService;
         }
 
-        protected override async Task Handle([NotNull] WithdrawalRequest request, CancellationToken cancellationToken)
+        protected override async Task Handle( WithdrawalRequest request, CancellationToken cancellationToken)
         {
             var userId = _httpContextAccessor.GetUserId();
 

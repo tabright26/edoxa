@@ -11,8 +11,6 @@ using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Seedwork.Domain.Providers;
 
-using JetBrains.Annotations;
-
 using MediatR;
 
 using Microsoft.AspNetCore.Http;
@@ -30,7 +28,7 @@ namespace eDoxa.Arena.Challenges.Api.Application.Requests.Handlers
             _challengeService = challengeService;
         }
 
-        protected override async Task Handle([NotNull] RegisterParticipantRequest request, CancellationToken cancellationToken)
+        protected override async Task Handle( RegisterParticipantRequest request, CancellationToken cancellationToken)
         {
             var userId = _httpContextAccessor.GetUserId();
 

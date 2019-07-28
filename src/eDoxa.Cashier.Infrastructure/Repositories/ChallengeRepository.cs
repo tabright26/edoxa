@@ -17,8 +17,6 @@ using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Infrastructure.Models;
 using eDoxa.Seedwork.Domain.Extensions;
 
-using JetBrains.Annotations;
-
 using LinqKit;
 
 using Microsoft.EntityFrameworkCore;
@@ -38,8 +36,7 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
             _mapper = mapper;
         }
 
-        [ItemCanBeNull]
-        private async Task<ChallengeModel> FindChallengeModelAsync(Guid challengeId)
+        private async Task<ChallengeModel?> FindChallengeModelAsync(Guid challengeId)
         {
             var challenges = from challenge in _context.Challenges.AsExpandable()
                              where challenge.Id == challengeId
@@ -65,7 +62,7 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
             _materializedObjects[challenge] = challengeModel;
         }
 
-        public async Task<IChallenge> FindChallengeAsync(ChallengeId challengeId)
+        public async Task<IChallenge?> FindChallengeAsync(ChallengeId challengeId)
         {
             if (_materializedIds.TryGetValue(challengeId, out var challenge))
             {

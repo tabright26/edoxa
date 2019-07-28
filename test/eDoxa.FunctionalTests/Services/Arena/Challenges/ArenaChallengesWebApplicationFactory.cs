@@ -13,8 +13,6 @@ using eDoxa.Seedwork.IntegrationEvents.Infrastructure;
 using eDoxa.Seedwork.Security.Hosting;
 using eDoxa.Seedwork.Testing.Extensions;
 
-using JetBrains.Annotations;
-
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -24,7 +22,7 @@ namespace eDoxa.FunctionalTests.Services.Arena.Challenges
 {
     public sealed class ArenaChallengesWebApplicationFactory : WebApplicationFactory<Startup>
     {
-        protected override void ConfigureWebHost([NotNull] IWebHostBuilder builder)
+        protected override void ConfigureWebHost( IWebHostBuilder builder)
         {
             builder.UseEnvironment(EnvironmentNames.Testing);
 
@@ -35,8 +33,8 @@ namespace eDoxa.FunctionalTests.Services.Arena.Challenges
             builder.ConfigureAppConfiguration(configure => configure.AddJsonFile("appsettings.json", false).AddEnvironmentVariables());
         }
 
-        [NotNull]
-        protected override TestServer CreateServer([NotNull] IWebHostBuilder builder)
+        
+        protected override TestServer CreateServer( IWebHostBuilder builder)
         {
             var server = base.CreateServer(builder);
 

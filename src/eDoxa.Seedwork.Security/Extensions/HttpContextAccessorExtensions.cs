@@ -8,16 +8,13 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using JetBrains.Annotations;
-
 using Microsoft.AspNetCore.Http;
 
 namespace eDoxa.Seedwork.Security.Extensions
 {
     public static class HttpContextAccessorExtensions
     {
-        [CanBeNull]
-        public static string GetClaimOrDefault(this IHttpContextAccessor accessor, string claimType)
+        public static string? GetClaimOrDefault(this IHttpContextAccessor accessor, string claimType)
         {
             return accessor.HttpContext?.GetClaimOrDefault(claimType);
         }

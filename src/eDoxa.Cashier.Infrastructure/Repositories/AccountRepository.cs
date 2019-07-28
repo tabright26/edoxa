@@ -9,7 +9,7 @@ using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Infrastructure.Models;
 using eDoxa.Seedwork.Domain.Extensions;
-using JetBrains.Annotations;
+
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -33,8 +33,7 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
             _mapper = mapper;
         }
 
-        [ItemCanBeNull]
-        private async Task<AccountModel> FindUserAccountModelAsync(Guid userId)
+        private async Task<AccountModel?> FindUserAccountModelAsync(Guid userId)
         {
             var accountModels = from account in _context.Accounts.Include(account => account.Transactions).AsExpandable()
                                 where account.UserId == userId
@@ -55,8 +54,7 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
             _materializedObjects[account] = accountModel;
         }
 
-        [ItemCanBeNull]
-        public async Task<IAccount> FindUserAccountAsync(UserId userId)
+        public async Task<IAccount?> FindUserAccountAsync(UserId userId)
         {
             if (_materializedIds.TryGetValue(userId, out var account))
             {

@@ -15,24 +15,18 @@ using AutoMapper;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Cashier.Domain.Queries
 {
     public interface IAccountQuery
     {
         IMapper Mapper { get; }
 
-        [ItemCanBeNull]
-        Task<IAccount> FindUserAccountAsync(UserId userId);
+        Task<IAccount?> FindUserAccountAsync(UserId userId);
 
-        [ItemCanBeNull]
-        Task<IAccount> FindUserAccountAsync();
+        Task<IAccount?> FindUserAccountAsync();
 
-        [ItemCanBeNull]
-        Task<Balance> FindUserBalanceAsync(UserId userId, Currency currency);
+        Task<Balance?> FindUserBalanceAsync(UserId userId, Currency currency);
 
-        [ItemCanBeNull]
-        Task<Balance> FindUserBalanceAsync(Currency currency);
+        Task<Balance?> FindUserBalanceAsync(Currency currency);
     }
 }

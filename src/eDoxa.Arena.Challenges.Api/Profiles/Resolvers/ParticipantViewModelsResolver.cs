@@ -13,25 +13,23 @@ using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Arena.Challenges.Api.Profiles.Resolvers
 {
     internal sealed class
         ParticipantViewModelsResolver : IMemberValueResolver<IChallenge, ChallengeViewModel, IReadOnlyCollection<Participant>, ParticipantViewModel[]>
     {
-        [NotNull]
+        
         public ParticipantViewModel[] Resolve(
-            [NotNull] IChallenge challenge,
-            [NotNull] ChallengeViewModel challengeViewModel,
-            [NotNull] IReadOnlyCollection<Participant> participants,
-            [CanBeNull] ParticipantViewModel[] participantViewModels,
-            [NotNull] ResolutionContext context
+             IChallenge challenge,
+             ChallengeViewModel challengeViewModel,
+             IReadOnlyCollection<Participant> participants,
+             ParticipantViewModel[]? participantViewModels,
+             ResolutionContext context
         )
         {
             var participantCount = challenge.Participants.Count;
 
-            participantViewModels = participantViewModels ?? new ParticipantViewModel[participantCount];
+            participantViewModels ??= new ParticipantViewModel[participantCount];
 
             for (var index = 0; index < participantCount; index++)
             {

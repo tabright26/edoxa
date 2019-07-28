@@ -14,8 +14,6 @@ using System.Globalization;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels
 {
     public abstract partial class Score : ValueObject
@@ -43,14 +41,14 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels
         }
     }
 
-    public abstract partial class Score : IComparable, IComparable<Score>
+    public abstract partial class Score : IComparable, IComparable<Score?>
     {
-        public int CompareTo([CanBeNull] object obj)
+        public int CompareTo(object? obj)
         {
             return this.CompareTo(obj as Score);
         }
 
-        public int CompareTo([CanBeNull] Score other)
+        public int CompareTo(Score? other)
         {
             return _score.CompareTo(other?._score);
         }

@@ -12,8 +12,6 @@ using eDoxa.Identity.Api.Areas.Identity.Services;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
 
-using JetBrains.Annotations;
-
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 
@@ -34,7 +32,7 @@ namespace eDoxa.Identity.Api.Services
 
         private IdentityOptions Options { get; }
 
-        public async Task GetProfileDataAsync([NotNull] ProfileDataRequestContext context)
+        public async Task GetProfileDataAsync( ProfileDataRequestContext context)
         {
             var user = await UserManager.GetUserAsync(context.Subject);
 
@@ -46,7 +44,7 @@ namespace eDoxa.Identity.Api.Services
             }
         }
 
-        public async Task IsActiveAsync([NotNull] IsActiveContext context)
+        public async Task IsActiveAsync( IsActiveContext context)
         {
             var user = await UserManager.GetUserAsync(context.Subject);
 

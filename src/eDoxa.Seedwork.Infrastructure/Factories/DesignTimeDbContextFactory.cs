@@ -13,8 +13,6 @@ using System.Reflection;
 
 using eDoxa.Seedwork.Security.Constants;
 
-using JetBrains.Annotations;
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
@@ -63,7 +61,6 @@ namespace eDoxa.Seedwork.Infrastructure.Factories
             }
         }
 
-        [CanBeNull]
-        public abstract TContext CreateDbContext(string[] args);
+        public abstract TContext? CreateDbContext(string[] args);
     }
 }

@@ -12,8 +12,6 @@ using System.Linq;
 
 using FluentValidation;
 
-using JetBrains.Annotations;
-
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -22,7 +20,7 @@ namespace eDoxa.Seedwork.Application.Mvc.Filters
 {
     public sealed class ValidationExceptionFilter : IExceptionFilter
     {
-        public void OnException([NotNull] ExceptionContext context)
+        public void OnException( ExceptionContext context)
         {
             if (!(context.Exception is ValidationException exception))
             {

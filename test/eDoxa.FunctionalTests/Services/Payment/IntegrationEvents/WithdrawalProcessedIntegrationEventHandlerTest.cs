@@ -23,8 +23,6 @@ using eDoxa.Seedwork.Testing.Extensions;
 
 using FluentAssertions;
 
-using JetBrains.Annotations;
-
 using Microsoft.AspNetCore.TestHost;
 
 using Moq;
@@ -46,8 +44,7 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
 
         private readonly TestServer _testServer;
 
-        [ItemCanBeNull]
-        private async Task<ITransaction> TryGetPublishedTransaction(TransactionId transactionId)
+        private async Task<ITransaction?> TryGetPublishedTransaction(TransactionId transactionId)
         {
             var counter = 0;
 

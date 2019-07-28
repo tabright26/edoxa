@@ -10,8 +10,6 @@
 
 using System;
 
-using JetBrains.Annotations;
-
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +20,7 @@ namespace eDoxa.Seedwork.Application.Mvc.Filters.Attributes
 {
     public sealed class DevToolsAttribute : Attribute, IResourceFilter
     {
-        public void OnResourceExecuting([NotNull] ResourceExecutingContext context)
+        public void OnResourceExecuting( ResourceExecutingContext context)
         {
             var environment = context.HttpContext.RequestServices.GetService<IHostingEnvironment>();
 
@@ -37,7 +35,7 @@ namespace eDoxa.Seedwork.Application.Mvc.Filters.Attributes
             }
         }
 
-        public void OnResourceExecuted([NotNull] ResourceExecutedContext context)
+        public void OnResourceExecuted( ResourceExecutedContext context)
         {
         }
     }

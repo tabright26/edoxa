@@ -11,8 +11,6 @@ using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Infrastructure.Models;
 
-using JetBrains.Annotations;
-
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -128,8 +126,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             return await this.UpdateUserAsync(user);
         }
 
-        [ItemCanBeNull]
-        public Task<User> FindByGameAsync(Game game, string playerId)
+        public Task<User?> FindByGameAsync(Game game, string playerId)
         {
             this.ThrowIfDisposed();
 

@@ -10,8 +10,6 @@
 
 using System.Linq.Expressions;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Seedwork.Domain.Specifications
 {
     internal sealed class ExpressionSpecificationVisitor : ExpressionVisitor
@@ -25,8 +23,7 @@ namespace eDoxa.Seedwork.Domain.Specifications
             _to = to;
         }
 
-        [CanBeNull]
-        public override Expression Visit([NotNull] Expression node)
+        public override Expression? Visit( Expression node)
         {
             return node == _from ? _to : base.Visit(node);
         }

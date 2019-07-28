@@ -13,8 +13,6 @@ using System;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Seedwork.Security.Extensions;
 
-using JetBrains.Annotations;
-
 using Microsoft.AspNetCore.Http;
 
 using static eDoxa.Seedwork.Security.Constants.CustomClaimTypes;
@@ -30,14 +28,12 @@ namespace eDoxa.Cashier.Api.Extensions
             return UserId.Parse(accessor.GetClaimOrDefault(Subject) ?? throw new ArgumentNullException(Subject));
         }
 
-        [CanBeNull]
-        public static string GetCustomerId(this IHttpContextAccessor accessor)
+        public static string? GetCustomerId(this IHttpContextAccessor accessor)
         {
             return accessor.GetClaimOrDefault(StripeCustomerId) ?? throw new ArgumentNullException(StripeCustomerId);
         }
 
-        [CanBeNull]
-        public static string GetConnectAccountId(this IHttpContextAccessor accessor)
+        public static string? GetConnectAccountId(this IHttpContextAccessor accessor)
         {
             return accessor.GetClaimOrDefault(StripeConnectAccountId) ?? throw new ArgumentNullException(StripeConnectAccountId);
         }

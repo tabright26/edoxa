@@ -8,8 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using JetBrains.Annotations;
-
 using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Seedwork.IntegrationEvents.Infrastructure
@@ -24,7 +22,7 @@ namespace eDoxa.Seedwork.IntegrationEvents.Infrastructure
 
         public DbSet<IntegrationEventLogEntry> Logs => this.Set<IntegrationEventLogEntry>();
 
-        protected override void OnModelCreating([NotNull] ModelBuilder builder)
+        protected override void OnModelCreating( ModelBuilder builder)
         {
             builder.Entity<IntegrationEventLogEntry>(
                 entity =>

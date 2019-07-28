@@ -14,8 +14,6 @@ using System.Net;
 
 using eDoxa.Seedwork.Security.Constants;
 
-using JetBrains.Annotations;
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 
@@ -26,7 +24,7 @@ namespace eDoxa.Seedwork.Application.Swagger.Filters
 {
     public sealed class CustomOperationFilter : IOperationFilter
     {
-        public void Apply([NotNull] Operation operation, [NotNull] OperationFilterContext context)
+        public void Apply( Operation operation,  OperationFilterContext context)
         {
             ApplySecurityOperation(operation, context);
         }

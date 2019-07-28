@@ -21,8 +21,6 @@ using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.Infrastructure.Models;
 
-using JetBrains.Annotations;
-
 using LinqKit;
 
 using Microsoft.AspNetCore.Http;
@@ -45,8 +43,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries
 
         private IQueryable<AccountModel> Accounts { get; }
 
-        [ItemCanBeNull]
-        private async Task<AccountModel> FindUserAccountModelAsync(Guid userId)
+        private async Task<AccountModel?> FindUserAccountModelAsync(Guid userId)
         {
             var accounts = from account in Accounts.Include(account => account.Transactions).AsExpandable()
                            where account.UserId == userId
@@ -58,32 +55,28 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries
 
     public sealed partial class AccountQuery : IAccountQuery
     {
-        [ItemCanBeNull]
-        public async Task<IAccount> FindUserAccountAsync(UserId userId)
+        public async Task<IAccount?> FindUserAccountAsync(UserId userId)
         {
             var accountModel = await this.FindUserAccountModelAsync(userId);
 
             return Mapper.Map<IAccount>(accountModel);
         }
 
-        [ItemCanBeNull]
-        public async Task<IAccount> FindUserAccountAsync()
+        public async Task<IAccount?> FindUserAccountAsync()
         {
             var userId = _httpContextAccessor.GetUserId();
 
             return await this.FindUserAccountAsync(userId);
         }
 
-        [ItemCanBeNull]
-        public async Task<Balance> FindUserBalanceAsync(UserId userId, Currency currency)
+        public async Task<Balance?> FindUserBalanceAsync(UserId userId, Currency currency)
         {
             var account = await this.FindUserAccountAsync(userId);
 
             return account?.GetBalanceFor(currency);
         }
 
-        [ItemCanBeNull]
-        public async Task<Balance> FindUserBalanceAsync(Currency currency)
+        public async Task<Balance?> FindUserBalanceAsync(Currency currency)
         {
             var userId = _httpContextAccessor.GetUserId();
 

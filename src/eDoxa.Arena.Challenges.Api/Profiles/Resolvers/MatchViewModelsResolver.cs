@@ -13,24 +13,22 @@ using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 
-using JetBrains.Annotations;
-
 namespace eDoxa.Arena.Challenges.Api.Profiles.Resolvers
 {
     internal sealed class MatchViewModelsResolver : IMemberValueResolver<Participant, ParticipantViewModel, IReadOnlyCollection<IMatch>, MatchViewModel[]>
     {
-        [NotNull]
+        
         public MatchViewModel[] Resolve(
-            [NotNull] Participant participant,
-            [NotNull] ParticipantViewModel participantViewModel,
-            [NotNull] IReadOnlyCollection<IMatch> matches,
-            [CanBeNull] MatchViewModel[] matchViewModels,
-            [NotNull] ResolutionContext context
+             Participant participant,
+             ParticipantViewModel participantViewModel,
+             IReadOnlyCollection<IMatch> matches,
+             MatchViewModel[]? matchViewModels,
+             ResolutionContext context
         )
         {
             var matchCount = participant.Matches.Count;
 
-            matchViewModels = matchViewModels ?? new MatchViewModel[matchCount];
+            matchViewModels ??= new MatchViewModel[matchCount];
 
             for (var index = 0; index < matchCount; index++)
             {
