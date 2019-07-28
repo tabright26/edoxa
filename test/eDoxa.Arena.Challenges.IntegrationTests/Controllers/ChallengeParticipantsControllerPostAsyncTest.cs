@@ -1,4 +1,4 @@
-﻿// Filename: ChallengeParticipantsControllerPostAsync.cs
+﻿// Filename: ChallengeParticipantsControllerPostAsyncTest.cs
 // Date Created: 2019-07-26
 // 
 // ================================================
@@ -27,28 +27,18 @@ using eDoxa.Seedwork.Testing.Helpers;
 using IdentityModel;
 
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
 
+using Xunit;
+
 namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 {
-    [TestClass]
-    public sealed class ChallengeParticipantsControllerPostAsyncTest
+    public sealed class ChallengeParticipantsControllerPostAsyncTest : IClassFixture<ArenaChallengesWebApplicationFactory>
     {
-        private HttpClient _httpClient;
-        private TestServer _testServer;
-
-        public async Task<HttpResponseMessage> ExecuteAsync(UserId userId, RegisterParticipantRequest request)
+        public ChallengeParticipantsControllerPostAsyncTest(ArenaChallengesWebApplicationFactory arenaChallengesWebApplicationFactory)
         {
-            return await _httpClient.DefaultRequestHeaders(new[] {new Claim(JwtClaimTypes.Subject, userId.ToString())})
-                .PostAsync($"api/challenges/{request.ChallengeId}/participants", new JsonContent(request));
-        }
-
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            var arenaChallengesWebApplicationFactory = new ArenaChallengesWebApplicationFactory().WithWebHostBuilder(
+            var factory = arenaChallengesWebApplicationFactory.WithWebHostBuilder(
                 builder => builder.ConfigureTestContainer<ContainerBuilder>(
                     container =>
                     {
@@ -64,14 +54,21 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
                 )
             );
 
-            _httpClient = arenaChallengesWebApplicationFactory.CreateClient();
-
-            _testServer = arenaChallengesWebApplicationFactory.Server;
-
+            _httpClient = factory.CreateClient();
+            _testServer = factory.Server;
             _testServer.CleanupDbContext();
         }
 
-        [TestMethod]
+        private readonly HttpClient _httpClient;
+        private readonly TestServer _testServer;
+
+        private async Task<HttpResponseMessage> ExecuteAsync(UserId userId, RegisterParticipantRequest request)
+        {
+            return await _httpClient.DefaultRequestHeaders(new[] {new Claim(JwtClaimTypes.Subject, userId.ToString())})
+                .PostAsync($"api/challenges/{request.ChallengeId}/participants", new JsonContent(request));
+        }
+
+        [Fact]
         public async Task ShouldBeOk()
         {
             // Arrange

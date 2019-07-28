@@ -22,31 +22,26 @@ using eDoxa.Seedwork.Testing.Extensions;
 using FluentAssertions;
 
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using Xunit;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
 {
-    [TestClass]
-    public sealed class ChallengeRepositoryTest
+    public sealed class ChallengeRepositoryTest : IClassFixture<ArenaChallengesWebApplicationFactory>
     {
-        private TestServer _testServer;
+        private readonly TestServer _testServer;
 
-        [TestInitialize]
-        public void TestInitialize()
+        public ChallengeRepositoryTest(ArenaChallengesWebApplicationFactory arenaChallengesWebApplicationFactory)
         {
-            var arenaChallengesWebApplicationFactory = new ArenaChallengesWebApplicationFactory();
-
             arenaChallengesWebApplicationFactory.CreateClient();
-
             _testServer = arenaChallengesWebApplicationFactory.Server;
-
             _testServer.CleanupDbContext();
         }
 
-        [DataTestMethod]
-        [DataRow(56239561)]
-        [DataRow(78754231)]
-        [DataRow(89785671)]
+        [Theory]
+        [InlineData(56239561)]
+        [InlineData(78754231)]
+        [InlineData(89785671)]
         public async Task Scenario_ChallengeStateIsValid_ShouldBeTrue(int seed)
         {
             // Arrange

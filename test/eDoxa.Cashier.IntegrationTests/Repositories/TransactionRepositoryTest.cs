@@ -1,5 +1,5 @@
 ﻿// Filename: TransactionRepositoryTest.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-07-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -16,32 +16,27 @@ using eDoxa.Seedwork.Testing.Extensions;
 using FluentAssertions;
 
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace eDoxa.Cashier.IntegrationTests.Infrastructure.Repositories
+using Xunit;
+
+namespace eDoxa.Cashier.IntegrationTests.Repositories
 {
-    [TestClass]
-    public sealed class TransactionRepositoryTest
+    public sealed class TransactionRepositoryTest : IClassFixture<CashierWebApplicationFactory>
     {
-        private TestServer _testServer;
+        private readonly TestServer _testServer;
 
-        [TestInitialize]
-        public void TestInitialize()
+        public TransactionRepositoryTest(CashierWebApplicationFactory cashierWebApplicationFactory)
         {
-            var cashierWebApplicationFactory = new CashierWebApplicationFactory();
-
             cashierWebApplicationFactory.CreateClient();
-
             _testServer = cashierWebApplicationFactory.Server;
-
             _testServer.CleanupDbContext();
         }
 
-        [DataTestMethod]
-        [DataRow(1)]
-        [DataRow(10)]
-        [DataRow(100)]
-        [DataRow(1000)]
+        [Theory]
+        [InlineData(1)]
+        [InlineData(10)]
+        [InlineData(100)]
+        [InlineData(1000)]
         public async Task TransactionScenario_MarkAsSucceded(int seed)
         {
             var accountFaker = new AccountFaker();
@@ -117,11 +112,11 @@ namespace eDoxa.Cashier.IntegrationTests.Infrastructure.Repositories
             );
         }
 
-        [DataTestMethod]
-        [DataRow(1)]
-        [DataRow(10)]
-        [DataRow(100)]
-        [DataRow(1000)]
+        [Theory]
+        [InlineData(1)]
+        [InlineData(10)]
+        [InlineData(100)]
+        [InlineData(1000)]
         public async Task TransactionScenario_MarkAsFailed(int seed)
         {
             var accountFaker = new AccountFaker();

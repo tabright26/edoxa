@@ -7,29 +7,25 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Controllers
 {
-    [TestClass]
-    public sealed class AccountControllerLoginTest
+    public sealed class AccountControllerLoginTest : IClassFixture<IdentityWebApplicationFactory>
     {
-        private HttpClient _httpClient;
+        public AccountControllerLoginTest(IdentityWebApplicationFactory identityWebApplicationFactory)
+        {
+            _httpClient = identityWebApplicationFactory.CreateClient();
+        }
 
-        public async Task<HttpResponseMessage> ExecuteAsync()
+        private readonly HttpClient _httpClient;
+
+        private async Task<HttpResponseMessage> ExecuteAsync()
         {
             return await _httpClient.GetAsync("identity/account/login");
         }
 
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            var identityWebApplicationFactory = new IdentityWebApplicationFactory();
-
-            _httpClient = identityWebApplicationFactory.CreateClient();
-        }
-
-        [TestMethod]
+        [Fact]
         public async Task IdentityScenario()
         {
             // Act

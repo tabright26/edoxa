@@ -23,17 +23,24 @@ using IdentityModel;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using Xunit;
 
 namespace eDoxa.Cashier.IntegrationTests.Controllers
 {
-    [TestClass]
-    public sealed class TransactionsControllerGetAsyncTest
+    public sealed class TransactionsControllerGetAsyncTest : IClassFixture<CashierWebApplicationFactory>
     {
-        private HttpClient _httpClient;
-        private TestServer _testServer;
+        public TransactionsControllerGetAsyncTest(CashierWebApplicationFactory cashierWebApplicationFactory)
+        {
+            _httpClient = cashierWebApplicationFactory.CreateClient();
+            _testServer = cashierWebApplicationFactory.Server;
+            _testServer.CleanupDbContext();
+        }
 
-        public async Task<HttpResponseMessage> ExecuteAsync(
+        private readonly HttpClient _httpClient;
+        private readonly TestServer _testServer;
+
+        private async Task<HttpResponseMessage> ExecuteAsync(
             UserId userId,
             Currency currency = null,
             TransactionType type = null,
@@ -44,19 +51,30 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
                 .GetAsync($"api/transactions?currency={currency}&type={type}&status={status}");
         }
 
-        [TestInitialize]
-        public void TestInitialize()
+        [Fact]
+        public async Task ShouldBeNoContent()
         {
-            var cashierWebApplicationFactory = new CashierWebApplicationFactory();
+            // Arrange
+            var account = new Account(new UserId());
 
-            _httpClient = cashierWebApplicationFactory.CreateClient();
+            await _testServer.UsingScopeAsync(
+                async scope =>
+                {
+                    var accountRepository = scope.GetService<IAccountRepository>();
+                    accountRepository.Create(account);
+                    await accountRepository.CommitAsync();
+                }
+            );
 
-            _testServer = cashierWebApplicationFactory.Server;
+            // Act
+            var response = await this.ExecuteAsync(account.UserId);
 
-            _testServer.CleanupDbContext();
+            // Assert
+            response.EnsureSuccessStatusCode();
+            response.StatusCode.Should().Be(StatusCodes.Status204NoContent);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task ShouldBeOk()
         {
             // Arrange
@@ -81,29 +99,6 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             response.StatusCode.Should().Be(StatusCodes.Status200OK);
             var transactions = await response.DeserializeAsync<TransactionViewModel[]>();
             transactions.Should().HaveCount(account.Transactions.Count);
-        }
-
-        [TestMethod]
-        public async Task ShouldBeNoContent()
-        {
-            // Arrange
-            var account = new Account(new UserId());
-
-            await _testServer.UsingScopeAsync(
-                async scope =>
-                {
-                    var accountRepository = scope.GetService<IAccountRepository>();
-                    accountRepository.Create(account);
-                    await accountRepository.CommitAsync();
-                }
-            );
-
-            // Act
-            var response = await this.ExecuteAsync(account.UserId);
-
-            // Assert
-            response.EnsureSuccessStatusCode();
-            response.StatusCode.Should().Be(StatusCodes.Status204NoContent);
         }
     }
 }

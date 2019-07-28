@@ -21,32 +21,27 @@ using eDoxa.Seedwork.Testing.Extensions;
 using FluentAssertions;
 
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using Xunit;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Services
 {
-    [TestClass]
-    public sealed class ChallengeServiceCloseAsyncTest
+    public sealed class ChallengeServiceCloseAsyncTest : IClassFixture<ArenaChallengesWebApplicationFactory>
     {
-        private TestServer _testServer;
+        private readonly TestServer _testServer;
 
-        [TestInitialize]
-        public void TestInitialize()
+        public ChallengeServiceCloseAsyncTest(ArenaChallengesWebApplicationFactory arenaChallengesWebApplicationFactory)
         {
-            var arenaChallengesWebApplicationFactory = new ArenaChallengesWebApplicationFactory();
-
             arenaChallengesWebApplicationFactory.CreateClient();
-
             _testServer = arenaChallengesWebApplicationFactory.Server;
-
             _testServer.CleanupDbContext();
         }
 
-        [DataRow(5, 1)]
-        [DataRow(6, 2)]
-        [DataRow(7, 4)]
-        [DataRow(8, 8)]
-        [DataTestMethod]
+        [Theory]
+        [InlineData(5, 1)]
+        [InlineData(6, 2)]
+        [InlineData(7, 4)]
+        [InlineData(8, 8)]
         public async Task ShouldBeValid(int count, int seed)
         {
             // Arrange

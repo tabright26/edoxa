@@ -1,5 +1,5 @@
 ﻿// Filename: ArenaChallengesWebApplicationFactory.cs
-// Date Created: 2019-07-26
+// Date Created: 2019-07-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -30,7 +30,7 @@ using Moq;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests
 {
-    internal sealed class ArenaChallengesWebApplicationFactory : WebApplicationFactory<Startup>
+    public sealed class ArenaChallengesWebApplicationFactory : WebApplicationFactory<Startup>
     {
         protected override void ConfigureWebHost([NotNull] IWebHostBuilder builder)
         {

@@ -1,5 +1,5 @@
 ﻿// Filename: CashierWebApplicationFactory.cs
-// Date Created: 2019-07-26
+// Date Created: 2019-07-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -27,7 +27,7 @@ using Moq;
 
 namespace eDoxa.Cashier.IntegrationTests
 {
-    internal sealed class CashierWebApplicationFactory : WebApplicationFactory<Startup>
+    public sealed class CashierWebApplicationFactory : WebApplicationFactory<Startup>
     {
         protected override void ConfigureWebHost([NotNull] IWebHostBuilder builder)
         {

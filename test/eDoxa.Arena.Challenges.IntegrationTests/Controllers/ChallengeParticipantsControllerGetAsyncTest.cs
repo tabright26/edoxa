@@ -21,35 +21,30 @@ using FluentAssertions;
 using IdentityModel;
 
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using Xunit;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 {
-    [TestClass]
-    public sealed class ChallengeParticipantsControllerGetAsyncTest
+    public sealed class ChallengeParticipantsControllerGetAsyncTest : IClassFixture<ArenaChallengesWebApplicationFactory>
     {
-        private HttpClient _httpClient;
-        private TestServer _testServer;
+        public ChallengeParticipantsControllerGetAsyncTest(ArenaChallengesWebApplicationFactory arenaChallengesWebApplicationFactory)
+        {
+            _httpClient = arenaChallengesWebApplicationFactory.CreateClient();
+            _testServer = arenaChallengesWebApplicationFactory.Server;
+            _testServer.CleanupDbContext();
+        }
 
-        public async Task<HttpResponseMessage> ExecuteAsync(ChallengeId challengeId)
+        private readonly HttpClient _httpClient;
+        private readonly TestServer _testServer;
+
+        private async Task<HttpResponseMessage> ExecuteAsync(ChallengeId challengeId)
         {
             return await _httpClient.DefaultRequestHeaders(new[] {new Claim(JwtClaimTypes.Subject, Guid.NewGuid().ToString())})
                 .GetAsync($"api/challenges/{challengeId}/participants");
         }
 
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            var arenaChallengesWebApplicationFactory = new ArenaChallengesWebApplicationFactory();
-
-            _httpClient = arenaChallengesWebApplicationFactory.CreateClient();
-
-            _testServer = arenaChallengesWebApplicationFactory.Server;
-
-            _testServer.CleanupDbContext();
-        }
-
-        [TestMethod]
+        [Fact]
         public async Task ShouldBeOk()
         {
             // Arrange

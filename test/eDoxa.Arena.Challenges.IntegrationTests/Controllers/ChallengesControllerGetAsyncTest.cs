@@ -18,47 +18,31 @@ using eDoxa.Seedwork.Testing.Extensions;
 using FluentAssertions;
 
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using Xunit;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 {
-    [TestClass]
-    public sealed class ChallengesControllerGetAsyncTest
+    public sealed class ChallengesControllerGetAsyncTest : IClassFixture<ArenaChallengesWebApplicationFactory>
     {
-        private HttpClient _httpClient;
-        private TestServer _testServer;
+        public ChallengesControllerGetAsyncTest(ArenaChallengesWebApplicationFactory arenaChallengesWebApplicationFactory)
+        {
+            _httpClient = arenaChallengesWebApplicationFactory.CreateClient();
+            _testServer = arenaChallengesWebApplicationFactory.Server;
+            _testServer.CleanupDbContext();
+        }
 
-        public async Task<HttpResponseMessage> ExecuteAsync()
+        private readonly HttpClient _httpClient;
+        private readonly TestServer _testServer;
+
+        private async Task<HttpResponseMessage> ExecuteAsync()
         {
             return await _httpClient.GetAsync("api/challenges");
         }
 
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            var arenaChallengesWebApplicationFactory = new ArenaChallengesWebApplicationFactory();
-
-            _httpClient = arenaChallengesWebApplicationFactory.CreateClient();
-
-            _testServer = arenaChallengesWebApplicationFactory.Server;
-
-            _testServer.CleanupDbContext();
-        }
-
-        [TestMethod]
-        public async Task ShouldBeNoContent()
-        {
-            // Act
-            var response = await this.ExecuteAsync();
-
-            // Assert
-            response.EnsureSuccessStatusCode();
-            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
-        }
-
-        [DataRow(2)]
-        [DataRow(5)]
-        [DataTestMethod]
+        [Theory]
+        [InlineData(2)]
+        [InlineData(5)]
         public async Task The_response_http_should_have_exactly_the_same_number_of_fake_challenges_added_to_the_database(int count)
         {
             // Arrange
@@ -83,10 +67,10 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
             challengeViewModels.Should().HaveCount(count);
         }
 
-        [DataRow(100)]
-        [DataRow(1000)]
-        [DataRow(10000)]
-        [DataTestMethod]
+        [Theory]
+        [InlineData(100)]
+        [InlineData(1000)]
+        [InlineData(10000)]
         public async Task Fake_challenge_with_same_seed_should_be_equivalent(int seed)
         {
             // Arrange
@@ -113,6 +97,17 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
             challengeFaker.UseSeed(seed);
             challenge = challengeFaker.Generate();
             challengeViewModel.Id.Should().Be(challenge.Id);
+        }
+
+        [Fact]
+        public async Task ShouldBeNoContent()
+        {
+            // Act
+            var response = await this.ExecuteAsync();
+
+            // Assert
+            response.EnsureSuccessStatusCode();
+            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
         }
     }
 }

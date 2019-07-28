@@ -18,34 +18,39 @@ using FluentAssertions;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Controllers
 {
-    [TestClass]
-    public sealed class UsersControllerGetAsyncTest
+    public sealed class UsersControllerGetAsyncTest : IClassFixture<IdentityWebApplicationFactory>
     {
-        private HttpClient _httpClient;
-        private TestServer _testServer;
+        public UsersControllerGetAsyncTest(IdentityWebApplicationFactory identityWebApplicationFactory)
+        {
+            _httpClient = identityWebApplicationFactory.CreateClient();
+            _testServer = identityWebApplicationFactory.Server;
+            _testServer.CleanupDbContext();
+        }
+
+        private readonly HttpClient _httpClient;
+        private readonly TestServer _testServer;
 
         private async Task<HttpResponseMessage> ExecuteAsync()
         {
             return await _httpClient.GetAsync("api/users");
         }
 
-        [TestInitialize]
-        public void TestInitialize()
+        [Fact]
+        public async Task ApiUsers_WithNinetyNineUsers_ShouldBeNoContent()
         {
-            var identityWebApplicationFactory = new IdentityWebApplicationFactory();
+            // Act
+            var response = await this.ExecuteAsync();
 
-            _httpClient = identityWebApplicationFactory.CreateClient();
-
-            _testServer = identityWebApplicationFactory.Server;
-
-            _testServer.CleanupDbContext();
+            // Assert
+            response.StatusCode.Should().Be(StatusCodes.Status204NoContent);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task ApiUsers_WithNinetyNineUsers_ShouldHaveCountOfNinetyNine()
         {
             // Arrange
@@ -68,16 +73,6 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
             response.EnsureSuccessStatusCode();
             var users = await response.DeserializeAsync<UserViewModel[]>();
             users.Should().HaveCount(100);
-        }
-
-        [TestMethod]
-        public async Task ApiUsers_WithNinetyNineUsers_ShouldBeNoContent()
-        {
-            // Act
-            var response = await this.ExecuteAsync();
-
-            // Assert
-            response.StatusCode.Should().Be(StatusCodes.Status204NoContent);
         }
     }
 }

@@ -185,7 +185,7 @@ namespace eDoxa.Identity.Api
                 }
             );
 
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddAutoMapper(Assembly.GetAssembly(typeof(Startup)), Assembly.GetAssembly(typeof(IdentityDbContext)));
 
             if (AppSettings.SwaggerEnabled)
             {

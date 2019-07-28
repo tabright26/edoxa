@@ -23,36 +23,53 @@ using IdentityModel;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using Xunit;
 
 namespace eDoxa.Cashier.IntegrationTests.Controllers
 {
-    [TestClass]
-    public sealed class AccountDepositControllerPostAsyncTest
+    public sealed class AccountDepositControllerPostAsyncTest : IClassFixture<CashierWebApplicationFactory>
     {
-        private HttpClient _httpClient;
-        private TestServer _testServer;
+        public AccountDepositControllerPostAsyncTest(CashierWebApplicationFactory cashierWebApplicationFactory)
+        {
+            _httpClient = cashierWebApplicationFactory.CreateClient();
+            _testServer = cashierWebApplicationFactory.Server;
+            _testServer.CleanupDbContext();
+        }
 
-        public async Task<HttpResponseMessage> ExecuteAsync(UserId userId, string customerId, DepositRequest request)
+        private readonly HttpClient _httpClient;
+        private readonly TestServer _testServer;
+
+        private async Task<HttpResponseMessage> ExecuteAsync(UserId userId, string customerId, DepositRequest request)
         {
             return await _httpClient
                 .DefaultRequestHeaders(new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(CustomClaimTypes.StripeCustomerId, customerId)})
                 .PostAsync("api/account/deposit", new JsonContent(request));
         }
 
-        [TestInitialize]
-        public void TestInitialize()
+        [Fact]
+        public async Task Money_InvalidAmount_ShouldBeStatus400BadRequest()
         {
-            var cashierWebApplicationFactory = new CashierWebApplicationFactory();
+            // Arrange
+            var account = new Account(new UserId());
 
-            _httpClient = cashierWebApplicationFactory.CreateClient();
+            await _testServer.UsingScopeAsync(
+                async scope =>
+                {
+                    var accountRepository = scope.GetService<IAccountRepository>();
+                    accountRepository.Create(account);
+                    await accountRepository.CommitAsync();
+                }
+            );
 
-            _testServer = cashierWebApplicationFactory.Server;
+            // Act
+            var response = await this.ExecuteAsync(account.UserId, "cus_test", new DepositRequest(Currency.Money.Name, 2.5M));
 
-            _testServer.CleanupDbContext();
+            // Assert
+            response.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Money_ValidAmount_ShouldBeStatus200OK()
         {
             // Arrange
@@ -77,7 +94,29 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             message.Should().NotBeNull();
         }
 
-        [TestMethod]
+        [Fact]
+        public async Task Token_InvalidAmount_ShouldBeStatus400BadRequest()
+        {
+            // Arrange
+            var account = new Account(new UserId());
+
+            await _testServer.UsingScopeAsync(
+                async scope =>
+                {
+                    var accountRepository = scope.GetService<IAccountRepository>();
+                    accountRepository.Create(account);
+                    await accountRepository.CommitAsync();
+                }
+            );
+
+            // Act
+            var response = await this.ExecuteAsync(account.UserId, "cus_test", new DepositRequest(Currency.Token.Name, 2500M));
+
+            // Assert
+            response.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
+        }
+
+        [Fact]
         public async Task Token_ValidAmount_ShouldBeStatus200OK()
         {
             // Arrange
@@ -100,50 +139,6 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             response.StatusCode.Should().Be(StatusCodes.Status200OK);
             var message = await response.DeserializeAsync<string>();
             message.Should().NotBeNull();
-        }
-
-        [TestMethod]
-        public async Task Money_InvalidAmount_ShouldBeStatus400BadRequest()
-        {
-            // Arrange
-            var account = new Account(new UserId());
-
-            await _testServer.UsingScopeAsync(
-                async scope =>
-                {
-                    var accountRepository = scope.GetService<IAccountRepository>();
-                    accountRepository.Create(account);
-                    await accountRepository.CommitAsync();
-                }
-            );
-
-            // Act
-            var response = await this.ExecuteAsync(account.UserId, "cus_test", new DepositRequest(Currency.Money.Name, 2.5M));
-
-            // Assert
-            response.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
-        }
-
-        [TestMethod]
-        public async Task Token_InvalidAmount_ShouldBeStatus400BadRequest()
-        {
-            // Arrange
-            var account = new Account(new UserId());
-
-            await _testServer.UsingScopeAsync(
-                async scope =>
-                {
-                    var accountRepository = scope.GetService<IAccountRepository>();
-                    accountRepository.Create(account);
-                    await accountRepository.CommitAsync();
-                }
-            );
-
-            // Act
-            var response = await this.ExecuteAsync(account.UserId, "cus_test", new DepositRequest(Currency.Token.Name, 2500M));
-
-            // Assert
-            response.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
         }
     }
 }

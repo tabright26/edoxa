@@ -24,40 +24,35 @@ using IdentityModel;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using Xunit;
 
 namespace eDoxa.Cashier.IntegrationTests.Controllers
 {
-    [TestClass]
-    public sealed class AccountBalanceControllerGetByCurrencyAsyncTest
+    public sealed class AccountBalanceControllerGetByCurrencyAsyncTest : IClassFixture<CashierWebApplicationFactory>
     {
-        private HttpClient _httpClient;
-        private TestServer _testServer;
+        private readonly HttpClient _httpClient;
+        private readonly TestServer _testServer;
+
+        public AccountBalanceControllerGetByCurrencyAsyncTest(CashierWebApplicationFactory cashierWebApplicationFactory)
+        {
+            _httpClient = cashierWebApplicationFactory.CreateClient();
+            _testServer = cashierWebApplicationFactory.Server;
+            _testServer.CleanupDbContext();
+        }
 
         public static IEnumerable<object[]> ValidCurrencyDataSets => Currency.GetEnumerations().Select(currency => new object[] {currency}).ToList();
 
         public static IEnumerable<object[]> InvalidCurrencyDataSets => new[] {new object[] {Currency.All}, new object[] {new Currency()}};
 
-        public async Task<HttpResponseMessage> ExecuteAsync(UserId userId, Currency currency)
+        private async Task<HttpResponseMessage> ExecuteAsync(UserId userId, Currency currency)
         {
             return await _httpClient.DefaultRequestHeaders(new[] {new Claim(JwtClaimTypes.Subject, userId.ToString())})
                 .GetAsync($"api/account/balance/{currency}");
         }
 
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            var cashierWebApplicationFactory = new CashierWebApplicationFactory();
-
-            _httpClient = cashierWebApplicationFactory.CreateClient();
-
-            _testServer = cashierWebApplicationFactory.Server;
-
-            _testServer.CleanupDbContext();
-        }
-
-        [DataTestMethod]
-        [DynamicData(nameof(ValidCurrencyDataSets))]
+        [Theory]
+        [MemberData(nameof(ValidCurrencyDataSets))]
         public async Task ShouldHaveNoAvailableFundsAndNoPendingFunds(Currency currency)
         {
             // Arrange
@@ -85,8 +80,8 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             balanceViewModel?.Pending.Should().Be(decimal.Zero);
         }
 
-        [DataTestMethod]
-        [DynamicData(nameof(ValidCurrencyDataSets))]
+        [Theory]
+        [MemberData(nameof(ValidCurrencyDataSets))]
         public async Task ShouldHaveAvailableFundsAndPendingFunds(Currency currency)
         {
             // Arrange
@@ -117,8 +112,8 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             balanceViewModel?.Pending.Should().Be(balance.Pending);
         }
 
-        [DataTestMethod]
-        [DynamicData(nameof(ValidCurrencyDataSets))]
+        [Theory]
+        [MemberData(nameof(ValidCurrencyDataSets))]
         public async Task UserWithoutAccount_ShouldBeNotFound(Currency currency)
         {
             // Act
@@ -128,8 +123,8 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             response.StatusCode.Should().Be(StatusCodes.Status404NotFound);
         }
 
-        [DataTestMethod]
-        [DynamicData(nameof(InvalidCurrencyDataSets))]
+        [Theory]
+        [MemberData(nameof(InvalidCurrencyDataSets))]
         public async Task InvalidCurrency_ShouldBeBadRequest(Currency currency)
         {
             var accountFaker = new AccountFaker();

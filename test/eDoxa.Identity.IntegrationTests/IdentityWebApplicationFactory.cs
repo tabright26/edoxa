@@ -1,5 +1,5 @@
 ﻿// Filename: IdentityWebApplicationFactory.cs
-// Date Created: 2019-07-26
+// Date Created: 2019-07-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -21,7 +21,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace eDoxa.Identity.IntegrationTests
 {
-    internal sealed class IdentityWebApplicationFactory : WebApplicationFactory<Startup>
+    public sealed class IdentityWebApplicationFactory : WebApplicationFactory<Startup>
     {
         protected override void ConfigureWebHost([NotNull] IWebHostBuilder builder)
         {

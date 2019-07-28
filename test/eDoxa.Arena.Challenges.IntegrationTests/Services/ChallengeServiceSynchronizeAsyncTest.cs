@@ -20,28 +20,23 @@ using eDoxa.Seedwork.Testing.Extensions;
 using FluentAssertions;
 
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using Xunit;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Services
 {
-    [TestClass]
-    public sealed class ChallengeServiceSynchronizeAsyncTest
+    public sealed class ChallengeServiceSynchronizeAsyncTest : IClassFixture<ArenaChallengesWebApplicationFactory>
     {
-        private TestServer _testServer;
-
-        [TestInitialize]
-        public void TestInitialize()
+        public ChallengeServiceSynchronizeAsyncTest(ArenaChallengesWebApplicationFactory arenaChallengesWebApplicationFactory)
         {
-            var arenaChallengesWebApplicationFactory = new ArenaChallengesWebApplicationFactory();
-
             arenaChallengesWebApplicationFactory.CreateClient();
-
             _testServer = arenaChallengesWebApplicationFactory.Server;
-
             _testServer.CleanupDbContext();
         }
 
-        [TestMethod]
+        private readonly TestServer _testServer;
+
+        [Fact]
         public async Task T1()
         {
             // Arrange

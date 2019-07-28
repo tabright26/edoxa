@@ -110,7 +110,7 @@ namespace eDoxa.Arena.Challenges.Api
                 }
             );
 
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddAutoMapper(Assembly.GetAssembly(typeof(Startup)), Assembly.GetAssembly(typeof(ArenaChallengesDbContext)));
 
             if (AppSettings.SwaggerEnabled)
             {
