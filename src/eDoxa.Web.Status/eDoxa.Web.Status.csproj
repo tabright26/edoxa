@@ -6,6 +6,9 @@
     <RootNamespace>eDoxa.Web.Status</RootNamespace>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <LangVersion>8.0</LangVersion>
+    <NullableContextOptions>enable</NullableContextOptions>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>

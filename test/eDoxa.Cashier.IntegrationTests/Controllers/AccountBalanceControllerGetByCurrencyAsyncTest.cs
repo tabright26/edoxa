@@ -41,13 +41,13 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             _testServer.CleanupDbContext();
         }
 
-        public static IEnumerable<object[]> ValidCurrencyDataSets => Currency.GetEnumerations().Select(currency => new object[] {currency}).ToList();
+        public static IEnumerable<object[]> ValidCurrencyDataSets => Currency.GetEnumerations().Select(currency => new object[] { currency }).ToList();
 
-        public static IEnumerable<object[]> InvalidCurrencyDataSets => new[] {new object[] {Currency.All}, new object[] {new Currency()}};
+        public static IEnumerable<object[]> InvalidCurrencyDataSets => new[] { new object[] { Currency.All }, new object[] { new Currency() } }.ToList();
 
         private async Task<HttpResponseMessage> ExecuteAsync(UserId userId, Currency currency)
         {
-            return await _httpClient.DefaultRequestHeaders(new[] {new Claim(JwtClaimTypes.Subject, userId.ToString())})
+            return await _httpClient.DefaultRequestHeaders(new[] { new Claim(JwtClaimTypes.Subject, userId.ToString()) })
                 .GetAsync($"api/account/balance/{currency}");
         }
 

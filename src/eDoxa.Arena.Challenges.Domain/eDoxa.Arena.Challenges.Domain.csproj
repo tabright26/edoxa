@@ -4,6 +4,9 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>eDoxa.Arena.Challenges.Domain</AssemblyName>
     <RootNamespace>eDoxa.Arena.Challenges.Domain</RootNamespace>
+    <LangVersion>8.0</LangVersion>
+    <NullableContextOptions>enable</NullableContextOptions>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>

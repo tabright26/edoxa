@@ -4,6 +4,8 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AssemblyName>eDoxa.Seedwork.UnitTests</AssemblyName>
     <RootNamespace>eDoxa.Seedwork.UnitTests</RootNamespace>
+    <LangVersion>8.0</LangVersion>
+    <NullableContextOptions>enable</NullableContextOptions>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 

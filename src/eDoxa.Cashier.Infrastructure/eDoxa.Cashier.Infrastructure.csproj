@@ -4,6 +4,9 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AssemblyName>eDoxa.Cashier.Infrastructure</AssemblyName>
     <RootNamespace>eDoxa.Cashier.Infrastructure</RootNamespace>
+    <LangVersion>8.0</LangVersion>
+    <NullableContextOptions>enable</NullableContextOptions>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>

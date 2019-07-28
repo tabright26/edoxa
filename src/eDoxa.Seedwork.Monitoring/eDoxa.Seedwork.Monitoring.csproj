@@ -4,6 +4,8 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AssemblyName>eDoxa.Seedwork.Monitoring</AssemblyName>
     <RootNamespace>eDoxa.Seedwork.Monitoring</RootNamespace>
+    <LangVersion>8.0</LangVersion>
+    <NullableContextOptions>enable</NullableContextOptions>
   </PropertyGroup>
 
   <ItemGroup>

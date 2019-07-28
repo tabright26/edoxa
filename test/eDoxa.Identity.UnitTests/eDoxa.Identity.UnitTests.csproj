@@ -4,6 +4,9 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AssemblyName>eDoxa.Identity.UnitTests</AssemblyName>
     <RootNamespace>eDoxa.Identity.UnitTests</RootNamespace>
+    <LangVersion>8.0</LangVersion>
+    <NullableContextOptions>enable</NullableContextOptions>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>

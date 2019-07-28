@@ -3,6 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AssemblyName>eDoxa.Arena.Challenges.Api.Games</AssemblyName>
+    <RootNamespace>eDoxa.Arena.Challenges.Api.Games</RootNamespace>
+    <LangVersion>8.0</LangVersion>
+    <NullableContextOptions>enable</NullableContextOptions>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
