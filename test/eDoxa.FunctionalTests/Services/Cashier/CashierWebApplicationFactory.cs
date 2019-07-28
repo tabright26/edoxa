@@ -1,5 +1,5 @@
 ﻿// Filename: CashierWebApplicationFactory.cs
-// Date Created: 2019-07-26
+// Date Created: 2019-07-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -20,9 +20,9 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 
-namespace eDoxa.FunctionalTests.Services.Cashier.Helpers
+namespace eDoxa.FunctionalTests.Services.Cashier
 {
-    public class CashierWebApplicationFactory : WebApplicationFactory<Startup>
+    public sealed class CashierWebApplicationFactory : WebApplicationFactory<Startup>
     {
         protected override void ConfigureWebHost([NotNull] IWebHostBuilder builder)
         {

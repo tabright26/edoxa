@@ -1,5 +1,5 @@
 ﻿// Filename: PaymentWebApplicationFactory.cs
-// Date Created: 2019-07-26
+// Date Created: 2019-07-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -16,9 +16,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 
-namespace eDoxa.FunctionalTests.Services.Payment.Helpers
+namespace eDoxa.FunctionalTests.Services.Payment
 {
-    public class PaymentWebApplicationFactory : WebApplicationFactory<Startup>
+    public sealed class PaymentWebApplicationFactory : WebApplicationFactory<Startup>
     {
         protected override void ConfigureWebHost([NotNull] IWebHostBuilder builder)
         {
