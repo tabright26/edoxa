@@ -1,4 +1,4 @@
-﻿// Filename: WithdrawalProcessedIntegrationEventHandler.cs
+﻿// Filename: DepositProcessedIntegrationEventHandler.cs
 // Date Created: 2019-07-26
 // 
 // ================================================
@@ -36,33 +36,33 @@ using Stripe;
 namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
 {
     [TestClass]
-    public sealed class WithdrawalProcessedIntegrationEventHandler : CashierWebApplicationFactory
+    public sealed class DepositProcessedIntegrationEventHandlerTest
     {
+        private TestServer _testServer;
+
         [TestInitialize]
-        public async Task TestInitialize()
+        public void TestInitialize()
         {
-            this.CreateClient();
+            var cashierWebApplicationFactory = new CashierWebApplicationFactory();
 
-            await this.TestCleanup();
-        }
+            cashierWebApplicationFactory.CreateClient();
 
-        [TestCleanup]
-        public async Task TestCleanup()
-        {
-            await Server.CleanupDbContextAsync();
+            _testServer = cashierWebApplicationFactory.Server;
+
+            _testServer.CleanupDbContext();
         }
 
         [TestMethod]
         public async Task TransactionStatus_ShouldBeSucceded()
         {
-            using (var paymentWebApplication = new PaymentWebApplicationFactory().WithWebHostBuilder(
+            using (var paymentWebApplicationFactory = new PaymentWebApplicationFactory().WithWebHostBuilder(
                 builder => builder.ConfigureTestContainer<ContainerBuilder>(
                     container =>
                     {
                         var mockStripeService = new Mock<IStripeService>();
 
                         mockStripeService.Setup(
-                                stripeService => stripeService.CreateTransferAsync(
+                                stripeService => stripeService.CreateInvoiceAsync(
                                     It.IsAny<Guid>(),
                                     It.IsAny<string>(),
                                     It.IsAny<string>(),
@@ -77,15 +77,15 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
                 )
             ))
             {
-                using (paymentWebApplication.CreateClient())
+                using (paymentWebApplicationFactory.CreateClient())
                 {
                     var accountFaker = new AccountFaker();
-                    accountFaker.UseSeed(23569854);
+                    accountFaker.UseSeed(23345667);
                     var account = accountFaker.Generate();
                     var moneyDepositTransaction = new MoneyDepositTransaction(Money.Fifty);
                     account?.CreateTransaction(moneyDepositTransaction);
 
-                    await Server.UsingScopeAsync(
+                    await _testServer.UsingScopeAsync(
                         async scope =>
                         {
                             var accountRepository = scope.GetService<IAccountRepository>();
@@ -94,13 +94,13 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
                         }
                     );
 
-                    await Server.UsingScopeAsync(
+                    await _testServer.UsingScopeAsync(
                         async scope =>
                         {
                             var integrationEventService = scope.GetService<IIntegrationEventService>();
 
                             await integrationEventService.PublishAsync(
-                                new WithdrawalProcessedIntegrationEvent(moneyDepositTransaction.Id, moneyDepositTransaction.Description.Text, "acct_test", 5000)
+                                new DepositProcessedIntegrationEvent(moneyDepositTransaction.Id, moneyDepositTransaction.Description.Text, "cus_test", 5000)
                             );
                         }
                     );
@@ -117,14 +117,14 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
         [TestMethod]
         public async Task TransactionStatus_ShouldBeFailed()
         {
-            using (var paymentWebApplication = new PaymentWebApplicationFactory().WithWebHostBuilder(
+            using (var paymentWebApplicationFactory = new PaymentWebApplicationFactory().WithWebHostBuilder(
                 builder => builder.ConfigureTestContainer<ContainerBuilder>(
                     container =>
                     {
                         var mockStripeService = new Mock<IStripeService>();
 
                         mockStripeService.Setup(
-                                stripeService => stripeService.CreateTransferAsync(
+                                stripeService => stripeService.CreateInvoiceAsync(
                                     It.IsAny<Guid>(),
                                     It.IsAny<string>(),
                                     It.IsAny<string>(),
@@ -139,15 +139,15 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
                 )
             ))
             {
-                using (paymentWebApplication.CreateClient())
+                using (paymentWebApplicationFactory.CreateClient())
                 {
                     var accountFaker = new AccountFaker();
-                    accountFaker.UseSeed(78589854);
+                    accountFaker.UseSeed(23568904);
                     var account = accountFaker.Generate();
                     var moneyDepositTransaction = new MoneyDepositTransaction(Money.Fifty);
                     account?.CreateTransaction(moneyDepositTransaction);
 
-                    await Server.UsingScopeAsync(
+                    await _testServer.UsingScopeAsync(
                         async scope =>
                         {
                             var accountRepository = scope.GetService<IAccountRepository>();
@@ -156,13 +156,13 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
                         }
                     );
 
-                    await Server.UsingScopeAsync(
+                    await _testServer.UsingScopeAsync(
                         async scope =>
                         {
                             var integrationEventService = scope.GetService<IIntegrationEventService>();
 
                             await integrationEventService.PublishAsync(
-                                new WithdrawalProcessedIntegrationEvent(moneyDepositTransaction.Id, moneyDepositTransaction.Description.Text, "acct_test", 5000)
+                                new DepositProcessedIntegrationEvent(moneyDepositTransaction.Id, moneyDepositTransaction.Description.Text, "cus_test", 5000)
                             );
                         }
                     );
@@ -183,7 +183,7 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
 
             while (counter < 20)
             {
-                var transaction = await Server.UsingScopeAsync(
+                var transaction = await _testServer.UsingScopeAsync(
                     async scope =>
                     {
                         var transactionRepository = scope.GetService<ITransactionRepository>();
@@ -196,7 +196,7 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
                 {
                     counter++;
 
-                    await Task.Delay(100);
+                    await Task.Delay(1000);
 
                     continue;
                 }

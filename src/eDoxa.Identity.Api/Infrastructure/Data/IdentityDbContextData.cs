@@ -98,6 +98,18 @@ namespace eDoxa.Identity.Api.Infrastructure.Data
             }
         }
 
+        public void Cleanup()
+        {
+            if (!_environment.IsProduction())
+            {
+                _context.Users.RemoveRange(_context.Users);
+
+                _context.Roles.RemoveRange(_context.Roles);
+
+                _context.SaveChanges();
+            }
+        }
+
         public async Task CleanupAsync()
         {
             if (!_environment.IsProduction())

@@ -3,10 +3,6 @@
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.Threading.Tasks;
@@ -24,44 +20,44 @@ namespace eDoxa.Seedwork.Testing.Extensions
 {
     public static class TestServerExtensions
     {
-        public static void EnsureCreatedDbContext<TDbContext>(this TestServer testServer)
+        public static void EnsureCreatedDbContext<TDbContext>(this TestServer server)
         where TDbContext : DbContext
         {
-            testServer.UsingScope(scope => scope?.GetService<TDbContext>().Database?.EnsureCreated());
+            server.UsingScope(scope => scope?.GetService<TDbContext>().Database?.EnsureCreated());
         }
 
-        public static void MigrateDbContext<TDbContext>(this TestServer testServer)
+        public static void MigrateDbContext<TDbContext>(this TestServer server)
         where TDbContext : DbContext
         {
-            testServer.UsingScope(scope => scope?.GetService<TDbContext>().Database?.Migrate());
+            server.UsingScope(scope => scope?.GetService<TDbContext>().Database?.Migrate());
         }
 
-        public static async Task CleanupDbContextAsync(this TestServer testServer)
+        public static void CleanupDbContext(this TestServer server)
         {
-            await testServer.UsingScopeAsync(
-                async scope =>
+            server.UsingScope(
+                scope =>
                 {
-                    var dbContextData = scope?.GetService<IDbContextData>() ?? throw new InvalidOperationException();
+                    var context = scope?.GetService<IDbContextData>() ?? throw new InvalidOperationException();
 
-                    await dbContextData.CleanupAsync();
+                    context.Cleanup();
                 }
             );
         }
 
-        public static void UsingScope(this TestServer testServer, Action<IServiceScope> execute)
+        public static void UsingScope(this TestServer server, Action<IServiceScope> execute)
         {
-            testServer.Host.UsingScope(execute);
+            server.Host.UsingScope(execute);
         }
 
-        public static async Task UsingScopeAsync(this TestServer testServer, Func<IServiceScope, Task> executeAsync)
+        public static async Task UsingScopeAsync(this TestServer server, Func<IServiceScope, Task> executeAsync)
         {
-            await testServer.Host.UsingScopeAsync(executeAsync);
+            await server.Host.UsingScopeAsync(executeAsync);
         }
 
         [ItemNotNull]
-        public static async Task<TResult> UsingScopeAsync<TResult>(this TestServer testServer, Func<IServiceScope, Task<TResult>> executeAsync)
+        public static async Task<TResult> UsingScopeAsync<TResult>(this TestServer server, Func<IServiceScope, Task<TResult>> executeAsync)
         {
-            return await testServer.Host.UsingScopeAsync(executeAsync);
+            return await server.Host.UsingScopeAsync(executeAsync);
         }
     }
 }

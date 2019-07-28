@@ -1,5 +1,5 @@
-﻿// Filename: ChallengeParticipantsControllerPostAsyncTest.cs
-// Date Created: 2019-06-25
+﻿// Filename: ChallengeParticipantsControllerPostAsync.cs
+// Date Created: 2019-07-26
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -20,7 +20,6 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Domain.Services;
-using eDoxa.Arena.Challenges.IntegrationTests.Helpers;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Helpers;
@@ -35,7 +34,7 @@ using Moq;
 namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 {
     [TestClass]
-    public sealed class ChallengeParticipantsControllerPostAsync
+    public sealed class ChallengeParticipantsControllerPostAsyncTest
     {
         private HttpClient _httpClient;
         private TestServer _testServer;
@@ -47,9 +46,9 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         }
 
         [TestInitialize]
-        public async Task TestInitialize()
+        public void TestInitialize()
         {
-            var factory = new ArenaChallengesWebApplicationFactory().WithWebHostBuilder(
+            var arenaChallengesWebApplicationFactory = new ArenaChallengesWebApplicationFactory().WithWebHostBuilder(
                 builder => builder.ConfigureTestContainer<ContainerBuilder>(
                     container =>
                     {
@@ -65,17 +64,11 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
                 )
             );
 
-            _httpClient = factory.CreateClient();
+            _httpClient = arenaChallengesWebApplicationFactory.CreateClient();
 
-            _testServer = factory.Server;
+            _testServer = arenaChallengesWebApplicationFactory.Server;
 
-            await this.TestCleanup();
-        }
-
-        [TestCleanup]
-        public async Task TestCleanup()
-        {
-            await _testServer.CleanupDbContextAsync();
+            _testServer.CleanupDbContext();
         }
 
         [TestMethod]

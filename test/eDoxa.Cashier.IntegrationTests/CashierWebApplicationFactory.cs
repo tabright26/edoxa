@@ -1,4 +1,4 @@
-﻿// Filename: ArenaChallengesWebApplicationFactory.cs
+﻿// Filename: CashierWebApplicationFactory.cs
 // Date Created: 2019-07-26
 // 
 // ================================================
@@ -6,13 +6,12 @@
 
 using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
 
 using Autofac;
 
-using eDoxa.Arena.Challenges.Api;
-using eDoxa.Arena.Challenges.Api.Games.LeagueOfLegends.Abstractions;
-using eDoxa.Arena.Challenges.Infrastructure;
-using eDoxa.Arena.Challenges.IntegrationTests.Helpers.Mocks;
+using eDoxa.Cashier.Api;
+using eDoxa.Cashier.Infrastructure;
 using eDoxa.Seedwork.IntegrationEvents;
 using eDoxa.Seedwork.Security.Hosting;
 using eDoxa.Seedwork.Testing.Extensions;
@@ -24,23 +23,29 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 
-namespace eDoxa.Arena.Challenges.IntegrationTests.Helpers
+using Moq;
+
+namespace eDoxa.Cashier.IntegrationTests
 {
-    public class ArenaChallengesWebApplicationFactory : WebApplicationFactory<Startup>
+    internal sealed class CashierWebApplicationFactory : WebApplicationFactory<Startup>
     {
         protected override void ConfigureWebHost([NotNull] IWebHostBuilder builder)
         {
             builder.UseEnvironment(EnvironmentNames.Testing);
 
-            builder.UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ArenaChallengesWebApplicationFactory)).Location));
+            builder.UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(CashierWebApplicationFactory)).Location));
 
             builder.ConfigureAppConfiguration(configure => configure.AddJsonFile("appsettings.json", false).AddEnvironmentVariables());
 
             builder.ConfigureTestContainer<ContainerBuilder>(
                 container =>
                 {
-                    container.RegisterType<MockLeagueOfLegendsService>().As<ILeagueOfLegendsService>().InstancePerDependency();
-                    container.RegisterType<MockIntegrationEventService>().As<IIntegrationEventService>().InstancePerDependency();
+                    var mockIntegrationEventService = new Mock<IIntegrationEventService>();
+
+                    mockIntegrationEventService.Setup(integrationEventService => integrationEventService.PublishAsync(It.IsAny<IntegrationEvent>()))
+                        .Returns(Task.CompletedTask);
+
+                    container.RegisterInstance(mockIntegrationEventService.Object).As<IIntegrationEventService>().SingleInstance();
                 }
             );
         }
@@ -50,7 +55,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Helpers
         {
             var server = base.CreateServer(builder);
 
-            server.EnsureCreatedDbContext<ArenaChallengesDbContext>();
+            server.EnsureCreatedDbContext<CashierDbContext>();
 
             return server;
         }

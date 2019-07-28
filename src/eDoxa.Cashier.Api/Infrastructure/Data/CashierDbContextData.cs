@@ -80,6 +80,18 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
             }
         }
 
+        public void Cleanup()
+        {
+            if (!_environment.IsProduction())
+            {
+                _context.Accounts.RemoveRange(_context.Accounts);
+
+                _context.Challenges.RemoveRange(_context.Challenges);
+
+                _context.SaveChanges();
+            }
+        }
+
         public async Task CleanupAsync()
         {
             if (!_environment.IsProduction())

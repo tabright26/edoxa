@@ -1,5 +1,5 @@
-﻿// Filename: UsersControllerTest.cs
-// Date Created: 2019-06-25
+﻿// Filename: UsersControllerGetAsyncTest.cs
+// Date Created: 2019-07-26
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,21 +11,22 @@ using System.Threading.Tasks;
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Areas.Identity.ViewModels;
 using eDoxa.Identity.Api.Infrastructure.Data.Storage;
-using eDoxa.Identity.IntegrationTests.Helpers;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 
 using FluentAssertions;
 
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Identity.IntegrationTests.Controllers
 {
     [TestClass]
-    public sealed class UsersController : IdentityWebApplicationFactory
+    public sealed class UsersControllerGetAsyncTest
     {
         private HttpClient _httpClient;
+        private TestServer _testServer;
 
         private async Task<HttpResponseMessage> ExecuteAsync()
         {
@@ -33,24 +34,22 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
         }
 
         [TestInitialize]
-        public async Task TestInitialize()
+        public void TestInitialize()
         {
-            _httpClient = this.CreateClient();
+            var identityWebApplicationFactory = new IdentityWebApplicationFactory();
 
-            await this.TestCleanup();
-        }
+            _httpClient = identityWebApplicationFactory.CreateClient();
 
-        [TestCleanup]
-        public async Task TestCleanup()
-        {
-            await Server.CleanupDbContextAsync();
+            _testServer = identityWebApplicationFactory.Server;
+
+            _testServer.CleanupDbContext();
         }
 
         [TestMethod]
         public async Task ApiUsers_WithNinetyNineUsers_ShouldHaveCountOfNinetyNine()
         {
             // Arrange
-            await Server.UsingScopeAsync(
+            await _testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var userManager = scope.GetService<CustomUserManager>();

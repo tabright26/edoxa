@@ -44,6 +44,16 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data
             }
         }
 
+        public void Cleanup()
+        {
+            if (!_environment.IsProduction())
+            {
+                _context.Challenges.RemoveRange(_context.Challenges);
+
+                _context.SaveChanges();
+            }
+        }
+
         public async Task CleanupAsync()
         {
             if (!_environment.IsProduction())

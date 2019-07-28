@@ -16,6 +16,8 @@ namespace eDoxa.Seedwork.Infrastructure
     {
         Task SeedAsync();
 
+        void Cleanup();
+
         Task CleanupAsync();
     }
 }

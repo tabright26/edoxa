@@ -14,7 +14,6 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.IntegrationTests.Helpers;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 
@@ -23,14 +22,16 @@ using FluentAssertions;
 using IdentityModel;
 
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Cashier.IntegrationTests.Controllers
 {
     [TestClass]
-    public sealed class TransactionsControllerGetAsyncTest : CashierWebApplicationFactory
+    public sealed class TransactionsControllerGetAsyncTest
     {
         private HttpClient _httpClient;
+        private TestServer _testServer;
 
         public async Task<HttpResponseMessage> ExecuteAsync(
             UserId userId,
@@ -44,17 +45,15 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
         }
 
         [TestInitialize]
-        public async Task TestInitialize()
+        public void TestInitialize()
         {
-            _httpClient = this.CreateClient();
+            var cashierWebApplicationFactory = new CashierWebApplicationFactory();
 
-            await this.TestCleanup();
-        }
+            _httpClient = cashierWebApplicationFactory.CreateClient();
 
-        [TestCleanup]
-        public async Task TestCleanup()
-        {
-            await Server.CleanupDbContextAsync();
+            _testServer = cashierWebApplicationFactory.Server;
+
+            _testServer.CleanupDbContext();
         }
 
         [TestMethod]
@@ -65,7 +64,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             accountFaker.UseSeed(1);
             var account = accountFaker.Generate();
 
-            await Server.UsingScopeAsync(
+            await _testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var accountRepository = scope.GetService<IAccountRepository>();
@@ -90,7 +89,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Arrange
             var account = new Account(new UserId());
 
-            await Server.UsingScopeAsync(
+            await _testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var accountRepository = scope.GetService<IAccountRepository>();

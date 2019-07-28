@@ -15,32 +15,32 @@ using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Repositories;
-using eDoxa.Arena.Challenges.IntegrationTests.Helpers;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Providers;
 using eDoxa.Seedwork.Testing.Extensions;
 
 using FluentAssertions;
 
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
 {
     [TestClass]
-    public sealed class ChallengeRepositoryTest : ArenaChallengesWebApplicationFactory
+    public sealed class ChallengeRepositoryTest
     {
-        [TestInitialize]
-        public async Task TestInitialize()
-        {
-            this.CreateClient();
-            
-            await this.TestCleanup();
-        }
+        private TestServer _testServer;
 
-        [TestCleanup]
-        public async Task TestCleanup()
+        [TestInitialize]
+        public void TestInitialize()
         {
-            await Server.CleanupDbContextAsync();
+            var arenaChallengesWebApplicationFactory = new ArenaChallengesWebApplicationFactory();
+
+            arenaChallengesWebApplicationFactory.CreateClient();
+
+            _testServer = arenaChallengesWebApplicationFactory.Server;
+
+            _testServer.CleanupDbContext();
         }
 
         [DataTestMethod]
@@ -55,7 +55,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
             challengeFaker.UseSeed(seed);
             var fakeChallenge = challengeFaker.Generate();
 
-            await Server.UsingScopeAsync(
+            await _testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var challengeRepository = scope.GetService<IChallengeRepository>();
@@ -66,7 +66,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
 
             // Assert
 
-            await Server.UsingScopeAsync(
+            await _testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var challengeRepository = scope.GetService<IChallengeRepository>();
@@ -80,7 +80,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
             var participant1 = new Participant(new UserId(), new GameAccountId(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider());
 
             // Act
-            await Server.UsingScopeAsync(
+            await _testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var challengeRepository = scope.GetService<IChallengeRepository>();
@@ -92,7 +92,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
             );
 
             // Assert
-            await Server.UsingScopeAsync(
+            await _testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var challengeRepository = scope.GetService<IChallengeRepository>();
@@ -104,7 +104,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
             );
 
             // Act
-            await Server.UsingScopeAsync(
+            await _testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var challengeRepository = scope.GetService<IChallengeRepository>();
@@ -123,7 +123,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
             );
 
             // Assert
-            await Server.UsingScopeAsync(
+            await _testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var challengeRepository = scope.GetService<IChallengeRepository>();
@@ -142,7 +142,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
             );
 
             // Act
-            await Server.UsingScopeAsync(
+            await _testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var challengeRepository = scope.GetService<IChallengeRepository>();
@@ -155,7 +155,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
             );
 
             // Assert
-            await Server.UsingScopeAsync(
+            await _testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var challengeRepository = scope.GetService<IChallengeRepository>();
@@ -171,7 +171,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
             var match2 = new GameMatch(new GameScore(fakeChallenge.Game, 23847883M), new GameReference(Guid.NewGuid()), new UtcNowDateTimeProvider());
 
             // Act
-            await Server.UsingScopeAsync(
+            await _testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var challengeRepository = scope.GetService<IChallengeRepository>();
@@ -184,7 +184,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
             );
 
             // Assert
-            await Server.UsingScopeAsync(
+            await _testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var challengeRepository = scope.GetService<IChallengeRepository>();

@@ -19,9 +19,9 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 
-namespace eDoxa.Identity.IntegrationTests.Helpers
+namespace eDoxa.Identity.IntegrationTests
 {
-    public class IdentityWebApplicationFactory : WebApplicationFactory<Startup>
+    internal sealed class IdentityWebApplicationFactory : WebApplicationFactory<Startup>
     {
         protected override void ConfigureWebHost([NotNull] IWebHostBuilder builder)
         {
