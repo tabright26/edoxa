@@ -12,27 +12,25 @@ using System;
 using System.Data.Common;
 using System.Threading.Tasks;
 
-using eDoxa.Seedwork.IntegrationEvents.Utilities;
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace eDoxa.Seedwork.IntegrationEvents
+namespace eDoxa.Seedwork.IntegrationEvents.Infrastructure
 {
     public class IntegrationEventService<TDbContext> : IIntegrationEventService
     where TDbContext : DbContext
     {
         private readonly TDbContext _context;
-        private readonly IEventBusService _eventBusService;
+        private readonly IServiceBusPublisher _serviceBusPublisher;
         private readonly IIntegrationEventLogRepository _integrationEventLogRepository;
 
         public IntegrationEventService(
             TDbContext context,
-            IEventBusService eventBusService,
+            IServiceBusPublisher serviceBusPublisher,
             Func<DbConnection, IIntegrationEventLogRepository> repositoryFactory)
         {
             _context = context;
-            _eventBusService = eventBusService;
+            _serviceBusPublisher = serviceBusPublisher;
             _integrationEventLogRepository = repositoryFactory(_context.Database.GetDbConnection());
         }
 
@@ -51,7 +49,7 @@ namespace eDoxa.Seedwork.IntegrationEvents
                                           }
                                       );
 
-            _eventBusService.Publish(integrationEvent);
+            _serviceBusPublisher.Publish(integrationEvent);
 
             await _integrationEventLogRepository.MarkIntegrationEventAsPublishedAsync(integrationEvent);
         }

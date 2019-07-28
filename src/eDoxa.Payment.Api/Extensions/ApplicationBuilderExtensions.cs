@@ -21,7 +21,7 @@ namespace eDoxa.Payment.Api.Extensions
     {
         public static void UseIntegrationEventSubscriptions(this IApplicationBuilder application)
         {
-            var service = application.ApplicationServices.GetRequiredService<IEventBusService>();
+            var service = application.ApplicationServices.GetRequiredService<IServiceBusPublisher>();
 
             service.Subscribe<UserCreatedIntegrationEvent, UserCreatedIntegrationEventHandler>();
 

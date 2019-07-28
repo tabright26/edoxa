@@ -11,7 +11,7 @@
 using System.Data.Common;
 using System.Threading.Tasks;
 
-namespace eDoxa.Seedwork.IntegrationEvents
+namespace eDoxa.Seedwork.IntegrationEvents.Infrastructure
 {
     /// <summary>
     ///     The <see cref="IntegrationEvent" /> logger repository. Used to change the state of the

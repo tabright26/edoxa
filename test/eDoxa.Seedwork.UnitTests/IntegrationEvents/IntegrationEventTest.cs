@@ -38,7 +38,7 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents
 
             // Assert
             Assert.AreNotEqual(Guid.Empty, integrationEvent.Id);
-            integrationEvent.Created.Should().BeCloseTo(DateTime.UtcNow);
+            integrationEvent.Timestamp.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(5));
         }
 
         [TestMethod]

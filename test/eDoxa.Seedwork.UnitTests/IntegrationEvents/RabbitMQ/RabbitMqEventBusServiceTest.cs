@@ -13,7 +13,8 @@ using System.Reflection;
 using Autofac;
 
 using eDoxa.Seedwork.IntegrationEvents;
-using eDoxa.Seedwork.IntegrationEvents.RabbitMQ;
+using eDoxa.Seedwork.IntegrationEvents.Infrastructure;
+using eDoxa.Seedwork.IntegrationEvents.RabbitMq;
 using eDoxa.Seedwork.UnitTests.IntegrationEvents.Mocks;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -51,11 +52,11 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents.RabbitMQ
 
             // Assert
             var handler =
-                typeof(RabbitMqEventBusService).GetField("_handler", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(eventBusService) as
-                    InMemorySubscriptionHandler;
+                typeof(RabbitMqServiceBusPublisher).GetField("_handler", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(eventBusService) as
+                    InMemoryIntegrationEventSubscriptionStore;
 
             Assert.IsNotNull(handler);
-            Assert.IsTrue(handler.ContainsIntegrationEvent<MockIntegrationEvent1>());
+            Assert.IsTrue(handler.Contains<MockIntegrationEvent1>());
         }
 
         [Ignore("Must be transferred to an integration test project because it requires external dependencies (RabbitMQ).")]
@@ -65,15 +66,15 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents.RabbitMQ
             var eventBusService = GetEventBusService();
 
             // Act
-            eventBusService.SubscribeDynamic<MockDynamicIntegrationEventHandler1>(nameof(MockIntegrationEvent1));
+            eventBusService.Subscribe<MockDynamicIntegrationEventHandler1>(nameof(MockIntegrationEvent1));
 
             // Assert
             var handler =
-                typeof(RabbitMqEventBusService).GetField("_handler", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(eventBusService) as
-                    InMemorySubscriptionHandler;
+                typeof(RabbitMqServiceBusPublisher).GetField("_handler", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(eventBusService) as
+                    InMemoryIntegrationEventSubscriptionStore;
 
             Assert.IsNotNull(handler);
-            Assert.IsTrue(handler.ContainsIntegrationEvent(nameof(MockIntegrationEvent1)));
+            Assert.IsTrue(handler.Contains(nameof(MockIntegrationEvent1)));
         }
 
         [Ignore("Must be transferred to an integration test project because it requires external dependencies (RabbitMQ).")]
@@ -88,8 +89,8 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents.RabbitMQ
 
             // Assert
             var handler =
-                typeof(RabbitMqEventBusService).GetField("_handler", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(eventBusService) as
-                    InMemorySubscriptionHandler;
+                typeof(RabbitMqServiceBusPublisher).GetField("_handler", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(eventBusService) as
+                    InMemoryIntegrationEventSubscriptionStore;
 
             Assert.IsNotNull(handler);
             Assert.IsTrue(handler.IsEmpty);
@@ -101,28 +102,28 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents.RabbitMQ
             // Arrange
             var eventBusService = GetEventBusService();
 
-            eventBusService.SubscribeDynamic<MockDynamicIntegrationEventHandler1>(nameof(MockIntegrationEvent1));
+            eventBusService.Subscribe<MockDynamicIntegrationEventHandler1>(nameof(MockIntegrationEvent1));
 
             // Act
-            eventBusService.UnsubscribeDynamic<MockDynamicIntegrationEventHandler1>(nameof(MockIntegrationEvent1));
+            eventBusService.Unsubscribe<MockDynamicIntegrationEventHandler1>(nameof(MockIntegrationEvent1));
 
             // Assert
             var handler =
-                typeof(RabbitMqEventBusService).GetField("_handler", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(eventBusService) as
-                    InMemorySubscriptionHandler;
+                typeof(RabbitMqServiceBusPublisher).GetField("_handler", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(eventBusService) as
+                    InMemoryIntegrationEventSubscriptionStore;
 
             Assert.IsNotNull(handler);
             Assert.IsTrue(handler.IsEmpty);
         }
 
-        private static IEventBusService GetEventBusService()
+        private static IServiceBusPublisher GetEventBusService()
         {
             var services = new ServiceCollection();
 
-            services.AddSingleton<IRabbitMqPersistentConnection>(
+            services.AddSingleton<IRabbitMqServiceBusContext>(
                 serviceProvider =>
                 {
-                    var logger = new Mock<ILogger<RabbitMqPersistentConnection>>();
+                    var logger = new Mock<ILogger<RabbitMqServiceBusContext>>();
 
                     var factory = new ConnectionFactory
                     {
@@ -132,37 +133,37 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents.RabbitMQ
                         Password = "4t8SaVXVMy0rT2kM"
                     };
 
-                    return new RabbitMqPersistentConnection(factory, logger.Object, 1);
+                    return new RabbitMqServiceBusContext(factory, logger.Object, 1);
                 }
             );
 
-            services.AddSingleton<IEventBusService, RabbitMqEventBusService>(
+            services.AddSingleton<IServiceBusPublisher, RabbitMqServiceBusPublisher>(
                 serviceProvider =>
                 {
-                    var logger = new Mock<ILogger<RabbitMqEventBusService>>();
+                    var logger = new Mock<ILogger<RabbitMqServiceBusPublisher>>();
 
                     var scope = new Mock<ILifetimeScope>();
 
-                    var connection = serviceProvider.GetRequiredService<IRabbitMqPersistentConnection>();
+                    var connection = serviceProvider.GetRequiredService<IRabbitMqServiceBusContext>();
 
-                    var handler = serviceProvider.GetRequiredService<ISubscriptionHandler>();
+                    var handler = serviceProvider.GetRequiredService<IIntegrationEventSubscriptionStore>();
 
-                    return new RabbitMqEventBusService(
+                    return new RabbitMqServiceBusPublisher(
                         logger.Object,
                         scope.Object,
                         connection,
                         handler,
                         1,
-                        nameof(RabbitMqEventBusService)
+                        nameof(RabbitMqServiceBusPublisher)
                     );
                 }
             );
 
-            services.AddSingleton<ISubscriptionHandler, InMemorySubscriptionHandler>();
+            services.AddSingleton<IIntegrationEventSubscriptionStore, InMemoryIntegrationEventSubscriptionStore>();
 
             var provider = services.BuildServiceProvider();
 
-            return provider.GetService<IEventBusService>();
+            return provider.GetService<IServiceBusPublisher>();
         }
     }
 }

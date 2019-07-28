@@ -25,7 +25,7 @@ namespace eDoxa.Cashier.Api.IntegrationEvents.Handlers
             _transactionRepository = transactionRepository;
         }
 
-        public async Task Handle(TransactionFailedIntegrationEvent integrationEvent)
+        public async Task HandleAsync(TransactionFailedIntegrationEvent integrationEvent)
         {
             var transaction = await _transactionRepository.FindTransactionAsync(TransactionId.FromGuid(integrationEvent.TransactionId));
 

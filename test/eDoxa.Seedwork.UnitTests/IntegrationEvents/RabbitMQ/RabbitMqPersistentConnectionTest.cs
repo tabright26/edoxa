@@ -10,8 +10,7 @@
 
 using System;
 
-using eDoxa.Seedwork.IntegrationEvents.Exceptions;
-using eDoxa.Seedwork.IntegrationEvents.RabbitMQ;
+using eDoxa.Seedwork.IntegrationEvents.RabbitMq;
 using eDoxa.Seedwork.Testing.Helpers.Mocks;
 
 using FluentAssertions;
@@ -27,17 +26,17 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents.RabbitMQ
     [TestClass]
     public sealed class RabbitMqPersistentConnectionTest
     {
-        private MockLogger<RabbitMqPersistentConnection> _mockLogger;
+        private MockLogger<RabbitMqServiceBusContext> _mockLogger;
 
         public RabbitMqPersistentConnectionTest()
         {
-            _mockLogger = new MockLogger<RabbitMqPersistentConnection>();
+            _mockLogger = new MockLogger<RabbitMqServiceBusContext>();
         }
 
         [Ignore("Must be transferred to an integration test project because it requires external dependencies (RabbitMQ).")]
         public void TryConnect_IsConnected_ShouldBeTrue()
         {
-            using (var connection = new RabbitMqPersistentConnection(new ConnectionFactory(), _mockLogger.Object))
+            using (var connection = new RabbitMqServiceBusContext(new ConnectionFactory(), _mockLogger.Object))
             {
                 // Act
                 connection.TryConnect();
@@ -51,7 +50,7 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents.RabbitMQ
         public void TryConnect_RetryPolicyTryConnectOnce_ShouldThrownBrokerUnreachableException()
         {
             // Arrange
-            var connection = new RabbitMqPersistentConnection(new ConnectionFactory(), _mockLogger.Object, 1);
+            var connection = new RabbitMqServiceBusContext(new ConnectionFactory(), _mockLogger.Object, 1);
 
             // Act
             var action = new Action(() => connection.TryConnect());
@@ -63,7 +62,7 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents.RabbitMQ
         [Ignore("Must be transferred to an integration test project because it requires external dependencies (RabbitMQ).")]
         public void CreateChannel_TryConnectAndCreateChannel_ShouldBeNotNull()
         {
-            using (var connection = new RabbitMqPersistentConnection(new ConnectionFactory(), _mockLogger.Object))
+            using (var connection = new RabbitMqServiceBusContext(new ConnectionFactory(), _mockLogger.Object))
             {
                 // Arrange
                 connection.TryConnect();
@@ -80,24 +79,24 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents.RabbitMQ
         public void CreateChannel_CreateChannelWithoutConnection_ShouldThrownRabbitMqException()
         {
             // Arrange
-            var connection = new RabbitMqPersistentConnection(new ConnectionFactory(), _mockLogger.Object);
+            var connection = new RabbitMqServiceBusContext(new ConnectionFactory(), _mockLogger.Object);
 
             // Act
             var action = new Action(() => connection.CreateChannel());
 
             // Assert
-            action.Should().Throw<RabbitMqException>();
+            action.Should().Throw<InvalidOperationException>();
         }
 
-        private IRabbitMqPersistentConnection GetRabbitMqEventBusPersistentConnection()
+        private IRabbitMqServiceBusContext GetRabbitMqEventBusPersistentConnection()
         {
             var services = new ServiceCollection();
 
-            services.AddSingleton<IRabbitMqPersistentConnection>(serviceProvider => new RabbitMqPersistentConnection(new ConnectionFactory(), _mockLogger.Object));
+            services.AddSingleton<IRabbitMqServiceBusContext>(serviceProvider => new RabbitMqServiceBusContext(new ConnectionFactory(), _mockLogger.Object));
 
             var provider = services.BuildServiceProvider();
 
-            return provider.GetService<IRabbitMqPersistentConnection>();
+            return provider.GetService<IRabbitMqServiceBusContext>();
         }
     }
 }

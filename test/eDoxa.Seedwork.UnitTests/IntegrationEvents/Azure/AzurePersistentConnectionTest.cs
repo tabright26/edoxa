@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Seedwork.IntegrationEvents.Azure;
+using eDoxa.Seedwork.IntegrationEvents.AzureServiceBus;
 
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,24 +38,24 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents.Azure
             Assert.IsNotNull(topicClient);
         }
 
-        private static IAzurePersistentConnection GetAzurePersistentConnection()
+        private static IAzureServiceBusContext GetAzurePersistentConnection()
         {
             var services = new ServiceCollection();
 
-            services.AddSingleton<IAzurePersistentConnection>(
+            services.AddSingleton<IAzureServiceBusContext>(
                 serviceProvider =>
                 {
-                    var logger = new Mock<ILogger<AzurePersistentConnection>>();
+                    var logger = new Mock<ILogger<AzureServiceBusContext>>();
 
                     var builder = new ServiceBusConnectionStringBuilder(ConnectionString);
 
-                    return new AzurePersistentConnection(builder, logger.Object);
+                    return new AzureServiceBusContext(builder, logger.Object);
                 }
             );
 
             var provider = services.BuildServiceProvider();
 
-            return provider.GetService<IAzurePersistentConnection>();
+            return provider.GetService<IAzureServiceBusContext>();
         }
     }
 }

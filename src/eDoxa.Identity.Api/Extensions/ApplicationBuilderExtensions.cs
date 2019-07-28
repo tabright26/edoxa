@@ -17,7 +17,7 @@ namespace eDoxa.Identity.Api.Extensions
     {
         public static void UseIntegrationEventSubscriptions(this IApplicationBuilder application)
         {
-            var eventBusService = application.ApplicationServices.GetRequiredService<IEventBusService>();
+            var eventBusService = application.ApplicationServices.GetRequiredService<IServiceBusPublisher>();
             eventBusService.Subscribe<RoleClaimAddedIntegrationEvent, RoleClaimAddedIntegrationEventHandler>();
             eventBusService.Subscribe<RoleClaimRemovedIntegrationEvent, RoleClaimRemovedIntegrationEventHandler>();
             eventBusService.Subscribe<RoleCreatedIntegrationEvent, RoleCreatedIntegrationEventHandler>();

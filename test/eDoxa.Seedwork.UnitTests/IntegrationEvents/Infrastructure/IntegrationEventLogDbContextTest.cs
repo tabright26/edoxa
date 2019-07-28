@@ -10,7 +10,6 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Seedwork.IntegrationEvents;
 using eDoxa.Seedwork.IntegrationEvents.Infrastructure;
 using eDoxa.Seedwork.UnitTests.IntegrationEvents.Mocks;
 
@@ -52,7 +51,7 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents.Infrastructure
                 var integrationEvent = MockIntegrationEvent.Deserialize(integrationEventLogEntry.JsonObject);
 
                 integrationEventLogEntry.Id.Should().Be(integrationEvent.Id);
-                integrationEventLogEntry.Created.Should().BeCloseTo(integrationEvent.Created, 1000);
+                integrationEventLogEntry.Created.Should().BeCloseTo(integrationEvent.Timestamp, 1000);
                 integrationEvent.Equals(mockIntegrationEvent).Should().BeTrue();
             }
 

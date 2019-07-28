@@ -25,10 +25,10 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents
             var integrationEventHandlerType = typeof(MockIntegrationEventHandler1);
 
             // Act
-            var subscription = Subscription.FromIntegrationEventHandler(integrationEventHandlerType);
+            var subscription = new IntegrationEventSubscription(integrationEventHandlerType);
 
             // Assert            
-            Assert.AreEqual(integrationEventHandlerType, subscription.IntegrationEventHandlerType);
+            Assert.AreEqual(integrationEventHandlerType, subscription.HandlerType);
             Assert.IsFalse(subscription.IsDynamic);
         }
 
@@ -40,10 +40,10 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents
             var dynamicIntegrationEventHandlerType = typeof(MockDynamicIntegrationEventHandler1);
 
             // Act
-            var subscription = Subscription.FromDynamicIntegrationEventHandler(dynamicIntegrationEventHandlerType);
+            var subscription = new DynamicIntegrationEventSubscription(dynamicIntegrationEventHandlerType);
 
             // Assert            
-            Assert.AreEqual(dynamicIntegrationEventHandlerType, subscription.IntegrationEventHandlerType);
+            Assert.AreEqual(dynamicIntegrationEventHandlerType, subscription.HandlerType);
             Assert.IsTrue(subscription.IsDynamic);
         }
     }

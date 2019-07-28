@@ -23,7 +23,7 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents.Mocks
 
         public bool Handled { get; private set; }
 
-        public Task Handle(MockIntegrationEvent1 integrationEvent1)
+        public Task HandleAsync(MockIntegrationEvent1 integrationEvent1)
         {
             Handled = true;
 

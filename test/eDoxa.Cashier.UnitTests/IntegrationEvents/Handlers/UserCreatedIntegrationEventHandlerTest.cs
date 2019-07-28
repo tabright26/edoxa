@@ -52,7 +52,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
             var handler = new UserCreatedIntegrationEventHandler(_mockMediator.Object);
 
             // Act
-            await handler.Handle(integrationEvent);
+            await handler.HandleAsync(integrationEvent);
 
             // Assert
             _mockMediator.Verify(mock => mock.Send(It.IsAny<CreateUserRequest>(), It.IsAny<CancellationToken>()), Times.Once);

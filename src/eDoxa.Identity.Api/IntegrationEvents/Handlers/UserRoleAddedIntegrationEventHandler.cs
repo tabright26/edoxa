@@ -20,7 +20,7 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Handlers
             _userManager = userManager;
         }
 
-        public async Task Handle(UserRoleAddedIntegrationEvent integrationEvent)
+        public async Task HandleAsync(UserRoleAddedIntegrationEvent integrationEvent)
         {
             var user = await _userManager.FindByIdAsync(integrationEvent.UserId.ToString());
 

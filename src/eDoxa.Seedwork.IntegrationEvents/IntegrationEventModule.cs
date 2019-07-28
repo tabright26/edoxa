@@ -13,18 +13,20 @@ using System.Data.Common;
 
 using Autofac;
 
+using eDoxa.Seedwork.IntegrationEvents.Infrastructure;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Seedwork.IntegrationEvents
 {
-    public sealed class IntegrationEventModule<TContext> : Module
-    where TContext : DbContext
+    public sealed class IntegrationEventModule<TDbContext> : Module
+    where TDbContext : DbContext
     {
         protected override void Load( ContainerBuilder builder)
         {
             builder.RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies()).AsClosedTypesOf(typeof(IIntegrationEventHandler<>));
             builder.Register<Func<DbConnection, IIntegrationEventLogRepository>>(context => connection => new IntegrationEventLogRepository(connection));
-            builder.RegisterType<IntegrationEventService<TContext>>().As<IIntegrationEventService>().InstancePerDependency();
+            builder.RegisterType<IntegrationEventService<TDbContext>>().As<IIntegrationEventService>().InstancePerDependency();
         }
     }
 }

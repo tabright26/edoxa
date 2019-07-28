@@ -21,7 +21,7 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Handlers
             _roleManager = roleManager;
         }
 
-        public async Task Handle(RoleClaimAddedIntegrationEvent integrationEvent)
+        public async Task HandleAsync(RoleClaimAddedIntegrationEvent integrationEvent)
         {
             if (await _roleManager.RoleExistsAsync(integrationEvent.RoleName))
             {

@@ -22,21 +22,21 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
     public class UserCreatedIntegrationEventHandler : IIntegrationEventHandler<UserCreatedIntegrationEvent>
     {
         private readonly ILogger<UserCreatedIntegrationEventHandler> _logger;
-        private readonly IEventBusService _eventBusService;
+        private readonly IServiceBusPublisher _serviceBusPublisher;
         private readonly IStripeService _stripeService;
 
         public UserCreatedIntegrationEventHandler(
             ILogger<UserCreatedIntegrationEventHandler> logger,
-            IEventBusService eventBusService,
+            IServiceBusPublisher serviceBusPublisher,
             IStripeService stripeService
         )
         {
             _logger = logger;
-            _eventBusService = eventBusService;
+            _serviceBusPublisher = serviceBusPublisher;
             _stripeService = stripeService;
         }
 
-        public async Task Handle(UserCreatedIntegrationEvent integrationEvent)
+        public async Task HandleAsync(UserCreatedIntegrationEvent integrationEvent)
         {
             _logger.LogInformation($"Handling {nameof(UserCreatedIntegrationEventHandler)}...");
 
@@ -54,7 +54,7 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
 
             _logger.LogInformation($"Handled {nameof(UserCreatedIntegrationEventHandler)}.");
 
-            _eventBusService.Publish(
+            _serviceBusPublisher.Publish(
                 new UserClaimsAddedIntegrationEvent
                 {
                     UserId = integrationEvent.UserId,

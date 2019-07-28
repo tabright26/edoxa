@@ -23,10 +23,10 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents.Mocks
         {
         }
 
-        private MockIntegrationEvent(Guid id, DateTime created)
+        private MockIntegrationEvent(Guid id, DateTime timestamp)
         {
             Id = id;
-            Created = created;
+            Timestamp = timestamp;
         }
 
         public bool Equals(IntegrationEvent? other)
@@ -60,7 +60,7 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents.Mocks
 
             var id = jsonObject.GetValue(nameof(Id)).ToObject<Guid>();
 
-            var created = jsonObject.GetValue(nameof(Created)).ToObject<DateTime>();
+            var created = jsonObject.GetValue(nameof(Timestamp)).ToObject<DateTime>();
 
             return new MockIntegrationEvent(id, created);
         }
@@ -112,7 +112,7 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents.Mocks
         {
             unchecked
             {
-                return (Id.GetHashCode() * 397) ^ Created.GetHashCode();
+                return (Id.GetHashCode() * 397) ^ Timestamp.GetHashCode();
             }
         }
     }

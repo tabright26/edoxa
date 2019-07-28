@@ -12,14 +12,14 @@ using System;
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Seedwork.IntegrationEvents
+namespace eDoxa.Seedwork.IntegrationEvents.Infrastructure
 {
     public class IntegrationEventLogEntry
     {
         public IntegrationEventLogEntry(IntegrationEvent integrationEvent) : this()
         {
             Id = integrationEvent.Id;
-            Created = integrationEvent.Created;
+            Created = integrationEvent.Timestamp;
             TypeFullName = integrationEvent.GetType().FullName;
             JsonObject = JsonConvert.SerializeObject(integrationEvent);
         }
@@ -30,39 +30,18 @@ namespace eDoxa.Seedwork.IntegrationEvents
             PublishAttempted = 0;
         }
 
-        /// <summary>
-        ///     The <see cref="IntegrationEvent" /> id.
-        /// </summary>
         public Guid Id { get; private set; }
 
-        /// <summary>
-        ///     The <see cref="IntegrationEvent" /> created.
-        /// </summary>
         public DateTime Created { get; private set; }
 
-        /// <summary>
-        ///     The <see cref="IntegrationEvent" /> type full name.
-        /// </summary>
         public string TypeFullName { get; private set; }
 
-        /// <summary>
-        ///     The <see cref="IntegrationEvent" /> json object.
-        /// </summary>
         public string JsonObject { get; private set; }
 
-        /// <summary>
-        ///     The <see cref="IntegrationEventLogEntry" /> state.
-        /// </summary>
         public IntegrationEventState State { get; private set; }
 
-        /// <summary>
-        ///     The <see cref="IntegrationEventLogEntry" /> publish attempted.
-        /// </summary>
         public int PublishAttempted { get; private set; }
 
-        /// <summary>
-        ///     Mark <see cref="IntegrationEventLogEntry" /> as published.
-        /// </summary>
         public void MarkAsPublished()
         {
             State = IntegrationEventState.Published;

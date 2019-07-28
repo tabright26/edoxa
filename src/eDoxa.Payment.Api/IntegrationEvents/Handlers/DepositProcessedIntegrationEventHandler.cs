@@ -23,21 +23,21 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
     internal sealed class DepositProcessedIntegrationEventHandler : IIntegrationEventHandler<DepositProcessedIntegrationEvent>
     {
         private readonly ILogger<DepositProcessedIntegrationEventHandler> _logger;
-        private readonly IEventBusService _eventBusService;
+        private readonly IServiceBusPublisher _serviceBusPublisher;
         private readonly IStripeService _stripeService;
 
         public DepositProcessedIntegrationEventHandler(
             ILogger<DepositProcessedIntegrationEventHandler> logger,
-            IEventBusService eventBusService,
+            IServiceBusPublisher serviceBusPublisher,
             IStripeService stripeService
         )
         {
             _logger = logger;
-            _eventBusService = eventBusService;
+            _serviceBusPublisher = serviceBusPublisher;
             _stripeService = stripeService;
         }
 
-        public async Task Handle(DepositProcessedIntegrationEvent integrationEvent)
+        public async Task HandleAsync(DepositProcessedIntegrationEvent integrationEvent)
         {
             try
             {
@@ -52,7 +52,7 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
 
                 _logger.LogInformation($"Processed {nameof(DepositProcessedIntegrationEvent)}.");
 
-                _eventBusService.Publish(new TransactionSuccededIntegrationEvent(integrationEvent.TransactionId));
+                _serviceBusPublisher.Publish(new TransactionSuccededIntegrationEvent(integrationEvent.TransactionId));
 
                 _logger.LogInformation($"Published {nameof(TransactionSuccededIntegrationEvent)}.");
             }
@@ -60,7 +60,7 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
             {
                 _logger.LogError(exception, exception.StripeError?.ToJson());
 
-                _eventBusService.Publish(new TransactionFailedIntegrationEvent(integrationEvent.TransactionId));
+                _serviceBusPublisher.Publish(new TransactionFailedIntegrationEvent(integrationEvent.TransactionId));
 
                 _logger.LogInformation($"Published {nameof(TransactionFailedIntegrationEvent)}.");
             }
@@ -68,7 +68,7 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
             {
                 _logger.LogCritical(exception, $"Another exception type that {nameof(StripeException)} occurred.");
 
-                _eventBusService.Publish(new TransactionFailedIntegrationEvent(integrationEvent.TransactionId));
+                _serviceBusPublisher.Publish(new TransactionFailedIntegrationEvent(integrationEvent.TransactionId));
 
                 _logger.LogInformation($"Published {nameof(TransactionFailedIntegrationEvent)}.");
             }

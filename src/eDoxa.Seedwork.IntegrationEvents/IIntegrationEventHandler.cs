@@ -12,25 +12,14 @@ using System.Threading.Tasks;
 
 namespace eDoxa.Seedwork.IntegrationEvents
 {
-    /// <summary>
-    ///     The <see cref="IntegrationEvent" /> handler.
-    /// </summary>
-    public interface IIntegrationEventHandler
-    {
-        // Marker interface
-    }
-
-    /// <typeparam name="TIntegrationEvent">Type of an <see cref="IntegrationEvent" />.</typeparam>
     public interface IIntegrationEventHandler<in TIntegrationEvent> : IIntegrationEventHandler
     where TIntegrationEvent : IntegrationEvent
     {
-        /// <summary>
-        ///     Handle the <see cref="IntegrationEvent" />.
-        /// </summary>
-        /// <param name="integrationEvent">The <see cref="IntegrationEvent" />.</param>
-        /// <returns>
-        ///     A <see cref="Task" /> that completes when handle the <see cref="IntegrationEvent" /> has completed processing.
-        /// </returns>
-        Task Handle(TIntegrationEvent integrationEvent);
+        Task HandleAsync(TIntegrationEvent integrationEvent);
+    }
+
+    public interface IIntegrationEventHandler
+    {
+        // Marker interface
     }
 }

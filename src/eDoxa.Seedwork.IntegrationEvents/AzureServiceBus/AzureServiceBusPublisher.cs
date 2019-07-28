@@ -1,12 +1,8 @@
-﻿// Filename: AzureEventBusService.cs
-// Date Created: 2019-03-04
+﻿// Filename: AzureServiceBusPublisher.cs
+// Date Created: 2019-07-26
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
-// this source code package.
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
 using System.Diagnostics;
@@ -15,39 +11,42 @@ using System.Threading.Tasks;
 
 using Autofac;
 
+using eDoxa.Seedwork.IntegrationEvents.Infrastructure;
+
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace eDoxa.Seedwork.IntegrationEvents.Azure
+namespace eDoxa.Seedwork.IntegrationEvents.AzureServiceBus
 {
-    public class AzureEventBusService : IEventBusService
+    public class AzureServiceBusPublisher : IServiceBusPublisher
     {
         private const string TopicName = "edoxa-azure-topic";
         private const string LifetimeScopeTag = "edoxa.azure.broker";
         private const string IntegrationEventSuffix = nameof(IntegrationEvent);
 
-        private readonly ILogger<AzureEventBusService> _logger;
+        private readonly ILogger<AzureServiceBusPublisher> _logger;
         private readonly ILifetimeScope _scope;
-        private readonly IAzurePersistentConnection _connection;
-        private readonly ISubscriptionHandler _handler;
+        private readonly IAzureServiceBusContext _context;
+        private readonly IIntegrationEventSubscriptionStore _store;
         private readonly SubscriptionClient _subscriptionClient;
 
-        public AzureEventBusService(
-            ILogger<AzureEventBusService> logger,
+        public AzureServiceBusPublisher(
+            ILogger<AzureServiceBusPublisher> logger,
             ILifetimeScope scope,
-            IAzurePersistentConnection connection,
-            ISubscriptionHandler handler,
-            string subscriptionName)
+            IAzureServiceBusContext context,
+            IIntegrationEventSubscriptionStore store,
+            string subscriptionName
+        )
         {
             _logger = logger;
             _scope = scope;
-            _connection = connection;
-            _handler = handler;
+            _context = context;
+            _store = store;
 
-            _subscriptionClient = new SubscriptionClient(connection.ConnectionStringBuilder.GetNamespaceConnectionString(), TopicName, subscriptionName);
+            _subscriptionClient = new SubscriptionClient(context.ConnectionStringBuilder.GetNamespaceConnectionString(), TopicName, subscriptionName);
 
             this.RemoveDefaultRule();
             this.RegisterMessageHandler();
@@ -55,7 +54,7 @@ namespace eDoxa.Seedwork.IntegrationEvents.Azure
 
         public void Dispose()
         {
-            _handler.ClearSubscriptions();
+            _store.Clear();
         }
 
         public void Publish(IntegrationEvent integrationEvent)
@@ -66,10 +65,12 @@ namespace eDoxa.Seedwork.IntegrationEvents.Azure
 
             var message = new Message
             {
-                MessageId = Guid.NewGuid().ToString(), Body = Encoding.UTF8.GetBytes(jsonString), Label = integrationEventName
+                MessageId = Guid.NewGuid().ToString(),
+                Body = Encoding.UTF8.GetBytes(jsonString),
+                Label = integrationEventName
             };
 
-            var topicClient = _connection.CreateTopicClient();
+            var topicClient = _context.CreateTopicClient();
 
             topicClient.SendAsync(message).GetAwaiter().GetResult();
         }
@@ -80,22 +81,22 @@ namespace eDoxa.Seedwork.IntegrationEvents.Azure
         {
             var integrationEventName = typeof(TIntegrationEvent).Name.Replace(IntegrationEventSuffix, string.Empty);
 
-            if (!_handler.ContainsIntegrationEvent<TIntegrationEvent>())
+            if (!_store.Contains<TIntegrationEvent>())
             {
                 try
                 {
                     _subscriptionClient.AddRuleAsync(
-                                           new RuleDescription
-                                           {
-                                               Filter = new CorrelationFilter
-                                               {
-                                                   Label = integrationEventName
-                                               },
-                                               Name = integrationEventName
-                                           }
-                                       )
-                                       .GetAwaiter()
-                                       .GetResult();
+                            new RuleDescription
+                            {
+                                Filter = new CorrelationFilter
+                                {
+                                    Label = integrationEventName
+                                },
+                                Name = integrationEventName
+                            }
+                        )
+                        .GetAwaiter()
+                        .GetResult();
                 }
                 catch (ServiceBusException)
                 {
@@ -103,13 +104,13 @@ namespace eDoxa.Seedwork.IntegrationEvents.Azure
                 }
             }
 
-            _handler.AddSubscription<TIntegrationEvent, TDynamicIntegrationEventHandler>();
+            _store.AddSubscription<TIntegrationEvent, TDynamicIntegrationEventHandler>();
         }
 
-        public void SubscribeDynamic<TDynamicIntegrationEventHandler>(string integrationEventName)
+        public void Subscribe<TDynamicIntegrationEventHandler>(string integrationEventTypeName)
         where TDynamicIntegrationEventHandler : IDynamicIntegrationEventHandler
         {
-            _handler.AddDynamicSubscription<TDynamicIntegrationEventHandler>(integrationEventName);
+            _store.AddSubscription<TDynamicIntegrationEventHandler>(integrationEventTypeName);
         }
 
         public void Unsubscribe<TIntegrationEvent, TDynamicIntegrationEventHandler>()
@@ -127,13 +128,13 @@ namespace eDoxa.Seedwork.IntegrationEvents.Azure
                 _logger.LogInformation($"The messaging entity {integrationEventName} could not be found.");
             }
 
-            _handler.RemoveSubscription<TIntegrationEvent, TDynamicIntegrationEventHandler>();
+            _store.RemoveSubscription<TIntegrationEvent, TDynamicIntegrationEventHandler>();
         }
 
-        public void UnsubscribeDynamic<TDynamicIntegrationEventHandler>(string integrationEventName)
+        public void Unsubscribe<TDynamicIntegrationEventHandler>(string integrationEventTypeName)
         where TDynamicIntegrationEventHandler : IDynamicIntegrationEventHandler
         {
-            _handler.RemoveDynamicSubscription<TDynamicIntegrationEventHandler>(integrationEventName);
+            _store.RemoveSubscription<TDynamicIntegrationEventHandler>(integrationEventTypeName);
         }
 
         private void RemoveDefaultRule()
@@ -164,7 +165,8 @@ namespace eDoxa.Seedwork.IntegrationEvents.Azure
                 },
                 new MessageHandlerOptions(ExceptionReceivedHandler)
                 {
-                    MaxConcurrentCalls = 10, AutoComplete = false
+                    MaxConcurrentCalls = 10,
+                    AutoComplete = false
                 }
             );
 
@@ -188,39 +190,32 @@ namespace eDoxa.Seedwork.IntegrationEvents.Azure
 
         private async Task ProcessIntegrationEventAsync(string jsonString, string integrationEventName)
         {
-            if (_handler.ContainsIntegrationEvent(integrationEventName))
+            if (_store.Contains(integrationEventName))
             {
                 using (var scope = _scope.BeginLifetimeScope(LifetimeScopeTag))
                 {
-                    var subscriptions = _handler.FindAllSubscriptions(integrationEventName);
+                    var subscriptions = _store.FetchSubscriptions(integrationEventName);
 
                     foreach (var subscription in subscriptions)
                     {
                         if (subscription.IsDynamic)
                         {
-                            if (scope.ResolveOptional(subscription.IntegrationEventHandlerType) is IDynamicIntegrationEventHandler handler)
+                            if (scope.ResolveOptional(subscription.HandlerType) is IDynamicIntegrationEventHandler handler)
                             {
-                                await handler.Handle((dynamic) JObject.Parse(jsonString));
+                                await handler.HandleAsync((dynamic) JObject.Parse(jsonString));
                             }
                         }
                         else
                         {
-                            var integrationEventType = _handler.GetIntegrationEventType(integrationEventName);
+                            var integrationEventType = _store.TryGetIntegrationEventType(integrationEventName);
 
                             var integrationEvent = JsonConvert.DeserializeObject(jsonString, integrationEventType);
 
-                            var handler = scope.ResolveOptional(subscription.IntegrationEventHandlerType);
+                            var handler = scope.ResolveOptional(subscription.HandlerType);
 
                             var concreteType = typeof(IIntegrationEventHandler<>).MakeGenericType(integrationEventType);
 
-                            await (Task) concreteType.GetMethod("Handle")
-                                                     .Invoke(
-                                                         handler,
-                                                         new[]
-                                                         {
-                                                             integrationEvent
-                                                         }
-                                                     );
+                            await (Task) concreteType.GetMethod(nameof(IDynamicIntegrationEventHandler.HandleAsync)).Invoke(handler, new[] {integrationEvent});
                         }
                     }
                 }

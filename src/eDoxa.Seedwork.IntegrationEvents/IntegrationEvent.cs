@@ -14,24 +14,19 @@ using Newtonsoft.Json;
 
 namespace eDoxa.Seedwork.IntegrationEvents
 {
-    //TODO: Add a property for the name of an event to publish the integration event in an adapter format for Javascript. (Version v.3)
     [JsonObject]
     public abstract class IntegrationEvent
     {
         protected IntegrationEvent()
         {
             Id = Guid.NewGuid();
-            Created = DateTime.UtcNow;
+            Timestamp = DateTime.UtcNow;
         }
 
-        /// <summary>
-        ///     The <see cref="IntegrationEvent" /> id.
-        /// </summary>
-        public Guid Id { get; protected set; }
+        [JsonProperty]
+        public Guid Id { get; set; }
 
-        /// <summary>
-        ///     The <see cref="IntegrationEvent" /> created.
-        /// </summary>
-        public DateTime Created { get; protected set; }
+        [JsonProperty]
+        public DateTime Timestamp { get; set; }
     }
 }

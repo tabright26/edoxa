@@ -12,12 +12,10 @@ using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Seedwork.IntegrationEvents.Infrastructure;
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
-namespace eDoxa.Seedwork.IntegrationEvents
+namespace eDoxa.Seedwork.IntegrationEvents.Infrastructure
 {
     public class IntegrationEventLogRepository : IIntegrationEventLogRepository
     {

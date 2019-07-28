@@ -9,6 +9,7 @@
 // this source code package.
 
 using eDoxa.Seedwork.IntegrationEvents;
+using eDoxa.Seedwork.IntegrationEvents.Infrastructure;
 
 namespace eDoxa.Seedwork.UnitTests.IntegrationEvents.Mocks
 {

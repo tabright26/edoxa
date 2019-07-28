@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Seedwork.IntegrationEvents;
+using eDoxa.Seedwork.IntegrationEvents.Infrastructure;
 using eDoxa.Seedwork.UnitTests.IntegrationEvents.Mocks;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -31,7 +31,7 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents
 
             // Assert
             Assert.AreEqual(integrationEvent.Id, integrationEventLogEntry.Id);
-            Assert.AreEqual(integrationEvent.Created, integrationEventLogEntry.Created);
+            Assert.AreEqual(integrationEvent.Timestamp, integrationEventLogEntry.Created);
             Assert.AreEqual(integrationEvent.GetType().FullName, integrationEventLogEntry.TypeFullName);
             Assert.AreEqual(JsonConvert.SerializeObject(integrationEvent), integrationEventLogEntry.JsonObject);
             Assert.AreEqual(0, integrationEventLogEntry.PublishAttempted);

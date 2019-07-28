@@ -27,7 +27,7 @@ namespace eDoxa.Cashier.Api.IntegrationEvents.Handlers
             _mediator = mediator;
         }
 
-        public async Task Handle(UserCreatedIntegrationEvent integrationEvent)
+        public async Task HandleAsync(UserCreatedIntegrationEvent integrationEvent)
         {
             await _mediator.Send(new CreateUserRequest(UserId.FromGuid(integrationEvent.UserId)));
         }

@@ -6,7 +6,7 @@
 
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Seedwork.IntegrationEvents;
+using eDoxa.Seedwork.IntegrationEvents.Infrastructure;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

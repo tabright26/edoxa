@@ -1,12 +1,8 @@
-﻿// Filename: RabbitMqEventBusService.cs
-// Date Created: 2019-03-04
+﻿// Filename: RabbitMqServiceBusPublisher.cs
+// Date Created: 2019-07-26
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
-// this source code package.
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
 using System.Net.Sockets;
@@ -14,6 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Autofac;
+
+using eDoxa.Seedwork.IntegrationEvents.Infrastructure;
 
 using Microsoft.Extensions.Logging;
 
@@ -26,45 +24,53 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RabbitMQ.Client.Exceptions;
 
-namespace eDoxa.Seedwork.IntegrationEvents.RabbitMQ
+namespace eDoxa.Seedwork.IntegrationEvents.RabbitMq
 {
-    public class RabbitMqEventBusService : IEventBusService
+    public class RabbitMqServiceBusPublisher : IServiceBusPublisher
     {
+        public enum RabbitMqDeliveryMode
+        {
+            NonPersistent = 1,
+            Persistent = 2
+        }
+
         private const string Exchange = "rabbitmq";
         private const string LifetimeScopeTag = Exchange;
 
         private readonly int _retryCount;
-        private readonly ILogger<RabbitMqEventBusService> _logger;
+        private readonly ILogger<RabbitMqServiceBusPublisher> _logger;
         private readonly ILifetimeScope _scope;
-        private readonly IRabbitMqPersistentConnection _connection;
-        private readonly ISubscriptionHandler _handler;
+        private readonly IRabbitMqServiceBusContext _connection;
 
-        private string _queue;
+        private string? _queue;
         private IModel _channel;
 
-        public RabbitMqEventBusService(
-            ILogger<RabbitMqEventBusService> logger,
+        public RabbitMqServiceBusPublisher(
+            ILogger<RabbitMqServiceBusPublisher> logger,
             ILifetimeScope scope,
-            IRabbitMqPersistentConnection connection,
-            ISubscriptionHandler handler,
+            IRabbitMqServiceBusContext connection,
+            IIntegrationEventSubscriptionStore store,
             int retryCount = 5,
-            string queue = null)
+            string? queue = null
+        )
         {
             _logger = logger;
             _scope = scope;
             _connection = connection;
-            _handler = handler;
-            _handler.OnIntegrationEventRemoved += this.OnIntegrationEventRemoved;
+            Store = store;
+            Store.OnIntegrationEventRemoved += this.OnIntegrationEventRemoved;
             _retryCount = retryCount;
             _queue = queue;
             _channel = this.CreateChannel();
         }
 
+        public IIntegrationEventSubscriptionStore Store { get; }
+
         public void Dispose()
         {
             _channel?.Dispose();
 
-            _handler.ClearSubscriptions();
+            Store.Clear();
         }
 
         public void Publish(IntegrationEvent integrationEvent)
@@ -75,15 +81,15 @@ namespace eDoxa.Seedwork.IntegrationEvents.RabbitMQ
             }
 
             var retryPolicy = Policy.Handle<BrokerUnreachableException>()
-                                    .Or<SocketException>()
-                                    .WaitAndRetry(
-                                        _retryCount,
-                                        retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
-                                        (exception, timeSpan) =>
-                                        {
-                                            _logger.LogWarning(exception.ToString());
-                                        }
-                                    );
+                .Or<SocketException>()
+                .WaitAndRetry(
+                    _retryCount,
+                    retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
+                    (exception, timeSpan) =>
+                    {
+                        _logger.LogWarning(exception.ToString());
+                    }
+                );
 
             using (var channel = _connection.CreateChannel())
             {
@@ -98,9 +104,15 @@ namespace eDoxa.Seedwork.IntegrationEvents.RabbitMQ
                     {
                         var basicProperties = channel.CreateBasicProperties();
 
-                        basicProperties.DeliveryMode = (int) RabbitMqDeliveryMode.Persistent;
+                        basicProperties.DeliveryMode = (byte) RabbitMqDeliveryMode.Persistent;
 
-                        channel.BasicPublish(Exchange, integrationEventName, true, basicProperties, Encoding.UTF8.GetBytes(jsonString));
+                        channel.BasicPublish(
+                            Exchange,
+                            integrationEventName,
+                            true,
+                            basicProperties,
+                            Encoding.UTF8.GetBytes(jsonString)
+                        );
                     }
                 );
             }
@@ -110,32 +122,32 @@ namespace eDoxa.Seedwork.IntegrationEvents.RabbitMQ
         where TIntegrationEvent : IntegrationEvent
         where TIntegrationEventHandler : IIntegrationEventHandler<TIntegrationEvent>
         {
-            var integrationEventName = _handler.GetIntegrationEventKey<TIntegrationEvent>();
+            var integrationEventName = Store.GetIntegrationEventTypeName<TIntegrationEvent>();
 
             this.QueueBind(integrationEventName);
 
-            _handler.AddSubscription<TIntegrationEvent, TIntegrationEventHandler>();
+            Store.AddSubscription<TIntegrationEvent, TIntegrationEventHandler>();
         }
 
-        public void SubscribeDynamic<TDynamicIntegrationEventHandler>(string integrationEventName)
+        public void Subscribe<TDynamicIntegrationEventHandler>(string integrationEventTypeName)
         where TDynamicIntegrationEventHandler : IDynamicIntegrationEventHandler
         {
-            this.QueueBind(integrationEventName);
+            this.QueueBind(integrationEventTypeName);
 
-            _handler.AddDynamicSubscription<TDynamicIntegrationEventHandler>(integrationEventName);
+            Store.AddSubscription<TDynamicIntegrationEventHandler>(integrationEventTypeName);
         }
 
         public void Unsubscribe<TIntegrationEvent, TIntegrationEventHandler>()
         where TIntegrationEvent : IntegrationEvent
         where TIntegrationEventHandler : IIntegrationEventHandler<TIntegrationEvent>
         {
-            _handler.RemoveSubscription<TIntegrationEvent, TIntegrationEventHandler>();
+            Store.RemoveSubscription<TIntegrationEvent, TIntegrationEventHandler>();
         }
 
-        public void UnsubscribeDynamic<TDynamicIntegrationEventHandler>(string integrationEventName)
+        public void Unsubscribe<TDynamicIntegrationEventHandler>(string integrationEventTypeName)
         where TDynamicIntegrationEventHandler : IDynamicIntegrationEventHandler
         {
-            _handler.RemoveDynamicSubscription<TDynamicIntegrationEventHandler>(integrationEventName);
+            Store.RemoveSubscription<TDynamicIntegrationEventHandler>(integrationEventTypeName);
         }
 
         private void OnIntegrationEventRemoved(object sender, string integrationEventName)
@@ -149,7 +161,7 @@ namespace eDoxa.Seedwork.IntegrationEvents.RabbitMQ
             {
                 channel.QueueUnbind(_queue, Exchange, integrationEventName);
 
-                if (!_handler.IsEmpty)
+                if (!Store.IsEmpty)
                 {
                     return;
                 }
@@ -162,7 +174,7 @@ namespace eDoxa.Seedwork.IntegrationEvents.RabbitMQ
 
         private void QueueBind(string integrationEventName)
         {
-            if (_handler.ContainsIntegrationEvent(integrationEventName))
+            if (Store.Contains(integrationEventName))
             {
                 return;
             }
@@ -189,7 +201,13 @@ namespace eDoxa.Seedwork.IntegrationEvents.RabbitMQ
 
             channel.ExchangeDeclare(Exchange, ExchangeType.Direct);
 
-            channel.QueueDeclare(_queue, true, false, false, null);
+            channel.QueueDeclare(
+                _queue,
+                true,
+                false,
+                false,
+                null
+            );
 
             var consumer = new EventingBasicConsumer(channel);
 
@@ -218,40 +236,28 @@ namespace eDoxa.Seedwork.IntegrationEvents.RabbitMQ
 
         private async Task ProcessIntegrationEventAsync(string jsonString, string integrationEventName)
         {
-            if (_handler.ContainsIntegrationEvent(integrationEventName))
+            using (var scope = _scope.BeginLifetimeScope(LifetimeScopeTag))
             {
-                using (var scope = _scope.BeginLifetimeScope(LifetimeScopeTag))
+                foreach (var subscription in Store.FetchSubscriptions(integrationEventName))
                 {
-                    var subscriptions = _handler.FindAllSubscriptions(integrationEventName);
-
-                    foreach (var subscription in subscriptions)
+                    if (subscription.IsDynamic)
                     {
-                        if (subscription.IsDynamic)
+                        if (scope.ResolveOptional(subscription.HandlerType) is IDynamicIntegrationEventHandler handler)
                         {
-                            if (scope.ResolveOptional(subscription.IntegrationEventHandlerType) is IDynamicIntegrationEventHandler handler)
-                            {
-                                await handler.Handle((dynamic) JObject.Parse(jsonString));
-                            }
+                            await handler.HandleAsync((dynamic)JObject.Parse(jsonString));
                         }
-                        else
-                        {
-                            var integrationEventType = _handler.GetIntegrationEventType(integrationEventName);
+                    }
+                    else
+                    {
+                        var integrationEventType = Store.TryGetIntegrationEventType(integrationEventName);
 
-                            var integrationEvent = JsonConvert.DeserializeObject(jsonString, integrationEventType);
+                        var integrationEvent = JsonConvert.DeserializeObject(jsonString, integrationEventType);
 
-                            var handler = scope.ResolveOptional(subscription.IntegrationEventHandlerType);
+                        var handler = scope.ResolveOptional(subscription.HandlerType);
 
-                            var concreteType = typeof(IIntegrationEventHandler<>).MakeGenericType(integrationEventType);
+                        var concreteType = typeof(IIntegrationEventHandler<>).MakeGenericType(integrationEventType);
 
-                            await (Task) concreteType.GetMethod("Handle")
-                                                     .Invoke(
-                                                         handler,
-                                                         new[]
-                                                         {
-                                                             integrationEvent
-                                                         }
-                                                     );
-                        }
+                        await (Task)concreteType.GetMethod(nameof(IDynamicIntegrationEventHandler.HandleAsync)).Invoke(handler, new[] { integrationEvent });
                     }
                 }
             }

@@ -1,5 +1,5 @@
-﻿// Filename: IIntegrationEventService.cs
-// Date Created: 2019-04-08
+﻿// Filename: IntegrationEventState.cs
+// Date Created: 2019-03-04
 // 
 // ============================================================
 // Copyright © 2019, Francis Quenneville
@@ -8,12 +8,12 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Threading.Tasks;
-
-namespace eDoxa.Seedwork.IntegrationEvents
+namespace eDoxa.Seedwork.IntegrationEvents.Infrastructure
 {
-    public interface IIntegrationEventService
+    public enum IntegrationEventState
     {
-        Task PublishAsync(IntegrationEvent integrationEvent);
+        NotPublished = 0,
+        Published = 1,
+        PublishedFailed = 2
     }
 }

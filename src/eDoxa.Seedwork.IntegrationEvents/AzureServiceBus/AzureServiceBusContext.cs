@@ -1,28 +1,24 @@
-﻿// Filename: AzurePersistentConnection.cs
-// Date Created: 2019-03-04
+﻿// Filename: AzureServiceBusContext.cs
+// Date Created: 2019-07-26
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
-// this source code package.
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
 
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Extensions.Logging;
 
-namespace eDoxa.Seedwork.IntegrationEvents.Azure
+namespace eDoxa.Seedwork.IntegrationEvents.AzureServiceBus
 {
-    public class AzurePersistentConnection : IAzurePersistentConnection
+    public class AzureServiceBusContext : IAzureServiceBusContext
     {
         private const string TopicName = "edoxa-azure-topic";
 
-        private readonly ILogger<AzurePersistentConnection> _logger;
+        private readonly ILogger<AzureServiceBusContext> _logger;
 
         private bool _disposed;
         private ITopicClient _client;
 
-        public AzurePersistentConnection(ServiceBusConnectionStringBuilder builder, ILogger<AzurePersistentConnection> logger)
+        public AzureServiceBusContext(ServiceBusConnectionStringBuilder builder, ILogger<AzureServiceBusContext> logger)
         {
             ConnectionStringBuilder = builder;
             _logger = logger;

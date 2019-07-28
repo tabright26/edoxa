@@ -9,8 +9,9 @@ using System;
 using Autofac;
 
 using eDoxa.Seedwork.IntegrationEvents;
-using eDoxa.Seedwork.IntegrationEvents.Azure;
-using eDoxa.Seedwork.IntegrationEvents.RabbitMQ;
+using eDoxa.Seedwork.IntegrationEvents.AzureServiceBus;
+using eDoxa.Seedwork.IntegrationEvents.Infrastructure;
+using eDoxa.Seedwork.IntegrationEvents.RabbitMq;
 using eDoxa.Seedwork.Monitoring.AppSettings;
 
 using IdentityServer4.AccessTokenValidation;
@@ -62,25 +63,25 @@ namespace eDoxa.Seedwork.Application.Extensions
         {
             if (appSettings.AzureServiceBusEnabled)
             {
-                services.AddSingleton<IAzurePersistentConnection>(
+                services.AddSingleton<IAzureServiceBusContext>(
                     provider =>
                     {
-                        var logger = provider.GetRequiredService<ILogger<AzurePersistentConnection>>();
+                        var logger = provider.GetRequiredService<ILogger<AzureServiceBusContext>>();
 
                         var builder = new ServiceBusConnectionStringBuilder(appSettings.ServiceBus.HostName);
 
-                        return new AzurePersistentConnection(builder, logger);
+                        return new AzureServiceBusContext(builder, logger);
                     }
                 );
             }
             else
             {
-                services.AddSingleton<IRabbitMqPersistentConnection>(
+                services.AddSingleton<IRabbitMqServiceBusContext>(
                     provider =>
                     {
-                        var logger = provider.GetRequiredService<ILogger<RabbitMqPersistentConnection>>();
+                        var logger = provider.GetRequiredService<ILogger<RabbitMqServiceBusContext>>();
 
-                        return new RabbitMqPersistentConnection(
+                        return new RabbitMqServiceBusContext(
                             new ConnectionFactory
                             {
                                 HostName = appSettings.ServiceBus.HostName,
@@ -100,18 +101,18 @@ namespace eDoxa.Seedwork.Application.Extensions
         {
             if (appSettings.AzureServiceBusEnabled)
             {
-                services.AddSingleton<IEventBusService, AzureEventBusService>(
+                services.AddSingleton<IServiceBusPublisher, AzureServiceBusPublisher>(
                     provider =>
                     {
-                        var logger = provider.GetRequiredService<ILogger<AzureEventBusService>>();
+                        var logger = provider.GetRequiredService<ILogger<AzureServiceBusPublisher>>();
 
                         var scope = provider.GetRequiredService<ILifetimeScope>();
 
-                        var connection = provider.GetRequiredService<IAzurePersistentConnection>();
+                        var connection = provider.GetRequiredService<IAzureServiceBusContext>();
 
-                        var handler = provider.GetRequiredService<ISubscriptionHandler>();
+                        var handler = provider.GetRequiredService<IIntegrationEventSubscriptionStore>();
 
-                        return new AzureEventBusService(
+                        return new AzureServiceBusPublisher(
                             logger,
                             scope,
                             connection,
@@ -123,20 +124,20 @@ namespace eDoxa.Seedwork.Application.Extensions
             }
             else
             {
-                services.AddSingleton<IEventBusService, RabbitMqEventBusService>(
+                services.AddSingleton<IServiceBusPublisher, RabbitMqServiceBusPublisher>(
                     provider =>
                     {
-                        var logger = provider.GetRequiredService<ILogger<RabbitMqEventBusService>>();
+                        var logger = provider.GetRequiredService<ILogger<RabbitMqServiceBusPublisher>>();
 
                         var scope = provider.GetRequiredService<ILifetimeScope>();
 
-                        var connection = provider.GetRequiredService<IRabbitMqPersistentConnection>();
+                        var connection = provider.GetRequiredService<IRabbitMqServiceBusContext>();
 
-                        var handler = provider.GetRequiredService<ISubscriptionHandler>();
+                        var handler = provider.GetRequiredService<IIntegrationEventSubscriptionStore>();
 
                         var retryCount = appSettings.ServiceBus.RetryCount ?? 5;
 
-                        return new RabbitMqEventBusService(
+                        return new RabbitMqServiceBusPublisher(
                             logger,
                             scope,
                             connection,
@@ -148,7 +149,7 @@ namespace eDoxa.Seedwork.Application.Extensions
                 );
             }
 
-            services.AddSingleton<ISubscriptionHandler, InMemorySubscriptionHandler>();
+            services.AddSingleton<IIntegrationEventSubscriptionStore, InMemoryIntegrationEventSubscriptionStore>();
         }
     }
 }
