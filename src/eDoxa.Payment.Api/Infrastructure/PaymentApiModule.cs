@@ -12,7 +12,7 @@ using System;
 
 using Autofac;
 
-using eDoxa.Seedwork.IntegrationEvents;
+using eDoxa.Seedwork.ServiceBus;
 
 namespace eDoxa.Payment.Api.Infrastructure
 {

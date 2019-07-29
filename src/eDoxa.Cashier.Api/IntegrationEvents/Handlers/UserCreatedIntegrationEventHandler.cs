@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Application.Requests;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Seedwork.IntegrationEvents;
+using eDoxa.Seedwork.ServiceBus;
 
 using MediatR;
 

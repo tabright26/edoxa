@@ -7,7 +7,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace eDoxa.Seedwork.IntegrationEvents
+namespace eDoxa.Seedwork.ServiceBus
 {
     public interface IServiceBusStore
     {

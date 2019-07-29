@@ -6,7 +6,7 @@
 
 using System.Threading.Tasks;
 
-namespace eDoxa.Seedwork.IntegrationEvents
+namespace eDoxa.Seedwork.ServiceBus
 {
     public interface IIntegrationEventPublisher
     {

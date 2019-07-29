@@ -6,7 +6,7 @@
 
 using eDoxa.Identity.Api.IntegrationEvents;
 using eDoxa.Identity.Api.IntegrationEvents.Handlers;
-using eDoxa.Seedwork.IntegrationEvents;
+using eDoxa.Seedwork.ServiceBus;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;

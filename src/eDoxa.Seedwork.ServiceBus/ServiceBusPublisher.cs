@@ -12,7 +12,7 @@ using Autofac;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace eDoxa.Seedwork.IntegrationEvents
+namespace eDoxa.Seedwork.ServiceBus
 {
     public abstract class ServiceBusPublisher : IServiceBusPublisher
     {

@@ -10,7 +10,7 @@
 
 using eDoxa.Payment.Api.IntegrationEvents;
 using eDoxa.Payment.Api.IntegrationEvents.Handlers;
-using eDoxa.Seedwork.IntegrationEvents;
+using eDoxa.Seedwork.ServiceBus;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;

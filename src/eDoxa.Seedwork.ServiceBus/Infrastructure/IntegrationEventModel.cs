@@ -8,7 +8,7 @@ using System;
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Seedwork.IntegrationEvents.Infrastructure
+namespace eDoxa.Seedwork.ServiceBus.Infrastructure
 {
     public sealed class IntegrationEventModel
     {

@@ -6,15 +6,13 @@
 
 using System.IO;
 using System.Reflection;
-using System.Threading.Tasks;
 
 using Autofac;
 
 using eDoxa.Cashier.Api;
 using eDoxa.Cashier.Infrastructure;
-using eDoxa.Seedwork.IntegrationEvents;
-using eDoxa.Seedwork.IntegrationEvents.Infrastructure;
 using eDoxa.Seedwork.Security.Hosting;
+using eDoxa.Seedwork.ServiceBus.Modules;
 using eDoxa.Seedwork.Testing.Extensions;
 
 using Microsoft.AspNetCore.Hosting;
@@ -22,13 +20,11 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 
-using Moq;
-
 namespace eDoxa.Cashier.IntegrationTests
 {
     public sealed class CashierWebApplicationFactory : WebApplicationFactory<Startup>
     {
-        protected override void ConfigureWebHost( IWebHostBuilder builder)
+        protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             builder.UseEnvironment(EnvironmentNames.Testing);
 
@@ -39,18 +35,12 @@ namespace eDoxa.Cashier.IntegrationTests
             builder.ConfigureTestContainer<ContainerBuilder>(
                 container =>
                 {
-                    var mockIntegrationEventService = new Mock<IIntegrationEventPublisher>();
-
-                    mockIntegrationEventService.Setup(integrationEventService => integrationEventService.PublishAsync(It.IsAny<IntegrationEvent>()))
-                        .Returns(Task.CompletedTask);
-
-                    container.RegisterInstance(mockIntegrationEventService.Object).As<IIntegrationEventPublisher>().SingleInstance();
+                    container.RegisterModule<MockIntegrationEventModule>();
                 }
             );
         }
 
-        
-        protected override TestServer CreateServer( IWebHostBuilder builder)
+        protected override TestServer CreateServer(IWebHostBuilder builder)
         {
             var server = base.CreateServer(builder);
 

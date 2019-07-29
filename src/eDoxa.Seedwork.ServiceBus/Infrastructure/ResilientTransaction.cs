@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace eDoxa.Seedwork.IntegrationEvents.Infrastructure
+namespace eDoxa.Seedwork.ServiceBus.Infrastructure
 {
     public class ResilientTransaction
     {

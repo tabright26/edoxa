@@ -7,12 +7,12 @@
 using System;
 using System.Reflection;
 
-using eDoxa.Seedwork.IntegrationEvents.Infrastructure;
+using eDoxa.Seedwork.ServiceBus.Infrastructure;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace eDoxa.Seedwork.IntegrationEvents.Extensions
+namespace eDoxa.Seedwork.ServiceBus.Extensions
 {
     public static class ServiceCollectionExtensions
     {

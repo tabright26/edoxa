@@ -9,11 +9,11 @@ using System.Data.Common;
 
 using Autofac;
 
-using eDoxa.Seedwork.IntegrationEvents.Infrastructure;
+using eDoxa.Seedwork.ServiceBus.Infrastructure;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace eDoxa.Seedwork.IntegrationEvents
+namespace eDoxa.Seedwork.ServiceBus.Modules
 {
     public sealed class IntegrationEventModule<TDbContext> : Module
     where TDbContext : DbContext

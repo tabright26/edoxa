@@ -22,11 +22,12 @@ using eDoxa.Seedwork.Application.DomainEvents;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Swagger.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
-using eDoxa.Seedwork.IntegrationEvents;
-using eDoxa.Seedwork.IntegrationEvents.Extensions;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security.Constants;
 using eDoxa.Seedwork.Security.Extensions;
+using eDoxa.Seedwork.ServiceBus;
+using eDoxa.Seedwork.ServiceBus.Extensions;
+using eDoxa.Seedwork.ServiceBus.Modules;
 
 using FluentValidation.AspNetCore;
 

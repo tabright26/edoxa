@@ -12,8 +12,8 @@ using System.Reflection;
 
 using Autofac;
 
-using eDoxa.Seedwork.IntegrationEvents;
-using eDoxa.Seedwork.IntegrationEvents.RabbitMq;
+using eDoxa.Seedwork.ServiceBus;
+using eDoxa.Seedwork.ServiceBus.RabbitMq;
 using eDoxa.Seedwork.UnitTests.IntegrationEvents.Mocks;
 
 using Microsoft.Extensions.DependencyInjection;

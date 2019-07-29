@@ -7,9 +7,12 @@
 using System.IO;
 using System.Reflection;
 
+using Autofac;
+
 using eDoxa.Identity.Api;
 using eDoxa.Identity.Api.Infrastructure;
 using eDoxa.Seedwork.Security.Hosting;
+using eDoxa.Seedwork.ServiceBus.Modules;
 using eDoxa.Seedwork.Testing.Extensions;
 
 using Microsoft.AspNetCore.Hosting;
@@ -21,17 +24,23 @@ namespace eDoxa.Identity.IntegrationTests
 {
     public sealed class IdentityWebApplicationFactory : WebApplicationFactory<Startup>
     {
-        protected override void ConfigureWebHost( IWebHostBuilder builder)
+        protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             builder.UseEnvironment(EnvironmentNames.Testing);
 
             builder.UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(IdentityWebApplicationFactory)).Location));
 
             builder.ConfigureAppConfiguration(configure => configure.AddJsonFile("appsettings.json", false).AddEnvironmentVariables());
+
+            builder.ConfigureTestContainer<ContainerBuilder>(
+                container =>
+                {
+                    container.RegisterModule<MockIntegrationEventModule>();
+                }
+            );
         }
 
-        
-        protected override TestServer CreateServer( IWebHostBuilder builder)
+        protected override TestServer CreateServer(IWebHostBuilder builder)
         {
             var server = base.CreateServer(builder);
 

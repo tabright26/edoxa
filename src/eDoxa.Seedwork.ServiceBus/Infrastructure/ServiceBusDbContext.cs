@@ -6,7 +6,7 @@
 
 using Microsoft.EntityFrameworkCore;
 
-namespace eDoxa.Seedwork.IntegrationEvents.Infrastructure
+namespace eDoxa.Seedwork.ServiceBus.Infrastructure
 {
     public sealed class ServiceBusDbContext : DbContext
     {

@@ -7,7 +7,6 @@
 using System;
 using System.IO;
 using System.Reflection;
-using System.Threading.Tasks;
 
 using Autofac;
 
@@ -15,9 +14,8 @@ using eDoxa.Arena.Challenges.Api;
 using eDoxa.Arena.Challenges.Api.Games.LeagueOfLegends.Abstractions;
 using eDoxa.Arena.Challenges.Api.Games.LeagueOfLegends.Dtos;
 using eDoxa.Arena.Challenges.Infrastructure;
-using eDoxa.Seedwork.IntegrationEvents;
-using eDoxa.Seedwork.IntegrationEvents.Infrastructure;
 using eDoxa.Seedwork.Security.Hosting;
+using eDoxa.Seedwork.ServiceBus.Modules;
 using eDoxa.Seedwork.Testing.Extensions;
 
 using Microsoft.AspNetCore.Hosting;
@@ -31,7 +29,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests
 {
     public sealed class ArenaChallengesWebApplicationFactory : WebApplicationFactory<Startup>
     {
-        protected override void ConfigureWebHost( IWebHostBuilder builder)
+        protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             builder.UseEnvironment(EnvironmentNames.Testing);
 
@@ -59,18 +57,12 @@ namespace eDoxa.Arena.Challenges.IntegrationTests
 
                     container.RegisterInstance(mockLeagueOfLegendsService.Object).As<ILeagueOfLegendsService>().SingleInstance();
 
-                    var mockIntegrationEventService = new Mock<IIntegrationEventPublisher>();
-
-                    mockIntegrationEventService.Setup(integrationEventService => integrationEventService.PublishAsync(It.IsAny<IntegrationEvent>()))
-                        .Returns(Task.CompletedTask);
-
-                    container.RegisterInstance(mockIntegrationEventService.Object).As<IIntegrationEventPublisher>().SingleInstance();
+                    container.RegisterModule<MockIntegrationEventModule>();
                 }
             );
         }
 
-        
-        protected override TestServer CreateServer( IWebHostBuilder builder)
+        protected override TestServer CreateServer(IWebHostBuilder builder)
         {
             var server = base.CreateServer(builder);
 

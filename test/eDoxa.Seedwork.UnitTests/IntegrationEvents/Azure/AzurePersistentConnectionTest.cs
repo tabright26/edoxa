@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Seedwork.IntegrationEvents.AzureServiceBus;
+using eDoxa.Seedwork.ServiceBus.AzureServiceBus;
 
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Extensions.DependencyInjection;

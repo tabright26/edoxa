@@ -18,8 +18,7 @@ using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.FunctionalTests.Services.Cashier;
 using eDoxa.Payment.Api.Providers.Stripe.Abstractions;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.IntegrationEvents;
-using eDoxa.Seedwork.IntegrationEvents.Infrastructure;
+using eDoxa.Seedwork.ServiceBus;
 using eDoxa.Seedwork.Testing.Extensions;
 
 using FluentAssertions;

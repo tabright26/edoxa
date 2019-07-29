@@ -6,8 +6,7 @@
 
 using eDoxa.Cashier.Api.Application.Services;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Seedwork.IntegrationEvents;
-using eDoxa.Seedwork.IntegrationEvents.Infrastructure;
+using eDoxa.Seedwork.ServiceBus;
 using eDoxa.Seedwork.Testing.TestConstructor;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;

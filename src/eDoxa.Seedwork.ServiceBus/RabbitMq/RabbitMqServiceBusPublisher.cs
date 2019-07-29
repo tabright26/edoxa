@@ -21,7 +21,7 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RabbitMQ.Client.Exceptions;
 
-namespace eDoxa.Seedwork.IntegrationEvents.RabbitMq
+namespace eDoxa.Seedwork.ServiceBus.RabbitMq
 {
     public class RabbitMqServiceBusPublisher : ServiceBusPublisher
     {

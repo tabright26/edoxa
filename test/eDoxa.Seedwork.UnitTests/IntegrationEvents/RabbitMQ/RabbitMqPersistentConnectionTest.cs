@@ -10,7 +10,7 @@
 
 using System;
 
-using eDoxa.Seedwork.IntegrationEvents.RabbitMq;
+using eDoxa.Seedwork.ServiceBus.RabbitMq;
 using eDoxa.Seedwork.Testing.Helpers.Mocks;
 
 using FluentAssertions;

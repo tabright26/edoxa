@@ -4,7 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-namespace eDoxa.Seedwork.IntegrationEvents.Infrastructure
+namespace eDoxa.Seedwork.ServiceBus.Infrastructure
 {
     public enum IntegrationEventStatus
     {

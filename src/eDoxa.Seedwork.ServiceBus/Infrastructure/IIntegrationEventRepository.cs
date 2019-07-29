@@ -7,7 +7,7 @@
 using System.Data.Common;
 using System.Threading.Tasks;
 
-namespace eDoxa.Seedwork.IntegrationEvents.Infrastructure
+namespace eDoxa.Seedwork.ServiceBus.Infrastructure
 {
     public interface IIntegrationEventRepository
     {

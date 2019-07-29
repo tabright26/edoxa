@@ -7,7 +7,7 @@
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Extensions.Logging;
 
-namespace eDoxa.Seedwork.IntegrationEvents.AzureServiceBus
+namespace eDoxa.Seedwork.ServiceBus.AzureServiceBus
 {
     public class AzureServiceBusContext : IAzureServiceBusContext
     {

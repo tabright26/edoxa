@@ -16,7 +16,7 @@ using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Seedwork.IntegrationEvents.AzureServiceBus
+namespace eDoxa.Seedwork.ServiceBus.AzureServiceBus
 {
     public class AzureServiceBusPublisher : ServiceBusPublisher
     {

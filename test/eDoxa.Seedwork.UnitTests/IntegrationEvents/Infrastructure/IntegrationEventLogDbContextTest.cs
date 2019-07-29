@@ -10,7 +10,7 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Seedwork.IntegrationEvents.Infrastructure;
+using eDoxa.Seedwork.ServiceBus.Infrastructure;
 using eDoxa.Seedwork.UnitTests.IntegrationEvents.Mocks;
 
 using FluentAssertions;

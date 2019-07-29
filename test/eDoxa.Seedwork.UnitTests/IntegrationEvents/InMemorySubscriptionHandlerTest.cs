@@ -10,7 +10,7 @@
 
 using System;
 
-using eDoxa.Seedwork.IntegrationEvents;
+using eDoxa.Seedwork.ServiceBus;
 using eDoxa.Seedwork.UnitTests.IntegrationEvents.Mocks;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;

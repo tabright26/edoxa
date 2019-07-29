@@ -6,7 +6,7 @@
 
 using System;
 
-namespace eDoxa.Seedwork.IntegrationEvents
+namespace eDoxa.Seedwork.ServiceBus
 {
     public interface IServiceBusPublisher : IDisposable
     {

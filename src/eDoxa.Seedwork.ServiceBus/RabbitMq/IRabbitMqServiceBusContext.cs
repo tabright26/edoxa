@@ -8,7 +8,7 @@ using System;
 
 using RabbitMQ.Client;
 
-namespace eDoxa.Seedwork.IntegrationEvents.RabbitMq
+namespace eDoxa.Seedwork.ServiceBus.RabbitMq
 {
     public interface IRabbitMqServiceBusContext : IDisposable
     {

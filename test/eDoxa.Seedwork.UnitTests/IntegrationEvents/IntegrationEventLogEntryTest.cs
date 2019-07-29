@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Seedwork.IntegrationEvents.Infrastructure;
+using eDoxa.Seedwork.ServiceBus.Infrastructure;
 using eDoxa.Seedwork.UnitTests.IntegrationEvents.Mocks;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;

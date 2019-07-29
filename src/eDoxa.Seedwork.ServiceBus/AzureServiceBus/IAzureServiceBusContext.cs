@@ -8,7 +8,7 @@ using System;
 
 using Microsoft.Azure.ServiceBus;
 
-namespace eDoxa.Seedwork.IntegrationEvents.AzureServiceBus
+namespace eDoxa.Seedwork.ServiceBus.AzureServiceBus
 {
     public interface IAzureServiceBusContext : IDisposable
     {

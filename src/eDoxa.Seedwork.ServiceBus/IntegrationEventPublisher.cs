@@ -8,12 +8,12 @@ using System;
 using System.Data.Common;
 using System.Threading.Tasks;
 
-using eDoxa.Seedwork.IntegrationEvents.Infrastructure;
+using eDoxa.Seedwork.ServiceBus.Infrastructure;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace eDoxa.Seedwork.IntegrationEvents
+namespace eDoxa.Seedwork.ServiceBus
 {
     public class IntegrationEventPublisher<TDbContext> : IIntegrationEventPublisher
     where TDbContext : DbContext

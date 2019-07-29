@@ -10,7 +10,7 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Seedwork.IntegrationEvents;
+using eDoxa.Seedwork.ServiceBus;
 
 namespace eDoxa.Seedwork.UnitTests.IntegrationEvents.Mocks
 {

@@ -8,10 +8,10 @@ using System;
 
 using Autofac;
 
-using eDoxa.Seedwork.IntegrationEvents;
-using eDoxa.Seedwork.IntegrationEvents.AzureServiceBus;
-using eDoxa.Seedwork.IntegrationEvents.RabbitMq;
 using eDoxa.Seedwork.Monitoring.AppSettings;
+using eDoxa.Seedwork.ServiceBus;
+using eDoxa.Seedwork.ServiceBus.AzureServiceBus;
+using eDoxa.Seedwork.ServiceBus.RabbitMq;
 
 using IdentityServer4.AccessTokenValidation;
 using IdentityServer4.Models;
