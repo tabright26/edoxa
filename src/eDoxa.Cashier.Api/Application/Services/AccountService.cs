@@ -17,6 +17,7 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services;
+using eDoxa.Seedwork.IntegrationEvents;
 using eDoxa.Seedwork.IntegrationEvents.Infrastructure;
 
 namespace eDoxa.Cashier.Api.Application.Services
@@ -24,12 +25,12 @@ namespace eDoxa.Cashier.Api.Application.Services
     public sealed class AccountService : IAccountService
     {
         private readonly IAccountRepository _accountRepository;
-        private readonly IIntegrationEventService _integrationEventService;
+        private readonly IIntegrationEventPublisher _integrationEventPublisher;
 
-        public AccountService(IAccountRepository accountRepository, IIntegrationEventService integrationEventService)
+        public AccountService(IAccountRepository accountRepository, IIntegrationEventPublisher integrationEventPublisher)
         {
             _accountRepository = accountRepository;
-            _integrationEventService = integrationEventService;
+            _integrationEventPublisher = integrationEventPublisher;
         }
 
         public async Task WithdrawalAsync(string connectAccountId, UserId userId, Money money, CancellationToken cancellationToken = default)
@@ -40,7 +41,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             await _accountRepository.CommitAsync(cancellationToken);
 
-            await _integrationEventService.PublishAsync(
+            await _integrationEventPublisher.PublishAsync(
                 new WithdrawalProcessedIntegrationEvent(
                     transaction.Id,
                     transaction.Description.Text,
@@ -93,7 +94,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             await _accountRepository.CommitAsync(cancellationToken);
 
-            await _integrationEventService.PublishAsync(
+            await _integrationEventPublisher.PublishAsync(
                 new DepositProcessedIntegrationEvent(transaction.Id, transaction.Description.Text, customerId, transaction.Price.ToCents())
             );
         }

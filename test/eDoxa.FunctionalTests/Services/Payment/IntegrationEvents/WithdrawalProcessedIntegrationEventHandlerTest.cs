@@ -18,6 +18,7 @@ using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.FunctionalTests.Services.Cashier;
 using eDoxa.Payment.Api.Providers.Stripe.Abstractions;
 using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.IntegrationEvents;
 using eDoxa.Seedwork.IntegrationEvents.Infrastructure;
 using eDoxa.Seedwork.Testing.Extensions;
 
@@ -119,7 +120,7 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
                     await _testServer.UsingScopeAsync(
                         async scope =>
                         {
-                            var integrationEventService = scope.GetService<IIntegrationEventService>();
+                            var integrationEventService = scope.GetService<IIntegrationEventPublisher>();
 
                             await integrationEventService.PublishAsync(
                                 new WithdrawalProcessedIntegrationEvent(moneyDepositTransaction.Id, moneyDepositTransaction.Description.Text, "acct_test", 5000)
@@ -181,7 +182,7 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
                     await _testServer.UsingScopeAsync(
                         async scope =>
                         {
-                            var integrationEventService = scope.GetService<IIntegrationEventService>();
+                            var integrationEventService = scope.GetService<IIntegrationEventPublisher>();
 
                             await integrationEventService.PublishAsync(
                                 new WithdrawalProcessedIntegrationEvent(moneyDepositTransaction.Id, moneyDepositTransaction.Description.Text, "acct_test", 5000)

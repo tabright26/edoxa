@@ -41,7 +41,7 @@ namespace eDoxa.Identity.Api
 
                 host.MigrateDbContextWithRetryPolicy<IdentityDbContext>();
 
-                host.MigrateDbContextWithRetryPolicy<IntegrationEventDbContext>();
+                host.MigrateDbContextWithRetryPolicy<ServiceBusDbContext>();
 
                 Log.Information("Starting {Application} web host...");
 

@@ -21,8 +21,8 @@ namespace eDoxa.Seedwork.IntegrationEvents
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies()).AsClosedTypesOf(typeof(IIntegrationEventHandler<>));
-            builder.Register<Func<DbConnection, IIntegrationEventLogRepository>>(context => connection => new IntegrationEventLogRepository(connection));
-            builder.RegisterType<IntegrationEventService<TDbContext>>().As<IIntegrationEventService>().InstancePerDependency();
+            builder.Register<Func<DbConnection, IIntegrationEventRepository>>(context => connection => new IntegrationEventRepository(connection));
+            builder.RegisterType<IntegrationEventPublisher<TDbContext>>().As<IIntegrationEventPublisher>().InstancePerDependency();
         }
     }
 }

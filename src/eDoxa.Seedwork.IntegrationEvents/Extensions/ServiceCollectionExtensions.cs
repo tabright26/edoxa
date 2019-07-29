@@ -18,7 +18,7 @@ namespace eDoxa.Seedwork.IntegrationEvents.Extensions
     {
         public static void AddIntegrationEventDbContext(this IServiceCollection services, string connectionString, Assembly migrationsAssembly)
         {
-            services.AddDbContext<IntegrationEventDbContext>(
+            services.AddDbContext<ServiceBusDbContext>(
                 options => options.UseSqlServer(
                     connectionString,
                     sqlServerOptions =>

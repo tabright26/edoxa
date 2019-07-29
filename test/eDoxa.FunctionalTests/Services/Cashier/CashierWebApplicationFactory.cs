@@ -40,7 +40,7 @@ namespace eDoxa.FunctionalTests.Services.Cashier
 
             server.EnsureCreatedDbContext<CashierDbContext>();
 
-            server.MigrateDbContext<IntegrationEventDbContext>();
+            server.MigrateDbContext<ServiceBusDbContext>();
 
             return server;
         }

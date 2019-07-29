@@ -41,7 +41,7 @@ namespace eDoxa.Arena.Challenges.Api
 
                 host.MigrateDbContextWithRetryPolicy<ArenaChallengesDbContext>();
 
-                host.MigrateDbContextWithRetryPolicy<IntegrationEventDbContext>();
+                host.MigrateDbContextWithRetryPolicy<ServiceBusDbContext>();
 
                 Log.Information("Starting {Application} web host...");
 

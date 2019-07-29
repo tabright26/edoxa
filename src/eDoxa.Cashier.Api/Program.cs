@@ -41,7 +41,7 @@ namespace eDoxa.Cashier.Api
 
                 host.MigrateDbContextWithRetryPolicy<CashierDbContext>();
 
-                host.MigrateDbContextWithRetryPolicy<IntegrationEventDbContext>();
+                host.MigrateDbContextWithRetryPolicy<ServiceBusDbContext>();
 
                 Log.Information("Starting {Application} web host...");
 

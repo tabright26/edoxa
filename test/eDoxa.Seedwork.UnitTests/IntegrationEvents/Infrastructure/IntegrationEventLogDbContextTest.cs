@@ -27,57 +27,57 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents.Infrastructure
         public async Task IntegrationEventLoggerDbContext_EntityMappingConsistency_ShouldBeValid()
         {
             // Arrange
-            var options = new DbContextOptionsBuilder<IntegrationEventDbContext>().UseInMemoryDatabase(
+            var options = new DbContextOptionsBuilder<ServiceBusDbContext>().UseInMemoryDatabase(
                     $"{nameof(IntegrationEventLogDbContextTest)}.{nameof(this.IntegrationEventLoggerDbContext_EntityMappingConsistency_ShouldBeValid)}"
                 )
                 .Options;
 
             var mockIntegrationEvent = new MockIntegrationEvent();
-            var mockIntegrationEventLogEntry = new MockIntegrationEventLogEntry(mockIntegrationEvent);
+            var mockIntegrationEventLogEntry = new IntegrationEventModel(mockIntegrationEvent);
 
             // Act
-            using (var context = new IntegrationEventDbContext(options))
+            using (var context = new ServiceBusDbContext(options))
             {
-                context.Logs.Add(mockIntegrationEventLogEntry);
+                context.IntegrationEvents.Add(mockIntegrationEventLogEntry);
 
                 await context.SaveChangesAsync();
             }
 
             // Assert
-            using (var context = new IntegrationEventDbContext(options))
+            using (var context = new ServiceBusDbContext(options))
             {
-                var integrationEventLogEntry = await context.Logs.SingleAsync();
+                var integrationEventLogEntry = await context.IntegrationEvents.SingleAsync();
 
-                var integrationEvent = MockIntegrationEvent.Deserialize(integrationEventLogEntry.JsonObject);
+                var integrationEvent = MockIntegrationEvent.Deserialize(integrationEventLogEntry.Content);
 
                 integrationEventLogEntry.Id.Should().Be(integrationEvent.Id);
-                integrationEventLogEntry.Created.Should().BeCloseTo(integrationEvent.Timestamp, 1000);
+                integrationEventLogEntry.Timestamp.Should().BeCloseTo(integrationEvent.Timestamp, 1000);
                 integrationEvent.Equals(mockIntegrationEvent).Should().BeTrue();
             }
 
             // Act
-            using (var context = new IntegrationEventDbContext(options))
+            using (var context = new ServiceBusDbContext(options))
             {
-                var integrationEventLogEntry = await context.Logs.SingleAsync();
+                var integrationEventLogEntry = await context.IntegrationEvents.SingleAsync();
 
                 Assert.AreEqual(0, integrationEventLogEntry.PublishAttempted);
-                Assert.AreEqual(IntegrationEventState.NotPublished, integrationEventLogEntry.State);
+                Assert.AreEqual(IntegrationEventStatus.NotPublished, integrationEventLogEntry.Status);
 
                 integrationEventLogEntry.MarkAsPublished();
 
                 Assert.AreEqual(1, integrationEventLogEntry.PublishAttempted);
-                Assert.AreEqual(IntegrationEventState.Published, integrationEventLogEntry.State);
+                Assert.AreEqual(IntegrationEventStatus.Published, integrationEventLogEntry.Status);
 
                 await context.SaveChangesAsync();
             }
 
             // Assert
-            using (var context = new IntegrationEventDbContext(options))
+            using (var context = new ServiceBusDbContext(options))
             {
-                var integrationEventLogEntry = await context.Logs.SingleAsync();
+                var integrationEventLogEntry = await context.IntegrationEvents.SingleAsync();
 
                 Assert.AreEqual(1, integrationEventLogEntry.PublishAttempted);
-                Assert.AreEqual(IntegrationEventState.Published, integrationEventLogEntry.State);
+                Assert.AreEqual(IntegrationEventStatus.Published, integrationEventLogEntry.Status);
             }
         }
     }

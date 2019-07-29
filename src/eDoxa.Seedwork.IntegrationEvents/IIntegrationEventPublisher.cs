@@ -1,4 +1,4 @@
-﻿// Filename: IIntegrationEventService.cs
+﻿// Filename: IIntegrationEventPublisher.cs
 // Date Created: 2019-07-28
 // 
 // ================================================
@@ -6,9 +6,9 @@
 
 using System.Threading.Tasks;
 
-namespace eDoxa.Seedwork.IntegrationEvents.Infrastructure
+namespace eDoxa.Seedwork.IntegrationEvents
 {
-    public interface IIntegrationEventService
+    public interface IIntegrationEventPublisher
     {
         Task PublishAsync(IntegrationEvent integrationEvent);
     }

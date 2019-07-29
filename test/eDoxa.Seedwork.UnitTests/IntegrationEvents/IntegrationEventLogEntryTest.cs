@@ -27,15 +27,15 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents
             var integrationEvent = new MockIntegrationEvent1();
 
             // Act
-            var integrationEventLogEntry = new MockIntegrationEventLogEntry(integrationEvent);
+            var integrationEventLogEntry = new IntegrationEventModel(integrationEvent);
 
             // Assert
             Assert.AreEqual(integrationEvent.Id, integrationEventLogEntry.Id);
-            Assert.AreEqual(integrationEvent.Timestamp, integrationEventLogEntry.Created);
-            Assert.AreEqual(integrationEvent.GetType().FullName, integrationEventLogEntry.TypeFullName);
-            Assert.AreEqual(JsonConvert.SerializeObject(integrationEvent), integrationEventLogEntry.JsonObject);
+            Assert.AreEqual(integrationEvent.Timestamp, integrationEventLogEntry.Timestamp);
+            Assert.AreEqual(integrationEvent.GetType().FullName, integrationEventLogEntry.TypeName);
+            Assert.AreEqual(JsonConvert.SerializeObject(integrationEvent), integrationEventLogEntry.Content);
             Assert.AreEqual(0, integrationEventLogEntry.PublishAttempted);
-            Assert.AreEqual(IntegrationEventState.NotPublished, integrationEventLogEntry.State);
+            Assert.AreEqual(IntegrationEventStatus.NotPublished, integrationEventLogEntry.Status);
         }
 
         [TestMethod]
@@ -43,14 +43,14 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents
         {
             // Arrange
             var integrationEvent = new MockIntegrationEvent1();
-            var integrationEventLogEntry = new MockIntegrationEventLogEntry(integrationEvent);
+            var integrationEventLogEntry = new IntegrationEventModel(integrationEvent);
 
             // Act
             integrationEventLogEntry.MarkAsPublished();
 
             // Assert
             Assert.AreEqual(1, integrationEventLogEntry.PublishAttempted);
-            Assert.AreEqual(IntegrationEventState.Published, integrationEventLogEntry.State);
+            Assert.AreEqual(IntegrationEventStatus.Published, integrationEventLogEntry.Status);
         }
     }
 }

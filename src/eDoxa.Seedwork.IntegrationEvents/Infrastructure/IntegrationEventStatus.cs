@@ -1,4 +1,4 @@
-﻿// Filename: IntegrationEventState.cs
+﻿// Filename: IntegrationEventStatus.cs
 // Date Created: 2019-07-28
 // 
 // ================================================
@@ -6,7 +6,7 @@
 
 namespace eDoxa.Seedwork.IntegrationEvents.Infrastructure
 {
-    public enum IntegrationEventState
+    public enum IntegrationEventStatus
     {
         NotPublished = 0,
         Published = 1,

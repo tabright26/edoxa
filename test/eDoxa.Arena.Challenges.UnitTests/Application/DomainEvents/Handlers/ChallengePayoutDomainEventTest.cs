@@ -6,6 +6,7 @@
 
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Seedwork.IntegrationEvents;
 using eDoxa.Seedwork.IntegrationEvents.Infrastructure;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -18,13 +19,13 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.DomainEvents.Handlers
     public sealed class ChallengePayoutDomainEventTest
     {
         private ChallengeFaker _challengeFaker;
-        private Mock<IIntegrationEventService> _mockIntegrationEventService;
+        private Mock<IIntegrationEventPublisher> _mockIntegrationEventService;
 
         [TestInitialize]
         public void TestInitialize()
         {
             _challengeFaker = new ChallengeFaker(state: ChallengeState.Ended);
-            _mockIntegrationEventService = new Mock<IIntegrationEventService>();
+            _mockIntegrationEventService = new Mock<IIntegrationEventPublisher>();
         }
 
         //[TestMethod]

@@ -40,7 +40,7 @@ namespace eDoxa.FunctionalTests.Services.Identity
 
             server.EnsureCreatedDbContext<IdentityDbContext>();
 
-            server.MigrateDbContext<IntegrationEventDbContext>();
+            server.MigrateDbContext<ServiceBusDbContext>();
 
             return server;
         }

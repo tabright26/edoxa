@@ -1,4 +1,4 @@
-﻿// Filename: IntegrationEventLogRepository.cs
+﻿// Filename: IntegrationEventRepository.cs
 // Date Created: 2019-07-28
 // 
 // ================================================
@@ -13,14 +13,14 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace eDoxa.Seedwork.IntegrationEvents.Infrastructure
 {
-    public class IntegrationEventLogRepository : IIntegrationEventLogRepository
+    public class IntegrationEventRepository : IIntegrationEventRepository
     {
-        private readonly IntegrationEventDbContext _context;
+        private readonly ServiceBusDbContext _context;
 
-        public IntegrationEventLogRepository(DbConnection connection)
+        public IntegrationEventRepository(DbConnection connection)
         {
-            _context = new IntegrationEventDbContext(
-                new DbContextOptionsBuilder<IntegrationEventDbContext>().UseSqlServer(connection)
+            _context = new ServiceBusDbContext(
+                new DbContextOptionsBuilder<ServiceBusDbContext>().UseSqlServer(connection)
                     .ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning))
                     .Options
             );
@@ -28,22 +28,22 @@ namespace eDoxa.Seedwork.IntegrationEvents.Infrastructure
 
         public Task SaveIntegrationEventAsync(IntegrationEvent integrationEvent, DbTransaction transaction)
         {
-            var logEntry = new IntegrationEventLogEntry(integrationEvent);
+            var model = new IntegrationEventModel(integrationEvent);
 
             _context.Database.UseTransaction(transaction);
 
-            _context.Logs.Add(logEntry);
+            _context.IntegrationEvents.Add(model);
 
             return _context.SaveChangesAsync();
         }
 
         public Task MarkIntegrationEventAsPublishedAsync(IntegrationEvent integrationEvent)
         {
-            var integrationEventLogEntry = _context.Logs.Single(logEntry => logEntry.Id == integrationEvent.Id);
+            var integrationEventLogEntry = _context.IntegrationEvents.Single(logEntry => logEntry.Id == integrationEvent.Id);
 
             integrationEventLogEntry.MarkAsPublished();
 
-            _context.Logs.Update(integrationEventLogEntry);
+            _context.IntegrationEvents.Update(integrationEventLogEntry);
 
             return _context.SaveChangesAsync();
         }

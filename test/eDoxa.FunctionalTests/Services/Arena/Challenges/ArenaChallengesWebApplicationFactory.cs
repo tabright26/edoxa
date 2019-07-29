@@ -40,7 +40,7 @@ namespace eDoxa.FunctionalTests.Services.Arena.Challenges
 
             server.EnsureCreatedDbContext<ArenaChallengesDbContext>();
 
-            server.MigrateDbContext<IntegrationEventDbContext>();
+            server.MigrateDbContext<ServiceBusDbContext>();
 
             return server;
         }

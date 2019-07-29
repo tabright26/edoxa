@@ -1,4 +1,4 @@
-﻿// Filename: IIntegrationEventLogRepository.cs
+﻿// Filename: IIntegrationEventRepository.cs
 // Date Created: 2019-07-28
 // 
 // ================================================
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace eDoxa.Seedwork.IntegrationEvents.Infrastructure
 {
-    public interface IIntegrationEventLogRepository
+    public interface IIntegrationEventRepository
     {
         Task SaveIntegrationEventAsync(IntegrationEvent integrationEvent, DbTransaction transaction);
 

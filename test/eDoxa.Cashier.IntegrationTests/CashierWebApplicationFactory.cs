@@ -39,12 +39,12 @@ namespace eDoxa.Cashier.IntegrationTests
             builder.ConfigureTestContainer<ContainerBuilder>(
                 container =>
                 {
-                    var mockIntegrationEventService = new Mock<IIntegrationEventService>();
+                    var mockIntegrationEventService = new Mock<IIntegrationEventPublisher>();
 
                     mockIntegrationEventService.Setup(integrationEventService => integrationEventService.PublishAsync(It.IsAny<IntegrationEvent>()))
                         .Returns(Task.CompletedTask);
 
-                    container.RegisterInstance(mockIntegrationEventService.Object).As<IIntegrationEventService>().SingleInstance();
+                    container.RegisterInstance(mockIntegrationEventService.Object).As<IIntegrationEventPublisher>().SingleInstance();
                 }
             );
         }
