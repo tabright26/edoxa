@@ -11,12 +11,9 @@ using System.Threading.Tasks;
 
 using Autofac;
 
-using eDoxa.Seedwork.IntegrationEvents.Infrastructure;
-
 using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 using Polly;
 
@@ -26,7 +23,7 @@ using RabbitMQ.Client.Exceptions;
 
 namespace eDoxa.Seedwork.IntegrationEvents.RabbitMq
 {
-    public class RabbitMqServiceBusPublisher : IServiceBusPublisher
+    public class RabbitMqServiceBusPublisher : ServiceBusPublisher
     {
         public enum RabbitMqDeliveryMode
         {
@@ -39,7 +36,6 @@ namespace eDoxa.Seedwork.IntegrationEvents.RabbitMq
 
         private readonly int _retryCount;
         private readonly ILogger<RabbitMqServiceBusPublisher> _logger;
-        private readonly ILifetimeScope _scope;
         private readonly IRabbitMqServiceBusContext _connection;
 
         private string? _queue;
@@ -47,33 +43,29 @@ namespace eDoxa.Seedwork.IntegrationEvents.RabbitMq
 
         public RabbitMqServiceBusPublisher(
             ILogger<RabbitMqServiceBusPublisher> logger,
-            ILifetimeScope scope,
+            ILifetimeScope lifetimeScope,
             IRabbitMqServiceBusContext connection,
-            IIntegrationEventSubscriptionStore store,
+            IServiceBusStore store,
             int retryCount = 5,
             string? queue = null
-        )
+        ) : base(store, lifetimeScope, LifetimeScopeTag)
         {
             _logger = logger;
-            _scope = scope;
             _connection = connection;
-            Store = store;
             Store.OnIntegrationEventRemoved += this.OnIntegrationEventRemoved;
             _retryCount = retryCount;
             _queue = queue;
             _channel = this.CreateChannel();
         }
 
-        public IIntegrationEventSubscriptionStore Store { get; }
-
-        public void Dispose()
+        public override void Dispose()
         {
             _channel?.Dispose();
 
             Store.Clear();
         }
 
-        public void Publish(IntegrationEvent integrationEvent)
+        public override void Publish(IntegrationEvent integrationEvent)
         {
             if (!_connection.IsConnected)
             {
@@ -118,34 +110,26 @@ namespace eDoxa.Seedwork.IntegrationEvents.RabbitMq
             }
         }
 
-        public void Subscribe<TIntegrationEvent, TIntegrationEventHandler>()
-        where TIntegrationEvent : IntegrationEvent
-        where TIntegrationEventHandler : IIntegrationEventHandler<TIntegrationEvent>
+        public override void Subscribe<TIntegrationEvent, TIntegrationEventHandler>()
         {
-            var integrationEventName = Store.GetIntegrationEventTypeName<TIntegrationEvent>();
-
-            this.QueueBind(integrationEventName);
+            this.QueueBind(typeof(TIntegrationEvent).Name);
 
             Store.AddSubscription<TIntegrationEvent, TIntegrationEventHandler>();
         }
 
-        public void Subscribe<TDynamicIntegrationEventHandler>(string integrationEventTypeName)
-        where TDynamicIntegrationEventHandler : IDynamicIntegrationEventHandler
+        public override void Subscribe<TDynamicIntegrationEventHandler>(string integrationEventTypeName)
         {
             this.QueueBind(integrationEventTypeName);
 
             Store.AddSubscription<TDynamicIntegrationEventHandler>(integrationEventTypeName);
         }
 
-        public void Unsubscribe<TIntegrationEvent, TIntegrationEventHandler>()
-        where TIntegrationEvent : IntegrationEvent
-        where TIntegrationEventHandler : IIntegrationEventHandler<TIntegrationEvent>
+        public override void Unsubscribe<TIntegrationEvent, TIntegrationEventHandler>()
         {
             Store.RemoveSubscription<TIntegrationEvent, TIntegrationEventHandler>();
         }
 
-        public void Unsubscribe<TDynamicIntegrationEventHandler>(string integrationEventTypeName)
-        where TDynamicIntegrationEventHandler : IDynamicIntegrationEventHandler
+        public override void Unsubscribe<TDynamicIntegrationEventHandler>(string integrationEventTypeName)
         {
             Store.RemoveSubscription<TDynamicIntegrationEventHandler>(integrationEventTypeName);
         }
@@ -217,7 +201,7 @@ namespace eDoxa.Seedwork.IntegrationEvents.RabbitMq
 
                 var message = Encoding.UTF8.GetString(eventArgs.Body);
 
-                await this.ProcessIntegrationEventAsync(message, integrationEventName);
+                await this.ProcessAsync(message, integrationEventName);
 
                 channel.BasicAck(eventArgs.DeliveryTag, false);
             };
@@ -234,32 +218,17 @@ namespace eDoxa.Seedwork.IntegrationEvents.RabbitMq
             return channel;
         }
 
-        private async Task ProcessIntegrationEventAsync(string jsonString, string integrationEventName)
+        protected override async Task ProcessAsync(string json, string integrationEventTypeName)
         {
-            using (var scope = _scope.BeginLifetimeScope(LifetimeScopeTag))
+            _logger.LogTrace($"Processing RabbitMQ event: {integrationEventTypeName}.");
+
+            if (Store.Contains(integrationEventTypeName))
             {
-                foreach (var subscription in Store.FetchSubscriptions(integrationEventName))
-                {
-                    if (subscription.IsDynamic)
-                    {
-                        if (scope.ResolveOptional(subscription.HandlerType) is IDynamicIntegrationEventHandler handler)
-                        {
-                            await handler.HandleAsync((dynamic)JObject.Parse(jsonString));
-                        }
-                    }
-                    else
-                    {
-                        var integrationEventType = Store.TryGetIntegrationEventType(integrationEventName);
-
-                        var integrationEvent = JsonConvert.DeserializeObject(jsonString, integrationEventType);
-
-                        var handler = scope.ResolveOptional(subscription.HandlerType);
-
-                        var concreteType = typeof(IIntegrationEventHandler<>).MakeGenericType(integrationEventType);
-
-                        await (Task)concreteType.GetMethod(nameof(IDynamicIntegrationEventHandler.HandleAsync)).Invoke(handler, new[] { integrationEvent });
-                    }
-                }
+                await base.ProcessAsync(json, integrationEventTypeName);
+            }
+            else
+            {
+                _logger.LogWarning($"No subscription for RabbitMQ event: {integrationEventTypeName}.");
             }
         }
     }

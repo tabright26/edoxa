@@ -9,10 +9,8 @@
 // this source code package.
 
 using System;
-using System.Collections.Generic;
 
 using eDoxa.Seedwork.IntegrationEvents;
-using eDoxa.Seedwork.IntegrationEvents.Infrastructure;
 using eDoxa.Seedwork.UnitTests.IntegrationEvents.Mocks;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -27,7 +25,7 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents
         {
             // Arrange
             var onIntegrationEventRemovedEventRaisedCount = 0;
-            var subscriptionHandler = new InMemoryIntegrationEventSubscriptionStore();
+            var subscriptionHandler = new InMemoryServiceBusStore();
 
             subscriptionHandler.OnIntegrationEventRemoved += (sender, eventArgs) => onIntegrationEventRemovedEventRaisedCount++;
 
@@ -48,7 +46,7 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents
         public void Property_IsEmpty_ShouldBeTrue()
         {
             // Arrange => Act
-            var subscriptionHandler = new InMemoryIntegrationEventSubscriptionStore();
+            var subscriptionHandler = new InMemoryServiceBusStore();
 
             // Assert
             Assert.IsTrue(subscriptionHandler.IsEmpty);
@@ -58,7 +56,7 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents
         public void AddSubscription_SubscriptionHandlerIsEmpty_ShouldBeFalse()
         {
             // Arrange
-            var subscriptionHandler = new InMemoryIntegrationEventSubscriptionStore();
+            var subscriptionHandler = new InMemoryServiceBusStore();
 
             // Act
             subscriptionHandler.AddSubscription<MockIntegrationEvent1, MockIntegrationEventHandler1>();
@@ -71,7 +69,7 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents
         public void AddSubscription_SubscribedToTheSameIntegrationEvent_ShouldThrowIntegrationEventException()
         {
             // Arrange
-            var subscriptionHandler = new InMemoryIntegrationEventSubscriptionStore();
+            var subscriptionHandler = new InMemoryServiceBusStore();
             subscriptionHandler.AddSubscription<MockIntegrationEvent1, MockIntegrationEventHandler1>();
 
             // Act => Assert
@@ -84,7 +82,7 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents
         public void AddDynamicSubscription_SubscriptionHandlerIsEmpty_ShouldBeFalse()
         {
             // Arrange
-            var subscriptionHandler = new InMemoryIntegrationEventSubscriptionStore();
+            var subscriptionHandler = new InMemoryServiceBusStore();
 
             // Act
             subscriptionHandler.AddSubscription<MockDynamicIntegrationEventHandler1>(nameof(MockIntegrationEvent1));
@@ -97,7 +95,7 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents
         public void AddDynamicSubscription_SubscribedToTheSameIntegrationEvent_ShouldThrowIntegrationEventException()
         {
             // Arrange
-            var subscriptionHandler = new InMemoryIntegrationEventSubscriptionStore();
+            var subscriptionHandler = new InMemoryServiceBusStore();
 
             subscriptionHandler.AddSubscription<MockDynamicIntegrationEventHandler1>(nameof(MockIntegrationEvent1));
 
@@ -111,7 +109,7 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents
         public void ClearSubscriptions_AllIntegrationEventAreRemovedFromTheSubscriptionHandler_ShouldBeTrue()
         {
             // Arrange
-            var subscriptionHandler = new InMemoryIntegrationEventSubscriptionStore();
+            var subscriptionHandler = new InMemoryServiceBusStore();
             subscriptionHandler.AddSubscription<MockIntegrationEvent1, MockIntegrationEventHandler1>();
 
             // Act
@@ -125,7 +123,7 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents
         public void ContainsIntegrationEvent_AddedIntegrationEventIsContainedByTheSubscriptionHandler_ShouldBeTrue()
         {
             // Arrange
-            var subscriptionHandler = new InMemoryIntegrationEventSubscriptionStore();
+            var subscriptionHandler = new InMemoryServiceBusStore();
             subscriptionHandler.AddSubscription<MockIntegrationEvent1, MockIntegrationEventHandler1>();
 
             // Act
@@ -170,43 +168,29 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents
         //    Assert.IsTrue(subscription.IsDynamic);
         //}
 
-        [TestMethod]
-        public void FindAllSubscriptions_TwoSubscriptionsAreAddedAndTheMethodsAreCalledBoth_ShouldBeCountOfFour()
-        {
-            // Arrange
-            var subscriptions = new List<IntegrationEventSubscription>();
-            var subscriptionHandler = new InMemoryIntegrationEventSubscriptionStore();
-            subscriptionHandler.AddSubscription<MockIntegrationEvent1, MockIntegrationEventHandler1>();
+        //[TestMethod]
+        //public void FindAllSubscriptions_TwoSubscriptionsAreAddedAndTheMethodsAreCalledBoth_ShouldBeCountOfFour()
+        //{
+        //    // Arrange
+        //    var subscriptions = new List<SubscriptionInfo>();
+        //    var subscriptionHandler = new InMemoryServiceBusStore();
+        //    subscriptionHandler.AddSubscription<MockIntegrationEvent1, MockIntegrationEventHandler1>();
 
-            subscriptionHandler.AddSubscription<MockDynamicIntegrationEventHandler2>(nameof(MockIntegrationEvent1));
+        //    subscriptionHandler.AddSubscription<MockDynamicIntegrationEventHandler2>(nameof(MockIntegrationEvent1));
 
-            // Act            
-            subscriptions.AddRange(subscriptionHandler.FetchSubscriptions<MockIntegrationEvent1>());
-            subscriptions.AddRange(subscriptionHandler.FetchSubscriptions(nameof(MockIntegrationEvent1)));
+        //    // Act            
+        //    subscriptions.AddRange(subscriptionHandler.GetHandlerTypesFor<MockIntegrationEvent1>());
+        //    subscriptions.AddRange(subscriptionHandler.GetHandlerTypesFor(nameof(MockIntegrationEvent1)));
 
-            // Assert
-            Assert.AreEqual(4, subscriptions.Count);
-        }
-
-        [TestMethod]
-        public void GetIntegrationEventType_TypeOfSubscriptionAdded_ShouldBeTypeOfIntegrationEvent()
-        {
-            // Arrange
-            var subscriptionHandler = new InMemoryIntegrationEventSubscriptionStore();
-            subscriptionHandler.AddSubscription<MockIntegrationEvent1, MockIntegrationEventHandler1>();
-
-            // Act
-            var integrationEventType = subscriptionHandler.TryGetIntegrationEventType(nameof(MockIntegrationEvent1));
-
-            // Assert
-            Assert.AreEqual(typeof(MockIntegrationEvent1), integrationEventType);
-        }
+        //    // Assert
+        //    Assert.AreEqual(4, subscriptions.Count);
+        //}
 
         [TestMethod]
         public void RemoveSubscription_ContainsIntegrationEvent_ShouldBeFalse()
         {
             // Arrange
-            var subscriptionHandler = new InMemoryIntegrationEventSubscriptionStore();
+            var subscriptionHandler = new InMemoryServiceBusStore();
             subscriptionHandler.AddSubscription<MockIntegrationEvent1, MockIntegrationEventHandler1>();
 
             // Act
@@ -220,7 +204,7 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents
         public void RemoveSubscription_OnIntegrationEventRemovedEvent_ShouldNotBeRaised()
         {
             // Arrange
-            var subscriptionHandler = new InMemoryIntegrationEventSubscriptionStore();
+            var subscriptionHandler = new InMemoryServiceBusStore();
             var onIntegrationEventRemovedEventRaisedCount = 0;
 
             subscriptionHandler.OnIntegrationEventRemoved += (sender, eventArgs) => onIntegrationEventRemovedEventRaisedCount++;
@@ -244,7 +228,7 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents
         public void RemoveDynamicSubscription_ContainsIntegrationEvent_ShouldBeFalse()
         {
             // Arrange
-            var subscriptionHandler = new InMemoryIntegrationEventSubscriptionStore();
+            var subscriptionHandler = new InMemoryServiceBusStore();
 
             subscriptionHandler.AddSubscription<MockDynamicIntegrationEventHandler1>(nameof(MockIntegrationEvent1));
 
@@ -259,7 +243,7 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents
         public void RemoveDynamicSubscription_OnIntegrationEventRemovedEvent_ShouldNotBeRaised()
         {
             // Arrange
-            var subscriptionHandler = new InMemoryIntegrationEventSubscriptionStore();
+            var subscriptionHandler = new InMemoryServiceBusStore();
             var onIntegrationEventRemovedEventRaisedCount = 0;
 
             subscriptionHandler.OnIntegrationEventRemoved += (sender, eventArgs) => onIntegrationEventRemovedEventRaisedCount++;

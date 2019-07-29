@@ -1,5 +1,5 @@
-﻿// Filename: ISubscriptionCollection.cs
-// Date Created: 2019-07-26
+﻿// Filename: IServiceBusStore.cs
+// Date Created: 2019-07-28
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -7,9 +7,9 @@
 using System;
 using System.Collections.Generic;
 
-namespace eDoxa.Seedwork.IntegrationEvents.Infrastructure
+namespace eDoxa.Seedwork.IntegrationEvents
 {
-    public interface IIntegrationEventSubscriptionStore
+    public interface IServiceBusStore
     {
         bool IsEmpty { get; }
 
@@ -22,24 +22,12 @@ namespace eDoxa.Seedwork.IntegrationEvents.Infrastructure
         bool Contains<TIntegrationEvent>()
         where TIntegrationEvent : IntegrationEvent;
 
-        string GetIntegrationEventTypeName<TIntegrationEvent>()
+        bool TryGetTypeFor(string integrationEventTypeName, out Type integrationEventType);
+
+        IReadOnlyCollection<Type> GetHandlerTypesFor(string integrationEventTypeName);
+
+        IReadOnlyCollection<Type> GetHandlerTypesFor<TIntegrationEvent>()
         where TIntegrationEvent : IntegrationEvent;
-
-        Type? TryGetIntegrationEventType(string integrationEventTypeName);
-
-        IReadOnlyCollection<IntegrationEventSubscription> FetchSubscriptions(string integrationEventTypeName);
-
-        IReadOnlyCollection<IntegrationEventSubscription> FetchSubscriptions<TIntegrationEvent>()
-        where TIntegrationEvent : IntegrationEvent;
-
-        bool TryGetSubscription(string integrationEventTypeName, Type integrationEventHandlerType, out IntegrationEventSubscription integrationEventSubscription);
-
-        bool TryGetSubscription<TIntegrationEvent, TIntegrationEventHandler>(out IntegrationEventSubscription integrationEventSubscription)
-        where TIntegrationEvent : IntegrationEvent
-        where TIntegrationEventHandler : IIntegrationEventHandler<TIntegrationEvent>;
-
-        bool TryGetSubscription<TDynamicIntegrationEventHandler>(string integrationEventTypeName, out IntegrationEventSubscription integrationEventSubscription)
-        where TDynamicIntegrationEventHandler : IDynamicIntegrationEventHandler;
 
         void AddSubscription<TIntegrationEvent, TIntegrationEventHandler>()
         where TIntegrationEvent : IntegrationEvent

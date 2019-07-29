@@ -10,7 +10,6 @@ using Autofac;
 
 using eDoxa.Seedwork.IntegrationEvents;
 using eDoxa.Seedwork.IntegrationEvents.AzureServiceBus;
-using eDoxa.Seedwork.IntegrationEvents.Infrastructure;
 using eDoxa.Seedwork.IntegrationEvents.RabbitMq;
 using eDoxa.Seedwork.Monitoring.AppSettings;
 
@@ -110,7 +109,7 @@ namespace eDoxa.Seedwork.Application.Extensions
 
                         var connection = provider.GetRequiredService<IAzureServiceBusContext>();
 
-                        var handler = provider.GetRequiredService<IIntegrationEventSubscriptionStore>();
+                        var handler = provider.GetRequiredService<IServiceBusStore>();
 
                         return new AzureServiceBusPublisher(
                             logger,
@@ -133,7 +132,7 @@ namespace eDoxa.Seedwork.Application.Extensions
 
                         var connection = provider.GetRequiredService<IRabbitMqServiceBusContext>();
 
-                        var handler = provider.GetRequiredService<IIntegrationEventSubscriptionStore>();
+                        var handler = provider.GetRequiredService<IServiceBusStore>();
 
                         var retryCount = appSettings.ServiceBus.RetryCount ?? 5;
 
@@ -149,7 +148,7 @@ namespace eDoxa.Seedwork.Application.Extensions
                 );
             }
 
-            services.AddSingleton<IIntegrationEventSubscriptionStore, InMemoryIntegrationEventSubscriptionStore>();
+            services.AddSingleton<IServiceBusStore, InMemoryServiceBusStore>();
         }
     }
 }

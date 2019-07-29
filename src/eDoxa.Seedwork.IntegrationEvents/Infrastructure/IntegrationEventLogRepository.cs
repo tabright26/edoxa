@@ -1,12 +1,8 @@
 ﻿// Filename: IntegrationEventLogRepository.cs
-// Date Created: 2019-03-04
+// Date Created: 2019-07-28
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
-// this source code package.
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Data.Common;
 using System.Linq;
@@ -24,8 +20,7 @@ namespace eDoxa.Seedwork.IntegrationEvents.Infrastructure
         public IntegrationEventLogRepository(DbConnection connection)
         {
             _context = new IntegrationEventDbContext(
-                new DbContextOptionsBuilder<IntegrationEventDbContext>()
-                    .UseSqlServer(connection)
+                new DbContextOptionsBuilder<IntegrationEventDbContext>().UseSqlServer(connection)
                     .ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning))
                     .Options
             );

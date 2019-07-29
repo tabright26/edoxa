@@ -11,40 +11,35 @@ using System.Threading.Tasks;
 
 using Autofac;
 
-using eDoxa.Seedwork.IntegrationEvents.Infrastructure;
-
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace eDoxa.Seedwork.IntegrationEvents.AzureServiceBus
 {
-    public class AzureServiceBusPublisher : IServiceBusPublisher
+    public class AzureServiceBusPublisher : ServiceBusPublisher
     {
         private const string TopicName = "edoxa-azure-topic";
         private const string LifetimeScopeTag = "edoxa.azure.broker";
         private const string IntegrationEventSuffix = nameof(IntegrationEvent);
 
         private readonly ILogger<AzureServiceBusPublisher> _logger;
-        private readonly ILifetimeScope _scope;
         private readonly IAzureServiceBusContext _context;
-        private readonly IIntegrationEventSubscriptionStore _store;
+        private readonly IServiceBusStore _serviceBusStore;
         private readonly SubscriptionClient _subscriptionClient;
 
         public AzureServiceBusPublisher(
             ILogger<AzureServiceBusPublisher> logger,
-            ILifetimeScope scope,
+            ILifetimeScope lifetimeScope,
             IAzureServiceBusContext context,
-            IIntegrationEventSubscriptionStore store,
+            IServiceBusStore serviceBusStore,
             string subscriptionName
-        )
+        ) : base(serviceBusStore, lifetimeScope, LifetimeScopeTag)
         {
             _logger = logger;
-            _scope = scope;
             _context = context;
-            _store = store;
+            _serviceBusStore = serviceBusStore;
 
             _subscriptionClient = new SubscriptionClient(context.ConnectionStringBuilder.GetNamespaceConnectionString(), TopicName, subscriptionName);
 
@@ -52,12 +47,12 @@ namespace eDoxa.Seedwork.IntegrationEvents.AzureServiceBus
             this.RegisterMessageHandler();
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
-            _store.Clear();
+            _serviceBusStore.Clear();
         }
 
-        public void Publish(IntegrationEvent integrationEvent)
+        public override void Publish(IntegrationEvent integrationEvent)
         {
             var integrationEventName = integrationEvent.GetType().Name.Replace(IntegrationEventSuffix, string.Empty);
 
@@ -75,13 +70,11 @@ namespace eDoxa.Seedwork.IntegrationEvents.AzureServiceBus
             topicClient.SendAsync(message).GetAwaiter().GetResult();
         }
 
-        public void Subscribe<TIntegrationEvent, TDynamicIntegrationEventHandler>()
-        where TIntegrationEvent : IntegrationEvent
-        where TDynamicIntegrationEventHandler : IIntegrationEventHandler<TIntegrationEvent>
+        public override void Subscribe<TIntegrationEvent, TDynamicIntegrationEventHandler>()
         {
             var integrationEventName = typeof(TIntegrationEvent).Name.Replace(IntegrationEventSuffix, string.Empty);
 
-            if (!_store.Contains<TIntegrationEvent>())
+            if (!_serviceBusStore.Contains<TIntegrationEvent>())
             {
                 try
                 {
@@ -104,18 +97,15 @@ namespace eDoxa.Seedwork.IntegrationEvents.AzureServiceBus
                 }
             }
 
-            _store.AddSubscription<TIntegrationEvent, TDynamicIntegrationEventHandler>();
+            _serviceBusStore.AddSubscription<TIntegrationEvent, TDynamicIntegrationEventHandler>();
         }
 
-        public void Subscribe<TDynamicIntegrationEventHandler>(string integrationEventTypeName)
-        where TDynamicIntegrationEventHandler : IDynamicIntegrationEventHandler
+        public override void Subscribe<TDynamicIntegrationEventHandler>(string integrationEventTypeName)
         {
-            _store.AddSubscription<TDynamicIntegrationEventHandler>(integrationEventTypeName);
+            _serviceBusStore.AddSubscription<TDynamicIntegrationEventHandler>(integrationEventTypeName);
         }
 
-        public void Unsubscribe<TIntegrationEvent, TDynamicIntegrationEventHandler>()
-        where TIntegrationEvent : IntegrationEvent
-        where TDynamicIntegrationEventHandler : IIntegrationEventHandler<TIntegrationEvent>
+        public override void Unsubscribe<TIntegrationEvent, TDynamicIntegrationEventHandler>()
         {
             var integrationEventName = typeof(TIntegrationEvent).Name.Replace(IntegrationEventSuffix, string.Empty);
 
@@ -128,13 +118,12 @@ namespace eDoxa.Seedwork.IntegrationEvents.AzureServiceBus
                 _logger.LogInformation($"The messaging entity {integrationEventName} could not be found.");
             }
 
-            _store.RemoveSubscription<TIntegrationEvent, TDynamicIntegrationEventHandler>();
+            _serviceBusStore.RemoveSubscription<TIntegrationEvent, TDynamicIntegrationEventHandler>();
         }
 
-        public void Unsubscribe<TDynamicIntegrationEventHandler>(string integrationEventTypeName)
-        where TDynamicIntegrationEventHandler : IDynamicIntegrationEventHandler
+        public override void Unsubscribe<TDynamicIntegrationEventHandler>(string integrationEventTypeName)
         {
-            _store.RemoveSubscription<TDynamicIntegrationEventHandler>(integrationEventTypeName);
+            _serviceBusStore.RemoveSubscription<TDynamicIntegrationEventHandler>(integrationEventTypeName);
         }
 
         private void RemoveDefaultRule()
@@ -158,7 +147,7 @@ namespace eDoxa.Seedwork.IntegrationEvents.AzureServiceBus
 
                     var json = Encoding.UTF8.GetString(message.Body);
 
-                    await this.ProcessIntegrationEventAsync(json, integrationEventName);
+                    await this.ProcessAsync(json, integrationEventName);
 
                     // Complete the message so that it is not received again.
                     await _subscriptionClient.CompleteAsync(message.SystemProperties.LockToken);
@@ -188,37 +177,17 @@ namespace eDoxa.Seedwork.IntegrationEvents.AzureServiceBus
             }
         }
 
-        private async Task ProcessIntegrationEventAsync(string jsonString, string integrationEventName)
+        protected override async Task ProcessAsync(string json, string integrationEventTypeName)
         {
-            if (_store.Contains(integrationEventName))
+            _logger.LogTrace($"Processing Azure Service Bus event: {integrationEventTypeName}.");
+
+            if (_serviceBusStore.Contains(integrationEventTypeName))
             {
-                using (var scope = _scope.BeginLifetimeScope(LifetimeScopeTag))
-                {
-                    var subscriptions = _store.FetchSubscriptions(integrationEventName);
-
-                    foreach (var subscription in subscriptions)
-                    {
-                        if (subscription.IsDynamic)
-                        {
-                            if (scope.ResolveOptional(subscription.HandlerType) is IDynamicIntegrationEventHandler handler)
-                            {
-                                await handler.HandleAsync((dynamic) JObject.Parse(jsonString));
-                            }
-                        }
-                        else
-                        {
-                            var integrationEventType = _store.TryGetIntegrationEventType(integrationEventName);
-
-                            var integrationEvent = JsonConvert.DeserializeObject(jsonString, integrationEventType);
-
-                            var handler = scope.ResolveOptional(subscription.HandlerType);
-
-                            var concreteType = typeof(IIntegrationEventHandler<>).MakeGenericType(integrationEventType);
-
-                            await (Task) concreteType.GetMethod(nameof(IDynamicIntegrationEventHandler.HandleAsync)).Invoke(handler, new[] {integrationEvent});
-                        }
-                    }
-                }
+                await base.ProcessAsync(json, integrationEventTypeName);
+            }
+            else
+            {
+                _logger.LogWarning($"No subscription for Azure Service Bus event: {integrationEventTypeName}.");
             }
         }
     }

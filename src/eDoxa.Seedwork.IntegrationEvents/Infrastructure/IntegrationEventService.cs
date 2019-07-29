@@ -1,12 +1,8 @@
 ﻿// Filename: IntegrationEventService.cs
-// Date Created: 2019-03-04
+// Date Created: 2019-07-28
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
-// this source code package.
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
 using System.Data.Common;
@@ -27,7 +23,8 @@ namespace eDoxa.Seedwork.IntegrationEvents.Infrastructure
         public IntegrationEventService(
             TDbContext context,
             IServiceBusPublisher serviceBusPublisher,
-            Func<DbConnection, IIntegrationEventLogRepository> repositoryFactory)
+            Func<DbConnection, IIntegrationEventLogRepository> repositoryFactory
+        )
         {
             _context = context;
             _serviceBusPublisher = serviceBusPublisher;
@@ -37,17 +34,17 @@ namespace eDoxa.Seedwork.IntegrationEvents.Infrastructure
         public async Task PublishAsync(IntegrationEvent integrationEvent)
         {
             await ResilientTransaction.NewInstance(_context)
-                                      .ExecuteAsync(
-                                          async () =>
-                                          {
-                                              await _context.SaveChangesAsync();
+                .ExecuteAsync(
+                    async () =>
+                    {
+                        await _context.SaveChangesAsync();
 
-                                              await _integrationEventLogRepository.SaveIntegrationEventAsync(
-                                                  integrationEvent,
-                                                  _context.Database.CurrentTransaction.GetDbTransaction()
-                                              );
-                                          }
-                                      );
+                        await _integrationEventLogRepository.SaveIntegrationEventAsync(
+                            integrationEvent,
+                            _context.Database.CurrentTransaction.GetDbTransaction()
+                        );
+                    }
+                );
 
             _serviceBusPublisher.Publish(integrationEvent);
 

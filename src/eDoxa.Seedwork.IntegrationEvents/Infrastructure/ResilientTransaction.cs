@@ -1,12 +1,8 @@
 ﻿// Filename: ResilientTransaction.cs
-// Date Created: 2019-03-04
+// Date Created: 2019-07-28
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
-// this source code package.
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
 using System.Threading.Tasks;
@@ -29,19 +25,18 @@ namespace eDoxa.Seedwork.IntegrationEvents.Infrastructure
             return new ResilientTransaction(context);
         }
 
-        public async Task ExecuteAsync(Func<Task> action)
+        public async Task ExecuteAsync(Func<Task> operationAsync)
         {
             var strategy = _context.Database.CreateExecutionStrategy();
 
             await strategy.ExecuteAsync(
                 async () =>
                 {
-                    using (var transaction = _context.Database.BeginTransaction())
-                    {
-                        await action();
+                    using var transaction = _context.Database.BeginTransaction();
 
-                        transaction.Commit();
-                    }
+                    await operationAsync();
+
+                    transaction.Commit();
                 }
             );
         }

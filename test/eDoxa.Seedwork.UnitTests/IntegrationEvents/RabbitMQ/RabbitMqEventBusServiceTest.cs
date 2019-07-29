@@ -13,7 +13,6 @@ using System.Reflection;
 using Autofac;
 
 using eDoxa.Seedwork.IntegrationEvents;
-using eDoxa.Seedwork.IntegrationEvents.Infrastructure;
 using eDoxa.Seedwork.IntegrationEvents.RabbitMq;
 using eDoxa.Seedwork.UnitTests.IntegrationEvents.Mocks;
 
@@ -53,7 +52,7 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents.RabbitMQ
             // Assert
             var handler =
                 typeof(RabbitMqServiceBusPublisher).GetField("_handler", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(eventBusService) as
-                    InMemoryIntegrationEventSubscriptionStore;
+                    InMemoryServiceBusStore;
 
             Assert.IsNotNull(handler);
             Assert.IsTrue(handler.Contains<MockIntegrationEvent1>());
@@ -71,7 +70,7 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents.RabbitMQ
             // Assert
             var handler =
                 typeof(RabbitMqServiceBusPublisher).GetField("_handler", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(eventBusService) as
-                    InMemoryIntegrationEventSubscriptionStore;
+                    InMemoryServiceBusStore;
 
             Assert.IsNotNull(handler);
             Assert.IsTrue(handler.Contains(nameof(MockIntegrationEvent1)));
@@ -90,7 +89,7 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents.RabbitMQ
             // Assert
             var handler =
                 typeof(RabbitMqServiceBusPublisher).GetField("_handler", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(eventBusService) as
-                    InMemoryIntegrationEventSubscriptionStore;
+                    InMemoryServiceBusStore;
 
             Assert.IsNotNull(handler);
             Assert.IsTrue(handler.IsEmpty);
@@ -110,7 +109,7 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents.RabbitMQ
             // Assert
             var handler =
                 typeof(RabbitMqServiceBusPublisher).GetField("_handler", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(eventBusService) as
-                    InMemoryIntegrationEventSubscriptionStore;
+                    InMemoryServiceBusStore;
 
             Assert.IsNotNull(handler);
             Assert.IsTrue(handler.IsEmpty);
@@ -146,7 +145,7 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents.RabbitMQ
 
                     var connection = serviceProvider.GetRequiredService<IRabbitMqServiceBusContext>();
 
-                    var handler = serviceProvider.GetRequiredService<IIntegrationEventSubscriptionStore>();
+                    var handler = serviceProvider.GetRequiredService<IServiceBusStore>();
 
                     return new RabbitMqServiceBusPublisher(
                         logger.Object,
@@ -159,7 +158,7 @@ namespace eDoxa.Seedwork.UnitTests.IntegrationEvents.RabbitMQ
                 }
             );
 
-            services.AddSingleton<IIntegrationEventSubscriptionStore, InMemoryIntegrationEventSubscriptionStore>();
+            services.AddSingleton<IServiceBusStore, InMemoryServiceBusStore>();
 
             var provider = services.BuildServiceProvider();
 
