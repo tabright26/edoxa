@@ -10,6 +10,8 @@ using System.IO;
 using System.Reflection;
 
 using Autofac;
+using Autofac.Builder;
+using Autofac.Features.Scanning;
 
 using AutoMapper;
 
@@ -25,9 +27,9 @@ using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security.Constants;
 using eDoxa.Seedwork.Security.Extensions;
-using eDoxa.Seedwork.ServiceBus;
-using eDoxa.Seedwork.ServiceBus.Extensions;
-using eDoxa.Seedwork.ServiceBus.Modules;
+using eDoxa.ServiceBus.Abstractions;
+using eDoxa.ServiceBus.Azure.Modules;
+using eDoxa.ServiceBus.Modules;
 
 using FluentValidation.AspNetCore;
 
@@ -73,11 +75,7 @@ namespace eDoxa.Cashier.Api
             services.AddHealthChecks(AppSettings);
 
             services.AddCorsPolicy();
-
-            services.AddEntityFrameworkSqlServer();
-
-            services.AddIntegrationEventDbContext(AppSettings.ConnectionStrings.SqlServer, Assembly.GetAssembly(typeof(Startup)));
-
+            
             services.AddDbContext<CashierDbContext, CashierDbContextData>(AppSettings.ConnectionStrings.SqlServer, Assembly.GetAssembly(typeof(Startup)));
 
             services.AddVersionedApiExplorer(options => options.GroupNameFormat = "'v'VV");
@@ -122,8 +120,6 @@ namespace eDoxa.Cashier.Api
             }
 
             services.AddAuthentication(HostingEnvironment, AppSettings);
-
-            services.AddServiceBus(AppSettings);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -132,7 +128,9 @@ namespace eDoxa.Cashier.Api
 
             builder.RegisterModule<RequestModule>();
 
-            builder.RegisterModule<IntegrationEventModule<CashierDbContext>>();
+            builder.RegisterModule<ServiceBusModule<Startup>>();
+
+            builder.RegisterModule<AzureServiceBusModule>();
 
             builder.RegisterModule<CashierApiModule>();
         }
@@ -174,7 +172,7 @@ namespace eDoxa.Cashier.Api
 
             application.UseMvc();
 
-            application.UseIntegrationEventSubscriptions();
+            application.UseServiceBusSubscriber();
         }
     }
 }

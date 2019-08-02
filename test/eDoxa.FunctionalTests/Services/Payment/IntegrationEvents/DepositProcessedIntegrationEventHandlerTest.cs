@@ -18,8 +18,8 @@ using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.FunctionalTests.Services.Cashier;
 using eDoxa.Payment.Api.Providers.Stripe.Abstractions;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.ServiceBus;
 using eDoxa.Seedwork.Testing.Extensions;
+using eDoxa.ServiceBus.Abstractions;
 
 using FluentAssertions;
 
@@ -53,7 +53,7 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
                 var transaction = await _testServer.UsingScopeAsync(
                     async scope =>
                     {
-                        var transactionRepository = scope.GetService<ITransactionRepository>();
+                        var transactionRepository = scope.GetRequiredService<ITransactionRepository>();
 
                         return await transactionRepository.FindTransactionAsync(transactionId);
                     }
@@ -110,18 +110,18 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
                     await _testServer.UsingScopeAsync(
                         async scope =>
                         {
-                            var accountRepository = scope.GetService<IAccountRepository>();
+                            var accountRepository = scope.GetRequiredService<IAccountRepository>();
                             accountRepository.Create(account);
                             await accountRepository.CommitAsync();
                         }
                     );
 
-                    await _testServer.UsingScopeAsync(
-                        async scope =>
+                    _testServer.UsingScope(
+                        scope =>
                         {
-                            var integrationEventService = scope.GetService<IIntegrationEventPublisher>();
+                            var integrationEventService = scope.GetRequiredService<IServiceBusPublisher>();
 
-                            await integrationEventService.PublishAsync(
+                            integrationEventService.Publish(
                                 new DepositProcessedIntegrationEvent(moneyDepositTransaction.Id, moneyDepositTransaction.Description.Text, "cus_test", 5000)
                             );
                         }
@@ -172,18 +172,18 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
                     await _testServer.UsingScopeAsync(
                         async scope =>
                         {
-                            var accountRepository = scope.GetService<IAccountRepository>();
+                            var accountRepository = scope.GetRequiredService<IAccountRepository>();
                             accountRepository.Create(account);
                             await accountRepository.CommitAsync();
                         }
                     );
 
-                    await _testServer.UsingScopeAsync(
-                        async scope =>
+                    _testServer.UsingScope(
+                        scope =>
                         {
-                            var integrationEventService = scope.GetService<IIntegrationEventPublisher>();
+                            var integrationEventService = scope.GetRequiredService<IServiceBusPublisher>();
 
-                            await integrationEventService.PublishAsync(
+                            integrationEventService.Publish(
                                 new DepositProcessedIntegrationEvent(moneyDepositTransaction.Id, moneyDepositTransaction.Description.Text, "cus_test", 5000)
                             );
                         }

@@ -10,7 +10,6 @@ using System.Reflection;
 using eDoxa.Arena.Challenges.Api;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Seedwork.Security.Hosting;
-using eDoxa.Seedwork.ServiceBus.Infrastructure;
 using eDoxa.Seedwork.Testing.Extensions;
 
 using Microsoft.AspNetCore.Hosting;
@@ -39,8 +38,6 @@ namespace eDoxa.FunctionalTests.Services.Arena.Challenges
             var server = base.CreateServer(builder);
 
             server.EnsureCreatedDbContext<ArenaChallengesDbContext>();
-
-            server.MigrateDbContext<ServiceBusDbContext>();
 
             return server;
         }

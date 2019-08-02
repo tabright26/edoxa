@@ -4,13 +4,15 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Seedwork.ServiceBus;
+using System;
+
+using eDoxa.ServiceBus;
 
 namespace eDoxa.Identity.Api.IntegrationEvents
 {
     public class RoleCreatedIntegrationEvent : IntegrationEvent
     {
-        public RoleCreatedIntegrationEvent(string roleName)
+        public RoleCreatedIntegrationEvent(string roleName) : base(Guid.NewGuid())
         {
             RoleName = roleName;
         }

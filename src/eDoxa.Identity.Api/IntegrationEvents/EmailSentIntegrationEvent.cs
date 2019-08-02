@@ -4,13 +4,15 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Seedwork.ServiceBus;
+using System;
+
+using eDoxa.ServiceBus;
 
 namespace eDoxa.Identity.Api.IntegrationEvents
 {
     public class EmailSentIntegrationEvent : IntegrationEvent
     {
-        public EmailSentIntegrationEvent(string email, string subject, string htmlMessage)
+        public EmailSentIntegrationEvent(string email, string subject, string htmlMessage) : base(Guid.NewGuid())
         {
             Email = email;
             Subject = subject;

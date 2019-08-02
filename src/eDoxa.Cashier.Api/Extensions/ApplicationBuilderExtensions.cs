@@ -10,7 +10,7 @@
 
 using eDoxa.Cashier.Api.IntegrationEvents;
 using eDoxa.Cashier.Api.IntegrationEvents.Handlers;
-using eDoxa.Seedwork.ServiceBus;
+using eDoxa.ServiceBus.Abstractions;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,12 +19,12 @@ namespace eDoxa.Cashier.Api.Extensions
 {
     public static class ApplicationBuilderExtensions
     {
-        public static void UseIntegrationEventSubscriptions(this IApplicationBuilder application)
+        public static void UseServiceBusSubscriber(this IApplicationBuilder application)
         {
-            var service = application.ApplicationServices.GetRequiredService<IServiceBusPublisher>();
-            service.Subscribe<UserCreatedIntegrationEvent, UserCreatedIntegrationEventHandler>();
-            service.Subscribe<TransactionSuccededIntegrationEvent, TransactionSuccededIntegrationEventHandler>();
-            service.Subscribe<TransactionFailedIntegrationEvent, TransactionFailedIntegrationEventHandler>();
+            var serviceBusSubscriber = application.ApplicationServices.GetRequiredService<IServiceBusSubscriber>();
+            serviceBusSubscriber.Subscribe<UserCreatedIntegrationEvent, UserCreatedIntegrationEventHandler>();
+            serviceBusSubscriber.Subscribe<TransactionSuccededIntegrationEvent, TransactionSuccededIntegrationEventHandler>();
+            serviceBusSubscriber.Subscribe<TransactionFailedIntegrationEvent, TransactionFailedIntegrationEventHandler>();
         }
     }
 }

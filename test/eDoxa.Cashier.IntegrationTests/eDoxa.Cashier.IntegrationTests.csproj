@@ -5,7 +5,7 @@
     <AssemblyName>eDoxa.Cashier.IntegrationTests</AssemblyName>
     <RootNamespace>eDoxa.Cashier.IntegrationTests</RootNamespace>
     <LangVersion>8.0</LangVersion>
-    <NullableContextOptions>enable</NullableContextOptions>
+    <Nullable>disable</Nullable>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
@@ -15,12 +15,12 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
     <PackageReference Include="xunit.core" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
+    <PackageReference Include="eDoxa.ServiceBus.Moq" Version="1.0.0-CI-20190802-042217" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\eDoxa.Cashier.Api\eDoxa.Cashier.Api.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Seedwork.Security\eDoxa.Seedwork.Security.csproj" />
-    <ProjectReference Include="..\..\src\eDoxa.Seedwork.ServiceBus\eDoxa.Seedwork.ServiceBus.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Seedwork.Testing\eDoxa.Seedwork.Testing.csproj" />
   </ItemGroup>
 

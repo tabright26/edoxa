@@ -48,7 +48,7 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var accountRepository = scope.GetService<IAccountRepository>();
+                    var accountRepository = scope.GetRequiredService<IAccountRepository>();
                     accountRepository.Create(fakeAccount);
                     await accountRepository.CommitAsync();
                 }
@@ -57,7 +57,7 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var accountRepository = scope.GetService<ITransactionRepository>();
+                    var accountRepository = scope.GetRequiredService<ITransactionRepository>();
                     var transaction = await accountRepository.FindTransactionAsync(moneyDepositTransaction.Id);
                     transaction.Should().NotBeNull();
                     transaction.Should().Be(moneyDepositTransaction);
@@ -68,7 +68,7 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var accountRepository = scope.GetService<ITransactionRepository>();
+                    var accountRepository = scope.GetRequiredService<ITransactionRepository>();
                     var transaction = await accountRepository.FindTransactionAsync(moneyDepositTransaction.Id);
                     transaction.Should().NotBeNull();
                     transaction.Should().Be(moneyDepositTransaction);
@@ -80,7 +80,7 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var accountRepository = scope.GetService<ITransactionRepository>();
+                    var accountRepository = scope.GetRequiredService<ITransactionRepository>();
                     var transaction = await accountRepository.FindTransactionAsync(moneyDepositTransaction.Id);
                     transaction.Should().NotBeNull();
                     transaction.Should().Be(moneyDepositTransaction);
@@ -91,7 +91,7 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var accountRepository = scope.GetService<ITransactionRepository>();
+                    var accountRepository = scope.GetRequiredService<ITransactionRepository>();
                     var transaction = await accountRepository.FindTransactionAsync(moneyDepositTransaction.Id);
                     transaction.Should().NotBeNull();
                     transaction.Should().Be(moneyDepositTransaction);
@@ -103,7 +103,7 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var accountRepository = scope.GetService<ITransactionRepository>();
+                    var accountRepository = scope.GetRequiredService<ITransactionRepository>();
                     var transaction = await accountRepository.FindTransactionAsync(moneyDepositTransaction.Id);
                     transaction.Should().NotBeNull();
                     transaction.Should().Be(moneyDepositTransaction);
@@ -128,7 +128,7 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var accountRepository = scope.GetService<IAccountRepository>();
+                    var accountRepository = scope.GetRequiredService<IAccountRepository>();
                     accountRepository.Create(fakeAccount);
                     await accountRepository.CommitAsync();
                 }
@@ -137,7 +137,7 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var accountRepository = scope.GetService<ITransactionRepository>();
+                    var accountRepository = scope.GetRequiredService<ITransactionRepository>();
                     var transaction = await accountRepository.FindTransactionAsync(moneyDepositTransaction.Id);
                     transaction.Should().NotBeNull();
                     transaction.Should().Be(moneyDepositTransaction);
@@ -148,7 +148,7 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var accountRepository = scope.GetService<ITransactionRepository>();
+                    var accountRepository = scope.GetRequiredService<ITransactionRepository>();
                     var transaction = await accountRepository.FindTransactionAsync(moneyDepositTransaction.Id);
                     transaction.Should().NotBeNull();
                     transaction.Should().Be(moneyDepositTransaction);
@@ -160,7 +160,7 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var accountRepository = scope.GetService<ITransactionRepository>();
+                    var accountRepository = scope.GetRequiredService<ITransactionRepository>();
                     var transaction = await accountRepository.FindTransactionAsync(moneyDepositTransaction.Id);
                     transaction.Should().NotBeNull();
                     transaction.Should().Be(moneyDepositTransaction);
@@ -171,7 +171,7 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var accountRepository = scope.GetService<ITransactionRepository>();
+                    var accountRepository = scope.GetRequiredService<ITransactionRepository>();
                     var transaction = await accountRepository.FindTransactionAsync(moneyDepositTransaction.Id);
                     transaction.Should().NotBeNull();
                     transaction.Should().Be(moneyDepositTransaction);
@@ -183,7 +183,7 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var accountRepository = scope.GetService<ITransactionRepository>();
+                    var accountRepository = scope.GetRequiredService<ITransactionRepository>();
                     var transaction = await accountRepository.FindTransactionAsync(moneyDepositTransaction.Id);
                     transaction.Should().NotBeNull();
                     transaction.Should().Be(moneyDepositTransaction);

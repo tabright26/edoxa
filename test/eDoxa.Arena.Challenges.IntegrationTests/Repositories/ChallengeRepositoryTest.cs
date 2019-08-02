@@ -53,7 +53,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var challengeRepository = scope.GetService<IChallengeRepository>();
+                    var challengeRepository = scope.GetRequiredService<IChallengeRepository>();
                     challengeRepository.Create(fakeChallenge);
                     await challengeRepository.CommitAsync();
                 }
@@ -64,7 +64,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var challengeRepository = scope.GetService<IChallengeRepository>();
+                    var challengeRepository = scope.GetRequiredService<IChallengeRepository>();
                     var challenge = await challengeRepository.FindChallengeAsync(fakeChallenge.Id);
                     challenge.Should().NotBeNull();
                     challenge?.Should().Be(fakeChallenge);
@@ -78,7 +78,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var challengeRepository = scope.GetService<IChallengeRepository>();
+                    var challengeRepository = scope.GetRequiredService<IChallengeRepository>();
                     var challenge = await challengeRepository.FindChallengeAsync(fakeChallenge.Id);
                     challenge.Should().NotBeNull();
                     challenge?.Register(participant1);
@@ -90,7 +90,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var challengeRepository = scope.GetService<IChallengeRepository>();
+                    var challengeRepository = scope.GetRequiredService<IChallengeRepository>();
                     var challenge = await challengeRepository.FindChallengeAsync(fakeChallenge.Id);
                     challenge.Should().NotBeNull();
                     challenge?.Participants.Should().Contain(participant1);
@@ -102,7 +102,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var challengeRepository = scope.GetService<IChallengeRepository>();
+                    var challengeRepository = scope.GetRequiredService<IChallengeRepository>();
                     var challenge = await challengeRepository.FindChallengeAsync(fakeChallenge.Id);
                     challenge.Should().NotBeNull();
                     var entries = challenge?.Entries - challenge?.Participants.Count;
@@ -121,7 +121,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var challengeRepository = scope.GetService<IChallengeRepository>();
+                    var challengeRepository = scope.GetRequiredService<IChallengeRepository>();
                     var challenge = await challengeRepository.FindChallengeAsync(fakeChallenge.Id);
                     challenge.Should().NotBeNull();
                     challenge?.Participants.Should().HaveCount(challenge.Entries);
@@ -140,7 +140,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var challengeRepository = scope.GetService<IChallengeRepository>();
+                    var challengeRepository = scope.GetRequiredService<IChallengeRepository>();
                     var challenge = await challengeRepository.FindChallengeAsync(fakeChallenge.Id);
                     challenge.Should().NotBeNull();
                     var participant = challenge?.Participants.Single(p => p == participant1);
@@ -153,7 +153,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var challengeRepository = scope.GetService<IChallengeRepository>();
+                    var challengeRepository = scope.GetRequiredService<IChallengeRepository>();
                     var challenge = await challengeRepository.FindChallengeAsync(fakeChallenge.Id);
                     challenge.Should().NotBeNull();
                     var participant = challenge?.Participants.Single(p => p == participant1);
@@ -169,7 +169,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var challengeRepository = scope.GetService<IChallengeRepository>();
+                    var challengeRepository = scope.GetRequiredService<IChallengeRepository>();
                     var challenge = await challengeRepository.FindChallengeAsync(fakeChallenge.Id);
                     challenge.Should().NotBeNull();
                     var participant = challenge?.Participants.Single(p => p == participant1);
@@ -182,7 +182,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var challengeRepository = scope.GetService<IChallengeRepository>();
+                    var challengeRepository = scope.GetRequiredService<IChallengeRepository>();
                     var challenge = await challengeRepository.FindChallengeAsync(fakeChallenge.Id);
                     challenge.Should().NotBeNull();
                     var participant = challenge?.Participants.Single(p => p == participant1);

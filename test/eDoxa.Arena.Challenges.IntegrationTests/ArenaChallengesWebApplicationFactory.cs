@@ -15,8 +15,8 @@ using eDoxa.Arena.Challenges.Api.Games.LeagueOfLegends.Abstractions;
 using eDoxa.Arena.Challenges.Api.Games.LeagueOfLegends.Dtos;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Seedwork.Security.Hosting;
-using eDoxa.Seedwork.ServiceBus.Modules;
 using eDoxa.Seedwork.Testing.Extensions;
+using eDoxa.ServiceBus.Moq;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -57,7 +57,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests
 
                     container.RegisterInstance(mockLeagueOfLegendsService.Object).As<ILeagueOfLegendsService>().SingleInstance();
 
-                    container.RegisterModule<MockIntegrationEventModule>();
+                    container.RegisterModule<MockServiceBusModule>();
                 }
             );
         }

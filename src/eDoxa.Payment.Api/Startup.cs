@@ -9,8 +9,10 @@ using Autofac;
 using eDoxa.Payment.Api.Extensions;
 using eDoxa.Payment.Api.Infrastructure;
 using eDoxa.Payment.Api.Providers.Extensions;
-using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Monitoring.Extensions;
+using eDoxa.ServiceBus;
+using eDoxa.ServiceBus.Azure.Modules;
+using eDoxa.ServiceBus.Modules;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,17 +38,21 @@ namespace eDoxa.Payment.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<ServiceBusOptions>(Configuration.GetSection("ServiceBus"));
+
             services.AddOptions();
 
             services.AddHealthChecks(AppSettings);
 
             services.AddProviders(Configuration);
-
-            services.AddServiceBus(AppSettings);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
+            builder.RegisterModule<ServiceBusModule<Startup>>();
+
+            builder.RegisterModule<AzureServiceBusModule>();
+
             builder.RegisterModule<PaymentApiModule>();
         }
 
@@ -61,7 +67,7 @@ namespace eDoxa.Payment.Api
 
             application.UseProviders(Configuration);
 
-            application.UseIntegrationEventSubscriptions();
+            application.UseServiceBusSubscriber();
         }
     }
 }

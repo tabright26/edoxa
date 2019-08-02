@@ -10,13 +10,13 @@
 
 using System;
 
-using eDoxa.Seedwork.ServiceBus;
+using eDoxa.ServiceBus;
 
 namespace eDoxa.Cashier.Api.IntegrationEvents
 {
     public class TransactionSuccededIntegrationEvent : IntegrationEvent
     {
-        public TransactionSuccededIntegrationEvent(Guid transactionId)
+        public TransactionSuccededIntegrationEvent(Guid transactionId) : base(Guid.NewGuid())
         {
             TransactionId = transactionId;
         }

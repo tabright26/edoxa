@@ -10,13 +10,13 @@
 
 using System;
 
-using eDoxa.Seedwork.ServiceBus;
+using eDoxa.ServiceBus;
 
 namespace eDoxa.Payment.Api.IntegrationEvents
 {
     internal sealed class TransactionFailedIntegrationEvent : IntegrationEvent
     {
-        public TransactionFailedIntegrationEvent(Guid transactionId)
+        public TransactionFailedIntegrationEvent(Guid transactionId)  : base(Guid.NewGuid())
         {
             TransactionId = transactionId;
         }

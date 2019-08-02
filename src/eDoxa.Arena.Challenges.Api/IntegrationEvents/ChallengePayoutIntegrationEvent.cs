@@ -11,13 +11,13 @@
 using System;
 using System.Collections.Generic;
 
-using eDoxa.Seedwork.ServiceBus;
+using eDoxa.ServiceBus;
 
 namespace eDoxa.Arena.Challenges.Api.IntegrationEvents
 {
     public sealed class ChallengePayoutIntegrationEvent : IntegrationEvent
     {
-        public ChallengePayoutIntegrationEvent(Guid challengeId, IReadOnlyDictionary<Guid, decimal?> userPrizes)
+        public ChallengePayoutIntegrationEvent(Guid challengeId, IReadOnlyDictionary<Guid, decimal?> userPrizes) : base(challengeId)
         {
             ChallengeId = challengeId;
             UserPrizes = userPrizes;

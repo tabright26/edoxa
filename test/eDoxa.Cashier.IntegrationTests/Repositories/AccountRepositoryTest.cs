@@ -47,7 +47,7 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var accountRepository = scope.GetService<IAccountRepository>();
+                    var accountRepository = scope.GetRequiredService<IAccountRepository>();
                     accountRepository.Create(fakeAccount);
                     await accountRepository.CommitAsync();
                 }
@@ -56,7 +56,7 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var accountRepository = scope.GetService<IAccountRepository>();
+                    var accountRepository = scope.GetRequiredService<IAccountRepository>();
                     var account = await accountRepository.FindUserAccountAsync(fakeAccount.UserId);
                     account.Should().NotBeNull();
                     account.Should().Be(fakeAccount);
@@ -70,7 +70,7 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var accountRepository = scope.GetService<IAccountRepository>();
+                    var accountRepository = scope.GetRequiredService<IAccountRepository>();
                     var account = await accountRepository.FindUserAccountAsync(fakeAccount.UserId);
                     account.Should().NotBeNull();
                     account.Should().Be(fakeAccount);
@@ -82,7 +82,7 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var accountRepository = scope.GetService<IAccountRepository>();
+                    var accountRepository = scope.GetRequiredService<IAccountRepository>();
                     var account = await accountRepository.FindUserAccountAsync(fakeAccount.UserId);
                     account.Should().NotBeNull();
                     account.Should().Be(fakeAccount);
@@ -95,7 +95,7 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var accountRepository = scope.GetService<IAccountRepository>();
+                    var accountRepository = scope.GetRequiredService<IAccountRepository>();
                     var account = await accountRepository.FindUserAccountAsync(fakeAccount.UserId);
                     account.Should().NotBeNull();
                     account.Should().Be(fakeAccount);
@@ -109,7 +109,7 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var accountRepository = scope.GetService<IAccountRepository>();
+                    var accountRepository = scope.GetRequiredService<IAccountRepository>();
                     var account = await accountRepository.FindUserAccountAsync(fakeAccount.UserId);
                     account.Should().NotBeNull();
                     account.Should().Be(fakeAccount);
@@ -123,7 +123,7 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var accountRepository = scope.GetService<IAccountRepository>();
+                    var accountRepository = scope.GetRequiredService<IAccountRepository>();
                     var account = await accountRepository.FindUserAccountAsync(fakeAccount.UserId);
                     account.Should().NotBeNull();
                     account.Should().Be(fakeAccount);

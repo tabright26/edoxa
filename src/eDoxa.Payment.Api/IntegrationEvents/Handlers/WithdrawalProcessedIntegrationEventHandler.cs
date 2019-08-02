@@ -12,7 +12,7 @@ using System;
 using System.Threading.Tasks;
 
 using eDoxa.Payment.Api.Providers.Stripe.Abstractions;
-using eDoxa.Seedwork.ServiceBus;
+using eDoxa.ServiceBus.Abstractions;
 
 using Microsoft.Extensions.Logging;
 

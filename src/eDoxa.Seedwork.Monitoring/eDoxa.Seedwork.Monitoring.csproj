@@ -5,7 +5,7 @@
     <AssemblyName>eDoxa.Seedwork.Monitoring</AssemblyName>
     <RootNamespace>eDoxa.Seedwork.Monitoring</RootNamespace>
     <LangVersion>8.0</LangVersion>
-    <NullableContextOptions>enable</NullableContextOptions>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>

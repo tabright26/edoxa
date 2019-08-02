@@ -6,13 +6,13 @@
 
 using System;
 
-using eDoxa.Seedwork.ServiceBus;
+using eDoxa.ServiceBus;
 
 namespace eDoxa.Identity.Api.IntegrationEvents
 {
     public class UserRoleRemovedIntegrationEvent : IntegrationEvent
     {
-        public UserRoleRemovedIntegrationEvent(Guid userId, string roleName)
+        public UserRoleRemovedIntegrationEvent(Guid userId, string roleName) : base(Guid.NewGuid())
         {
             UserId = userId;
             RoleName = roleName;

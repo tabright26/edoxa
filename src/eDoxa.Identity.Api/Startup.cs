@@ -29,9 +29,8 @@ using eDoxa.Seedwork.Security.Constants;
 using eDoxa.Seedwork.Security.Extensions;
 using eDoxa.Seedwork.Security.Hosting.Extensions;
 using eDoxa.Seedwork.Security.Middlewares;
-using eDoxa.Seedwork.ServiceBus;
-using eDoxa.Seedwork.ServiceBus.Extensions;
-using eDoxa.Seedwork.ServiceBus.Modules;
+using eDoxa.ServiceBus.Azure.Modules;
+using eDoxa.ServiceBus.Modules;
 
 using FluentValidation.AspNetCore;
 
@@ -80,10 +79,6 @@ namespace eDoxa.Identity.Api
             services.AddHealthChecks(AppSettings);
 
             services.AddDataProtection(Configuration);
-
-            services.AddEntityFrameworkSqlServer();
-
-            services.AddIntegrationEventDbContext(AppSettings.ConnectionStrings.SqlServer, Assembly.GetAssembly(typeof(Startup)));
 
             services.AddDbContext<IdentityDbContext, IdentityDbContextData>(AppSettings.ConnectionStrings.SqlServer, Assembly.GetAssembly(typeof(Startup)));
 
@@ -234,16 +229,16 @@ namespace eDoxa.Identity.Api
                 .BuildCustomServices();
 
             services.AddAuthentication(HostingEnvironment, AppSettings);
-
-            services.AddServiceBus(AppSettings);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterModule<DomainEventModule>();
 
-            builder.RegisterModule<IntegrationEventModule<IdentityDbContext>>();
+            builder.RegisterModule<ServiceBusModule<Startup>>();
 
+            builder.RegisterModule<AzureServiceBusModule>();
+            
             builder.RegisterModule<IdentityApiModule>();
         }
 
@@ -304,7 +299,7 @@ namespace eDoxa.Identity.Api
 
             application.UseMvcWithDefaultRoute();
 
-            application.UseIntegrationEventSubscriptions();
+            application.UseServiceBusSubscriber();
         }
     }
 }

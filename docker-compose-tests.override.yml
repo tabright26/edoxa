@@ -39,9 +39,8 @@ services:
       - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
       - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
       - AzureServiceBusEnabled=${ASB_ENABLE:-false}
-      - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq.test}
-      - ServiceBus__RetryCount=${ASB_RETRYCOUNT:-5}
-      - ServiceBus__SubscriptionName=Identity
+      - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq.test}      
+      - ServiceBus__SubscriptionName=identity
       - AzureKubernetesServiceEnabled=${AKS_ENABLE:-false}
       - Authority__PrivateUrl=${URL:-http://localhost}:5000
       - Authority__PublicUrl=${URL:-http://localhost}:5000
@@ -73,9 +72,8 @@ services:
       - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
       - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
       - AzureServiceBusEnabled=${ASB_ENABLE:-false}
-      - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq.test}
-      - ServiceBus__RetryCount=${ASB_RETRYCOUNT:-5}
-      - ServiceBus__SubscriptionName=Cashier
+      - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq.test}      
+      - ServiceBus__SubscriptionName=cashier
       - HealthChecks__PaymentUrl=${URL:-http://localhost}:5002/health
       - Authority__PrivateUrl=${URL:-http://localhost}:5000
       - Authority__PublicUrl=${URL:-http://localhost}:5000
@@ -99,9 +97,8 @@ services:
       - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
       - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
       - AzureServiceBusEnabled=${ASB_ENABLE:-false}
-      - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq.test}
-      - ServiceBus__RetryCount=${ASB_RETRYCOUNT:-5}
-      - ServiceBus__SubscriptionName=Arena.Challenges
+      - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq.test}      
+      - ServiceBus__SubscriptionName=arena.challenges
       - Authority__PrivateUrl=${URL:-http://localhost}:5000
       - Authority__PublicUrl=${URL:-http://localhost}:5000
       - SwaggerEnabled=${SwaggerEnabled:-false}

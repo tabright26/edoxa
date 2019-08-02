@@ -10,7 +10,7 @@
 
 using eDoxa.Payment.Api.IntegrationEvents;
 using eDoxa.Payment.Api.IntegrationEvents.Handlers;
-using eDoxa.Seedwork.ServiceBus;
+using eDoxa.ServiceBus.Abstractions;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,15 +19,12 @@ namespace eDoxa.Payment.Api.Extensions
 {
     public static class ApplicationBuilderExtensions
     {
-        public static void UseIntegrationEventSubscriptions(this IApplicationBuilder application)
+        public static void UseServiceBusSubscriber(this IApplicationBuilder application)
         {
-            var service = application.ApplicationServices.GetRequiredService<IServiceBusPublisher>();
-
-            service.Subscribe<UserCreatedIntegrationEvent, UserCreatedIntegrationEventHandler>();
-
-            service.Subscribe<DepositProcessedIntegrationEvent, DepositProcessedIntegrationEventHandler>();
-
-            service.Subscribe<WithdrawalProcessedIntegrationEvent, WithdrawalProcessedIntegrationEventHandler>();
+            var serviceBusSubscriber = application.ApplicationServices.GetRequiredService<IServiceBusSubscriber>();
+            serviceBusSubscriber.Subscribe<UserCreatedIntegrationEvent, UserCreatedIntegrationEventHandler>();
+            serviceBusSubscriber.Subscribe<DepositProcessedIntegrationEvent, DepositProcessedIntegrationEventHandler>();
+            serviceBusSubscriber.Subscribe<WithdrawalProcessedIntegrationEvent, WithdrawalProcessedIntegrationEventHandler>();
         }
     }
 }

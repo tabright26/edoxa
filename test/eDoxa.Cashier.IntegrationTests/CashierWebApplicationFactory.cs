@@ -12,8 +12,8 @@ using Autofac;
 using eDoxa.Cashier.Api;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Seedwork.Security.Hosting;
-using eDoxa.Seedwork.ServiceBus.Modules;
 using eDoxa.Seedwork.Testing.Extensions;
+using eDoxa.ServiceBus.Moq;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -35,7 +35,7 @@ namespace eDoxa.Cashier.IntegrationTests
             builder.ConfigureTestContainer<ContainerBuilder>(
                 container =>
                 {
-                    container.RegisterModule<MockIntegrationEventModule>();
+                    container.RegisterModule<MockServiceBusModule>();
                 }
             );
         }

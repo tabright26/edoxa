@@ -17,19 +17,19 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services;
-using eDoxa.Seedwork.ServiceBus;
+using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Cashier.Api.Application.Services
 {
     public sealed class AccountService : IAccountService
     {
         private readonly IAccountRepository _accountRepository;
-        private readonly IIntegrationEventPublisher _integrationEventPublisher;
+        private readonly IServiceBusPublisher _serviceBusPublisher;
 
-        public AccountService(IAccountRepository accountRepository, IIntegrationEventPublisher integrationEventPublisher)
+        public AccountService(IAccountRepository accountRepository, IServiceBusPublisher serviceBusPublisher)
         {
             _accountRepository = accountRepository;
-            _integrationEventPublisher = integrationEventPublisher;
+            _serviceBusPublisher = serviceBusPublisher;
         }
 
         public async Task WithdrawalAsync(string connectAccountId, UserId userId, Money money, CancellationToken cancellationToken = default)
@@ -40,7 +40,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             await _accountRepository.CommitAsync(cancellationToken);
 
-            await _integrationEventPublisher.PublishAsync(
+            _serviceBusPublisher.Publish(
                 new WithdrawalProcessedIntegrationEvent(
                     transaction.Id,
                     transaction.Description.Text,
@@ -93,7 +93,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             await _accountRepository.CommitAsync(cancellationToken);
 
-            await _integrationEventPublisher.PublishAsync(
+            _serviceBusPublisher.Publish(
                 new DepositProcessedIntegrationEvent(transaction.Id, transaction.Description.Text, customerId, transaction.Price.ToCents())
             );
         }

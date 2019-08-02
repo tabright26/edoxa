@@ -81,14 +81,14 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var challengeRepository = scope.GetService<IChallengeRepository>();
+                    var challengeRepository = scope.GetRequiredService<IChallengeRepository>();
                     challengeRepository.Create(challenge);
                     await challengeRepository.CommitAsync();
                 }
             );
 
             // Act
-            var response = await this.ExecuteAsync(userId, new RegisterParticipantRequest(ChallengeId.FromGuid(challenge.Id)));
+            using var response = await this.ExecuteAsync(userId, new RegisterParticipantRequest(ChallengeId.FromGuid(challenge.Id)));
 
             // Assert
             response.EnsureSuccessStatusCode();

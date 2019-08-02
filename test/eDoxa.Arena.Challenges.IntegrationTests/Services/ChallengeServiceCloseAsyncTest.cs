@@ -52,7 +52,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Services
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var challengeRepository = scope.GetService<IChallengeRepository>();
+                    var challengeRepository = scope.GetRequiredService<IChallengeRepository>();
                     challengeRepository.Create(challenges);
                     await challengeRepository.CommitAsync();
                 }
@@ -64,7 +64,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Services
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var challengeService = scope.GetService<IChallengeService>();
+                    var challengeService = scope.GetRequiredService<IChallengeService>();
                     await challengeService.CloseAsync(closedAt);
                 }
             );
@@ -73,7 +73,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Services
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var challengeRepository = scope.GetService<IChallengeRepository>();
+                    var challengeRepository = scope.GetRequiredService<IChallengeRepository>();
                     challenges = await challengeRepository.FetchChallengesAsync(null, ChallengeState.Closed);
                     challenges.Should().HaveCount(count);
                     challenges.ForEach(challenge => challenge.Timeline.ClosedAt.Should().Be(closedAt.DateTime));

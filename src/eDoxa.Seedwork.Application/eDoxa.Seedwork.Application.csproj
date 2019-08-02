@@ -5,10 +5,11 @@
         <AssemblyName>eDoxa.Seedwork.Application</AssemblyName>
         <RootNamespace>eDoxa.Seedwork.Application</RootNamespace>
         <LangVersion>8.0</LangVersion>
-        <NullableContextOptions>enable</NullableContextOptions>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Autofac" Version="4.9.3" />
         <PackageReference Include="Microsoft.AspNetCore.CookiePolicy" Version="2.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="2.2.1" />
@@ -16,6 +17,7 @@
         <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="1.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+        <PackageReference Include="Microsoft.Azure.ServiceBus" Version="3.4.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
         <PackageReference Include="Microsoft.Extensions.Logging.ApplicationInsights" Version="2.10.0" />
         <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="2.2.5" />
@@ -39,7 +41,6 @@
         <ProjectReference Include="..\eDoxa.Seedwork.Infrastructure\eDoxa.Seedwork.Infrastructure.csproj" />
         <ProjectReference Include="..\eDoxa.Seedwork.Monitoring\eDoxa.Seedwork.Monitoring.csproj" />
         <ProjectReference Include="..\eDoxa.Seedwork.Security\eDoxa.Seedwork.Security.csproj" />
-        <ProjectReference Include="..\eDoxa.Seedwork.ServiceBus\eDoxa.Seedwork.ServiceBus.csproj" />
     </ItemGroup>
 
 </Project>

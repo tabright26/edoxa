@@ -6,23 +6,14 @@
 
 using System;
 
-using Autofac;
-
 using eDoxa.Seedwork.Monitoring.AppSettings;
-using eDoxa.Seedwork.ServiceBus;
-using eDoxa.Seedwork.ServiceBus.AzureServiceBus;
-using eDoxa.Seedwork.ServiceBus.RabbitMq;
 
 using IdentityServer4.AccessTokenValidation;
 using IdentityServer4.Models;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Azure.ServiceBus;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-
-using RabbitMQ.Client;
 
 namespace eDoxa.Seedwork.Application.Extensions
 {
@@ -49,106 +40,6 @@ namespace eDoxa.Seedwork.Application.Extensions
                 options.RequireHttpsMetadata = environment.IsProduction();
                 options.ApiSecret = "secret";
             };
-        }
-
-        public static void AddServiceBus(this IServiceCollection services, IHasServiceBusAppSettings appSettings)
-        {
-            services.AddServiceBusConnection(appSettings);
-
-            services.AddEventBus(appSettings);
-        }
-
-        private static void AddServiceBusConnection(this IServiceCollection services, IHasServiceBusAppSettings appSettings)
-        {
-            if (appSettings.AzureServiceBusEnabled)
-            {
-                services.AddSingleton<IAzureServiceBusContext>(
-                    provider =>
-                    {
-                        var logger = provider.GetRequiredService<ILogger<AzureServiceBusContext>>();
-
-                        var builder = new ServiceBusConnectionStringBuilder(appSettings.ServiceBus.HostName);
-
-                        return new AzureServiceBusContext(builder, logger);
-                    }
-                );
-            }
-            else
-            {
-                services.AddSingleton<IRabbitMqServiceBusContext>(
-                    provider =>
-                    {
-                        var logger = provider.GetRequiredService<ILogger<RabbitMqServiceBusContext>>();
-
-                        return new RabbitMqServiceBusContext(
-                            new ConnectionFactory
-                            {
-                                HostName = appSettings.ServiceBus.HostName,
-                                Port = appSettings.ServiceBus.Port ?? -1,
-                                UserName = appSettings.ServiceBus.UserName ?? "guest",
-                                Password = appSettings.ServiceBus.Password ?? "guest"
-                            },
-                            logger,
-                            appSettings.ServiceBus.RetryCount ?? 5
-                        );
-                    }
-                );
-            }
-        }
-
-        private static void AddEventBus(this IServiceCollection services, IHasServiceBusAppSettings appSettings)
-        {
-            if (appSettings.AzureServiceBusEnabled)
-            {
-                services.AddSingleton<IServiceBusPublisher, AzureServiceBusPublisher>(
-                    provider =>
-                    {
-                        var logger = provider.GetRequiredService<ILogger<AzureServiceBusPublisher>>();
-
-                        var scope = provider.GetRequiredService<ILifetimeScope>();
-
-                        var connection = provider.GetRequiredService<IAzureServiceBusContext>();
-
-                        var handler = provider.GetRequiredService<IServiceBusStore>();
-
-                        return new AzureServiceBusPublisher(
-                            logger,
-                            scope,
-                            connection,
-                            handler,
-                            appSettings.ServiceBus.SubscriptionName
-                        );
-                    }
-                );
-            }
-            else
-            {
-                services.AddSingleton<IServiceBusPublisher, RabbitMqServiceBusPublisher>(
-                    provider =>
-                    {
-                        var logger = provider.GetRequiredService<ILogger<RabbitMqServiceBusPublisher>>();
-
-                        var scope = provider.GetRequiredService<ILifetimeScope>();
-
-                        var connection = provider.GetRequiredService<IRabbitMqServiceBusContext>();
-
-                        var handler = provider.GetRequiredService<IServiceBusStore>();
-
-                        var retryCount = appSettings.ServiceBus.RetryCount ?? 5;
-
-                        return new RabbitMqServiceBusPublisher(
-                            logger,
-                            scope,
-                            connection,
-                            handler,
-                            retryCount,
-                            appSettings.ServiceBus.SubscriptionName
-                        );
-                    }
-                );
-            }
-
-            services.AddSingleton<IServiceBusStore, InMemoryServiceBusStore>();
         }
     }
 }

@@ -10,7 +10,7 @@
 
 using System;
 
-using eDoxa.Seedwork.ServiceBus;
+using eDoxa.ServiceBus;
 
 namespace eDoxa.Cashier.Api.IntegrationEvents
 {
@@ -21,7 +21,7 @@ namespace eDoxa.Cashier.Api.IntegrationEvents
             string transactionDescription,
             string connectAccountId,
             long amount
-        )
+        ) : base(Guid.NewGuid())
         {
             TransactionId = transactionId;
             TransactionDescription = transactionDescription;

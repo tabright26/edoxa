@@ -7,12 +7,17 @@
 using System;
 using System.Collections.Generic;
 
-using eDoxa.Seedwork.ServiceBus;
+using eDoxa.ServiceBus;
 
 namespace eDoxa.Identity.Api.IntegrationEvents
 {
     public sealed class UserClaimsReplacedIntegrationEvent : IntegrationEvent
     {
+        public UserClaimsReplacedIntegrationEvent() : base(Guid.NewGuid())
+        {
+            
+        }
+
         public Guid UserId { get; set; }
 
         public int ClaimCount { get; set; }

@@ -5,7 +5,7 @@
     <AssemblyName>eDoxa.Arena.Challenges.Domain</AssemblyName>
     <RootNamespace>eDoxa.Arena.Challenges.Domain</RootNamespace>
     <LangVersion>8.0</LangVersion>
-    <NullableContextOptions>enable</NullableContextOptions>
+    <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 

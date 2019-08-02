@@ -5,11 +5,12 @@
     <AssemblyName>eDoxa.Cashier.UnitTests</AssemblyName>
     <RootNamespace>eDoxa.Cashier.UnitTests</RootNamespace>
     <LangVersion>8.0</LangVersion>
-    <NullableContextOptions>enable</NullableContextOptions>
+    <Nullable>disable</Nullable>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="eDoxa.ServiceBus.Abstractions" Version="1.0.0-CI-20190802-042217" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />
     <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
@@ -17,7 +18,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\eDoxa.Cashier.Api\eDoxa.Cashier.Api.csproj" />
-    <ProjectReference Include="..\..\src\eDoxa.Seedwork.ServiceBus\eDoxa.Seedwork.ServiceBus.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Seedwork.Testing\eDoxa.Seedwork.Testing.csproj" />
   </ItemGroup>
 

@@ -5,14 +5,9 @@
     <AssemblyName>eDoxa.Arena.Challenges.UnitTests</AssemblyName>
     <RootNamespace>eDoxa.Arena.Challenges.UnitTests</RootNamespace>
     <LangVersion>8.0</LangVersion>
-    <NullableContextOptions>enable</NullableContextOptions>
+    <Nullable>disable</Nullable>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="Helpers\Stubs\LeagueOfLegends\Matches.json" />
-    <None Remove="Helpers\Stubs\LeagueOfLegends\MatchReferences.json" />
-  </ItemGroup>
 
   <ItemGroup>
     <Content Include="Helpers\Stubs\LeagueOfLegends\Matches.json">

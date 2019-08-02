@@ -21,13 +21,13 @@ namespace eDoxa.Seedwork.Testing.Extensions
         public static void EnsureCreatedDbContext<TDbContext>(this TestServer server)
         where TDbContext : DbContext
         {
-            server.UsingScope(scope => scope?.GetService<TDbContext>().Database?.EnsureCreated());
+            server.UsingScope(scope => scope?.GetRequiredService<TDbContext>().Database?.EnsureCreated());
         }
 
         public static void MigrateDbContext<TDbContext>(this TestServer server)
         where TDbContext : DbContext
         {
-            server.UsingScope(scope => scope?.GetService<TDbContext>().Database?.Migrate());
+            server.UsingScope(scope => scope?.GetRequiredService<TDbContext>().Database?.Migrate());
         }
 
         public static void CleanupDbContext(this TestServer server)
@@ -35,7 +35,7 @@ namespace eDoxa.Seedwork.Testing.Extensions
             server.UsingScope(
                 scope =>
                 {
-                    var context = scope?.GetService<IDbContextData>() ?? throw new InvalidOperationException();
+                    var context = scope?.GetRequiredService<IDbContextData>() ?? throw new InvalidOperationException();
 
                     context.Cleanup();
                 }

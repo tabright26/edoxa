@@ -16,7 +16,6 @@ using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Security.AzureKeyVault.Extensions;
-using eDoxa.Seedwork.ServiceBus.Infrastructure;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -40,8 +39,6 @@ namespace eDoxa.Arena.Challenges.Api
                 Log.Information("Applying {Application} context migrations...");
 
                 host.MigrateDbContextWithRetryPolicy<ArenaChallengesDbContext>();
-
-                host.MigrateDbContextWithRetryPolicy<ServiceBusDbContext>();
 
                 Log.Information("Starting {Application} web host...");
 

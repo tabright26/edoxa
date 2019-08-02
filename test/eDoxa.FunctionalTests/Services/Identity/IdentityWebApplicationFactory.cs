@@ -10,7 +10,6 @@ using System.Reflection;
 using eDoxa.Identity.Api;
 using eDoxa.Identity.Api.Infrastructure;
 using eDoxa.Seedwork.Security.Hosting;
-using eDoxa.Seedwork.ServiceBus.Infrastructure;
 using eDoxa.Seedwork.Testing.Extensions;
 
 using Microsoft.AspNetCore.Hosting;
@@ -39,8 +38,6 @@ namespace eDoxa.FunctionalTests.Services.Identity
             var server = base.CreateServer(builder);
 
             server.EnsureCreatedDbContext<IdentityDbContext>();
-
-            server.MigrateDbContext<ServiceBusDbContext>();
 
             return server;
         }

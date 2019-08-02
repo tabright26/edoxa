@@ -8,7 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Seedwork.ServiceBus;
+using eDoxa.ServiceBus.Abstractions;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,9 +17,9 @@ namespace eDoxa.Arena.Challenges.Api.Extensions
 {
     public static class ApplicationBuilderExtensions
     {
-        public static void UseIntegrationEventSubscriptions(this IApplicationBuilder application)
+        public static void UseServiceBusSubscriber(this IApplicationBuilder application)
         {
-            var service = application.ApplicationServices.GetRequiredService<IServiceBusPublisher>();
+            var serviceBusSubscriber = application.ApplicationServices.GetRequiredService<IServiceBusSubscriber>();
         }
     }
 }

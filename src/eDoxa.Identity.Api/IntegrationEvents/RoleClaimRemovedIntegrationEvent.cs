@@ -4,13 +4,15 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Seedwork.ServiceBus;
+using System;
+
+using eDoxa.ServiceBus;
 
 namespace eDoxa.Identity.Api.IntegrationEvents
 {
     public class RoleClaimRemovedIntegrationEvent : IntegrationEvent
     {
-        public RoleClaimRemovedIntegrationEvent(string roleName, string claimType, string claimValue)
+        public RoleClaimRemovedIntegrationEvent(string roleName, string claimType, string claimValue) : base(Guid.NewGuid())
         {
             RoleName = roleName;
             ClaimType = claimType;

@@ -30,9 +30,8 @@ using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security.Constants;
 using eDoxa.Seedwork.Security.Extensions;
-using eDoxa.Seedwork.ServiceBus;
-using eDoxa.Seedwork.ServiceBus.Extensions;
-using eDoxa.Seedwork.ServiceBus.Modules;
+using eDoxa.ServiceBus.Azure.Modules;
+using eDoxa.ServiceBus.Modules;
 
 using FluentValidation.AspNetCore;
 
@@ -78,11 +77,7 @@ namespace eDoxa.Arena.Challenges.Api
             services.AddHealthChecks(AppSettings);
 
             services.AddCorsPolicy();
-
-            services.AddEntityFrameworkSqlServer();
-
-            services.AddIntegrationEventDbContext(AppSettings.ConnectionStrings.SqlServer, Assembly.GetAssembly(typeof(Startup)));
-
+            
             services.AddDbContext<ArenaChallengesDbContext, ArenaChallengesDbContextData>(AppSettings.ConnectionStrings.SqlServer, Assembly.GetAssembly(typeof(Startup)));
 
             services.AddDistributedRedisCache(
@@ -145,8 +140,6 @@ namespace eDoxa.Arena.Challenges.Api
 
             // TODO: Add to autofac module.
             services.AddArenaServices(Configuration);
-
-            services.AddServiceBus(AppSettings);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -155,7 +148,9 @@ namespace eDoxa.Arena.Challenges.Api
 
             builder.RegisterModule<RequestModule>();
 
-            builder.RegisterModule<IntegrationEventModule<ArenaChallengesDbContext>>();
+            builder.RegisterModule<ServiceBusModule<Startup>>();
+
+            builder.RegisterModule<AzureServiceBusModule>();
 
             builder.RegisterModule<ArenaChallengesApiModule>();
         }
@@ -197,7 +192,7 @@ namespace eDoxa.Arena.Challenges.Api
 
             application.UseMvc();
 
-            application.UseIntegrationEventSubscriptions();
+            application.UseServiceBusSubscriber();
         }
     }
 }

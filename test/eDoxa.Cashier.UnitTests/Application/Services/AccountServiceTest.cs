@@ -6,8 +6,8 @@
 
 using eDoxa.Cashier.Api.Application.Services;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Seedwork.ServiceBus;
 using eDoxa.Seedwork.Testing.TestConstructor;
+using eDoxa.ServiceBus.Abstractions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -19,7 +19,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
         [TestMethod]
         public void Constructor_Tests()
         {
-            TestConstructor<AccountService>.ForParameters(typeof(IAccountRepository), typeof(IIntegrationEventPublisher))
+            TestConstructor<AccountService>.ForParameters(typeof(IAccountRepository), typeof(IServiceBusPublisher))
                 .WithClassName("AccountService")
                 .Assert();
         }

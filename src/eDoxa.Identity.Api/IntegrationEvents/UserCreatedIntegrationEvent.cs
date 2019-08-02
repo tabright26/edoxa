@@ -6,7 +6,7 @@
 
 using System;
 
-using eDoxa.Seedwork.ServiceBus;
+using eDoxa.ServiceBus;
 
 namespace eDoxa.Identity.Api.IntegrationEvents
 {
@@ -20,7 +20,7 @@ namespace eDoxa.Identity.Api.IntegrationEvents
             int year,
             int month,
             int day
-        )
+        ) : base(Guid.NewGuid())
         {
             UserId = userId;
             Email = email;

@@ -10,12 +10,16 @@
 
 using System;
 
-using eDoxa.Seedwork.ServiceBus;
+using eDoxa.ServiceBus;
 
 namespace eDoxa.Cashier.Api.IntegrationEvents
 {
     public sealed class UserCreatedIntegrationEvent : IntegrationEvent
     {
+        public UserCreatedIntegrationEvent() : base(Guid.NewGuid())
+        {
+        }
+
         public Guid UserId { get; set; }
 
         public string Email { get; set; }

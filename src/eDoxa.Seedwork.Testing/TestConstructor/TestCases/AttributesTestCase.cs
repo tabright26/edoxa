@@ -33,7 +33,7 @@ namespace eDoxa.Seedwork.Testing.TestConstructor.TestCases
 
         public override string Execute()
         {
-            var types = _constructorInfo.DeclaringType.CustomAttributes.Select(data => data.AttributeType).ToArray();
+            var types = _constructorInfo.DeclaringType.CustomAttributes.Where(x => x.AttributeType.Name != "NullableAttribute" && x.AttributeType.Name != "NullableContextAttribute").Select(data => data.AttributeType).ToArray();
             var classAttributeTypes = _classAttributeTypes;
 
             return !types.SequenceEqual(classAttributeTypes)

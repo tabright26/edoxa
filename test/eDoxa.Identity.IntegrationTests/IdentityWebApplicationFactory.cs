@@ -12,8 +12,8 @@ using Autofac;
 using eDoxa.Identity.Api;
 using eDoxa.Identity.Api.Infrastructure;
 using eDoxa.Seedwork.Security.Hosting;
-using eDoxa.Seedwork.ServiceBus.Modules;
 using eDoxa.Seedwork.Testing.Extensions;
+using eDoxa.ServiceBus.Moq;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -35,7 +35,7 @@ namespace eDoxa.Identity.IntegrationTests
             builder.ConfigureTestContainer<ContainerBuilder>(
                 container =>
                 {
-                    container.RegisterModule<MockIntegrationEventModule>();
+                    container.RegisterModule<MockServiceBusModule>();
                 }
             );
         }

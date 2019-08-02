@@ -47,7 +47,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Services
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var challengeRepository = scope.GetService<IChallengeRepository>();
+                    var challengeRepository = scope.GetRequiredService<IChallengeRepository>();
                     challengeRepository.Create(challenges);
                     await challengeRepository.CommitAsync();
                 }
@@ -57,7 +57,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Services
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var challengeService = scope.GetService<IChallengeService>();
+                    var challengeService = scope.GetRequiredService<IChallengeService>();
                     var synchronizedAt = new DateTimeProvider(DateTime.UtcNow);
                     await challengeService.SynchronizeAsync(ChallengeGame.LeagueOfLegends, TimeSpan.Zero, synchronizedAt);
                 }
@@ -67,7 +67,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Services
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var challengeRepository = scope.GetService<IChallengeRepository>();
+                    var challengeRepository = scope.GetRequiredService<IChallengeRepository>();
                     challenges = await challengeRepository.FetchChallengesAsync(null, ChallengeState.InProgress);
                     challenges.Should().HaveCount(5);
                 }

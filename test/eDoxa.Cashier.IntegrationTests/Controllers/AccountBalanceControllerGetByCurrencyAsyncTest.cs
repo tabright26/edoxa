@@ -61,7 +61,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var accountRepository = scope.GetService<IAccountRepository>();
+                    var accountRepository = scope.GetRequiredService<IAccountRepository>();
                     accountRepository.Create(account);
                     await accountRepository.CommitAsync();
                 }
@@ -93,7 +93,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var accountRepository = scope.GetService<IAccountRepository>();
+                    var accountRepository = scope.GetRequiredService<IAccountRepository>();
                     accountRepository.Create(account);
                     await accountRepository.CommitAsync();
                 }
@@ -134,7 +134,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var accountRepository = scope.GetService<IAccountRepository>();
+                    var accountRepository = scope.GetRequiredService<IAccountRepository>();
                     accountRepository.Create(account);
                     await accountRepository.CommitAsync();
                 }
