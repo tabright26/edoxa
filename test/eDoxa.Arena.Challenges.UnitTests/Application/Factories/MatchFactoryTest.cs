@@ -9,9 +9,9 @@ using System.Collections.Generic;
 
 using eDoxa.Arena.Challenges.Api.Application.Adapters;
 using eDoxa.Arena.Challenges.Api.Application.Factories;
-using eDoxa.Arena.Challenges.Api.Games.LeagueOfLegends.Abstractions;
 using eDoxa.Arena.Challenges.Domain.Adapters;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Games.LeagueOfLegends.Abstractions;
 
 using FluentAssertions;
 

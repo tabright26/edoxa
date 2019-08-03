@@ -65,7 +65,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
             );
 
             // Act
-            var response = await this.ExecuteAsync(ChallengeId.FromGuid(challenge.Id));
+            using var response = await this.ExecuteAsync(ChallengeId.FromGuid(challenge.Id));
 
             // Assert
             response.EnsureSuccessStatusCode();

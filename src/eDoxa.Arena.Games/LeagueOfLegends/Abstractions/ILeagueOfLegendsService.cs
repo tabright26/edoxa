@@ -1,4 +1,4 @@
-﻿// Filename: ILeagueOfLegendsProxy.cs
+﻿// Filename: ILeagueOfLegendsService.cs
 // Date Created: 2019-06-29
 // 
 // ================================================
@@ -11,11 +11,14 @@
 using System;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Api.Games.LeagueOfLegends.Dtos;
+using eDoxa.Arena.Games.LeagueOfLegends.Dtos;
 
-namespace eDoxa.Arena.Challenges.Api.Games.LeagueOfLegends.Abstractions
+namespace eDoxa.Arena.Games.LeagueOfLegends.Abstractions
 {
-    public interface ILeagueOfLegendsProxy
+    /// <summary>
+    ///     API version 4
+    /// </summary>
+    public interface ILeagueOfLegendsService
     {
         Task<LeagueOfLegendsMatchReferenceDto[]> GetMatchReferencesAsync(string accountId, DateTime endTime, DateTime beginTime);
 

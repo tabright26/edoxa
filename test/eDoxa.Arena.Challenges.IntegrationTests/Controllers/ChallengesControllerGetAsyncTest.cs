@@ -59,7 +59,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
             );
 
             // Act
-            var response = await this.ExecuteAsync();
+            using var response = await this.ExecuteAsync();
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -88,7 +88,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
             );
 
             // Act
-            var response = await this.ExecuteAsync();
+            using var response = await this.ExecuteAsync();
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -103,7 +103,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         public async Task ShouldBeNoContent()
         {
             // Act
-            var response = await this.ExecuteAsync();
+            using var response = await this.ExecuteAsync();
 
             // Assert
             response.EnsureSuccessStatusCode();

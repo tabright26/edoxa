@@ -10,12 +10,15 @@ using System.ComponentModel.DataAnnotations;
 
 using eDoxa.Seedwork.Monitoring.AppSettings;
 using eDoxa.Seedwork.Monitoring.AppSettings.Options;
+using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Payment.Api.Infrastructure
 {
-    public class PaymentAppSettings : IHasAzureKeyVaultAppSettings
+    public class PaymentAppSettings : IHasAzureKeyVaultAppSettings, IHasServiceBusAppSettings
     {
         [Required]
         public AzureKeyVaultOptions AzureKeyVault { get; set; }
+
+        public bool AzureServiceBusEnabled { get; set; }
     }
 }

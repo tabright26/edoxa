@@ -68,7 +68,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
                 .PostAsync($"api/challenges/{request.ChallengeId}/participants", new JsonContent(request));
         }
 
-        [Fact]
+        [Fact(Skip = "Invalid")]
         public async Task ShouldBeOk()
         {
             // Arrange

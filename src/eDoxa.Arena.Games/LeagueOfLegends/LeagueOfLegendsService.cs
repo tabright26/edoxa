@@ -13,12 +13,12 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 
-using eDoxa.Arena.Challenges.Api.Games.LeagueOfLegends.Abstractions;
-using eDoxa.Arena.Challenges.Api.Games.LeagueOfLegends.Dtos;
+using eDoxa.Arena.Games.LeagueOfLegends.Abstractions;
+using eDoxa.Arena.Games.LeagueOfLegends.Dtos;
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Arena.Challenges.Api.Games.LeagueOfLegends
+namespace eDoxa.Arena.Games.LeagueOfLegends
 {
     internal sealed class LeagueOfLegendsService : ILeagueOfLegendsService
     {

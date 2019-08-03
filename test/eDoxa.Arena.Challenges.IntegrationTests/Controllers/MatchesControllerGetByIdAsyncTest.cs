@@ -69,7 +69,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
             var matchId = challenge.Participants.First().Matches.First().Id;
 
             // Act
-            var response = await this.ExecuteAsync(MatchId.FromGuid(matchId));
+            using var response = await this.ExecuteAsync(MatchId.FromGuid(matchId));
 
             // Assert
             response.EnsureSuccessStatusCode();

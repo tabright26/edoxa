@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 using Microsoft.Extensions.Options;
 
-namespace eDoxa.Arena.Challenges.Api.Games.LeagueOfLegends
+namespace eDoxa.Arena.Games.LeagueOfLegends
 {
     internal sealed class LeagueOfLegendsDelegatingHandler : DelegatingHandler
     {

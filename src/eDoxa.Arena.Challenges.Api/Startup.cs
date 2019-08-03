@@ -16,11 +16,11 @@ using AutoMapper;
 using eDoxa.Arena.Challenges.Api.Application.DelegatingHandlers;
 using eDoxa.Arena.Challenges.Api.Application.Services;
 using eDoxa.Arena.Challenges.Api.Extensions;
-using eDoxa.Arena.Challenges.Api.Games.Extensions;
 using eDoxa.Arena.Challenges.Api.Infrastructure;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data;
 using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.Infrastructure;
+using eDoxa.Arena.Games.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Modules;
 using eDoxa.Seedwork.Application.Swagger.Extensions;
@@ -29,7 +29,6 @@ using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security.Constants;
 using eDoxa.Seedwork.Security.Extensions;
-using eDoxa.ServiceBus.Azure.Modules;
 using eDoxa.ServiceBus.Modules;
 
 using FluentValidation.AspNetCore;
@@ -110,6 +109,7 @@ namespace eDoxa.Arena.Challenges.Api
 
             services.AddAuthentication(HostingEnvironment, AppSettings);
 
+            // TODO: Use claims instead.
             services.AddTransient<IdentityDelegatingHandler>();
 
             services.AddHttpClient<IIdentityService, IdentityService>()
@@ -117,8 +117,7 @@ namespace eDoxa.Arena.Challenges.Api
                 .AddPolicyHandler(HttpPolicies.GetRetryPolicy())
                 .AddPolicyHandler(HttpPolicies.GetCircuitBreakerPolicy());
 
-            // TODO: Add to autofac module.
-            services.AddArenaServices(Configuration);
+            services.AddArenaGames(Configuration);
         }
 
         public void ConfigureDevelopmentServices(IServiceCollection services)
@@ -134,9 +133,7 @@ namespace eDoxa.Arena.Challenges.Api
 
             builder.RegisterModule<RequestModule>();
 
-            builder.RegisterModule<ServiceBusModule<Startup>>();
-
-            builder.RegisterModule<AzureServiceBusModule>();
+            builder.RegisterModule(new ServiceBusModule<Startup>(AppSettings));
 
             builder.RegisterModule<ArenaChallengesApiModule>();
         }

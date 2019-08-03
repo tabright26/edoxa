@@ -11,14 +11,14 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.7.1" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.8.0-beta1" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.7.12" />
     <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
     <PackageReference Include="Stripe.net" Version="27.18.0" />
-    <PackageReference Include="eDoxa.ServiceBus" Version="1.0.0-CI-20190802-214238" />
-    <PackageReference Include="eDoxa.ServiceBus.Abstractions" Version="1.0.0-CI-20190802-214238" />
-    <PackageReference Include="eDoxa.ServiceBus.Azure" Version="1.0.0-CI-20190802-214238" />
+    <PackageReference Include="eDoxa.ServiceBus" Version="1.0.0-CI-20190803-030316" />
+    <PackageReference Include="eDoxa.ServiceBus.Abstractions" Version="1.0.0-CI-20190803-030316" />
+    <PackageReference Include="eDoxa.ServiceBus.Azure" Version="1.0.0-CI-20190803-030316" />
   </ItemGroup>
 
   <ItemGroup>

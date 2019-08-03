@@ -44,8 +44,8 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
         public async Task ApiUsers_WithNinetyNineUsers_ShouldBeNoContent()
         {
             // Act
-            var response = await this.ExecuteAsync();
-
+            using var response = await this.ExecuteAsync();
+             
             // Assert
             response.StatusCode.Should().Be(StatusCodes.Status204NoContent);
         }
@@ -67,7 +67,7 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
             );
 
             // Act
-            var response = await this.ExecuteAsync();
+            using var response = await this.ExecuteAsync();
 
             // Assert
             response.EnsureSuccessStatusCode();

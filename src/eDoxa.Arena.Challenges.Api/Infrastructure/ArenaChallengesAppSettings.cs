@@ -10,12 +10,13 @@ using System.ComponentModel.DataAnnotations;
 
 using eDoxa.Seedwork.Monitoring.AppSettings;
 using eDoxa.Seedwork.Monitoring.AppSettings.Options;
+using eDoxa.ServiceBus.Abstractions;
 
 using IdentityServer4.Models;
 
 namespace eDoxa.Arena.Challenges.Api.Infrastructure
 {
-    public class ArenaChallengesAppSettings : IHasAzureKeyVaultAppSettings, IHasApiResourceAppSettings
+    public class ArenaChallengesAppSettings : IHasAzureKeyVaultAppSettings, IHasApiResourceAppSettings, IHasServiceBusAppSettings
     {
         [Required]
         public ConnectionStrings ConnectionStrings { get; set; }
@@ -28,6 +29,8 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure
 
         [Required]
         public AzureKeyVaultOptions AzureKeyVault { get; set; }
+
+        public bool AzureServiceBusEnabled { get; set; }
     }
 
     public class ConnectionStrings : IHasSqlServerConnectionString, IHasRedisConnectionString

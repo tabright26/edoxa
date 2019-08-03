@@ -8,10 +8,10 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Arena.Challenges.Api.Games.LeagueOfLegends.Dtos;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Strategies;
+using eDoxa.Arena.Games.LeagueOfLegends.Dtos;
 
 namespace eDoxa.Arena.Challenges.Api.Application.Strategies
 {

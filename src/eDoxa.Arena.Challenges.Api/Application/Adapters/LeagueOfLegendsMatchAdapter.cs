@@ -11,10 +11,10 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Api.Games.LeagueOfLegends.Abstractions;
 using eDoxa.Arena.Challenges.Domain.Adapters;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Games.LeagueOfLegends.Abstractions;
 using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Arena.Challenges.Api.Application.Adapters

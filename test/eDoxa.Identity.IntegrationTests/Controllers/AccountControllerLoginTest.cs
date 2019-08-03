@@ -29,7 +29,7 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
         public async Task IdentityScenario()
         {
             // Act
-            var response = await this.ExecuteAsync();
+            using var response = await this.ExecuteAsync();
 
             // Assert
             response.EnsureSuccessStatusCode();

@@ -67,7 +67,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            var response = await this.ExecuteAsync(account.UserId);
+            using var response = await this.ExecuteAsync(account.UserId);
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -92,7 +92,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            var response = await this.ExecuteAsync(account.UserId);
+            using var response = await this.ExecuteAsync(account.UserId);
 
             // Assert
             response.EnsureSuccessStatusCode();

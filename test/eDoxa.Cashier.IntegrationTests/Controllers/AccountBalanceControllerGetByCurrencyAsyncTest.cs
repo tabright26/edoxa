@@ -68,7 +68,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            var response = await this.ExecuteAsync(account.UserId, currency);
+            using var response = await this.ExecuteAsync(account.UserId, currency);
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -100,7 +100,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            var response = await this.ExecuteAsync(account.UserId, currency);
+            using var response = await this.ExecuteAsync(account.UserId, currency);
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -117,7 +117,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
         public async Task UserWithoutAccount_ShouldBeNotFound(Currency currency)
         {
             // Act
-            var response = await this.ExecuteAsync(new UserId(), currency);
+            using var response = await this.ExecuteAsync(new UserId(), currency);
 
             // Assert
             response.StatusCode.Should().Be(StatusCodes.Status404NotFound);
@@ -141,7 +141,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            var response = await this.ExecuteAsync(account.UserId, currency);
+            using var response = await this.ExecuteAsync(account.UserId, currency);
 
             // Assert
             response.StatusCode.Should().Be(StatusCodes.Status400BadRequest);

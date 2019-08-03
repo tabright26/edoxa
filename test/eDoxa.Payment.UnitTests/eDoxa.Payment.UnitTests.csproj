@@ -11,7 +11,7 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />
     <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
-    <PackageReference Include="eDoxa.ServiceBus.Moq" Version="1.0.0-CI-20190802-214238" />
+    <PackageReference Include="eDoxa.ServiceBus.Moq" Version="1.0.0-CI-20190803-030316" />
   </ItemGroup>
 
   <ItemGroup>

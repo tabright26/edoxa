@@ -12,15 +12,15 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Api.Games.LeagueOfLegends.Abstractions;
-using eDoxa.Arena.Challenges.Api.Games.LeagueOfLegends.Dtos;
+using eDoxa.Arena.Games.LeagueOfLegends.Abstractions;
+using eDoxa.Arena.Games.LeagueOfLegends.Dtos;
 
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Arena.Challenges.Api.Games.LeagueOfLegends
+namespace eDoxa.Arena.Games.LeagueOfLegends
 {
     internal sealed class LeagueOfLegendsProxy : ILeagueOfLegendsProxy
     {

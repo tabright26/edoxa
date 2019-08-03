@@ -11,9 +11,9 @@ using System.Reflection;
 using Autofac;
 
 using eDoxa.Arena.Challenges.Api;
-using eDoxa.Arena.Challenges.Api.Games.LeagueOfLegends.Abstractions;
-using eDoxa.Arena.Challenges.Api.Games.LeagueOfLegends.Dtos;
 using eDoxa.Arena.Challenges.Infrastructure;
+using eDoxa.Arena.Games.LeagueOfLegends.Abstractions;
+using eDoxa.Arena.Games.LeagueOfLegends.Dtos;
 using eDoxa.Seedwork.Security.Hosting;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.ServiceBus.Moq;

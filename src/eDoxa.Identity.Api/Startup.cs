@@ -29,7 +29,6 @@ using eDoxa.Seedwork.Security.Constants;
 using eDoxa.Seedwork.Security.Extensions;
 using eDoxa.Seedwork.Security.Hosting.Extensions;
 using eDoxa.Seedwork.Security.Middlewares;
-using eDoxa.ServiceBus.Azure.Modules;
 using eDoxa.ServiceBus.Modules;
 
 using FluentValidation.AspNetCore;
@@ -219,9 +218,7 @@ namespace eDoxa.Identity.Api
         {
             builder.RegisterModule<DomainEventModule>();
 
-            builder.RegisterModule<ServiceBusModule<Startup>>();
-
-            builder.RegisterModule<AzureServiceBusModule>();
+            builder.RegisterModule(new ServiceBusModule<Startup>(AppSettings));
 
             builder.RegisterModule<IdentityApiModule>();
         }

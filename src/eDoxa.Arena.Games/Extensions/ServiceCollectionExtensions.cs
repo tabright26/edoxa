@@ -8,18 +8,18 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Arena.Challenges.Api.Games.LeagueOfLegends.Extensions;
+using eDoxa.Arena.Games.LeagueOfLegends.Extensions;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace eDoxa.Arena.Challenges.Api.Games.Extensions
+namespace eDoxa.Arena.Games.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddArenaServices(this IServiceCollection services, IConfiguration configuration)
+        public static void AddArenaGames(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddLeagueOfLegendsServices(configuration);
+            services.AddLeagueOfLegends(configuration);
         }
     }
 }

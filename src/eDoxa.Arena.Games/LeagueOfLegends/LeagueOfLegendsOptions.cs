@@ -12,7 +12,7 @@ using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
-namespace eDoxa.Arena.Challenges.Api.Games.LeagueOfLegends
+namespace eDoxa.Arena.Games.LeagueOfLegends
 {
     internal sealed class LeagueOfLegendsOptions
     {

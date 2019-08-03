@@ -14,7 +14,7 @@ using System.Collections.Generic;
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Arena.Challenges.Api.Games.LeagueOfLegends.Dtos
+namespace eDoxa.Arena.Games.LeagueOfLegends.Dtos
 {
     public class LeagueOfLegendsParticipantTimelineDto
     {
