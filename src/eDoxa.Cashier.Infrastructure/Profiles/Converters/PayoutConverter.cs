@@ -23,7 +23,7 @@ namespace eDoxa.Cashier.Infrastructure.Profiles.Converters
             return new Payout(
                 new Buckets(
                     bucketModels.Select(
-                        bucket => new Bucket(new Prize(bucket.PrizeAmount, Currency.FromValue(bucket.PrizeCurrency)), new BucketSize(bucket.Size))
+                        bucket => new Bucket(new Prize(bucket.PrizeAmount, Currency.FromValue(bucket.PrizeCurrency)!), new BucketSize(bucket.Size))
                     )
                 )
             );

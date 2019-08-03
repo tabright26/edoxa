@@ -4,25 +4,34 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
+using eDoxa.Seedwork.Application.Constants;
+using eDoxa.ServiceBus.Abstractions;
 
-using eDoxa.ServiceBus;
+using Newtonsoft.Json;
 
 namespace eDoxa.Identity.Api.IntegrationEvents
 {
-    public class EmailSentIntegrationEvent : IntegrationEvent
+    [JsonObject]
+    internal sealed class EmailSentIntegrationEvent : IIntegrationEvent
     {
-        public EmailSentIntegrationEvent(string email, string subject, string htmlMessage) : base(Guid.NewGuid())
+        [JsonConstructor]
+        public EmailSentIntegrationEvent(string email, string subject, string htmlMessage)
         {
             Email = email;
             Subject = subject;
             HtmlMessage = htmlMessage;
         }
 
-        public string Email { get; private set; }
+        [JsonProperty]
+        public string Email { get; }
 
-        public string Subject { get; private set; }
+        [JsonProperty]
+        public string Subject { get; }
 
-        public string HtmlMessage { get; private set; }
+        [JsonProperty]
+        public string HtmlMessage { get; }
+
+        [JsonIgnore]
+        public string Name => IntegrationEventNames.EmailSent;
     }
 }

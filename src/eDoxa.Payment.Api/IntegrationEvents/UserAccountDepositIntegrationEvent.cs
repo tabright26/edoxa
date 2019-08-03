@@ -10,18 +10,23 @@
 
 using System;
 
-using eDoxa.ServiceBus;
+using eDoxa.Seedwork.Application.Constants;
+using eDoxa.ServiceBus.Abstractions;
+
+using Newtonsoft.Json;
 
 namespace eDoxa.Payment.Api.IntegrationEvents
 {
-    internal sealed class DepositProcessedIntegrationEvent : IntegrationEvent
+    [JsonObject]
+    internal sealed class UserAccountDepositIntegrationEvent : IIntegrationEvent
     {
-        public DepositProcessedIntegrationEvent(
+        [JsonConstructor]
+        public UserAccountDepositIntegrationEvent(
             Guid transactionId,
             string transactionDescription,
             string customerId,
             long amount
-        ) : base(Guid.NewGuid())
+        )
         {
             TransactionId = transactionId;
             TransactionDescription = transactionDescription;
@@ -29,12 +34,19 @@ namespace eDoxa.Payment.Api.IntegrationEvents
             Amount = amount;
         }
 
-        public Guid TransactionId { get; private set; }
+        [JsonProperty]
+        public Guid TransactionId { get; }
 
-        public string TransactionDescription { get; private set; }
+        [JsonProperty]
+        public string TransactionDescription { get; }
 
-        public string CustomerId { get; private set; }
+        [JsonProperty]
+        public string CustomerId { get; }
 
-        public long Amount { get; private set; }
+        [JsonProperty]
+        public long Amount { get; }
+
+        [JsonIgnore]
+        public string Name => IntegrationEventNames.UserAccountDeposit;
     }
 }

@@ -1,8 +1,10 @@
 ﻿// Filename: PayoutViewModel.cs
-// Date Created: 2019-07-10
+// Date Created: 2019-07-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
+
+#nullable disable
 
 using Newtonsoft.Json;
 

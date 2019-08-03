@@ -102,12 +102,8 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             {
                 var gameReferences = getGameReferences(
                     participant.GameAccountId,
-
-                    // ReSharper disable once PossibleInvalidOperationException
-                    Timeline.StartedAt.Value,
-
-                    // ReSharper disable once PossibleInvalidOperationException
-                    Timeline.EndedAt.Value
+                    Timeline.StartedAt ?? throw new InvalidOperationException(),
+                    Timeline.EndedAt ?? throw new InvalidOperationException()
                 );
 
                 foreach (var gameReference in participant.GetUnsynchronizedGameReferences(gameReferences))

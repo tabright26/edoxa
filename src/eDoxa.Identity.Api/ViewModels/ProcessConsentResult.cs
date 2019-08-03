@@ -8,19 +8,21 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+#nullable disable
+
 namespace eDoxa.Identity.Api.ViewModels
 {
     public class ProcessConsentResult
     {
         public bool IsRedirect => RedirectUri != null;
 
-        public string? RedirectUri { get; set; }
+        public string RedirectUri { get; set; }
 
         public string ClientId { get; set; }
 
         public bool ShowView => ViewModel != null;
 
-        public ConsentViewModel? ViewModel { get; set; }
+        public ConsentViewModel ViewModel { get; set; }
 
         public bool HasValidationError => ValidationError != null;
 

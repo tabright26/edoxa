@@ -12,7 +12,7 @@ using System.Collections.Generic;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels
 {
-    public interface IScoreboard : IReadOnlyDictionary<UserId, Score>
+    public interface IScoreboard : IReadOnlyDictionary<UserId, Score?>
     {
         UserId UserIdAt(int index);
 

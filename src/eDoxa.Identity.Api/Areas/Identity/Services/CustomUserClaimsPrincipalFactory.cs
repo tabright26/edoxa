@@ -27,9 +27,9 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
     {
         public CustomUserClaimsPrincipalFactory(CustomUserManager userManager, CustomRoleManager roleManager, IOptions<IdentityOptions> optionsAccessor)
         {
-            UserManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
-            RoleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
-            Options = optionsAccessor.Value ?? throw new ArgumentNullException(nameof(optionsAccessor));
+            UserManager = userManager;
+            RoleManager = roleManager;
+            Options = optionsAccessor.Value;
         }
 
         private CustomUserManager UserManager { get; }
@@ -38,7 +38,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
         private IdentityOptions Options { get; }
 
-        private ClaimsIdentity Identity { get; set; }
+        private ClaimsIdentity? Identity { get; set; }
 
         
         public async Task<ClaimsPrincipal> CreateAsync( User user)
@@ -61,7 +61,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
         private async Task GenerateUserClaimsAsync(User user)
         {
-            Identity.AddClaim(new Claim(Options.ClaimsIdentity.UserIdClaimType, await UserManager.GetUserIdAsync(user)));
+            Identity!.AddClaim(new Claim(Options.ClaimsIdentity.UserIdClaimType, await UserManager.GetUserIdAsync(user)));
 
             await this.TryGenerateUserNameClaimAsync(user);
 
@@ -92,7 +92,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
             if (userName != null)
             {
-                Identity.AddClaim(new Claim(Options.ClaimsIdentity.UserNameClaimType, userName));
+                Identity!.AddClaim(new Claim(Options.ClaimsIdentity.UserNameClaimType, userName));
             }
         }
 
@@ -102,7 +102,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
             if (firstName != null)
             {
-                Identity.AddClaim(new Claim(JwtClaimTypes.GivenName, firstName));
+                Identity!.AddClaim(new Claim(JwtClaimTypes.GivenName, firstName));
             }
         }
 
@@ -112,7 +112,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
             if (lastName != null)
             {
-                Identity.AddClaim(new Claim(JwtClaimTypes.FamilyName, lastName));
+                Identity!.AddClaim(new Claim(JwtClaimTypes.FamilyName, lastName));
             }
         }
 
@@ -122,7 +122,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
             if (birthDate != null)
             {
-                Identity.AddClaim(new Claim(JwtClaimTypes.BirthDate, birthDate));
+                Identity!.AddClaim(new Claim(JwtClaimTypes.BirthDate, birthDate));
             }
         }
 
@@ -134,7 +134,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
                 var emailConfirmed = await UserManager.IsEmailConfirmedAsync(user);
 
-                Identity.AddClaim(new Claim(JwtClaimTypes.Email, email));
+                Identity!.AddClaim(new Claim(JwtClaimTypes.Email, email));
 
                 Identity.AddClaim(new Claim(JwtClaimTypes.EmailVerified, emailConfirmed.ToString()));
             }
@@ -150,9 +150,9 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 {
                     var phoneNumberConfirmed = await UserManager.IsPhoneNumberConfirmedAsync(user);
 
-                    Identity.AddClaim(new Claim(JwtClaimTypes.PhoneNumber, phoneNumber));
+                    Identity!.AddClaim(new Claim(JwtClaimTypes.PhoneNumber, phoneNumber));
 
-                    Identity.AddClaim(new Claim(JwtClaimTypes.PhoneNumberVerified, phoneNumberConfirmed.ToString()));
+                    Identity!.AddClaim(new Claim(JwtClaimTypes.PhoneNumberVerified, phoneNumberConfirmed.ToString()));
                 }
             }
         }
@@ -165,7 +165,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
                 foreach (var roleName in roles)
                 {
-                    Identity.AddClaim(new Claim(Options.ClaimsIdentity.RoleClaimType, roleName));
+                    Identity!.AddClaim(new Claim(Options.ClaimsIdentity.RoleClaimType, roleName));
 
                     if (RoleManager.SupportsRoleClaims)
                     {
@@ -181,7 +181,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
             if (role != null)
             {
-                Identity.AddClaims(await RoleManager.GetClaimsAsync(role));
+                Identity!.AddClaims(await RoleManager.GetClaimsAsync(role));
             }
         }
 
@@ -189,11 +189,11 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
         {
             var games = await UserManager.GetGamesAsync(user);
 
-            var userGames = games.ToDictionary(userGame => Game.FromValue(userGame.Value).Name, userGame => userGame.PlayerId);
+            var userGames = games.ToDictionary(userGame => Game.FromValue(userGame.Value)!.Name, userGame => userGame.PlayerId);
 
             if (userGames.Any())
             {
-                Identity.AddClaim(
+                Identity!.AddClaim(
                     new Claim(CustomClaimTypes.Games, JsonConvert.SerializeObject(userGames, Formatting.Indented), IdentityServerConstants.ClaimValueTypes.Json)
                 );
             }

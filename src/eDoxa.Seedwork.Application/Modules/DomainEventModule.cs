@@ -14,7 +14,7 @@ using Autofac;
 
 using eDoxa.Seedwork.Application.DomainEvents.Handlers;
 
-namespace eDoxa.Seedwork.Application.DomainEvents
+namespace eDoxa.Seedwork.Application.Modules
 {
     public sealed class DomainEventModule : Module
     {

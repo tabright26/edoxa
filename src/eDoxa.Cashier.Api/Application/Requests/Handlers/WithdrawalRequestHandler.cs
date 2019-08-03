@@ -32,7 +32,7 @@ namespace eDoxa.Cashier.Api.Application.Requests.Handlers
         {
             var userId = _httpContextAccessor.GetUserId();
 
-            var connectAccountId = _httpContextAccessor.GetConnectAccountId();
+            var connectAccountId = _httpContextAccessor.GetConnectAccountId()!;
 
             await _accountService.WithdrawalAsync(connectAccountId, userId, new Money(request.Amount), cancellationToken);
         }

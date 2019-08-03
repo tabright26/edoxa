@@ -23,14 +23,15 @@ namespace eDoxa.Arena.Challenges.Api.Application.Factories
     {
         private readonly IDictionary<ChallengeGame, IScoringStrategy> _strategies;
 
-        public ScoringFactory(IEnumerable<IScoringStrategy> strategies = null)
+        public ScoringFactory(IEnumerable<IScoringStrategy>? strategies = null)
         {
             _strategies = strategies?.ToDictionary(strategie => strategie.Game) ??
                           Assembly.GetAssembly(typeof(Startup))
                               .GetTypes()
-                              .Where(type => typeof(IScoringStrategy).IsAssignableFrom(type) && type.IsInterface == false)
-                              .Select(type => Activator.CreateInstance(type) as IScoringStrategy)
-                              .ToDictionary(strategy => strategy?.Game);
+                              .Where(type => typeof(IScoringStrategy).IsAssignableFrom(type) && !type.IsInterface)
+                              .Select(Activator.CreateInstance)
+                              .Cast<IScoringStrategy>()
+                              .ToDictionary(strategy => strategy.Game);
         }
 
         public IScoringStrategy CreateInstance(ChallengeGame game)

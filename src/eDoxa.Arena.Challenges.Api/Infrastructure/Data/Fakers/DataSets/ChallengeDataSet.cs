@@ -30,7 +30,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.DataSets
             return new ChallengeName(Faker.PickRandom("Daily Challenge", "Monthly Challenge", "Weekly Challenge"));
         }
 
-        public ChallengeGame Game(ChallengeGame game = null)
+        public ChallengeGame Game(ChallengeGame? game = null)
         {
             return game ?? Faker.PickRandom(ChallengeGame.GetEnumerations());
         }
@@ -50,7 +50,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.DataSets
             return Faker.PickRandom(ValueObject.GetValues<ChallengeDuration>());
         }
 
-        public ChallengeState State(ChallengeState state = null)
+        public ChallengeState State(ChallengeState? state = null)
         {
             return state ?? Faker.PickRandom(ChallengeState.GetEnumerations());
         }

@@ -4,19 +4,26 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
+using eDoxa.Seedwork.Application.Constants;
+using eDoxa.ServiceBus.Abstractions;
 
-using eDoxa.ServiceBus;
+using Newtonsoft.Json;
 
 namespace eDoxa.Identity.Api.IntegrationEvents
 {
-    public class RoleDeletedIntegrationEvent : IntegrationEvent
+    [JsonObject]
+    internal sealed class RoleDeletedIntegrationEvent : IIntegrationEvent
     {
-        public RoleDeletedIntegrationEvent(string roleName) : base(Guid.NewGuid())
+        [JsonConstructor]
+        public RoleDeletedIntegrationEvent(string roleName)
         {
             RoleName = roleName;
         }
 
-        public string RoleName { get; private set; }
+        [JsonProperty]
+        public string RoleName { get; }
+
+        [JsonIgnore]
+        public string Name => IntegrationEventNames.RoleDeleted;
     }
 }

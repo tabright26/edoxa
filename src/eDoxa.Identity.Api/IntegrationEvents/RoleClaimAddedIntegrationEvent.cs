@@ -4,25 +4,34 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
+using eDoxa.Seedwork.Application.Constants;
+using eDoxa.ServiceBus.Abstractions;
 
-using eDoxa.ServiceBus;
+using Newtonsoft.Json;
 
 namespace eDoxa.Identity.Api.IntegrationEvents
 {
-    public class RoleClaimAddedIntegrationEvent : IntegrationEvent
+    [JsonObject]
+    internal sealed class RoleClaimAddedIntegrationEvent : IIntegrationEvent
     {
-        public RoleClaimAddedIntegrationEvent(string roleName, string claimType, string claimValue) : base(Guid.NewGuid())
+        [JsonConstructor]
+        public RoleClaimAddedIntegrationEvent(string roleName, string claimType, string claimValue)
         {
             RoleName = roleName;
             ClaimType = claimType;
             ClaimValue = claimValue;
         }
 
-        public string RoleName { get; private set; }
+        [JsonProperty]
+        public string RoleName { get; }
 
-        public string ClaimType { get; private set; }
+        [JsonProperty]
+        public string ClaimType { get; }
 
-        public string ClaimValue { get; private set; }
+        [JsonProperty]
+        public string ClaimValue { get; }
+
+        [JsonIgnore]
+        public string Name => IntegrationEventNames.RoleClaimAdded;
     }
 }

@@ -1,12 +1,8 @@
 ﻿// Filename: CustomExceptionHandlerMiddleware.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.Threading.Tasks;
@@ -14,6 +10,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+
+using Newtonsoft.Json;
 
 namespace eDoxa.Seedwork.Application.Middlewares
 {
@@ -40,11 +38,11 @@ namespace eDoxa.Seedwork.Application.Middlewares
             {
                 _logger.LogError(new EventId(exception.HResult), exception, exception.Message);
 
-                var error = new Error();
+                var error = new ErrorDto();
 
                 if (_environment.IsDevelopment())
                 {
-                    error = new Error(exception);
+                    error = new ErrorDto(exception);
                 }
 
                 context.Response.ContentType = "application/json";
@@ -52,6 +50,33 @@ namespace eDoxa.Seedwork.Application.Middlewares
                 context.Response.StatusCode = StatusCodes.Status500InternalServerError;
 
                 await context.Response.WriteJsonAsync(error.ToString());
+            }
+        }
+
+        [JsonObject]
+        private sealed class ErrorDto
+        {
+            public ErrorDto(Exception exception)
+            {
+                StatusCode = StatusCodes.Status500InternalServerError;
+                Message = exception.Message;
+            }
+
+            public ErrorDto()
+            {
+                StatusCode = StatusCodes.Status500InternalServerError;
+                Message = "Internal Server Error";
+            }
+
+            [JsonProperty("statusCode")]
+            public int StatusCode { get; }
+
+            [JsonProperty("message")]
+            public string Message { get; }
+
+            public override string ToString()
+            {
+                return JsonConvert.SerializeObject(this);
             }
         }
     }

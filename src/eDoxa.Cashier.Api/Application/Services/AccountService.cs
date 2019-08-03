@@ -34,14 +34,16 @@ namespace eDoxa.Cashier.Api.Application.Services
 
         public async Task WithdrawalAsync(string connectAccountId, UserId userId, Money money, CancellationToken cancellationToken = default)
         {
-            var account = new MoneyAccount(await _accountRepository.FindUserAccountAsync(userId));
+            var account = await _accountRepository.FindUserAccountAsync(userId);
 
-            var transaction = account.Withdrawal(money);
+            var moneyAccount = new MoneyAccount(account!);
+
+            var transaction = moneyAccount.Withdrawal(money);
 
             await _accountRepository.CommitAsync(cancellationToken);
 
-            _serviceBusPublisher.Publish(
-                new WithdrawalProcessedIntegrationEvent(
+            await _serviceBusPublisher.PublishAsync(
+                new UserAccountWithdrawalIntegrationEvent(
                     transaction.Id,
                     transaction.Description.Text,
                     connectAccountId,
@@ -58,7 +60,7 @@ namespace eDoxa.Cashier.Api.Application.Services
             {
                 case Money money:
                 {
-                    var moneyAccount = new MoneyAccount(account);
+                    var moneyAccount = new MoneyAccount(account!);
 
                     await this.DepositAsync(customerId, moneyAccount, money, cancellationToken);
 
@@ -67,7 +69,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
                 case Token token:
                 {
-                    var tokenAccount = new TokenAccount(account);
+                    var tokenAccount = new TokenAccount(account!);
 
                     await this.DepositAsync(customerId, tokenAccount, token, cancellationToken);
 
@@ -93,8 +95,8 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             await _accountRepository.CommitAsync(cancellationToken);
 
-            _serviceBusPublisher.Publish(
-                new DepositProcessedIntegrationEvent(transaction.Id, transaction.Description.Text, customerId, transaction.Price.ToCents())
+            await _serviceBusPublisher.PublishAsync(
+                new UserAccountDepositIntegrationEvent(transaction.Id, transaction.Description.Text, customerId, transaction.Price.ToCents())
             );
         }
     }

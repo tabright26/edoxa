@@ -3,10 +3,6 @@
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.Data.Common;
@@ -21,7 +17,7 @@ namespace eDoxa.Seedwork.Infrastructure.Factories
     {
         private const string ConnectionString = "DataSource=:memory:";
 
-        private DbConnection _connection;
+        private DbConnection? _connection;
 
         public void Dispose()
         {
@@ -39,10 +35,9 @@ namespace eDoxa.Seedwork.Infrastructure.Factories
                 _connection = new SqliteConnection(ConnectionString);
                 _connection.Open();
 
-                using (var context = this.CreateInstance())
-                {
-                    context.Database.EnsureCreated();
-                }
+                using var context = this.CreateInstance();
+
+                context.Database.EnsureCreated();
             }
 
             return this.CreateInstance();

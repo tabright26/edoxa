@@ -3,35 +3,29 @@
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 
-using eDoxa.ServiceBus;
+using eDoxa.Seedwork.Application.Constants;
+using eDoxa.ServiceBus.Abstractions;
+
+using Newtonsoft.Json;
 
 namespace eDoxa.Cashier.Api.IntegrationEvents
 {
-    public sealed class UserCreatedIntegrationEvent : IntegrationEvent
+    [JsonObject]
+    internal sealed class UserCreatedIntegrationEvent : IIntegrationEvent
     {
-        public UserCreatedIntegrationEvent() : base(Guid.NewGuid())
+        [JsonConstructor]
+        public UserCreatedIntegrationEvent(Guid userId)
         {
+            UserId = userId;
         }
 
-        public Guid UserId { get; set; }
+        [JsonProperty]
+        public Guid UserId { get; }
 
-        public string Email { get; set; }
-
-        public string FirstName { get; set; }
-
-        public string LastName { get; set; }
-
-        public int Year { get; set; }
-
-        public int Month { get; set; }
-
-        public int Day { get; set; }
+        [JsonIgnore]
+        public string Name => IntegrationEventNames.UserCreated;
     }
 }

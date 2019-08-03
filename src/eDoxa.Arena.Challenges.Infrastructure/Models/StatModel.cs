@@ -8,6 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+#nullable disable
+
 namespace eDoxa.Arena.Challenges.Infrastructure.Models
 {
     public class StatModel

@@ -18,7 +18,7 @@ namespace eDoxa.Cashier.Api.Application.Factories
     {
         private readonly IPayoutStrategy _strategy;
 
-        public PayoutFactory(IPayoutStrategy strategy = null)
+        public PayoutFactory(IPayoutStrategy? strategy = null)
         {
             _strategy = strategy ?? new PayoutStrategy();
         }

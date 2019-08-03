@@ -1,8 +1,10 @@
 ﻿// Filename: ArenaChallengesAppSettings.cs
-// Date Created: 2019-07-24
+// Date Created: 2019-07-26
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
+
+#nullable disable
 
 using System.ComponentModel.DataAnnotations;
 
@@ -13,10 +15,11 @@ using IdentityServer4.Models;
 
 namespace eDoxa.Arena.Challenges.Api.Infrastructure
 {
-    public class ArenaChallengesAppSettings : IHasAzureKeyVaultAppSettings,
-                                              IHasApiResourceAppSettings,
-                                              IHasServiceBusAppSettings
+    public class ArenaChallengesAppSettings : IHasAzureKeyVaultAppSettings, IHasApiResourceAppSettings
     {
+        [Required]
+        public ConnectionStrings ConnectionStrings { get; set; }
+
         public bool SwaggerEnabled { get; set; }
 
         [Required]
@@ -27,22 +30,14 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure
 
         [Required]
         public AzureKeyVaultOptions AzureKeyVault { get; set; }
-
-        [Required]
-        public ConnectionStrings ConnectionStrings { get; set; }
-
-        public bool AzureServiceBusEnabled { get; set; }
-
-        [Required]
-        public ServiceBusOptions ServiceBus { get; set; }
     }
 
     public class ConnectionStrings : IHasSqlServerConnectionString, IHasRedisConnectionString
     {
         [Required]
-        public string SqlServer { get; set; }
+        public string Redis { get; set; }
 
         [Required]
-        public string Redis { get; set; }
+        public string SqlServer { get; set; }
     }
 }

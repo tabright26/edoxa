@@ -4,6 +4,8 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+#nullable disable
+
 using System.ComponentModel.DataAnnotations;
 
 using eDoxa.Seedwork.Monitoring.AppSettings;
@@ -14,8 +16,7 @@ using IdentityServer4.Models;
 namespace eDoxa.Cashier.Api.Infrastructure
 {
     public class CashierAppSettings : IHasAzureKeyVaultAppSettings,
-                                      IHasApiResourceAppSettings,
-                                      IHasServiceBusAppSettings
+                                      IHasApiResourceAppSettings
     {
         [Required]
         public HealthChecksOptions HealthChecks { get; set; }
@@ -33,11 +34,6 @@ namespace eDoxa.Cashier.Api.Infrastructure
 
         [Required]
         public ConnectionStrings ConnectionStrings { get; set; }
-
-        public bool AzureServiceBusEnabled { get; set; }
-
-        [Required]
-        public ServiceBusOptions ServiceBus { get; set; }
     }
 
     public class HealthChecksOptions

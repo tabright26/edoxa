@@ -17,7 +17,7 @@ namespace eDoxa.Cashier.Infrastructure.Profiles.Converters
         
         public IChallenge Convert( ChallengeModel source,  IChallenge destination,  ResolutionContext context)
         {
-            var entryFee = new EntryFee(source.EntryFeeAmount, Currency.FromValue(source.EntryFeeCurrency));
+            var entryFee = new EntryFee(source.EntryFeeAmount, Currency.FromValue(source.EntryFeeCurrency)!);
 
             var payout = context.Mapper.Map<IPayout>(source.Buckets);
 

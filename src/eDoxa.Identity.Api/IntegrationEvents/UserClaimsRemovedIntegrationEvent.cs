@@ -7,19 +7,30 @@
 using System;
 using System.Collections.Generic;
 
-using eDoxa.ServiceBus;
+using eDoxa.Seedwork.Application.Constants;
+using eDoxa.ServiceBus.Abstractions;
+
+using Newtonsoft.Json;
 
 namespace eDoxa.Identity.Api.IntegrationEvents
 {
-    public sealed class UserClaimsRemovedIntegrationEvent : IntegrationEvent
+    [JsonObject]
+    internal sealed class UserClaimsRemovedIntegrationEvent : IIntegrationEvent
     {
-        public UserClaimsRemovedIntegrationEvent() : base(Guid.NewGuid())
+        [JsonConstructor]
+        public UserClaimsRemovedIntegrationEvent(Guid userId, IDictionary<string, string> claims)
         {
-            
+            UserId = userId;
+            Claims = claims;
         }
 
-        public Guid UserId { get; set; }
+        [JsonProperty]
+        public Guid UserId { get; }
 
-        public IDictionary<string, string> Claims { get; set; }
+        [JsonProperty]
+        public IDictionary<string, string> Claims { get; }
+
+        [JsonIgnore]
+        public string Name => IntegrationEventNames.UserClaimsRemoved;
     }
 }

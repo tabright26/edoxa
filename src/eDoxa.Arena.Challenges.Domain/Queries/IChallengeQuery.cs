@@ -22,11 +22,11 @@ namespace eDoxa.Arena.Challenges.Domain.Queries
     {
         IMapper Mapper { get; }
 
-        Task<IReadOnlyCollection<IChallenge>> FetchUserChallengeHistoryAsync(UserId userId, ChallengeGame game = null, ChallengeState state = null);
+        Task<IReadOnlyCollection<IChallenge>> FetchUserChallengeHistoryAsync(UserId userId, ChallengeGame? game = null, ChallengeState? state = null);
 
-        Task<IReadOnlyCollection<IChallenge>> FetchUserChallengeHistoryAsync(ChallengeGame game = null, ChallengeState state = null);
+        Task<IReadOnlyCollection<IChallenge>> FetchUserChallengeHistoryAsync(ChallengeGame? game = null, ChallengeState? state = null);
 
-        Task<IReadOnlyCollection<IChallenge>> FetchChallengesAsync(ChallengeGame game = null, ChallengeState state = null);
+        Task<IReadOnlyCollection<IChallenge>> FetchChallengesAsync(ChallengeGame? game = null, ChallengeState? state = null);
 
         Task<IChallenge?> FindChallengeAsync(ChallengeId challengeId);
     }

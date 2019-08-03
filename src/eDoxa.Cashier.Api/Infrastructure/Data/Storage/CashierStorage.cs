@@ -34,20 +34,20 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Storage
         {
             var path = Path.Combine(Directory.GetCurrentDirectory(), TestUsersFilePath);
 
-            using (var reader = new StreamReader(path))
-            using (var csv = new CsvReader(reader))
-            {
-                var records = csv.GetRecords(
-                        new
-                        {
-                            Id = default(Guid)
-                        }
-                    ).ToList();
+            using var reader = new StreamReader(path);
 
-                foreach (var record in records)
+            using var csv = new CsvReader(reader);
+
+            var records = csv.GetRecords(
+                new
                 {
-                    yield return new User(UserId.FromGuid(record.Id));
+                    Id = default(Guid)
                 }
+            ).ToList();
+
+            foreach (var record in records)
+            {
+                yield return new User(UserId.FromGuid(record.Id));
             }
         }
 
@@ -57,36 +57,36 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Storage
             var payoutStrategy = payoutFactory.CreateInstance();
             var path = Path.Combine(Directory.GetCurrentDirectory(), TestChallengesFilePath);
 
-            using (var reader = new StreamReader(path))
-            using (var csv = new CsvReader(reader))
+            using var reader = new StreamReader(path);
+
+            using var csv = new CsvReader(reader);
+
+            var records = csv.GetRecords(
+                    new
+                    {
+                        Id = default(Guid),
+                        EntryFeeCurrency = default(int),
+                        EntryFeeAmount = default(decimal),
+                        PayoutEntries = default(int)
+                    }
+                )
+                .ToList();
+
+            foreach (var record in records)
             {
-                var records = csv.GetRecords(
-                        new
-                        {
-                            Id = default(Guid),
-                            EntryFeeCurrency = default(int),
-                            EntryFeeAmount = default(decimal),
-                            PayoutEntries = default(int)
-                        }
-                    )
-                    .ToList();
+                var payoutEntries = new PayoutEntries(record.PayoutEntries);
 
-                foreach (var record in records)
-                {
-                    var payoutEntries = new PayoutEntries(record.PayoutEntries);
+                var currency = Currency.FromValue(record.EntryFeeCurrency)!;
 
-                    var currency = Currency.FromValue(record.EntryFeeCurrency);
+                var entryFee = new EntryFee(record.EntryFeeAmount, currency);
 
-                    var entryFee = new EntryFee(record.EntryFeeAmount, currency);
+                var payout = payoutStrategy.GetPayout(payoutEntries, entryFee);
 
-                    var payout = payoutStrategy.GetPayout(payoutEntries, entryFee);
+                var challenge = new Challenge(entryFee, payout);
 
-                    var challenge = new Challenge(entryFee, payout);
+                challenge.SetEntityId(ChallengeId.FromGuid(record.Id));
 
-                    challenge.SetEntityId(ChallengeId.FromGuid(record.Id));
-
-                    yield return challenge;
-                }
+                yield return challenge;
             }
         }
     }

@@ -61,6 +61,6 @@ namespace eDoxa.Seedwork.Infrastructure.Factories
             }
         }
 
-        public abstract TContext? CreateDbContext(string[] args);
+        public abstract TContext CreateDbContext(string[] args);
     }
 }

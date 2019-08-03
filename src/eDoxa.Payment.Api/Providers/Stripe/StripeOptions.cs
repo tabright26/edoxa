@@ -8,10 +8,13 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+#nullable disable
+
 using System.Collections.Generic;
 
 namespace eDoxa.Payment.Api.Providers.Stripe
 {
+    // TODO: Add securiry attribute like [Required]
     public sealed class StripeOptions
     {
         public string Country { get; set; }

@@ -25,9 +25,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="eDoxa.ServiceBus" Version="1.0.0-CI-20190802-042217" />
-    <PackageReference Include="eDoxa.ServiceBus.Abstractions" Version="1.0.0-CI-20190802-042217" />
-    <PackageReference Include="eDoxa.ServiceBus.Azure" Version="1.0.0-CI-20190802-042217" />
+    <PackageReference Include="eDoxa.ServiceBus" Version="1.0.0-CI-20190802-214238" />
+    <PackageReference Include="eDoxa.ServiceBus.Abstractions" Version="1.0.0-CI-20190802-214238" />
+    <PackageReference Include="eDoxa.ServiceBus.Azure" Version="1.0.0-CI-20190802-214238" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.8.0-beta1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />

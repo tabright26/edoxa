@@ -6,20 +6,30 @@
 
 using System;
 
-using eDoxa.ServiceBus;
+using eDoxa.Seedwork.Application.Constants;
+using eDoxa.ServiceBus.Abstractions;
+
+using Newtonsoft.Json;
 
 namespace eDoxa.Identity.Api.IntegrationEvents
 {
-    public class UserRoleAddedIntegrationEvent : IntegrationEvent
+    [JsonObject]
+    internal sealed class UserRoleAddedIntegrationEvent : IIntegrationEvent
     {
-        public UserRoleAddedIntegrationEvent(Guid userId, string roleName) : base(Guid.NewGuid())
+        [JsonConstructor]
+        public UserRoleAddedIntegrationEvent(Guid userId, string roleName)
         {
             UserId = userId;
             RoleName = roleName;
         }
 
-        public Guid UserId { get; private set; }
+        [JsonProperty]
+        public Guid UserId { get; }
 
-        public string RoleName { get; private set; }
+        [JsonProperty]
+        public string RoleName { get; }
+
+        [JsonIgnore]
+        public string Name => IntegrationEventNames.UserRoleAdded;
     }
 }

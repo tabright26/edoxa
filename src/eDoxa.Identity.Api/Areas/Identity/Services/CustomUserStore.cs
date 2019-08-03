@@ -24,7 +24,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
     {
         private static readonly Random Random = new Random();
 
-        public CustomUserStore(IdentityDbContext context, CustomIdentityErrorDescriber describer = null) : base(context, describer)
+        public CustomUserStore(IdentityDbContext context, CustomIdentityErrorDescriber describer) : base(context, describer)
         {
         }
 
@@ -99,7 +99,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
             UserGames.Add(new UserGame
             {
-                Value = Game.FromName(gameName).Value,
+                Value = Game.FromName(gameName)!.Value,
                 PlayerId = playerId,
                 UserId = user.Id
             });
@@ -208,30 +208,6 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             }
 
             return Task.FromResult(user.LastName);
-        }
-
-        public Task<string?> GetNameAsync(User user, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-
-            this.ThrowIfDisposed();
-
-            if (user == null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
-
-            if (user.FirstName == null)
-            {
-                return Task.FromResult((string) null);
-            }
-
-            if (user.LastName == null)
-            {
-                return Task.FromResult((string) null);
-            }
-
-            return Task.FromResult($"{user.FirstName} {user.LastName}");
         }
     }
 }

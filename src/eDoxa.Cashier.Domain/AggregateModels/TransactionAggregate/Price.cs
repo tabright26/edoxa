@@ -16,7 +16,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate
 
         public Price(ICurrency currency)
         {
-            Money money = null;
+            Money? money = null;
 
             if (currency.Type == Currency.Money)
             {

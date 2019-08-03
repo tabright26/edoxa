@@ -78,21 +78,21 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Queries
 
     public sealed partial class ChallengeQuery : IChallengeQuery
     {
-        public async Task<IReadOnlyCollection<IChallenge>> FetchUserChallengeHistoryAsync(UserId userId, ChallengeGame game = null, ChallengeState state = null)
+        public async Task<IReadOnlyCollection<IChallenge>> FetchUserChallengeHistoryAsync(UserId userId, ChallengeGame? game = null, ChallengeState? state = null)
         {
             var challengeModels = await this.FetchUserChallengeHistoryAsync(userId, game?.Value, state?.Value);
 
             return Mapper.Map<IReadOnlyCollection<IChallenge>>(challengeModels);
         }
 
-        public async Task<IReadOnlyCollection<IChallenge>> FetchUserChallengeHistoryAsync(ChallengeGame game = null, ChallengeState state = null)
+        public async Task<IReadOnlyCollection<IChallenge>> FetchUserChallengeHistoryAsync(ChallengeGame? game = null, ChallengeState? state = null)
         {
             var userId = _httpContextAccessor.GetUserId();
 
             return await this.FetchUserChallengeHistoryAsync(userId, game, state);
         }
 
-        public async Task<IReadOnlyCollection<IChallenge>> FetchChallengesAsync(ChallengeGame game = null, ChallengeState state = null)
+        public async Task<IReadOnlyCollection<IChallenge>> FetchChallengesAsync(ChallengeGame? game = null, ChallengeState? state = null)
         {
             var challengeModels = await this.FetchChallengeModelsAsync(game?.Value, state?.Value);
 

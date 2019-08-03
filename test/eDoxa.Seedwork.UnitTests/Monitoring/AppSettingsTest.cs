@@ -1,5 +1,5 @@
 ﻿// Filename: AppSettingsTest.cs
-// Date Created: 2019-07-24
+// Date Created: 2019-07-26
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -55,7 +55,7 @@ namespace eDoxa.Seedwork.UnitTests.Monitoring
             isValid.Should().BeFalse();
         }
 
-        private sealed class MockAppSettings : IHasApiResourceAppSettings, IHasServiceBusAppSettings, IHasAzureKubernetesServiceAppSettings
+        private sealed class MockAppSettings : IHasApiResourceAppSettings, IHasAzureKubernetesServiceAppSettings
         {
             [Required]
             public AuthorityOptions Authority { get; set; }
@@ -66,11 +66,6 @@ namespace eDoxa.Seedwork.UnitTests.Monitoring
             public ApiResource ApiResource { get; set; }
 
             public bool AzureKubernetesServiceEnabled { get; set; }
-
-            public bool AzureServiceBusEnabled { get; set; }
-
-            [Required]
-            public ServiceBusOptions ServiceBus { get; set; }
         }
     }
 }

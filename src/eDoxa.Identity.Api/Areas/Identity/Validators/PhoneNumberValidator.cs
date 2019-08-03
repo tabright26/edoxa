@@ -17,16 +17,14 @@ namespace eDoxa.Identity.Api.Areas.Identity.Validators
 {
     public class PhoneNumberValidator : IUserValidator<User>
     {
-        public PhoneNumberValidator(CustomIdentityErrorDescriber errors = null)
+        public PhoneNumberValidator(CustomIdentityErrorDescriber errors)
         {
-            Describer = errors ?? new CustomIdentityErrorDescriber();
+            Describer = errors;
         }
 
-        public CustomIdentityErrorDescriber Describer { get; private set; }
+        public CustomIdentityErrorDescriber Describer { get; }
 
-        
-        
-        public async Task<IdentityResult> ValidateAsync( UserManager<User> manager,  User user)
+        public async Task<IdentityResult> ValidateAsync(UserManager<User> manager, User user)
         {
             if (manager == null)
             {

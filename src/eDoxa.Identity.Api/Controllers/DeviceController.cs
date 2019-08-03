@@ -116,7 +116,7 @@ namespace eDoxa.Identity.Api.Controllers
                 return result;
             }
 
-            ConsentResponse grantedConsent = null;
+            ConsentResponse? grantedConsent = null;
 
             // user clicked 'no' - send back the standard 'access_denied' response
             if (model.Button == "no")

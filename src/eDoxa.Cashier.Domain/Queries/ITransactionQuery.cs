@@ -25,15 +25,15 @@ namespace eDoxa.Cashier.Domain.Queries
 
         Task<IReadOnlyCollection<ITransaction>> FindUserTransactionsAsync(
             UserId userId,
-            Currency currency = null,
-            TransactionType type = null,
-            TransactionStatus status = null
+            Currency? currency = null,
+            TransactionType? type = null,
+            TransactionStatus? status = null
         );
 
         Task<IReadOnlyCollection<ITransaction>> FindUserTransactionsAsync(
-            Currency currency = null,
-            TransactionType type = null,
-            TransactionStatus status = null
+            Currency? currency = null,
+            TransactionType? type = null,
+            TransactionStatus? status = null
         );
     }
 }

@@ -143,7 +143,7 @@ namespace eDoxa.Identity.Api.Controllers
 
                     if (ConsentOptions.EnableOfflineAccess == false)
                     {
-                        scopes = scopes.Where(x => x != IdentityServerConstants.StandardScopes.OfflineAccess);
+                        scopes = scopes.Where(scope => scope != IdentityServerConstants.StandardScopes.OfflineAccess);
                     }
 
                     grantedConsent = new ConsentResponse
@@ -179,7 +179,7 @@ namespace eDoxa.Identity.Api.Controllers
                 await _interaction.GrantConsentAsync(request, grantedConsent);
 
                 // indicate that's it ok to redirect back to authorization endpoint
-                result.RedirectUri = model.ReturnUrl;
+                result.RedirectUri = model!.ReturnUrl;
                 result.ClientId = request.ClientId;
             }
             else

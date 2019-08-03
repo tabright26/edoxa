@@ -10,8 +10,6 @@ using System.IO;
 using System.Reflection;
 
 using Autofac;
-using Autofac.Builder;
-using Autofac.Features.Scanning;
 
 using AutoMapper;
 
@@ -19,15 +17,13 @@ using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Api.Infrastructure;
 using eDoxa.Cashier.Api.Infrastructure.Data;
 using eDoxa.Cashier.Infrastructure;
-using eDoxa.Seedwork.Application;
-using eDoxa.Seedwork.Application.DomainEvents;
 using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Application.Modules;
 using eDoxa.Seedwork.Application.Swagger.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security.Constants;
 using eDoxa.Seedwork.Security.Extensions;
-using eDoxa.ServiceBus.Abstractions;
 using eDoxa.ServiceBus.Azure.Modules;
 using eDoxa.ServiceBus.Modules;
 

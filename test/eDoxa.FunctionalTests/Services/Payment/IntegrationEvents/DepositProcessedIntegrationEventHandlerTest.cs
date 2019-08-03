@@ -44,7 +44,7 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
 
         private readonly TestServer _testServer;
 
-        private async Task<ITransaction?> TryGetPublishedTransaction(TransactionId transactionId)
+        private async Task<ITransaction> TryGetPublishedTransaction(TransactionId transactionId)
         {
             var counter = 0;
 
@@ -77,7 +77,7 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
         [Fact]
         public async Task TransactionStatus_ShouldBeFailed()
         {
-            using (var paymentWebApplicationFactory = new PaymentWebApplicationFactory().WithWebHostBuilder(
+            using var paymentWebApplicationFactory = new PaymentWebApplicationFactory().WithWebHostBuilder(
                 builder => builder.ConfigureTestContainer<ContainerBuilder>(
                     container =>
                     {
@@ -97,49 +97,48 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
                         container.RegisterInstance(mockStripeService.Object).As<IStripeService>();
                     }
                 )
-            ))
+            );
+
+            using (paymentWebApplicationFactory.CreateClient())
             {
-                using (paymentWebApplicationFactory.CreateClient())
-                {
-                    var accountFaker = new AccountFaker();
-                    accountFaker.UseSeed(23568904);
-                    var account = accountFaker.Generate();
-                    var moneyDepositTransaction = new MoneyDepositTransaction(Money.Fifty);
-                    account?.CreateTransaction(moneyDepositTransaction);
+                var accountFaker = new AccountFaker();
+                accountFaker.UseSeed(23568904);
+                var account = accountFaker.Generate();
+                var moneyDepositTransaction = new MoneyDepositTransaction(Money.Fifty);
+                account?.CreateTransaction(moneyDepositTransaction);
 
-                    await _testServer.UsingScopeAsync(
-                        async scope =>
-                        {
-                            var accountRepository = scope.GetRequiredService<IAccountRepository>();
-                            accountRepository.Create(account);
-                            await accountRepository.CommitAsync();
-                        }
-                    );
+                await _testServer.UsingScopeAsync(
+                    async scope =>
+                    {
+                        var accountRepository = scope.GetRequiredService<IAccountRepository>();
+                        accountRepository.Create(account);
+                        await accountRepository.CommitAsync();
+                    }
+                );
 
-                    _testServer.UsingScope(
-                        scope =>
-                        {
-                            var integrationEventService = scope.GetRequiredService<IServiceBusPublisher>();
+                await _testServer.UsingScopeAsync(
+                    async scope =>
+                    {
+                        var integrationEventService = scope.GetRequiredService<IServiceBusPublisher>();
 
-                            integrationEventService.Publish(
-                                new DepositProcessedIntegrationEvent(moneyDepositTransaction.Id, moneyDepositTransaction.Description.Text, "cus_test", 5000)
-                            );
-                        }
-                    );
+                        await integrationEventService.PublishAsync(
+                            new UserAccountDepositIntegrationEvent(moneyDepositTransaction.Id, moneyDepositTransaction.Description.Text, "cus_test", 5000)
+                        );
+                    }
+                );
 
-                    var transaction = await this.TryGetPublishedTransaction(moneyDepositTransaction.Id);
+                var transaction = await this.TryGetPublishedTransaction(moneyDepositTransaction.Id);
 
-                    transaction.Should().NotBeNull();
+                transaction.Should().NotBeNull();
 
-                    transaction?.Status.Should().Be(TransactionStatus.Failed);
-                }
+                transaction?.Status.Should().Be(TransactionStatus.Failed);
             }
         }
 
         [Fact]
         public async Task TransactionStatus_ShouldBeSucceded()
         {
-            using (var paymentWebApplicationFactory = new PaymentWebApplicationFactory().WithWebHostBuilder(
+            using var paymentWebApplicationFactory = new PaymentWebApplicationFactory().WithWebHostBuilder(
                 builder => builder.ConfigureTestContainer<ContainerBuilder>(
                     container =>
                     {
@@ -159,42 +158,41 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
                         container.RegisterInstance(mockStripeService.Object).As<IStripeService>();
                     }
                 )
-            ))
+            );
+
+            using (paymentWebApplicationFactory.CreateClient())
             {
-                using (paymentWebApplicationFactory.CreateClient())
-                {
-                    var accountFaker = new AccountFaker();
-                    accountFaker.UseSeed(23345667);
-                    var account = accountFaker.Generate();
-                    var moneyDepositTransaction = new MoneyDepositTransaction(Money.Fifty);
-                    account?.CreateTransaction(moneyDepositTransaction);
+                var accountFaker = new AccountFaker();
+                accountFaker.UseSeed(23345667);
+                var account = accountFaker.Generate();
+                var moneyDepositTransaction = new MoneyDepositTransaction(Money.Fifty);
+                account?.CreateTransaction(moneyDepositTransaction);
 
-                    await _testServer.UsingScopeAsync(
-                        async scope =>
-                        {
-                            var accountRepository = scope.GetRequiredService<IAccountRepository>();
-                            accountRepository.Create(account);
-                            await accountRepository.CommitAsync();
-                        }
-                    );
+                await _testServer.UsingScopeAsync(
+                    async scope =>
+                    {
+                        var accountRepository = scope.GetRequiredService<IAccountRepository>();
+                        accountRepository.Create(account);
+                        await accountRepository.CommitAsync();
+                    }
+                );
 
-                    _testServer.UsingScope(
-                        scope =>
-                        {
-                            var integrationEventService = scope.GetRequiredService<IServiceBusPublisher>();
+                await _testServer.UsingScopeAsync(
+                    async scope =>
+                    {
+                        var integrationEventService = scope.GetRequiredService<IServiceBusPublisher>();
 
-                            integrationEventService.Publish(
-                                new DepositProcessedIntegrationEvent(moneyDepositTransaction.Id, moneyDepositTransaction.Description.Text, "cus_test", 5000)
-                            );
-                        }
-                    );
+                        await integrationEventService.PublishAsync(
+                            new UserAccountDepositIntegrationEvent(moneyDepositTransaction.Id, moneyDepositTransaction.Description.Text, "cus_test", 5000)
+                        );
+                    }
+                );
 
-                    var transaction = await this.TryGetPublishedTransaction(moneyDepositTransaction.Id);
+                var transaction = await this.TryGetPublishedTransaction(moneyDepositTransaction.Id);
 
-                    transaction.Should().NotBeNull();
+                transaction.Should().NotBeNull();
 
-                    transaction?.Status.Should().Be(TransactionStatus.Succeded);
-                }
+                transaction?.Status.Should().Be(TransactionStatus.Succeded);
             }
         }
     }

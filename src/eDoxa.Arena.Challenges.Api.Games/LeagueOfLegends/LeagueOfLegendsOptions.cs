@@ -8,10 +8,15 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System.ComponentModel.DataAnnotations;
+
+#nullable disable
+
 namespace eDoxa.Arena.Challenges.Api.Games.LeagueOfLegends
 {
     internal sealed class LeagueOfLegendsOptions
     {
+        [Required]
         public string RiotToken { get; set; }
     }
 }

@@ -10,23 +10,22 @@ using eDoxa.Identity.Api.Areas.Identity.Services;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
 {
     public class TwoFactorAuthenticationModel : PageModel
     {
-        private const string AuthenicatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}";
+        //private const string AuthenicatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}";
 
         private readonly CustomUserManager _userManager;
         private readonly CustomSignInManager _signInManager;
-        private readonly ILogger<TwoFactorAuthenticationModel> _logger;
+        //private readonly ILogger<TwoFactorAuthenticationModel> _logger;
 
-        public TwoFactorAuthenticationModel(CustomUserManager userManager, CustomSignInManager signInManager, ILogger<TwoFactorAuthenticationModel> logger)
+        public TwoFactorAuthenticationModel(CustomUserManager userManager, CustomSignInManager signInManager/*, ILogger<TwoFactorAuthenticationModel> logger*/)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _logger = logger;
+            //_logger = logger;
         }
 
         public bool HasAuthenticator { get; set; }

@@ -21,7 +21,7 @@ using MediatR;
 
 using Module = Autofac.Module;
 
-namespace eDoxa.Seedwork.Application
+namespace eDoxa.Seedwork.Application.Modules
 {
     public sealed class RequestModule : Module
     {

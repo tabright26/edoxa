@@ -33,7 +33,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Fakers.DataSets
             return Faker.PickRandom(ValueObject.GetValues<PayoutEntries>());
         }
 
-        public EntryFee EntryFee(Currency entryFeeCurrency = null)
+        public EntryFee EntryFee(Currency? entryFeeCurrency = null)
         {
             var moneyEntryFees = ValueObject.GetValues<MoneyEntryFee>().ToList();
 

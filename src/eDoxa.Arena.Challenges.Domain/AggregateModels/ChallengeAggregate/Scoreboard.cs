@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed class Scoreboard : Dictionary<UserId, Score>, IScoreboard
+    public sealed class Scoreboard : Dictionary<UserId, Score?>, IScoreboard
     {
         public Scoreboard(IChallenge challenge) : base(
             challenge.Participants.OrderByDescending(participant => participant.ComputeScore(challenge.BestOf))

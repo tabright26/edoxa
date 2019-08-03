@@ -83,6 +83,13 @@ namespace eDoxa.Cashier.Api.Application.Requests.Validations
 
                                     var account = await accountQuery.FindUserAccountAsync(userId);
 
+                                    if (account == null)
+                                    {
+                                        context.AddFailure("User account not found.");
+
+                                        return;
+                                    }
+
                                     if (request.Currency == Currency.Money.Name)
                                     {
                                         var moneyAccount = new MoneyAccount(account);

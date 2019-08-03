@@ -33,7 +33,7 @@ namespace eDoxa.Cashier.Api.Application.Requests.Handlers
         {
             var userId = _httpContextAccessor.GetUserId();
 
-            var customerId = _httpContextAccessor.GetCustomerId();
+            var customerId = _httpContextAccessor.GetCustomerId()!;
 
             await _accountService.DepositAsync(customerId, userId, MapCurrency(request.Currency, request.Amount), cancellationToken);
         }

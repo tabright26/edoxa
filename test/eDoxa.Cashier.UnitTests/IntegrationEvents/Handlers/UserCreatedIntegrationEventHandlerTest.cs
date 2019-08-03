@@ -42,10 +42,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
         public async Task UserCreatedIntegrationEvent_ShouldBeCompletedTask()
         {
             // Arrange
-            var integrationEvent = new UserCreatedIntegrationEvent
-            {
-                UserId = Guid.NewGuid()
-            };
+            var integrationEvent = new UserCreatedIntegrationEvent(Guid.NewGuid());
 
             _mockMediator.Setup(mock => mock.Send(It.IsAny<CreateUserRequest>(), It.IsAny<CancellationToken>())).Returns(Unit.Task).Verifiable();
 

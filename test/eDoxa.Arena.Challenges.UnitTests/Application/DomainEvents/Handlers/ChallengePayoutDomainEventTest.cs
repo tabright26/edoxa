@@ -4,44 +4,44 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.ServiceBus.Abstractions;
+//using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
+//using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+//using eDoxa.ServiceBus.Abstractions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+//using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Moq;
+//using Moq;
 
-namespace eDoxa.Arena.Challenges.UnitTests.Application.DomainEvents.Handlers
-{
-    [TestClass]
-    public sealed class ChallengePayoutDomainEventTest
-    {
-        private ChallengeFaker _challengeFaker;
-        private Mock<IServiceBusPublisher> _mockServiceBusPublisher;
+//namespace eDoxa.Arena.Challenges.UnitTests.Application.DomainEvents.Handlers
+//{
+//    [TestClass]
+//    public sealed class ChallengePayoutDomainEventTest
+//    {
+//        private ChallengeFaker _challengeFaker;
+//        private Mock<IServiceBusPublisher> _mockServiceBusPublisher;
 
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            _challengeFaker = new ChallengeFaker(state: ChallengeState.Ended);
-            _mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
-        }
+//        [TestInitialize]
+//        public void TestInitialize()
+//        {
+//            _challengeFaker = new ChallengeFaker(state: ChallengeState.Ended);
+//            _mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
+//        }
 
-        //[TestMethod]
-        //public async Task HandleAsync_PayoutProcessedDomainEvent_ShouldBeCompletedTask()
-        //{
-        //    // Arranges
-        //    var challenge = _challengeFaker.Generate();
+//        [TestMethod]
+//        public async Task HandleAsync_PayoutProcessedDomainEvent_ShouldBeCompletedTask()
+//        {
+//            // Arranges
+//            var challenge = _challengeFaker.Generate();
 
-        //    _mockIntegrationEventService.Setup(mock => mock.PublishAsync(It.IsAny<ChallengePayoutIntegrationEvent>())).Returns(Task.CompletedTask).Verifiable();
+//            _mockIntegrationEventService.Setup(mock => mock.PublishAsync(It.IsAny<ChallengePayoutIntegrationEvent>())).Returns(Task.CompletedTask).Verifiable();
 
-        //    var handler = new ChallengePayoutDomainEventHandler(_mockIntegrationEventService.Object);
+//            var handler = new ChallengePayoutDomainEventHandler(_mockIntegrationEventService.Object);
 
-        //    // Act
-        //    await handler.HandleAsync(new ChallengePayoutDomainEvent(challenge.Id, challenge.Payout.GetParticipantPrizes(challenge.Scoreboard)));
+//            // Act
+//            await handler.HandleAsync(new ChallengePayoutDomainEvent(challenge.Id, challenge.Payout.GetParticipantPrizes(challenge.Scoreboard)));
 
-        //    // Assert
-        //    _mockIntegrationEventService.Verify(mock => mock.PublishAsync(It.IsAny<ChallengePayoutIntegrationEvent>()), Times.Once);
-        //}
-    }
-}
+//            // Assert
+//            _mockIntegrationEventService.Verify(mock => mock.PublishAsync(It.IsAny<ChallengePayoutIntegrationEvent>()), Times.Once);
+//        }
+//    }
+//}

@@ -18,16 +18,14 @@ namespace eDoxa.Identity.Api.Areas.Identity.Validators
 {
     public sealed class EmailValidator : IUserValidator<User>
     {
-        public EmailValidator(CustomIdentityErrorDescriber errors = null)
+        public EmailValidator(CustomIdentityErrorDescriber errors)
         {
-            Describer = errors ?? new CustomIdentityErrorDescriber();
+            Describer = errors;
         }
 
-        public CustomIdentityErrorDescriber Describer { get; private set; }
+        private CustomIdentityErrorDescriber Describer { get; }
 
-        
-        
-        public async Task<IdentityResult> ValidateAsync( UserManager<User> manager,  User user)
+        public async Task<IdentityResult> ValidateAsync(UserManager<User> manager, User user)
         {
             if (manager == null)
             {
@@ -69,7 +67,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Validators
 
                 if (flag)
                 {
-                    var userId = await manager.GetUserIdAsync(byEmailAsync);
+                    var userId = await manager.GetUserIdAsync(byEmailAsync!);
 
                     flag = !string.Equals(userId, await manager.GetUserIdAsync(user));
                 }

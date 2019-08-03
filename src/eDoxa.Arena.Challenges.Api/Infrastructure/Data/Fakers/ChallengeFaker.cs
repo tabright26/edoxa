@@ -18,7 +18,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers
 {
     public sealed class ChallengeFaker : Faker<IChallenge>
     {
-        public ChallengeFaker(ChallengeGame game = null, ChallengeState state = null)
+        public ChallengeFaker(ChallengeGame? game = null, ChallengeState? state = null)
         {
             this.CustomInstantiator(
                 faker =>
@@ -108,7 +108,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers
         }
 
         
-        public override IChallenge Generate(string ruleSets = null)
+        public override IChallenge Generate(string? ruleSets = null)
         {
             FakerHub.User().Reset();
 

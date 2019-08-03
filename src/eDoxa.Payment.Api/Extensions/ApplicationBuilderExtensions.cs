@@ -22,9 +22,8 @@ namespace eDoxa.Payment.Api.Extensions
         public static void UseServiceBusSubscriber(this IApplicationBuilder application)
         {
             var serviceBusSubscriber = application.ApplicationServices.GetRequiredService<IServiceBusSubscriber>();
-            serviceBusSubscriber.Subscribe<UserCreatedIntegrationEvent, UserCreatedIntegrationEventHandler>();
-            serviceBusSubscriber.Subscribe<DepositProcessedIntegrationEvent, DepositProcessedIntegrationEventHandler>();
-            serviceBusSubscriber.Subscribe<WithdrawalProcessedIntegrationEvent, WithdrawalProcessedIntegrationEventHandler>();
+            serviceBusSubscriber.Subscribe<UserAccountDepositIntegrationEvent, UserAccountDepositIntegrationEventHandler>();
+            serviceBusSubscriber.Subscribe<UserAccountWithdrawalIntegrationEvent, UserAccountWithdrawalIntegrationEventHandler>();
         }
     }
 }

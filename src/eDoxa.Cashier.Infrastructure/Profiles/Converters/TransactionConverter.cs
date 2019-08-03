@@ -19,9 +19,9 @@ namespace eDoxa.Cashier.Infrastructure.Profiles.Converters
         public ITransaction Convert( TransactionModel source,  ITransaction destination,  ResolutionContext context)
         {
             var transaction = new Transaction(
-                Convert(source.Amount, Currency.FromValue(source.Currency)),
+                Convert(source.Amount, Currency.FromValue(source.Currency)!),
                 new TransactionDescription(source.Description),
-                TransactionType.FromValue(source.Type),
+                TransactionType.FromValue(source.Type)!,
                 new DateTimeProvider(source.Timestamp)
             );
 

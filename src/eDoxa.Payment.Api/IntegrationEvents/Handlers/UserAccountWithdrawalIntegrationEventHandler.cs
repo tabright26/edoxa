@@ -20,14 +20,14 @@ using Stripe;
 
 namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
 {
-    internal sealed class WithdrawalProcessedIntegrationEventHandler : IIntegrationEventHandler<WithdrawalProcessedIntegrationEvent>
+    internal sealed class UserAccountWithdrawalIntegrationEventHandler : IIntegrationEventHandler<UserAccountWithdrawalIntegrationEvent>
     {
-        private readonly ILogger<WithdrawalProcessedIntegrationEventHandler> _logger;
+        private readonly ILogger<UserAccountWithdrawalIntegrationEventHandler> _logger;
         private readonly IServiceBusPublisher _serviceBusPublisher;
         private readonly IStripeService _stripeService;
 
-        public WithdrawalProcessedIntegrationEventHandler(
-            ILogger<WithdrawalProcessedIntegrationEventHandler> logger,
+        public UserAccountWithdrawalIntegrationEventHandler(
+            ILogger<UserAccountWithdrawalIntegrationEventHandler> logger,
             IServiceBusPublisher serviceBusPublisher,
             IStripeService stripeService
         )
@@ -37,11 +37,11 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
             _stripeService = stripeService;
         }
 
-        public async Task HandleAsync(WithdrawalProcessedIntegrationEvent integrationEvent)
+        public async Task HandleAsync(UserAccountWithdrawalIntegrationEvent integrationEvent)
         {
             try
             {
-                _logger.LogInformation($"Processing {nameof(WithdrawalProcessedIntegrationEvent)}...");
+                _logger.LogInformation($"Processing {nameof(UserAccountWithdrawalIntegrationEvent)}...");
 
                 await _stripeService.CreateTransferAsync(
                     integrationEvent.TransactionId,
@@ -50,27 +50,27 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
                     integrationEvent.Amount
                 );
 
-                _logger.LogInformation($"Processed {nameof(WithdrawalProcessedIntegrationEvent)}.");
+                _logger.LogInformation($"Processed {nameof(UserAccountWithdrawalIntegrationEvent)}.");
 
-                _serviceBusPublisher.Publish(new TransactionSuccededIntegrationEvent(integrationEvent.TransactionId));
+                await _serviceBusPublisher.PublishAsync(new UserTransactionSuccededIntegrationEvent(integrationEvent.TransactionId));
 
-                _logger.LogInformation($"Published {nameof(TransactionSuccededIntegrationEvent)}.");
+                _logger.LogInformation($"Published {nameof(UserTransactionSuccededIntegrationEvent)}.");
             }
             catch (StripeException exception)
             {
                 _logger.LogError(exception, exception.StripeError?.ToJson());
 
-                _serviceBusPublisher.Publish(new TransactionFailedIntegrationEvent(integrationEvent.TransactionId));
+                await _serviceBusPublisher.PublishAsync(new UserTransactionFailedIntegrationEvent(integrationEvent.TransactionId));
 
-                _logger.LogInformation($"Published {nameof(TransactionFailedIntegrationEvent)}.");
+                _logger.LogInformation($"Published {nameof(UserTransactionFailedIntegrationEvent)}.");
             }
             catch (Exception exception)
             {
                 _logger.LogCritical(exception, $"Another exception type that {nameof(StripeException)} occurred.");
 
-                _serviceBusPublisher.Publish(new TransactionFailedIntegrationEvent(integrationEvent.TransactionId));
+                await _serviceBusPublisher.PublishAsync(new UserTransactionFailedIntegrationEvent(integrationEvent.TransactionId));
 
-                _logger.LogInformation($"Published {nameof(TransactionFailedIntegrationEvent)}.");
+                _logger.LogInformation($"Published {nameof(UserTransactionFailedIntegrationEvent)}.");
             }
         }
     }

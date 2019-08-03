@@ -21,7 +21,7 @@ namespace eDoxa.Seedwork.Monitoring.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static TAppSettings GetAppSettings<TAppSettings>(this IConfiguration configuration, ApiResource apiResource = null)
+        public static TAppSettings GetAppSettings<TAppSettings>(this IConfiguration configuration, ApiResource? apiResource = null)
         where TAppSettings : class
         {
             var appSettings = configuration.Get<TAppSettings>();

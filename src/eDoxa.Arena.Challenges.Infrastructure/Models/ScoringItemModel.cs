@@ -8,6 +8,8 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+#nullable disable
+
 using eDoxa.Seedwork.Infrastructure;
 
 namespace eDoxa.Arena.Challenges.Infrastructure.Models

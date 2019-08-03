@@ -66,9 +66,9 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries
     public sealed partial class TransactionQuery : ITransactionQuery
     {
         public async Task<IReadOnlyCollection<ITransaction>> FindUserTransactionsAsync(
-            Currency currency = null,
-            TransactionType type = null,
-            TransactionStatus status = null
+            Currency? currency = null,
+            TransactionType? type = null,
+            TransactionStatus? status = null
         )
         {
             var userId = _httpContextAccessor.GetUserId();
@@ -78,9 +78,9 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries
 
         public async Task<IReadOnlyCollection<ITransaction>> FindUserTransactionsAsync(
             UserId userId,
-            Currency currency = null,
-            TransactionType type = null,
-            TransactionStatus status = null
+            Currency? currency = null,
+            TransactionType? type = null,
+            TransactionStatus? status = null
         )
         {
             var transactionModels = await this.FindTransactionModelAsync(userId, currency?.Value, type?.Value, status?.Value);

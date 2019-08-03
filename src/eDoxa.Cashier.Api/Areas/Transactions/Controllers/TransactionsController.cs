@@ -47,7 +47,7 @@ namespace eDoxa.Cashier.Api.Areas.Transactions.Controllers
         [HttpGet]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<TransactionViewModel>))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> GetAsync(Currency currency = null, TransactionType type = null, TransactionStatus status = null)
+        public async Task<IActionResult> GetAsync(Currency? currency = null, TransactionType? type = null, TransactionStatus? status = null)
         {
             var transactionViewModels = await _transactionQuery.FindUserTransactionViewModelsAsync(currency, type, status);
 

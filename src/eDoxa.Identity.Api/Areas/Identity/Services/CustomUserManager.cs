@@ -68,7 +68,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            if (await this.HasGameAlreadyLinkedAsync(user, Game.FromName(gameName)))
+            if (await this.HasGameAlreadyLinkedAsync(user, Game.FromName(gameName)!))
             {
                 var userId = await this.GetUserIdAsync(user);
 
@@ -80,7 +80,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 return IdentityResult.Failed(ErrorDescriber.GameAlreadyLinked());
             }
 
-            if (await this.FindByGameAsync(Game.FromName(gameName), playerId) != null)
+            if (await this.FindByGameAsync(Game.FromName(gameName)!, playerId) != null)
             {
                 var userId = await this.GetUserIdAsync(user);
 
@@ -159,10 +159,10 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
         {
             var games = await this.GetGamesAsync(user);
 
-            return games.SingleOrDefault(userGame => Game.FromValue(userGame.Value).Name == game.Name) != null;
+            return games.SingleOrDefault(userGame => Game.FromValue(userGame.Value)!.Name == game.Name) != null;
         }
 
-        public async Task<string> GetBirthDateAsync(User user)
+        public async Task<string?> GetBirthDateAsync(User user)
         {
             this.ThrowIfDisposed();
 
@@ -174,7 +174,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             return await Store.GetBirthDateAsync(user, CancellationToken);
         }
 
-        public async Task<string> GetFirstNameAsync(User user)
+        public async Task<string?> GetFirstNameAsync(User user)
         {
             this.ThrowIfDisposed();
 
@@ -186,7 +186,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             return await Store.GetFirstNameAsync(user, CancellationToken);
         }
 
-        public async Task<string> GetLastNameAsync(User user)
+        public async Task<string?> GetLastNameAsync(User user)
         {
             this.ThrowIfDisposed();
 
@@ -196,18 +196,6 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             }
 
             return await Store.GetLastNameAsync(user, CancellationToken);
-        }
-
-        public async Task<string> GetNameAsync(User user)
-        {
-            this.ThrowIfDisposed();
-
-            if (user == null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
-
-            return await Store.GetNameAsync(user, CancellationToken);
         }
     }
 }

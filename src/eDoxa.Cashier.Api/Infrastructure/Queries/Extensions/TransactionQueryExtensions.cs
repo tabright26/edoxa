@@ -25,9 +25,9 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries.Extensions
         public static async Task<IReadOnlyCollection<TransactionModel>> FindUserTransactionModelsAsync(
             this ITransactionQuery transactionQuery,
             UserId userId,
-            Currency currency = null,
-            TransactionType type = null,
-            TransactionStatus status = null
+            Currency? currency = null,
+            TransactionType? type = null,
+            TransactionStatus? status = null
         )
         {
             var transactions = await transactionQuery.FindUserTransactionsAsync(userId, currency, type, status);
@@ -37,9 +37,9 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries.Extensions
 
         public static async Task<IReadOnlyCollection<TransactionModel>> FindUserTransactionModelsAsync(
             this ITransactionQuery transactionQuery,
-            Currency currency = null,
-            TransactionType type = null,
-            TransactionStatus status = null
+            Currency? currency = null,
+            TransactionType? type = null,
+            TransactionStatus? status = null
         )
         {
             var transactions = await transactionQuery.FindUserTransactionsAsync(currency, type, status);
@@ -50,9 +50,9 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries.Extensions
         public static async Task<IReadOnlyCollection<TransactionViewModel>> FindUserTransactionViewModelsAsync(
             this ITransactionQuery transactionQuery,
             UserId userId,
-            Currency currency = null,
-            TransactionType type = null,
-            TransactionStatus status = null
+            Currency? currency = null,
+            TransactionType? type = null,
+            TransactionStatus? status = null
         )
         {
             var transactions = await transactionQuery.FindUserTransactionsAsync(userId, currency, type, status);
@@ -62,9 +62,9 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries.Extensions
 
         public static async Task<IReadOnlyCollection<TransactionViewModel>> FindUserTransactionViewModelsAsync(
             this ITransactionQuery transactionQuery,
-            Currency currency = null,
-            TransactionType type = null,
-            TransactionStatus status = null
+            Currency? currency = null,
+            TransactionType? type = null,
+            TransactionStatus? status = null
         )
         {
             var transactions = await transactionQuery.FindUserTransactionsAsync(currency, type, status);

@@ -20,8 +20,8 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions
         public static async Task<IReadOnlyCollection<ChallengeModel>> FetchUserChallengeModelHistoryAsync(
             this IChallengeQuery challengeQuery,
             UserId userId,
-            ChallengeGame game = null,
-            ChallengeState state = null
+            ChallengeGame? game = null,
+            ChallengeState? state = null
         )
         {
             var challenges = await challengeQuery.FetchUserChallengeHistoryAsync(userId, game, state);
@@ -31,8 +31,8 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions
 
         public static async Task<IReadOnlyCollection<ChallengeModel>> FetchUserChallengeModelHistoryAsync(
             this IChallengeQuery challengeQuery,
-            ChallengeGame game = null,
-            ChallengeState state = null
+            ChallengeGame? game = null,
+            ChallengeState? state = null
         )
         {
             var challenges = await challengeQuery.FetchUserChallengeHistoryAsync(game, state);
@@ -42,8 +42,8 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions
 
         public static async Task<IReadOnlyCollection<ChallengeModel>> FetchChallengeModelsAsync(
             this IChallengeQuery challengeQuery,
-            ChallengeGame game = null,
-            ChallengeState state = null
+            ChallengeGame? game = null,
+            ChallengeState? state = null
         )
         {
             var challenges = await challengeQuery.FetchChallengesAsync(game, state);
@@ -61,8 +61,8 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions
         public static async Task<IReadOnlyCollection<ChallengeViewModel>> FetchUserChallengeViewModelHistoryAsync(
             this IChallengeQuery challengeQuery,
             UserId userId,
-            ChallengeGame game = null,
-            ChallengeState state = null
+            ChallengeGame? game = null,
+            ChallengeState? state = null
         )
         {
             var challenges = await challengeQuery.FetchUserChallengeHistoryAsync(userId, game, state);
@@ -72,8 +72,8 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions
 
         public static async Task<IReadOnlyCollection<ChallengeViewModel>> FetchUserChallengeViewModelHistoryAsync(
             this IChallengeQuery challengeQuery,
-            ChallengeGame game = null,
-            ChallengeState state = null
+            ChallengeGame? game = null,
+            ChallengeState? state = null
         )
         {
             var challenges = await challengeQuery.FetchUserChallengeHistoryAsync(game, state);
@@ -83,8 +83,8 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions
 
         public static async Task<IReadOnlyCollection<ChallengeViewModel>> FetchChallengeViewModelsAsync(
             this IChallengeQuery challengeQuery,
-            ChallengeGame game = null,
-            ChallengeState state = null
+            ChallengeGame? game = null,
+            ChallengeState? state = null
         )
         {
             var challenges = await challengeQuery.FetchChallengesAsync(game, state);

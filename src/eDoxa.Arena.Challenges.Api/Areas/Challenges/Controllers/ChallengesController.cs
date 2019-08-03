@@ -46,7 +46,7 @@ namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers
         [HttpGet]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<ChallengeViewModel>))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> GetAsync(ChallengeGame game = null, ChallengeState state = null)
+        public async Task<IActionResult> GetAsync(ChallengeGame? game = null, ChallengeState? state = null)
         {
             var challengeViewModels = await _challengeQuery.FetchChallengeViewModelsAsync(game, state);
 

@@ -72,12 +72,26 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         protected override IEnumerable<object> GetAtomicValues()
         {
-            yield return CreatedAt;
-            yield return Duration;
-            yield return StartedAt;
-            yield return EndedAt;
-            yield return ClosedAt;
             yield return State;
+
+            yield return CreatedAt;
+
+            yield return Duration;
+
+            if (StartedAt != null)
+            {
+                yield return StartedAt;
+            }
+
+            if (EndedAt != null)
+            {
+                yield return EndedAt;
+            }
+
+            if (ClosedAt != null)
+            {
+                yield return ClosedAt;
+            }
         }
 
         public override string ToString()

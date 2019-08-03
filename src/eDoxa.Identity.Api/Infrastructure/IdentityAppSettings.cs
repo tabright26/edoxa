@@ -4,6 +4,8 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+#nullable disable
+
 using System.ComponentModel.DataAnnotations;
 
 using eDoxa.Seedwork.Monitoring.AppSettings;
@@ -13,9 +15,7 @@ using IdentityServer4.Models;
 
 namespace eDoxa.Identity.Api.Infrastructure
 {
-    public class IdentityAppSettings : IHasAzureKeyVaultAppSettings,
-                                       IHasApiResourceAppSettings,
-                                       IHasServiceBusAppSettings
+    public class IdentityAppSettings : IHasAzureKeyVaultAppSettings, IHasApiResourceAppSettings
     {
         [Required]
         public IdentityServerOptions IdentityServer { get; set; }
@@ -33,11 +33,6 @@ namespace eDoxa.Identity.Api.Infrastructure
 
         [Required]
         public ConnectionStrings ConnectionStrings { get; set; }
-
-        public bool AzureServiceBusEnabled { get; set; }
-
-        [Required]
-        public ServiceBusOptions ServiceBus { get; set; }
     }
 
     public class IdentityServerOptions
