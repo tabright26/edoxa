@@ -1,5 +1,5 @@
 ﻿// Filename: IdentityAppSettings.cs
-// Date Created: 2019-07-24
+// Date Created: 2019-07-26
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -21,18 +21,25 @@ namespace eDoxa.Identity.Api.Infrastructure
         public IdentityServerOptions IdentityServer { get; set; }
 
         [Required]
+        public ConnectionStrings ConnectionStrings { get; set; }
+
+        [Required]
         public ApiResource ApiResource { get; set; }
 
         [Required]
         public AuthorityOptions Authority { get; set; }
 
-        public bool SwaggerEnabled { get; set; }
-
         [Required]
         public AzureKeyVaultOptions AzureKeyVault { get; set; }
+    }
+
+    public class ConnectionStrings : IHasSqlServerConnectionString, IHasRedisConnectionString
+    {
+        [Required]
+        public string Redis { get; set; }
 
         [Required]
-        public ConnectionStrings ConnectionStrings { get; set; }
+        public string SqlServer { get; set; }
     }
 
     public class IdentityServerOptions
@@ -44,14 +51,5 @@ namespace eDoxa.Identity.Api.Infrastructure
         public string ArenaChallengesUrl { get; set; }
 
         public WebOptions Web { get; set; }
-    }
-
-    public class ConnectionStrings : IHasSqlServerConnectionString, IHasRedisConnectionString
-    {
-        [Required]
-        public string SqlServer { get; set; }
-
-        [Required]
-        public string Redis { get; set; }
     }
 }

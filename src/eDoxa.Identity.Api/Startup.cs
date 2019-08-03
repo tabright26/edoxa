@@ -155,8 +155,6 @@ namespace eDoxa.Identity.Api
                 }
             );
 
-            services.AddVersionedApiExplorer(options => options.GroupNameFormat = "'v'VV");
-
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
@@ -182,27 +180,6 @@ namespace eDoxa.Identity.Api
             );
 
             services.AddAutoMapper(Assembly.GetAssembly(typeof(Startup)), Assembly.GetAssembly(typeof(IdentityDbContext)));
-
-            if (AppSettings.SwaggerEnabled)
-            {
-                services.AddSwaggerGen(
-                    options =>
-                    {
-                        var provider = services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
-
-                        foreach (var description in provider.ApiVersionDescriptions)
-                        {
-                            options.SwaggerDoc(description.GroupName, description.CreateInfoForApiVersion(AppSettings));
-                        }
-
-                        options.IncludeXmlComments(XmlCommentsFilePath);
-
-                        options.AddSecurityDefinition(AppSettings);
-
-                        options.AddFilters();
-                    }
-                );
-            }
 
             services.AddIdentityServer(
                     options =>
@@ -231,6 +208,13 @@ namespace eDoxa.Identity.Api
             services.AddAuthentication(HostingEnvironment, AppSettings);
         }
 
+        public void ConfigureDevelopmentServices(IServiceCollection services)
+        {
+            this.ConfigureServices(services);
+
+            services.AddSwagger(XmlCommentsFilePath, AppSettings);
+        }
+
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterModule<DomainEventModule>();
@@ -238,11 +222,11 @@ namespace eDoxa.Identity.Api
             builder.RegisterModule<ServiceBusModule<Startup>>();
 
             builder.RegisterModule<AzureServiceBusModule>();
-            
+
             builder.RegisterModule<IdentityApiModule>();
         }
 
-        public void Configure(IApplicationBuilder application, IApiVersionDescriptionProvider provider)
+        public void Configure(IApplicationBuilder application)
         {
             application.UseHealthChecks();
 
@@ -272,34 +256,16 @@ namespace eDoxa.Identity.Api
                 application.UseIdentityServer();
             }
 
-            if (AppSettings.SwaggerEnabled)
-            {
-                application.UseSwagger();
-
-                application.UseSwaggerUI(
-                    options =>
-                    {
-                        foreach (var description in provider.ApiVersionDescriptions)
-                        {
-                            options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
-                        }
-
-                        options.RoutePrefix = string.Empty;
-
-                        options.OAuthClientId(AppSettings.ApiResource.SwaggerClientId());
-
-                        options.OAuthAppName(AppSettings.ApiResource.SwaggerClientName());
-
-                        options.DefaultModelExpandDepth(0);
-
-                        options.DefaultModelsExpandDepth(-1);
-                    }
-                );
-            }
-
             application.UseMvcWithDefaultRoute();
 
             application.UseServiceBusSubscriber();
+        }
+
+        public void ConfigureDevelopment(IApplicationBuilder application, IApiVersionDescriptionProvider provider)
+        {
+            this.Configure(application);
+
+            application.UseSwagger(provider, AppSettings);
         }
     }
 }

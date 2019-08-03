@@ -60,8 +60,6 @@ namespace eDoxa.Seedwork.UnitTests.Monitoring
             [Required]
             public AuthorityOptions Authority { get; set; }
 
-            public bool SwaggerEnabled { get; set; }
-
             [Required]
             public ApiResource ApiResource { get; set; }
 

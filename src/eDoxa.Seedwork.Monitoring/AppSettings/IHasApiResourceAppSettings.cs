@@ -8,7 +8,7 @@ using IdentityServer4.Models;
 
 namespace eDoxa.Seedwork.Monitoring.AppSettings
 {
-    public interface IHasApiResourceAppSettings : IHasAuthorityAppSettings, IHasSwaggerAppSettings
+    public interface IHasApiResourceAppSettings : IHasAuthorityAppSettings
     {
         ApiResource ApiResource { get; set; }
     }

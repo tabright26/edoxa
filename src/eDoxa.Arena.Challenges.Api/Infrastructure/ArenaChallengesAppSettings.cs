@@ -20,8 +20,6 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure
         [Required]
         public ConnectionStrings ConnectionStrings { get; set; }
 
-        public bool SwaggerEnabled { get; set; }
-
         [Required]
         public ApiResource ApiResource { get; set; }
 

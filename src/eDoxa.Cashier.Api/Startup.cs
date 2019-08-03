@@ -71,10 +71,8 @@ namespace eDoxa.Cashier.Api
             services.AddHealthChecks(AppSettings);
 
             services.AddCorsPolicy();
-            
-            services.AddDbContext<CashierDbContext, CashierDbContextData>(AppSettings.ConnectionStrings.SqlServer, Assembly.GetAssembly(typeof(Startup)));
 
-            services.AddVersionedApiExplorer(options => options.GroupNameFormat = "'v'VV");
+            services.AddDbContext<CashierDbContext, CashierDbContextData>(AppSettings.ConnectionStrings.SqlServer, Assembly.GetAssembly(typeof(Startup)));
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
@@ -94,28 +92,14 @@ namespace eDoxa.Cashier.Api
 
             services.AddAutoMapper(Assembly.GetAssembly(typeof(Startup)), Assembly.GetAssembly(typeof(CashierDbContext)));
 
-            if (AppSettings.SwaggerEnabled)
-            {
-                services.AddSwaggerGen(
-                    options =>
-                    {
-                        var provider = services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
-
-                        foreach (var description in provider.ApiVersionDescriptions)
-                        {
-                            options.SwaggerDoc(description.GroupName, description.CreateInfoForApiVersion(AppSettings));
-                        }
-
-                        options.IncludeXmlComments(XmlCommentsFilePath);
-
-                        options.AddSecurityDefinition(AppSettings);
-
-                        options.AddFilters();
-                    }
-                );
-            }
-
             services.AddAuthentication(HostingEnvironment, AppSettings);
+        }
+
+        public void ConfigureDevelopmentServices(IServiceCollection services)
+        {
+            this.ConfigureServices(services);
+
+            services.AddSwagger(XmlCommentsFilePath, AppSettings);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -131,7 +115,7 @@ namespace eDoxa.Cashier.Api
             builder.RegisterModule<CashierApiModule>();
         }
 
-        public void Configure(IApplicationBuilder application, IApiVersionDescriptionProvider provider)
+        public void Configure(IApplicationBuilder application)
         {
             application.UseHealthChecks();
 
@@ -141,34 +125,16 @@ namespace eDoxa.Cashier.Api
 
             application.UseAuthentication(HostingEnvironment);
 
-            if (AppSettings.SwaggerEnabled)
-            {
-                application.UseSwagger();
-
-                application.UseSwaggerUI(
-                    options =>
-                    {
-                        foreach (var description in provider.ApiVersionDescriptions)
-                        {
-                            options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
-                        }
-
-                        options.RoutePrefix = string.Empty;
-
-                        options.OAuthClientId(AppSettings.ApiResource.SwaggerClientId());
-
-                        options.OAuthAppName(AppSettings.ApiResource.SwaggerClientName());
-
-                        options.DefaultModelExpandDepth(0);
-
-                        options.DefaultModelsExpandDepth(-1);
-                    }
-                );
-            }
-
             application.UseMvc();
 
             application.UseServiceBusSubscriber();
+        }
+
+        public void ConfigureDevelopment(IApplicationBuilder application, IApiVersionDescriptionProvider provider)
+        {
+            this.Configure(application);
+
+            application.UseSwagger(provider, AppSettings);
         }
     }
 }

@@ -76,8 +76,11 @@ namespace eDoxa.Arena.Challenges.Api
             services.AddHealthChecks(AppSettings);
 
             services.AddCorsPolicy();
-            
-            services.AddDbContext<ArenaChallengesDbContext, ArenaChallengesDbContextData>(AppSettings.ConnectionStrings.SqlServer, Assembly.GetAssembly(typeof(Startup)));
+
+            services.AddDbContext<ArenaChallengesDbContext, ArenaChallengesDbContextData>(
+                AppSettings.ConnectionStrings.SqlServer,
+                Assembly.GetAssembly(typeof(Startup))
+            );
 
             services.AddDistributedRedisCache(
                 options =>
@@ -86,8 +89,6 @@ namespace eDoxa.Arena.Challenges.Api
                     options.InstanceName = HostingEnvironment.ApplicationName;
                 }
             );
-
-            services.AddVersionedApiExplorer(options => options.GroupNameFormat = "'v'VV");
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
@@ -107,27 +108,6 @@ namespace eDoxa.Arena.Challenges.Api
 
             services.AddAutoMapper(Assembly.GetAssembly(typeof(Startup)), Assembly.GetAssembly(typeof(ArenaChallengesDbContext)));
 
-            if (AppSettings.SwaggerEnabled)
-            {
-                services.AddSwaggerGen(
-                    options =>
-                    {
-                        var provider = services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
-
-                        foreach (var description in provider.ApiVersionDescriptions)
-                        {
-                            options.SwaggerDoc(description.GroupName, description.CreateInfoForApiVersion(AppSettings));
-                        }
-
-                        options.IncludeXmlComments(XmlCommentsFilePath);
-
-                        options.AddSecurityDefinition(AppSettings);
-
-                        options.AddFilters();
-                    }
-                );
-            }
-
             services.AddAuthentication(HostingEnvironment, AppSettings);
 
             services.AddTransient<IdentityDelegatingHandler>();
@@ -139,6 +119,13 @@ namespace eDoxa.Arena.Challenges.Api
 
             // TODO: Add to autofac module.
             services.AddArenaServices(Configuration);
+        }
+
+        public void ConfigureDevelopmentServices(IServiceCollection services)
+        {
+            this.ConfigureServices(services);
+
+            services.AddSwagger(XmlCommentsFilePath, AppSettings);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -154,7 +141,7 @@ namespace eDoxa.Arena.Challenges.Api
             builder.RegisterModule<ArenaChallengesApiModule>();
         }
 
-        public void Configure(IApplicationBuilder application, IApiVersionDescriptionProvider provider)
+        public void Configure(IApplicationBuilder application)
         {
             application.UseHealthChecks();
 
@@ -164,34 +151,16 @@ namespace eDoxa.Arena.Challenges.Api
 
             application.UseAuthentication(HostingEnvironment);
 
-            if (AppSettings.SwaggerEnabled)
-            {
-                application.UseSwagger();
-
-                application.UseSwaggerUI(
-                    options =>
-                    {
-                        foreach (var description in provider.ApiVersionDescriptions)
-                        {
-                            options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
-                        }
-
-                        options.RoutePrefix = string.Empty;
-
-                        options.OAuthClientId(AppSettings.ApiResource.SwaggerClientId());
-
-                        options.OAuthAppName(AppSettings.ApiResource.SwaggerClientName());
-
-                        options.DefaultModelExpandDepth(0);
-
-                        options.DefaultModelsExpandDepth(-1);
-                    }
-                );
-            }
-
             application.UseMvc();
 
             application.UseServiceBusSubscriber();
+        }
+
+        public void ConfigureDevelopment(IApplicationBuilder application, IApiVersionDescriptionProvider provider)
+        {
+            this.Configure(application);
+
+            application.UseSwagger(provider, AppSettings);
         }
     }
 }

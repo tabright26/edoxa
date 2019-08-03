@@ -36,8 +36,7 @@ services:
       - IdentityServer__IdentityUrl=${URL:-http://localhost}:5000
       - IdentityServer__CashierUrl=${URL:-http://localhost}:5002
       - IdentityServer__ArenaChallengesUrl=${URL:-http://localhost}:5003
-      - IdentityServer__Web__SpaUrl=${URL:-http://localhost}:5300
-      - SwaggerEnabled=${SwaggerEnabled:-true}
+      - IdentityServer__Web__SpaUrl=${URL:-http://localhost}:5300      
     ports:
       - "5000:80"
     volumes:
@@ -69,8 +68,7 @@ services:
       - ServiceBus__SubscriptionName=cashier
       - HealthChecks__PaymentUrl=http://payment.api/health
       - Authority__PrivateUrl=http://identity.api
-      - Authority__PublicUrl=${URL:-http://localhost}:5000
-      - SwaggerEnabled=${SwaggerEnabled:-true}
+      - Authority__PublicUrl=${URL:-http://localhost}:5000      
     ports:
       - "5002:80"
     volumes:
@@ -89,8 +87,7 @@ services:
       - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq}
       - ServiceBus__SubscriptionName=arena.challenges
       - Authority__PrivateUrl=http://identity.api
-      - Authority__PublicUrl=${URL:-http://localhost}:5000
-      - SwaggerEnabled=${SwaggerEnabled:-true}
+      - Authority__PublicUrl=${URL:-http://localhost}:5000      
     ports:
       - "5003:80"
     volumes:

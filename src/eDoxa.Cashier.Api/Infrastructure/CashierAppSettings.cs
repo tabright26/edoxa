@@ -1,5 +1,5 @@
 ﻿// Filename: CashierAppSettings.cs
-// Date Created: 2019-07-24
+// Date Created: 2019-07-26
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -15,13 +15,13 @@ using IdentityServer4.Models;
 
 namespace eDoxa.Cashier.Api.Infrastructure
 {
-    public class CashierAppSettings : IHasAzureKeyVaultAppSettings,
-                                      IHasApiResourceAppSettings
+    public class CashierAppSettings : IHasAzureKeyVaultAppSettings, IHasApiResourceAppSettings
     {
         [Required]
         public HealthChecksOptions HealthChecks { get; set; }
 
-        public bool SwaggerEnabled { get; set; }
+        [Required]
+        public ConnectionStrings ConnectionStrings { get; set; }
 
         [Required]
         public ApiResource ApiResource { get; set; }
@@ -31,20 +31,17 @@ namespace eDoxa.Cashier.Api.Infrastructure
 
         [Required]
         public AzureKeyVaultOptions AzureKeyVault { get; set; }
-
-        [Required]
-        public ConnectionStrings ConnectionStrings { get; set; }
-    }
-
-    public class HealthChecksOptions
-    {
-        [Required]
-        public string PaymentUrl { get; set; }
     }
 
     public class ConnectionStrings : IHasSqlServerConnectionString
     {
         [Required]
         public string SqlServer { get; set; }
+    }
+
+    public class HealthChecksOptions
+    {
+        [Required]
+        public string PaymentUrl { get; set; }
     }
 }

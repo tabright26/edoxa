@@ -19,15 +19,7 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents
         [TestMethod]
         public void Constructor_Tests()
         {
-            TestConstructor<UserCreatedIntegrationEvent>.ForParameters(
-                    typeof(Guid),
-                    typeof(string),
-                    typeof(string),
-                    typeof(string),
-                    typeof(int),
-                    typeof(int),
-                    typeof(int)
-                )
+            TestConstructor<UserCreatedIntegrationEvent>.ForParameters(typeof(Guid))
                 .WithClassName("UserCreatedIntegrationEvent")
                 .Assert();
         }

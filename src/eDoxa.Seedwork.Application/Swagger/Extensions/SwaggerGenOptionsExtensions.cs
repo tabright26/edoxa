@@ -1,18 +1,17 @@
 ﻿// Filename: SwaggerGenOptionsExtensions.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-07-05
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
+using System.Collections.Generic;
 using System.Linq;
 
 using eDoxa.Seedwork.Domain.Aggregate;
 using eDoxa.Seedwork.Domain.Extensions;
+using eDoxa.Seedwork.Monitoring.AppSettings;
 
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.DependencyInjection;
 
 using Swashbuckle.AspNetCore.Swagger;
@@ -22,6 +21,32 @@ namespace eDoxa.Seedwork.Application.Swagger.Extensions
 {
     internal static class SwaggerGenOptionsExtensions
     {
+        public static void SwaggerDocs(this SwaggerGenOptions options, IApiVersionDescriptionProvider provider, IHasApiResourceAppSettings appSettings)
+        {
+            foreach (var description in provider.ApiVersionDescriptions)
+            {
+                options.SwaggerDoc(description.GroupName, description.CreateInfoForApiVersion(appSettings));
+            }
+        }
+
+        public static void AddSecurityDefinition(this SwaggerGenOptions options, IHasApiResourceAppSettings appSettings)
+        {
+            options.AddSecurityDefinition(
+                "oauth2",
+                new OAuth2Scheme
+                {
+                    Type = "oauth2",
+                    Flow = "implicit",
+                    AuthorizationUrl = $"{appSettings.Authority.PublicUrl}/connect/authorize",
+                    TokenUrl = $"{appSettings.Authority.PublicUrl}/connect/token",
+                    Scopes = new Dictionary<string, string>
+                    {
+                        [appSettings.ApiResource.Name] = appSettings.ApiResource.DisplayName
+                    }
+                }
+            );
+        }
+
         public static void DescribeAllEnumerationsAsStrings(this SwaggerGenOptions options)
         {
             Enumeration.GetTypes()
