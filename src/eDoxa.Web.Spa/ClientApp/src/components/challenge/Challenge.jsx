@@ -10,7 +10,7 @@ import ChallengePayout from './ChallengePayout';
 
 import faker from 'faker';
 
-import { findChallenge } from '../../store/actions/arenaChallengeActions';
+import { loadChallenge } from '../../store/actions/arenaChallengeActions';
 
 faker.seed(1);
 
@@ -20,7 +20,7 @@ class Challenge extends Component {
     if (!this.props.challenge) {
       // If the challenge does not exist, dispatch a redux action to find the challenge with the API call.
       // This call will update the store with the HTTP response call.
-      this.props.actions.findChallenge();
+      this.props.actions.loadChallenge();
     }
   }
 
@@ -64,8 +64,8 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     actions: {
-      findChallenge: () =>
-        dispatch(findChallenge(ownProps.match.params.challengeId))
+      loadChallenge: () =>
+        dispatch(loadChallenge(ownProps.match.params.challengeId))
     }
   };
 };

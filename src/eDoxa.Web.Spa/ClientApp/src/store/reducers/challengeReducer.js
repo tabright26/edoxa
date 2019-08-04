@@ -1,7 +1,8 @@
 import {
   LOAD_CHALLENGES_SUCCESS,
   LOAD_CHALLENGES_FAIL,
-  FIND_CHALLENGE_SUCCESS
+  LOAD_CHALLENGE_SUCCESS,
+  LOAD_CHALLENGE_FAIL
 } from '../actions/arenaChallengeActions';
 
 export const reducer = (state = [], action) => {
@@ -12,13 +13,16 @@ export const reducer = (state = [], action) => {
         case 204:
           return state;
         default:
-          return data;
+          return [...state, ...data];
       }
     case LOAD_CHALLENGES_FAIL:
       console.log(action.payload.error);
       return state;
-    case FIND_CHALLENGE_SUCCESS:
+    case LOAD_CHALLENGE_SUCCESS:
       return [...state, action.challenge];
+    case LOAD_CHALLENGE_FAIL:
+      console.log(action.payload.error);
+      return state;
     default:
       return state;
   }
