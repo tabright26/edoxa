@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, ListGroup, ListGroupItem } from 'react-bootstrap';
 
-import Spinner from '../UI/Spinner';
+import Spinner from '../Shared/Spinner';
 
 const Body = ({ challenge }) => {
   if (!challenge) {

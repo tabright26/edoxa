@@ -1,4 +1,4 @@
-import { FIND_ACCOUNT_BALANCE_SUCCESS } from '../actions/cashierActions';
+import { LOAD_USER_ACCOUNT_BALANCE_SUCCESS } from '../actions/userAccountActions';
 
 const account = {
   money: { available: null, pending: null },
@@ -7,7 +7,7 @@ const account = {
 
 export const reducer = (state = account, action) => {
   switch (action.type) {
-    case FIND_ACCOUNT_BALANCE_SUCCESS:
+    case LOAD_USER_ACCOUNT_BALANCE_SUCCESS:
       const { balance } = action;
       const { currency, available, pending } = balance;
       const normalizedCurrency = currency.toLowerCase();

@@ -10,7 +10,7 @@ import ChallengePayout from './ChallengePayout';
 
 import faker from 'faker';
 
-import { findChallenge } from '../../store/actions/arenaChallengesActions';
+import { findChallenge } from '../../store/actions/arenaChallengeActions';
 
 faker.seed(1);
 

@@ -1,12 +1,12 @@
 import React from 'react';
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 
-import withGameProviderContainer from './Container';
+import withUserGamesContainer from './Container';
 
-const GameProviderList = ({ gameProviders }) => (
+const UserGameIndex = ({ userGames }) => (
   <Container>
     <Row>
-      {gameProviders.map((gameProvider, index) => (
+      {userGames.map((gameProvider, index) => (
         <Col key={index} xl="4">
           <Card
             className="my-3"
@@ -36,4 +36,4 @@ const GameProviderList = ({ gameProviders }) => (
   </Container>
 );
 
-export default withGameProviderContainer(GameProviderList);
+export default withUserGamesContainer(UserGameIndex);

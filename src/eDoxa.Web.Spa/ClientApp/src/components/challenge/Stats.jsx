@@ -1,9 +1,9 @@
 import React from 'react';
 import { Modal, Button, Table } from 'react-bootstrap';
 
-import ScoreFormat from '../UI/ScoreFormat';
+import ScoreFormat from '../Shared/Formaters/ScoreFormat';
 
-import Spinner from '../UI/Spinner';
+import Spinner from '../Shared/Spinner';
 
 const Stats = props => {
   const { stats } = props;

@@ -1,9 +1,9 @@
 import React from 'react';
 import { Table, Card } from 'react-bootstrap';
 
-import Spinner from '../UI/Spinner';
-import CurrencyFormat from '../UI/CurrencyFormat';
-import BucketFormat from '../UI/BucketFormat';
+import Spinner from '../Shared/Spinner';
+import CurrencyFormat from '../Shared/Formaters/CurrencyFormat';
+import BucketFormat from '../Shared/Formaters/BucketFormat';
 
 const Render = ({ challenge }) => {
   if (!challenge) {

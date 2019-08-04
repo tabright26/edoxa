@@ -12,14 +12,14 @@ import {
 
 import Moment from 'react-moment';
 
-import CurrencyFormat from '../UI/CurrencyFormat';
+import CurrencyFormat from '../Shared/Formaters/CurrencyFormat';
 
 import {
   fetchTransactions,
   fetchCards,
   hasBankAccount,
   findAccountBalance
-} from '../../store/actions/cashierActions';
+} from '../../store/actions/userAccountActions';
 
 class CashierOverview extends Component {
   componentDidMount() {

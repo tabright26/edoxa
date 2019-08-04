@@ -1,6 +1,13 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Container, Row, Col, Card, Button, Image } from 'react-bootstrap';
+import React, { Component } from './node_modules/react';
+import { connect } from './node_modules/react-redux';
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Button,
+  Image
+} from './node_modules/react-bootstrap';
 
 import { fetchLeagueOfLegendAccountByName } from '../../store/actions/gameAccountActions';
 

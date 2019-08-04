@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { fetchTransactions } from '../../store/actions/cashierActions';
+import { fetchTransactions } from '../../store/actions/userAccountActions';
 
 class TransactionHistory extends Component {
   componentDidMount() {

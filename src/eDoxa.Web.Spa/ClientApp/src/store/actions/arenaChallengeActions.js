@@ -1,7 +1,7 @@
 import {
   fetchChallengesAsync,
   findChallengeAsync
-} from '../../services/arenaChallengesService';
+} from '../../services/arenaChallengeService';
 
 export const FETCH_CHALLENGES_SUCCESS = 'FETCH_CHALLENGES_SUCCESS';
 export const FIND_CHALLENGE_SUCCESS = 'FIND_CHALLENGE_SUCCESS';

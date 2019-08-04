@@ -1,8 +1,8 @@
 import React from 'react';
 import { Card, Row, Col, Badge, ProgressBar } from 'react-bootstrap';
 
-import CurrencyFormat from '../UI/CurrencyFormat';
-import Spinner from '../UI/Spinner';
+import CurrencyFormat from '../Shared/Formaters/CurrencyFormat';
+import Spinner from '../Shared/Spinner';
 
 import ChallengeTimeline from './ChallengeTimeline';
 

@@ -3,9 +3,9 @@ import { Route, Switch } from 'react-router-dom';
 import PrivateRoute from '../utils/PrivateRoute';
 import NotFoundPage from '../utils/NotFound';
 
-import Header from './UI/Header';
-import Home from './UI/Home';
-import Footer from './UI/Footer';
+import Header from './Shared/Header';
+import Home from './Shared/Home';
+import Footer from './Shared/Footer';
 
 import Challenge from './challenge/Challenge';
 import Challenges from './challenge/Challenges';
@@ -14,7 +14,7 @@ import AccountOverview from './cashier/AccountOverview';
 import TransactionHistory from './cashier/TransactionHistory';
 import PaymentMethods from './cashier/PaymentMethods';
 
-import ScreensGameProviderList from '../screens/GameProvider/List/List';
+import ScreensUserGameIndex from '../screens/User/Game/Index';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/bootstrap-custom.scss';
@@ -50,7 +50,7 @@ class App extends Component {
           <PrivateRoute
             exact
             path="/arena/games"
-            component={ScreensGameProviderList}
+            component={ScreensUserGameIndex}
           />
           <Route component={NotFoundPage} />
         </Switch>

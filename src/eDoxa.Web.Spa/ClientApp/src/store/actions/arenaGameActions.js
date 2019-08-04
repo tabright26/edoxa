@@ -1,4 +1,4 @@
-import { fetchLeagueOfLeagueAccountByNameAsync } from '../../services/LOLService';
+import { fetchLeagueOfLeagueAccountByNameAsync } from '../../services/arenaGameService';
 
 export const FETCH_LEAGUEOFLEGENDACCOUNTBYNAME_SUCCESS =
   'FETCH_LEAGUEOFLEGENDACCOUNT_SUCCESS';

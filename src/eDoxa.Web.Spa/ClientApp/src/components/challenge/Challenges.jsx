@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
   Table,
-  ProgressBar,
   Container,
   Row,
   Col,
@@ -15,9 +14,9 @@ import Moment from 'react-moment';
 
 import Scrollbar from 'react-scrollbars-custom';
 
-import CurrencyFormat from '../UI/CurrencyFormat';
+import CurrencyFormat from '../Shared/Formaters/CurrencyFormat';
 
-import { fetchChallenges } from '../../store/actions/arenaChallengesActions';
+import { fetchChallenges } from '../../store/actions/arenaChallengeActions';
 
 class Challenges extends Component {
   componentDidMount() {

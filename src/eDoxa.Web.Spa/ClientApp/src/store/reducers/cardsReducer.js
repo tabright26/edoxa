@@ -1,4 +1,4 @@
-import { FETCH_CARDS_SUCCESS } from '../actions/cashierActions';
+import { FETCH_CARDS_SUCCESS } from '../actions/userAccountActions';
 
 export const reducer = (state = [], action) => {
   switch (action.type) {

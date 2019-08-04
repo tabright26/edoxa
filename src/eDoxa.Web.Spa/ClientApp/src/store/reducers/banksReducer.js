@@ -1,4 +1,4 @@
-import { HAS_BANKACCOUNT_SUCCESS } from '../actions/cashierActions';
+import { HAS_BANKACCOUNT_SUCCESS } from '../actions/userAccountActions';
 
 export const reducer = (state = false, action) => {
   switch (action.type) {

@@ -2,7 +2,7 @@ import React from 'react';
 import { Card } from 'react-bootstrap';
 
 import Moment from 'react-moment';
-import Spinner from '../UI/Spinner';
+import Spinner from '../Shared/Spinner';
 
 import faker from 'faker';
 

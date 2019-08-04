@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { fetchCards, hasBankAccount } from '../../store/actions/cashierActions';
+import {
+  fetchCards,
+  hasBankAccount
+} from '../../store/actions/userAccountActions';
 
 class PaymentMethods extends Component {
   componentDidMount() {

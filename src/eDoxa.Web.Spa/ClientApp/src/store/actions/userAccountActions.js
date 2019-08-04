@@ -1,23 +1,22 @@
 import {
   fetchTransactionsAsync,
-  findAccountBalanceAsync
-} from '../../services/cashierService';
-import {
+  findAccountBalanceAsync,
   fetchCardsAsync,
   hasBankAccountAsync
-} from '../../services/stripeService';
+} from '../../services/userAccountService';
 
-export const FIND_ACCOUNT_BALANCE_SUCCESS = 'FIND_ACCOUNT_BALANCE_SUCCESS';
-export const FETCH_TRANSACTIONS_SUCCESS = 'FETCH_TRANSACTIONS_SUCCESS';
+export const LOAD_USER_ACCOUNT_BALANCE_SUCCESS =
+  'LOAD_USER_ACCOUNT_BALANCE_SUCCESS';
+export const LOAD_USER_TRANSACTIONS_SUCCESS = 'LOAD_USER_TRANSACTIONS_SUCCESS';
 export const FETCH_CARDS_SUCCESS = 'FETCH_CARDS_SUCCESS';
 export const HAS_BANKACCOUNT_SUCCESS = 'HAS_BANKACCOUNT_SUCCESS';
 
-export function findAccountBalanceSuccess(balance) {
-  return { type: FIND_ACCOUNT_BALANCE_SUCCESS, balance };
+export function loadUserAccountBalanceSuccess(balance) {
+  return { type: LOAD_USER_ACCOUNT_BALANCE_SUCCESS, balance };
 }
 
-export function fetchTransactionsSuccess(transactions) {
-  return { type: FETCH_TRANSACTIONS_SUCCESS, transactions };
+export function loadUserTransactionsSuccess(transactions) {
+  return { type: LOAD_USER_TRANSACTIONS_SUCCESS, transactions };
 }
 
 export function fetchCardsSuccess(cards) {
@@ -32,7 +31,7 @@ export function findAccountBalance(currency) {
   return async function(dispatch, getState) {
     try {
       const response = await findAccountBalanceAsync(currency, getState);
-      dispatch(findAccountBalanceSuccess(response.data));
+      dispatch(loadUserAccountBalanceSuccess(response.data));
     } catch (error) {
       console.log(error);
     }
@@ -43,7 +42,7 @@ export function fetchTransactions() {
   return async function(dispatch, getState) {
     try {
       const response = await fetchTransactionsAsync(getState);
-      dispatch(fetchTransactionsSuccess(response.data));
+      dispatch(loadUserTransactionsSuccess(response.data));
     } catch (error) {
       console.log(error);
     }

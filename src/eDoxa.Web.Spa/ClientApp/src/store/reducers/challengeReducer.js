@@ -1,7 +1,7 @@
 import {
   FETCH_CHALLENGES_SUCCESS,
   FIND_CHALLENGE_SUCCESS
-} from '../actions/arenaChallengesActions';
+} from '../actions/arenaChallengeActions';
 
 /*
 The state of this reducer correspond to the global state property 'api.challenges'.
