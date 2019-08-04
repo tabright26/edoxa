@@ -1,70 +1,90 @@
 import {
-  fetchTransactionsAsync,
-  findAccountBalanceAsync,
-  fetchCardsAsync,
-  hasBankAccountAsync
+  loadUserAccountBalanceMoneyAsync,
+  loadUserAccountBalanceTokenAsync,
+  loadUserAccountTransactionsAsync,
+  loadUserStripeCardsAsync,
+  loadUserStripeBankAccountsAsync
 } from '../../services/userAccountService';
 
-export const LOAD_USER_ACCOUNT_BALANCE_SUCCESS =
-  'LOAD_USER_ACCOUNT_BALANCE_SUCCESS';
-export const LOAD_USER_TRANSACTIONS_SUCCESS = 'LOAD_USER_TRANSACTIONS_SUCCESS';
-export const FETCH_CARDS_SUCCESS = 'FETCH_CARDS_SUCCESS';
-export const HAS_BANKACCOUNT_SUCCESS = 'HAS_BANKACCOUNT_SUCCESS';
+export const LOAD_USER_ACCOUNT_BALANCE_MONEY_SUCCESS =
+  'LOAD_USER_ACCOUNT_BALANCE_MONEY_SUCCESS';
+export const LOAD_USER_ACCOUNT_BALANCE_TOKEN_SUCCESS =
+  'LOAD_USER_ACCOUNT_BALANCE_TOKEN_SUCCESS';
+export const LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS =
+  'LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS';
+export const LOAD_USER_STRIPE_CARDS_SUCCESS = 'LOAD_USER_STRIPE_CARDS_SUCCESS';
+export const HAS_USER_STRIPE_BANK_ACCOUNT_SUCCESS =
+  'HAS_USER_STRIPE_BANK_ACCOUNT_SUCCESS';
 
-export function loadUserAccountBalanceSuccess(balance) {
-  return { type: LOAD_USER_ACCOUNT_BALANCE_SUCCESS, balance };
+export function loadUserAccountBalanceMoneySuccess(money) {
+  return { type: LOAD_USER_ACCOUNT_BALANCE_MONEY_SUCCESS, money };
 }
 
-export function loadUserTransactionsSuccess(transactions) {
-  return { type: LOAD_USER_TRANSACTIONS_SUCCESS, transactions };
+export function loadUserAccountBalanceTokenSuccess(token) {
+  return { type: LOAD_USER_ACCOUNT_BALANCE_TOKEN_SUCCESS, token };
 }
 
-export function fetchCardsSuccess(cards) {
-  return { type: FETCH_CARDS_SUCCESS, cards };
+export function loadUserAccountTransactionsSuccess(transactions) {
+  return { type: LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS, transactions };
 }
 
-export function hasBankAccountSuccess(hasBankAccount) {
-  return { type: HAS_BANKACCOUNT_SUCCESS, hasBankAccount };
+export function loadUserStripeCardsSuccess(cards) {
+  return { type: LOAD_USER_STRIPE_CARDS_SUCCESS, cards };
 }
 
-export function findAccountBalance(currency) {
+export function hasUserStripeBankAccountSuccess(hasBankAccount) {
+  return { type: HAS_USER_STRIPE_BANK_ACCOUNT_SUCCESS, hasBankAccount };
+}
+
+export function loadUserAccountBalanceForMoney() {
   return async function(dispatch, getState) {
     try {
-      const response = await findAccountBalanceAsync(currency, getState);
-      dispatch(loadUserAccountBalanceSuccess(response.data));
+      const response = await loadUserAccountBalanceMoneyAsync(getState);
+      dispatch(loadUserAccountBalanceMoneySuccess(response.data));
     } catch (error) {
       console.log(error);
     }
   };
 }
 
-export function fetchTransactions() {
+export function loadUserAccountBalanceForToken() {
   return async function(dispatch, getState) {
     try {
-      const response = await fetchTransactionsAsync(getState);
-      dispatch(loadUserTransactionsSuccess(response.data));
+      const response = await loadUserAccountBalanceTokenAsync(getState);
+      dispatch(loadUserAccountBalanceTokenSuccess(response.data));
     } catch (error) {
       console.log(error);
     }
   };
 }
 
-export function fetchCards() {
+export function loadUserAccountTransactions() {
   return async function(dispatch, getState) {
     try {
-      const response = await fetchCardsAsync(getState);
-      dispatch(fetchCardsSuccess(response.data.data));
+      const response = await loadUserAccountTransactionsAsync(getState);
+      dispatch(loadUserAccountTransactionsSuccess(response.data));
     } catch (error) {
       console.log(error);
     }
   };
 }
 
-export function hasBankAccount() {
+export function loadUserStripeCards() {
   return async function(dispatch, getState) {
     try {
-      const response = await hasBankAccountAsync(getState);
-      dispatch(hasBankAccountSuccess(response.data.data.length >= 1));
+      const response = await loadUserStripeCardsAsync(getState);
+      dispatch(loadUserStripeCardsSuccess(response.data.data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function hasUserStripeBankAccount() {
+  return async function(dispatch, getState) {
+    try {
+      const response = await loadUserStripeBankAccountsAsync(getState);
+      dispatch(hasUserStripeBankAccountSuccess(response.data.data.length >= 1));
     } catch (error) {
       console.log(error);
     }

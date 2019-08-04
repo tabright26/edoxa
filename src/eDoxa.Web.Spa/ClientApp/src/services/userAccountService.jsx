@@ -1,6 +1,14 @@
 import axios from 'axios';
 
-export async function findAccountBalanceAsync(currency, getState) {
+export async function loadUserAccountBalanceMoneyAsync(getState) {
+  return await loadUserAccountBalanceAsync('money', getState);
+}
+
+export async function loadUserAccountBalanceTokenAsync(getState) {
+  return await loadUserAccountBalanceAsync('token', getState);
+}
+
+async function loadUserAccountBalanceAsync(currency, getState) {
   const state = getState();
   const { access_token } = state.oidc.user;
   return await axios({
@@ -13,7 +21,7 @@ export async function findAccountBalanceAsync(currency, getState) {
   });
 }
 
-export async function fetchTransactionsAsync(getState) {
+export async function loadUserAccountTransactionsAsync(getState) {
   const state = getState();
   const { access_token } = state.oidc.user;
   return await axios({
@@ -26,7 +34,7 @@ export async function fetchTransactionsAsync(getState) {
   });
 }
 
-export async function fetchCardsAsync(getState) {
+export async function loadUserStripeCardsAsync(getState) {
   const state = getState();
   const { profile } = state.oidc.user;
   return await axios({
@@ -41,7 +49,7 @@ export async function fetchCardsAsync(getState) {
   });
 }
 
-export async function hasBankAccountAsync(getState) {
+export async function loadUserStripeBankAccountsAsync(getState) {
   const state = getState();
   const { profile } = state.oidc.user;
   return await axios({

@@ -1,12 +1,12 @@
 import React from 'react';
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 
-import withUserGamesContainer from './Container';
+import withUserGameContainer from './Container';
 
-const UserGameIndex = ({ userGames }) => (
+const UserGameIndex = ({ games }) => (
   <Container>
     <Row>
-      {userGames.map((gameProvider, index) => (
+      {games.map((game, index) => (
         <Col key={index} xl="4">
           <Card
             className="my-3"
@@ -17,7 +17,7 @@ const UserGameIndex = ({ userGames }) => (
             <Card.Img />
             <Card.ImgOverlay>
               <Card.Title as="h5" className="text-center">
-                {gameProvider.game}
+                {game.name}
               </Card.Title>
               <Card.Text>
                 This is a wider card with supporting text below as a natural
@@ -36,4 +36,4 @@ const UserGameIndex = ({ userGames }) => (
   </Container>
 );
 
-export default withUserGamesContainer(UserGameIndex);
+export default withUserGameContainer(UserGameIndex);

@@ -2,20 +2,20 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { loadUserGames } from '../../../store/actions/userGameActions';
 
-const withUserGamesContainer = WrappedComponent => {
-  class UserGamesContainer extends Component {
+const withUserGameContainer = WrappedComponent => {
+  class UserGameContainer extends Component {
     componentDidMount() {
       this.props.actions.loadUserGames();
     }
 
     render() {
-      return <WrappedComponent userGames={this.props.userGames} />;
+      return <WrappedComponent games={this.props.games} />;
     }
   }
 
   const mapStateToProps = state => {
     return {
-      userGames: state.gameProviders
+      games: state.gameProviders
     };
   };
 
@@ -30,7 +30,7 @@ const withUserGamesContainer = WrappedComponent => {
   return connect(
     mapStateToProps,
     mapDispatchToProps
-  )(UserGamesContainer);
+  )(UserGameContainer);
 };
 
-export default withUserGamesContainer;
+export default withUserGameContainer;

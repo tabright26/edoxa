@@ -15,22 +15,23 @@ import Moment from 'react-moment';
 import CurrencyFormat from '../Shared/Formaters/CurrencyFormat';
 
 import {
-  fetchTransactions,
-  fetchCards,
-  hasBankAccount,
-  findAccountBalance
+  loadUserAccountTransactions,
+  loadUserStripeCards,
+  hasUserStripeBankAccount
 } from '../../store/actions/userAccountActions';
+
+import UserAccountBalanceMoneyIndex from '../User/Account/Balance/Money/Index';
+import UserAccountBalanceTokenIndex from '../User/Account/Balance/Token/Index';
 
 class CashierOverview extends Component {
   componentDidMount() {
-    this.props.actions.findAccountBalance();
     this.props.actions.fetchTransactions();
     this.props.actions.fetchCards();
     this.props.actions.hasBankAccount();
   }
 
   render() {
-    const { cards, transactions, hasBankAccount, account } = this.props;
+    const { cards, transactions, hasBankAccount } = this.props;
     return (
       <Container>
         <Row>
@@ -62,22 +63,7 @@ class CashierOverview extends Component {
             <Card bg="dark" className="text-light mt-3">
               <Card.Header as="h3">Money</Card.Header>
               <Card.Body>
-                <dl className="row mb-0">
-                  <dt className="col-sm-9">Available</dt>
-                  <dd className="col-sm-3">
-                    <CurrencyFormat
-                      currency="money"
-                      amount={account.money.available}
-                    />
-                  </dd>
-                  <dt className="col-sm-9">Pending</dt>
-                  <dd className="col-sm-3 mb-0">
-                    <CurrencyFormat
-                      currency="money"
-                      amount={account.money.pending}
-                    />
-                  </dd>
-                </dl>
+                <UserAccountBalanceMoneyIndex />
               </Card.Body>
             </Card>
           </Col>
@@ -85,22 +71,7 @@ class CashierOverview extends Component {
             <Card bg="dark" className="text-light mt-3">
               <Card.Header as="h3">Tokens</Card.Header>
               <Card.Body>
-                <dl className="row mb-0">
-                  <dt className="col-sm-9">Available</dt>
-                  <dd className="col-sm-3">
-                    <CurrencyFormat
-                      currency="token"
-                      amount={account.token.available}
-                    />
-                  </dd>
-                  <dt className="col-sm-9">Pending</dt>
-                  <dd className="col-sm-3 mb-0">
-                    <CurrencyFormat
-                      currency="token"
-                      amount={account.token.pending}
-                    />
-                  </dd>
-                </dl>
+                <UserAccountBalanceTokenIndex />
               </Card.Body>
             </Card>
           </Col>
@@ -251,13 +222,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     actions: {
-      fetchTransactions: () => dispatch(fetchTransactions()),
-      fetchCards: () => dispatch(fetchCards()),
-      hasBankAccount: () => dispatch(hasBankAccount()),
-      findAccountBalance: () => {
-        dispatch(findAccountBalance('money'));
-        dispatch(findAccountBalance('token'));
-      }
+      fetchTransactions: () => dispatch(loadUserAccountTransactions()),
+      fetchCards: () => dispatch(loadUserStripeCards()),
+      hasBankAccount: () => dispatch(hasUserStripeBankAccount())
     }
   };
 };

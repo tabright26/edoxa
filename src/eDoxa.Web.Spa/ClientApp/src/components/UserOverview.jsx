@@ -10,7 +10,7 @@ import {
 } from './node_modules/react-bootstrap';
 
 import { fetchLeagueOfLegendAccountByName } from '../../store/actions/gameAccountActions';
-
+// TODO: To refactor
 class UserOverview extends Component {
   constructor(props) {
     super(props);

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { fetchTransactions } from '../../store/actions/userAccountActions';
+import { loadUserAccountTransactions } from '../../store/actions/userAccountActions';
 
 class TransactionHistory extends Component {
   componentDidMount() {
@@ -21,7 +21,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     actions: {
-      fetchTransactions: () => dispatch(fetchTransactions())
+      fetchTransactions: () => dispatch(loadUserAccountTransactions())
     }
   };
 };

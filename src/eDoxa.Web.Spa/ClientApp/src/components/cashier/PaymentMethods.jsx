@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import {
-  fetchCards,
-  hasBankAccount
+  loadUserStripeCards,
+  hasUserStripeBankAccount
 } from '../../store/actions/userAccountActions';
 
 class PaymentMethods extends Component {
@@ -25,8 +25,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     actions: {
-      fetchCards: () => dispatch(fetchCards()),
-      hasBankAccount: () => dispatch(hasBankAccount())
+      fetchCards: () => dispatch(loadUserStripeCards()),
+      hasBankAccount: () => dispatch(hasUserStripeBankAccount())
     }
   };
 };

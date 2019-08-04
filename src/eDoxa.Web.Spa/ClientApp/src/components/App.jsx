@@ -4,7 +4,7 @@ import PrivateRoute from '../utils/PrivateRoute';
 import NotFoundPage from '../utils/NotFound';
 
 import Header from './Shared/Header';
-import Home from './Shared/Home';
+import Home from '../screens/Home/Index';
 import Footer from './Shared/Footer';
 
 import Challenge from './challenge/Challenge';

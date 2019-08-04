@@ -1,6 +1,9 @@
 import { combineReducers } from 'redux';
-import { reducer as gameAccountReducer } from './gameAccountReducer';
+
+import { reducer as userAccountReducer } from './userAccountReducer';
+//import { reducer as gameAccountReducer } from "./gameAccountReducer";
 
 export const reducer = combineReducers({
-  gameAccounts: gameAccountReducer
+  account: userAccountReducer
+  // gameAccounts: gameAccountReducer
 });
