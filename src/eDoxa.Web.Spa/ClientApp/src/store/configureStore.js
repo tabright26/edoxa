@@ -1,7 +1,9 @@
+import axios from 'axios';
 import { routerMiddleware } from 'connected-react-router';
 import { createStore, compose, applyMiddleware } from 'redux';
 import { createLogger } from 'redux-logger';
 import thunk from 'redux-thunk';
+import { multiClientMiddleware } from 'redux-axios-middleware';
 
 import { persistStore } from 'redux-persist';
 
@@ -22,7 +24,25 @@ export default () => {
     createRootReducer(history),
     initialState,
     composeEnhancers(
-      applyMiddleware(thunk, routerMiddleware(history), createLogger())
+      applyMiddleware(
+        thunk,
+        routerMiddleware(history),
+        multiClientMiddleware({
+          default: {
+            client: axios.create({
+              baseURL: process.env.REACT_APP_WEB_GATEWAY,
+              responseType: 'json'
+            })
+          },
+          stripe: {
+            client: axios.create({
+              baseURL: 'https://api.stripe.com/v1',
+              responseType: 'json'
+            })
+          }
+        }),
+        createLogger()
+      )
     )
   );
   const persistor = persistStore(store);

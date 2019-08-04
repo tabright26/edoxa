@@ -1,24 +1,22 @@
 import {
-  FETCH_CHALLENGES_SUCCESS,
+  LOAD_CHALLENGES_SUCCESS,
+  LOAD_CHALLENGES_FAIL,
   FIND_CHALLENGE_SUCCESS
 } from '../actions/arenaChallengeActions';
 
-/*
-The state of this reducer correspond to the global state property 'api.challenges'.
-store.getState() = {
-  router: {}
-  form: {}
-  oidc: {}
-  api: {
-    challenges: [] <=
-  }
-}
-*/
-
 export const reducer = (state = [], action) => {
   switch (action.type) {
-    case FETCH_CHALLENGES_SUCCESS:
-      return action.challenges;
+    case LOAD_CHALLENGES_SUCCESS:
+      const { status, data } = action.payload;
+      switch (status) {
+        case 204:
+          return state;
+        default:
+          return data;
+      }
+    case LOAD_CHALLENGES_FAIL:
+      console.log(action.payload.error);
+      return state;
     case FIND_CHALLENGE_SUCCESS:
       return [...state, action.challenge];
     default:

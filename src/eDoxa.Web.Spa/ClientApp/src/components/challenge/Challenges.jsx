@@ -16,11 +16,11 @@ import Scrollbar from 'react-scrollbars-custom';
 
 import CurrencyFormat from '../Shared/Formaters/CurrencyFormat';
 
-import { fetchChallenges } from '../../store/actions/arenaChallengeActions';
+import { loadChallenges } from '../../store/actions/arenaChallengeActions';
 
 class Challenges extends Component {
   componentDidMount() {
-    this.props.actions.fetchChallenges();
+    this.props.actions.loadChallenges();
   }
 
   render() {
@@ -132,7 +132,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     actions: {
-      fetchChallenges: () => dispatch(fetchChallenges())
+      loadChallenges: () => dispatch(loadChallenges())
     }
   };
 };
