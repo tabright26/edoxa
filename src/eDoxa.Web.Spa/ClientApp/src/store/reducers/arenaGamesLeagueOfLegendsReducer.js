@@ -6,7 +6,7 @@ import {
 export const reducer = (state = {}, action) => {
   switch (action.type) {
     case LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME_SUCCESS:
-      return action.payload;
+      return action.payload.data;
     case LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME_FAIL:
       console.log(action.payload.error);
       return state;

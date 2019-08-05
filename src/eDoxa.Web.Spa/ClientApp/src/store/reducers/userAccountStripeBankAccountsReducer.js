@@ -3,15 +3,16 @@ import {
   LOAD_USER_STRIPE_BANK_ACCOUNTS_FAIL
 } from '../actions/userAccountActions';
 
-export const reducer = (state = false, action) => {
+export const reducer = (state = { data: [] }, action) => {
   switch (action.type) {
     case LOAD_USER_STRIPE_BANK_ACCOUNTS_SUCCESS:
       const { status, data } = action.payload;
       switch (status) {
         case 204:
-          return false;
+          return state;
         default:
-          return data.data.length >= 1;
+          console.log(data);
+          return data;
       }
     case LOAD_USER_STRIPE_BANK_ACCOUNTS_FAIL:
       console.log(action.payload.error);

@@ -7,18 +7,64 @@ export const middleware = multiClientMiddleware({
     client: axios.create({
       baseURL: process.env.REACT_APP_WEB_GATEWAY,
       responseType: 'json'
-    })
+    }),
+    options: {
+      interceptors: {
+        request: [
+          ({ getState, dispatch }, config) => {
+            config.headers = {
+              authorization: `Bearer ${getState().oidc.user.access_token}`,
+              accept: 'application/json'
+            };
+            return config;
+          }
+        ]
+      }
+    }
   },
   stripe: {
     client: axios.create({
       baseURL: 'https://api.stripe.com',
       responseType: 'json'
-    })
+    }),
+    options: {
+      interceptors: {
+        request: [
+          ({ getState, dispatch }, config) => {
+            const state = getState();
+            const { profile } = state.oidc.user;
+            config.url = config.url
+              .replace(':customerId', profile['stripe:customerId'])
+              .replace(':connectAccountId', profile['stripe:connectAccountId']);
+            config.headers = {
+              authorization: `Bearer ${process.env.REACT_APP_STRIPE_APIKEY}`,
+              accept: 'application/json'
+            };
+            console.log(config);
+            return config;
+          }
+        ]
+      }
+    }
   },
   leagueOfLegends: {
     client: axios.create({
       baseURL: 'https://na1.api.riotgames.com',
       responseType: 'json'
-    })
+    }),
+    options: {
+      interceptors: {
+        request: [
+          ({ getState, dispatch }, config) => {
+            config.headers = {
+              'X-Riot-Token': process.env.REACT_APP_LEAGUEOFLEGENDS_RIOT_TOKEN,
+              'Accept-Charset':
+                'application/x-www-form-urlencoded; charset=UTF-8'
+            };
+            return config;
+          }
+        ]
+      }
+    }
   }
 });

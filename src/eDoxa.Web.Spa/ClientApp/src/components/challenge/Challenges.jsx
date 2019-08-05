@@ -14,7 +14,7 @@ import Moment from 'react-moment';
 
 import Scrollbar from 'react-scrollbars-custom';
 
-import CurrencyFormat from '../Shared/Formaters/CurrencyFormat';
+//import CurrencyFormat from "../Shared/Formaters/CurrencyFormat";
 
 import { loadChallenges } from '../../store/actions/arenaChallengeActions';
 
@@ -125,7 +125,7 @@ class Challenges extends Component {
 
 const mapStateToProps = state => {
   return {
-    challenges: state.arena.challenges || []
+    challenges: state.arena.challenges
   };
 };
 

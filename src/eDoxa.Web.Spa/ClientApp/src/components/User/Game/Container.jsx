@@ -15,7 +15,7 @@ const withUserGameContainer = WrappedComponent => {
 
   const mapStateToProps = state => {
     return {
-      games: state.gameProviders
+      games: state.user.games
     };
   };
 

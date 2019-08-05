@@ -103,30 +103,28 @@ class CashierOverview extends Component {
                 </thead>
                 <tbody>
                   {transactions
-                    ? transactions
-                        .sort((left, right) =>
-                          left.timestamp < right.timestamp ? -1 : 1
-                        )
-                        .map((transaction, index) => (
-                          <tr key={index}>
-                            <td>{transaction.id}</td>
-                            <td>
-                              <Moment unix format="ll">
-                                {transaction.timestamp}
-                              </Moment>
-                            </td>
-                            <td>
-                              <CurrencyFormat
-                                currency={transaction.currency}
-                                amount={transaction.amount}
-                              />
-                            </td>
-                            <td>{transaction.description}</td>
-                            <td>{transaction.type}</td>
-                            <td>{transaction.status}</td>
-                          </tr>
-                        ))
-                    : []}
+                    .sort((left, right) =>
+                      left.timestamp < right.timestamp ? -1 : 1
+                    )
+                    .map((transaction, index) => (
+                      <tr key={index}>
+                        <td>{transaction.id}</td>
+                        <td>
+                          <Moment unix format="ll">
+                            {transaction.timestamp}
+                          </Moment>
+                        </td>
+                        <td>
+                          <CurrencyFormat
+                            currency={transaction.currency}
+                            amount={transaction.amount}
+                          />
+                        </td>
+                        <td>{transaction.description}</td>
+                        <td>{transaction.type}</td>
+                        <td>{transaction.status}</td>
+                      </tr>
+                    ))}
                 </tbody>
               </Table>
             </Card>
@@ -213,9 +211,9 @@ class CashierOverview extends Component {
 
 const mapStateToProps = state => {
   return {
-    transactions: state.cashier.transactions,
-    cards: state.cashier.cards,
-    account: state.cashier.account
+    transactions: state.user.account.transactions,
+    cards: state.user.account.stripe.cards.data,
+    hasBankAccount: state.user.account.stripe.bankAccounts.data.length >= 1
   };
 };
 

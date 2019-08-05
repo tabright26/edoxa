@@ -2,8 +2,8 @@ import React from 'react';
 import { Table, Card } from 'react-bootstrap';
 
 import Spinner from '../Shared/Spinner';
-import CurrencyFormat from '../Shared/Formaters/CurrencyFormat';
-import BucketFormat from '../Shared/Formaters/BucketFormat';
+//import CurrencyFormat from '../Shared/Formaters/CurrencyFormat';
+//import BucketFormat from '../Shared/Formaters/BucketFormat';
 
 const Render = ({ challenge }) => {
   if (!challenge) {
@@ -13,8 +13,8 @@ const Render = ({ challenge }) => {
       </Card.Body>
     );
   } else {
-    let prevSize = 1;
-    let nextSize = 0;
+    //let prevSize = 1;
+    //let nextSize = 0;
     return (
       <Table striped bordered hover size="sm" variant="dark" className="m-0">
         <thead>

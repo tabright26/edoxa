@@ -3,7 +3,7 @@ import {
   LOAD_USER_STRIPE_CARDS_FAIL
 } from '../actions/userAccountActions';
 
-export const reducer = (state = [], action) => {
+export const reducer = (state = { data: [] }, action) => {
   switch (action.type) {
     case LOAD_USER_STRIPE_CARDS_SUCCESS:
       const { status, data } = action.payload;
@@ -11,7 +11,7 @@ export const reducer = (state = [], action) => {
         case 204:
           return state;
         default:
-          return data.data;
+          return data;
       }
     case LOAD_USER_STRIPE_CARDS_FAIL:
       console.log(action.payload.error);
