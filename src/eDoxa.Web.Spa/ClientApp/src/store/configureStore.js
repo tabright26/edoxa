@@ -1,35 +1,29 @@
 import { createStore, compose, applyMiddleware } from 'redux';
-import { loadUser } from 'redux-oidc';
 import { persistStore } from 'redux-persist';
-
-import createRootReducer from './reducers/rootReducer';
+import { loadUser } from 'redux-oidc';
 
 import { middleware as thunkMiddleware } from './middlewares/thunkMiddleware';
-import {
-  middleware as routerMiddleware,
-  history
-} from './middlewares/routerMiddleware';
+import { middleware as routerMiddleware } from './middlewares/routerMiddleware';
 import { middleware as axiosMiddleware } from './middlewares/axiosMiddleware';
 import { middleware as signalrMiddleware } from './middlewares/signalrMiddleware';
 import { middleware as loggerMiddleware } from './middlewares/loggerMiddleware';
 
 import userManager from '../utils/userManager';
+import createRootReducer from './reducers/rootReducer';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const initialState = {};
-
-export default () => {
+export default initialState => {
   const store = createStore(
-    createRootReducer(history),
+    createRootReducer(),
     initialState,
     composeEnhancers(
       applyMiddleware(
-        thunkMiddleware(),
-        routerMiddleware(),
-        axiosMiddleware(),
-        signalrMiddleware(),
-        loggerMiddleware()
+        thunkMiddleware,
+        routerMiddleware,
+        axiosMiddleware,
+        signalrMiddleware,
+        loggerMiddleware
       )
     )
   );

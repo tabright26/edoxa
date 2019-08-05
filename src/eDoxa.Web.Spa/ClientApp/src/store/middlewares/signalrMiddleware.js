@@ -1,5 +1,3 @@
-export function middleware() {
-  return store => next => action => {
-    return next(action);
-  };
-}
+export const middleware = store => next => action => {
+  return next(action);
+};

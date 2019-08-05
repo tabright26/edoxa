@@ -1,10 +1,7 @@
-import { FETCH_LEAGUEOFLEGENDACCOUNT_SUCCESS } from '../actions/arenaGameActions';
+import { combineReducers } from 'redux';
 
-export const reducer = (state = [], action) => {
-  switch (action.type) {
-    case FETCH_LEAGUEOFLEGENDACCOUNT_SUCCESS:
-      return action.leagueOfLegendAccount;
-    default:
-      return state;
-  }
-};
+import { reducer as arenaGamesLeagueOfLegendsReducer } from './arenaGamesLeagueOfLegendsReducer';
+
+export const reducer = combineReducers({
+  leagueOfLegends: arenaGamesLeagueOfLegendsReducer
+});

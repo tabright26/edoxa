@@ -1,9 +1,9 @@
 import { createBrowserHistory } from 'history';
 
-import { routerMiddleware } from 'connected-react-router';
+import { routerMiddleware, connectRouter } from 'connected-react-router';
 
 export const history = createBrowserHistory();
 
-export function middleware() {
-  return routerMiddleware(history);
-}
+export const middleware = routerMiddleware(history);
+
+export const reducer = connectRouter(history);

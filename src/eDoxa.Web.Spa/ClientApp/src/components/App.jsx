@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import PrivateRoute from '../utils/PrivateRoute';
-import NotFoundPage from '../utils/NotFound';
+import PrivateRoute from '../screens/Shared/PrivateRoute';
+import NotFoundPage from '../screens/Shared/NotFound';
 
 import Header from './Shared/Header';
 import Home from '../screens/Home/Index';

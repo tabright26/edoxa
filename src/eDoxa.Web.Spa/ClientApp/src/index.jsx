@@ -12,15 +12,17 @@ import { history } from './store/middlewares/routerMiddleware';
 import configureStore from './store/configureStore';
 import userManager from '../src/utils/userManager';
 
-import Callback from './utils/Callback';
+import Callback from './screens/Shared/Callback';
 import App from './components/App';
 
-const storage = configureStore();
+const initialState = {};
+
+const { store, persistor } = configureStore(initialState);
 
 ReactDOM.render(
-  <Provider store={storage.store}>
-    <OidcProvider userManager={userManager} store={storage.store}>
-      <PersistGate loading={null} persistor={storage.persistor}>
+  <Provider store={store}>
+    <OidcProvider userManager={userManager} store={store}>
+      <PersistGate loading={null} persistor={persistor}>
         <Router history={history}>
           <Switch>
             <Route exact path="/callback" component={Callback} />

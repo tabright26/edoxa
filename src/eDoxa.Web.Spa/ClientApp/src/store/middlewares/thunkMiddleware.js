@@ -1,5 +1,3 @@
 import thunk from 'redux-thunk';
 
-export function middleware() {
-  return thunk;
-}
+export const middleware = thunk;

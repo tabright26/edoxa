@@ -1,5 +1,3 @@
 import { createLogger } from 'redux-logger';
 
-export function middleware() {
-  return createLogger();
-}
+export const middleware = createLogger();

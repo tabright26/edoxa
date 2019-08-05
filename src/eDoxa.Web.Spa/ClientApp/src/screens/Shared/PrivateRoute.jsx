@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import userManager, { POST_LOGIN_REDIRECT_URI } from './userManager';
+import userManager, { POST_LOGIN_REDIRECT_URI } from '../../utils/userManager';
 
 const PrivateRoute = ({
   isAuthenticated,

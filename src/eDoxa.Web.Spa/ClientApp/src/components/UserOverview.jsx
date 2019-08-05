@@ -9,7 +9,7 @@ import {
   Image
 } from './node_modules/react-bootstrap';
 
-import { fetchLeagueOfLegendAccountByName } from '../../store/actions/gameAccountActions';
+import { loadLeagueOfLegendsSummonerByName } from '../../store/actions/gameAccountActions';
 // TODO: To refactor
 class UserOverview extends Component {
   constructor(props) {
@@ -84,7 +84,7 @@ class UserOverview extends Component {
                 <Button
                   variant="primary"
                   type="button"
-                  onClick={fetchLeagueOfLegendAccountByName(
+                  onClick={loadLeagueOfLegendsSummonerByName(
                     this.state.leagueName
                   )}
                 >
@@ -107,8 +107,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     actions: {
-      fetchLeagueOfLegendAccountByName: () =>
-        dispatch(fetchLeagueOfLegendAccountByName())
+      loadLeagueOfLegendsSummonerByName: summonerName =>
+        dispatch(loadLeagueOfLegendsSummonerByName(summonerName))
     }
   };
 };

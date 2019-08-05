@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { reducer as userAccountTransactionsReducer } from './userAccountTransactionsReducer';
-import { reducer as bankAccountReducer } from './banksReducer';
-import { reducer as cardsReducer } from './cardsReducer';
+import { reducer as bankAccountReducer } from './userAccountStripeBankAccountsReducer';
+import { reducer as cardsReducer } from './userAccountStripeCardsReducer';
 import { reducer as accountReducer } from './userAccountBalanceReducer';
 
 import { persistReducer } from 'redux-persist';
