@@ -13,7 +13,7 @@ export const reducer = (state = [], action) => {
         case 204:
           return state;
         default:
-          return [...state, ...data];
+          return data;
       }
     case LOAD_CHALLENGES_FAIL:
       console.log(action.payload.error);

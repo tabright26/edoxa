@@ -3,13 +3,13 @@ import { connect } from 'react-redux';
 
 import {
   loadUserStripeCards,
-  hasUserStripeBankAccount
+  loadUserStripeBankAccounts
 } from '../../store/actions/userAccountActions';
 
 class PaymentMethods extends Component {
   componentDidMount() {
-    this.props.actions.fetchCards();
-    this.props.actions.hasBankAccount();
+    this.props.actions.loadUserStripeCards();
+    this.props.actions.loadUserStripeBankAccounts();
   }
   render() {
     return <></>;
@@ -25,8 +25,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     actions: {
-      fetchCards: () => dispatch(loadUserStripeCards()),
-      hasBankAccount: () => dispatch(hasUserStripeBankAccount())
+      loadUserStripeCards: () => dispatch(loadUserStripeCards()),
+      loadUserStripeBankAccounts: () => dispatch(loadUserStripeBankAccounts())
     }
   };
 };

@@ -8,7 +8,8 @@ import { ConnectedRouter as Router } from 'connected-react-router';
 import { PersistGate } from 'redux-persist/integration/react';
 
 import * as serviceWorker from './serviceWorker';
-import configureStore, { history } from './store/configureStore';
+import { history } from './store/middlewares/routerMiddleware';
+import configureStore from './store/configureStore';
 import userManager from '../src/utils/userManager';
 
 import Callback from './utils/Callback';

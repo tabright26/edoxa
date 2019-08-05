@@ -17,7 +17,7 @@ import CurrencyFormat from '../Shared/Formaters/CurrencyFormat';
 import {
   loadUserAccountTransactions,
   loadUserStripeCards,
-  hasUserStripeBankAccount
+  loadUserStripeBankAccounts
 } from '../../store/actions/userAccountActions';
 
 import UserAccountBalanceMoneyIndex from '../User/Account/Balance/Money/Index';
@@ -25,9 +25,9 @@ import UserAccountBalanceTokenIndex from '../User/Account/Balance/Token/Index';
 
 class CashierOverview extends Component {
   componentDidMount() {
-    this.props.actions.fetchTransactions();
-    this.props.actions.fetchCards();
-    this.props.actions.hasBankAccount();
+    this.props.actions.loadUserAccountTransactions();
+    this.props.actions.loadUserStripeCards();
+    this.props.actions.loadUserStripeBankAccounts();
   }
 
   render() {
@@ -222,9 +222,10 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     actions: {
-      fetchTransactions: () => dispatch(loadUserAccountTransactions()),
-      fetchCards: () => dispatch(loadUserStripeCards()),
-      hasBankAccount: () => dispatch(hasUserStripeBankAccount())
+      loadUserAccountTransactions: () =>
+        dispatch(loadUserAccountTransactions()),
+      loadUserStripeCards: () => dispatch(loadUserStripeCards()),
+      loadUserStripeBankAccounts: () => dispatch(loadUserStripeBankAccounts())
     }
   };
 };
