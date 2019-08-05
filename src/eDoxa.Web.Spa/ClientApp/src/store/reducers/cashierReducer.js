@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { reducer as transactionsReducer } from './transactionsReducer';
+import { reducer as userAccountTransactionsReducer } from './userAccountTransactionsReducer';
 import { reducer as bankAccountReducer } from './banksReducer';
 import { reducer as cardsReducer } from './cardsReducer';
 import { reducer as accountReducer } from './userAccountBalanceReducer';
@@ -17,7 +17,7 @@ export const reducer = persistReducer(
   combineReducers({
     account: accountReducer,
     hasBankAccount: bankAccountReducer,
-    transactions: transactionsReducer,
+    transactions: userAccountTransactionsReducer,
     cards: cardsReducer
   })
 );

@@ -3,7 +3,7 @@ import { reducer as oidcReducer } from 'redux-oidc';
 import { connectRouter } from 'connected-react-router';
 import { reducer as arenaReducer } from './reducers/arenaReducer';
 import { reducer as cashierReducer } from './reducers/cashierReducer';
-import { reducer as gameProvidersReducer } from './reducers/gameProvidersReducer';
+import { reducer as userGamesReducer } from './reducers/userGamesReducer';
 import { reducer as userReducer } from './reducers/userReducer';
 
 export default history =>
@@ -12,6 +12,6 @@ export default history =>
     oidc: oidcReducer,
     arena: arenaReducer,
     cashier: cashierReducer,
-    gameProviders: gameProvidersReducer,
+    gameProviders: userGamesReducer,
     user: userReducer
   });

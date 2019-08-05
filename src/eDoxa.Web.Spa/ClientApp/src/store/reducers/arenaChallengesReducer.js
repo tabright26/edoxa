@@ -19,7 +19,7 @@ export const reducer = (state = [], action) => {
       console.log(action.payload.error);
       return state;
     case LOAD_CHALLENGE_SUCCESS:
-      return [...state, action.challenge];
+      return [...state, action.payload.data];
     case LOAD_CHALLENGE_FAIL:
       console.log(action.payload.error);
       return state;
