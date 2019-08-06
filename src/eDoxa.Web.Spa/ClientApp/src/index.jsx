@@ -14,6 +14,7 @@ import userManager from '../src/utils/userManager';
 
 import Callback from './screens/Shared/Callback';
 import App from './components/App';
+import Spinner from './components/Shared/Spinner';
 
 const initialState = {};
 
@@ -22,7 +23,7 @@ const { store, persistor } = configureStore(initialState);
 ReactDOM.render(
   <Provider store={store}>
     <OidcProvider userManager={userManager} store={store}>
-      <PersistGate loading={null} persistor={persistor}>
+      <PersistGate loading={<Spinner />} persistor={persistor}>
         <Router history={history}>
           <Switch>
             <Route exact path="/callback" component={Callback} />

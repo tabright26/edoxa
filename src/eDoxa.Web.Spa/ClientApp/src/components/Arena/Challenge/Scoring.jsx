@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, ListGroup, ListGroupItem } from 'react-bootstrap';
 
-import Spinner from '../Shared/Spinner';
+import Spinner from '../../Shared/Spinner';
 
 const Body = ({ challenge }) => {
   if (!challenge) {
@@ -24,7 +24,7 @@ const Body = ({ challenge }) => {
   }
 };
 
-const ChallengeScoring = ({ challenge }) => {
+const ArenaChallengeScoring = ({ challenge }) => {
   return (
     <Card bg="dark" className="my-2 text-light">
       <Card.Header as="h5" className="text-center">
@@ -35,4 +35,4 @@ const ChallengeScoring = ({ challenge }) => {
   );
 };
 
-export default ChallengeScoring;
+export default ArenaChallengeScoring;

@@ -7,12 +7,12 @@ import Header from './Shared/Header';
 import Home from '../screens/Home/Index';
 import Footer from './Shared/Footer';
 
-import Challenge from './challenge/Challenge';
-import Challenges from './challenge/Challenges';
+import Challenge from './Arena/Challenge/Details';
+import Challenges from './Arena/Challenge/Index';
 
-import AccountOverview from './cashier/AccountOverview';
-import TransactionHistory from './cashier/TransactionHistory';
-import PaymentMethods from './cashier/PaymentMethods';
+import AccountOverview from '../screens/Account/Overview';
+import TransactionHistory from '../screens/Account/TransactionHistory';
+import PaymentMethods from '../screens/Account/PaymentMethods';
 
 import ScreensUserGameIndex from '../screens/User/Game/Index';
 

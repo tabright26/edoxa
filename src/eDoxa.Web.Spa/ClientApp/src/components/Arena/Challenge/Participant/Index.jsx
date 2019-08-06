@@ -1,11 +1,11 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 
-import Spinner from '../Shared/Spinner';
+import Spinner from '../../../Shared/Spinner';
 
-import Participant from './Participant';
+import ArenaChallengeParticipantDetails from './Details';
 
-const Participants = ({ challenge }) => {
+const ArenaChallengeParticipantIndex = ({ challenge }) => {
   if (!challenge) {
     return (
       <Card.Body className="text-center mt-5">
@@ -20,7 +20,7 @@ const Participants = ({ challenge }) => {
             left.averageScore < right.averageScore ? 1 : -1
           )
           .map((participant, index) => (
-            <Participant
+            <ArenaChallengeParticipantDetails
               key={index}
               participant={participant}
               position={index + 1}
@@ -31,4 +31,4 @@ const Participants = ({ challenge }) => {
   }
 };
 
-export default Participants;
+export default ArenaChallengeParticipantIndex;

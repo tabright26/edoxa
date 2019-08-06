@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import {
   Table,
   Container,
@@ -14,15 +13,9 @@ import Moment from 'react-moment';
 
 import Scrollbar from 'react-scrollbars-custom';
 
-//import CurrencyFormat from "../Shared/Formaters/CurrencyFormat";
+import { withArenaChallengesContainer } from './Container';
 
-import { loadChallenges } from '../../store/actions/arenaChallengeActions';
-
-class Challenges extends Component {
-  componentDidMount() {
-    this.props.actions.loadChallenges();
-  }
-
+class ArenaChallengeIndex extends Component {
   render() {
     return (
       <>
@@ -123,21 +116,4 @@ class Challenges extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    challenges: state.arena.challenges
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    actions: {
-      loadChallenges: () => dispatch(loadChallenges())
-    }
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Challenges);
+export default withArenaChallengesContainer(ArenaChallengeIndex);

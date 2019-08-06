@@ -2,7 +2,7 @@ import React from 'react';
 import { Card } from 'react-bootstrap';
 
 import Moment from 'react-moment';
-import Spinner from '../Shared/Spinner';
+import Spinner from '../../Shared/Spinner';
 
 import faker from 'faker';
 
@@ -10,7 +10,7 @@ faker.seed(1);
 
 const style = { width: '200px' };
 
-const Timeline = ({ challenge, state, date }) => {
+const ArenaChallengeTimeline = ({ challenge, state, date }) => {
   const isActiveState = challenge.state === state;
   return (
     <span
@@ -52,22 +52,22 @@ const Body = ({ challenge }) => {
         >
           <strong>Timeline</strong>
         </span>
-        <Timeline
+        <ArenaChallengeTimeline
           challenge={challenge}
           state="Inscription"
           date={challenge.timeline.createdAt}
         />
-        <Timeline
+        <ArenaChallengeTimeline
           challenge={challenge}
           state="Started"
           date={challenge.timeline.startedAt}
         />
-        <Timeline
+        <ArenaChallengeTimeline
           challenge={challenge}
           state="Ended"
           date={challenge.timeline.endedAt}
         />
-        <Timeline
+        <ArenaChallengeTimeline
           challenge={challenge}
           state="Closed"
           date={challenge.timeline.closedAt}

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Card, Badge } from 'react-bootstrap';
 
-import Spinner from '../Shared/Spinner';
-import ScoreFormat from '../Shared/Formaters/ScoreFormat';
+import Spinner from '../../../../Shared/Spinner';
+import ScoreFormat from '../../../../Shared/Formaters/ScoreFormat';
 import Moment from 'react-moment';
 
-import Stats from './Stats';
+import Stats from './Stat/Index';
 
 class Match extends Component {
   constructor(props) {

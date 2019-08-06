@@ -1,8 +1,8 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 
-import Spinner from '../Shared/Spinner';
-import Match from './Match';
+import Spinner from '../../../../Shared/Spinner';
+import Match from './Details';
 
 const Matches = ({ participant }) => {
   if (!participant) {

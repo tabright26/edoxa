@@ -2,9 +2,9 @@ import React from 'react';
 import { Card, Row, Col, Badge, ProgressBar } from 'react-bootstrap';
 
 //import CurrencyFormat from '../Shared/Formaters/CurrencyFormat';
-import Spinner from '../Shared/Spinner';
+import Spinner from '../../Shared/Spinner';
 
-import ChallengeTimeline from './ChallengeTimeline';
+import ChallengeTimeline from './Timeline';
 
 import faker from 'faker';
 
@@ -64,10 +64,10 @@ const Body = ({ challenge }) => {
   }
 };
 
-const ChallengeSetup = ({ challenge }) => (
+const ArenaChallengeSpecification = ({ challenge }) => (
   <Card bg="dark" className="my-4 text-light">
     <Body challenge={challenge} />
   </Card>
 );
 
-export default ChallengeSetup;
+export default ArenaChallengeSpecification;

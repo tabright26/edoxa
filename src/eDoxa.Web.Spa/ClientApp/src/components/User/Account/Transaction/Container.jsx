@@ -2,20 +2,21 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { loadUserAccountTransactions } from '../../../../store/actions/userAccountActions';
 
-const withUserAccountTransactionsContainer = WrappedComponent => {
-  class UserAccountTransactionsContainer extends Component {
+const withUserAccountTransactionContainer = WrappedComponent => {
+  class UserAccountTransactionContainer extends Component {
     componentDidMount() {
       this.props.actions.loadUserAccountTransactions();
     }
 
     render() {
-      return <WrappedComponent transactions={this.props.transactions} />;
+      const { transactions, ...rest } = this.props;
+      return <WrappedComponent transactions={transactions} {...rest} />;
     }
   }
 
   const mapStateToProps = state => {
     return {
-      transactions: state.cashier.transactions
+      transactions: state.user.account.transactions
     };
   };
 
@@ -31,7 +32,7 @@ const withUserAccountTransactionsContainer = WrappedComponent => {
   return connect(
     mapStateToProps,
     mapDispatchToProps
-  )(UserAccountTransactionsContainer);
+  )(UserAccountTransactionContainer);
 };
 
-export default withUserAccountTransactionsContainer;
+export default withUserAccountTransactionContainer;

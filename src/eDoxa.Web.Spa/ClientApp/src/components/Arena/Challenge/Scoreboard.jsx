@@ -3,9 +3,9 @@ import { Card, Accordion } from 'react-bootstrap';
 
 import Scrollbar from 'react-scrollbars-custom';
 
-import Participants from './Participants';
+import ArenaChallengeParticipantIndex from './Participant/Index';
 
-const ChallengeScoreboard = ({ challenge }) => (
+const ArenaChallengeScoreboard = ({ challenge }) => (
   <>
     <Card bg="dark" className="my-2 text-light text-center">
       <Card.Header as="h5" className="border-0">
@@ -18,10 +18,10 @@ const ChallengeScoreboard = ({ challenge }) => (
       }}
     >
       <Accordion>
-        <Participants challenge={challenge} />
+        <ArenaChallengeParticipantIndex challenge={challenge} />
       </Accordion>
     </Scrollbar>
   </>
 );
 
-export default ChallengeScoreboard;
+export default ArenaChallengeScoreboard;

@@ -1,16 +1,12 @@
 import React from 'react';
 import { Card, Badge, Accordion } from 'react-bootstrap';
 
-import ScoreFormat from '../Shared/Formaters/ScoreFormat';
-import Spinner from '../Shared/Spinner';
+import ScoreFormat from '../../../Shared/Formaters/ScoreFormat';
+import Spinner from '../../../Shared/Spinner';
 
-import Matches from './Matches';
+import Matches from './Match/Index';
 
-import faker from 'faker';
-
-faker.seed(1);
-
-const Participant = ({ participant, position }) => {
+const ArenaChallengeParticipantDetails = ({ participant, position }) => {
   if (!participant) {
     return (
       <Card.Body className="text-center mt-5">
@@ -35,7 +31,7 @@ const Participant = ({ participant, position }) => {
               >
                 <Badge variant="primary">{position}</Badge>
               </div>
-              <div className="px-3 py-2">{faker.internet.userName()}</div>
+              <div className="px-3 py-2">{participant.id}</div>
               <div
                 className="bg-primary px-3 py-2 text-center ml-auto"
                 style={{
@@ -58,4 +54,4 @@ const Participant = ({ participant, position }) => {
   }
 };
 
-export default Participant;
+export default ArenaChallengeParticipantDetails;

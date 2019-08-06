@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table, Card } from 'react-bootstrap';
 
-import Spinner from '../Shared/Spinner';
+import Spinner from '../../Shared/Spinner';
 //import CurrencyFormat from '../Shared/Formaters/CurrencyFormat';
 //import BucketFormat from '../Shared/Formaters/BucketFormat';
 
@@ -49,7 +49,7 @@ const Render = ({ challenge }) => {
   }
 };
 
-const ChallengePayout = ({ challenge }) => {
+const ArenaChallengePayout = ({ challenge }) => {
   return (
     <Card bg="dark" className="my-4 text-light text-center">
       <Card.Header as="h5">
@@ -60,4 +60,4 @@ const ChallengePayout = ({ challenge }) => {
   );
 };
 
-export default ChallengePayout;
+export default ArenaChallengePayout;

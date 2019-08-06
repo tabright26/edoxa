@@ -28,7 +28,9 @@ class Header extends React.Component {
     const { user } = this.props;
     return (
       <Navbar variant="dark" bg="secondary" fixed="top">
-        <Navbar.Brand href={window.location.origin}>eDoxa</Navbar.Brand>
+        <LinkContainer to="/">
+          <Navbar.Brand>eDoxa</Navbar.Brand>
+        </LinkContainer>
         {!user ? (
           <Form className="ml-auto" inline>
             <Button variant="link">Register</Button>
@@ -48,10 +50,14 @@ class Header extends React.Component {
                 <Moment utc={true} interval={1000} format="LL LTS" />
               </Badge>
             </Navbar.Text>
-            <NavDropdown
-              alignRight={true}
-              title={user.profile.preferred_username}
-            >
+            <NavDropdown alignRight={true} title={user.profile.name}>
+              <NavDropdown.Header>
+                <LinkContainer to="/profile">
+                  <Button active block>
+                    Profile
+                  </Button>
+                </LinkContainer>
+              </NavDropdown.Header>
               <NavDropdown.Header>Arena</NavDropdown.Header>
               <LinkContainer to="/arena/challenge-history">
                 <NavDropdown.Item eventKey="1">
