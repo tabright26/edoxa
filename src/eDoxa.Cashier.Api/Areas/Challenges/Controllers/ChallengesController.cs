@@ -37,6 +37,7 @@ namespace eDoxa.Cashier.Api.Areas.Challenges.Controllers
         /// <summary>
         ///     Find a challenge.
         /// </summary>
+        [AllowAnonymous]
         [HttpGet("{challengeId}")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeViewModel))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]

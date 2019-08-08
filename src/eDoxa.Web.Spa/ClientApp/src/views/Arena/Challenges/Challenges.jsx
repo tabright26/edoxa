@@ -1,6 +1,6 @@
 import React from "react";
 
-import ArenaChallengeIndex from "../../../components/Arena/Challenge/Index";
+import ArenaChallengeIndex from "../../../containers/App/Arena/Challenge/Index";
 
 const Challenges = () => <ArenaChallengeIndex />;
 

@@ -1,7 +1,7 @@
 import {
   LOAD_USER_STRIPE_CARDS_SUCCESS,
   LOAD_USER_STRIPE_CARDS_FAIL
-} from '../actions/userAccountActions';
+} from '../actions/stripeActions';
 
 export const reducer = (state = { data: [] }, action) => {
   switch (action.type) {

@@ -11,11 +11,15 @@ export const middleware = multiClientMiddleware({
     options: {
       interceptors: {
         request: [
-          ({ getState, dispatch }, config) => {
+          ({ getState }, config) => {
             config.headers = {
-              authorization: `Bearer ${getState().oidc.user.access_token}`,
               accept: "application/json"
             };
+            const state = getState();
+            const { user } = state.oidc;
+            if (user) {
+              config.headers["authorization"] = `Bearer ${getState().oidc.user.access_token}`;
+            }
             return config;
           }
         ]
@@ -30,12 +34,10 @@ export const middleware = multiClientMiddleware({
     options: {
       interceptors: {
         request: [
-          ({ getState, dispatch }, config) => {
+          ({ getState }, config) => {
             const state = getState();
             const { profile } = state.oidc.user;
-            config.url = config.url
-              .replace(":customerId", profile["stripe:customerId"])
-              .replace(":connectAccountId", profile["stripe:connectAccountId"]);
+            config.url = config.url.replace(":customerId", profile["stripe:customerId"]).replace(":connectAccountId", profile["stripe:connectAccountId"]);
             config.headers = {
               authorization: `Bearer ${process.env.REACT_APP_STRIPE_APIKEY}`,
               accept: "application/json"
@@ -54,12 +56,15 @@ export const middleware = multiClientMiddleware({
     options: {
       interceptors: {
         request: [
-          ({ getState, dispatch }, config) => {
-            config.headers = {
-              "X-Riot-Token": process.env.REACT_APP_LEAGUEOFLEGENDS_RIOT_TOKEN,
-              "Accept-Charset":
-                "application/x-www-form-urlencoded; charset=UTF-8"
-            };
+          ({ getState }, config) => {
+            const state = getState();
+            const user = state.oidc;
+            if (user) {
+              config.headers = {
+                "X-Riot-Token": process.env.REACT_APP_LEAGUEOFLEGENDS_RIOT_TOKEN,
+                "Accept-Charset": "application/x-www-form-urlencoded; charset=UTF-8"
+              };
+            }
             return config;
           }
         ]

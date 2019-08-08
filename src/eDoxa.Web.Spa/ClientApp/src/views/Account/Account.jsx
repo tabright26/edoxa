@@ -1,12 +1,12 @@
 import React from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
 
-import UserAccountBalanceMoney from "../../components/User/Account/Balance/Money/Index";
-import UserAccountBalanceToken from "../../components/User/Account/Balance/Token/Index";
-import UserAccountTransactionTable from "../../components/User/Account/Transaction/Table";
-import UserAccountStripeCardTable from "../../components/User/Account/Stripe/Card/Table";
-import UserAccountStripeBankAccountAlert from "../../components/User/Account/Stripe/BankAccount/Alert";
-import UserAccountStripeConnectAccountAlert from "../../components/User/Account/Stripe/ConnectAccount/Alert";
+import UserAccountBalanceMoney from "../../containers/App/User/Account/Balance/Money/Index";
+import UserAccountBalanceToken from "../../containers/App/User/Account/Balance/Token/Index";
+import UserAccountTransactionTable from "../../containers/App/User/Account/Transaction/Table";
+import UserAccountStripeCardTable from "../../containers/App/User/Account/Stripe/Card/Table";
+import UserAccountStripeBankAccountAlert from "../../containers/App/User/Account/Stripe/BankAccount/Alert";
+import UserAccountStripeConnectAccountAlert from "../../containers/App/User/Account/Stripe/ConnectAccount/Alert";
 
 const Account = () => (
   <Container>

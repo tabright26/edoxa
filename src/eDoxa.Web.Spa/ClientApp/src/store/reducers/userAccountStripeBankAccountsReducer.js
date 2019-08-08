@@ -1,7 +1,4 @@
-import {
-  LOAD_USER_STRIPE_BANK_ACCOUNTS_SUCCESS,
-  LOAD_USER_STRIPE_BANK_ACCOUNTS_FAIL
-} from '../actions/userAccountActions';
+import { LOAD_USER_STRIPE_BANK_ACCOUNTS_SUCCESS, LOAD_USER_STRIPE_BANK_ACCOUNTS_FAIL } from "../actions/stripeActions";
 
 export const reducer = (state = { data: [] }, action) => {
   switch (action.type) {

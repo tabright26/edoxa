@@ -1,7 +1,7 @@
 import {
   LOAD_USER_ACCOUNT_BALANCE_MONEY_SUCCESS,
   LOAD_USER_ACCOUNT_BALANCE_MONEY_FAIL
-} from '../actions/userAccountActions';
+} from '../actions/cashierActions';
 
 const initialState = { type: 'Money', available: 0, pending: 0 };
 

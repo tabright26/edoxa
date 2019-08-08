@@ -7,7 +7,7 @@ export function loadChallenges() {
     payload: {
       request: {
         method: 'get',
-        url: '/arena/challenges/api/challenges'
+        url: '/arena/challenge/api/challenges'
       }
     }
   };
@@ -22,7 +22,7 @@ export function loadChallenge(challengeId) {
     payload: {
       request: {
         method: 'get',
-        url: `/arena/challenges/api/challenges/${challengeId}`
+        url: `/arena/challenge/api/challenges/${challengeId}`
       }
     }
   };

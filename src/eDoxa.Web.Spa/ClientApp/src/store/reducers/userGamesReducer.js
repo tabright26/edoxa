@@ -1,7 +1,4 @@
-import {
-  LOAD_USER_GAMES_SUCCESS,
-  LOAD_USER_GAMES_FAIL
-} from '../actions/userGameActions';
+import { LOAD_USER_GAMES_SUCCESS, LOAD_USER_GAMES_FAIL } from "../actions/identityActions";
 
 export const reducer = (state = [], action) => {
   switch (action.type) {

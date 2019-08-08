@@ -1,7 +1,7 @@
 import {
   LOAD_USER_ACCOUNT_BALANCE_TOKEN_SUCCESS,
   LOAD_USER_ACCOUNT_BALANCE_TOKEN_FAIL
-} from '../actions/userAccountActions';
+} from '../actions/cashierActions';
 
 const initialState = { type: 'Token', available: 0, pending: 0 };
 

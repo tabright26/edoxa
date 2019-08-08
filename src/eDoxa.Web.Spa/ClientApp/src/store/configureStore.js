@@ -1,5 +1,6 @@
 import { createStore, compose, applyMiddleware } from "redux";
 import { loadUser } from "redux-oidc";
+import { loadUsers } from "./actions/identityActions";
 
 import { middleware as thunkMiddleware } from "./middlewares/thunkMiddleware";
 import { middleware as routerMiddleware } from "./middlewares/routerMiddleware";
@@ -16,5 +17,6 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 export default initialState => {
   const store = createStore(createRootReducer(), initialState, composeEnhancers(applyMiddleware(thunkMiddleware, axiosMiddleware, signalrMiddleware, routerMiddleware, loggerMiddleware)));
   loadUser(store, userManager);
+  store.dispatch(loadUsers());
   return store;
 };

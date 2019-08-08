@@ -1,6 +1,7 @@
 {
   "ReRoutes": [
     {
+      "Priority": 0,
       "DownstreamPathTemplate": "/api/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -17,6 +18,20 @@
       }
     },
     {
+      "Priority": 1,
+      "DownstreamPathTemplate": "/api/users",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "identity.api",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/identity/api/users",
+      "UpstreamHttpMethod": ["GET"]
+    },
+    {
+      "Priority": 0,
       "DownstreamPathTemplate": "/api/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -33,6 +48,20 @@
       }
     },
     {
+      "Priority": 1,
+      "DownstreamPathTemplate": "/api/challenges/{challengeId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "cashier.api",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/cashier/api/challenges/{challengeId}",
+      "UpstreamHttpMethod": ["GET"]
+    },
+    {
+      "Priority": 0,
       "DownstreamPathTemplate": "/api/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -41,12 +70,25 @@
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/arena/challenges/api/{everything}",
+      "UpstreamPathTemplate": "/arena/challenge/api/{everything}",
       "UpstreamHttpMethod": ["DELETE", "POST", "PUT", "GET", "PATCH"],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "ArenaChallengesApiKey",
         "AllowedScopes": []
       }
+    },
+    {
+      "Priority": 1,
+      "DownstreamPathTemplate": "/api/challenges",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "arena.challenges.api",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/arena/challenge/api/challenges",
+      "UpstreamHttpMethod": ["GET"]
     }
   ],
   "GlobalConfiguration": {

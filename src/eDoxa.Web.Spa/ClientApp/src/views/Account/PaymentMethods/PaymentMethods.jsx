@@ -1,5 +1,12 @@
 import React from "react";
 
-const AccountPaymentMethods = () => <h1 className="animated fadeIn mt-4">Payment Methods</h1>;
+import CreateStripeCardModel from "../../../modals/Stripe/Card/Create/Create";
+
+const AccountPaymentMethods = () => (
+  <>
+    <h1 className="animated fadeIn mt-4">Payment Methods</h1>
+    <CreateStripeCardModel />
+  </>
+);
 
 export default AccountPaymentMethods;
