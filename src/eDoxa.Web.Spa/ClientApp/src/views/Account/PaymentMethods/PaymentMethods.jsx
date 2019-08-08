@@ -1,6 +1,6 @@
 import React from "react";
 
-import CreateStripeCardModel from "../../../modals/Stripe/Card/Create/Create";
+import CreateStripeCardModel from "../../../containers/Modals/Stripe/Card/Create/Create";
 
 const AccountPaymentMethods = () => (
   <>

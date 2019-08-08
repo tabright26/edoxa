@@ -3,7 +3,7 @@ import { Nav } from "reactstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { AppNavbarBrand, AppSidebarToggler } from "@coreui/react";
 
-import withUserContainer from "../../../containers/App/User/Containers";
+import withUserHoc from "../../../containers/App/User/withUserHoc";
 
 import logo from "../../../assets/img/brand/logo.svg";
 import sygnet from "../../../assets/img/brand/sygnet.svg";
@@ -97,4 +97,4 @@ class Header extends Component {
   }
 }
 
-export default withUserContainer(Header);
+export default withUserHoc(Header);

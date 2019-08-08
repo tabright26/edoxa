@@ -1,9 +1,9 @@
-import React from 'react';
-import { Table } from 'react-bootstrap';
+import React from "react";
+import { Table } from "react-bootstrap";
 
-import withUserAccountStripeCardContainer from './Container';
+import withStripeCardHoc from "../withStripeCardHoc";
 
-const UserAccountStripeCardTable = ({ cards }) => (
+const StripeCardTable = ({ cards }) => (
   <Table variant="dark" responsive borderless striped hover className="mb-0">
     <thead>
       <tr>
@@ -26,4 +26,4 @@ const UserAccountStripeCardTable = ({ cards }) => (
   </Table>
 );
 
-export default withUserAccountStripeCardContainer(UserAccountStripeCardTable);
+export default withStripeCardHoc(StripeCardTable);

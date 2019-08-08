@@ -4,8 +4,7 @@ import { Card, Badge } from "react-bootstrap";
 import Loading from "../../../../../../containers/Shared/Loading";
 import Format from "../../../../../../containers/Shared/Formats";
 import Moment from "react-moment";
-
-import Stats from "./Stat/Index";
+import ArenaChallengeParticipantMatchStatListModal from "../../../../../Modals/Arena/Challenge/Participant/Match/Stat/List/List";
 
 class Match extends Component {
   constructor(props) {
@@ -57,7 +56,7 @@ class Match extends Component {
               <Format.Score score={match.totalScore} />
             </div>
           </Card.Body>
-          <Stats show={this.state.modalShow} onHide={modalClose} stats={match.stats} />
+          <ArenaChallengeParticipantMatchStatListModal isOpen={this.state.modalShow} toggle={modalClose} stats={match.stats} />
         </>
       );
     }

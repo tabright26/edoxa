@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { loadUserGames } from "../../../../store/actions/identityActions";
 
-const withUserGameContainer = WrappedComponent => {
+const withUserGameHoc = WrappedComponent => {
   class UserGameContainer extends Component {
     componentDidMount() {
       this.props.actions.loadUserGames();
@@ -33,4 +33,4 @@ const withUserGameContainer = WrappedComponent => {
   )(UserGameContainer);
 };
 
-export default withUserGameContainer;
+export default withUserGameHoc;

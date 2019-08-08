@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 
-import withUserGameContainer from './Container';
+import withUserGameHoc from '../withUserGameHoc';
 
 const UserGameIndex = ({ games }) => (
   <Container>
@@ -36,4 +36,4 @@ const UserGameIndex = ({ games }) => (
   </Container>
 );
 
-export default withUserGameContainer(UserGameIndex);
+export default withUserGameHoc(UserGameIndex);

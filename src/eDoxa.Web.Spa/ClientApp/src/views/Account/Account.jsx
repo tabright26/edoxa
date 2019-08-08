@@ -3,10 +3,10 @@ import { Container, Row, Col, Card } from "react-bootstrap";
 
 import UserAccountBalanceMoney from "../../containers/App/User/Account/Balance/Money/Index";
 import UserAccountBalanceToken from "../../containers/App/User/Account/Balance/Token/Index";
-import UserAccountTransactionTable from "../../containers/App/User/Account/Transaction/Table";
-import UserAccountStripeCardTable from "../../containers/App/User/Account/Stripe/Card/Table";
-import UserAccountStripeBankAccountAlert from "../../containers/App/User/Account/Stripe/BankAccount/Alert";
-import UserAccountStripeConnectAccountAlert from "../../containers/App/User/Account/Stripe/ConnectAccount/Alert";
+import UserAccountTransactionTable from "../../containers/App/User/Account/Transaction/Table/Table";
+import UserStripeCardTable from "../../containers/App/User/Stripe/Card/Table/Table";
+import UserStripeBankAccountAlert from "../../containers/App/User/Stripe/BankAccount/Alert/Alert";
+import UserStripeConnectAccountAlert from "../../containers/App/User/Stripe/ConnectAccount/Alert/Alert";
 
 const Account = () => (
   <Container>
@@ -16,7 +16,7 @@ const Account = () => (
         <hr className="border" />
       </Col>
       <Col>
-        <UserAccountStripeConnectAccountAlert />
+        <UserStripeConnectAccountAlert />
       </Col>
     </Row>
     <Row>
@@ -44,7 +44,7 @@ const Account = () => (
       </Col>
       <Col>
         <Card bg="dark">
-          <UserAccountTransactionTable variant="dark" className="mb-0" borderless hover responsive striped />
+          <UserAccountTransactionTable />
         </Card>
       </Col>
     </Row>
@@ -55,13 +55,13 @@ const Account = () => (
       </Col>
       <Col>
         <Card bg="dark">
-          <UserAccountStripeCardTable />
+          <UserStripeCardTable />
         </Card>
       </Col>
     </Row>
     <Row>
       <Col>
-        <UserAccountStripeBankAccountAlert />
+        <UserStripeBankAccountAlert />
       </Col>
     </Row>
   </Container>

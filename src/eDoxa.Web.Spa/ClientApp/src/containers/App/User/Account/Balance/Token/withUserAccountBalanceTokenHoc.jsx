@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { loadUserAccountBalanceForToken } from "../../../../../../store/actions/cashierActions";
 
-const withUserAccountBalanceTokenContainer = WrappedComponent => {
+const withUserAccountBalanceTokenHoc = WrappedComponent => {
   class UserAccountBalanceTokenContainer extends Component {
     componentDidMount() {
       this.props.actions.loadUserAccountBalanceForToken();
@@ -33,4 +33,4 @@ const withUserAccountBalanceTokenContainer = WrappedComponent => {
   )(UserAccountBalanceTokenContainer);
 };
 
-export default withUserAccountBalanceTokenContainer;
+export default withUserAccountBalanceTokenHoc;

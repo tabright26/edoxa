@@ -1,16 +1,16 @@
 import React from "react";
 
-import CurrencyFormat from "../../../../../containers/Shared/Formats/Currency";
+import Format from "../../../../../containers/Shared/Formats";
 
 const UserAccountBalanceCurrency = ({ currency }) => (
   <dl className="row mb-0">
     <dt className="col-sm-9">Available</dt>
     <dd className="col-sm-3">
-      <CurrencyFormat currency={currency.type} amount={currency.available} />
+      <Format.Currency currency={currency.type} amount={currency.available} />
     </dd>
     <dt className="col-sm-9">Pending</dt>
     <dd className="col-sm-3 mb-0">
-      <CurrencyFormat currency={currency.type} amount={currency.pending} />
+      <Format.Currency currency={currency.type} amount={currency.pending} />
     </dd>
   </dl>
 );

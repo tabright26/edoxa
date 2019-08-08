@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-const withUserContainer = WrappedComponent => {
+const withUserHoc = WrappedComponent => {
   class UserContainer extends Component {
     render() {
       const { user } = this.props;
@@ -18,4 +18,4 @@ const withUserContainer = WrappedComponent => {
   return connect(mapStateToProps)(UserContainer);
 };
 
-export default withUserContainer;
+export default withUserHoc;

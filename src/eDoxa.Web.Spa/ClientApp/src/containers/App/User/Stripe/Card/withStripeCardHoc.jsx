@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { loadUserStripeCards } from "../../../../../../store/actions/stripeActions";
+import { loadUserStripeCards } from "../../../../../store/actions/stripeActions";
 
-const withUserAccountStripeCardContainer = WrappedComponent => {
-  class UserAccountStripeCardContainer extends Component {
+const withStripeCardHoc = WrappedComponent => {
+  class StripeCardContainer extends Component {
     componentDidMount() {
       this.props.actions.loadUserStripeCards();
     }
@@ -31,7 +31,7 @@ const withUserAccountStripeCardContainer = WrappedComponent => {
   return connect(
     mapStateToProps,
     mapDispatchToProps
-  )(UserAccountStripeCardContainer);
+  )(StripeCardContainer);
 };
 
-export default withUserAccountStripeCardContainer;
+export default withStripeCardHoc;

@@ -1,5 +1,5 @@
-import UserAccountBalanceCurrency from '../Currency';
+import UserAccountBalanceCurrency from "../Currency";
 
-import withUserAccountBalanceMoneyContainer from './Container';
+import withUserAccountBalanceMoneyHoc from "./withUserAccountBalanceMoneyHoc";
 
-export default withUserAccountBalanceMoneyContainer(UserAccountBalanceCurrency);
+export default withUserAccountBalanceMoneyHoc(UserAccountBalanceCurrency);

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-const withUserProfileContainer = WrappedComponent => {
+const withUserProfileHoc = WrappedComponent => {
   class UserProfileContainer extends Component {
     render() {
       return <WrappedComponent profile={this.props.profile} />;
@@ -26,4 +26,4 @@ const withUserProfileContainer = WrappedComponent => {
   )(UserProfileContainer);
 };
 
-export default withUserProfileContainer;
+export default withUserProfileHoc;

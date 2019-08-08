@@ -1,5 +1,5 @@
 import UserAccountBalanceCurrency from '../Currency';
 
-import withUserAccountBalanceTokenContainer from './Container';
+import withUserAccountBalanceTokenHoc from './withUserAccountBalanceTokenHoc';
 
-export default withUserAccountBalanceTokenContainer(UserAccountBalanceCurrency);
+export default withUserAccountBalanceTokenHoc(UserAccountBalanceCurrency);

@@ -1,7 +1,7 @@
 import React from "react";
 
-import UserGamesComponent from "../../../containers/App/User/Game/Index";
+import UserGameCollection from "../../../containers/App/User/Game/Collection/Collection";
 
-const UserGames = () => <UserGamesComponent />;
+const UserGames = () => <UserGameCollection />;
 
 export default UserGames;

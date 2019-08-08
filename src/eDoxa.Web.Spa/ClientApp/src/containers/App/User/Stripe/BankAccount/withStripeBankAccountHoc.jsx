@@ -1,16 +1,17 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { loadUserStripeBankAccounts } from "../../../../../../store/actions/stripeActions";
 
-const withUserAccountStripeBankAccountContainer = WrappedComponent => {
-  class UserAccountStripeBankAccountContainer extends Component {
+import { loadUserStripeBankAccounts } from "../../../../../store/actions/stripeActions";
+
+const withStripeBankAccountHoc = WrappedComponent => {
+  class StripeBankAccountContainer extends Component {
     componentDidMount() {
       this.props.actions.loadUserStripeBankAccounts();
     }
 
     render() {
-      const { hasBankAccount, ...rest } = this.props;
-      return <WrappedComponent hasBankAccount={hasBankAccount} {...rest} />;
+      const { hasBankAccount, ...attributes } = this.props;
+      return <WrappedComponent hasBankAccount={hasBankAccount} {...attributes} />;
     }
   }
 
@@ -31,7 +32,7 @@ const withUserAccountStripeBankAccountContainer = WrappedComponent => {
   return connect(
     mapStateToProps,
     mapDispatchToProps
-  )(UserAccountStripeBankAccountContainer);
+  )(StripeBankAccountContainer);
 };
 
-export default withUserAccountStripeBankAccountContainer;
+export default withStripeBankAccountHoc;

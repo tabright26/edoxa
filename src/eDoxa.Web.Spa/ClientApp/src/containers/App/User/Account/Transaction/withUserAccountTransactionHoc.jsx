@@ -2,15 +2,15 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { loadUserAccountTransactions } from "../../../../../store/actions/cashierActions";
 
-const withUserAccountTransactionContainer = WrappedComponent => {
+const withUserAccountTransactionHoc = WrappedComponent => {
   class UserAccountTransactionContainer extends Component {
     componentDidMount() {
       this.props.actions.loadUserAccountTransactions();
     }
 
     render() {
-      const { transactions, ...rest } = this.props;
-      return <WrappedComponent transactions={transactions} {...rest} />;
+      const { transactions, ...attributes } = this.props;
+      return <WrappedComponent transactions={transactions} {...attributes} />;
     }
   }
 
@@ -34,4 +34,4 @@ const withUserAccountTransactionContainer = WrappedComponent => {
   )(UserAccountTransactionContainer);
 };
 
-export default withUserAccountTransactionContainer;
+export default withUserAccountTransactionHoc;
