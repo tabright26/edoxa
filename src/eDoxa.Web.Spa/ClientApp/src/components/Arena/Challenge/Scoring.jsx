@@ -1,13 +1,13 @@
-import React from 'react';
-import { Card, ListGroup, ListGroupItem } from 'react-bootstrap';
+import React from "react";
+import { Card, ListGroup, ListGroupItem } from "react-bootstrap";
 
-import Spinner from '../../Shared/Spinner';
+import Loading from "../../../containers/Shared/Loading";
 
 const Body = ({ challenge }) => {
   if (!challenge) {
     return (
       <Card.Body className="text-center">
-        <Spinner />
+        <Loading />
       </Card.Body>
     );
   } else {

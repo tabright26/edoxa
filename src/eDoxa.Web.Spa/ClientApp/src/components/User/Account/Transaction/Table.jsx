@@ -2,7 +2,7 @@ import React from 'react';
 import { Table } from 'react-bootstrap';
 import { Moment } from 'react-moment';
 
-import CurrencyFormat from '../../../Shared/Formaters/CurrencyFormat';
+import CurrencyFormat from '../../../../containers/Shared/Formats/Currency';
 
 import withUserAccountTransactionContainer from './Container';
 

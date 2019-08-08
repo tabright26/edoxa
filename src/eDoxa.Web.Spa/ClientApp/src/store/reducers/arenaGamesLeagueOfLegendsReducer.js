@@ -8,7 +8,7 @@ export const reducer = (state = {}, action) => {
     case LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME_SUCCESS:
       return action.payload.data;
     case LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME_FAIL:
-      console.log(action.payload.error);
+      console.log(action.payload);
       return state;
     default:
       return state;

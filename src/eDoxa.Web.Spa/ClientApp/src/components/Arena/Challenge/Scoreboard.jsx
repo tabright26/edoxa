@@ -1,9 +1,9 @@
-import React from 'react';
-import { Card, Accordion } from 'react-bootstrap';
+import React from "react";
+import { Card, Accordion } from "react-bootstrap";
 
-import Scrollbar from 'react-scrollbars-custom';
+import Scrollbar from "react-scrollbars-custom";
 
-import ArenaChallengeParticipantIndex from './Participant/Index';
+import ArenaChallengeParticipantIndex from "./Participant/Index";
 
 const ArenaChallengeScoreboard = ({ challenge }) => (
   <>
@@ -14,7 +14,7 @@ const ArenaChallengeScoreboard = ({ challenge }) => (
     </Card>
     <Scrollbar
       style={{
-        height: '500px'
+        height: "500px"
       }}
     >
       <Accordion>

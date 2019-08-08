@@ -1,25 +1,15 @@
-import React from 'react';
-import { Card } from 'react-bootstrap';
+import React from "react";
+import { Card } from "react-bootstrap";
 
-import Moment from 'react-moment';
-import Spinner from '../../Shared/Spinner';
+import Moment from "react-moment";
+import Loading from "../../../containers/Shared/Loading";
 
-import faker from 'faker';
-
-faker.seed(1);
-
-const style = { width: '200px' };
+const style = { width: "200px" };
 
 const ArenaChallengeTimeline = ({ challenge, state, date }) => {
   const isActiveState = challenge.state === state;
   return (
-    <span
-      className={`btn ${
-        isActiveState ? 'bg-info' : 'bg-secondary'
-      } text-light mt-2 rounded-0`}
-      style={style}
-      title={`${state}${isActiveState ? ' (current)' : ''}`}
-    >
+    <span className={`btn ${isActiveState ? "bg-info" : "bg-secondary"} text-light mt-2 rounded-0`} style={style} title={`${state}${isActiveState ? " (current)" : ""}`}>
       {date ? (
         <Moment unix format="lll">
           {date}
@@ -35,7 +25,7 @@ const Body = ({ challenge }) => {
   if (!challenge) {
     return (
       <Card.Body className="text-center text-white">
-        <Spinner />
+        <Loading />
       </Card.Body>
     );
   } else {
@@ -43,35 +33,16 @@ const Body = ({ challenge }) => {
       <div
         className="d-flex flex-column position-relative"
         style={{
-          right: '50px'
+          right: "50px"
         }}
       >
-        <span
-          className="btn bg-primary text-light mt-2 rounded-0"
-          style={style}
-        >
+        <span className="btn bg-primary text-light mt-2 rounded-0" style={style}>
           <strong>Timeline</strong>
         </span>
-        <ArenaChallengeTimeline
-          challenge={challenge}
-          state="Inscription"
-          date={challenge.timeline.createdAt}
-        />
-        <ArenaChallengeTimeline
-          challenge={challenge}
-          state="Started"
-          date={challenge.timeline.startedAt}
-        />
-        <ArenaChallengeTimeline
-          challenge={challenge}
-          state="Ended"
-          date={challenge.timeline.endedAt}
-        />
-        <ArenaChallengeTimeline
-          challenge={challenge}
-          state="Closed"
-          date={challenge.timeline.closedAt}
-        />
+        <ArenaChallengeTimeline challenge={challenge} state="Inscription" date={challenge.timeline.createdAt} />
+        <ArenaChallengeTimeline challenge={challenge} state="Started" date={challenge.timeline.startedAt} />
+        <ArenaChallengeTimeline challenge={challenge} state="Ended" date={challenge.timeline.endedAt} />
+        <ArenaChallengeTimeline challenge={challenge} state="Closed" date={challenge.timeline.closedAt} />
       </div>
     );
   }

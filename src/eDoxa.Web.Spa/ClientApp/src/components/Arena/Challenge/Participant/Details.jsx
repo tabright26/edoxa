@@ -1,32 +1,28 @@
-import React from 'react';
-import { Card, Badge, Accordion } from 'react-bootstrap';
+import React from "react";
+import { Card, Badge, Accordion } from "react-bootstrap";
 
-import ScoreFormat from '../../../Shared/Formaters/ScoreFormat';
-import Spinner from '../../../Shared/Spinner';
+import Format from "../../../../containers/Shared/Formats";
+import Loading from "../../../../containers/Shared/Loading";
 
-import Matches from './Match/Index';
+import Matches from "./Match/Index";
 
 const ArenaChallengeParticipantDetails = ({ participant, position }) => {
   if (!participant) {
     return (
       <Card.Body className="text-center mt-5">
-        <Spinner />
+        <Loading />
       </Card.Body>
     );
   } else {
     return (
       <>
-        <Accordion.Toggle
-          as="div"
-          eventKey={position - 1}
-          className="participant"
-        >
+        <Accordion.Toggle as="div" eventKey={position - 1} className="participant">
           <Card bg="dark" className="my-2 text-light">
             <Card.Body className="p-0 d-flex">
               <div
                 className="pl-2 py-2 text-center"
                 style={{
-                  width: '45px'
+                  width: "45px"
                 }}
               >
                 <Badge variant="primary">{position}</Badge>
@@ -35,10 +31,10 @@ const ArenaChallengeParticipantDetails = ({ participant, position }) => {
               <div
                 className="bg-primary px-3 py-2 text-center ml-auto"
                 style={{
-                  width: '90px'
+                  width: "90px"
                 }}
               >
-                <ScoreFormat score={participant.averageScore} />
+                <Format.Score score={participant.averageScore} />
               </div>
             </Card.Body>
           </Card>

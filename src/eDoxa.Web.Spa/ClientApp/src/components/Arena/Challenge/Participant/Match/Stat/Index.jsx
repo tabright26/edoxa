@@ -1,9 +1,9 @@
-import React from 'react';
-import { Modal, Button, Table } from 'react-bootstrap';
+import React from "react";
+import { Modal, Button, Table } from "react-bootstrap";
 
-import ScoreFormat from '../../../../../Shared/Formaters/ScoreFormat';
+import Format from "../../../../../../containers/Shared/Formats";
 
-import Spinner from '../../../../../Shared/Spinner';
+import Loading from "../../../../../../containers/Shared/Loading";
 
 const Stats = props => {
   const { stats } = props;
@@ -14,7 +14,7 @@ const Stats = props => {
       </Modal.Header>
       {!stats ? (
         <Modal.Body>
-          <Spinner />
+          <Loading />
         </Modal.Body>
       ) : (
         <Table className="mb-0" striped>
@@ -22,9 +22,9 @@ const Stats = props => {
             <tr>
               <th>Name</th>
               <th className="text-center">Value</th>
-              <th className="text-center"></th>
+              <th className="text-center" />
               <th className="text-center">Weighting</th>
-              <th className="text-center"></th>
+              <th className="text-center" />
               <th className="text-center">Score</th>
             </tr>
           </thead>
@@ -37,19 +37,14 @@ const Stats = props => {
                 <td className="text-center">{stat.weighting}</td>
                 <td className="text-center">&#61;</td>
                 <td className="text-center text-primary">
-                  <ScoreFormat score={stat.score} />
+                  <Format.Score score={stat.score} />
                 </td>
               </tr>
             ))}
             <tr>
               <th colSpan={5}>Score</th>
               <th className="text-center text-primary">
-                <ScoreFormat
-                  score={stats.reduce(
-                    (totalScore, stat) => totalScore + stat.score,
-                    0
-                  )}
-                />
+                <Format.Score score={stats.reduce((totalScore, stat) => totalScore + stat.score, 0)} />
               </th>
             </tr>
           </tbody>

@@ -1,7 +1,7 @@
-import React from 'react';
-import { Table, Card } from 'react-bootstrap';
+import React from "react";
+import { Table, Card } from "react-bootstrap";
 
-import Spinner from '../../Shared/Spinner';
+import Loading from "../../../containers/Shared/Loading";
 //import CurrencyFormat from '../Shared/Formaters/CurrencyFormat';
 //import BucketFormat from '../Shared/Formaters/BucketFormat';
 
@@ -9,7 +9,7 @@ const Render = ({ challenge }) => {
   if (!challenge) {
     return (
       <Card.Body>
-        <Spinner />
+        <Loading />
       </Card.Body>
     );
   } else {
@@ -52,9 +52,7 @@ const Render = ({ challenge }) => {
 const ArenaChallengePayout = ({ challenge }) => {
   return (
     <Card bg="dark" className="my-4 text-light text-center">
-      <Card.Header as="h5">
-        {/* Payout ({challenge ? challenge.payout.prizePool.currency : ''}) */}
-      </Card.Header>
+      <Card.Header as="h5">{/* Payout ({challenge ? challenge.payout.prizePool.currency : ''}) */}</Card.Header>
       <Render challenge={challenge} />
     </Card>
   );

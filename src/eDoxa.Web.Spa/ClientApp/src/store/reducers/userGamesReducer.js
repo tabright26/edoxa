@@ -14,7 +14,7 @@ export const reducer = (state = [], action) => {
           return data;
       }
     case LOAD_USER_GAMES_FAIL:
-      console.log(action.payload.error);
+      console.log(action.payload);
       return state;
     default:
       return state;

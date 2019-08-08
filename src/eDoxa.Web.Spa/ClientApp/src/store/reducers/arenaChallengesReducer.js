@@ -16,12 +16,12 @@ export const reducer = (state = [], action) => {
           return data;
       }
     case LOAD_CHALLENGES_FAIL:
-      console.log(action.payload.error);
+      console.log(action.payload);
       return state;
     case LOAD_CHALLENGE_SUCCESS:
       return [...state, action.payload.data];
     case LOAD_CHALLENGE_FAIL:
-      console.log(action.payload.error);
+      console.log(action.payload);
       return state;
     default:
       return state;

@@ -1,9 +1,9 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { Navbar, Nav, Form, NavDropdown, Button, Badge } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
-import Moment from 'react-moment';
-import userManager, { POST_LOGIN_REDIRECT_URI } from '../../utils/userManager';
+import React from "react";
+import { connect } from "react-redux";
+import { Navbar, Nav, Form, NavDropdown, Button, Badge } from "react-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
+import Moment from "react-moment";
+import userManager, { POST_LOGIN_REDIRECT_URI } from "../../utils/userManager";
 
 class Header extends React.Component {
   signinRedirectClickHandled = event => {
@@ -71,12 +71,12 @@ class Header extends React.Component {
                   Account Overview
                 </NavDropdown.Item>
               </LinkContainer>
-              <LinkContainer to="/transaction-history">
+              <LinkContainer to="/account/transaction-history">
                 <NavDropdown.Item eventKey="3">
                   Transaction History
                 </NavDropdown.Item>
               </LinkContainer>
-              <LinkContainer to="/payment-methods">
+              <LinkContainer to="/account/payment-methods">
                 <NavDropdown.Item eventKey="4">
                   Payment Methods
                 </NavDropdown.Item>

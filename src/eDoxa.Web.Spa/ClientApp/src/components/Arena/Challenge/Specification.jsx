@@ -1,20 +1,16 @@
-import React from 'react';
-import { Card, Row, Col, Badge, ProgressBar } from 'react-bootstrap';
+import React from "react";
+import { Card, Row, Col, Badge, ProgressBar } from "react-bootstrap";
 
 //import CurrencyFormat from '../Shared/Formaters/CurrencyFormat';
-import Spinner from '../../Shared/Spinner';
+import Loading from "../../../containers/Shared/Loading";
 
-import ChallengeTimeline from './Timeline';
-
-import faker from 'faker';
-
-faker.seed(1);
+import ChallengeTimeline from "./Timeline";
 
 const Body = ({ challenge }) => {
   if (!challenge) {
     return (
       <Card.Body className="text-center text-white">
-        <Spinner />
+        <Loading />
       </Card.Body>
     );
   } else {
@@ -32,9 +28,7 @@ const Body = ({ challenge }) => {
               <dd className="col-7">
                 <Badge variant="primary">{challenge.game}</Badge>
               </dd>
-              <dt className="col-5">
-                {/* Entry fee ({challenge.setup.entryFee.currency}) */}
-              </dt>
+              <dt className="col-5">{/* Entry fee ({challenge.setup.entryFee.currency}) */}</dt>
               <dd className="col-7">
                 {/* <CurrencyFormat
                   currency={challenge.setup.entryFee.currency}
@@ -43,17 +37,10 @@ const Body = ({ challenge }) => {
               </dd>
               <dt className="col-5">Entries</dt>
               <dd className="col-7 my-auto">
-                <ProgressBar
-                  variant="primary"
-                  now={challenge.participants.length}
-                  max={challenge.entries}
-                  label={`${challenge.participants.length}/${challenge.entries}`}
-                />
+                <ProgressBar variant="primary" now={challenge.participants.length} max={challenge.entries} label={`${challenge.participants.length}/${challenge.entries}`} />
               </dd>
               <dt className="col-5 mt-2 mb-1">Payout entries</dt>
-              <dd className="col-7 mt-2 mb-1">
-                {/* {challenge.setup.payoutEntries} */}
-              </dd>
+              <dd className="col-7 mt-2 mb-1">{/* {challenge.setup.payoutEntries} */}</dd>
               <dt className="col-5 mt-1">Best of</dt>
               <dd className="col-7 mt-1 mb-0">{challenge.bestOf}</dd>
             </dl>

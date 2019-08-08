@@ -1,131 +1,156 @@
-# Getting Started
+[![@coreui coreui](https://img.shields.io/badge/@coreui%20-coreui-lightgrey.svg?style=flat-square)](https://github.com/coreui/coreui)
+[![npm package][npm-coreui-badge]][npm-coreui]
+[![NPM downloads][npm-coreui-download]][npm-coreui]  
+[![@coreui react](https://img.shields.io/badge/@coreui%20-react-lightgrey.svg?style=flat-square)](https://github.com/coreui/react)
+[![npm package][npm-coreui-react-badge]][npm-coreui-react]
+[![NPM downloads][npm-coreui-react-download]][npm-coreui-react]
+
+[npm-coreui]: https://www.npmjs.com/package/@coreui/coreui
+[npm-coreui-badge]: https://img.shields.io/npm/v/@coreui/coreui.png?style=flat-square
+[npm-coreui-download]: https://img.shields.io/npm/dm/@coreui/coreui.svg?style=flat-square
+[npm-coreui-react]: https://www.npmjs.com/package/@coreui/react
+[npm-coreui-react-badge]: https://img.shields.io/npm/v/@coreui/react.png?style=flat-square
+[npm-coreui-react-download]: https://img.shields.io/npm/dm/@coreui/react.svg?style=flat-square
+
+# CoreUI Pro React Admin Template Starter `v2`
+
+CoreUI is meant to be the UX game changer. Pure & transparent code is devoid of redundant components, so the app is light enough to offer ultimate user experience. This means mobile devices also, where the navigation is just as easy and intuitive as on a desktop or laptop. The CoreUI Layout API lets you customize your project for almost any device – be it Mobile, Web or WebApp – CoreUI covers them all!
+
+## Table of Contents
+
+* [Versions](#versions)
+* [CoreUI Pro](#coreui-pro)
+* [Installation](#installation)
+* [Usage](#usage)
+* [What's included](#whats-included)
+* [Documentation](#documentation)
+* [Versioning](#versioning)
+* [Creators](#creators)
+* [Community](#community)
+* [Copyright and License](#copyright-and-license)
+
+## Versions
+
+* [CoreUI Pro Bootstrap Admin Template](https://github.com/coreui/coreui-pro-bootstrap-admin-template)
+* [CoreUI Pro Bootstrap Admin Template (Ajax)](https://github.com/coreui/coreui-pro-bootstrap-admin-template-ajax)
+* [CoreUI Pro Angular 2+ Admin Template](https://github.com/coreui/coreui-pro-angular-admin-template)
+* 🚧 CoreUI Pro .NET Core 2 Admin Template (Available Soon)
+* [CoreUI Pro React.js Admin Template](https://github.com/coreui/coreui-pro-react-admin-template)
+* [CoreUI Pro Vue.js Admin Template](https://github.com/coreui/coreui-pro-vue-admin-template)
+
+**Only customers with [Membership Plan](https://coreui.io/pro/#buy) have access to private github repositories.**
+
+## CoreUI Pro
+
+* 💪  [CoreUI Pro Bootstrap Admin Template](https://coreui.io/pro/)
+* 💪  [CoreUI Pro Bootstrap Admin Template (Ajax)](https://coreui.io/pro/)
+* 💪  [CoreUI Pro Angular Admin Template](https://coreui.io/pro/angular)
+* 💪  [CoreUI Pro React Admin Template](https://coreui.io/pro/react)
+* 💪  [CoreUI Pro Vue Admin Template](https://coreui.io/pro/vue)
 
 ## Installation
 
-1. Download [Git](https://git-scm.com/)
-1. Download [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-windows?view=azure-cli-latest)
-1. Download [Docker Desktop for Windows](https://hub.docker.com/editions/community/docker-ce-desktop-windows/)
-1. Download [Node.js](https://nodejs.org/)
-1. Download [Visual Studio Code](https://code.visualstudio.com/)
+### Clone repo
 
-Visual Studio Code extensions (required):
+**Only customers with [Membership Plan](https://coreui.io/pro/#buy) have access to private github repository.**
 
-- Docker
-- PowerShell
-- ESLint
-- Prettier
-- Debugger for Chrome
+``` bash
+# clone the repo
+$ git clone https://github.com/coreui/coreui-pro-react-admin-template.git my-project
 
-<strong>Note:</strong>
-For now, the backend is developed using `Google Chrome` development tools. To avoid unnecessary compatibility issues during the development process, `Google Chrome` is recommended as the default debugger.
+# go into app's directory
+$ cd my-project
 
----
-
-### Step 1: Clone the eDoxa git repository:
-
-<small>Note: Use git bash only for this step.</small>
-
-```sh
-git clone https://edoxa.visualstudio.com/eDoxa/_git/eDoxa.Web.Spa
+# install app's dependencies
+$ npm install
 ```
 
----
+### Copy and Paste
 
-<strong>Note: Use the built-in VSCode Powershell Console to perform all the following steps.</strong>
+Copy all your files to your project folder and then,
 
-### Step 2: Depending on your Docker installation, do one of the following:
+``` bash
+# go into app's directory
+$ cd my-project
 
-#### Docker Desktop for Windows (Hyper-V)
-
-Run the following command to obtain the local IPv4 address of your computer:
-
-```
-ipconfig
+# install app's dependencies
+$ npm install
 ```
 
-<small>Note: Choose IPv4 with a default gateway (Ethernet or Wi-Fi).</small>
+## Create React App
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app)
 
----
+see also:
+[User Guide](CRA.md)
 
-### Step 3: Update the local IP references in the .env file with your `IPv4 Address`.
+### Basic usage
 
-If you have a problem configuring the front-end environment with your local address, you can use `localhost` as the `HOST` variable in the `.env` file. The ip part of the `REACT_APP_REDIRECT_URI` variable must also be changed to `localhost`. DO NOT modify other variables in the `.env` file.
-
----
-
-### Step 4: Install eDoxa development environment:
-
-This script uses docker-compose to pull the Docker images from the Azure container registry, and then start them as a detach process on your local computer:
-
-```ps
-.\docker-compose
+``` bash
+# dev server  with hot reload at http://localhost:3000
+$ npm start
 ```
 
-| Service              | Host                        | Port | Description |
-| :------------------- | --------------------------- | :--: | :---------: |
-| mssql                | IPv4 Address                | 1433 |     ---     |
-| redis                | IPv4 Address                | 6379 |     ---     |
-| rabbitmq             | IPv4 Address                | 5672 |     ---     |
-| idsrv                | IPv4 Address                | 5000 |     ---     |
-| identity.api         | IPv4 Address                | 5001 |     ---     |
-| cashier.api          | IPv4 Address                | 5002 |     ---     |
-| arena.challenges.api | IPv4 Address                | 5003 |     ---     |
-| web.aggregator       | IPv4 Address                | 5100 |     ---     |
-| web.gateway          | IPv4 Address                | 5200 |     ---     |
-| web.spa              | IPv4 Address or `localhost` | 5300 |     ---     |
-| web.status           | IPv4 Address                | 5500 |     ---     |
+Navigate to [http://localhost:3000](http://localhost:3000). The app will automatically reload if you change any of the source files.
 
----
+### Build
 
-### Step 5: Install the React npm packages dependencies:
+Run `build` to build the project. The build artifacts will be stored in the `build/` directory.
 
-```
-npm install
+```bash
+# build for production with minification
+$ npm run build
 ```
 
----
+## What's included
 
-### Step 6: Launch the React project:
-
-```
-npm start
-```
-
-# Build
-
-No build.
-
-# Development
-
-<strong>IdentityServer credential</strong><br>
-Email: admin@edoxa.gg<br>
-Password: Pass@word1<br>
-UserId: e4655fe0-affd-4323-b022-bdb2ebde6091
-
-<strong>SQL Server credential</strong><br>
-Server Name: 127.0.0.1,1433<br>
-Authentication: SQL Server Authentication<br>
-Username: sa<br>
-Password: fnU3Www9TnBDp3MA
-
-# Testing
-
-Use the following command to start project test suites:
+Within the download you'll find the following directories and files, logically grouping common assets and providing both compiled and minified variations. You'll see something like this:
 
 ```
-npm test
+CoreUI-React#v2.0.0
+├── public/          #static files
+│   ├── assets/      #assets
+│   └── index.html   #html template
+│
+├── src/             #project root
+│   ├── containers/  #container source
+│   ├── scss/        #user scss/css source
+│   ├── views/       #views source
+│   ├── App.js
+│   ├── App.test.js
+│   ├── index.js
+│   ├── _nav.js      #sidebar config
+│   └── routes.js    #routes config
+│
+└── package.json
 ```
 
-# Documentation
+## Documentation
 
-| Dependencies     | References                                                       |
-| :--------------- | ---------------------------------------------------------------- |
-| React            | https://reactjs.org/docs/getting-started                         |
-| React-Router     | https://reacttraining.com/react-router/web/example/basic         |
-| React-Redux      | https://redux.js.org/                                            |
-| React-Bootstrap  | https://react-bootstrap.github.io/                               |
-| Create React App | https://facebook.github.io/create-react-app/docs/getting-started |
-| Jest             | https://jestjs.io/docs/en/getting-started                        |
-| OpenIdConnect    | https://www.npmjs.com/package/oidc-client                        |
-|                  | https://www.npmjs.com/package/react-oidc                         |
-|                  | https://reacttraining.com/react-router/web/example/auth-workflow |
+The documentation for the CoreUI  Admin Template is hosted at our website [CoreUI for React](https://coreui.io/react/)
+
+
+## Versioning
+
+For transparency into our release cycle and in striving to maintain backward compatibility, CoreUI Pro Admin Template is maintained under [the Semantic Versioning guidelines](http://semver.org/).
+
+See [the Releases section of our project](https://github.com/coreui/coreui-pro-react-admin-template/releases) for changelogs for each release version.
+
+## Creators
+
+**Łukasz Holeczek**
+* <https://twitter.com/lukaszholeczek>
+* <https://github.com/mrholek>
+
+**Andrzej Kopański**
+* <https://github.com/xidedix>
+
+## Community
+
+Get updates on CoreUI's development and chat with the project maintainers and community members.
+
+- Follow [@core_ui on Twitter](https://twitter.com/core_ui).
+- Read and subscribe to [CoreUI Blog](https://coreui.ui/blog/).
+
+## Copyright and License
+
+copyright 2018 creativeLabs Łukasz Holeczek.

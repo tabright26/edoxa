@@ -7,11 +7,7 @@ import ChallengeScoreboard from './Scoreboard';
 import ChallengeScoring from './Scoring';
 import ChallengePayout from './Payout';
 
-import faker from 'faker';
-
 import { withArenaChallengeContainer } from './Container';
-
-faker.seed(1);
 
 class Challenge extends Component {
   render() {

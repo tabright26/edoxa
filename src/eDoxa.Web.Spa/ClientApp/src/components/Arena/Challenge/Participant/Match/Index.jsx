@@ -1,16 +1,14 @@
-import React from 'react';
-import { Card } from 'react-bootstrap';
+import React from "react";
+import { Card } from "react-bootstrap";
 
-import Spinner from '../../../../Shared/Spinner';
-import Match from './Details';
+import Loading from "../../../../../containers/Shared/Loading";
+
+import Match from "./Details";
 
 const Matches = ({ participant }) => {
   if (!participant) {
-    return (
-      <Card.Body className="text-center">
-        <Spinner />
-      </Card.Body>
-    );
+    return <Card.Body className="text-center">
+    <Loading /></Card.Body>;
   } else {
     return (
       <>

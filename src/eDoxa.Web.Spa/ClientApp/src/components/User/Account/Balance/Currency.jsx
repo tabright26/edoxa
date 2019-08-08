@@ -1,6 +1,6 @@
 import React from 'react';
 
-import CurrencyFormat from '../../../Shared/Formaters/CurrencyFormat';
+import CurrencyFormat from '../../../../containers/Shared/Formats/Currency';
 
 const UserAccountBalanceCurrency = ({ currency }) => (
   <dl className="row mb-0">

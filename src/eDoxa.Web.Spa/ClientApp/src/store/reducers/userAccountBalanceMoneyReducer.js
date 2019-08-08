@@ -15,7 +15,7 @@ export const reducer = (state = initialState, action) => {
         pending
       };
     case LOAD_USER_ACCOUNT_BALANCE_MONEY_FAIL:
-      console.log(action.payload.error);
+      console.log(action.payload);
       return state;
     default:
       return state;
