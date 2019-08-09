@@ -1,5 +1,5 @@
 ﻿// Filename: IdentityDbContext.cs
-// Date Created: 2019-07-17
+// Date Created: 2019-07-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -21,7 +21,7 @@ namespace eDoxa.Identity.Api.Infrastructure
 
         public DbSet<UserGame> UserGames => this.Set<UserGame>();
 
-        protected override void OnModelCreating( ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
@@ -32,7 +32,31 @@ namespace eDoxa.Identity.Api.Infrastructure
                     builder.Property(user => user.NormalizedEmail).IsRequired();
                     builder.Property(user => user.FirstName).IsRequired(false);
                     builder.Property(user => user.LastName).IsRequired(false);
+                    builder.Property(user => user.Gender).IsRequired(false);
                     builder.Property(user => user.BirthDate).IsRequired(false);
+
+                    builder.OwnsOne(
+                        user => user.Address,
+                        userAddress =>
+                        {
+                            userAddress.Property(address => address!.Street).IsRequired();
+                            userAddress.Property(address => address!.City).IsRequired();
+                            userAddress.Property(address => address!.PostalCode).IsRequired();
+                            userAddress.Property(address => address!.Country).IsRequired();
+                            userAddress.ToTable("Address");
+                        }
+                    );
+
+                    builder.OwnsOne(
+                        user => user.Doxatag,
+                        userDoxatag =>
+                        {
+                            userDoxatag.Property(doxatag => doxatag!.Name);
+                            userDoxatag.Property(doxatag => doxatag!.UniqueTag);
+                            userDoxatag.ToTable("Doxatag");
+                        }
+                    );
+
                     builder.HasMany<UserGame>().WithOne().HasForeignKey(userGame => userGame.UserId).IsRequired();
                     builder.ToTable("User");
                 }

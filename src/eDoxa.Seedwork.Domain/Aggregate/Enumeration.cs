@@ -79,12 +79,12 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             return !(left == right);
         }
 
-        public static TEnumeration? FromValue(int value)
+        public static TEnumeration FromValue(int value)
         {
             return GetEnumerations().SingleOrDefault(enumeration => enumeration.Value == value) ?? None;
         }
 
-        public static TEnumeration? FromName(string? name)
+        public static TEnumeration FromName(string? name)
         {
             return GetEnumerations().SingleOrDefault(enumeration => string.Equals(enumeration.Name, name, StringComparison.InvariantCultureIgnoreCase)) ?? None;
         }
@@ -109,12 +109,12 @@ namespace eDoxa.Seedwork.Domain.Aggregate
             return Value.GetHashCode();
         }
 
-        public static bool HasEnumeration(TEnumeration? enumeration)
+        public static bool HasEnumeration(TEnumeration enumeration)
         {
             return enumeration != null && enumeration != All && enumeration != None && GetEnumerations().Contains(enumeration);
         }
 
-        public bool HasFilter(TEnumeration? enumeration)
+        public bool HasFilter(TEnumeration enumeration)
         {
             return (Value & (enumeration?.Value ?? All.Value)) != None.Value;
         }

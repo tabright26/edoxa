@@ -16,6 +16,12 @@ namespace eDoxa.Identity.Api.Infrastructure.Models
 
         public string? LastName { get; set; }
 
+        public int? Gender { get; set; }
+
         public DateTime? BirthDate { get; set; }
+
+        public Address? Address { get; set; }
+
+        public Doxatag? Doxatag { get; set; }
     }
 }
