@@ -13,9 +13,9 @@ namespace eDoxa.Identity.Api.Infrastructure.Models
     [TypeConverter(typeof(EnumerationTypeConverter))]
     public sealed class Gender : Enumeration<Gender>
     {
-        public static readonly Gender Male = new Gender(1 << 1, nameof(Male));
-        public static readonly Gender Female = new Gender(1 << 2, nameof(Female));
-        public static readonly Gender Other = new Gender(1 << 3, nameof(Other));
+        public static readonly Gender Male = new Gender(1, nameof(Male));
+        public static readonly Gender Female = new Gender(1 << 1, nameof(Female));
+        public static readonly Gender Other = new Gender(1 << 2, nameof(Other));
 
         public Gender()
         {

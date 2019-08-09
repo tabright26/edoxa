@@ -1,5 +1,5 @@
 ﻿// Filename: User.cs
-// Date Created: 2019-07-17
+// Date Created: 2019-07-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,13 +12,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Models
 {
     public class User : IdentityUser<Guid>
     {
-        public string? FirstName { get; set; }
-
-        public string? LastName { get; set; }
-
-        public int? Gender { get; set; }
-
-        public DateTime? BirthDate { get; set; }
+        public Profile? Profile { get; set; }
 
         public Address? Address { get; set; }
 

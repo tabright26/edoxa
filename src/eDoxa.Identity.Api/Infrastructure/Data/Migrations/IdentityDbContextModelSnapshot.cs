@@ -67,8 +67,6 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
-                    b.Property<DateTime?>("BirthDate");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
@@ -77,12 +75,6 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
-
-                    b.Property<string>("FirstName");
-
-                    b.Property<int?>("Gender");
-
-                    b.Property<string>("LastName");
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -251,6 +243,28 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                             b1.HasOne("eDoxa.Identity.Api.Infrastructure.Models.User")
                                 .WithOne("Doxatag")
                                 .HasForeignKey("eDoxa.Identity.Api.Infrastructure.Models.Doxatag", "UserId")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
+
+                    b.OwnsOne("eDoxa.Identity.Api.Infrastructure.Models.Profile", "Profile", b1 =>
+                        {
+                            b1.Property<Guid>("UserId");
+
+                            b1.Property<DateTime?>("BirthDate");
+
+                            b1.Property<string>("FirstName");
+
+                            b1.Property<int?>("Gender");
+
+                            b1.Property<string>("LastName");
+
+                            b1.HasKey("UserId");
+
+                            b1.ToTable("Profile");
+
+                            b1.HasOne("eDoxa.Identity.Api.Infrastructure.Models.User")
+                                .WithOne("Profile")
+                                .HasForeignKey("eDoxa.Identity.Api.Infrastructure.Models.Profile", "UserId")
                                 .OnDelete(DeleteBehavior.Cascade);
                         });
                 });

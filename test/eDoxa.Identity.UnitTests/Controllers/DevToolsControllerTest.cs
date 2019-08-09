@@ -34,5 +34,11 @@ namespace eDoxa.Identity.UnitTests.Controllers
                 )
                 .Assert();
         }
+
+        [TestMethod]
+        public void Constructor_Tests1()
+        {
+            var t = 1 << 2;
+        }
     }
 }

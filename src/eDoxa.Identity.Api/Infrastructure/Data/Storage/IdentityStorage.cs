@@ -1,5 +1,5 @@
 ﻿// Filename: IdentityStorage.cs
-// Date Created: 2019-07-11
+// Date Created: 2019-07-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -39,29 +39,29 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
         {
             var path = Path.Combine(Directory.GetCurrentDirectory(), TestUserClaimsFilePath);
 
-            using (var reader = new StreamReader(path))
-            using (var csv = new CsvReader(reader))
-            {
-                var records = csv.GetRecords(
-                    new
-                    {
-                        Id = default(int),
-                        ClaimType = default(string),
-                        ClaimValue = default(string),
-                        UserId = default(Guid)
-                    }
-                );
+            using var reader = new StreamReader(path);
 
-                foreach (var record in records)
+            using var csv = new CsvReader(reader);
+
+            var records = csv.GetRecords(
+                new
                 {
-                    yield return new UserClaim
-                    {
-                        Id = record.Id,
-                        ClaimType = record.ClaimType,
-                        ClaimValue = record.ClaimValue,
-                        UserId = record.UserId
-                    };
+                    Id = default(int),
+                    ClaimType = default(string),
+                    ClaimValue = default(string),
+                    UserId = default(Guid)
                 }
+            );
+
+            foreach (var record in records)
+            {
+                yield return new UserClaim
+                {
+                    Id = record.Id,
+                    ClaimType = record.ClaimType,
+                    ClaimValue = record.ClaimValue,
+                    UserId = record.UserId
+                };
             }
         }
 
@@ -69,27 +69,27 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
         {
             var path = Path.Combine(Directory.GetCurrentDirectory(), RolesFilePath);
 
-            using (var reader = new StreamReader(path))
-            using (var csv = new CsvReader(reader))
-            {
-                var records = csv.GetRecords(
-                    new
-                    {
-                        Id = default(Guid),
-                        Name = default(string),
-                        NormalizedName = default(string)
-                    }
-                );
+            using var reader = new StreamReader(path);
 
-                foreach (var record in records)
+            using var csv = new CsvReader(reader);
+
+            var records = csv.GetRecords(
+                new
                 {
-                    yield return new Role
-                    {
-                        Id = record.Id,
-                        Name = record.Name,
-                        NormalizedName = record.NormalizedName
-                    };
+                    Id = default(Guid),
+                    Name = default(string),
+                    NormalizedName = default(string)
                 }
+            );
+
+            foreach (var record in records)
+            {
+                yield return new Role
+                {
+                    Id = record.Id,
+                    Name = record.Name,
+                    NormalizedName = record.NormalizedName
+                };
             }
         }
 
@@ -97,65 +97,77 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
         {
             var path = Path.Combine(Directory.GetCurrentDirectory(), RoleClaimsFilePath);
 
-            using (var reader = new StreamReader(path))
-            using (var csv = new CsvReader(reader))
-            {
-                var records = csv.GetRecords(
-                    new
-                    {
-                        Id = default(int),
-                        ClaimType = default(string),
-                        ClaimValue = default(string),
-                        RoleId = default(Guid)
-                    }
-                );
+            using var reader = new StreamReader(path);
 
-                foreach (var record in records)
+            using var csv = new CsvReader(reader);
+
+            var records = csv.GetRecords(
+                new
                 {
-                    yield return new RoleClaim
-                    {
-                        Id = record.Id,
-                        ClaimType = record.ClaimType,
-                        ClaimValue = record.ClaimValue,
-                        RoleId = record.RoleId
-                    };
+                    Id = default(int),
+                    ClaimType = default(string),
+                    ClaimValue = default(string),
+                    RoleId = default(Guid)
                 }
+            );
+
+            foreach (var record in records)
+            {
+                yield return new RoleClaim
+                {
+                    Id = record.Id,
+                    ClaimType = record.ClaimType,
+                    ClaimValue = record.ClaimValue,
+                    RoleId = record.RoleId
+                };
             }
         }
 
         private static IEnumerable<User> GetTestUsers()
         {
+            var random = new Random();
+
             var path = Path.Combine(Directory.GetCurrentDirectory(), TestUsersFilePath);
 
-            using (var reader = new StreamReader(path))
-            using (var csv = new CsvReader(reader))
-            {
-                var records = csv.GetRecords(
-                    new
-                    {
-                        Id = default(Guid),
-                        Gamertag = default(string),
-                        FirstName = default(string),
-                        LastName = default(string),
-                        Email = default(string),
-                        Phone = default(string),
-                        BirthDate = default(long)
-                    }
-                );
+            using var reader = new StreamReader(path);
 
-                foreach (var record in records)
+            using var csv = new CsvReader(reader);
+
+            var records = csv.GetRecords(
+                new
                 {
-                    yield return new User
+                    Id = default(Guid),
+                    Doxatag = default(string),
+                    FirstName = default(string),
+                    LastName = default(string),
+                    Email = default(string),
+                    Phone = default(string),
+                    BirthDate = default(long),
+                    Gender = default(int)
+                }
+            );
+
+            foreach (var record in records)
+            {
+                yield return new User
+                {
+                    Id = record.Id,
+                    UserName = record.Email,
+                    Email = record.Email,
+                    PhoneNumber = record.Phone,
+                    Doxatag = new Doxatag
                     {
-                        Id = record.Id,
-                        UserName = record.Gamertag,
+                        Name = record.Doxatag,
+                        UniqueTag = random.Next(100, 10000)
+                    },
+                    Profile = new Profile
+                    {
                         FirstName = record.FirstName,
                         LastName = record.LastName,
-                        Email = record.Email,
-                        PhoneNumber = record.Phone,
-                        BirthDate = DateTimeOffset.FromUnixTimeSeconds(record.BirthDate).Date
-                    };
-                }
+                        BirthDate = DateTimeOffset.FromUnixTimeSeconds(record.BirthDate).Date,
+                        Gender = Gender.FromValue(record.Gender)
+                    }
+                };
             }
         }
 
@@ -163,25 +175,25 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
         {
             var path = Path.Combine(Directory.GetCurrentDirectory(), TestUserRolesFilePath);
 
-            using (var reader = new StreamReader(path))
-            using (var csv = new CsvReader(reader))
-            {
-                var records = csv.GetRecords(
-                    new
-                    {
-                        RoleId = default(Guid),
-                        UserId = default(Guid)
-                    }
-                );
+            using var reader = new StreamReader(path);
 
-                foreach (var record in records)
+            using var csv = new CsvReader(reader);
+
+            var records = csv.GetRecords(
+                new
                 {
-                    yield return new UserRole
-                    {
-                        RoleId = record.RoleId,
-                        UserId = record.UserId
-                    };
+                    RoleId = default(Guid),
+                    UserId = default(Guid)
                 }
+            );
+
+            foreach (var record in records)
+            {
+                yield return new UserRole
+                {
+                    RoleId = record.RoleId,
+                    UserId = record.UserId
+                };
             }
         }
     }

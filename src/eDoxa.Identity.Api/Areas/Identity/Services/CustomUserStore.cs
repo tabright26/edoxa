@@ -179,7 +179,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return Task.FromResult(user.BirthDate?.ToString("yyyy-MM-dd"));
+            return Task.FromResult(user.Profile.BirthDate?.ToString("yyyy-MM-dd"));
         }
 
         public Task<string?> GetFirstNameAsync(User user, CancellationToken cancellationToken)
@@ -193,7 +193,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return Task.FromResult(user.FirstName);
+            return Task.FromResult(user.Profile.FirstName);
         }
 
         public Task<string?> GetLastNameAsync(User user, CancellationToken cancellationToken)
@@ -207,7 +207,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return Task.FromResult(user.LastName);
+            return Task.FromResult(user.Profile.LastName);
         }
     }
 }

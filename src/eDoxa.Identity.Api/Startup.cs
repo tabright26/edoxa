@@ -14,7 +14,6 @@ using AutoMapper;
 
 using eDoxa.Identity.Api.Areas.Identity.Extensions;
 using eDoxa.Identity.Api.Areas.Identity.Services;
-using eDoxa.Identity.Api.Areas.Identity.Validators;
 using eDoxa.Identity.Api.Extensions;
 using eDoxa.Identity.Api.Infrastructure;
 using eDoxa.Identity.Api.Infrastructure.Data;
@@ -89,10 +88,6 @@ namespace eDoxa.Identity.Api
                 }
             );
 
-            services.AddScoped<IUserValidator<User>, EmailValidator>();
-            services.AddScoped<IUserValidator<User>, PhoneNumberValidator>();
-            services.AddScoped<IUserValidator<User>, UserNameValidator>();
-
             services.AddIdentity<User, Role>(
                     options =>
                     {
@@ -107,9 +102,8 @@ namespace eDoxa.Identity.Api
                         options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
                         options.Lockout.MaxFailedAccessAttempts = 5;
 
-                        options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_#";
                         options.User.RequireUniqueEmail = true;
-
+                        
                         options.ClaimsIdentity.UserIdClaimType = JwtClaimTypes.Subject;
                         options.ClaimsIdentity.UserNameClaimType = JwtClaimTypes.Name;
                         options.ClaimsIdentity.RoleClaimType = JwtClaimTypes.Role;
@@ -139,9 +133,6 @@ namespace eDoxa.Identity.Api
                 )
                 .AddClaimsPrincipalFactory<CustomUserClaimsPrincipalFactory>()
                 .AddUserManager<CustomUserManager>()
-                .AddUserValidator<EmailValidator>()
-                .AddUserValidator<PhoneNumberValidator>()
-                .AddUserValidator<UserNameValidator>()
                 .AddSignInManager<CustomSignInManager>()
                 .AddRoleManager<CustomRoleManager>()
                 .BuildCustomServices();

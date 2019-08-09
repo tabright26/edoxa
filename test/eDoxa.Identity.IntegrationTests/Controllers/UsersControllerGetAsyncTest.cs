@@ -4,6 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -59,9 +60,13 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
                 {
                     var userManager = scope.GetRequiredService<CustomUserManager>();
 
-                    foreach (var testUser in IdentityStorage.TestUsers.Take(100).ToList())
+                    var testUsers = IdentityStorage.TestUsers;
+
+                    foreach (var testUser in testUsers.Take(100).ToList())
                     {
-                        await userManager.CreateAsync(testUser);
+                        var test = await userManager.CreateAsync(testUser);
+
+                        Console.WriteLine(test);
                     }
                 }
             );

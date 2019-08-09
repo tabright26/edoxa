@@ -4,10 +4,10 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using AutoMapper;
-
 using eDoxa.Identity.Api.Areas.Identity.ViewModels;
 using eDoxa.Identity.Api.Infrastructure.Models;
+
+using Profile = AutoMapper.Profile;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Profiles
 {

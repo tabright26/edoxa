@@ -30,10 +30,28 @@ namespace eDoxa.Identity.Api.Infrastructure
                 {
                     builder.Property(user => user.Email).IsRequired();
                     builder.Property(user => user.NormalizedEmail).IsRequired();
-                    builder.Property(user => user.FirstName).IsRequired(false);
-                    builder.Property(user => user.LastName).IsRequired(false);
-                    builder.Property(user => user.Gender).IsRequired(false);
-                    builder.Property(user => user.BirthDate).IsRequired(false);
+
+                    builder.OwnsOne(
+                        user => user.Doxatag,
+                        userDoxatag =>
+                        {
+                            userDoxatag.Property(doxatag => doxatag!.Name);
+                            userDoxatag.Property(doxatag => doxatag!.UniqueTag);
+                            userDoxatag.ToTable("Doxatag");
+                        }
+                    );
+
+                    builder.OwnsOne(
+                        user => user.Profile,
+                        userProfile =>
+                        {
+                            userProfile.Property(user => user!.FirstName).IsRequired(false);
+                            userProfile.Property(user => user!.LastName).IsRequired(false);
+                            userProfile.Property(user => user!.Gender).HasConversion(gender => gender != null ? (int?) gender.Value : null, gender => gender.HasValue ? Gender.FromValue(gender.Value) : null).IsRequired(false);
+                            userProfile.Property(user => user!.BirthDate).IsRequired(false);
+                            userProfile.ToTable("Profile");
+                        }
+                    );
 
                     builder.OwnsOne(
                         user => user.Address,
@@ -44,16 +62,6 @@ namespace eDoxa.Identity.Api.Infrastructure
                             userAddress.Property(address => address!.PostalCode).IsRequired();
                             userAddress.Property(address => address!.Country).IsRequired();
                             userAddress.ToTable("Address");
-                        }
-                    );
-
-                    builder.OwnsOne(
-                        user => user.Doxatag,
-                        userDoxatag =>
-                        {
-                            userDoxatag.Property(doxatag => doxatag!.Name);
-                            userDoxatag.Property(doxatag => doxatag!.UniqueTag);
-                            userDoxatag.ToTable("Doxatag");
                         }
                     );
 
