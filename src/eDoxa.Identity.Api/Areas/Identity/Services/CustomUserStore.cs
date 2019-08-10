@@ -10,16 +10,14 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Identity.Api.Infrastructure;
 using eDoxa.Identity.Api.Infrastructure.Models;
 
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-
-using IdentityDbContext = eDoxa.Identity.Api.Infrastructure.IdentityDbContext;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Services
 {
-    public class CustomUserStore : UserStore<User, Role, IdentityDbContext, Guid, UserClaim, UserRole,
+    public class CustomUserStore : Microsoft.AspNetCore.Identity.EntityFrameworkCore.UserStore<User, Role, IdentityDbContext, Guid, UserClaim, UserRole,
         UserLogin, UserToken, RoleClaim>
     {
         private static readonly Random Random = new Random();
@@ -62,12 +60,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             return users.Select(user => user.NormalizedUserName.Split('#').Last()).Select(tag => Convert.ToInt32(tag)).ToList();
         }
 
-        
-        public override async Task SetUserNameAsync(
-             User user,
-             string userName,
-            CancellationToken cancellationToken = new CancellationToken()
-        )
+        public override async Task SetUserNameAsync(User user, string userName, CancellationToken cancellationToken = new CancellationToken())
         {
             var tags = await this.GetUserNameTagsAsync(userName);
 
@@ -76,7 +69,12 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             await base.SetUserNameAsync(user, FormatUserName(userName, tag), cancellationToken);
         }
 
-        public virtual Task AddGameAsync(User user, string gameName, string playerId, CancellationToken cancellationToken = default)
+        public virtual Task AddGameAsync(
+            User user,
+            string gameName,
+            string playerId,
+            CancellationToken cancellationToken = default
+        )
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -97,12 +95,14 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 throw new ArgumentNullException(nameof(playerId));
             }
 
-            UserGames.Add(new UserGame
-            {
-                Value = Game.FromName(gameName)!.Value,
-                PlayerId = playerId,
-                UserId = user.Id
-            });
+            UserGames.Add(
+                new UserGame
+                {
+                    Value = Game.FromName(gameName)!.Value,
+                    PlayerId = playerId,
+                    UserId = user.Id
+                }
+            );
 
             return Task.FromResult(false);
         }
@@ -168,7 +168,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             return default;
         }
 
-        public Task<string?> GetBirthDateAsync(User user, CancellationToken cancellationToken)
+        public Task<Profile?> GetProfileAsync(User user, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -179,10 +179,10 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return Task.FromResult(user.Profile.BirthDate?.ToString("yyyy-MM-dd"));
+            return Task.FromResult(user.Profile);
         }
 
-        public Task<string?> GetFirstNameAsync(User user, CancellationToken cancellationToken)
+        public Task<Doxatag?> GetDoxatagAsync(User user, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -193,10 +193,10 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return Task.FromResult(user.Profile.FirstName);
+            return Task.FromResult(user.Doxatag);
         }
 
-        public Task<string?> GetLastNameAsync(User user, CancellationToken cancellationToken)
+        public Task<Address?> GetAddressAsync(User user, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -207,7 +207,63 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return Task.FromResult(user.Profile.LastName);
+            return Task.FromResult(user.Address);
+        }
+
+        public Task<string?> GetFirstNameAsync(User user, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            this.ThrowIfDisposed();
+
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return Task.FromResult(user.Profile?.FirstName);
+        }
+
+        public Task<string?> GetLastNameAsync(User user, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            this.ThrowIfDisposed();
+
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return Task.FromResult(user.Profile?.LastName);
+        }
+
+        public Task<Gender?> GetGenderAsync(User user, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            this.ThrowIfDisposed();
+
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return Task.FromResult(user.Profile?.Gender);
+        }
+
+        public Task<string?> GetBirthDateAsync(User user, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            this.ThrowIfDisposed();
+
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return Task.FromResult(user.Profile?.BirthDate?.ToString("yyyy-MM-dd"));
         }
     }
 }

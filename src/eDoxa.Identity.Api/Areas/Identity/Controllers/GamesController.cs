@@ -7,8 +7,8 @@
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Areas.Identity.Extensions;
+using eDoxa.Identity.Api.Areas.Identity.Requests;
 using eDoxa.Identity.Api.Areas.Identity.Services;
-using eDoxa.Identity.Api.Areas.Identity.ViewModels;
 using eDoxa.Identity.Api.Extensions;
 using eDoxa.Identity.Api.Infrastructure.Models;
 
@@ -27,9 +27,9 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
     public sealed class GamesController : ControllerBase
     {
-        private readonly CustomUserManager _userManager;
+        private readonly ICustomUserManager _userManager;
 
-        public GamesController(CustomUserManager userManager)
+        public GamesController(ICustomUserManager userManager)
         {
             _userManager = userManager;
         }
@@ -44,13 +44,13 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                 return this.NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            var gameViewModels = await _userManager.GetGameViewModelsAsync(user);
+            var gameViewModels = await _userManager.GenerateGameResponsesAsync(user);
 
             return this.Ok(gameViewModels);
         }
 
         [HttpPost("{game}")]
-        public async Task<IActionResult> PostAsync(Game game, [FromBody] AddGameViewModel model)
+        public async Task<IActionResult> PostAsync(Game game, [FromBody] AddGameRequest model)
         {
             if (ModelState.IsValid)
             {

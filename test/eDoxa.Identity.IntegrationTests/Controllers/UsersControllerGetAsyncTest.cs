@@ -9,8 +9,8 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
+using eDoxa.Identity.Api.Areas.Identity.Responses;
 using eDoxa.Identity.Api.Areas.Identity.Services;
-using eDoxa.Identity.Api.Areas.Identity.ViewModels;
 using eDoxa.Identity.Api.Infrastructure.Data.Storage;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
@@ -76,7 +76,7 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
 
             // Assert
             response.EnsureSuccessStatusCode();
-            var users = await response.DeserializeAsync<UserViewModel[]>();
+            var users = await response.DeserializeAsync<UserResponse[]>();
             users.Should().HaveCount(100);
         }
     }

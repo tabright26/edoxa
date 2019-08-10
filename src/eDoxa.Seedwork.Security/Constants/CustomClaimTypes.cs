@@ -12,6 +12,7 @@ namespace eDoxa.Seedwork.Security.Constants
 {
     public static class CustomClaimTypes
     {
+        public const string NickNameTag = "nickname_tag";
         public const string SecurityStamp = "security_stamp";
         public const string Permission = "permission";
         public const string Games = "games";

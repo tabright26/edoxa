@@ -105,7 +105,7 @@ namespace eDoxa.Identity.Api
                         options.User.RequireUniqueEmail = true;
                         
                         options.ClaimsIdentity.UserIdClaimType = JwtClaimTypes.Subject;
-                        options.ClaimsIdentity.UserNameClaimType = JwtClaimTypes.Name;
+                        options.ClaimsIdentity.UserNameClaimType = JwtClaimTypes.NickName;
                         options.ClaimsIdentity.RoleClaimType = JwtClaimTypes.Role;
                         options.ClaimsIdentity.SecurityStampClaimType = CustomClaimTypes.SecurityStamp;
 

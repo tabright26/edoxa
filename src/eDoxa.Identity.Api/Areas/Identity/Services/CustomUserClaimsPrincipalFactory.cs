@@ -40,8 +40,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
         private ClaimsIdentity? Identity { get; set; }
 
-        
-        public async Task<ClaimsPrincipal> CreateAsync( User user)
+        public async Task<ClaimsPrincipal> CreateAsync(User user)
         {
             if (user == null)
             {
@@ -64,6 +63,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             Identity!.AddClaim(new Claim(Options.ClaimsIdentity.UserIdClaimType, await UserManager.GetUserIdAsync(user)));
 
             await this.TryGenerateUserNameClaimAsync(user);
+
+            await this.TryGenerateNameClaimAsync(user);
 
             await this.TryGenerateFirstNameClaimAsync(user);
 
@@ -88,11 +89,25 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
         private async Task TryGenerateUserNameClaimAsync(User user)
         {
-            var userName = await UserManager.GetUserNameAsync(user);
+            var doxatag = await UserManager.GetDoxatagAsync(user);
 
-            if (userName != null)
+            if (doxatag != null)
             {
-                Identity!.AddClaim(new Claim(Options.ClaimsIdentity.UserNameClaimType, userName));
+                Identity!.AddClaim(new Claim(JwtClaimTypes.PreferredUserName, doxatag.Name));
+
+                Identity!.AddClaim(new Claim(Options.ClaimsIdentity.UserNameClaimType, doxatag.ToString()));
+            }
+        }
+
+        private async Task TryGenerateNameClaimAsync(User user)
+        {
+            var firstName = await UserManager.GetFirstNameAsync(user);
+
+            var lastName = await UserManager.GetLastNameAsync(user);
+
+            if (firstName != null && lastName != null)
+            {
+                Identity!.AddClaim(new Claim(JwtClaimTypes.Name, $"{firstName} {lastName}"));
             }
         }
 

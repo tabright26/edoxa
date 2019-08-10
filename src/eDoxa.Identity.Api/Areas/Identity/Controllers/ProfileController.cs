@@ -1,11 +1,9 @@
-﻿// Filename: UsersController.cs
-// Date Created: 2019-07-22
+﻿// Filename: UserProfileController.cs
+// Date Created: 2019-08-09
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -17,42 +15,42 @@ using IdentityServer4.AccessTokenValidation;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 {
     [ApiController]
     [ApiVersion("1.0")]
     [Produces("application/json")]
-    [Route("api/users")]
-    [ApiExplorerSettings(GroupName = "Users")]
+    [Route("api/users/{userId}")]
+    [ApiExplorerSettings(GroupName = "Profile")]
     [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
-    public class UsersController : ControllerBase
+    public class ProfileController : ControllerBase
     {
         private readonly ICustomUserManager _userManager;
         private readonly IMapper _mapper;
 
-        public UsersController(ICustomUserManager userManager, IMapper mapper)
+        public ProfileController(ICustomUserManager userManager, IMapper mapper)
         {
             _userManager = userManager;
             _mapper = mapper;
         }
 
         /// <summary>
-        ///     Fetch users.
+        ///     Find user's profile.
         /// </summary>
-        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetAsync()
         {
-            var users = await _userManager.Users.ToListAsync();
+            var user = await _userManager.GetUserAsync(User);
 
-            if (!users.Any())
+            var doxatag = await _userManager.GetProfileAsync(user);
+
+            if (doxatag == null)
             {
                 return this.NoContent();
             }
 
-            return this.Ok(_mapper.Map<IEnumerable<UserResponse>>(users));
+            return this.Ok(_mapper.Map<ProfileResponse>(doxatag));
         }
     }
 }

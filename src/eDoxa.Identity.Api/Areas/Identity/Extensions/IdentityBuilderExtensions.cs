@@ -27,6 +27,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Extensions
             services.AddScoped<CustomUserClaimsPrincipalFactory>();
             services.AddScoped<CustomIdentityErrorDescriber>();
             services.AddScoped<CustomUserManager>();
+            services.AddScoped<ICustomUserManager, CustomUserManager>();
             services.AddScoped<CustomSignInManager>();
             services.AddScoped<CustomRoleManager>();
         }

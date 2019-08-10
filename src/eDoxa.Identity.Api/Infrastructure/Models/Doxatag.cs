@@ -13,5 +13,10 @@ namespace eDoxa.Identity.Api.Infrastructure.Models
         public string Name { get; set; }
 
         public int UniqueTag { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Name}#{UniqueTag}";
+        }
     }
 }

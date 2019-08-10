@@ -1,17 +1,17 @@
-﻿// Filename: AddGameViewModel.cs
-// Date Created: 2019-07-21
+﻿// Filename: AddGameRequest.cs
+// Date Created: 2019-08-09
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Runtime.Serialization;
 
-namespace eDoxa.Identity.Api.Areas.Identity.ViewModels
+namespace eDoxa.Identity.Api.Areas.Identity.Requests
 {
     [DataContract]
-    public class AddGameViewModel
+    public class AddGameRequest
     {
-        public AddGameViewModel(string playerId)
+        public AddGameRequest(string playerId)
         {
             PlayerId = playerId;
         }

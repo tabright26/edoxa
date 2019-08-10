@@ -17,7 +17,7 @@ using Microsoft.Extensions.Options;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Services
 {
-    public sealed class CustomUserManager : UserManager<User>
+    public sealed class CustomUserManager : UserManager<User>, ICustomUserManager
     {
         public CustomUserManager(
             CustomUserStore store,
@@ -72,10 +72,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             {
                 var userId = await this.GetUserIdAsync(user);
 
-                Logger.LogWarning(
-                    4,
-                    $"{nameof(this.AddGameAsync)} for user {userId} failed because it has already been linked to {gameName} game provider."
-                );
+                Logger.LogWarning(4, $"{nameof(this.AddGameAsync)} for user {userId} failed because it has already been linked to {gameName} game provider.");
 
                 return IdentityResult.Failed(ErrorDescriber.GameAlreadyLinked());
             }
@@ -162,6 +159,42 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             return games.SingleOrDefault(userGame => Game.FromValue(userGame.Value)!.Name == game.Name) != null;
         }
 
+        public async Task<Profile?> GetProfileAsync(User user)
+        {
+            this.ThrowIfDisposed();
+
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return await Store.GetProfileAsync(user, CancellationToken);
+        }
+
+        public async Task<Address?> GetAddressAsync(User user)
+        {
+            this.ThrowIfDisposed();
+
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return await Store.GetAddressAsync(user, CancellationToken);
+        }
+
+        public async Task<Doxatag?> GetDoxatagAsync(User user)
+        {
+            this.ThrowIfDisposed();
+
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return await Store.GetDoxatagAsync(user, CancellationToken);
+        }
+
         public async Task<string?> GetBirthDateAsync(User user)
         {
             this.ThrowIfDisposed();
@@ -196,6 +229,18 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             }
 
             return await Store.GetLastNameAsync(user, CancellationToken);
+        }
+
+        public async Task<Gender?> GetGenderAsync(User user)
+        {
+            this.ThrowIfDisposed();
+
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return await Store.GetGenderAsync(user, CancellationToken);
         }
     }
 }

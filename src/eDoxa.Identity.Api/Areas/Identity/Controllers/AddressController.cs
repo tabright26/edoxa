@@ -1,11 +1,9 @@
-﻿// Filename: UsersController.cs
-// Date Created: 2019-07-22
+﻿// Filename: AddressController.cs
+// Date Created: 2019-08-09
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -17,42 +15,42 @@ using IdentityServer4.AccessTokenValidation;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 {
     [ApiController]
     [ApiVersion("1.0")]
     [Produces("application/json")]
-    [Route("api/users")]
-    [ApiExplorerSettings(GroupName = "Users")]
+    [Route("api/address")]
+    [ApiExplorerSettings(GroupName = "Address")]
     [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
-    public class UsersController : ControllerBase
+    public class AddressController : ControllerBase
     {
         private readonly ICustomUserManager _userManager;
         private readonly IMapper _mapper;
 
-        public UsersController(ICustomUserManager userManager, IMapper mapper)
+        public AddressController(ICustomUserManager userManager, IMapper mapper)
         {
             _userManager = userManager;
             _mapper = mapper;
         }
 
         /// <summary>
-        ///     Fetch users.
+        ///     Find user's address.
         /// </summary>
-        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetAsync()
         {
-            var users = await _userManager.Users.ToListAsync();
+            var user = await _userManager.GetUserAsync(User);
 
-            if (!users.Any())
+            var address = await _userManager.GetAddressAsync(user);
+
+            if (address == null)
             {
                 return this.NoContent();
             }
 
-            return this.Ok(_mapper.Map<IEnumerable<UserResponse>>(users));
+            return this.Ok(_mapper.Map<AddressResponse>(address));
         }
     }
 }

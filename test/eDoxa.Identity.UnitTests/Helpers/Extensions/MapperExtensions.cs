@@ -9,7 +9,6 @@ using System.Reflection;
 using AutoMapper;
 
 using eDoxa.Identity.Api;
-using eDoxa.Identity.Api.Infrastructure;
 
 namespace eDoxa.Identity.UnitTests.Helpers.Extensions
 {
@@ -19,7 +18,7 @@ namespace eDoxa.Identity.UnitTests.Helpers.Extensions
         {
             get
             {
-                var configuration = new MapperConfiguration(config => config.AddMaps(Assembly.GetAssembly(typeof(IdentityDbContext)), Assembly.GetAssembly(typeof(Startup))));
+                var configuration = new MapperConfiguration(config => config.AddMaps(Assembly.GetAssembly(typeof(Startup))));
 
                 configuration.AssertConfigurationIsValid();
 

@@ -6,7 +6,7 @@
 
 using System.Collections.Generic;
 
-using eDoxa.Identity.Api.Areas.Identity.ViewModels;
+using eDoxa.Identity.Api.Areas.Identity.Responses;
 using eDoxa.Seedwork.Domain.Extensions;
 
 using FluentAssertions;
@@ -15,12 +15,12 @@ namespace eDoxa.Identity.UnitTests.Helpers.Extensions
 {
     public static class FluentAssertionsExtensions
     {
-        public static void AssertStateIsValid(this IEnumerable<UserViewModel> users)
+        public static void AssertStateIsValid(this IEnumerable<UserResponse> users)
         {
             users.ForEach(AssertStateIsValid);
         }
 
-        public static void AssertStateIsValid(this UserViewModel user)
+        public static void AssertStateIsValid(this UserResponse user)
         {
             user.Should().NotBeNull();
         }
