@@ -20,9 +20,9 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class ResetPasswordModel : PageModel
     {
-        private readonly CustomUserManager _userManager;
+        private readonly UserManager _userManager;
 
-        public ResetPasswordModel(CustomUserManager userManager)
+        public ResetPasswordModel(UserManager userManager)
         {
             _userManager = userManager;
         }

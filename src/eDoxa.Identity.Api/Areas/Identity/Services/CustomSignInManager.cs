@@ -17,7 +17,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
     public sealed class CustomSignInManager : SignInManager<User>
     {
         public CustomSignInManager(
-            CustomUserManager userManager,
+            UserManager userManager,
             IHttpContextAccessor contextAccessor,
             CustomUserClaimsPrincipalFactory claimsFactory,
             IOptions<IdentityOptions> optionsAccessor,

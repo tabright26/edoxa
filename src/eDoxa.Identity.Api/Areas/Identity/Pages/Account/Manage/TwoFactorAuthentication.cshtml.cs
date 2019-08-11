@@ -17,11 +17,11 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
     {
         //private const string AuthenicatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}";
 
-        private readonly CustomUserManager _userManager;
+        private readonly UserManager _userManager;
         private readonly CustomSignInManager _signInManager;
         //private readonly ILogger<TwoFactorAuthenticationModel> _logger;
 
-        public TwoFactorAuthenticationModel(CustomUserManager userManager, CustomSignInManager signInManager/*, ILogger<TwoFactorAuthenticationModel> logger*/)
+        public TwoFactorAuthenticationModel(UserManager userManager, CustomSignInManager signInManager/*, ILogger<TwoFactorAuthenticationModel> logger*/)
         {
             _userManager = userManager;
             _signInManager = signInManager;

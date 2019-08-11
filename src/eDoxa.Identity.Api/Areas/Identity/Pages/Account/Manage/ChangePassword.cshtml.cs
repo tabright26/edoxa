@@ -17,11 +17,11 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
 {
     public class ChangePasswordModel : PageModel
     {
-        private readonly CustomUserManager _userManager;
+        private readonly UserManager _userManager;
         private readonly CustomSignInManager _signInManager;
         private readonly ILogger<ChangePasswordModel> _logger;
 
-        public ChangePasswordModel(CustomUserManager userManager, CustomSignInManager signInManager, ILogger<ChangePasswordModel> logger)
+        public ChangePasswordModel(UserManager userManager, CustomSignInManager signInManager, ILogger<ChangePasswordModel> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;

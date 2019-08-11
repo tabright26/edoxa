@@ -26,8 +26,6 @@ using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security.Constants;
 using eDoxa.Seedwork.Security.Extensions;
-using eDoxa.Seedwork.Security.Hosting.Extensions;
-using eDoxa.Seedwork.Security.Middlewares;
 using eDoxa.ServiceBus.Modules;
 
 using FluentValidation.AspNetCore;
@@ -132,7 +130,7 @@ namespace eDoxa.Identity.Api
                     }
                 )
                 .AddClaimsPrincipalFactory<CustomUserClaimsPrincipalFactory>()
-                .AddUserManager<CustomUserManager>()
+                .AddUserManager<UserManager>()
                 .AddSignInManager<CustomSignInManager>()
                 .AddRoleManager<CustomRoleManager>()
                 .BuildCustomServices();
@@ -235,14 +233,7 @@ namespace eDoxa.Identity.Api
             application.UseForwardedHeaders();
             application.UseCookiePolicy();
 
-            if (HostingEnvironment.IsTesting())
-            {
-                application.UseMiddleware<TestAuthenticationMiddleware>();
-            }
-            else
-            {
-                application.UseIdentityServer();
-            }
+            application.UseIdentityServer();
 
             application.UseMvcWithDefaultRoute();
 

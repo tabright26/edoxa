@@ -25,14 +25,14 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 {
     public sealed class CustomUserClaimsPrincipalFactory : IUserClaimsPrincipalFactory<User>
     {
-        public CustomUserClaimsPrincipalFactory(CustomUserManager userManager, CustomRoleManager roleManager, IOptions<IdentityOptions> optionsAccessor)
+        public CustomUserClaimsPrincipalFactory(UserManager userManager, CustomRoleManager roleManager, IOptions<IdentityOptions> optionsAccessor)
         {
             UserManager = userManager;
             RoleManager = roleManager;
             Options = optionsAccessor.Value;
         }
 
-        private CustomUserManager UserManager { get; }
+        private UserManager UserManager { get; }
 
         private CustomRoleManager RoleManager { get; }
 

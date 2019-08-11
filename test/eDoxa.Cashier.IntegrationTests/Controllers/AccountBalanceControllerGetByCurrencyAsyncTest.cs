@@ -41,9 +41,9 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             _testServer.CleanupDbContext();
         }
 
-        public static IEnumerable<object[]> ValidCurrencyDataSets => Currency.GetEnumerations().Select(currency => new object[] { currency }).ToList();
+        public static IEnumerable<object[]> ValidCurrencyDataSets => Currency.GetEnumerations().Select(currency => new object[] { currency });
 
-        public static IEnumerable<object[]> InvalidCurrencyDataSets => new[] { new object[] { Currency.All }, new object[] { new Currency() } }.ToList();
+        public static IEnumerable<object[]> InvalidCurrencyDataSets => new[] { new object[] { Currency.All }, new object[] { new Currency() } };
 
         private async Task<HttpResponseMessage> ExecuteAsync(UserId userId, Currency currency)
         {

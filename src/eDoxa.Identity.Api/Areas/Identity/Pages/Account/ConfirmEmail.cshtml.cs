@@ -18,9 +18,9 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class ConfirmEmailModel : PageModel
     {
-        private readonly CustomUserManager _userManager;
+        private readonly UserManager _userManager;
 
-        public ConfirmEmailModel(CustomUserManager userManager)
+        public ConfirmEmailModel(UserManager userManager)
         {
             _userManager = userManager;
         }

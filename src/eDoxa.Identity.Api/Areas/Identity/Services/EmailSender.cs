@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Services
 {
-    public class CustomEmailSender : IEmailSender
+    public class EmailSender : IEmailSender
     {
         
         public Task SendEmailAsync( string email,  string subject,  string htmlMessage)

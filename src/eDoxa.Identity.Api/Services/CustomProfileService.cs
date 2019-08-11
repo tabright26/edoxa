@@ -19,7 +19,7 @@ namespace eDoxa.Identity.Api.Services
 {
     internal sealed class CustomProfileService : IProfileService
     {
-        public CustomProfileService(CustomUserClaimsPrincipalFactory principalFactory, CustomUserManager userManager, IOptions<IdentityOptions> optionsAccessor)
+        public CustomProfileService(CustomUserClaimsPrincipalFactory principalFactory, UserManager userManager, IOptions<IdentityOptions> optionsAccessor)
         {
             PrincipalFactory = principalFactory;
             UserManager = userManager;
@@ -28,7 +28,7 @@ namespace eDoxa.Identity.Api.Services
 
         private CustomUserClaimsPrincipalFactory PrincipalFactory { get; }
 
-        private CustomUserManager UserManager { get; }
+        private UserManager UserManager { get; }
 
         private IdentityOptions Options { get; }
 

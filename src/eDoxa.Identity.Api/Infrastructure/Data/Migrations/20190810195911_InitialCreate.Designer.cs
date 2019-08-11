@@ -10,7 +10,7 @@ using eDoxa.Identity.Api.Infrastructure;
 namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(IdentityDbContext))]
-    [Migration("20190809194423_InitialCreate")]
+    [Migration("20190810195911_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -236,9 +236,9 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                         {
                             b1.Property<Guid>("UserId");
 
-                            b1.Property<string>("Name");
+                            b1.Property<int>("Discriminator");
 
-                            b1.Property<int>("UniqueTag");
+                            b1.Property<string>("Name");
 
                             b1.HasKey("UserId");
 

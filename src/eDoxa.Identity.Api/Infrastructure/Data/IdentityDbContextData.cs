@@ -21,14 +21,14 @@ namespace eDoxa.Identity.Api.Infrastructure.Data
         private readonly ILogger<IdentityDbContextData> _logger;
         private readonly IHostingEnvironment _environment;
         private readonly IdentityDbContext _context;
-        private readonly CustomUserManager _userManager;
+        private readonly UserManager _userManager;
         private readonly CustomRoleManager _roleManager;
 
         public IdentityDbContextData(
             ILogger<IdentityDbContextData> logger,
             IHostingEnvironment environment,
             IdentityDbContext context,
-            CustomUserManager userManager,
+            UserManager userManager,
             CustomRoleManager roleManager
         )
         {

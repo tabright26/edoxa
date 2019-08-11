@@ -1,5 +1,5 @@
 ﻿// Filename: AccountControllerLoginTest.cs
-// Date Created: 2019-07-21
+// Date Created: 2019-08-10
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 using Xunit;
 
-namespace eDoxa.Identity.IntegrationTests.Controllers
+namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Pages
 {
     public sealed class AccountControllerLoginTest : IClassFixture<IdentityWebApplicationFactory>
     {

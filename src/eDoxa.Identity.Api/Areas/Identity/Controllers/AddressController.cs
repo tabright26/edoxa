@@ -8,8 +8,10 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using eDoxa.Identity.Api.Areas.Identity.Requests;
 using eDoxa.Identity.Api.Areas.Identity.Responses;
 using eDoxa.Identity.Api.Areas.Identity.Services;
+using eDoxa.Identity.Api.Extensions;
 
 using IdentityServer4.AccessTokenValidation;
 
@@ -26,10 +28,10 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
     public class AddressController : ControllerBase
     {
-        private readonly ICustomUserManager _userManager;
+        private readonly IUserManager _userManager;
         private readonly IMapper _mapper;
 
-        public AddressController(ICustomUserManager userManager, IMapper mapper)
+        public AddressController(IUserManager userManager, IMapper mapper)
         {
             _userManager = userManager;
             _mapper = mapper;
@@ -51,6 +53,35 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
             }
 
             return this.Ok(_mapper.Map<AddressResponse>(address));
+        }
+
+        /// <summary>
+        ///     Find user's address.
+        /// </summary>
+        [HttpPut]
+        public async Task<IActionResult> PutAsync([FromBody] AddressPutRequest request)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.GetUserAsync(User);
+
+                var result = await _userManager.SetAddressAsync(
+                    user,
+                    request.Street,
+                    request.City,
+                    request.PostalCode,
+                    request.Country
+                );
+
+                if (result.Succeeded)
+                {
+                    return this.Ok("The user's address has been updated.");
+                }
+
+                ModelState.Bind(result);
+            }
+
+            return this.BadRequest(ModelState);
         }
     }
 }

@@ -23,9 +23,9 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
     {
         private readonly ILogger<ExternalLoginModel> _logger;
         private readonly CustomSignInManager _signInManager;
-        private readonly CustomUserManager _userManager;
+        private readonly UserManager _userManager;
 
-        public ExternalLoginModel(CustomSignInManager signInManager, CustomUserManager userManager, ILogger<ExternalLoginModel> logger)
+        public ExternalLoginModel(CustomSignInManager signInManager, UserManager userManager, ILogger<ExternalLoginModel> logger)
         {
             _signInManager = signInManager;
             _userManager = userManager;

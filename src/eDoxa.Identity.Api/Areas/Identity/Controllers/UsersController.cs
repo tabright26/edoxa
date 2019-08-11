@@ -4,6 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,10 +30,10 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
     public class UsersController : ControllerBase
     {
-        private readonly ICustomUserManager _userManager;
+        private readonly IUserManager _userManager;
         private readonly IMapper _mapper;
 
-        public UsersController(ICustomUserManager userManager, IMapper mapper)
+        public UsersController(IUserManager userManager, IMapper mapper)
         {
             _userManager = userManager;
             _mapper = mapper;
@@ -41,8 +42,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         /// <summary>
         ///     Fetch users.
         /// </summary>
-        [AllowAnonymous]
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAsync()
         {
             var users = await _userManager.Users.ToListAsync();
@@ -53,6 +54,23 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
             }
 
             return this.Ok(_mapper.Map<IEnumerable<UserResponse>>(users));
+        }
+
+        /// <summary>
+        ///     Find user's by id.
+        /// </summary>
+        [HttpGet("{userId}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetByIdAsync(Guid userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+
+            if (user == null)
+            {
+                return this.NotFound("User's not found.");
+            }
+
+            return this.Ok(_mapper.Map<UserResponse>(user));
         }
     }
 }

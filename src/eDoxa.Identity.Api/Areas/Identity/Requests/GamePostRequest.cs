@@ -9,9 +9,9 @@ using System.Runtime.Serialization;
 namespace eDoxa.Identity.Api.Areas.Identity.Requests
 {
     [DataContract]
-    public class AddGameRequest
+    public class GamePostRequest
     {
-        public AddGameRequest(string playerId)
+        public GamePostRequest(string playerId)
         {
             PlayerId = playerId;
         }

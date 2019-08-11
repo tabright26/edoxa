@@ -39,11 +39,11 @@ namespace eDoxa.Identity.Api.Controllers
         private readonly IIdentityServerInteractionService _interaction;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
         private readonly CustomSignInManager _signInManager;
-        private readonly CustomUserManager _userManager;
+        private readonly UserManager _userManager;
         private readonly IdentityAppSettings _appSettings;
 
         public AccountController(
-            CustomUserManager userManager,
+            UserManager userManager,
             CustomSignInManager signInManager,
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,

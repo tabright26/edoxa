@@ -1,10 +1,9 @@
 ﻿// Filename: UsersControllerGetAsyncTest.cs
-// Date Created: 2019-07-26
+// Date Created: 2019-08-10
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -22,7 +21,7 @@ using Microsoft.AspNetCore.TestHost;
 
 using Xunit;
 
-namespace eDoxa.Identity.IntegrationTests.Controllers
+namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
     public sealed class UsersControllerGetAsyncTest : IClassFixture<IdentityWebApplicationFactory>
     {
@@ -42,31 +41,31 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
         }
 
         [Fact]
-        public async Task ApiUsers_WithNinetyNineUsers_ShouldBeNoContent()
+        public async Task GetAsync_ShouldBeNoContent()
         {
             // Act
             using var response = await this.ExecuteAsync();
-             
+
             // Assert
+            response.EnsureSuccessStatusCode();
+
             response.StatusCode.Should().Be(StatusCodes.Status204NoContent);
         }
 
         [Fact]
-        public async Task ApiUsers_WithNinetyNineUsers_ShouldHaveCountOfNinetyNine()
+        public async Task GetAsync_WithNinetyNineUsers_ShouldHaveCountOfNinetyNine()
         {
             // Arrange
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var userManager = scope.GetRequiredService<CustomUserManager>();
+                    var userManager = scope.GetRequiredService<UserManager>();
 
-                    var testUsers = IdentityStorage.TestUsers;
-
-                    foreach (var testUser in testUsers.Take(100).ToList())
+                    foreach (var testUser in IdentityStorage.TestUsers.Take(100).ToList())
                     {
-                        var test = await userManager.CreateAsync(testUser);
+                        var result = await userManager.CreateAsync(testUser);
 
-                        Console.WriteLine(test);
+                        result.Succeeded.Should().BeTrue();
                     }
                 }
             );
@@ -76,7 +75,11 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
 
             // Assert
             response.EnsureSuccessStatusCode();
+
+            response.StatusCode.Should().Be(StatusCodes.Status200OK);
+
             var users = await response.DeserializeAsync<UserResponse[]>();
+
             users.Should().HaveCount(100);
         }
     }

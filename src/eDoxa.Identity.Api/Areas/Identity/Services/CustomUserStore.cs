@@ -17,59 +17,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Services
 {
-    public class CustomUserStore : Microsoft.AspNetCore.Identity.EntityFrameworkCore.UserStore<User, Role, IdentityDbContext, Guid, UserClaim, UserRole,
+    public sealed class CustomUserStore : Microsoft.AspNetCore.Identity.EntityFrameworkCore.UserStore<User, Role, IdentityDbContext, Guid, UserClaim, UserRole,
         UserLogin, UserToken, RoleClaim>
     {
-        private static readonly Random Random = new Random();
-
         public CustomUserStore(IdentityDbContext context, CustomIdentityErrorDescriber describer) : base(context, describer)
         {
         }
 
         private DbSet<UserGame> UserGames => Context.Set<UserGame>();
 
-        private static int EnsureUniqueTag(IReadOnlyCollection<int> tags)
-        {
-            while (true)
-            {
-                var tag = GenerateTag();
-
-                if (tags.Contains(tag))
-                {
-                    continue;
-                }
-
-                return tag;
-            }
-        }
-
-        private static int GenerateTag()
-        {
-            return Random.Next(100, 10000);
-        }
-
-        private static string FormatUserName(string normalizedName, int tag)
-        {
-            return $"{normalizedName}#{tag}";
-        }
-
-        private async Task<IReadOnlyCollection<int>> GetUserNameTagsAsync(string userName)
-        {
-            var users = await Users.Where(user => user.NormalizedUserName.Contains(userName, StringComparison.OrdinalIgnoreCase)).ToListAsync();
-
-            return users.Select(user => user.NormalizedUserName.Split('#').Last()).Select(tag => Convert.ToInt32(tag)).ToList();
-        }
-
-        public override async Task SetUserNameAsync(User user, string userName, CancellationToken cancellationToken = new CancellationToken())
-        {
-            var tags = await this.GetUserNameTagsAsync(userName);
-
-            var tag = tags.Any() ? EnsureUniqueTag(tags) : GenerateTag();
-
-            await base.SetUserNameAsync(user, FormatUserName(userName, tag), cancellationToken);
-        }
-
-        public virtual Task AddGameAsync(
+        public Task AddGameAsync(
             User user,
             string gameName,
             string playerId,
@@ -133,7 +90,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             return await UserGames.SingleOrDefaultAsync(game => game.UserId == userId && game.Value == gameValue, cancellationToken);
         }
 
-        protected async Task<UserGame?> FindUserGameAsync(int gameValue, string playerId, CancellationToken cancellationToken = default)
+        private async Task<UserGame?> FindUserGameAsync(int gameValue, string playerId, CancellationToken cancellationToken = default)
         {
             return await UserGames.SingleOrDefaultAsync(game => game.Value == gameValue && game.PlayerId == playerId, cancellationToken);
         }
@@ -196,6 +153,29 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             return Task.FromResult(user.Doxatag);
         }
 
+        public Task SetDoxatagAsync(User user, Doxatag doxatag, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            this.ThrowIfDisposed();
+
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            user.Doxatag = doxatag;
+
+            return Task.CompletedTask;
+        }
+
+        public async Task<IList<int>> GetDiscriminatorsForDoxatagAsync(string doxatagName, CancellationToken cancellationToken = default)
+        {
+            return await Users.Where(user => user.Doxatag != null && user.Doxatag.Name.Contains(doxatagName, StringComparison.OrdinalIgnoreCase))
+                .Select(user => user.Doxatag!.Discriminator)
+                .ToListAsync(cancellationToken);
+        }
+
         public Task<Address?> GetAddressAsync(User user, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -208,6 +188,22 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             }
 
             return Task.FromResult(user.Address);
+        }
+
+        public Task SetAddressAsync(User user, Address address, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            this.ThrowIfDisposed();
+
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            user.Address = address;
+
+            return Task.CompletedTask;
         }
 
         public Task<string?> GetFirstNameAsync(User user, CancellationToken cancellationToken = default)
@@ -264,6 +260,22 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             }
 
             return Task.FromResult(user.Profile?.BirthDate?.ToString("yyyy-MM-dd"));
+        }
+
+        public Task SetProfileAsync(User user, Profile profile, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            this.ThrowIfDisposed();
+
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            user.Profile = profile;
+
+            return Task.CompletedTask;
         }
     }
 }

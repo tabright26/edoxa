@@ -158,7 +158,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
                     Doxatag = new Doxatag
                     {
                         Name = record.Doxatag,
-                        UniqueTag = random.Next(100, 10000)
+                        Discriminator = random.Next(100, 10000)
                     },
                     Profile = new Profile
                     {

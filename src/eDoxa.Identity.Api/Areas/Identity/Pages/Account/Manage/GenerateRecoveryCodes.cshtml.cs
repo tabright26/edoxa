@@ -18,10 +18,10 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
 {
     public class GenerateRecoveryCodesModel : PageModel
     {
-        private readonly CustomUserManager _userManager;
+        private readonly UserManager _userManager;
         private readonly ILogger<GenerateRecoveryCodesModel> _logger;
 
-        public GenerateRecoveryCodesModel(CustomUserManager userManager, ILogger<GenerateRecoveryCodesModel> logger)
+        public GenerateRecoveryCodesModel(UserManager userManager, ILogger<GenerateRecoveryCodesModel> logger)
         {
             _userManager = userManager;
             _logger = logger;

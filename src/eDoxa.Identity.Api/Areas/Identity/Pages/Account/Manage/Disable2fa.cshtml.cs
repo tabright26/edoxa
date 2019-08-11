@@ -17,10 +17,10 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
 {
     public class Disable2faModel : PageModel
     {
-        private readonly CustomUserManager _userManager;
+        private readonly UserManager _userManager;
         private readonly ILogger<Disable2faModel> _logger;
 
-        public Disable2faModel(CustomUserManager userManager, ILogger<Disable2faModel> logger)
+        public Disable2faModel(UserManager userManager, ILogger<Disable2faModel> logger)
         {
             _userManager = userManager;
             _logger = logger;

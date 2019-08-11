@@ -27,9 +27,9 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
     public sealed class GamesController : ControllerBase
     {
-        private readonly ICustomUserManager _userManager;
+        private readonly IUserManager _userManager;
 
-        public GamesController(ICustomUserManager userManager)
+        public GamesController(IUserManager userManager)
         {
             _userManager = userManager;
         }
@@ -50,7 +50,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         }
 
         [HttpPost("{game}")]
-        public async Task<IActionResult> PostAsync(Game game, [FromBody] AddGameRequest model)
+        public async Task<IActionResult> PostAsync(Game game, [FromBody] GamePostRequest model)
         {
             if (ModelState.IsValid)
             {

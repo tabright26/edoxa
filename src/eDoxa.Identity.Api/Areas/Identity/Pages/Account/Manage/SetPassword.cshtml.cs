@@ -16,10 +16,10 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
 {
     public class SetPasswordModel : PageModel
     {
-        private readonly CustomUserManager _userManager;
+        private readonly UserManager _userManager;
         private readonly CustomSignInManager _signInManager;
 
-        public SetPasswordModel(CustomUserManager userManager, CustomSignInManager signInManager)
+        public SetPasswordModel(UserManager userManager, CustomSignInManager signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;

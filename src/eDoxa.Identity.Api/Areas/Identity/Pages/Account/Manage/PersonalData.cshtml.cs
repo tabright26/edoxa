@@ -16,10 +16,10 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
 {
     public class PersonalDataModel : PageModel
     {
-        private readonly CustomUserManager _userManager;
+        private readonly UserManager _userManager;
         private readonly ILogger<PersonalDataModel> _logger;
 
-        public PersonalDataModel(CustomUserManager userManager, ILogger<PersonalDataModel> logger)
+        public PersonalDataModel(UserManager userManager, ILogger<PersonalDataModel> logger)
         {
             _userManager = userManager;
             _logger = logger;

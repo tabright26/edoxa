@@ -4,12 +4,11 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Identity.Api.Areas.Identity.Responses;
 using eDoxa.Identity.Api.Infrastructure.Models;
 
 using Profile = AutoMapper.Profile;
 
-namespace eDoxa.Identity.Api.Areas.Identity.Profiles
+namespace eDoxa.Identity.Api.Areas.Identity.Responses.Profiles
 {
     public class AddressProfile : Profile
     {

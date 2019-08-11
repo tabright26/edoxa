@@ -36,7 +36,7 @@ namespace eDoxa.Identity.Api.Infrastructure
                         userDoxatag =>
                         {
                             userDoxatag.Property(doxatag => doxatag!.Name);
-                            userDoxatag.Property(doxatag => doxatag!.UniqueTag);
+                            userDoxatag.Property(doxatag => doxatag!.Discriminator);
                             userDoxatag.ToTable("Doxatag");
                         }
                     );

@@ -1,4 +1,4 @@
-﻿// Filename: UserDoxatagController.cs
+﻿// Filename: DoxatagController.cs
 // Date Created: 2019-08-09
 // 
 // ================================================
@@ -8,8 +8,10 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using eDoxa.Identity.Api.Areas.Identity.Requests;
 using eDoxa.Identity.Api.Areas.Identity.Responses;
 using eDoxa.Identity.Api.Areas.Identity.Services;
+using eDoxa.Identity.Api.Extensions;
 
 using IdentityServer4.AccessTokenValidation;
 
@@ -26,10 +28,10 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
     public class DoxatagController : ControllerBase
     {
-        private readonly ICustomUserManager _userManager;
+        private readonly IUserManager _userManager;
         private readonly IMapper _mapper;
 
-        public DoxatagController(ICustomUserManager userManager, IMapper mapper)
+        public DoxatagController(IUserManager userManager, IMapper mapper)
         {
             _userManager = userManager;
             _mapper = mapper;
@@ -51,6 +53,29 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
             }
 
             return this.Ok(_mapper.Map<DoxatagResponse>(doxatag));
+        }
+
+        /// <summary>
+        ///     Update user's Doxatag.
+        /// </summary>
+        [HttpPut]
+        public async Task<IActionResult> PutAsync([FromBody] DoxatagPutRequest request)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.GetUserAsync(User);
+
+                var result = await _userManager.SetDoxatagAsync(user, request.Name);
+
+                if (result.Succeeded)
+                {
+                    return this.Ok("The user's Doxatag has been updated.");
+                }
+
+                ModelState.Bind(result);
+            }
+
+            return this.BadRequest(ModelState);
         }
     }
 }

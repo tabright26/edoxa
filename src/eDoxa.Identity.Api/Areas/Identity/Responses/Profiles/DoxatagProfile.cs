@@ -4,12 +4,11 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Identity.Api.Areas.Identity.Responses;
 using eDoxa.Identity.Api.Infrastructure.Models;
 
 using Profile = AutoMapper.Profile;
 
-namespace eDoxa.Identity.Api.Areas.Identity.Profiles
+namespace eDoxa.Identity.Api.Areas.Identity.Responses.Profiles
 {
     public class DoxatagProfile : Profile
     {
@@ -17,7 +16,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Profiles
         {
             this.CreateMap<Doxatag, DoxatagResponse>()
                 .ForMember(doxatag => doxatag.Prefix, config => config.MapFrom(doxatag => doxatag.Name))
-                .ForMember(doxatag => doxatag.Suffix, config => config.MapFrom(doxatag => doxatag.UniqueTag))
+                .ForMember(doxatag => doxatag.Suffix, config => config.MapFrom(doxatag => doxatag.Discriminator))
                 .ForMember(doxatag => doxatag.Value, config => config.MapFrom(doxatag => doxatag.ToString()));
         }
     }

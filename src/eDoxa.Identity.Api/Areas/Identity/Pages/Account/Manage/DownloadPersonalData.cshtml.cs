@@ -23,10 +23,10 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
 {
     public class DownloadPersonalDataModel : PageModel
     {
-        private readonly CustomUserManager _userManager;
+        private readonly UserManager _userManager;
         private readonly ILogger<DownloadPersonalDataModel> _logger;
 
-        public DownloadPersonalDataModel(CustomUserManager userManager, ILogger<DownloadPersonalDataModel> logger)
+        public DownloadPersonalDataModel(UserManager userManager, ILogger<DownloadPersonalDataModel> logger)
         {
             _userManager = userManager;
             _logger = logger;

@@ -17,9 +17,11 @@ using Microsoft.Extensions.Options;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Services
 {
-    public sealed class CustomUserManager : UserManager<User>, ICustomUserManager
+    public sealed class UserManager : UserManager<User>, IUserManager
     {
-        public CustomUserManager(
+        private static readonly Random Random = new Random();
+
+        public UserManager(
             CustomUserStore store,
             IOptions<IdentityOptions> optionsAccessor,
             IPasswordHasher<User> passwordHasher,
@@ -28,7 +30,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             ILookupNormalizer keyNormalizer,
             CustomIdentityErrorDescriber errors,
             IServiceProvider services,
-            ILogger<CustomUserManager> logger
+            ILogger<UserManager> logger
         ) : base(
             store,
             optionsAccessor,
@@ -152,13 +154,6 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             return await Store.GetGamesAsync(user, CancellationToken);
         }
 
-        private async Task<bool> HasGameAlreadyLinkedAsync(User user, Game game)
-        {
-            var games = await this.GetGamesAsync(user);
-
-            return games.SingleOrDefault(userGame => Game.FromValue(userGame.Value)!.Name == game.Name) != null;
-        }
-
         public async Task<Profile?> GetProfileAsync(User user)
         {
             this.ThrowIfDisposed();
@@ -169,6 +164,30 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             }
 
             return await Store.GetProfileAsync(user, CancellationToken);
+        }
+
+        public async Task<IdentityResult> SetProfileAsync(User user, string? firstName, string? lastName, Gender? gender, DateTime? birthDate)
+        {
+            this.ThrowIfDisposed();
+
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            var profile = new Profile
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                Gender = gender,
+                BirthDate = birthDate
+            };
+
+            await Store.SetProfileAsync(user, profile, CancellationToken);
+
+            await this.UpdateSecurityStampAsync(user);
+
+            return await this.UpdateUserAsync(user);
         }
 
         public async Task<Address?> GetAddressAsync(User user)
@@ -183,6 +202,30 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             return await Store.GetAddressAsync(user, CancellationToken);
         }
 
+        public async Task<IdentityResult> SetAddressAsync(User user, string street, string city, string postalCode, string country)
+        {
+            this.ThrowIfDisposed();
+
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            var address = new Address
+            {
+                Street = street,
+                City = city,
+                PostalCode = postalCode,
+                Country = country
+            };
+
+            await Store.SetAddressAsync(user, address, CancellationToken);
+
+            await this.UpdateSecurityStampAsync(user);
+
+            return await this.UpdateUserAsync(user);
+        }
+
         public async Task<Doxatag?> GetDoxatagAsync(User user)
         {
             this.ThrowIfDisposed();
@@ -193,6 +236,55 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             }
 
             return await Store.GetDoxatagAsync(user, CancellationToken);
+        }
+
+        public async Task<IdentityResult> SetDoxatagAsync(User user, string doxatagName)
+        {
+            this.ThrowIfDisposed();
+
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            var doxatag = new Doxatag
+            {
+                Name = doxatagName,
+                Discriminator = await this.EnsureDiscriminatorUniqueness(doxatagName)
+            };
+
+            await Store.SetDoxatagAsync(user, doxatag, CancellationToken);
+
+            await this.UpdateSecurityStampAsync(user);
+
+            return await this.UpdateUserAsync(user);
+        }
+
+        private async Task<int> EnsureDiscriminatorUniqueness(string doxatagName)
+        {
+            var discriminators = await Store.GetDiscriminatorsForDoxatagAsync(doxatagName);
+
+            return discriminators.Any() ? EnsureDiscriminatorUniqueness() : GenerateDiscriminator();
+
+            int EnsureDiscriminatorUniqueness()
+            {
+                while (true)
+                {
+                    var discriminator = GenerateDiscriminator();
+
+                    if (discriminators.Contains(discriminator))
+                    {
+                        continue;
+                    }
+
+                    return discriminator;
+                }
+            }
+
+            static int GenerateDiscriminator()
+            {
+                return Random.Next(100, 10000);
+            }
         }
 
         public async Task<string?> GetBirthDateAsync(User user)
@@ -241,6 +333,13 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             }
 
             return await Store.GetGenderAsync(user, CancellationToken);
+        }
+
+        private async Task<bool> HasGameAlreadyLinkedAsync(User user, Game game)
+        {
+            var games = await this.GetGamesAsync(user);
+
+            return games.SingleOrDefault(userGame => Game.FromValue(userGame.Value)!.Name == game.Name) != null;
         }
     }
 }

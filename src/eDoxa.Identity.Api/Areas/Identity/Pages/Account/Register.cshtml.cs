@@ -25,10 +25,10 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
         private readonly IEmailSender _emailSender;
         private readonly ILogger<RegisterModel> _logger;
         private readonly CustomSignInManager _signInManager;
-        private readonly CustomUserManager _userManager;
+        private readonly UserManager _userManager;
 
         public RegisterModel(
-            CustomUserManager userManager,
+            UserManager userManager,
             CustomSignInManager signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender

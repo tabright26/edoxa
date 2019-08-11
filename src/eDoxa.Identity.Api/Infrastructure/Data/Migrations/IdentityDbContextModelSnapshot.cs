@@ -232,9 +232,9 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                         {
                             b1.Property<Guid>("UserId");
 
-                            b1.Property<string>("Name");
+                            b1.Property<int>("Discriminator");
 
-                            b1.Property<int>("UniqueTag");
+                            b1.Property<string>("Name");
 
                             b1.HasKey("UserId");
 

@@ -17,7 +17,7 @@ using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Services
 {
-    public interface ICustomUserManager
+    public interface IUserManager
     {
         Task<IdentityResult> AddGameAsync(User user, string gameName, string playerId);
 
@@ -254,5 +254,11 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
         bool SupportsQueryableUsers { get; }
 
         IQueryable<User> Users { get; }
+
+        Task<IdentityResult> SetProfileAsync(User user, string? firstName, string? lastName, Gender? gender, DateTime? birthDate);
+
+        Task<IdentityResult> SetAddressAsync(User user, string street, string city, string postalCode, string country);
+
+        Task<IdentityResult> SetDoxatagAsync(User user, string doxatagName);
     }
 }

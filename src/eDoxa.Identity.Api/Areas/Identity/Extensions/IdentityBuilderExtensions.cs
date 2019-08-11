@@ -22,12 +22,12 @@ namespace eDoxa.Identity.Api.Areas.Identity.Extensions
         public static void BuildCustomServices(this IdentityBuilder builder)
         {
             var services = builder.Services;
-            services.AddSingleton<IEmailSender, CustomEmailSender>();
+            services.AddSingleton<IEmailSender, EmailSender>();
             services.AddScoped<CustomUserStore>();
             services.AddScoped<CustomUserClaimsPrincipalFactory>();
             services.AddScoped<CustomIdentityErrorDescriber>();
-            services.AddScoped<CustomUserManager>();
-            services.AddScoped<ICustomUserManager, CustomUserManager>();
+            services.AddScoped<UserManager>();
+            services.AddScoped<IUserManager, UserManager>();
             services.AddScoped<CustomSignInManager>();
             services.AddScoped<CustomRoleManager>();
         }

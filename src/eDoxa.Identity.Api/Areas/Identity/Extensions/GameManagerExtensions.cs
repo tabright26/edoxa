@@ -17,7 +17,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Extensions
     public static class GameManagerExtensions
     {
         // TODO: Mapper profile.
-        public static async Task<IList<GameResponse>> GenerateGameResponsesAsync(this ICustomUserManager userManager, User user)
+        public static async Task<IList<GameResponse>> GenerateGameResponsesAsync(this IUserManager userManager, User user)
         {
             var games = await userManager.GetGamesAsync(user);
 

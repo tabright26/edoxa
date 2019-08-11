@@ -12,11 +12,11 @@ namespace eDoxa.Identity.Api.Infrastructure.Models
     {
         public string Name { get; set; }
 
-        public int UniqueTag { get; set; }
+        public int Discriminator { get; set; }
 
         public override string ToString()
         {
-            return $"{Name}#{UniqueTag}";
+            return $"{Name}#{Discriminator}";
         }
     }
 }

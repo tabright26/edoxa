@@ -20,10 +20,10 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class ForgotPasswordModel : PageModel
     {
-        private readonly CustomUserManager _userManager;
+        private readonly UserManager _userManager;
         private readonly IEmailSender _emailSender;
 
-        public ForgotPasswordModel(CustomUserManager userManager, IEmailSender emailSender)
+        public ForgotPasswordModel(UserManager userManager, IEmailSender emailSender)
         {
             _userManager = userManager;
             _emailSender = emailSender;

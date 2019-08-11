@@ -61,8 +61,4 @@
     <Content Include="Infrastructure\Data\Storage\TestFiles\TestUserRoles.csv" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Areas\Identity\Requests\" />
-  </ItemGroup>
-
 </Project>

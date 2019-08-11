@@ -20,10 +20,10 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
 {
     public class ExternalLoginsModel : PageModel
     {
-        private readonly CustomUserManager _userManager;
+        private readonly UserManager _userManager;
         private readonly CustomSignInManager _signInManager;
 
-        public ExternalLoginsModel(CustomUserManager userManager, CustomSignInManager signInManager)
+        public ExternalLoginsModel(UserManager userManager, CustomSignInManager signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;

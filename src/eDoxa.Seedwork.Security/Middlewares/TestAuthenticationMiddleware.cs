@@ -36,6 +36,8 @@ namespace eDoxa.Seedwork.Security.Middlewares
 
         public async Task Invoke(HttpContext context)
         {
+            //await context.ChallengeAsync(JwtBearerDefaults.AuthenticationScheme);
+
             var identity = new ClaimsIdentity(
                 new[]
                 {
