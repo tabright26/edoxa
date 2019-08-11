@@ -14,12 +14,11 @@ using eDoxa.Arena.Challenges.Api;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Games.LeagueOfLegends.Abstractions;
 using eDoxa.Arena.Games.LeagueOfLegends.Dtos;
-using eDoxa.Seedwork.Security.Hosting;
+using eDoxa.Seedwork.Testing;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.ServiceBus.Moq;
 
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 
@@ -27,12 +26,10 @@ using Moq;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests
 {
-    public sealed class ArenaChallengesWebApplicationFactory : WebApplicationFactory<Startup>
+    public sealed class ArenaChallengesWebApplicationFactory : CustomWebApplicationFactory<Startup>
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            builder.UseEnvironment(EnvironmentNames.Testing);
-
             builder.UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ArenaChallengesWebApplicationFactory)).Location));
 
             builder.ConfigureAppConfiguration(configure => configure.AddJsonFile("appsettings.json", false).AddEnvironmentVariables());

@@ -51,6 +51,5 @@ namespace eDoxa.Seedwork.Testing.Extensions
         {
             return new MockAsyncEnumerable<T>(obj.ToArray());
         }
-
     }
 }

@@ -15,15 +15,14 @@ using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Security.Constants;
+using eDoxa.Seedwork.Testing.Contents;
 using eDoxa.Seedwork.Testing.Extensions;
-using eDoxa.Seedwork.Testing.Helpers;
 
 using FluentAssertions;
 
 using IdentityModel;
 
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.TestHost;
 
 using Xunit;
 
@@ -31,23 +30,18 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 {
     public sealed class AccountWithdrawalControllerPostAsyncTest : IClassFixture<CashierWebApplicationFactory>
     {
-        public AccountWithdrawalControllerPostAsyncTest(CashierWebApplicationFactory cashierWebApplicationFactory)
+        public AccountWithdrawalControllerPostAsyncTest(CashierWebApplicationFactory factory)
         {
-            _httpClient = cashierWebApplicationFactory.CreateClient();
-            _testServer = cashierWebApplicationFactory.Server;
-            _testServer.CleanupDbContext();
+            _factory = factory;
         }
 
-        private readonly HttpClient _httpClient;
-        private readonly TestServer _testServer;
+        private readonly CashierWebApplicationFactory _factory;
 
-        private async Task<HttpResponseMessage> ExecuteAsync(UserId userId, string connectAccountId, WithdrawalRequest request)
+        private HttpClient _httpClient;
+
+        private async Task<HttpResponseMessage> ExecuteAsync(WithdrawalRequest request)
         {
-            return await _httpClient
-                .DefaultRequestHeaders(
-                    new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(CustomClaimTypes.StripeConnectAccountId, connectAccountId)}
-                )
-                .PostAsync("api/account/withdrawal", new JsonContent(request));
+            return await _httpClient.PostAsync("api/account/withdrawal", new JsonContent(request));
         }
 
         [Fact]
@@ -56,7 +50,16 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Arrange
             var account = new Account(new UserId());
 
-            await _testServer.UsingScopeAsync(
+            var factory = _factory.WithClaimsPrincipal(
+                new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
+                new Claim(CustomClaimTypes.StripeConnectAccountId, "acct_test")
+            );
+
+            _httpClient = factory.CreateClient();
+            var server = factory.Server;
+            server.CleanupDbContext();
+
+            await server.UsingScopeAsync(
                 async scope =>
                 {
                     var accountRepository = scope.GetRequiredService<IAccountRepository>();
@@ -66,7 +69,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            using var response = await this.ExecuteAsync(account.UserId, "acct_test", new WithdrawalRequest(Money.Fifty));
+            using var response = await this.ExecuteAsync(new WithdrawalRequest(Money.Fifty));
 
             // Assert
             response.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
@@ -78,7 +81,16 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Arrange
             var account = new Account(new UserId());
 
-            await _testServer.UsingScopeAsync(
+            var factory = _factory.WithClaimsPrincipal(
+                new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
+                new Claim(CustomClaimTypes.StripeConnectAccountId, "acct_test")
+            );
+
+            _httpClient = factory.CreateClient();
+            var server = factory.Server;
+            server.CleanupDbContext();
+
+            await server.UsingScopeAsync(
                 async scope =>
                 {
                     var accountRepository = scope.GetRequiredService<IAccountRepository>();
@@ -88,7 +100,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            using var response = await this.ExecuteAsync(account.UserId, "acct_test", new WithdrawalRequest(2.5M));
+            using var response = await this.ExecuteAsync(new WithdrawalRequest(2.5M));
 
             // Assert
             response.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
@@ -104,7 +116,16 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
             account.CreateTransaction(transaction);
 
-            await _testServer.UsingScopeAsync(
+            var factory = _factory.WithClaimsPrincipal(
+                new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
+                new Claim(CustomClaimTypes.StripeConnectAccountId, "acct_test")
+            );
+
+            _httpClient = factory.CreateClient();
+            var server = factory.Server;
+            server.CleanupDbContext();
+
+            await server.UsingScopeAsync(
                 async scope =>
                 {
                     var accountRepository = scope.GetRequiredService<IAccountRepository>();
@@ -113,7 +134,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
                 }
             );
 
-            await _testServer.UsingScopeAsync(
+            await server.UsingScopeAsync(
                 async scope =>
                 {
                     var transactionRepository = scope.GetRequiredService<ITransactionRepository>();
@@ -124,7 +145,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            using var response = await this.ExecuteAsync(account.UserId, "acct_test", new WithdrawalRequest(Money.Fifty));
+            using var response = await this.ExecuteAsync(new WithdrawalRequest(Money.Fifty));
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -136,8 +157,17 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
         [Fact]
         public async Task User_WithoutAccount_ShouldBeStatus404NotFound()
         {
+            var factory = _factory.WithClaimsPrincipal(
+                new Claim(JwtClaimTypes.Subject,new UserId().ToString()),
+                new Claim(CustomClaimTypes.StripeConnectAccountId, "acct_test")
+            );
+
+            _httpClient = factory.CreateClient();
+            var server = factory.Server;
+            server.CleanupDbContext();
+
             // Act
-            using var response = await this.ExecuteAsync(new UserId(), "acct_test", new WithdrawalRequest(Money.Fifty));
+            using var response = await this.ExecuteAsync(new WithdrawalRequest(Money.Fifty));
 
             // Assert
             response.StatusCode.Should().Be(StatusCodes.Status400BadRequest);

@@ -43,6 +43,7 @@ namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers
         /// <summary>
         ///     Get challenges.
         /// </summary>
+        [AllowAnonymous]
         [HttpGet]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<ChallengeViewModel>))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
@@ -61,6 +62,7 @@ namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers
         /// <summary>
         ///     Find a challenge.
         /// </summary>
+        [AllowAnonymous]
         [HttpGet("{challengeId}")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeViewModel))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]

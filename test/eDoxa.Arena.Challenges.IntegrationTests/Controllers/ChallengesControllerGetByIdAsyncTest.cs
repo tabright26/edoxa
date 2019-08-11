@@ -4,9 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Net.Http;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
@@ -14,12 +12,9 @@ using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Security.Constants;
 using eDoxa.Seedwork.Testing.Extensions;
 
 using FluentAssertions;
-
-using IdentityModel;
 
 using Microsoft.AspNetCore.TestHost;
 
@@ -31,8 +26,9 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
     {
         public ChallengesControllerGetByIdAsyncTest(ArenaChallengesWebApplicationFactory arenaChallengesWebApplicationFactory)
         {
-            _httpClient = arenaChallengesWebApplicationFactory.CreateClient();
-            _testServer = arenaChallengesWebApplicationFactory.Server;
+            var factory = arenaChallengesWebApplicationFactory.WithClaimsPrincipal();
+            _httpClient = factory.CreateClient();
+            _testServer = factory.Server;
             _testServer.CleanupDbContext();
         }
 
@@ -41,11 +37,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 
         private async Task<HttpResponseMessage> ExecuteAsync(ChallengeId challengeId)
         {
-            return await _httpClient
-                .DefaultRequestHeaders(
-                    new[] {new Claim(JwtClaimTypes.Subject, Guid.NewGuid().ToString()), new Claim(JwtClaimTypes.Role, CustomRoles.Administrator)}
-                )
-                .GetAsync($"api/challenges/{challengeId}");
+            return await _httpClient.GetAsync($"api/challenges/{challengeId}");
         }
 
         [Fact]

@@ -1,12 +1,8 @@
 ﻿// Filename: MockLogger.cs
-// Date Created: 2019-07-04
+// Date Created: 2019-08-11
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 
@@ -15,7 +11,7 @@ using Microsoft.Extensions.Logging.Internal;
 
 using Moq;
 
-namespace eDoxa.Seedwork.Testing.Helpers.Mocks
+namespace eDoxa.Seedwork.Testing.Mocks
 {
     public sealed class MockLogger<T> : Mock<ILogger<T>>
     {

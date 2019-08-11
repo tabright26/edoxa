@@ -14,15 +14,14 @@ using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Security.Constants;
+using eDoxa.Seedwork.Testing.Contents;
 using eDoxa.Seedwork.Testing.Extensions;
-using eDoxa.Seedwork.Testing.Helpers;
 
 using FluentAssertions;
 
 using IdentityModel;
 
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.TestHost;
 
 using Xunit;
 
@@ -30,21 +29,18 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 {
     public sealed class AccountDepositControllerPostAsyncTest : IClassFixture<CashierWebApplicationFactory>
     {
-        public AccountDepositControllerPostAsyncTest(CashierWebApplicationFactory cashierWebApplicationFactory)
+        private readonly CashierWebApplicationFactory _factory;
+
+        public AccountDepositControllerPostAsyncTest(CashierWebApplicationFactory factory)
         {
-            _httpClient = cashierWebApplicationFactory.CreateClient();
-            _testServer = cashierWebApplicationFactory.Server;
-            _testServer.CleanupDbContext();
+            _factory = factory;
         }
 
-        private readonly HttpClient _httpClient;
-        private readonly TestServer _testServer;
+        private HttpClient _httpClient;
 
-        private async Task<HttpResponseMessage> ExecuteAsync(UserId userId, string customerId, DepositRequest request)
+        private async Task<HttpResponseMessage> ExecuteAsync(DepositRequest request)
         {
-            return await _httpClient
-                .DefaultRequestHeaders(new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(CustomClaimTypes.StripeCustomerId, customerId)})
-                .PostAsync("api/account/deposit", new JsonContent(request));
+            return await _httpClient.PostAsync("api/account/deposit", new JsonContent(request));
         }
 
         [Fact]
@@ -53,7 +49,16 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Arrange
             var account = new Account(new UserId());
 
-            await _testServer.UsingScopeAsync(
+            var factory = _factory.WithClaimsPrincipal(
+                new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
+                new Claim(CustomClaimTypes.StripeCustomerId, "cus_test")
+            );
+            
+            _httpClient = factory.CreateClient();
+            var server = factory.Server;
+            server.CleanupDbContext();
+
+            await server.UsingScopeAsync(
                 async scope =>
                 {
                     var accountRepository = scope.GetRequiredService<IAccountRepository>();
@@ -63,7 +68,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            using var response = await this.ExecuteAsync(account.UserId, "cus_test", new DepositRequest(Currency.Money.Name, 2.5M));
+            using var response = await this.ExecuteAsync(new DepositRequest(Currency.Money.Name, 2.5M));
 
             // Assert
             response.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
@@ -75,7 +80,16 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Arrange
             var account = new Account(new UserId());
 
-            await _testServer.UsingScopeAsync(
+            var factory = _factory.WithClaimsPrincipal(
+                new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
+                new Claim(CustomClaimTypes.StripeCustomerId, "cus_test")
+            );
+
+            _httpClient = factory.CreateClient();
+            var server = factory.Server;
+            server.CleanupDbContext();
+
+            await server.UsingScopeAsync(
                 async scope =>
                 {
                     var accountRepository = scope.GetRequiredService<IAccountRepository>();
@@ -85,7 +99,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            using var response = await this.ExecuteAsync(account.UserId, "cus_test", new DepositRequest(Currency.Money.Name, Money.Fifty));
+            using var response = await this.ExecuteAsync(new DepositRequest(Currency.Money.Name, Money.Fifty));
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -100,7 +114,15 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Arrange
             var account = new Account(new UserId());
 
-            await _testServer.UsingScopeAsync(
+            var factory = _factory.WithClaimsPrincipal(
+                new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
+                new Claim(CustomClaimTypes.StripeCustomerId, "cus_test")
+            );
+            _httpClient = factory.CreateClient();
+            var server = factory.Server;
+            server.CleanupDbContext();
+
+            await server.UsingScopeAsync(
                 async scope =>
                 {
                     var accountRepository = scope.GetRequiredService<IAccountRepository>();
@@ -110,7 +132,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            using var response = await this.ExecuteAsync(account.UserId, "cus_test", new DepositRequest(Currency.Token.Name, 2500M));
+            using var response = await this.ExecuteAsync(new DepositRequest(Currency.Token.Name, 2500M));
 
             // Assert
             response.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
@@ -122,7 +144,16 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Arrange
             var account = new Account(new UserId());
 
-            await _testServer.UsingScopeAsync(
+            var factory = _factory.WithClaimsPrincipal(
+                new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
+                new Claim(CustomClaimTypes.StripeCustomerId, "cus_test")
+            );
+
+            _httpClient = factory.CreateClient();
+            var server = factory.Server;
+            server.CleanupDbContext();
+
+            await server.UsingScopeAsync(
                 async scope =>
                 {
                     var accountRepository = scope.GetRequiredService<IAccountRepository>();
@@ -132,7 +163,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            using var response = await this.ExecuteAsync(account.UserId, "cus_test", new DepositRequest(Currency.Token.Name, Token.TwoHundredFiftyThousand));
+            using var response = await this.ExecuteAsync(new DepositRequest(Currency.Token.Name, Token.TwoHundredFiftyThousand));
 
             // Assert
             response.EnsureSuccessStatusCode();

@@ -9,22 +9,19 @@ using System.Reflection;
 
 using eDoxa.Identity.Api;
 using eDoxa.Identity.Api.Infrastructure;
-using eDoxa.Seedwork.Security.Hosting;
+using eDoxa.Seedwork.Testing;
 using eDoxa.Seedwork.Testing.Extensions;
 
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 
 namespace eDoxa.FunctionalTests.Services.Identity
 {
-    public sealed class IdentityWebApplicationFactory : WebApplicationFactory<Startup>
+    public sealed class IdentityWebApplicationFactory : CustomWebApplicationFactory<Startup>
     {
         protected override void ConfigureWebHost( IWebHostBuilder builder)
         {
-            builder.UseEnvironment(EnvironmentNames.Testing);
-
             builder.UseContentRoot(
                 Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(IdentityWebApplicationFactory)).Location), "Services/Identity")
             );

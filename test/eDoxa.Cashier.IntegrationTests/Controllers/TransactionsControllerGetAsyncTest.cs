@@ -30,25 +30,22 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 {
     public sealed class TransactionsControllerGetAsyncTest : IClassFixture<CashierWebApplicationFactory>
     {
-        public TransactionsControllerGetAsyncTest(CashierWebApplicationFactory cashierWebApplicationFactory)
+        private readonly CashierWebApplicationFactory _factory;
+
+        public TransactionsControllerGetAsyncTest(CashierWebApplicationFactory factory)
         {
-            _httpClient = cashierWebApplicationFactory.CreateClient();
-            _testServer = cashierWebApplicationFactory.Server;
-            _testServer.CleanupDbContext();
+            _factory = factory;
         }
 
-        private readonly HttpClient _httpClient;
-        private readonly TestServer _testServer;
+        private HttpClient _httpClient;
 
         private async Task<HttpResponseMessage> ExecuteAsync(
-            UserId userId,
             Currency currency = null,
             TransactionType type = null,
             TransactionStatus status = null
         )
         {
-            return await _httpClient.DefaultRequestHeaders(new[] {new Claim(JwtClaimTypes.Subject, userId.ToString())})
-                .GetAsync($"api/transactions?currency={currency}&type={type}&status={status}");
+            return await _httpClient.GetAsync($"api/transactions?currency={currency}&type={type}&status={status}");
         }
 
         [Fact]
@@ -57,7 +54,12 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Arrange
             var account = new Account(new UserId());
 
-            await _testServer.UsingScopeAsync(
+            var factory = _factory.WithWebHostBuilder(builder => builder.ConfigureTestServices(services => services.AddFakeClaimsPrincipalFilter(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()).ToArray())));
+            _httpClient = factory.CreateClient();
+            var server = factory.Server;
+            server.CleanupDbContext();
+
+            await server.UsingScopeAsync(
                 async scope =>
                 {
                     var accountRepository = scope.GetRequiredService<IAccountRepository>();
@@ -67,7 +69,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            using var response = await this.ExecuteAsync(account.UserId);
+            using var response = await this.ExecuteAsync();
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -82,7 +84,12 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             accountFaker.UseSeed(1);
             var account = accountFaker.Generate();
 
-            await _testServer.UsingScopeAsync(
+            var factory = _factory.WithWebHostBuilder(builder => builder.ConfigureTestServices(services => services.AddFakeClaimsPrincipalFilter(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()).ToArray())));
+            _httpClient = factory.CreateClient();
+            var server = factory.Server;
+            server.CleanupDbContext();
+
+            await server.UsingScopeAsync(
                 async scope =>
                 {
                     var accountRepository = scope.GetRequiredService<IAccountRepository>();
@@ -92,7 +99,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            using var response = await this.ExecuteAsync(account.UserId);
+            using var response = await this.ExecuteAsync();
 
             // Assert
             response.EnsureSuccessStatusCode();

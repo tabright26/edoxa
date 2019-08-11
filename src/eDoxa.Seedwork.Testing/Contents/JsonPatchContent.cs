@@ -1,5 +1,5 @@
 ﻿// Filename: JsonPatchContent.cs
-// Date Created: --
+// Date Created: 2019-08-10
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,7 +9,7 @@ using System.Text;
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Seedwork.Testing.Helpers
+namespace eDoxa.Seedwork.Testing.Contents
 {
     public sealed class JsonPatchContent : StringContent
     {

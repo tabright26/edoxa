@@ -4,9 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Net.Http;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
@@ -18,8 +16,6 @@ using eDoxa.Seedwork.Testing.Extensions;
 
 using FluentAssertions;
 
-using IdentityModel;
-
 using Microsoft.AspNetCore.TestHost;
 
 using Xunit;
@@ -30,8 +26,9 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
     {
         public ChallengeParticipantsControllerGetAsyncTest(ArenaChallengesWebApplicationFactory arenaChallengesWebApplicationFactory)
         {
-            _httpClient = arenaChallengesWebApplicationFactory.CreateClient();
-            _testServer = arenaChallengesWebApplicationFactory.Server;
+            var factory = arenaChallengesWebApplicationFactory.WithClaimsPrincipal();
+            _httpClient = factory.CreateClient();
+            _testServer = factory.Server;
             _testServer.CleanupDbContext();
         }
 
@@ -40,8 +37,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 
         private async Task<HttpResponseMessage> ExecuteAsync(ChallengeId challengeId)
         {
-            return await _httpClient.DefaultRequestHeaders(new[] {new Claim(JwtClaimTypes.Subject, Guid.NewGuid().ToString())})
-                .GetAsync($"api/challenges/{challengeId}/participants");
+            return await _httpClient.GetAsync($"api/challenges/{challengeId}/participants");
         }
 
         [Fact]

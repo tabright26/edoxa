@@ -120,7 +120,7 @@ namespace eDoxa.Cashier.Api
 
             application.UseCustomExceptionHandler();
 
-            application.UseAuthentication(HostingEnvironment);
+            application.UseAuthentication();
 
             application.UseMvc();
 

@@ -15,8 +15,8 @@ using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Infrastructure.Data.Storage;
 using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Testing.Contents;
 using eDoxa.Seedwork.Testing.Extensions;
-using eDoxa.Seedwork.Testing.Helpers;
 
 using FluentAssertions;
 
@@ -36,7 +36,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             User = new HashSet<User>(IdentityStorage.TestUsers).First();
 
             var factory = identityWebApplicationFactory.WithWebHostBuilder(
-                builder => builder.ConfigureTestServices(services => services.AddTestMvc(new[] {new Claim(JwtClaimTypes.Subject, User.Id.ToString())}))
+                builder => builder.ConfigureTestServices(services => services.AddFakeClaimsPrincipalFilter(new[] {new Claim(JwtClaimTypes.Subject, User.Id.ToString())}))
             );
 
             _httpClient = factory.CreateClient();

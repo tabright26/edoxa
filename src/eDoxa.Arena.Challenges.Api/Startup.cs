@@ -146,7 +146,7 @@ namespace eDoxa.Arena.Challenges.Api
 
             application.UseCustomExceptionHandler();
 
-            application.UseAuthentication(HostingEnvironment);
+            application.UseAuthentication();
 
             application.UseMvc();
 

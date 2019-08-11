@@ -1,5 +1,5 @@
-﻿// Filename: FakeUserFilter.cs
-// Date Created: 2019-08-10
+﻿// Filename: MockAsyncClaimsPrincipalFilter.cs
+// Date Created: 2019-08-11
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace eDoxa.Seedwork.Testing.Mocks
 {
-    public sealed class MockAsyncClaimsPrincipalFilter : IAsyncActionFilter
+    internal sealed class MockAsyncClaimsPrincipalFilter : IAsyncActionFilter
     {
         public MockAsyncClaimsPrincipalFilter(IEnumerable<Claim> claims)
         {

@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Api.ViewModels;
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Seedwork.Application.Extensions;
@@ -29,20 +28,18 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 {
     public sealed class ChallengeHistoryControllerGetAsyncTest : IClassFixture<ArenaChallengesWebApplicationFactory>
     {
-        public ChallengeHistoryControllerGetAsyncTest(ArenaChallengesWebApplicationFactory arenaChallengesWebApplicationFactory)
+        public ChallengeHistoryControllerGetAsyncTest(ArenaChallengesWebApplicationFactory factory)
         {
-            _httpClient = arenaChallengesWebApplicationFactory.CreateClient();
-            _testServer = arenaChallengesWebApplicationFactory.Server;
-            _testServer.CleanupDbContext();
+            _factory = factory;
         }
 
-        private readonly HttpClient _httpClient;
-        private readonly TestServer _testServer;
+        private readonly ArenaChallengesWebApplicationFactory _factory;
 
-        private async Task<HttpResponseMessage> ExecuteAsync(UserId userId, ChallengeGame game = null, ChallengeState state = null)
+        private HttpClient _httpClient;
+
+        private async Task<HttpResponseMessage> ExecuteAsync(ChallengeGame game = null, ChallengeState state = null)
         {
-            return await _httpClient.DefaultRequestHeaders(new[] {new Claim(JwtClaimTypes.Subject, userId.ToString())})
-                .GetAsync($"api/challenges/history?game={game}&state={state}");
+            return await _httpClient.GetAsync($"api/challenges/history?game={game}&state={state}");
         }
 
         [Fact]
@@ -53,7 +50,19 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
             challengeFaker.UseSeed(1);
             var challenge = challengeFaker.Generate();
 
-            await _testServer.UsingScopeAsync(
+            var participant = challenge.Participants.First();
+
+            var factory = _factory.WithWebHostBuilder(
+                builder => builder.ConfigureTestServices(
+                    services => services.AddFakeClaimsPrincipalFilter(new[] {new Claim(JwtClaimTypes.Subject, participant.UserId.ToString())})
+                )
+            );
+
+            _httpClient = factory.CreateClient();
+            var server = factory.Server;
+            server.CleanupDbContext();
+
+            await server.UsingScopeAsync(
                 async scope =>
                 {
                     var challengeRepository = scope.GetRequiredService<IChallengeRepository>();
@@ -62,10 +71,8 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
                 }
             );
 
-            var participant = challenge.Participants.First();
-
             // Act
-            using var response = await this.ExecuteAsync(UserId.FromGuid(participant.UserId));
+            using var response = await this.ExecuteAsync();
 
             // Assert
             response.EnsureSuccessStatusCode();

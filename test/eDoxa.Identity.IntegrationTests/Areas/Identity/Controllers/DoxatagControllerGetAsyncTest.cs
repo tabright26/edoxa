@@ -37,7 +37,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             User = new HashSet<User>(IdentityStorage.TestUsers).First();
 
             var factory = identityWebApplicationFactory.WithWebHostBuilder(
-                builder => builder.ConfigureTestServices(services => services.AddTestMvc(new[] {new Claim(JwtClaimTypes.Subject, User.Id.ToString())}))
+                builder => builder.ConfigureTestServices(services => services.AddFakeClaimsPrincipalFilter(new[] {new Claim(JwtClaimTypes.Subject, User.Id.ToString())}))
             );
 
             _httpClient = factory.CreateClient();

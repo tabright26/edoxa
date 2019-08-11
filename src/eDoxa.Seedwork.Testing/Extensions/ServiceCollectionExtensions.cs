@@ -16,12 +16,13 @@ namespace eDoxa.Seedwork.Testing.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddTestMvc(this IServiceCollection services, IEnumerable<Claim> claims)
+        public static void AddFakeClaimsPrincipalFilter(this IServiceCollection services, IEnumerable<Claim> claims)
         {
             services.AddMvc(
                 options =>
                 {
                     options.Filters.Add(new AllowAnonymousFilter());
+
                     options.Filters.Add(new MockAsyncClaimsPrincipalFilter(claims));
                 }
             );

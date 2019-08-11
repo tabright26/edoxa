@@ -52,7 +52,6 @@ namespace eDoxa.Seedwork.Testing.Extensions
             await server.Host.UsingScopeAsync(executeAsync);
         }
 
-        
         public static async Task<TResult> UsingScopeAsync<TResult>(this TestServer server, Func<IServiceScope, Task<TResult>> executeAsync)
         {
             return await server.Host.UsingScopeAsync(executeAsync);
