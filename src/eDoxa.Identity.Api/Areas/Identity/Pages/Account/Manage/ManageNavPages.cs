@@ -23,32 +23,32 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
 
         public static string TwoFactorAuthentication => "TwoFactorAuthentication";
 
-        public static string IndexNavClass(ViewContext viewContext)
+        public static string? IndexNavClass(ViewContext viewContext)
         {
             return PageNavClass(viewContext, Index);
         }
 
-        public static string ChangePasswordNavClass(ViewContext viewContext)
+        public static string? ChangePasswordNavClass(ViewContext viewContext)
         {
             return PageNavClass(viewContext, ChangePassword);
         }
 
-        public static string ExternalLoginsNavClass(ViewContext viewContext)
+        public static string? ExternalLoginsNavClass(ViewContext viewContext)
         {
             return PageNavClass(viewContext, ExternalLogins);
         }
 
-        public static string PersonalDataNavClass(ViewContext viewContext)
+        public static string? PersonalDataNavClass(ViewContext viewContext)
         {
             return PageNavClass(viewContext, PersonalData);
         }
 
-        public static string TwoFactorAuthenticationNavClass(ViewContext viewContext)
+        public static string? TwoFactorAuthenticationNavClass(ViewContext viewContext)
         {
             return PageNavClass(viewContext, TwoFactorAuthentication);
         }
 
-        private static string PageNavClass(ViewContext viewContext, string page)
+        private static string? PageNavClass(ViewContext viewContext, string page)
         {
             var activePage = viewContext.ViewData["ActivePage"] as string ?? Path.GetFileNameWithoutExtension(viewContext.ActionDescriptor.DisplayName);
 

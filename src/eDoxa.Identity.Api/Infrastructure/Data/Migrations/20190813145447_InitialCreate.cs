@@ -118,7 +118,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                     Line1 = table.Column<string>(nullable: false),
                     Line2 = table.Column<string>(nullable: true),
                     City = table.Column<string>(nullable: false),
-                    PostalCode = table.Column<string>(nullable: false),
+                    PostalCode = table.Column<string>(nullable: true),
                     State = table.Column<string>(nullable: true),
                     UserId = table.Column<Guid>(nullable: false)
                 },

@@ -77,7 +77,7 @@ namespace eDoxa.Identity.Api.Infrastructure
                     builder.Property(address => address.Line2).IsRequired(false);
                     builder.Property(address => address.City).IsRequired();
                     builder.Property(address => address.State).IsRequired(false);
-                    builder.Property(address => address.PostalCode).IsRequired();
+                    builder.Property(address => address.PostalCode).IsRequired(false);
                     builder.ToTable("UserAddress");
                 }
             );

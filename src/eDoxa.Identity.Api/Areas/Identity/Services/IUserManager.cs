@@ -34,7 +34,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             string? line2,
             string city,
             string? state,
-            string postalCode
+            string? postalCode
         );
 
         Task<IdentityResult> UpdateAddressAsync(
@@ -44,12 +44,14 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             string? line2,
             string city,
             string? state,
-            string postalCode
+            string? postalCode
         );
 
         Task<IdentityResult> RemoveAddressAsync(User user, Guid addressId);
 
         Task<IList<UserAddress>> GetAddressBookAsync(User user);
+
+        Task<UserAddress?> FindUserAddressAsync(User user, Guid addressId);
 
         Task<PersonalInfo?> GetPersonalInfoAsync(User user);
 

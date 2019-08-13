@@ -4,6 +4,8 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+#nullable disable
+
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;

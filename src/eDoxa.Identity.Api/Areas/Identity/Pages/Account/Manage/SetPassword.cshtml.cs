@@ -4,6 +4,8 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+#nullable disable
+
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
@@ -29,7 +31,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
         public InputModel Input { get; set; }
 
         [TempData]
-        public string? StatusMessage { get; set; }
+        public string StatusMessage { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {

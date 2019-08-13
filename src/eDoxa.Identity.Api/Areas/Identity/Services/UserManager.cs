@@ -154,6 +154,18 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             return await Store.GetGamesAsync(user, CancellationToken);
         }
 
+        public async Task<UserAddress?> FindUserAddressAsync(User user, Guid addressId)
+        {
+            this.ThrowIfDisposed();
+
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return await Store.FindUserAddressAsync(user.Id, addressId);
+        }
+
         public async Task<PersonalInfo?> GetPersonalInfoAsync(User user)
         {
             this.ThrowIfDisposed();
@@ -313,7 +325,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             string? line2,
             string city,
             string? state,
-            string postalCode
+            string? postalCode
         )
         {
             this.ThrowIfDisposed();
@@ -346,7 +358,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             string? line2,
             string city,
             string? state,
-            string postalCode
+            string? postalCode
         )
         {
             this.ThrowIfDisposed();
@@ -358,12 +370,23 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
             var address = await Store.FindUserAddressAsync(user.Id, addressId, CancellationToken);
 
+            if (address == null)
+            {
+                return IdentityResult.Failed(
+                    new IdentityError
+                    {
+                        Code = "UserAddressNotFound",
+                        Description = "User's address not found."
+                    }
+                );
+            }
+
             address.Line1 = line1;
             address.Line2 = line2;
             address.City = city;
             address.State = state;
             address.PostalCode = postalCode;
-            
+
             await this.UpdateSecurityStampAsync(user);
 
             return await this.UpdateUserAsync(user);

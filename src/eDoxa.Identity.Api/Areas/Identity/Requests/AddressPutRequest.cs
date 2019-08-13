@@ -16,7 +16,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Requests
             string? line2,
             string city,
             string? state,
-            string postalCode
+            string? postalCode
         )
         {
             Line1 = line1;
@@ -38,7 +38,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Requests
         [DataMember(Name = "state", IsRequired = false)]
         public string? State { get; private set; }
 
-        [DataMember(Name = "postalCode")]
-        public string PostalCode { get; private set; }
+        [DataMember(Name = "postalCode", IsRequired = false)]
+        public string? PostalCode { get; private set; }
     }
 }

@@ -27,7 +27,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     [ApiVersion("1.0")]
     [Produces("application/json")]
     [Route("api/address-book")]
-    [ApiExplorerSettings(GroupName = "Address")]
+    [ApiExplorerSettings(GroupName = "Address Book")]
     [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
     public class AddressBookController : ControllerBase
     {
@@ -41,7 +41,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         }
 
         /// <summary>
-        ///     Find user's address.
+        ///     Find user's address book.
         /// </summary>
         [HttpGet]
         public async Task<IActionResult> GetAsync()
@@ -55,7 +55,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                 return this.NoContent();
             }
 
-            return this.Ok(_mapper.Map<IReadOnlyCollection<AddressResponse>>(addressBook));
+            return this.Ok(_mapper.Map<IList<AddressResponse>>(addressBook));
         }
 
         /// <summary>
@@ -90,7 +90,25 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         }
 
         /// <summary>
-        ///     Find user's address.
+        ///     Find user's address by id.
+        /// </summary>
+        [HttpGet("{addressId}")]
+        public async Task<IActionResult> GetByIdAsync(Guid addressId)
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            var address = await _userManager.FindUserAddressAsync(user, addressId);
+
+            if (address == null)
+            {
+                return this.NotFound("User's address not found.");
+            }
+
+            return this.Ok(_mapper.Map<AddressResponse>(address));
+        }
+
+        /// <summary>
+        ///     Update user's address by id.
         /// </summary>
         [HttpPut("{addressId}")]
         public async Task<IActionResult> PutAsync(Guid addressId, [FromBody] AddressPutRequest request)
@@ -121,7 +139,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         }
 
         /// <summary>
-        ///     Remove user's address.
+        ///     Remove user's address by id.
         /// </summary>
         [HttpDelete("{addressId}")]
         public async Task<IActionResult> DeleteAsync(Guid addressId)

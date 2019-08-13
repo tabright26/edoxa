@@ -129,8 +129,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
 
                     b.Property<string>("Line2");
 
-                    b.Property<string>("PostalCode")
-                        .IsRequired();
+                    b.Property<string>("PostalCode");
 
                     b.Property<string>("State");
 

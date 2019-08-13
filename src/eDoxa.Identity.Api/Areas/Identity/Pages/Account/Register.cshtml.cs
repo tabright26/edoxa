@@ -17,6 +17,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
+#nullable disable
+
 namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
@@ -42,14 +44,14 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
 
         [BindProperty] public InputModel Input { get; set; }
 
-        public string? ReturnUrl { get; set; }
+        public string ReturnUrl { get; set; }
 
-        public void OnGet(string? returnUrl = null)
+        public void OnGet(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
         }
 
-        public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
 

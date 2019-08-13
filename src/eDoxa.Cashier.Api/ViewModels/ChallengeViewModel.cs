@@ -4,6 +4,8 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+#nullable disable
+
 using Newtonsoft.Json;
 
 namespace eDoxa.Cashier.Api.ViewModels

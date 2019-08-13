@@ -4,6 +4,8 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+#nullable disable
+
 using eDoxa.Cashier.Domain.AggregateModels;
 
 using Newtonsoft.Json;

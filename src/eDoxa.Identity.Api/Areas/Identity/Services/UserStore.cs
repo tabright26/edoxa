@@ -185,7 +185,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             string? line2,
             string city,
             string? state,
-            string postalCode,
+            string? postalCode,
             CancellationToken cancellationToken = default
         )
         {
@@ -257,7 +257,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             AddressBook.Remove(address);
         }
 
-        public async Task<UserAddress> FindUserAddressAsync(Guid userId, Guid addressId, CancellationToken cancellationToken = default)
+        public async Task<UserAddress?> FindUserAddressAsync(Guid userId, Guid addressId, CancellationToken cancellationToken = default)
         {
             return await AddressBook.SingleOrDefaultAsync(address => address.UserId == userId && address.Id == addressId, cancellationToken);
         }
