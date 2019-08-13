@@ -14,7 +14,7 @@ namespace eDoxa.Seedwork.Testing.Mocks
 {
     internal sealed class MockAsyncClaimsPrincipalFilter : IAsyncActionFilter
     {
-        public MockAsyncClaimsPrincipalFilter(IEnumerable<Claim> claims)
+        public MockAsyncClaimsPrincipalFilter(params Claim[] claims)
         {
             Claims = claims;
         }

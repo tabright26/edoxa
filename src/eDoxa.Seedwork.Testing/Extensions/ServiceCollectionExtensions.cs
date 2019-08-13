@@ -16,7 +16,7 @@ namespace eDoxa.Seedwork.Testing.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddFakeClaimsPrincipalFilter(this IServiceCollection services, IEnumerable<Claim> claims)
+        public static void AddFakeClaimsPrincipalFilter(this IServiceCollection services, params Claim[] claims)
         {
             services.AddMvc(
                 options =>

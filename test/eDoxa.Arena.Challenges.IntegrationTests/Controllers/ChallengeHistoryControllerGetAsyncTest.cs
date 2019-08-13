@@ -54,7 +54,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 
             var factory = _factory.WithWebHostBuilder(
                 builder => builder.ConfigureTestServices(
-                    services => services.AddFakeClaimsPrincipalFilter(new[] {new Claim(JwtClaimTypes.Subject, participant.UserId.ToString())})
+                    services => services.AddFakeClaimsPrincipalFilter(new Claim(JwtClaimTypes.Subject, participant.UserId.ToString()))
                 )
             );
 

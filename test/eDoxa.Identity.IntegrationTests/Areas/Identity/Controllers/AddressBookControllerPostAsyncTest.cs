@@ -1,10 +1,9 @@
-﻿// Filename: AddressControllerPutAsyncTest.cs
-// Date Created: 2019-08-10
+﻿// Filename: AddressBookControllerPostAsyncTest.cs
+// Date Created: 2019-08-13
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -30,15 +29,15 @@ using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
-    public sealed class AddressControllerPutAsyncTest : IClassFixture<IdentityWebApplicationFactory>
+    public sealed class AddressBookControllerPostAsyncTest : IClassFixture<IdentityWebApplicationFactory>
     {
-        public AddressControllerPutAsyncTest(IdentityWebApplicationFactory identityWebApplicationFactory)
+        public AddressBookControllerPostAsyncTest(IdentityWebApplicationFactory identityWebApplicationFactory)
         {
             User = new HashSet<User>(IdentityStorage.TestUsers).First();
 
             var factory = identityWebApplicationFactory.WithWebHostBuilder(
                 builder => builder.ConfigureTestServices(
-                    services => services.AddFakeClaimsPrincipalFilter(new[] {new Claim(JwtClaimTypes.Subject, User.Id.ToString())})
+                    services => services.AddFakeClaimsPrincipalFilter(new Claim(JwtClaimTypes.Subject, User.Id.ToString()))
                 )
             );
 
@@ -47,9 +46,9 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             _testServer.CleanupDbContext();
         }
 
-        private async Task<HttpResponseMessage> ExecuteAsync(Guid addressId, AddressPutRequest request)
+        private async Task<HttpResponseMessage> ExecuteAsync(AddressPostRequest request)
         {
-            return await _httpClient.PutAsync($"api/address-book/{addressId}", new JsonContent(request));
+            return await _httpClient.PostAsync("api/address-book", new JsonContent(request));
         }
 
         private readonly TestServer _testServer;
@@ -58,7 +57,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         private User User { get; }
 
         [Fact]
-        public async Task PutAsync_ShouldBeStatus200OK()
+        public async Task PostAsync_ShouldBeStatus200OK()
         {
             await _testServer.UsingScopeAsync(
                 async scope =>
@@ -69,24 +68,10 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
                     result.Succeeded.Should().BeTrue();
 
-                    result = await userManager.AddAddressAsync(
-                        User,
-                        "Old",
-                        "Old",
-                        null,
-                        "Old",
-                        "Old",
-                        "Old"
-                    );
-
-                    result.Succeeded.Should().BeTrue();
-
-                    var addressBook = await userManager.GetAddressBookAsync(User);
-
                     // Act
                     using var response = await this.ExecuteAsync(
-                        addressBook.First().Id,
-                        new AddressPutRequest(
+                        new AddressPostRequest(
+                            "New",
                             "New",
                             "New",
                             "New",

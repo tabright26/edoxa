@@ -1,9 +1,10 @@
-﻿// Filename: AddressControllerGetAsyncTest.cs
-// Date Created: 2019-08-10
+﻿// Filename: AddressBookControllerGetByIdAsyncTest.cs
+// Date Created: 2019-08-13
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -30,15 +31,15 @@ using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
-    public sealed class AddressControllerGetAsyncTest : IClassFixture<IdentityWebApplicationFactory>
+    public sealed class AddressBookControllerGetByIdAsyncTest : IClassFixture<IdentityWebApplicationFactory>
     {
-        public AddressControllerGetAsyncTest(IdentityWebApplicationFactory identityWebApplicationFactory)
+        public AddressBookControllerGetByIdAsyncTest(IdentityWebApplicationFactory identityWebApplicationFactory)
         {
             User = new HashSet<User>(IdentityStorage.TestUsers).First();
 
             var factory = identityWebApplicationFactory.WithWebHostBuilder(
                 builder => builder.ConfigureTestServices(
-                    services => services.AddFakeClaimsPrincipalFilter(new[] {new Claim(JwtClaimTypes.Subject, User.Id.ToString())})
+                    services => services.AddFakeClaimsPrincipalFilter(new Claim(JwtClaimTypes.Subject, User.Id.ToString()))
                 )
             );
 
@@ -52,9 +53,9 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
         private User User { get; }
 
-        private async Task<HttpResponseMessage> ExecuteAsync()
+        private async Task<HttpResponseMessage> ExecuteAsync(Guid addressId)
         {
-            return await _httpClient.GetAsync("api/address-book");
+            return await _httpClient.GetAsync($"api/address-book/{addressId}");
         }
 
         [Fact]
@@ -83,8 +84,10 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
                     var addressBook = await userManager.GetAddressBookAsync(User);
 
+                    var address = addressBook.First();
+
                     // Act
-                    using var response = await this.ExecuteAsync();
+                    using var response = await this.ExecuteAsync(address.Id);
 
                     // Assert
                     response.EnsureSuccessStatusCode();
@@ -93,15 +96,15 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
                     var mapper = scope.GetRequiredService<IMapper>();
 
-                    var addressResponse = await response.DeserializeAsync<ICollection<AddressResponse>>();
+                    var addressResponse = await response.DeserializeAsync<AddressResponse>();
 
-                    addressResponse.Should().BeEquivalentTo(mapper.Map<ICollection<AddressResponse>>(addressBook));
+                    addressResponse.Should().BeEquivalentTo(mapper.Map<AddressResponse>(address));
                 }
             );
         }
 
         [Fact]
-        public async Task GetAsync_ShouldBeStatus204NoContent()
+        public async Task GetAsync_ShouldBeStatus404NotFound()
         {
             await _testServer.UsingScopeAsync(
                 async scope =>
@@ -115,12 +118,10 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             );
 
             // Act
-            using var response = await this.ExecuteAsync();
+            using var response = await this.ExecuteAsync(Guid.NewGuid());
 
             // Assert
-            response.EnsureSuccessStatusCode();
-
-            response.StatusCode.Should().Be(StatusCodes.Status204NoContent);
+            response.StatusCode.Should().Be(StatusCodes.Status404NotFound);
         }
     }
 }

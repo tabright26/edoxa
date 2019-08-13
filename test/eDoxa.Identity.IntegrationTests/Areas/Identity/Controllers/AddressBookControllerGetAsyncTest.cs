@@ -1,5 +1,5 @@
-﻿// Filename: ProfileControllerGetAsyncTest.cs
-// Date Created: 2019-08-10
+﻿// Filename: AddressBookControllerGetAsyncTest.cs
+// Date Created: 2019-08-13
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -30,14 +30,16 @@ using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
-    public sealed class PersonalInfoControllerGetAsyncTest : IClassFixture<IdentityWebApplicationFactory>
+    public sealed class AddressBookControllerGetAsyncTest : IClassFixture<IdentityWebApplicationFactory>
     {
-        public PersonalInfoControllerGetAsyncTest(IdentityWebApplicationFactory identityWebApplicationFactory)
+        public AddressBookControllerGetAsyncTest(IdentityWebApplicationFactory identityWebApplicationFactory)
         {
             User = new HashSet<User>(IdentityStorage.TestUsers).First();
 
             var factory = identityWebApplicationFactory.WithWebHostBuilder(
-                builder => builder.ConfigureTestServices(services => services.AddFakeClaimsPrincipalFilter(new Claim(JwtClaimTypes.Subject, User.Id.ToString())))
+                builder => builder.ConfigureTestServices(
+                    services => services.AddFakeClaimsPrincipalFilter(new Claim(JwtClaimTypes.Subject, User.Id.ToString()))
+                )
             );
 
             _httpClient = factory.CreateClient();
@@ -52,16 +54,12 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
         private async Task<HttpResponseMessage> ExecuteAsync()
         {
-            return await _httpClient.GetAsync("api/personal-info");
+            return await _httpClient.GetAsync("api/address-book");
         }
 
         [Fact]
         public async Task GetAsync_ShouldBeStatus200OK()
         {
-            var profile = new PersonalInfo();
-
-            User.PersonalInfo = profile;
-
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
@@ -70,25 +68,34 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                     var result = await userManager.CreateAsync(User);
 
                     result.Succeeded.Should().BeTrue();
-                }
-            );
 
-            // Act
-            using var response = await this.ExecuteAsync();
+                    result = await userManager.AddAddressAsync(
+                        User,
+                        "Test",
+                        "Test",
+                        null,
+                        "Test",
+                        "Test",
+                        "Test"
+                    );
 
-            // Assert
-            response.EnsureSuccessStatusCode();
+                    result.Succeeded.Should().BeTrue();
 
-            response.StatusCode.Should().Be(StatusCodes.Status200OK);
+                    var addressBook = await userManager.GetAddressBookAsync(User);
 
-            await _testServer.UsingScopeAsync(
-                async scope =>
-                {
+                    // Act
+                    using var response = await this.ExecuteAsync();
+
+                    // Assert
+                    response.EnsureSuccessStatusCode();
+
+                    response.StatusCode.Should().Be(StatusCodes.Status200OK);
+
                     var mapper = scope.GetRequiredService<IMapper>();
 
-                    var profileResponse = await response.DeserializeAsync<PersonalInfoResponse>();
+                    var addressResponse = await response.DeserializeAsync<ICollection<AddressResponse>>();
 
-                    profileResponse.Should().BeEquivalentTo(mapper.Map<PersonalInfoResponse>(profile));
+                    addressResponse.Should().BeEquivalentTo(mapper.Map<ICollection<AddressResponse>>(addressBook));
                 }
             );
         }
@@ -96,8 +103,6 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         [Fact]
         public async Task GetAsync_ShouldBeStatus204NoContent()
         {
-            User.PersonalInfo = null;
-
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
