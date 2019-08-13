@@ -30,9 +30,9 @@ using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
-    public sealed class ProfileControllerPatchAsyncTest : IClassFixture<IdentityWebApplicationFactory>
+    public sealed class PersonalInfoControllerPatchAsyncTest : IClassFixture<IdentityWebApplicationFactory>
     {
-        public ProfileControllerPatchAsyncTest(IdentityWebApplicationFactory identityWebApplicationFactory)
+        public PersonalInfoControllerPatchAsyncTest(IdentityWebApplicationFactory identityWebApplicationFactory)
         {
             User = new HashSet<User>(IdentityStorage.TestUsers).First();
 
@@ -45,9 +45,9 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             _testServer.CleanupDbContext();
         }
 
-        private async Task<HttpResponseMessage> ExecuteAsync(JsonPatchDocument<ProfilePatchRequest> document)
+        private async Task<HttpResponseMessage> ExecuteAsync(JsonPatchDocument<PersonalInfoPatchRequest> document)
         {
-            return await _httpClient.PatchAsync("api/profile", new JsonPatchContent(document));
+            return await _httpClient.PatchAsync("api/personal-info", new JsonPatchContent(document));
         }
 
         private readonly TestServer _testServer;
@@ -58,12 +58,12 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         [Fact]
         public async Task PatchAsync_ShouldBeStatus200OK()
         {
-            var profile = new Profile
+            var profile = new PersonalInfo
             {
                 FirstName = "Old"
             };
 
-            User.Profile = profile;
+            User.PersonalInfo = profile;
 
             await _testServer.UsingScopeAsync(
                 async scope =>
@@ -76,7 +76,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                 }
             );
 
-            var document = new JsonPatchDocument<ProfilePatchRequest>();
+            var document = new JsonPatchDocument<PersonalInfoPatchRequest>();
 
             document.Test(request => request.FirstName, profile.FirstName);
 

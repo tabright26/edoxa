@@ -30,9 +30,9 @@ using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
-    public sealed class DoxatagControllerGetAsyncTest : IClassFixture<IdentityWebApplicationFactory>
+    public sealed class DoxaTagControllerGetAsyncTest : IClassFixture<IdentityWebApplicationFactory>
     {
-        public DoxatagControllerGetAsyncTest(IdentityWebApplicationFactory identityWebApplicationFactory)
+        public DoxaTagControllerGetAsyncTest(IdentityWebApplicationFactory identityWebApplicationFactory)
         {
             User = new HashSet<User>(IdentityStorage.TestUsers).First();
 
@@ -52,15 +52,15 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
         private async Task<HttpResponseMessage> ExecuteAsync()
         {
-            return await _httpClient.GetAsync("api/doxatag");
+            return await _httpClient.GetAsync("api/doxa-tag");
         }
 
         [Fact]
         public async Task GetAsync_ShouldBeStatus200OK()
         {
-            var doxatag = new Doxatag();
+            var doxaTag = new DoxaTag();
 
-            User.Doxatag = doxatag;
+            User.DoxaTag = doxaTag;
 
             await _testServer.UsingScopeAsync(
                 async scope =>
@@ -86,9 +86,9 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                 {
                     var mapper = scope.GetRequiredService<IMapper>();
 
-                    var doxatagResponse = await response.DeserializeAsync<DoxatagResponse>();
+                    var doxaTagResponse = await response.DeserializeAsync<DoxaTagResponse>();
 
-                    doxatagResponse.Should().BeEquivalentTo(mapper.Map<DoxatagResponse>(doxatag));
+                    doxaTagResponse.Should().BeEquivalentTo(mapper.Map<DoxaTagResponse>(doxaTag));
                 }
             );
         }
@@ -96,7 +96,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         [Fact]
         public async Task GetAsync_ShouldBeStatus204NoContent()
         {
-            User.Doxatag = null;
+            User.DoxaTag = null;
 
             await _testServer.UsingScopeAsync(
                 async scope =>

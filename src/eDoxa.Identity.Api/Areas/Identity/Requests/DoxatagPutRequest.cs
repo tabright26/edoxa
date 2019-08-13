@@ -9,9 +9,9 @@ using System.Runtime.Serialization;
 namespace eDoxa.Identity.Api.Areas.Identity.Requests
 {
     [DataContract]
-    public class DoxatagPutRequest
+    public class DoxaTagPutRequest
     {
-        public DoxatagPutRequest(string name)
+        public DoxaTagPutRequest(string name)
         {
             Name = name;
         }

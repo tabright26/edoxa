@@ -33,10 +33,10 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             var user = new User
             {
                 Id = Guid.NewGuid(),
-                Doxatag = new Doxatag
+                DoxaTag = new DoxaTag
                 {
                     Name = "Test",
-                    Discriminator = 234
+                    Code = 234
                 }
             };
 
@@ -44,9 +44,9 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             mockUserManager.Setup(userManager => userManager.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(user).Verifiable();
 
-            mockUserManager.Setup(userManager => userManager.GetDoxatagAsync(It.IsAny<User>())).ReturnsAsync(user.Doxatag).Verifiable();
+            mockUserManager.Setup(userManager => userManager.GetDoxaTagAsync(It.IsAny<User>())).ReturnsAsync(user.DoxaTag).Verifiable();
 
-            var controller = new UserDoxatagController(mockUserManager.Object, Mapper);
+            var controller = new UserDoxaTagController(mockUserManager.Object, Mapper);
 
             // Act
             var result = await controller.GetAsync(user.Id);
@@ -54,11 +54,11 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(Mapper.Map<DoxatagResponse>(user.Doxatag));
+            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(Mapper.Map<DoxaTagResponse>(user.DoxaTag));
 
             mockUserManager.Verify(userManager => userManager.FindByIdAsync(It.IsAny<string>()), Times.Once);
 
-            mockUserManager.Verify(userManager => userManager.GetDoxatagAsync(It.IsAny<User>()), Times.Once);
+            mockUserManager.Verify(userManager => userManager.GetDoxaTagAsync(It.IsAny<User>()), Times.Once);
         }
 
         [TestMethod]
@@ -68,16 +68,16 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             var user = new User
             {
                 Id = Guid.NewGuid(),
-                Doxatag = null
+                DoxaTag = null
             };
 
             var mockUserManager = new Mock<IUserManager>();
 
             mockUserManager.Setup(userManager => userManager.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(user).Verifiable();
 
-            mockUserManager.Setup(userManager => userManager.GetDoxatagAsync(It.IsAny<User>())).ReturnsAsync(user.Doxatag).Verifiable();
+            mockUserManager.Setup(userManager => userManager.GetDoxaTagAsync(It.IsAny<User>())).ReturnsAsync(user.DoxaTag).Verifiable();
 
-            var controller = new UserDoxatagController(mockUserManager.Object, Mapper);
+            var controller = new UserDoxaTagController(mockUserManager.Object, Mapper);
 
             // Act
             var result = await controller.GetAsync(user.Id);
@@ -87,7 +87,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             mockUserManager.Verify(userManager => userManager.FindByIdAsync(It.IsAny<string>()), Times.Once);
 
-            mockUserManager.Verify(userManager => userManager.GetDoxatagAsync(It.IsAny<User>()), Times.Once);
+            mockUserManager.Verify(userManager => userManager.GetDoxaTagAsync(It.IsAny<User>()), Times.Once);
         }
 
         [TestMethod]
@@ -98,7 +98,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             mockUserManager.Setup(userManager => userManager.FindByIdAsync(It.IsAny<string>())).ReturnsAsync((User) null).Verifiable();
 
-            var controller = new UserDoxatagController(mockUserManager.Object, Mapper);
+            var controller = new UserDoxaTagController(mockUserManager.Object, Mapper);
 
             // Act
             var result = await controller.GetAsync(Guid.NewGuid());
@@ -110,7 +110,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             mockUserManager.Verify(userManager => userManager.FindByIdAsync(It.IsAny<string>()), Times.Once);
 
-            mockUserManager.Verify(userManager => userManager.GetDoxatagAsync(It.IsAny<User>()), Times.Never);
+            mockUserManager.Verify(userManager => userManager.GetDoxaTagAsync(It.IsAny<User>()), Times.Never);
         }
     }
 }

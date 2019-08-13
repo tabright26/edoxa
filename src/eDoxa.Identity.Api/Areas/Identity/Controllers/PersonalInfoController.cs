@@ -1,4 +1,4 @@
-﻿// Filename: ProfileController.cs
+﻿// Filename: PersonalInfoController.cs
 // Date Created: 2019-08-09
 // 
 // ================================================
@@ -24,55 +24,55 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     [ApiController]
     [ApiVersion("1.0")]
     [Produces("application/json")]
-    [Route("api/profile")]
-    [ApiExplorerSettings(GroupName = "Profile")]
+    [Route("api/personal-info")]
+    [ApiExplorerSettings(GroupName = "Personal Info")]
     [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
-    public class ProfileController : ControllerBase
+    public class PersonalInfoController : ControllerBase
     {
         private readonly IUserManager _userManager;
         private readonly IMapper _mapper;
 
-        public ProfileController(IUserManager userManager, IMapper mapper)
+        public PersonalInfoController(IUserManager userManager, IMapper mapper)
         {
             _userManager = userManager;
             _mapper = mapper;
         }
 
         /// <summary>
-        ///     Find user's profile.
+        ///     Find user's personal info.
         /// </summary>
         [HttpGet]
         public async Task<IActionResult> GetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
 
-            var profile = await _userManager.GetProfileAsync(user);
+            var profile = await _userManager.GetPersonalInfoAsync(user);
 
             if (profile == null)
             {
                 return this.NoContent();
             }
 
-            return this.Ok(_mapper.Map<ProfileResponse>(profile));
+            return this.Ok(_mapper.Map<PersonalInfoResponse>(profile));
         }
 
         /// <summary>
         ///     Update user's profile information.
         /// </summary>
         [HttpPatch]
-        public async Task<IActionResult> PatchAsync([FromBody] JsonPatchDocument<ProfilePatchRequest> document)
+        public async Task<IActionResult> PatchAsync([FromBody] JsonPatchDocument<PersonalInfoPatchRequest> document)
         {
             if (ModelState.IsValid)
             {
                 var user = await _userManager.GetUserAsync(User);
 
-                var profile = await _userManager.GetProfileAsync(user);
+                var profile = await _userManager.GetPersonalInfoAsync(user);
 
-                var request = _mapper.Map<ProfilePatchRequest>(profile);
+                var request = _mapper.Map<PersonalInfoPatchRequest>(profile);
 
                 document.ApplyTo(request, ModelState); // TODO: Add fluentvalidation.
 
-                var result = await _userManager.SetProfileAsync(
+                var result = await _userManager.SetPersonalInfoAsync(
                     user,
                     request.FirstName,
                     request.LastName,

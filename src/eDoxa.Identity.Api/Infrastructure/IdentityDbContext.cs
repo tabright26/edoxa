@@ -32,24 +32,24 @@ namespace eDoxa.Identity.Api.Infrastructure
                     builder.Property(user => user.NormalizedEmail).IsRequired();
 
                     builder.OwnsOne(
-                        user => user.Doxatag,
-                        userDoxatag =>
+                        user => user.DoxaTag,
+                        userDoxaTag =>
                         {
-                            userDoxatag.Property(doxatag => doxatag!.Name);
-                            userDoxatag.Property(doxatag => doxatag!.Discriminator);
-                            userDoxatag.ToTable("Doxatag");
+                            userDoxaTag.Property(doxaTag => doxaTag!.Name);
+                            userDoxaTag.Property(doxaTag => doxaTag!.Code);
+                            userDoxaTag.ToTable("DoxaTag");
                         }
                     );
 
                     builder.OwnsOne(
-                        user => user.Profile,
-                        userProfile =>
+                        user => user.PersonalInfo,
+                        userPersonalInfo =>
                         {
-                            userProfile.Property(user => user!.FirstName).IsRequired(false);
-                            userProfile.Property(user => user!.LastName).IsRequired(false);
-                            userProfile.Property(user => user!.Gender).HasConversion(gender => gender != null ? (int?) gender.Value : null, gender => gender.HasValue ? Gender.FromValue(gender.Value) : null).IsRequired(false);
-                            userProfile.Property(user => user!.BirthDate).IsRequired(false);
-                            userProfile.ToTable("Profile");
+                            userPersonalInfo.Property(personalInfo => personalInfo!.FirstName).IsRequired(false);
+                            userPersonalInfo.Property(personalInfo => personalInfo!.LastName).IsRequired(false);
+                            userPersonalInfo.Property(personalInfo => personalInfo!.Gender).HasConversion(gender => gender != null ? (int?) gender.Value : null, gender => gender.HasValue ? Gender.FromValue(gender.Value) : null).IsRequired(false);
+                            userPersonalInfo.Property(personalInfo => personalInfo!.BirthDate).IsRequired(false);
+                            userPersonalInfo.ToTable("PersonalInfo");
                         }
                     );
 

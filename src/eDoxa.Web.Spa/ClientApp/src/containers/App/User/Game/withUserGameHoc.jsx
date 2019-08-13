@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { loadUserGames } from "../../../../store/actions/identityActions";
+import { loadGames } from "../../../../store/actions/identityActions";
 
 const withUserGameHoc = WrappedComponent => {
   class UserGameContainer extends Component {
     componentDidMount() {
-      this.props.actions.loadUserGames();
+      this.props.actions.loadGames();
     }
 
     render() {
@@ -22,7 +22,7 @@ const withUserGameHoc = WrappedComponent => {
   const mapDispatchToProps = dispatch => {
     return {
       actions: {
-        loadUserGames: () => dispatch(loadUserGames())
+        loadGames: () => dispatch(loadGames())
       }
     };
   };

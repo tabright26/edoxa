@@ -36,10 +36,10 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             var user = new User
             {
                 Id = Guid.NewGuid(),
-                Doxatag = new Doxatag
+                DoxaTag = new DoxaTag
                 {
                     Name = "Test",
-                    Discriminator = 234
+                    Code = 234
                 }
             };
 
@@ -86,10 +86,10 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             var user = new User
             {
                 Id = Guid.NewGuid(),
-                Doxatag = new Doxatag
+                DoxaTag = new DoxaTag
                 {
                     Name = "Test",
-                    Discriminator = 234
+                    Code = 234
                 }
             };
 

@@ -10,7 +10,7 @@ using eDoxa.Identity.Api.Infrastructure;
 namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(IdentityDbContext))]
-    [Migration("20190810195911_InitialCreate")]
+    [Migration("20190813005024_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -232,25 +232,25 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                                 .OnDelete(DeleteBehavior.Cascade);
                         });
 
-                    b.OwnsOne("eDoxa.Identity.Api.Infrastructure.Models.Doxatag", "Doxatag", b1 =>
+                    b.OwnsOne("eDoxa.Identity.Api.Infrastructure.Models.DoxaTag", "DoxaTag", b1 =>
                         {
                             b1.Property<Guid>("UserId");
 
-                            b1.Property<int>("Discriminator");
+                            b1.Property<int>("Code");
 
                             b1.Property<string>("Name");
 
                             b1.HasKey("UserId");
 
-                            b1.ToTable("Doxatag");
+                            b1.ToTable("DoxaTag");
 
                             b1.HasOne("eDoxa.Identity.Api.Infrastructure.Models.User")
-                                .WithOne("Doxatag")
-                                .HasForeignKey("eDoxa.Identity.Api.Infrastructure.Models.Doxatag", "UserId")
+                                .WithOne("DoxaTag")
+                                .HasForeignKey("eDoxa.Identity.Api.Infrastructure.Models.DoxaTag", "UserId")
                                 .OnDelete(DeleteBehavior.Cascade);
                         });
 
-                    b.OwnsOne("eDoxa.Identity.Api.Infrastructure.Models.Profile", "Profile", b1 =>
+                    b.OwnsOne("eDoxa.Identity.Api.Infrastructure.Models.PersonalInfo", "PersonalInfo", b1 =>
                         {
                             b1.Property<Guid>("UserId");
 
@@ -264,11 +264,11 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
 
                             b1.HasKey("UserId");
 
-                            b1.ToTable("Profile");
+                            b1.ToTable("PersonalInfo");
 
                             b1.HasOne("eDoxa.Identity.Api.Infrastructure.Models.User")
-                                .WithOne("Profile")
-                                .HasForeignKey("eDoxa.Identity.Api.Infrastructure.Models.Profile", "UserId")
+                                .WithOne("PersonalInfo")
+                                .HasForeignKey("eDoxa.Identity.Api.Infrastructure.Models.PersonalInfo", "UserId")
                                 .OnDelete(DeleteBehavior.Cascade);
                         });
                 });

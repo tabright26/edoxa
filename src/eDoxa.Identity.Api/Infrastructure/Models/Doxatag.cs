@@ -8,15 +8,15 @@
 
 namespace eDoxa.Identity.Api.Infrastructure.Models
 {
-    public class Doxatag
+    public class DoxaTag
     {
         public string Name { get; set; }
 
-        public int Discriminator { get; set; }
+        public int Code { get; set; }
 
         public override string ToString()
         {
-            return $"{Name}#{Discriminator}";
+            return $"{Name}#{Code}";
         }
     }
 }

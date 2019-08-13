@@ -1,4 +1,4 @@
-﻿// Filename: Profile.cs
+﻿// Filename: PersonalInfo.cs
 // Date Created: 2019-08-09
 // 
 // ================================================
@@ -8,7 +8,7 @@ using System;
 
 namespace eDoxa.Identity.Api.Infrastructure.Models
 {
-    public class Profile
+    public class PersonalInfo
     {
         public string? FirstName { get; set; }
 

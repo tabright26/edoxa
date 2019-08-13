@@ -1,4 +1,4 @@
-﻿// Filename: ProfilePatchRequest.cs
+﻿// Filename: PersonalInfoPatchRequest.cs
 // Date Created: 2019-08-10
 // 
 // ================================================
@@ -12,9 +12,9 @@ using eDoxa.Identity.Api.Infrastructure.Models;
 namespace eDoxa.Identity.Api.Areas.Identity.Requests
 {
     [DataContract]
-    public class ProfilePatchRequest
+    public class PersonalInfoPatchRequest
     {
-        public ProfilePatchRequest(
+        public PersonalInfoPatchRequest(
             string? firstName,
             string? lastName,
             Gender? gender,

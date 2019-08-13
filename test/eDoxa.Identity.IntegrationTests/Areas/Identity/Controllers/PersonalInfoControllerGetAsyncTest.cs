@@ -28,13 +28,11 @@ using Microsoft.AspNetCore.TestHost;
 
 using Xunit;
 
-using Profile = eDoxa.Identity.Api.Infrastructure.Models.Profile;
-
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
-    public sealed class ProfileControllerGetAsyncTest : IClassFixture<IdentityWebApplicationFactory>
+    public sealed class PersonalInfoControllerGetAsyncTest : IClassFixture<IdentityWebApplicationFactory>
     {
-        public ProfileControllerGetAsyncTest(IdentityWebApplicationFactory identityWebApplicationFactory)
+        public PersonalInfoControllerGetAsyncTest(IdentityWebApplicationFactory identityWebApplicationFactory)
         {
             User = new HashSet<User>(IdentityStorage.TestUsers).First();
 
@@ -54,15 +52,15 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
         private async Task<HttpResponseMessage> ExecuteAsync()
         {
-            return await _httpClient.GetAsync("api/profile");
+            return await _httpClient.GetAsync("api/personal-info");
         }
 
         [Fact]
         public async Task GetAsync_ShouldBeStatus200OK()
         {
-            var profile = new Profile();
+            var profile = new PersonalInfo();
 
-            User.Profile = profile;
+            User.PersonalInfo = profile;
 
             await _testServer.UsingScopeAsync(
                 async scope =>
@@ -88,9 +86,9 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                 {
                     var mapper = scope.GetRequiredService<IMapper>();
 
-                    var profileResponse = await response.DeserializeAsync<ProfileResponse>();
+                    var profileResponse = await response.DeserializeAsync<PersonalInfoResponse>();
 
-                    profileResponse.Should().BeEquivalentTo(mapper.Map<ProfileResponse>(profile));
+                    profileResponse.Should().BeEquivalentTo(mapper.Map<PersonalInfoResponse>(profile));
                 }
             );
         }
@@ -98,7 +96,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         [Fact]
         public async Task GetAsync_ShouldBeStatus204NoContent()
         {
-            User.Profile = null;
+            User.PersonalInfo = null;
 
             await _testServer.UsingScopeAsync(
                 async scope =>

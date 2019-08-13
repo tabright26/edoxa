@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Col, Row, ListGroup, ListGroupItem, TabContent, TabPane } from "reactstrap";
 
+import ProfileDetails from "./Details/Details";
+
 class Profile extends Component {
   state = {
     activeTab: 0
@@ -14,50 +16,50 @@ class Profile extends Component {
     return (
       <Row>
         <Col xs="4" sm="3" md="2">
-          <ListGroup id="list-tab" role="tablist">
+          <ListGroup id="list-tab-2" role="tablist" className="my-4">
             <ListGroupItem onClick={() => this.toggle(0)} action active={this.state.activeTab === 0}>
-              Home
+              Profile Overview
             </ListGroupItem>
             <ListGroupItem onClick={() => this.toggle(1)} action active={this.state.activeTab === 1}>
-              Profile
+              Profile Details
             </ListGroupItem>
             <ListGroupItem onClick={() => this.toggle(2)} action active={this.state.activeTab === 2}>
-              Change Password
+              Security
             </ListGroupItem>
             <ListGroupItem onClick={() => this.toggle(3)} action active={this.state.activeTab === 3}>
-              Settings
+              Confidentiality
+            </ListGroupItem>
+            <ListGroupItem onClick={() => this.toggle(4)} action active={this.state.activeTab === 4}>
+              Connections
+            </ListGroupItem>
+            <ListGroupItem onClick={() => this.toggle(5)} action active={this.state.activeTab === 5}>
+              Payment Methods
+            </ListGroupItem>
+            <ListGroupItem onClick={() => this.toggle(6)} action active={this.state.activeTab === 6}>
+              Transaction History
             </ListGroupItem>
           </ListGroup>
         </Col>
-        <Col xs="8">
-          <TabContent activeTab={this.state.activeTab}>
-            <TabPane tabId={0}>
-              <p>
-                Velit aute mollit ipsum ad dolor consectetur nulla officia culpa adipisicing exercitation fugiat tempor. Voluptate deserunt sit sunt nisi aliqua fugiat proident ea ut. Mollit voluptate
-                reprehenderit occaecat nisi ad non minim tempor sunt voluptate consectetur exercitation id ut nulla. Ea et fugiat aliquip nostrud sunt incididunt consectetur culpa aliquip eiusmod
-                dolor. Anim ad Lorem aliqua in cupidatat nisi enim eu nostrud do aliquip veniam minim.
-              </p>
+        <Col xs="12" sm="12" md="7" lg="6">
+          <TabContent activeTab={this.state.activeTab} className="border-0 my-4" style={{ background: "none" }}>
+            <TabPane tabId={0} className="p-0">
+              <h5 className="mb-4">PROFILE OVERVIEW</h5>
             </TabPane>
-            <TabPane tabId={1}>
-              <p>
-                Cupidatat quis ad sint excepteur laborum in esse qui. Et excepteur consectetur ex nisi eu do cillum ad laborum. Mollit et eu officia dolore sunt Lorem culpa qui commodo velit ex amet
-                id ex. Officia anim incididunt laboris deserunt anim aute dolor incididunt veniam aute dolore do exercitation. Dolor nisi culpa ex ad irure in elit eu dolore. Ad laboris ipsum
-                reprehenderit irure non commodo enim culpa commodo veniam incididunt veniam ad.
-              </p>
+            <ProfileDetails tabId={1} />
+            <TabPane tabId={2} className="p-0">
+              <h5 className="mb-4">SECURITY</h5>
             </TabPane>
-            <TabPane tabId={2}>
-              <p>
-                Ut ut do pariatur aliquip aliqua aliquip exercitation do nostrud commodo reprehenderit aute ipsum voluptate. Irure Lorem et laboris nostrud amet cupidatat cupidatat anim do ut velit
-                mollit consequat enim tempor. Consectetur est minim nostrud nostrud consectetur irure labore voluptate irure. Ipsum id Lorem sit sint voluptate est pariatur eu ad cupidatat et deserunt
-                culpa sit eiusmod deserunt. Consectetur et fugiat anim do eiusmod aliquip nulla laborum elit adipisicing pariatur cillum.
-              </p>
+            <TabPane tabId={3} className="p-0">
+              <h5 className="mb-4">CONFIDENTIALITY</h5>
             </TabPane>
-            <TabPane tabId={3}>
-              <p>
-                Irure enim occaecat labore sit qui aliquip reprehenderit amet velit. Deserunt ullamco ex elit nostrud ut dolore nisi officia magna sit occaecat laboris sunt dolor. Nisi eu minim cillum
-                occaecat aute est cupidatat aliqua labore aute occaecat ea aliquip sunt amet. Aute mollit dolor ut exercitation irure commodo non amet consectetur quis amet culpa. Quis ullamco nisi
-                amet qui aute irure eu. Magna labore dolor quis ex labore id nostrud deserunt dolor eiusmod eu pariatur culpa mollit in irure.
-              </p>
+            <TabPane tabId={4} className="p-0">
+              <h5 className="mb-4">CONNECTIONS</h5>
+            </TabPane>
+            <TabPane tabId={5} className="p-0">
+              <h5 className="mb-4">PAYMENT METHODS</h5>
+            </TabPane>
+            <TabPane tabId={6} className="p-0">
+              <h5 className="mb-4">TRANSACTION HISTORY</h5>
             </TabPane>
           </TabContent>
         </Col>

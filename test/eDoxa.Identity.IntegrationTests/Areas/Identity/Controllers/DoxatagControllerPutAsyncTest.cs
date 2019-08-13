@@ -29,9 +29,9 @@ using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
-    public sealed class DoxatagControllerPutAsyncTest : IClassFixture<IdentityWebApplicationFactory>
+    public sealed class DoxaTagControllerPutAsyncTest : IClassFixture<IdentityWebApplicationFactory>
     {
-        public DoxatagControllerPutAsyncTest(IdentityWebApplicationFactory identityWebApplicationFactory)
+        public DoxaTagControllerPutAsyncTest(IdentityWebApplicationFactory identityWebApplicationFactory)
         {
             User = new HashSet<User>(IdentityStorage.TestUsers).First();
 
@@ -44,9 +44,9 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             _testServer.CleanupDbContext();
         }
 
-        private async Task<HttpResponseMessage> ExecuteAsync(DoxatagPutRequest request)
+        private async Task<HttpResponseMessage> ExecuteAsync(DoxaTagPutRequest request)
         {
-            return await _httpClient.PutAsync("api/doxatag", new JsonContent(request));
+            return await _httpClient.PutAsync("api/doxa-tag", new JsonContent(request));
         }
 
         private readonly TestServer _testServer;
@@ -57,13 +57,13 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         [Fact]
         public async Task PutAsync_ShouldBeStatus200OK()
         {
-            var oldDoxatag = new Doxatag
+            var oldDoxatag = new DoxaTag
             {
                 Name = "Old",
-                Discriminator = 12345
+                Code = 12345
             };
 
-            User.Doxatag = oldDoxatag;
+            User.DoxaTag = oldDoxatag;
 
             await _testServer.UsingScopeAsync(
                 async scope =>
@@ -77,7 +77,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             );
 
             // Act
-            using var response = await this.ExecuteAsync(new DoxatagPutRequest("New"));
+            using var response = await this.ExecuteAsync(new DoxaTagPutRequest("New"));
 
             // Assert
             response.EnsureSuccessStatusCode();

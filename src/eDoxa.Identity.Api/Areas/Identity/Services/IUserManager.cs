@@ -27,11 +27,11 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
         Task<IList<UserGame>> GetGamesAsync(User user);
 
-        Task<Profile?> GetProfileAsync(User user);
+        Task<PersonalInfo?> GetPersonalInfoAsync(User user);
 
         Task<Address?> GetAddressAsync(User user);
 
-        Task<Doxatag?> GetDoxatagAsync(User user);
+        Task<DoxaTag?> GetDoxaTagAsync(User user);
 
         Task<string?> GetBirthDateAsync(User user);
 
@@ -255,10 +255,10 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
         IQueryable<User> Users { get; }
 
-        Task<IdentityResult> SetProfileAsync(User user, string? firstName, string? lastName, Gender? gender, DateTime? birthDate);
+        Task<IdentityResult> SetPersonalInfoAsync(User user, string? firstName, string? lastName, Gender? gender, DateTime? birthDate);
 
         Task<IdentityResult> SetAddressAsync(User user, string street, string city, string postalCode, string country);
 
-        Task<IdentityResult> SetDoxatagAsync(User user, string doxatagName);
+        Task<IdentityResult> SetDoxaTagAsync(User user, string doxaTagName);
     }
 }

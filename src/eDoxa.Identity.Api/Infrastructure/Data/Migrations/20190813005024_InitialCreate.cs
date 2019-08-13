@@ -90,18 +90,18 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Doxatag",
+                name: "DoxaTag",
                 columns: table => new
                 {
                     UserId = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: true),
-                    Discriminator = table.Column<int>(nullable: false)
+                    Code = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Doxatag", x => x.UserId);
+                    table.PrimaryKey("PK_DoxaTag", x => x.UserId);
                     table.ForeignKey(
-                        name: "FK_Doxatag_User_UserId",
+                        name: "FK_DoxaTag_User_UserId",
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
@@ -109,7 +109,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Profile",
+                name: "PersonalInfo",
                 columns: table => new
                 {
                     UserId = table.Column<Guid>(nullable: false),
@@ -120,9 +120,9 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Profile", x => x.UserId);
+                    table.PrimaryKey("PK_PersonalInfo", x => x.UserId);
                     table.ForeignKey(
-                        name: "FK_Profile_User_UserId",
+                        name: "FK_PersonalInfo_User_UserId",
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
@@ -284,10 +284,10 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                 name: "Address");
 
             migrationBuilder.DropTable(
-                name: "Doxatag");
+                name: "DoxaTag");
 
             migrationBuilder.DropTable(
-                name: "Profile");
+                name: "PersonalInfo");
 
             migrationBuilder.DropTable(
                 name: "RoleClaim");

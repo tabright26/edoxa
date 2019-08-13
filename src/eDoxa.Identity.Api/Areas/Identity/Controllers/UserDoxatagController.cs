@@ -22,15 +22,15 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     [ApiController]
     [ApiVersion("1.0")]
     [Produces("application/json")]
-    [Route("api/users/{userId}/doxatag")]
+    [Route("api/users/{userId}/doxa-tag")]
     [ApiExplorerSettings(GroupName = "Users")]
     [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
-    public class UserDoxatagController : ControllerBase
+    public class UserDoxaTagController : ControllerBase
     {
         private readonly IUserManager _userManager;
         private readonly IMapper _mapper;
 
-        public UserDoxatagController(IUserManager userManager, IMapper mapper)
+        public UserDoxaTagController(IUserManager userManager, IMapper mapper)
         {
             _userManager = userManager;
             _mapper = mapper;
@@ -50,14 +50,14 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                 return this.NotFound("User's not found.");
             }
 
-            var doxatag = await _userManager.GetDoxatagAsync(user);
+            var doxaTag = await _userManager.GetDoxaTagAsync(user);
 
-            if (doxatag == null)
+            if (doxaTag == null)
             {
                 return this.NoContent();
             }
 
-            return this.Ok(_mapper.Map<DoxatagResponse>(doxatag));
+            return this.Ok(_mapper.Map<DoxaTagResponse>(doxaTag));
         }
     }
 }

@@ -155,12 +155,12 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
                     UserName = record.Email,
                     Email = record.Email,
                     PhoneNumber = record.Phone,
-                    Doxatag = new Doxatag
+                    DoxaTag = new DoxaTag
                     {
                         Name = record.Doxatag,
-                        Discriminator = random.Next(100, 10000)
+                        Code = random.Next(100, 10000)
                     },
-                    Profile = new Profile
+                    PersonalInfo = new PersonalInfo
                     {
                         FirstName = record.FirstName,
                         LastName = record.LastName,

@@ -12,10 +12,10 @@ namespace eDoxa.Identity.Api.Infrastructure.Models
 {
     public class User : IdentityUser<Guid>
     {
-        public Profile? Profile { get; set; }
+        public PersonalInfo? PersonalInfo { get; set; }
 
         public Address? Address { get; set; }
 
-        public Doxatag? Doxatag { get; set; }
+        public DoxaTag? DoxaTag { get; set; }
     }
 }

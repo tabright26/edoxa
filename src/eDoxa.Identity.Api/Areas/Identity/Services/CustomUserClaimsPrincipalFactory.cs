@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Services
 {
@@ -62,19 +63,21 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
         {
             Identity!.AddClaim(new Claim(Options.ClaimsIdentity.UserIdClaimType, await UserManager.GetUserIdAsync(user)));
 
-            await this.TryGenerateUserNameClaimAsync(user);
-
-            await this.TryGenerateNameClaimAsync(user);
+            await this.TryGenerateDoxaTagClaimAsync(user);
 
             await this.TryGenerateFirstNameClaimAsync(user);
 
             await this.TryGenerateLastNameClaimAsync(user);
+
+            await this.TryGenerateNameClaimAsync(user);
 
             await this.TryGenerateBirthDateClaimAsync(user);
 
             await this.TryGenerateEmailClaimsAsync(user);
 
             await this.TryGeneratePhoneNumberClaimsAsync(user);
+
+            await this.TryGenerateAddressesClaimAsync(user);
 
             if (UserManager.SupportsUserSecurityStamp)
             {
@@ -87,15 +90,26 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             }
         }
 
-        private async Task TryGenerateUserNameClaimAsync(User user)
+        private async Task TryGenerateDoxaTagClaimAsync(User user)
         {
-            var doxatag = await UserManager.GetDoxatagAsync(user);
+            var doxaTag = await UserManager.GetDoxaTagAsync(user);
 
-            if (doxatag != null)
+            if (doxaTag != null)
             {
-                Identity!.AddClaim(new Claim(JwtClaimTypes.PreferredUserName, doxatag.Name));
-
-                Identity!.AddClaim(new Claim(Options.ClaimsIdentity.UserNameClaimType, doxatag.ToString()));
+                Identity!.AddClaim(
+                    new Claim(
+                        CustomClaimTypes.DoxaTag,
+                        JsonConvert.SerializeObject(
+                            doxaTag,
+                            Formatting.Indented,
+                            new JsonSerializerSettings
+                            {
+                                ContractResolver = new CamelCasePropertyNamesContractResolver()
+                            }
+                        ),
+                        IdentityServerConstants.ClaimValueTypes.Json
+                    )
+                );
             }
         }
 
@@ -169,6 +183,22 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
                     Identity!.AddClaim(new Claim(JwtClaimTypes.PhoneNumberVerified, phoneNumberConfirmed.ToString()));
                 }
+            }
+        }
+
+        private async Task TryGenerateAddressesClaimAsync(User user)
+        {
+            var address = await UserManager.GetAddressAsync(user);
+
+            if (address != null)
+            {
+                Identity!.AddClaim(
+                    new Claim(
+                        CustomClaimTypes.Addresses,
+                        JsonConvert.SerializeObject(new[] {address}, Formatting.Indented),
+                        IdentityServerConstants.ClaimValueTypes.Json
+                    )
+                );
             }
         }
 

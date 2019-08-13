@@ -154,7 +154,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             return await Store.GetGamesAsync(user, CancellationToken);
         }
 
-        public async Task<Profile?> GetProfileAsync(User user)
+        public async Task<PersonalInfo?> GetPersonalInfoAsync(User user)
         {
             this.ThrowIfDisposed();
 
@@ -163,10 +163,10 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return await Store.GetProfileAsync(user, CancellationToken);
+            return await Store.GetPersonalInfoAsync(user, CancellationToken);
         }
 
-        public async Task<IdentityResult> SetProfileAsync(User user, string? firstName, string? lastName, Gender? gender, DateTime? birthDate)
+        public async Task<IdentityResult> SetPersonalInfoAsync(User user, string? firstName, string? lastName, Gender? gender, DateTime? birthDate)
         {
             this.ThrowIfDisposed();
 
@@ -175,7 +175,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            var profile = new Profile
+            var profile = new PersonalInfo
             {
                 FirstName = firstName,
                 LastName = lastName,
@@ -183,7 +183,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 BirthDate = birthDate
             };
 
-            await Store.SetProfileAsync(user, profile, CancellationToken);
+            await Store.SetPersonalInfoAsync(user, profile, CancellationToken);
 
             await this.UpdateSecurityStampAsync(user);
 
@@ -226,7 +226,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             return await this.UpdateUserAsync(user);
         }
 
-        public async Task<Doxatag?> GetDoxatagAsync(User user)
+        public async Task<DoxaTag?> GetDoxaTagAsync(User user)
         {
             this.ThrowIfDisposed();
 
@@ -238,7 +238,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             return await Store.GetDoxatagAsync(user, CancellationToken);
         }
 
-        public async Task<IdentityResult> SetDoxatagAsync(User user, string doxatagName)
+        public async Task<IdentityResult> SetDoxaTagAsync(User user, string doxaTagName)
         {
             this.ThrowIfDisposed();
 
@@ -247,41 +247,41 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            var doxatag = new Doxatag
+            var doxaTag = new DoxaTag
             {
-                Name = doxatagName,
-                Discriminator = await this.EnsureDiscriminatorUniqueness(doxatagName)
+                Name = doxaTagName,
+                Code = await this.EnsureCodeUniqueness(doxaTagName)
             };
 
-            await Store.SetDoxatagAsync(user, doxatag, CancellationToken);
+            await Store.SetDoxatagAsync(user, doxaTag, CancellationToken);
 
             await this.UpdateSecurityStampAsync(user);
 
             return await this.UpdateUserAsync(user);
         }
 
-        private async Task<int> EnsureDiscriminatorUniqueness(string doxatagName)
+        private async Task<int> EnsureCodeUniqueness(string doxaTagName)
         {
-            var discriminators = await Store.GetDiscriminatorsForDoxatagAsync(doxatagName);
+            var codes = await Store.GetCodesForDoxaTagAsync(doxaTagName);
 
-            return discriminators.Any() ? EnsureDiscriminatorUniqueness() : GenerateDiscriminator();
+            return codes.Any() ? EnsureCodeUniqueness() : GenerateCode();
 
-            int EnsureDiscriminatorUniqueness()
+            int EnsureCodeUniqueness()
             {
                 while (true)
                 {
-                    var discriminator = GenerateDiscriminator();
+                    var code = GenerateCode();
 
-                    if (discriminators.Contains(discriminator))
+                    if (codes.Contains(code))
                     {
                         continue;
                     }
 
-                    return discriminator;
+                    return code;
                 }
             }
 
-            static int GenerateDiscriminator()
+            static int GenerateCode()
             {
                 return Random.Next(100, 10000);
             }

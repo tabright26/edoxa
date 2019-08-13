@@ -1,4 +1,4 @@
-﻿// Filename: ProfileControllerTest.cs
+﻿// Filename: PersonalInfoControllerTest.cs
 // Date Created: 2019-08-09
 // 
 // ================================================
@@ -28,7 +28,7 @@ using static eDoxa.Identity.UnitTests.Helpers.Extensions.MapperExtensions;
 namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 {
     [TestClass]
-    public sealed class ProfileControllerTest
+    public sealed class PersonalInfoControllerTest
     {
         [TestMethod]
         public async Task GetAsync_ShouldBeOkObjectResult()
@@ -36,7 +36,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Arrange
             var user = new User
             {
-                Profile = new Profile
+                PersonalInfo = new PersonalInfo
                 {
                     FirstName = "Test",
                     LastName = "Test",
@@ -49,9 +49,9 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
 
-            mockUserManager.Setup(userManager => userManager.GetProfileAsync(It.IsAny<User>())).ReturnsAsync(user.Profile).Verifiable();
+            mockUserManager.Setup(userManager => userManager.GetPersonalInfoAsync(It.IsAny<User>())).ReturnsAsync(user.PersonalInfo).Verifiable();
 
-            var controller = new ProfileController(mockUserManager.Object, Mapper);
+            var controller = new PersonalInfoController(mockUserManager.Object, Mapper);
 
             // Act
             var result = await controller.GetAsync();
@@ -59,11 +59,11 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(Mapper.Map<ProfileResponse>(user.Profile));
+            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(Mapper.Map<PersonalInfoResponse>(user.PersonalInfo));
 
             mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
 
-            mockUserManager.Verify(userManager => userManager.GetProfileAsync(It.IsAny<User>()), Times.Once);
+            mockUserManager.Verify(userManager => userManager.GetPersonalInfoAsync(It.IsAny<User>()), Times.Once);
         }
 
         [TestMethod]
@@ -76,7 +76,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsNotNull<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
 
-            var controller = new ProfileController(mockUserManager.Object, Mapper);
+            var controller = new PersonalInfoController(mockUserManager.Object, Mapper);
 
             // Act
             var result = await controller.GetAsync();
@@ -86,7 +86,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
 
-            mockUserManager.Verify(userManager => userManager.GetProfileAsync(It.IsAny<User>()), Times.Once);
+            mockUserManager.Verify(userManager => userManager.GetPersonalInfoAsync(It.IsAny<User>()), Times.Once);
         }
 
         [TestMethod]
@@ -95,7 +95,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Arrange
             var user = new User
             {
-                Profile = new Profile
+                PersonalInfo = new PersonalInfo
                 {
                     FirstName = "FirstName",
                     LastName = "LastName",
@@ -108,10 +108,10 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
 
-            mockUserManager.Setup(userManager => userManager.GetProfileAsync(It.IsAny<User>())).ReturnsAsync(user.Profile).Verifiable();
+            mockUserManager.Setup(userManager => userManager.GetPersonalInfoAsync(It.IsAny<User>())).ReturnsAsync(user.PersonalInfo).Verifiable();
 
             mockUserManager.Setup(
-                    userManager => userManager.SetProfileAsync(
+                    userManager => userManager.SetPersonalInfoAsync(
                         It.IsAny<User>(),
                         It.IsAny<string>(),
                         It.IsAny<string>(),
@@ -122,9 +122,9 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                 .ReturnsAsync(IdentityResult.Success)
                 .Verifiable();
 
-            var controller = new ProfileController(mockUserManager.Object, Mapper);
+            var controller = new PersonalInfoController(mockUserManager.Object, Mapper);
 
-            var document = new JsonPatchDocument<ProfilePatchRequest>();
+            var document = new JsonPatchDocument<PersonalInfoPatchRequest>();
 
             // Act
             var result = await controller.PatchAsync(document);
@@ -136,10 +136,10 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
 
-            mockUserManager.Verify(userManager => userManager.GetProfileAsync(It.IsAny<User>()), Times.Once);
+            mockUserManager.Verify(userManager => userManager.GetPersonalInfoAsync(It.IsAny<User>()), Times.Once);
 
             mockUserManager.Verify(
-                userManager => userManager.SetProfileAsync(
+                userManager => userManager.SetPersonalInfoAsync(
                     It.IsAny<User>(),
                     It.IsAny<string>(),
                     It.IsAny<string>(),
@@ -156,7 +156,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Arrange
             var user = new User
             {
-                Profile = new Profile
+                PersonalInfo = new PersonalInfo
                 {
                     FirstName = "FirstName",
                     LastName = "LastName",
@@ -169,10 +169,10 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
 
-            mockUserManager.Setup(userManager => userManager.GetProfileAsync(It.IsAny<User>())).ReturnsAsync(user.Profile).Verifiable();
+            mockUserManager.Setup(userManager => userManager.GetPersonalInfoAsync(It.IsAny<User>())).ReturnsAsync(user.PersonalInfo).Verifiable();
 
             mockUserManager.Setup(
-                    userManager => userManager.SetProfileAsync(
+                    userManager => userManager.SetPersonalInfoAsync(
                         It.IsAny<User>(),
                         It.IsAny<string>(),
                         It.IsAny<string>(),
@@ -183,9 +183,9 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                 .ReturnsAsync(IdentityResult.Failed())
                 .Verifiable();
 
-            var controller = new ProfileController(mockUserManager.Object, Mapper);
+            var controller = new PersonalInfoController(mockUserManager.Object, Mapper);
 
-            var document = new JsonPatchDocument<ProfilePatchRequest>();
+            var document = new JsonPatchDocument<PersonalInfoPatchRequest>();
 
             // Act
             var result = await controller.PatchAsync(document);
@@ -197,10 +197,10 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
 
-            mockUserManager.Verify(userManager => userManager.GetProfileAsync(It.IsAny<User>()), Times.Once);
+            mockUserManager.Verify(userManager => userManager.GetPersonalInfoAsync(It.IsAny<User>()), Times.Once);
 
             mockUserManager.Verify(
-                userManager => userManager.SetProfileAsync(
+                userManager => userManager.SetPersonalInfoAsync(
                     It.IsAny<User>(),
                     It.IsAny<string>(),
                     It.IsAny<string>(),

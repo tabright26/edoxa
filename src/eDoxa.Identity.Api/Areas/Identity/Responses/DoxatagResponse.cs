@@ -1,4 +1,4 @@
-﻿// Filename: DoxatagResponse.cs
+﻿// Filename: DoxaTagResponse.cs
 // Date Created: 2019-08-09
 // 
 // ================================================
@@ -11,15 +11,12 @@ using Newtonsoft.Json;
 namespace eDoxa.Identity.Api.Areas.Identity.Responses
 {
     [JsonObject]
-    public class DoxatagResponse
+    public class DoxaTagResponse
     {
-        [JsonProperty("prefix")]
-        public string Prefix { get; set; }
+        [JsonProperty("name")]
+        public string Name { get; set; }
 
-        [JsonProperty("suffix")]
-        public int Suffix { get; set; }
-
-        [JsonProperty("value")]
-        public string Value { get; set; }
+        [JsonProperty("code")]
+        public int Code { get; set; }
     }
 }

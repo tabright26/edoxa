@@ -28,9 +28,9 @@ using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
-    public sealed class UserDoxatagControllerGetAsyncTest : IClassFixture<IdentityWebApplicationFactory>
+    public sealed class UserDoxaTagControllerGetAsyncTest : IClassFixture<IdentityWebApplicationFactory>
     {
-        public UserDoxatagControllerGetAsyncTest(IdentityWebApplicationFactory identityWebApplicationFactory)
+        public UserDoxaTagControllerGetAsyncTest(IdentityWebApplicationFactory identityWebApplicationFactory)
         {
             User = new HashSet<User>(IdentityStorage.TestUsers).First();
             _httpClient = identityWebApplicationFactory.CreateClient();
@@ -45,19 +45,19 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
         private async Task<HttpResponseMessage> ExecuteAsync(Guid userId)
         {
-            return await _httpClient.GetAsync($"api/users/{userId}/doxatag");
+            return await _httpClient.GetAsync($"api/users/{userId}/doxa-tag");
         }
 
         [Fact]
         public async Task GetAsync_ShouldBeStatus200OK()
         {
-            var doxatag = new Doxatag
+            var doxaTag = new DoxaTag
             {
                 Name = "Test",
-                Discriminator = 12345
+                Code = 12345
             };
 
-            User.Doxatag = doxatag;
+            User.DoxaTag = doxaTag;
 
             await _testServer.UsingScopeAsync(
                 async scope =>
@@ -83,9 +83,9 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                 {
                     var mapper = scope.GetRequiredService<IMapper>();
 
-                    var doxatagResponse = await response.DeserializeAsync<DoxatagResponse>();
+                    var doxaTagResponse = await response.DeserializeAsync<DoxaTagResponse>();
 
-                    doxatagResponse.Should().BeEquivalentTo(mapper.Map<DoxatagResponse>(doxatag));
+                    doxaTagResponse.Should().BeEquivalentTo(mapper.Map<DoxaTagResponse>(doxaTag));
                 }
             );
         }
@@ -93,7 +93,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         [Fact]
         public async Task GetAsync_ShouldBeStatus204NoContent()
         {
-            User.Doxatag = null;
+            User.DoxaTag = null;
 
             await _testServer.UsingScopeAsync(
                 async scope =>

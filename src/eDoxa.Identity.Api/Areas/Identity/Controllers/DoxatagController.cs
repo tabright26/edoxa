@@ -1,4 +1,4 @@
-﻿// Filename: DoxatagController.cs
+﻿// Filename: DoxaTagController.cs
 // Date Created: 2019-08-09
 // 
 // ================================================
@@ -23,15 +23,15 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     [ApiController]
     [ApiVersion("1.0")]
     [Produces("application/json")]
-    [Route("api/doxatag")]
-    [ApiExplorerSettings(GroupName = "Doxatag")]
+    [Route("api/doxa-tag")]
+    [ApiExplorerSettings(GroupName = "DoxaTag")]
     [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
-    public class DoxatagController : ControllerBase
+    public class DoxaTagController : ControllerBase
     {
         private readonly IUserManager _userManager;
         private readonly IMapper _mapper;
 
-        public DoxatagController(IUserManager userManager, IMapper mapper)
+        public DoxaTagController(IUserManager userManager, IMapper mapper)
         {
             _userManager = userManager;
             _mapper = mapper;
@@ -45,27 +45,27 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
 
-            var doxatag = await _userManager.GetDoxatagAsync(user);
+            var doxaTag = await _userManager.GetDoxaTagAsync(user);
 
-            if (doxatag == null)
+            if (doxaTag == null)
             {
                 return this.NoContent();
             }
 
-            return this.Ok(_mapper.Map<DoxatagResponse>(doxatag));
+            return this.Ok(_mapper.Map<DoxaTagResponse>(doxaTag));
         }
 
         /// <summary>
         ///     Update user's Doxatag.
         /// </summary>
         [HttpPut]
-        public async Task<IActionResult> PutAsync([FromBody] DoxatagPutRequest request)
+        public async Task<IActionResult> PutAsync([FromBody] DoxaTagPutRequest request)
         {
             if (ModelState.IsValid)
             {
                 var user = await _userManager.GetUserAsync(User);
 
-                var result = await _userManager.SetDoxatagAsync(user, request.Name);
+                var result = await _userManager.SetDoxaTagAsync(user, request.Name);
 
                 if (result.Succeeded)
                 {

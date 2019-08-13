@@ -18,7 +18,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Responses
         [JsonProperty("id")]
         public Guid Id { get; set; }
 
-        [JsonProperty("doxatag")]
-        public DoxatagResponse Doxatag { get; set; }
+        [JsonProperty("doxaTag")]
+        public DoxaTagResponse DoxaTag { get; set; }
     }
 }
