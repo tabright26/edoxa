@@ -16,7 +16,7 @@ class AddressBookTabPanel extends Component {
             </div>
           </CardHeader>
           <CardBody>
-            <AddressBookData addressBook={[{ street: "1225 NOTRE-DAME OUEST", city: "MONTREAL", postalCode: "A1A 1A1", country: "CA" }]} />
+            <AddressBookData />
           </CardBody>
         </Card>
       </TabPane>

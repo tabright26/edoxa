@@ -74,16 +74,47 @@ export function loadPersonalInfo() {
   };
 }
 
+export const LOAD_ADDRESS_BOOK = "LOAD_ADDRESS_BOOK";
+export const LOAD_ADDRESS_BOOK_SUCCESS = "LOAD_ADDRESS_BOOK_SUCCESS";
+export const LOAD_ADDRESS_BOOK_FAIL = "LOAD_ADDRESS_BOOK_FAIL";
+export function loadAddressBook() {
+  return {
+    types: [LOAD_ADDRESS_BOOK, LOAD_ADDRESS_BOOK_SUCCESS, LOAD_ADDRESS_BOOK_FAIL],
+    payload: {
+      request: {
+        method: "get",
+        url: `/identity/api/address-book`
+      }
+    }
+  };
+}
+
 export const LOAD_ADDRESS = "LOAD_ADDRESS";
 export const LOAD_ADDRESS_SUCCESS = "LOAD_ADDRESS_SUCCESS";
 export const LOAD_ADDRESS_FAIL = "LOAD_ADDRESS_FAIL";
-export function loadAddress() {
+export function loadAddress(addressId) {
   return {
     types: [LOAD_ADDRESS, LOAD_ADDRESS_SUCCESS, LOAD_ADDRESS_FAIL],
     payload: {
       request: {
         method: "get",
-        url: "/identity/api/address"
+        url: `/identity/api/address-book/${addressId}`
+      }
+    }
+  };
+}
+
+export const ADD_ADDRESS = "ADD_ADDRESS";
+export const ADD_ADDRESS_SUCCESS = "ADD_ADDRESS_SUCCESS";
+export const ADD_ADDRESS_FAIL = "ADD_ADDRESS_FAIL";
+export function addAddress(body) {
+  return {
+    types: [ADD_ADDRESS, ADD_ADDRESS_SUCCESS, ADD_ADDRESS_FAIL],
+    payload: {
+      request: {
+        method: "post",
+        url: "/identity/api/address-book",
+        body: body
       }
     }
   };
@@ -92,14 +123,29 @@ export function loadAddress() {
 export const UPDATE_ADDRESS = "UPDATE_ADDRESS";
 export const UPDATE_ADDRESS_SUCCESS = "UPDATE_ADDRESS_SUCCESS";
 export const UPDATE_ADDRESS_FAIL = "UPDATE_ADDRESS_FAIL";
-export function updateAddress(body) {
+export function updateAddress(addressId, body) {
   return {
     types: [UPDATE_ADDRESS, UPDATE_ADDRESS_SUCCESS, UPDATE_ADDRESS_FAIL],
     payload: {
       request: {
         method: "put",
-        url: "/identity/api/address",
+        url: `/identity/api/address-book/${addressId}`,
         body: body
+      }
+    }
+  };
+}
+
+export const REMOVE_ADDRESS = "REMOVE_ADDRESS";
+export const REMOVE_ADDRESS_SUCCESS = "REMOVE_ADDRESS_SUCCESS";
+export const REMOVE_ADDRESS_FAIL = "REMOVE_ADDRESS_FAIL";
+export function removeAddress(addressId) {
+  return {
+    types: [REMOVE_ADDRESS, REMOVE_ADDRESS_SUCCESS, REMOVE_ADDRESS_FAIL],
+    payload: {
+      request: {
+        method: "delete",
+        url: `/identity/api/address-book/${addressId}`
       }
     }
   };

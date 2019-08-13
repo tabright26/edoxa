@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { loadAddress } from "../../../../store/actions/identityActions";
+import { loadAddressBook } from "../../../../store/actions/identityActions";
 
 const withAddressBookHoc = WrappedComponent => {
   class AddressBookContainer extends Component {
     componentDidMount() {
-      this.props.actions.loadAddress();
+      this.props.actions.loadAddressBook();
     }
 
     render() {
@@ -22,7 +22,7 @@ const withAddressBookHoc = WrappedComponent => {
   const mapDispatchToProps = dispatch => {
     return {
       actions: {
-        loadAddress: () => dispatch(loadAddress())
+        loadAddressBook: () => dispatch(loadAddressBook())
       }
     };
   };
