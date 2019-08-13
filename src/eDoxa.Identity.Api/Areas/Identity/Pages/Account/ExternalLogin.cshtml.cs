@@ -22,10 +22,10 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
     public class ExternalLoginModel : PageModel
     {
         private readonly ILogger<ExternalLoginModel> _logger;
-        private readonly CustomSignInManager _signInManager;
+        private readonly SignInManager _signInManager;
         private readonly UserManager _userManager;
 
-        public ExternalLoginModel(CustomSignInManager signInManager, UserManager userManager, ILogger<ExternalLoginModel> logger)
+        public ExternalLoginModel(SignInManager signInManager, UserManager userManager, ILogger<ExternalLoginModel> logger)
         {
             _signInManager = signInManager;
             _userManager = userManager;

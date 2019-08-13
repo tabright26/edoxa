@@ -4,6 +4,10 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -34,12 +38,15 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Arrange
             var user = new User
             {
-                Address = new Address
+                AddressBook = new List<UserAddress>
                 {
-                    City = "Test",
-                    PostalCode = "Test",
-                    Country = "Test",
-                    Street = "Test"
+                    new UserAddress
+                    {
+                        City = "Test",
+                        PostalCode = "Test",
+                        Country = "Test",
+                        Line1 = "Test"
+                    }
                 }
             };
 
@@ -47,9 +54,9 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
 
-            mockUserManager.Setup(userManager => userManager.GetAddressAsync(It.IsAny<User>())).ReturnsAsync(user.Address).Verifiable();
+            mockUserManager.Setup(userManager => userManager.GetAddressBookAsync(It.IsAny<User>())).ReturnsAsync(user.AddressBook).Verifiable();
 
-            var controller = new AddressController(mockUserManager.Object, Mapper);
+            var controller = new AddressBookController(mockUserManager.Object, Mapper);
 
             // Act
             var result = await controller.GetAsync();
@@ -57,11 +64,11 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(Mapper.Map<AddressResponse>(user.Address));
+            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(Mapper.Map<ICollection<AddressResponse>>(user.AddressBook));
 
             mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
 
-            mockUserManager.Verify(userManager => userManager.GetAddressAsync(It.IsAny<User>()), Times.Once);
+            mockUserManager.Verify(userManager => userManager.GetAddressBookAsync(It.IsAny<User>()), Times.Once);
         }
 
         [TestMethod]
@@ -74,7 +81,9 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsNotNull<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
 
-            var controller = new AddressController(mockUserManager.Object, Mapper);
+            mockUserManager.Setup(userManager => userManager.GetAddressBookAsync(It.IsAny<User>())).ReturnsAsync(new Collection<UserAddress>()).Verifiable();
+
+            var controller = new AddressBookController(mockUserManager.Object, Mapper);
 
             // Act
             var result = await controller.GetAsync();
@@ -84,7 +93,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
 
-            mockUserManager.Verify(userManager => userManager.GetAddressAsync(It.IsAny<User>()), Times.Once);
+            mockUserManager.Verify(userManager => userManager.GetAddressBookAsync(It.IsAny<User>()), Times.Once);
         }
 
         [TestMethod]
@@ -93,12 +102,15 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Arrange
             var user = new User
             {
-                Address = new Address
+                AddressBook = new List<UserAddress>
                 {
-                    City = "Test",
-                    PostalCode = "Test",
-                    Country = "Test",
-                    Street = "Test"
+                    new UserAddress
+                    {
+                        City = "Test",
+                        PostalCode = "Test",
+                        Country = "Test",
+                        Line1 = "Test"
+                    }
                 }
             };
 
@@ -107,8 +119,10 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
 
             mockUserManager.Setup(
-                    userManager => userManager.SetAddressAsync(
+                    userManager => userManager.UpdateAddressAsync(
                         It.IsAny<User>(),
+                        It.IsAny<Guid>(),
+                        It.IsAny<string>(),
                         It.IsAny<string>(),
                         It.IsAny<string>(),
                         It.IsAny<string>(),
@@ -118,12 +132,12 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                 .ReturnsAsync(IdentityResult.Success)
                 .Verifiable();
 
-            var controller = new AddressController(mockUserManager.Object, Mapper);
+            var controller = new AddressBookController(mockUserManager.Object, Mapper);
 
-            var request = new AddressPutRequest("New", "New", "New", "New");
+            var request = new AddressPutRequest("New", "New", "New", "New", "New");
 
             // Act
-            var result = await controller.PutAsync(request);
+            var result = await controller.PutAsync(user.AddressBook.First().Id, request);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -133,8 +147,10 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
 
             mockUserManager.Verify(
-                userManager => userManager.SetAddressAsync(
+                userManager => userManager.UpdateAddressAsync(
                     It.IsAny<User>(),
+                    It.IsAny<Guid>(),
+                    It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<string>(),
@@ -155,8 +171,10 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsNotNull<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
 
             mockUserManager.Setup(
-                    userManager => userManager.SetAddressAsync(
+                    userManager => userManager.UpdateAddressAsync(
                         It.IsAny<User>(),
+                        It.IsAny<Guid>(),
+                        It.IsAny<string>(),
                         It.IsAny<string>(),
                         It.IsAny<string>(),
                         It.IsAny<string>(),
@@ -166,12 +184,12 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                 .ReturnsAsync(IdentityResult.Failed())
                 .Verifiable();
 
-            var controller = new AddressController(mockUserManager.Object, Mapper);
+            var controller = new AddressBookController(mockUserManager.Object, Mapper);
 
-            var request = new AddressPutRequest("New", "New", "New", "New");
+            var request = new AddressPutRequest("New", "New", "New", "New", "New");
 
             // Act
-            var result = await controller.PutAsync(request);
+            var result = await controller.PutAsync(Guid.NewGuid(), request);
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
@@ -181,8 +199,10 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
 
             mockUserManager.Verify(
-                userManager => userManager.SetAddressAsync(
+                userManager => userManager.UpdateAddressAsync(
                     It.IsAny<User>(),
+                    It.IsAny<Guid>(),
+                    It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<string>(),

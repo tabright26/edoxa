@@ -1,5 +1,5 @@
 ﻿// Filename: PersonalInfoProfile.cs
-// Date Created: 2019-08-09
+// Date Created: 2019-08-10
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -15,6 +15,14 @@ namespace eDoxa.Identity.Api.Areas.Identity.Responses.Profiles
         public PersonalInfoProfile()
         {
             this.CreateMap<PersonalInfo, PersonalInfoResponse>()
+                .ForMember(
+                    personalInfo => personalInfo.Name,
+                    config =>
+                    {
+                        config.Condition(personalInfo => personalInfo.FirstName != null && personalInfo.LastName != null);
+                        config.MapFrom(personalInfo => $"{personalInfo.FirstName} {personalInfo.LastName}");
+                    }
+                )
                 .ForMember(personalInfo => personalInfo.FirstName, config => config.MapFrom(personalInfo => personalInfo.FirstName))
                 .ForMember(personalInfo => personalInfo.LastName, config => config.MapFrom(personalInfo => personalInfo.LastName))
                 .ForMember(personalInfo => personalInfo.Gender, config => config.MapFrom(personalInfo => personalInfo.Gender))

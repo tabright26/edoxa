@@ -32,6 +32,25 @@ namespace eDoxa.Identity.Api.Infrastructure
                     builder.Property(user => user.NormalizedEmail).IsRequired();
 
                     builder.OwnsOne(
+                        user => user.PersonalInfo,
+                        userPersonalInfo =>
+                        {
+                            userPersonalInfo.Property(personalInfo => personalInfo!.FirstName).IsRequired(false);
+                            userPersonalInfo.Property(personalInfo => personalInfo!.LastName).IsRequired(false);
+
+                            userPersonalInfo.Property(personalInfo => personalInfo!.Gender)
+                                .HasConversion(
+                                    gender => gender != null ? (int?) gender.Value : null,
+                                    gender => gender.HasValue ? Gender.FromValue(gender.Value) : null
+                                )
+                                .IsRequired(false);
+
+                            userPersonalInfo.Property(personalInfo => personalInfo!.BirthDate).IsRequired(false);
+                            userPersonalInfo.ToTable("PersonalInfo");
+                        }
+                    );
+
+                    builder.OwnsOne(
                         user => user.DoxaTag,
                         userDoxaTag =>
                         {
@@ -41,32 +60,25 @@ namespace eDoxa.Identity.Api.Infrastructure
                         }
                     );
 
-                    builder.OwnsOne(
-                        user => user.PersonalInfo,
-                        userPersonalInfo =>
-                        {
-                            userPersonalInfo.Property(personalInfo => personalInfo!.FirstName).IsRequired(false);
-                            userPersonalInfo.Property(personalInfo => personalInfo!.LastName).IsRequired(false);
-                            userPersonalInfo.Property(personalInfo => personalInfo!.Gender).HasConversion(gender => gender != null ? (int?) gender.Value : null, gender => gender.HasValue ? Gender.FromValue(gender.Value) : null).IsRequired(false);
-                            userPersonalInfo.Property(personalInfo => personalInfo!.BirthDate).IsRequired(false);
-                            userPersonalInfo.ToTable("PersonalInfo");
-                        }
-                    );
-
-                    builder.OwnsOne(
-                        user => user.Address,
-                        userAddress =>
-                        {
-                            userAddress.Property(address => address!.Street).IsRequired();
-                            userAddress.Property(address => address!.City).IsRequired();
-                            userAddress.Property(address => address!.PostalCode).IsRequired();
-                            userAddress.Property(address => address!.Country).IsRequired();
-                            userAddress.ToTable("Address");
-                        }
-                    );
-
+                    builder.HasMany(user => user.AddressBook).WithOne().HasForeignKey(address => address.UserId).IsRequired();
                     builder.HasMany<UserGame>().WithOne().HasForeignKey(userGame => userGame.UserId).IsRequired();
                     builder.ToTable("User");
+                }
+            );
+
+            modelBuilder.Entity<UserAddress>(
+                builder =>
+                {
+                    builder.HasKey(address => address.Id);
+                    builder.Property(address => address.Id).IsRequired();
+                    builder.Property(address => address.Type).HasConversion(type => type.Value, type => UserAddressType.FromValue(type)).IsRequired();
+                    builder.Property(address => address.Country).IsRequired();
+                    builder.Property(address => address.Line1).IsRequired();
+                    builder.Property(address => address.Line2).IsRequired(false);
+                    builder.Property(address => address.City).IsRequired();
+                    builder.Property(address => address.State).IsRequired(false);
+                    builder.Property(address => address.PostalCode).IsRequired();
+                    builder.ToTable("UserAddress");
                 }
             );
 

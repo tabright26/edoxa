@@ -36,12 +36,12 @@ namespace eDoxa.Identity.Api.Controllers
     {
         private readonly IEventService _events;
         private readonly IIdentityServerInteractionService _interaction;
-        private readonly CustomSignInManager _signInManager;
+        private readonly SignInManager _signInManager;
         private readonly UserManager _userManager;
 
         public ExternalController(
             UserManager userManager,
-            CustomSignInManager signInManager,
+            SignInManager signInManager,
             IIdentityServerInteractionService interaction,
             IEventService events
         )

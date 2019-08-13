@@ -10,7 +10,7 @@ using eDoxa.Identity.Api.Infrastructure;
 namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(IdentityDbContext))]
-    [Migration("20190813005024_InitialCreate")]
+    [Migration("20190813071718_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -117,6 +117,38 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                     b.ToTable("User");
                 });
 
+            modelBuilder.Entity("eDoxa.Identity.Api.Infrastructure.Models.UserAddress", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("City")
+                        .IsRequired();
+
+                    b.Property<string>("Country")
+                        .IsRequired();
+
+                    b.Property<string>("Line1")
+                        .IsRequired();
+
+                    b.Property<string>("Line2");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired();
+
+                    b.Property<string>("State");
+
+                    b.Property<int>("Type");
+
+                    b.Property<Guid>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserAddress");
+                });
+
             modelBuilder.Entity("eDoxa.Identity.Api.Infrastructure.Models.UserClaim", b =>
                 {
                     b.Property<int>("Id")
@@ -206,32 +238,6 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("eDoxa.Identity.Api.Infrastructure.Models.User", b =>
                 {
-                    b.OwnsOne("eDoxa.Identity.Api.Infrastructure.Models.Address", "Address", b1 =>
-                        {
-                            b1.Property<Guid>("UserId");
-
-                            b1.Property<string>("City")
-                                .IsRequired();
-
-                            b1.Property<string>("Country")
-                                .IsRequired();
-
-                            b1.Property<string>("PostalCode")
-                                .IsRequired();
-
-                            b1.Property<string>("Street")
-                                .IsRequired();
-
-                            b1.HasKey("UserId");
-
-                            b1.ToTable("Address");
-
-                            b1.HasOne("eDoxa.Identity.Api.Infrastructure.Models.User")
-                                .WithOne("Address")
-                                .HasForeignKey("eDoxa.Identity.Api.Infrastructure.Models.Address", "UserId")
-                                .OnDelete(DeleteBehavior.Cascade);
-                        });
-
                     b.OwnsOne("eDoxa.Identity.Api.Infrastructure.Models.DoxaTag", "DoxaTag", b1 =>
                         {
                             b1.Property<Guid>("UserId");
@@ -271,6 +277,14 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                                 .HasForeignKey("eDoxa.Identity.Api.Infrastructure.Models.PersonalInfo", "UserId")
                                 .OnDelete(DeleteBehavior.Cascade);
                         });
+                });
+
+            modelBuilder.Entity("eDoxa.Identity.Api.Infrastructure.Models.UserAddress", b =>
+                {
+                    b.HasOne("eDoxa.Identity.Api.Infrastructure.Models.User")
+                        .WithMany("AddressBook")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("eDoxa.Identity.Api.Infrastructure.Models.UserClaim", b =>

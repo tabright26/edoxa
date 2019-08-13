@@ -38,13 +38,13 @@ namespace eDoxa.Identity.Api.Controllers
         private readonly IEventService _events;
         private readonly IIdentityServerInteractionService _interaction;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
-        private readonly CustomSignInManager _signInManager;
+        private readonly SignInManager _signInManager;
         private readonly UserManager _userManager;
         private readonly IdentityAppSettings _appSettings;
 
         public AccountController(
             UserManager userManager,
-            CustomSignInManager signInManager,
+            SignInManager signInManager,
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
             IAuthenticationSchemeProvider schemeProvider,

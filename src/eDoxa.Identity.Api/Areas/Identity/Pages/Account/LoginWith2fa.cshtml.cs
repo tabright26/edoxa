@@ -22,10 +22,10 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class LoginWith2faModel : PageModel
     {
-        private readonly CustomSignInManager _signInManager;
+        private readonly SignInManager _signInManager;
         private readonly ILogger<LoginWith2faModel> _logger;
 
-        public LoginWith2faModel(CustomSignInManager signInManager, ILogger<LoginWith2faModel> logger)
+        public LoginWith2faModel(SignInManager signInManager, ILogger<LoginWith2faModel> logger)
         {
             _signInManager = signInManager;
             _logger = logger;

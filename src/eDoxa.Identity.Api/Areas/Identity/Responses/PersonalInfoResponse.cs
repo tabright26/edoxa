@@ -16,6 +16,9 @@ namespace eDoxa.Identity.Api.Areas.Identity.Responses
     [JsonObject]
     public class PersonalInfoResponse
     {
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
         [JsonProperty("firstName")]
         public string FirstName { get; set; }
 

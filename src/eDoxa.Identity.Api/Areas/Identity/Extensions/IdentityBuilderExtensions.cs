@@ -23,13 +23,13 @@ namespace eDoxa.Identity.Api.Areas.Identity.Extensions
         {
             var services = builder.Services;
             services.AddSingleton<IEmailSender, EmailSender>();
-            services.AddScoped<CustomUserStore>();
+            services.AddScoped<UserStore>();
             services.AddScoped<CustomUserClaimsPrincipalFactory>();
             services.AddScoped<CustomIdentityErrorDescriber>();
             services.AddScoped<UserManager>();
             services.AddScoped<IUserManager, UserManager>();
-            services.AddScoped<CustomSignInManager>();
-            services.AddScoped<CustomRoleManager>();
+            services.AddScoped<SignInManager>();
+            services.AddScoped<RoleManager>();
         }
 
         public static IdentityBuilder AddTokenProviders(this IdentityBuilder builder, Action<TokenProviderOptions> options)

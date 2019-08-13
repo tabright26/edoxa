@@ -118,7 +118,7 @@ namespace eDoxa.Identity.Api
                     }
                 )
                 .AddEntityFrameworkStores<IdentityDbContext>()
-                .AddUserStore<CustomUserStore>()
+                .AddUserStore<UserStore>()
                 .AddTokenProviders(
                     options =>
                     {
@@ -131,8 +131,8 @@ namespace eDoxa.Identity.Api
                 )
                 .AddClaimsPrincipalFactory<CustomUserClaimsPrincipalFactory>()
                 .AddUserManager<UserManager>()
-                .AddSignInManager<CustomSignInManager>()
-                .AddRoleManager<CustomRoleManager>()
+                .AddSignInManager<SignInManager>()
+                .AddRoleManager<RoleManager>()
                 .BuildCustomServices();
 
             services.Configure<PasswordHasherOptions>(

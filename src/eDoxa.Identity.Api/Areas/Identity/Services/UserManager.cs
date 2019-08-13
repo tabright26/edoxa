@@ -1,4 +1,4 @@
-﻿// Filename: CustomUserManager.cs
+﻿// Filename: UserManager.cs
 // Date Created: 2019-07-21
 // 
 // ================================================
@@ -22,7 +22,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
         private static readonly Random Random = new Random();
 
         public UserManager(
-            CustomUserStore store,
+            UserStore store,
             IOptions<IdentityOptions> optionsAccessor,
             IPasswordHasher<User> passwordHasher,
             IEnumerable<IUserValidator<User>> userValidators,
@@ -47,7 +47,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             Store = store;
         }
 
-        private new CustomUserStore Store { get; }
+        private new UserStore Store { get; }
 
         private new CustomIdentityErrorDescriber ErrorDescriber { get; }
 
@@ -166,7 +166,13 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             return await Store.GetPersonalInfoAsync(user, CancellationToken);
         }
 
-        public async Task<IdentityResult> SetPersonalInfoAsync(User user, string? firstName, string? lastName, Gender? gender, DateTime? birthDate)
+        public async Task<IdentityResult> SetPersonalInfoAsync(
+            User user,
+            string? firstName,
+            string? lastName,
+            Gender? gender,
+            DateTime? birthDate
+        )
         {
             this.ThrowIfDisposed();
 
@@ -184,42 +190,6 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             };
 
             await Store.SetPersonalInfoAsync(user, profile, CancellationToken);
-
-            await this.UpdateSecurityStampAsync(user);
-
-            return await this.UpdateUserAsync(user);
-        }
-
-        public async Task<Address?> GetAddressAsync(User user)
-        {
-            this.ThrowIfDisposed();
-
-            if (user == null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
-
-            return await Store.GetAddressAsync(user, CancellationToken);
-        }
-
-        public async Task<IdentityResult> SetAddressAsync(User user, string street, string city, string postalCode, string country)
-        {
-            this.ThrowIfDisposed();
-
-            if (user == null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
-
-            var address = new Address
-            {
-                Street = street,
-                City = city,
-                PostalCode = postalCode,
-                Country = country
-            };
-
-            await Store.SetAddressAsync(user, address, CancellationToken);
 
             await this.UpdateSecurityStampAsync(user);
 
@@ -258,33 +228,6 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             await this.UpdateSecurityStampAsync(user);
 
             return await this.UpdateUserAsync(user);
-        }
-
-        private async Task<int> EnsureCodeUniqueness(string doxaTagName)
-        {
-            var codes = await Store.GetCodesForDoxaTagAsync(doxaTagName);
-
-            return codes.Any() ? EnsureCodeUniqueness() : GenerateCode();
-
-            int EnsureCodeUniqueness()
-            {
-                while (true)
-                {
-                    var code = GenerateCode();
-
-                    if (codes.Contains(code))
-                    {
-                        continue;
-                    }
-
-                    return code;
-                }
-            }
-
-            static int GenerateCode()
-            {
-                return Random.Next(100, 10000);
-            }
         }
 
         public async Task<string?> GetBirthDateAsync(User user)
@@ -333,6 +276,124 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             }
 
             return await Store.GetGenderAsync(user, CancellationToken);
+        }
+
+        public async Task<IList<UserAddress>> GetAddressBookAsync(User user)
+        {
+            this.ThrowIfDisposed();
+
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return await Store.GetAddressBookAsync(user, CancellationToken);
+        }
+
+        public async Task<IdentityResult> RemoveAddressAsync(User user, Guid addressId)
+        {
+            this.ThrowIfDisposed();
+
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            await Store.RemoveAddressAsync(user, addressId, CancellationToken);
+
+            await this.UpdateSecurityStampAsync(user);
+
+            return await this.UpdateUserAsync(user);
+        }
+
+        public async Task<IdentityResult> AddAddressAsync(
+            User user,
+            string country,
+            string line1,
+            string? line2,
+            string city,
+            string? state,
+            string postalCode
+        )
+        {
+            this.ThrowIfDisposed();
+
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            await Store.AddAddressAsync(
+                user,
+                country,
+                line1,
+                line2,
+                city,
+                state,
+                postalCode,
+                CancellationToken
+            );
+
+            await this.UpdateSecurityStampAsync(user);
+
+            return await this.UpdateUserAsync(user);
+        }
+
+        public async Task<IdentityResult> UpdateAddressAsync(
+            User user,
+            Guid addressId,
+            string line1,
+            string? line2,
+            string city,
+            string? state,
+            string postalCode
+        )
+        {
+            this.ThrowIfDisposed();
+
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            var address = await Store.FindUserAddressAsync(user.Id, addressId, CancellationToken);
+
+            address.Line1 = line1;
+            address.Line2 = line2;
+            address.City = city;
+            address.State = state;
+            address.PostalCode = postalCode;
+            
+            await this.UpdateSecurityStampAsync(user);
+
+            return await this.UpdateUserAsync(user);
+        }
+
+        private async Task<int> EnsureCodeUniqueness(string doxaTagName)
+        {
+            var codes = await Store.GetCodesForDoxaTagAsync(doxaTagName);
+
+            return codes.Any() ? EnsureCodeUniqueness() : GenerateCode();
+
+            int EnsureCodeUniqueness()
+            {
+                while (true)
+                {
+                    var code = GenerateCode();
+
+                    if (codes.Contains(code))
+                    {
+                        continue;
+                    }
+
+                    return code;
+                }
+            }
+
+            static int GenerateCode()
+            {
+                return Random.Next(100, 10000);
+            }
         }
 
         private async Task<bool> HasGameAlreadyLinkedAsync(User user, Game game)

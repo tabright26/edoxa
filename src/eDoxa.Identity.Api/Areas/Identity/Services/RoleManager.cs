@@ -13,14 +13,14 @@ using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Services
 {
-    public sealed class CustomRoleManager : RoleManager<Role>
+    public sealed class RoleManager : RoleManager<Role>
     {
-        public CustomRoleManager(
+        public RoleManager(
             IRoleStore<Role> store,
             IEnumerable<IRoleValidator<Role>> roleValidators,
             ILookupNormalizer keyNormalizer,
             CustomIdentityErrorDescriber errors,
-            ILogger<CustomRoleManager> logger
+            ILogger<RoleManager> logger
         ) : base(
             store,
             roleValidators,

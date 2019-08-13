@@ -4,6 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -91,12 +92,15 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Arrange
             var user = new User
             {
-                Address = new Address
+                AddressBook = new List<UserAddress>
                 {
-                    City = "Test",
-                    PostalCode = "Test",
-                    Country = "Test",
-                    Street = "Test"
+                    new UserAddress
+                    {
+                        City = "Test",
+                        PostalCode = "Test",
+                        Country = "Test",
+                        Line1 = "Test"
+                    }
                 }
             };
 

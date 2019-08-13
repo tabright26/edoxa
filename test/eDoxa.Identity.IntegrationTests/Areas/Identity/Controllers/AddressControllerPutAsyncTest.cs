@@ -4,6 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -36,7 +37,9 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             User = new HashSet<User>(IdentityStorage.TestUsers).First();
 
             var factory = identityWebApplicationFactory.WithWebHostBuilder(
-                builder => builder.ConfigureTestServices(services => services.AddFakeClaimsPrincipalFilter(new[] {new Claim(JwtClaimTypes.Subject, User.Id.ToString())}))
+                builder => builder.ConfigureTestServices(
+                    services => services.AddFakeClaimsPrincipalFilter(new[] {new Claim(JwtClaimTypes.Subject, User.Id.ToString())})
+                )
             );
 
             _httpClient = factory.CreateClient();
@@ -44,9 +47,9 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             _testServer.CleanupDbContext();
         }
 
-        private async Task<HttpResponseMessage> ExecuteAsync(AddressPutRequest request)
+        private async Task<HttpResponseMessage> ExecuteAsync(Guid addressId, AddressPutRequest request)
         {
-            return await _httpClient.PutAsync("api/address", new JsonContent(request));
+            return await _httpClient.PutAsync($"api/address-book/{addressId}", new JsonContent(request));
         }
 
         private readonly TestServer _testServer;
@@ -57,14 +60,6 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         [Fact]
         public async Task PutAsync_ShouldBeStatus200OK()
         {
-            User.Address = new Address
-            {
-                City = "Old",
-                Street = "Old",
-                PostalCode = "Old",
-                Country = "Old"
-            };
-
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
@@ -73,20 +68,43 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                     var result = await userManager.CreateAsync(User);
 
                     result.Succeeded.Should().BeTrue();
+
+                    result = await userManager.AddAddressAsync(
+                        User,
+                        "Old",
+                        "Old",
+                        null,
+                        "Old",
+                        "Old",
+                        "Old"
+                    );
+
+                    result.Succeeded.Should().BeTrue();
+
+                    var addressBook = await userManager.GetAddressBookAsync(User);
+
+                    // Act
+                    using var response = await this.ExecuteAsync(
+                        addressBook.First().Id,
+                        new AddressPutRequest(
+                            "New",
+                            "New",
+                            "New",
+                            "New",
+                            "New"
+                        )
+                    );
+
+                    // Assert
+                    response.EnsureSuccessStatusCode();
+
+                    response.StatusCode.Should().Be(StatusCodes.Status200OK);
+
+                    var message = await response.DeserializeAsync<string>();
+
+                    message.Should().NotBeNullOrWhiteSpace();
                 }
             );
-
-            // Act
-            using var response = await this.ExecuteAsync(new AddressPutRequest("New", "New", "New", "New"));
-
-            // Assert
-            response.EnsureSuccessStatusCode();
-
-            response.StatusCode.Should().Be(StatusCodes.Status200OK);
-
-            var message = await response.DeserializeAsync<string>();
-
-            message.Should().NotBeNullOrWhiteSpace();
         }
     }
 }

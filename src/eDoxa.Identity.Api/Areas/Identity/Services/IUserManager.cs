@@ -27,9 +27,31 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
         Task<IList<UserGame>> GetGamesAsync(User user);
 
-        Task<PersonalInfo?> GetPersonalInfoAsync(User user);
+        Task<IdentityResult> AddAddressAsync(
+            User user,
+            string country,
+            string line1,
+            string? line2,
+            string city,
+            string? state,
+            string postalCode
+        );
 
-        Task<Address?> GetAddressAsync(User user);
+        Task<IdentityResult> UpdateAddressAsync(
+            User user,
+            Guid addressId,
+            string line1,
+            string? line2,
+            string city,
+            string? state,
+            string postalCode
+        );
+
+        Task<IdentityResult> RemoveAddressAsync(User user, Guid addressId);
+
+        Task<IList<UserAddress>> GetAddressBookAsync(User user);
+
+        Task<PersonalInfo?> GetPersonalInfoAsync(User user);
 
         Task<DoxaTag?> GetDoxaTagAsync(User user);
 
@@ -256,8 +278,6 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
         IQueryable<User> Users { get; }
 
         Task<IdentityResult> SetPersonalInfoAsync(User user, string? firstName, string? lastName, Gender? gender, DateTime? birthDate);
-
-        Task<IdentityResult> SetAddressAsync(User user, string street, string city, string postalCode, string country);
 
         Task<IdentityResult> SetDoxaTagAsync(User user, string doxaTagName);
     }

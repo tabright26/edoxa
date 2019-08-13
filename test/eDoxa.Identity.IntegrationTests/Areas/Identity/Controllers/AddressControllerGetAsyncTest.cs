@@ -37,7 +37,9 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             User = new HashSet<User>(IdentityStorage.TestUsers).First();
 
             var factory = identityWebApplicationFactory.WithWebHostBuilder(
-                builder => builder.ConfigureTestServices(services => services.AddFakeClaimsPrincipalFilter(new[] {new Claim(JwtClaimTypes.Subject, User.Id.ToString())}))
+                builder => builder.ConfigureTestServices(
+                    services => services.AddFakeClaimsPrincipalFilter(new[] {new Claim(JwtClaimTypes.Subject, User.Id.ToString())})
+                )
             );
 
             _httpClient = factory.CreateClient();
@@ -52,22 +54,12 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
         private async Task<HttpResponseMessage> ExecuteAsync()
         {
-            return await _httpClient.GetAsync("api/address");
+            return await _httpClient.GetAsync("api/address-book");
         }
 
         [Fact]
         public async Task GetAsync_ShouldBeStatus200OK()
         {
-            var address = new Address
-            {
-                City = "Test",
-                Street = "Test",
-                PostalCode = "Test",
-                Country = "Test"
-            };
-
-            User.Address = address;
-
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
@@ -76,25 +68,34 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                     var result = await userManager.CreateAsync(User);
 
                     result.Succeeded.Should().BeTrue();
-                }
-            );
 
-            // Act
-            using var response = await this.ExecuteAsync();
+                    result = await userManager.AddAddressAsync(
+                        User,
+                        "Test",
+                        "Test",
+                        null,
+                        "Test",
+                        "Test",
+                        "Test"
+                    );
 
-            // Assert
-            response.EnsureSuccessStatusCode();
+                    result.Succeeded.Should().BeTrue();
 
-            response.StatusCode.Should().Be(StatusCodes.Status200OK);
+                    var addressBook = await userManager.GetAddressBookAsync(User);
 
-            await _testServer.UsingScopeAsync(
-                async scope =>
-                {
+                    // Act
+                    using var response = await this.ExecuteAsync();
+
+                    // Assert
+                    response.EnsureSuccessStatusCode();
+
+                    response.StatusCode.Should().Be(StatusCodes.Status200OK);
+
                     var mapper = scope.GetRequiredService<IMapper>();
 
-                    var addressResponse = await response.DeserializeAsync<AddressResponse>();
+                    var addressResponse = await response.DeserializeAsync<ICollection<AddressResponse>>();
 
-                    addressResponse.Should().BeEquivalentTo(mapper.Map<AddressResponse>(address));
+                    addressResponse.Should().BeEquivalentTo(mapper.Map<ICollection<AddressResponse>>(addressBook));
                 }
             );
         }
@@ -102,8 +103,6 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         [Fact]
         public async Task GetAsync_ShouldBeStatus204NoContent()
         {
-            User.Address = null;
-
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {

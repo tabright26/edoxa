@@ -17,9 +17,9 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
     public class SetPasswordModel : PageModel
     {
         private readonly UserManager _userManager;
-        private readonly CustomSignInManager _signInManager;
+        private readonly SignInManager _signInManager;
 
-        public SetPasswordModel(UserManager userManager, CustomSignInManager signInManager)
+        public SetPasswordModel(UserManager userManager, SignInManager signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;

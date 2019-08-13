@@ -1,4 +1,4 @@
-﻿// Filename: CustomUserStore.cs
+﻿// Filename: UserStore.cs
 // Date Created: 2019-07-21
 // 
 // ================================================
@@ -17,12 +17,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Services
 {
-    public sealed class CustomUserStore : Microsoft.AspNetCore.Identity.EntityFrameworkCore.UserStore<User, Role, IdentityDbContext, Guid, UserClaim, UserRole,
+    public sealed class UserStore : Microsoft.AspNetCore.Identity.EntityFrameworkCore.UserStore<User, Role, IdentityDbContext, Guid, UserClaim, UserRole,
         UserLogin, UserToken, RoleClaim>
     {
-        public CustomUserStore(IdentityDbContext context, CustomIdentityErrorDescriber describer) : base(context, describer)
+        public UserStore(IdentityDbContext context, CustomIdentityErrorDescriber describer) : base(context, describer)
         {
         }
+
+        private DbSet<UserAddress> AddressBook => Context.Set<UserAddress>();
 
         private DbSet<UserGame> UserGames => Context.Set<UserGame>();
 
@@ -106,7 +108,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return await UserGames.Where(game => game.UserId.Equals(user.Id)).ToListAsync(cancellationToken);
+            return await UserGames.Where(game => game.UserId == user.Id).ToListAsync(cancellationToken);
         }
 
         public async Task<User?> FindByGameAsync(int gameValue, string playerId, CancellationToken cancellationToken = default)
@@ -176,7 +178,16 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 .ToListAsync(cancellationToken);
         }
 
-        public Task<Address?> GetAddressAsync(User user, CancellationToken cancellationToken = default)
+        public Task AddAddressAsync(
+            User user,
+            string country,
+            string line1,
+            string? line2,
+            string city,
+            string? state,
+            string postalCode,
+            CancellationToken cancellationToken = default
+        )
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -187,10 +198,45 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return Task.FromResult(user.Address);
+            if (string.IsNullOrWhiteSpace(country))
+            {
+                throw new ArgumentNullException(nameof(country));
+            }
+
+            if (string.IsNullOrWhiteSpace(line1))
+            {
+                throw new ArgumentNullException(nameof(line1));
+            }
+
+            if (string.IsNullOrWhiteSpace(city))
+            {
+                throw new ArgumentNullException(nameof(city));
+            }
+
+            if (string.IsNullOrWhiteSpace(postalCode))
+            {
+                throw new ArgumentNullException(nameof(postalCode));
+            }
+
+            AddressBook.Add(
+                new UserAddress
+                {
+                    Id = Guid.NewGuid(),
+                    Type = UserAddressType.Principal,
+                    Country = country,
+                    Line1 = line1,
+                    Line2 = line2,
+                    City = city,
+                    State = state,
+                    PostalCode = postalCode,
+                    UserId = user.Id
+                }
+            );
+
+            return Task.FromResult(false);
         }
 
-        public Task SetAddressAsync(User user, Address address, CancellationToken cancellationToken = default)
+        public async Task RemoveAddressAsync(User user, Guid addressId, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -201,9 +247,33 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            user.Address = address;
+            var address = await this.FindUserAddressAsync(user.Id, addressId, cancellationToken);
 
-            return Task.CompletedTask;
+            if (address == null)
+            {
+                return;
+            }
+
+            AddressBook.Remove(address);
+        }
+
+        public async Task<UserAddress> FindUserAddressAsync(Guid userId, Guid addressId, CancellationToken cancellationToken = default)
+        {
+            return await AddressBook.SingleOrDefaultAsync(address => address.UserId == userId && address.Id == addressId, cancellationToken);
+        }
+
+        public async Task<IList<UserAddress>> GetAddressBookAsync(User user, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            this.ThrowIfDisposed();
+
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return await AddressBook.Where(address => address.UserId == user.Id).ToListAsync(cancellationToken);
         }
 
         public Task<string?> GetFirstNameAsync(User user, CancellationToken cancellationToken = default)

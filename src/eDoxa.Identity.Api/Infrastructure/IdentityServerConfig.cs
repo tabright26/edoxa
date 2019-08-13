@@ -27,6 +27,12 @@ namespace eDoxa.Identity.Api.Infrastructure
 
             yield return new IdentityResources.Profile();
 
+            yield return new IdentityResources.Email();
+
+            yield return new IdentityResources.Phone();
+
+            yield return new IdentityResources.Address();
+
             yield return CustomIdentityResources.Roles;
 
             yield return CustomIdentityResources.Permissions;

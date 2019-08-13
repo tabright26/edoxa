@@ -20,10 +20,10 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
     public class IndexModel : PageModel
     {
         private readonly UserManager _userManager;
-        private readonly CustomSignInManager _signInManager;
+        private readonly SignInManager _signInManager;
         private readonly IEmailSender _emailSender;
 
-        public IndexModel(UserManager userManager, CustomSignInManager signInManager, IEmailSender emailSender)
+        public IndexModel(UserManager userManager, SignInManager signInManager, IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;

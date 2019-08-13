@@ -22,10 +22,10 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class LoginWithRecoveryCodeModel : PageModel
     {
-        private readonly CustomSignInManager _signInManager;
+        private readonly SignInManager _signInManager;
         private readonly ILogger<LoginWithRecoveryCodeModel> _logger;
 
-        public LoginWithRecoveryCodeModel(CustomSignInManager signInManager, ILogger<LoginWithRecoveryCodeModel> logger)
+        public LoginWithRecoveryCodeModel(SignInManager signInManager, ILogger<LoginWithRecoveryCodeModel> logger)
         {
             _signInManager = signInManager;
             _logger = logger;

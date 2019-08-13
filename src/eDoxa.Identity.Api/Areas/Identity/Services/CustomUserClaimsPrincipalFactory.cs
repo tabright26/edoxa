@@ -26,7 +26,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 {
     public sealed class CustomUserClaimsPrincipalFactory : IUserClaimsPrincipalFactory<User>
     {
-        public CustomUserClaimsPrincipalFactory(UserManager userManager, CustomRoleManager roleManager, IOptions<IdentityOptions> optionsAccessor)
+        public CustomUserClaimsPrincipalFactory(UserManager userManager, RoleManager roleManager, IOptions<IdentityOptions> optionsAccessor)
         {
             UserManager = userManager;
             RoleManager = roleManager;
@@ -35,7 +35,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
         private UserManager UserManager { get; }
 
-        private CustomRoleManager RoleManager { get; }
+        private RoleManager RoleManager { get; }
 
         private IdentityOptions Options { get; }
 
@@ -188,7 +188,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
         private async Task TryGenerateAddressesClaimAsync(User user)
         {
-            var address = await UserManager.GetAddressAsync(user);
+            var address = await UserManager.GetAddressBookAsync(user);
 
             if (address != null)
             {

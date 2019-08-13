@@ -19,10 +19,10 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
     public class DeletePersonalDataModel : PageModel
     {
         private readonly UserManager _userManager;
-        private readonly CustomSignInManager _signInManager;
+        private readonly SignInManager _signInManager;
         private readonly ILogger<DeletePersonalDataModel> _logger;
 
-        public DeletePersonalDataModel(UserManager userManager, CustomSignInManager signInManager, ILogger<DeletePersonalDataModel> logger)
+        public DeletePersonalDataModel(UserManager userManager, SignInManager signInManager, ILogger<DeletePersonalDataModel> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
