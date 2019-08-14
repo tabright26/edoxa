@@ -16,7 +16,7 @@ export function loadUsers() {
 export const LOAD_USER_DOXATAG = "LOAD_USER_DOXATAG";
 export const LOAD_USER_DOXATAG_SUCCESS = "LOAD_USER_DOXATAG_SUCCESS";
 export const LOAD_USER_DOXATAG_FAIL = "LOAD_USER_DOXATAG_FAIL";
-export function loadUserDoxatag(userId) {
+export function loadUserDoxaTag(userId) {
   return {
     types: [LOAD_USER_DOXATAG, LOAD_USER_DOXATAG_SUCCESS, LOAD_USER_DOXATAG_FAIL],
     payload: {
@@ -31,7 +31,7 @@ export function loadUserDoxatag(userId) {
 export const LOAD_DOXATAG = "LOAD_DOXATAG";
 export const LOAD_DOXATAG_SUCCESS = "LOAD_DOXATAG_SUCCESS";
 export const LOAD_DOXATAG_FAIL = "LOAD_DOXATAG_FAIL";
-export function loadDoxatag() {
+export function loadDoxaTag() {
   return {
     types: [LOAD_DOXATAG, LOAD_DOXATAG_SUCCESS, LOAD_DOXATAG_FAIL],
     payload: {
@@ -46,14 +46,14 @@ export function loadDoxatag() {
 export const UPDATE_DOXATAG = "UPDATE_DOXATAG";
 export const UPDATE_DOXATAG_SUCCESS = "UPDATE_DOXATAG_SUCCESS";
 export const UPDATE_DOXATAG_FAIL = "UPDATE_DOXATAG_FAIL";
-export function updateDoxatag(body) {
+export function updateDoxaTag(name) {
   return {
     types: [UPDATE_DOXATAG, UPDATE_DOXATAG_SUCCESS, UPDATE_DOXATAG_FAIL],
     payload: {
       request: {
         method: "put",
         url: "/identity/api/doxa-tag",
-        body: body
+        data: { name }
       }
     }
   };
@@ -107,14 +107,14 @@ export function loadAddress(addressId) {
 export const ADD_ADDRESS = "ADD_ADDRESS";
 export const ADD_ADDRESS_SUCCESS = "ADD_ADDRESS_SUCCESS";
 export const ADD_ADDRESS_FAIL = "ADD_ADDRESS_FAIL";
-export function addAddress(body) {
+export function addAddress(address) {
   return {
     types: [ADD_ADDRESS, ADD_ADDRESS_SUCCESS, ADD_ADDRESS_FAIL],
     payload: {
       request: {
-        method: "post",
+        method: "POST",
         url: "/identity/api/address-book",
-        body: body
+        data: address
       }
     }
   };
@@ -123,14 +123,14 @@ export function addAddress(body) {
 export const UPDATE_ADDRESS = "UPDATE_ADDRESS";
 export const UPDATE_ADDRESS_SUCCESS = "UPDATE_ADDRESS_SUCCESS";
 export const UPDATE_ADDRESS_FAIL = "UPDATE_ADDRESS_FAIL";
-export function updateAddress(addressId, body) {
+export function updateAddress(addressId, address) {
   return {
     types: [UPDATE_ADDRESS, UPDATE_ADDRESS_SUCCESS, UPDATE_ADDRESS_FAIL],
     payload: {
       request: {
         method: "put",
         url: `/identity/api/address-book/${addressId}`,
-        body: body
+        data: address
       }
     }
   };

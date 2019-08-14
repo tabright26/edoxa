@@ -4,6 +4,7 @@ import { reducer as routerReducer } from "../middlewares/routerMiddleware";
 import { reducer as arenaReducer } from "./arenaReducer";
 import { reducer as userReducer } from "./userReducer";
 import { reducer as usersReducer } from "./usersReducer";
+import { reducer as formReducer } from "redux-form";
 
 export default () =>
   combineReducers({
@@ -11,5 +12,6 @@ export default () =>
     oidc: oidcReducer,
     arena: arenaReducer,
     user: userReducer,
-    users: usersReducer
+    users: usersReducer,
+    form: formReducer
   });

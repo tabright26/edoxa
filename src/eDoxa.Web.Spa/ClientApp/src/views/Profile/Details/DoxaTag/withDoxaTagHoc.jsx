@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { loadDoxatag } from "../../../../store/actions/identityActions";
+import { loadDoxaTag } from "../../../../store/actions/identityActions";
 
 const withDoxaTagHoc = WrappedComponent => {
   class DoxaTagContainer extends Component {
@@ -22,7 +22,7 @@ const withDoxaTagHoc = WrappedComponent => {
   const mapDispatchToProps = dispatch => {
     return {
       actions: {
-        loadDoxatag: () => dispatch(loadDoxatag())
+        loadDoxatag: () => dispatch(loadDoxaTag())
       }
     };
   };

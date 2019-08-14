@@ -12,13 +12,10 @@ export const middleware = multiClientMiddleware({
       interceptors: {
         request: [
           ({ getState }, config) => {
-            config.headers = {
-              accept: "application/json"
-            };
             const state = getState();
             const { user } = state.oidc;
             if (user) {
-              config.headers["authorization"] = `Bearer ${getState().oidc.user.access_token}`;
+              config.headers["Authorization"] = `Bearer ${user.access_token}`;
             }
             return config;
           }
