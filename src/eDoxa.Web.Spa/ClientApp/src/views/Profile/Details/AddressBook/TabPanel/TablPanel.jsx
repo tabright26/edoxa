@@ -5,8 +5,6 @@ import { TabPane, Card, CardHeader, CardBody } from "reactstrap";
 
 import AddressBookData from "./Data";
 
-import AddressBookModal from "../Modal/Modal";
-
 class AddressBookTabPanel extends Component {
   handleOpen = name => () => {
     this.props.actions.show(name);

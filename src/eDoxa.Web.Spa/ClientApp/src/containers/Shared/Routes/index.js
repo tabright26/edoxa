@@ -1,4 +1,3 @@
-import { Route } from "react-router-dom";
-import Secure from "./Secure";
+import Routes from "./Routes";
 
-export default { Default: Route, Secure };
+export default Routes;

@@ -28,7 +28,7 @@ const StructureTeamDashboard = React.lazy(() => import("./views/Structures/Teams
 const StructureTeamDetails = React.lazy(() => import("./views/Structures/Teams/Details/Details"));
 const StructureTeamMarketplace = React.lazy(() => import("./views/Structures/Teams/Makertplace/Marketplace"));
 const UserGames = React.lazy(() => import("./views/User/Games/Games"));
-
+const ProfileDetailsModal = React.lazy(() => import("./views/Profile/Details/AddressBook/Modal/Modal"));
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: "/", name: "Home", exact: true, secure: false, scopes: [] },
@@ -45,7 +45,7 @@ const routes = [
   { path: "/arena/tournament-history", name: "Tournament History", component: ArenaTournamentHistory, exact: true, secure: true, scopes: [] },
   { path: "/marketplace", name: "Marketplace", component: Marketplace, exact: true, secure: false, scopes: [] },
   { path: "/news-feeds", name: "News Feeds", component: NewsFeeds, exact: true, secure: false, scopes: [] },
-  { path: "/profile", name: "Profile Overview", component: Profile, exact: true, secure: true, scopes: [] },
+  { path: "/profile", name: "Profile Overview", component: Profile, exact: true, secure: true, scopes: [], modals: [ProfileDetailsModal] },
   { path: "/structures", name: "Structures", component: Structures, exact: true, secure: false, scopes: [] },
   { path: "/structures/clans", name: "Clans", component: StructureClans, exact: true, secure: false, scopes: [] },
   { path: "/structures/clans/:clanId", name: "Clan Details", component: StructureClanDetails, exact: true, secure: true, scopes: [] },
