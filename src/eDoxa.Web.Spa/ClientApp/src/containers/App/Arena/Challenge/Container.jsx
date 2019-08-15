@@ -47,7 +47,11 @@ export const withArenaChallengeContainer = WrappedComponent => {
   const mapStateToProps = (state, ownProps) => {
     const challenge = state.arena.challenges.find(challenge => challenge.id === ownProps.match.params.challengeId);
     challenge.participants.forEach(participant => {
-      participant.user = state.users.find(user => user.id === participant.userId);
+      participant.user = state.users.find(user => user.id === participant.userId) || {
+        doxaTag: {
+          name: "Unavailable"
+        }
+      };
     });
     return {
       challenge

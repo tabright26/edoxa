@@ -1,27 +1,34 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { connectModal } from "redux-modal";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
-
-import AddressBookForm from "../../../../../forms/Identity/AddressBook/Create/Create";
-
-import { addAddress } from "../../../../../store/actions/identityActions";
+import AddressForm from "../../../../../forms/Identity/Address";
+import { loadAddressBook, addAddress } from "../../../../../store/actions/identityActions";
 
 class AddressBookModal extends Component {
   submit = values => {
     // print the form values to the console
-    this.props.dispatch(addAddress(values));
+    this.props
+      .dispatch(addAddress(values))
+      .then(() => {
+        this.props
+          .dispatch(loadAddressBook())
+          .then(() => this.props.toggle())
+          .catch(console.log);
+      })
+      .catch(console.log);
   };
 
   render() {
-    const { className, isOpen, toggle } = this.props;
+    const { show, handleHide, className } = this.props;
     return (
-      <Modal size="lg" isOpen={isOpen} toggle={toggle} className={"modal-primary " + className}>
-        <ModalHeader toggle={toggle}>Add new address</ModalHeader>
+      <Modal size="lg" isOpen={show} toggle={handleHide} className={"modal-primary " + className}>
+        <ModalHeader toggle={handleHide}>Add new address</ModalHeader>
         <ModalBody>
           <dl className="row mb-0">
             <dd className="col-sm-2 mb-0 text-muted">New address</dd>
             <dd className="col-sm-8 mb-0">
-              <AddressBookForm onSubmit={this.submit} onCancel={toggle} />
+              <AddressForm.Create onSubmit={this.submit} onCancel={handleHide} />
             </dd>
           </dl>
         </ModalBody>
@@ -30,4 +37,4 @@ class AddressBookModal extends Component {
   }
 }
 
-export default connect()(AddressBookModal);
+export default connect()(connectModal({ name: "myModal" })(AddressBookModal));

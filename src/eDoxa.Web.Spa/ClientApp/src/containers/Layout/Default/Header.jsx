@@ -13,22 +13,21 @@ import { Button, Form, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledD
 import userManager, { POST_LOGIN_REDIRECT_URI } from "../../../utils/userManager";
 
 class HeaderDropdown extends Component {
-  signinRedirectClickHandled = event => {
-    event.preventDefault();
+  signinRedirectClickHandled = () => {
     userManager.signinRedirect();
   };
-  signoutRedirectClickHandled = event => {
-    event.preventDefault();
+
+  signoutRedirectClickHandled = () => {
     localStorage.removeItem(POST_LOGIN_REDIRECT_URI);
     userManager.removeUser();
     userManager.signoutRedirect();
   };
 
-  userInfoClickHandled = event => {
-    event.preventDefault();
+  userInfoClickHandled = () => {
     const { user } = this.props;
     console.log(JSON.stringify(user, null, 2));
   };
+
   render() {
     const { user } = this.props;
 
