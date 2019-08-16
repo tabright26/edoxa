@@ -2,8 +2,9 @@ import React from "react";
 import { Route } from "react-router-dom";
 import { connect } from "react-redux";
 import userManager, { POST_LOGIN_REDIRECT_URI } from "../../../../utils/userManager";
+import Loading from "../../Loading";
 
-const SecureRoute = ({ isSignedIn, path, exact, name, modals = [], scopes = [], component: Component }) => {
+const SecureRoute = ({ isSignedIn, path, exact, name, scopes = [], component: Component }) => {
   return (
     <Route
       path={path}
@@ -13,17 +14,11 @@ const SecureRoute = ({ isSignedIn, path, exact, name, modals = [], scopes = [], 
         if (!isSignedIn) {
           localStorage.setItem(POST_LOGIN_REDIRECT_URI, path);
           userManager.signinRedirect();
+          return <Loading />;
         }
-        if (true) {
+        if (false) {
         }
-        return (
-          <>
-            {modals.map((Modal, index) => (
-              <Modal key={index} />
-            ))}
-            <Component {...props} />
-          </>
-        );
+        return <Component {...props} />;
       }}
     />
   );

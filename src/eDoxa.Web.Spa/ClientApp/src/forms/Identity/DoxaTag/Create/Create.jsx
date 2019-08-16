@@ -1,7 +1,7 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
 import { FormGroup, Input, Form } from "reactstrap";
-import Button from "../../../../components/Buttons";
+import Button from "../../../../components/Button";
 import { CREATE_DOXATAG_FORM } from "../forms";
 
 const CreateDoxaTagForm = ({ handleSubmit, handleCancel }) => (

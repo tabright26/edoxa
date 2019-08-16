@@ -2,7 +2,7 @@ import React from "react";
 import { Field, reduxForm } from "redux-form";
 import { FormGroup, Col, Input, Form } from "reactstrap";
 
-import Button from "../../../../components/Buttons";
+import Button from "../../../../components/Button";
 import { DELETE_ADDRESS_FORM } from "../forms";
 
 const UpdateAddressForm = ({ handleSubmit, handleCancel }) => (
