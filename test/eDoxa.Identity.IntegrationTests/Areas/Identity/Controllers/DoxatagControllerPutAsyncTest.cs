@@ -29,16 +29,12 @@ using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
-    public sealed class DoxaTagControllerPutAsyncTest : IClassFixture<IdentityWebApplicationFactory>
+    public sealed class DoxaTagControllerPutAsyncTest : IClassFixture<IdentityWebApiFactory>
     {
-        public DoxaTagControllerPutAsyncTest(IdentityWebApplicationFactory identityWebApplicationFactory)
+        public DoxaTagControllerPutAsyncTest(IdentityWebApiFactory identityWebApiFactory)
         {
             User = new HashSet<User>(IdentityStorage.TestUsers).First();
-
-            var factory = identityWebApplicationFactory.WithWebHostBuilder(
-                builder => builder.ConfigureTestServices(services => services.AddFakeClaimsPrincipalFilter(new Claim(JwtClaimTypes.Subject, User.Id.ToString())))
-            );
-
+            var factory = identityWebApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, User.Id.ToString()));
             _httpClient = factory.CreateClient();
             _testServer = factory.Server;
             _testServer.CleanupDbContext();

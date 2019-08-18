@@ -27,11 +27,11 @@ using Xunit;
 
 namespace eDoxa.Cashier.IntegrationTests.Controllers
 {
-    public sealed class AccountDepositControllerPostAsyncTest : IClassFixture<CashierWebApplicationFactory>
+    public sealed class AccountDepositControllerPostAsyncTest : IClassFixture<CashierWebApiFactory>
     {
-        private readonly CashierWebApplicationFactory _factory;
+        private readonly CashierWebApiFactory _factory;
 
-        public AccountDepositControllerPostAsyncTest(CashierWebApplicationFactory factory)
+        public AccountDepositControllerPostAsyncTest(CashierWebApiFactory factory)
         {
             _factory = factory;
         }
@@ -49,7 +49,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Arrange
             var account = new Account(new UserId());
 
-            var factory = _factory.WithClaimsPrincipal(
+            var factory = _factory.WithClaims(
                 new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
                 new Claim(CustomClaimTypes.StripeCustomerId, "cus_test")
             );
@@ -80,7 +80,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Arrange
             var account = new Account(new UserId());
 
-            var factory = _factory.WithClaimsPrincipal(
+            var factory = _factory.WithClaims(
                 new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
                 new Claim(CustomClaimTypes.StripeCustomerId, "cus_test")
             );
@@ -114,7 +114,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Arrange
             var account = new Account(new UserId());
 
-            var factory = _factory.WithClaimsPrincipal(
+            var factory = _factory.WithClaims(
                 new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
                 new Claim(CustomClaimTypes.StripeCustomerId, "cus_test")
             );
@@ -144,7 +144,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Arrange
             var account = new Account(new UserId());
 
-            var factory = _factory.WithClaimsPrincipal(
+            var factory = _factory.WithClaims(
                 new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
                 new Claim(CustomClaimTypes.StripeCustomerId, "cus_test")
             );

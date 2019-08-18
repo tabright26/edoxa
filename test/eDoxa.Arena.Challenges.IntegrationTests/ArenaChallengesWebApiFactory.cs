@@ -26,11 +26,11 @@ using Moq;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests
 {
-    public sealed class ArenaChallengesWebApplicationFactory : CustomWebApplicationFactory<Startup>
+    public sealed class ArenaChallengesWebApiFactory : WebApiFactory<Startup>
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            builder.UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ArenaChallengesWebApplicationFactory)).Location));
+            builder.UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ArenaChallengesWebApiFactory)).Location));
 
             builder.ConfigureAppConfiguration(configure => configure.AddJsonFile("appsettings.json", false).AddEnvironmentVariables());
 

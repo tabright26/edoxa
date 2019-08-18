@@ -22,11 +22,11 @@ using Xunit;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 {
-    public sealed class ChallengesControllerGetByIdAsyncTest : IClassFixture<ArenaChallengesWebApplicationFactory>
+    public sealed class ChallengesControllerGetByIdAsyncTest : IClassFixture<ArenaChallengesWebApiFactory>
     {
-        public ChallengesControllerGetByIdAsyncTest(ArenaChallengesWebApplicationFactory arenaChallengesWebApplicationFactory)
+        public ChallengesControllerGetByIdAsyncTest(ArenaChallengesWebApiFactory arenaChallengesWebApiFactory)
         {
-            var factory = arenaChallengesWebApplicationFactory.WithClaimsPrincipal();
+            var factory = arenaChallengesWebApiFactory.WithClaims();
             _httpClient = factory.CreateClient();
             _testServer = factory.Server;
             _testServer.CleanupDbContext();

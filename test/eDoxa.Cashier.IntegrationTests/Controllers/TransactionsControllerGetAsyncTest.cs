@@ -22,17 +22,16 @@ using FluentAssertions;
 using IdentityModel;
 
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.TestHost;
 
 using Xunit;
 
 namespace eDoxa.Cashier.IntegrationTests.Controllers
 {
-    public sealed class TransactionsControllerGetAsyncTest : IClassFixture<CashierWebApplicationFactory>
+    public sealed class TransactionsControllerGetAsyncTest : IClassFixture<CashierWebApiFactory>
     {
-        private readonly CashierWebApplicationFactory _factory;
+        private readonly CashierWebApiFactory _factory;
 
-        public TransactionsControllerGetAsyncTest(CashierWebApplicationFactory factory)
+        public TransactionsControllerGetAsyncTest(CashierWebApiFactory factory)
         {
             _factory = factory;
         }
@@ -54,7 +53,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Arrange
             var account = new Account(new UserId());
 
-            var factory = _factory.WithWebHostBuilder(builder => builder.ConfigureTestServices(services => services.AddFakeClaimsPrincipalFilter(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()).ToArray())));
+            var factory = _factory.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()));
             _httpClient = factory.CreateClient();
             var server = factory.Server;
             server.CleanupDbContext();
@@ -84,7 +83,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             accountFaker.UseSeed(1);
             var account = accountFaker.Generate();
 
-            var factory = _factory.WithWebHostBuilder(builder => builder.ConfigureTestServices(services => services.AddFakeClaimsPrincipalFilter(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()).ToArray())));
+            var factory = _factory.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()));
             _httpClient = factory.CreateClient();
             var server = factory.Server;
             server.CleanupDbContext();

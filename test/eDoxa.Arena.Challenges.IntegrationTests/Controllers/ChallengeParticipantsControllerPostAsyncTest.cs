@@ -28,11 +28,11 @@ using Xunit;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 {
-    public sealed class ChallengeParticipantsControllerPostAsyncTest : IClassFixture<ArenaChallengesWebApplicationFactory>
+    public sealed class ChallengeParticipantsControllerPostAsyncTest : IClassFixture<ArenaChallengesWebApiFactory>
     {
-        public ChallengeParticipantsControllerPostAsyncTest(ArenaChallengesWebApplicationFactory arenaChallengesWebApplicationFactory)
+        public ChallengeParticipantsControllerPostAsyncTest(ArenaChallengesWebApiFactory arenaChallengesWebApiFactory)
         {
-            var factory = arenaChallengesWebApplicationFactory.WithWebHostBuilder(
+            var factory = arenaChallengesWebApiFactory.WithWebHostBuilder(
                 builder => builder.ConfigureTestContainer<ContainerBuilder>(
                     container =>
                     {

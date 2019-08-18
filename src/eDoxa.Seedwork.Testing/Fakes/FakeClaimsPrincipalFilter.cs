@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace eDoxa.Seedwork.Testing.Mocks
+namespace eDoxa.Seedwork.Testing.Fakes
 {
-    internal sealed class MockAsyncClaimsPrincipalFilter : IAsyncActionFilter
+    internal sealed class FakeClaimsPrincipalFilter : IAsyncActionFilter
     {
-        public MockAsyncClaimsPrincipalFilter(params Claim[] claims)
+        public FakeClaimsPrincipalFilter(params Claim[] claims)
         {
             Claims = claims;
         }

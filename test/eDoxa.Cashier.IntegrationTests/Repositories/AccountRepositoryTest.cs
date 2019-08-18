@@ -22,14 +22,14 @@ using Xunit;
 
 namespace eDoxa.Cashier.IntegrationTests.Repositories
 {
-    public sealed class AccountRepositoryTest : IClassFixture<CashierWebApplicationFactory>
+    public sealed class AccountRepositoryTest : IClassFixture<CashierWebApiFactory>
     {
         private readonly TestServer _testServer;
 
-        public AccountRepositoryTest(CashierWebApplicationFactory cashierWebApplicationFactory)
+        public AccountRepositoryTest(CashierWebApiFactory cashierWebApiFactory)
         {
-            cashierWebApplicationFactory.CreateClient();
-            _testServer = cashierWebApplicationFactory.Server;
+            cashierWebApiFactory.CreateClient();
+            _testServer = cashierWebApiFactory.Server;
             _testServer.CleanupDbContext();
         }
 

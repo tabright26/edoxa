@@ -20,20 +20,18 @@ using FluentAssertions;
 
 using IdentityModel;
 
-using Microsoft.AspNetCore.TestHost;
-
 using Xunit;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 {
-    public sealed class ChallengeHistoryControllerGetAsyncTest : IClassFixture<ArenaChallengesWebApplicationFactory>
+    public sealed class ChallengeHistoryControllerGetAsyncTest : IClassFixture<ArenaChallengesWebApiFactory>
     {
-        public ChallengeHistoryControllerGetAsyncTest(ArenaChallengesWebApplicationFactory factory)
+        public ChallengeHistoryControllerGetAsyncTest(ArenaChallengesWebApiFactory factory)
         {
             _factory = factory;
         }
 
-        private readonly ArenaChallengesWebApplicationFactory _factory;
+        private readonly ArenaChallengesWebApiFactory _factory;
 
         private HttpClient _httpClient;
 
@@ -52,11 +50,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 
             var participant = challenge.Participants.First();
 
-            var factory = _factory.WithWebHostBuilder(
-                builder => builder.ConfigureTestServices(
-                    services => services.AddFakeClaimsPrincipalFilter(new Claim(JwtClaimTypes.Subject, participant.UserId.ToString()))
-                )
-            );
+            var factory = _factory.WithClaims(new Claim(JwtClaimTypes.Subject, participant.UserId.ToString()));
 
             _httpClient = factory.CreateClient();
             var server = factory.Server;

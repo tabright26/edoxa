@@ -17,7 +17,7 @@ namespace eDoxa.Seedwork.Testing.Modules
 {
     public sealed class MockHttpContextAccessorModule : Module
     {
-        internal MockHttpContextAccessorModule(IEnumerable<Claim> claims)
+        internal MockHttpContextAccessorModule(params Claim[] claims)
         {
             Claims = claims;
         }

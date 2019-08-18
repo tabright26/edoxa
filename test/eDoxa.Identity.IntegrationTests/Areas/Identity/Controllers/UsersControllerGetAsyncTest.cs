@@ -23,12 +23,12 @@ using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
-    public sealed class UsersControllerGetAsyncTest : IClassFixture<IdentityWebApplicationFactory>
+    public sealed class UsersControllerGetAsyncTest : IClassFixture<IdentityWebApiFactory>
     {
-        public UsersControllerGetAsyncTest(IdentityWebApplicationFactory identityWebApplicationFactory)
+        public UsersControllerGetAsyncTest(IdentityWebApiFactory identityWebApiFactory)
         {
-            _httpClient = identityWebApplicationFactory.CreateClient();
-            _testServer = identityWebApplicationFactory.Server;
+            _httpClient = identityWebApiFactory.CreateClient();
+            _testServer = identityWebApiFactory.Server;
             _testServer.CleanupDbContext();
         }
 

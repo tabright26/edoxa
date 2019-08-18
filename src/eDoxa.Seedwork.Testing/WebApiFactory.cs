@@ -1,4 +1,4 @@
-﻿// Filename: CustomWebApplicationFactory.cs
+﻿// Filename: WebApiFactory.cs
 // Date Created: 2019-08-11
 // 
 // ================================================
@@ -19,20 +19,20 @@ using Microsoft.AspNetCore.TestHost;
 
 namespace eDoxa.Seedwork.Testing
 {
-    public abstract class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStartup>
+    public abstract class WebApiFactory<TStartup> : WebApplicationFactory<TStartup>
     where TStartup : class
     {
-        public WebApplicationFactory<TStartup> WithClaimsPrincipal()
+        public WebApplicationFactory<TStartup> WithDefaultClaims()
         {
-            return this.WithClaimsPrincipal(new Claim(JwtClaimTypes.Subject, Guid.NewGuid().ToString()));
+            return this.WithClaims(new Claim(JwtClaimTypes.Subject, Guid.NewGuid().ToString()));
         }
 
-        public WebApplicationFactory<TStartup> WithClaimsPrincipal(params Claim[] claims)
+        public virtual WebApplicationFactory<TStartup> WithClaims(params Claim[] claims)
         {
             return this.WithWebHostBuilder(
                 builder =>
                 {
-                    builder.ConfigureTestServices(services => services.AddFakeClaimsPrincipalFilter(claims));
+                    builder.ConfigureTestServices(services => services.AddFakeAuthentication(options => options.Claims = claims));
 
                     builder.ConfigureTestContainer<ContainerBuilder>(container => container.RegisterModule(new MockHttpContextAccessorModule(claims)));
                 }

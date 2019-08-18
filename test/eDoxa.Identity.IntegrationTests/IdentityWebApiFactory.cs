@@ -21,20 +21,15 @@ using Microsoft.Extensions.Configuration;
 
 namespace eDoxa.Identity.IntegrationTests
 {
-    public sealed class IdentityWebApplicationFactory : CustomWebApplicationFactory<Startup>
+    public sealed class IdentityWebApiFactory : IdentityApiWeb<Startup>
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            builder.UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(IdentityWebApplicationFactory)).Location));
+            builder.UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(IdentityWebApiFactory)).Location));
 
             builder.ConfigureAppConfiguration(configure => configure.AddJsonFile("appsettings.json", false).AddEnvironmentVariables());
 
-            builder.ConfigureTestContainer<ContainerBuilder>(
-                container =>
-                {
-                    container.RegisterModule<MockServiceBusModule>();
-                }
-            );
+            builder.ConfigureTestContainer<ContainerBuilder>(container => container.RegisterModule<MockServiceBusModule>());
         }
 
         protected override TestServer CreateServer(IWebHostBuilder builder)

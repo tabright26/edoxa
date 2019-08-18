@@ -27,14 +27,14 @@ using Xunit;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
 {
-    public sealed class ChallengeRepositoryTest : IClassFixture<ArenaChallengesWebApplicationFactory>
+    public sealed class ChallengeRepositoryTest : IClassFixture<ArenaChallengesWebApiFactory>
     {
         private readonly TestServer _testServer;
 
-        public ChallengeRepositoryTest(ArenaChallengesWebApplicationFactory arenaChallengesWebApplicationFactory)
+        public ChallengeRepositoryTest(ArenaChallengesWebApiFactory arenaChallengesWebApiFactory)
         {
-            arenaChallengesWebApplicationFactory.CreateClient();
-            _testServer = arenaChallengesWebApplicationFactory.Server;
+            arenaChallengesWebApiFactory.CreateClient();
+            _testServer = arenaChallengesWebApiFactory.Server;
             _testServer.CleanupDbContext();
         }
 

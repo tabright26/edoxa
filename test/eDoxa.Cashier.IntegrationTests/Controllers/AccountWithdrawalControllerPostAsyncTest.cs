@@ -28,14 +28,14 @@ using Xunit;
 
 namespace eDoxa.Cashier.IntegrationTests.Controllers
 {
-    public sealed class AccountWithdrawalControllerPostAsyncTest : IClassFixture<CashierWebApplicationFactory>
+    public sealed class AccountWithdrawalControllerPostAsyncTest : IClassFixture<CashierWebApiFactory>
     {
-        public AccountWithdrawalControllerPostAsyncTest(CashierWebApplicationFactory factory)
+        public AccountWithdrawalControllerPostAsyncTest(CashierWebApiFactory factory)
         {
             _factory = factory;
         }
 
-        private readonly CashierWebApplicationFactory _factory;
+        private readonly CashierWebApiFactory _factory;
 
         private HttpClient _httpClient;
 
@@ -50,7 +50,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Arrange
             var account = new Account(new UserId());
 
-            var factory = _factory.WithClaimsPrincipal(
+            var factory = _factory.WithClaims(
                 new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
                 new Claim(CustomClaimTypes.StripeConnectAccountId, "acct_test")
             );
@@ -81,7 +81,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Arrange
             var account = new Account(new UserId());
 
-            var factory = _factory.WithClaimsPrincipal(
+            var factory = _factory.WithClaims(
                 new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
                 new Claim(CustomClaimTypes.StripeConnectAccountId, "acct_test")
             );
@@ -116,7 +116,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
             account.CreateTransaction(transaction);
 
-            var factory = _factory.WithClaimsPrincipal(
+            var factory = _factory.WithClaims(
                 new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
                 new Claim(CustomClaimTypes.StripeConnectAccountId, "acct_test")
             );
@@ -157,7 +157,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
         [Fact]
         public async Task User_WithoutAccount_ShouldBeStatus404NotFound()
         {
-            var factory = _factory.WithClaimsPrincipal(
+            var factory = _factory.WithClaims(
                 new Claim(JwtClaimTypes.Subject,new UserId().ToString()),
                 new Claim(CustomClaimTypes.StripeConnectAccountId, "acct_test")
             );

@@ -11,11 +11,11 @@ using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Pages
 {
-    public sealed class AccountControllerLoginTest : IClassFixture<IdentityWebApplicationFactory>
+    public sealed class AccountControllerLoginTest : IClassFixture<IdentityWebApiFactory>
     {
-        public AccountControllerLoginTest(IdentityWebApplicationFactory identityWebApplicationFactory)
+        public AccountControllerLoginTest(IdentityWebApiFactory identityWebApiFactory)
         {
-            _httpClient = identityWebApplicationFactory.CreateClient();
+            _httpClient = identityWebApiFactory.CreateClient();
         }
 
         private readonly HttpClient _httpClient;

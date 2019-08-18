@@ -28,13 +28,13 @@ using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
-    public sealed class UserDoxaTagControllerGetAsyncTest : IClassFixture<IdentityWebApplicationFactory>
+    public sealed class UserDoxaTagControllerGetAsyncTest : IClassFixture<IdentityWebApiFactory>
     {
-        public UserDoxaTagControllerGetAsyncTest(IdentityWebApplicationFactory identityWebApplicationFactory)
+        public UserDoxaTagControllerGetAsyncTest(IdentityWebApiFactory identityWebApiFactory)
         {
             User = new HashSet<User>(IdentityStorage.TestUsers).First();
-            _httpClient = identityWebApplicationFactory.CreateClient();
-            _testServer = identityWebApplicationFactory.Server;
+            _httpClient = identityWebApiFactory.CreateClient();
+            _testServer = identityWebApiFactory.Server;
             _testServer.CleanupDbContext();
         }
 

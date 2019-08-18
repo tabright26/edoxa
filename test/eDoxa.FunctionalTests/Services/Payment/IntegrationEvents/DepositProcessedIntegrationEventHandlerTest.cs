@@ -33,12 +33,12 @@ using Xunit;
 
 namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
 {
-    public sealed class DepositProcessedIntegrationEventHandlerTest : IClassFixture<CashierWebApplicationFactory>
+    public sealed class DepositProcessedIntegrationEventHandlerTest : IClassFixture<CashierWebApiFactory>
     {
-        public DepositProcessedIntegrationEventHandlerTest(CashierWebApplicationFactory cashierWebApplicationFactory)
+        public DepositProcessedIntegrationEventHandlerTest(CashierWebApiFactory cashierWebApiFactory)
         {
-            cashierWebApplicationFactory.CreateClient();
-            _testServer = cashierWebApplicationFactory.Server;
+            cashierWebApiFactory.CreateClient();
+            _testServer = cashierWebApiFactory.Server;
             _testServer.CleanupDbContext();
         }
 
@@ -77,7 +77,7 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
         [Fact]
         public async Task TransactionStatus_ShouldBeFailed()
         {
-            using var paymentWebApplicationFactory = new PaymentWebApplicationFactory().WithWebHostBuilder(
+            using var paymentWebApplicationFactory = new PaymentWebApiFactory().WithWebHostBuilder(
                 builder => builder.ConfigureTestContainer<ContainerBuilder>(
                     container =>
                     {
@@ -138,7 +138,7 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
         [Fact]
         public async Task TransactionStatus_ShouldBeSucceded()
         {
-            using var paymentWebApplicationFactory = new PaymentWebApplicationFactory().WithWebHostBuilder(
+            using var paymentWebApplicationFactory = new PaymentWebApiFactory().WithWebHostBuilder(
                 builder => builder.ConfigureTestContainer<ContainerBuilder>(
                     container =>
                     {

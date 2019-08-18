@@ -28,12 +28,12 @@ using Xunit;
 
 namespace eDoxa.Cashier.IntegrationTests.Controllers
 {
-    public sealed class AccountBalanceControllerGetByCurrencyAsyncTest : IClassFixture<CashierWebApplicationFactory>
+    public sealed class AccountBalanceControllerGetByCurrencyAsyncTest : IClassFixture<CashierWebApiFactory>
     {
-        private readonly CashierWebApplicationFactory _factory;
+        private readonly CashierWebApiFactory _factory;
         private HttpClient _httpClient;
 
-        public AccountBalanceControllerGetByCurrencyAsyncTest(CashierWebApplicationFactory factory)
+        public AccountBalanceControllerGetByCurrencyAsyncTest(CashierWebApiFactory factory)
         {
             _factory = factory;
         }
@@ -54,7 +54,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Arrange
             var account = new Account(new UserId());
 
-            var factory = _factory.WithClaimsPrincipal(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()).ToArray());
+            var factory = _factory.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()).ToArray());
             _httpClient = factory.CreateClient();
             var server = factory.Server;
             server.CleanupDbContext();
@@ -90,7 +90,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             accountFaker.UseSeed(1);
             var account = accountFaker.Generate();
             var balance = account.GetBalanceFor(currency);
-            var factory = _factory.WithClaimsPrincipal(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()).ToArray());
+            var factory = _factory.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()).ToArray());
             _httpClient = factory.CreateClient();
             var server = factory.Server;
             server.CleanupDbContext();
@@ -121,7 +121,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
         [MemberData(nameof(ValidCurrencyDataSets))]
         public async Task UserWithoutAccount_ShouldBeNotFound(Currency currency)
         {
-            var factory = _factory.WithClaimsPrincipal();
+            var factory = _factory.WithClaims();
 
             _httpClient = factory.CreateClient();
 
@@ -139,7 +139,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             var accountFaker = new AccountFaker();
             accountFaker.UseSeed(1);
             var account = accountFaker.Generate();
-            var factory = _factory.WithClaimsPrincipal(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()).ToArray());
+            var factory = _factory.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()).ToArray());
 
             _httpClient = factory.CreateClient();
             var server = factory.Server;
