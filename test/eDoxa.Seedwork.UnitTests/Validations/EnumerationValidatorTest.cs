@@ -9,7 +9,7 @@
 // this source code package.
 
 using eDoxa.Seedwork.Application.Validations.Extensions;
-using eDoxa.Seedwork.Domain.Aggregate;
+using eDoxa.Seedwork.Domain;
 
 using FluentAssertions;
 

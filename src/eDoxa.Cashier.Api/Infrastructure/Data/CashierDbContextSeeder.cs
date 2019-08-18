@@ -1,5 +1,5 @@
 ﻿// Filename: CashierDbContextSeeder.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -77,30 +77,6 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
                 {
                     _logger.LogInformation("The challenge's already populated.");
                 }
-            }
-        }
-
-        public void Cleanup()
-        {
-            if (!_environment.IsProduction())
-            {
-                _context.Accounts.RemoveRange(_context.Accounts);
-
-                _context.Challenges.RemoveRange(_context.Challenges);
-
-                _context.SaveChanges();
-            }
-        }
-
-        public async Task CleanupAsync()
-        {
-            if (!_environment.IsProduction())
-            {
-                _context.Accounts.RemoveRange(_context.Accounts);
-
-                _context.Challenges.RemoveRange(_context.Challenges);
-
-                await _context.SaveChangesAsync();
             }
         }
     }

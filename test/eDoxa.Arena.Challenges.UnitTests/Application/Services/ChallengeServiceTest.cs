@@ -18,7 +18,6 @@ using eDoxa.Arena.Challenges.Domain.Factories;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Providers;
 
 using FluentAssertions;
 

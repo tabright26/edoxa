@@ -19,7 +19,7 @@ using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.UserAggregate;
-using eDoxa.Seedwork.Domain.Providers;
+using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Storage
 {

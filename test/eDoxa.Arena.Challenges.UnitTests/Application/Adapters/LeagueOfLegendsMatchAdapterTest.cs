@@ -14,7 +14,7 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.UnitTests.Helpers;
 using eDoxa.Arena.Games.LeagueOfLegends.Abstractions;
 using eDoxa.Arena.Games.LeagueOfLegends.Dtos;
-using eDoxa.Seedwork.Domain.Providers;
+using eDoxa.Seedwork.Domain;
 
 using FluentAssertions;
 

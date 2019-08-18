@@ -1,12 +1,8 @@
-﻿// Filename: DevelopmentOnlyController.cs
-// Date Created: 2019-06-13
+﻿// Filename: DevToolsController.cs
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.Threading.Tasks;
 
@@ -30,20 +26,22 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
     [ApiExplorerSettings(GroupName = "DevTools")]
     public sealed class DevToolsController : ControllerBase
     {
-        private readonly IDbContextSeeder _dbContextSeeder;
+        private readonly IDbContextSeeder _seeder;
+        private readonly IDbContextCleaner _cleaner;
 
-        public DevToolsController(IDbContextSeeder dbContextSeeder)
+        public DevToolsController(IDbContextSeeder seeder, IDbContextCleaner cleaner)
         {
-            _dbContextSeeder = dbContextSeeder;
+            _seeder = seeder;
+            _cleaner = cleaner;
         }
 
         [HttpPost("database/reset")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         public async Task<IActionResult> DatabaseResetAsync()
         {
-            await _dbContextSeeder.CleanupAsync();
+            await _cleaner.CleanupAsync();
 
-            await _dbContextSeeder.SeedAsync();
+            await _seeder.SeedAsync();
 
             return this.Ok("The database has been reset to the default data.");
         }
@@ -52,7 +50,7 @@ namespace eDoxa.Arena.Challenges.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         public async Task<IActionResult> DatabaseCleanupAsync()
         {
-            await _dbContextSeeder.CleanupAsync();
+            await _cleaner.CleanupAsync();
 
             return this.Ok("The database has been cleaned up.");
         }

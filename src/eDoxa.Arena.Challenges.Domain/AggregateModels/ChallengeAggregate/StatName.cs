@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-using eDoxa.Seedwork.Domain.Aggregate;
+using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {

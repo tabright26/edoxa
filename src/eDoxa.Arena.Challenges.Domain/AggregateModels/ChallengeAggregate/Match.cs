@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Aggregate;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {

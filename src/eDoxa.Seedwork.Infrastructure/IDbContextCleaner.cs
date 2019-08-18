@@ -1,4 +1,4 @@
-﻿// Filename: IDbContextSeeder.cs
+﻿// Filename: IDbContextCleaner.cs
 // Date Created: 2019-08-18
 // 
 // ================================================
@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace eDoxa.Seedwork.Infrastructure
 {
-    public interface IDbContextSeeder
+    public interface IDbContextCleaner
     {
-        Task SeedAsync();
+        Task CleanupAsync();
     }
 }

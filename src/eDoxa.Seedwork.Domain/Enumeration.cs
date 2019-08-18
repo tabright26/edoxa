@@ -1,5 +1,5 @@
 ﻿// Filename: Enumeration.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,7 +11,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
-namespace eDoxa.Seedwork.Domain.Aggregate
+namespace eDoxa.Seedwork.Domain
 {
     public static class Enumeration
     {

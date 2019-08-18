@@ -7,7 +7,7 @@
 using Bogus;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Seedwork.Domain.Aggregate;
+using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.DataSets
 {

@@ -1,12 +1,12 @@
 ﻿// Filename: UtcNowDateTimeProvider.cs
-// Date Created: 2019-07-10
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
 
-namespace eDoxa.Seedwork.Domain.Providers
+namespace eDoxa.Seedwork.Domain
 {
     public sealed class UtcNowDateTimeProvider : IDateTimeProvider
     {

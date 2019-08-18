@@ -1,5 +1,5 @@
 ﻿// Filename: Entity.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -7,7 +7,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace eDoxa.Seedwork.Domain.Aggregate
+namespace eDoxa.Seedwork.Domain
 {
     public abstract class Entity<TEntityId> : IEntity
     where TEntityId : EntityId<TEntityId>, new()

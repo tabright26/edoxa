@@ -9,7 +9,7 @@ using AutoMapper;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Infrastructure.Models;
-using eDoxa.Seedwork.Domain.Providers;
+using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Cashier.Infrastructure.Profiles.Converters
 {

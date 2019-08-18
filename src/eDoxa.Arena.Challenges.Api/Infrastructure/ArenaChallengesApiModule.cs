@@ -23,15 +23,18 @@ using eDoxa.Seedwork.Infrastructure;
 
 namespace eDoxa.Arena.Challenges.Api.Infrastructure
 {
-    public sealed class ArenaChallengesApiModule : Module
+    internal sealed class ArenaChallengesApiModule : Module
     {
         protected override void Load( ContainerBuilder builder)
         {
+            // Repositories
+            builder.RegisterType<ChallengeRepository>().As<IChallengeRepository>().InstancePerLifetimeScope();
+
             // Seeder
             builder.RegisterType<ArenaChallengesDbContextSeeder>().As<IDbContextSeeder>().InstancePerLifetimeScope();
 
-            // Repositories
-            builder.RegisterType<ChallengeRepository>().As<IChallengeRepository>().InstancePerLifetimeScope();
+            // Cleaner
+            builder.RegisterType<ArenaChallengesDbContextCleaner>().As<IDbContextCleaner>().InstancePerLifetimeScope();
 
             // Queries
             builder.RegisterType<ChallengeQuery>().As<IChallengeQuery>().InstancePerLifetimeScope();

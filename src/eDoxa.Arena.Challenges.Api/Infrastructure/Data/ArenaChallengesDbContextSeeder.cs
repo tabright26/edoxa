@@ -1,5 +1,5 @@
 ﻿// Filename: ArenaChallengesDbContextSeeder.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data
 {
-    public sealed class ArenaChallengesDbContextSeeder : IDbContextSeeder
+    internal sealed class ArenaChallengesDbContextSeeder : IDbContextSeeder
     {
         private readonly ArenaChallengesDbContext _context;
         private readonly IHostingEnvironment _environment;
@@ -41,26 +41,6 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data
 
                     await _challengeRepository.CommitAsync();
                 }
-            }
-        }
-
-        public void Cleanup()
-        {
-            if (!_environment.IsProduction())
-            {
-                _context.Challenges.RemoveRange(_context.Challenges);
-
-                _context.SaveChanges();
-            }
-        }
-
-        public async Task CleanupAsync()
-        {
-            if (!_environment.IsProduction())
-            {
-                _context.Challenges.RemoveRange(_context.Challenges);
-
-                await _context.SaveChangesAsync();
             }
         }
     }

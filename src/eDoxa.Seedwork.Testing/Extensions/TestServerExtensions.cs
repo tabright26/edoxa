@@ -35,9 +35,9 @@ namespace eDoxa.Seedwork.Testing.Extensions
             server.UsingScope(
                 scope =>
                 {
-                    var context = scope?.GetRequiredService<IDbContextSeeder>() ?? throw new InvalidOperationException();
+                    var context = scope?.GetRequiredService<IDbContextCleaner>() ?? throw new InvalidOperationException();
 
-                    context.Cleanup();
+                    context.CleanupAsync().Wait();
                 }
             );
         }

@@ -6,7 +6,7 @@
 
 using System;
 
-using eDoxa.Seedwork.Domain.Aggregate;
+using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
 {

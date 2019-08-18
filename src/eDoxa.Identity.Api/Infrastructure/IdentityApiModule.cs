@@ -11,12 +11,15 @@ using eDoxa.Seedwork.Infrastructure;
 
 namespace eDoxa.Identity.Api.Infrastructure
 {
-    public sealed class IdentityApiModule : Module
+    internal sealed class IdentityApiModule : Module
     {
         protected override void Load(ContainerBuilder builder)
         {
             // Seeder
             builder.RegisterType<IdentityDbContextSeeder>().As<IDbContextSeeder>().InstancePerLifetimeScope();
+
+            // Cleaner
+            builder.RegisterType<IdentityDbContextCleaner>().As<IDbContextCleaner>().InstancePerLifetimeScope();
         }
     }
 }

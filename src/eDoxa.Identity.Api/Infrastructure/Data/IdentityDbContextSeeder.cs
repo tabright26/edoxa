@@ -1,5 +1,5 @@
 ﻿// Filename: IdentityDbContextSeeder.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -16,25 +16,22 @@ using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Identity.Api.Infrastructure.Data
 {
-    public sealed class IdentityDbContextSeeder : IDbContextSeeder
+    internal sealed class IdentityDbContextSeeder : IDbContextSeeder
     {
         private readonly ILogger<IdentityDbContextSeeder> _logger;
         private readonly IHostingEnvironment _environment;
-        private readonly IdentityDbContext _context;
         private readonly UserManager _userManager;
         private readonly RoleManager _roleManager;
 
         public IdentityDbContextSeeder(
             ILogger<IdentityDbContextSeeder> logger,
             IHostingEnvironment environment,
-            IdentityDbContext context,
             UserManager userManager,
             RoleManager roleManager
         )
         {
             _logger = logger;
             _environment = environment;
-            _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
         }
@@ -95,30 +92,6 @@ namespace eDoxa.Identity.Api.Infrastructure.Data
                 {
                     _logger.LogInformation("The users already populated.");
                 }
-            }
-        }
-
-        public void Cleanup()
-        {
-            if (!_environment.IsProduction())
-            {
-                _context.Users.RemoveRange(_context.Users);
-
-                _context.Roles.RemoveRange(_context.Roles);
-
-                _context.SaveChanges();
-            }
-        }
-
-        public async Task CleanupAsync()
-        {
-            if (!_environment.IsProduction())
-            {
-                _context.Users.RemoveRange(_context.Users);
-
-                _context.Roles.RemoveRange(_context.Roles);
-
-                await _context.SaveChangesAsync();
             }
         }
     }

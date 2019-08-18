@@ -21,7 +21,7 @@ using eDoxa.Seedwork.Infrastructure;
 
 namespace eDoxa.Cashier.Api.Infrastructure
 {
-    public sealed class CashierApiModule : Module
+    internal sealed class CashierApiModule : Module
     {
         protected override void Load(ContainerBuilder builder)
         {
@@ -32,6 +32,9 @@ namespace eDoxa.Cashier.Api.Infrastructure
 
             // Seeder
             builder.RegisterType<CashierDbContextSeeder>().As<IDbContextSeeder>().InstancePerLifetimeScope();
+
+            // Cleaner
+            builder.RegisterType<CashierDbContextCleaner>().As<IDbContextCleaner>().InstancePerLifetimeScope();
 
             // Queries
             builder.RegisterType<ChallengeQuery>().As<IChallengeQuery>().InstancePerLifetimeScope();

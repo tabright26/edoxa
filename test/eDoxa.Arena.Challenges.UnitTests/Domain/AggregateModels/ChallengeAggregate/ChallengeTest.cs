@@ -11,7 +11,7 @@ using System.Linq;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Seedwork.Domain.Providers;
+using eDoxa.Seedwork.Domain;
 
 using FluentAssertions;
 

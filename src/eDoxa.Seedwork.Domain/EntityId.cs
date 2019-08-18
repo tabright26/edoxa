@@ -1,5 +1,5 @@
 ﻿// Filename: EntityId.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 
-namespace eDoxa.Seedwork.Domain.Aggregate
+namespace eDoxa.Seedwork.Domain
 {
     public abstract partial class EntityId<TEntityId> : ValueObject, IComparable
     where TEntityId : EntityId<TEntityId>, new()

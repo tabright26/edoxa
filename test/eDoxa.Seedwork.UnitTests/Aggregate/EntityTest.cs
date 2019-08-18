@@ -9,7 +9,6 @@
 // this source code package.
 
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Aggregate;
 
 using FluentAssertions;
 

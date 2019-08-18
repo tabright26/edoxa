@@ -7,7 +7,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 
-using eDoxa.Seedwork.Domain.Aggregate;
+using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Cashier.Domain.AggregateModels
 {

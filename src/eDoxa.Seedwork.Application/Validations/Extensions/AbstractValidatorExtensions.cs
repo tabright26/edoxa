@@ -11,7 +11,7 @@
 using System;
 using System.Linq.Expressions;
 
-using eDoxa.Seedwork.Domain.Aggregate;
+using eDoxa.Seedwork.Domain;
 
 using FluentValidation;
 

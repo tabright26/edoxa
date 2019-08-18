@@ -7,7 +7,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using eDoxa.Seedwork.Domain.Aggregate;
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Monitoring.AppSettings;
 
 using Microsoft.AspNetCore.Mvc.ApiExplorer;

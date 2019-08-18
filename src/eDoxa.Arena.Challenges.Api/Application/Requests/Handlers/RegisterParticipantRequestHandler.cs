@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Domain.Services;
-using eDoxa.Seedwork.Domain.Providers;
+using eDoxa.Seedwork.Domain;
 
 using MediatR;
 
