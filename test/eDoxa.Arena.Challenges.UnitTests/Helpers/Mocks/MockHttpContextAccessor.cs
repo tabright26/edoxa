@@ -4,8 +4,9 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Collections.Generic;
 using System.Security.Claims;
+
+using eDoxa.Seedwork.Testing.Extensions;
 
 using IdentityModel;
 
@@ -19,13 +20,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Helpers.Mocks
     {
         public MockHttpContextAccessor()
         {
-            this.Setup(accessor => accessor.HttpContext.User.Claims)
-                .Returns(
-                    new HashSet<Claim>
-                    {
-                        new Claim(JwtClaimTypes.Subject, "5C43502B-FCE8-4235-8557-C22D2A638AD7")
-                    }
-                );
+            this.Setup(accessor => accessor.HttpContext.User.Claims).Returns(new Claim(JwtClaimTypes.Subject, "5C43502B-FCE8-4235-8557-C22D2A638AD7").ToList());
         }
     }
 }

@@ -5,7 +5,6 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 using eDoxa.Seedwork.Testing.Mocks;
 
@@ -22,34 +21,10 @@ namespace eDoxa.Seedwork.Testing.Extensions
             };
         }
 
-        public static T[] ToArray<T>(this T obj)
-        where T : class
-        {
-            return new[] {obj};
-        }
-
-        public static HashSet<T> ToHashSet<T>(this T obj)
-        where T : class
-        {
-            return new HashSet<T>
-            {
-                obj
-            };
-        }
-
-        public static Collection<T> ToCollection<T>(this T obj)
-        where T : class
-        {
-            return new Collection<T>
-            {
-                obj
-            };
-        }
-
         public static MockAsyncEnumerable<T> ToMockAsyncEnumerable<T>(this T obj)
         where T : class
         {
-            return new MockAsyncEnumerable<T>(obj.ToArray());
+            return new MockAsyncEnumerable<T>(obj.ToList());
         }
     }
 }

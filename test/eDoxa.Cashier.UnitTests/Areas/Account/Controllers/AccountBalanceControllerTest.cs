@@ -12,11 +12,9 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.UnitTests.Helpers.Extensions;
-using eDoxa.Seedwork.Testing.TestConstructor;
 
 using FluentAssertions;
 
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -33,22 +31,6 @@ namespace eDoxa.Cashier.UnitTests.Areas.Account.Controllers
         public void TestInitialize()
         {
             _mockAccountQuery = new Mock<IAccountQuery>();
-        }
-
-        [TestMethod]
-        public void Constructor_Tests()
-        {
-            TestConstructor<AccountBalanceController>.ForParameters(typeof(IAccountQuery))
-                .WithClassName("AccountBalanceController")
-                .WithClassAttributes(
-                    typeof(AuthorizeAttribute),
-                    typeof(ApiControllerAttribute),
-                    typeof(ApiVersionAttribute),
-                    typeof(ProducesAttribute),
-                    typeof(RouteAttribute),
-                    typeof(ApiExplorerSettingsAttribute)
-                )
-                .Assert();
         }
 
         [TestMethod]

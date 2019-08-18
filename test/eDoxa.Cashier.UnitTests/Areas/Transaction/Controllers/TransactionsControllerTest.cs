@@ -13,11 +13,9 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.UnitTests.Helpers.Extensions;
-using eDoxa.Seedwork.Testing.TestConstructor;
 
 using FluentAssertions;
 
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -34,22 +32,6 @@ namespace eDoxa.Cashier.UnitTests.Areas.Transaction.Controllers
         public void TestInitialize()
         {
             _mockTransactionQuery = new Mock<ITransactionQuery>();
-        }
-
-        [TestMethod]
-        public void Constructor_Tests()
-        {
-            TestConstructor<TransactionsController>.ForParameters(typeof(ITransactionQuery))
-                .WithClassName("TransactionsController")
-                .WithClassAttributes(
-                    typeof(AuthorizeAttribute),
-                    typeof(ApiControllerAttribute),
-                    typeof(ApiVersionAttribute),
-                    typeof(ProducesAttribute),
-                    typeof(RouteAttribute),
-                    typeof(ApiExplorerSettingsAttribute)
-                )
-                .Assert();
         }
 
         [TestMethod]

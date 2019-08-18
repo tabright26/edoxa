@@ -15,7 +15,6 @@ using Moq;
 
 namespace eDoxa.Cashier.UnitTests.Application.Factories
 {
-    // TODO: Should be a transfer to Cashier API.
     [TestClass]
     public sealed class PayoutFactoryTest
     {

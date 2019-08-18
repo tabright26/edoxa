@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeFakerTest.cs
-// Date Created: 2019-07-12
+// Date Created: 2019-07-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,7 +11,7 @@ using Bogus;
 
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.UnitTests.Helpers.Extensions;
+using eDoxa.Arena.Challenges.UnitTests.Helpers.Assertions.Extensions;
 
 using FluentAssertions;
 
@@ -40,7 +40,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Data.Fakers
             var challenges = challengeFaker.Generate(20);
 
             // Assert
-            challenges.AssertStateIsValid();
+            challenges.Should().BeValid();
         }
 
         [DataTestMethod]
@@ -62,8 +62,8 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Data.Fakers
             var challenge2 = challengeFaker2.Generate();
 
             // Assert
-            challenge1.AssertStateIsValid();
-            challenge2.AssertStateIsValid();
+            challenge1.Should().BeValid();
+            challenge2.Should().BeValid();
             challenge1.Should().Be(challenge2);
         }
 
@@ -84,8 +84,8 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Data.Fakers
             var challenge2 = challengeFaker.Generate();
 
             // Assert
-            challenge1.AssertStateIsValid();
-            challenge2.AssertStateIsValid();
+            challenge1.Should().BeValid();
+            challenge2.Should().BeValid();
             challenge1.Should().NotBe(challenge2);
         }
 
@@ -106,7 +106,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Data.Fakers
             var participantIds = challenges.SelectMany(challenge => challenge.Participants).Select(participant => participant.Id).ToList();
 
             // Assert
-            challenges.AssertStateIsValid();
+            challenges.Should().BeValid();
             participantIds.Distinct().Should().HaveCount(participantIds.Count);
         }
 
@@ -127,7 +127,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Data.Fakers
             var participantUserIds = challenges.SelectMany(challenge => challenge.Participants).Select(participant => participant.UserId).ToList();
 
             // Assert
-            challenges.AssertStateIsValid();
+            challenges.Should().BeValid();
             participantUserIds.Distinct().Should().NotHaveCount(participantUserIds.Count);
         }
     }

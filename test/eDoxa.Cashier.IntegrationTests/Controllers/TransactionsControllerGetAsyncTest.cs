@@ -16,6 +16,7 @@ using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
+using eDoxa.Seedwork.Testing.Http.Extensions;
 
 using FluentAssertions;
 

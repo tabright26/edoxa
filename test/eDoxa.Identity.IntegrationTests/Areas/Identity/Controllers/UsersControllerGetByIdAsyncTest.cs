@@ -16,6 +16,7 @@ using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Infrastructure.Data.Storage;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
+using eDoxa.Seedwork.Testing.Http.Extensions;
 
 using FluentAssertions;
 

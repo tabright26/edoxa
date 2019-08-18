@@ -6,10 +6,7 @@
 
 using System.Security.Claims;
 
-using Autofac;
-
 using eDoxa.Seedwork.Testing.Extensions;
-using eDoxa.Seedwork.Testing.Modules;
 
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;

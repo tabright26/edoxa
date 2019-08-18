@@ -9,10 +9,9 @@ using System.Threading.Tasks;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.Infrastructure.Repositories;
+using eDoxa.Arena.Challenges.UnitTests.Helpers.Assertions.Extensions;
 using eDoxa.Arena.Challenges.UnitTests.Helpers.Extensions;
 using eDoxa.Seedwork.Infrastructure.Factories;
-
-using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

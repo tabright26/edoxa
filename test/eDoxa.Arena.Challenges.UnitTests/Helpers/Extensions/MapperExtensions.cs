@@ -1,5 +1,5 @@
 ﻿// Filename: MapperExtensions.cs
-// Date Created: 2019-07-10
+// Date Created: 2019-07-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -19,7 +19,9 @@ namespace eDoxa.Arena.Challenges.UnitTests.Helpers.Extensions
         {
             get
             {
-                var configuration = new MapperConfiguration(config => config.AddMaps(Assembly.GetAssembly(typeof(ArenaChallengesDbContext)), Assembly.GetAssembly(typeof(Startup))));
+                var configuration = new MapperConfiguration(
+                    config => config.AddMaps(Assembly.GetAssembly(typeof(ArenaChallengesDbContext)), Assembly.GetAssembly(typeof(Startup)))
+                );
 
                 configuration.AssertConfigurationIsValid();
 

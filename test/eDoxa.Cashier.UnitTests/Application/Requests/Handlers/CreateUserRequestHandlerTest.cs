@@ -12,7 +12,6 @@ using eDoxa.Cashier.Api.Application.Requests.Handlers;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Testing.TestConstructor;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -29,12 +28,6 @@ namespace eDoxa.Cashier.UnitTests.Application.Requests.Handlers
         public void TestInitialize()
         {
             _mockAccountRepository = new Mock<IAccountRepository>();
-        }
-
-        [TestMethod]
-        public void Constructor_Tests()
-        {
-            TestConstructor<CreateUserRequestHandler>.ForParameters(typeof(IAccountRepository)).WithClassName("CreateUserRequestHandler").Assert();
         }
 
         [TestMethod]

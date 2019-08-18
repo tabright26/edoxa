@@ -10,13 +10,11 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Api.Application.Requests;
 using eDoxa.Cashier.Api.Areas.Accounts.Controllers;
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Seedwork.Testing.TestConstructor;
 
 using FluentAssertions;
 
 using MediatR;
 
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -33,22 +31,6 @@ namespace eDoxa.Cashier.UnitTests.Areas.Account.Controllers
         public void TestInitialize()
         {
             _mockMediator = new Mock<IMediator>();
-        }
-
-        [TestMethod]
-        public void Constructor_Tests()
-        {
-            TestConstructor<AccountWithdrawalController>.ForParameters(typeof(IMediator))
-                .WithClassName("AccountWithdrawalController")
-                .WithClassAttributes(
-                    typeof(AuthorizeAttribute),
-                    typeof(ApiControllerAttribute),
-                    typeof(ApiVersionAttribute),
-                    typeof(ProducesAttribute),
-                    typeof(RouteAttribute),
-                    typeof(ApiExplorerSettingsAttribute)
-                )
-                .Assert();
         }
 
         [TestMethod]

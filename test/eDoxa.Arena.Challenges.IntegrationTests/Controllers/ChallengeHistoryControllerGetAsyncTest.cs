@@ -15,9 +15,8 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
-
+using eDoxa.Seedwork.Testing.Http.Extensions;
 using FluentAssertions;
-
 using IdentityModel;
 
 using Xunit;

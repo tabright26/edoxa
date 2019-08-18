@@ -63,7 +63,7 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
                 {
                     counter++;
 
-                    await Task.Delay(1000);
+                    await Task.Delay(2500);
 
                     continue;
                 }

@@ -40,7 +40,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public override string ToString()
         {
-            return Score.ToString();
+            return Name.ToString();
         }
     }
 }

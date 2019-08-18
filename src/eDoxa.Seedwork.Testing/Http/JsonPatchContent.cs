@@ -9,7 +9,7 @@ using System.Text;
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Seedwork.Testing.Contents
+namespace eDoxa.Seedwork.Testing.Http
 {
     public sealed class JsonPatchContent : StringContent
     {

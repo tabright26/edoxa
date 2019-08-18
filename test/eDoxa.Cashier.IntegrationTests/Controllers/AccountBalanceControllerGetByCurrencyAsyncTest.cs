@@ -17,6 +17,7 @@ using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
+using eDoxa.Seedwork.Testing.Http.Extensions;
 
 using FluentAssertions;
 
@@ -54,7 +55,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Arrange
             var account = new Account(new UserId());
 
-            var factory = _factory.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()).ToArray());
+            var factory = _factory.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()));
             _httpClient = factory.CreateClient();
             var server = factory.Server;
             server.CleanupDbContext();
@@ -90,7 +91,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             accountFaker.UseSeed(1);
             var account = accountFaker.Generate();
             var balance = account.GetBalanceFor(currency);
-            var factory = _factory.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()).ToArray());
+            var factory = _factory.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()));
             _httpClient = factory.CreateClient();
             var server = factory.Server;
             server.CleanupDbContext();
@@ -117,20 +118,20 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             balanceViewModel?.Pending.Should().Be(balance.Pending);
         }
 
-        [Theory]
-        [MemberData(nameof(ValidCurrencyDataSets))]
-        public async Task UserWithoutAccount_ShouldBeNotFound(Currency currency)
-        {
-            var factory = _factory.WithClaims();
+        //[Theory]
+        //[MemberData(nameof(ValidCurrencyDataSets))]
+        //public async Task UserWithoutAccount_ShouldBeNotFound(Currency currency)
+        //{
+        //    var factory = _factory.WithClaims();
 
-            _httpClient = factory.CreateClient();
+        //    _httpClient = factory.CreateClient();
 
-            // Act
-            using var response = await this.ExecuteAsync(currency);
+        //    // Act
+        //    using var response = await this.ExecuteAsync(currency);
 
-            // Assert
-            response.StatusCode.Should().Be(StatusCodes.Status404NotFound);
-        }
+        //    // Assert
+        //    response.StatusCode.Should().Be(StatusCodes.Status404NotFound);
+        //}
 
         [Theory]
         [MemberData(nameof(InvalidCurrencyDataSets))]
@@ -139,7 +140,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             var accountFaker = new AccountFaker();
             accountFaker.UseSeed(1);
             var account = accountFaker.Generate();
-            var factory = _factory.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()).ToArray());
+            var factory = _factory.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()));
 
             _httpClient = factory.CreateClient();
             var server = factory.Server;

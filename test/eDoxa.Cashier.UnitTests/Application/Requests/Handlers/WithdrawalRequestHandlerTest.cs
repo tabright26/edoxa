@@ -14,11 +14,9 @@ using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.UnitTests.Helpers.Mocks;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Testing.TestConstructor;
 
 using MediatR;
 
-using Microsoft.AspNetCore.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
@@ -36,14 +34,6 @@ namespace eDoxa.Cashier.UnitTests.Application.Requests.Handlers
         {
             _mockHttpContextAccessor = new MockHttpContextAccessor();
             _mockAccountService = new Mock<IAccountService>();
-        }
-
-        [TestMethod]
-        public void Constructor_Tests()
-        {
-            TestConstructor<WithdrawalRequestHandler>.ForParameters(typeof(IHttpContextAccessor), typeof(IAccountService))
-                .WithClassName("WithdrawalRequestHandler")
-                .Assert();
         }
 
         [TestMethod]
