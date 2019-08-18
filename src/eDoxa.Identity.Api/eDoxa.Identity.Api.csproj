@@ -46,7 +46,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="compilerconfig.json" CopyToOutputDirectory="Always" />
     <Content Update="compilerconfig.json.defaults" CopyToOutputDirectory="Always" />
   </ItemGroup>
 
