@@ -4,7 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Seedwork.Application.Constants;
+using eDoxa.Seedwork.Application;
 using eDoxa.ServiceBus.Abstractions;
 
 using Newtonsoft.Json;

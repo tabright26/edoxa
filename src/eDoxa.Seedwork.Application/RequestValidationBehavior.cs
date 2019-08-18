@@ -18,7 +18,7 @@ using MediatR;
 
 using Microsoft.Extensions.Logging;
 
-namespace eDoxa.Seedwork.Application.Behaviors
+namespace eDoxa.Seedwork.Application
 {
     public sealed class RequestValidationBehavior<TRequest, TResult> : IPipelineBehavior<TRequest, TResult>
     {

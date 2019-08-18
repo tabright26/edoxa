@@ -1,5 +1,5 @@
 ﻿// Filename: AccountModel.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,12 +9,15 @@
 using System;
 using System.Collections.Generic;
 
-using eDoxa.Seedwork.Infrastructure;
-
 namespace eDoxa.Cashier.Infrastructure.Models
 {
-    public class AccountModel : PersistentObject
+    /// <remarks>
+    ///     This class is a pure POCO object that represents a database table in EF Core 2.2.
+    /// </remarks>
+    public class AccountModel
     {
+        public Guid Id { get; set; }
+
         public Guid UserId { get; set; }
 
         public ICollection<TransactionModel> Transactions { get; set; }

@@ -16,13 +16,11 @@ using eDoxa.Identity.Api.Areas.Identity.Extensions;
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Extensions;
 using eDoxa.Identity.Api.Infrastructure;
-using eDoxa.Identity.Api.Infrastructure.Data;
 using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Identity.Api.Services;
+using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Application.Modules;
 using eDoxa.Seedwork.Application.Swagger.Extensions;
-using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security.Constants;
 using eDoxa.Seedwork.Security.Extensions;
@@ -39,6 +37,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Versioning;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -76,7 +75,16 @@ namespace eDoxa.Identity.Api
 
             services.AddDataProtection(Configuration);
 
-            services.AddDbContext<IdentityDbContext, IdentityDbContextData>(AppSettings.ConnectionStrings.SqlServer, Assembly.GetAssembly(typeof(Startup)));
+            services.AddDbContext<IdentityDbContext>(
+                options => options.UseSqlServer(
+                    AppSettings.ConnectionStrings.SqlServer,
+                    sqlServerOptions =>
+                    {
+                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup)).GetName().Name);
+                        sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
+                    }
+                )
+            );
 
             services.Configure<CookiePolicyOptions>(
                 options =>

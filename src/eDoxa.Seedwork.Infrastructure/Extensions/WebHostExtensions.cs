@@ -25,12 +25,12 @@ namespace eDoxa.Seedwork.Infrastructure.Extensions
         public static void MigrateDbContextWithRetryPolicy<TDbContext>(this IWebHost host)
         where TDbContext : DbContext
         {
-            host.MigrateDbContextWithRetryPolicy<TDbContext, IDbContextData>();
+            host.MigrateDbContextWithRetryPolicy<TDbContext, IDbContextSeeder>();
         }
 
         private static void MigrateDbContextWithRetryPolicy<TDbContext, TDbContextData>(this IWebHost host)
         where TDbContext : DbContext
-        where TDbContextData : IDbContextData
+        where TDbContextData : IDbContextSeeder
         {
             // Create service scope.
             using (var scope = host.Services.CreateScope())

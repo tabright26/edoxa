@@ -8,7 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Reflection;
 
 using eDoxa.Seedwork.Security.Constants;
@@ -45,15 +44,11 @@ namespace eDoxa.Seedwork.Infrastructure.Factories
         {
             get
             {
-                var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-
                 var builder = new ConfigurationBuilder();
 
                 builder.SetBasePath(BasePath);
 
                 builder.AddJsonFile("appsettings.json", false, true);
-
-                builder.AddJsonFile($"appsettings.{environment}.json", true);
 
                 builder.AddEnvironmentVariables();
 

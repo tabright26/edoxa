@@ -1,5 +1,5 @@
 ﻿// Filename: MatchModel.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,12 +9,15 @@
 using System;
 using System.Collections.Generic;
 
-using eDoxa.Seedwork.Infrastructure;
-
 namespace eDoxa.Arena.Challenges.Infrastructure.Models
 {
-    public class MatchModel : PersistentObject
+    /// <remarks>
+    ///     This class is a pure POCO object that represents a database table in EF Core 2.2.
+    /// </remarks>
+    public class MatchModel
     {
+        public Guid Id { get; set; }
+
         public DateTime SynchronizedAt { get; set; }
 
         public string GameReference { get; set; }

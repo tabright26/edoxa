@@ -1,4 +1,4 @@
-﻿// Filename: IdentityDbContextData.cs
+﻿// Filename: IdentityDbContextSeeder.cs
 // Date Created: 2019-06-25
 // 
 // ================================================
@@ -16,16 +16,16 @@ using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Identity.Api.Infrastructure.Data
 {
-    public sealed class IdentityDbContextData : IDbContextData
+    public sealed class IdentityDbContextSeeder : IDbContextSeeder
     {
-        private readonly ILogger<IdentityDbContextData> _logger;
+        private readonly ILogger<IdentityDbContextSeeder> _logger;
         private readonly IHostingEnvironment _environment;
         private readonly IdentityDbContext _context;
         private readonly UserManager _userManager;
         private readonly RoleManager _roleManager;
 
-        public IdentityDbContextData(
-            ILogger<IdentityDbContextData> logger,
+        public IdentityDbContextSeeder(
+            ILogger<IdentityDbContextSeeder> logger,
             IHostingEnvironment environment,
             IdentityDbContext context,
             UserManager userManager,

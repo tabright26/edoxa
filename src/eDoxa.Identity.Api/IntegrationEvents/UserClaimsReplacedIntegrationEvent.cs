@@ -7,7 +7,7 @@
 using System;
 using System.Collections.Generic;
 
-using eDoxa.Seedwork.Application.Constants;
+using eDoxa.Seedwork.Application;
 using eDoxa.ServiceBus.Abstractions;
 
 using Newtonsoft.Json;

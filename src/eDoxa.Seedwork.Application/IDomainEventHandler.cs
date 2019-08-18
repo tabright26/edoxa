@@ -1,4 +1,4 @@
-// Filename: DomainEventHandler.cs
+// Filename: IDomainEventHandler.cs
 // Date Created: 2019-06-01
 // 
 // ================================================
@@ -12,9 +12,9 @@ using eDoxa.Seedwork.Domain;
 
 using MediatR;
 
-namespace eDoxa.Seedwork.Application.DomainEvents.Handlers
+namespace eDoxa.Seedwork.Application
 {
-    public abstract class DomainEventHandler<TDomainEvent> : NotificationHandler<TDomainEvent>, IDomainEventHandler<TDomainEvent>
+    public interface IDomainEventHandler<in TDomainEvent> : INotificationHandler<TDomainEvent>
     where TDomainEvent : IDomainEvent
     {
     }

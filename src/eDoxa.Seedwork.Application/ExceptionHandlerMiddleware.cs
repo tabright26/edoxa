@@ -1,5 +1,5 @@
-﻿// Filename: CustomExceptionHandlerMiddleware.cs
-// Date Created: 2019-06-25
+﻿// Filename: ExceptionHandlerMiddleware.cs
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,15 +13,16 @@ using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Seedwork.Application.Middlewares
+namespace eDoxa.Seedwork.Application
 {
-    public sealed class CustomExceptionHandlerMiddleware
+    // TODO: This middleware must be replaced by the default Exception Handler Middleware in .Net Core 3.0.
+    public sealed class ExceptionHandlerMiddleware
     {
         private readonly IHostingEnvironment _environment;
-        private readonly ILogger<CustomExceptionHandlerMiddleware> _logger;
+        private readonly ILogger<ExceptionHandlerMiddleware> _logger;
         private readonly RequestDelegate _next;
 
-        public CustomExceptionHandlerMiddleware(IHostingEnvironment environment, ILogger<CustomExceptionHandlerMiddleware> logger, RequestDelegate next)
+        public ExceptionHandlerMiddleware(IHostingEnvironment environment, ILogger<ExceptionHandlerMiddleware> logger, RequestDelegate next)
         {
             _environment = environment;
             _logger = logger;
@@ -38,13 +39,16 @@ namespace eDoxa.Seedwork.Application.Middlewares
             {
                 _logger.LogError(new EventId(exception.HResult), exception, exception.Message);
 
-                var error = new ErrorDto();
+                var error = new Error();
 
                 if (_environment.IsDevelopment())
                 {
-                    error = new ErrorDto(exception);
+                    error = new Error(exception);
                 }
 
+                // Content-Type is normally included in the HTTP response and Accept is normally included in the HTTP request.
+                // Content-Type and Accept HTTP headers are respectively the server response body type and the server accept body type.
+                // For more control over HTTP requests use a custom CORS middleware.
                 context.Response.ContentType = "application/json";
 
                 context.Response.StatusCode = StatusCodes.Status500InternalServerError;
@@ -54,15 +58,15 @@ namespace eDoxa.Seedwork.Application.Middlewares
         }
 
         [JsonObject]
-        private sealed class ErrorDto
+        private sealed class Error // These Json attribute configurations are valid because this class is never deserialized.
         {
-            public ErrorDto(Exception exception)
+            public Error(Exception exception)
             {
                 StatusCode = StatusCodes.Status500InternalServerError;
                 Message = exception.Message;
             }
 
-            public ErrorDto()
+            public Error()
             {
                 StatusCode = StatusCodes.Status500InternalServerError;
                 Message = "Internal Server Error";

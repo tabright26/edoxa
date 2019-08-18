@@ -16,8 +16,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace eDoxa.Seedwork.Application.Mvc.Filters.Attributes
+namespace eDoxa.Seedwork.Application
 {
+    // TODO: This attribute must be replaced by UseEnpoints in .Net Core 3.0.
     public sealed class DevToolsAttribute : Attribute, IResourceFilter
     {
         public void OnResourceExecuting( ResourceExecutingContext context)

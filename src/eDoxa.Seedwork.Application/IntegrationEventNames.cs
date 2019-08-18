@@ -4,7 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-namespace eDoxa.Seedwork.Application.Constants
+namespace eDoxa.Seedwork.Application
 {
     public static class IntegrationEventNames
     {

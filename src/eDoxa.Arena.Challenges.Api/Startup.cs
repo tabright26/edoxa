@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -17,14 +17,12 @@ using eDoxa.Arena.Challenges.Api.Application.DelegatingHandlers;
 using eDoxa.Arena.Challenges.Api.Application.Services;
 using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Api.Infrastructure;
-using eDoxa.Arena.Challenges.Api.Infrastructure.Data;
 using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Games.Extensions;
+using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Application.Modules;
 using eDoxa.Seedwork.Application.Swagger.Extensions;
-using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security.Constants;
@@ -38,6 +36,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Versioning;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -74,11 +73,15 @@ namespace eDoxa.Arena.Challenges.Api
 
             services.AddHealthChecks(AppSettings);
 
-            services.AddCorsPolicy();
-
-            services.AddDbContext<ArenaChallengesDbContext, ArenaChallengesDbContextData>(
-                AppSettings.ConnectionStrings.SqlServer,
-                Assembly.GetAssembly(typeof(Startup))
+            services.AddDbContext<ArenaChallengesDbContext>(
+                options => options.UseSqlServer(
+                    AppSettings.ConnectionStrings.SqlServer,
+                    sqlServerOptions =>
+                    {
+                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup)).GetName().Name);
+                        sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
+                    }
+                )
             );
 
             services.AddDistributedRedisCache(
@@ -88,6 +91,8 @@ namespace eDoxa.Arena.Challenges.Api
                     options.InstanceName = HostingEnvironment.ApplicationName;
                 }
             );
+
+            services.AddCorsPolicy();
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)

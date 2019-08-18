@@ -8,8 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Seedwork.Application.Middlewares;
-
 using Microsoft.AspNetCore.Builder;
 
 namespace eDoxa.Seedwork.Application.Extensions
@@ -18,7 +16,7 @@ namespace eDoxa.Seedwork.Application.Extensions
     {
         public static void UseCustomExceptionHandler(this IApplicationBuilder application)
         {
-            application.UseMiddleware<CustomExceptionHandlerMiddleware>();
+            application.UseMiddleware<ExceptionHandlerMiddleware>();
         }
     }
 }

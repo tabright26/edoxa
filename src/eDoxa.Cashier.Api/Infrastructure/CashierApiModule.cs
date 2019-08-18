@@ -1,5 +1,5 @@
 ﻿// Filename: CashierApiModule.cs
-// Date Created: 2019-07-07
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,6 +9,7 @@ using Autofac;
 using eDoxa.Cashier.Api.Application.Factories;
 using eDoxa.Cashier.Api.Application.Services;
 using eDoxa.Cashier.Api.Application.Strategies;
+using eDoxa.Cashier.Api.Infrastructure.Data;
 using eDoxa.Cashier.Api.Infrastructure.Queries;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.Domain.Queries;
@@ -16,17 +17,21 @@ using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.Domain.Strategies;
 using eDoxa.Cashier.Infrastructure.Repositories;
+using eDoxa.Seedwork.Infrastructure;
 
 namespace eDoxa.Cashier.Api.Infrastructure
 {
     public sealed class CashierApiModule : Module
     {
-        protected override void Load( ContainerBuilder builder)
+        protected override void Load(ContainerBuilder builder)
         {
             // Repositories
             builder.RegisterType<ChallengeRepository>().As<IChallengeRepository>().InstancePerLifetimeScope();
             builder.RegisterType<AccountRepository>().As<IAccountRepository>().InstancePerLifetimeScope();
             builder.RegisterType<TransactionRepository>().As<ITransactionRepository>().InstancePerLifetimeScope();
+
+            // Seeder
+            builder.RegisterType<CashierDbContextSeeder>().As<IDbContextSeeder>().InstancePerLifetimeScope();
 
             // Queries
             builder.RegisterType<ChallengeQuery>().As<IChallengeQuery>().InstancePerLifetimeScope();

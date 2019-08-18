@@ -10,7 +10,7 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Seedwork.Application.Mvc.Filters.Attributes;
+using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Infrastructure;
 
 using Microsoft.AspNetCore.Authorization;
@@ -27,19 +27,19 @@ namespace eDoxa.Cashier.Api.Controllers
     [ApiExplorerSettings(GroupName = "DevTools")]
     public sealed class DevToolsController : ControllerBase
     {
-        private readonly IDbContextData _dbContextData;
+        private readonly IDbContextSeeder _dbContextSeeder;
 
-        public DevToolsController(IDbContextData dbContextData)
+        public DevToolsController(IDbContextSeeder dbContextSeeder)
         {
-            _dbContextData = dbContextData;
+            _dbContextSeeder = dbContextSeeder;
         }
 
         [HttpPost("database/reset")]
         public async Task<IActionResult> DatabaseResetAsync()
         {
-            await _dbContextData.CleanupAsync();
+            await _dbContextSeeder.CleanupAsync();
 
-            await _dbContextData.SeedAsync();
+            await _dbContextSeeder.SeedAsync();
 
             return this.Ok("The database has been reset to the default data.");
         }
@@ -47,7 +47,7 @@ namespace eDoxa.Cashier.Api.Controllers
         [HttpPost("database/cleanup")]
         public async Task<IActionResult> DatabaseCleanupAsync()
         {
-            await _dbContextData.CleanupAsync();
+            await _dbContextSeeder.CleanupAsync();
 
             return this.Ok("The database has been cleaned up.");
         }

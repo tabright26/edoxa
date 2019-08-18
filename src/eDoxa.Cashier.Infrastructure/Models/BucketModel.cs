@@ -1,11 +1,14 @@
 ﻿// Filename: BucketModel.cs
-// Date Created: 2019-07-10
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 namespace eDoxa.Cashier.Infrastructure.Models
 {
+    /// <remarks>
+    ///     This class is a pure POCO object that represents a database table in EF Core 2.2.
+    /// </remarks>
     public class BucketModel
     {
         public int Size { get; set; }

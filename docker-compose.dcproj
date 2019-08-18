@@ -5,7 +5,7 @@
     <DockerTargetOS>Linux</DockerTargetOS>
     <ProjectGuid>702d7d71-3cd1-436f-bd4e-6a488bb3cfc9</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
-    <DockerServiceUrl>{Scheme}://192.168.0.106:{ServicePort}</DockerServiceUrl>
+    <DockerServiceUrl>{Scheme}://192.168.0.109:{ServicePort}</DockerServiceUrl>
     <DockerServiceName>identity.api</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>

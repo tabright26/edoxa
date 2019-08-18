@@ -1,4 +1,4 @@
-﻿// Filename: ArenaChallengesDbContextData.cs
+﻿// Filename: ArenaChallengesDbContextSeeder.cs
 // Date Created: 2019-06-25
 // 
 // ================================================
@@ -16,13 +16,13 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data
 {
-    public sealed class ArenaChallengesDbContextData : IDbContextData
+    public sealed class ArenaChallengesDbContextSeeder : IDbContextSeeder
     {
         private readonly ArenaChallengesDbContext _context;
         private readonly IHostingEnvironment _environment;
         private readonly IChallengeRepository _challengeRepository;
 
-        public ArenaChallengesDbContextData(ArenaChallengesDbContext context, IHostingEnvironment environment, IChallengeRepository challengeRepository)
+        public ArenaChallengesDbContextSeeder(ArenaChallengesDbContext context, IHostingEnvironment environment, IChallengeRepository challengeRepository)
         {
             _context = context;
             _environment = environment;

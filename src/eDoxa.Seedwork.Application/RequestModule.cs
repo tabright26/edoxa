@@ -13,15 +13,13 @@ using System.Reflection;
 
 using Autofac;
 
-using eDoxa.Seedwork.Application.Behaviors;
-
 using FluentValidation;
 
 using MediatR;
 
 using Module = Autofac.Module;
 
-namespace eDoxa.Seedwork.Application.Modules
+namespace eDoxa.Seedwork.Application
 {
     public sealed class RequestModule : Module
     {

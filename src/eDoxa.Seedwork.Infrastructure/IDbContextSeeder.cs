@@ -1,4 +1,4 @@
-﻿// Filename: IDbContextData.cs
+﻿// Filename: IDbContextSeeder.cs
 // Date Created: 2019-07-06
 // 
 // ================================================
@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace eDoxa.Seedwork.Infrastructure
 {
-    public interface IDbContextData
+    public interface IDbContextSeeder
     {
         Task SeedAsync();
 

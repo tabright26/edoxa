@@ -1,4 +1,4 @@
-﻿// Filename: CashierDbContextData.cs
+﻿// Filename: CashierDbContextSeeder.cs
 // Date Created: 2019-06-25
 // 
 // ================================================
@@ -18,16 +18,16 @@ using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Cashier.Api.Infrastructure.Data
 {
-    internal sealed class CashierDbContextData : IDbContextData
+    internal sealed class CashierDbContextSeeder : IDbContextSeeder
     {
         private readonly CashierDbContext _context;
         private readonly IAccountRepository _accountRepository;
         private readonly IChallengeRepository _challengeRepository;
-        private readonly ILogger<CashierDbContextData> _logger;
+        private readonly ILogger<CashierDbContextSeeder> _logger;
         private readonly IHostingEnvironment _environment;
 
-        public CashierDbContextData(
-            ILogger<CashierDbContextData> logger,
+        public CashierDbContextSeeder(
+            ILogger<CashierDbContextSeeder> logger,
             IHostingEnvironment environment,
             CashierDbContext context,
             IAccountRepository accountRepository,

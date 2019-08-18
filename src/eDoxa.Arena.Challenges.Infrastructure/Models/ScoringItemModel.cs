@@ -1,21 +1,22 @@
 ﻿// Filename: ScoringItemModel.cs
-// Date Created: 2019-06-18
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 #nullable disable
 
-using eDoxa.Seedwork.Infrastructure;
+using System;
 
 namespace eDoxa.Arena.Challenges.Infrastructure.Models
 {
-    public class ScoringItemModel : PersistentObject
+    /// <remarks>
+    ///     This class is a pure POCO object that represents a database table in EF Core 2.2.
+    /// </remarks>
+    public class ScoringItemModel
     {
+        public Guid Id { get; set; }
+
         public string Name { get; set; }
 
         public float Weighting { get; set; }

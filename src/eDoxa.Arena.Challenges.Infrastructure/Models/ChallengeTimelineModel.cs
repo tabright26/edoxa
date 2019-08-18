@@ -1,17 +1,16 @@
-﻿// Filename: TimelineModel.cs
-// Date Created: 2019-06-20
+﻿// Filename: ChallengeTimelineModel.cs
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 
 namespace eDoxa.Arena.Challenges.Infrastructure.Models
 {
+    /// <remarks>
+    ///     This class is a pure POCO object that represents a database table in EF Core 2.2.
+    /// </remarks>
     public class ChallengeTimelineModel
     {
         public DateTime CreatedAt { get; set; }

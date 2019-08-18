@@ -12,9 +12,7 @@ using System;
 
 using Autofac;
 
-using eDoxa.Seedwork.Application.DomainEvents.Handlers;
-
-namespace eDoxa.Seedwork.Application.Modules
+namespace eDoxa.Seedwork.Application
 {
     public sealed class DomainEventModule : Module
     {
