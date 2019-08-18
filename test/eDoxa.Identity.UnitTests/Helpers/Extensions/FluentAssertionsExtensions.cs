@@ -7,7 +7,6 @@
 using System.Collections.Generic;
 
 using eDoxa.Identity.Api.Areas.Identity.Responses;
-using eDoxa.Seedwork.Domain.Extensions;
 
 using FluentAssertions;
 
@@ -17,7 +16,10 @@ namespace eDoxa.Identity.UnitTests.Helpers.Extensions
     {
         public static void AssertStateIsValid(this IEnumerable<UserResponse> users)
         {
-            users.ForEach(AssertStateIsValid);
+            foreach (var user in users)
+            {
+                user.AssertStateIsValid();
+            }
         }
 
         public static void AssertStateIsValid(this UserResponse user)

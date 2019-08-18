@@ -1,5 +1,5 @@
 ﻿// Filename: SwaggerGenOptionsExtensions.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 
 using eDoxa.Seedwork.Domain.Aggregate;
-using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Monitoring.AppSettings;
 
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
@@ -49,17 +48,17 @@ namespace eDoxa.Seedwork.Application.Swagger.Extensions
 
         public static void DescribeAllEnumerationsAsStrings(this SwaggerGenOptions options)
         {
-            Enumeration.GetTypes()
-                .ForEach(
-                    type => options.MapType(
-                        type,
-                        () => new Schema
-                        {
-                            Type = "string",
-                            Enum = Enumeration.GetEnumerations(type).Cast<object>().ToList()
-                        }
-                    )
+            foreach (var type in Enumeration.GetTypes())
+            {
+                options.MapType(
+                    type,
+                    () => new Schema
+                    {
+                        Type = "string",
+                        Enum = Enumeration.GetEnumerations(type).Cast<object>().ToList()
+                    }
                 );
+            }
         }
     }
 }

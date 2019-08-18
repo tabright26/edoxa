@@ -11,7 +11,6 @@ using AutoMapper;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Infrastructure.Models;
-using eDoxa.Seedwork.Domain.Extensions;
 
 namespace eDoxa.Cashier.Infrastructure.Profiles.Converters
 {
@@ -26,7 +25,10 @@ namespace eDoxa.Cashier.Infrastructure.Profiles.Converters
 
             var transactions = context.Mapper.Map<ICollection<ITransaction>>(source.Transactions);
 
-            transactions.ForEach(transaction => account.CreateTransaction(transaction));
+            foreach (var transaction in transactions)
+            {
+                account.CreateTransaction(transaction);
+            }
 
             return account;
         }

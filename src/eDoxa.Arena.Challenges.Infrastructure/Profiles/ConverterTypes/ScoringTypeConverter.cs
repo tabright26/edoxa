@@ -15,7 +15,6 @@ using AutoMapper;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
-using eDoxa.Seedwork.Domain.Extensions;
 
 namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.ConverterTypes
 {
@@ -26,7 +25,10 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.ConverterTypes
         {
             var scoring = new Scoring();
 
-            source.ForEach(item => scoring.Add(new StatName(item.Name), new StatWeighting(item.Weighting)));
+            foreach (var item in source)
+            {
+                scoring.Add(new StatName(item.Name), new StatWeighting(item.Weighting));
+            }
 
             return scoring;
         }

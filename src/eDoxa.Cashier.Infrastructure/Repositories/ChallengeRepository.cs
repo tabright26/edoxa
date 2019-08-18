@@ -15,7 +15,6 @@ using AutoMapper;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Infrastructure.Models;
-using eDoxa.Seedwork.Domain.Extensions;
 
 using LinqKit;
 
@@ -50,7 +49,10 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
     {
         public void Create(IEnumerable<IChallenge> challenges)
         {
-            challenges.ForEach(this.Create);
+            foreach (var challenge in challenges)
+            {
+                this.Create(challenge);
+            }
         }
 
         public void Create(IChallenge challenge)

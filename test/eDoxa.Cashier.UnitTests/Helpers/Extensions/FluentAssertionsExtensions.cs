@@ -8,7 +8,6 @@ using System.Collections.Generic;
 
 using eDoxa.Cashier.Api.ViewModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Seedwork.Domain.Extensions;
 
 using FluentAssertions;
 
@@ -27,7 +26,10 @@ namespace eDoxa.Cashier.UnitTests.Helpers.Extensions
 
         public static void AssertStateIsValid(this IEnumerable<TransactionViewModel> transactions)
         {
-            transactions.ForEach(AssertStateIsValid);
+            foreach (var transaction in transactions)
+            {
+                transaction.AssertStateIsValid();
+            }
         }
 
         public static void AssertStateIsValid(this TransactionViewModel transaction)

@@ -15,7 +15,6 @@ using AutoMapper;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
-using eDoxa.Seedwork.Domain.Extensions;
 
 namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.Resolvers
 {
@@ -33,7 +32,10 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.Resolvers
         {
             var participants = context.Mapper.Map<ICollection<ParticipantModel>>(sourceMember);
 
-            participants.ForEach(participant => participant.Challenge = destination);
+            foreach (var participant in participants)
+            {
+                participant.Challenge = destination;
+            }
 
             return participants;
         }

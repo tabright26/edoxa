@@ -8,7 +8,6 @@ using AutoMapper;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Infrastructure.Models;
-using eDoxa.Seedwork.Domain.Extensions;
 
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
@@ -97,7 +96,10 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
             var transactions =
                 account.Transactions.Where(transaction => accountModel.Transactions.All(transactionModel => transactionModel.Id != transaction.Id));
 
-            _mapper.Map<ICollection<TransactionModel>>(transactions).ForEach(transaction => accountModel.Transactions.Add(transaction));
+            foreach (var transaction in _mapper.Map<ICollection<TransactionModel>>(transactions))
+            {
+                accountModel.Transactions.Add(transaction);
+            }
         }
     }
 }

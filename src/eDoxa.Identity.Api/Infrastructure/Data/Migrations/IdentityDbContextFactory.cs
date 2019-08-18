@@ -1,30 +1,37 @@
 ﻿// Filename: IdentityDbContextFactory.cs
-// Date Created: 2019-06-14
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.IO;
 using System.Reflection;
 
-using eDoxa.Seedwork.Infrastructure.Factories;
+using eDoxa.Seedwork.Security.Constants;
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
 
 namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
 {
-    internal sealed class IdentityDbContextFactory : DesignTimeDbContextFactory<IdentityDbContext>
+    internal sealed class IdentityDbContextFactory : IDesignTimeDbContextFactory<IdentityDbContext>
     {
-        protected override string BasePath => Directory.GetCurrentDirectory();
+        private static IConfiguration Configuration =>
+            new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", false, true)
+                .AddEnvironmentVariables()
+                .Build();
 
-        protected override Assembly MigrationsAssembly => Assembly.GetAssembly(typeof(Startup));
-
-        
-        public override IdentityDbContext CreateDbContext(string[] args)
+        public IdentityDbContext CreateDbContext(string[] args)
         {
-            return new IdentityDbContext(Options);
+            return new IdentityDbContext(
+                new DbContextOptionsBuilder<IdentityDbContext>().UseSqlServer(
+                        Configuration.GetConnectionString(CustomConnectionStrings.SqlServer),
+                        builder => builder.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup)).GetName().Name)
+                    )
+                    .Options
+            );
         }
     }
 }

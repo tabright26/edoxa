@@ -1,12 +1,8 @@
 ﻿// Filename: ParticipantTypeConverter.cs
-// Date Created: 2019-06-21
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.Collections.Generic;
 
@@ -15,15 +11,13 @@ using AutoMapper;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
-using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Providers;
 
 namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.ConverterTypes
 {
     internal sealed class ParticipantTypeConverter : ITypeConverter<ParticipantModel, Participant>
     {
-        
-        public Participant Convert( ParticipantModel source,  Participant destination,  ResolutionContext context)
+        public Participant Convert(ParticipantModel source, Participant destination, ResolutionContext context)
         {
             var participant = new Participant(
                 UserId.FromGuid(source.UserId),
@@ -35,7 +29,10 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.ConverterTypes
 
             var matches = context.Mapper.Map<ICollection<IMatch>>(source.Matches);
 
-            matches.ForEach(match => participant.Snapshot(match));
+            foreach (var match in matches)
+            {
+                participant.Snapshot(match);
+            }
 
             return participant;
         }

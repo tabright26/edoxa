@@ -4,8 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Seedwork.Domain.Extensions;
-
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
@@ -15,7 +13,10 @@ namespace eDoxa.Identity.Api.Extensions
     {
         public static void Bind(this ModelStateDictionary modelState, IdentityResult result)
         {
-            result.Errors.ForEach(error => modelState.AddModelError(string.Empty, error.Description));
+            foreach (var error in result.Errors)
+            {
+                modelState.AddModelError(string.Empty, error.Description);
+            }
         }
     }
 }

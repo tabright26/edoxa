@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeServiceCloseAsyncTest.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -14,7 +14,6 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Providers;
 using eDoxa.Seedwork.Testing.Extensions;
 
@@ -74,9 +73,15 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Services
                 async scope =>
                 {
                     var challengeRepository = scope.GetRequiredService<IChallengeRepository>();
+
                     challenges = await challengeRepository.FetchChallengesAsync(null, ChallengeState.Closed);
+
                     challenges.Should().HaveCount(count);
-                    challenges.ForEach(challenge => challenge.Timeline.ClosedAt.Should().Be(closedAt.DateTime));
+
+                    foreach (var challenge in challenges)
+                    {
+                        challenge.Timeline.ClosedAt.Should().Be(closedAt.DateTime);
+                    }
                 }
             );
         }

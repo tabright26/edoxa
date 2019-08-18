@@ -8,7 +8,6 @@ using System.Linq;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Seedwork.Domain.Extensions;
 
 using FluentAssertions;
 using FluentAssertions.Primitives;
@@ -37,30 +36,26 @@ namespace eDoxa.Arena.Challenges.UnitTests.Helpers.Assertions
 
             Challenge.Participants.Should().NotBeNullOrEmpty(because, becauseArgs);
 
-            Challenge.Participants.ForEach(
-                participant =>
+            foreach (var participant in Challenge.Participants)
+            {
+                Challenge.SynchronizedAt?.Should().BeAfter(participant.RegisteredAt, because, becauseArgs);
+
+                participant.RegisteredAt.Should().BeAfter(Challenge.Timeline.CreatedAt, because, becauseArgs);
+
+                if (Challenge.Timeline.State != ChallengeState.Inscription)
                 {
-                    Challenge.SynchronizedAt?.Should().BeAfter(participant.RegisteredAt, because, becauseArgs);
-
-                    participant.RegisteredAt.Should().BeAfter(Challenge.Timeline.CreatedAt, because, becauseArgs);
-
-                    if (Challenge.Timeline.State != ChallengeState.Inscription)
-                    {
-                        participant.Matches.Should().NotBeNullOrEmpty(because, becauseArgs);
-                    }
-
-                    participant.Matches.ForEach(
-                        match =>
-                        {
-                            Challenge.SynchronizedAt?.Should().BeOnOrAfter(match.SynchronizedAt, because, becauseArgs);
-
-                            participant.SynchronizedAt?.Should().BeOnOrAfter(match.SynchronizedAt, because, becauseArgs);
-
-                            match.SynchronizedAt.Should().BeAfter(participant.RegisteredAt, because, becauseArgs);
-                        }
-                    );
+                    participant.Matches.Should().NotBeNullOrEmpty(because, becauseArgs);
                 }
-            );
+
+                foreach (var match in participant.Matches)
+                {
+                    Challenge.SynchronizedAt?.Should().BeOnOrAfter(match.SynchronizedAt, because, becauseArgs);
+
+                    participant.SynchronizedAt?.Should().BeOnOrAfter(match.SynchronizedAt, because, becauseArgs);
+
+                    match.SynchronizedAt.Should().BeAfter(participant.RegisteredAt, because, becauseArgs);
+                }
+            }
 
             Challenge.Participants.Select(participant => participant.Id).Distinct().Should().HaveCount(Challenge.Participants.Count, because, becauseArgs);
 

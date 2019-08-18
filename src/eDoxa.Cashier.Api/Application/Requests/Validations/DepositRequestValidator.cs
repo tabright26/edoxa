@@ -11,7 +11,6 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Validators;
-using eDoxa.Seedwork.Domain.Extensions;
 
 using FluentValidation;
 
@@ -98,7 +97,10 @@ namespace eDoxa.Cashier.Api.Application.Requests.Validations
 
                                         if (errors.Any())
                                         {
-                                            errors.ForEach(context.AddFailure);
+                                            foreach (var error in errors)
+                                            {
+                                                context.AddFailure(error);
+                                            }
 
                                             return;
                                         }
@@ -112,7 +114,10 @@ namespace eDoxa.Cashier.Api.Application.Requests.Validations
 
                                         if (errors.Any())
                                         {
-                                            errors.ForEach(context.AddFailure);
+                                            foreach (var error in errors)
+                                            {
+                                                context.AddFailure(error);
+                                            }
                                         }
                                     }
                                 }

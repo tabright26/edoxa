@@ -1,12 +1,8 @@
 ﻿// Filename: WebHostExtensions.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.Data.SqlClient;
@@ -28,48 +24,46 @@ namespace eDoxa.Seedwork.Infrastructure.Extensions
             host.MigrateDbContextWithRetryPolicy<TDbContext, IDbContextSeeder>();
         }
 
-        private static void MigrateDbContextWithRetryPolicy<TDbContext, TDbContextData>(this IWebHost host)
+        private static void MigrateDbContextWithRetryPolicy<TDbContext, TDbContextSeeder>(this IWebHost host)
         where TDbContext : DbContext
-        where TDbContextData : IDbContextSeeder
+        where TDbContextSeeder : IDbContextSeeder
         {
             // Create service scope.
-            using (var scope = host.Services.CreateScope())
+            using var scope = host.Services.CreateScope();
+
+            // Gets service provider.
+            var provider = scope.ServiceProvider;
+
+            // Gets database context logger service.
+            var logger = provider.GetRequiredService<ILogger<TDbContext>>();
+
+            // Gets database context service.
+            var context = provider.GetService<TDbContext>();
+
+            try
             {
-                // Gets service provider.
-                var provider = scope.ServiceProvider;
+                logger.LogInformation($"Migrating database associated with context {typeof(TDbContext).Name}.");
 
-                // Gets database context logger service.
-                var logger = provider.GetRequiredService<ILogger<TDbContext>>();
+                // Try to retrieved the database policy.
+                var policy = Policy.Handle<SqlException>().WaitAndRetry(new[] {TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(15)});
 
-                // Gets database context service.
-                var context = provider.GetService<TDbContext>();
+                // Execute the database commands if the policy is retrieved.
+                policy.Execute(
+                    () =>
+                    {
+                        // Migrated database associated with context.
+                        context.Database.Migrate();
 
-                try
-                {
-                    logger.LogInformation($"Migrating database associated with context {typeof(TDbContext).Name}.");
+                        // Seed context data to database.
+                        provider.GetService<TDbContextSeeder>()?.SeedAsync().Wait();
+                    }
+                );
 
-                    // Try to retrieved the database policy.
-                    var policy = Policy.Handle<SqlException>()
-                        .WaitAndRetry(new[] {TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(15)});
-
-                    // Execute the database commands if the policy is retrieved.
-                    policy.Execute(
-                        () =>
-                        {
-                            // Migrated database associated with context.
-                            context.Database.Migrate();
-
-                            // Seed context data to database.
-                            provider.GetService<TDbContextData>()?.SeedAsync().Wait();
-                        }
-                    );
-
-                    logger.LogInformation($"Migrated database associated with context {typeof(TDbContext).Name}.");
-                }
-                catch (Exception exception) // An error occurred while migrating the database used on context.
-                {
-                    logger.LogError(exception, $"An error occurred while migrating the database used on context {typeof(TDbContext).Name}.");
-                }
+                logger.LogInformation($"Migrated database associated with context {typeof(TDbContext).Name}.");
+            }
+            catch (Exception exception) // An error occurred while migrating the database used on context.
+            {
+                logger.LogError(exception, $"An error occurred while migrating the database used on context {typeof(TDbContext).Name}.");
             }
         }
     }

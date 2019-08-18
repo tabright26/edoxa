@@ -1,5 +1,5 @@
 ﻿// Filename: WithdrawalRequestValidator.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,7 +11,6 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Validators;
-using eDoxa.Seedwork.Domain.Extensions;
 
 using FluentValidation;
 using FluentValidation.Results;
@@ -56,7 +55,10 @@ namespace eDoxa.Cashier.Api.Application.Requests.Validations
 
                                     var accountMoney = new MoneyAccount(account);
 
-                                    new WithdrawalMoneyValidator(new Money(request.Amount)).Validate(accountMoney).Errors.ForEach(context.AddFailure);
+                                    foreach (var error in new WithdrawalMoneyValidator(new Money(request.Amount)).Validate(accountMoney).Errors)
+                                    {
+                                        context.AddFailure(error);
+                                    }
                                 }
                             );
                     }

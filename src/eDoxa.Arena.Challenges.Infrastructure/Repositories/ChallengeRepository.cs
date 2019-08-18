@@ -1,12 +1,8 @@
 ﻿// Filename: ChallengeRepository.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.Collections.Generic;
@@ -20,7 +16,6 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
-using eDoxa.Seedwork.Domain.Extensions;
 
 using LinqKit;
 
@@ -77,7 +72,10 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
     {
         public void Create(IEnumerable<IChallenge> challenges)
         {
-            challenges.ForEach(this.Create);
+            foreach (var challenge in challenges)
+            {
+                this.Create(challenge);
+            }
         }
 
         public void Create(IChallenge challenge)
@@ -161,21 +159,28 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
 
             challengeModel.Timeline.ClosedAt = challenge.Timeline.ClosedAt;
 
-            challengeModel.Participants.ForEach(
-                participantModel => this.CopyChanges(challenge.Participants.Single(participant => participant.Id == participantModel.Id), participantModel)
-            );
+            foreach (var participantModel in challengeModel.Participants)
+            {
+                this.CopyChanges(challenge.Participants.Single(participant => participant.Id == participantModel.Id), participantModel);
+            }
 
             var participants =
                 challenge.Participants.Where(participant => challengeModel.Participants.All(participantModel => participantModel.Id != participant.Id));
 
-            _mapper.Map<ICollection<ParticipantModel>>(participants).ForEach(participant => challengeModel.Participants.Add(participant));
+            foreach (var participant in _mapper.Map<ICollection<ParticipantModel>>(participants))
+            {
+                challengeModel.Participants.Add(participant);
+            }
         }
 
         private void CopyChanges(Participant participant, ParticipantModel participantModel)
         {
             var matches = participant.Matches.Where(match => participantModel.Matches.All(matchModel => matchModel.Id != match.Id));
 
-            _mapper.Map<ICollection<MatchModel>>(matches).ForEach(match => participantModel.Matches.Add(match));
+            foreach (var match in _mapper.Map<ICollection<MatchModel>>(matches))
+            {
+                participantModel.Matches.Add(match);
+            }
         }
     }
 }

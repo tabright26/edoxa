@@ -16,7 +16,6 @@ using AutoMapper;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
-using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Providers;
 
 namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.ConverterTypes
@@ -39,7 +38,10 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.ConverterTypes
 
             var participants = context.Mapper.Map<ICollection<Participant>>(source.Participants);
 
-            participants.ForEach(participant => challenge.Register(participant));
+            foreach (var participant in participants)
+            {
+                challenge.Register(participant);
+            }
 
             if (source.Timeline.StartedAt.HasValue)
             {
