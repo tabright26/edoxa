@@ -232,7 +232,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             var doxaTag = new DoxaTag
             {
                 Name = doxaTagName,
-                Code = await this.EnsureCodeUniqueness(doxaTagName)
+                Code = await this.EnsureCodeUniqueness(doxaTagName),
+                Timestamp = DateTime.UtcNow
             };
 
             await Store.SetDoxatagAsync(user, doxaTag, CancellationToken);

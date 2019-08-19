@@ -4,6 +4,8 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
+
 #nullable disable
 
 namespace eDoxa.Identity.Api.Infrastructure.Models
@@ -13,6 +15,8 @@ namespace eDoxa.Identity.Api.Infrastructure.Models
         public string Name { get; set; }
 
         public int Code { get; set; }
+
+        public DateTime Timestamp { get; set; }
 
         public override string ToString()
         {

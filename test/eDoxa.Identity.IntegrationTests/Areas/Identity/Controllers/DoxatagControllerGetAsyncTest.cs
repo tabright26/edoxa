@@ -4,6 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -55,7 +56,12 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         [Fact]
         public async Task GetAsync_ShouldBeStatus200OK()
         {
-            var doxaTag = new DoxaTag();
+            var doxaTag = new DoxaTag
+            {
+                Name = "Test",
+                Code = 1000,
+                Timestamp = DateTime.UtcNow
+            };
 
             User.DoxaTag = doxaTag;
 

@@ -1,5 +1,5 @@
 ﻿// Filename: IdentityDbContext.cs
-// Date Created: 2019-07-21
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -54,8 +54,9 @@ namespace eDoxa.Identity.Api.Infrastructure
                         user => user.DoxaTag,
                         userDoxaTag =>
                         {
-                            userDoxaTag.Property(doxaTag => doxaTag!.Name);
-                            userDoxaTag.Property(doxaTag => doxaTag!.Code);
+                            userDoxaTag.Property(doxaTag => doxaTag!.Name).IsRequired();
+                            userDoxaTag.Property(doxaTag => doxaTag!.Code).IsRequired();
+                            userDoxaTag.Property(doxaTag => doxaTag!.Timestamp).HasConversion(dateTime => dateTime.Ticks, ticks => new DateTime(ticks)).IsRequired();
                             userDoxaTag.ToTable("DoxaTag");
                         }
                     );
