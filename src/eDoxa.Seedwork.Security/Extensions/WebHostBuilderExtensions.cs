@@ -1,17 +1,13 @@
 ﻿// Filename: WebHostBuilderExtensions.cs
-// Date Created: 2019-06-08
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
-namespace eDoxa.Seedwork.Security.AzureKeyVault.Extensions
+namespace eDoxa.Seedwork.Security.Extensions
 {
     public static class WebHostBuilderExtensions
     {
@@ -19,6 +15,8 @@ namespace eDoxa.Seedwork.Security.AzureKeyVault.Extensions
         private const string AzureKeyVaultClientId = "AzureKeyVault:ClientId";
         private const string AzureKeyVaultClientSecret = "AzureKeyVault:ClientSecret";
 
+        // TODO: Must be cleaner.
+        // TODO: Add a validation to ensure the connection between Azure Key Vault and the service host.
         public static IWebHostBuilder UseAzureKeyVault(this IWebHostBuilder webHostBuilder)
         {
             return webHostBuilder.ConfigureAppConfiguration(

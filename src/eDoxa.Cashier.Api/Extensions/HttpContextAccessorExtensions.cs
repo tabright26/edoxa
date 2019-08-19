@@ -15,7 +15,7 @@ using eDoxa.Seedwork.Security.Extensions;
 
 using Microsoft.AspNetCore.Http;
 
-using static eDoxa.Seedwork.Security.Constants.CustomClaimTypes;
+using static eDoxa.Seedwork.Security.AppClaimTypes;
 
 using static IdentityModel.JwtClaimTypes;
 

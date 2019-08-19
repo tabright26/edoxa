@@ -7,8 +7,6 @@
 using System.IO;
 using System.Reflection;
 
-using eDoxa.Seedwork.Security.Constants;
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
@@ -27,7 +25,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
         {
             return new IdentityDbContext(
                 new DbContextOptionsBuilder<IdentityDbContext>().UseSqlServer(
-                        Configuration.GetConnectionString(CustomConnectionStrings.SqlServer),
+                        Configuration.GetConnectionString(Seedwork.Infrastructure.ConnectionStrings.SqlServer),
                         builder => builder.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup)).GetName().Name)
                     )
                     .Options

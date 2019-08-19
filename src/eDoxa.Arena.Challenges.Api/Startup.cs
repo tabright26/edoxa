@@ -25,8 +25,6 @@ using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Swagger.Extensions;
 using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
-using eDoxa.Seedwork.Security.Constants;
-using eDoxa.Seedwork.Security.Extensions;
 using eDoxa.ServiceBus.Modules;
 
 using FluentValidation.AspNetCore;
@@ -43,6 +41,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 
 using static eDoxa.Seedwork.Security.IdentityServer.Resources.CustomApiResources;
+
+using ConnectionStrings = eDoxa.Seedwork.Infrastructure.ConnectionStrings;
 
 namespace eDoxa.Arena.Challenges.Api
 {
@@ -87,12 +87,17 @@ namespace eDoxa.Arena.Challenges.Api
             services.AddDistributedRedisCache(
                 options =>
                 {
-                    options.Configuration = Configuration.GetConnectionString(CustomConnectionStrings.Redis);
+                    options.Configuration = Configuration.GetConnectionString(ConnectionStrings.Redis);
                     options.InstanceName = HostingEnvironment.ApplicationName;
                 }
             );
 
-            services.AddCorsPolicy();
+            services.AddCors(
+                options =>
+                {
+                    options.AddPolicy("default", builder => builder.AllowAnyMethod().AllowAnyHeader().AllowCredentials().SetIsOriginAllowed(_ => true));
+                }
+            );
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
@@ -106,7 +111,7 @@ namespace eDoxa.Arena.Challenges.Api
                     options.ReportApiVersions = true;
                     options.AssumeDefaultVersionWhenUnspecified = true;
                     options.DefaultApiVersion = new ApiVersion(1, 0);
-                    options.ApiVersionReader = new HeaderApiVersionReader(CustomHeaderNames.Version);
+                    options.ApiVersionReader = new HeaderApiVersionReader();
                 }
             );
 
@@ -145,17 +150,17 @@ namespace eDoxa.Arena.Challenges.Api
 
         public void Configure(IApplicationBuilder application)
         {
-            application.UseHealthChecks();
-
-            application.UseCorsPolicy();
+            application.UseServiceBusSubscriber();
 
             application.UseCustomExceptionHandler();
+
+            application.UseCors("default");
 
             application.UseAuthentication();
 
             application.UseMvc();
 
-            application.UseServiceBusSubscriber();
+            application.UseHealthChecks();
         }
 
         public void ConfigureDevelopment(IApplicationBuilder application, IApiVersionDescriptionProvider provider)

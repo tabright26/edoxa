@@ -20,8 +20,6 @@ using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Swagger.Extensions;
 using eDoxa.Seedwork.Monitoring.Extensions;
-using eDoxa.Seedwork.Security.Constants;
-using eDoxa.Seedwork.Security.Extensions;
 using eDoxa.ServiceBus.Modules;
 
 using FluentValidation.AspNetCore;
@@ -79,7 +77,12 @@ namespace eDoxa.Cashier.Api
                 )
             );
 
-            services.AddCorsPolicy();
+            services.AddCors(
+                options =>
+                {
+                    options.AddPolicy("default", builder => builder.AllowAnyMethod().AllowAnyHeader().AllowCredentials().SetIsOriginAllowed(_ => true));
+                }
+            );
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
@@ -93,7 +96,7 @@ namespace eDoxa.Cashier.Api
                     options.ReportApiVersions = true;
                     options.AssumeDefaultVersionWhenUnspecified = true;
                     options.DefaultApiVersion = new ApiVersion(1, 0);
-                    options.ApiVersionReader = new HeaderApiVersionReader(CustomHeaderNames.Version);
+                    options.ApiVersionReader = new HeaderApiVersionReader();
                 }
             );
 
@@ -122,17 +125,17 @@ namespace eDoxa.Cashier.Api
 
         public void Configure(IApplicationBuilder application)
         {
-            application.UseHealthChecks();
-
-            application.UseCorsPolicy();
+            application.UseServiceBusSubscriber();
 
             application.UseCustomExceptionHandler();
+
+            application.UseCors("default");
 
             application.UseAuthentication();
 
             application.UseMvc();
 
-            application.UseServiceBusSubscriber();
+            application.UseHealthChecks();
         }
 
         public void ConfigureDevelopment(IApplicationBuilder application, IApiVersionDescriptionProvider provider)

@@ -13,7 +13,7 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Security.Constants;
+using eDoxa.Seedwork.Security;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Http;
 using eDoxa.Seedwork.Testing.Http.Extensions;
@@ -52,7 +52,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
             var factory = _factory.WithClaims(
                 new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
-                new Claim(CustomClaimTypes.StripeCustomerId, "cus_test")
+                new Claim(AppClaimTypes.StripeCustomerId, "cus_test")
             );
             
             _httpClient = factory.CreateClient();
@@ -83,7 +83,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
             var factory = _factory.WithClaims(
                 new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
-                new Claim(CustomClaimTypes.StripeCustomerId, "cus_test")
+                new Claim(AppClaimTypes.StripeCustomerId, "cus_test")
             );
 
             _httpClient = factory.CreateClient();
@@ -117,7 +117,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
             var factory = _factory.WithClaims(
                 new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
-                new Claim(CustomClaimTypes.StripeCustomerId, "cus_test")
+                new Claim(AppClaimTypes.StripeCustomerId, "cus_test")
             );
             _httpClient = factory.CreateClient();
             var server = factory.Server;
@@ -147,7 +147,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
             var factory = _factory.WithClaims(
                 new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
-                new Claim(CustomClaimTypes.StripeCustomerId, "cus_test")
+                new Claim(AppClaimTypes.StripeCustomerId, "cus_test")
             );
 
             _httpClient = factory.CreateClient();

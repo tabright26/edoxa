@@ -4,7 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-namespace eDoxa.Seedwork.Security.Constants
+namespace eDoxa.Identity.Api.Areas.Identity.Constants
 {
     public static class CustomTokenProviders
     {

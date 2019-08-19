@@ -9,7 +9,6 @@
 // this source code package.
 
 using eDoxa.Seedwork.Monitoring.Extensions;
-using eDoxa.Seedwork.Security.Extensions;
 using eDoxa.Web.Spa.Extensions;
 using eDoxa.Web.Spa.Infrastructure;
 
@@ -41,7 +40,16 @@ namespace eDoxa.Web.Spa
         {
             services.AddHealthChecks(AppSettings);
 
-            services.AddDataProtection(Configuration);
+            //if (Configuration.GetValue<bool>("AzureKubernetesService:Enable"))
+            //{
+            //    services.AddDataProtection(
+            //            options =>
+            //            {
+            //                options.ApplicationDiscriminator = Configuration["ApplicationDiscriminator"];
+            //            }
+            //        )
+            //        .PersistKeysToRedis(ConnectionMultiplexer.Connect(Configuration.GetConnectionString(CustomConnectionStrings.Redis)), "data-protection");
+            //}
 
             services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
 

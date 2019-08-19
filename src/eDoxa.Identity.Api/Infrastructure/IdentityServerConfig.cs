@@ -10,7 +10,7 @@
 
 using System.Collections.Generic;
 
-using eDoxa.Seedwork.Security.Constants;
+using eDoxa.Seedwork.Security;
 using eDoxa.Seedwork.Security.Extensions;
 using eDoxa.Seedwork.Security.IdentityServer.Resources;
 
@@ -94,13 +94,13 @@ namespace eDoxa.Identity.Api.Infrastructure
                 {
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
-                    CustomScopes.Roles,
-                    CustomScopes.Permissions,
-                    CustomScopes.Stripe,
-                    CustomScopes.Games,
-                    CustomScopes.IdentityApi,
-                    CustomScopes.CashierApi,
-                    CustomScopes.ArenaChallengesApi
+                    AppScopes.Roles,
+                    AppScopes.Permissions,
+                    AppScopes.Stripe,
+                    AppScopes.Games,
+                    AppScopes.IdentityApi,
+                    AppScopes.CashierApi,
+                    AppScopes.ArenaChallengesApi
                 },
                 
             };

@@ -12,6 +12,7 @@ using Autofac;
 
 using AutoMapper;
 
+using eDoxa.Identity.Api.Areas.Identity.Constants;
 using eDoxa.Identity.Api.Areas.Identity.Extensions;
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Extensions;
@@ -22,8 +23,7 @@ using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Swagger.Extensions;
 using eDoxa.Seedwork.Monitoring.Extensions;
-using eDoxa.Seedwork.Security.Constants;
-using eDoxa.Seedwork.Security.Extensions;
+using eDoxa.Seedwork.Security;
 using eDoxa.ServiceBus.Modules;
 
 using FluentValidation.AspNetCore;
@@ -73,7 +73,16 @@ namespace eDoxa.Identity.Api
 
             services.AddHealthChecks(AppSettings);
 
-            services.AddDataProtection(Configuration);
+            //if (Configuration.GetValue<bool>("AzureKubernetesService:Enable"))
+            //{
+            //    services.AddDataProtection(
+            //            options =>
+            //            {
+            //                options.ApplicationDiscriminator = Configuration["ApplicationDiscriminator"];
+            //            }
+            //        )
+            //        .PersistKeysToRedis(ConnectionMultiplexer.Connect(Configuration.GetConnectionString(CustomConnectionStrings.Redis)), "data-protection");
+            //}
 
             services.AddDbContext<IdentityDbContext>(
                 options => options.UseSqlServer(
@@ -111,9 +120,9 @@ namespace eDoxa.Identity.Api
                         options.User.RequireUniqueEmail = true;
                         
                         options.ClaimsIdentity.UserIdClaimType = JwtClaimTypes.Subject;
-                        options.ClaimsIdentity.UserNameClaimType = CustomClaimTypes.DoxaTag;
+                        options.ClaimsIdentity.UserNameClaimType = AppClaimTypes.DoxaTag;
                         options.ClaimsIdentity.RoleClaimType = JwtClaimTypes.Role;
-                        options.ClaimsIdentity.SecurityStampClaimType = CustomClaimTypes.SecurityStamp;
+                        options.ClaimsIdentity.SecurityStampClaimType = AppClaimTypes.SecurityStamp;
 
                         options.SignIn.RequireConfirmedPhoneNumber = false;
                         options.SignIn.RequireConfirmedEmail = HostingEnvironment.IsProduction();
@@ -171,7 +180,7 @@ namespace eDoxa.Identity.Api
                     options.ReportApiVersions = true;
                     options.AssumeDefaultVersionWhenUnspecified = true;
                     options.DefaultApiVersion = new ApiVersion(1, 0);
-                    options.ApiVersionReader = new HeaderApiVersionReader(CustomHeaderNames.Version);
+                    options.ApiVersionReader = new HeaderApiVersionReader();
                 }
             );
 
@@ -222,7 +231,7 @@ namespace eDoxa.Identity.Api
 
         public void Configure(IApplicationBuilder application)
         {
-            application.UseHealthChecks();
+            application.UseServiceBusSubscriber();
 
             if (HostingEnvironment.IsDevelopment())
             {
@@ -230,12 +239,11 @@ namespace eDoxa.Identity.Api
             }
             else
             {
+                //application.UseCustomExceptionHandler();
                 application.UseExceptionHandler("/Home/Error");
                 application.UseHsts();
             }
-
-            //application.UseCustomExceptionHandler();
-
+            
             application.UseHttpsRedirection();
             application.UseStaticFiles();
             application.UseForwardedHeaders();
@@ -245,7 +253,7 @@ namespace eDoxa.Identity.Api
 
             application.UseMvcWithDefaultRoute();
 
-            application.UseServiceBusSubscriber();
+            application.UseHealthChecks();
         }
 
         public void ConfigureDevelopment(IApplicationBuilder application, IApiVersionDescriptionProvider provider)

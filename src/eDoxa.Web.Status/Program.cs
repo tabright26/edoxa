@@ -10,7 +10,7 @@
 
 using System;
 
-using eDoxa.Seedwork.Security.AzureKeyVault.Extensions;
+using eDoxa.Seedwork.Security.Extensions;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;

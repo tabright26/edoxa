@@ -13,7 +13,7 @@ using System;
 using Autofac.Extensions.DependencyInjection;
 
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Security.AzureKeyVault.Extensions;
+using eDoxa.Seedwork.Security.Extensions;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;

@@ -10,7 +10,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Infrastructure.Models;
-using eDoxa.Seedwork.Security.Constants;
+using eDoxa.Seedwork.Security;
 
 using IdentityModel;
 
@@ -98,7 +98,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             {
                 Identity!.AddClaim(
                     new Claim(
-                        CustomClaimTypes.DoxaTag,
+                        AppClaimTypes.DoxaTag,
                         JsonConvert.SerializeObject(
                             doxaTag,
                             Formatting.Indented,
@@ -194,7 +194,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             {
                 Identity!.AddClaim(
                     new Claim(
-                        CustomClaimTypes.Addresses,
+                        AppClaimTypes.Addresses,
                         JsonConvert.SerializeObject(new[] {address}, Formatting.Indented),
                         IdentityServerConstants.ClaimValueTypes.Json
                     )
@@ -239,7 +239,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             if (userGames.Any())
             {
                 Identity!.AddClaim(
-                    new Claim(CustomClaimTypes.Games, JsonConvert.SerializeObject(userGames, Formatting.Indented), IdentityServerConstants.ClaimValueTypes.Json)
+                    new Claim(AppClaimTypes.Games, JsonConvert.SerializeObject(userGames, Formatting.Indented), IdentityServerConstants.ClaimValueTypes.Json)
                 );
             }
         }

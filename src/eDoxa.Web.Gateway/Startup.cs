@@ -1,17 +1,12 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-06-26
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.Collections.Generic;
 
 using eDoxa.Seedwork.Monitoring.Extensions;
-using eDoxa.Seedwork.Security.Extensions;
 using eDoxa.Web.Gateway.Extensions;
 using eDoxa.Web.Gateway.Infrastructure;
 
@@ -48,7 +43,12 @@ namespace eDoxa.Web.Gateway
         {
             services.AddHealthChecks(AppSettings);
 
-            services.AddCorsPolicy();
+            services.AddCors(
+                options =>
+                {
+                    options.AddPolicy("default", builder => builder.AllowAnyMethod().AllowAnyHeader().AllowCredentials().SetIsOriginAllowed(_ => true));
+                }
+            );
 
             services.AddAuthentication(
                 HostingEnvironment,
@@ -73,7 +73,7 @@ namespace eDoxa.Web.Gateway
                 application.UseDeveloperExceptionPage();
             }
 
-            application.UseCorsPolicy();
+            application.UseCors("default");
 
             application.UseOcelot().Wait();
         }

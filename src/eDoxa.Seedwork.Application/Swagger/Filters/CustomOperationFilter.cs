@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 
-using eDoxa.Seedwork.Security.Constants;
+using eDoxa.Seedwork.Security;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -63,7 +63,7 @@ namespace eDoxa.Seedwork.Application.Swagger.Filters
                                 {
                                     "oauth2", new[]
                                     {
-                                        CustomScopes.IdentityApi, CustomScopes.CashierApi, CustomScopes.ArenaChallengesApi
+                                        AppScopes.IdentityApi, AppScopes.CashierApi, AppScopes.ArenaChallengesApi
                                     }
                                 }
                             }

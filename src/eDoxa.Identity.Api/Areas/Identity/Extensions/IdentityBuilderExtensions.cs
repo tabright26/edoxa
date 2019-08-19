@@ -6,10 +6,10 @@
 
 using System;
 
+using eDoxa.Identity.Api.Areas.Identity.Constants;
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Areas.Identity.TokenProviders;
 using eDoxa.Identity.Api.Areas.Identity.TokenProviders.Options;
-using eDoxa.Seedwork.Security.Constants;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;

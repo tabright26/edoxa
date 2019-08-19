@@ -15,7 +15,7 @@ using Autofac.Extensions.DependencyInjection;
 using eDoxa.Identity.Api.Infrastructure;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
-using eDoxa.Seedwork.Security.AzureKeyVault.Extensions;
+using eDoxa.Seedwork.Security.Extensions;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;

@@ -1,18 +1,14 @@
-﻿// Filename: CustomScopes.cs
-// Date Created: 2019-06-25
+﻿// Filename: AppScopes.cs
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using eDoxa.Seedwork.Security.IdentityServer.Resources;
 
-namespace eDoxa.Seedwork.Security.Constants
+namespace eDoxa.Seedwork.Security
 {
-    public static class CustomScopes
+    public static class AppScopes
     {
         public static readonly string Roles = CustomIdentityResources.Roles.Name;
         public static readonly string Permissions = CustomIdentityResources.Permissions.Name;

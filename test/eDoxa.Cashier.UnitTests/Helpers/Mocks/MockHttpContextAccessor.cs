@@ -7,7 +7,7 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 
-using eDoxa.Seedwork.Security.Constants;
+using eDoxa.Seedwork.Security;
 
 using IdentityModel;
 
@@ -26,8 +26,8 @@ namespace eDoxa.Cashier.UnitTests.Helpers.Mocks
                     new HashSet<Claim>
                     {
                         new Claim(JwtClaimTypes.Subject, "5C43502B-FCE8-4235-8557-C22D2A638AD7"),
-                        new Claim(CustomClaimTypes.StripeConnectAccountId, "acct_test"),
-                        new Claim(CustomClaimTypes.StripeCustomerId, "cus_test")
+                        new Claim(AppClaimTypes.StripeConnectAccountId, "acct_test"),
+                        new Claim(AppClaimTypes.StripeCustomerId, "cus_test")
                     }
                 );
         }

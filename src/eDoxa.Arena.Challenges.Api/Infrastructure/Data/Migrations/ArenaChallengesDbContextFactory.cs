@@ -8,7 +8,6 @@ using System.IO;
 using System.Reflection;
 
 using eDoxa.Arena.Challenges.Infrastructure;
-using eDoxa.Seedwork.Security.Constants;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -28,7 +27,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Migrations
         {
             return new ArenaChallengesDbContext(
                 new DbContextOptionsBuilder<ArenaChallengesDbContext>().UseSqlServer(
-                        Configuration.GetConnectionString(CustomConnectionStrings.SqlServer),
+                        Configuration.GetConnectionString(Seedwork.Infrastructure.ConnectionStrings.SqlServer),
                         builder => builder.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup)).GetName().Name)
                     )
                     .Options
