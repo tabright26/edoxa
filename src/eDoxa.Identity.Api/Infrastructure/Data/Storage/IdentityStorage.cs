@@ -1,11 +1,12 @@
 ﻿// Filename: IdentityStorage.cs
-// Date Created: 2019-07-21
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 
@@ -155,12 +156,18 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
                     UserName = record.Email,
                     Email = record.Email,
                     PhoneNumber = record.Phone,
-                    DoxaTag = new DoxaTag
+                    DoxaTagHistory = new Collection<UserDoxaTag>
                     {
-                        Name = record.Doxatag,
-                        Code = random.Next(100, 10000)
+                        new UserDoxaTag
+                        {
+                            Id = Guid.NewGuid(),
+                            UserId = record.Id,
+                            Name = record.Doxatag,
+                            Code = random.Next(100, 10000),
+                            Timestamp = DateTime.UtcNow
+                        }
                     },
-                    PersonalInfo = new PersonalInfo
+                    PersonalInfo = new UserPersonalInfo
                     {
                         FirstName = record.FirstName,
                         LastName = record.LastName,

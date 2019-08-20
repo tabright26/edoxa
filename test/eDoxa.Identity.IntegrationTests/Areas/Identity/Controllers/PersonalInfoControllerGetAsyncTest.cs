@@ -55,7 +55,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         [Fact]
         public async Task GetAsync_ShouldBeStatus200OK()
         {
-            var profile = new PersonalInfo();
+            var profile = new UserPersonalInfo();
 
             User.PersonalInfo = profile;
 
@@ -83,9 +83,9 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                 {
                     var mapper = scope.GetRequiredService<IMapper>();
 
-                    var profileResponse = await response.DeserializeAsync<PersonalInfoResponse>();
+                    var profileResponse = await response.DeserializeAsync<UserPersonalInfoResponse>();
 
-                    profileResponse.Should().BeEquivalentTo(mapper.Map<PersonalInfoResponse>(profile));
+                    profileResponse.Should().BeEquivalentTo(mapper.Map<UserPersonalInfoResponse>(profile));
                 }
             );
         }

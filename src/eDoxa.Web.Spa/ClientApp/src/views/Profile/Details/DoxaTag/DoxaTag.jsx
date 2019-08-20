@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Card, CardHeader, CardBody } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
-import withDoxaTag from "../../../../containers/App/User/Profile/Details/withDoxaTag";
+import withDoxaTagHistory from "../../../../containers/App/User/Profile/Details/withDoxaTagHistory";
 import DoxaTagForm from "../../../../forms/Identity/DoxaTag";
 const DoxaTagCard = ({ className, doxaTag }) => {
   const [isFormHidden, setFormHidden] = useState(true);
@@ -36,4 +36,4 @@ const DoxaTagCard = ({ className, doxaTag }) => {
   );
 };
 
-export default withDoxaTag(DoxaTagCard);
+export default withDoxaTagHistory(DoxaTagCard);

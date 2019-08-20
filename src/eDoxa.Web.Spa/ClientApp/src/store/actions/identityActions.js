@@ -1,59 +1,44 @@
-export const LOAD_USERS = "LOAD_USERS";
-export const LOAD_USERS_SUCCESS = "LOAD_USERS_SUCCESS";
-export const LOAD_USERS_FAIL = "LOAD_USERS_FAIL";
-export function loadUsers() {
+export const LOAD_DOXATAGS = "LOAD_DOXATAGS";
+export const LOAD_DOXATAGS_SUCCESS = "LOAD_DOXATAGS_SUCCESS";
+export const LOAD_DOXATAGS_FAIL = "LOAD_DOXATAGS_FAIL";
+export function loadDoxaTags() {
   return {
-    types: [LOAD_USERS, LOAD_USERS_SUCCESS, LOAD_USERS_FAIL],
+    types: [LOAD_DOXATAGS, LOAD_DOXATAGS_SUCCESS, LOAD_DOXATAGS_FAIL],
     payload: {
       request: {
         method: "get",
-        url: "/identity/api/users"
+        url: "/identity/api/doxatags"
       }
     }
   };
 }
 
-export const LOAD_USER_DOXATAG = "LOAD_USER_DOXATAG";
-export const LOAD_USER_DOXATAG_SUCCESS = "LOAD_USER_DOXATAG_SUCCESS";
-export const LOAD_USER_DOXATAG_FAIL = "LOAD_USER_DOXATAG_FAIL";
-export function loadUserDoxaTag(userId) {
+export const LOAD_DOXATAG_HISTORY = "LOAD_DOXATAG_HISTORY";
+export const LOAD_DOXATAG_HISTORY_SUCCESS = "LOAD_DOXATAG_HISTORY_SUCCESS";
+export const LOAD_DOXATAG_HISTORY_FAIL = "LOAD_DOXATAG_HISTORY_FAIL";
+export function loadDoxaTagHistory() {
   return {
-    types: [LOAD_USER_DOXATAG, LOAD_USER_DOXATAG_SUCCESS, LOAD_USER_DOXATAG_FAIL],
+    types: [LOAD_DOXATAG_HISTORY, LOAD_DOXATAG_HISTORY_SUCCESS, LOAD_DOXATAG_HISTORY_FAIL],
     payload: {
       request: {
         method: "get",
-        url: `/identity/api/users/${userId}/doxa-tag`
+        url: "/identity/api/doxatag-history"
       }
     }
   };
 }
 
-export const LOAD_DOXATAG = "LOAD_DOXATAG";
-export const LOAD_DOXATAG_SUCCESS = "LOAD_DOXATAG_SUCCESS";
-export const LOAD_DOXATAG_FAIL = "LOAD_DOXATAG_FAIL";
-export function loadDoxaTag() {
+export const CHANGE_DOXATAG = "CHANGE_DOXATAG";
+export const CHANGE_DOXATAG_SUCCESS = "CHANGE_DOXATAG_SUCCESS";
+export const CHANGE_DOXATAG_FAIL = "CHANGE_DOXATAG_FAIL";
+export function changeDoxaTag(data) {
   return {
-    types: [LOAD_DOXATAG, LOAD_DOXATAG_SUCCESS, LOAD_DOXATAG_FAIL],
+    types: [CHANGE_DOXATAG, CHANGE_DOXATAG_SUCCESS, CHANGE_DOXATAG_FAIL],
     payload: {
       request: {
-        method: "get",
-        url: "/identity/api/doxa-tag"
-      }
-    }
-  };
-}
-
-export const UPDATE_DOXATAG = "UPDATE_DOXATAG";
-export const UPDATE_DOXATAG_SUCCESS = "UPDATE_DOXATAG_SUCCESS";
-export const UPDATE_DOXATAG_FAIL = "UPDATE_DOXATAG_FAIL";
-export function updateDoxaTag(name) {
-  return {
-    types: [UPDATE_DOXATAG, UPDATE_DOXATAG_SUCCESS, UPDATE_DOXATAG_FAIL],
-    payload: {
-      request: {
-        method: "put",
-        url: "/identity/api/doxa-tag",
-        data: { name }
+        method: "post",
+        url: "/identity/api/doxatag-history",
+        data: data
       }
     }
   };

@@ -1,5 +1,5 @@
 ﻿// Filename: UserStore.cs
-// Date Created: 2019-07-21
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -25,6 +25,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
         }
 
         private DbSet<UserAddress> AddressBook => Context.Set<UserAddress>();
+
+        public DbSet<UserDoxaTag> DoxaTagHistory => Context.Set<UserDoxaTag>();
 
         private DbSet<UserGame> UserGames => Context.Set<UserGame>();
 
@@ -127,7 +129,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             return default;
         }
 
-        public Task<PersonalInfo?> GetPersonalInfoAsync(User user, CancellationToken cancellationToken = default)
+        public Task<UserPersonalInfo?> GetPersonalInfoAsync(User user, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -141,7 +143,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             return Task.FromResult(user.PersonalInfo);
         }
 
-        public Task<DoxaTag?> GetDoxatagAsync(User user, CancellationToken cancellationToken = default)
+        public async Task<ICollection<UserDoxaTag>> GetDoxaTagHistoryAsync(User user, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -152,10 +154,10 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return Task.FromResult(user.DoxaTag);
+            return await DoxaTagHistory.Where(doxaTag => doxaTag.UserId == user.Id).OrderBy(doxaTag => doxaTag.Timestamp).ToListAsync(cancellationToken);
         }
 
-        public Task SetDoxatagAsync(User user, DoxaTag doxaTag, CancellationToken cancellationToken = default)
+        public async Task<UserDoxaTag?> GetDoxaTagAsync(User user, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -166,15 +168,31 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            user.DoxaTag = doxaTag;
+            var history = await this.GetDoxaTagHistoryAsync(user, cancellationToken);
+
+            return history.FirstOrDefault();
+        }
+
+        public Task SetDoxatagAsync(User user, UserDoxaTag userDoxaTag, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            this.ThrowIfDisposed();
+
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            DoxaTagHistory.Add(userDoxaTag);
 
             return Task.CompletedTask;
         }
 
         public async Task<IList<int>> GetCodesForDoxaTagAsync(string doxaTagName, CancellationToken cancellationToken = default)
         {
-            return await Users.Where(user => user.DoxaTag != null && user.DoxaTag.Name.Contains(doxaTagName, StringComparison.OrdinalIgnoreCase))
-                .Select(user => user.DoxaTag!.Code)
+            return await DoxaTagHistory.Where(doxaTag => doxaTag.Name.Contains(doxaTagName, StringComparison.OrdinalIgnoreCase))
+                .Select(doxaTag => doxaTag.Code)
                 .ToListAsync(cancellationToken);
         }
 
@@ -262,7 +280,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             return await AddressBook.SingleOrDefaultAsync(address => address.UserId == userId && address.Id == addressId, cancellationToken);
         }
 
-        public async Task<IList<UserAddress>> GetAddressBookAsync(User user, CancellationToken cancellationToken = default)
+        public async Task<ICollection<UserAddress>> GetAddressBookAsync(User user, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -332,7 +350,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             return Task.FromResult(user.PersonalInfo?.BirthDate?.ToString("yyyy-MM-dd"));
         }
 
-        public Task SetPersonalInfoAsync(User user, PersonalInfo personalInfo, CancellationToken cancellationToken)
+        public Task SetPersonalInfoAsync(User user, UserPersonalInfo userPersonalInfo, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -343,7 +361,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            user.PersonalInfo = personalInfo;
+            user.PersonalInfo = userPersonalInfo;
 
             return Task.CompletedTask;
         }

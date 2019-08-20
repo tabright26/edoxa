@@ -55,7 +55,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         [Fact]
         public async Task PatchAsync_ShouldBeStatus200OK()
         {
-            var profile = new PersonalInfo
+            var profile = new UserPersonalInfo
             {
                 FirstName = "Old"
             };

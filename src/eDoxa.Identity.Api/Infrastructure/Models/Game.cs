@@ -13,7 +13,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Models
     [TypeConverter(typeof(EnumerationTypeConverter))]
     public sealed class Game : Enumeration<Game>
     {
-        public static readonly Game LeagueOfLegends = new Game(1 << 0, nameof(LeagueOfLegends), true, true);
+        public static readonly Game LeagueOfLegends = new Game(1, nameof(LeagueOfLegends), true, true);
         public static readonly Game Smite = new Game(1 << 1, nameof(Smite), false, false);
         public static readonly Game StarCraft2 = new Game(1 << 2, nameof(StarCraft2), false, false);
         public static readonly Game Dota2 = new Game(1 << 3, nameof(Dota2), false, true);

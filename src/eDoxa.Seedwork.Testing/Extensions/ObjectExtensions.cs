@@ -12,19 +12,13 @@ namespace eDoxa.Seedwork.Testing.Extensions
 {
     public static class ObjectExtensions
     {
-        public static List<T> ToList<T>(this T obj)
-        where T : class
-        {
-            return new List<T>
-            {
-                obj
-            };
-        }
-
         public static MockAsyncEnumerable<T> ToMockAsyncEnumerable<T>(this T obj)
         where T : class
         {
-            return new MockAsyncEnumerable<T>(obj.ToList());
+            return new MockAsyncEnumerable<T>(new List<T>
+            {
+                obj
+            });
         }
     }
 }

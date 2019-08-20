@@ -55,7 +55,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                 return this.NoContent();
             }
 
-            return this.Ok(_mapper.Map<IList<AddressResponse>>(addressBook));
+            return this.Ok(_mapper.Map<IEnumerable<UserAddressResponse>>(addressBook));
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                 return this.NotFound("User's address not found.");
             }
 
-            return this.Ok(_mapper.Map<AddressResponse>(address));
+            return this.Ok(_mapper.Map<UserAddressResponse>(address));
         }
 
         /// <summary>

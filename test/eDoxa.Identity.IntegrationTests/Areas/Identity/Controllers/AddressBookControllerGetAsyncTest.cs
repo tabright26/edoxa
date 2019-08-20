@@ -88,9 +88,9 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
                     var mapper = scope.GetRequiredService<IMapper>();
 
-                    var addressResponse = await response.DeserializeAsync<ICollection<AddressResponse>>();
+                    var addressResponse = await response.DeserializeAsync<ICollection<UserAddressResponse>>();
 
-                    addressResponse.Should().BeEquivalentTo(mapper.Map<ICollection<AddressResponse>>(addressBook));
+                    addressResponse.Should().BeEquivalentTo(mapper.Map<ICollection<UserAddressResponse>>(addressBook));
                 }
             );
         }

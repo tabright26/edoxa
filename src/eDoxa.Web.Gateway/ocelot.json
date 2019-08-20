@@ -19,7 +19,7 @@
     },
     {
       "Priority": 1,
-      "DownstreamPathTemplate": "/api/users",
+      "DownstreamPathTemplate": "/api/doxatags",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -27,7 +27,7 @@
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/identity/api/users",
+      "UpstreamPathTemplate": "/identity/api/doxatags",
       "UpstreamHttpMethod": ["GET"]
     },
     {
