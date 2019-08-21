@@ -38,15 +38,19 @@ namespace eDoxa.Identity.Api.Infrastructure.Data
 
         public async Task SeedAsync()
         {
-            var roles = IdentityStorage.Roles;
+            var fileStorage = new IdentityFileStorage();
 
-            var roleClaims = IdentityStorage.RoleClaims;
+            var testFileStorage = new IdentityTestFileStorage();
 
-            var testUsers = IdentityStorage.TestUsers;
+            var roles = await fileStorage.GetRolesAsync();
 
-            var testUserClaims = IdentityStorage.TestUserClaims;
+            var roleClaims = await fileStorage.GetRoleClaimsAsync();
 
-            var testUserRoles = IdentityStorage.TestUserRoles;
+            var testUsers = await testFileStorage.GetUsersAsync();
+
+            var testUserClaims = await testFileStorage.GetUserClaimsAsync();
+
+            var testUserRoles = await testFileStorage.GetUserRolesAsync();
 
             if (!_roleManager.Roles.Any())
             {

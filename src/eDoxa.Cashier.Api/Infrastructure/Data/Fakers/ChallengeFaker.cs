@@ -21,7 +21,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Fakers
                 {
                     var entryFee = MoneyEntryFee.Five;
 
-                    var payout = new PayoutFactory().CreateInstance().GetPayout(PayoutEntries.Ten, entryFee);
+                    var payout = new PayoutFactory().CreateInstance().GetPayoutAsync(PayoutEntries.Ten, entryFee).Result;
 
                     var challenge = new Challenge(entryFee, payout);
 

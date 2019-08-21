@@ -84,6 +84,8 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsNotNull<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
 
+            mockUserManager.Setup(userManager => userManager.GetDoxaTagHistoryAsync(It.IsAny<User>())).ReturnsAsync(new Collection<UserDoxaTag>()).Verifiable();
+
             var controller = new DoxaTagHistoryController(mockUserManager.Object, Mapper);
 
             // Act

@@ -1,5 +1,5 @@
 ﻿// Filename: ArenaChallengesApiModule.cs
-// Date Created: 2019-07-07
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,6 +11,7 @@ using eDoxa.Arena.Challenges.Api.Application.Factories;
 using eDoxa.Arena.Challenges.Api.Application.Services;
 using eDoxa.Arena.Challenges.Api.Application.Strategies;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data;
+using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Storage;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Queries;
 using eDoxa.Arena.Challenges.Domain.Adapters;
 using eDoxa.Arena.Challenges.Domain.Factories;
@@ -25,10 +26,13 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure
 {
     internal sealed class ArenaChallengesApiModule : Module
     {
-        protected override void Load( ContainerBuilder builder)
+        protected override void Load(ContainerBuilder builder)
         {
             // Repositories
             builder.RegisterType<ChallengeRepository>().As<IChallengeRepository>().InstancePerLifetimeScope();
+
+            // Storage
+            builder.RegisterType<ArenaChallengeTestFileStorage>().As<IArenaChallengeTestFileStorage>().InstancePerDependency();
 
             // Seeder
             builder.RegisterType<ArenaChallengesDbContextSeeder>().As<IDbContextSeeder>().InstancePerLifetimeScope();
