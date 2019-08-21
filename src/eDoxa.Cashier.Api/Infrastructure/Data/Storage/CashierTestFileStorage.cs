@@ -6,11 +6,8 @@
 
 using System;
 using System.Collections.Immutable;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-
-using CsvHelper;
 
 using eDoxa.Cashier.Api.Application.Factories;
 using eDoxa.Cashier.Domain.AggregateModels;
@@ -18,6 +15,7 @@ using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.Domain.Factories;
+using eDoxa.Seedwork.Infrastructure.Extensions;
 
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
@@ -69,11 +67,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Storage
                 throw new InvalidOperationException();
             }
 
-            using var stream = await file.OpenReadAsync();
-
-            using var streamReader = new StreamReader(stream);
-
-            using var csvReader = new CsvReader(streamReader);
+            using var csvReader = await file.OpenCsvReaderAsync();
 
             return csvReader.GetRecords(
                     new
@@ -108,13 +102,9 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Storage
                 throw new InvalidOperationException();
             }
 
-            using var stream = await file.OpenReadAsync();
+            using var csvReader = await file.OpenCsvReaderAsync();
 
-            using var streamReader = new StreamReader(stream);
-
-            using var csvStream = new CsvReader(streamReader);
-
-            return csvStream.GetRecords(
+            return csvReader.GetRecords(
                     new
                     {
                         Id = default(Guid),

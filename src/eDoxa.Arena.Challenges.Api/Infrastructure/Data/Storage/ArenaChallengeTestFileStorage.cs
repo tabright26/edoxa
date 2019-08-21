@@ -6,13 +6,10 @@
 
 using System;
 using System.Collections.Immutable;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
 using Bogus;
-
-using CsvHelper;
 
 using eDoxa.Arena.Challenges.Api.Application.Factories;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
@@ -21,6 +18,7 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Infrastructure.Extensions;
 
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
@@ -72,13 +70,9 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Storage
                 throw new InvalidOperationException();
             }
 
-            using var stream = await file.OpenReadAsync();
+            using var csvReader = await file.OpenCsvReaderAsync();
 
-            using var streamReader = new StreamReader(stream);
-
-            using var csvStream = new CsvReader(streamReader);
-
-            return csvStream.GetRecords(
+            return csvReader.GetRecords(
                     new
                     {
                         Id = default(Guid)
@@ -111,13 +105,9 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Storage
                 throw new InvalidOperationException();
             }
 
-            using var stream = await file.OpenReadAsync();
+            using var csvReader = await file.OpenCsvReaderAsync();
 
-            using var streamReader = new StreamReader(stream);
-
-            using var csvStream = new CsvReader(streamReader);
-
-            return csvStream.GetRecords(
+            return csvReader.GetRecords(
                     new
                     {
                         Id = default(Guid),

@@ -5,13 +5,11 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-using CsvHelper;
-
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Seedwork.Infrastructure.Extensions;
 
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
@@ -53,13 +51,8 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Storage
             {
                 throw new InvalidOperationException();
             }
-            
-            // TODO: Create and extension method.
-            using var stream = await file.OpenReadAsync();
 
-            using var streamReader = new StreamReader(stream);
-
-            using var csvReader = new CsvReader(streamReader);
+            using var csvReader = await file.OpenCsvReaderAsync();
 
             return csvReader.GetRecords(
                     new
