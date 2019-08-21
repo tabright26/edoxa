@@ -7,6 +7,7 @@
 using Autofac;
 
 using eDoxa.Identity.Api.Infrastructure.Data;
+using eDoxa.Identity.Api.Infrastructure.Data.Storage;
 using eDoxa.Seedwork.Infrastructure;
 
 namespace eDoxa.Identity.Api.Infrastructure
@@ -15,6 +16,10 @@ namespace eDoxa.Identity.Api.Infrastructure
     {
         protected override void Load(ContainerBuilder builder)
         {
+            // Storage
+            builder.RegisterType<IdentityFileStorage>().As<IIdentityFileStorage>().InstancePerDependency();
+            builder.RegisterType<IdentityTestFileStorage>().As<IIdentityTestFileStorage>().InstancePerDependency();
+
             // Seeder
             builder.RegisterType<IdentityDbContextSeeder>().As<IDbContextSeeder>().InstancePerLifetimeScope();
 

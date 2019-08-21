@@ -1,5 +1,5 @@
 ﻿// Filename: IdentityDbContext.cs
-// Date Created: 2019-07-21
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -30,7 +30,7 @@ namespace eDoxa.Identity.Api.Infrastructure
                 {
                     builder.Property(user => user.Email).IsRequired();
                     builder.Property(user => user.NormalizedEmail).IsRequired();
-
+                    
                     builder.OwnsOne(
                         user => user.PersonalInfo,
                         userPersonalInfo =>
@@ -50,19 +50,23 @@ namespace eDoxa.Identity.Api.Infrastructure
                         }
                     );
 
-                    builder.OwnsOne(
-                        user => user.DoxaTag,
-                        userDoxaTag =>
-                        {
-                            userDoxaTag.Property(doxaTag => doxaTag!.Name);
-                            userDoxaTag.Property(doxaTag => doxaTag!.Code);
-                            userDoxaTag.ToTable("DoxaTag");
-                        }
-                    );
-
+                    builder.HasMany(user => user.DoxaTagHistory).WithOne().HasForeignKey(doxaTag => doxaTag.UserId).IsRequired();
                     builder.HasMany(user => user.AddressBook).WithOne().HasForeignKey(address => address.UserId).IsRequired();
                     builder.HasMany<UserGame>().WithOne().HasForeignKey(userGame => userGame.UserId).IsRequired();
                     builder.ToTable("User");
+                }
+            );
+
+            modelBuilder.Entity<UserDoxaTag>(
+                builder =>
+                {
+                    builder.HasKey(doxaTag => doxaTag.Id);
+                    builder.Property(doxaTag => doxaTag.Id).IsRequired();
+                    builder.Property(doxaTag => doxaTag.UserId).IsRequired();
+                    builder.Property(doxaTag => doxaTag.Name).IsRequired();
+                    builder.Property(doxaTag => doxaTag.Code).IsRequired();
+                    builder.Property(doxaTag => doxaTag.Timestamp).HasConversion(dateTime => dateTime.Ticks, ticks => new DateTime(ticks)).IsRequired();
+                    builder.ToTable("UserDoxaTag");
                 }
             );
 

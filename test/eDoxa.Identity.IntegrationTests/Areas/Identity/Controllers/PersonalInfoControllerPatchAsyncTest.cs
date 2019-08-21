@@ -35,7 +35,8 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
     {
         public PersonalInfoControllerPatchAsyncTest(IdentityWebApiFactory identityWebApiFactory)
         {
-            User = new HashSet<User>(IdentityStorage.TestUsers).First();
+            var identityStorage = new IdentityTestFileStorage();
+            User = identityStorage.GetUsersAsync().GetAwaiter().GetResult().First();
             var factory = identityWebApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, User.Id.ToString()));
             _httpClient = factory.CreateClient();
             _testServer = factory.Server;
@@ -55,7 +56,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         [Fact]
         public async Task PatchAsync_ShouldBeStatus200OK()
         {
-            var profile = new PersonalInfo
+            var profile = new UserPersonalInfo
             {
                 FirstName = "Old"
             };

@@ -19,6 +19,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 {
     public interface IUserManager
     {
+        UserStore Store { get; }
+
         Task<IdentityResult> AddGameAsync(User user, string gameName, string playerId);
 
         Task<IdentityResult> RemoveGameAsync(User user, Game game);
@@ -49,13 +51,15 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
         Task<IdentityResult> RemoveAddressAsync(User user, Guid addressId);
 
-        Task<IList<UserAddress>> GetAddressBookAsync(User user);
+        Task<ICollection<UserAddress>> GetAddressBookAsync(User user);
 
         Task<UserAddress?> FindUserAddressAsync(User user, Guid addressId);
 
-        Task<PersonalInfo?> GetPersonalInfoAsync(User user);
+        Task<UserPersonalInfo?> GetPersonalInfoAsync(User user);
 
-        Task<DoxaTag?> GetDoxaTagAsync(User user);
+        Task<UserDoxaTag?> GetDoxaTagAsync(User user);
+
+        Task<ICollection<UserDoxaTag>> GetDoxaTagHistoryAsync(User user);
 
         Task<string?> GetBirthDateAsync(User user);
 

@@ -16,7 +16,6 @@ using eDoxa.Identity.Api.Areas.Identity.Requests;
 using eDoxa.Identity.Api.Areas.Identity.Responses;
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Infrastructure.Models;
-using eDoxa.Seedwork.Testing.Extensions;
 
 using FluentAssertions;
 
@@ -39,13 +38,16 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Arrange
             var user = new User
             {
-                AddressBook = new UserAddress
+                AddressBook = new Collection<UserAddress>
                 {
-                    City = "Test",
-                    PostalCode = "Test",
-                    Country = "Test",
-                    Line1 = "Test"
-                }.ToList()
+                    new UserAddress
+                    {
+                        City = "Test",
+                        PostalCode = "Test",
+                        Country = "Test",
+                        Line1 = "Test"
+                    }
+                }
             };
 
             var mockUserManager = new Mock<IUserManager>();
@@ -62,7 +64,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(Mapper.Map<ICollection<AddressResponse>>(user.AddressBook));
+            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(Mapper.Map<ICollection<UserAddressResponse>>(user.AddressBook));
 
             mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
 
@@ -100,13 +102,16 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Arrange
             var user = new User
             {
-                AddressBook = new UserAddress
+                AddressBook = new Collection<UserAddress>
                 {
-                    City = "Test",
-                    PostalCode = "Test",
-                    Country = "Test",
-                    Line1 = "Test"
-                }.ToList()
+                    new UserAddress
+                    {   Id = Guid.NewGuid(),
+                        City = "Test",
+                        PostalCode = "Test",
+                        Country = "Test",
+                        Line1 = "Test"
+                    }
+                }
             };
 
             var mockUserManager = new Mock<IUserManager>();
@@ -168,13 +173,16 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Arrange
             var user = new User
             {
-                AddressBook = new UserAddress
+                AddressBook = new Collection<UserAddress>
                 {
-                    City = "Test",
-                    PostalCode = "Test",
-                    Country = "Test",
-                    Line1 = "Test"
-                }.ToList()
+                    new UserAddress
+                    {   Id = Guid.NewGuid(),
+                        City = "Test",
+                        PostalCode = "Test",
+                        Country = "Test",
+                        Line1 = "Test"
+                    }
+                }
             };
 
             var mockUserManager = new Mock<IUserManager>();
@@ -236,13 +244,16 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Arrange
             var user = new User
             {
-                AddressBook = new UserAddress
+                AddressBook = new Collection<UserAddress>
                 {
-                    City = "Test",
-                    PostalCode = "Test",
-                    Country = "Test",
-                    Line1 = "Test"
-                }.ToList()
+                    new UserAddress
+                    {   Id = Guid.NewGuid(),
+                        City = "Test",
+                        PostalCode = "Test",
+                        Country = "Test",
+                        Line1 = "Test"
+                    }
+                }
             };
 
             var mockUserManager = new Mock<IUserManager>();
@@ -259,7 +270,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(Mapper.Map<AddressResponse>(user.AddressBook.First()));
+            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(Mapper.Map<UserAddressResponse>(user.AddressBook.First()));
 
             mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
 
@@ -299,13 +310,16 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Arrange
             var user = new User
             {
-                AddressBook = new UserAddress
+                AddressBook = new Collection<UserAddress>
                 {
-                    City = "Test",
-                    PostalCode = "Test",
-                    Country = "Test",
-                    Line1 = "Test"
-                }.ToList()
+                    new UserAddress
+                    {   Id = Guid.NewGuid(),
+                        City = "Test",
+                        PostalCode = "Test",
+                        Country = "Test",
+                        Line1 = "Test"
+                    }
+                }
             };
 
             var mockUserManager = new Mock<IUserManager>();
@@ -424,14 +438,16 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Arrange
             var user = new User
             {
-                AddressBook = new UserAddress
+                AddressBook = new Collection<UserAddress>
                 {
-                    Id = Guid.NewGuid(),
-                    City = "Test",
-                    PostalCode = "Test",
-                    Country = "Test",
-                    Line1 = "Test"
-                }.ToList()
+                    new UserAddress
+                    {   Id = Guid.NewGuid(),
+                        City = "Test",
+                        PostalCode = "Test",
+                        Country = "Test",
+                        Line1 = "Test"
+                    }
+                }
             };
 
             var mockUserManager = new Mock<IUserManager>();
@@ -463,14 +479,17 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Arrange
             var user = new User
             {
-                AddressBook = new UserAddress
+                AddressBook = new Collection<UserAddress>
                 {
-                    Id = Guid.NewGuid(),
-                    City = "Test",
-                    PostalCode = "Test",
-                    Country = "Test",
-                    Line1 = "Test"
-                }.ToList()
+                    new UserAddress
+                    {
+                        Id = Guid.NewGuid(),
+                        City = "Test",
+                        PostalCode = "Test",
+                        Country = "Test",
+                        Line1 = "Test"
+                    }
+                }
             };
 
             var mockUserManager = new Mock<IUserManager>();

@@ -6,6 +6,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 using Microsoft.AspNetCore.Identity;
 
@@ -15,13 +16,14 @@ namespace eDoxa.Identity.Api.Infrastructure.Models
     {
         public User()
         {
-            AddressBook = new List<UserAddress>();
+            AddressBook = new Collection<UserAddress>();
+            DoxaTagHistory = new Collection<UserDoxaTag>();
         }
 
-        public PersonalInfo? PersonalInfo { get; set; }
+        public UserPersonalInfo? PersonalInfo { get; set; }
 
-        public DoxaTag? DoxaTag { get; set; }
+        public ICollection<UserDoxaTag> DoxaTagHistory { get; set; }
 
-        public IList<UserAddress> AddressBook { get; set; }
+        public ICollection<UserAddress> AddressBook { get; set; }
     }
 }

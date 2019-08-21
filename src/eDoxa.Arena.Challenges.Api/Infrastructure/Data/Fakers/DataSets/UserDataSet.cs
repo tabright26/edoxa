@@ -5,6 +5,7 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 using Bogus;
@@ -17,7 +18,8 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.DataSets
 {
     public class UserDataSet
     {
-        private static readonly IReadOnlyCollection<User> TestUsers = ArenaChallengesStorage.TestUsers;
+        // TODO: Should be refactored.
+        private static readonly IImmutableSet<User> TestUsers = new ArenaChallengeTestFileStorage().GetUsersAsync().Result;
 
         private static ICollection<User> _testUsers = new HashSet<User>(TestUsers);
 

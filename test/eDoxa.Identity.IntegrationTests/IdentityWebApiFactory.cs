@@ -36,7 +36,7 @@ namespace eDoxa.Identity.IntegrationTests
         {
             var server = base.CreateServer(builder);
 
-            server.EnsureCreatedDbContext<IdentityDbContext>();
+            server.MigrateDbContext<IdentityDbContext>();
 
             return server;
         }

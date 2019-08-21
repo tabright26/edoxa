@@ -36,7 +36,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Arrange
             var user = new User
             {
-                PersonalInfo = new PersonalInfo
+                PersonalInfo = new UserPersonalInfo
                 {
                     FirstName = "Test",
                     LastName = "Test",
@@ -59,7 +59,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(Mapper.Map<PersonalInfoResponse>(user.PersonalInfo));
+            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(Mapper.Map<UserPersonalInfoResponse>(user.PersonalInfo));
 
             mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
 
@@ -95,7 +95,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Arrange
             var user = new User
             {
-                PersonalInfo = new PersonalInfo
+                PersonalInfo = new UserPersonalInfo
                 {
                     FirstName = "FirstName",
                     LastName = "LastName",
@@ -156,7 +156,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Arrange
             var user = new User
             {
-                PersonalInfo = new PersonalInfo
+                PersonalInfo = new UserPersonalInfo
                 {
                     FirstName = "FirstName",
                     LastName = "LastName",

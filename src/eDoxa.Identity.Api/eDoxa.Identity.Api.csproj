@@ -45,19 +45,4 @@
     <ProjectReference Include="..\eDoxa.Seedwork.Monitoring\eDoxa.Seedwork.Monitoring.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Content Update="compilerconfig.json.defaults" CopyToOutputDirectory="Always" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Infrastructure\Data\Storage\SourceFiles\Roles.csv" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="Infrastructure\Data\Storage\SourceFiles\RoleClaims.csv" CopyToOutputDirectory="PreserveNewest" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Infrastructure\Data\Storage\TestFiles\TestUsers.csv" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="Infrastructure\Data\Storage\TestFiles\TestUserClaims.csv" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="Infrastructure\Data\Storage\TestFiles\TestUserRoles.csv" CopyToOutputDirectory="PreserveNewest" />
-  </ItemGroup>
-
 </Project>

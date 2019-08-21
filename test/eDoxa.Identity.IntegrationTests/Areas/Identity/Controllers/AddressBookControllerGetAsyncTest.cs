@@ -35,7 +35,8 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
     {
         public AddressBookControllerGetAsyncTest(IdentityWebApiFactory identityWebApiFactory)
         {
-            User = new HashSet<User>(IdentityStorage.TestUsers).First();
+            var identityStorage = new IdentityTestFileStorage();
+            User = identityStorage.GetUsersAsync().GetAwaiter().GetResult().First();
             var factory = identityWebApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, User.Id.ToString()));
             _httpClient = factory.CreateClient();
             _testServer = factory.Server;
@@ -88,9 +89,9 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
                     var mapper = scope.GetRequiredService<IMapper>();
 
-                    var addressResponse = await response.DeserializeAsync<ICollection<AddressResponse>>();
+                    var addressResponse = await response.DeserializeAsync<ICollection<UserAddressResponse>>();
 
-                    addressResponse.Should().BeEquivalentTo(mapper.Map<ICollection<AddressResponse>>(addressBook));
+                    addressResponse.Should().BeEquivalentTo(mapper.Map<ICollection<UserAddressResponse>>(addressBook));
                 }
             );
         }

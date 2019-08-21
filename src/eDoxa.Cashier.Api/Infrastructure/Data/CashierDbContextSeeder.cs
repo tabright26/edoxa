@@ -67,7 +67,11 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
             {
                 if (!_context.Challenges.Any())
                 {
-                    _challengeRepository.Create(CashierStorage.TestChallenges);
+                    var storage = new CashierTestFileStorage();
+
+                    var challenges = await storage.GetChallengesAsync();
+
+                    _challengeRepository.Create(challenges);
 
                     await _challengeRepository.CommitAsync();
 

@@ -1,116 +1,125 @@
-﻿// Filename: UserDoxatagControllerTest.cs
-// Date Created: 2019-08-10
-// 
-// ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+﻿//// Filename: UserDoxatagControllerTest.cs
+//// Date Created: 2019-08-18
+//// 
+//// ================================================
+//// Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
-using System.Threading.Tasks;
+//using System;
+//using System.Collections.ObjectModel;
+//using System.Linq;
+//using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Areas.Identity.Controllers;
-using eDoxa.Identity.Api.Areas.Identity.Responses;
-using eDoxa.Identity.Api.Areas.Identity.Services;
-using eDoxa.Identity.Api.Infrastructure.Models;
+//using eDoxa.Identity.Api.Areas.Identity.Controllers;
+//using eDoxa.Identity.Api.Areas.Identity.Responses;
+//using eDoxa.Identity.Api.Areas.Identity.Services;
+//using eDoxa.Identity.Api.Infrastructure.Models;
 
-using FluentAssertions;
+//using FluentAssertions;
 
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+//using Microsoft.AspNetCore.Mvc;
+//using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Moq;
+//using Moq;
 
-using static eDoxa.Identity.UnitTests.Helpers.Extensions.MapperExtensions;
+//using static eDoxa.Identity.UnitTests.Helpers.Extensions.MapperExtensions;
 
-namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
-{
-    [TestClass]
-    public sealed class UserDoxatagControllerTest
-    {
-        [TestMethod]
-        public async Task GetAsync_ShouldBeOkObjectResult()
-        {
-            // Arrange
-            var user = new User
-            {
-                Id = Guid.NewGuid(),
-                DoxaTag = new DoxaTag
-                {
-                    Name = "Test",
-                    Code = 234
-                }
-            };
+//namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
+//{
+//    [TestClass]
+//    public sealed class UserDoxatagControllerTest
+//    {
+//        [TestMethod]
+//        public async Task GetAsync_ShouldBeOkObjectResult()
+//        {
+//            // Arrange
+//            var user = new User
+//            {
+//                Id = Guid.NewGuid()
+//            };
 
-            var mockUserManager = new Mock<IUserManager>();
+//            user.DoxaTagHistory = new Collection<UserDoxaTag>
+//            {
+//                new UserDoxaTag
+//                {
+//                    Id = Guid.NewGuid(),
+//                    UserId = user.Id,
+//                    Name = "Test",
+//                    Code = 1234,
+//                    Timestamp = DateTime.UtcNow
+//                }
+//            };
 
-            mockUserManager.Setup(userManager => userManager.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(user).Verifiable();
+//            var mockUserManager = new Mock<IUserManager>();
 
-            mockUserManager.Setup(userManager => userManager.GetDoxaTagAsync(It.IsAny<User>())).ReturnsAsync(user.DoxaTag).Verifiable();
+//            mockUserManager.Setup(userManager => userManager.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(user).Verifiable();
 
-            var controller = new UserDoxaTagController(mockUserManager.Object, Mapper);
+//            mockUserManager.Setup(userManager => userManager.GetDoxaTagAsync(It.IsAny<User>())).ReturnsAsync(user.DoxaTagHistory.First()).Verifiable();
 
-            // Act
-            var result = await controller.GetAsync(user.Id);
+//            var controller = new UserDoxaTagController(mockUserManager.Object, Mapper);
 
-            // Assert
-            result.Should().BeOfType<OkObjectResult>();
+//            // Act
+//            var result = await controller.GetAsync(user.Id);
 
-            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(Mapper.Map<DoxaTagResponse>(user.DoxaTag));
+//            // Assert
+//            result.Should().BeOfType<OkObjectResult>();
 
-            mockUserManager.Verify(userManager => userManager.FindByIdAsync(It.IsAny<string>()), Times.Once);
+//            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(Mapper.Map<UserDoxaTagResponse>(user.DoxaTagHistory.First()));
 
-            mockUserManager.Verify(userManager => userManager.GetDoxaTagAsync(It.IsAny<User>()), Times.Once);
-        }
+//            mockUserManager.Verify(userManager => userManager.FindByIdAsync(It.IsAny<string>()), Times.Once);
 
-        [TestMethod]
-        public async Task GetAsync_ShouldBeNoContentResult()
-        {
-            // Arrange
-            var user = new User
-            {
-                Id = Guid.NewGuid(),
-                DoxaTag = null
-            };
+//            mockUserManager.Verify(userManager => userManager.GetDoxaTagAsync(It.IsAny<User>()), Times.Once);
+//        }
 
-            var mockUserManager = new Mock<IUserManager>();
+//        [TestMethod]
+//        public async Task GetAsync_ShouldBeNoContentResult()
+//        {
+//            // Arrange
+//            var user = new User
+//            {
+//                Id = Guid.NewGuid(),
+//                DoxaTagHistory = new Collection<UserDoxaTag>()
+//            };
 
-            mockUserManager.Setup(userManager => userManager.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(user).Verifiable();
+//            var mockUserManager = new Mock<IUserManager>();
 
-            mockUserManager.Setup(userManager => userManager.GetDoxaTagAsync(It.IsAny<User>())).ReturnsAsync(user.DoxaTag).Verifiable();
+//            mockUserManager.Setup(userManager => userManager.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(user).Verifiable();
 
-            var controller = new UserDoxaTagController(mockUserManager.Object, Mapper);
+//            mockUserManager.Setup(userManager => userManager.GetDoxaTagAsync(It.IsAny<User>())).ReturnsAsync(user.DoxaTagHistory.FirstOrDefault()).Verifiable();
 
-            // Act
-            var result = await controller.GetAsync(user.Id);
+//            var controller = new UserDoxaTagController(mockUserManager.Object, Mapper);
 
-            // Assert
-            result.Should().BeOfType<NoContentResult>();
+//            // Act
+//            var result = await controller.GetAsync(user.Id);
 
-            mockUserManager.Verify(userManager => userManager.FindByIdAsync(It.IsAny<string>()), Times.Once);
+//            // Assert
+//            result.Should().BeOfType<NoContentResult>();
 
-            mockUserManager.Verify(userManager => userManager.GetDoxaTagAsync(It.IsAny<User>()), Times.Once);
-        }
+//            mockUserManager.Verify(userManager => userManager.FindByIdAsync(It.IsAny<string>()), Times.Once);
 
-        [TestMethod]
-        public async Task GetAsync_ShouldBeNotFoundObjectResult()
-        {
-            // Arrange
-            var mockUserManager = new Mock<IUserManager>();
+//            mockUserManager.Verify(userManager => userManager.GetDoxaTagAsync(It.IsAny<User>()), Times.Once);
+//        }
 
-            mockUserManager.Setup(userManager => userManager.FindByIdAsync(It.IsAny<string>())).ReturnsAsync((User) null).Verifiable();
+//        [TestMethod]
+//        public async Task GetAsync_ShouldBeNotFoundObjectResult()
+//        {
+//            // Arrange
+//            var mockUserManager = new Mock<IUserManager>();
 
-            var controller = new UserDoxaTagController(mockUserManager.Object, Mapper);
+//            mockUserManager.Setup(userManager => userManager.FindByIdAsync(It.IsAny<string>())).ReturnsAsync((User) null).Verifiable();
 
-            // Act
-            var result = await controller.GetAsync(Guid.NewGuid());
+//            var controller = new UserDoxaTagController(mockUserManager.Object, Mapper);
 
-            // Assert
-            result.Should().BeOfType<NotFoundObjectResult>();
+//            // Act
+//            var result = await controller.GetAsync(Guid.NewGuid());
 
-            result.As<NotFoundObjectResult>().Value.Should().BeOfType<string>();
+//            // Assert
+//            result.Should().BeOfType<NotFoundObjectResult>();
 
-            mockUserManager.Verify(userManager => userManager.FindByIdAsync(It.IsAny<string>()), Times.Once);
+//            result.As<NotFoundObjectResult>().Value.Should().BeOfType<string>();
 
-            mockUserManager.Verify(userManager => userManager.GetDoxaTagAsync(It.IsAny<User>()), Times.Never);
-        }
-    }
-}
+//            mockUserManager.Verify(userManager => userManager.FindByIdAsync(It.IsAny<string>()), Times.Once);
+
+//            mockUserManager.Verify(userManager => userManager.GetDoxaTagAsync(It.IsAny<User>()), Times.Never);
+//        }
+//    }
+//}

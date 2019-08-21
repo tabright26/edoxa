@@ -46,14 +46,14 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
 
-            var profile = await _userManager.GetPersonalInfoAsync(user);
+            var personalInfo = await _userManager.GetPersonalInfoAsync(user);
 
-            if (profile == null)
+            if (personalInfo == null)
             {
                 return this.NoContent();
             }
 
-            return this.Ok(_mapper.Map<PersonalInfoResponse>(profile));
+            return this.Ok(_mapper.Map<UserPersonalInfoResponse>(personalInfo));
         }
 
         /// <summary>
