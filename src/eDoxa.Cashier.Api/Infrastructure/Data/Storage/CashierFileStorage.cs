@@ -46,13 +46,15 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Storage
 
             var rootDirectory = _share.GetRootDirectoryReference();
 
+            // TODO: Rename this file reference to ChallengePayoutLevels.csv
             var file = rootDirectory.GetFileReference("ChallengePayouts.csv");
 
             if (!await file.ExistsAsync())
             {
                 throw new InvalidOperationException();
             }
-
+            
+            // TODO: Create and extension method.
             using var stream = await file.OpenReadAsync();
 
             using var streamReader = new StreamReader(stream);
