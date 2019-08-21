@@ -7,13 +7,11 @@
 using System;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-using CsvHelper;
-
 using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Seedwork.Infrastructure.Extensions;
 
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
@@ -64,13 +62,9 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
                 throw new InvalidOperationException();
             }
 
-            using var stream = await file.OpenReadAsync();
+            using var csvReader = await file.OpenCsvReaderAsync();
 
-            using var streamReader = new StreamReader(stream);
-
-            using var csvStream = new CsvReader(streamReader);
-
-            return csvStream.GetRecords(
+            return csvReader.GetRecords(
                     new
                     {
                         Id = default(int),
@@ -114,13 +108,9 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
                 throw new InvalidOperationException();
             }
 
-            using var stream = await file.OpenReadAsync();
+            using var csvReader = await file.OpenCsvReaderAsync();
 
-            using var streamReader = new StreamReader(stream);
-
-            using var csvStream = new CsvReader(streamReader);
-
-            return csvStream.GetRecords(
+            return csvReader.GetRecords(
                     new
                     {
                         Id = default(Guid),
@@ -186,13 +176,9 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
                 throw new InvalidOperationException();
             }
 
-            using var stream = await file.OpenReadAsync();
+            using var csvReader = await file.OpenCsvReaderAsync();
 
-            using var streamReader = new StreamReader(stream);
-
-            using var csvStream = new CsvReader(streamReader);
-
-            return csvStream.GetRecords(
+            return csvReader.GetRecords(
                     new
                     {
                         RoleId = default(Guid),
