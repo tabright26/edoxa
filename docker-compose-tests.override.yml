@@ -11,12 +11,12 @@ services:
 
   redis.test:
     ports:
-      - "6379:6379"
+      - "10379:6379"
 
   rabbitmq.test:
     ports:
-      - "15672:15672"
-      - "5672:5672"
+      - "19672:15672"
+      - "9672:5672"
 
   seedwork.unit-tests:
     entrypoint: dotnet test -c Release --logger:trx;LogFileName=/var/tmp/eDoxa.Seedwork.UnitTests.trx
