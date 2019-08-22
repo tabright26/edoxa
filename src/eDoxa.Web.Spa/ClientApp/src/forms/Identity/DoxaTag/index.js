@@ -1,7 +1,3 @@
-import Create from "./Create";
-import Update from "./Update";
+import Change from "./Change";
 
-export default {
-  Create,
-  Update
-};
+export default { Change };
