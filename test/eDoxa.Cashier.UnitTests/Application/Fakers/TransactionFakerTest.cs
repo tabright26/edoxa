@@ -16,7 +16,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Fakers
     public sealed class TransactionFakerTest
     {
         [TestMethod]
-        public void FakePositiveTransactions_ShouldNotThrow()
+        public void Generate_TenPositiveTransactions_ShouldHaveCountTen()
         {
             // Arrange
             var transactionFaker = new TransactionFaker();
@@ -29,7 +29,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Fakers
         }
 
         [TestMethod]
-        public void FakePositiveTransaction_ShouldNotThrow()
+        public void Generate_SinglePositiveTransaction_ShouldNotBeNull()
         {
             // Arrange
             var transactionFaker = new TransactionFaker();
@@ -42,7 +42,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Fakers
         }
 
         [TestMethod]
-        public void FakeNegativeTransactions_ShouldNotThrow()
+        public void Generate_TenNegativeTransactions_ShouldHaveCountTen()
         {
             // Arrange
             var transactionFaker = new TransactionFaker();
@@ -55,7 +55,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Fakers
         }
 
         [TestMethod]
-        public void FakeNegativeTransaction_ShouldNotThrow()
+        public void Generate_SingleNegativeTransaction_ShouldNotBeNull()
         {
             // Arrange
             var transactionFaker = new TransactionFaker();

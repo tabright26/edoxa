@@ -30,7 +30,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
 
         [DataTestMethod]
         [DynamicData(nameof(DataQueryParameters))]
-        public async Task FindParticipantMatchesAsync_FromSeed_ShouldBeEquivalentToParticipantMatchList(ChallengeGame game, ChallengeState state)
+        public async Task FindParticipantMatchesAsync_ShouldBeEquivalentToParticipantMatchList(ChallengeGame game, ChallengeState state)
         {
             //Arrange
             var challengeFaker = new ChallengeFaker(game, state);
@@ -68,7 +68,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
 
         [DataTestMethod]
         [DynamicData(nameof(DataQueryParameters))]
-        public async Task FindMatchAsync_FromSeed_ShouldBeEquivalentToMatch(ChallengeGame game, ChallengeState state)
+        public async Task FindMatchAsync_ShouldBeEquivalentToMatch(ChallengeGame game, ChallengeState state)
         {
             //Arrange
             var challengeFaker = new ChallengeFaker(game, state);

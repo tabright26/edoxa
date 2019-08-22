@@ -26,7 +26,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
 
         [DataTestMethod]
         [DynamicData(nameof(ValidCurrencyDataSets))]
-        public void GetBalanceFor_ValidCurrency_ShouldThrowArgumentException(Currency currency)
+        public void GetBalanceFor_WithValidCurrency_ShouldBeCurrency(Currency currency)
         {
             var account = new Account(new UserId());
 
@@ -37,7 +37,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
 
         [DataTestMethod]
         [DynamicData(nameof(InvalidCurrencyDataSets))]
-        public void GetBalanceFor_InvalidCurrency_ShouldThrowArgumentException(Currency currency)
+        public void GetBalanceFor_WithInvalidCurrency_ShouldThrowArgumentException(Currency currency)
         {
             var account = new Account(new UserId());
 

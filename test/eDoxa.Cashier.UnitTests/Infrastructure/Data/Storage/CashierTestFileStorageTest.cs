@@ -46,7 +46,7 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Storage
         }
 
         [TestMethod]
-        public async Task GetUsersAsync_WithAdmin_ShouldContainAdminId()
+        public async Task GetUsersAsync_ShouldContainAdminId()
         {
             // Arrange
             var storage = new CashierTestFileStorage();

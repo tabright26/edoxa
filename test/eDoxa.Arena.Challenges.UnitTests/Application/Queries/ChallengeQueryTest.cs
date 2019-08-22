@@ -81,7 +81,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
 
         [DataTestMethod]
         [DynamicData(nameof(DataQueryParameters))]
-        public async Task FetchChallengesAsync_FromSeed_ShoulHaveCount(ChallengeGame game, ChallengeState state)
+        public async Task FetchChallengesAsync_ShouldHaveCount(ChallengeGame game, ChallengeState state)
         {
             //Arrange
             var challengeFaker = new ChallengeFaker();
@@ -116,7 +116,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
 
         [DataTestMethod]
         [DynamicData(nameof(DataQueryParameters))]
-        public async Task FindChallengeAsync_FromSeed_ShouldBeChallenge(ChallengeGame game, ChallengeState state)
+        public async Task FindChallengeAsync_ShouldBeChallenge(ChallengeGame game, ChallengeState state)
         {
             //Arrange
             var challengeFaker = new ChallengeFaker(game, state);

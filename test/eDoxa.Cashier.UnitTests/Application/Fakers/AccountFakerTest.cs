@@ -16,7 +16,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Fakers
     public sealed class AccountFakerTest
     {
         [TestMethod]
-        public void FakeNewAccount_ShouldNotThrow()
+        public void Generate_FakeNewAccount_ShouldNotBeNull()
         {
             // Arrange
             var accountFaker = new AccountFaker();
@@ -29,7 +29,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Fakers
         }
 
         [TestMethod]
-        public void FakeAdminAccount_ShouldNotThrow()
+        public void Generate_FakeAdminAccount_ShouldNotBeNull()
         {
             // Arrange
             var accountFaker = new AccountFaker();

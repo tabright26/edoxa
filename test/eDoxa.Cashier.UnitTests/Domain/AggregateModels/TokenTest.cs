@@ -22,7 +22,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels
         [DataRow(500000, 1000000, 1500000)]
         [DataRow(1000000, 500000, 1500000)]
         [DataTestMethod]
-        public void Add_Amount_ShouldBeResult(int amount1, int amount2, int result)
+        public void Add_ShouldBeResult(int amount1, int amount2, int result)
         {
             // Arrange
             var token1 = new Token(amount1);
@@ -41,7 +41,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels
         [DataRow(1000000, 250000, 750000)]
         [DataRow(5000000, 1000000, 4000000)]
         [DataTestMethod]
-        public void Subtract_Amount_ShouldBeResult(int amount1, int amount2, int result)
+        public void Subtract_ShouldBeResult(int amount1, int amount2, int result)
         {
             // Arrange
             var token1 = new Token(amount1);
