@@ -27,7 +27,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
 
         [DataTestMethod]
         [DynamicData(nameof(GameDataSets))]
-        public void Snapshot_Stats_ShouldHaveCountOfScoring(ChallengeGame game)
+        public void StatMatch_FromGame_ShouldHaveCountOfScoring(ChallengeGame game)
         {
             // Arrange
             var faker = new Faker();

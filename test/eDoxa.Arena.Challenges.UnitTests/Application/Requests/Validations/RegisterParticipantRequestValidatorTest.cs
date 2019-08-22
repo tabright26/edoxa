@@ -32,7 +32,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Requests.Validations
         }
 
         [TestMethod]
-        public void ShouldBeValidChallengeId()
+        public void RegisterParticipantValidator_ShouldBeValidChallengeId()
         {
             // Arrange
             var challengeFaker = new ChallengeFaker();
@@ -43,6 +43,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Requests.Validations
                 .ReturnsAsync(challengeViewModel)
                 .Verifiable();
 
+            //Act
             var validator = new RegisterParticipantValidator(_mockHttpContextAccessor.Object, _mockChallengeQuery.Object);
 
             // Assert

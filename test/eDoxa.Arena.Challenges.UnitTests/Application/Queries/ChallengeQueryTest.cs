@@ -43,8 +43,9 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
 
         [DataTestMethod]
         [DynamicData(nameof(DataQueryParameters))]
-        public async Task FetchUserChallengeHistoryAsync(ChallengeGame game, ChallengeState state)
+        public async Task FetchUserChallengeHistoryAsync_WhenChallengeQuery_ShouldBeChallenge(ChallengeGame game, ChallengeState state)
         {
+            //Arrange
             var challengeFaker = new ChallengeFaker(game, state);
 
             challengeFaker.UseSeed(84566374);
@@ -69,8 +70,10 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
                 {
                     var challengeQuery = new ChallengeQuery(context, MapperExtensions.Mapper, _mockHttpContextAccessor.Object);
 
+                    //Act
                     var challengeViewModels = await challengeQuery.FetchUserChallengeHistoryAsync(game, state);
 
+                    //Assert
                     challengeViewModels.Single().Should().Be(challenge);
                 }
             }
@@ -78,8 +81,9 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
 
         [DataTestMethod]
         [DynamicData(nameof(DataQueryParameters))]
-        public async Task FetchChallengesAsync(ChallengeGame game, ChallengeState state)
+        public async Task FetchChallengesAsync_FromSeed_ShoulHaveCount(ChallengeGame game, ChallengeState state)
         {
+            //Arrange
             var challengeFaker = new ChallengeFaker();
 
             challengeFaker.UseSeed(84936374);
@@ -101,8 +105,10 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
                 {
                     var challengeQuery = new ChallengeQuery(context, MapperExtensions.Mapper, _mockHttpContextAccessor.Object);
 
+                    //Act
                     var challenges = await challengeQuery.FetchChallengesAsync(game, state);
 
+                    //Assert
                     challenges.Should().HaveCount(fakeChallenges.Count(challenge => challenge.Game == game && challenge.Timeline == state));
                 }
             }
@@ -110,8 +116,9 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
 
         [DataTestMethod]
         [DynamicData(nameof(DataQueryParameters))]
-        public async Task FindChallengeAsync(ChallengeGame game, ChallengeState state)
+        public async Task FindChallengeAsync_FromSeed_ShouldBeChallenge(ChallengeGame game, ChallengeState state)
         {
+            //Arrange
             var challengeFaker = new ChallengeFaker(game, state);
 
             challengeFaker.UseSeed(84568994);
@@ -133,8 +140,10 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
                 {
                     var challengeQuery = new ChallengeQuery(context, MapperExtensions.Mapper, _mockHttpContextAccessor.Object);
 
+                    //Act
                     var challengeViewModel = await challengeQuery.FindChallengeAsync(challenge.Id);
 
+                    //Assert
                     challengeViewModel.Should().Be(challenge);
                 }
             }

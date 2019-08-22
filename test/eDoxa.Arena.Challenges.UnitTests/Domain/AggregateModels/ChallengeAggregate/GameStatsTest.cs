@@ -25,7 +25,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
 
         [DataTestMethod]
         [DynamicData(nameof(GameDataSets))]
-        public void Stats_ShouldBeAssignableToType(ChallengeGame game)
+        public void Stats_FromGame_ShouldBeAssignableToType(ChallengeGame game)
         {
             // Arrange
             var stats = new Faker().Game().Stats(game);

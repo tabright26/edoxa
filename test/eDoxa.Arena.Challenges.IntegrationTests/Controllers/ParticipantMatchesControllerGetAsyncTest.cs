@@ -5,6 +5,7 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -65,6 +66,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 
             // Assert
             response.EnsureSuccessStatusCode();
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
             var matchViewModels = await response.DeserializeAsync<MatchViewModel[]>();
             matchViewModels.Should().HaveCount(participant.Matches.Count);
         }

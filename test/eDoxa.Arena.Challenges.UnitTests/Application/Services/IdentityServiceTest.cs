@@ -11,5 +11,6 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Services
     [TestClass]
     public sealed class IdentityServiceTest
     {
+        //TODO: Maybe add someting here ?
     }
 }

@@ -31,7 +31,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Games.LeagueOfLegends
     public sealed class LeagueOfLegendsMatchService
     {
         [TestMethod]
-        public async Task GetMatchReferencesAsync_ShouldBeOkObjectResult()
+        public async Task GetMatchReferencesAsync_FromJson_ShouldBeEquivalentToMatchReferencesDTO()
         {
             // Arrange
             var matchReferencesDTO =
@@ -71,7 +71,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Games.LeagueOfLegends
         [DataRow(2974045372)]
         [DataRow(2974074080)]
         [DataRow(2974102736)]
-        public async Task GetMatchAsync_ShouldBeOkObjectResult(long gameId)
+        public async Task GetMatchAsync_FromJson_ShouldBeEquivalentToMatch(long gameId)
         {
             // Arrange
             var matches = JsonFileConvert.DeserializeObject<IEnumerable<LeagueOfLegendsMatchDto>>(@"Helpers/Stubs/LeagueOfLegends/Matches.json");

@@ -23,7 +23,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Strategies
         [DataRow(nameof(LeagueOfLegendsParticipantStatsDto.Assists), 3)]
         [DataRow(nameof(LeagueOfLegendsParticipantStatsDto.TotalDamageDealtToChampions), 0.0008F)]
         [DataRow(nameof(LeagueOfLegendsParticipantStatsDto.TotalHeal), 0.0015F)]
-        public void Scoring_Strategy_ShouldContain(string key, float value)
+        public void LeagueOfLegendsScoringStrategy_ShouldContain(string key, float value)
         {
             // Act
             var strategy = new LeagueOfLegendsScoringStrategy();

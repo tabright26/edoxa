@@ -44,7 +44,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         [Theory]
         [InlineData(2)]
         [InlineData(5)]
-        public async Task The_response_http_should_have_exactly_the_same_number_of_fake_challenges_added_to_the_database(int count)
+        public async Task ShouldHaveCount(int count)
         {
             // Arrange
             var challengeFaker = new ChallengeFaker();
@@ -64,6 +64,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 
             // Assert
             response.EnsureSuccessStatusCode();
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
             var challengeViewModels = await response.DeserializeAsync<ChallengeViewModel[]>();
             challengeViewModels.Should().HaveCount(count);
         }
@@ -72,7 +73,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         [InlineData(100)]
         [InlineData(1000)]
         [InlineData(10000)]
-        public async Task Fake_challenge_with_same_seed_should_be_equivalent(int seed)
+        public async Task ShouldBeOk(int seed)
         {
             // Arrange
             var challengeFaker = new ChallengeFaker();
@@ -93,6 +94,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 
             // Assert
             response.EnsureSuccessStatusCode();
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
             var challengeViewModel = (await response.DeserializeAsync<ChallengeViewModel[]>()).First();
             challengeFaker = new ChallengeFaker();
             challengeFaker.UseSeed(seed);

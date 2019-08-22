@@ -43,7 +43,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Adapters
         }
 
         [TestMethod]
-        public async Task GetMatchAsync()
+        public async Task GetMatchAsync_WhenGameAccountIdIsParticipant_ShouldBeLeagueOfLegends()
         {
             // Arrange
             var challengeFaker = new ChallengeFaker(ChallengeGame.LeagueOfLegends, ChallengeState.InProgress);

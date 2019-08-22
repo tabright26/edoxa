@@ -37,7 +37,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Services
         private readonly TestServer _testServer;
 
         [Fact]
-        public async Task T1()
+        public async Task ShouldHaveCountFive()
         {
             // Arrange
             var challengeFaker = new ChallengeFaker(ChallengeGame.LeagueOfLegends, ChallengeState.InProgress);

@@ -30,8 +30,9 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
 
         [DataTestMethod]
         [DynamicData(nameof(DataQueryParameters))]
-        public async Task FindChallengeParticipantsAsync(ChallengeGame game, ChallengeState state)
+        public async Task FindChallengeParticipantsAsync_FromSeed_ShouldBeEquivalentToParticipantList(ChallengeGame game, ChallengeState state)
         {
+            //Arrange
             var challengeFaker = new ChallengeFaker(game, state);
 
             challengeFaker.UseSeed(68545632);
@@ -53,8 +54,10 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
                 {
                     var participantQuery = new ParticipantQuery(context, MapperExtensions.Mapper);
 
+                    //Act
                     var participantViewModels = await participantQuery.FetchChallengeParticipantsAsync(challenge.Id);
 
+                    //Assert
                     participantViewModels.Should().BeEquivalentTo(challenge.Participants.ToList());
                 }
             }
@@ -62,8 +65,9 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
 
         [DataTestMethod]
         [DynamicData(nameof(DataQueryParameters))]
-        public async Task FindParticipantAsync(ChallengeGame game, ChallengeState state)
+        public async Task FindParticipantAsync_FromSeed_EquivalentToParticipant(ChallengeGame game, ChallengeState state)
         {
+            //Arrange
             var challengeFaker = new ChallengeFaker(game, state);
 
             challengeFaker.UseSeed(48956632);
@@ -87,8 +91,10 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
 
                     foreach (var participant in challenge.Participants)
                     {
+                        //Act
                         var participantViewModel = await participantQuery.FindParticipantAsync(ParticipantId.FromGuid(participant.Id));
 
+                        //Assert
                         participantViewModel.Should().BeEquivalentTo(participant);
                     }
                 }
