@@ -53,7 +53,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         private User User { get; }
 
         [Fact]
-        public async Task PatchAsync_ShouldBeStatus200OK()
+        public async Task ShouldBeStatus200Ok()
         {
             var profile = new UserPersonalInfo
             {

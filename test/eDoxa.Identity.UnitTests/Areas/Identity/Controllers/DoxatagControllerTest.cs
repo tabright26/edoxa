@@ -32,7 +32,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
     public sealed class DoxaTagControllerTest
     {
         [TestMethod]
-        public async Task GetAsync_ShouldBeOkObjectResult()
+        public async Task GetAsync_WithNewDoxaTag_ShouldBeOkObjectResult()
         {
             // Arrange
             var user = new User
@@ -74,7 +74,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
         }
 
         [TestMethod]
-        public async Task GetAsync_ShouldBeNoContentResult()
+        public async Task GetAsync_WithEmptyDoxaTag_ShouldBeNoContentResult()
         {
             // Arrange
             var user = new User();
@@ -99,7 +99,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
         }
 
         [TestMethod]
-        public async Task PostAsync_ShouldBeOkObjectResult()
+        public async Task PostAsync_WithNewDoxaTag_ShouldBeOkObjectResult()
         {
             // Arrange
             var user = new User
@@ -142,7 +142,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
         }
 
         [TestMethod]
-        public async Task PostAsync_ShouldBeBadRequestObjectResult()
+        public async Task PostAsync_WithEmptyDoxaTag_ShouldBeBadRequestObjectResult()
         {
             // Arrange
             var user = new User();

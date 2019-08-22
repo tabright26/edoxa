@@ -33,7 +33,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
     public sealed class AddressBookControllerTest
     {
         [TestMethod]
-        public async Task GetAsync_ShouldBeOkObjectResult()
+        public async Task GetAsync_WithNewAddressBook_ShouldBeOkObjectResult()
         {
             // Arrange
             var user = new User
@@ -72,7 +72,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
         }
 
         [TestMethod]
-        public async Task GetAsync_ShouldBeNoContentResult()
+        public async Task GetAsync_WithEmptyAddressBook_ShouldBeNoContentResult()
         {
             // Arrange
             var user = new User();
@@ -97,7 +97,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
         }
 
         [TestMethod]
-        public async Task PostAsync_ShouldBeOkObjectResult()
+        public async Task PostAsync_WithNewAddressBook_ShouldBeOkObjectResult()
         {
             // Arrange
             var user = new User
@@ -168,7 +168,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
         }
 
         [TestMethod]
-        public async Task PostAsync_ShouldBeBadRequestObjectResult()
+        public async Task PostAsync_WithNewAddressBook_ShouldBeBadRequestObjectResult()
         {
             // Arrange
             var user = new User
@@ -239,7 +239,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
         }
 
         [TestMethod]
-        public async Task GetByIdAsync_ShouldBeOkObjectResult()
+        public async Task GetByIdAsync_WithNewAddressBook_ShouldBeOkObjectResult()
         {
             // Arrange
             var user = new User
@@ -278,7 +278,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
         }
 
         [TestMethod]
-        public async Task GetByIdAsync_ShouldBeNotFoundObjectResult()
+        public async Task GetByIdAsync_WithEmptyAddressBook_ShouldBeNotFoundObjectResult()
         {
             // Arrange
             var user = new User();
@@ -305,7 +305,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
         }
 
         [TestMethod]
-        public async Task PutAsync_ShouldBeOkObjectResult()
+        public async Task PutAsync_WithNewAddressBook_ShouldBeOkObjectResult()
         {
             // Arrange
             var user = new User
@@ -375,7 +375,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
         }
 
         [TestMethod]
-        public async Task PutAsync_ShouldBeBadRequestObjectResult()
+        public async Task PutAsync_WithEmptyAddressBook_ShouldBeBadRequestObjectResult()
         {
             // Arrange
             var user = new User();
@@ -433,7 +433,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
         }
 
         [TestMethod]
-        public async Task DeleteAsync_ShouldBeOkObjectResult()
+        public async Task DeleteAsync_WithNewAddressBook_ShouldBeOkObjectResult()
         {
             // Arrange
             var user = new User
@@ -474,7 +474,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
         }
 
         [TestMethod]
-        public async Task DeleteAsync_ShouldBeBadRequestObjectResult()
+        public async Task DeleteAsync_WithNewAddressBook_ShouldBeBadRequestObjectResult()
         {
             // Arrange
             var user = new User

@@ -36,7 +36,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         }
 
         [Fact]
-        public async Task GetAsync_ShouldBeNoContent()
+        public async Task ShouldBeNoContent()
         {
             // Act
             using var response = await this.ExecuteAsync();
@@ -48,7 +48,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         }
 
         [Fact]
-        public async Task GetAsync_WithNinetyNineUsers_ShouldHaveCountOfNinetyNine()
+        public async Task ShouldBeStatus200Ok()
         {
             // Arrange
             await _testServer.UsingScopeAsync(

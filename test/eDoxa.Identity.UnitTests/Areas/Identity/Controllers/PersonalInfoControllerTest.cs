@@ -31,7 +31,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
     public sealed class PersonalInfoControllerTest
     {
         [TestMethod]
-        public async Task GetAsync_ShouldBeOkObjectResult()
+        public async Task GetAsync_WithNewUserPersonnalInfo_ShouldBeOkObjectResult()
         {
             // Arrange
             var user = new User
@@ -67,7 +67,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
         }
 
         [TestMethod]
-        public async Task GetAsync_ShouldBeNoContentResult()
+        public async Task GetAsync_WithEmptyUserPersonnalInfo_ShouldBeNoContentResult()
         {
             // Arrange
             var user = new User();
@@ -90,7 +90,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
         }
 
         [TestMethod]
-        public async Task PatchAsync_ShouldBeOkObjectResult()
+        public async Task PatchAsync_WithNewUserPersonnalInfo_ShouldBeOkObjectResult()
         {
             // Arrange
             var user = new User
@@ -151,7 +151,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
         }
 
         [TestMethod]
-        public async Task PatchAsync_ShouldBeBadRequestObjectResult()
+        public async Task PatchAsync_WithNewUserPersonnalInfo_ShouldBeBadRequestObjectResult()
         {
             // Arrange
             var user = new User
