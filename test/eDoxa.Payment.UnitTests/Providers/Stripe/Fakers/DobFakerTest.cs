@@ -16,7 +16,7 @@ namespace eDoxa.Payment.UnitTests.Providers.Stripe.Fakers
     public sealed class DobFakerTest
     {
         [TestMethod]
-        public void FakeDob_ShouldNotThrow()
+        public void FakeDob_ShouldNotBeNull()
         {
             // Arrange
             var dobFaker = new DobFaker();

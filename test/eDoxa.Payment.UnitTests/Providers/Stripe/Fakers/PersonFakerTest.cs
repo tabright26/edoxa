@@ -16,7 +16,7 @@ namespace eDoxa.Payment.UnitTests.Providers.Stripe.Fakers
     public sealed class PersonFakerTest
     {
         [TestMethod]
-        public void FakePerson_ShouldNotThrow()
+        public void FakePerson_ShouldNotBeNull()
         {
             // Arrange
             var personFaker = new PersonFaker();

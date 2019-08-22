@@ -16,7 +16,7 @@ namespace eDoxa.Payment.UnitTests.Providers.Stripe.Fakers
     public sealed class ShippingFakerTest
     {
         [TestMethod]
-        public void FakeShipping_ShouldNotThrow()
+        public void FakeShipping_ShouldNotBeNull()
         {
             // Arrange
             var shippingFaker = new ShippingFaker();
