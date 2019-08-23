@@ -6,13 +6,13 @@ import { Card, CardHeader, CardBody } from "reactstrap";
 import withPersonalInfo from "../../../../containers/App/User/Profile/Details/withPersonalInfo";
 import PersonalInfoForm from "../../../../forms/Identity/PersonalInfo";
 
-const PersonalInfoCard = ({ className, personalInfo }) => {
+const PersonalInfoCard = ({ className, personalInfo, actions }) => {
   const [isFormHidden, setFormHidden] = useState(true);
   return (
     <Card className={className}>
       <CardHeader>
         <strong>PERSONAL INFORMATIONS</strong>
-        {isFormHidden ? (
+        {isFormHidden && personalInfo ? (
           <div className="card-header-actions btn-link" onClick={() => setFormHidden(false)}>
             <small>
               <FontAwesomeIcon icon={faEdit} /> UPDATE
@@ -21,7 +21,9 @@ const PersonalInfoCard = ({ className, personalInfo }) => {
         ) : null}
       </CardHeader>
       <CardBody>
-        {isFormHidden ? (
+        {!personalInfo ? (
+          <PersonalInfoForm.Create onSubmit={fields => actions.createPersonalInfo(fields).then(() => setFormHidden(true))} handleCancel={() => setFormHidden(true)} />
+        ) : isFormHidden ? (
           <dl className="row mb-0">
             <dd className="col-sm-3 text-muted">Name</dd>
             <dd className="col-sm-9">
@@ -37,12 +39,7 @@ const PersonalInfoCard = ({ className, personalInfo }) => {
             <dd className="col-sm-9 mb-0">{personalInfo.gender}</dd>
           </dl>
         ) : (
-          <dl className="row mb-0">
-            <dd className="col-sm-3 text-muted">Personal Inforamtion</dd>
-            <dd className="col-sm-9">
-              <PersonalInfoForm.Update handleCancel={() => setFormHidden(true)} />
-            </dd>
-          </dl>
+          <PersonalInfoForm.Update handleCancel={() => setFormHidden(true)} />
         )}
       </CardBody>
     </Card>

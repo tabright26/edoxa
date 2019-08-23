@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { loadPersonalInfo } from "../../../../../store/actions/identityActions";
+import { SubmissionError } from "redux-form";
+import { loadPersonalInfo, createPersonalInfo, CREATE_PERSONAL_INFO_SUCCESS, CREATE_PERSONAL_INFO_FAIL } from "../../../../../store/actions/identityActions";
 
 const withPersonalInfo = WrappedComponent => {
   class PersonalInfoContainer extends Component {
@@ -22,7 +23,27 @@ const withPersonalInfo = WrappedComponent => {
   const mapDispatchToProps = dispatch => {
     return {
       actions: {
-        loadPersonalInfo: () => dispatch(loadPersonalInfo())
+        loadPersonalInfo: () => dispatch(loadPersonalInfo()),
+        createPersonalInfo: async data => {
+          const { year, month, day } = data.birthDate;
+          data.birthDate = new Date(year, month, day);
+          await dispatch(createPersonalInfo(data)).then(async action => {
+            switch (action.type) {
+              case CREATE_PERSONAL_INFO_SUCCESS:
+                await dispatch(loadPersonalInfo());
+                break;
+              case CREATE_PERSONAL_INFO_FAIL:
+                const { isAxiosError, response } = action.error;
+                if (isAxiosError) {
+                  throw new SubmissionError(response.data.errors);
+                }
+                break;
+              default:
+                console.error(action);
+                break;
+            }
+          });
+        }
       }
     };
   };

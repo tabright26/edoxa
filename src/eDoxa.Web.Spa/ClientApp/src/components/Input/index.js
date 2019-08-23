@@ -1,3 +1,4 @@
 import Text from "./Text";
+import Select from "./Select";
 
-export default { Text };
+export default { Text, Select };
