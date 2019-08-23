@@ -1,58 +1,48 @@
 import React from "react";
-import { reduxForm } from "redux-form";
-import { FormGroup, Col, Input, Form } from "reactstrap";
+import { Field, reduxForm } from "redux-form";
+import { Input, Form, FormGroup } from "reactstrap";
+import myInput from "../../../../components/Input";
 import Button from "../../../../components/Button";
 import { UPDATE_PERSONALINFO_FORM } from "../forms";
+import moment from "moment";
+import validate from "./validate";
 
-const UpdatePersonalInfoForm = ({ handleSubmit, handleCancel }) => (
-  <Form onSubmit={handleSubmit}>
-    <FormGroup row className="my-0">
-      <Col xs="6">
-        <FormGroup>
-          <Input type="text" id="firstName" bsSize="sm" placeholder="Enter your first name" />
-        </FormGroup>
-      </Col>
-      <Col xs="6">
-        <FormGroup>
-          <Input type="text" id="lastName" bsSize="sm" placeholder="Enter your last name" />
-        </FormGroup>
-      </Col>
-    </FormGroup>
-    <FormGroup>
-      <Input className="d-inline" type="select" name="months" id="month" bsSize="sm" style={{ width: "60px" }}>
-        <option value="0">mm</option>
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-        <option value="Other">Other</option>
-      </Input>
-      <span className="d-inline">/</span>
-      <Input className="d-inline" type="select" name="days" id="day" bsSize="sm" style={{ width: "60px" }}>
-        <option value="0">dd</option>
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-        <option value="Other">Other</option>
-      </Input>
-      <span className="d-inline">/</span>
-      <Input className="d-inline" type="select" name="years" id="year" bsSize="sm" style={{ width: "75px" }}>
-        <option value="0">YYYY</option>
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-        <option value="Other">Other</option>
-      </Input>
-    </FormGroup>
-    <FormGroup>
-      <Input type="select" name="gender" id="gender" bsSize="sm">
-        <option value="0">Please select</option>
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-        <option value="Other">Other</option>
-      </Input>
-    </FormGroup>
-    <FormGroup className="mb-0">
-      <Button.Save className="mr-2" />
-      <Button.Cancel onClick={handleCancel} />
-    </FormGroup>
-  </Form>
-);
+// TODO: Refactor inputs into components folder.
+const UpdatePersonalInfoForm = ({ handleSubmit, handleCancel, personalInfo }) => {
+  const birthDate = moment.unix(personalInfo.birthDate).toDate();
+  return (
+    <Form onSubmit={handleSubmit}>
+      <dl className="row mb-0">
+        <dd className="col-sm-3 text-muted mb-0">Name</dd>
+        <dd className="col-sm-9 mb-0">
+          <dl className="row">
+            <dt className="col-sm-6 mb-0">
+              <Field name="firstName" label="Enter your first name" component={props => <myInput.Text {...props} />} />
+            </dt>
+            <dd className="col-sm-6 mb-0">
+              <Input type="text" value={personalInfo.lastName} bsSize="sm" disabled />
+            </dd>
+          </dl>
+        </dd>
+        <dd className="col-sm-3 text-muted mb-0">Birth date</dd>
+        <dd className="col-sm-9 mb-0">
+          <FormGroup>
+            <Input type="text" className="d-inline" value={birthDate.getDay()} name="day" bsSize="sm" style={{ width: "60px" }} disabled />
+            <span className="d-inline mx-2">/</span>
+            <Input type="text" className="d-inline" value={birthDate.getMonth()} name="month" bsSize="sm" style={{ width: "60px" }} disabled />
+            <span className="d-inline mx-2">/</span>
+            <Input className="d-inline" type="text" value={birthDate.getFullYear()} name="year" bsSize="sm" style={{ width: "75px" }} disabled />
+          </FormGroup>
+        </dd>
+        <dd className="col-sm-3 text-muted mb">Gender</dd>
+        <dd className="col-sm-5 mb-0">
+          <Input type="text" value="Male" name={personalInfo.gender} bsSize="sm" disabled />
+          <Button.Save className="mt-3 mr-2" />
+          <Button.Cancel className="mt-3" onClick={handleCancel} />
+        </dd>
+      </dl>
+    </Form>
+  );
+};
 
-export default reduxForm({ form: UPDATE_PERSONALINFO_FORM })(UpdatePersonalInfoForm);
+export default reduxForm({ form: UPDATE_PERSONALINFO_FORM, validate })(UpdatePersonalInfoForm);

@@ -39,7 +39,12 @@ const PersonalInfoCard = ({ className, personalInfo, actions }) => {
             <dd className="col-sm-9 mb-0">{personalInfo.gender}</dd>
           </dl>
         ) : (
-          <PersonalInfoForm.Update handleCancel={() => setFormHidden(true)} />
+          <PersonalInfoForm.Update
+            initialValues={{ firstName: personalInfo.firstName }}
+            personalInfo={personalInfo}
+            onSubmit={fields => actions.updatePersonalInfo(fields).then(() => setFormHidden(true))}
+            handleCancel={() => setFormHidden(true)}
+          />
         )}
       </CardBody>
     </Card>
