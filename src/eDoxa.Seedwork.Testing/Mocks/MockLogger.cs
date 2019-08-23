@@ -6,6 +6,7 @@
 
 using System;
 
+using Microsoft.Azure.KeyVault.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Internal;
 
@@ -25,7 +26,17 @@ namespace eDoxa.Seedwork.Testing.Mocks
                     It.IsAny<Exception>(),
                     It.IsAny<Func<object, Exception, string>>()
                 )
-            );
+            ).Verifiable();
+        }
+
+        public void Verify(Times times)
+        {
+            this.Verify(logger => logger.Log(
+                It.IsAny<LogLevel>(),
+                It.IsAny<EventId>(),
+                It.IsAny<FormattedLogValues>(),
+                It.IsAny<Exception>(),
+                It.IsAny<Func<object, Exception, string>>()), times);
         }
     }
 }
