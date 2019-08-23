@@ -4,12 +4,12 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+#nullable disable
+
 using System;
 using System.Runtime.Serialization;
 
 using eDoxa.Identity.Api.Infrastructure.Models;
-
-using Newtonsoft.Json;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Requests
 {
@@ -29,16 +29,21 @@ namespace eDoxa.Identity.Api.Areas.Identity.Requests
             BirthDate = birthDate;
         }
 
+        public PersonalInfoPostRequest()
+        {
+            // Required by Fluent Validation.
+        }
+
         [DataMember(Name = "firstName")]
-        public string FirstName { get; }
+        public string FirstName { get; private set; }
 
         [DataMember(Name = "lastName")]
-        public string LastName { get; }
+        public string LastName { get; private set; }
 
         [DataMember(Name = "gender")]
-        public Gender Gender { get; }
+        public Gender Gender { get; private set; }
 
         [DataMember(Name = "birthDate")]
-        public DateTime BirthDate { get; }
+        public DateTime BirthDate { get; private set; }
     }
 }
