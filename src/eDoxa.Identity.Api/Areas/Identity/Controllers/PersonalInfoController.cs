@@ -16,7 +16,6 @@ using eDoxa.Identity.Api.Extensions;
 using IdentityServer4.AccessTokenValidation;
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Controllers
@@ -57,20 +56,21 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         }
 
         /// <summary>
-        ///     Update user's profile information.
+        ///     Create user's profile information.
         /// </summary>
-        [HttpPatch]
-        public async Task<IActionResult> PatchAsync([FromBody] JsonPatchDocument<PersonalInfoPatchRequest> document)
+        [HttpPost]
+        public async Task<IActionResult> PostAsync([FromBody] PersonalInfoPostRequest request)
         {
             if (ModelState.IsValid)
             {
                 var user = await _userManager.GetUserAsync(User);
 
-                var profile = await _userManager.GetPersonalInfoAsync(user);
+                var personalInfo = await _userManager.GetPersonalInfoAsync(user);
 
-                var request = _mapper.Map<PersonalInfoPatchRequest>(profile);
-
-                document.ApplyTo(request, ModelState); // TODO: Add fluentvalidation.
+                if (personalInfo == null)
+                {
+                    return this.BadRequest("The user's personal information has already been created.");
+                }
 
                 var result = await _userManager.SetPersonalInfoAsync(
                     user,
@@ -82,7 +82,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 
                 if (result.Succeeded)
                 {
-                    return this.Ok("The user's profile information has been updated.");
+                    return this.Ok("The user's personal info has been created.");
                 }
 
                 ModelState.Bind(result);
