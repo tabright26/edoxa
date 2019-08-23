@@ -29,7 +29,9 @@ namespace eDoxa.Identity.Api.Areas.Identity.Extensions
             services.AddScoped<UserManager>();
             services.AddScoped<IUserManager, UserManager>();
             services.AddScoped<SignInManager>();
+            services.AddScoped<ISignInManager, SignInManager>();
             services.AddScoped<RoleManager>();
+            services.AddScoped<IRoleManager, RoleManager>();
         }
 
         public static IdentityBuilder AddTokenProviders(this IdentityBuilder builder, Action<TokenProviderOptions> options)

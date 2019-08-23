@@ -14,7 +14,7 @@ using Microsoft.Extensions.Options;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Services
 {
-    public sealed class SignInManager : SignInManager<User>
+    public sealed class SignInManager : SignInManager<User>, ISignInManager
     {
         public SignInManager(
             UserManager userManager,

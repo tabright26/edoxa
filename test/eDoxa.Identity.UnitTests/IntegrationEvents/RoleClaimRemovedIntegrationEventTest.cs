@@ -22,7 +22,7 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents
             var serializedEvent = JsonConvert.SerializeObject(roleClaimRemovedEvent);
 
             //Act
-            var deserializedEvent = JsonConvert.DeserializeObject<EmailSentIntegrationEvent>(serializedEvent);
+            var deserializedEvent = JsonConvert.DeserializeObject<RoleClaimRemovedIntegrationEvent>(serializedEvent);
 
             //Assert
             deserializedEvent.Should().BeEquivalentTo(roleClaimRemovedEvent);

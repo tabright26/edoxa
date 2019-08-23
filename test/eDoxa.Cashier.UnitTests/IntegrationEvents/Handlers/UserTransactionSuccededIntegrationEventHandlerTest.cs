@@ -11,7 +11,10 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Api.Application.Requests;
 using eDoxa.Cashier.Api.IntegrationEvents;
 using eDoxa.Cashier.Api.IntegrationEvents.Handlers;
+using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Seedwork.Domain;
 
 using MediatR;
 
@@ -25,14 +28,22 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
     public sealed class UserTransactionSuccededIntegrationEventHandlerTest
     {
         [TestMethod]
-        public async Task UserTransactionFailedIntegrationEvent_ShouldBeCompletedTask()
+        public async Task UserTransactionSuccededIntegrationEvent_ShouldBeCompletedTask()
         {
             // Arrange
-            var mockRepository = new Mock<ITransactionRepository>();
+            var mockTransactionRepository = new Mock<ITransactionRepository>();
 
-            mockRepository.Setup(transaction => transaction);
+            mockTransactionRepository
+                .Setup(transcationRepository => transcationRepository.FindTransactionAsync(It.IsAny<TransactionId>()))
+                .ReturnsAsync(new Transaction(Money.Ten, new TransactionDescription("Description"), TransactionType.Deposit, new UtcNowDateTimeProvider()))
+                .Verifiable();
 
-            var handler = new UserTransactionSuccededIntegrationEventHandler(mockRepository.Object);
+            mockTransactionRepository.Setup(transactionRepository =>
+                    transactionRepository.CommitAsync(It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask)
+                .Verifiable();
+
+            var handler = new UserTransactionSuccededIntegrationEventHandler(mockTransactionRepository.Object);
 
             var integrationEvent = new UserTransactionSuccededIntegrationEvent(Guid.NewGuid());
 
@@ -40,7 +51,9 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
             await handler.HandleAsync(integrationEvent);
 
             // Assert
-            mockRepository.Verify(transaction => transaction);
+            mockTransactionRepository.Verify(transcationRepository => transcationRepository.FindTransactionAsync(It.IsAny<TransactionId>()), Times.Once);
+
+            mockTransactionRepository.Verify(transactionRepository => transactionRepository.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }

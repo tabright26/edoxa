@@ -23,41 +23,35 @@ using Moq;
 namespace eDoxa.Identity.UnitTests.IntegrationEvents.Handlers
 {
     [TestClass]
-    public sealed class RoleClaimAddedIntegrationEventHandlerTest
+    public sealed class RoleCreatedIntegrationEventHandlerTest
     {
         [TestMethod]
-        public async Task RoleClaimAddedIntegrationEvent_ShouldBeCompletedTask()
+        public async Task RoleCreatedIntegrationEvent_ShouldBeCompletedTask()
         {
             // Arrange
             var mockRoleManager = new Mock<IRoleManager>();
 
             mockRoleManager
                 .Setup(roleManager => roleManager.RoleExistsAsync(It.IsAny<string>()))
-                .ReturnsAsync(true)
+                .ReturnsAsync(false)
                 .Verifiable();
 
             mockRoleManager.Setup(roleManager =>
-                    roleManager.FindByNameAsync(It.IsAny<string>()))
-                .ReturnsAsync(new Role{})
-                .Verifiable();
-
-            mockRoleManager.Setup(roleManager =>
-                    roleManager.AddClaimAsync(It.IsAny<Role>(), It.IsAny<Claim>()))
+                    roleManager.CreateAsync(It.IsAny<Role>()))
                 .ReturnsAsync(IdentityResult.Success)
                 .Verifiable();
 
-            var handler = new RoleClaimAddedIntegrationEventHandler(
+            var handler = new RoleCreatedIntegrationEventHandler(
                 mockRoleManager.Object);
 
-            var integrationEvent = new RoleClaimAddedIntegrationEvent("role", "admin", "allow");
+            var integrationEvent = new RoleCreatedIntegrationEvent("role");
 
             // Act
             await handler.HandleAsync(integrationEvent);
 
             // Assert
             mockRoleManager.Verify(roleManager => roleManager.RoleExistsAsync(It.IsAny<string>()), Times.Once);
-            mockRoleManager.Verify(roleManager => roleManager.FindByNameAsync(It.IsAny<string>()), Times.Once);
-            mockRoleManager.Verify(roleManager => roleManager.AddClaimAsync(It.IsAny<Role>(), It.IsAny<Claim>()), Times.Once);
+            mockRoleManager.Verify(roleManager => roleManager.CreateAsync(It.IsAny<Role>()), Times.Once);
         }
     }
 }

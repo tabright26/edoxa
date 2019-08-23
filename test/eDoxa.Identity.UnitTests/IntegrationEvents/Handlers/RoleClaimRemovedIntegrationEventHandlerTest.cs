@@ -23,10 +23,10 @@ using Moq;
 namespace eDoxa.Identity.UnitTests.IntegrationEvents.Handlers
 {
     [TestClass]
-    public sealed class RoleClaimAddedIntegrationEventHandlerTest
+    public sealed class RoleClaimRemovedIntegrationEventHandlerTest
     {
         [TestMethod]
-        public async Task RoleClaimAddedIntegrationEvent_ShouldBeCompletedTask()
+        public async Task RoleClaimRemovedIntegrationEvent_ShouldBeCompletedTask()
         {
             // Arrange
             var mockRoleManager = new Mock<IRoleManager>();
@@ -38,18 +38,18 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents.Handlers
 
             mockRoleManager.Setup(roleManager =>
                     roleManager.FindByNameAsync(It.IsAny<string>()))
-                .ReturnsAsync(new Role{})
+                .ReturnsAsync(new Role { })
                 .Verifiable();
 
             mockRoleManager.Setup(roleManager =>
-                    roleManager.AddClaimAsync(It.IsAny<Role>(), It.IsAny<Claim>()))
+                    roleManager.RemoveClaimAsync(It.IsAny<Role>(), It.IsAny<Claim>()))
                 .ReturnsAsync(IdentityResult.Success)
                 .Verifiable();
 
-            var handler = new RoleClaimAddedIntegrationEventHandler(
+            var handler = new RoleClaimRemovedIntegrationEventHandler(
                 mockRoleManager.Object);
 
-            var integrationEvent = new RoleClaimAddedIntegrationEvent("role", "admin", "allow");
+            var integrationEvent = new RoleClaimRemovedIntegrationEvent("role", "admin", "allow");
 
             // Act
             await handler.HandleAsync(integrationEvent);
@@ -57,7 +57,7 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents.Handlers
             // Assert
             mockRoleManager.Verify(roleManager => roleManager.RoleExistsAsync(It.IsAny<string>()), Times.Once);
             mockRoleManager.Verify(roleManager => roleManager.FindByNameAsync(It.IsAny<string>()), Times.Once);
-            mockRoleManager.Verify(roleManager => roleManager.AddClaimAsync(It.IsAny<Role>(), It.IsAny<Claim>()), Times.Once);
+            mockRoleManager.Verify(roleManager => roleManager.RemoveClaimAsync(It.IsAny<Role>(), It.IsAny<Claim>()), Times.Once);
         }
     }
 }

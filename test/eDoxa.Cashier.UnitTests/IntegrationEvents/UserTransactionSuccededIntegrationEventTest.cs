@@ -22,7 +22,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents
             var serializedEvent = JsonConvert.SerializeObject(transactionSuccededEvent);
 
             //Act
-            var deserializedEvent = JsonConvert.DeserializeObject<UserAccountDepositIntegrationEvent>(serializedEvent);
+            var deserializedEvent = JsonConvert.DeserializeObject<UserTransactionSuccededIntegrationEvent>(serializedEvent);
 
             //Assert
             deserializedEvent.Should().BeEquivalentTo(transactionSuccededEvent);

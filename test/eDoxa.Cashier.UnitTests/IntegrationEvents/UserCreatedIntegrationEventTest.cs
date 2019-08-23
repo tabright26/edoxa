@@ -14,18 +14,18 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents
     public sealed class UserCreatedIntegrationEventTest
     {
         [TestMethod]
-        public void UserCreatedIntegrationEventTest_WithNewUserAccount_ShouldBeEquivalentToUserCreationEvent()
+        public void UserCreatedIntegrationEvent_WithNewUserAccount_ShouldBeEquivalentToUserCreationEvent()
         {
             //Arrange
-            var userCreationEvent = new UserCreatedIntegrationEventTest();
+            var userCreatedEvent = new UserCreatedIntegrationEvent(Guid.NewGuid());
 
-            var serializedEvent = JsonConvert.SerializeObject(userCreationEvent);
+            var serializedEvent = JsonConvert.SerializeObject(userCreatedEvent);
 
             //Act
-            var deserializedEvent = JsonConvert.DeserializeObject<UserCreatedIntegrationEventTest>(serializedEvent);
+            var deserializedEvent = JsonConvert.DeserializeObject<UserCreatedIntegrationEvent>(serializedEvent);
 
             //Assert
-            deserializedEvent.Should().BeEquivalentTo(userCreationEvent);
+            deserializedEvent.Should().BeEquivalentTo(userCreatedEvent);
         }
     }
 }
