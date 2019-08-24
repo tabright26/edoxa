@@ -29,10 +29,12 @@ namespace eDoxa.Identity.Api.Areas.Identity.Requests
             BirthDate = birthDate;
         }
 
+#nullable disable
         public PersonalInfoPostRequest()
         {
             // Required by Fluent Validation.
         }
+#nullable restore
 
         [DataMember(Name = "firstName")]
         public string FirstName { get; private set; }

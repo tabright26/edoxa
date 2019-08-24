@@ -1,22 +1,43 @@
-import { LOAD_ADDRESS_SUCCESS, LOAD_ADDRESS_FAIL, LOAD_ADDRESS_BOOK_SUCCESS, LOAD_ADDRESS_BOOK_FAIL } from "../actions/identityActions";
+import { SubmissionError } from "redux-form";
+import {
+  LOAD_ADDRESS_BOOK_SUCCESS,
+  LOAD_ADDRESS_BOOK_FAIL,
+  ADD_ADDRESS_SUCCESS,
+  ADD_ADDRESS_FAIL,
+  UPDATE_ADDRESS_SUCCESS,
+  UPDATE_ADDRESS_FAIL,
+  REMOVE_ADDRESS_SUCCESS,
+  REMOVE_ADDRESS_FAIL
+} from "../actions/identityActions";
 
 export const reducer = (state = [], action) => {
   switch (action.type) {
-    case LOAD_ADDRESS_BOOK_SUCCESS:
+    case LOAD_ADDRESS_BOOK_SUCCESS: {
       const { status, data } = action.payload;
-      switch (status) {
-        case 204:
-          return state;
-        default:
-          return data;
+      return status !== 204 ? data : state;
+    }
+    case ADD_ADDRESS_SUCCESS: {
+      break;
+    }
+    case UPDATE_ADDRESS_SUCCESS: {
+      break;
+    }
+    case REMOVE_ADDRESS_SUCCESS: {
+      const { data: addressId } = action.payload;
+      return state.filter(address => address.id !== addressId);
+    }
+    case ADD_ADDRESS_FAIL:
+    case UPDATE_ADDRESS_FAIL:
+    case REMOVE_ADDRESS_FAIL: {
+      const { isAxiosError, response } = action.error;
+      if (isAxiosError) {
+        throw new SubmissionError(response.data.errors);
       }
-    case LOAD_ADDRESS_SUCCESS:
-      return [...state, action.payload.data];
+      break;
+    }
     case LOAD_ADDRESS_BOOK_FAIL:
-    case LOAD_ADDRESS_FAIL:
-      console.log(action.payload);
+    default: {
       return state;
-    default:
-      return state;
+    }
   }
 };

@@ -2,7 +2,7 @@ import React, { Suspense } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { Col, Row, ListGroup, ListGroupItem } from "reactstrap";
 import { LinkContainer } from "react-router-bootstrap";
-import Loading from "../../containers/Shared/Loading";
+import Loading from "../../components/Loading";
 
 const ProfileOverview = React.lazy(() => import("./Overview/Overview"));
 const ProfileDetails = React.lazy(() => import("./Details/Details"));
@@ -40,7 +40,7 @@ const Profile = ({ match }) => (
       </ListGroup>
     </Col>
     <Col xs="12" sm="12" md="8" lg="7" xl="6">
-      <Suspense fallback={<Loading />}>
+      <Suspense fallback={<Loading.Default />}>
         <Switch>
           <Route path={`${match.url}/overview`} exact name="Profile Overview" render={props => <ProfileOverview {...props} />} />
           <Route path={`${match.url}/details`} exact name="Profile Details" render={props => <ProfileDetails {...props} />} />

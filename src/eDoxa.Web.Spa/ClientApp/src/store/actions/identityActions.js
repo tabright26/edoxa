@@ -38,7 +38,7 @@ export function changeDoxaTag(data) {
       request: {
         method: "post",
         url: "/identity/api/doxatag-history",
-        data: data
+        data
       }
     }
   };
@@ -69,7 +69,7 @@ export function createPersonalInfo(data) {
       request: {
         method: "post",
         url: "/identity/api/personal-info",
-        data: data
+        data
       }
     }
   };
@@ -85,7 +85,7 @@ export function updatePersonalInfo(data) {
       request: {
         method: "put",
         url: "/identity/api/personal-info",
-        data: data
+        data
       }
     }
   };
@@ -106,32 +106,17 @@ export function loadAddressBook() {
   };
 }
 
-export const LOAD_ADDRESS = "LOAD_ADDRESS";
-export const LOAD_ADDRESS_SUCCESS = "LOAD_ADDRESS_SUCCESS";
-export const LOAD_ADDRESS_FAIL = "LOAD_ADDRESS_FAIL";
-export function loadAddress(addressId) {
-  return {
-    types: [LOAD_ADDRESS, LOAD_ADDRESS_SUCCESS, LOAD_ADDRESS_FAIL],
-    payload: {
-      request: {
-        method: "get",
-        url: `/identity/api/address-book/${addressId}`
-      }
-    }
-  };
-}
-
 export const ADD_ADDRESS = "ADD_ADDRESS";
 export const ADD_ADDRESS_SUCCESS = "ADD_ADDRESS_SUCCESS";
 export const ADD_ADDRESS_FAIL = "ADD_ADDRESS_FAIL";
-export function addAddress(address) {
+export function addAddress(data) {
   return {
     types: [ADD_ADDRESS, ADD_ADDRESS_SUCCESS, ADD_ADDRESS_FAIL],
     payload: {
       request: {
         method: "POST",
         url: "/identity/api/address-book",
-        data: address
+        data
       }
     }
   };
@@ -140,14 +125,14 @@ export function addAddress(address) {
 export const UPDATE_ADDRESS = "UPDATE_ADDRESS";
 export const UPDATE_ADDRESS_SUCCESS = "UPDATE_ADDRESS_SUCCESS";
 export const UPDATE_ADDRESS_FAIL = "UPDATE_ADDRESS_FAIL";
-export function updateAddress(addressId, address) {
+export function updateAddress(addressId, data) {
   return {
     types: [UPDATE_ADDRESS, UPDATE_ADDRESS_SUCCESS, UPDATE_ADDRESS_FAIL],
     payload: {
       request: {
         method: "put",
         url: `/identity/api/address-book/${addressId}`,
-        data: address
+        data
       }
     }
   };

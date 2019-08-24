@@ -28,6 +28,13 @@ namespace eDoxa.Identity.Api.Areas.Identity.Requests
             PostalCode = postalCode;
         }
 
+#nullable disable
+        public AddressPostRequest()
+        {
+            // Required by Fluent Validation.
+        }
+#nullable restore
+
         [DataMember(Name = "country")]
         public string Country { get; private set; }
 

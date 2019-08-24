@@ -21,7 +21,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Requests
         public void DeserializeObject_WhenDeserializeWithDataContractConstructor_ShouldBeEquivalentToRequest()
         {
             // Arrange
-            var request = new DoxaTagPostRequest("MyDoxaTag");
+            var request = new DoxaTagPostRequest("DoxaTag");
             var requestSerialized = JsonConvert.SerializeObject(request);
 
             // Act

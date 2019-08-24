@@ -24,7 +24,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Requests
         public void DeserializeObject_WhenDeserializeWithDataContractConstructor_ShouldBeEquivalentToRequest()
         {
             // Arrange
-            var request = new PersonalInfoPostRequest("Bob", "Bob", Gender.Male, new DateTime(2000, 1, 1));
+            var request = new PersonalInfoPostRequest("FirstName", "LastName", Gender.Other, DateTime.UnixEpoch);
             var requestSerialized = JsonConvert.SerializeObject(request);
 
             // Act

@@ -1,3 +1,3 @@
-import Canada from "./Canada";
+import CanadaCountry from "./Canada";
 
-export default Canada;
+export default CanadaCountry;

@@ -1,8 +1,18 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { show } from "redux-modal";
-import { loadAddressBook } from "../../../../../store/actions/identityActions";
-import { CREATE_ADDRESS_MODAL, UPDATE_ADDRESS_MODAL, DELETE_ADDRESS_MODAL } from "../../../../../modals/Identity/Address/modals";
+import { SubmissionError } from "redux-form";
+import {
+  loadAddressBook,
+  addAddress,
+  updateAddress,
+  removeAddress,
+  ADD_ADDRESS_SUCCESS,
+  ADD_ADDRESS_FAIL,
+  UPDATE_ADDRESS_SUCCESS,
+  UPDATE_ADDRESS_FAIL
+} from "../../../../../store/actions/identityActions";
+import { CREATE_ADDRESS_MODAL } from "../../../../../modals";
 
 const withAddressBook = WrappedComponent => {
   class AddressBookContainer extends Component {
@@ -25,9 +35,44 @@ const withAddressBook = WrappedComponent => {
     return {
       actions: {
         loadAddressBook: () => dispatch(loadAddressBook()),
-        showCreateAddressModal: () => dispatch(show(CREATE_ADDRESS_MODAL)),
-        showUpdateAddressModal: addressId => dispatch(show(UPDATE_ADDRESS_MODAL, { addressId })),
-        showDeleteAddressModal: addressId => dispatch(show(DELETE_ADDRESS_MODAL, { addressId }))
+        addAddress: async data => {
+          await dispatch(addAddress(data)).then(async action => {
+            switch (action.type) {
+              case ADD_ADDRESS_SUCCESS:
+                await dispatch(loadAddressBook());
+                break;
+              case ADD_ADDRESS_FAIL:
+                const { isAxiosError, response } = action.error;
+                if (isAxiosError) {
+                  throw new SubmissionError(response.data.errors);
+                }
+                break;
+              default:
+                console.error(action);
+                break;
+            }
+          });
+        },
+        updateAddress: async (addressId, data) => {
+          await dispatch(updateAddress(addressId, data)).then(async action => {
+            switch (action.type) {
+              case UPDATE_ADDRESS_SUCCESS:
+                await dispatch(loadAddressBook());
+                break;
+              case UPDATE_ADDRESS_FAIL:
+                const { isAxiosError, response } = action.error;
+                if (isAxiosError) {
+                  throw new SubmissionError(response.data.errors);
+                }
+                break;
+              default:
+                console.error(action);
+                break;
+            }
+          });
+        },
+        removeAddress: addressId => dispatch(removeAddress(addressId)),
+        showCreateAddressModal: () => dispatch(show(CREATE_ADDRESS_MODAL))
       }
     };
   };

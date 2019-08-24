@@ -1,6 +1,6 @@
 import React from "react";
 
-const Canada = ({ line1, line2, city, country, state, postalCode }) => (
+const CanadaCountry = ({ line1, line2, city, country, state, postalCode }) => (
   <address className="text-uppercase m-0">
     <span>{line1}</span>
     <br />
@@ -18,4 +18,4 @@ const Canada = ({ line1, line2, city, country, state, postalCode }) => (
   </address>
 );
 
-export default Canada;
+export default CanadaCountry;

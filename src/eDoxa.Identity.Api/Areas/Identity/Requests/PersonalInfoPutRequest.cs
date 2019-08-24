@@ -18,10 +18,12 @@ namespace eDoxa.Identity.Api.Areas.Identity.Requests
             FirstName = firstName;
         }
 
+#nullable disable
         public PersonalInfoPutRequest()
         {
             // Required by Fluent Validation.
         }
+#nullable restore
 
         [DataMember(Name = "firstName")]
         public string FirstName { get; private set; }

@@ -3,7 +3,7 @@ import { Card, CardHeader, CardBody } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import withDoxaTagHistory from "../../../../containers/App/User/Profile/Details/withDoxaTagHistory";
-import DoxaTagForm from "../../../../forms/Identity/DoxaTag";
+import DoxaTagForm from "../../../../forms/User/DoxaTag";
 
 const DoxaTagCard = ({ className, doxaTag, actions }) => {
   const [isFormHidden, setFormHidden] = useState(true);
@@ -28,7 +28,7 @@ const DoxaTagCard = ({ className, doxaTag, actions }) => {
                 {doxaTag.name}#{doxaTag.code}
               </span>
             ) : (
-              <DoxaTagForm.Change onSubmit={data => actions.changeDoxaTag(data).then(() => setFormHidden(true))} handleCancel={() => setFormHidden(true)} />
+              <DoxaTagForm.Change initialValues={{ name: doxaTag.name }} onSubmit={data => actions.changeDoxaTag(data).then(() => setFormHidden(true))} handleCancel={() => setFormHidden(true)} />
             )}
           </dd>
         </dl>

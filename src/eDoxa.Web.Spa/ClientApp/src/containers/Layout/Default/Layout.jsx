@@ -6,7 +6,7 @@ import navigation from "../../../_nav";
 // routes config
 import routes from "../../../routes";
 import Routes from "../../Shared/Routes";
-import Loading from "../../Shared/Loading";
+import Loading from "../../../components/Loading";
 
 //const Aside = React.lazy(() => import("./Aside"));
 const Footer = React.lazy(() => import("./Footer"));
@@ -17,7 +17,7 @@ class Layout extends Component {
     return (
       <div className="app">
         <AppHeader fixed>
-          <Suspense fallback={<Loading />}>
+          <Suspense fallback={<Loading.Default />}>
             <Header />
           </Suspense>
         </AppHeader>
@@ -34,7 +34,7 @@ class Layout extends Component {
           <main className="main">
             {/* <AppBreadcrumb appRoutes={routes} /> */}
             <Container fluid>
-              <Suspense fallback={<Loading />}>
+              <Suspense fallback={<Loading.Default />}>
                 <Routes routes={routes} />
               </Suspense>
             </Container>
@@ -46,7 +46,7 @@ class Layout extends Component {
           </AppAside> */}
         </div>
         <AppFooter>
-          <Suspense fallback={<Loading />}>
+          <Suspense fallback={<Loading.Default />}>
             <Footer />
           </Suspense>
         </AppFooter>

@@ -239,72 +239,6 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
         }
 
         [TestMethod]
-        public async Task GetByIdAsync_ShouldBeOkObjectResult()
-        {
-            // Arrange
-            var user = new User
-            {
-                AddressBook = new Collection<UserAddress>
-                {
-                    new UserAddress
-                    {   Id = Guid.NewGuid(),
-                        City = "Test",
-                        PostalCode = "Test",
-                        Country = "Test",
-                        Line1 = "Test"
-                    }
-                }
-            };
-
-            var mockUserManager = new Mock<IUserManager>();
-
-            mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
-
-            mockUserManager.Setup(userManager => userManager.FindUserAddressAsync(It.IsAny<User>(), It.IsAny<Guid>())).ReturnsAsync(user.AddressBook.First()).Verifiable();
-
-            var controller = new AddressBookController(mockUserManager.Object, Mapper);
-
-            // Act
-            var result = await controller.GetByIdAsync(user.AddressBook.First().Id);
-
-            // Assert
-            result.Should().BeOfType<OkObjectResult>();
-
-            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(Mapper.Map<UserAddressResponse>(user.AddressBook.First()));
-
-            mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
-
-            mockUserManager.Verify(userManager => userManager.FindUserAddressAsync(It.IsAny<User>(), It.IsAny<Guid>()), Times.Once);
-        }
-
-        [TestMethod]
-        public async Task GetByIdAsync_ShouldBeNotFoundObjectResult()
-        {
-            // Arrange
-            var user = new User();
-
-            var mockUserManager = new Mock<IUserManager>();
-
-            mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsNotNull<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
-
-            mockUserManager.Setup(userManager => userManager.FindUserAddressAsync(It.IsAny<User>(), It.IsAny<Guid>())).ReturnsAsync((UserAddress) null).Verifiable();
-
-            var controller = new AddressBookController(mockUserManager.Object, Mapper);
-
-            // Act
-            var result = await controller.GetByIdAsync(Guid.NewGuid());
-
-            // Assert
-            result.Should().BeOfType<NotFoundObjectResult>();
-
-            result.As<NotFoundObjectResult>().Value.Should().BeOfType<string>();
-
-            mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
-
-            mockUserManager.Verify(userManager => userManager.FindUserAddressAsync(It.IsAny<User>(), It.IsAny<Guid>()), Times.Once);
-        }
-
-        [TestMethod]
         public async Task PutAsync_ShouldBeOkObjectResult()
         {
             // Arrange
@@ -450,6 +384,8 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                 }
             };
 
+            var address = user.AddressBook.First();
+
             var mockUserManager = new Mock<IUserManager>();
 
             mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
@@ -461,12 +397,12 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             var controller = new AddressBookController(mockUserManager.Object, Mapper);
 
             // Act
-            var result = await controller.DeleteAsync(user.AddressBook.First().Id);
+            var result = await controller.DeleteAsync(address.Id);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            result.As<OkObjectResult>().Value.Should().BeOfType<string>();
+            result.As<OkObjectResult>().Value.Should().Be(address.Id);
 
             mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
 

@@ -90,24 +90,6 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         }
 
         /// <summary>
-        ///     Find user's address by id.
-        /// </summary>
-        [HttpGet("{addressId}")]
-        public async Task<IActionResult> GetByIdAsync(Guid addressId)
-        {
-            var user = await _userManager.GetUserAsync(User);
-
-            var address = await _userManager.FindUserAddressAsync(user, addressId);
-
-            if (address == null)
-            {
-                return this.NotFound("User's address not found.");
-            }
-
-            return this.Ok(_mapper.Map<UserAddressResponse>(address));
-        }
-
-        /// <summary>
         ///     Update user's address by id.
         /// </summary>
         [HttpPut("{addressId}")]
@@ -152,7 +134,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 
                 if (result.Succeeded)
                 {
-                    return this.Ok("The user's address has been removed.");
+                    return this.Ok(addressId);
                 }
 
                 ModelState.Bind(result);

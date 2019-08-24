@@ -16,6 +16,13 @@ namespace eDoxa.Identity.Api.Areas.Identity.Requests
             PlayerId = playerId;
         }
 
+#nullable disable
+        public GamePostRequest()
+        {
+            // Required by Fluent Validation.
+        }
+#nullable restore
+
         [DataMember(Name = "playerId")]
         public string PlayerId { get; private set; }
     }
