@@ -75,6 +75,22 @@ export function createPersonalInfo(data) {
   };
 }
 
+export const UPDATE_PERSONAL_INFO = "UPDATE_PERSONAL_INFO";
+export const UPDATE_PERSONAL_INFO_SUCCESS = "UPDATE_PERSONAL_INFO_SUCCESS";
+export const UPDATE_PERSONAL_INFO_FAIL = "UPDATE_PERSONAL_INFO_FAIL";
+export function updatePersonalInfo(data) {
+  return {
+    types: [UPDATE_PERSONAL_INFO, UPDATE_PERSONAL_INFO_SUCCESS, UPDATE_PERSONAL_INFO_FAIL],
+    payload: {
+      request: {
+        method: "put",
+        url: "/identity/api/personal-info",
+        data: data
+      }
+    }
+  };
+}
+
 export const LOAD_ADDRESS_BOOK = "LOAD_ADDRESS_BOOK";
 export const LOAD_ADDRESS_BOOK_SUCCESS = "LOAD_ADDRESS_BOOK_SUCCESS";
 export const LOAD_ADDRESS_BOOK_FAIL = "LOAD_ADDRESS_BOOK_FAIL";

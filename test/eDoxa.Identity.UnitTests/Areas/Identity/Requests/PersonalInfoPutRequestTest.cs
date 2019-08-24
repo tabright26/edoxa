@@ -1,13 +1,10 @@
-﻿// Filename: PersonalInfoPostRequestTest.cs
+﻿// Filename: PersonalInfoPutRequestTest.cs
 // Date Created: 2019-08-22
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
-
 using eDoxa.Identity.Api.Areas.Identity.Requests;
-using eDoxa.Identity.Api.Infrastructure.Models;
 
 using FluentAssertions;
 
@@ -18,17 +15,17 @@ using Newtonsoft.Json;
 namespace eDoxa.Identity.UnitTests.Areas.Identity.Requests
 {
     [TestClass]
-    public sealed class PersonalInfoPostRequestTest
+    public sealed class PersonalInfoPutRequestTest
     {
         [TestMethod]
         public void DeserializeObject_WhenDeserializeWithDataContractConstructor_ShouldBeEquivalentToRequest()
         {
             // Arrange
-            var request = new PersonalInfoPostRequest("Bob", "Bob", Gender.Male, new DateTime(2000, 1, 1));
+            var request = new PersonalInfoPutRequest("Bob");
             var requestSerialized = JsonConvert.SerializeObject(request);
 
             // Act
-            var requestDeserialized = JsonConvert.DeserializeObject<PersonalInfoPostRequest>(requestSerialized);
+            var requestDeserialized = JsonConvert.DeserializeObject<PersonalInfoPutRequest>(requestSerialized);
 
             // Assert
             requestDeserialized.Should().BeEquivalentTo(request);

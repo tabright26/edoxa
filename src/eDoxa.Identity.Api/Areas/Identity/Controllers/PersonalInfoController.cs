@@ -72,6 +72,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                     return this.BadRequest("The user's personal information has already been created.");
                 }
 
+                // TODO: Must be refactored.
                 var result = await _userManager.SetPersonalInfoAsync(
                     user,
                     request.FirstName,
@@ -83,6 +84,43 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                 if (result.Succeeded)
                 {
                     return this.Ok("The user's personal info has been created.");
+                }
+
+                ModelState.Bind(result);
+            }
+
+            return this.BadRequest(ModelState);
+        }
+
+        /// <summary>
+        ///     Update user's profile information.
+        /// </summary>
+        [HttpPut]
+        public async Task<IActionResult> PutAsync([FromBody] PersonalInfoPutRequest request)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.GetUserAsync(User);
+
+                var personalInfo = await _userManager.GetPersonalInfoAsync(user);
+
+                if (personalInfo == null)
+                {
+                    return this.BadRequest("The user's personal informations does not exist.");
+                }
+
+                // TODO: Must be refactored.
+                var result = await _userManager.SetPersonalInfoAsync(
+                    user,
+                    request.FirstName,
+                    personalInfo.LastName,
+                    personalInfo.Gender,
+                    personalInfo.BirthDate
+                );
+
+                if (result.Succeeded)
+                {
+                    return this.Ok("The user's personal info has been updated.");
                 }
 
                 ModelState.Bind(result);

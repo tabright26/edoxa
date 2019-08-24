@@ -1,4 +1,4 @@
-﻿// Filename: DoxaTagPostRequestValidatorTest.cs
+﻿// Filename: PersonalInfoPutRequestValidatorTest.cs
 // Date Created: 2019-08-22
 // 
 // ================================================
@@ -13,36 +13,32 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
 {
     [TestClass]
-    public sealed class DoxaTagPostRequestValidatorTest
+    public sealed class PersonalInfoPutRequestValidatorTest
     {
         [DataTestMethod]
         [DataRow("DoxaTagName")]
         [DataRow("aaaaaaaaaaaaaaaa")]
-        public void Validate_WhenNameIsValid_ShouldNotHaveValidationErrorFor(string name)
+        public void Validate_WhenFirstNameIsValid_ShouldNotHaveValidationErrorFor(string firstName)
         {
             // Arrange
-            var validator = new DoxaTagPostRequestValidator();
+            var validator = new PersonalInfoPutRequestValidator();
 
             // Act - Assert
-            validator.ShouldNotHaveValidationErrorFor(request => request.Name, name);
+            validator.ShouldNotHaveValidationErrorFor(request => request.FirstName, firstName);
         }
 
         [DataTestMethod]
         [DataRow(null)]
         [DataRow("")]
-        [DataRow("@DoxaTagName3")]
-        [DataRow(" DoxaTagName3")]
-        [DataRow("DoxaTag Name3")]
-        [DataRow("DoxaTagName%")]
         [DataRow("D")]
         [DataRow("aaaaaaaaaaaaaaaaa")]
-        public void Validate_WhenNameIsInvalid_ShouldHaveValidationErrorFor(string name)
+        public void Validate_WhenFirstNameIsInvalid_ShouldHaveValidationErrorFor(string firstName)
         {
             // Arrange
-            var validator = new DoxaTagPostRequestValidator();
+            var validator = new PersonalInfoPutRequestValidator();
 
             // Act - Assert
-            validator.ShouldHaveValidationErrorFor(request => request.Name, name);
+            validator.ShouldHaveValidationErrorFor(request => request.FirstName, firstName);
         }
     }
 }

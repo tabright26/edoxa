@@ -29,7 +29,7 @@ using static eDoxa.Identity.UnitTests.Helpers.Extensions.MapperExtensions;
 namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 {
     [TestClass]
-    public sealed class DoxaTagControllerTest
+    public sealed class DoxaTagHistoryControllerTest
     {
         [TestMethod]
         public async Task GetAsync_ShouldBeOkObjectResult()

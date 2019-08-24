@@ -4,10 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
-
 using eDoxa.Identity.Api.Areas.Identity.Requests;
-using eDoxa.Seedwork.Application.Validations.Extensions;
 
 using FluentValidation;
 
