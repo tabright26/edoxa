@@ -1,8 +1,8 @@
 import React from "react";
 import { Button } from "reactstrap";
 
-const SaveButton = ({ className }) => (
-  <Button className={className} color="primary" size="sm" type="submit">
+const SaveButton = ({ className, width = "75px" }) => (
+  <Button className={className} style={{ width }} color="primary" size="sm" type="submit">
     Save
   </Button>
 );

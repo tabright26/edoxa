@@ -1,8 +1,8 @@
 import React from "react";
 import { Card, Row, Col, Badge, ProgressBar } from "react-bootstrap";
 
-//import CurrencyFormat from '../Shared/Formaters/CurrencyFormat';
-import Loading from "../../../Shared/Loading";
+//import Format from "../../../../components/Format";
+import Loading from "../../../../components/Loading";
 
 import ChallengeTimeline from "./Timeline";
 
@@ -10,7 +10,7 @@ const Body = ({ challenge }) => {
   if (!challenge) {
     return (
       <Card.Body className="text-center text-white">
-        <Loading />
+        <Loading.Default />
       </Card.Body>
     );
   } else {

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders correctly 1`] = `
+exports[`renders without crashing 1`] = `
 Array [
   <input
     className="form-control-sm form-control"

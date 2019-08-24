@@ -2,7 +2,7 @@ import React from "react";
 import { Route } from "react-router-dom";
 import { connect } from "react-redux";
 import userManager, { POST_LOGIN_REDIRECT_URI } from "../../../../utils/userManager";
-import Loading from "../../Loading";
+import Loading from "../../../../components/Loading";
 
 const SecureRoute = ({ isSignedIn, path, exact, name, scopes = [], component: Component }) => {
   return (
@@ -14,7 +14,7 @@ const SecureRoute = ({ isSignedIn, path, exact, name, scopes = [], component: Co
         if (!isSignedIn) {
           localStorage.setItem(POST_LOGIN_REDIRECT_URI, path);
           userManager.signinRedirect();
-          return <Loading />;
+          return <Loading.Default />;
         }
         if (false) {
         }

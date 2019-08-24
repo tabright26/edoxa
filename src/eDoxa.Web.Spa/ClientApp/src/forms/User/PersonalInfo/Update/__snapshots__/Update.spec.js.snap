@@ -1,0 +1,156 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<form
+  className=""
+  onSubmit={[Function]}
+>
+  <dl
+    className="row mb-0"
+  >
+    <dd
+      className="col-sm-3 text-muted mb-0"
+    >
+      Name
+    </dd>
+    <dd
+      className="col-sm-9 mb-0"
+    >
+      <dl
+        className="row"
+      >
+        <dt
+          className="col-sm-4 mb-0"
+        >
+          <input
+            className="form-control-sm form-control"
+            name="firstName"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onDragStart={[Function]}
+            onDrop={[Function]}
+            onFocus={[Function]}
+            placeholder="Enter your first name"
+            type="text"
+            value=""
+          />
+          <div
+            className="invalid-feedback"
+          />
+        </dt>
+        <dd
+          className="col-sm-4 mb-0"
+        >
+          <input
+            className="form-control-sm form-control"
+            disabled={true}
+            type="text"
+            value="Bob"
+          />
+        </dd>
+      </dl>
+    </dd>
+    <dd
+      className="col-sm-3 text-muted mb-0"
+    >
+      Birth date
+    </dd>
+    <dd
+      className="col-sm-9 mb-0"
+    >
+      <div
+        className="form-group"
+      >
+        <input
+          className="d-inline form-control-sm form-control"
+          disabled={true}
+          name="day"
+          style={
+            Object {
+              "width": "60px",
+            }
+          }
+          type="text"
+          value={3}
+        />
+        <span
+          className="d-inline mx-2"
+        >
+          /
+        </span>
+        <input
+          className="d-inline form-control-sm form-control"
+          disabled={true}
+          name="month"
+          style={
+            Object {
+              "width": "60px",
+            }
+          }
+          type="text"
+          value={1}
+        />
+        <span
+          className="d-inline mx-2"
+        >
+          /
+        </span>
+        <input
+          className="d-inline form-control-sm form-control"
+          disabled={true}
+          name="year"
+          style={
+            Object {
+              "width": "75px",
+            }
+          }
+          type="text"
+          value={32134}
+        />
+      </div>
+    </dd>
+    <dd
+      className="col-sm-3 text-muted mb"
+    >
+      Gender
+    </dd>
+    <dd
+      className="col-sm-3 mb-0"
+    >
+      <input
+        className="form-control-sm form-control"
+        disabled={true}
+        name="Male"
+        type="text"
+        value="Male"
+      />
+      <button
+        aria-label={null}
+        className="mt-3 mr-2 btn btn-primary btn-sm"
+        onClick={[Function]}
+        style={
+          Object {
+            "width": "75px",
+          }
+        }
+        type="submit"
+      >
+        Save
+      </button>
+      <button
+        aria-label={null}
+        className="mt-3 btn btn-outline-primary btn-sm"
+        onClick={[Function]}
+        style={
+          Object {
+            "width": "75px",
+          }
+        }
+        type="button"
+      >
+        Cancel
+      </button>
+    </dd>
+  </dl>
+</form>
+`;

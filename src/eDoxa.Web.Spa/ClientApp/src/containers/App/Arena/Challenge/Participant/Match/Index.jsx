@@ -1,7 +1,7 @@
 import React from "react";
 import { Card } from "react-bootstrap";
 
-import Loading from "../../../../../Shared/Loading";
+import Loading from "../../../../../../components/Loading";
 
 import Match from "./Details";
 
@@ -9,7 +9,7 @@ const Matches = ({ participant }) => {
   if (!participant) {
     return (
       <Card.Body className="text-center">
-        <Loading />
+        <Loading.Default />
       </Card.Body>
     );
   } else {

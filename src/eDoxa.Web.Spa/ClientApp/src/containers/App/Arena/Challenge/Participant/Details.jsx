@@ -1,8 +1,8 @@
 import React from "react";
 import { Card, Badge, Accordion } from "react-bootstrap";
 
-import Format from "../../../../Shared/Formats";
-import Loading from "../../../../Shared/Loading";
+import Format from "../../../../../components/Format";
+import Loading from "../../../../../components/Loading";
 
 import Matches from "./Match/Index";
 

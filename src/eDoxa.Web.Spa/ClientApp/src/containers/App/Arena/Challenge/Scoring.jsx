@@ -1,13 +1,13 @@
 import React from "react";
 import { Card, ListGroup, ListGroupItem } from "react-bootstrap";
 
-import Loading from "../../../../containers/Shared/Loading";
+import Loading from "../../../../components/Loading";
 
 const Body = ({ challenge }) => {
   if (!challenge) {
     return (
       <Card.Body className="text-center">
-        <Loading />
+        <Loading.Default />
       </Card.Body>
     );
   } else {
