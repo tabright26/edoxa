@@ -4,6 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
@@ -23,16 +24,15 @@ using FluentAssertions;
 using IdentityModel;
 
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.TestHost;
 
 using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
-    public sealed class PersonalInfoControllerPatchAsyncTest : IClassFixture<IdentityWebApiFactory>
+    public sealed class PersonalInfoControllerPostAsyncTest : IClassFixture<IdentityWebApiFactory>
     {
-        public PersonalInfoControllerPatchAsyncTest(IdentityWebApiFactory identityWebApiFactory)
+        public PersonalInfoControllerPostAsyncTest(IdentityWebApiFactory identityWebApiFactory)
         {
             var identityStorage = new IdentityTestFileStorage();
             User = identityStorage.GetUsersAsync().GetAwaiter().GetResult().First();
@@ -42,9 +42,9 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             _testServer.CleanupDbContext();
         }
 
-        private async Task<HttpResponseMessage> ExecuteAsync(JsonPatchDocument<PersonalInfoPatchRequest> document)
+        private async Task<HttpResponseMessage> ExecuteAsync(PersonalInfoPostRequest request)
         {
-            return await _httpClient.PatchAsync("api/personal-info", new JsonPatchContent(document));
+            return await _httpClient.PostAsync("api/personal-info", new JsonContent(request));
         }
 
         private readonly TestServer _testServer;
@@ -53,15 +53,8 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         private User User { get; }
 
         [Fact]
-        public async Task PatchAsync_ShouldBeStatus200OK()
+        public async Task ShouldBeStatus200OK()
         {
-            var profile = new UserPersonalInfo
-            {
-                FirstName = "Old"
-            };
-
-            User.PersonalInfo = profile;
-
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
@@ -73,14 +66,8 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                 }
             );
 
-            var document = new JsonPatchDocument<PersonalInfoPatchRequest>();
-
-            document.Test(request => request.FirstName, profile.FirstName);
-
-            document.Add(request => request.FirstName, "New");
-
             // Act
-            using var response = await this.ExecuteAsync(document);
+            using var response = await this.ExecuteAsync(new PersonalInfoPostRequest("Bob", "Bob", Gender.Male, new DateTime(2000, 1, 1)));
 
             // Assert
             response.EnsureSuccessStatusCode();

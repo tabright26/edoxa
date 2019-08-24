@@ -90,7 +90,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
         }
 
         [TestMethod]
-        public async Task PatchAsync_ShouldBeOkObjectResult()
+        public async Task PostAsync_ShouldBeOkObjectResult()
         {
             // Arrange
             var user = new User
@@ -124,10 +124,8 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             var controller = new PersonalInfoController(mockUserManager.Object, Mapper);
 
-            var document = new JsonPatchDocument<PersonalInfoPatchRequest>();
-
             // Act
-            var result = await controller.PatchAsync(document);
+            var result = await controller.PostAsync(new PersonalInfoPostRequest("Bob", "Bob", Gender.Male, new DateTime(2000, 1, 1)));
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -151,7 +149,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
         }
 
         [TestMethod]
-        public async Task PatchAsync_ShouldBeBadRequestObjectResult()
+        public async Task PostAsync_ShouldBeBadRequestObjectResult()
         {
             // Arrange
             var user = new User
@@ -185,10 +183,8 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             var controller = new PersonalInfoController(mockUserManager.Object, Mapper);
 
-            var document = new JsonPatchDocument<PersonalInfoPatchRequest>();
-
             // Act
-            var result = await controller.PatchAsync(document);
+            var result = await controller.PostAsync(new PersonalInfoPostRequest("Bob", "Bob", Gender.Male, new DateTime(2000, 1, 1)));
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
