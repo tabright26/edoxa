@@ -4,6 +4,8 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+#nullable disable
+
 using System.Runtime.Serialization;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Requests
@@ -14,6 +16,11 @@ namespace eDoxa.Identity.Api.Areas.Identity.Requests
         public DoxaTagPostRequest(string name)
         {
             Name = name;
+        }
+
+        public DoxaTagPostRequest()
+        {
+            // Required by Fluent Validation.
         }
 
         [DataMember(Name = "name")]

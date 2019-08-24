@@ -1,6 +1,6 @@
 import React from "react";
-import { Field, reduxForm } from "redux-form";
-import { FormGroup, Label, Col, Input, Form } from "reactstrap";
+import { reduxForm } from "redux-form";
+import { FormGroup, Col, Input, Form } from "reactstrap";
 import Button from "../../../../components/Button";
 import { UPDATE_PERSONALINFO_FORM } from "../forms";
 

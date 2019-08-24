@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -22,10 +22,12 @@ using eDoxa.Identity.Api.Services;
 using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Swagger.Extensions;
+using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security;
 using eDoxa.ServiceBus.Modules;
 
+using FluentValidation;
 using FluentValidation.AspNetCore;
 
 using IdentityModel;
@@ -53,6 +55,11 @@ namespace eDoxa.Identity.Api
             AppContext.BaseDirectory,
             $"{typeof(Startup).GetTypeInfo().Assembly.GetName().Name}.xml"
         );
+
+        static Startup()
+        {
+            ValidatorOptions.PropertyNameResolver = CamelCasePropertyNameResolver.ResolvePropertyName;
+        }
 
         public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
         {
@@ -118,7 +125,7 @@ namespace eDoxa.Identity.Api
                         options.Lockout.MaxFailedAccessAttempts = 5;
 
                         options.User.RequireUniqueEmail = true;
-                        
+
                         options.ClaimsIdentity.UserIdClaimType = JwtClaimTypes.Subject;
                         options.ClaimsIdentity.UserNameClaimType = AppClaimTypes.DoxaTag;
                         options.ClaimsIdentity.RoleClaimType = JwtClaimTypes.Role;
@@ -172,7 +179,13 @@ namespace eDoxa.Identity.Api
                         options.Conventions.AuthorizeAreaPage("Identity", "/Account/Logout");
                     }
                 )
-                .AddFluentValidation(config => config.RunDefaultMvcValidationAfterFluentValidationExecutes = false);
+                .AddFluentValidation(
+                    config =>
+                    {
+                        config.RegisterValidatorsFromAssemblyContaining<Startup>();
+                        config.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
+                    }
+                );
 
             services.AddApiVersioning(
                 options =>
@@ -243,7 +256,7 @@ namespace eDoxa.Identity.Api
                 application.UseExceptionHandler("/Home/Error");
                 application.UseHsts();
             }
-            
+
             application.UseHttpsRedirection();
             application.UseStaticFiles();
             application.UseForwardedHeaders();
