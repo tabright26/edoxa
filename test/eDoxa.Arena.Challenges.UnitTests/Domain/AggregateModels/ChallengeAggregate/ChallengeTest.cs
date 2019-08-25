@@ -25,67 +25,8 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
         private static IEnumerable<object[]> ChallengeStateDataSets =>
             ChallengeState.GetEnumerations().Where(state => state != ChallengeState.Inscription).Select(state => new object[] {state}).ToList();
 
-        //private static IEnumerable<object[]> ChallengeDataSets =>
-        //    ChallengeGame.GetEnumerations()
-        //        .SelectMany(
-        //            game => ValueObject.GetValues<ChallengeDuration>()
-        //                .SelectMany(
-        //                    duration => ValueObject.GetValues<PayoutEntries>()
-        //                        .SelectMany(
-        //                            payoutEntries => ValueObject.GetValues<BestOf>()
-        //                                .SelectMany(
-        //                                    bestOf => EntryFee.GetValues()
-        //                                        .Select(
-        //                                            entryFee => new object[]
-        //                                            {
-        //                                                new ChallengeName(nameof(Challenge)),
-        //                                                game,
-        //                                                new ChallengeSetup(bestOf, payoutEntries, entryFee),
-        //                                                new ChallengeTimeline(new UtcNowDateTimeProvider(), duration),
-        //                                                new ScoringFactory().CreateInstance(game).Scoring,
-        //                                                new PayoutFactory(new PayoutStrategy()).CreateInstance().GetPayout(payoutEntries, entryFee)
-        //                                            }
-        //                                        )
-        //                                )
-        //                        )
-        //                )
-        //        );
-
-        //[DataTestMethod]
-        //[DynamicData(nameof(ChallengeDataSets))]
-        //public void Constructor_ShouldNotThrow(
-        //    ChallengeName name,
-        //    ChallengeGame game,
-        //    ChallengeSetup setup,
-        //    ChallengeTimeline timeline,
-        //    IScoring scoring,
-        //    IPayout payout
-        //)
-        //{
-        //    // Arrange
-        //    var action = new Action(
-        //        () =>
-        //        {
-        //            // Act
-        //            var challenge = new Challenge(
-        //                name,
-        //                game,
-        //                setup,
-        //                timeline,
-        //                scoring,
-        //                payout
-        //            );
-
-        //            challenge.DumbAsJson(true);
-        //        }
-        //    );
-
-        //    // Assert
-        //    action.Should().NotThrow();
-        //}
-
         [TestMethod]
-        public void Register_Participant_ShouldBeRegistered()
+        public void Register_Participant_ShouldHaveOneMore()
         {
             // Arrange
             var challengeFaker = new ChallengeFaker(state: ChallengeState.Inscription);

@@ -53,7 +53,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         }
 
         [Fact]
-        public async Task GetAsync_ShouldBeStatus200OK()
+        public async Task ShouldBeStatus200Ok()
         {
             var profile = new UserPersonalInfo();
 
@@ -91,7 +91,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         }
 
         [Fact]
-        public async Task GetAsync_ShouldBeStatus204NoContent()
+        public async Task ShouldBeStatus204NoContent()
         {
             User.PersonalInfo = null;
 

@@ -16,7 +16,7 @@ namespace eDoxa.Payment.UnitTests.Providers.Stripe.Fakers
     public sealed class InvoiceItemFakerTest
     {
         [TestMethod]
-        public void FakeInvoiceItem_ShouldNotThrow()
+        public void FakeInvoiceItem_ShouldNotBeNull()
         {
             // Arrange
             var invoiceItemFaker = new InvoiceItemFaker();

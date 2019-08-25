@@ -14,9 +14,9 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Handlers
 {
     internal sealed class RoleClaimAddedIntegrationEventHandler : IIntegrationEventHandler<RoleClaimAddedIntegrationEvent>
     {
-        private readonly RoleManager _roleManager;
+        private readonly IRoleManager _roleManager;
 
-        public RoleClaimAddedIntegrationEventHandler(RoleManager roleManager)
+        public RoleClaimAddedIntegrationEventHandler(IRoleManager roleManager)
         {
             _roleManager = roleManager;
         }

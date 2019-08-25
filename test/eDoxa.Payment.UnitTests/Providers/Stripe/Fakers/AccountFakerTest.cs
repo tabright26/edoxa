@@ -16,7 +16,7 @@ namespace eDoxa.Payment.UnitTests.Providers.Stripe.Fakers
     public sealed class AccountFakerTest
     {
         [TestMethod]
-        public void FakeAccount_ShouldNotThrow()
+        public void FakeAccount_ShouldNotBeNull()
         {
             // Arrange
             var accountFaker = new AccountFaker();
@@ -24,7 +24,7 @@ namespace eDoxa.Payment.UnitTests.Providers.Stripe.Fakers
             // Act
             var account = accountFaker.FakeAccount();
 
-            // Assert
+            // Assert 
             account.Should().NotBeNull();
         }
     }

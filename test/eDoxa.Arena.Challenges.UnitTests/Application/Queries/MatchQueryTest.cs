@@ -30,8 +30,9 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
 
         [DataTestMethod]
         [DynamicData(nameof(DataQueryParameters))]
-        public async Task FindParticipantMatchesAsync(ChallengeGame game, ChallengeState state)
+        public async Task FindParticipantMatchesAsync_ShouldBeEquivalentToParticipantMatchList(ChallengeGame game, ChallengeState state)
         {
+            //Arrange
             var challengeFaker = new ChallengeFaker(game, state);
 
             challengeFaker.UseSeed(89568322);
@@ -55,8 +56,10 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
 
                     foreach (var participant in challenge.Participants)
                     {
+                        //Act
                         var matchViewModels = await matchQuery.FetchParticipantMatchesAsync(ParticipantId.FromGuid(participant.Id));
 
+                        //Arrange
                         matchViewModels.Should().BeEquivalentTo(participant.Matches.ToList());
                     }
                 }
@@ -65,8 +68,9 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
 
         [DataTestMethod]
         [DynamicData(nameof(DataQueryParameters))]
-        public async Task FindMatchAsync(ChallengeGame game, ChallengeState state)
+        public async Task FindMatchAsync_ShouldBeEquivalentToMatch(ChallengeGame game, ChallengeState state)
         {
+            //Arrange
             var challengeFaker = new ChallengeFaker(game, state);
 
             challengeFaker.UseSeed(83459632);
@@ -90,8 +94,10 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Queries
 
                     foreach (var match in challenge.Participants.SelectMany(participant => participant.Matches).ToList())
                     {
+                        //Act
                         var matchViewModel = await matchQuery.FindMatchAsync(MatchId.FromGuid(match.Id));
 
+                        //Arrange
                         matchViewModel.Should().BeEquivalentTo(match);
                     }
                 }

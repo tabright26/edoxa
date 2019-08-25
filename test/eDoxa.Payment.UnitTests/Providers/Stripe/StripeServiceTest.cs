@@ -41,7 +41,7 @@ namespace eDoxa.Payment.UnitTests.Providers.Stripe
         }
 
         [TestMethod]
-        public async Task CreateAccountAsync()
+        public async Task CreateAccountAsync_WithStripeService_ShouldBeValid()
         {
             // Arrange
             var accountFaker = new AccountFaker();
@@ -73,7 +73,7 @@ namespace eDoxa.Payment.UnitTests.Providers.Stripe
         }
 
         [TestMethod]
-        public async Task CreateCustomerAsync()
+        public async Task CreateCustomerAsync_WithStripeService_ShouldBeValid()
         {
             // Arrange
             var accountFaker = new AccountFaker();
@@ -101,7 +101,7 @@ namespace eDoxa.Payment.UnitTests.Providers.Stripe
         }
 
         [TestMethod]
-        public async Task CreateInvoiceAsync()
+        public async Task CreateInvoiceAsync_WithStripeService_ShouldBeValid()
         {
             // Arrange
             var invoiceFaker = new InvoiceFaker();
@@ -139,7 +139,7 @@ namespace eDoxa.Payment.UnitTests.Providers.Stripe
         }
 
         [TestMethod]
-        public async Task CreatePayoutAsync()
+        public async Task CreateTransferAsync_WithStripeService_ShouldBeValid()
         {
             // Arrange
             var transferFaker = new TransferFaker();

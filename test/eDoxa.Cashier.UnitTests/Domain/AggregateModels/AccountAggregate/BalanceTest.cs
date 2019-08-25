@@ -21,7 +21,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
     public sealed class BalanceTest
     {
         [TestMethod]
-        public void Available_CurrencyMoney_ShouldBeMoneyFifty()
+        public void Balance_WithTransactions_ShouldBeFifty()
         {
             // Arrange
             var transactions = CreateTransactions().ToList();
@@ -30,13 +30,13 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
             var balance = new Balance(transactions, Currency.Money);
 
             // Assert
-            balance.Currency.Should().Be(Currency.Money);
             balance.Available.Should().Be(Money.Fifty);
+            balance.Currency.Should().Be(Currency.Money);
             balance.Pending.Should().Be(Money.Ten);
         }
 
         [TestMethod]
-        public void Available_CurrencyToken_ShouldBeTokenFiftyThousand()
+        public void Balance_WithTransactions_ShouldBeFiftyThousands()
         {
             // Arrange
             var transactions = CreateTransactions().ToList();
@@ -45,8 +45,8 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
             var balance = new Balance(transactions, Currency.Token);
 
             // Assert
-            balance.Currency.Should().Be(Currency.Token);
             balance.Available.Should().Be(Token.FiftyThousand);
+            balance.Currency.Should().Be(Currency.Token);
             balance.Pending.Should().Be(decimal.Zero);
         }
 

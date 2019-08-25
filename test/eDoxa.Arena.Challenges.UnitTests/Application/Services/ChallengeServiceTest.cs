@@ -27,6 +27,7 @@ using Moq;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Application.Services
 {
+    //TODO: Maybe split this ?
     [TestClass]
     public sealed class ChallengeServiceTest
     {

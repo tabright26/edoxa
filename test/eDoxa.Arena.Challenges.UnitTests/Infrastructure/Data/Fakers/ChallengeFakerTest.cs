@@ -30,7 +30,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Data.Fakers
 
         [DataTestMethod]
         [DynamicData(nameof(ChallengeFakerDataSets))]
-        public void Generate_ChallengesWithAnyStateGeneratedByAnySeed_ShouldBeValidState(ChallengeGame game, ChallengeState state, int seed)
+        public void Generate_ChallengesWithAnyStateGeneratedByAnySeed_ShouldBeValid(ChallengeGame game, ChallengeState state, int seed)
         {
             // Arrange
             var challengeFaker = new ChallengeFaker(game, state);
@@ -49,7 +49,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Data.Fakers
         [DataRow(100)]
         [DataRow(1000)]
         [DataRow(10000)]
-        public void Generate_FromDifferentFakerWithSameSeed_ShouldBeEquals(int seed)
+        public void GenerateTwo_FromDifferentFakerWithSameSeed_ShouldBothBeValid(int seed)
         {
             // Arrange
             var challengeFaker1 = new ChallengeFaker();
@@ -73,7 +73,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Data.Fakers
         [DataRow(100)]
         [DataRow(1000)]
         [DataRow(10000)]
-        public void Generate_FromSameFaker_ShouldNotBeEquals(int seed)
+        public void GenerateTwo_FromSameFakerWithDifferentSeeds_ShouldBothNotBeValid(int seed)
         {
             // Arrange
             var challengeFaker = new ChallengeFaker();
@@ -95,7 +95,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Data.Fakers
         [DataRow(100)]
         [DataRow(1000)]
         [DataRow(10000)]
-        public void Generate_DistinctParticipants_ShouldHaveCount(int seed)
+        public void Generate_DistinctParticipants_BeValid(int seed)
         {
             // Arrange
             var challengeFaker = new ChallengeFaker();
@@ -116,7 +116,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Data.Fakers
         [DataRow(100)]
         [DataRow(1000)]
         [DataRow(10000)]
-        public void Generate_DistinctUserIds_ShouldNotHaveCount(int seed)
+        public void Generate_DistinctUserIds_ShouldBeValid(int seed)
         {
             // Arrange
             var challengeFaker = new ChallengeFaker();

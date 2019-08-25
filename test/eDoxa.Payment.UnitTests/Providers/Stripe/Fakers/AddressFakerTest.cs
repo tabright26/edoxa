@@ -16,7 +16,7 @@ namespace eDoxa.Payment.UnitTests.Providers.Stripe.Fakers
     public sealed class AddressFakerTest
     {
         [TestMethod]
-        public void FakeAddress_ShouldNotThrow()
+        public void FakeAddress_ShouldNotBeNull()
         {
             // Arrange
             var addressFaker = new AddressFaker();

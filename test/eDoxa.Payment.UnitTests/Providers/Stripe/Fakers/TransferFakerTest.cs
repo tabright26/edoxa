@@ -16,7 +16,7 @@ namespace eDoxa.Payment.UnitTests.Providers.Stripe.Fakers
     public sealed class TransferFakerTest
     {
         [TestMethod]
-        public void FakeTransfer_ShouldNotThrow()
+        public void FakeTransfer_ShouldNotBeNull()
         {
             // Arrange
             var transferFaker = new TransferFaker();

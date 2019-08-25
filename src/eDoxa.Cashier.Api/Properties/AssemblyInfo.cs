@@ -10,6 +10,10 @@
 
 using System.Runtime.CompilerServices;
 
+// Required by Moq.
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
+
 [assembly: InternalsVisibleTo("eDoxa.Cashier.UnitTests")]
 [assembly: InternalsVisibleTo("eDoxa.Cashier.IntegrationTests")]
+
 [assembly: InternalsVisibleTo("eDoxa.FunctionalTests")]

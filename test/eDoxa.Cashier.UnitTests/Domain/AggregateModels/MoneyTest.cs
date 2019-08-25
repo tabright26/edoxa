@@ -21,7 +21,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels
         [DataRow(100, 10, 110)]
         [DataRow(100, 50, 150)]
         [DataTestMethod]
-        public void Add_Amount_ShouldBeResult(int amount1, int amount2, int result)
+        public void Add_ShouldBeResult(int amount1, int amount2, int result)
         {
             // Arrange
             var money1 = new Money(amount1);
@@ -40,7 +40,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels
         [DataRow(100, 10, 90)]
         [DataRow(100, 50, 50)]
         [DataTestMethod]
-        public void Subtract_Amount_ShouldBeResult(int amount1, int amount2, int result)
+        public void Subtract_ShouldBeResult(int amount1, int amount2, int result)
         {
             // Arrange
             var money1 = new Money(amount1);

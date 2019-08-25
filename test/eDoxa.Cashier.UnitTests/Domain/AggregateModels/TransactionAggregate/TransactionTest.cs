@@ -18,7 +18,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.TransactionAggregate
     public sealed class TransactionTest
     {
         [TestMethod]
-        public void Constructor_Tests()
+        public void Transaction_WithConstructor_ShouldBeValid()
         {
             // Arrange
             var currency = Money.Fifty;

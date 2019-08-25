@@ -21,8 +21,9 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Repositories
     public sealed class ChallengeRepositoryTest
     {
         [TestMethod]
-        public async Task Create_Challenge_ShouldNotBeNull()
+        public async Task FindChallengeAsync_FromRepository_ShouldNotBeNull()
         {
+            //Arrange
             var challengeFaker = new ChallengeFaker();
 
             challengeFaker.UseSeed(1);
@@ -44,16 +45,19 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Repositories
                 {
                     var repository = new ChallengeRepository(context, MapperExtensions.Mapper);
 
+                    //Act
                     var challenge = await repository.FindChallengeAsync(fakeChallenge.Id);
 
+                    //Assert
                     challenge.Should().NotBeNull();
                 }
             }
         }
 
         [TestMethod]
-        public async Task Create_Challenges_ShouldNotBeNull()
+        public async Task FetchChallengesAsync_FromRepository_ShouldNotBeNull()
         {
+            //Arrange
             var challengeFaker = new ChallengeFaker();
 
             challengeFaker.UseSeed(1);
@@ -75,8 +79,10 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Repositories
                 {
                     var repository = new ChallengeRepository(context, MapperExtensions.Mapper);
 
+                    //Act
                     var challenges = await repository.FetchChallengesAsync();
 
+                    //Assert
                     challenges.Should().NotBeNull();
                 }
             }

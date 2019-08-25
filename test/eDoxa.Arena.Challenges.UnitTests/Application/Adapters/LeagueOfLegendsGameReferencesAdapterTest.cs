@@ -43,7 +43,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Application.Adapters
         }
 
         [TestMethod]
-        public async Task GetGameReferencesAsync()
+        public async Task GetGameReferencesAsync_WhenMatchReferenceTimestampIsBetweenRange_ShouldBeLeagueOfLegends()
         {
             // Arrange
             var gameAccountId = new GameAccountId("NzH50JS-LCAu0UEY4EMjuS710F_U_8pLfEpNib9X06dD4w");

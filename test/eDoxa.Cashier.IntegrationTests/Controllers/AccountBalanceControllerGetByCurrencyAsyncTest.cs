@@ -50,7 +50,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
         [Theory]
         [MemberData(nameof(ValidCurrencyDataSets))]
-        public async Task ShouldHaveNoAvailableFundsAndNoPendingFunds(Currency currency)
+        public async Task ShouldBeNotValid(Currency currency)
         {
             // Arrange
             var account = new Account(new UserId());
@@ -84,7 +84,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
         [Theory]
         [MemberData(nameof(ValidCurrencyDataSets))]
-        public async Task ShouldHaveAvailableFundsAndPendingFunds(Currency currency)
+        public async Task ShouldBeValid(Currency currency)
         {
             // Arrange
             var accountFaker = new AccountFaker();
@@ -118,24 +118,9 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             balanceViewModel?.Pending.Should().Be(balance.Pending);
         }
 
-        //[Theory]
-        //[MemberData(nameof(ValidCurrencyDataSets))]
-        //public async Task UserWithoutAccount_ShouldBeNotFound(Currency currency)
-        //{
-        //    var factory = _factory.WithClaims();
-
-        //    _httpClient = factory.CreateClient();
-
-        //    // Act
-        //    using var response = await this.ExecuteAsync(currency);
-
-        //    // Assert
-        //    response.StatusCode.Should().Be(StatusCodes.Status404NotFound);
-        //}
-
         [Theory]
         [MemberData(nameof(InvalidCurrencyDataSets))]
-        public async Task InvalidCurrency_ShouldBeBadRequest(Currency currency)
+        public async Task ShouldBeBadRequest(Currency currency)
         {
             var accountFaker = new AccountFaker();
             accountFaker.UseSeed(1);

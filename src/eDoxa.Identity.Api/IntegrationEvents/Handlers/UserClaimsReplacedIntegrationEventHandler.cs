@@ -15,9 +15,9 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Handlers
 {
     internal sealed class UserClaimsReplacedIntegrationEventHandler : IIntegrationEventHandler<UserClaimsReplacedIntegrationEvent>
     {
-        private readonly UserManager _userManager;
+        private readonly IUserManager _userManager;
 
-        public UserClaimsReplacedIntegrationEventHandler(UserManager userManager)
+        public UserClaimsReplacedIntegrationEventHandler(IUserManager userManager)
         {
             _userManager = userManager;
         }

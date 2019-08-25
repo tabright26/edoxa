@@ -77,7 +77,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
         }
 
         [Fact]
-        public async Task ShouldBeOk()
+        public async Task ShouldBeStatus200OK()
         {
             // Arrange
             var accountFaker = new AccountFaker();

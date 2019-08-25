@@ -41,7 +41,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Services
         [InlineData(6, 2)]
         [InlineData(7, 4)]
         [InlineData(8, 8)]
-        public async Task ShouldBeValid(int count, int seed)
+        public async Task ShouldHaveCount(int count, int seed)
         {
             // Arrange
             var challengeFaker = new ChallengeFaker(state: ChallengeState.Ended);

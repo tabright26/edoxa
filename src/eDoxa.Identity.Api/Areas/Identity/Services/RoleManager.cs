@@ -13,7 +13,7 @@ using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Services
 {
-    public sealed class RoleManager : RoleManager<Role>
+    public sealed class RoleManager : RoleManager<Role>, IRoleManager
     {
         public RoleManager(
             IRoleStore<Role> store,

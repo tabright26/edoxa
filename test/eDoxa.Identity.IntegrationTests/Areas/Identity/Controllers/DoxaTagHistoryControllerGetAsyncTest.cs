@@ -56,7 +56,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         }
 
         [Fact]
-        public async Task GetAsync_ShouldBeStatus200OK()
+        public async Task ShouldBeStatus200Ok()
         {
             User.DoxaTagHistory = new Collection<UserDoxaTag>
             {
@@ -106,7 +106,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         }
 
         [Fact]
-        public async Task GetAsync_ShouldBeStatus204NoContent()
+        public async Task ShouldBeStatus204NoContent()
         {
             User.DoxaTagHistory = null;
 
