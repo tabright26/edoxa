@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeRepositoryTest.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -27,16 +27,16 @@ using Xunit;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
 {
-    //TODO: Changeuh Changeuh Changeuh
-
-    public sealed class ChallengeRepositoryTest : IClassFixture<ArenaChallengesWebApiFactory>
+    // TODO: These methods must be refactored into smaller tests.
+    // TODO: Avoid using Theory in integration tests.
+    public sealed class ChallengeRepositoryTest : IClassFixture<ArenaChallengeApiFactory>
     {
         private readonly TestServer _testServer;
 
-        public ChallengeRepositoryTest(ArenaChallengesWebApiFactory arenaChallengesWebApiFactory)
+        public ChallengeRepositoryTest(ArenaChallengeApiFactory arenaChallengeApiFactory)
         {
-            arenaChallengesWebApiFactory.CreateClient();
-            _testServer = arenaChallengesWebApiFactory.Server;
+            arenaChallengeApiFactory.CreateClient();
+            _testServer = arenaChallengeApiFactory.Server;
             _testServer.CleanupDbContext();
         }
 
@@ -62,7 +62,6 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
             );
 
             // Assert
-
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {

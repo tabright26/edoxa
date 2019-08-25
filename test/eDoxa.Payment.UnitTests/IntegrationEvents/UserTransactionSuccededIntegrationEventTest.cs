@@ -1,4 +1,4 @@
-﻿// Filename: UserAccountDepositIntegrationEventTest.cs
+﻿// Filename: UserTransactionSuccededIntegrationEventTest.cs
 // Date Created: 2019-08-25
 // 
 // ================================================
@@ -17,18 +17,18 @@ using Newtonsoft.Json;
 namespace eDoxa.Payment.UnitTests.IntegrationEvents
 {
     [TestClass]
-    public sealed class UserAccountDepositIntegrationEventTest
+    public sealed class UserTransactionSuccededIntegrationEventTest
     {
         [TestMethod]
         public void DeserializeObject_WhenDeserializeWithJsonConstructor_ShouldBeEquivalentToIntegrationEvent()
         {
             //Arrange
-            var integrationEvent = new UserAccountDepositIntegrationEvent(Guid.NewGuid(), "Test transaction", "123", 123);
+            var integrationEvent = new UserTransactionSuccededIntegrationEvent(Guid.NewGuid());
 
             var integrationEventSerialized = JsonConvert.SerializeObject(integrationEvent);
 
             //Act
-            var integrationEventDeserialized = JsonConvert.DeserializeObject<UserAccountDepositIntegrationEvent>(integrationEventSerialized);
+            var integrationEventDeserialized = JsonConvert.DeserializeObject<UserTransactionSuccededIntegrationEvent>(integrationEventSerialized);
 
             //Assert
             integrationEventDeserialized.Should().BeEquivalentTo(integrationEvent);

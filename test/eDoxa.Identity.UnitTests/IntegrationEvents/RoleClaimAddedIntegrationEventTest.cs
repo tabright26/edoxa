@@ -1,6 +1,4 @@
-﻿using System;
-
-using eDoxa.Identity.Api.IntegrationEvents;
+﻿using eDoxa.Identity.Api.IntegrationEvents;
 
 using FluentAssertions;
 
@@ -14,18 +12,18 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents
     public sealed class RoleClaimAddedIntegrationEventTest
     {
         [TestMethod]
-        public void RoleClaimAddedIntegrationEvent_WithNewRole_ShouldBeEquivalentToRoleClaimAddedEvent()
+        public void DeserializeObject_WhenDeserializeWithJsonConstructor_ShouldBeEquivalentToIntegrationEvent()
         {
             //Arrange
-            var roleClaimAddedEvent = new RoleClaimAddedIntegrationEvent("admin", "test", "allow");
+            var integrationEvent = new RoleClaimAddedIntegrationEvent("admin", "test", "allow");
 
-            var serializedEvent = JsonConvert.SerializeObject(roleClaimAddedEvent);
+            var integrationEventSerialized = JsonConvert.SerializeObject(integrationEvent);
 
             //Act
-            var deserializedEvent = JsonConvert.DeserializeObject<RoleClaimAddedIntegrationEvent>(serializedEvent);
+            var integrationEventDeserialized = JsonConvert.DeserializeObject<RoleClaimAddedIntegrationEvent>(integrationEventSerialized);
 
             //Assert
-            deserializedEvent.Should().BeEquivalentTo(roleClaimAddedEvent);
+            integrationEventDeserialized.Should().BeEquivalentTo(integrationEvent);
         }
     }
 }

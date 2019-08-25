@@ -1,11 +1,10 @@
 ﻿// Filename: AccountBalanceControllerGetByCurrencyAsyncTest.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Collections.Generic;
-using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -13,7 +12,6 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Api.Infrastructure.Data.Fakers;
 using eDoxa.Cashier.Api.ViewModels;
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
@@ -23,39 +21,33 @@ using FluentAssertions;
 
 using IdentityModel;
 
-using Microsoft.AspNetCore.Http;
-
 using Xunit;
 
 namespace eDoxa.Cashier.IntegrationTests.Controllers
 {
-    public sealed class AccountBalanceControllerGetByCurrencyAsyncTest : IClassFixture<CashierWebApiFactory>
+    public sealed class AccountBalanceControllerGetByCurrencyAsyncTest : IClassFixture<CashierApiFactory>
     {
-        private readonly CashierWebApiFactory _factory;
-        private HttpClient _httpClient;
-
-        public AccountBalanceControllerGetByCurrencyAsyncTest(CashierWebApiFactory factory)
+        public AccountBalanceControllerGetByCurrencyAsyncTest(CashierApiFactory factory)
         {
             _factory = factory;
         }
 
-        public static IEnumerable<object[]> ValidCurrencyDataSets => Currency.GetEnumerations().Select(currency => new object[] { currency });
-
-        public static IEnumerable<object[]> InvalidCurrencyDataSets => new[] { new object[] { Currency.All }, new object[] { new Currency() } };
+        private readonly CashierApiFactory _factory;
+        private HttpClient _httpClient;
 
         private async Task<HttpResponseMessage> ExecuteAsync(Currency currency)
         {
             return await _httpClient.GetAsync($"api/account/balance/{currency}");
         }
 
-        [Theory]
-        [MemberData(nameof(ValidCurrencyDataSets))]
-        public async Task ShouldBeNotValid(Currency currency)
+        [Fact]
+        public async Task ShouldBeHttpStatusCodeBadRequest()
         {
-            // Arrange
-            var account = new Account(new UserId());
-
+            var accountFaker = new AccountFaker();
+            accountFaker.UseSeed(1);
+            var account = accountFaker.Generate();
             var factory = _factory.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()));
+
             _httpClient = factory.CreateClient();
             var server = factory.Server;
             server.CleanupDbContext();
@@ -70,23 +62,17 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            using var response = await this.ExecuteAsync(currency);
+            using var response = await this.ExecuteAsync(Currency.All);
 
             // Assert
-            response.EnsureSuccessStatusCode();
-            response.StatusCode.Should().Be(StatusCodes.Status200OK);
-            var balanceViewModel = await response.DeserializeAsync<BalanceViewModel>();
-            balanceViewModel.Should().NotBeNull();
-            balanceViewModel?.Currency.Should().Be(currency);
-            balanceViewModel?.Available.Should().Be(decimal.Zero);
-            balanceViewModel?.Pending.Should().Be(decimal.Zero);
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
-        [Theory]
-        [MemberData(nameof(ValidCurrencyDataSets))]
-        public async Task ShouldBeValid(Currency currency)
+        [Fact]
+        public async Task ShouldBeHttpStatusCodeOK()
         {
             // Arrange
+            var currency = Currency.Money;
             var accountFaker = new AccountFaker();
             accountFaker.UseSeed(1);
             var account = accountFaker.Generate();
@@ -110,41 +96,12 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
             // Assert
             response.EnsureSuccessStatusCode();
-            response.StatusCode.Should().Be(StatusCodes.Status200OK);
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
             var balanceViewModel = await response.DeserializeAsync<BalanceViewModel>();
             balanceViewModel.Should().NotBeNull();
             balanceViewModel?.Currency.Should().Be(currency);
             balanceViewModel?.Available.Should().Be(balance.Available);
             balanceViewModel?.Pending.Should().Be(balance.Pending);
-        }
-
-        [Theory]
-        [MemberData(nameof(InvalidCurrencyDataSets))]
-        public async Task ShouldBeBadRequest(Currency currency)
-        {
-            var accountFaker = new AccountFaker();
-            accountFaker.UseSeed(1);
-            var account = accountFaker.Generate();
-            var factory = _factory.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()));
-
-            _httpClient = factory.CreateClient();
-            var server = factory.Server;
-            server.CleanupDbContext();
-
-            await server.UsingScopeAsync(
-                async scope =>
-                {
-                    var accountRepository = scope.GetRequiredService<IAccountRepository>();
-                    accountRepository.Create(account);
-                    await accountRepository.CommitAsync();
-                }
-            );
-
-            // Act
-            using var response = await this.ExecuteAsync(currency);
-
-            // Assert
-            response.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
         }
     }
 }

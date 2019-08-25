@@ -6,7 +6,6 @@
 
 using System;
 
-using Microsoft.Azure.KeyVault.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Internal;
 

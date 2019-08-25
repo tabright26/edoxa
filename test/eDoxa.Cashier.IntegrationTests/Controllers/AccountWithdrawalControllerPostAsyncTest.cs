@@ -1,9 +1,10 @@
 ﻿// Filename: AccountWithdrawalControllerPostAsyncTest.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -23,20 +24,18 @@ using FluentAssertions;
 
 using IdentityModel;
 
-using Microsoft.AspNetCore.Http;
-
 using Xunit;
 
 namespace eDoxa.Cashier.IntegrationTests.Controllers
 {
-    public sealed class AccountWithdrawalControllerPostAsyncTest : IClassFixture<CashierWebApiFactory>
+    public sealed class AccountWithdrawalControllerPostAsyncTest : IClassFixture<CashierApiFactory>
     {
-        public AccountWithdrawalControllerPostAsyncTest(CashierWebApiFactory factory)
+        public AccountWithdrawalControllerPostAsyncTest(CashierApiFactory factory)
         {
             _factory = factory;
         }
 
-        private readonly CashierWebApiFactory _factory;
+        private readonly CashierApiFactory _factory;
 
         private HttpClient _httpClient;
 
@@ -46,7 +45,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
         }
 
         [Fact]
-        public async Task Money_InsufficientFunds_ShouldBeStatus400BadRequest()
+        public async Task ShouldBeHttpStatusCodeBadRequest()
         {
             // Arrange
             var account = new Account(new UserId());
@@ -73,17 +72,14 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             using var response = await this.ExecuteAsync(new WithdrawalRequest(Money.Fifty));
 
             // Assert
-            response.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
         [Fact]
-        public async Task Money_InvalidAmount_ShouldBeStatus400BadRequest()
+        public async Task ShouldBeHttpStatusCodeNotFound()
         {
-            // Arrange
-            var account = new Account(new UserId());
-
             var factory = _factory.WithClaims(
-                new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
+                new Claim(JwtClaimTypes.Subject, new UserId().ToString()),
                 new Claim(AppClaimTypes.StripeConnectAccountId, "acct_test")
             );
 
@@ -91,24 +87,16 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             var server = factory.Server;
             server.CleanupDbContext();
 
-            await server.UsingScopeAsync(
-                async scope =>
-                {
-                    var accountRepository = scope.GetRequiredService<IAccountRepository>();
-                    accountRepository.Create(account);
-                    await accountRepository.CommitAsync();
-                }
-            );
-
             // Act
-            using var response = await this.ExecuteAsync(new WithdrawalRequest(2.5M));
+            using var response = await this.ExecuteAsync(new WithdrawalRequest(Money.Fifty));
 
             // Assert
-            response.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
+            // BUG: The response status code should be http status code not found.
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
         [Fact]
-        public async Task Money_ValidAmount_ShouldBeStatus200OK()
+        public async Task ShouldBeHttpStatusCodeOK()
         {
             // Arrange
             var account = new Account(new UserId());
@@ -150,28 +138,9 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
             // Assert
             response.EnsureSuccessStatusCode();
-            response.StatusCode.Should().Be(StatusCodes.Status200OK);
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
             var message = await response.DeserializeAsync<string>();
             message.Should().NotBeNull();
-        }
-
-        [Fact]
-        public async Task User_WithoutAccount_ShouldBeStatus404NotFound()
-        {
-            var factory = _factory.WithClaims(
-                new Claim(JwtClaimTypes.Subject,new UserId().ToString()),
-                new Claim(AppClaimTypes.StripeConnectAccountId, "acct_test")
-            );
-
-            _httpClient = factory.CreateClient();
-            var server = factory.Server;
-            server.CleanupDbContext();
-
-            // Act
-            using var response = await this.ExecuteAsync(new WithdrawalRequest(Money.Fifty));
-
-            // Assert
-            response.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
         }
     }
 }

@@ -29,13 +29,13 @@ using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
-    public sealed class PersonalInfoControllerPutAsyncTest : IClassFixture<IdentityWebApiFactory>
+    public sealed class PersonalInfoControllerPutAsyncTest : IClassFixture<IdentityApiFactory>
     {
-        public PersonalInfoControllerPutAsyncTest(IdentityWebApiFactory identityWebApiFactory)
+        public PersonalInfoControllerPutAsyncTest(IdentityApiFactory identityApiFactory)
         {
             var identityStorage = new IdentityTestFileStorage();
             User = identityStorage.GetUsersAsync().GetAwaiter().GetResult().First();
-            var factory = identityWebApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, User.Id.ToString()));
+            var factory = identityApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, User.Id.ToString()));
             _httpClient = factory.CreateClient();
             _testServer = factory.Server;
             _testServer.CleanupDbContext();

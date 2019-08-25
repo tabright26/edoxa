@@ -1,9 +1,10 @@
 ﻿// Filename: TransactionsControllerGetAsyncTest.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -22,34 +23,28 @@ using FluentAssertions;
 
 using IdentityModel;
 
-using Microsoft.AspNetCore.Http;
-
 using Xunit;
 
 namespace eDoxa.Cashier.IntegrationTests.Controllers
 {
-    public sealed class TransactionsControllerGetAsyncTest : IClassFixture<CashierWebApiFactory>
+    public sealed class TransactionsControllerGetAsyncTest : IClassFixture<CashierApiFactory>
     {
-        private readonly CashierWebApiFactory _factory;
-
-        public TransactionsControllerGetAsyncTest(CashierWebApiFactory factory)
+        public TransactionsControllerGetAsyncTest(CashierApiFactory factory)
         {
             _factory = factory;
         }
 
+        private readonly CashierApiFactory _factory;
+
         private HttpClient _httpClient;
 
-        private async Task<HttpResponseMessage> ExecuteAsync(
-            Currency currency = null,
-            TransactionType type = null,
-            TransactionStatus status = null
-        )
+        private async Task<HttpResponseMessage> ExecuteAsync(Currency currency = null, TransactionType type = null, TransactionStatus status = null)
         {
             return await _httpClient.GetAsync($"api/transactions?currency={currency}&type={type}&status={status}");
         }
 
         [Fact]
-        public async Task ShouldBeNoContent()
+        public async Task ShouldBeHttpStatusCodeNoContent()
         {
             // Arrange
             var account = new Account(new UserId());
@@ -73,11 +68,11 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
             // Assert
             response.EnsureSuccessStatusCode();
-            response.StatusCode.Should().Be(StatusCodes.Status204NoContent);
+            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
         }
 
         [Fact]
-        public async Task ShouldBeStatus200OK()
+        public async Task ShouldBeHttpStatusCodeOK()
         {
             // Arrange
             var accountFaker = new AccountFaker();
@@ -103,7 +98,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
             // Assert
             response.EnsureSuccessStatusCode();
-            response.StatusCode.Should().Be(StatusCodes.Status200OK);
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
             var transactions = await response.DeserializeAsync<TransactionViewModel[]>();
             transactions.Should().HaveCount(account.Transactions.Count);
         }

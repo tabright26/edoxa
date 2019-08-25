@@ -15,18 +15,18 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents
     public sealed class UserClaimsRemovedIntegrationEventTest
     {
         [TestMethod]
-        public void UserClaimsRemovedIntegrationEvent_WithNewClaim_ShouldBeEquivalentToUserClaimRemovedEvent()
+        public void DeserializeObject_WhenDeserializeWithJsonConstructor_ShouldBeEquivalentToIntegrationEvent()
         {
             //Arrange
-            var userClaimRemovedEvent = new UserClaimsRemovedIntegrationEvent(Guid.NewGuid(), new Dictionary<string, string>());
+            var integrationEvent = new UserClaimsRemovedIntegrationEvent(Guid.NewGuid(), new Dictionary<string, string>());
 
-            var serializedEvent = JsonConvert.SerializeObject(userClaimRemovedEvent);
+            var integrationEventSerialized = JsonConvert.SerializeObject(integrationEvent);
 
             //Act
-            var deserializedEvent = JsonConvert.DeserializeObject<UserClaimsRemovedIntegrationEvent>(serializedEvent);
+            var integrationEventDeserialized = JsonConvert.DeserializeObject<UserClaimsRemovedIntegrationEvent>(integrationEventSerialized);
 
             //Assert
-            deserializedEvent.Should().BeEquivalentTo(userClaimRemovedEvent);
+            integrationEventDeserialized.Should().BeEquivalentTo(integrationEvent);
         }
     }
 }

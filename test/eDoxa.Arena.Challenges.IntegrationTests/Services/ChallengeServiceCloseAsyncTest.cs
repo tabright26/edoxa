@@ -25,17 +25,19 @@ using Xunit;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Services
 {
-    public sealed class ChallengeServiceCloseAsyncTest : IClassFixture<ArenaChallengesWebApiFactory>
+    public sealed class ChallengeServiceCloseAsyncTest : IClassFixture<ArenaChallengeApiFactory>
     {
         private readonly TestServer _testServer;
 
-        public ChallengeServiceCloseAsyncTest(ArenaChallengesWebApiFactory arenaChallengesWebApiFactory)
+        public ChallengeServiceCloseAsyncTest(ArenaChallengeApiFactory arenaChallengeApiFactory)
         {
-            arenaChallengesWebApiFactory.CreateClient();
-            _testServer = arenaChallengesWebApiFactory.Server;
+            arenaChallengeApiFactory.CreateClient();
+            _testServer = arenaChallengeApiFactory.Server;
             _testServer.CleanupDbContext();
         }
 
+        // TODO: The method name must be written as a test scenario.
+        // TODO: Avoid using Theory in integration tests.
         [Theory]
         [InlineData(5, 1)]
         [InlineData(6, 2)]

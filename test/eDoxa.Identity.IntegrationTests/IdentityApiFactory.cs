@@ -7,34 +7,36 @@
 using System.IO;
 using System.Reflection;
 
+using Autofac;
+
 using eDoxa.Identity.Api;
 using eDoxa.Identity.Api.Infrastructure;
 using eDoxa.Seedwork.Testing;
 using eDoxa.Seedwork.Testing.Extensions;
+using eDoxa.ServiceBus.Moq;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 
-namespace eDoxa.FunctionalTests.Services.Identity
+namespace eDoxa.Identity.IntegrationTests
 {
-    public sealed class IdentityWebApiFactory : IdentityApiWeb<Startup>
+    public sealed class IdentityApiFactory : IdentityApiFactory<Startup>
     {
-        protected override void ConfigureWebHost( IWebHostBuilder builder)
+        protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            builder.UseContentRoot(
-                Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(IdentityWebApiFactory)).Location), "Services/Identity")
-            );
+            builder.UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(IdentityApiFactory)).Location));
 
             builder.ConfigureAppConfiguration(configure => configure.AddJsonFile("appsettings.json", false).AddEnvironmentVariables());
+
+            builder.ConfigureTestContainer<ContainerBuilder>(container => container.RegisterModule<MockServiceBusModule>());
         }
 
-        
-        protected override TestServer CreateServer( IWebHostBuilder builder)
+        protected override TestServer CreateServer(IWebHostBuilder builder)
         {
             var server = base.CreateServer(builder);
 
-            server.EnsureCreatedDbContext<IdentityDbContext>();
+            server.MigrateDbContext<IdentityDbContext>();
 
             return server;
         }

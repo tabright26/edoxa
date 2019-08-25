@@ -1,5 +1,5 @@
 ﻿// Filename: StripeServiceTest.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -41,7 +41,7 @@ namespace eDoxa.Payment.UnitTests.Providers.Stripe
         }
 
         [TestMethod]
-        public async Task CreateAccountAsync_WithStripeService_ShouldBeValid()
+        public async Task CreateAccountAsync_WhenValid_ShouldBeCompletedTask()
         {
             // Arrange
             var accountFaker = new AccountFaker();
@@ -52,7 +52,7 @@ namespace eDoxa.Payment.UnitTests.Providers.Stripe
                 .ReturnsAsync(account)
                 .Verifiable();
 
-            var service = this.StripeService();
+            var service = this.CreateStripeService();
 
             // Act
             await service.CreateAccountAsync(
@@ -73,7 +73,7 @@ namespace eDoxa.Payment.UnitTests.Providers.Stripe
         }
 
         [TestMethod]
-        public async Task CreateCustomerAsync_WithStripeService_ShouldBeValid()
+        public async Task CreateCustomerAsync_WhenValid_ShouldBeCompletedTask()
         {
             // Arrange
             var accountFaker = new AccountFaker();
@@ -88,7 +88,7 @@ namespace eDoxa.Payment.UnitTests.Providers.Stripe
                 .ReturnsAsync(customer)
                 .Verifiable();
 
-            var service = this.StripeService();
+            var service = this.CreateStripeService();
 
             // Act
             await service.CreateCustomerAsync(Guid.NewGuid(), account.Id, customer.Email);
@@ -101,7 +101,7 @@ namespace eDoxa.Payment.UnitTests.Providers.Stripe
         }
 
         [TestMethod]
-        public async Task CreateInvoiceAsync_WithStripeService_ShouldBeValid()
+        public async Task CreateInvoiceAsync_WhenValid_ShouldBeCompletedTask()
         {
             // Arrange
             var invoiceFaker = new InvoiceFaker();
@@ -121,7 +121,7 @@ namespace eDoxa.Payment.UnitTests.Providers.Stripe
                 .ReturnsAsync(invoiceFaker.FakeInvoice)
                 .Verifiable();
 
-            var service = this.StripeService();
+            var service = this.CreateStripeService();
 
             // Act
             await service.CreateInvoiceAsync(Guid.NewGuid(), string.Empty, customer.Id, 1000);
@@ -139,7 +139,7 @@ namespace eDoxa.Payment.UnitTests.Providers.Stripe
         }
 
         [TestMethod]
-        public async Task CreateTransferAsync_WithStripeService_ShouldBeValid()
+        public async Task CreateTransferAsync_WhenValid_ShouldBeCompletedTask()
         {
             // Arrange
             var transferFaker = new TransferFaker();
@@ -152,7 +152,7 @@ namespace eDoxa.Payment.UnitTests.Providers.Stripe
                 .ReturnsAsync(transferFaker.FakeTransfer)
                 .Verifiable();
 
-            var service = this.StripeService();
+            var service = this.CreateStripeService();
 
             // Act
             await service.CreateTransferAsync(Guid.NewGuid(), string.Empty, account.Id, 1000);
@@ -164,7 +164,7 @@ namespace eDoxa.Payment.UnitTests.Providers.Stripe
             );
         }
 
-        private StripeService StripeService()
+        private StripeService CreateStripeService()
         {
             var mockOptionsSnapshot = new Mock<IOptionsSnapshot<StripeOptions>>();
 

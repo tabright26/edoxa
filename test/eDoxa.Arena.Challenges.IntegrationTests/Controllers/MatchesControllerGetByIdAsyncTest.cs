@@ -1,5 +1,5 @@
 ﻿// Filename: MatchesControllerGetByIdAsyncTest.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -25,11 +25,11 @@ using Xunit;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 {
-    public sealed class MatchesControllerGetByIdAsyncTest : IClassFixture<ArenaChallengesWebApiFactory>
+    public sealed class MatchesControllerGetByIdAsyncTest : IClassFixture<ArenaChallengeApiFactory>
     {
-        public MatchesControllerGetByIdAsyncTest(ArenaChallengesWebApiFactory arenaChallengesWebApiFactory)
+        public MatchesControllerGetByIdAsyncTest(ArenaChallengeApiFactory arenaChallengeApiFactory)
         {
-            var factory = arenaChallengesWebApiFactory.WithClaims();
+            var factory = arenaChallengeApiFactory.WithClaims();
             _httpClient = factory.CreateClient();
             _testServer = factory.Server;
             _testServer.CleanupDbContext();
@@ -44,7 +44,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         }
 
         [Fact]
-        public async Task ShouldBeOk()
+        public async Task ShouldBeHttpStatusCodeOK()
         {
             // Arrange
             var challengeFaker = new ChallengeFaker(state: ChallengeState.Ended);
