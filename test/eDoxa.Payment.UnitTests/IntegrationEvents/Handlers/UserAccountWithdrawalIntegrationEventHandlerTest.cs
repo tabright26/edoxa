@@ -1,5 +1,5 @@
-// Filename: UserCreatedIntegrationEventHandlerTest.cs
-// Date Created: 2019-06-25
+// Filename: UserAccountWithdrawalIntegrationEventHandlerTest.cs
+// Date Created: 2019-08-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,12 +11,9 @@ using System.Threading.Tasks;
 using eDoxa.Payment.Api.IntegrationEvents;
 using eDoxa.Payment.Api.IntegrationEvents.Handlers;
 using eDoxa.Payment.Api.Providers.Stripe.Abstractions;
-
-using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Testing.Mocks;
 using eDoxa.ServiceBus.Abstractions;
 
-using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
@@ -27,24 +24,31 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
     public sealed class UserAccountWithdrawalIntegrationEventHandlerTest
     {
         [TestMethod]
-        public async Task UserAccountWithdrawalIntegrationEvent_ShouldBeCompletedTask()
+        public async Task HandleAsync_WhenUserAccountDepositIntegrationEventIsValid_ShouldBeCompletedTask()
         {
             // Arrange
             var mockLogger = new MockLogger<UserAccountWithdrawalIntegrationEventHandler>();
-            var mockServiceBus = new Mock<IServiceBusPublisher>();
+            var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
             var mockStripeService = new Mock<IStripeService>();
 
-            mockServiceBus
-                .Setup(serviceBus => serviceBus.PublishAsync(It.IsAny<IIntegrationEvent>()))
+            mockServiceBusPublisher.Setup(serviceBusPublisher => serviceBusPublisher.PublishAsync(It.IsAny<IIntegrationEvent>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            mockStripeService.Setup(stripeService =>
-                    stripeService.CreateTransferAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>(), It.IsAny<CancellationToken>()))
+            mockStripeService
+                .Setup(
+                    stripeService => stripeService.CreateTransferAsync(
+                        It.IsAny<Guid>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<long>(),
+                        It.IsAny<CancellationToken>()
+                    )
+                )
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var handler = new UserAccountWithdrawalIntegrationEventHandler(mockLogger.Object, mockServiceBus.Object, mockStripeService.Object);
+            var handler = new UserAccountWithdrawalIntegrationEventHandler(mockLogger.Object, mockServiceBusPublisher.Object, mockStripeService.Object);
 
             var integrationEvent = new UserAccountWithdrawalIntegrationEvent(Guid.NewGuid(), "test", "user", 100);
 
@@ -54,10 +58,18 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
             // Assert
             mockLogger.Verify(Times.Exactly(3));
 
-            mockServiceBus.Verify(serviceBus => serviceBus.PublishAsync(It.IsAny<IIntegrationEvent>()), Times.Once);
+            mockServiceBusPublisher.Verify(serviceBusPublisher => serviceBusPublisher.PublishAsync(It.IsAny<IIntegrationEvent>()), Times.Once);
 
-            mockStripeService.Verify(stripeService =>
-                stripeService.CreateTransferAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>(), It.IsAny<CancellationToken>()), Times.Once);
+            mockStripeService.Verify(
+                stripeService => stripeService.CreateTransferAsync(
+                    It.IsAny<Guid>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<long>(),
+                    It.IsAny<CancellationToken>()
+                ),
+                Times.Once
+            );
         }
     }
 }

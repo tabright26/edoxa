@@ -1,4 +1,10 @@
-﻿using System;
+﻿// Filename: UserTransactionFailedIntegrationEventTest.cs
+// Date Created: 2019-08-25
+// 
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+
+using System;
 
 using eDoxa.Payment.Api.IntegrationEvents;
 
@@ -14,18 +20,18 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents
     public sealed class UserTransactionFailedIntegrationEventTest
     {
         [TestMethod]
-        public void UserTransactionFailedIntegrationEvent_WithNewUserAccount_ShouldBeEquivalentToTransactionFailedEvent()
+        public void DeserializeObject_WhenDeserializeWithJsonConstructor_ShouldBeEquivalentToIntegrationEvent()
         {
             //Arrange
-            var transactionFailedEvent = new UserTransactionFailedIntegrationEvent(Guid.NewGuid());
+            var integrationEvent = new UserTransactionFailedIntegrationEvent(Guid.NewGuid());
 
-            var serializedEvent = JsonConvert.SerializeObject(transactionFailedEvent);
+            var integrationEventSerialized = JsonConvert.SerializeObject(integrationEvent);
 
             //Act
-            var deserializedEvent = JsonConvert.DeserializeObject<UserTransactionFailedIntegrationEvent>(serializedEvent);
+            var integrationEventDeserialized = JsonConvert.DeserializeObject<UserTransactionFailedIntegrationEvent>(integrationEventSerialized);
 
             //Assert
-            deserializedEvent.Should().BeEquivalentTo(transactionFailedEvent);
+            integrationEventDeserialized.Should().BeEquivalentTo(integrationEvent);
         }
     }
 }

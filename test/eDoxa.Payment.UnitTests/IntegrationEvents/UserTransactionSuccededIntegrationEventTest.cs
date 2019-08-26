@@ -1,4 +1,10 @@
-﻿using System;
+﻿// Filename: UserTransactionSuccededIntegrationEventTest.cs
+// Date Created: 2019-08-25
+// 
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+
+using System;
 
 using eDoxa.Payment.Api.IntegrationEvents;
 
@@ -14,18 +20,18 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents
     public sealed class UserTransactionSuccededIntegrationEventTest
     {
         [TestMethod]
-        public void UserTransactionSuccededIntegrationEvent_WithNewUserAccount_ShouldBeEquivalentToTransactionSuccededEvent()
+        public void DeserializeObject_WhenDeserializeWithJsonConstructor_ShouldBeEquivalentToIntegrationEvent()
         {
             //Arrange
-            var transactionSuccededEvent = new UserTransactionSuccededIntegrationEvent(Guid.NewGuid());
+            var integrationEvent = new UserTransactionSuccededIntegrationEvent(Guid.NewGuid());
 
-            var serializedEvent = JsonConvert.SerializeObject(transactionSuccededEvent);
+            var integrationEventSerialized = JsonConvert.SerializeObject(integrationEvent);
 
             //Act
-            var deserializedEvent = JsonConvert.DeserializeObject<UserTransactionSuccededIntegrationEvent>(serializedEvent);
+            var integrationEventDeserialized = JsonConvert.DeserializeObject<UserTransactionSuccededIntegrationEvent>(integrationEventSerialized);
 
             //Assert
-            deserializedEvent.Should().BeEquivalentTo(transactionSuccededEvent);
+            integrationEventDeserialized.Should().BeEquivalentTo(integrationEvent);
         }
     }
 }

@@ -1,4 +1,10 @@
-﻿using System;
+﻿// Filename: UserAccountDepositIntegrationEventTest.cs
+// Date Created: 2019-08-25
+// 
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+
+using System;
 
 using eDoxa.Payment.Api.IntegrationEvents;
 
@@ -14,18 +20,18 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents
     public sealed class UserAccountDepositIntegrationEventTest
     {
         [TestMethod]
-        public void UserAccountDepositIntegrationEvent_WithNewUserAccount_ShouldBeEquivalentToDepositEvent()
+        public void DeserializeObject_WhenDeserializeWithJsonConstructor_ShouldBeEquivalentToIntegrationEvent()
         {
             //Arrange
-            var depositEvent = new UserAccountDepositIntegrationEvent(Guid.NewGuid(), "Test transaction", "123", 123);
+            var integrationEvent = new UserAccountDepositIntegrationEvent(Guid.NewGuid(), "Test transaction", "123", 123);
 
-            var serializedEvent = JsonConvert.SerializeObject(depositEvent);
+            var integrationEventSerialized = JsonConvert.SerializeObject(integrationEvent);
 
             //Act
-            var deserializedEvent = JsonConvert.DeserializeObject<UserAccountDepositIntegrationEvent>(serializedEvent);
+            var integrationEventDeserialized = JsonConvert.DeserializeObject<UserAccountDepositIntegrationEvent>(integrationEventSerialized);
 
             //Assert
-            deserializedEvent.Should().BeEquivalentTo(depositEvent);
+            integrationEventDeserialized.Should().BeEquivalentTo(integrationEvent);
         }
     }
 }

@@ -1,4 +1,10 @@
-﻿using System;
+﻿// Filename: UserAccountWithdrawalIntegrationEventTest.cs
+// Date Created: 2019-08-25
+// 
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+
+using System;
 
 using eDoxa.Payment.Api.IntegrationEvents;
 
@@ -14,18 +20,18 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents
     public sealed class UserAccountWithdrawalIntegrationEventTest
     {
         [TestMethod]
-        public void UserAccountWithdrawalIntegrationEvent_WithNewUserAccount_ShouldBeEquivalentToWithdrawalEvent()
+        public void DeserializeObject_WhenDeserializeWithJsonConstructor_ShouldBeEquivalentToIntegrationEvent()
         {
             //Arrange
-            var withdrawalEvent = new UserAccountWithdrawalIntegrationEvent(Guid.NewGuid(), "Test transaction", "123", 123);
+            var integrationEvent = new UserAccountWithdrawalIntegrationEvent(Guid.NewGuid(), "Test transaction", "123", 123);
 
-            var serializedEvent = JsonConvert.SerializeObject(withdrawalEvent);
+            var integrationEventSerialized = JsonConvert.SerializeObject(integrationEvent);
 
             //Act
-            var deserializedEvent = JsonConvert.DeserializeObject<UserAccountWithdrawalIntegrationEvent>(serializedEvent);
+            var integrationEventDeserialized = JsonConvert.DeserializeObject<UserAccountWithdrawalIntegrationEvent>(integrationEventSerialized);
 
             //Assert
-            deserializedEvent.Should().BeEquivalentTo(withdrawalEvent);
+            integrationEventDeserialized.Should().BeEquivalentTo(integrationEvent);
         }
     }
 }
