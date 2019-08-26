@@ -4,18 +4,21 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+
+using FluentAssertions;
 
 using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Pages
 {
-    public sealed class AccountControllerLoginTest : IClassFixture<IdentityWebApiFactory>
+    public sealed class AccountControllerLoginTest : IClassFixture<IdentityApiFactory>
     {
-        public AccountControllerLoginTest(IdentityWebApiFactory identityWebApiFactory)
+        public AccountControllerLoginTest(IdentityApiFactory identityApiFactory)
         {
-            _httpClient = identityWebApiFactory.CreateClient();
+            _httpClient = identityApiFactory.CreateClient();
         }
 
         private readonly HttpClient _httpClient;
@@ -26,13 +29,14 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Pages
         }
 
         [Fact]
-        public async Task IdentityScenario()
+        public async Task ShouldBeHttpStatusCodeOK()
         {
             // Act
             using var response = await this.ExecuteAsync();
 
             // Assert
             response.EnsureSuccessStatusCode();
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
     }
 }

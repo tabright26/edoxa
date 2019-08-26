@@ -6,6 +6,7 @@
 
 using System;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -23,20 +24,19 @@ using FluentAssertions;
 
 using IdentityModel;
 
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.TestHost;
 
 using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
-    public sealed class AddressBookControllerPutAsyncTest : IClassFixture<IdentityWebApiFactory>
+    public sealed class AddressBookControllerPutAsyncTest : IClassFixture<IdentityApiFactory>
     {
-        public AddressBookControllerPutAsyncTest(IdentityWebApiFactory identityWebApiFactory)
+        public AddressBookControllerPutAsyncTest(IdentityApiFactory identityApiFactory)
         {
             var identityStorage = new IdentityTestFileStorage();
             User = identityStorage.GetUsersAsync().GetAwaiter().GetResult().First();
-            var factory = identityWebApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, User.Id.ToString()));
+            var factory = identityApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, User.Id.ToString()));
             _httpClient = factory.CreateClient();
             _testServer = factory.Server;
             _testServer.CleanupDbContext();
@@ -53,7 +53,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         private User User { get; }
 
         [Fact]
-        public async Task ShouldBeStatus200Ok()
+        public async Task ShouldBeHttpStatusCodeOK()
         {
             await _testServer.UsingScopeAsync(
                 async scope =>
@@ -93,7 +93,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                     // Assert
                     response.EnsureSuccessStatusCode();
 
-                    response.StatusCode.Should().Be(StatusCodes.Status200OK);
+                    response.StatusCode.Should().Be(HttpStatusCode.OK);
 
                     var message = await response.DeserializeAsync<string>();
 

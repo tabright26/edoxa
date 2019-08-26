@@ -1,5 +1,5 @@
 ﻿// Filename: AccountRepositoryTest.cs
-// Date Created: 2019-07-27
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -22,15 +22,16 @@ using Xunit;
 
 namespace eDoxa.Cashier.IntegrationTests.Repositories
 {
-    //TODO: Changeuh Changeuh Changeuh
-    public sealed class AccountRepositoryTest : IClassFixture<CashierWebApiFactory>
+    // TODO: These methods must be refactored into smaller tests.
+    // TODO: Avoid using Theory in integration tests.
+    public sealed class AccountRepositoryTest : IClassFixture<CashierApiFactory>
     {
         private readonly TestServer _testServer;
 
-        public AccountRepositoryTest(CashierWebApiFactory cashierWebApiFactory)
+        public AccountRepositoryTest(CashierApiFactory cashierApiFactory)
         {
-            cashierWebApiFactory.CreateClient();
-            _testServer = cashierWebApiFactory.Server;
+            cashierApiFactory.CreateClient();
+            _testServer = cashierApiFactory.Server;
             _testServer.CleanupDbContext();
         }
 

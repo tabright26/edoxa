@@ -12,6 +12,7 @@ using eDoxa.Payment.Api.Providers.Extensions;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.ServiceBus.Modules;
 
+using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -21,6 +22,11 @@ namespace eDoxa.Payment.Api
 {
     public class Startup
     {
+        static Startup()
+        {
+            TelemetryDebugWriter.IsTracingDisabled = true;
+        }
+
         public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
         {
             Configuration = configuration;

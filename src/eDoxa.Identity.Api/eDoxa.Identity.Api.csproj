@@ -8,6 +8,8 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
+    <ApplicationInsightsResourceId>/subscriptions/94f2e2f6-0cc0-40ed-ab0a-96f8090b7e66/resourcegroups/edoxa-dev-rg/providers/microsoft.insights/components/edoxa-dev</ApplicationInsightsResourceId>
+    <ApplicationInsightsAnnotationResourceId>/subscriptions/94f2e2f6-0cc0-40ed-ab0a-96f8090b7e66/resourcegroups/edoxa-dev-rg/providers/microsoft.insights/components/edoxa-dev</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -28,7 +30,7 @@
     <PackageReference Include="AspNet.Security.OAuth.BattleNet" Version="2.1.0" />
     <PackageReference Include="AspNet.Security.OAuth.Twitch" Version="2.1.0" />
     <PackageReference Include="AspNet.Security.OpenId.Steam" Version="2.1.0" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.8.0-beta1" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.7.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OAuth" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
@@ -38,11 +40,16 @@
     <PackageReference Include="eDoxa.ServiceBus" Version="1.0.0-CI-20190803-030316" />
     <PackageReference Include="eDoxa.ServiceBus.Abstractions" Version="1.0.0-CI-20190803-030316" />
     <PackageReference Include="eDoxa.ServiceBus.Azure" Version="1.0.0-CI-20190803-030316" />
+    <PackageReference Include="Serilog.Sinks.Seq" Version="4.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Monitoring\eDoxa.Seedwork.Monitoring.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 
 </Project>

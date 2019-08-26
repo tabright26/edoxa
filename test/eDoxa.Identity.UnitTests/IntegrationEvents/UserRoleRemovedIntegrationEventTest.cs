@@ -14,18 +14,18 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents
     public sealed class UserRoleRemovedIntegrationEventTest
     {
         [TestMethod]
-        public void UserRoleRemovedIntegrationEvent_WithNewUserAccount_ShouldBeEquivalentToUserRoleRemovedEvent()
+        public void DeserializeObject_WhenDeserializeWithJsonConstructor_ShouldBeEquivalentToIntegrationEvent()
         {
             //Arrange
-            var userRoleRemovedEvent = new UserRoleRemovedIntegrationEvent(Guid.NewGuid(), "role");
+            var integrationEvent = new UserRoleRemovedIntegrationEvent(Guid.NewGuid(), "role");
 
-            var serializedEvent = JsonConvert.SerializeObject(userRoleRemovedEvent);
+            var integrationEventSerialized = JsonConvert.SerializeObject(integrationEvent);
 
             //Act
-            var deserializedEvent = JsonConvert.DeserializeObject<UserRoleRemovedIntegrationEvent>(serializedEvent);
+            var integrationEventDeserialized = JsonConvert.DeserializeObject<UserRoleRemovedIntegrationEvent>(integrationEventSerialized);
 
             //Assert
-            deserializedEvent.Should().BeEquivalentTo(userRoleRemovedEvent);
+            integrationEventDeserialized.Should().BeEquivalentTo(integrationEvent);
         }
     }
 }

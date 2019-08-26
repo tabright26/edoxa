@@ -4,11 +4,12 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Security.Extensions;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+
+using Serilog;
 
 namespace eDoxa.Web.Spa
 {
@@ -25,7 +26,9 @@ namespace eDoxa.Web.Spa
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
-            return WebHost.CreateDefaultBuilder<Startup>(args).ConfigureLogging().UseAzureKeyVault().UseApplicationInsights().UseSerilog();
+            return WebHost.CreateDefaultBuilder<Startup>(args)
+                .UseApplicationInsights()
+                .UseSerilog((context, config) => config.MinimumLevel.Information().Enrich.FromLogContext().WriteTo.Console().WriteTo.Seq(context.Configuration["Serilog:Seq"]));
         }
     }
 }

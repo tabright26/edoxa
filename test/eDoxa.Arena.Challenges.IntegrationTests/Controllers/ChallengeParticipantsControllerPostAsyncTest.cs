@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeParticipantsControllerPostAsyncTest.cs
-// Date Created: 2019-07-26
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -31,11 +31,11 @@ using Xunit;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 {
-    public sealed class ChallengeParticipantsControllerPostAsyncTest : IClassFixture<ArenaChallengesWebApiFactory>
+    public sealed class ChallengeParticipantsControllerPostAsyncTest : IClassFixture<ArenaChallengeApiFactory>
     {
-        public ChallengeParticipantsControllerPostAsyncTest(ArenaChallengesWebApiFactory arenaChallengesWebApiFactory)
+        public ChallengeParticipantsControllerPostAsyncTest(ArenaChallengeApiFactory arenaChallengeApiFactory)
         {
-            var factory = arenaChallengesWebApiFactory.WithWebHostBuilder(
+            var factory = arenaChallengeApiFactory.WithWebHostBuilder(
                 builder => builder.ConfigureTestContainer<ContainerBuilder>(
                     container =>
                     {
@@ -65,7 +65,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         }
 
         [Fact(Skip = "Invalid")]
-        public async Task ShouldBeOk()
+        public async Task ShouldBeHttpStatusCodeOK()
         {
             // Arrange
             var challengeFaker = new ChallengeFaker(ChallengeGame.LeagueOfLegends, ChallengeState.Inscription);

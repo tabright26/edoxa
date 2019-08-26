@@ -1,5 +1,5 @@
 ﻿// Filename: DepositProcessedIntegrationEventHandlerTest.cs
-// Date Created: 2019-07-26
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -33,17 +33,18 @@ using Xunit;
 
 namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
 {
-    public sealed class DepositProcessedIntegrationEventHandlerTest : IClassFixture<CashierWebApiFactory>
+    public sealed class DepositProcessedIntegrationEventHandlerTest : IClassFixture<CashierApiFactory>
     {
-        public DepositProcessedIntegrationEventHandlerTest(CashierWebApiFactory cashierWebApiFactory)
+        public DepositProcessedIntegrationEventHandlerTest(CashierApiFactory cashierApiFactory)
         {
-            cashierWebApiFactory.CreateClient();
-            _testServer = cashierWebApiFactory.Server;
+            cashierApiFactory.CreateClient();
+            _testServer = cashierApiFactory.Server;
             _testServer.CleanupDbContext();
         }
 
         private readonly TestServer _testServer;
 
+        // TODO: Create an helper method for functional assertions with a retry policy. (Maybe with Polly)
         private async Task<ITransaction> TryGetPublishedTransaction(TransactionId transactionId)
         {
             var counter = 0;
@@ -75,9 +76,11 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
         }
 
         [Fact]
+
+        // TODO: The method name must be written as a test scenario.
         public async Task TransactionStatus_ShouldBeFailed()
         {
-            using var paymentWebApplicationFactory = new PaymentWebApiFactory().WithWebHostBuilder(
+            using var paymentWebApplicationFactory = new PaymentApiFactory().WithWebHostBuilder(
                 builder => builder.ConfigureTestContainer<ContainerBuilder>(
                     container =>
                     {
@@ -136,9 +139,11 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
         }
 
         [Fact]
+
+        // TODO: The method name must be written as a test scenario.
         public async Task TransactionStatus_ShouldBeSucceded()
         {
-            using var paymentWebApplicationFactory = new PaymentWebApiFactory().WithWebHostBuilder(
+            using var paymentWebApplicationFactory = new PaymentApiFactory().WithWebHostBuilder(
                 builder => builder.ConfigureTestContainer<ContainerBuilder>(
                     container =>
                     {

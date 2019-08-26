@@ -10,6 +10,7 @@
 
 using eDoxa.Web.Status.Extensions;
 
+using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +20,11 @@ namespace eDoxa.Web.Status
 {
     public sealed class Startup
     {
+        static Startup()
+        {
+            TelemetryDebugWriter.IsTracingDisabled = true;
+        }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;

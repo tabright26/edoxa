@@ -13,6 +13,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace eDoxa.Payment.UnitTests.Providers.Stripe.Fakers
 {
     [TestClass]
+    // TODO: These tests must be recast to be more explicit about the tested behavior. (Check if Bogus has a special librairy to test fakers.)
     public sealed class ShippingFakerTest
     {
         [TestMethod]

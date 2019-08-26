@@ -1,6 +1,4 @@
-﻿using System;
-
-using eDoxa.Identity.Api.IntegrationEvents;
+﻿using eDoxa.Identity.Api.IntegrationEvents;
 
 using FluentAssertions;
 
@@ -14,18 +12,18 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents
     public sealed class EmailSentIntegrationEventTest
     {
         [TestMethod]
-        public void EmailSentIntegrationEvent_WithNewEmail_ShouldBeEquivalentToSendingEvent()
+        public void DeserializeObject_WhenDeserializeWithJsonConstructor_ShouldBeEquivalentToIntegrationEvent()
         {
             //Arrange
-            var sendingEvent = new EmailSentIntegrationEvent("gabriel@edoxa.gg", "mange Dla Baloney", "Mah man");
+            var integrationEvent = new EmailSentIntegrationEvent("gabriel@edoxa.gg", "mange Dla Baloney", "Mah man");
 
-            var serializedEvent = JsonConvert.SerializeObject(sendingEvent);
+            var integrationEventSerialized = JsonConvert.SerializeObject(integrationEvent);
 
             //Act
-            var deserializedEvent = JsonConvert.DeserializeObject<EmailSentIntegrationEvent>(serializedEvent);
+            var integrationEventDeserialized = JsonConvert.DeserializeObject<EmailSentIntegrationEvent>(integrationEventSerialized);
 
             //Assert
-            deserializedEvent.Should().BeEquivalentTo(sendingEvent);
+            integrationEventDeserialized.Should().BeEquivalentTo(integrationEvent);
         }
     }
 }

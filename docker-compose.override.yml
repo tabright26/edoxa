@@ -18,10 +18,17 @@ services:
       - "15672:15672"
       - "5672:5672"
 
+  seq:
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - "5400:80"
+
   identity.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
+      - Serilog__Seq=http://seq 
       - ConnectionStrings__SqlServer=${MSSQL_IDENTITY:-Server=mssql;Database=Services.Identity;User Id=sa;Password=fnU3Www9TnBDp3MA}
       - ConnectionStrings__Redis=${REDIS:-redis}
       - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
@@ -36,7 +43,7 @@ services:
       - IdentityServer__IdentityUrl=${URL:-http://localhost}:5000
       - IdentityServer__CashierUrl=${URL:-http://localhost}:5002
       - IdentityServer__ArenaChallengesUrl=${URL:-http://localhost}:5003
-      - IdentityServer__Web__SpaUrl=${URL:-http://localhost}:5300      
+      - IdentityServer__Web__SpaUrl=${URL:-http://localhost}:5300
     ports:
       - "5000:80"
     volumes:
@@ -46,6 +53,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
+      - Serilog__Seq=http://seq 
       - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}      
       - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
       - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
@@ -59,6 +67,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
+      - Serilog__Seq=http://seq 
       - ConnectionStrings__SqlServer=${MSSQL_CASHIER:-Server=mssql;Database=Services.Cashier;User Id=sa;Password=fnU3Www9TnBDp3MA}
       - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}      
       - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
@@ -78,6 +87,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
+      - Serilog__Seq=http://seq 
       - ConnectionStrings__SqlServer=${MSSQL_CHALLENGE:-Server=mssql;Database=Services.Arena.Challenges;User Id=sa;Password=fnU3Www9TnBDp3MA}      
       - ConnectionStrings__Redis=${REDIS:-redis}
       - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
@@ -95,7 +105,8 @@ services:
 
   web.gateway:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development      
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Serilog__Seq=http://seq 
       - HealthChecks__IdentityUrl=http://identity.api/health
       - HealthChecks__CashierUrl=http://cashier.api/health
       - HealthChecks__ArenaChallengesUrl=http://arena.challenges.api/health      
@@ -110,6 +121,7 @@ services:
   #  environment:
   #    - ASPNETCORE_ENVIRONMENT=Development
   #    - ASPNETCORE_URLS=http://+:80
+  #    - Serilog__Seq=http://seq 
   #    - ConnectionStrings__Redis=${REDIS:-redis}
   #    - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
   #    - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
@@ -128,9 +140,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
-      - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
-      - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
+      - Serilog__Seq=http://seq 
       - HealthChecks__Endpoints__0__Name=eDoxa Identity API
       - HealthChecks__Endpoints__0__Uri=http://identity.api/health
       - HealthChecks__Endpoints__1__Name=eDoxa Payment API

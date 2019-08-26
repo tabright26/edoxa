@@ -26,7 +26,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
             ChallengeState.GetEnumerations().Where(state => state != ChallengeState.Inscription).Select(state => new object[] {state}).ToList();
 
         [TestMethod]
-        public void Register_Participant_ShouldHaveOneMore()
+        public void Register_WhenStateInscription_ShouldHaveOneMore()
         {
             // Arrange
             var challengeFaker = new ChallengeFaker(state: ChallengeState.Inscription);
@@ -43,7 +43,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
 
         [DataTestMethod]
         [DynamicData(nameof(ChallengeStateDataSets))]
-        public void Register_ChallengeStateNotInscription_ShouldThrowInvalidOperationException(ChallengeState state)
+        public void Register_WhenStateNotInscription_ShouldThrowInvalidOperationException(ChallengeState state)
         {
             // Arrange
             var challengeFaker = new ChallengeFaker(state: state);
@@ -60,7 +60,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
         }
 
         [TestMethod]
-        public void Register_RegisteredParticipant_ShouldThrowInvalidOperationException()
+        public void Register_WhenParticipantIsRegistered_ShouldThrowInvalidOperationException()
         {
             // Arrange
             var challengeFaker = new ChallengeFaker(state: ChallengeState.Inscription);

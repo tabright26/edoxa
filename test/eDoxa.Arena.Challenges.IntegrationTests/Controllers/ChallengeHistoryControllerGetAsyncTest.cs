@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeHistoryControllerGetAsyncTest.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -17,21 +17,23 @@ using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Http.Extensions;
+
 using FluentAssertions;
+
 using IdentityModel;
 
 using Xunit;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 {
-    public sealed class ChallengeHistoryControllerGetAsyncTest : IClassFixture<ArenaChallengesWebApiFactory>
+    public sealed class ChallengeHistoryControllerGetAsyncTest : IClassFixture<ArenaChallengeApiFactory>
     {
-        public ChallengeHistoryControllerGetAsyncTest(ArenaChallengesWebApiFactory factory)
+        public ChallengeHistoryControllerGetAsyncTest(ArenaChallengeApiFactory factory)
         {
             _factory = factory;
         }
 
-        private readonly ArenaChallengesWebApiFactory _factory;
+        private readonly ArenaChallengeApiFactory _factory;
 
         private HttpClient _httpClient;
 
@@ -41,7 +43,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         }
 
         [Fact]
-        public async Task ShouldBeOk()
+        public async Task ShouldBeHttpStatusCodeOK()
         {
             // Arrange
             var challengeFaker = new ChallengeFaker(state: ChallengeState.InProgress);

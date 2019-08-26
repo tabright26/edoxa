@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -11,19 +12,18 @@ using eDoxa.Seedwork.Testing.Http.Extensions;
 
 using FluentAssertions;
 
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.TestHost;
 
 using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
-    public sealed class DoxaTagsControllerGetAsyncTest : IClassFixture<IdentityWebApiFactory>
+    public sealed class DoxaTagsControllerGetAsyncTest : IClassFixture<IdentityApiFactory>
     {
-        public DoxaTagsControllerGetAsyncTest(IdentityWebApiFactory identityWebApiFactory)
+        public DoxaTagsControllerGetAsyncTest(IdentityApiFactory identityApiFactory)
         {
-            _httpClient = identityWebApiFactory.CreateClient();
-            _testServer = identityWebApiFactory.Server;
+            _httpClient = identityApiFactory.CreateClient();
+            _testServer = identityApiFactory.Server;
             _testServer.CleanupDbContext();
         }
 
@@ -36,19 +36,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         }
 
         [Fact]
-        public async Task ShouldBeNoContent()
-        {
-            // Act
-            using var response = await this.ExecuteAsync();
-
-            // Assert
-            response.EnsureSuccessStatusCode();
-
-            response.StatusCode.Should().Be(StatusCodes.Status204NoContent);
-        }
-
-        [Fact]
-        public async Task ShouldBeStatus200Ok()
+        public async Task ShouldBeHttpStatusCodeOK()
         {
             // Arrange
             await _testServer.UsingScopeAsync(
@@ -74,11 +62,23 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             // Assert
             response.EnsureSuccessStatusCode();
 
-            response.StatusCode.Should().Be(StatusCodes.Status200OK);
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
 
             var users = await response.DeserializeAsync<UserDoxaTagResponse[]>();
 
             users.Should().HaveCount(100);
+        }
+
+        [Fact]
+        public async Task ShouldBeHttpStatusCodeNoContent()
+        {
+            // Act
+            using var response = await this.ExecuteAsync();
+
+            // Assert
+            response.EnsureSuccessStatusCode();
+
+            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
         }
     }
 }

@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.TestHost;
 
 namespace eDoxa.Seedwork.Testing
 {
-    public abstract class IdentityApiWeb<TStartup> : WebApiFactory<TStartup>
+    public abstract class IdentityApiFactory<TStartup> : WebApiFactory<TStartup>
     where TStartup : class
     {
         public override WebApplicationFactory<TStartup> WithClaims(params Claim[] claims)

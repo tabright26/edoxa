@@ -1,5 +1,5 @@
 ﻿// Filename: Program.cs
-// Date Created: 2019-06-28
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,7 +8,6 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 using Serilog;
 
@@ -30,20 +29,13 @@ namespace eDoxa.Web.Gateway
             var builder = WebHost.CreateDefaultBuilder<Startup>(args);
 
             builder.ConfigureServices(services => services.AddSingleton(builder))
-                .ConfigureAppConfiguration(configurationBuilder => configurationBuilder.AddJsonFile("ocelot.json", false, true))
-                .ConfigureLogging(
-                    (context, loggingbuilder) =>
-                    {
-                        loggingbuilder.AddConfiguration(context.Configuration.GetSection("Logging"));
-                        loggingbuilder.AddConsole();
-                        loggingbuilder.AddDebug();
-                    }
-                )
+                .ConfigureAppConfiguration(config => config.AddJsonFile("ocelot.json", false, true))
+                .UseApplicationInsights()
                 .UseSerilog(
-                    (context, loggerConfiguration) =>
-                    {
-                        loggerConfiguration.MinimumLevel.Information().Enrich.FromLogContext().WriteTo.Console();
-                    }
+                    (context, config) => config.MinimumLevel.Information()
+                        .Enrich.FromLogContext()
+                        .WriteTo.Console()
+                        .WriteTo.Seq(context.Configuration["Serilog:Seq"])
                 );
 
             return builder;

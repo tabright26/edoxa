@@ -1,10 +1,9 @@
 ﻿// Filename: ChallengesControllerGetAsyncTest.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -24,12 +23,12 @@ using Xunit;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 {
-    public sealed class ChallengesControllerGetAsyncTest : IClassFixture<ArenaChallengesWebApiFactory>
+    public sealed class ChallengesControllerGetAsyncTest : IClassFixture<ArenaChallengeApiFactory>
     {
-        public ChallengesControllerGetAsyncTest(ArenaChallengesWebApiFactory arenaChallengesWebApiFactory)
+        public ChallengesControllerGetAsyncTest(ArenaChallengeApiFactory arenaChallengeApiFactory)
         {
-            _httpClient = arenaChallengesWebApiFactory.CreateClient();
-            _testServer = arenaChallengesWebApiFactory.Server;
+            _httpClient = arenaChallengeApiFactory.CreateClient();
+            _testServer = arenaChallengeApiFactory.Server;
             _testServer.CleanupDbContext();
         }
 
@@ -41,13 +40,24 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
             return await _httpClient.GetAsync("api/challenges");
         }
 
-        [Theory]
-        [InlineData(2)]
-        [InlineData(5)]
-        public async Task ShouldHaveCount(int count)
+        [Fact]
+        public async Task ShouldBeHttpStatusCodeNoContent()
+        {
+            // Act
+            using var response = await this.ExecuteAsync();
+
+            // Assert
+            response.EnsureSuccessStatusCode();
+            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        }
+
+        [Fact]
+        public async Task ShouldBeHttpStatusCodeOK()
         {
             // Arrange
+            const int count = 5;
             var challengeFaker = new ChallengeFaker();
+            challengeFaker.UseSeed(1000);
             var challenges = challengeFaker.Generate(count);
 
             await _testServer.UsingScopeAsync(
@@ -67,50 +77,6 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var challengeViewModels = await response.DeserializeAsync<ChallengeViewModel[]>();
             challengeViewModels.Should().HaveCount(count);
-        }
-
-        [Theory]
-        [InlineData(100)]
-        [InlineData(1000)]
-        [InlineData(10000)]
-        public async Task ShouldBeOk(int seed)
-        {
-            // Arrange
-            var challengeFaker = new ChallengeFaker();
-            challengeFaker.UseSeed(seed);
-            var challenge = challengeFaker.Generate();
-
-            await _testServer.UsingScopeAsync(
-                async scope =>
-                {
-                    var challengeRepository = scope.GetRequiredService<IChallengeRepository>();
-                    challengeRepository.Create(challenge);
-                    await challengeRepository.CommitAsync();
-                }
-            );
-
-            // Act
-            using var response = await this.ExecuteAsync();
-
-            // Assert
-            response.EnsureSuccessStatusCode();
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var challengeViewModel = (await response.DeserializeAsync<ChallengeViewModel[]>()).First();
-            challengeFaker = new ChallengeFaker();
-            challengeFaker.UseSeed(seed);
-            challenge = challengeFaker.Generate();
-            challengeViewModel.Id.Should().Be(challenge.Id);
-        }
-
-        [Fact]
-        public async Task ShouldBeNoContent()
-        {
-            // Act
-            using var response = await this.ExecuteAsync();
-
-            // Assert
-            response.EnsureSuccessStatusCode();
-            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
         }
     }
 }

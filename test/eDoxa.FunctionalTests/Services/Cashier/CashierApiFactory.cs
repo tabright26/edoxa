@@ -1,5 +1,5 @@
-﻿// Filename: CashierWebApplicationFactory.cs
-// Date Created: 2019-07-27
+﻿// Filename: CashierWebApiFactory.cs
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -18,19 +18,16 @@ using Microsoft.Extensions.Configuration;
 
 namespace eDoxa.FunctionalTests.Services.Cashier
 {
-    public sealed class CashierWebApiFactory : WebApiFactory<Startup>
+    public sealed class CashierApiFactory : WebApiFactory<Startup>
     {
-        protected override void ConfigureWebHost( IWebHostBuilder builder)
+        protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            builder.UseContentRoot(
-                Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(CashierWebApiFactory)).Location), "Services/Cashier")
-            );
+            builder.UseContentRoot(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(CashierApiFactory)).Location), "Services/Cashier"));
 
             builder.ConfigureAppConfiguration(configure => configure.AddJsonFile("appsettings.json", false).AddEnvironmentVariables());
         }
 
-        
-        protected override TestServer CreateServer( IWebHostBuilder builder)
+        protected override TestServer CreateServer(IWebHostBuilder builder)
         {
             var server = base.CreateServer(builder);
 

@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeServiceSynchronizeAsyncTest.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-08-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -25,17 +25,18 @@ using Xunit;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Services
 {
-    public sealed class ChallengeServiceSynchronizeAsyncTest : IClassFixture<ArenaChallengesWebApiFactory>
+    public sealed class ChallengeServiceSynchronizeAsyncTest : IClassFixture<ArenaChallengeApiFactory>
     {
-        public ChallengeServiceSynchronizeAsyncTest(ArenaChallengesWebApiFactory arenaChallengesWebApiFactory)
+        public ChallengeServiceSynchronizeAsyncTest(ArenaChallengeApiFactory arenaChallengeApiFactory)
         {
-            arenaChallengesWebApiFactory.CreateClient();
-            _testServer = arenaChallengesWebApiFactory.Server;
+            arenaChallengeApiFactory.CreateClient();
+            _testServer = arenaChallengeApiFactory.Server;
             _testServer.CleanupDbContext();
         }
 
         private readonly TestServer _testServer;
 
+        // TODO: The method name must be written as a test scenario.
         [Fact]
         public async Task ShouldHaveCountFive()
         {

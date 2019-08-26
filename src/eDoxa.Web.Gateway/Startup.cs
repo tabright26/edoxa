@@ -12,6 +12,7 @@ using eDoxa.Web.Gateway.Infrastructure;
 
 using IdentityServer4.Models;
 
+using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +27,11 @@ namespace eDoxa.Web.Gateway
 {
     public class Startup
     {
+        static Startup()
+        {
+            TelemetryDebugWriter.IsTracingDisabled = true;
+        }
+
         public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
         {
             Configuration = configuration;
