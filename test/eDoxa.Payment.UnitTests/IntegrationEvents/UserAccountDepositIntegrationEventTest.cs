@@ -8,13 +8,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Cashier.UnitTests.IntegrationEvents
+namespace eDoxa.Payment.UnitTests.IntegrationEvents
 {
     [TestClass]
     public sealed class UserAccountDepositIntegrationEventTest
     {
         [TestMethod]
-        public void UserCreatedIntegrationEvent_WithNewUserAccount_ShouldBeEquivalentToDepositEvent()
+        public void UserAccountDepositIntegrationEvent_WithNewUserAccount_ShouldBeEquivalentToDepositEvent()
         {
             //Arrange
             var depositEvent = new UserAccountDepositIntegrationEvent(Guid.NewGuid(), "Test transaction", "123", 123);
