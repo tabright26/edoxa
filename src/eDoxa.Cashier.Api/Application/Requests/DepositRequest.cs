@@ -19,6 +19,13 @@ namespace eDoxa.Cashier.Api.Application.Requests
             Amount = amount;
         }
 
+#nullable disable
+        public DepositRequest()
+        {
+            // Required by Fluent Validation
+        }
+#nullable restore
+
         [DataMember(Name = "currency")]
         public string Currency { get; private set; }
 

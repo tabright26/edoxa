@@ -4,12 +4,15 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Runtime.Serialization;
+
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 
 using MediatR;
 
 namespace eDoxa.Cashier.Api.Application.Requests
 {
+    [DataContract]
     public sealed class CreateUserRequest : IRequest
     {
         public CreateUserRequest(UserId userId)
@@ -17,6 +20,13 @@ namespace eDoxa.Cashier.Api.Application.Requests
             UserId = userId;
         }
 
-        public UserId UserId { get; private set; }
+#nullable disable
+        public CreateUserRequest()
+        {
+            // Required by Fluent Validation
+        }
+#nullable restore
+
+        [DataMember] public UserId UserId { get; private set; }
     }
 }

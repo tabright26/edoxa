@@ -4,8 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-#nullable disable
-
 using System.Runtime.Serialization;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
@@ -17,15 +15,17 @@ namespace eDoxa.Arena.Challenges.Api.Application.Requests
     [DataContract]
     public sealed class RegisterParticipantRequest : IRequest
     {
-        public RegisterParticipantRequest(ChallengeId challengeId) : this()
+        public RegisterParticipantRequest(ChallengeId challengeId)
         {
             ChallengeId = challengeId;
         }
 
+#nullable disable
         public RegisterParticipantRequest()
         {
-            // Required for unit tests.
+            // Required by Fluent Validation
         }
+#nullable restore
 
         [IgnoreDataMember] public ChallengeId ChallengeId { get; private set; }
     }

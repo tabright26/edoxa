@@ -20,6 +20,13 @@ namespace eDoxa.Arena.Challenges.Api.Application.Requests
             ChallengeId = challengeId;
         }
 
+#nullable disable
+        public CloseChallengesRequest()
+        {
+            // Required by Fluent Validation
+        }
+#nullable restore
+
         [IgnoreDataMember]
         public ChallengeId ChallengeId { get; private set; }
     }
