@@ -32,10 +32,10 @@ namespace eDoxa.Web.Gateway
                 .ConfigureAppConfiguration(config => config.AddJsonFile("ocelot.json", false, true))
                 .UseApplicationInsights()
                 .UseSerilog(
-                    (context, loggerConfiguration) =>
-                    {
-                        loggerConfiguration.MinimumLevel.Information().Enrich.FromLogContext().WriteTo.Console();
-                    }
+                    (context, config) => config.MinimumLevel.Information()
+                        .Enrich.FromLogContext()
+                        .WriteTo.Console()
+                        .WriteTo.Seq(context.Configuration["Serilog:Seq"])
                 );
 
             return builder;

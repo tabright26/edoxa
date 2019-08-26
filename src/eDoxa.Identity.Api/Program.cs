@@ -69,6 +69,7 @@ namespace eDoxa.Identity.Api
                         .Enrich.WithProperty("Application", typeof(Program).Namespace)
                         .Enrich.FromLogContext()
                         .WriteTo.Console()
+                        .WriteTo.Seq(context.Configuration["Serilog:Seq"])
                         .ReadFrom.Configuration(context.Configuration)
                 );
         }

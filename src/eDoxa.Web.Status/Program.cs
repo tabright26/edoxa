@@ -51,7 +51,7 @@ namespace eDoxa.Web.Status
                 .CaptureStartupErrors(false)
                 .UseApplicationInsights()
                 .UseSerilog(
-                    (context, config) => config.MinimumLevel.Verbose().Enrich.WithProperty("Application", typeof(Program).Namespace).Enrich.FromLogContext().WriteTo.Console().ReadFrom.Configuration(context.Configuration)
+                    (context, config) => config.MinimumLevel.Verbose().Enrich.WithProperty("Application", typeof(Program).Namespace).Enrich.FromLogContext().WriteTo.Console().WriteTo.Seq(context.Configuration["Serilog:Seq"]).ReadFrom.Configuration(context.Configuration)
                 );
         }
     }

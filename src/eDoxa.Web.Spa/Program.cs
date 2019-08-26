@@ -28,7 +28,7 @@ namespace eDoxa.Web.Spa
         {
             return WebHost.CreateDefaultBuilder<Startup>(args)
                 .UseApplicationInsights()
-                .UseSerilog((context, config) => config.MinimumLevel.Information().Enrich.FromLogContext().WriteTo.Console());
+                .UseSerilog((context, config) => config.MinimumLevel.Information().Enrich.FromLogContext().WriteTo.Console().WriteTo.Seq(context.Configuration["Serilog:Seq"]));
         }
     }
 }
