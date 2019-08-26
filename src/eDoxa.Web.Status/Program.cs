@@ -1,12 +1,8 @@
 ﻿// Filename: Program.cs
-// Date Created: 2019-04-12
+// Date Created: 2019-08-18
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
-// this source code package.
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
 
@@ -27,11 +23,11 @@ namespace eDoxa.Web.Status
             {
                 var builder = CreateWebHostBuilder(args);
 
-                Log.Information("Building {Application} web host...");
+                Log.Information("Building {Application} host...");
 
                 var host = builder.Build();
 
-                Log.Information("Starting {Application} web host...");
+                Log.Information("Starting {Application} host...");
 
                 host.Run();
 
@@ -52,11 +48,11 @@ namespace eDoxa.Web.Status
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             return WebHost.CreateDefaultBuilder<Startup>(args)
-                          .CaptureStartupErrors(false)
-                          .ConfigureLogging((context, loggingBuilder) => loggingBuilder.AddSerilog())
-                          .UseAzureKeyVault()
-                          .UseApplicationInsights()
-                          .UseSerilog();
+                .CaptureStartupErrors(false)
+                .UseApplicationInsights()
+                .UseSerilog(
+                    (context, config) => config.MinimumLevel.Verbose().Enrich.WithProperty("Application", typeof(Program).Namespace).Enrich.FromLogContext().WriteTo.Console().ReadFrom.Configuration(context.Configuration)
+                );
         }
     }
 }

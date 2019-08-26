@@ -32,6 +32,7 @@ using FluentValidation.AspNetCore;
 
 using IdentityModel;
 
+using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -58,6 +59,7 @@ namespace eDoxa.Identity.Api
 
         static Startup()
         {
+            TelemetryDebugWriter.IsTracingDisabled = true;
             ValidatorOptions.PropertyNameResolver = CamelCasePropertyNameResolver.ResolvePropertyName;
         }
 
@@ -85,7 +87,7 @@ namespace eDoxa.Identity.Api
             //    services.AddDataProtection(
             //            options =>
             //            {
-            //                options.ApplicationDiscriminator = Configuration["ApplicationDiscriminator"];
+            //                options.ApplicationDiscriminator = typeof(Program).Namespace;;
             //            }
             //        )
             //        .PersistKeysToRedis(ConnectionMultiplexer.Connect(Configuration.GetConnectionString(CustomConnectionStrings.Redis)), "data-protection");

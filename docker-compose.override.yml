@@ -95,7 +95,7 @@ services:
 
   web.gateway:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development      
+      - ASPNETCORE_ENVIRONMENT=Development
       - HealthChecks__IdentityUrl=http://identity.api/health
       - HealthChecks__CashierUrl=http://cashier.api/health
       - HealthChecks__ArenaChallengesUrl=http://arena.challenges.api/health      
@@ -128,9 +128,6 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
-      - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
-      - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
       - HealthChecks__Endpoints__0__Name=eDoxa Identity API
       - HealthChecks__Endpoints__0__Uri=http://identity.api/health
       - HealthChecks__Endpoints__1__Name=eDoxa Payment API

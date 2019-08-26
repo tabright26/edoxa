@@ -13,7 +13,6 @@ using System;
 using Autofac.Extensions.DependencyInjection;
 
 using eDoxa.Identity.Api.Infrastructure;
-using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Security.Extensions;
 
@@ -32,7 +31,7 @@ namespace eDoxa.Identity.Api
             {
                 var builder = CreateWebHostBuilder(args);
 
-                Log.Information("Building {Application} web host...");
+                Log.Information("Building {Application} host...");
 
                 var host = builder.Build();
 
@@ -40,7 +39,7 @@ namespace eDoxa.Identity.Api
 
                 host.MigrateDbContextWithRetryPolicy<IdentityDbContext>();
 
-                Log.Information("Starting {Application} web host...");
+                Log.Information("Starting {Application} host...");
 
                 host.Run();
 
@@ -61,12 +60,17 @@ namespace eDoxa.Identity.Api
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             return WebHost.CreateDefaultBuilder<Startup>(args)
-                .ConfigureServices(services => services.AddAutofac())
                 .CaptureStartupErrors(false)
-                .ConfigureLogging()
+                .ConfigureServices(services => services.AddAutofac())
                 .UseAzureKeyVault()
                 .UseApplicationInsights()
-                .UseSerilog();
+                .UseSerilog(
+                    (context, config) => config.MinimumLevel.Verbose()
+                        .Enrich.WithProperty("Application", typeof(Program).Namespace)
+                        .Enrich.FromLogContext()
+                        .WriteTo.Console()
+                        .ReadFrom.Configuration(context.Configuration)
+                );
         }
     }
 }

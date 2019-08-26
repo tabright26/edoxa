@@ -13,6 +13,8 @@
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
+    <ApplicationInsightsResourceId>/subscriptions/94f2e2f6-0cc0-40ed-ab0a-96f8090b7e66/resourcegroups/edoxa-dev-rg/providers/microsoft.insights/components/edoxa-dev</ApplicationInsightsResourceId>
+    <ApplicationInsightsAnnotationResourceId>/subscriptions/94f2e2f6-0cc0-40ed-ab0a-96f8090b7e66/resourcegroups/edoxa-dev-rg/providers/microsoft.insights/components/edoxa-dev</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -44,7 +46,10 @@
   <ItemGroup>
     <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Monitoring\eDoxa.Seedwork.Monitoring.csproj" />
-    <ProjectReference Include="..\eDoxa.Seedwork.Security\eDoxa.Seedwork.Security.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

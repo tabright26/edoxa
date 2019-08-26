@@ -24,6 +24,6 @@ namespace eDoxa.Identity.Api.Areas.Identity.Requests
 #nullable restore
 
         [DataMember(Name = "name")]
-        public string? Name { get; private set; }
+        public string Name { get; private set; }
     }
 }

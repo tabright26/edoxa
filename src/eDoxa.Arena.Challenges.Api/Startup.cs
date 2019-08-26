@@ -29,6 +29,7 @@ using eDoxa.ServiceBus.Modules;
 
 using FluentValidation.AspNetCore;
 
+using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -48,6 +49,11 @@ namespace eDoxa.Arena.Challenges.Api
 {
     public sealed class Startup
     {
+        static Startup()
+        {
+            TelemetryDebugWriter.IsTracingDisabled = true;
+        }
+
         private static readonly string XmlCommentsFilePath = Path.Combine(
             AppContext.BaseDirectory,
             $"{typeof(Startup).GetTypeInfo().Assembly.GetName().Name}.xml"

@@ -11,12 +11,6 @@ namespace eDoxa.Seedwork.Security.Extensions
 {
     public static class WebHostBuilderExtensions
     {
-        private const string AzureKeyVaultName = "AzureKeyVault:Name";
-        private const string AzureKeyVaultClientId = "AzureKeyVault:ClientId";
-        private const string AzureKeyVaultClientSecret = "AzureKeyVault:ClientSecret";
-
-        // TODO: Must be cleaner.
-        // TODO: Add a validation to ensure the connection between Azure Key Vault and the service host.
         public static IWebHostBuilder UseAzureKeyVault(this IWebHostBuilder webHostBuilder)
         {
             return webHostBuilder.ConfigureAppConfiguration(
@@ -26,9 +20,11 @@ namespace eDoxa.Seedwork.Security.Extensions
 
                     var builder = new ConfigurationBuilder();
 
-                    var vault = $"https://{configuration[AzureKeyVaultName]}.vault.azure.net";
-
-                    builder.AddAzureKeyVault(vault, configuration[AzureKeyVaultClientId], configuration[AzureKeyVaultClientSecret]);
+                    builder.AddAzureKeyVault(
+                        $"https://{configuration["AzureKeyVault:Name"]}.vault.azure.net",
+                        configuration["AzureKeyVault:ClientId"],
+                        configuration["AzureKeyVault:ClientSecret"]
+                    );
 
                     config.AddConfiguration(builder.Build());
                 }

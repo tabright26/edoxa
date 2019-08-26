@@ -12,6 +12,7 @@ using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Web.Spa.Extensions;
 using eDoxa.Web.Spa.Infrastructure;
 
+using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -23,6 +24,11 @@ namespace eDoxa.Web.Spa
 {
     public sealed class Startup
     {
+        static Startup()
+        {
+            TelemetryDebugWriter.IsTracingDisabled = true;
+        }
+
         public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
         {
             Configuration = configuration;
@@ -45,7 +51,7 @@ namespace eDoxa.Web.Spa
             //    services.AddDataProtection(
             //            options =>
             //            {
-            //                options.ApplicationDiscriminator = Configuration["ApplicationDiscriminator"];
+            //                options.ApplicationDiscriminator = typeof(Program).Namespace;
             //            }
             //        )
             //        .PersistKeysToRedis(ConnectionMultiplexer.Connect(Configuration.GetConnectionString(CustomConnectionStrings.Redis)), "data-protection");
