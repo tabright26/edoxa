@@ -13,11 +13,14 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Application.Requests;
+using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions;
 using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
+using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Domain;
 
 using MediatR;
 
@@ -38,12 +41,12 @@ namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers
     public class ChallengeParticipantsController : ControllerBase
     {
         private readonly IParticipantQuery _participantQuery;
-        private readonly IMediator _mediator;
+        private readonly IChallengeService _challengeService;
 
-        public ChallengeParticipantsController(IParticipantQuery participantQuery, IMediator mediator)
+        public ChallengeParticipantsController(IParticipantQuery participantQuery, IChallengeService challengeService)
         {
             _participantQuery = participantQuery;
-            _mediator = mediator;
+            _challengeService = challengeService;
         }
 
         /// <summary>
@@ -71,7 +74,11 @@ namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         public async Task<IActionResult> PostAsync(ChallengeId challengeId)
         {
-            await _mediator.SendAsync(new RegisterParticipantRequest(challengeId));
+            var userId = HttpContext.GetUserId();
+
+            var registeredAt = new UtcNowDateTimeProvider();
+
+            await _challengeService.RegisterParticipantAsync(challengeId, userId, registeredAt);
 
             return this.Ok("Participant as been registered.");
         }

@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Api.Application.Requests;
 using eDoxa.Cashier.Api.Areas.Accounts.Controllers;
 using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
+using eDoxa.Cashier.Domain.Services;
+using eDoxa.Cashier.UnitTests.Helpers.Mocks;
 
 using FluentAssertions;
 
@@ -25,29 +28,33 @@ namespace eDoxa.Cashier.UnitTests.Areas.Account.Controllers
     [TestClass]
     public sealed class AccountDepositControllerTest
     {
-        private Mock<IMediator> _mockMediator;
-
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            _mockMediator = new Mock<IMediator>();
-        }
-
         [TestMethod]
         public async Task PostAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
-            _mockMediator.Setup(mock => mock.Send(It.IsAny<DepositRequest>(), It.IsAny<CancellationToken>())).Returns(Unit.Task).Verifiable();
+            var deposit = new DepositRequest(Currency.Token.Name, Token.FiftyThousand);
 
-            var controller = new AccountDepositController(_mockMediator.Object);
+            var mockAccountService = new Mock<IAccountService>();
+
+            mockAccountService.Setup(accountService => accountService.DepositAsync(It.IsAny<string>(), It.IsAny<UserId>(),
+                It.IsAny<Token>(), It.IsAny<CancellationToken>())).Returns(Task.CompletedTask).Verifiable();
+
+            var controller = new AccountDepositController(mockAccountService.Object);
+
+            var mockHttpContextAccessor = new MockHttpContextAccessor();
+
+            controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = await controller.PostAsync(new DepositRequest(Currency.Money.Name, Money.Fifty));
+            var result = await controller.PostAsync(deposit);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            _mockMediator.Verify(mock => mock.Send(It.IsAny<DepositRequest>(), It.IsAny<CancellationToken>()), Times.Once);
+            mockAccountService.Verify(accountService => accountService.DepositAsync(It.IsAny<string>(), It.IsAny<UserId>(),
+                It.IsAny<Token>(), It.IsAny<CancellationToken>()), Times.Once);
+
+            mockHttpContextAccessor.Verify();
         }
     }
 }

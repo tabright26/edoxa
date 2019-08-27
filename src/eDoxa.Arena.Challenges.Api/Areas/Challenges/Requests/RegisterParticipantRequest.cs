@@ -10,7 +10,7 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 
 using MediatR;
 
-namespace eDoxa.Arena.Challenges.Api.Application.Requests
+namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Requests
 {
     [DataContract]
     public sealed class RegisterParticipantRequest : IRequest
