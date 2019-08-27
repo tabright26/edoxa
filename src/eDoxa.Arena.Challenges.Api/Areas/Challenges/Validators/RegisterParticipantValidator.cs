@@ -4,6 +4,8 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using eDoxa.Arena.Challenges.Api.Application.Requests;
+using eDoxa.Arena.Challenges.Api.Areas.Challenges.Requests;
 using eDoxa.Arena.Challenges.Domain.Queries;
 using eDoxa.Seedwork.Application.Validations.Extensions;
 
@@ -12,7 +14,7 @@ using FluentValidation.Results;
 
 using Microsoft.AspNetCore.Http;
 
-namespace eDoxa.Arena.Challenges.Api.Application.Requests.Validations
+namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Validators
 {
     public sealed class RegisterParticipantValidator : AbstractValidator<RegisterParticipantRequest>
     {

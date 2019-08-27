@@ -8,9 +8,13 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Application.Requests;
+using eDoxa.Cashier.Api.Extensions;
+using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.Services;
 using eDoxa.Seedwork.Application.Extensions;
 
 using MediatR;
@@ -31,11 +35,11 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
     [ApiExplorerSettings(GroupName = "Account")]
     public sealed class AccountDepositController : ControllerBase
     {
-        private readonly IMediator _mediator;
+        private readonly IAccountService _accountService;
 
-        public AccountDepositController(IMediator mediator)
+        public AccountDepositController(IAccountService accountService)
         {
-            _mediator = mediator;
+            _accountService = accountService;
         }
 
         /// <summary>
@@ -46,9 +50,28 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
         [SwaggerResponse(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> PostAsync([FromBody] DepositRequest request)
         {
-            await _mediator.SendAsync(request);
+            var userId = HttpContext.GetUserId();
+
+            var customerId = HttpContext.GetCustomerId()!;
+
+            await _accountService.DepositAsync(customerId, userId, MapCurrency(request.Currency, request.Amount));
 
             return this.Ok("Processing the deposit transaction...");
+        }
+
+        private static ICurrency MapCurrency(string currency, decimal amount)
+        {
+            if (Currency.FromName(currency) == Currency.Money)
+            {
+                return new Money(amount);
+            }
+
+            if (Currency.FromName(currency) == Currency.Token)
+            {
+                return new Token(amount);
+            }
+
+            throw new InvalidOperationException();
         }
     }
 }

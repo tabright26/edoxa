@@ -5,23 +5,15 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Arena.Challenges.Api.Application.Requests;
-using eDoxa.Arena.Challenges.Api.Application.Requests.Validations;
-using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.Domain.Queries;
 
 using FluentAssertions;
 
-using FluentValidation.TestHelper;
-
-using Microsoft.AspNetCore.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using Moq;
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Arena.Challenges.UnitTests.Application.Requests
+namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenge.Requests
 {
     [TestClass]
     public sealed class SynchronizeChallengesRequestTest
