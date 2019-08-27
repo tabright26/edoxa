@@ -12,8 +12,11 @@ using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Web.Spa.Extensions;
 using eDoxa.Web.Spa.Infrastructure;
 
+using HealthChecks.UI.Client;
+
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
@@ -71,8 +74,6 @@ namespace eDoxa.Web.Spa
 
         public void Configure(IApplicationBuilder application)
         {
-            application.UseHealthChecks();
-
             if (HostingEnvironment.IsDevelopment())
             {
                 application.UseDeveloperExceptionPage();
@@ -86,6 +87,15 @@ namespace eDoxa.Web.Spa
             application.UseSpaStaticFiles();
 
             application.UseMvcWithDefaultRoute();
+
+            application.UseHealthChecks(
+                "/health",
+                new HealthCheckOptions
+                {
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                }
+            );
 
             application.UseSpa(
                 builder =>

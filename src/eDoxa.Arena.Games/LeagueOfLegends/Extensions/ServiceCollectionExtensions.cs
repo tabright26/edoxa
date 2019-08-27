@@ -4,11 +4,16 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
+using System.Net;
+
 using eDoxa.Arena.Games.LeagueOfLegends.Abstractions;
-using eDoxa.Seedwork.Monitoring;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
+using Polly;
+using Polly.Extensions.Http;
 
 namespace eDoxa.Arena.Games.LeagueOfLegends.Extensions
 {
@@ -22,8 +27,10 @@ namespace eDoxa.Arena.Games.LeagueOfLegends.Extensions
 
             services.AddHttpClient<ILeagueOfLegendsService, LeagueOfLegendsService>()
                 .AddHttpMessageHandler<LeagueOfLegendsDelegatingHandler>()
-                .AddPolicyHandler(HttpPolicies.GetRetryPolicy())
-                .AddPolicyHandler(HttpPolicies.GetCircuitBreakerPolicy());
+                .AddPolicyHandler(HttpPolicyExtensions.HandleTransientHttpError()
+                    .OrResult(message => message.StatusCode == HttpStatusCode.NotFound)
+                    .WaitAndRetryAsync(6, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))))
+                .AddPolicyHandler(HttpPolicyExtensions.HandleTransientHttpError().CircuitBreakerAsync(5, TimeSpan.FromSeconds(30)));
 
             services.AddSingleton<ILeagueOfLegendsProxy, LeagueOfLegendsProxy>();
         }
