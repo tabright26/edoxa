@@ -10,10 +10,13 @@ using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Web.Gateway.Extensions;
 using eDoxa.Web.Gateway.Infrastructure;
 
+using HealthChecks.UI.Client;
+
 using IdentityServer4.Models;
 
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -72,14 +75,21 @@ namespace eDoxa.Web.Gateway
 
         public void Configure(IApplicationBuilder application)
         {
-            application.UseHealthChecks();
-
             if (HostingEnvironment.IsDevelopment())
             {
                 application.UseDeveloperExceptionPage();
             }
 
             application.UseCors("default");
+
+            application.UseHealthChecks(
+                "/health",
+                new HealthCheckOptions
+                {
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                }
+            );
 
             application.UseOcelot().Wait();
         }

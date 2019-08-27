@@ -30,10 +30,13 @@ using eDoxa.ServiceBus.Modules;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 
+using HealthChecks.UI.Client;
+
 using IdentityModel;
 
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -268,7 +271,14 @@ namespace eDoxa.Identity.Api
 
             application.UseMvcWithDefaultRoute();
 
-            application.UseHealthChecks();
+            application.UseHealthChecks(
+                "/health",
+                new HealthCheckOptions
+                {
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                }
+            );
         }
 
         public void ConfigureDevelopment(IApplicationBuilder application, IApiVersionDescriptionProvider provider)

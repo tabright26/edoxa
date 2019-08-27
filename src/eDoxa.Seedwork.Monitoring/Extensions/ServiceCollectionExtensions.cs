@@ -15,8 +15,6 @@ using IdentityServer4.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using Serilog;
-
 namespace eDoxa.Seedwork.Monitoring.Extensions
 {
     public static class ServiceCollectionExtensions
@@ -52,7 +50,7 @@ namespace eDoxa.Seedwork.Monitoring.Extensions
                 {
                     foreach (var name in validationResult.MemberNames)
                     {
-                        Log.Error($"{name}:{validationResult.ErrorMessage}");
+                        Console.WriteLine($"{name}:{validationResult.ErrorMessage}");
                     }
                 }
             }
