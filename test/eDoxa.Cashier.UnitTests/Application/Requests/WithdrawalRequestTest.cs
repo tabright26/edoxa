@@ -4,8 +4,12 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using eDoxa.Arena.Challenges.Api.Application.Requests;
+using eDoxa.Arena.Challenges.Api.Application.Requests.Validations;
+using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
+using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.Domain.Queries;
 using eDoxa.Cashier.Api.Application.Requests;
-using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 
@@ -30,12 +34,12 @@ namespace eDoxa.Cashier.UnitTests.Application.Requests
         public void DeserializeObject_WhenDeserializeWithDataContractConstructor_ShouldBeEquivalentToRequest()
         {
             //Arrange
-            var request = new WithdrawalRequest(Money.Fifty);
+            var request = new WithdrawalRequest();
 
             var serializedEvent = JsonConvert.SerializeObject(request);
 
             //Act
-            var deserializedEvent = JsonConvert.DeserializeObject<WithdrawalRequest>(serializedEvent);
+            var deserializedEvent = JsonConvert.DeserializeObject<CreateUserRequest>(serializedEvent);
 
             //Assert
             deserializedEvent.Should().BeEquivalentTo(request);

@@ -4,16 +4,12 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Application.Requests;
 using eDoxa.Cashier.Api.Areas.Accounts.Controllers;
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.Domain.Services;
-using eDoxa.Cashier.UnitTests.Helpers.Mocks;
 
 using FluentAssertions;
 
@@ -29,34 +25,29 @@ namespace eDoxa.Cashier.UnitTests.Areas.Account.Controllers
     [TestClass]
     public sealed class AccountWithdrawalControllerTest
     {
+        private Mock<IMediator> _mockMediator;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            _mockMediator = new Mock<IMediator>();
+        }
 
         [TestMethod]
         public async Task PostAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
-            var withdrawal = new WithdrawalRequest(Money.Fifty);
+            _mockMediator.Setup(mediator => mediator.Send(It.IsAny<WithdrawalRequest>(), It.IsAny<CancellationToken>())).Returns(Unit.Task).Verifiable();
 
-            var mockAccountService = new Mock<IAccountService>();
-
-            mockAccountService.Setup(accountService => accountService.WithdrawalAsync(It.IsAny<string>(), It.IsAny<UserId>(),
-                It.IsAny<Money>(), It.IsAny<CancellationToken>())).Returns(Task.CompletedTask).Verifiable();
-
-            var controller = new AccountWithdrawalController(mockAccountService.Object);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+            var controller = new AccountWithdrawalController(_mockMediator.Object);
 
             // Act
-            var result = await controller.PostAsync(withdrawal);
+            var result = await controller.PostAsync(new WithdrawalRequest(Money.Fifty));
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            mockAccountService.Verify(accountService => accountService.WithdrawalAsync(It.IsAny<string>(), It.IsAny<UserId>(),
-                It.IsAny<Money>(), It.IsAny<CancellationToken>()), Times.Once);
-
-            mockHttpContextAccessor.Verify();
+            _mockMediator.Verify(mediator => mediator.Send(It.IsAny<WithdrawalRequest>(), It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }

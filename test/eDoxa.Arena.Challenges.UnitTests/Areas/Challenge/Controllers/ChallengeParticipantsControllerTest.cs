@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Application.Requests;
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers;
-using eDoxa.Arena.Challenges.Api.Areas.Challenges.Requests;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
@@ -51,15 +50,15 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenge.Controllers
 
             _queries.Setup(queries => queries.FetchChallengeParticipantsAsync(It.IsAny<ChallengeId>())).ReturnsAsync(challenge.Participants).Verifiable();
 
-            //var controller = new ChallengeParticipantsController(_queries.Object, _mediator.Object);
+            var controller = new ChallengeParticipantsController(_queries.Object, _mediator.Object);
 
-            //// Act
-            //var result = await controller.GetAsync(new ChallengeId());
+            // Act
+            var result = await controller.GetAsync(new ChallengeId());
 
-            //// Assert
-            //result.Should().BeOfType<OkObjectResult>();
-            //_queries.Verify();
-            //_mediator.VerifyNoOtherCalls();
+            // Assert
+            result.Should().BeOfType<OkObjectResult>();
+            _queries.Verify();
+            _mediator.VerifyNoOtherCalls();
         }
 
         [TestMethod]
@@ -70,15 +69,15 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenge.Controllers
                 .ReturnsAsync(new Collection<Participant>())
                 .Verifiable();
 
-            //var controller = new ChallengeParticipantsController(_queries.Object, _mediator.Object);
+            var controller = new ChallengeParticipantsController(_queries.Object, _mediator.Object);
 
-            //// Act
-            //var result = await controller.GetAsync(new ChallengeId());
+            // Act
+            var result = await controller.GetAsync(new ChallengeId());
 
-            //// Assert
-            //result.Should().BeOfType<NoContentResult>();
-            //_queries.Verify();
-            //_mediator.VerifyNoOtherCalls();
+            // Assert
+            result.Should().BeOfType<NoContentResult>();
+            _queries.Verify();
+            _mediator.VerifyNoOtherCalls();
         }
 
         [TestMethod]
@@ -87,17 +86,17 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenge.Controllers
             // Arrange
             _mediator.Setup(mediator => mediator.Send(It.IsAny<RegisterParticipantRequest>(), It.IsAny<CancellationToken>())).Returns(Unit.Task).Verifiable();
 
-            //var controller = new ChallengeParticipantsController(_queries.Object, _mediator.Object);
+            var controller = new ChallengeParticipantsController(_queries.Object, _mediator.Object);
 
-            //// Act
-            //var result = await controller.PostAsync(new ChallengeId());
+            // Act
+            var result = await controller.PostAsync(new ChallengeId());
 
-            //// Assert
-            //result.Should().BeOfType<OkObjectResult>();
+            // Assert
+            result.Should().BeOfType<OkObjectResult>();
 
-            //_queries.VerifyNoOtherCalls();
+            _queries.VerifyNoOtherCalls();
 
-            //_mediator.Verify();
+            _mediator.Verify();
         }
     }
 }

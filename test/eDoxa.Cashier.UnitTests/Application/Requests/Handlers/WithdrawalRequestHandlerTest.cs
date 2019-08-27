@@ -1,5 +1,5 @@
-﻿// Filename: DepositRequestHandlerTest.cs
-// Date Created: 2019-06-25
+﻿// Filename: WithdrawalRequestHandlerTest.cs
+// Date Created: 2019-07-05
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -24,39 +24,39 @@ using Moq;
 namespace eDoxa.Cashier.UnitTests.Application.Requests.Handlers
 {
     [TestClass]
-    public sealed class DepositRequestHandlerTest
+    public sealed class WithdrawalRequestHandlerTest
     {
         private MockHttpContextAccessor _mockHttpContextAccessor;
-        private Mock<IAccountService> _mockMoneyAccountService;
+        private Mock<IAccountService> _mockAccountService;
 
         [TestInitialize]
         public void TestInitialize()
         {
             _mockHttpContextAccessor = new MockHttpContextAccessor();
-            _mockMoneyAccountService = new Mock<IAccountService>();
+            _mockAccountService = new Mock<IAccountService>();
         }
 
         [TestMethod]
-        public async Task HandleAsync_DepositMoneyRequest_ShouldBeOfTypeEither()
+        public async Task HandleAsync_WithdrawMoneyRequest_ShouldBeOfTypeEither()
         {
             // Arrange
-            var request = new DepositRequest(Currency.Money.Name, Money.Fifty);
+            var request = new WithdrawalRequest(Money.Fifty.Amount);
 
-            _mockMoneyAccountService
+            _mockAccountService
                 .Setup(
-                    accountService => accountService.DepositAsync(It.IsAny<string>(), It.IsAny<UserId>(), It.IsAny<ICurrency>(), It.IsAny<CancellationToken>())
+                    accountService => accountService.WithdrawalAsync(It.IsAny<string>(), It.IsAny<UserId>(), It.IsAny<Money>(), It.IsAny<CancellationToken>())
                 )
                 .Returns(Unit.Task)
                 .Verifiable();
 
-            var handler = new DepositRequestHandler(_mockHttpContextAccessor.Object, _mockMoneyAccountService.Object);
+            var handler = new WithdrawalRequestHandler(_mockHttpContextAccessor.Object, _mockAccountService.Object);
 
             // Act
             await handler.HandleAsync(request);
 
             // Assert
-            _mockMoneyAccountService.Verify(
-                accountService => accountService.DepositAsync(It.IsAny<string>(), It.IsAny<UserId>(), It.IsAny<ICurrency>(), It.IsAny<CancellationToken>()),
+            _mockAccountService.Verify(
+                accountService => accountService.WithdrawalAsync(It.IsAny<string>(), It.IsAny<UserId>(), It.IsAny<Money>(), It.IsAny<CancellationToken>()),
                 Times.Once
             );
         }

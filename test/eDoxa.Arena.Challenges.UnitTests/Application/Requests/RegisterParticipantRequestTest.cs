@@ -5,6 +5,7 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Arena.Challenges.Api.Application.Requests;
+using eDoxa.Arena.Challenges.Api.Application.Requests.Validations;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
@@ -23,21 +24,21 @@ using Newtonsoft.Json;
 namespace eDoxa.Arena.Challenges.UnitTests.Application.Requests
 {
     [TestClass]
-    public sealed class CloseChallengesRequestTest
+    public sealed class RegisterParticipantRequestTest
     {
         [TestMethod]
         public void DeserializeObject_WhenDeserializeWithDataContractConstructor_ShouldBeEquivalentToRequest()
         {
             //Arrange
-            var request = new CloseChallengesRequest(new ChallengeId());
+            var registerParticipant = new RegisterParticipantRequest(new ChallengeId());
 
-            var serializedEvent = JsonConvert.SerializeObject(request);
+            var serializedEvent = JsonConvert.SerializeObject(registerParticipant);
 
             //Act
             var deserializedEvent = JsonConvert.DeserializeObject<CloseChallengesRequest>(serializedEvent);
 
             //Assert
-            deserializedEvent.Should().BeEquivalentTo(request);
+            deserializedEvent.Should().BeEquivalentTo(registerParticipant);
         }
     }
 }

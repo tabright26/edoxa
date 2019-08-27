@@ -11,9 +11,6 @@
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Application.Requests;
-using eDoxa.Cashier.Api.Extensions;
-using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.Services;
 using eDoxa.Seedwork.Application.Extensions;
 
 using MediatR;
@@ -34,11 +31,11 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
     [ApiExplorerSettings(GroupName = "Account")]
     public sealed class AccountWithdrawalController : ControllerBase
     {
-        private readonly IAccountService _accountService;
+        private readonly IMediator _mediator;
 
-        public AccountWithdrawalController(IAccountService accountService)
+        public AccountWithdrawalController(IMediator mediator)
         {
-            _accountService = accountService;
+            _mediator = mediator;
         }
 
         /// <summary>
@@ -49,11 +46,7 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
         [SwaggerResponse(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> PostAsync([FromBody] WithdrawalRequest request)
         {
-            var userId = HttpContext.GetUserId();
-
-            var connectAccountId = HttpContext.GetConnectAccountId()!;
-
-            await _accountService.WithdrawalAsync(connectAccountId, userId, new Money(request.Amount));
+            await _mediator.SendAsync(request);
 
             return this.Ok("Processing the withdrawal transaction...");
         }

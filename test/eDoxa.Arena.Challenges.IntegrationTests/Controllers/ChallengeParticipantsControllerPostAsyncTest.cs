@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 using Autofac;
 
 using eDoxa.Arena.Challenges.Api.Application.Requests;
-using eDoxa.Arena.Challenges.Api.Areas.Challenges.Requests;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;

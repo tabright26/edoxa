@@ -4,7 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Arena.Challenges.Api.Areas.Challenges.Validators;
+using eDoxa.Arena.Challenges.Api.Application.Requests.Validations;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
@@ -16,7 +16,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
 
-namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenge.Requests.Validations
+namespace eDoxa.Arena.Challenges.UnitTests.Application.Requests.Validations
 {
     [TestClass]
     public sealed class RegisterParticipantRequestValidatorTest
