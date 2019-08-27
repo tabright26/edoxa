@@ -32,7 +32,7 @@ const App = () => (
         <Switch>
           <Route exact path="/callback" name="Callback" render={props => <Callback {...props} />} />
           <Route exact path="/terms-of-services" name="Terms of Services" render={props => <PageTermsOfServices {...props} />} />
-          <Route exact path="/FAQ" name="F. A. Q." render={props => <PageFAQ {...props} />} />
+          <Route exact path="/faq" name="F. A. Q." render={props => <PageFAQ {...props} />} />
           <Route exact path="/errors/401" name="Error 401" render={props => <PageError401 {...props} />} />
           <Route exact path="/errors/403" name="Error 403" render={props => <PageError403 {...props} />} />
           <Route exact path="/errors/404" name="Error 404" render={props => <PageError404 {...props} />} />

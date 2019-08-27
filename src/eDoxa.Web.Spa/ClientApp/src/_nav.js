@@ -1,58 +1,53 @@
 export default {
   items: [
     {
-      name: "Arena",
-      url: "/arena",
-      icon: "icon-cursor",
-      children: [
-        {
-          name: "Challenges",
-          url: "/arena/challenges",
-          icon: "icon-cursor"
-        },
-        {
-          name: "Games",
-          url: "/arena/games",
-          icon: "icon-cursor"
-        },
-        {
-          name: "Tournaments",
-          url: "/arena/tournaments",
-          icon: "icon-cursor"
-        }
-      ]
+      title: true,
+      name: "Arena"
     },
     {
-      name: "Structures",
-      url: "/structures",
-      icon: "icon-cursor",
-      children: [
-        {
-          name: "Clans",
-          url: "/structures/clans",
-          icon: "icon-cursor"
-        },
-        {
-          name: "Leagues",
-          url: "/structures/leagues",
-          icon: "icon-cursor"
-        },
-        {
-          name: "Teams",
-          url: "/structures/teams",
-          icon: "icon-cursor"
-        }
-      ]
+      name: "Challenges",
+      url: "/arena/challenges",
+      icon: "icon-cursor"
+    },
+
+    {
+      name: "Tournaments",
+      url: "/arena/tournaments",
+      icon: "icon-cursor"
     },
     {
-      name: "Marketplace",
-      url: "/marketplace",
-      icon: "icon-speedometer"
+      name: "Games",
+      url: "/arena/games",
+      icon: "icon-cursor"
     },
     {
-      name: "News Feeds",
-      url: "/news-feeds",
-      icon: "icon-speedometer"
+      title: true,
+      name: "Structures"
+    },
+    {
+      name: "Teams",
+      url: "/structures/teams",
+      icon: "icon-cursor"
+    },
+    {
+      name: "Clans",
+      url: "/structures/clans",
+      icon: "icon-cursor"
+    },
+    {
+      name: "Leagues",
+      url: "/structures/leagues",
+      icon: "icon-cursor"
+    },
+    {
+      divider: true,
+      class: "mt-auto"
+    },
+    {
+      name: "F. A. Q.",
+      url: "/faq",
+      icon: "fa fa-question-circle",
+      variant: "info"
     }
   ]
 };

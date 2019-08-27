@@ -1,6 +1,6 @@
-import React, { Component, Suspense } from "react";
+import React, { Suspense } from "react";
 import { Container } from "reactstrap";
-import { AppFooter, AppHeader, AppSidebar, AppSidebarFooter, AppSidebarForm, AppSidebarHeader, AppSidebarMinimizer, AppSidebarNav } from "@coreui/react";
+import { AppFooter, AppAside, AppHeader, AppSidebar, AppSidebarFooter, AppSidebarForm, AppSidebarHeader, AppSidebarMinimizer, AppSidebarNav } from "@coreui/react";
 // sidebar nav config
 import navigation from "../../../_nav";
 // routes config
@@ -8,51 +8,47 @@ import routes from "../../../routes";
 import Routes from "../../Shared/Routes";
 import Loading from "../../../components/Loading";
 
-//const Aside = React.lazy(() => import("./Aside"));
+const Aside = React.lazy(() => import("./Aside"));
 const Footer = React.lazy(() => import("./Footer"));
 const Header = React.lazy(() => import("./Header"));
 
-class Layout extends Component {
-  render() {
-    return (
-      <div className="app">
-        <AppHeader fixed>
+const Layout = ({ ...props }) => (
+  <div className="app">
+    <AppHeader fixed>
+      <Suspense fallback={<Loading.Default />}>
+        <Header />
+      </Suspense>
+    </AppHeader>
+    <div className="app-body">
+      <AppSidebar fixed minimized display="lg">
+        <AppSidebarHeader />
+        <AppSidebarForm />
+        <Suspense>
+          <AppSidebarNav navConfig={navigation} {...props} />
+        </Suspense>
+        <AppSidebarFooter />
+        <AppSidebarMinimizer />
+      </AppSidebar>
+      <main className="main">
+        {/* <AppBreadcrumb appRoutes={routes} /> */}
+        <Container fluid>
           <Suspense fallback={<Loading.Default />}>
-            <Header />
+            <Routes routes={routes} />
           </Suspense>
-        </AppHeader>
-        <div className="app-body">
-          <AppSidebar fixed display="lg">
-            <AppSidebarHeader />
-            <AppSidebarForm />
-            <Suspense>
-              <AppSidebarNav navConfig={navigation} {...this.props} />
-            </Suspense>
-            <AppSidebarFooter />
-            <AppSidebarMinimizer />
-          </AppSidebar>
-          <main className="main">
-            {/* <AppBreadcrumb appRoutes={routes} /> */}
-            <Container fluid>
-              <Suspense fallback={<Loading.Default />}>
-                <Routes routes={routes} />
-              </Suspense>
-            </Container>
-          </main>
-          {/* <AppAside fixed>
-            <Suspense fallback={<Loading />}>
-              <Aside />
-            </Suspense>
-          </AppAside> */}
-        </div>
-        <AppFooter>
-          <Suspense fallback={<Loading.Default />}>
-            <Footer />
-          </Suspense>
-        </AppFooter>
-      </div>
-    );
-  }
-}
+        </Container>
+      </main>
+      <AppAside fixed>
+        <Suspense fallback={<Loading.Default />}>
+          <Aside />
+        </Suspense>
+      </AppAside>
+    </div>
+    <AppFooter>
+      <Suspense fallback={<Loading.Default />}>
+        <Footer />
+      </Suspense>
+    </AppFooter>
+  </div>
+);
 
 export default Layout;
