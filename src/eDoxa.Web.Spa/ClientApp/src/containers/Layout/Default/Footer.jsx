@@ -1,26 +1,12 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React from "react";
+import { Link } from "react-router-dom";
 
-const propTypes = {
-  children: PropTypes.node
-};
-
-const defaultProps = {};
-
-class Footer extends Component {
-  render() {
-    // eslint-disable-next-line
-    const { children, ...attributes } = this.props;
-
-    return (
-      <React.Fragment>
-        <span className="ml-auto">&copy; {new Date(Date.now()).getFullYear()} eDoxa - All rights reserved.</span>
-      </React.Fragment>
-    );
-  }
-}
-
-Footer.propTypes = propTypes;
-Footer.defaultProps = defaultProps;
+const Footer = () => (
+  <div className="ml-auto">
+    &copy; {new Date(Date.now()).getFullYear()} eDoxa - All rights reserved.
+    <span className="mx-2">|</span>
+    <Link to="/terms-of-services">Terms of Services</Link>
+  </div>
+);
 
 export default Footer;
