@@ -16,7 +16,11 @@ using eDoxa.Identity.Api.Extensions;
 using IdentityServer4.AccessTokenValidation;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 {
@@ -41,6 +45,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         ///     Find user's personal info.
         /// </summary>
         [HttpGet]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(UserPersonalInfoResponse))]
+        [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -59,6 +65,9 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         ///     Create user's profile information.
         /// </summary>
         [HttpPost]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(string))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
         public async Task<IActionResult> PostAsync([FromBody] PersonalInfoPostRequest request)
         {
             if (ModelState.IsValid)
@@ -96,6 +105,9 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         ///     Update user's profile information.
         /// </summary>
         [HttpPut]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(string))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
         public async Task<IActionResult> PutAsync([FromBody] PersonalInfoPutRequest request)
         {
             if (ModelState.IsValid)

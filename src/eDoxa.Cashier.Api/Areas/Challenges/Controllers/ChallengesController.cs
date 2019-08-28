@@ -1,19 +1,20 @@
 ﻿// Filename: ChallengesController.cs
-// Date Created: 2019-07-11
+// Date Created: 2019-08-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Api.Areas.Challenges.Responses;
 using eDoxa.Cashier.Api.Infrastructure.Queries.Extensions;
-using eDoxa.Cashier.Api.ViewModels;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.Queries;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -39,18 +40,24 @@ namespace eDoxa.Cashier.Api.Areas.Challenges.Controllers
         /// </summary>
         [AllowAnonymous]
         [HttpGet("{challengeId}")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeViewModel))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeResponse))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetByIdAsync(ChallengeId challengeId)
         {
-            var challengeViewModel = await _challengeQuery.FindChallengeViewModelAsync(challengeId);
-
-            if (challengeViewModel == null)
+            if (ModelState.IsValid)
             {
-                return this.NotFound("Challenge not found.");
+                var response = await _challengeQuery.FindChallengeResponseAsync(challengeId);
+
+                if (response == null)
+                {
+                    return this.NotFound("Challenge not found.");
+                }
+
+                return this.Ok(response);
             }
 
-            return this.Ok(challengeViewModel);
+            return this.BadRequest(ModelState);
         }
     }
 }

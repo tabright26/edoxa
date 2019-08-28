@@ -14,12 +14,16 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 
+using FluentValidation.Results;
+
 namespace eDoxa.Cashier.Domain.Services
 {
     public interface IAccountService
     {
-        Task DepositAsync(string customerId, UserId userId, ICurrency currency, CancellationToken cancellationToken = default);
+        Task<ValidationResult> DepositAsync(IAccount account, ICurrency currency, string customerId, CancellationToken cancellationToken = default);
 
-        Task WithdrawalAsync(string connectAccountId, UserId userId, Money money, CancellationToken cancellationToken = default);
+        Task<ValidationResult> WithdrawalAsync(IMoneyAccount account, Money money, string connectAccountId, CancellationToken cancellationToken = default);
+
+        Task<IAccount?> FindUserAccountAsync(UserId userId);
     }
 }

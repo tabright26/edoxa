@@ -4,10 +4,12 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Areas.Identity.Extensions;
 using eDoxa.Identity.Api.Areas.Identity.Requests;
+using eDoxa.Identity.Api.Areas.Identity.Responses;
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Extensions;
 using eDoxa.Identity.Api.Infrastructure.Models;
@@ -15,7 +17,11 @@ using eDoxa.Identity.Api.Infrastructure.Models;
 using IdentityServer4.AccessTokenValidation;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 {
@@ -35,6 +41,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         }
 
         [HttpGet]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<GameResponse>))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -44,12 +52,15 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                 return this.NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            var gameViewModels = await _userManager.GenerateGameResponsesAsync(user);
+            var responses = await _userManager.GenerateGameResponsesAsync(user);
 
-            return this.Ok(gameViewModels);
+            return this.Ok(responses);
         }
 
         [HttpPost("{game}")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> PostAsync(Game game, [FromBody] GamePostRequest model)
         {
             if (ModelState.IsValid)
@@ -75,6 +86,9 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         }
 
         [HttpDelete("{game}")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> DeleteAsync(Game game)
         {
             if (ModelState.IsValid)

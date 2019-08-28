@@ -9,8 +9,8 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Api.Areas.Transactions.Responses;
 using eDoxa.Cashier.Api.Infrastructure.Data.Fakers;
-using eDoxa.Cashier.Api.ViewModels;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
@@ -99,7 +99,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var transactions = await response.DeserializeAsync<TransactionViewModel[]>();
+            var transactions = await response.DeserializeAsync<TransactionResponse[]>();
             transactions.Should().HaveCount(account.Transactions.Count);
         }
     }

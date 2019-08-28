@@ -26,7 +26,7 @@ namespace eDoxa.Seedwork.UnitTests.Validations
         public void Validate_Enumeration_ShouldBeTrue()
         {
             // Arrange
-            var model = new MockViewModel
+            var response = new MockResponse
             {
                 Enumeration = MockEnumeration.MockEnumeration1
             };
@@ -34,7 +34,7 @@ namespace eDoxa.Seedwork.UnitTests.Validations
             var validator = new MockValidator();
 
             // Act
-            var result = validator.Validate(model);
+            var result = validator.Validate(response);
 
             // Assert
             result.IsValid.Should().BeTrue();
@@ -44,7 +44,7 @@ namespace eDoxa.Seedwork.UnitTests.Validations
         public void Validate_AllEnumeration_ShouldBeFalse()
         {
             // Arrange
-            var model = new MockViewModel
+            var response = new MockResponse
             {
                 Enumeration = MockEnumeration.All
             };
@@ -52,7 +52,7 @@ namespace eDoxa.Seedwork.UnitTests.Validations
             var validator = new MockValidator();
 
             // Act
-            var result = validator.Validate(model);
+            var result = validator.Validate(response);
 
             // Assert
             result.IsValid.Should().BeFalse();
@@ -63,7 +63,7 @@ namespace eDoxa.Seedwork.UnitTests.Validations
         public void Validate_NoneEnumeration_ShouldBeFalse()
         {
             // Arrange
-            var model = new MockViewModel
+            var response = new MockResponse
             {
                 Enumeration = new MockEnumeration()
             };
@@ -71,7 +71,7 @@ namespace eDoxa.Seedwork.UnitTests.Validations
             var validator = new MockValidator();
 
             // Act
-            var result = validator.Validate(model);
+            var result = validator.Validate(response);
 
             // Assert
             result.IsValid.Should().BeFalse();
@@ -82,7 +82,7 @@ namespace eDoxa.Seedwork.UnitTests.Validations
         public void Validate_NullEnumeration_ShouldBeFalse()
         {
             // Arrange
-            var model = new MockViewModel
+            var response = new MockResponse
             {
                 Enumeration = null
             };
@@ -90,14 +90,14 @@ namespace eDoxa.Seedwork.UnitTests.Validations
             var validator = new MockValidator();
 
             // Act
-            var result = validator.Validate(model);
+            var result = validator.Validate(response);
 
             // Assert
             result.IsValid.Should().BeFalse();
             result.Errors.Should().HaveCount(1);
         }
 
-        private class MockValidator : AbstractValidator<MockViewModel>
+        private class MockValidator : AbstractValidator<MockResponse>
         {
             public MockValidator()
             {
@@ -105,14 +105,14 @@ namespace eDoxa.Seedwork.UnitTests.Validations
             }
         }
 
-        private class MockViewModel
+        private class MockResponse
         {
             public MockEnumeration Enumeration { get; set; }
         }
 
         private class MockEnumeration : Enumeration<MockEnumeration>
         {
-            public static readonly MockEnumeration MockEnumeration1 = new MockEnumeration(1 << 0, nameof(MockEnumeration1));
+            public static readonly MockEnumeration MockEnumeration1 = new MockEnumeration(1, nameof(MockEnumeration1));
 
             public MockEnumeration()
             {

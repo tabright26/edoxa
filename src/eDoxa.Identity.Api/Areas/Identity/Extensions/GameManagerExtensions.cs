@@ -31,8 +31,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Extensions
                         IsSupported = game.IsSupported
                     }
                 )
-                .OrderBy(gameViewModel => gameViewModel.Name)
-                .ThenBy(gameViewModel => gameViewModel.IsSupported)
+                .OrderBy(response => response.Name)
+                .ThenBy(response => response.IsSupported)
                 .ToList();
         }
     }

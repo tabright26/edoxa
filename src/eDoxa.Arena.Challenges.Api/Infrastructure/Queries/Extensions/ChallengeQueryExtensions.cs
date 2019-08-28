@@ -7,7 +7,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Api.ViewModels;
+using eDoxa.Arena.Challenges.Api.Areas.Challenges.Responses;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
@@ -58,7 +58,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions
             return challengeQuery.Mapper.Map<ChallengeModel>(challenge);
         }
 
-        public static async Task<IReadOnlyCollection<ChallengeViewModel>> FetchUserChallengeViewModelHistoryAsync(
+        public static async Task<IReadOnlyCollection<ChallengeResponse>> FetchUserChallengeHistoryResponsesAsync(
             this IChallengeQuery challengeQuery,
             UserId userId,
             ChallengeGame? game = null,
@@ -67,10 +67,10 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions
         {
             var challenges = await challengeQuery.FetchUserChallengeHistoryAsync(userId, game, state);
 
-            return challengeQuery.Mapper.Map<IReadOnlyCollection<ChallengeViewModel>>(challenges);
+            return challengeQuery.Mapper.Map<IReadOnlyCollection<ChallengeResponse>>(challenges);
         }
 
-        public static async Task<IReadOnlyCollection<ChallengeViewModel>> FetchUserChallengeViewModelHistoryAsync(
+        public static async Task<IReadOnlyCollection<ChallengeResponse>> FetchUserChallengeHistoryResponsesAsync(
             this IChallengeQuery challengeQuery,
             ChallengeGame? game = null,
             ChallengeState? state = null
@@ -78,10 +78,10 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions
         {
             var challenges = await challengeQuery.FetchUserChallengeHistoryAsync(game, state);
 
-            return challengeQuery.Mapper.Map<IReadOnlyCollection<ChallengeViewModel>>(challenges);
+            return challengeQuery.Mapper.Map<IReadOnlyCollection<ChallengeResponse>>(challenges);
         }
 
-        public static async Task<IReadOnlyCollection<ChallengeViewModel>> FetchChallengeViewModelsAsync(
+        public static async Task<IReadOnlyCollection<ChallengeResponse>> FetchChallengeResponsesAsync(
             this IChallengeQuery challengeQuery,
             ChallengeGame? game = null,
             ChallengeState? state = null
@@ -89,14 +89,14 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions
         {
             var challenges = await challengeQuery.FetchChallengesAsync(game, state);
 
-            return challengeQuery.Mapper.Map<IReadOnlyCollection<ChallengeViewModel>>(challenges);
+            return challengeQuery.Mapper.Map<IReadOnlyCollection<ChallengeResponse>>(challenges);
         }
 
-        public static async Task<ChallengeViewModel?> FindChallengeViewModelAsync(this IChallengeQuery challengeQuery, ChallengeId challengeId)
+        public static async Task<ChallengeResponse?> FindChallengeResponseAsync(this IChallengeQuery challengeQuery, ChallengeId challengeId)
         {
             var challenge = await challengeQuery.FindChallengeAsync(challengeId);
 
-            return challengeQuery.Mapper.Map<ChallengeViewModel>(challenge);
+            return challengeQuery.Mapper.Map<ChallengeResponse>(challenge);
         }
     }
 }

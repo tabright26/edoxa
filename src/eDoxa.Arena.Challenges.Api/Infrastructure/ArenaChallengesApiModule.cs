@@ -6,10 +6,10 @@
 
 using Autofac;
 
-using eDoxa.Arena.Challenges.Api.Application.Adapters;
-using eDoxa.Arena.Challenges.Api.Application.Factories;
-using eDoxa.Arena.Challenges.Api.Application.Services;
-using eDoxa.Arena.Challenges.Api.Application.Strategies;
+using eDoxa.Arena.Challenges.Api.Areas.Challenges.Adapters;
+using eDoxa.Arena.Challenges.Api.Areas.Challenges.Factories;
+using eDoxa.Arena.Challenges.Api.Areas.Challenges.Services;
+using eDoxa.Arena.Challenges.Api.Areas.Challenges.Strategies;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Storage;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Queries;

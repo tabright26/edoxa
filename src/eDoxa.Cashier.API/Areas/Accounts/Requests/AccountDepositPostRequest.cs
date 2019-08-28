@@ -1,5 +1,5 @@
-﻿// Filename: DepositRequest.cs
-// Date Created: 2019-06-25
+﻿// Filename: AccountDepositPostRequest.cs
+// Date Created: 2019-08-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -20,7 +20,7 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Requests
 #nullable disable
         public AccountDepositPostRequest()
         {
-            // Required by Fluent Validation
+            // Required by Fluent Validation.
         }
 #nullable restore
 

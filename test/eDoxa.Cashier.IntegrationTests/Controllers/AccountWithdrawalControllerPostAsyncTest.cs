@@ -91,8 +91,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             using var response = await this.ExecuteAsync(new AccountWithdrawalPostRequest(Money.Fifty));
 
             // Assert
-            // BUG: The response status code should be http status code not found.
-            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
 
         [Fact]

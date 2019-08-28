@@ -4,6 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,7 +19,11 @@ using eDoxa.Identity.Api.Extensions;
 using IdentityServer4.AccessTokenValidation;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 {
@@ -43,6 +48,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         ///     Find user's DoxaTag history.
         /// </summary>
         [HttpGet]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<UserDoxaTagResponse>))]
+        [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -61,6 +68,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         ///     Create new user's DoxaTag.
         /// </summary>
         [HttpPost]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
         public async Task<IActionResult> PostAsync([FromBody] DoxaTagPostRequest request)
         {
             if (ModelState.IsValid)

@@ -10,7 +10,7 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.ViewModels;
+using eDoxa.Cashier.Api.Areas.Accounts.Responses;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Queries;
@@ -34,18 +34,18 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries.Extensions
             return accountQuery.Mapper.Map<AccountModel>(account);
         }
 
-        public static async Task<BalanceViewModel?> FindUserBalanceViewModelAsync(this IAccountQuery accountQuery, UserId userId, Currency currency)
+        public static async Task<BalanceResponse?> FindUserBalanceResponseAsync(this IAccountQuery accountQuery, UserId userId, Currency currency)
         {
             var balance = await accountQuery.FindUserBalanceAsync(userId, currency);
 
-            return accountQuery.Mapper.Map<BalanceViewModel>(balance);
+            return accountQuery.Mapper.Map<BalanceResponse>(balance);
         }
 
-        public static async Task<BalanceViewModel?> FindUserBalanceViewModelAsync(this IAccountQuery accountQuery, Currency currency)
+        public static async Task<BalanceResponse?> FindUserBalanceResponseAsync(this IAccountQuery accountQuery, Currency currency)
         {
             var balance = await accountQuery.FindUserBalanceAsync(currency);
 
-            return accountQuery.Mapper.Map<BalanceViewModel>(balance);
+            return accountQuery.Mapper.Map<BalanceResponse>(balance);
         }
     }
 }

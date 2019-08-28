@@ -19,9 +19,11 @@ using eDoxa.Cashier.Infrastructure;
 using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Swagger.Extensions;
+using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.ServiceBus.Modules;
 
+using FluentValidation;
 using FluentValidation.AspNetCore;
 
 using HealthChecks.UI.Client;
@@ -48,6 +50,7 @@ namespace eDoxa.Cashier.Api
         static Startup()
         {
             TelemetryDebugWriter.IsTracingDisabled = true;
+            ValidatorOptions.PropertyNameResolver = CamelCasePropertyNameResolver.ResolvePropertyName;
         }
 
         private static readonly string XmlCommentsFilePath = Path.Combine(
@@ -97,7 +100,13 @@ namespace eDoxa.Cashier.Api
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
                 .AddControllersAsServices()
-                .AddFluentValidation(config => config.RunDefaultMvcValidationAfterFluentValidationExecutes = false);
+                .AddFluentValidation(
+                    config =>
+                    {
+                        config.RegisterValidatorsFromAssemblyContaining<Startup>();
+                        config.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
+                    }
+                );
 
             services.AddApiVersioning(
                 options =>
@@ -124,8 +133,6 @@ namespace eDoxa.Cashier.Api
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterModule<DomainEventModule>();
-
-            builder.RegisterModule<RequestModule>();
 
             builder.RegisterModule(new ServiceBusModule<Startup>(AppSettings));
 

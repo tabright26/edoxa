@@ -1,23 +1,20 @@
 ﻿// Filename: ParticipantsController.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-08-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.Threading.Tasks;
 
+using eDoxa.Arena.Challenges.Api.Areas.Challenges.Responses;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions;
-using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -42,18 +39,24 @@ namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers
         ///     Find a participant.
         /// </summary>
         [HttpGet("{participantId}")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ParticipantViewModel))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ParticipantResponse))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
         public async Task<IActionResult> GetByIdAsync(ParticipantId participantId)
         {
-            var participantViewModel = await _query.FindParticipantViewModelAsync(participantId);
-
-            if (participantViewModel == null)
+            if (ModelState.IsValid)
             {
-                return this.NotFound("Participant not found.");
+                var response = await _query.FindParticipantResponseAsync(participantId);
+
+                if (response == null)
+                {
+                    return this.NotFound("Participant not found.");
+                }
+
+                return this.Ok(response);
             }
 
-            return this.Ok(participantViewModel);
+            return this.BadRequest(ModelState);
         }
     }
 }

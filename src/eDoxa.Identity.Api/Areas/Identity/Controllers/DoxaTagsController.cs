@@ -14,8 +14,12 @@ using eDoxa.Identity.Api.Areas.Identity.Responses;
 using eDoxa.Identity.Api.Areas.Identity.Services;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
+
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 {
@@ -40,6 +44,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         ///     Fetch DoxaTags.
         /// </summary>
         [HttpGet]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<UserDoxaTagResponse>))]
+        [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync()
         {
             var doxaTags = await _userManager.Store.DoxaTagHistory.GroupBy(doxaTag => doxaTag.UserId)

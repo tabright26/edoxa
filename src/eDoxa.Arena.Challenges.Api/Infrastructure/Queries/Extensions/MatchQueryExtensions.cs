@@ -7,7 +7,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Api.ViewModels;
+using eDoxa.Arena.Challenges.Api.Areas.Challenges.Responses;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
@@ -30,21 +30,21 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions
             return challengeQuery.Mapper.Map<MatchModel>(match);
         }
 
-        public static async Task<IReadOnlyCollection<MatchViewModel>> FetchParticipantMatchViewModelsAsync(
+        public static async Task<IReadOnlyCollection<MatchResponse>> FetchParticipantMatchResponsesAsync(
             this IMatchQuery challengeQuery,
             ParticipantId participantId
         )
         {
             var matches = await challengeQuery.FetchParticipantMatchesAsync(participantId);
 
-            return challengeQuery.Mapper.Map<IReadOnlyCollection<MatchViewModel>>(matches);
+            return challengeQuery.Mapper.Map<IReadOnlyCollection<MatchResponse>>(matches);
         }
 
-        public static async Task<MatchViewModel?> FindMatchViewModelAsync(this IMatchQuery challengeQuery, MatchId matchId)
+        public static async Task<MatchResponse?> FindMatchResponseAsync(this IMatchQuery challengeQuery, MatchId matchId)
         {
             var match = await challengeQuery.FindMatchAsync(matchId);
 
-            return challengeQuery.Mapper.Map<MatchViewModel>(match);
+            return challengeQuery.Mapper.Map<MatchResponse>(match);
         }
     }
 }

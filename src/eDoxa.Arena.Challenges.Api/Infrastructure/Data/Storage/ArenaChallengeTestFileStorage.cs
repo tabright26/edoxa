@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 using Bogus;
 
-using eDoxa.Arena.Challenges.Api.Application.Factories;
+using eDoxa.Arena.Challenges.Api.Areas.Challenges.Factories;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;

@@ -28,7 +28,7 @@ namespace eDoxa.Seedwork.UnitTests.Validations
         public void Validate_EntityId_ShouldBeTrue()
         {
             // Arrange
-            var model = new MockViewModel
+            var model = new MockResponse
             {
                 EntityId = new MockEntityId()
             };
@@ -46,7 +46,7 @@ namespace eDoxa.Seedwork.UnitTests.Validations
         public void Validate_NullEntityId_ShouldBeFalse()
         {
             // Arrange
-            var model = new MockViewModel
+            var response = new MockResponse
             {
                 EntityId = null
             };
@@ -54,7 +54,7 @@ namespace eDoxa.Seedwork.UnitTests.Validations
             var validator = new MockValidator();
 
             // Act
-            var result = validator.Validate(model);
+            var result = validator.Validate(response);
 
             // Assert
             result.IsValid.Should().BeFalse();
@@ -65,7 +65,7 @@ namespace eDoxa.Seedwork.UnitTests.Validations
         public void Validate_EmptyEntityId_ShouldBeFalse()
         {
             // Arrange
-            var model = new MockViewModel
+            var response = new MockResponse
             {
                 EntityId = new MockEmptyEntityId()
             };
@@ -73,14 +73,14 @@ namespace eDoxa.Seedwork.UnitTests.Validations
             var validator = new MockValidator();
 
             // Act
-            var result = validator.Validate(model);
+            var result = validator.Validate(response);
 
             // Assert
             result.IsValid.Should().BeFalse();
             result.Errors.Should().HaveCount(1);
         }
 
-        private class MockValidator : AbstractValidator<MockViewModel>
+        private class MockValidator : AbstractValidator<MockResponse>
         {
             public MockValidator()
             {
@@ -88,7 +88,7 @@ namespace eDoxa.Seedwork.UnitTests.Validations
             }
         }
 
-        private class MockViewModel
+        private class MockResponse
         {
             public MockEntityId EntityId { get; set; }
         }

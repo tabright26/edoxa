@@ -8,9 +8,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using eDoxa.Arena.Challenges.Api.Areas.Challenges.Responses;
 using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions;
-using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
 using eDoxa.Arena.Challenges.Domain.Services;
@@ -19,6 +19,7 @@ using eDoxa.Seedwork.Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -47,18 +48,24 @@ namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers
         ///     Find the participants of a challenge.
         /// </summary>
         [HttpGet]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<ParticipantViewModel>))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<ParticipantResponse>))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
         public async Task<IActionResult> GetAsync(ChallengeId challengeId)
         {
-            var participantViewModels = await _participantQuery.FetchChallengeParticipantViewModelsAsync(challengeId);
-
-            if (!participantViewModels.Any())
+            if (ModelState.IsValid)
             {
-                return this.NoContent();
+                var responses = await _participantQuery.FetchChallengeParticipantResponsesAsync(challengeId);
+
+                if (!responses.Any())
+                {
+                    return this.NoContent();
+                }
+
+                return this.Ok(responses);
             }
 
-            return this.Ok(participantViewModels);
+            return this.BadRequest(ModelState);
         }
 
         /// <summary>
@@ -66,22 +73,29 @@ namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers
         /// </summary>
         [HttpPost]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> PostAsync(ChallengeId challengeId)
         {
-            var userId = HttpContext.GetUserId();
-
-            var challenge = await _challengeQuery.FindChallengeAsync(challengeId);
-
-            if (challenge == null)
+            if (ModelState.IsValid)
             {
-                return this.NotFound();
+                var userId = HttpContext.GetUserId();
+
+                var challenge = await _challengeQuery.FindChallengeAsync(challengeId);
+
+                if (challenge == null)
+                {
+                    return this.NotFound("Challenge not found.");
+                }
+
+                var registeredAt = new UtcNowDateTimeProvider();
+
+                await _challengeService.RegisterParticipantAsync(challengeId, userId, registeredAt);
+
+                return this.Ok("Participant as been registered.");
             }
 
-            var registeredAt = new UtcNowDateTimeProvider();
-
-            await _challengeService.RegisterParticipantAsync(challengeId, userId, registeredAt);
-
-            return this.Ok("Participant as been registered.");
+            return this.BadRequest(ModelState);
         }
     }
 }
