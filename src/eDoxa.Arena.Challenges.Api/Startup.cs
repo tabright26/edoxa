@@ -7,6 +7,7 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
+using System.Net;
 using System.Reflection;
 
 using Autofac;
@@ -23,14 +24,16 @@ using eDoxa.Arena.Games.Extensions;
 using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Swagger.Extensions;
-using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.ServiceBus.Modules;
 
 using FluentValidation.AspNetCore;
 
+using HealthChecks.UI.Client;
+
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
@@ -41,6 +44,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Newtonsoft.Json;
 
+using Polly;
+using Polly.Extensions.Http;
+
 using static eDoxa.Seedwork.Security.IdentityServer.Resources.CustomApiResources;
 
 using ConnectionStrings = eDoxa.Seedwork.Infrastructure.ConnectionStrings;
@@ -49,15 +55,15 @@ namespace eDoxa.Arena.Challenges.Api
 {
     public sealed class Startup
     {
-        static Startup()
-        {
-            TelemetryDebugWriter.IsTracingDisabled = true;
-        }
-
         private static readonly string XmlCommentsFilePath = Path.Combine(
             AppContext.BaseDirectory,
             $"{typeof(Startup).GetTypeInfo().Assembly.GetName().Name}.xml"
         );
+
+        static Startup()
+        {
+            TelemetryDebugWriter.IsTracingDisabled = true;
+        }
 
         public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
         {
@@ -130,8 +136,12 @@ namespace eDoxa.Arena.Challenges.Api
 
             services.AddHttpClient<IIdentityService, IdentityService>()
                 .AddHttpMessageHandler<IdentityDelegatingHandler>()
-                .AddPolicyHandler(HttpPolicies.GetRetryPolicy())
-                .AddPolicyHandler(HttpPolicies.GetCircuitBreakerPolicy());
+                .AddPolicyHandler(
+                    HttpPolicyExtensions.HandleTransientHttpError()
+                        .OrResult(message => message.StatusCode == HttpStatusCode.NotFound)
+                        .WaitAndRetryAsync(6, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)))
+                )
+                .AddPolicyHandler(HttpPolicyExtensions.HandleTransientHttpError().CircuitBreakerAsync(5, TimeSpan.FromSeconds(30)));
 
             services.AddArenaGames(Configuration);
         }
@@ -166,7 +176,14 @@ namespace eDoxa.Arena.Challenges.Api
 
             application.UseMvc();
 
-            application.UseHealthChecks();
+            application.UseHealthChecks(
+                "/health",
+                new HealthCheckOptions
+                {
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                }
+            );
         }
 
         public void ConfigureDevelopment(IApplicationBuilder application, IApiVersionDescriptionProvider provider)

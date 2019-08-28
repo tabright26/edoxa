@@ -6,6 +6,7 @@
 
 using Autofac;
 
+using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Infrastructure.Data;
 using eDoxa.Identity.Api.Infrastructure.Data.Storage;
 using eDoxa.Seedwork.Infrastructure;
@@ -25,6 +26,9 @@ namespace eDoxa.Identity.Api.Infrastructure
 
             // Cleaner
             builder.RegisterType<IdentityDbContextCleaner>().As<IDbContextCleaner>().InstancePerLifetimeScope();
+
+            // Services
+            builder.RegisterType<RedirectService>().As<IRedirectService>().InstancePerDependency();
         }
     }
 }

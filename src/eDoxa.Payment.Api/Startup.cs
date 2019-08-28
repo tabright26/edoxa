@@ -12,8 +12,11 @@ using eDoxa.Payment.Api.Providers.Extensions;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.ServiceBus.Modules;
 
+using HealthChecks.UI.Client;
+
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -58,7 +61,7 @@ namespace eDoxa.Payment.Api
 
         public void Configure(IApplicationBuilder application)
         {
-            application.UseHealthChecks();
+            application.UseServiceBusSubscriber();
 
             if (HostingEnvironment.IsDevelopment())
             {
@@ -67,7 +70,14 @@ namespace eDoxa.Payment.Api
 
             application.UseProviders(Configuration);
 
-            application.UseServiceBusSubscriber();
+            application.UseHealthChecks(
+                "/health",
+                new HealthCheckOptions
+                {
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                }
+            );
         }
     }
 }
