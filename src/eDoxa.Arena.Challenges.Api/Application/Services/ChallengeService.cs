@@ -76,9 +76,12 @@ namespace eDoxa.Arena.Challenges.Api.Application.Services
 
                 await _challengeRepository.CommitAsync(cancellationToken);
             }
+
+            // TODO: Synchronize and close challenges with the same method call.
+            // await _challengeService.CloseAsync(new UtcNowDateTimeProvider(), cancellationToken);
         }
 
-        public async Task CloseAsync(IDateTimeProvider closedAt, CancellationToken cancellationToken = default)
+        private async Task CloseAsync(IDateTimeProvider closedAt, CancellationToken cancellationToken = default)
         {
             var challenges = await _challengeRepository.FetchChallengesAsync(null, ChallengeState.Ended);
 

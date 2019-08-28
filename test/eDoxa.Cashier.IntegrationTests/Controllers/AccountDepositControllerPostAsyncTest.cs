@@ -9,7 +9,7 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Application.Requests;
+using eDoxa.Cashier.Api.Areas.Accounts.Requests;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
@@ -38,9 +38,9 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
         private HttpClient _httpClient;
 
-        private async Task<HttpResponseMessage> ExecuteAsync(DepositRequest request)
+        private async Task<HttpResponseMessage> ExecuteAsync(AccountDepositPostRequest postRequest)
         {
-            return await _httpClient.PostAsync("api/account/deposit", new JsonContent(request));
+            return await _httpClient.PostAsync("api/account/deposit", new JsonContent(postRequest));
         }
 
         [Fact]
@@ -68,7 +68,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            using var response = await this.ExecuteAsync(new DepositRequest(Currency.Token.Name, 2500M));
+            using var response = await this.ExecuteAsync(new AccountDepositPostRequest(Currency.Token.Name, 2500M));
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -99,7 +99,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            using var response = await this.ExecuteAsync(new DepositRequest(Currency.Money.Name, Money.Fifty));
+            using var response = await this.ExecuteAsync(new AccountDepositPostRequest(Currency.Money.Name, Money.Fifty));
 
             // Assert
             response.EnsureSuccessStatusCode();

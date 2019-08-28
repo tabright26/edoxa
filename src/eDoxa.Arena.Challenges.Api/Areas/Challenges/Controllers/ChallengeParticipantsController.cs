@@ -1,28 +1,20 @@
 ﻿// Filename: ChallengeParticipantsController.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-08-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Api.Application.Requests;
 using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions;
 using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
 using eDoxa.Arena.Challenges.Domain.Services;
-using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain;
-
-using MediatR;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -41,11 +33,13 @@ namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers
     public class ChallengeParticipantsController : ControllerBase
     {
         private readonly IParticipantQuery _participantQuery;
+        private readonly IChallengeQuery _challengeQuery;
         private readonly IChallengeService _challengeService;
 
-        public ChallengeParticipantsController(IParticipantQuery participantQuery, IChallengeService challengeService)
+        public ChallengeParticipantsController(IParticipantQuery participantQuery, IChallengeQuery challengeQuery, IChallengeService challengeService)
         {
             _participantQuery = participantQuery;
+            _challengeQuery = challengeQuery;
             _challengeService = challengeService;
         }
 
@@ -75,6 +69,13 @@ namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers
         public async Task<IActionResult> PostAsync(ChallengeId challengeId)
         {
             var userId = HttpContext.GetUserId();
+
+            var challenge = await _challengeQuery.FindChallengeAsync(challengeId);
+
+            if (challenge == null)
+            {
+                return this.NotFound();
+            }
 
             var registeredAt = new UtcNowDateTimeProvider();
 

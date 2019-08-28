@@ -5,14 +5,12 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Application.Requests;
 using eDoxa.Cashier.Api.IntegrationEvents;
 using eDoxa.Cashier.Api.IntegrationEvents.Handlers;
-
-using MediatR;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
+using eDoxa.Cashier.Domain.Repositories;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -24,14 +22,14 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
     public sealed class UserCreatedIntegrationEventHandlerTest
     {
         [TestMethod]
-        public async Task UserCreatedIntegrationEvent_ShouldBeCompletedTask()
+        public async Task HandleAsync_WhenUserCreatedIntegrationEvent_ShouldBeCompletedTask()
         {
             // Arrange
-            var mockMediator = new Mock<IMediator>();
+            var mockAccountRepository = new Mock<IAccountRepository>();
 
-            mockMediator.Setup(mediator => mediator.Send(It.IsAny<CreateUserRequest>(), It.IsAny<CancellationToken>())).Returns(Unit.Task).Verifiable();
+            mockAccountRepository.Setup(accountRepository => accountRepository.Create(It.IsAny<IAccount>())).Verifiable();
 
-            var handler = new UserCreatedIntegrationEventHandler(mockMediator.Object);
+            var handler = new UserCreatedIntegrationEventHandler(mockAccountRepository.Object);
 
             var integrationEvent = new UserCreatedIntegrationEvent(Guid.NewGuid());
 
@@ -39,7 +37,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
             await handler.HandleAsync(integrationEvent);
 
             // Assert
-            mockMediator.Verify(mediator => mediator.Send(It.IsAny<CreateUserRequest>(), It.IsAny<CancellationToken>()), Times.Once);
+            mockAccountRepository.Verify(accountRepository => accountRepository.Create(It.IsAny<IAccount>()), Times.Once);
         }
     }
 }

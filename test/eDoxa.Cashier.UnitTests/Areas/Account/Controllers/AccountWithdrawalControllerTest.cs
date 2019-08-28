@@ -4,20 +4,17 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Application.Requests;
 using eDoxa.Cashier.Api.Areas.Accounts.Controllers;
+using eDoxa.Cashier.Api.Areas.Accounts.Requests;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.UnitTests.Helpers.Mocks;
 
 using FluentAssertions;
-
-using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -34,7 +31,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Account.Controllers
         public async Task PostAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
-            var withdrawal = new WithdrawalRequest(Money.Fifty);
+            var withdrawal = new AccountWithdrawalPostRequest(Money.Fifty);
 
             var mockAccountService = new Mock<IAccountService>();
 

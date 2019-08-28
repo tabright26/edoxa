@@ -11,13 +11,10 @@
 using System;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Application.Requests;
+using eDoxa.Cashier.Api.Areas.Accounts.Requests;
 using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Services;
-using eDoxa.Seedwork.Application.Extensions;
-
-using MediatR;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -48,13 +45,13 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
         [HttpPost]
         [SwaggerResponse(StatusCodes.Status200OK)]
         [SwaggerResponse(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> PostAsync([FromBody] DepositRequest request)
+        public async Task<IActionResult> PostAsync([FromBody] AccountDepositPostRequest postRequest)
         {
             var userId = HttpContext.GetUserId();
 
             var customerId = HttpContext.GetCustomerId()!;
 
-            await _accountService.DepositAsync(customerId, userId, MapCurrency(request.Currency, request.Amount));
+            await _accountService.DepositAsync(customerId, userId, MapCurrency(postRequest.Currency, postRequest.Amount));
 
             return this.Ok("Processing the deposit transaction...");
         }

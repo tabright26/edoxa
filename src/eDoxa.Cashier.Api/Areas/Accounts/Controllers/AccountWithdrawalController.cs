@@ -10,13 +10,10 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Application.Requests;
+using eDoxa.Cashier.Api.Areas.Accounts.Requests;
 using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Services;
-using eDoxa.Seedwork.Application.Extensions;
-
-using MediatR;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -47,13 +44,13 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
         [HttpPost]
         [SwaggerResponse(StatusCodes.Status200OK)]
         [SwaggerResponse(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> PostAsync([FromBody] WithdrawalRequest request)
+        public async Task<IActionResult> PostAsync([FromBody] AccountWithdrawalPostRequest postRequest)
         {
             var userId = HttpContext.GetUserId();
 
             var connectAccountId = HttpContext.GetConnectAccountId()!;
 
-            await _accountService.WithdrawalAsync(connectAccountId, userId, new Money(request.Amount));
+            await _accountService.WithdrawalAsync(connectAccountId, userId, new Money(postRequest.Amount));
 
             return this.Ok("Processing the withdrawal transaction...");
         }
