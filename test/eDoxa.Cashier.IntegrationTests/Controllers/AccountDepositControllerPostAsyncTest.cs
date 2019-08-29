@@ -68,7 +68,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            using var response = await this.ExecuteAsync(new AccountDepositPostRequest(Currency.Token.Name, 2500M));
+            using var response = await this.ExecuteAsync(new AccountDepositPostRequest(Currency.Token, 2500M));
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -99,7 +99,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            using var response = await this.ExecuteAsync(new AccountDepositPostRequest(Currency.Money.Name, Money.Fifty));
+            using var response = await this.ExecuteAsync(new AccountDepositPostRequest(Currency.Money, Money.Fifty));
 
             // Assert
             response.EnsureSuccessStatusCode();

@@ -15,8 +15,6 @@ using eDoxa.Arena.Challenges.UnitTests.Helpers.Extensions;
 
 using FluentAssertions;
 
-using MediatR;
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -27,29 +25,25 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
     [TestClass]
     public sealed class ParticipantsControllerTest
     {
-        private Mock<IMediator> _mediator;
-        private Mock<IParticipantQuery> _queries;
-
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            _queries = new Mock<IParticipantQuery>();
-            _queries.SetupGet(matchQuery => matchQuery.Mapper).Returns(MapperExtensions.Mapper);
-            _mediator = new Mock<IMediator>();
-        }
-
         [TestMethod]
         public async Task GetByIdAsync_ShouldBeOkObjectResult()
         {
             // Arrange        
             var challengeFaker = new ChallengeFaker(state: ChallengeState.InProgress);
+
             challengeFaker.UseSeed(95632852);
+
             var challenge = challengeFaker.Generate();
+
             var participants = challenge.Participants;
 
-            _queries.Setup(queries => queries.FindParticipantAsync(It.IsAny<ParticipantId>())).ReturnsAsync(participants.First()).Verifiable();
+            var mockParticipantQuery = new Mock<IParticipantQuery>();
+            
+            mockParticipantQuery.Setup(participantQuery => participantQuery.FindParticipantAsync(It.IsAny<ParticipantId>())).ReturnsAsync(participants.First()).Verifiable();
 
-            var controller = new ParticipantsController(_queries.Object);
+            mockParticipantQuery.SetupGet(participantQuery => participantQuery.Mapper).Returns(MapperExtensions.Mapper).Verifiable();
+
+            var controller = new ParticipantsController(mockParticipantQuery.Object);
 
             // Act
             var result = await controller.GetByIdAsync(new ParticipantId());
@@ -57,18 +51,22 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            _queries.Verify();
+            mockParticipantQuery.Verify(participantQuery => participantQuery.FindParticipantAsync(It.IsAny<ParticipantId>()), Times.Once);
 
-            _mediator.VerifyNoOtherCalls();
+            mockParticipantQuery.VerifyGet(participantQuery => participantQuery.Mapper, Times.Once);
         }
 
         [TestMethod]
         public async Task GetByIdAsync_ShouldBeNotFoundObjectResult()
         {
             // Arrange
-            _queries.Setup(queries => queries.FindParticipantAsync(It.IsAny<ParticipantId>())).ReturnsAsync((Participant) null).Verifiable();
+            var mockParticipantQuery = new Mock<IParticipantQuery>();
 
-            var controller = new ParticipantsController(_queries.Object);
+            mockParticipantQuery.Setup(participantQuery => participantQuery.FindParticipantAsync(It.IsAny<ParticipantId>())).Verifiable();
+
+            mockParticipantQuery.SetupGet(participantQuery => participantQuery.Mapper).Returns(MapperExtensions.Mapper).Verifiable();
+
+            var controller = new ParticipantsController(mockParticipantQuery.Object);
 
             // Act
             var result = await controller.GetByIdAsync(new ParticipantId());
@@ -76,9 +74,34 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
 
-            _queries.Verify();
+            mockParticipantQuery.Verify(participantQuery => participantQuery.FindParticipantAsync(It.IsAny<ParticipantId>()), Times.Once);
 
-            _mediator.VerifyNoOtherCalls();
+            mockParticipantQuery.VerifyGet(participantQuery => participantQuery.Mapper, Times.Once);
+        }
+
+        [TestMethod]
+        public async Task GetByIdAsync_ShouldBeBadRequestObjectResult()
+        {
+            // Arrange
+            var mockParticipantQuery = new Mock<IParticipantQuery>();
+
+            mockParticipantQuery.Setup(participantQuery => participantQuery.FindParticipantAsync(It.IsAny<ParticipantId>())).Verifiable();
+
+            mockParticipantQuery.SetupGet(participantQuery => participantQuery.Mapper).Returns(MapperExtensions.Mapper).Verifiable();
+
+            var controller = new ParticipantsController(mockParticipantQuery.Object);
+
+            controller.ControllerContext.ModelState.AddModelError("error", "error");
+
+            // Act
+            var result = await controller.GetByIdAsync(new ParticipantId());
+
+            // Assert
+            result.Should().BeOfType<BadRequestObjectResult>();
+
+            mockParticipantQuery.Verify(participantQuery => participantQuery.FindParticipantAsync(It.IsAny<ParticipantId>()), Times.Never);
+
+            mockParticipantQuery.VerifyGet(participantQuery => participantQuery.Mapper, Times.Never);
         }
     }
 }

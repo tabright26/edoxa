@@ -1,10 +1,11 @@
 ﻿// Filename: Token.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-08-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Globalization;
 
 using eDoxa.Seedwork.Domain;
@@ -38,6 +39,19 @@ namespace eDoxa.Cashier.Domain.AggregateModels
         public static Token operator -(Token token)
         {
             return new Token(-token.Amount);
+        }
+
+        public static IImmutableSet<Token> DepositAmounts()
+        {
+            return new[]
+            {
+                FiftyThousand,
+                OneHundredThousand,
+                TwoHundredFiftyThousand,
+                FiveHundredThousand,
+                OneMillion,
+                FiveMillions
+            }.ToImmutableHashSet();
         }
 
         public override string ToString()

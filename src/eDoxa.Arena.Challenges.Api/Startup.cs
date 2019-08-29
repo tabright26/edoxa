@@ -114,7 +114,11 @@ namespace eDoxa.Arena.Challenges.Api
                 }
             );
 
-            services.AddMvc()
+            services.AddMvc(
+                    options =>
+                    {
+                        options.Filters.Add(new ProducesAttribute("application/json"));
+                    })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
                 .AddControllersAsServices()

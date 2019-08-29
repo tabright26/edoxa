@@ -23,7 +23,6 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
     [Authorize]
     [ApiController]
     [ApiVersion("1.0")]
-    [Produces("application/json")]
     [Route("api/account/balance")]
     [ApiExplorerSettings(GroupName = "Account")]
     public sealed class AccountBalanceController : ControllerBase

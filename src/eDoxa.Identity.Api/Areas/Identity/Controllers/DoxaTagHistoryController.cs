@@ -1,10 +1,9 @@
 ﻿// Filename: DoxaTagHistoryController.cs
-// Date Created: 2019-08-18
+// Date Created: 2019-08-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,7 +28,6 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 {
     [ApiController]
     [ApiVersion("1.0")]
-    [Produces("application/json")]
     [Route("api/doxatag-history")]
     [ApiExplorerSettings(GroupName = "DoxaTag History")]
     [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]

@@ -21,7 +21,7 @@ namespace eDoxa.Cashier.UnitTests.Helpers.Mocks
     {
         public MockHttpContextAccessor()
         {
-            this.Setup(accessor => accessor.HttpContext.User.Claims)
+            this.SetupGet(accessor => accessor.HttpContext.User.Claims)
                 .Returns(
                     new HashSet<Claim>
                     {
@@ -29,7 +29,12 @@ namespace eDoxa.Cashier.UnitTests.Helpers.Mocks
                         new Claim(AppClaimTypes.StripeConnectAccountId, "acct_test"),
                         new Claim(AppClaimTypes.StripeCustomerId, "cus_test")
                     }
-                );
+                ).Verifiable();
+        }
+
+        public void VerifyGet(Times times)
+        {
+            this.VerifyGet(accessor => accessor.HttpContext.User.Claims, times);
         }
     }
 }

@@ -1,11 +1,12 @@
 ﻿// Filename: Money.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-08-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 
 using eDoxa.Seedwork.Domain;
 
@@ -40,6 +41,23 @@ namespace eDoxa.Cashier.Domain.AggregateModels
         public static Money operator -(Money money)
         {
             return new Money(-money.Amount);
+        }
+
+        public static IImmutableSet<Money> DepositAmounts()
+        {
+            return new[]
+            {
+                Ten,
+                Twenty,
+                Fifty,
+                OneHundred,
+                FiveHundred
+            }.ToImmutableHashSet();
+        }
+
+        public static IImmutableSet<Money> WithdrawalAmounts()
+        {
+            return new[] {Fifty, OneHundred, TwoHundred}.ToImmutableHashSet();
         }
 
         public override string ToString()

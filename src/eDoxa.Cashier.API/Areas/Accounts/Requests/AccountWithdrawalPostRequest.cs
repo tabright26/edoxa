@@ -16,10 +16,12 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Requests
             Amount = amount;
         }
 
+#nullable disable
         public AccountWithdrawalPostRequest()
         {
             // Required by Fluent Validation.
         }
+#nullable restore
 
         [DataMember(Name = "amount")]
         public decimal Amount { get; private set; }

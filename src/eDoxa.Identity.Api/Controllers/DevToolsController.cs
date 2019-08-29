@@ -1,5 +1,5 @@
 ﻿// Filename: DevToolsController.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-08-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -18,7 +18,6 @@ namespace eDoxa.Identity.Api.Controllers
     [DevTools]
     [ApiController]
     [ApiVersion("1.0")]
-    [Produces("application/json")]
     [Route("api")]
     [ApiExplorerSettings(GroupName = "DevTools")]
     public sealed class DevToolsController : ControllerBase

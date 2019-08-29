@@ -14,13 +14,13 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 
 namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Responses.Profiles.Resolvers
 {
-    internal sealed class MatchResponsesResolver : IMemberValueResolver<Participant, ParticipantResponse, IReadOnlyCollection<IMatch>, MatchResponse[]?>
+    internal sealed class MatchResponsesResolver : IMemberValueResolver<Participant, ParticipantResponse, IReadOnlyCollection<IMatch>, MatchResponse[]>
     {
         public MatchResponse[] Resolve(
             Participant participant,
             ParticipantResponse participantResponse,
             IReadOnlyCollection<IMatch> matches,
-            MatchResponse[]? matchResponses,
+            MatchResponse[] matchResponses,
             ResolutionContext context
         )
         {

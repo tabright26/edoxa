@@ -53,7 +53,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
 
             controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
-            var request = new AccountDepositPostRequest(Currency.Token.Name, Token.FiftyThousand);
+            var request = new AccountDepositPostRequest(Currency.Token, Token.FiftyThousand);
 
             // Act
             var result = await controller.PostAsync(request);
@@ -63,6 +63,8 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
 
             mockAccountService.Verify(accountService => accountService.FindUserAccountAsync(It.IsAny<UserId>()), Times.Once);
 
+            mockHttpContextAccessor.VerifyGet(Times.Exactly(2));
+
             mockAccountService.Verify(
                 accountService => accountService.DepositAsync(
                     It.IsAny<IAccount>(),
@@ -70,16 +72,12 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
                     It.IsAny<string>(),
                     It.IsAny<CancellationToken>()),
                 Times.Once);
-
-            mockHttpContextAccessor.Verify();
         }
 
         [TestMethod]
         public async Task PostAsync_ShouldBeOfTypeNotFoundObjectResult()
         {
             // Arrange
-            var deposit = new AccountDepositPostRequest(Currency.Token.Name, Token.FiftyThousand);
-
             var mockAccountService = new Mock<IAccountService>();
 
             mockAccountService.Setup(accountService => accountService.FindUserAccountAsync(It.IsAny<UserId>())).Verifiable();
@@ -99,13 +97,17 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
 
             controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
+            var request = new AccountDepositPostRequest(Currency.Token, Token.FiftyThousand);
+
             // Act
-            var result = await controller.PostAsync(deposit);
+            var result = await controller.PostAsync(request);
 
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
 
             mockAccountService.Verify(accountService => accountService.FindUserAccountAsync(It.IsAny<UserId>()), Times.Once);
+
+            mockHttpContextAccessor.VerifyGet(Times.Exactly(2));
 
             mockAccountService.Verify(
                 accountService => accountService.DepositAsync(
@@ -114,8 +116,51 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
                     It.IsAny<string>(),
                     It.IsAny<CancellationToken>()),
                 Times.Never);
+        }
 
-            mockHttpContextAccessor.Verify();
+        [TestMethod]
+        public async Task PostAsync_ShouldBeOfTypeBadRequestObjectResult()
+        {
+            // Arrange
+            var mockAccountService = new Mock<IAccountService>();
+
+            mockAccountService.Setup(accountService => accountService.FindUserAccountAsync(It.IsAny<UserId>())).Verifiable();
+
+            mockAccountService.Setup(
+                    accountService => accountService.DepositAsync(
+                        It.IsAny<IAccount>(),
+                        It.IsAny<Token>(),
+                        It.IsAny<string>(),
+                        It.IsAny<CancellationToken>()))
+                .Verifiable();
+
+            var controller = new AccountDepositController(mockAccountService.Object);
+
+            var mockHttpContextAccessor = new MockHttpContextAccessor();
+
+            controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+
+            controller.ControllerContext.ModelState.AddModelError("error", "error");
+
+            var request = new AccountDepositPostRequest(Currency.Token, Token.FiftyThousand);
+
+            // Act
+            var result = await controller.PostAsync(request);
+
+            // Assert
+            result.Should().BeOfType<BadRequestObjectResult>();
+
+            mockAccountService.Verify(accountService => accountService.FindUserAccountAsync(It.IsAny<UserId>()), Times.Never);
+
+            mockHttpContextAccessor.VerifyGet(Times.Never());
+
+            mockAccountService.Verify(
+                accountService => accountService.DepositAsync(
+                    It.IsAny<IAccount>(),
+                    It.IsAny<Token>(),
+                    It.IsAny<string>(),
+                    It.IsAny<CancellationToken>()),
+                Times.Never);
         }
     }
 }

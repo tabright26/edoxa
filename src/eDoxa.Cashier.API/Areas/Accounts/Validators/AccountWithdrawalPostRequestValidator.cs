@@ -17,12 +17,10 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Validators
     {
         public AccountWithdrawalPostRequestValidator()
         {
-            var amounts = new[] {Money.Fifty, Money.OneHundred, Money.TwoHundred};
-
             this.RuleFor(request => request.Amount)
-                .Must(amount => amounts.Any(money => money.Amount == amount))
+                .Must(amount => Money.WithdrawalAmounts().Any(money => money.Amount == amount))
                 .WithMessage(
-                    $"The amount of {nameof(Money)} is invalid. These are valid amounts: [{string.Join(", ", amounts.Select(amount => amount.Amount))}].");
+                    $"The amount of {nameof(Money)} is invalid. These are valid amounts: [{string.Join(", ", Money.WithdrawalAmounts().Select(amount => amount.Amount))}].");
         }
     }
 }

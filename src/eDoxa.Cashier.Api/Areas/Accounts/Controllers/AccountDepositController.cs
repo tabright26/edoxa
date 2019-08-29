@@ -4,12 +4,10 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Areas.Accounts.Requests;
 using eDoxa.Cashier.Api.Extensions;
-using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Services;
 
 using FluentValidation.AspNetCore;
@@ -26,7 +24,6 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
     [Authorize]
     [ApiController]
     [ApiVersion("1.0")]
-    [Produces("application/json")]
     [Route("api/account/deposit")]
     [ApiExplorerSettings(GroupName = "Account")]
     public sealed class AccountDepositController : ControllerBase
@@ -60,7 +57,7 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
                     return this.NotFound("User's account not found.");
                 }
 
-                var result = await _accountService.DepositAsync(account, MapCurrency(request.Currency, request.Amount), customerId);
+                var result = await _accountService.DepositAsync(account, request.Currency.Format(request.Amount), customerId);
 
                 if (result.IsValid)
                 {
@@ -71,22 +68,6 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
             }
 
             return this.BadRequest(ModelState);
-        }
-
-        // TODO: Should be move to Currency class.
-        private static ICurrency MapCurrency(string currency, decimal amount)
-        {
-            if (Currency.FromName(currency) == Currency.Money)
-            {
-                return new Money(amount);
-            }
-
-            if (Currency.FromName(currency) == Currency.Token)
-            {
-                return new Token(amount);
-            }
-
-            throw new InvalidOperationException();
         }
     }
 }

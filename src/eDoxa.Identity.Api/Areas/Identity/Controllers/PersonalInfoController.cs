@@ -1,5 +1,5 @@
 ﻿// Filename: PersonalInfoController.cs
-// Date Created: 2019-08-09
+// Date Created: 2019-08-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -26,7 +26,6 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 {
     [ApiController]
     [ApiVersion("1.0")]
-    [Produces("application/json")]
     [Route("api/personal-info")]
     [ApiExplorerSettings(GroupName = "Personal Info")]
     [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
@@ -87,8 +86,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                     request.FirstName,
                     request.LastName,
                     request.Gender,
-                    request.BirthDate
-                );
+                    request.BirthDate);
 
                 if (result.Succeeded)
                 {
@@ -127,8 +125,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                     request.FirstName,
                     personalInfo.LastName,
                     personalInfo.Gender,
-                    personalInfo.BirthDate
-                );
+                    personalInfo.BirthDate);
 
                 if (result.Succeeded)
                 {

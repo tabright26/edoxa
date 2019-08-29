@@ -26,21 +26,15 @@ namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
     [TestClass]
     public sealed class TransactionsControllerTest
     {
-        private Mock<ITransactionQuery> _mockTransactionQuery;
-
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            _mockTransactionQuery = new Mock<ITransactionQuery>();
-        }
-
         [TestMethod]
-        public async Task DepositTokenAsync_ShouldBeOfTypeOkObjectResult()
+        public async Task GetAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
             var transactionFaker = new TransactionFaker();
 
-            _mockTransactionQuery
+            var mockTransactionQuery = new Mock<ITransactionQuery>();
+
+            mockTransactionQuery
                 .Setup(
                     transactionQuery => transactionQuery.FindUserTransactionsAsync(
                         It.IsAny<Currency>(),
@@ -49,9 +43,9 @@ namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
                 .ReturnsAsync(transactionFaker.Generate(5, TransactionFaker.PositiveTransaction))
                 .Verifiable();
 
-            _mockTransactionQuery.SetupGet(transactionQuery => transactionQuery.Mapper).Returns(MapperExtensions.Mapper);
+            mockTransactionQuery.SetupGet(transactionQuery => transactionQuery.Mapper).Returns(MapperExtensions.Mapper);
 
-            var controller = new TransactionsController(_mockTransactionQuery.Object);
+            var controller = new TransactionsController(mockTransactionQuery.Object);
 
             // Act
             var result = await controller.GetAsync();
@@ -59,17 +53,21 @@ namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            _mockTransactionQuery.Verify(
+            mockTransactionQuery.Verify(
                 transactionQuery =>
                     transactionQuery.FindUserTransactionsAsync(It.IsAny<Currency>(), It.IsAny<TransactionType>(), It.IsAny<TransactionStatus>()),
                 Times.Once);
+
+            mockTransactionQuery.VerifyGet(transactionQuery => transactionQuery.Mapper, Times.Once);
         }
 
         [TestMethod]
-        public async Task DepositTokenAsync_ShouldBeOfTypeNoContentResult()
+        public async Task GetAsync_ShouldBeOfTypeNoContentResult()
         {
             // Arrange
-            _mockTransactionQuery
+            var mockTransactionQuery = new Mock<ITransactionQuery>();
+
+            mockTransactionQuery
                 .Setup(
                     transactionQuery => transactionQuery.FindUserTransactionsAsync(
                         It.IsAny<Currency>(),
@@ -78,9 +76,9 @@ namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
                 .ReturnsAsync(new Collection<ITransaction>())
                 .Verifiable();
 
-            _mockTransactionQuery.SetupGet(transactionQuery => transactionQuery.Mapper).Returns(MapperExtensions.Mapper);
+            mockTransactionQuery.SetupGet(transactionQuery => transactionQuery.Mapper).Returns(MapperExtensions.Mapper);
 
-            var controller = new TransactionsController(_mockTransactionQuery.Object);
+            var controller = new TransactionsController(mockTransactionQuery.Object);
 
             // Act
             var result = await controller.GetAsync();
@@ -88,10 +86,47 @@ namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
             // Assert
             result.Should().BeOfType<NoContentResult>();
 
-            _mockTransactionQuery.Verify(
+            mockTransactionQuery.Verify(
                 transactionQuery =>
                     transactionQuery.FindUserTransactionsAsync(It.IsAny<Currency>(), It.IsAny<TransactionType>(), It.IsAny<TransactionStatus>()),
                 Times.Once);
+
+            mockTransactionQuery.VerifyGet(transactionQuery => transactionQuery.Mapper, Times.Once);
+        }
+
+        [TestMethod]
+        public async Task GetByIdAsync_ShouldBeOfTypeBadRequestObjectResult()
+        {
+            // Arrange
+            var challengeFaker = new ChallengeFaker();
+
+            challengeFaker.UseSeed(1000);
+
+            var mockTransactionQuery = new Mock<ITransactionQuery>();
+
+            mockTransactionQuery.Setup(
+                    transactionQuery =>
+                        transactionQuery.FindUserTransactionsAsync(It.IsAny<Currency>(), It.IsAny<TransactionType>(), It.IsAny<TransactionStatus>()))
+                .Verifiable();
+
+            mockTransactionQuery.SetupGet(accountQuery => accountQuery.Mapper).Verifiable();
+
+            var controller = new TransactionsController(mockTransactionQuery.Object);
+
+            controller.ControllerContext.ModelState.AddModelError("error", "error");
+
+            // Act
+            var result = await controller.GetAsync(Currency.Money);
+
+            // Assert
+            result.Should().BeOfType<BadRequestObjectResult>();
+
+            mockTransactionQuery.Verify(
+                transactionQuery =>
+                    transactionQuery.FindUserTransactionsAsync(It.IsAny<Currency>(), It.IsAny<TransactionType>(), It.IsAny<TransactionStatus>()),
+                Times.Never);
+
+            mockTransactionQuery.VerifyGet(accountQuery => accountQuery.Mapper, Times.Never);
         }
     }
 }

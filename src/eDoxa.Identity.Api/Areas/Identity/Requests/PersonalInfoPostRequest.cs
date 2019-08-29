@@ -4,8 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-#nullable disable
-
 using System;
 using System.Runtime.Serialization;
 
@@ -14,7 +12,7 @@ using eDoxa.Identity.Api.Infrastructure.Models;
 namespace eDoxa.Identity.Api.Areas.Identity.Requests
 {
     [DataContract]
-    public class PersonalInfoPostRequest
+    public sealed class PersonalInfoPostRequest
     {
         public PersonalInfoPostRequest(
             string firstName,

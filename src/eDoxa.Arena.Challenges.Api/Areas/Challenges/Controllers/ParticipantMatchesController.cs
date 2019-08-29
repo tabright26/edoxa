@@ -25,7 +25,6 @@ namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers
     [Authorize]
     [ApiController]
     [ApiVersion("1.0")]
-    [Produces("application/json")]
     [Route("api/participants/{participantId}/matches")]
     [ApiExplorerSettings(GroupName = "Participant")]
     public class ParticipantMatchesController : ControllerBase

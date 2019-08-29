@@ -18,29 +18,23 @@ namespace eDoxa.Cashier.UnitTests.Areas.Challenges.Factories
     [TestClass]
     public sealed class PayoutFactoryTest
     {
-        private Mock<IPayoutStrategy> _mockPayoutStrategy;
-
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            _mockPayoutStrategy = new Mock<IPayoutStrategy>();
-        }
-
         [TestMethod]
-        public void CreateInstance_FromDependencyInjection_ShouldBePayoutStrategy()
+        public void CreateInstance_WithPayoutStrategy_ShouldNotBeNull()
         {
             // Arrange
-            var payoutFactory = new PayoutFactory(_mockPayoutStrategy.Object);
+            var mockPayoutStrategy = new Mock<IPayoutStrategy>();
+
+            var payoutFactory = new PayoutFactory(mockPayoutStrategy.Object);
 
             // Act
             var payoutStrategy = payoutFactory.CreateInstance();
 
             // Assert
-            payoutStrategy.Should().Be(_mockPayoutStrategy.Object);
+            payoutStrategy.Should().NotBeNull();
         }
 
         [TestMethod]
-        public void CreateInstance_WithoutStrategy_ShouldNotBeNull()
+        public void CreateInstance_WithoutPayoutStrategy_ShouldNotBeNull()
         {
             // Arrange
             var payoutFactory = new PayoutFactory();

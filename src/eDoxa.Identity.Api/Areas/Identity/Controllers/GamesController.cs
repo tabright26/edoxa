@@ -1,5 +1,5 @@
 ﻿// Filename: GamesController.cs
-// Date Created: 2019-07-21
+// Date Created: 2019-08-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -27,7 +27,6 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 {
     [ApiController]
     [ApiVersion("1.0")]
-    [Produces("application/json")]
     [Route("api/games")]
     [ApiExplorerSettings(GroupName = "Games")]
     [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]

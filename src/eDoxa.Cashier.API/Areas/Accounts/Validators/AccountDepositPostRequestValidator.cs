@@ -8,6 +8,7 @@ using System.Linq;
 
 using eDoxa.Cashier.Api.Areas.Accounts.Requests;
 using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Seedwork.Application.Validations.Extensions;
 
 using FluentValidation;
 
@@ -17,49 +18,23 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Validators
     {
         public AccountDepositPostRequestValidator()
         {
-            this.RuleFor(request => request.Currency)
-                .NotNull()
+            this.Enumeration(request => request.Currency)
                 .DependentRules(
                     () =>
                     {
                         this.When(
-                            request => Currency.FromName(request.Currency) == Currency.Money,
-                            () =>
-                            {
-                                var amounts = new[]
-                                {
-                                    Money.Ten,
-                                    Money.Twenty,
-                                    Money.Fifty,
-                                    Money.OneHundred,
-                                    Money.FiveHundred
-                                };
-
-                                this.RuleFor(request => request.Amount)
-                                    .Must(amount => amounts.Any(money => money.Amount == amount))
-                                    .WithMessage(
-                                        $"The amount of {nameof(Money)} is invalid. These are valid amounts: [{string.Join(", ", amounts.Select(amount => amount.Amount))}].");
-                            });
+                            request => request.Currency == Currency.Money,
+                            () => this.RuleFor(request => request.Amount)
+                                .Must(amount => Money.DepositAmounts().Any(money => money.Amount == amount))
+                                .WithMessage(
+                                    $"The amount of {nameof(Money)} is invalid. These are valid amounts: [{string.Join(", ", Money.DepositAmounts().Select(money => money.Amount))}]."));
 
                         this.When(
-                            request => Currency.FromName(request.Currency) == Currency.Token,
-                            () =>
-                            {
-                                var amounts = new[]
-                                {
-                                    Token.FiftyThousand,
-                                    Token.OneHundredThousand,
-                                    Token.TwoHundredFiftyThousand,
-                                    Token.FiveHundredThousand,
-                                    Token.OneMillion,
-                                    Token.FiveMillions
-                                };
-
-                                this.RuleFor(request => request.Amount)
-                                    .Must(amount => amounts.Any(token => token.Amount == amount))
-                                    .WithMessage(
-                                        $"The amount of {nameof(Token)} is invalid. These are valid amounts: [{string.Join(", ", amounts.Select(amount => amount.Amount))}].");
-                            });
+                            request => request.Currency == Currency.Token,
+                            () => this.RuleFor(request => request.Amount)
+                                .Must(amount => Token.DepositAmounts().Any(token => token.Amount == amount))
+                                .WithMessage(
+                                    $"The amount of {nameof(Token)} is invalid. These are valid amounts: [{string.Join(", ", Token.DepositAmounts().Select(token => token.Amount))}]."));
                     });
         }
     }

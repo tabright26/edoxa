@@ -4,10 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Responses;
 using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions;
@@ -15,20 +11,20 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
 using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Seedwork.Domain;
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-
 using Swashbuckle.AspNetCore.Annotations;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers
 {
     [Authorize]
     [ApiController]
     [ApiVersion("1.0")]
-    [Produces("application/json")]
     [Route("api/challenges/{challengeId}/participants")]
     [ApiExplorerSettings(GroupName = "Challenge")]
     public class ChallengeParticipantsController : ControllerBase
@@ -88,9 +84,7 @@ namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers
                     return this.NotFound("Challenge not found.");
                 }
 
-                var registeredAt = new UtcNowDateTimeProvider();
-
-                await _challengeService.RegisterParticipantAsync(challengeId, userId, registeredAt);
+                await _challengeService.RegisterParticipantAsync(challengeId, userId, new UtcNowDateTimeProvider());
 
                 return this.Ok("Participant as been registered.");
             }

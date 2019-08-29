@@ -1,5 +1,5 @@
-﻿// Filename: AddressController.cs
-// Date Created: 2019-08-09
+﻿// Filename: AddressBookController.cs
+// Date Created: 2019-08-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -29,7 +29,6 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 {
     [ApiController]
     [ApiVersion("1.0")]
-    [Produces("application/json")]
     [Route("api/address-book")]
     [ApiExplorerSettings(GroupName = "Address Book")]
     [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
@@ -83,8 +82,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                     request.Line2,
                     request.City,
                     request.State,
-                    request.PostalCode
-                );
+                    request.PostalCode);
 
                 if (result.Succeeded)
                 {
@@ -116,8 +114,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                     request.Line2,
                     request.City,
                     request.State,
-                    request.PostalCode
-                );
+                    request.PostalCode);
 
                 if (result.Succeeded)
                 {

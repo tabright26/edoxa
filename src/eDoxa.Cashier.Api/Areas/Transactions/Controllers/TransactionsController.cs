@@ -26,7 +26,6 @@ namespace eDoxa.Cashier.Api.Areas.Transactions.Controllers
     [Authorize]
     [ApiController]
     [ApiVersion("1.0")]
-    [Produces("application/json")]
     [Route("api/transactions")]
     [ApiExplorerSettings(GroupName = "Transaction")]
     public class TransactionsController : ControllerBase

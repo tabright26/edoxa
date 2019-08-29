@@ -1,5 +1,5 @@
 ﻿// Filename: DoxaTagsController.cs
-// Date Created: 2019-08-19
+// Date Created: 2019-08-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -16,7 +16,6 @@ using eDoxa.Identity.Api.Areas.Identity.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 
 using Swashbuckle.AspNetCore.Annotations;
@@ -26,7 +25,6 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     [AllowAnonymous]
     [ApiController]
     [ApiVersion("1.0")]
-    [Produces("application/json")]
     [Route("api/doxatags")]
     [ApiExplorerSettings(GroupName = "DoxaTags")]
     public class DoxaTagsController : ControllerBase
