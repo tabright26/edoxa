@@ -9,7 +9,7 @@ using System.Runtime.Serialization;
 namespace eDoxa.Identity.Api.Areas.Identity.Requests
 {
     [DataContract]
-    public class GamePostRequest
+    public sealed class GamePostRequest
     {
         public GamePostRequest(string playerId)
         {

@@ -9,7 +9,7 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Application.Requests;
+using eDoxa.Cashier.Api.Areas.Accounts.Requests;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
@@ -39,9 +39,9 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
         private HttpClient _httpClient;
 
-        private async Task<HttpResponseMessage> ExecuteAsync(WithdrawalRequest request)
+        private async Task<HttpResponseMessage> ExecuteAsync(AccountWithdrawalPostRequest postRequest)
         {
-            return await _httpClient.PostAsync("api/account/withdrawal", new JsonContent(request));
+            return await _httpClient.PostAsync("api/account/withdrawal", new JsonContent(postRequest));
         }
 
         [Fact]
@@ -69,7 +69,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            using var response = await this.ExecuteAsync(new WithdrawalRequest(Money.Fifty));
+            using var response = await this.ExecuteAsync(new AccountWithdrawalPostRequest(Money.Fifty));
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -88,11 +88,10 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             server.CleanupDbContext();
 
             // Act
-            using var response = await this.ExecuteAsync(new WithdrawalRequest(Money.Fifty));
+            using var response = await this.ExecuteAsync(new AccountWithdrawalPostRequest(Money.Fifty));
 
             // Assert
-            // BUG: The response status code should be http status code not found.
-            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
 
         [Fact]
@@ -134,7 +133,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            using var response = await this.ExecuteAsync(new WithdrawalRequest(Money.Fifty));
+            using var response = await this.ExecuteAsync(new AccountWithdrawalPostRequest(Money.Fifty));
 
             // Assert
             response.EnsureSuccessStatusCode();

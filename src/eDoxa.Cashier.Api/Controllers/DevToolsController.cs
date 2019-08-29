@@ -22,7 +22,7 @@ namespace eDoxa.Cashier.Api.Controllers
     [DevTools]
     [ApiController]
     [ApiVersion("1.0")]
-    [Produces("application/json")]
+
     [Route("api")]
     [ApiExplorerSettings(GroupName = "DevTools")]
     public sealed class DevToolsController : ControllerBase

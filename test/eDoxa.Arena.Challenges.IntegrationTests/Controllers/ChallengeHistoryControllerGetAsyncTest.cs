@@ -10,8 +10,8 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
+using eDoxa.Arena.Challenges.Api.Areas.Challenges.Responses;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
-using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Seedwork.Application.Extensions;
@@ -73,8 +73,8 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var challengeViewModel = (await response.DeserializeAsync<ChallengeViewModel[]>()).First();
-            challengeViewModel.Id.Should().Be(challenge.Id);
+            var challengeResponse = (await response.DeserializeAsync<ChallengeResponse[]>()).First();
+            challengeResponse.Id.Should().Be(challenge.Id);
         }
     }
 }

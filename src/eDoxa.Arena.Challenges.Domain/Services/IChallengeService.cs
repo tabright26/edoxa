@@ -23,7 +23,5 @@ namespace eDoxa.Arena.Challenges.Domain.Services
         Task RegisterParticipantAsync(ChallengeId challengeId, UserId userId, IDateTimeProvider registeredAt, CancellationToken cancellationToken = default);
 
         Task SynchronizeAsync(ChallengeGame game, TimeSpan interval, IDateTimeProvider synchronizedAt, CancellationToken cancellationToken = default);
-
-        Task CloseAsync(IDateTimeProvider closedAt, CancellationToken cancellationToken = default);
     }
 }

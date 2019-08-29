@@ -6,9 +6,9 @@
 
 using Autofac;
 
-using eDoxa.Cashier.Api.Application.Factories;
-using eDoxa.Cashier.Api.Application.Services;
-using eDoxa.Cashier.Api.Application.Strategies;
+using eDoxa.Cashier.Api.Areas.Accounts.Services;
+using eDoxa.Cashier.Api.Areas.Challenges.Factories;
+using eDoxa.Cashier.Api.Areas.Challenges.Strategies;
 using eDoxa.Cashier.Api.Infrastructure.Data;
 using eDoxa.Cashier.Api.Infrastructure.Data.Storage;
 using eDoxa.Cashier.Api.Infrastructure.Queries;

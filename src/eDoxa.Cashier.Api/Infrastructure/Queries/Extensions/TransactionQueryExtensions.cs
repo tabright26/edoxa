@@ -11,7 +11,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.ViewModels;
+using eDoxa.Cashier.Api.Areas.Transactions.Responses;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
@@ -47,7 +47,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries.Extensions
             return transactionQuery.Mapper.Map<IReadOnlyCollection<TransactionModel>>(transactions);
         }
 
-        public static async Task<IReadOnlyCollection<TransactionViewModel>> FindUserTransactionViewModelsAsync(
+        public static async Task<IReadOnlyCollection<TransactionResponse>> FindUserTransactionResponsesAsync(
             this ITransactionQuery transactionQuery,
             UserId userId,
             Currency? currency = null,
@@ -57,10 +57,10 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries.Extensions
         {
             var transactions = await transactionQuery.FindUserTransactionsAsync(userId, currency, type, status);
 
-            return transactionQuery.Mapper.Map<IReadOnlyCollection<TransactionViewModel>>(transactions);
+            return transactionQuery.Mapper.Map<IReadOnlyCollection<TransactionResponse>>(transactions);
         }
 
-        public static async Task<IReadOnlyCollection<TransactionViewModel>> FindUserTransactionViewModelsAsync(
+        public static async Task<IReadOnlyCollection<TransactionResponse>> FindUserTransactionResponsesAsync(
             this ITransactionQuery transactionQuery,
             Currency? currency = null,
             TransactionType? type = null,
@@ -69,7 +69,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries.Extensions
         {
             var transactions = await transactionQuery.FindUserTransactionsAsync(currency, type, status);
 
-            return transactionQuery.Mapper.Map<IReadOnlyCollection<TransactionViewModel>>(transactions);
+            return transactionQuery.Mapper.Map<IReadOnlyCollection<TransactionResponse>>(transactions);
         }
     }
 }

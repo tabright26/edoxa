@@ -1,5 +1,5 @@
-﻿// Filename: UserAccountTransactionFailedIntegrationEventHandler.cs
-// Date Created: 2019-07-05
+﻿// Filename: UserTransactionFailedIntegrationEventHandler.cs
+// Date Created: 2019-08-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.

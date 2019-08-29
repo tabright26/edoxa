@@ -9,8 +9,8 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Api.Areas.Accounts.Responses;
 using eDoxa.Cashier.Api.Infrastructure.Data.Fakers;
-using eDoxa.Cashier.Api.ViewModels;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Seedwork.Application.Extensions;
@@ -41,7 +41,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
         }
 
         [Fact]
-        public async Task ShouldBeHttpStatusCodeBadRequest()
+        public async Task ShouldBeHttpStatusCodeInternalServerError()
         {
             var accountFaker = new AccountFaker();
             accountFaker.UseSeed(1);
@@ -65,7 +65,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             using var response = await this.ExecuteAsync(Currency.All);
 
             // Assert
-            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+            response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
         }
 
         [Fact]
@@ -97,11 +97,11 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var balanceViewModel = await response.DeserializeAsync<BalanceViewModel>();
-            balanceViewModel.Should().NotBeNull();
-            balanceViewModel?.Currency.Should().Be(currency);
-            balanceViewModel?.Available.Should().Be(balance.Available);
-            balanceViewModel?.Pending.Should().Be(balance.Pending);
+            var balanceResponse = await response.DeserializeAsync<BalanceResponse>();
+            balanceResponse.Should().NotBeNull();
+            balanceResponse?.Currency.Should().Be(currency);
+            balanceResponse?.Available.Should().Be(balance.Available);
+            balanceResponse?.Pending.Should().Be(balance.Pending);
         }
     }
 }

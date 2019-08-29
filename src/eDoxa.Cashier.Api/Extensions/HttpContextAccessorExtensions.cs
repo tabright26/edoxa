@@ -37,5 +37,20 @@ namespace eDoxa.Cashier.Api.Extensions
         {
             return accessor.GetClaimOrDefault(StripeConnectAccountId) ?? throw new ArgumentNullException(StripeConnectAccountId);
         }
+
+        public static string? GetCustomerId(this HttpContext httpContext)
+        {
+            return httpContext.GetClaimOrDefault(StripeCustomerId) ?? throw new ArgumentNullException(StripeCustomerId);
+        }
+
+        public static string? GetConnectAccountId(this HttpContext httpContext)
+        {
+            return httpContext.GetClaimOrDefault(StripeConnectAccountId) ?? throw new ArgumentNullException(StripeConnectAccountId);
+        }
+
+        public static UserId GetUserId(this HttpContext httpContext)
+        {
+            return UserId.Parse(httpContext.GetClaimOrDefault(Subject) ?? throw new ArgumentNullException(Subject));
+        }
     }
 }

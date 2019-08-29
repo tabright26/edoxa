@@ -1,5 +1,5 @@
 ﻿// Filename: MapperExtensions.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-08-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -19,7 +19,8 @@ namespace eDoxa.Cashier.UnitTests.Helpers.Extensions
         {
             get
             {
-                var configuration = new MapperConfiguration(config => config.AddMaps(Assembly.GetAssembly(typeof(CashierDbContext)), Assembly.GetAssembly(typeof(Startup))));
+                var configuration = new MapperConfiguration(
+                    config => config.AddMaps(Assembly.GetAssembly(typeof(CashierDbContext)), Assembly.GetAssembly(typeof(Startup))));
 
                 configuration.AssertConfigurationIsValid();
 

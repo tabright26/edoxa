@@ -6,7 +6,7 @@
 
 using Bogus;
 
-using eDoxa.Cashier.Api.Application.Factories;
+using eDoxa.Cashier.Api.Areas.Challenges.Factories;
 using eDoxa.Cashier.Api.Infrastructure.Data.Fakers.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 

@@ -25,5 +25,9 @@ namespace eDoxa.Arena.Challenges.Api.Extensions
         {
             return UserId.Parse(accessor.GetClaimOrDefault(Subject) ?? throw new ArgumentNullException(Subject));
         }
+        public static UserId GetUserId(this HttpContext httpContext)
+        {
+            return UserId.Parse(httpContext.GetClaimOrDefault(Subject) ?? throw new ArgumentNullException(Subject));
+        }
     }
 }

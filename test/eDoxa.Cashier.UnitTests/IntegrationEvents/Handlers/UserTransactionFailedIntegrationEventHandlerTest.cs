@@ -25,7 +25,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
     public sealed class UserTransactionFailedIntegrationEventHandlerTest
     {
         [TestMethod]
-        public async Task UserTransactionFailedIntegrationEvent_ShouldBeCompletedTask()
+        public async Task HandleAsync_WhenUserTransactionFailedIntegrationEvent_ShouldBeCompletedTask()
         {
             // Arrange
             var mockTransactionRepository = new Mock<ITransactionRepository>();

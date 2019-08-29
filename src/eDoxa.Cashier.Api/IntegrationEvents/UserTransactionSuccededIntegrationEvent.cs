@@ -1,5 +1,5 @@
-﻿// Filename: UserAccountTransactionSuccededIntegrationEvent.cs
-// Date Created: 2019-07-05
+﻿// Filename: UserTransactionSuccededIntegrationEvent.cs
+// Date Created: 2019-08-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.

@@ -14,8 +14,8 @@ using Autofac;
 
 using AutoMapper;
 
-using eDoxa.Arena.Challenges.Api.Application.DelegatingHandlers;
-using eDoxa.Arena.Challenges.Api.Application.Services;
+using eDoxa.Arena.Challenges.Api.Areas.Challenges.DelegatingHandlers;
+using eDoxa.Arena.Challenges.Api.Areas.Challenges.Services;
 using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Api.Infrastructure;
 using eDoxa.Arena.Challenges.Domain.Services;
@@ -24,9 +24,11 @@ using eDoxa.Arena.Games.Extensions;
 using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Swagger.Extensions;
+using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.ServiceBus.Modules;
 
+using FluentValidation;
 using FluentValidation.AspNetCore;
 
 using HealthChecks.UI.Client;
@@ -63,6 +65,7 @@ namespace eDoxa.Arena.Challenges.Api
         static Startup()
         {
             TelemetryDebugWriter.IsTracingDisabled = true;
+            ValidatorOptions.PropertyNameResolver = CamelCasePropertyNameResolver.ResolvePropertyName;
         }
 
         public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
@@ -111,11 +114,21 @@ namespace eDoxa.Arena.Challenges.Api
                 }
             );
 
-            services.AddMvc()
+            services.AddMvc(
+                    options =>
+                    {
+                        options.Filters.Add(new ProducesAttribute("application/json"));
+                    })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
                 .AddControllersAsServices()
-                .AddFluentValidation(config => config.RunDefaultMvcValidationAfterFluentValidationExecutes = false);
+                .AddFluentValidation(
+                    config =>
+                    {
+                        config.RegisterValidatorsFromAssemblyContaining<Startup>();
+                        config.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
+                    }
+                );
 
             services.AddApiVersioning(
                 options =>
@@ -156,8 +169,6 @@ namespace eDoxa.Arena.Challenges.Api
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterModule<DomainEventModule>();
-
-            builder.RegisterModule<RequestModule>();
 
             builder.RegisterModule(new ServiceBusModule<Startup>(AppSettings));
 

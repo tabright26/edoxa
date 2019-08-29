@@ -1,5 +1,5 @@
 ﻿// Filename: DoxaTagHistoryController.cs
-// Date Created: 2019-08-18
+// Date Created: 2019-08-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -18,13 +18,16 @@ using eDoxa.Identity.Api.Extensions;
 using IdentityServer4.AccessTokenValidation;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 {
     [ApiController]
     [ApiVersion("1.0")]
-    [Produces("application/json")]
     [Route("api/doxatag-history")]
     [ApiExplorerSettings(GroupName = "DoxaTag History")]
     [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
@@ -43,6 +46,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         ///     Find user's DoxaTag history.
         /// </summary>
         [HttpGet]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<UserDoxaTagResponse>))]
+        [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -61,6 +66,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         ///     Create new user's DoxaTag.
         /// </summary>
         [HttpPost]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
         public async Task<IActionResult> PostAsync([FromBody] DoxaTagPostRequest request)
         {
             if (ModelState.IsValid)

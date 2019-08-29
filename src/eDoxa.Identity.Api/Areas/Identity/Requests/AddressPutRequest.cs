@@ -9,7 +9,7 @@ using System.Runtime.Serialization;
 namespace eDoxa.Identity.Api.Areas.Identity.Requests
 {
     [DataContract]
-    public class AddressPutRequest
+    public sealed class AddressPutRequest
     {
         public AddressPutRequest(
             string line1,

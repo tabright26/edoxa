@@ -28,5 +28,8 @@ namespace eDoxa.Seedwork.Application
         public const string UserClaimsReplaced = "user.claims.replaced";
         public const string UserRoleAdded = "user.role.added";
         public const string UserRoleRemoved = "user.role.removed";
+
+        // Arena Challenges integration events.
+        public const string ArenaChallengesSynchronized = "arena.challenges.synchronized";
     }
 }

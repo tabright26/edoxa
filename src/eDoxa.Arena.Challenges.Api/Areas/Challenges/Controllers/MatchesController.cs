@@ -1,23 +1,20 @@
 ﻿// Filename: MatchesController.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-08-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.Threading.Tasks;
 
+using eDoxa.Arena.Challenges.Api.Areas.Challenges.Responses;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions;
-using eDoxa.Arena.Challenges.Api.ViewModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -26,7 +23,6 @@ namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers
     [Authorize]
     [ApiController]
     [ApiVersion("1.0")]
-    [Produces("application/json")]
     [Route("api/matches")]
     [ApiExplorerSettings(GroupName = "Match")]
     public class MatchesController : ControllerBase
@@ -42,18 +38,24 @@ namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers
         ///     Find a match.
         /// </summary>
         [HttpGet("{matchId}")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(MatchViewModel))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(MatchResponse))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetByIdAsync(MatchId matchId)
         {
-            var matchViewModel = await _matchQuery.FindMatchViewModelAsync(matchId);
-
-            if (matchViewModel == null)
+            if (ModelState.IsValid)
             {
-                return this.NotFound("Match not found.");
+                var response = await _matchQuery.FindMatchResponseAsync(matchId);
+
+                if (response == null)
+                {
+                    return this.NotFound("Match not found.");
+                }
+
+                return this.Ok(response);
             }
 
-            return this.Ok(matchViewModel);
+            return this.BadRequest(ModelState);
         }
     }
 }

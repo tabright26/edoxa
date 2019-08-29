@@ -6,7 +6,8 @@
 
 using System.Collections.Generic;
 
-using eDoxa.Cashier.Api.ViewModels;
+using eDoxa.Cashier.Api.Areas.Accounts.Responses;
+using eDoxa.Cashier.Api.Areas.Transactions.Responses;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 
 using FluentAssertions;
@@ -24,7 +25,7 @@ namespace eDoxa.Cashier.UnitTests.Helpers.Extensions
             balance.Pending.As<decimal>().Should().BeGreaterOrEqualTo(decimal.Zero);
         }
 
-        public static void AssertStateIsValid(this IEnumerable<TransactionViewModel> transactions)
+        public static void AssertStateIsValid(this IEnumerable<TransactionResponse> transactions)
         {
             foreach (var transaction in transactions)
             {
@@ -32,7 +33,7 @@ namespace eDoxa.Cashier.UnitTests.Helpers.Extensions
             }
         }
 
-        public static void AssertStateIsValid(this TransactionViewModel transaction)
+        public static void AssertStateIsValid(this TransactionResponse transaction)
         {
             transaction.Should().NotBeNull();
 
@@ -47,7 +48,7 @@ namespace eDoxa.Cashier.UnitTests.Helpers.Extensions
             transaction.Description.Should().NotBeNullOrEmpty();
         }
 
-        public static void AssertStateIsValid(this BalanceViewModel balance)
+        public static void AssertStateIsValid(this BalanceResponse balance)
         {
             balance.Should().NotBeNull();
 

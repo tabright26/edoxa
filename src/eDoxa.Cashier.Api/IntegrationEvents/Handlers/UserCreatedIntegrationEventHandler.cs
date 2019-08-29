@@ -1,31 +1,33 @@
 ﻿// Filename: UserCreatedIntegrationEventHandler.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-08-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Application.Requests;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
+using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.ServiceBus.Abstractions;
-
-using MediatR;
 
 namespace eDoxa.Cashier.Api.IntegrationEvents.Handlers
 {
     internal sealed class UserCreatedIntegrationEventHandler : IIntegrationEventHandler<UserCreatedIntegrationEvent>
     {
-        private readonly IMediator _mediator;
+        private readonly IAccountRepository _accountRepository;
 
-        public UserCreatedIntegrationEventHandler(IMediator mediator)
+        public UserCreatedIntegrationEventHandler(IAccountRepository accountRepository)
         {
-            _mediator = mediator;
+            _accountRepository = accountRepository;
         }
 
         public async Task HandleAsync(UserCreatedIntegrationEvent integrationEvent)
         {
-            await _mediator.Send(new CreateUserRequest(UserId.FromGuid(integrationEvent.UserId)));
+            var account = new Account(UserId.FromGuid(integrationEvent.UserId));
+
+            _accountRepository.Create(account);
+
+            await _accountRepository.CommitAsync();
         }
     }
 }

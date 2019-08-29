@@ -1,5 +1,5 @@
-﻿// Filename: AddressController.cs
-// Date Created: 2019-08-09
+﻿// Filename: AddressBookController.cs
+// Date Created: 2019-08-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -18,14 +18,17 @@ using eDoxa.Identity.Api.Extensions;
 using IdentityServer4.AccessTokenValidation;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore.Internal;
+
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 {
     [ApiController]
     [ApiVersion("1.0")]
-    [Produces("application/json")]
     [Route("api/address-book")]
     [ApiExplorerSettings(GroupName = "Address Book")]
     [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
@@ -44,6 +47,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         ///     Find user's address book.
         /// </summary>
         [HttpGet]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<UserAddressResponse>))]
+        [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -62,6 +67,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         ///     Add user's address.
         /// </summary>
         [HttpPost]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
         public async Task<IActionResult> PostAsync([FromBody] AddressPostRequest request)
         {
             if (ModelState.IsValid)
@@ -75,8 +82,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                     request.Line2,
                     request.City,
                     request.State,
-                    request.PostalCode
-                );
+                    request.PostalCode);
 
                 if (result.Succeeded)
                 {
@@ -93,6 +99,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         ///     Update user's address by id.
         /// </summary>
         [HttpPut("{addressId}")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
         public async Task<IActionResult> PutAsync(Guid addressId, [FromBody] AddressPutRequest request)
         {
             if (ModelState.IsValid)
@@ -106,8 +114,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                     request.Line2,
                     request.City,
                     request.State,
-                    request.PostalCode
-                );
+                    request.PostalCode);
 
                 if (result.Succeeded)
                 {
@@ -124,6 +131,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         ///     Remove user's address by id.
         /// </summary>
         [HttpDelete("{addressId}")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(Guid))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
         public async Task<IActionResult> DeleteAsync(Guid addressId)
         {
             if (ModelState.IsValid)
