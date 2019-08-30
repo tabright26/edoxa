@@ -2,13 +2,13 @@ import React from "react";
 import { Card, CardBody, Col, Container, Row } from "reactstrap";
 import { Redirect } from "react-router-dom";
 import SecurityPassword from "../../../../../forms/Security/Password";
-import withResetPassword from "../../../../../containers/App/Security/withResetPassword";
+import withUserContainer from "../../../../../containers/App/User/withUserContainer";
 import queryString from "query-string";
 
 const ResetPassword = ({ location, actions }) => {
   const code = queryString.parse(location.search).code;
   if (!code) {
-    return <Redirect to="/errors/500" />;
+    return <Redirect to="/errors/404" />;
   }
   return (
     <div className="app flex-row align-items-center">
@@ -29,4 +29,4 @@ const ResetPassword = ({ location, actions }) => {
   );
 };
 
-export default withResetPassword(ResetPassword);
+export default withUserContainer(ResetPassword);

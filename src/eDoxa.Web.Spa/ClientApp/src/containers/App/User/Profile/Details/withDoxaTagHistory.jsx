@@ -17,7 +17,7 @@ const withDoxaTagHistory = WrappedComponent => {
   const mapStateToProps = state => {
     const doxaTagHistory = state.user.doxaTagHistory.sort((left, right) => (left.timestamp < right.timestamp ? 1 : -1));
     return {
-      doxaTag: doxaTagHistory[0] || { name: "", code: 0 }
+      doxaTag: doxaTagHistory[0] || null
     };
   };
 

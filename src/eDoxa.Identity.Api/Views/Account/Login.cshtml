@@ -61,7 +61,7 @@
                                 <input asp-for="RememberMe" type="checkbox" class="custom-control-input">
                                 <label asp-for="RememberMe" class="custom-control-label">Remember me?</label>
                                 <div class="float-right">
-                                    <a href="/Identity/Account/ForgotPassword" id="forgot-password">Forgot your password?</a>
+                                    <a href="@RedirectService.RedirectToWebSpa("/security/password/forgot")" id="forgot-password">Forgot your password?</a>
                                 </div>
                             </div>
                         </div>
@@ -113,8 +113,6 @@
         </div>
     }
 </div>
-
-
 <environment include="Development">
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
@@ -133,5 +131,6 @@
             integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o">
     </script>
 </environment>
+<partial name="_ValidationScriptsPartial" />
 </body>
 </html>

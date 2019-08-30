@@ -55,6 +55,8 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         [Fact]
         public async Task ShouldBeHttpStatusCodeOK()
         {
+            User.PersonalInfo = null;
+
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {

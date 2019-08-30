@@ -9,7 +9,7 @@ exports[`renders without crashing 1`] = `
     className="form-group"
   >
     <input
-      className="form-control"
+      className="form-control-sm form-control"
       name="email"
       onBlur={[Function]}
       onChange={[Function]}

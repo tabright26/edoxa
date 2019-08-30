@@ -9,21 +9,20 @@ import { months, days, years } from "../../../../utils/helper";
 
 const CreatePersonalInfoForm = ({ handleSubmit }) => (
   <Form onSubmit={handleSubmit}>
-    <dl class="row mb-0">
-      <dd class="col-sm-3 text-muted mb-0">Name</dd>
-      <dd class="col-sm-9 mb-0">
-        <dl class="row">
-          <dt class="col-sm-4 mb-0">
+    <dl className="row mb-0">
+      <dd className="col-sm-3 text-muted mb-0">Name</dd>
+      <dd className="col-sm-9 mb-0">
+        <dl className="row">
+          <dt className="col-sm-4 mb-0">
             <Field name="firstName" label="Enter your first name" component={props => <Input.Text {...props} />} />
           </dt>
-          W
-          <dd class="col-sm-4 mb-0">
+          <dd className="col-sm-4 mb-0">
             <Field name="lastName" label="Enter your last name" component={props => <Input.Text {...props} />} />
           </dd>
         </dl>
       </dd>
-      <dd class="col-sm-3 text-muted mb-0">Birth date</dd>
-      <dd class="col-sm-9 mb-0">
+      <dd className="col-sm-3 text-muted mb-0">Birth date</dd>
+      <dd className="col-sm-9 mb-0">
         <FormSection name="birthDate" component={FormGroup}>
           <Field className="d-inline" name="year" type="select" style={{ width: "75px" }} component={props => <Input.Select {...props} />}>
             <option value="">yyyy</option>
@@ -53,8 +52,8 @@ const CreatePersonalInfoForm = ({ handleSubmit }) => (
           </Field>
         </FormSection>
       </dd>
-      <dd class="col-sm-3 text-muted mb">Gender</dd>
-      <dd class="col-sm-3 mb-0">
+      <dd className="col-sm-3 text-muted mb">Gender</dd>
+      <dd className="col-sm-3 mb-0">
         <Field name="gender" type="select" component={props => <Input.Select {...props} />}>
           <option value="">Select your gender...</option>
           <option value="Male">Male</option>
