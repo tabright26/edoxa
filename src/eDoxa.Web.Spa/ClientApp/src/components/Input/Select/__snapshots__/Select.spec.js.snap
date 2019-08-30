@@ -1,8 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders without crashing 1`] = `
-<input
-  className="form-control-sm form-control"
-  type="text"
+<select
+  className="form-control"
 />
 `;

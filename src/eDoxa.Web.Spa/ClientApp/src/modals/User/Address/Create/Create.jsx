@@ -3,7 +3,6 @@ import { connectModal } from "redux-modal";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
 import AddressForm from "../../../../forms/User/Address";
 import { CREATE_ADDRESS_MODAL } from "../../../../modals";
-import withAddressBook from "../../../../containers/App/User/Profile/Details/withAddressBook";
 
 const CreateAddressModal = ({ show, handleHide, className, actions }) => (
   <Modal size="lg" isOpen={show} toggle={handleHide} className={"modal-primary " + className}>
@@ -19,4 +18,4 @@ const CreateAddressModal = ({ show, handleHide, className, actions }) => (
   </Modal>
 );
 
-export default withAddressBook(connectModal({ name: CREATE_ADDRESS_MODAL })(CreateAddressModal));
+export default connectModal({ name: CREATE_ADDRESS_MODAL })(CreateAddressModal);

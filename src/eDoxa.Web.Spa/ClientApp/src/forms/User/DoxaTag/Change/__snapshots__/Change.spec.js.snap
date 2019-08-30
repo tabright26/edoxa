@@ -9,7 +9,7 @@ exports[`renders correctly 1`] = `
     className="form-group"
   >
     <input
-      className="form-control-sm form-control"
+      className="form-control"
       name="name"
       onBlur={[Function]}
       onChange={[Function]}
