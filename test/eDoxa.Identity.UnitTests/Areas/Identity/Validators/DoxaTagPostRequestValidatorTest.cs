@@ -4,6 +4,9 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Collections.Generic;
+
+using eDoxa.Identity.Api.Areas.Identity.ErrorDescribers;
 using eDoxa.Identity.Api.Areas.Identity.Validators;
 
 using FluentAssertions;
@@ -18,9 +21,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
     public sealed class DoxaTagPostRequestValidatorTest
     {
         [DataTestMethod]
-        [DataRow("DoxaTagName")]
-        [DataRow("Doxa_Tag_Name")]
-        [DataRow("aaaaaaaaaaaaaaaa")]
+        [DynamicData(nameof(ValidDoxaTags), DynamicDataSourceType.Method)]
         public void Validate_WhenNameIsValid_ShouldNotHaveValidationErrorFor(string name)
         {
             // Arrange
@@ -30,15 +31,15 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
             validator.ShouldNotHaveValidationErrorFor(request => request.Name, name);
         }
 
+        private static IEnumerable<object[]> ValidDoxaTags()
+        {
+            yield return new object[] { "DoxaTagName" };
+            yield return new object[] { "Doxa_Tag_Name" };
+            yield return new object[] { "aaaaaaaaaaaaaaaa" };
+        }
+
         [DataTestMethod]
-        [DataRow(null,"DoxaTag is required")]
-        [DataRow("", "DoxaTag is required")]
-        [DataRow("@DoxaTagName", "DoxaTag invalid. May only contains (a-z,A-Z,_)")]
-        [DataRow("DoxaTagName1", "DoxaTag invalid. May only contains (a-z,A-Z,_)")]
-        [DataRow("_DoxaTagName", "DoxaTag invalid. Cannot start or end with _")]
-        [DataRow("DoxaTagName_", "DoxaTag invalid. Cannot start or end with _")]
-        [DataRow("D", "DoxaTag must be between 2 and 16 characters long")]
-        [DataRow("aaaaaaaaaaaaaaaaa","DoxaTag must be between 2 and 16 characters long")]
+        [DynamicData(nameof(InvalidDoxaTags), DynamicDataSourceType.Method)]
         public void Validate_WhenNameIsInvalid_ShouldHaveValidationErrorFor(string name, string errorMessage)
         {
             // Arrange
@@ -48,6 +49,18 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
             var failures = validator.ShouldHaveValidationErrorFor(request => request.Name, name);
 
             failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
+        }
+
+        private static IEnumerable<object[]> InvalidDoxaTags()
+        {
+            yield return new object[] { null, DoxaTagErrorDescriber.Required() };
+            yield return new object[] { "", DoxaTagErrorDescriber.Required() };
+            yield return new object[] { "D", DoxaTagErrorDescriber.Length() };
+            yield return new object[] { "aaaaaaaaaaaaaaaaa", DoxaTagErrorDescriber.Length() };
+            yield return new object[] { "@DoxaTagName", DoxaTagErrorDescriber.Invalid() };
+            yield return new object[] { "DoxaTagName1", DoxaTagErrorDescriber.Invalid() };
+            yield return new object[] { "_DoxaTagName", DoxaTagErrorDescriber.InvalidUnderscore() };
+            yield return new object[] { "DoxaTagName_", DoxaTagErrorDescriber.InvalidUnderscore() };
         }
     }
 }

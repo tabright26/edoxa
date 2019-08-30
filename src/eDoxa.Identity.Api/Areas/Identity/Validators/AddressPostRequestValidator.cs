@@ -6,6 +6,7 @@
 
 using System.Text.RegularExpressions;
 
+using eDoxa.Identity.Api.Areas.Identity.ErrorDescribers;
 using eDoxa.Identity.Api.Areas.Identity.Requests;
 
 using FluentValidation;
@@ -18,48 +19,48 @@ namespace eDoxa.Identity.Api.Areas.Identity.Validators
         {
             this.RuleFor(request => request.Country)
                 .NotNull()
-                .WithMessage("Country is required")
+                .WithMessage(AddressBookErrorDescriber.CountryRequired())
                 .NotEmpty()
-                .WithMessage("Country is required")
+                .WithMessage(AddressBookErrorDescriber.CountryRequired())
                 .Matches(new Regex("^(Canada)|(United States)$"))
-                .WithMessage("Country invalid. Must be Canada or United States");
+                .WithMessage(AddressBookErrorDescriber.CountryInvalid());
 
             this.RuleFor(request => request.Line1)
                 .NotNull()
-                .WithMessage("Main address is required")
+                .WithMessage(AddressBookErrorDescriber.Line1Required())
                 .NotEmpty()
-                .WithMessage("Main address is required")
+                .WithMessage(AddressBookErrorDescriber.Line1Required())
                 .Matches(new Regex("^[a-zA-Z0-9- .,]{1,}$"))
-                .WithMessage("Main address invalid. Must not have special characters");
+                .WithMessage(AddressBookErrorDescriber.Line1Invalid());
 
             this.RuleFor(request => request.Line2)
                 .Matches(new Regex("^[a-zA-Z0-9- .,]{1,}$"))
-                .WithMessage("Secondary address invalid. Must not have special characters");
+                .WithMessage(AddressBookErrorDescriber.Line2Invalid());
 
             this.RuleFor(request => request.City)
                 .NotNull()
-                .WithMessage("City is required")
+                .WithMessage(AddressBookErrorDescriber.CityRequired())
                 .NotEmpty()
-                .WithMessage("City is required")
+                .WithMessage(AddressBookErrorDescriber.CityRequired())
                 .Matches(new Regex("^[a-zA-Z- ]{1,}$"))
-                .WithMessage("City is invalid. Only letters, spaces and hyphens allowed");
+                .WithMessage(AddressBookErrorDescriber.CityInvalid());
 
             this.RuleFor(request => request.State)
                 .NotNull()
-                .WithMessage("State is required")
+                .WithMessage(AddressBookErrorDescriber.StateRequired())
                 .NotEmpty()
-                .WithMessage("State is required")
+                .WithMessage(AddressBookErrorDescriber.StateRequired())
                 .Matches(new Regex("^[a-zA-Z- ]{1,}$"))
-                .WithMessage("State is invalid. Only letters, spaces and hyphens allowed");
+                .WithMessage(AddressBookErrorDescriber.StateInvalid());
 
             this.RuleFor(request => request.PostalCode)
                 .NotNull()
-                .WithMessage("Postal code is required")
+                .WithMessage(AddressBookErrorDescriber.PostalCodeRequired())
                 .NotEmpty()
-                .WithMessage("Postal code is required")
-                .Length(5, 6).WithMessage("Postal code must be between 5 and 6 characters long")
+                .WithMessage(AddressBookErrorDescriber.PostalCodeRequired())
+                .Length(5, 6).WithMessage(AddressBookErrorDescriber.PostalCodeLength())
                 .Matches(new Regex("^[0-9A-Z]{5,6}$"))
-                .WithMessage("Postal code is invalid. Only letters and numbers allowed");
+                .WithMessage(AddressBookErrorDescriber.PostalCodeInvalidError());
         }
     }
 }

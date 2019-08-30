@@ -5,9 +5,11 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
+using System.Collections.Generic;
 
 using Bogus.DataSets;
 
+using eDoxa.Identity.Api.Areas.Identity.ErrorDescribers;
 using eDoxa.Identity.Api.Areas.Identity.Validators;
 using eDoxa.Identity.Api.Infrastructure.Models;
 
@@ -24,9 +26,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
     public sealed class PersonalInfoPostRequestValidatorTest
     {
         [DataTestMethod]
-        [DataRow("Gabriel")]
-        [DataRow("Gabriel-Roy")]
-        [DataRow("Gabriel-Roy-R")]
+        [DynamicData(nameof(ValidFirstNames), DynamicDataSourceType.Method)]
         public void Validate_WhenFirstNameIsValid_ShouldNotHaveValidationErrorFor(string firstName)
         {
             // Arrange
@@ -36,15 +36,15 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
             validator.ShouldNotHaveValidationErrorFor(request => request.FirstName, firstName);
         }
 
+        private static IEnumerable<object[]> ValidFirstNames()
+        {
+            yield return new object[] { "Gabriel" };
+            yield return new object[] { "Gabriel-Roy" };
+            yield return new object[] { "Gabriel-Roy-R" };
+        }
+
         [DataTestMethod]
-        [DataRow(null, "First name is required")]
-        [DataRow("", "First name is required")]
-        [DataRow("G", "First name must be between 2 and 16 characters long")]
-        [DataRow("Gabriel-Roy-Gab-R", "First name must be between 2 and 16 characters long")]
-        [DataRow("Gab123", "First name invalid. Only letters and hyphens allowed")]
-        [DataRow("Gabriel-Ro_Roy", "First name invalid. Only letters and hyphens allowed")]
-        [DataRow("gabriel-Roy", "First name invalid. Every part must start with an uppercase")]
-        [DataRow("Gabriel-roy", "First name invalid. Every part must start with an uppercase")]
+        [DynamicData(nameof(InvalidFirstNames), DynamicDataSourceType.Method)]
         public void Validate_WhenFirstNameIsInvalid_ShouldHaveValidationErrorFor(string firstName, string errorMessage)
         {
             // Arrange
@@ -55,10 +55,20 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
             failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
         }
 
+        private static IEnumerable<object[]> InvalidFirstNames()
+        {
+            yield return new object[] { null, PersonalInfoErrorDescriber.FirstNameRequired() };
+            yield return new object[] { "", PersonalInfoErrorDescriber.FirstNameRequired() };
+            yield return new object[] { "G", PersonalInfoErrorDescriber.FirstNameLength() };
+            yield return new object[] { "Gabriel-Roy-Gab-R", PersonalInfoErrorDescriber.FirstNameLength() };
+            yield return new object[] { "Gab123", PersonalInfoErrorDescriber.FirstNameInvalid() };
+            yield return new object[] { "Gabriel-Ro_Roy", PersonalInfoErrorDescriber.FirstNameInvalid() };
+            yield return new object[] { "gabriel-Roy", PersonalInfoErrorDescriber.FirstNameUppercase() };
+            yield return new object[] { "Gabriel-roy", PersonalInfoErrorDescriber.FirstNameUppercase() };
+        }
+
         [DataTestMethod]
-        [DataRow("Gabriel")]
-        [DataRow("Gabriel-Roy")]
-        [DataRow("Gabriel-Roy-R")]
+        [DynamicData(nameof(ValidLastNames), DynamicDataSourceType.Method)]
         public void Validate_WhenLastNameIsValid_ShouldNotHaveValidationErrorFor(string lastName)
         {
             // Arrange
@@ -68,15 +78,15 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
             validator.ShouldNotHaveValidationErrorFor(request => request.LastName, lastName);
         }
 
+        private static IEnumerable<object[]> ValidLastNames()
+        {
+            yield return new object[] { "Gabriel" };
+            yield return new object[] { "Gabriel-Roy" };
+            yield return new object[] { "Gabriel-Roy-R" };
+        }
+
         [DataTestMethod]
-        [DataRow(null, "Last name is required")]
-        [DataRow("", "Last name is required")]
-        [DataRow("G", "Last name must be between 2 and 16 characters long")]
-        [DataRow("Gabriel-Roy-Gab-R", "Last name must be between 2 and 16 characters long")]
-        [DataRow("Gab123", "Last name invalid. Only letters and hyphens allowed")]
-        [DataRow("Gabriel-Ro_Roy", "Last name invalid. Only letters and hyphens allowed")]
-        [DataRow("gabriel-Roy", "Last name invalid. Every part must start with an uppercase")]
-        [DataRow("Gabriel-roy", "Last name invalid. Every part must start with an uppercase")]
+        [DynamicData(nameof(InvalidLastNames), DynamicDataSourceType.Method)]
         public void Validate_WhenLastNameIsInvalid_ShouldHaveValidationErrorFor(string lastName, string errorMessage)
         {
             // Arrange
@@ -87,11 +97,21 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
             failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
         }
 
-        /*[DataTestMethod]
-        [DataRow("Male")]
-        [DataRow("Female")]
-        [DataRow("Others")]
-        public void Validate_WhenGenderIsValid_ShouldNotHaveValidationErrorFor(string gender)
+        private static IEnumerable<object[]> InvalidLastNames()
+        {
+            yield return new object[] { null, PersonalInfoErrorDescriber.LastNameRequired() };
+            yield return new object[] { "", PersonalInfoErrorDescriber.LastNameRequired() };
+            yield return new object[] { "G", PersonalInfoErrorDescriber.LastNameLength() };
+            yield return new object[] { "Gabriel-Roy-Gab-R", PersonalInfoErrorDescriber.LastNameLength() };
+            yield return new object[] { "Gab123", PersonalInfoErrorDescriber.LastNameInvalid() };
+            yield return new object[] { "Gabriel-Ro_Roy", PersonalInfoErrorDescriber.LastNameInvalid() };
+            yield return new object[] { "gabriel-Roy", PersonalInfoErrorDescriber.LastNameUppercase() };
+            yield return new object[] { "Gabriel-roy", PersonalInfoErrorDescriber.LastNameUppercase() };
+        }
+
+        [DataTestMethod]
+        [DynamicData(nameof(ValidGenders), DynamicDataSourceType.Method)]
+        public void Validate_WhenGenderIsValid_ShouldNotHaveValidationErrorFor(Gender gender)
         {
             // Arrange
             var validator = new PersonalInfoPostRequestValidator();
@@ -100,10 +120,16 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
             validator.ShouldNotHaveValidationErrorFor(request => request.Gender, gender);
         }
 
+        private static IEnumerable<object[]> ValidGenders()
+        {
+            yield return new object[] { Gender.Male };
+            yield return new object[] { Gender.Female };
+            yield return new object[] { Gender.Other };
+        }
+
         [DataTestMethod]
-        [DataRow(null, "Gender is required")]
-        [DataRow("", "Gender is required")]
-        public void Validate_WhenGenderIsInvalid_ShouldHaveValidationErrorFor(string gender, string errorMessage)
+        [DynamicData(nameof(InvalidGenders), DynamicDataSourceType.Method)]
+        public void Validate_WhenGenderIsInvalid_ShouldHaveValidationErrorFor(Gender gender, string errorMessage)
         {
             // Arrange
             var validator = new PersonalInfoPostRequestValidator();
@@ -113,30 +139,45 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
             failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
         }
 
+
+        private static IEnumerable<object[]> InvalidGenders()
+        {
+            yield return new object[] { null, PersonalInfoErrorDescriber.GenderRequired() };
+        }
+
         [DataTestMethod]
-        [DataRow("04/08/1995")]
-        public void Validate_WhenBirthDateIsValid_ShouldNotHaveValidationErrorFor(string birthDate)
+        [DynamicData(nameof(ValidBirthDates), DynamicDataSourceType.Method)]
+        public void Validate_WhenBirthDateIsValid_ShouldNotHaveValidationErrorFor(DateTime birthDate)
         {
             // Arrange
             var validator = new PersonalInfoPostRequestValidator();
 
             // Act - Assert
             validator.ShouldNotHaveValidationErrorFor(request => request.BirthDate, birthDate);
-        }*/
+        }
 
-        /*[DataTestMethod]
-        [DataRow(null, "Birth date is required")]
-        [DataRow("", "Birth date is required")]
-        [DataRow("1995/00/00", "Birth date invalid")]
+        private static IEnumerable<object[]> ValidBirthDates()
+        {
+            yield return new object[] { new DateTime(1995,08,04) };
+        }
+
+        [DataTestMethod]
+        [DynamicData(nameof(InvalidBirthDates), DynamicDataSourceType.Method)]
         public void Validate_WhenBirthDateIsInvalid_ShouldHaveValidationErrorFor(DateTime birthDate, string errorMessage)
         {
-            // Arrange
+            //Arrange
             var validator = new PersonalInfoPostRequestValidator();
 
-            // Act - Assert
+            //Act - Assert
             var failures = validator.ShouldHaveValidationErrorFor(request => request.BirthDate, birthDate);
             failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
-        }*/
+        }
+
+        private static IEnumerable<object[]> InvalidBirthDates()
+        {
+            yield return new object[] { null, PersonalInfoErrorDescriber.BirthDateRequired() };
+            yield return new object[] { new DateTime(), PersonalInfoErrorDescriber.BirthDateRequired() };
+        }
 
     }
 }

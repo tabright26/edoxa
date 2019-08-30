@@ -7,6 +7,7 @@
 using System;
 using System.Text.RegularExpressions;
 
+using eDoxa.Identity.Api.Areas.Identity.ErrorDescribers;
 using eDoxa.Identity.Api.Areas.Identity.Requests;
 
 using FluentValidation;
@@ -19,38 +20,42 @@ namespace eDoxa.Identity.Api.Areas.Identity.Validators
         {
             this.RuleFor(request => request.FirstName)
                 .NotNull()
-                .WithMessage("First name is required")
+                .WithMessage(PersonalInfoErrorDescriber.FirstNameRequired())
                 .NotEmpty()
-                .WithMessage("First name is required")
+                .WithMessage(PersonalInfoErrorDescriber.FirstNameRequired())
                 .Length(2, 16)
-                .WithMessage("First name must be between 2 and 16 characters long")
+                .WithMessage(PersonalInfoErrorDescriber.FirstNameLength())
                 .Matches(new Regex("^[a-zA-Z-]{2,16}$"))
-                .WithMessage("First name invalid. Only letters and hyphens allowed")
+                .WithMessage(PersonalInfoErrorDescriber.FirstNameInvalid())
                 .Matches(new Regex("^[A-Z](((-)[A-Z])|[a-z]){1,15}$"))
-                .WithMessage("First name invalid. Every part must start with an uppercase");
+                .WithMessage(PersonalInfoErrorDescriber.FirstNameUppercase());
 
             this.RuleFor(request => request.LastName)
                 .NotNull()
-                .WithMessage("Last name is required")
+                .WithMessage(PersonalInfoErrorDescriber.LastNameRequired())
                 .NotEmpty()
-                .WithMessage("Last name is required")
+                .WithMessage(PersonalInfoErrorDescriber.LastNameRequired())
                 .Length(2, 16)
-                .WithMessage("Last name must be between 2 and 16 characters long")
+                .WithMessage(PersonalInfoErrorDescriber.LastNameLength())
                 .Matches(new Regex("^[a-zA-Z-]{2,16}$"))
-                .WithMessage("Last name invalid. Only letters and hyphens allowed")
+                .WithMessage(PersonalInfoErrorDescriber.LastNameInvalid())
                 .Matches(new Regex("^[A-Z](((-)[A-Z])|[a-z]){1,15}$"))
-                .WithMessage("Last name invalid. Every part must start with an uppercase");
+                .WithMessage(PersonalInfoErrorDescriber.LastNameUppercase());
 
-            this.RuleFor(request => request.Gender).NotNull().WithMessage("Gender is required").NotEmpty().WithMessage("Gender is required");
+            this.RuleFor(request => request.Gender)
+                .NotNull()
+                .WithMessage(PersonalInfoErrorDescriber.GenderRequired())
+                .NotEmpty()
+                .WithMessage(PersonalInfoErrorDescriber.GenderRequired());
 
             //https://stackoverflow.com/questions/7777985/validate-datetime-with-fluentvalidator
             this.RuleFor(request => request.BirthDate)
                 .NotNull()
-                .WithMessage("Birth date is required")
+                .WithMessage(PersonalInfoErrorDescriber.BirthDateRequired())
                 .NotEmpty()
-                .WithMessage("Birth date  is required")
+                .WithMessage(PersonalInfoErrorDescriber.BirthDateRequired())
                 .Must(BeAValidDate)
-                .WithMessage("Birth date invalid");
+                .WithMessage(PersonalInfoErrorDescriber.BirthDateInvalid());
         }
 
         private static bool BeAValidDate(DateTime date)

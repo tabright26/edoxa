@@ -6,6 +6,7 @@
 
 using System.Text.RegularExpressions;
 
+using eDoxa.Identity.Api.Areas.Identity.ErrorDescribers;
 using eDoxa.Identity.Api.Areas.Identity.Requests;
 
 using FluentValidation;
@@ -16,13 +17,13 @@ namespace eDoxa.Identity.Api.Areas.Identity.Validators
     {
         public DoxaTagPostRequestValidator()
         {
-            this.RuleFor(request => request.Name).NotNull().WithMessage("DoxaTag is required").
-                NotEmpty().WithMessage("DoxaTag is required").
-                Length(2, 16).WithMessage("DoxaTag must be between 2 and 16 characters long").
+            this.RuleFor(request => request.Name).NotNull().WithMessage(DoxaTagErrorDescriber.Required()).
+                NotEmpty().WithMessage(DoxaTagErrorDescriber.Required()).
+                Length(2, 16).WithMessage(DoxaTagErrorDescriber.Length()).
                 Matches(new Regex("^[a-zA-Z_]{2,16}$")).
-                WithMessage("DoxaTag invalid. May only contains (a-z,A-Z,_)").
+                WithMessage(DoxaTagErrorDescriber.Invalid()).
                 Matches(new Regex("^[a-zA-Z][a-zA-Z_]{0,14}[a-zA-Z]$")).
-                WithMessage("DoxaTag invalid. Cannot start or end with _"); ;
+                WithMessage(DoxaTagErrorDescriber.InvalidUnderscore()); ;
 
         }
     }

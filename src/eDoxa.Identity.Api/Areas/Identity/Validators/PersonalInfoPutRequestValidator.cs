@@ -6,6 +6,7 @@
 
 using System.Text.RegularExpressions;
 
+using eDoxa.Identity.Api.Areas.Identity.ErrorDescribers;
 using eDoxa.Identity.Api.Areas.Identity.Requests;
 
 using FluentValidation;
@@ -18,15 +19,15 @@ namespace eDoxa.Identity.Api.Areas.Identity.Validators
         {
             this.RuleFor(request => request.FirstName)
                 .NotNull()
-                .WithMessage("First name is required")
+                .WithMessage(PersonalInfoErrorDescriber.FirstNameRequired())
                 .NotEmpty()
-                .WithMessage("First name is required")
+                .WithMessage(PersonalInfoErrorDescriber.FirstNameRequired())
                 .Length(2, 16)
-                .WithMessage("First name must be between 2 and 16 characters long")
+                .WithMessage(PersonalInfoErrorDescriber.FirstNameLength())
                 .Matches(new Regex("^[a-zA-Z-]{2,16}$"))
-                .WithMessage("First name invalid. Only letters and hyphens allowed")
+                .WithMessage(PersonalInfoErrorDescriber.FirstNameInvalid())
                 .Matches(new Regex("^[A-Z](((-)[A-Z])|[a-z]){1,15}$"))
-                .WithMessage("First name invalid. Every part must start with an uppercase");
+                .WithMessage(PersonalInfoErrorDescriber.FirstNameUppercase());
         }
     }
 }
