@@ -3,7 +3,7 @@
 exports[`renders without crashing 1`] = `
 Array [
   <input
-    className="form-control-sm form-control"
+    className="form-control"
     type="text"
   />,
   <div

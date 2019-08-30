@@ -11,7 +11,7 @@
         }
       ],
       "UpstreamPathTemplate": "/identity/api/{everything}",
-      "UpstreamHttpMethod": ["DELETE", "POST", "PUT", "GET", "PATCH"],
+      "UpstreamHttpMethod": [ "DELETE", "POST", "PUT", "GET", "PATCH" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "IdentityApiKey",
         "AllowedScopes": []
@@ -28,7 +28,33 @@
         }
       ],
       "UpstreamPathTemplate": "/identity/api/doxatags",
-      "UpstreamHttpMethod": ["GET"]
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "Priority": 1,
+      "DownstreamPathTemplate": "/api/password/reset",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "identity.api",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/identity/api/password/reset",
+      "UpstreamHttpMethod": [ "POST" ]
+    },
+    {
+      "Priority": 1,
+      "DownstreamPathTemplate": "/api/password/forgot",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "identity.api",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/identity/api/password/forgot",
+      "UpstreamHttpMethod": [ "POST" ]
     },
     {
       "Priority": 0,
@@ -41,7 +67,7 @@
         }
       ],
       "UpstreamPathTemplate": "/cashier/api/{everything}",
-      "UpstreamHttpMethod": ["DELETE", "POST", "PUT", "GET", "PATCH"],
+      "UpstreamHttpMethod": [ "DELETE", "POST", "PUT", "GET", "PATCH" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "CashierApiKey",
         "AllowedScopes": []
@@ -58,7 +84,7 @@
         }
       ],
       "UpstreamPathTemplate": "/cashier/api/challenges/{challengeId}",
-      "UpstreamHttpMethod": ["GET"]
+      "UpstreamHttpMethod": [ "GET" ]
     },
     {
       "Priority": 0,
@@ -71,7 +97,7 @@
         }
       ],
       "UpstreamPathTemplate": "/arena/challenge/api/{everything}",
-      "UpstreamHttpMethod": ["DELETE", "POST", "PUT", "GET", "PATCH"],
+      "UpstreamHttpMethod": [ "DELETE", "POST", "PUT", "GET", "PATCH" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "ArenaChallengesApiKey",
         "AllowedScopes": []
@@ -88,7 +114,7 @@
         }
       ],
       "UpstreamPathTemplate": "/arena/challenge/api/challenges",
-      "UpstreamHttpMethod": ["GET"]
+      "UpstreamHttpMethod": [ "GET" ]
     }
   ],
   "GlobalConfiguration": {

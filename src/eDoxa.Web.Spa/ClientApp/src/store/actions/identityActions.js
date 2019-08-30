@@ -153,6 +153,38 @@ export function removeAddress(addressId) {
   };
 }
 
+export const FORGOT_PASSWORD = "FORGOT_PASSWORD";
+export const FORGOT_PASSWORD_SUCCESS = "FORGOT_PASSWORD_SUCCESS";
+export const FORGOT_PASSWORD_FAIL = "FORGOT_PASSWORD_FAIL";
+export function forgotPassword(data) {
+  return {
+    types: [RESET_PASSWORD, RESET_PASSWORD_SUCCESS, RESET_PASSWORD_FAIL],
+    payload: {
+      request: {
+        method: "post",
+        url: "/identity/api/password/forgot",
+        data
+      }
+    }
+  };
+}
+
+export const RESET_PASSWORD = "RESET_PASSWORD";
+export const RESET_PASSWORD_SUCCESS = "RESET_PASSWORD_SUCCESS";
+export const RESET_PASSWORD_FAIL = "RESET_PASSWORD_FAIL";
+export function resetPassword(data) {
+  return {
+    types: [RESET_PASSWORD, RESET_PASSWORD_SUCCESS, RESET_PASSWORD_FAIL],
+    payload: {
+      request: {
+        method: "post",
+        url: "/identity/api/password/reset",
+        data
+      }
+    }
+  };
+}
+
 export const LOAD_GAMES = "LOAD_GAMES";
 export const LOAD_GAMES_SUCCESS = "LOAD_GAMES_SUCCESS";
 export const LOAD_GAMES_FAIL = "LOAD_GAMES_FAIL";

@@ -23,5 +23,10 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
         {
             return $"{AppSettings.IdentityServer.Web.SpaUrl}{url}";
         }
+
+        public string RedirectToIdentity(string url = "/")
+        {
+            return $"{AppSettings.IdentityServer.IdentityUrl}{url}";
+        }
     }
 }

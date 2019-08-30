@@ -17,10 +17,10 @@ export const reducer = (state = [], action) => {
       return status !== 204 ? data : state;
     }
     case ADD_ADDRESS_SUCCESS: {
-      break;
+      return state;
     }
     case UPDATE_ADDRESS_SUCCESS: {
-      break;
+      return state;
     }
     case REMOVE_ADDRESS_SUCCESS: {
       const { data: addressId } = action.payload;

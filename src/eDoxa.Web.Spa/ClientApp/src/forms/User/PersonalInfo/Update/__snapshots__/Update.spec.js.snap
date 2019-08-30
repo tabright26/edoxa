@@ -23,7 +23,7 @@ exports[`renders correctly 1`] = `
           className="col-sm-4 mb-0"
         >
           <input
-            className="form-control-sm form-control"
+            className="form-control"
             name="firstName"
             onBlur={[Function]}
             onChange={[Function]}

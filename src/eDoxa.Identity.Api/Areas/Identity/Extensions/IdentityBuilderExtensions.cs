@@ -1,5 +1,5 @@
 ﻿// Filename: IdentityBuilderExtensions.cs
-// Date Created: 2019-07-21
+// Date Created: 2019-08-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -36,20 +36,16 @@ namespace eDoxa.Identity.Api.Areas.Identity.Extensions
 
         public static IdentityBuilder AddTokenProviders(this IdentityBuilder builder, Action<TokenProviderOptions> options)
         {
-            builder.AddDefaultTokenProviders();
-
-            builder.AddTokenProvider<AuthenticatorTokenProvider>(CustomTokenProviders.Authenticator);
-            builder.AddTokenProvider<ChangeEmailTokenProvider>(CustomTokenProviders.ChangeEmail);
-            builder.AddTokenProvider<ChangePhoneNumberTokenProvider>(CustomTokenProviders.ChangePhoneNumber);
-            builder.AddTokenProvider<EmailConfirmationTokenProvider>(CustomTokenProviders.EmailConfirmation);
-            builder.AddTokenProvider<PasswordResetTokenProvider>(CustomTokenProviders.PasswordReset);
-
-            builder.AddTokenProviderOptions(options);
-
-            return builder;
+            return builder.AddDefaultTokenProviders()
+                .AddTokenProvider<AuthenticatorTokenProvider>(CustomTokenProviders.Authenticator)
+                .AddTokenProvider<ChangeEmailTokenProvider>(CustomTokenProviders.ChangeEmail)
+                .AddTokenProvider<ChangePhoneNumberTokenProvider>(CustomTokenProviders.ChangePhoneNumber)
+                .AddTokenProvider<EmailConfirmationTokenProvider>(CustomTokenProviders.EmailConfirmation)
+                .AddTokenProvider<PasswordResetTokenProvider>(CustomTokenProviders.PasswordReset)
+                .AddTokenProviderOptions(options);
         }
 
-        private static void AddTokenProviderOptions(this IdentityBuilder builder, Action<TokenProviderOptions> options)
+        private static IdentityBuilder AddTokenProviderOptions(this IdentityBuilder builder, Action<TokenProviderOptions> options)
         {
             var services = builder.Services;
             var tokenProviderOptions = new TokenProviderOptions();
@@ -59,6 +55,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Extensions
             services.Configure<ChangePhoneNumberTokenProviderOptions>(x => x.TokenLifespan = tokenProviderOptions.ChangePhoneNumber.TokenLifespan);
             services.Configure<EmailConfirmationTokenProviderOptions>(x => x.TokenLifespan = tokenProviderOptions.EmailConfirmation.TokenLifespan);
             services.Configure<PasswordResetTokenProviderOptions>(x => x.TokenLifespan = tokenProviderOptions.PasswordReset.TokenLifespan);
+            return builder;
         }
     }
 }
