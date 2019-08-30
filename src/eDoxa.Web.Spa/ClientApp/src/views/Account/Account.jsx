@@ -4,9 +4,9 @@ import { Container, Row, Col, Card } from "react-bootstrap";
 import UserAccountBalanceMoney from "../../containers/App/User/Account/Balance/Money/Index";
 import UserAccountBalanceToken from "../../containers/App/User/Account/Balance/Token/Index";
 import UserAccountTransactionTable from "../../containers/App/User/Account/Transaction/Table/Table";
-import UserStripeCardTable from "../../containers/App/User/Stripe/Card/Table/Table";
-import UserStripeBankAccountAlert from "../../containers/App/User/Stripe/BankAccount/Alert/Alert";
-import UserStripeConnectAccountAlert from "../../containers/App/User/Stripe/ConnectAccount/Alert/Alert";
+import StripeCardTable from "../../containers/App/Stripe/Card/Table/Table";
+import StripeBankAccountAlert from "../../containers/App/Stripe/BankAccount/Alert/Alert";
+import StripeConnectAccountAlert from "../../containers/App/Stripe/ConnectAccount/Alert/Alert";
 
 const Account = () => (
   <Container>
@@ -16,7 +16,7 @@ const Account = () => (
         <hr className="border" />
       </Col>
       <Col>
-        <UserStripeConnectAccountAlert />
+        <StripeConnectAccountAlert />
       </Col>
     </Row>
     <Row>
@@ -55,13 +55,13 @@ const Account = () => (
       </Col>
       <Col>
         <Card bg="dark">
-          <UserStripeCardTable />
+          <StripeCardTable />
         </Card>
       </Col>
     </Row>
     <Row>
       <Col>
-        <UserStripeBankAccountAlert />
+        <StripeBankAccountAlert />
       </Col>
     </Row>
   </Container>

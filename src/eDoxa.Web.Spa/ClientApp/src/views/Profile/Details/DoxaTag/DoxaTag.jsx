@@ -23,12 +23,12 @@ const DoxaTagCard = ({ className, doxaTag, actions }) => {
         <dl className="row mb-0">
           <dd className="col-sm-3 mb-0 text-muted">DoxaTag</dd>
           <dd className="col-sm-5 mb-0">
-            {isFormHidden ? (
+            {isFormHidden && doxaTag ? (
               <span>
                 {doxaTag.name}#{doxaTag.code}
               </span>
             ) : (
-              <DoxaTagForm.Change initialValues={{ name: doxaTag.name }} onSubmit={data => actions.changeDoxaTag(data).then(() => setFormHidden(true))} handleCancel={() => setFormHidden(true)} />
+              <DoxaTagForm.Change initialValues={doxaTag} onSubmit={data => actions.changeDoxaTag(data).then(() => setFormHidden(true))} handleCancel={() => setFormHidden(true)} />
             )}
           </dd>
         </dl>

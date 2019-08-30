@@ -92,22 +92,13 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
         public async Task PostAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            var user = new User
-            {
-                PersonalInfo = new UserPersonalInfo
-                {
-                    FirstName = "FirstName",
-                    LastName = "LastName",
-                    Gender = Gender.Male,
-                    BirthDate = DateTime.UtcNow.AddDays(-20)
-                }
-            };
+            var user = new User();
 
             var mockUserManager = new Mock<IUserManager>();
 
             mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
 
-            mockUserManager.Setup(userManager => userManager.GetPersonalInfoAsync(It.IsAny<User>())).ReturnsAsync(user.PersonalInfo).Verifiable();
+            mockUserManager.Setup(userManager => userManager.GetPersonalInfoAsync(It.IsAny<User>())).Verifiable();
 
             mockUserManager.Setup(
                     userManager => userManager.SetPersonalInfoAsync(
@@ -151,22 +142,13 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
         public async Task PostAsync_ShouldBeBadRequestObjectResult()
         {
             // Arrange
-            var user = new User
-            {
-                PersonalInfo = new UserPersonalInfo
-                {
-                    FirstName = "FirstName",
-                    LastName = "LastName",
-                    Gender = Gender.Male,
-                    BirthDate = DateTime.UtcNow.AddDays(-20)
-                }
-            };
+            var user = new User();
 
             var mockUserManager = new Mock<IUserManager>();
 
             mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
 
-            mockUserManager.Setup(userManager => userManager.GetPersonalInfoAsync(It.IsAny<User>())).ReturnsAsync(user.PersonalInfo).Verifiable();
+            mockUserManager.Setup(userManager => userManager.GetPersonalInfoAsync(It.IsAny<User>())).Verifiable();
 
             mockUserManager.Setup(
                     userManager => userManager.SetPersonalInfoAsync(

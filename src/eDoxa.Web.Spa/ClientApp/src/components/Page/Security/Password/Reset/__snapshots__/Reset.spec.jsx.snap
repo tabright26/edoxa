@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders without crashing 1`] = `
+exports[`renders correctly 1`] = `
 <div
   className="app flex-row align-items-center"
 >
@@ -19,17 +19,18 @@ exports[`renders without crashing 1`] = `
           <div
             className="p-4 card-body"
           >
+            <h1>
+              Reset Password
+            </h1>
+            <p
+              className="text-muted"
+            >
+              Reset your account password
+            </p>
             <form
               className=""
+              onSubmit={[Function]}
             >
-              <h1>
-                Reset Password
-              </h1>
-              <p
-                className="text-muted"
-              >
-                Reset your account password
-              </p>
               <div
                 className="mb-3 input-group"
               >
@@ -43,10 +44,19 @@ exports[`renders without crashing 1`] = `
                   </span>
                 </div>
                 <input
-                  autoComplete="email"
-                  className="form-control"
+                  className="form-control-sm form-control"
+                  name="email"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onDragStart={[Function]}
+                  onDrop={[Function]}
+                  onFocus={[Function]}
                   placeholder="Email"
                   type="text"
+                  value=""
+                />
+                <div
+                  className="invalid-feedback"
                 />
               </div>
               <div
@@ -64,14 +74,20 @@ exports[`renders without crashing 1`] = `
                   </span>
                 </div>
                 <input
-                  autoComplete="new-password"
                   className="form-control"
+                  name="password"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onDragStart={[Function]}
+                  onDrop={[Function]}
+                  onFocus={[Function]}
                   placeholder="Password"
                   type="password"
+                  value=""
                 />
               </div>
               <div
-                className="mb-4 input-group"
+                className="mb-3 input-group"
               >
                 <div
                   className="input-group-prepend"
@@ -85,19 +101,30 @@ exports[`renders without crashing 1`] = `
                   </span>
                 </div>
                 <input
-                  autoComplete="new-password"
                   className="form-control"
-                  placeholder="Repeat password"
+                  name="confirmPassword"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onDragStart={[Function]}
+                  onDrop={[Function]}
+                  onFocus={[Function]}
+                  placeholder="Confirm Password"
                   type="password"
+                  value=""
                 />
               </div>
-              <button
-                aria-label={null}
-                className="btn btn-primary btn-block"
-                onClick={[Function]}
+              <div
+                className="mb-0 form-group"
               >
-                Reset Password
-              </button>
+                <button
+                  aria-label={null}
+                  className="btn btn-primary btn-block"
+                  onClick={[Function]}
+                  type="submit"
+                >
+                  Reset
+                </button>
+              </div>
             </form>
           </div>
         </div>

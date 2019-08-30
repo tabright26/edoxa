@@ -67,7 +67,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 
                 var personalInfo = await _userManager.GetPersonalInfoAsync(user);
 
-                if (personalInfo == null)
+                if (personalInfo != null)
                 {
                     return this.BadRequest("The user's personal information has already been created.");
                 }

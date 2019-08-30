@@ -8,8 +8,7 @@ namespace eDoxa.Seedwork.Security
 {
     public static class AppClaimTypes
     {
-        public const string DoxaTag = "doxa_tag";
-        public const string Addresses = "addresses";
+        public const string DoxaTag = "doxatag";
         public const string SecurityStamp = "security_stamp";
         public const string Permission = "permission";
         public const string Games = "games";

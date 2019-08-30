@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardBody, Col, Container, Row } from "reactstrap";
 import SecurityPassword from "../../../../../forms/Security/Password";
-import withForgotPassword from "../../../../../containers/App/Security/withForgotPassword";
+import withUserContainer from "../../../../../containers/App/User/withUserContainer";
 
 const ForgotPassword = ({ actions }) => (
   <div className="app flex-row align-items-center">
@@ -21,4 +21,4 @@ const ForgotPassword = ({ actions }) => (
   </div>
 );
 
-export default withForgotPassword(ForgotPassword);
+export default withUserContainer(ForgotPassword);

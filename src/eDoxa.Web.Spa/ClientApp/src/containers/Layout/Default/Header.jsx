@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { LinkContainer } from "react-router-bootstrap";
 import { AppNavbarBrand, AppSidebarToggler, AppAsideToggler } from "@coreui/react";
-import withUserHoc from "../../../containers/App/User/withUserHoc";
+import withUserContainer from "../../../containers/App/User/withUserContainer";
 
 import logo from "../../../assets/img/brand/logo.svg";
 import sygnet from "../../../assets/img/brand/sygnet.svg";
@@ -120,4 +120,4 @@ class Header extends Component {
   }
 }
 
-export default withUserHoc(Header);
+export default withUserContainer(Header);

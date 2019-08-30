@@ -6,24 +6,24 @@ exports[`renders correctly 1`] = `
   onSubmit={[Function]}
 >
   <dl
-    class="row mb-0"
+    className="row mb-0"
   >
     <dd
-      class="col-sm-3 text-muted mb-0"
+      className="col-sm-3 text-muted mb-0"
     >
       Name
     </dd>
     <dd
-      class="col-sm-9 mb-0"
+      className="col-sm-9 mb-0"
     >
       <dl
-        class="row"
+        className="row"
       >
         <dt
-          class="col-sm-4 mb-0"
+          className="col-sm-4 mb-0"
         >
           <input
-            className="form-control"
+            className="form-control-sm form-control"
             name="firstName"
             onBlur={[Function]}
             onChange={[Function]}
@@ -38,12 +38,11 @@ exports[`renders correctly 1`] = `
             className="invalid-feedback"
           />
         </dt>
-        W
         <dd
-          class="col-sm-4 mb-0"
+          className="col-sm-4 mb-0"
         >
           <input
-            className="form-control"
+            className="form-control-sm form-control"
             name="lastName"
             onBlur={[Function]}
             onChange={[Function]}
@@ -61,12 +60,12 @@ exports[`renders correctly 1`] = `
       </dl>
     </dd>
     <dd
-      class="col-sm-3 text-muted mb-0"
+      className="col-sm-3 text-muted mb-0"
     >
       Birth date
     </dd>
     <dd
-      class="col-sm-9 mb-0"
+      className="col-sm-9 mb-0"
     >
       <div
         className="form-group"
@@ -742,12 +741,12 @@ exports[`renders correctly 1`] = `
       </div>
     </dd>
     <dd
-      class="col-sm-3 text-muted mb"
+      className="col-sm-3 text-muted mb"
     >
       Gender
     </dd>
     <dd
-      class="col-sm-3 mb-0"
+      className="col-sm-3 mb-0"
     >
       <select
         className="form-control"

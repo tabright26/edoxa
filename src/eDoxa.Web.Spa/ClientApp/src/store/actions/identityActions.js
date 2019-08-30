@@ -153,12 +153,27 @@ export function removeAddress(addressId) {
   };
 }
 
+export const CONFRIM_EMAIL = "CONFRIM_EMAIL";
+export const CONFRIM_EMAIL_SUCCESS = "CONFRIM_EMAIL_SUCCESS";
+export const CONFRIM_EMAIL_FAIL = "CONFRIM_EMAIL_FAIL";
+export function confirmEmail(userId, code) {
+  return {
+    types: [CONFRIM_EMAIL, CONFRIM_EMAIL_SUCCESS, CONFRIM_EMAIL_FAIL],
+    payload: {
+      request: {
+        method: "get",
+        url: `/identity/api/email/confirm?userId=${userId}&code=${code}`
+      }
+    }
+  };
+}
+
 export const FORGOT_PASSWORD = "FORGOT_PASSWORD";
 export const FORGOT_PASSWORD_SUCCESS = "FORGOT_PASSWORD_SUCCESS";
 export const FORGOT_PASSWORD_FAIL = "FORGOT_PASSWORD_FAIL";
 export function forgotPassword(data) {
   return {
-    types: [RESET_PASSWORD, RESET_PASSWORD_SUCCESS, RESET_PASSWORD_FAIL],
+    types: [FORGOT_PASSWORD, FORGOT_PASSWORD_SUCCESS, FORGOT_PASSWORD_FAIL],
     payload: {
       request: {
         method: "post",

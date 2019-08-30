@@ -1,5 +1,5 @@
 ﻿// Filename: Register.cshtml.cs
-// Date Created: 2019-07-21
+// Date Created: 2019-08-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -25,6 +25,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
     public class RegisterModel : PageModel
     {
         private readonly IEmailSender _emailSender;
+        private readonly IRedirectService _redirectService;
         private readonly ILogger<RegisterModel> _logger;
         private readonly SignInManager _signInManager;
         private readonly UserManager _userManager;
@@ -33,13 +34,15 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
             UserManager userManager,
             SignInManager signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender
+            IEmailSender emailSender,
+            IRedirectService redirectService
         )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _redirectService = redirectService;
         }
 
         [BindProperty] public InputModel Input { get; set; }
@@ -53,34 +56,29 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/");
+            returnUrl ??= _redirectService.RedirectToWebSpa();
 
             if (ModelState.IsValid)
             {
-                var user = new User
-                {
-                    Email = Input.Email,
-                    UserName = Input.Email
-                };
-
-                var result = await _userManager.CreateAsync(user, Input.Password);
+                var result = await _userManager.CreateAsync(
+                    new User
+                    {
+                        Email = Input.Email,
+                        UserName = Input.Email
+                    },
+                    Input.Password
+                );
 
                 if (result.Succeeded)
                 {
+                    var user = await _userManager.FindByEmailAsync(Input.Email);
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        null,
-                        new
-                        {
-                            userId = user.Id,
-                            code
-                        },
-                        Request.Scheme
-                    );
+                    var callbackUrl =
+                        $"{_redirectService.RedirectToWebSpa("/security/email/confirm")}?userId={user.Id}&code={code}";
 
                     await _emailSender.SendEmailAsync(
                         Input.Email,
@@ -90,7 +88,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
 
                     await _signInManager.SignInAsync(user, false);
 
-                    return this.LocalRedirect(returnUrl);
+                    return this.Redirect(returnUrl);
                 }
 
                 foreach (var error in result.Errors)

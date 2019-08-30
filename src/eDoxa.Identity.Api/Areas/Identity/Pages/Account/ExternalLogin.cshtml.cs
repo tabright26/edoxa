@@ -148,15 +148,16 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var user = new User
+                var result = await _userManager.CreateAsync(new User
                 {
-                    Email = Input.Email
-                };
-
-                var result = await _userManager.CreateAsync(user);
+                    Email = Input.Email,
+                    UserName = Input.Email
+                });
 
                 if (result.Succeeded)
                 {
+                    var user = await _userManager.FindByEmailAsync(Input.Email);
+
                     result = await _userManager.AddLoginAsync(user, info);
 
                     if (result.Succeeded)

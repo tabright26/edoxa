@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { loadUserStripeCards } from "../../../../../store/actions/stripeActions";
+import { loadUserStripeCards } from "../../../../store/actions/stripeActions";
 
 const withStripeCardHoc = WrappedComponent => {
   class StripeCardContainer extends Component {

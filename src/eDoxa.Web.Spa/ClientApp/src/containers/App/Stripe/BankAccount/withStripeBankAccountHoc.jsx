@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { loadUserStripeBankAccounts } from "../../../../../store/actions/stripeActions";
+import { loadUserStripeBankAccounts } from "../../../../store/actions/stripeActions";
 
 const withStripeBankAccountHoc = WrappedComponent => {
   class StripeBankAccountContainer extends Component {
