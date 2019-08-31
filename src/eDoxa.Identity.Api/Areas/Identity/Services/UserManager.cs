@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using eDoxa.Identity.Api.Infrastructure.Models;
 
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -50,6 +51,15 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
         public new UserStore Store { get; }
 
         private new CustomIdentityErrorDescriber ErrorDescriber { get; }
+
+        public async Task<IEnumerable<UserDoxaTag>> FetchDoxaTagsAsync()
+        {
+            this.ThrowIfDisposed();
+
+            return await Store.DoxaTagHistory.GroupBy(doxaTag => doxaTag.UserId)
+                .Select(doxaTagHistory => doxaTagHistory.OrderBy(doxaTag => doxaTag.Timestamp).First())
+                .ToListAsync();
+        }
 
         public async Task<IdentityResult> AddGameAsync(User user, string gameName, string playerId)
         {

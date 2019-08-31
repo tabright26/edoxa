@@ -21,6 +21,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
     {
         UserStore Store { get; }
 
+        Task<IEnumerable<UserDoxaTag>> FetchDoxaTagsAsync();
+
         Task<IdentityResult> AddGameAsync(User user, string gameName, string playerId);
 
         Task<IdentityResult> RemoveGameAsync(User user, Game game);

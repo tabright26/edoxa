@@ -35,26 +35,24 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAsync([FromQuery] string? userId, [FromQuery] string? code)
         {
-            if (userId == null || code == null)
+            if (userId != null && code != null)
             {
-                return this.Ok();
-            }
+                var user = await _userManager.FindByIdAsync(userId);
 
-            var user = await _userManager.FindByIdAsync(userId);
+                if (user == null)
+                {
+                    return this.NotFound($"Unable to load user with ID '{userId}'.");
+                }
 
-            if (user == null)
-            {
-                return this.NotFound($"Unable to load user with ID '{userId}'.");
-            }
+                // BUG: Quick fix. Must be refactored. Related to the encoding.
+                code = code.Replace(" ", "+");
 
-            // BUG: Quick fix. Must be refactored. Related to the encoding.
-            code = code.Replace(" ", "+");
+                var result = await _userManager.ConfirmEmailAsync(user, code);
 
-            var result = await _userManager.ConfirmEmailAsync(user, code);
-
-            if (!result.Succeeded)
-            {
-                throw new InvalidOperationException($"Error confirming email for user with ID '{userId}':");
+                if (!result.Succeeded)
+                {
+                    throw new InvalidOperationException($"Error confirming email for user with ID '{userId}':");
+                }
             }
 
             return this.Ok();

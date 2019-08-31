@@ -11,11 +11,13 @@ using Autofac;
 
 using eDoxa.Identity.Api;
 using eDoxa.Identity.Api.Infrastructure;
+using eDoxa.Identity.IntegrationTests.Mocks;
 using eDoxa.Seedwork.Testing;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.ServiceBus.Moq;
 
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 
@@ -29,7 +31,14 @@ namespace eDoxa.Identity.IntegrationTests
 
             builder.ConfigureAppConfiguration(configure => configure.AddJsonFile("appsettings.json", false).AddEnvironmentVariables());
 
-            builder.ConfigureTestContainer<ContainerBuilder>(container => container.RegisterModule<MockServiceBusModule>());
+            builder.ConfigureTestContainer<ContainerBuilder>(container =>
+            {
+                var mockEmailSender = new MockEmailSender();
+
+                container.RegisterInstance(mockEmailSender.Object).As<IEmailSender>().SingleInstance();
+
+                container.RegisterModule<MockServiceBusModule>();
+            });
         }
 
         protected override TestServer CreateServer(IWebHostBuilder builder)
