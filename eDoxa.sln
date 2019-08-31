@@ -36,7 +36,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Cashier.Domain", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Cashier.Infrastructure", "src\eDoxa.Cashier.Infrastructure\eDoxa.Cashier.Infrastructure.csproj", "{A83F8028-ECBA-4DBF-B061-70FA5B20100E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Cashier.Api", "src\eDoxa.Cashier.API\eDoxa.Cashier.Api.csproj", "{5971159D-5B73-4C21-AD50-671B8EAEE388}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Cashier.Api", "src\eDoxa.Cashier.Api\eDoxa.Cashier.Api.csproj", "{5971159D-5B73-4C21-AD50-671B8EAEE388}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Web.Spa", "src\eDoxa.Web.Spa\eDoxa.Web.Spa.csproj", "{A09B0ACE-CA61-43A5-8861-334A4B29567A}"
 EndProject
