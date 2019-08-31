@@ -66,12 +66,12 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                     // Act
                     using var response = await this.ExecuteAsync(
                         new AddressPostRequest(
-                            "New",
-                            "New",
-                            "New",
-                            "New",
-                            "New",
-                            "New"
+                            "Canada",
+                            "1234 Test Street",
+                            null,
+                            "Toronto",
+                            "Ontario",
+                            "A1A1A1"
                         )
                     );
 

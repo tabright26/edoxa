@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-08-18
+// Date Created: 2019-08-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -25,6 +25,7 @@ using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Swagger.Extensions;
 using eDoxa.Seedwork.Application.Validations;
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.ServiceBus.Modules;
 
@@ -32,6 +33,8 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 
 using HealthChecks.UI.Client;
+
+using IdentityServer4.AccessTokenValidation;
 
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
@@ -59,13 +62,13 @@ namespace eDoxa.Arena.Challenges.Api
     {
         private static readonly string XmlCommentsFilePath = Path.Combine(
             AppContext.BaseDirectory,
-            $"{typeof(Startup).GetTypeInfo().Assembly.GetName().Name}.xml"
-        );
+            $"{typeof(Startup).GetTypeInfo().Assembly.GetName().Name}.xml");
 
         static Startup()
         {
             TelemetryDebugWriter.IsTracingDisabled = true;
             ValidatorOptions.PropertyNameResolver = CamelCasePropertyNameResolver.ResolvePropertyName;
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         }
 
         public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
@@ -73,7 +76,6 @@ namespace eDoxa.Arena.Challenges.Api
             Configuration = configuration;
             HostingEnvironment = hostingEnvironment;
             AppSettings = configuration.GetAppSettings<ArenaChallengesAppSettings>(ArenaChallengesApi);
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         }
 
         private ArenaChallengesAppSettings AppSettings { get; }
@@ -95,24 +97,20 @@ namespace eDoxa.Arena.Challenges.Api
                     {
                         sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup)).GetName().Name);
                         sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
-                    }
-                )
-            );
+                    }));
 
             services.AddDistributedRedisCache(
                 options =>
                 {
                     options.Configuration = Configuration.GetConnectionString(ConnectionStrings.Redis);
                     options.InstanceName = HostingEnvironment.ApplicationName;
-                }
-            );
+                });
 
             services.AddCors(
                 options =>
                 {
                     options.AddPolicy("default", builder => builder.AllowAnyMethod().AllowAnyHeader().AllowCredentials().SetIsOriginAllowed(_ => true));
-                }
-            );
+                });
 
             services.AddMvc(
                     options =>
@@ -127,8 +125,7 @@ namespace eDoxa.Arena.Challenges.Api
                     {
                         config.RegisterValidatorsFromAssemblyContaining<Startup>();
                         config.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
-                    }
-                );
+                    });
 
             services.AddApiVersioning(
                 options =>
@@ -137,12 +134,19 @@ namespace eDoxa.Arena.Challenges.Api
                     options.AssumeDefaultVersionWhenUnspecified = true;
                     options.DefaultApiVersion = new ApiVersion(1, 0);
                     options.ApiVersionReader = new HeaderApiVersionReader();
-                }
-            );
+                });
 
             services.AddAutoMapper(Assembly.GetAssembly(typeof(Startup)), Assembly.GetAssembly(typeof(ArenaChallengesDbContext)));
 
-            services.AddAuthentication(HostingEnvironment, AppSettings);
+            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+                .AddIdentityServerAuthentication(
+                    options =>
+                    {
+                        options.ApiName = AppSettings.ApiResource.Name;
+                        options.Authority = AppSettings.Authority.PrivateUrl;
+                        options.RequireHttpsMetadata = false;
+                        options.ApiSecret = "secret";
+                    });
 
             // TODO: Use claims instead.
             services.AddTransient<IdentityDelegatingHandler>();
@@ -152,8 +156,7 @@ namespace eDoxa.Arena.Challenges.Api
                 .AddPolicyHandler(
                     HttpPolicyExtensions.HandleTransientHttpError()
                         .OrResult(message => message.StatusCode == HttpStatusCode.NotFound)
-                        .WaitAndRetryAsync(6, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)))
-                )
+                        .WaitAndRetryAsync(6, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))))
                 .AddPolicyHandler(HttpPolicyExtensions.HandleTransientHttpError().CircuitBreakerAsync(5, TimeSpan.FromSeconds(30)));
 
             services.AddArenaGames(Configuration);
@@ -193,8 +196,7 @@ namespace eDoxa.Arena.Challenges.Api
                 {
                     Predicate = _ => true,
                     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-                }
-            );
+                });
         }
 
         public void ConfigureDevelopment(IApplicationBuilder application, IApiVersionDescriptionProvider provider)

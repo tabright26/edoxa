@@ -1,18 +1,12 @@
 // Filename: IDomainEventHandler.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-08-30
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
-
-using eDoxa.Seedwork.Domain;
 
 using MediatR;
 
-namespace eDoxa.Seedwork.Application
+namespace eDoxa.Seedwork.Domain
 {
     public interface IDomainEventHandler<in TDomainEvent> : INotificationHandler<TDomainEvent>
     where TDomainEvent : IDomainEvent

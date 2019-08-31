@@ -7,14 +7,11 @@
 using System;
 using System.Collections.Generic;
 
-using Bogus.DataSets;
-
 using eDoxa.Identity.Api.Areas.Identity.ErrorDescribers;
 using eDoxa.Identity.Api.Areas.Identity.Validators;
 using eDoxa.Identity.Api.Infrastructure.Models;
 
 using FluentAssertions;
-using FluentAssertions.Primitives;
 
 using FluentValidation.TestHelper;
 

@@ -7,6 +7,7 @@
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 using Autofac;
@@ -21,6 +22,8 @@ using eDoxa.Seedwork.Testing.Extensions;
 
 using FluentAssertions;
 
+using IdentityModel;
+
 using Microsoft.AspNetCore.TestHost;
 
 using Moq;
@@ -31,9 +34,32 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 {
     public sealed class ChallengeParticipantsControllerPostAsyncTest : IClassFixture<ArenaChallengeApiFactory>
     {
-        public ChallengeParticipantsControllerPostAsyncTest(ArenaChallengeApiFactory arenaChallengeApiFactory)
+        private readonly ArenaChallengeApiFactory _factory;
+
+        public ChallengeParticipantsControllerPostAsyncTest(ArenaChallengeApiFactory factory)
         {
-            var factory = arenaChallengeApiFactory.WithWebHostBuilder(
+            _factory = factory;
+        }
+
+        private HttpClient _httpClient;
+
+        private async Task<HttpResponseMessage> ExecuteAsync(ChallengeId challengeId)
+        {
+            return await _httpClient.PostAsync($"api/challenges/{challengeId}/participants", null);
+        }
+
+        [Fact]
+        public async Task ShouldBeHttpStatusCodeOK()
+        {
+            // Arrange
+            var challengeFaker = new ChallengeFaker(ChallengeGame.LeagueOfLegends, ChallengeState.Inscription);
+            challengeFaker.UseSeed(1);
+            var challenge = challengeFaker.Generate();
+
+            var userId = new UserId();
+            var gameAccountId = new GameAccountId(Guid.NewGuid().ToString());
+
+            var factory = _factory.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString())).WithWebHostBuilder(
                 builder => builder.ConfigureTestContainer<ContainerBuilder>(
                     container =>
                     {
@@ -42,7 +68,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
                         mock.Setup(identityService => identityService.HasGameAccountIdAsync(It.IsAny<UserId>(), It.IsAny<ChallengeGame>())).ReturnsAsync(true);
 
                         mock.Setup(identityService => identityService.GetGameAccountIdAsync(It.IsAny<UserId>(), It.IsAny<ChallengeGame>()))
-                            .ReturnsAsync(new GameAccountId(Guid.NewGuid().ToString()));
+                            .ReturnsAsync(gameAccountId);
 
                         container.RegisterInstance(mock.Object).As<IIdentityService>();
                     }
@@ -50,27 +76,10 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
             );
 
             _httpClient = factory.CreateClient();
-            _testServer = factory.Server;
-            _testServer.CleanupDbContext();
-        }
+            var testServer = factory.Server;
+            testServer.CleanupDbContext();
 
-        private readonly HttpClient _httpClient;
-        private readonly TestServer _testServer;
-
-        private async Task<HttpResponseMessage> ExecuteAsync(ChallengeId challengeId)
-        {
-            return await _httpClient.PostAsync($"api/challenges/{challengeId}/participants", null);
-        }
-
-        [Fact(Skip = "Invalid")]
-        public async Task ShouldBeHttpStatusCodeOK()
-        {
-            // Arrange
-            var challengeFaker = new ChallengeFaker(ChallengeGame.LeagueOfLegends, ChallengeState.Inscription);
-            challengeFaker.UseSeed(1);
-            var challenge = challengeFaker.Generate();
-
-            await _testServer.UsingScopeAsync(
+            await testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var challengeRepository = scope.GetRequiredService<IChallengeRepository>();
