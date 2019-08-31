@@ -1,10 +1,11 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-08-18
+// Date Created: 2019-08-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Reflection;
 
@@ -19,10 +20,9 @@ using eDoxa.Identity.Api.Extensions;
 using eDoxa.Identity.Api.Infrastructure;
 using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Identity.Api.Services;
-using eDoxa.Seedwork.Application;
-using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Swagger.Extensions;
 using eDoxa.Seedwork.Application.Validations;
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security;
 using eDoxa.ServiceBus.Modules;
@@ -33,6 +33,8 @@ using FluentValidation.AspNetCore;
 using HealthChecks.UI.Client;
 
 using IdentityModel;
+
+using IdentityServer4.AccessTokenValidation;
 
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
@@ -57,13 +59,13 @@ namespace eDoxa.Identity.Api
     {
         private static readonly string XmlCommentsFilePath = Path.Combine(
             AppContext.BaseDirectory,
-            $"{typeof(Startup).GetTypeInfo().Assembly.GetName().Name}.xml"
-        );
+            $"{typeof(Startup).GetTypeInfo().Assembly.GetName().Name}.xml");
 
         static Startup()
         {
             TelemetryDebugWriter.IsTracingDisabled = true;
             ValidatorOptions.PropertyNameResolver = CamelCasePropertyNameResolver.ResolvePropertyName;
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         }
 
         public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
@@ -103,17 +105,14 @@ namespace eDoxa.Identity.Api
                     {
                         sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup)).GetName().Name);
                         sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
-                    }
-                )
-            );
+                    }));
 
             services.Configure<CookiePolicyOptions>(
                 options =>
                 {
                     options.CheckConsentNeeded = _ => true;
                     options.MinimumSameSitePolicy = SameSiteMode.None;
-                }
-            );
+                });
 
             services.AddIdentity<User, Role>(
                     options =>
@@ -144,8 +143,7 @@ namespace eDoxa.Identity.Api
                         options.Tokens.ChangePhoneNumberTokenProvider = CustomTokenProviders.ChangePhoneNumber;
                         options.Tokens.EmailConfirmationTokenProvider = CustomTokenProviders.EmailConfirmation;
                         options.Tokens.PasswordResetTokenProvider = CustomTokenProviders.PasswordReset;
-                    }
-                )
+                    })
                 .AddEntityFrameworkStores<IdentityDbContext>()
                 .AddUserStore<UserStore>()
                 .AddTokenProviders(
@@ -156,8 +154,7 @@ namespace eDoxa.Identity.Api
                         options.ChangePhoneNumber.TokenLifespan = TimeSpan.FromDays(1);
                         options.EmailConfirmation.TokenLifespan = TimeSpan.FromDays(2);
                         options.PasswordReset.TokenLifespan = TimeSpan.FromHours(2);
-                    }
-                )
+                    })
                 .AddClaimsPrincipalFactory<CustomUserClaimsPrincipalFactory>()
                 .AddUserManager<UserManager>()
                 .AddSignInManager<SignInManager>()
@@ -169,8 +166,7 @@ namespace eDoxa.Identity.Api
                 {
                     option.CompatibilityMode = PasswordHasherCompatibilityMode.IdentityV3;
                     option.IterationCount = HostingEnvironment.IsProduction() ? 100000 : 1;
-                }
-            );
+                });
 
             services.AddMvc(
                     options =>
@@ -186,15 +182,13 @@ namespace eDoxa.Identity.Api
                         options.AllowAreas = true;
                         options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage");
                         options.Conventions.AuthorizeAreaPage("Identity", "/Account/Logout");
-                    }
-                )
+                    })
                 .AddFluentValidation(
                     config =>
                     {
                         config.RegisterValidatorsFromAssemblyContaining<Startup>();
                         config.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
-                    }
-                );
+                    });
 
             services.AddApiVersioning(
                 options =>
@@ -203,8 +197,7 @@ namespace eDoxa.Identity.Api
                     options.AssumeDefaultVersionWhenUnspecified = true;
                     options.DefaultApiVersion = new ApiVersion(1, 0);
                     options.ApiVersionReader = new HeaderApiVersionReader();
-                }
-            );
+                });
 
             services.AddAutoMapper(Assembly.GetAssembly(typeof(Startup)), Assembly.GetAssembly(typeof(IdentityDbContext)));
 
@@ -220,8 +213,7 @@ namespace eDoxa.Identity.Api
                         options.UserInteraction.LoginUrl = "/Account/Login";
                         options.UserInteraction.LoginReturnUrlParameter = "returnUrl";
                         options.UserInteraction.LogoutUrl = "/Account/Logout";
-                    }
-                )
+                    })
                 .AddDeveloperSigningCredential()
                 .AddInMemoryPersistedGrants()
                 .AddInMemoryIdentityResources(IdentityServerConfig.GetIdentityResources())
@@ -232,7 +224,15 @@ namespace eDoxa.Identity.Api
                 .AddAspNetIdentity<User>()
                 .BuildCustomServices();
 
-            services.AddAuthentication(HostingEnvironment, AppSettings);
+            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+                .AddIdentityServerAuthentication(
+                    options =>
+                    {
+                        options.ApiName = AppSettings.ApiResource.Name;
+                        options.Authority = AppSettings.Authority.PrivateUrl;
+                        options.RequireHttpsMetadata = false;
+                        options.ApiSecret = "secret";
+                    });
         }
 
         public void ConfigureDevelopmentServices(IServiceCollection services)
@@ -281,8 +281,7 @@ namespace eDoxa.Identity.Api
                 {
                     Predicate = _ => true,
                     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-                }
-            );
+                });
         }
 
         public void ConfigureDevelopment(IApplicationBuilder application, IApiVersionDescriptionProvider provider)

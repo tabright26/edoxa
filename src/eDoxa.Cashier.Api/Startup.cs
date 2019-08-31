@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-08-18
+// Date Created: 2019-08-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -16,10 +16,10 @@ using AutoMapper;
 using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Api.Infrastructure;
 using eDoxa.Cashier.Infrastructure;
-using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Swagger.Extensions;
 using eDoxa.Seedwork.Application.Validations;
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.ServiceBus.Modules;
 
@@ -27,6 +27,8 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 
 using HealthChecks.UI.Client;
+
+using IdentityServer4.AccessTokenValidation;
 
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
@@ -47,23 +49,22 @@ namespace eDoxa.Cashier.Api
 {
     public sealed class Startup
     {
+        private static readonly string XmlCommentsFilePath = Path.Combine(
+            AppContext.BaseDirectory,
+            $"{typeof(Startup).GetTypeInfo().Assembly.GetName().Name}.xml");
+
         static Startup()
         {
             TelemetryDebugWriter.IsTracingDisabled = true;
             ValidatorOptions.PropertyNameResolver = CamelCasePropertyNameResolver.ResolvePropertyName;
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         }
-
-        private static readonly string XmlCommentsFilePath = Path.Combine(
-            AppContext.BaseDirectory,
-            $"{typeof(Startup).GetTypeInfo().Assembly.GetName().Name}.xml"
-        );
 
         public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
         {
             Configuration = configuration;
             HostingEnvironment = hostingEnvironment;
             AppSettings = configuration.GetAppSettings<CashierAppSettings>(CashierApi);
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         }
 
         public IConfiguration Configuration { get; }
@@ -85,16 +86,13 @@ namespace eDoxa.Cashier.Api
                     {
                         sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup)).GetName().Name);
                         sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
-                    }
-                )
-            );
+                    }));
 
             services.AddCors(
                 options =>
                 {
                     options.AddPolicy("default", builder => builder.AllowAnyMethod().AllowAnyHeader().AllowCredentials().SetIsOriginAllowed(_ => true));
-                }
-            );
+                });
 
             services.AddMvc(
                     options =>
@@ -109,8 +107,7 @@ namespace eDoxa.Cashier.Api
                     {
                         config.RegisterValidatorsFromAssemblyContaining<Startup>();
                         config.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
-                    }
-                );
+                    });
 
             services.AddApiVersioning(
                 options =>
@@ -119,12 +116,19 @@ namespace eDoxa.Cashier.Api
                     options.AssumeDefaultVersionWhenUnspecified = true;
                     options.DefaultApiVersion = new ApiVersion(1, 0);
                     options.ApiVersionReader = new HeaderApiVersionReader();
-                }
-            );
+                });
 
             services.AddAutoMapper(Assembly.GetAssembly(typeof(Startup)), Assembly.GetAssembly(typeof(CashierDbContext)));
 
-            services.AddAuthentication(HostingEnvironment, AppSettings);
+            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+                .AddIdentityServerAuthentication(
+                    options =>
+                    {
+                        options.ApiName = AppSettings.ApiResource.Name;
+                        options.Authority = AppSettings.Authority.PrivateUrl;
+                        options.RequireHttpsMetadata = false;
+                        options.ApiSecret = "secret";
+                    });
         }
 
         public void ConfigureDevelopmentServices(IServiceCollection services)
@@ -161,8 +165,7 @@ namespace eDoxa.Cashier.Api
                 {
                     Predicate = _ => true,
                     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-                }
-            );
+                });
         }
 
         public void ConfigureDevelopment(IApplicationBuilder application, IApiVersionDescriptionProvider provider)

@@ -66,12 +66,12 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
                     result = await userManager.AddAddressAsync(
                         User,
-                        "Old",
-                        "Old",
+                        "Canada",
+                        "1234 Test Street",
                         null,
-                        "Old",
-                        "Old",
-                        "Old"
+                        "Toronto",
+                        "Ontario",
+                        "A1A1A1"
                     );
 
                     result.Succeeded.Should().BeTrue();
@@ -82,11 +82,11 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                     using var response = await this.ExecuteAsync(
                         addressBook.First().Id,
                         new AddressPutRequest(
-                            "New",
-                            "New",
-                            "New",
-                            "New",
-                            "New"
+                            "1234 Rue Test",
+                            null,
+                            "Montreal",
+                            "Quebec",
+                            "Z9Z9Z9"
                         )
                     );
 

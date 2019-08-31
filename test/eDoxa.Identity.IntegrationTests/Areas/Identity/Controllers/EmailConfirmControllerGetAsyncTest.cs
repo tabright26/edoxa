@@ -1,5 +1,5 @@
-﻿// Filename: AddressBookControllerPostAsyncTest.cs
-// Date Created: 2019-08-13
+﻿// Filename: EmailConfirmControllerGetAsyncTest.cs
+// Date Created: 2019-08-30
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,14 +10,11 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Areas.Identity.Requests;
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Infrastructure.Data.Storage;
 using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
-using eDoxa.Seedwork.Testing.Http;
-using eDoxa.Seedwork.Testing.Http.Extensions;
 
 using FluentAssertions;
 
@@ -29,9 +26,9 @@ using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
-    public sealed class AddressBookControllerPostAsyncTest : IClassFixture<IdentityApiFactory>
+    public sealed class EmailConfirmControllerGetAsyncTest : IClassFixture<IdentityApiFactory>
     {
-        public AddressBookControllerPostAsyncTest(IdentityApiFactory identityApiFactory)
+        public EmailConfirmControllerGetAsyncTest(IdentityApiFactory identityApiFactory)
         {
             var identityStorage = new IdentityTestFileStorage();
             User = identityStorage.GetUsersAsync().GetAwaiter().GetResult().First();
@@ -41,15 +38,15 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             _testServer.CleanupDbContext();
         }
 
-        private async Task<HttpResponseMessage> ExecuteAsync(AddressPostRequest request)
-        {
-            return await _httpClient.PostAsync("api/address-book", new JsonContent(request));
-        }
-
         private readonly TestServer _testServer;
         private readonly HttpClient _httpClient;
 
         private User User { get; }
+
+        private async Task<HttpResponseMessage> ExecuteAsync(string userId, string code)
+        {
+            return await _httpClient.GetAsync($"api/email/confirm?userId={userId}&code={code}");
+        }
 
         [Fact]
         public async Task ShouldBeHttpStatusCodeOK()
@@ -63,26 +60,15 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
                     result.Succeeded.Should().BeTrue();
 
+                    var code = await userManager.GenerateEmailConfirmationTokenAsync(User);
+
                     // Act
-                    using var response = await this.ExecuteAsync(
-                        new AddressPostRequest(
-                            "Canada",
-                            "1234 Test Street",
-                            null,
-                            "Toronto",
-                            "Ontario",
-                            "A1A1A1"
-                        )
-                    );
+                    using var response = await this.ExecuteAsync(User.Id.ToString(), code);
 
                     // Assert
                     response.EnsureSuccessStatusCode();
 
                     response.StatusCode.Should().Be(HttpStatusCode.OK);
-
-                    var message = await response.DeserializeAsync<string>();
-
-                    message.Should().NotBeNullOrWhiteSpace();
                 }
             );
         }

@@ -1,5 +1,5 @@
 ﻿// Filename: PasswordForgotController.cs
-// Date Created: 2019-08-29
+// Date Created: 2019-08-30
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -45,23 +45,20 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
             {
                 var user = await _userManager.FindByEmailAsync(request.Email);
 
-                if (user == null || !await _userManager.IsEmailConfirmedAsync(user))
+                // Don't reveal that the user does not exist or is not confirmed
+                if (user != null && await _userManager.IsEmailConfirmedAsync(user))
                 {
-                    // Don't reveal that the user does not exist or is not confirmed
-                    return this.Ok();
+                    // For more information on how to enable account confirmation and password reset please 
+                    // visit https://go.microsoft.com/fwlink/?LinkID=532713
+                    var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+                    var callbackUrl = $"{_redirectService.RedirectToWebSpa("/security/password/reset")}?code={HttpUtility.UrlEncode(code)}";
+
+                    await _emailSender.SendEmailAsync(
+                        request.Email,
+                        "Reset Password",
+                        $"Please reset your password by <a href='{callbackUrl}'>clicking here</a>.");
                 }
-
-                // For more information on how to enable account confirmation and password reset please 
-                // visit https://go.microsoft.com/fwlink/?LinkID=532713
-                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-
-                var callbackUrl = $"{_redirectService.RedirectToWebSpa("/security/password/reset")}?code={HttpUtility.UrlEncode(code)}";
-
-                await _emailSender.SendEmailAsync(
-                    request.Email,
-                    "Reset Password",
-                    $"Please reset your password by <a href='{callbackUrl}'>clicking here</a>."
-                );
 
                 return this.Ok();
             }

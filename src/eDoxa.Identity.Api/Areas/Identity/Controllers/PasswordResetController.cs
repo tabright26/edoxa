@@ -23,12 +23,10 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     public sealed class PasswordResetController : ControllerBase
     {
         private readonly IUserManager _userManager;
-        private readonly IRedirectService _redirectService;
 
-        public PasswordResetController(IUserManager userManager, IRedirectService redirectService)
+        public PasswordResetController(IUserManager userManager)
         {
             _userManager = userManager;
-            _redirectService = redirectService;
         }
 
         /// <summary>

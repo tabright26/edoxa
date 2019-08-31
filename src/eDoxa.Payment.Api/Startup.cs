@@ -4,6 +4,8 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.IdentityModel.Tokens.Jwt;
+
 using Autofac;
 
 using eDoxa.Payment.Api.Extensions;
@@ -28,6 +30,7 @@ namespace eDoxa.Payment.Api
         static Startup()
         {
             TelemetryDebugWriter.IsTracingDisabled = true;
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         }
 
         public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)

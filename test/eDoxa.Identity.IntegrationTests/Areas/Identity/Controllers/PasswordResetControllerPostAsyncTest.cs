@@ -1,5 +1,5 @@
-﻿// Filename: AddressBookControllerPostAsyncTest.cs
-// Date Created: 2019-08-13
+﻿// Filename: PasswordResetControllerPostAsyncTest.cs
+// Date Created: 2019-08-30
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -17,7 +17,6 @@ using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Http;
-using eDoxa.Seedwork.Testing.Http.Extensions;
 
 using FluentAssertions;
 
@@ -29,9 +28,9 @@ using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
-    public sealed class AddressBookControllerPostAsyncTest : IClassFixture<IdentityApiFactory>
+    public sealed class PasswordResetControllerPostAsyncTest : IClassFixture<IdentityApiFactory>
     {
-        public AddressBookControllerPostAsyncTest(IdentityApiFactory identityApiFactory)
+        public PasswordResetControllerPostAsyncTest(IdentityApiFactory identityApiFactory)
         {
             var identityStorage = new IdentityTestFileStorage();
             User = identityStorage.GetUsersAsync().GetAwaiter().GetResult().First();
@@ -41,9 +40,9 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             _testServer.CleanupDbContext();
         }
 
-        private async Task<HttpResponseMessage> ExecuteAsync(AddressPostRequest request)
+        private async Task<HttpResponseMessage> ExecuteAsync(PasswordResetPostRequest request)
         {
-            return await _httpClient.PostAsync("api/address-book", new JsonContent(request));
+            return await _httpClient.PostAsync("api/password/reset", new JsonContent(request));
         }
 
         private readonly TestServer _testServer;
@@ -57,34 +56,24 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
+                    // Arrange
                     var userManager = scope.GetRequiredService<UserManager>();
 
                     var result = await userManager.CreateAsync(User);
 
                     result.Succeeded.Should().BeTrue();
 
+                    var code = await userManager.GeneratePasswordResetTokenAsync(User);
+
                     // Act
-                    using var response = await this.ExecuteAsync(
-                        new AddressPostRequest(
-                            "Canada",
-                            "1234 Test Street",
-                            null,
-                            "Toronto",
-                            "Ontario",
-                            "A1A1A1"
-                        )
-                    );
+                    using var response = await this.ExecuteAsync(new PasswordResetPostRequest("admin@edoxa.gg", "Pass@word1", code));
 
                     // Assert
                     response.EnsureSuccessStatusCode();
 
                     response.StatusCode.Should().Be(HttpStatusCode.OK);
+                });
 
-                    var message = await response.DeserializeAsync<string>();
-
-                    message.Should().NotBeNullOrWhiteSpace();
-                }
-            );
         }
     }
 }
