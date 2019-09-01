@@ -19,7 +19,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -80,7 +79,7 @@ namespace eDoxa.Web.Spa
             }
             else
             {
-                application.UseExceptionHandler("/Error");
+                application.UseHsts();
             }
 
             application.UseStaticFiles();
@@ -104,7 +103,7 @@ namespace eDoxa.Web.Spa
 
                     if (HostingEnvironment.IsDevelopment())
                     {
-                        builder.UseReactDevelopmentServer("start");
+                        builder.UseProxyToSpaDevelopmentServer(AppSettings.Web.ReactUrl);
                     }
                 }
             );

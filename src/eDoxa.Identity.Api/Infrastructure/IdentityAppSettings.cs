@@ -55,4 +55,10 @@ namespace eDoxa.Identity.Api.Infrastructure
 
         public WebOptions Web { get; set; }
     }
+
+    public class WebOptions
+    {
+        [Required]
+        public string SpaUrl { get; set; }
+    }
 }

@@ -23,9 +23,9 @@ namespace eDoxa.Web.Gateway.Extensions
         public static void AddHealthChecks(this IServiceCollection services, WebGatewayAppSettings appSettings)
         {
             var healthChecks = services.AddHealthChecks();
-            healthChecks.AddUrlGroup(appSettings.HealthChecks.IdentityUrl, "identity-api", new[] {"api"});
-            healthChecks.AddUrlGroup(appSettings.HealthChecks.CashierUrl, "cashier-api", new[] {"api"});
-            healthChecks.AddUrlGroup(appSettings.HealthChecks.ArenaChallengesUrl, "arena-challenges-api", new[] {"api"});
+            healthChecks.AddUrlGroup(appSettings.HealthChecks.IdentityUrl, "eDoxa.Identity.Api", new[] {"api", "identity"});
+            healthChecks.AddUrlGroup(appSettings.HealthChecks.CashierUrl, "eDoxa.Cashier.Api", new[] {"api", "cashier" });
+            healthChecks.AddUrlGroup(appSettings.HealthChecks.ArenaChallengesUrl, "eDoxa.Arena.Challenges.Api", new[] {"api", "arena", "challenges" });
         }
 
         public static void AddAuthentication(

@@ -71,13 +71,13 @@ services:
       - cashier.api
       - arena.challenges.api
 
-  #web.spa:
-  #  image: ${ACR_REGISTRY:-edoxa}/web.spa:${ACR_TAG:-latest}
-  #  build:
-  #    context: .
-  #    dockerfile: src/eDoxa.Web.Spa/Dockerfile
-  #  depends_on:
-  #    - seq
+  web.spa:
+    image: ${ACR_REGISTRY:-edoxa}/web.spa:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/eDoxa.Web.Spa/Dockerfile
+    depends_on:
+      - seq
 
   web.status:
     image: ${ACR_REGISTRY:-edoxa}/web.status:${ACR_TAG:-latest}
