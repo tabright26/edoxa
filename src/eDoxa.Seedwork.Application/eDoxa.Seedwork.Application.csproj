@@ -10,8 +10,8 @@
 
     <ItemGroup>
         <PackageReference Include="Autofac" Version="4.9.4" />
-        <PackageReference Include="eDoxa.ServiceBus.Core" Version="1.0.0-CI-20190803-030316" />
-        <PackageReference Include="eDoxa.ServiceBus.RabbitMq" Version="1.0.0-CI-20190803-030316" />
+        <PackageReference Include="eDoxa.ServiceBus.Core" Version="1.0.0-CI-20190901-042717" />
+        <PackageReference Include="eDoxa.ServiceBus.RabbitMq" Version="1.0.0-CI-20190901-042717" />
         <PackageReference Include="Microsoft.AspNetCore.CookiePolicy" Version="2.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="2.2.1" />
