@@ -1,5 +1,5 @@
-﻿// Filename: CustomIdentityResources.cs
-// Date Created: 2019-08-18
+﻿// Filename: IdentityResources.cs
+// Date Created: 2019-09-02
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,9 +10,9 @@ using IdentityModel;
 
 using IdentityServer4.Models;
 
-namespace eDoxa.Seedwork.Security.IdentityServer.Resources
+namespace eDoxa.Seedwork.Security
 {
-    public sealed class CustomIdentityResources
+    public sealed class IdentityResources
     {
         public static readonly RoleIdentityResource Roles = new RoleIdentityResource();
         public static readonly PermissionIdentityResource Permissions = new PermissionIdentityResource();
@@ -22,13 +22,12 @@ namespace eDoxa.Seedwork.Security.IdentityServer.Resources
         public sealed class GameIdentityResource : IdentityResource
         {
             internal GameIdentityResource() : base(
-                "games",
+                Scopes.Games,
                 "Your game(s)",
                 new HashSet<string>
                 {
                     "games"
-                }
-            )
+                })
             {
             }
         }
@@ -36,13 +35,12 @@ namespace eDoxa.Seedwork.Security.IdentityServer.Resources
         public sealed class RoleIdentityResource : IdentityResource
         {
             internal RoleIdentityResource() : base(
-                "roles",
+                Scopes.Roles,
                 "Your role(s)",
                 new HashSet<string>
                 {
                     JwtClaimTypes.Role
-                }
-            )
+                })
             {
             }
         }
@@ -50,13 +48,12 @@ namespace eDoxa.Seedwork.Security.IdentityServer.Resources
         public sealed class PermissionIdentityResource : IdentityResource
         {
             internal PermissionIdentityResource() : base(
-                "permissions",
+                Scopes.Permissions,
                 "Your permission(s)",
                 new HashSet<string>
                 {
-                    AppClaimTypes.Permission
-                }
-            )
+                    ClaimTypes.Permission
+                })
             {
             }
         }
@@ -64,14 +61,13 @@ namespace eDoxa.Seedwork.Security.IdentityServer.Resources
         public sealed class StripeIdentityResource : IdentityResource
         {
             internal StripeIdentityResource() : base(
-                "stripe",
+                Scopes.Stripe,
                 "Stripe",
                 new HashSet<string>
                 {
-                    AppClaimTypes.StripeConnectAccountId,
-                    AppClaimTypes.StripeCustomerId
-                }
-            )
+                    ClaimTypes.StripeConnectAccountId,
+                    ClaimTypes.StripeCustomerId
+                })
             {
             }
         }

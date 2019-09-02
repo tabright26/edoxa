@@ -9,10 +9,11 @@ using System.Collections.Generic;
 
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Seedwork.Domain;
+using eDoxa.Specifications.Abstractions;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
-    public interface IAccount : IEntity<AccountId>, IAggregateRoot
+    public interface IAccount : IEntity<AccountId>, IAggregateRoot, IVerifiable
     {
         UserId UserId { get; }
 
@@ -23,7 +24,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
         Balance GetBalanceFor(Currency currency);
     }
 
-    public interface IAccount<in TCurrency>
+    public interface IAccount<in TCurrency> : IVerifiable
     where TCurrency : ICurrency
     {
         Balance Balance { get; }

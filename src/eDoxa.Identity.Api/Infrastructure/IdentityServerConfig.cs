@@ -11,11 +11,11 @@
 using System.Collections.Generic;
 
 using eDoxa.Seedwork.Security;
-using eDoxa.Seedwork.Security.Extensions;
-using eDoxa.Seedwork.Security.IdentityServer.Resources;
-
+using eDoxa.Swagger.Client.Extensions;
 using IdentityServer4;
 using IdentityServer4.Models;
+
+using IdentityResources = eDoxa.Seedwork.Security.IdentityResources;
 
 namespace eDoxa.Identity.Api.Infrastructure
 {
@@ -23,41 +23,41 @@ namespace eDoxa.Identity.Api.Infrastructure
     {
         public static IEnumerable<IdentityResource> GetIdentityResources()
         {
-            yield return new IdentityResources.OpenId();
+            yield return new IdentityServer4.Models.IdentityResources.OpenId();
 
-            yield return new IdentityResources.Profile();
+            yield return new IdentityServer4.Models.IdentityResources.Profile();
 
-            yield return new IdentityResources.Email();
+            yield return new IdentityServer4.Models.IdentityResources.Email();
 
-            yield return new IdentityResources.Phone();
+            yield return new IdentityServer4.Models.IdentityResources.Phone();
 
-            yield return new IdentityResources.Address();
+            yield return new IdentityServer4.Models.IdentityResources.Address();
 
-            yield return CustomIdentityResources.Roles;
+            yield return IdentityResources.Roles;
 
-            yield return CustomIdentityResources.Permissions;
+            yield return IdentityResources.Permissions;
 
-            yield return CustomIdentityResources.Stripe;
+            yield return IdentityResources.Stripe;
 
-            yield return CustomIdentityResources.Games;
+            yield return IdentityResources.Games;
         }
 
         public static IEnumerable<ApiResource> GetApiResources()
         {
-            yield return CustomApiResources.IdentityApi;
+            yield return ApiResources.IdentityApi;
 
-            yield return CustomApiResources.CashierApi;
+            yield return ApiResources.CashierApi;
 
-            yield return CustomApiResources.ArenaChallengesApi;
+            yield return ApiResources.ArenaChallengesApi;
         }
 
         public static IEnumerable<Client> GetClients(IdentityAppSettings appSettings)
         {
-            yield return CustomApiResources.IdentityApi.SwaggerClient(appSettings.IdentityServer.IdentityUrl);
+            yield return ApiResources.IdentityApi.GetSwaggerClient(appSettings.IdentityServer.IdentityUrl);
 
-            yield return CustomApiResources.CashierApi.SwaggerClient(appSettings.IdentityServer.CashierUrl);
+            yield return ApiResources.CashierApi.GetSwaggerClient(appSettings.IdentityServer.CashierUrl);
 
-            yield return CustomApiResources.ArenaChallengesApi.SwaggerClient(appSettings.IdentityServer.ArenaChallengesUrl);
+            yield return ApiResources.ArenaChallengesApi.GetSwaggerClient(appSettings.IdentityServer.ArenaChallengesUrl);
 
             yield return new Client
             {
@@ -94,13 +94,13 @@ namespace eDoxa.Identity.Api.Infrastructure
                 {
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
-                    AppScopes.Roles,
-                    AppScopes.Permissions,
-                    AppScopes.Stripe,
-                    AppScopes.Games,
-                    AppScopes.IdentityApi,
-                    AppScopes.CashierApi,
-                    AppScopes.ArenaChallengesApi
+                    Scopes.Roles,
+                    Scopes.Permissions,
+                    Scopes.Stripe,
+                    Scopes.Games,
+                    Scopes.IdentityApi,
+                    Scopes.CashierApi,
+                    Scopes.ArenaChallengesApi
                 },
                 
             };

@@ -20,9 +20,9 @@ using eDoxa.Identity.Api.Extensions;
 using eDoxa.Identity.Api.Infrastructure;
 using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Identity.Api.Services;
-using eDoxa.Seedwork.Application.Swagger.Extensions;
+using eDoxa.Mediator;
+using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
-using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security;
 using eDoxa.ServiceBus.Modules;
@@ -51,7 +51,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Newtonsoft.Json;
 
-using static eDoxa.Seedwork.Security.IdentityServer.Resources.CustomApiResources;
+using static eDoxa.Seedwork.Security.ApiResources;
 
 namespace eDoxa.Identity.Api
 {
@@ -131,9 +131,9 @@ namespace eDoxa.Identity.Api
                         options.User.RequireUniqueEmail = true;
 
                         options.ClaimsIdentity.UserIdClaimType = JwtClaimTypes.Subject;
-                        options.ClaimsIdentity.UserNameClaimType = AppClaimTypes.DoxaTag;
+                        options.ClaimsIdentity.UserNameClaimType = ClaimTypes.DoxaTag;
                         options.ClaimsIdentity.RoleClaimType = JwtClaimTypes.Role;
-                        options.ClaimsIdentity.SecurityStampClaimType = AppClaimTypes.SecurityStamp;
+                        options.ClaimsIdentity.SecurityStampClaimType = ClaimTypes.SecurityStamp;
 
                         options.SignIn.RequireConfirmedPhoneNumber = false;
                         options.SignIn.RequireConfirmedEmail = HostingEnvironment.IsProduction();
@@ -239,12 +239,12 @@ namespace eDoxa.Identity.Api
         {
             this.ConfigureServices(services);
 
-            services.AddSwagger(XmlCommentsFilePath, AppSettings);
+            services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule<DomainEventModule>();
+            builder.RegisterModule<DomainEventModule<Startup>>();
 
             builder.RegisterModule(new ServiceBusModule<Startup>(AppSettings));
 

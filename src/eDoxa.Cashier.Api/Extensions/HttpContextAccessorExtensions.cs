@@ -11,11 +11,11 @@
 using System;
 
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Seedwork.Security.Extensions;
+using eDoxa.Seedwork.Application.Extensions;
 
 using Microsoft.AspNetCore.Http;
 
-using static eDoxa.Seedwork.Security.AppClaimTypes;
+using static eDoxa.Seedwork.Security.ClaimTypes;
 
 using static IdentityModel.JwtClaimTypes;
 

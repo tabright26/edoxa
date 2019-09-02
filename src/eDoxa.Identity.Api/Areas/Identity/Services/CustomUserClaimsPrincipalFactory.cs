@@ -22,6 +22,8 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
+using ClaimTypes = eDoxa.Seedwork.Security.ClaimTypes;
+
 namespace eDoxa.Identity.Api.Areas.Identity.Services
 {
     public sealed class CustomUserClaimsPrincipalFactory : IUserClaimsPrincipalFactory<User>
@@ -96,7 +98,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             {
                 Identity!.AddClaim(
                     new Claim(
-                        AppClaimTypes.DoxaTag,
+                        ClaimTypes.DoxaTag,
                         JsonConvert.SerializeObject(
                             doxaTag,
                             Formatting.Indented,
@@ -237,7 +239,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             if (userGames.Any())
             {
                 Identity!.AddClaim(
-                    new Claim(AppClaimTypes.Games, JsonConvert.SerializeObject(userGames, Formatting.Indented), IdentityServerConstants.ClaimValueTypes.Json)
+                    new Claim(ClaimTypes.Games, JsonConvert.SerializeObject(userGames, Formatting.Indented), IdentityServerConstants.ClaimValueTypes.Json)
                 );
             }
         }

@@ -11,6 +11,9 @@
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.9.4" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="eDoxa.Mediator.Abstractions" Version="1.0.0-CI-20190901-220828" />
+    <PackageReference Include="eDoxa.Specifications" Version="1.0.0-CI-20190901-231120" />
+    <PackageReference Include="eDoxa.Specifications.Abstractions" Version="1.0.0-CI-20190901-231120" />
     <PackageReference Include="MediatR" Version="7.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.DataAnnotations" Version="2.2.0" />
     <PackageReference Include="FluentValidation" Version="8.4.0" />

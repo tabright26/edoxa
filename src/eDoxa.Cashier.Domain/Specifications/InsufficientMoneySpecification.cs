@@ -13,7 +13,7 @@ using System.Linq.Expressions;
 
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Seedwork.Domain.Specifications;
+using eDoxa.Specifications;
 
 namespace eDoxa.Cashier.Domain.Specifications
 {

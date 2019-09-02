@@ -9,7 +9,7 @@
 // this source code package.
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Seedwork.Domain;
+using eDoxa.Mediator.Abstractions;
 
 namespace eDoxa.Arena.Challenges.Domain.DomainEvents
 {
