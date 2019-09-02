@@ -27,6 +27,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="eDoxa.Mediator" Version="1.0.0-CI-20190901-220828" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.7.1" />

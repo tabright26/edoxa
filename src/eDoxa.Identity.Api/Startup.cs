@@ -20,9 +20,9 @@ using eDoxa.Identity.Api.Extensions;
 using eDoxa.Identity.Api.Infrastructure;
 using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Identity.Api.Services;
+using eDoxa.Mediator;
 using eDoxa.Seedwork.Application.Swagger.Extensions;
 using eDoxa.Seedwork.Application.Validations;
-using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security;
 using eDoxa.ServiceBus.Modules;
@@ -244,7 +244,7 @@ namespace eDoxa.Identity.Api
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule<DomainEventModule>();
+            builder.RegisterModule<DomainEventModule<Startup>>();
 
             builder.RegisterModule(new ServiceBusModule<Startup>(AppSettings));
 

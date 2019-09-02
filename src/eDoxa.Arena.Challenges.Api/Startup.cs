@@ -21,10 +21,10 @@ using eDoxa.Arena.Challenges.Api.Infrastructure;
 using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Games.Extensions;
+using eDoxa.Mediator;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Swagger.Extensions;
 using eDoxa.Seedwork.Application.Validations;
-using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.ServiceBus.Modules;
 
@@ -170,7 +170,7 @@ namespace eDoxa.Arena.Challenges.Api
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule<DomainEventModule>();
+            builder.RegisterModule<DomainEventModule<Startup>>();
 
             builder.RegisterModule(new ServiceBusModule<Startup>(AppSettings));
 
