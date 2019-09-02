@@ -11,9 +11,8 @@
 using System.Collections.Generic;
 
 using eDoxa.Seedwork.Security;
-using eDoxa.Seedwork.Security.Extensions;
 using eDoxa.Seedwork.Security.IdentityServer.Resources;
-
+using eDoxa.Swagger.Client.Extensions;
 using IdentityServer4;
 using IdentityServer4.Models;
 
@@ -53,11 +52,11 @@ namespace eDoxa.Identity.Api.Infrastructure
 
         public static IEnumerable<Client> GetClients(IdentityAppSettings appSettings)
         {
-            yield return CustomApiResources.IdentityApi.SwaggerClient(appSettings.IdentityServer.IdentityUrl);
+            yield return CustomApiResources.IdentityApi.GetSwaggerClient(appSettings.IdentityServer.IdentityUrl);
 
-            yield return CustomApiResources.CashierApi.SwaggerClient(appSettings.IdentityServer.CashierUrl);
+            yield return CustomApiResources.CashierApi.GetSwaggerClient(appSettings.IdentityServer.CashierUrl);
 
-            yield return CustomApiResources.ArenaChallengesApi.SwaggerClient(appSettings.IdentityServer.ArenaChallengesUrl);
+            yield return CustomApiResources.ArenaChallengesApi.GetSwaggerClient(appSettings.IdentityServer.ArenaChallengesUrl);
 
             yield return new Client
             {

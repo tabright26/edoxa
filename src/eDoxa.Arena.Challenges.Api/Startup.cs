@@ -23,7 +23,6 @@ using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Games.Extensions;
 using eDoxa.Mediator;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Application.Swagger.Extensions;
 using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.ServiceBus.Modules;
@@ -165,7 +164,7 @@ namespace eDoxa.Arena.Challenges.Api
         {
             this.ConfigureServices(services);
 
-            services.AddSwagger(XmlCommentsFilePath, AppSettings);
+            services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

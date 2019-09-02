@@ -21,7 +21,7 @@ using eDoxa.Identity.Api.Infrastructure;
 using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Identity.Api.Services;
 using eDoxa.Mediator;
-using eDoxa.Seedwork.Application.Swagger.Extensions;
+using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security;
@@ -239,7 +239,7 @@ namespace eDoxa.Identity.Api
         {
             this.ConfigureServices(services);
 
-            services.AddSwagger(XmlCommentsFilePath, AppSettings);
+            services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

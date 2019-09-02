@@ -18,7 +18,6 @@ using eDoxa.Cashier.Api.Infrastructure;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Mediator;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Application.Swagger.Extensions;
 using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.ServiceBus.Modules;
@@ -135,7 +134,7 @@ namespace eDoxa.Cashier.Api
         {
             this.ConfigureServices(services);
 
-            services.AddSwagger(XmlCommentsFilePath, AppSettings);
+            services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
