@@ -25,6 +25,8 @@ using IdentityModel;
 
 using Xunit;
 
+using ClaimTypes = eDoxa.Seedwork.Security.ClaimTypes;
+
 namespace eDoxa.Cashier.IntegrationTests.Controllers
 {
     public sealed class AccountDepositControllerPostAsyncTest : IClassFixture<CashierApiFactory>
@@ -51,7 +53,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
             var factory = _factory.WithClaims(
                 new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
-                new Claim(AppClaimTypes.StripeCustomerId, "cus_test")
+                new Claim(ClaimTypes.StripeCustomerId, "cus_test")
             );
 
             _httpClient = factory.CreateClient();
@@ -82,7 +84,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
             var factory = _factory.WithClaims(
                 new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
-                new Claim(AppClaimTypes.StripeCustomerId, "cus_test")
+                new Claim(ClaimTypes.StripeCustomerId, "cus_test")
             );
 
             _httpClient = factory.CreateClient();

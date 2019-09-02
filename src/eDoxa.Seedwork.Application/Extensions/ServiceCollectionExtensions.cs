@@ -37,7 +37,7 @@ namespace eDoxa.Seedwork.Application.Extensions
                     options.DescribeAllEnumerationsAsStrings();
 
                     options.OperationFilter<SwaggerOperationFilter>(
-                        new SwaggerOperationOptions(AppScopes.IdentityApi, AppScopes.CashierApi, AppScopes.ArenaChallengesApi));
+                        new SwaggerOperationOptions(Scopes.IdentityApi, Scopes.CashierApi, Scopes.ArenaChallengesApi));
                 },
                 scopes);
         }

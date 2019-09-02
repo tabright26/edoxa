@@ -11,7 +11,7 @@
 using System;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
-using eDoxa.Seedwork.Security.Extensions;
+using eDoxa.Seedwork.Application.Extensions;
 
 using Microsoft.AspNetCore.Http;
 

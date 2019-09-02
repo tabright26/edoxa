@@ -42,7 +42,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Newtonsoft.Json;
 
-using static eDoxa.Seedwork.Security.IdentityServer.Resources.CustomApiResources;
+using static eDoxa.Seedwork.Security.ApiResources;
 
 namespace eDoxa.Cashier.Api
 {

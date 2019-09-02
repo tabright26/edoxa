@@ -51,7 +51,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Newtonsoft.Json;
 
-using static eDoxa.Seedwork.Security.IdentityServer.Resources.CustomApiResources;
+using static eDoxa.Seedwork.Security.ApiResources;
 
 namespace eDoxa.Identity.Api
 {
@@ -131,9 +131,9 @@ namespace eDoxa.Identity.Api
                         options.User.RequireUniqueEmail = true;
 
                         options.ClaimsIdentity.UserIdClaimType = JwtClaimTypes.Subject;
-                        options.ClaimsIdentity.UserNameClaimType = AppClaimTypes.DoxaTag;
+                        options.ClaimsIdentity.UserNameClaimType = ClaimTypes.DoxaTag;
                         options.ClaimsIdentity.RoleClaimType = JwtClaimTypes.Role;
-                        options.ClaimsIdentity.SecurityStampClaimType = AppClaimTypes.SecurityStamp;
+                        options.ClaimsIdentity.SecurityStampClaimType = ClaimTypes.SecurityStamp;
 
                         options.SignIn.RequireConfirmedPhoneNumber = false;
                         options.SignIn.RequireConfirmedEmail = HostingEnvironment.IsProduction();

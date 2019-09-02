@@ -1,5 +1,5 @@
-﻿// Filename: CustomApiResources.cs
-// Date Created: 2019-08-18
+﻿// Filename: ApiResources.cs
+// Date Created: 2019-09-02
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,9 +9,9 @@ using System.Linq;
 
 using IdentityServer4.Models;
 
-namespace eDoxa.Seedwork.Security.IdentityServer.Resources
+namespace eDoxa.Seedwork.Security
 {
-    public sealed class CustomApiResources
+    public sealed class ApiResources
     {
         public static readonly ApiResource IdentityApi = new IdentityResource();
         public static readonly ApiResource CashierApi = new CashierResource();
@@ -20,10 +20,9 @@ namespace eDoxa.Seedwork.Security.IdentityServer.Resources
         public sealed class IdentityResource : ApiResource
         {
             internal IdentityResource() : base(
-                "identity.api",
+                Security.Scopes.IdentityApi,
                 "eDoxa Identity API",
-                CustomIdentityResources.Roles.UserClaims.Union(CustomIdentityResources.Permissions.UserClaims).Union(CustomIdentityResources.Games.UserClaims)
-            )
+                IdentityResources.Roles.UserClaims.Union(IdentityResources.Permissions.UserClaims).Union(IdentityResources.Games.UserClaims))
             {
                 ApiSecrets = new HashSet<Secret>
                 {
@@ -35,10 +34,9 @@ namespace eDoxa.Seedwork.Security.IdentityServer.Resources
         public sealed class CashierResource : ApiResource
         {
             internal CashierResource() : base(
-                "cashier.api",
+                Security.Scopes.CashierApi,
                 "eDoxa Cashier API",
-                CustomIdentityResources.Roles.UserClaims.Union(CustomIdentityResources.Permissions.UserClaims.Union(CustomIdentityResources.Stripe.UserClaims))
-            )
+                IdentityResources.Roles.UserClaims.Union(IdentityResources.Permissions.UserClaims.Union(IdentityResources.Stripe.UserClaims)))
             {
                 ApiSecrets = new HashSet<Secret>
                 {
@@ -50,10 +48,9 @@ namespace eDoxa.Seedwork.Security.IdentityServer.Resources
         public sealed class ArenaChallengesResource : ApiResource
         {
             internal ArenaChallengesResource() : base(
-                "arena.challenges.api",
+                Security.Scopes.ArenaChallengesApi,
                 "eDoxa Arena Challenges API",
-                CustomIdentityResources.Roles.UserClaims.Union(CustomIdentityResources.Permissions.UserClaims)
-            )
+                IdentityResources.Roles.UserClaims.Union(IdentityResources.Permissions.UserClaims))
 
             {
                 ApiSecrets = new HashSet<Secret>

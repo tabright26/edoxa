@@ -24,7 +24,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 
-using static eDoxa.Seedwork.Security.IdentityServer.Resources.CustomApiResources;
+using static eDoxa.Seedwork.Security.ApiResources;
 
 namespace eDoxa.Web.Gateway
 {

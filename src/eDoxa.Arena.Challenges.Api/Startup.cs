@@ -50,7 +50,7 @@ using Newtonsoft.Json;
 using Polly;
 using Polly.Extensions.Http;
 
-using static eDoxa.Seedwork.Security.IdentityServer.Resources.CustomApiResources;
+using static eDoxa.Seedwork.Security.ApiResources;
 
 using ConnectionStrings = eDoxa.Seedwork.Infrastructure.ConnectionStrings;
 
