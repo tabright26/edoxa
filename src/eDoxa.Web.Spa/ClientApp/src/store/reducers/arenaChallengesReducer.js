@@ -1,9 +1,4 @@
-import {
-  LOAD_CHALLENGES_SUCCESS,
-  LOAD_CHALLENGES_FAIL,
-  LOAD_CHALLENGE_SUCCESS,
-  LOAD_CHALLENGE_FAIL
-} from '../actions/arenaChallengeActions';
+import { LOAD_CHALLENGES_SUCCESS, LOAD_CHALLENGES_FAIL, LOAD_CHALLENGE_SUCCESS, LOAD_CHALLENGE_FAIL } from "../actions/arenaChallengeActions";
 
 export const reducer = (state = [], action) => {
   switch (action.type) {

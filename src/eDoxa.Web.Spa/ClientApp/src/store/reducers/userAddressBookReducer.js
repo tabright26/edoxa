@@ -14,7 +14,12 @@ export const reducer = (state = [], action) => {
   switch (action.type) {
     case LOAD_ADDRESS_BOOK_SUCCESS: {
       const { status, data } = action.payload;
-      return status !== 204 ? data : state;
+      switch (status) {
+        case 204:
+          return state;
+        default:
+          return data;
+      }
     }
     case ADD_ADDRESS_SUCCESS: {
       return state;
@@ -33,7 +38,7 @@ export const reducer = (state = [], action) => {
       if (isAxiosError) {
         throw new SubmissionError(response.data.errors);
       }
-      break;
+      return state;
     }
     case LOAD_ADDRESS_BOOK_FAIL:
     default: {

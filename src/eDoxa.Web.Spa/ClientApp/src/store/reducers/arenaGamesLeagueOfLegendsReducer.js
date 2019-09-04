@@ -1,7 +1,4 @@
-import {
-  LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME_SUCCESS,
-  LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME_FAIL
-} from '../actions/leagueOfLegendsActions';
+import { LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME_SUCCESS, LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME_FAIL } from "../actions/leagueOfLegendsActions";
 
 export const reducer = (state = {}, action) => {
   switch (action.type) {

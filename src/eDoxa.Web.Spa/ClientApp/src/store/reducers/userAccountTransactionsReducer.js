@@ -1,7 +1,4 @@
-import {
-  LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS,
-  LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL
-} from '../actions/cashierActions';
+import { LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS, LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL } from "../actions/cashierActions";
 
 export const reducer = (state = [], action) => {
   switch (action.type) {

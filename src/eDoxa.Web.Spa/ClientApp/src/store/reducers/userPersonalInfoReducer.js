@@ -4,7 +4,12 @@ export const reducer = (state = null, action) => {
   switch (action.type) {
     case LOAD_PERSONAL_INFO_SUCCESS: {
       const { status, data } = action.payload;
-      return status !== 204 ? data : state;
+      switch (status) {
+        case 204:
+          return state;
+        default:
+          return data;
+      }
     }
     case LOAD_PERSONAL_INFO_FAIL:
     default: {
