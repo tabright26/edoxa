@@ -1,5 +1,5 @@
 ﻿// Filename: PasswordForgotControllerPostAsyncTest.cs
-// Date Created: 2019-08-30
+// Date Created: 2019-09-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -49,7 +49,10 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         [Fact]
         public async Task ShouldBeHttpStatusCodeOK()
         {
-            User.PersonalInfo = null;
+            var identityStorage = new IdentityTestFileStorage();
+            var users = await identityStorage.GetUsersAsync();
+            var user = users.First();
+            user.PersonalInfo = null;
 
             await _testServer.UsingScopeAsync(
                 async scope =>
@@ -59,8 +62,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                     var result = await userManager.CreateAsync(User);
 
                     result.Succeeded.Should().BeTrue();
-                }
-            );
+                });
 
             // Act
             using var response = await this.ExecuteAsync(new PasswordForgotPostRequest("admin@edoxa.gg"));

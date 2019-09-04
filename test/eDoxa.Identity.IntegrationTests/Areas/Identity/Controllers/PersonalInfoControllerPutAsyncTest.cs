@@ -1,5 +1,5 @@
 ﻿// Filename: PersonalInfoControllerPutAsyncTest.cs
-// Date Created: 2019-08-23
+// Date Created: 2019-09-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 using eDoxa.Identity.Api.Areas.Identity.Requests;
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Infrastructure.Data.Storage;
-using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Http;
@@ -23,8 +22,6 @@ using FluentAssertions;
 
 using IdentityModel;
 
-using Microsoft.AspNetCore.TestHost;
-
 using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
@@ -33,37 +30,38 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
     {
         public PersonalInfoControllerPutAsyncTest(IdentityApiFactory identityApiFactory)
         {
-            var identityStorage = new IdentityTestFileStorage();
-            User = identityStorage.GetUsersAsync().GetAwaiter().GetResult().First();
-            var factory = identityApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, User.Id.ToString()));
-            _httpClient = factory.CreateClient();
-            _testServer = factory.Server;
-            _testServer.CleanupDbContext();
+            _identityApiFactory = identityApiFactory;
         }
+
+        private readonly IdentityApiFactory _identityApiFactory;
 
         private async Task<HttpResponseMessage> ExecuteAsync(PersonalInfoPutRequest request)
         {
             return await _httpClient.PutAsync("api/personal-info", new JsonContent(request));
         }
 
-        private readonly TestServer _testServer;
-        private readonly HttpClient _httpClient;
-
-        private User User { get; }
+        private HttpClient _httpClient;
 
         [Fact]
         public async Task ShouldBeHttpStatusCodeOK()
         {
-            await _testServer.UsingScopeAsync(
+            var identityStorage = new IdentityTestFileStorage();
+            var users = await identityStorage.GetUsersAsync();
+            var user = users.First();
+            var factory = _identityApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
+            _httpClient = factory.CreateClient();
+            var testServer = factory.Server;
+            testServer.CleanupDbContext();
+
+            await testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var userManager = scope.GetRequiredService<UserManager>();
 
-                    var result = await userManager.CreateAsync(User);
+                    var result = await userManager.CreateAsync(user);
 
                     result.Succeeded.Should().BeTrue();
-                }
-            );
+                });
 
             // Act
             using var response = await this.ExecuteAsync(new PersonalInfoPutRequest("Bob"));
