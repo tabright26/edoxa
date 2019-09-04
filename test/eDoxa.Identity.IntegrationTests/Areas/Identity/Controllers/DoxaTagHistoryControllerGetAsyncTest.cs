@@ -1,5 +1,5 @@
-﻿// Filename: DoxatagControllerGetAsyncTest.cs
-// Date Created: 2019-08-18
+﻿// Filename: DoxaTagHistoryControllerGetAsyncTest.cs
+// Date Created: 2019-09-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -27,8 +27,6 @@ using FluentAssertions;
 
 using IdentityModel;
 
-using Microsoft.AspNetCore.TestHost;
-
 using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
@@ -37,18 +35,12 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
     {
         public DoxaTagHistoryControllerGetAsyncTest(IdentityApiFactory identityApiFactory)
         {
-            var identityStorage = new IdentityTestFileStorage();
-            User = identityStorage.GetUsersAsync().GetAwaiter().GetResult().First();
-            var factory = identityApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, User.Id.ToString()));
-            _httpClient = factory.CreateClient();
-            _testServer = factory.Server;
-            _testServer.CleanupDbContext();
+            _identityApiFactory = identityApiFactory;
         }
 
-        private readonly TestServer _testServer;
-        private readonly HttpClient _httpClient;
+        private readonly IdentityApiFactory _identityApiFactory;
 
-        private User User { get; }
+        private HttpClient _httpClient;
 
         private async Task<HttpResponseMessage> ExecuteAsync()
         {
@@ -56,30 +48,69 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         }
 
         [Fact]
+        public async Task ShouldBeHttpStatusCodeNoContent()
+        {
+            var identityStorage = new IdentityTestFileStorage();
+            var users = await identityStorage.GetUsersAsync();
+            var user = users.First();
+            user.DoxaTagHistory = null;
+            var factory = _identityApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
+            _httpClient = factory.CreateClient();
+            var testServer = factory.Server;
+            testServer.CleanupDbContext();
+
+            await testServer.UsingScopeAsync(
+                async scope =>
+                {
+                    var userManager = scope.GetRequiredService<UserManager>();
+
+                    var result = await userManager.CreateAsync(user);
+
+                    result.Succeeded.Should().BeTrue();
+                });
+
+            // Act
+            using var response = await this.ExecuteAsync();
+
+            // Assert
+            response.EnsureSuccessStatusCode();
+
+            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        }
+
+        [Fact]
         public async Task ShouldBeHttpStatusCodeOK()
         {
-            User.DoxaTagHistory = new Collection<UserDoxaTag>
+            var identityStorage = new IdentityTestFileStorage();
+            var users = await identityStorage.GetUsersAsync();
+            var user = users.First();
+
+            user.DoxaTagHistory = new Collection<UserDoxaTag>
             {
                 new UserDoxaTag
                 {
                     Id = Guid.NewGuid(),
-                    UserId = User.Id,
+                    UserId = user.Id,
                     Name = "Test",
                     Code = 1000,
                     Timestamp = DateTime.UtcNow
                 }
             };
 
-            await _testServer.UsingScopeAsync(
+            var factory = _identityApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
+            _httpClient = factory.CreateClient();
+            var testServer = factory.Server;
+            testServer.CleanupDbContext();
+
+            await testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var userManager = scope.GetRequiredService<UserManager>();
 
-                    var result = await userManager.CreateAsync(User);
+                    var result = await userManager.CreateAsync(user);
 
                     result.Succeeded.Should().BeTrue();
-                }
-            );
+                });
 
             // Act
             using var response = await this.ExecuteAsync();
@@ -89,45 +120,19 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            await _testServer.UsingScopeAsync(
+            await testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var mapper = scope.GetRequiredService<IMapper>();
 
                     var doxaTagResponse = (await response.DeserializeAsync<IEnumerable<UserDoxaTagResponse>>()).First();
 
-                    var expectedDoxaTagResponse = mapper.Map<IEnumerable<UserDoxaTagResponse>>(User.DoxaTagHistory).First();
+                    var expectedDoxaTagResponse = mapper.Map<IEnumerable<UserDoxaTagResponse>>(user.DoxaTagHistory).First();
 
                     doxaTagResponse.Name.Should().Be(expectedDoxaTagResponse.Name);
 
                     doxaTagResponse.Code.Should().Be(expectedDoxaTagResponse.Code);
-                }
-            );
-        }
-
-        [Fact]
-        public async Task ShouldBeHttpStatusCodeNoContent()
-        {
-            User.DoxaTagHistory = null;
-
-            await _testServer.UsingScopeAsync(
-                async scope =>
-                {
-                    var userManager = scope.GetRequiredService<UserManager>();
-
-                    var result = await userManager.CreateAsync(User);
-
-                    result.Succeeded.Should().BeTrue();
-                }
-            );
-
-            // Act
-            using var response = await this.ExecuteAsync();
-
-            // Assert
-            response.EnsureSuccessStatusCode();
-
-            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+                });
         }
     }
 }

@@ -1,4 +1,10 @@
-﻿using System.Linq;
+﻿// Filename: DoxaTagsControllerGetAsyncTest.cs
+// Date Created: 2019-09-01
+// 
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -36,6 +42,18 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         }
 
         [Fact]
+        public async Task ShouldBeHttpStatusCodeNoContent()
+        {
+            // Act
+            using var response = await this.ExecuteAsync();
+
+            // Assert
+            response.EnsureSuccessStatusCode();
+
+            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        }
+
+        [Fact]
         public async Task ShouldBeHttpStatusCodeOK()
         {
             // Arrange
@@ -53,8 +71,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
                         result.Succeeded.Should().BeTrue();
                     }
-                }
-            );
+                });
 
             // Act
             using var response = await this.ExecuteAsync();
@@ -67,18 +84,6 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             var users = await response.DeserializeAsync<UserDoxaTagResponse[]>();
 
             users.Should().HaveCount(100);
-        }
-
-        [Fact]
-        public async Task ShouldBeHttpStatusCodeNoContent()
-        {
-            // Act
-            using var response = await this.ExecuteAsync();
-
-            // Assert
-            response.EnsureSuccessStatusCode();
-
-            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
         }
     }
 }

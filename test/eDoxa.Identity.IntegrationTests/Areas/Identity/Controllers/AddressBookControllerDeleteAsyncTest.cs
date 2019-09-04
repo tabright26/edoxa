@@ -1,5 +1,5 @@
 ﻿// Filename: AddressBookControllerDeleteAsyncTest.cs
-// Date Created: 2019-08-13
+// Date Created: 2019-09-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Infrastructure.Data.Storage;
-using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Http.Extensions;
@@ -21,8 +20,6 @@ using eDoxa.Seedwork.Testing.Http.Extensions;
 using FluentAssertions;
 
 using IdentityModel;
-
-using Microsoft.AspNetCore.TestHost;
 
 using Xunit;
 
@@ -32,49 +29,50 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
     {
         public AddressBookControllerDeleteAsyncTest(IdentityApiFactory identityApiFactory)
         {
-            var identityStorage = new IdentityTestFileStorage();
-            User = identityStorage.GetUsersAsync().GetAwaiter().GetResult().First();
-            var factory = identityApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, User.Id.ToString()));
-            _httpClient = factory.CreateClient();
-            _testServer = factory.Server;
-            _testServer.CleanupDbContext();
+            _identityApiFactory = identityApiFactory;
         }
+
+        private readonly IdentityApiFactory _identityApiFactory;
 
         private async Task<HttpResponseMessage> ExecuteAsync(Guid addressId)
         {
             return await _httpClient.DeleteAsync($"api/address-book/{addressId}");
         }
 
-        private readonly TestServer _testServer;
-        private readonly HttpClient _httpClient;
-
-        private User User { get; }
+        private HttpClient _httpClient;
 
         [Fact]
         public async Task ShouldBeHttpStatusCodeOK()
         {
-            await _testServer.UsingScopeAsync(
+            var identityStorage = new IdentityTestFileStorage();
+            var users = await identityStorage.GetUsersAsync();
+            var user = users.First();
+            var factory = _identityApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
+            _httpClient = factory.CreateClient();
+            var testServer = factory.Server;
+            testServer.CleanupDbContext();
+
+            await testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var userManager = scope.GetRequiredService<UserManager>();
 
-                    var result = await userManager.CreateAsync(User);
+                    var result = await userManager.CreateAsync(user);
 
                     result.Succeeded.Should().BeTrue();
 
                     result = await userManager.AddAddressAsync(
-                        User,
-                        "Old",
-                        "Old",
+                        user,
+                        "Canada",
+                        "1234 Test Street",
                         null,
-                        "Old",
-                        "Old",
-                        "Old"
-                    );
+                        "Toronto",
+                        "Ontario",
+                        "A1A1A1");
 
                     result.Succeeded.Should().BeTrue();
 
-                    var addressBook = await userManager.GetAddressBookAsync(User);
+                    var addressBook = await userManager.GetAddressBookAsync(user);
 
                     // Act
                     using var response = await this.ExecuteAsync(addressBook.First().Id);
@@ -87,8 +85,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                     var message = await response.DeserializeAsync<string>();
 
                     message.Should().NotBeNullOrWhiteSpace();
-                }
-            );
+                });
         }
     }
 }

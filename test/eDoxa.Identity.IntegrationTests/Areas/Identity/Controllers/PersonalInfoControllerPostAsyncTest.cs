@@ -1,5 +1,5 @@
-﻿// Filename: ProfileControllerPatchAsyncTest.cs
-// Date Created: 2019-08-10
+﻿// Filename: PersonalInfoControllerPostAsyncTest.cs
+// Date Created: 2019-09-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -24,8 +24,6 @@ using FluentAssertions;
 
 using IdentityModel;
 
-using Microsoft.AspNetCore.TestHost;
-
 using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
@@ -34,42 +32,47 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
     {
         public PersonalInfoControllerPostAsyncTest(IdentityApiFactory identityApiFactory)
         {
-            var identityStorage = new IdentityTestFileStorage();
-            User = identityStorage.GetUsersAsync().GetAwaiter().GetResult().First();
-            var factory = identityApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, User.Id.ToString()));
-            _httpClient = factory.CreateClient();
-            _testServer = factory.Server;
-            _testServer.CleanupDbContext();
+            _identityApiFactory = identityApiFactory;
         }
+
+        private readonly IdentityApiFactory _identityApiFactory;
 
         private async Task<HttpResponseMessage> ExecuteAsync(PersonalInfoPostRequest request)
         {
             return await _httpClient.PostAsync("api/personal-info", new JsonContent(request));
         }
 
-        private readonly TestServer _testServer;
-        private readonly HttpClient _httpClient;
-
-        private User User { get; }
+        private HttpClient _httpClient;
 
         [Fact]
         public async Task ShouldBeHttpStatusCodeOK()
         {
-            User.PersonalInfo = null;
+            var identityStorage = new IdentityTestFileStorage();
+            var users = await identityStorage.GetUsersAsync();
+            var user = users.First();
+            user.PersonalInfo = null;
+            var factory = _identityApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
+            _httpClient = factory.CreateClient();
+            var testServer = factory.Server;
+            testServer.CleanupDbContext();
 
-            await _testServer.UsingScopeAsync(
+            await testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var userManager = scope.GetRequiredService<UserManager>();
 
-                    var result = await userManager.CreateAsync(User);
+                    var result = await userManager.CreateAsync(user);
 
                     result.Succeeded.Should().BeTrue();
-                }
-            );
+                });
 
             // Act
-            using var response = await this.ExecuteAsync(new PersonalInfoPostRequest("Bob", "Bob", Gender.Male, new DateTime(2000, 1, 1)));
+            using var response = await this.ExecuteAsync(
+                new PersonalInfoPostRequest(
+                    "Bob",
+                    "Bob",
+                    Gender.Male,
+                    new DateTime(2000, 1, 1)));
 
             // Assert
             response.EnsureSuccessStatusCode();

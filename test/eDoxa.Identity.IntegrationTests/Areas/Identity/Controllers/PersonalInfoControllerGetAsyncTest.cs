@@ -1,5 +1,5 @@
-﻿// Filename: ProfileControllerGetAsyncTest.cs
-// Date Created: 2019-08-10
+﻿// Filename: PersonalInfoControllerGetAsyncTest.cs
+// Date Created: 2019-09-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -24,8 +24,6 @@ using FluentAssertions;
 
 using IdentityModel;
 
-using Microsoft.AspNetCore.TestHost;
-
 using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
@@ -34,18 +32,12 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
     {
         public PersonalInfoControllerGetAsyncTest(IdentityApiFactory identityApiFactory)
         {
-            var identityStorage = new IdentityTestFileStorage();
-            User = identityStorage.GetUsersAsync().GetAwaiter().GetResult().First();
-            var factory = identityApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, User.Id.ToString()));
-            _httpClient = factory.CreateClient();
-            _testServer = factory.Server;
-            _testServer.CleanupDbContext();
+            _identityApiFactory = identityApiFactory;
         }
 
-        private readonly TestServer _testServer;
-        private readonly HttpClient _httpClient;
+        private readonly IdentityApiFactory _identityApiFactory;
 
-        private User User { get; }
+        private HttpClient _httpClient;
 
         private async Task<HttpResponseMessage> ExecuteAsync()
         {
@@ -53,22 +45,58 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         }
 
         [Fact]
-        public async Task ShouldBeHttpStatusCodeOK()
+        public async Task ShouldBeHttpStatusCodeNoContent()
         {
-            var profile = new UserPersonalInfo();
+            var identityStorage = new IdentityTestFileStorage();
+            var users = await identityStorage.GetUsersAsync();
+            var user = users.First();
+            user.PersonalInfo = null;
+            var factory = _identityApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
+            _httpClient = factory.CreateClient();
+            var testServer = factory.Server;
+            testServer.CleanupDbContext();
 
-            User.PersonalInfo = profile;
-
-            await _testServer.UsingScopeAsync(
+            await testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var userManager = scope.GetRequiredService<UserManager>();
 
-                    var result = await userManager.CreateAsync(User);
+                    var result = await userManager.CreateAsync(user);
 
                     result.Succeeded.Should().BeTrue();
-                }
-            );
+                });
+
+            // Act
+            using var response = await this.ExecuteAsync();
+
+            // Assert
+            response.EnsureSuccessStatusCode();
+
+            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        }
+
+        [Fact]
+        public async Task ShouldBeHttpStatusCodeOK()
+        {
+            var identityStorage = new IdentityTestFileStorage();
+            var users = await identityStorage.GetUsersAsync();
+            var user = users.First();
+            var profile = new UserPersonalInfo();
+            user.PersonalInfo = profile;
+            var factory = _identityApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
+            _httpClient = factory.CreateClient();
+            var testServer = factory.Server;
+            testServer.CleanupDbContext();
+
+            await testServer.UsingScopeAsync(
+                async scope =>
+                {
+                    var userManager = scope.GetRequiredService<UserManager>();
+
+                    var result = await userManager.CreateAsync(user);
+
+                    result.Succeeded.Should().BeTrue();
+                });
 
             // Act
             using var response = await this.ExecuteAsync();
@@ -78,7 +106,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            await _testServer.UsingScopeAsync(
+            await testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var mapper = scope.GetRequiredService<IMapper>();
@@ -86,33 +114,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                     var profileResponse = await response.DeserializeAsync<UserPersonalInfoResponse>();
 
                     profileResponse.Should().BeEquivalentTo(mapper.Map<UserPersonalInfoResponse>(profile));
-                }
-            );
-        }
-
-        [Fact]
-        public async Task ShouldBeHttpStatusCodeNoContent()
-        {
-            User.PersonalInfo = null;
-
-            await _testServer.UsingScopeAsync(
-                async scope =>
-                {
-                    var userManager = scope.GetRequiredService<UserManager>();
-
-                    var result = await userManager.CreateAsync(User);
-
-                    result.Succeeded.Should().BeTrue();
-                }
-            );
-
-            // Act
-            using var response = await this.ExecuteAsync();
-
-            // Assert
-            response.EnsureSuccessStatusCode();
-
-            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+                });
         }
     }
 }
