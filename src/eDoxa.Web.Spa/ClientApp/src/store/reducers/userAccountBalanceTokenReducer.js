@@ -1,9 +1,6 @@
-import {
-  LOAD_USER_ACCOUNT_BALANCE_TOKEN_SUCCESS,
-  LOAD_USER_ACCOUNT_BALANCE_TOKEN_FAIL
-} from '../actions/cashierActions';
+import { LOAD_USER_ACCOUNT_BALANCE_TOKEN_SUCCESS, LOAD_USER_ACCOUNT_BALANCE_TOKEN_FAIL } from "../actions/cashierActions";
 
-const initialState = { type: 'Token', available: 0, pending: 0 };
+export const initialState = { type: "Token", available: 0, pending: 0 };
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -15,8 +12,6 @@ export const reducer = (state = initialState, action) => {
         pending
       };
     case LOAD_USER_ACCOUNT_BALANCE_TOKEN_FAIL:
-      console.log(action.payload);
-      return state;
     default:
       return state;
   }

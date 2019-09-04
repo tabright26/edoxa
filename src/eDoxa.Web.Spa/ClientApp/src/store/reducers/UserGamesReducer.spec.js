@@ -1,35 +1,37 @@
-import { reducer } from "./userGamesReducer";
+import { reducer, initialState } from "./userGamesReducer";
 import * as types from "../actions/identityActions";
 
-describe("user account transactions reducer", () => {
+const games204Data = [];
+const games200Data = [{ gameId: "League" }, { gameId: "Overwatch" }, { gameId: "CSGO" }];
+
+describe("user games reducer", () => {
   it("should return the initial state", () => {
-    expect(reducer([], {})).toEqual([]);
+    expect(reducer(initialState, {})).toEqual(initialState);
   });
 
   it("should handle LOAD_GAMES_SUCCESS 204", () => {
     expect(
-      reducer([], {
+      reducer(initialState, {
         type: types.LOAD_GAMES_SUCCESS,
-        payload: { status: 204, data: "Run the tests" }
+        payload: { status: 204, data: games204Data }
       })
-    ).toEqual([]);
+    ).toEqual(initialState);
   });
 
-  it("should handle LOAD_GAMES_SUCCESS Empty", () => {
+  it("should handle LOAD_GAMES_SUCCESS 200", () => {
     expect(
-      reducer([], {
+      reducer(initialState, {
         type: types.LOAD_GAMES_SUCCESS,
-        payload: { status: {}, data: "Run the tests" }
+        payload: { status: 200, data: games200Data }
       })
-    ).toEqual("Run the tests");
+    ).toEqual(games200Data);
   });
 
   it("should handle LOAD_GAMES_FAIL", () => {
     expect(
-      reducer([], {
-        type: types.LOAD_GAMES_FAIL,
-        payload: { data: "This is an error message" }
+      reducer(initialState, {
+        type: types.LOAD_GAMES_FAIL
       })
-    ).toEqual([]);
+    ).toEqual(initialState);
   });
 });

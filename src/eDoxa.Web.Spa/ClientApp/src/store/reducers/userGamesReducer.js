@@ -1,8 +1,10 @@
 import { LOAD_GAMES_SUCCESS, LOAD_GAMES_FAIL } from "../actions/identityActions";
 
-export const reducer = (state = [], action) => {
+export const initialState = [];
+
+export const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case LOAD_GAMES_SUCCESS: {
+    case LOAD_GAMES_SUCCESS:
       const { status, data } = action.payload;
       switch (status) {
         case 204:
@@ -10,7 +12,6 @@ export const reducer = (state = [], action) => {
         default:
           return data;
       }
-    }
     case LOAD_GAMES_FAIL:
     default: {
       return state;

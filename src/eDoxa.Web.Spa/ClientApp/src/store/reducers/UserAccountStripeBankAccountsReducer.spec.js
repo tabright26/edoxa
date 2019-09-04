@@ -1,7 +1,8 @@
-import { reducer } from "./userAccountStripeBankAccountsReducer";
+import { reducer, initialState } from "./userAccountStripeBankAccountsReducer";
 import * as types from "../actions/stripeActions";
 
-const initialState = { data: [] };
+const stripeBank204Data = [];
+const stripeBaml200Data = { data: [{ id: "1" }] };
 
 describe("user account stripe bank account reducer", () => {
   it("should return the initial state", () => {
@@ -12,25 +13,24 @@ describe("user account stripe bank account reducer", () => {
     expect(
       reducer(initialState, {
         type: types.LOAD_USER_STRIPE_BANK_ACCOUNTS_SUCCESS,
-        payload: { status: 204, data: "Run the tests" }
+        payload: { status: 204, data: stripeBank204Data }
       })
     ).toEqual(initialState);
   });
 
-  it("should handle LOAD_USER_STRIPE_BANK_ACCOUNTS_SUCCESS Empty", () => {
+  it("should handle LOAD_USER_STRIPE_BANK_ACCOUNTS_SUCCESS 200", () => {
     expect(
       reducer(initialState, {
         type: types.LOAD_USER_STRIPE_BANK_ACCOUNTS_SUCCESS,
-        payload: { status: {}, data: "Run the tests" }
+        payload: { status: 200, data: stripeBaml200Data }
       })
-    ).toEqual("Run the tests");
+    ).toEqual(stripeBaml200Data);
   });
 
   it("should handle LOAD_USER_ACCOUNT_BALANCE_TOKEN_FAIL", () => {
     expect(
       reducer(initialState, {
-        type: types.LOAD_USER_STRIPE_BANK_ACCOUNTS_FAIL,
-        payload: { data: "This is an error message" }
+        type: types.LOAD_USER_STRIPE_BANK_ACCOUNTS_FAIL
       })
     ).toEqual(initialState);
   });

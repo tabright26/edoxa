@@ -1,35 +1,37 @@
-import { reducer } from "./userPersonalInfoReducer";
+import { reducer, initialState } from "./userPersonalInfoReducer";
 import * as types from "../actions/identityActions";
+
+const personalInfo204Data = {};
+const personalInfo200Data = { name: "Gabriel", gender: "Male" };
 
 describe("user personal info reducer", () => {
   it("should return the initial state", () => {
-    expect(reducer(null, {})).toEqual(null);
+    expect(reducer(initialState, {})).toEqual(initialState);
   });
 
   it("should handle LOAD_PERSONAL_INFO_SUCCESS 204", () => {
     expect(
-      reducer(null, {
+      reducer(initialState, {
         type: types.LOAD_PERSONAL_INFO_SUCCESS,
-        payload: { status: 204, data: "Run the tests" }
+        payload: { status: 204, data: personalInfo204Data }
       })
-    ).toEqual(null);
+    ).toEqual(initialState);
   });
 
-  it("should handle LOAD_PERSONAL_INFO_SUCCESS Empty", () => {
+  it("should handle LOAD_PERSONAL_INFO_SUCCESS 200", () => {
     expect(
-      reducer(null, {
+      reducer(initialState, {
         type: types.LOAD_PERSONAL_INFO_SUCCESS,
-        payload: { status: {}, data: "Run the tests" }
+        payload: { status: 200, data: personalInfo200Data }
       })
-    ).toEqual("Run the tests");
+    ).toEqual(personalInfo200Data);
   });
 
   it("should handle LOAD_PERSONAL_INFO_FAIL", () => {
     expect(
-      reducer(null, {
-        type: types.LOAD_PERSONAL_INFO_FAIL,
-        payload: { data: "This is an error message" }
+      reducer(initialState, {
+        type: types.LOAD_PERSONAL_INFO_FAIL
       })
-    ).toEqual(null);
+    ).toEqual(initialState);
   });
 });

@@ -1,32 +1,27 @@
-import { reducer } from "./arenaGamesLeagueOfLegendsReducer";
+import { reducer, initialState } from "./arenaGamesLeagueOfLegendsReducer";
 import * as types from "../actions/leagueOfLegendsActions";
+
+const successData = { id: "1" };
 
 describe("arena games league of legends reducer", () => {
   it("should return the initial state", () => {
-    expect(reducer(undefined, {})).toEqual({});
+    expect(reducer(initialState, {})).toEqual(initialState);
   });
 
   it("should handle LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME_SUCCESS", () => {
     expect(
-      reducer(
-        {},
-        {
-          type: types.LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME_SUCCESS,
-          payload: { data: "Run the tests" }
-        }
-      )
-    ).toEqual("Run the tests");
+      reducer(initialState, {
+        type: types.LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME_SUCCESS,
+        payload: { data: successData }
+      })
+    ).toEqual(successData);
   });
 
   it("should handle LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME_FAIL", () => {
     expect(
-      reducer(
-        {},
-        {
-          type: types.LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME_FAIL,
-          payload: { data: "This is an error message" }
-        }
-      )
-    ).toEqual({});
+      reducer(initialState, {
+        type: types.LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME_FAIL
+      })
+    ).toEqual(initialState);
   });
 });

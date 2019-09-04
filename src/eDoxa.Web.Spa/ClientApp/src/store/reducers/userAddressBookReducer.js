@@ -10,9 +10,11 @@ import {
   REMOVE_ADDRESS_FAIL
 } from "../actions/identityActions";
 
-export const reducer = (state = [], action) => {
+export const initialState = [];
+
+export const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case LOAD_ADDRESS_BOOK_SUCCESS: {
+    case LOAD_ADDRESS_BOOK_SUCCESS:
       const { status, data } = action.payload;
       switch (status) {
         case 204:
@@ -20,13 +22,6 @@ export const reducer = (state = [], action) => {
         default:
           return data;
       }
-    }
-    case ADD_ADDRESS_SUCCESS: {
-      return state;
-    }
-    case UPDATE_ADDRESS_SUCCESS: {
-      return state;
-    }
     case REMOVE_ADDRESS_SUCCESS: {
       const { data: addressId } = action.payload;
       return state.filter(address => address.id !== addressId);
@@ -40,6 +35,8 @@ export const reducer = (state = [], action) => {
       }
       return state;
     }
+    case ADD_ADDRESS_SUCCESS:
+    case UPDATE_ADDRESS_SUCCESS:
     case LOAD_ADDRESS_BOOK_FAIL:
     default: {
       return state;

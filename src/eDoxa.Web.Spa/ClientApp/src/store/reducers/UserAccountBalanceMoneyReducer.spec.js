@@ -1,7 +1,8 @@
-import { reducer } from "./userAccountBalanceMoneyReducer";
+import { reducer, initialState } from "./userAccountBalanceMoneyReducer";
 import * as types from "../actions/cashierActions";
 
-const initialState = { type: "Money", available: 0, pending: 0 };
+const successData = { currency: "Money", available: 10, pending: 50 };
+const expectedState = { type: "Money", available: 10, pending: 50 };
 
 describe("user account balance money reducer", () => {
   it("should return the initial state", () => {
@@ -12,16 +13,15 @@ describe("user account balance money reducer", () => {
     expect(
       reducer(initialState, {
         type: types.LOAD_USER_ACCOUNT_BALANCE_MONEY_SUCCESS,
-        payload: { data: { currency: "Money", available: 10, pending: 50 } }
+        payload: { data: successData }
       })
-    ).toEqual({ type: "Money", available: 10, pending: 50 });
+    ).toEqual(expectedState);
   });
 
   it("should handle LOAD_USER_ACCOUNT_BALANCE_MONEY_FAIL", () => {
     expect(
       reducer(initialState, {
-        type: types.LOAD_USER_ACCOUNT_BALANCE_MONEY_FAIL,
-        payload: { data: "This is an error message" }
+        type: types.LOAD_USER_ACCOUNT_BALANCE_MONEY_FAIL
       })
     ).toEqual(initialState);
   });

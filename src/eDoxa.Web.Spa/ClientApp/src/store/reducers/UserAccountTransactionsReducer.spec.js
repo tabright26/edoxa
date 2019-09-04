@@ -1,35 +1,37 @@
-import { reducer } from "./userAccountTransactionsReducer";
+import { reducer, initialState } from "./userAccountTransactionsReducer";
 import * as types from "../actions/cashierActions";
+
+const transaction204Data = [];
+const transaction200Data = { data: [{ id: "1" }] };
 
 describe("user account transactions reducer", () => {
   it("should return the initial state", () => {
-    expect(reducer([], {})).toEqual([]);
+    expect(reducer(initialState, {})).toEqual(initialState);
   });
 
   it("should handle LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS 204", () => {
     expect(
-      reducer([], {
+      reducer(initialState, {
         type: types.LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS,
-        payload: { status: 204, data: "Run the tests" }
+        payload: { status: 204, data: transaction204Data }
       })
-    ).toEqual([]);
+    ).toEqual(initialState);
   });
 
-  it("should handle LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS Empty", () => {
+  it("should handle LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS 200", () => {
     expect(
       reducer([], {
         type: types.LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS,
-        payload: { status: {}, data: "Run the tests" }
+        payload: { status: 200, data: transaction200Data }
       })
-    ).toEqual("Run the tests");
+    ).toEqual(transaction200Data);
   });
 
   it("should handle LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL", () => {
     expect(
-      reducer([], {
-        type: types.LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL,
-        payload: { data: "This is an error message" }
+      reducer(initialState, {
+        type: types.LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL
       })
-    ).toEqual([]);
+    ).toEqual(initialState);
   });
 });

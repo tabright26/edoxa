@@ -1,35 +1,37 @@
-import { reducer } from "./doxaTagsReducer";
+import { reducer, initialState } from "./doxaTagsReducer";
 import * as types from "../actions/identityActions";
+
+const doxaTag204Data = [];
+const doxaTag200Data = "DoxaTagYo";
 
 describe("doxatag reducer", () => {
   it("should return the initial state", () => {
-    expect(reducer(undefined, {})).toEqual([]);
+    expect(reducer(initialState, {})).toEqual(initialState);
   });
 
   it("should handle LOAD_DOXATAGS_SUCCESS 204", () => {
     expect(
-      reducer([], {
+      reducer(initialState, {
         type: types.LOAD_DOXATAGS_SUCCESS,
-        payload: { status: 204, data: "Run the tests" }
+        payload: { status: 204, data: doxaTag204Data }
       })
-    ).toEqual([]);
+    ).toEqual(initialState);
   });
 
-  it("should handle LOAD_DOXATAGS_SUCCESS Empty", () => {
+  it("should handle LOAD_DOXATAGS_SUCCESS 200", () => {
     expect(
-      reducer([], {
+      reducer(initialState, {
         type: types.LOAD_DOXATAGS_SUCCESS,
-        payload: { status: {}, data: "Run the tests" }
+        payload: { status: 200, data: doxaTag200Data }
       })
-    ).toEqual("Run the tests");
+    ).toEqual(doxaTag200Data);
   });
 
   it("should handle LOAD_DOXATAGS_FAIL", () => {
     expect(
-      reducer([], {
-        type: types.LOAD_DOXATAGS_FAIL,
-        payload: { data: "This is an error message" }
+      reducer(initialState, {
+        type: types.LOAD_DOXATAGS_FAIL
       })
-    ).toEqual([]);
+    ).toEqual(initialState);
   });
 });

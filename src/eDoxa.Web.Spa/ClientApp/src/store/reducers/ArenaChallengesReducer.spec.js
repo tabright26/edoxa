@@ -1,53 +1,57 @@
-import { reducer } from "../reducers/arenaChallengesReducer";
+import { reducer, initialState } from "../reducers/arenaChallengesReducer";
 import * as types from "../actions/arenaChallengeActions";
+
+const challenges204Data = [];
+const challenges200Data = [{ id: "1" }, { id: "2" }, { id: "1" }];
+
+const challengeSuccessData = { id: "1" };
+const challengeExpectedState = [...initialState, challengeSuccessData];
 
 describe("arena challenges reducer", () => {
   it("should return the initial state", () => {
-    expect(reducer(undefined, {})).toEqual([]);
+    expect(reducer(initialState, {})).toEqual(initialState);
   });
 
   it("should handle LOAD_CHALLENGES_SUCCESS 204", () => {
     expect(
-      reducer([], {
+      reducer(initialState, {
         type: types.LOAD_CHALLENGES_SUCCESS,
-        payload: { status: 204, data: "Run the tests" }
+        payload: { status: 204, data: challenges204Data }
       })
-    ).toEqual([]);
+    ).toEqual(initialState);
   });
 
-  it("should handle LOAD_CHALLENGES_SUCCESS Empty", () => {
+  it("should handle LOAD_CHALLENGES_SUCCESS 200", () => {
     expect(
-      reducer([], {
+      reducer(initialState, {
         type: types.LOAD_CHALLENGES_SUCCESS,
-        payload: { status: {}, data: "Run the tests" }
+        payload: { status: 200, data: challenges200Data }
       })
-    ).toEqual("Run the tests");
+    ).toEqual(challenges200Data);
   });
 
   it("should handle LOAD_CHALLENGES_FAIL", () => {
     expect(
-      reducer([], {
-        type: types.LOAD_CHALLENGES_FAIL,
-        payload: { status: {}, data: "This is an error message" }
+      reducer(initialState, {
+        type: types.LOAD_CHALLENGES_FAIL
       })
-    ).toEqual([]);
+    ).toEqual(initialState);
   });
 
   it("should handle LOAD_CHALLENGE_SUCCESS", () => {
     expect(
-      reducer([], {
+      reducer(initialState, {
         type: types.LOAD_CHALLENGE_SUCCESS,
-        payload: { status: {}, data: "Run the tests" }
+        payload: { data: challengeSuccessData }
       })
-    ).toEqual(["Run the tests"]);
+    ).toEqual(challengeExpectedState);
   });
 
   it("should handle LOAD_CHALLENGE_FAIL", () => {
     expect(
-      reducer([], {
-        type: types.LOAD_CHALLENGE_FAIL,
-        payload: { status: {}, data: "This is an error message" }
+      reducer(initialState, {
+        type: types.LOAD_CHALLENGE_FAIL
       })
-    ).toEqual([]);
+    ).toEqual(initialState);
   });
 });

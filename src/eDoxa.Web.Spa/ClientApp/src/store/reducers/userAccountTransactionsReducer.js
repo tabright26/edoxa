@@ -1,6 +1,8 @@
 import { LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS, LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL } from "../actions/cashierActions";
 
-export const reducer = (state = [], action) => {
+export const initialState = [];
+
+export const reducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS:
       const { status, data } = action.payload;
@@ -11,8 +13,6 @@ export const reducer = (state = [], action) => {
           return data;
       }
     case LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL:
-      console.log(action.payload);
-      return state;
     default:
       return state;
   }
