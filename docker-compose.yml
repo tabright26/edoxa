@@ -2,13 +2,13 @@ version: '3.7'
 
 services:
   mssql:
-    image: microsoft/mssql-server-linux:latest
+    image: mcr.microsoft.com/mssql/server:2017-CU14-ubuntu
 
   redis:
-    image: redis:latest
+    image: redis:5.0.5
 
   rabbitmq:
-    image: rabbitmq:latest
+    image: rabbitmq:3-management
 
   seq:
     image: datalust/seq:latest

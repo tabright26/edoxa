@@ -2,13 +2,13 @@ version: '3.7'
 
 services:
   mssql.test:
-    image: microsoft/mssql-server-linux:latest
+    image: mcr.microsoft.com/mssql/server:2017-CU14-ubuntu
 
   redis.test:
-    image: redis:latest
+    image: redis:5.0.5
 
   rabbitmq.test:
-    image: rabbitmq:latest
+    image: rabbitmq:3-management
 
   seedwork.unit-tests:
     image: ${ACR_REGISTRY:-edoxa}/seedwork.unit-tests:${ACR_TAG:-latest}

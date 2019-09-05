@@ -2,10 +2,10 @@ version: '3.7'
 
 services:
   mssql.testing:
-    image: microsoft/mssql-server-linux:latest
+    image: mcr.microsoft.com/mssql/server:2017-CU14-ubuntu
 
   redis.testing:
-    image: redis:latest
+    image: redis:5.0.5
 
   rabbitmq.testing:
-    image: rabbitmq:latest
+    image: rabbitmq:3-management
