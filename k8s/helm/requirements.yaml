@@ -1,0 +1,10 @@
+dependencies:
+  - name: mssql-linux
+    repository: https://kubernetes-charts.storage.googleapis.com/
+    version: 0.10.0
+  - name: redis
+    repository: https://kubernetes-charts.storage.googleapis.com/
+    version: 9.1.7
+  - name: rabbitmq
+    repository: https://kubernetes-charts.storage.googleapis.com/
+    version: 6.4.4

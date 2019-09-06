@@ -1,0 +1,73 @@
+global:
+  aspnetcore:
+    environment: "Development"
+    urls: "http://+:80"
+  applicationInsights:
+    instrumentationKey: "47ce723c-52e7-4714-931a-19e72c037c9a"
+  azureKeyVault:
+    name: "edoxa-dev"
+    clientId: "bb6ade30-85d1-4bb7-a90f-047a5ffe9323"
+    clientSecret: "j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5"
+  azureKubernetesServiceEnabled: "true"
+  azureServiceBus:
+    hostName: "Endpoint=sb://edoxa-dev.servicebus.windows.net/;SharedAccessKeyName=Development;SharedAccessKey=VbtDwEohICuu/l+CQHbNUPb+BelN5pjOp6IZmjcQQ9M=;EntityPath=services"
+
+mssql-linux:
+  acceptEula:
+    value: "Y"
+  edition:
+    value: "Developer"
+  sapassword: "RBCLVNRS8HPdksJj8bax"
+  service:
+    port: 1433
+redis:
+  redisPort: 6379
+rabbitmq:
+  service:
+    port: 5672
+    managerPort: 15672
+
+identity-api: 
+  replicaCount: 1
+  image:
+    repository: edoxa.azurecr.io/identity.api
+    tag: 1.1.0-223
+    pullPolicy: IfNotPresent
+    serviceBus:
+      subscriptionName: "identity"
+cashier-api: 
+  replicaCount: 1
+  image:
+    repository: edoxa.azurecr.io/cashier.api
+    tag: 1.1.0-223
+    pullPolicy: IfNotPresent
+payment-api: 
+  replicaCount: 1
+  image:
+    repository: edoxa.azurecr.io/payment.api
+    tag: 1.1.0-223
+    pullPolicy: IfNotPresent
+arena-challenges-api:
+  replicaCount: 1
+  image:
+    repository: edoxa.azurecr.io/arena.challenges.api
+    tag: 1.1.0-223
+    pullPolicy: IfNotPresent
+web-gateway:
+  replicaCount: 1
+  image:
+    repository: edoxa.azurecr.io/web.gateway
+    tag: 1.1.0-223
+    pullPolicy: IfNotPresent
+web-spa:
+  replicaCount: 1
+  image:
+    repository: edoxa.azurecr.io/web.spa
+    tag: 1.1.0-223
+    pullPolicy: IfNotPresent
+web-status:
+  replicaCount: 1
+  image:
+    repository: edoxa.azurecr.io/web.status
+    tag: 1.1.0-223
+    pullPolicy: IfNotPresent

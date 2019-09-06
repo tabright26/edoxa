@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "identity-api.fullname" . }}
+  labels:
+{{ include "identity-api.labels" . | indent 4 }}
+data:
+  ASPNETCORE_ENVIRONMENT: {{ .Values.global.aspnetcore.environment | quote }}
+  ASPNETCORE_URLS: {{ .Values.global.aspnetcore.urls | quote }}
+  ApplicationInsights__InstrumentationKey: {{ .Values.global.applicationInsights.instrumentationKey | quote }}
+  ConnectionStrings__SqlServer: ""
+  ConnectionStrings__Redis: ""
+  AzureKeyVault__Name: {{ .Values.global.azureKeyVault.name | quote }}
+  AzureKeyVault__ClientId: {{ .Values.global.azureKeyVault.clientId | quote }}
+  AzureKeyVault__ClientSecret: {{ .Values.global.azureKeyVault.clientSecret | quote }}
+  ServiceBus__HostName: {{ .Values.global.azureServiceBus.hostName | quote }}
+  ServiceBus__SubscriptionName: {{ .Values.serviceBus.subscriptionName | quote }}
+  AzureKubernetesServiceEnabled: {{ .Values.global.azureKubernetesServiceEnabled | quote }}
