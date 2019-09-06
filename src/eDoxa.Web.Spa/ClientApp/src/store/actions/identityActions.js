@@ -114,7 +114,7 @@ export function addAddress(data) {
     types: [ADD_ADDRESS, ADD_ADDRESS_SUCCESS, ADD_ADDRESS_FAIL],
     payload: {
       request: {
-        method: "POST",
+        method: "post",
         url: "/identity/api/address-book",
         data
       }
