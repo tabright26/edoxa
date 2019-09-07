@@ -1,9 +1,8 @@
-import {
-  LOAD_USER_STRIPE_CARDS_SUCCESS,
-  LOAD_USER_STRIPE_CARDS_FAIL
-} from '../actions/stripeActions';
+import { LOAD_USER_STRIPE_CARDS_SUCCESS, LOAD_USER_STRIPE_CARDS_FAIL } from "../actions/stripeActions";
 
-export const reducer = (state = { data: [] }, action) => {
+export const initialState = { data: [] };
+
+export const reducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_USER_STRIPE_CARDS_SUCCESS:
       const { status, data } = action.payload;
@@ -14,8 +13,6 @@ export const reducer = (state = { data: [] }, action) => {
           return data;
       }
     case LOAD_USER_STRIPE_CARDS_FAIL:
-      console.log(action.payload);
-      return state;
     default:
       return state;
   }

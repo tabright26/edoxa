@@ -1,24 +1,18 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 const propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.node
 };
 
 const defaultProps = {};
 
 class Aside extends Component {
-
   render() {
-
     // eslint-disable-next-line
     const { children, ...attributes } = this.props;
 
-    return (
-      <React.Fragment>
-        Aside
-      </React.Fragment>
-    );
+    return <React.Fragment>Aside</React.Fragment>;
   }
 }
 
