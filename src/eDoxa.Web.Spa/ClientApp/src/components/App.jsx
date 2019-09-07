@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import { ConnectedRouter as Router } from "connected-react-router";
 
 import { history } from "../utils/history";
@@ -99,6 +99,7 @@ const App = () => (
             )}
           />
           <Route path="/" name="Home" render={props => <DefaultLayout {...props} />} />
+          <Redirect to="/errors/404" />
         </Switch>
       </Suspense>
     </Router>

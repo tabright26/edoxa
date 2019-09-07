@@ -1,8 +1,8 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
 import { Input, Form, FormGroup } from "reactstrap";
-import myInput from "../../../../components/Input";
-import Button from "../../../../components/Button";
+import myInput from "../../../../components/Override/Input";
+import Button from "../../../../components/Override/Button";
 import { UPDATE_PERSONALINFO_FORM } from "../../../../forms";
 import moment from "moment";
 import validate from "./validate";

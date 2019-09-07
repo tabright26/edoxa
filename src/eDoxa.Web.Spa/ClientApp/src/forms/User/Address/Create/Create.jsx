@@ -2,8 +2,8 @@ import React from "react";
 import { Field, reduxForm } from "redux-form";
 import { FormGroup, Col, Form } from "reactstrap";
 import validate from "./validate";
-import Button from "../../../../components/Button";
-import Input from "../../../../components/Input";
+import Button from "../../../../components/Override/Button";
+import Input from "../../../../components/Override/Input";
 import { CREATE_ADDRESS_FORM } from "../../../../forms";
 
 const CreateAddressForm = ({ handleSubmit, handleCancel }) => (

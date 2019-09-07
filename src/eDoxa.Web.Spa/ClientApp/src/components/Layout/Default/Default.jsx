@@ -2,11 +2,11 @@ import React, { Suspense } from "react";
 import { Container } from "reactstrap";
 import { AppFooter, AppAside, AppHeader, AppSidebar, AppSidebarFooter, AppSidebarForm, AppSidebarHeader, AppSidebarMinimizer, AppSidebarNav } from "@coreui/react";
 // sidebar nav config
-import navigation from "../../../_nav";
+import navigation from "./_nav";
 // routes config
-import routes from "../../../containers/Routing/Routes/routes";
-import Routes from "../../../containers/Routing/RouteHandler";
-import Loading from "../../../components/Loading";
+import routes from "../../../routes";
+import Routes from "../../Routes";
+import Loading from "../../Loading";
 
 const Aside = React.lazy(() => import("../../Aside/Aside"));
 const Footer = React.lazy(() => import("../../Footer/Footer"));
