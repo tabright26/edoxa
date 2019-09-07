@@ -1,60 +1,37 @@
 const validate = values => {
+  const nameRegExp = new RegExp("^[A-Z](((-)[A-Z])|[a-z]){1,15}$");
+  const yearRegExp = new RegExp("^[0-9]{4}$");
+  const monthRegExp = new RegExp("^(0[1-9]|1[012])$");
+  const dayRegExp = new RegExp("^(0[1-9]|[12]\\d|3[01])$");
   const errors = {};
-
-  var nameReg = new RegExp("^[A-Z](((-)[A-Z])|[a-z]){1,15}$");
-  var yearReg = new RegExp("^[0-9]{4}$");
-  var monthReg = new RegExp("^(0[1-9]|1[012])$");
-  var dayReg = new RegExp("^(0[1-9]|[12]\\d|3[01])$");
-
-  if (values.firstName) {
-    var res = nameReg.test(values.firstName);
-    if (!res) {
-      errors.firstName = "Invalid first name";
-    }
-  } else {
+  if (!values.firstName) {
     errors.firstName = "First name is required";
+  } else if (!nameRegExp.test(values.firstName)) {
+    errors.firstName = "Invalid first name";
   }
-
-  if (values.lastName) {
-    res = nameReg.test(values.lastName);
-    if (!res) {
-      errors.lastName = "Invalid last name";
-    }
-  } else {
+  if (!values.lastName) {
     errors.lastName = "Last name is required";
+  } else if (!nameRegExp.test(values.lastName)) {
+    errors.lastName = "Invalid last name";
   }
-
-  if (values.year) {
-    res = yearReg.test(values.year);
-    if (!res) {
-      errors.year = "Invalid year";
-    }
-  } else {
+  if (!values.year) {
     errors.year = "Year of birth is required";
+  } else if (!yearRegExp.test(values.year)) {
+    errors.year = "Invalid year";
   }
-
-  if (values.month) {
-    res = monthReg.test(values.month);
-    if (!res) {
-      errors.month = "Invalid month";
-    }
-  } else {
+  if (!values.month) {
     errors.month = "Month of birth is required";
+  } else if (!monthRegExp.test(values.month)) {
+    errors.month = "Invalid month";
   }
-
-  if (values.day) {
-    res = dayReg.test(values.day);
-    if (!res) {
-      errors.day = "Invalid day";
-    }
-  } else {
+  if (!values.day) {
     errors.day = "Day of birth is required";
+  } else if (!dayRegExp.test(values.day)) {
+    errors.day = "Invalid day";
   }
-
   if (!values.gender) {
     errors.gender = "Gender is required";
   }
-
   return errors;
 };
 

@@ -1,17 +1,11 @@
 const validate = values => {
+  const emailRegExp = new RegExp("^([A-Z|a-z|0-9](\\.|_){0,1})+[A-Z|a-z|0-9]\\@([A-Z|a-z|0-9])+((\\.){0,1}[A-Z|a-z|0-9]){2}\\.[a-z]{2,3}$");
   const errors = {};
-
-  var emailReg = new RegExp("^([A-Z|a-z|0-9](\\.|_){0,1})+[A-Z|a-z|0-9]\\@([A-Z|a-z|0-9])+((\\.){0,1}[A-Z|a-z|0-9]){2}\\.[a-z]{2,3}$");
-
-  if (values.email) {
-    var res = emailReg.test(values.email);
-    if (!res) {
-      errors.email = "Invalid email";
-    }
-  } else {
+  if (!values.email) {
     errors.email = "Email is required";
+  } else if (!emailRegExp.test(values.email)) {
+    errors.email = "Invalid email";
   }
-
   return errors;
 };
 

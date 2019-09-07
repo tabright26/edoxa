@@ -1,17 +1,11 @@
 const validate = values => {
+  var nameRegExp = new RegExp("^[a-zA-Z][a-zA-Z_]{0,14}[a-zA-Z]$");
   const errors = {};
-
-  var nameReg = new RegExp("^[a-zA-Z][a-zA-Z_]{0,14}[a-zA-Z]$");
-
-  if (values.name) {
-    var res = nameReg.test(values.name);
-    if (!res) {
-      errors.name = "Invalid format. Must between 16 characters and greater than characters 2";
-    }
-  } else {
+  if (!values.name) {
     errors.name = "DoxaTag is required";
+  } else if (!nameRegExp.test(values.name)) {
+    errors.name = "Invalid format. Must between 16 characters and greater than characters 2";
   }
-
   return errors;
 };
 
