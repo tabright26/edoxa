@@ -1,12 +1,8 @@
 ﻿// Filename: Program.cs
-// Date Created: 2019-07-02
+// Date Created: 2019-09-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 
@@ -65,21 +61,23 @@ namespace eDoxa.Payment.Api
                         builder.AddAzureKeyVault(
                             $"https://{configuration["AzureKeyVault:Name"]}.vault.azure.net",
                             configuration["AzureKeyVault:ClientId"],
-                            configuration["AzureKeyVault:ClientSecret"]
-                        );
+                            configuration["AzureKeyVault:ClientSecret"]);
 
                         config.AddConfiguration(builder.Build());
-                    }
-                )
+                    })
                 .UseApplicationInsights()
                 .UseSerilog(
-                    (context, config) => config.MinimumLevel.Verbose()
-                        .Enrich.WithProperty("Application", typeof(Program).Namespace)
-                        .Enrich.FromLogContext()
-                        .WriteTo.Console()
-                        .WriteTo.Seq(context.Configuration["Serilog:Seq"])
-                        .ReadFrom.Configuration(context.Configuration)
-                );
+                    (context, config) =>
+                    {
+                        var seqServerUrl = context.Configuration["Serilog:Sink:Seq"];
+
+                        config.MinimumLevel.Verbose()
+                            .Enrich.WithProperty("Application", typeof(Program).Namespace)
+                            .Enrich.FromLogContext()
+                            .WriteTo.Console()
+                            .WriteTo.Seq(string.IsNullOrWhiteSpace(seqServerUrl) ? "http://seq" : seqServerUrl)
+                            .ReadFrom.Configuration(context.Configuration);
+                    });
         }
     }
 }

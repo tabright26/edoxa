@@ -8,3 +8,17 @@ data:
   ASPNETCORE_ENVIRONMENT: {{ .Values.global.aspnetcore.environment | quote }}
   ASPNETCORE_URLS: {{ .Values.global.aspnetcore.urls | quote }}
   ApplicationInsights__InstrumentationKey: {{ .Values.global.applicationInsights.instrumentationKey | quote }}
+  HealthChecks__Endpoints__0__Name: ""
+  HealthChecks__Endpoints__0__Uri: ""
+  HealthChecks__Endpoints__1__Name: ""
+  HealthChecks__Endpoints__1__Uri: ""
+  HealthChecks__Endpoints__2__Name: ""
+  HealthChecks__Endpoints__2__Uri: ""
+  HealthChecks__Endpoints__3__Name: ""
+  HealthChecks__Endpoints__3__Uri: ""
+  HealthChecks__Endpoints__4__Name: ""
+  HealthChecks__Endpoints__4__Uri: ""
+  HealthChecks__Endpoints__5__Name: ""
+  HealthChecks__Endpoints__5__Uri: ""
+  HealthChecks__EvaluationTimeInSeconds: ""
+  HealthChecks__MinimumSecondsBetweenFailureNotifications: ""

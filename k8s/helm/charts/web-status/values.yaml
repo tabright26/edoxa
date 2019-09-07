@@ -56,6 +56,34 @@ environment:
     key: ASPNETCORE_URLS
   - name: ApplicationInsights__InstrumentationKey
     key: ApplicationInsights__InstrumentationKey
+  - name: HealthChecks__Endpoints__0__Name
+    key: HealthChecks__Endpoints__0__Name
+  - name: HealthChecks__Endpoints__0__Uri
+    key: HealthChecks__Endpoints__0__Uri
+  - name: HealthChecks__Endpoints__1__Name
+    key: HealthChecks__Endpoints__1__Name
+  - name: HealthChecks__Endpoints__1__Uri
+    key: HealthChecks__Endpoints__1__Uri
+  - name: HealthChecks__Endpoints__2__Name
+    key: HealthChecks__Endpoints__2__Name
+  - name: HealthChecks__Endpoints__2__Uri
+    key: HealthChecks__Endpoints__2__Uri
+  - name: HealthChecks__Endpoints__3__Name
+    key: HealthChecks__Endpoints__3__Name
+  - name: HealthChecks__Endpoints__3__Uri
+    key: HealthChecks__Endpoints__3__Uri
+  - name: HealthChecks__Endpoints__4__Name
+    key: HealthChecks__Endpoints__4__Name
+  - name: HealthChecks__Endpoints__4__Uri
+    key: HealthChecks__Endpoints__4__Uri
+  - name: HealthChecks__Endpoints__5__Name
+    key: HealthChecks__Endpoints__5__Name
+  - name: HealthChecks__Endpoints__5__Uri
+    key: HealthChecks__Endpoints__5__Uri
+  - name: HealthChecks__EvaluationTimeInSeconds
+    key: HealthChecks__EvaluationTimeInSeconds
+  - name: HealthChecks__MinimumSecondsBetweenFailureNotifications
+    key: HealthChecks__MinimumSecondsBetweenFailureNotifications
 
 probes:
   liveness:

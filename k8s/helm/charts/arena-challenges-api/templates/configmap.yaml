@@ -8,3 +8,14 @@ data:
   ASPNETCORE_ENVIRONMENT: {{ .Values.global.aspnetcore.environment | quote }}
   ASPNETCORE_URLS: {{ .Values.global.aspnetcore.urls | quote }}
   ApplicationInsights__InstrumentationKey: {{ .Values.global.applicationInsights.instrumentationKey | quote }}
+  ConnectionStrings__SqlServer: ""
+  ConnectionStrings__Redis: ""
+  AzureKeyVault__Name: ""
+  AzureKeyVault__ClientId: ""
+  AzureKeyVault__ClientSecret: ""
+  AzureServiceBusEnabled: ""
+  ServiceBus__HostName: ""
+  ServiceBus__SubscriptionName: ""
+  AzureKubernetesServiceEnabled: ""
+  Authority__PrivateUrl: ""
+  Authority__PublicUrl: ""

@@ -1,5 +1,5 @@
 // Filename: Program.cs
-// Date Created: 2019-08-27
+// Date Created: 2019-09-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -42,12 +42,17 @@ namespace eDoxa.Web.Spa
                     })
                 .UseApplicationInsights()
                 .UseSerilog(
-                    (context, config) => config.MinimumLevel.Information()
-                        .Enrich.WithProperty("Application", typeof(Program).Namespace)
-                        .Enrich.FromLogContext()
-                        .WriteTo.Console()
-                        .WriteTo.Seq(context.Configuration["Serilog:Seq"])
-                        .ReadFrom.Configuration(context.Configuration));
+                    (context, config) =>
+                    {
+                        var seqServerUrl = context.Configuration["Serilog:Sink:Seq"];
+
+                        config.MinimumLevel.Information()
+                            .Enrich.WithProperty("Application", typeof(Program).Namespace)
+                            .Enrich.FromLogContext()
+                            .WriteTo.Console()
+                            .WriteTo.Seq(string.IsNullOrWhiteSpace(seqServerUrl) ? "http://seq" : seqServerUrl)
+                            .ReadFrom.Configuration(context.Configuration);
+                    });
         }
     }
 }

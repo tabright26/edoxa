@@ -59,6 +59,20 @@ environment:
     key: ASPNETCORE_URLS
   - name: ApplicationInsights__InstrumentationKey
     key: ApplicationInsights__InstrumentationKey
+  - name: AzureKeyVault__Name
+    key: AzureKeyVault__Name
+  - name: AzureKeyVault__ClientId
+    key: AzureKeyVault__ClientId
+  - name: AzureKeyVault__ClientSecret
+    key: AzureKeyVault__ClientSecret
+  - name: AzureServiceBusEnabled
+    key: AzureServiceBusEnabled
+  - name: ServiceBus__HostName
+    key: ServiceBus__HostName
+  - name: ServiceBus__SubscriptionName
+    key: ServiceBus__SubscriptionName
+  - name: AzureKubernetesServiceEnabled
+    key: AzureKubernetesServiceEnabled
 
 probes:
   liveness:

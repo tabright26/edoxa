@@ -1,5 +1,5 @@
 ﻿// Filename: Program.cs
-// Date Created: 2019-08-18
+// Date Created: 2019-09-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -68,21 +68,23 @@ namespace eDoxa.Arena.Challenges.Api
                         builder.AddAzureKeyVault(
                             $"https://{configuration["AzureKeyVault:Name"]}.vault.azure.net",
                             configuration["AzureKeyVault:ClientId"],
-                            configuration["AzureKeyVault:ClientSecret"]
-                        );
+                            configuration["AzureKeyVault:ClientSecret"]);
 
                         config.AddConfiguration(builder.Build());
-                    }
-                )
+                    })
                 .UseApplicationInsights()
                 .UseSerilog(
-                    (context, config) => config.MinimumLevel.Verbose()
-                        .Enrich.WithProperty("Application", typeof(Program).Namespace)
-                        .Enrich.FromLogContext()
-                        .WriteTo.Console()
-                        .WriteTo.Seq(context.Configuration["Serilog:Seq"])
-                        .ReadFrom.Configuration(context.Configuration)
-                );
+                    (context, config) =>
+                    {
+                        var seqServerUrl = context.Configuration["Serilog:Sink:Seq"];
+
+                        config.MinimumLevel.Verbose()
+                            .Enrich.WithProperty("Application", typeof(Program).Namespace)
+                            .Enrich.FromLogContext()
+                            .WriteTo.Console()
+                            .WriteTo.Seq(string.IsNullOrWhiteSpace(seqServerUrl) ? "http://seq" : seqServerUrl)
+                            .ReadFrom.Configuration(context.Configuration);
+                    });
         }
     }
 }

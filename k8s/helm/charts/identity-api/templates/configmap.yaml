@@ -16,3 +16,9 @@ data:
   ServiceBus__HostName: {{ .Values.global.azureServiceBus.hostName | quote }}
   ServiceBus__SubscriptionName: {{ .Values.serviceBus.subscriptionName | quote }}
   AzureKubernetesServiceEnabled: {{ .Values.global.azureKubernetesServiceEnabled | quote }}
+  Authority__PrivateUrl: ""
+  Authority__PublicUrl: ""
+  IdentityServer__IdentityUrl: ""
+  IdentityServer__CashierUrl: ""
+  IdentityServer__ArenaChallengesUrl: ""
+  IdentityServer__Web__SpaUrl: ""
