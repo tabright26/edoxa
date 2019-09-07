@@ -1,8 +1,8 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
 import { FormGroup, Col, Input, Form } from "reactstrap";
-import myInput from "../../../../components/Input";
-import Button from "../../../../components/Button";
+import myInput from "../../../../components/Override/Input";
+import Button from "../../../../components/Override/Button";
 import { DELETE_ADDRESS_FORM } from "../../../../forms";
 import validate from "./validate";
 

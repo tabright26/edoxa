@@ -1,8 +1,8 @@
 import React from "react";
 import { reduxForm, Field } from "redux-form";
 import { FormGroup, Form } from "reactstrap";
-import Button from "../../../../components/Button";
-import Input from "../../../../components/Input";
+import Button from "../../../../components/Override/Button";
+import Input from "../../../../components/Override/Input";
 import validate from "./validate";
 import { CHANGE_DOXATAG_FORM } from "../../../../forms";
 
