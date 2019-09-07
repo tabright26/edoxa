@@ -76,18 +76,21 @@ environment:
     key: Web__GatewayUrl
   - name: HealthChecks__Web__GatewayUrl
     key: HealthChecks__Web__GatewayUrl
+  - name: Serilog__Sink__Seq
+    key: Serilog__Sink__Seq
 
-probes:
-  liveness:
-    path: /liveness
-    initialDelaySeconds: 10
-    periodSeconds: 15
-    port: 80
-  readiness:
-    path: /health
-    timeoutSeconds: 5
-    initialDelaySeconds: 90
-    periodSeconds: 60
-    port: 80
+livenessProbe:
+  path: /liveness
+  initialDelaySeconds: 10
+  periodSeconds: 15
+  port: 80
 
-enableDevspaces: "false"
+readinessProbe:
+  path: /health
+  timeoutSeconds: 5
+  initialDelaySeconds: 90
+  periodSeconds: 60
+  port: 80
+  
+devspaces:
+  enabled: false

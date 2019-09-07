@@ -22,3 +22,4 @@ data:
   HealthChecks__Endpoints__5__Uri: ""
   HealthChecks__EvaluationTimeInSeconds: ""
   HealthChecks__MinimumSecondsBetweenFailureNotifications: ""
+  Serilog__Sink__Seq: ""

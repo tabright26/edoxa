@@ -8,5 +8,8 @@ dependencies:
 - name: rabbitmq
   repository: https://kubernetes-charts.storage.googleapis.com/
   version: 6.4.4
-digest: sha256:e26e383d9b0eba9f351b381bd824692bd0af3e1167305c4914578920c7d2f18d
-generated: "2019-09-05T18:40:40.9367008-04:00"
+- name: seq
+  repository: https://kubernetes-charts.storage.googleapis.com/
+  version: 1.0.2
+digest: sha256:ce78062003ee4e9751f5bf746c58cd0c83fb8adf288ce2ce8168a19f2a96ca8f
+generated: "2019-09-07T14:36:37.1356151-04:00"

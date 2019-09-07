@@ -160,6 +160,13 @@ namespace eDoxa.Cashier.Api
             application.UseMvc();
 
             application.UseHealthChecks(
+                "/liveness",
+                new HealthCheckOptions
+                {
+                    Predicate = registration => registration.Name.Contains("liveness")
+                });
+
+            application.UseHealthChecks(
                 "/health",
                 new HealthCheckOptions
                 {

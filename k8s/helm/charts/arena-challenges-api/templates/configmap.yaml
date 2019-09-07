@@ -19,3 +19,4 @@ data:
   AzureKubernetesServiceEnabled: ""
   Authority__PrivateUrl: ""
   Authority__PublicUrl: ""
+  Serilog__Sink__Seq: ""

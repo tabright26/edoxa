@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-08-27
+// Date Created: 2019-09-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -188,6 +188,13 @@ namespace eDoxa.Arena.Challenges.Api
             application.UseAuthentication();
 
             application.UseMvc();
+
+            application.UseHealthChecks(
+                "/liveness",
+                new HealthCheckOptions
+                {
+                    Predicate = registration => registration.Name.Contains("liveness")
+                });
 
             application.UseHealthChecks(
                 "/health",

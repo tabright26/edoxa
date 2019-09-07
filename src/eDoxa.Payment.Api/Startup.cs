@@ -74,6 +74,13 @@ namespace eDoxa.Payment.Api
             application.UseProviders(Configuration);
 
             application.UseHealthChecks(
+                "/liveness",
+                new HealthCheckOptions
+                {
+                    Predicate = registration => registration.Name.Contains("liveness")
+                });
+
+            application.UseHealthChecks(
                 "/health",
                 new HealthCheckOptions
                 {

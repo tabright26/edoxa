@@ -8,3 +8,10 @@ data:
   ASPNETCORE_ENVIRONMENT: {{ .Values.global.aspnetcore.environment | quote }}
   ASPNETCORE_URLS: {{ .Values.global.aspnetcore.urls | quote }}
   ApplicationInsights__InstrumentationKey: {{ .Values.global.applicationInsights.instrumentationKey | quote }}
+  AzureKubernetesServiceEnabled: ""
+  Authority__PrivateUrl: ""
+  Authority__PublicUrl: ""
+  HealthChecks__IdentityUrl: ""
+  HealthChecks__CashierUrl: ""
+  HealthChecks__ArenaChallengesUrl: ""
+  Serilog__Sink__Seq: ""

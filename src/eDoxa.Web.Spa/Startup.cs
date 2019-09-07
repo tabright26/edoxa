@@ -88,6 +88,13 @@ namespace eDoxa.Web.Spa
             application.UseMvcWithDefaultRoute();
 
             application.UseHealthChecks(
+                "/liveness",
+                new HealthCheckOptions
+                {
+                    Predicate = registration => registration.Name.Contains("liveness")
+                });
+
+            application.UseHealthChecks(
                 "/health",
                 new HealthCheckOptions
                 {

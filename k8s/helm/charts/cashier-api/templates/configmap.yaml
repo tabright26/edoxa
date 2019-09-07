@@ -19,3 +19,4 @@ data:
   Authority__PrivateUrl: ""
   Authority__PublicUrl: ""
   HealthChecks__PaymentUrl: ""
+  Serilog__Sink__Seq: ""

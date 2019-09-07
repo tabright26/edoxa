@@ -18,3 +18,4 @@ data:
   Web__ReactUrl: ""
   Web__GatewayUrl: ""
   HealthChecks__Web__GatewayUrl: ""
+  Serilog__Sink__Seq: ""

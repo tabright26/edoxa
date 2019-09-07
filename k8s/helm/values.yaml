@@ -26,6 +26,10 @@ rabbitmq:
   service:
     port: 5672
     managerPort: 15672
+seq:
+  acceptEULA: "Y"
+  service:
+    port: 5400
 
 identity-api: 
   replicaCount: 1

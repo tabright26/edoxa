@@ -83,6 +83,13 @@ namespace eDoxa.Web.Gateway
             application.UseCors("default");
 
             application.UseHealthChecks(
+                "/liveness",
+                new HealthCheckOptions
+                {
+                    Predicate = registration => registration.Name.Contains("liveness")
+                });
+
+            application.UseHealthChecks(
                 "/health",
                 new HealthCheckOptions
                 {
