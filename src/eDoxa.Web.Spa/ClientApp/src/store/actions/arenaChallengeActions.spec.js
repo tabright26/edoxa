@@ -6,11 +6,11 @@ describe("arena challenge actions", () => {
     const expectedMethod = "get";
     const expectedUrl = "/arena/challenge/api/challenges";
 
-    const object = loadChallenges();
+    const actionCreator = loadChallenges();
 
-    expect(object.types).toEqual(expectedType);
-    expect(object.payload.request.method).toEqual(expectedMethod);
-    expect(object.payload.request.url).toEqual(expectedUrl);
+    expect(actionCreator.types).toEqual(expectedType);
+    expect(actionCreator.payload.request.method).toEqual(expectedMethod);
+    expect(actionCreator.payload.request.url).toEqual(expectedUrl);
   });
 
   it("should create an action to get a challenge", () => {
@@ -20,10 +20,10 @@ describe("arena challenge actions", () => {
     const expectedMethod = "get";
     const expectedUrl = `/arena/challenge/api/challenges/${challengeId}`;
 
-    const object = loadChallenge(challengeId);
+    const actionCreator = loadChallenge(challengeId);
 
-    expect(object.types).toEqual(expectedType);
-    expect(object.payload.request.method).toEqual(expectedMethod);
-    expect(object.payload.request.url).toEqual(expectedUrl);
+    expect(actionCreator.types).toEqual(expectedType);
+    expect(actionCreator.payload.request.method).toEqual(expectedMethod);
+    expect(actionCreator.payload.request.url).toEqual(expectedUrl);
   });
 });

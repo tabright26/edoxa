@@ -19,11 +19,11 @@ describe("cashier actions", () => {
     const expectedMethod = "get";
     const expectedUrl = "/cashier/api/account/balance/money";
 
-    const object = loadUserAccountBalanceForMoney();
+    const actionCreator = loadUserAccountBalanceForMoney();
 
-    expect(object.types).toEqual(expectedType);
-    expect(object.payload.request.method).toEqual(expectedMethod);
-    expect(object.payload.request.url).toEqual(expectedUrl);
+    expect(actionCreator.types).toEqual(expectedType);
+    expect(actionCreator.payload.request.method).toEqual(expectedMethod);
+    expect(actionCreator.payload.request.url).toEqual(expectedUrl);
   });
 
   it("should create an action to get user balance token", () => {
@@ -31,11 +31,11 @@ describe("cashier actions", () => {
     const expectedMethod = "get";
     const expectedUrl = "/cashier/api/account/balance/token";
 
-    const object = loadUserAccountBalanceForToken();
+    const actionCreator = loadUserAccountBalanceForToken();
 
-    expect(object.types).toEqual(expectedType);
-    expect(object.payload.request.method).toEqual(expectedMethod);
-    expect(object.payload.request.url).toEqual(expectedUrl);
+    expect(actionCreator.types).toEqual(expectedType);
+    expect(actionCreator.payload.request.method).toEqual(expectedMethod);
+    expect(actionCreator.payload.request.url).toEqual(expectedUrl);
   });
 
   it("should create an action to get user transactions", () => {
@@ -43,10 +43,10 @@ describe("cashier actions", () => {
     const expectedMethod = "get";
     const expectedUrl = "/cashier/api/transactions";
 
-    const object = loadUserAccountTransactions();
+    const actionCreator = loadUserAccountTransactions();
 
-    expect(object.types).toEqual(expectedType);
-    expect(object.payload.request.method).toEqual(expectedMethod);
-    expect(object.payload.request.url).toEqual(expectedUrl);
+    expect(actionCreator.types).toEqual(expectedType);
+    expect(actionCreator.payload.request.method).toEqual(expectedMethod);
+    expect(actionCreator.payload.request.url).toEqual(expectedUrl);
   });
 });

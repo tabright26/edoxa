@@ -1,10 +1,8 @@
 import React from "react";
 
-//Change these into views
-
-const SecurityEmailConfirm = React.lazy(() => import("../../../../components/Page/Security/Email/Comfirm"));
-const SecurityPasswordForgot = React.lazy(() => import("../../../../components/Page/Security/Password/Forgot"));
-const SecurityPasswordReset = React.lazy(() => import("../../../../components/Page/Security/Password/Reset"));
+const SecurityEmailConfirm = React.lazy(() => import("../../../../views/User/Email/Comfirm"));
+const SecurityPasswordForgot = React.lazy(() => import("../../../../views/User/Password/Forgot"));
+const SecurityPasswordReset = React.lazy(() => import("../../../../views/User/Password/Reset"));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [

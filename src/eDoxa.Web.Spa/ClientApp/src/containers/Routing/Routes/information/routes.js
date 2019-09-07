@@ -1,9 +1,7 @@
 import React from "react";
 
-//Change these into pages
-
-const FAQ = React.lazy(() => import("../../../../components/Page/FAQ"));
-const TermsOfServices = React.lazy(() => import("../../../../components/Page/TermsOfServices"));
+const FAQ = React.lazy(() => import("../../../../views/FAQ"));
+const TermsOfServices = React.lazy(() => import("../../../../views/TermsOfServices"));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [

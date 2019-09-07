@@ -5,7 +5,7 @@ import Button from "../../../../components/Button";
 import Input from "../../../../components/Input";
 import validate from "./validate";
 import { CREATE_PERSONALINFO_FORM } from "../../../../forms";
-import { months, days, years } from "../../../../utils/helper";
+import { months, days, years } from "./helper";
 
 const CreatePersonalInfoForm = ({ handleSubmit }) => (
   <Form onSubmit={handleSubmit}>
