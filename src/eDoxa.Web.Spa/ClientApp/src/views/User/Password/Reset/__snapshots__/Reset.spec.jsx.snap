@@ -1,0 +1,119 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div
+  className="mx-4 card"
+>
+  <div
+    className="p-4 card-body"
+  >
+    <h1>
+      Reset Password
+    </h1>
+    <p
+      className="text-muted"
+    >
+      Reset your account password
+    </p>
+    <form
+      className=""
+      onSubmit={[Function]}
+    >
+      <div
+        className="mb-3 input-group"
+      >
+        <div
+          className="input-group-prepend"
+        >
+          <span
+            className="input-group-text"
+          >
+            @
+          </span>
+        </div>
+        <input
+          className="form-control-sm form-control"
+          name="email"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onDragStart={[Function]}
+          onDrop={[Function]}
+          onFocus={[Function]}
+          placeholder="Email"
+          type="text"
+          value=""
+        />
+        <div
+          className="invalid-feedback"
+        />
+      </div>
+      <div
+        className="mb-3 input-group"
+      >
+        <div
+          className="input-group-prepend"
+        >
+          <span
+            className="input-group-text"
+          >
+            <i
+              className="icon-lock"
+            />
+          </span>
+        </div>
+        <input
+          className="form-control"
+          name="password"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onDragStart={[Function]}
+          onDrop={[Function]}
+          onFocus={[Function]}
+          placeholder="Password"
+          type="password"
+          value=""
+        />
+      </div>
+      <div
+        className="mb-3 input-group"
+      >
+        <div
+          className="input-group-prepend"
+        >
+          <span
+            className="input-group-text"
+          >
+            <i
+              className="icon-lock"
+            />
+          </span>
+        </div>
+        <input
+          className="form-control"
+          name="confirmPassword"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onDragStart={[Function]}
+          onDrop={[Function]}
+          onFocus={[Function]}
+          placeholder="Confirm Password"
+          type="password"
+          value=""
+        />
+      </div>
+      <div
+        className="mb-0 form-group"
+      >
+        <button
+          aria-label={null}
+          className="btn btn-primary btn-block"
+          onClick={[Function]}
+          type="submit"
+        >
+          Reset
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+`;

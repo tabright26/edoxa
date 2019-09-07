@@ -1,8 +1,8 @@
 import React from "react";
 
-const Account = React.lazy(() => import("../../../views/Account/Account"));
-const AccountPaymentMethods = React.lazy(() => import("../../../views/Account/PaymentMethods/PaymentMethods"));
-const AccountTransactionHistory = React.lazy(() => import("../../../views/Account/TransactionHistory/TransactionHistory"));
+const Account = React.lazy(() => import("../../../views/User/Account/Account"));
+const AccountPaymentMethods = React.lazy(() => import("../../../views/User/Account/PaymentMethods/PaymentMethods"));
+const AccountTransactionHistory = React.lazy(() => import("../../../views/User/Account/TransactionHistory/TransactionHistory"));
 const Arena = React.lazy(() => import("../../../views/Arena/Arena"));
 const ArenaChallenges = React.lazy(() => import("../../../views/Arena/Challenges/Challenges"));
 const ArenaChallengeDetails = React.lazy(() => import("../../../views/Arena/Challenges/Details/Details"));
@@ -13,7 +13,7 @@ const ArenaTournamentDetails = React.lazy(() => import("../../../views/Arena/Tou
 const ArenaTournamentHistory = React.lazy(() => import("../../../views/Arena/Tournaments/History/History"));
 const Marketplace = React.lazy(() => import("../../../views/Marketplace/Marketplace"));
 const NewsFeeds = React.lazy(() => import("../../../views/NewsFeeds/NewsFeeds"));
-const Profile = React.lazy(() => import("../../../views/Profile/Profile"));
+const Profile = React.lazy(() => import("../../../views/User/Profile"));
 const Structures = React.lazy(() => import("../../../views/Structures/Structures"));
 const StructureClans = React.lazy(() => import("../../../views/Structures/Clans/Clans"));
 const StructureClanDashboard = React.lazy(() => import("../../../views/Structures/Clans/Dashboard/Dashboard"));

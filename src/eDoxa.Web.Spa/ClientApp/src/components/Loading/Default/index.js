@@ -1,3 +1,3 @@
-import DefaultLoading from "./Default";
+import LoadingDefault from "./Default";
 
-export default DefaultLoading;
+export default LoadingDefault;

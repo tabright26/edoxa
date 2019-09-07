@@ -16,12 +16,12 @@ describe("stripe actions", () => {
     const expectedMethod = "get";
     const expectedUrl = `/v1/customers/:customerId/sources?object=card`;
 
-    const object = loadUserStripeCards();
+    const actionCreator = loadUserStripeCards();
 
-    expect(object.types).toEqual(expectedType);
-    expect(object.payload.client).toEqual(expectedClient);
-    expect(object.payload.request.method).toEqual(expectedMethod);
-    expect(object.payload.request.url).toEqual(expectedUrl);
+    expect(actionCreator.types).toEqual(expectedType);
+    expect(actionCreator.payload.client).toEqual(expectedClient);
+    expect(actionCreator.payload.request.method).toEqual(expectedMethod);
+    expect(actionCreator.payload.request.url).toEqual(expectedUrl);
   });
 
   it("should create an action to get user stripe banks", () => {
@@ -30,11 +30,11 @@ describe("stripe actions", () => {
     const expectedMethod = "get";
     const expectedUrl = "/v1/accounts/:connectAccountId/external_accounts?object=bank_account";
 
-    const object = loadUserStripeBankAccounts();
+    const actionCreator = loadUserStripeBankAccounts();
 
-    expect(object.types).toEqual(expectedType);
-    expect(object.payload.client).toEqual(expectedClient);
-    expect(object.payload.request.method).toEqual(expectedMethod);
-    expect(object.payload.request.url).toEqual(expectedUrl);
+    expect(actionCreator.types).toEqual(expectedType);
+    expect(actionCreator.payload.client).toEqual(expectedClient);
+    expect(actionCreator.payload.request.method).toEqual(expectedMethod);
+    expect(actionCreator.payload.request.url).toEqual(expectedUrl);
   });
 });

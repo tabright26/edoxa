@@ -1,61 +1,35 @@
 const validate = values => {
+  const countryRegExp = new RegExp("^(Canada)|(United States)$");
+  const line1RegExp = new RegExp("^[a-zA-Z0-9- .,]{1,}$");
+  const line2RegExp = new RegExp("^[a-zA-Z0-9- .,]{1,}$");
+  const cityRegExp = new RegExp("^[a-zA-Z- ]{1,}$");
+  const stateRegExp = new RegExp("^[a-zA-Z- ]{1,}$");
+  const postalRegExp = new RegExp("^[0-9A-Z]{5,6}$");
   const errors = {};
-
-  var countryReg = new RegExp("^(Canada)|(United States)$");
-  var lineOneReg = new RegExp("^[a-zA-Z0-9- .,]{1,}$");
-  var lineTwoReg = new RegExp("^[a-zA-Z0-9- .,]{1,}$");
-  var cityReg = new RegExp("^[a-zA-Z- ]{1,}$");
-  var stateReg = new RegExp("^[a-zA-Z- ]{1,}$");
-  var postalReg = new RegExp("^[0-9A-Z]{5,6}$");
-
-  if (values.country) {
-    var res = countryReg.test(values.country);
-    if (!res) {
-      errors.country = "Invalid country";
-    }
-  } else {
+  if (!values.country) {
     errors.country = "Country is required";
+  } else if (!countryRegExp.test(values.country)) {
+    errors.country = "Invalid country";
   }
-
-  if (values.line1) {
-    res = lineOneReg.test(values.line1);
-    if (!res) {
-      errors.line1 = "Invalid main address";
-    }
-  } else {
+  if (!values.line1) {
     errors.line1 = "Main address is required";
+  } else if (!line1RegExp.test(values.line1)) {
+    errors.line1 = "Invalid main address";
   }
-
-  if (values.line2) {
-    res = lineTwoReg.test(values.line2);
-    if (!res) {
-      errors.line2 = "Invalid secondary address";
-    }
+  if (values.line2 && !line2RegExp.test(values.line2)) {
+    errors.line2 = "Invalid secondary address";
   }
-
-  if (values.city) {
-    res = cityReg.test(values.city);
-    if (!res) {
-      errors.city = "Invalid city";
-    }
-  } else {
+  if (!values.city) {
     errors.city = "City is required";
+  } else if (!cityRegExp.test(values.city)) {
+    errors.city = "Invalid city";
   }
-
-  if (values.state) {
-    res = stateReg.test(values.state);
-    if (!res) {
-      errors.state = "Invalid state";
-    }
+  if (values.state && !stateRegExp.test(values.state)) {
+    errors.state = "Invalid state";
   }
-
-  if (values.postalCode) {
-    res = postalReg.test(values.postalCode);
-    if (!res) {
-      errors.postalCode = "Invalid postal code";
-    }
+  if (values.postalCode && !postalRegExp.test(values.postalCode)) {
+    errors.postalCode = "Invalid postal code";
   }
-
   return errors;
 };
 

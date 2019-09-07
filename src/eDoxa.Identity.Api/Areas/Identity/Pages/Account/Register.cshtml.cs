@@ -78,7 +78,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
                     var callbackUrl =
-                        $"{_redirectService.RedirectToWebSpa("/security/email/confirm")}?userId={user.Id}&code={code}";
+                        $"{_redirectService.RedirectToWebSpa("/email/confirm")}?userId={user.Id}&code={code}";
 
                     await _emailSender.SendEmailAsync(
                         Input.Email,

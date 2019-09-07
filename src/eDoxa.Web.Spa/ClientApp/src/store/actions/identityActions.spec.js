@@ -63,11 +63,11 @@ describe("identity actions", () => {
     const expectedMethod = "get";
     const expectedUrl = "/identity/api/doxatags";
 
-    const object = loadDoxaTags();
+    const actionCreator = loadDoxaTags();
 
-    expect(object.types).toEqual(expectedType);
-    expect(object.payload.request.method).toEqual(expectedMethod);
-    expect(object.payload.request.url).toEqual(expectedUrl);
+    expect(actionCreator.types).toEqual(expectedType);
+    expect(actionCreator.payload.request.method).toEqual(expectedMethod);
+    expect(actionCreator.payload.request.url).toEqual(expectedUrl);
   });
 
   it("should create an action to get user doxatag history", () => {
@@ -75,11 +75,11 @@ describe("identity actions", () => {
     const expectedMethod = "get";
     const expectedUrl = "/identity/api/doxatag-history";
 
-    const object = loadDoxaTagHistory();
+    const actionCreator = loadDoxaTagHistory();
 
-    expect(object.types).toEqual(expectedType);
-    expect(object.payload.request.method).toEqual(expectedMethod);
-    expect(object.payload.request.url).toEqual(expectedUrl);
+    expect(actionCreator.types).toEqual(expectedType);
+    expect(actionCreator.payload.request.method).toEqual(expectedMethod);
+    expect(actionCreator.payload.request.url).toEqual(expectedUrl);
   });
 
   it("should create an action to post user doxatag", () => {
@@ -88,12 +88,12 @@ describe("identity actions", () => {
     const expectedUrl = "/identity/api/doxatag-history";
     const expectedDoxaTag = "DoxaTag";
 
-    const object = changeDoxaTag(expectedDoxaTag);
+    const actionCreator = changeDoxaTag(expectedDoxaTag);
 
-    expect(object.types).toEqual(expectedType);
-    expect(object.payload.request.method).toEqual(expectedMethod);
-    expect(object.payload.request.url).toEqual(expectedUrl);
-    expect(object.payload.request.data).toEqual(expectedDoxaTag);
+    expect(actionCreator.types).toEqual(expectedType);
+    expect(actionCreator.payload.request.method).toEqual(expectedMethod);
+    expect(actionCreator.payload.request.url).toEqual(expectedUrl);
+    expect(actionCreator.payload.request.data).toEqual(expectedDoxaTag);
   });
 
   it("should create an action to get user personal info", () => {
@@ -101,11 +101,11 @@ describe("identity actions", () => {
     const expectedMethod = "get";
     const expectedUrl = "/identity/api/personal-info";
 
-    const object = loadPersonalInfo();
+    const actionCreator = loadPersonalInfo();
 
-    expect(object.types).toEqual(expectedType);
-    expect(object.payload.request.method).toEqual(expectedMethod);
-    expect(object.payload.request.url).toEqual(expectedUrl);
+    expect(actionCreator.types).toEqual(expectedType);
+    expect(actionCreator.payload.request.method).toEqual(expectedMethod);
+    expect(actionCreator.payload.request.url).toEqual(expectedUrl);
   });
 
   it("should create an action to post user personal info", () => {

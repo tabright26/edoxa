@@ -14,11 +14,11 @@ describe("league of legends actions", () => {
     const expectedMethod = "get";
     const expectedUrl = `/lol/summoner/v4/summoners/by-name/${summonerName}`;
 
-    const object = loadLeagueOfLegendsSummonerByName(summonerName);
+    const actionCreator = loadLeagueOfLegendsSummonerByName(summonerName);
 
-    expect(object.types).toEqual(expectedType);
-    expect(object.payload.client).toEqual(expectedClient);
-    expect(object.payload.request.method).toEqual(expectedMethod);
-    expect(object.payload.request.url).toEqual(expectedUrl);
+    expect(actionCreator.types).toEqual(expectedType);
+    expect(actionCreator.payload.client).toEqual(expectedClient);
+    expect(actionCreator.payload.request.method).toEqual(expectedMethod);
+    expect(actionCreator.payload.request.url).toEqual(expectedUrl);
   });
 });
