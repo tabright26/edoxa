@@ -1,11 +1,11 @@
 {{- if .Values.ingress.enabled -}}
-{{- $fullName := include "web-status.fullname" . -}}
+{{- $fullName := include "subchart.fullname" . -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: {{ $fullName }}
   labels:
-{{ include "web-status.labels" . | indent 4 }}
+{{ include "subchart.labels" . | indent 4 }}
   {{- with .Values.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -15,22 +15,16 @@ spec:
   tls:
   {{- range .Values.ingress.tls }}
     - hosts:
-      {{- range .hosts }}
-        - {{ . | quote }}
-      {{- end }}
+        - {{ .Values.global.app.host }}
       secretName: {{ .secretName }}
   {{- end }}
 {{- end }}
   rules:
-  {{- range .Values.ingress.hosts }}
-    - host: {{ .host | quote }}
+    - host: {{ .Values.global.app.host }}
       http:
         paths:
-        {{- range .paths }}
-          - path: {{ . }}
+        - path: {{ . }}
             backend:
               serviceName: {{ $fullName }}
               servicePort: http
-        {{- end }}
-  {{- end }}
 {{- end }}

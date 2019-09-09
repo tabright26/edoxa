@@ -1,20 +1,20 @@
-{{- $configMapKeyRefName := include "web-status.fullname" . -}}
+{{- $configMapKeyRefName := include "subchart.configmap.fullname" . -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "web-status.fullname" . }}
+  name: {{ include "subchart.fullname" . }}
   labels:
-{{ include "web-status.labels" . | indent 4 }}
+{{ include "subchart.labels" . | indent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "web-status.name" . }}
+      app.kubernetes.io/name: {{ include "subchart.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: {{ include "web-status.name" . }}
+        app.kubernetes.io/name: {{ include "subchart.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
     {{- with .Values.imagePullSecrets }}

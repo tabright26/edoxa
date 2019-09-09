@@ -75,8 +75,6 @@ environment:
     key: ServiceBus__HostName
   - name: ServiceBus__SubscriptionName
     key: ServiceBus__SubscriptionName
-  - name: AzureKubernetesServiceEnabled
-    key: AzureKubernetesServiceEnabled
   - name: Authority__PrivateUrl
     key: Authority__PrivateUrl
   - name: Authority__PublicUrl

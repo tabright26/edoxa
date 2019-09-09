@@ -1,11 +1,11 @@
 {{- if .Values.ingress.enabled -}}
-{{- $fullName := include "web-spa.fullname" . -}}
+{{- $fullName := include "subchart.fullname" . -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: {{ $fullName }}
   labels:
-{{ include "web-spa.labels" . | indent 4 }}
+{{ include "subchart.labels" . | indent 4 }}
   {{- with .Values.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}

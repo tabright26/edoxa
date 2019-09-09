@@ -56,8 +56,6 @@ environment:
     key: ASPNETCORE_URLS
   - name: ApplicationInsights__InstrumentationKey
     key: ApplicationInsights__InstrumentationKey
-  - name: AzureKubernetesServiceEnabled
-    key: AzureKubernetesServiceEnabled
   - name: Authority__PrivateUrl
     key: Authority__PrivateUrl
   - name: Authority__PublicUrl

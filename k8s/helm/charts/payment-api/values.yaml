@@ -71,8 +71,6 @@ environment:
     key: ServiceBus__HostName
   - name: ServiceBus__SubscriptionName
     key: ServiceBus__SubscriptionName
-  - name: AzureKubernetesServiceEnabled
-    key: AzureKubernetesServiceEnabled
   - name: Serilog__Sink__Seq
     key: Serilog__Sink__Seq
 

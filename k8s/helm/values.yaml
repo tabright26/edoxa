@@ -1,42 +1,63 @@
 global:
-  aspnetcore:
-    environment: "Development"
-    urls: "http://+:80"
-  applicationInsights:
-    instrumentationKey: "47ce723c-52e7-4714-931a-19e72c037c9a"
-  azureKeyVault:
-    name: "edoxa-dev"
-    clientId: "bb6ade30-85d1-4bb7-a90f-047a5ffe9323"
-    clientSecret: "j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5"
-  azureKubernetesServiceEnabled: "true"
-  azureServiceBus:
-    hostName: "Endpoint=sb://edoxa-dev.servicebus.windows.net/;SharedAccessKeyName=Development;SharedAccessKey=VbtDwEohICuu/l+CQHbNUPb+BelN5pjOp6IZmjcQQ9M=;EntityPath=services"
+  app:
+    name: "eDoxa"
+    host: "127.0.0.1"
+    service:
+      api:
+        identity: "identity-api"
+        payment: "payment-api"
+        cashier: "cashier-api"
+        arenaChallenges: "arena-challenges-api"
+      web:
+        gateway: "web-gateway"
+        spa: "web-spa"
+        status: "web-status"
+  infrastructure:
+    ingress: 
+      api:
+        identity: "identity-api"
+        payment: "payment-api"
+        cashier: "cashier-api"
+        arenaChallenges: "arena-challenges-api"
+      web:
+        gateway: "web-gateway"
+        spa: "web-spa"
+        status: "web-status"
+    aspnetcore:
+      environment: "Development"
+      urls: "http://+:80"
+    applicationInsights:
+      instrumentationKey: "47ce723c-52e7-4714-931a-19e72c037c9a"
+    azureKeyVault:
+      name: "edoxa-dev"
+      clientId: "bb6ade30-85d1-4bb7-a90f-047a5ffe9323"
+      clientSecret: "j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5"
+    azureServiceBus:
+      enabled: true
+      hostName: "Endpoint=sb://edoxa-dev.servicebus.windows.net/;SharedAccessKeyName=Development;SharedAccessKey=VbtDwEohICuu/l+CQHbNUPb+BelN5pjOp6IZmjcQQ9M=;EntityPath=services"
+    mssql:
+      host: "mssql"
+      sapassword: "RBCLVNRS8HPdksJj8bax"  
+    redis:
+      host: "redis"
+    rabbitmq:
+      enabled: false
+      host: "rabbitmq"
+    seq:
+      enabled: true
+      host: "seq"
 
-mssql-linux:
-  acceptEula:
-    value: "Y"
-  edition:
-    value: "Developer"
-  sapassword: "RBCLVNRS8HPdksJj8bax"
-  service:
-    port: 1433
-redis:
-  redisPort: 6379
-rabbitmq:
-  service:
-    port: 5672
-    managerPort: 15672
-seq:
-  acceptEULA: "Y"
-  service:
-    port: 5400
-
+# Api services
 identity-api: 
   replicaCount: 1
   image:
     repository: edoxa.azurecr.io/identity.api
     tag: 1.1.0-223
     pullPolicy: IfNotPresent
+  infrastructure:
+    mssql:
+      database:
+        name: "identity.development.database"
     serviceBus:
       subscriptionName: "identity"
 cashier-api: 
@@ -45,18 +66,35 @@ cashier-api:
     repository: edoxa.azurecr.io/cashier.api
     tag: 1.1.0-223
     pullPolicy: IfNotPresent
+  infrastructure:
+    mssql:
+      database:
+        name: "cashier.development.database"
+    serviceBus:
+      subscriptionName: "cashier"
 payment-api: 
   replicaCount: 1
   image:
     repository: edoxa.azurecr.io/payment.api
     tag: 1.1.0-223
     pullPolicy: IfNotPresent
+  infrastructure:  
+    serviceBus:
+      subscriptionName: "payment"    
 arena-challenges-api:
   replicaCount: 1
   image:
     repository: edoxa.azurecr.io/arena.challenges.api
     tag: 1.1.0-223
     pullPolicy: IfNotPresent
+  infrastructure:  
+    mssql:
+      database:
+        name: "arena.challenges.development.database"
+    serviceBus:
+      subscriptionName: "arena.challenges"
+
+# Web services
 web-gateway:
   replicaCount: 1
   image:
@@ -75,3 +113,15 @@ web-status:
     repository: edoxa.azurecr.io/web.status
     tag: 1.1.0-223
     pullPolicy: IfNotPresent
+
+# Dependency services
+mssql-linux:
+  acceptEula:
+    value: "Y"
+  edition:
+    value: "Express"
+  sapassword: "RBCLVNRS8HPdksJj8bax"
+seq:
+  service:
+    port: 5400
+  acceptEULA: "Y"

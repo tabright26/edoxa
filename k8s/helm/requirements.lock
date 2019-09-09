@@ -1,4 +1,7 @@
 dependencies:
+- name: seq
+  repository: https://kubernetes-charts.storage.googleapis.com/
+  version: 1.0.2
 - name: mssql-linux
   repository: https://kubernetes-charts.storage.googleapis.com/
   version: 0.10.0
@@ -8,8 +11,5 @@ dependencies:
 - name: rabbitmq
   repository: https://kubernetes-charts.storage.googleapis.com/
   version: 6.4.4
-- name: seq
-  repository: https://kubernetes-charts.storage.googleapis.com/
-  version: 1.0.2
-digest: sha256:ce78062003ee4e9751f5bf746c58cd0c83fb8adf288ce2ce8168a19f2a96ca8f
-generated: "2019-09-07T14:36:37.1356151-04:00"
+digest: sha256:80fcb60703af11a983cc971d625627fd4561591a2efe0f467d67258277c472a8
+generated: "2019-09-09T12:00:22.1817873-04:00"
