@@ -1,15 +1,15 @@
 dependencies:
-  - name: seq
-    repository: https://kubernetes-charts.storage.googleapis.com/
-    version: 1.0.2
-  - name: mssql-linux
-    repository: https://kubernetes-charts.storage.googleapis.com/
-    version: 0.10.0
-    alias: mssql
-  - name: redis
-    repository: https://kubernetes-charts.storage.googleapis.com/
-    version: 9.1.7
-    alias: redis
-  - name: rabbitmq
-    repository: https://kubernetes-charts.storage.googleapis.com/
-    version: 6.4.4
+- name: seq
+  repository: https://kubernetes-charts.storage.googleapis.com/
+  version: 1.0.2
+- name: mssql-linux
+  repository: https://kubernetes-charts.storage.googleapis.com/
+  version: 0.10.0
+  alias: mssql
+- name: redis
+  repository: https://kubernetes-charts.storage.googleapis.com/
+  version: 9.1.7
+  alias: redis
+- name: rabbitmq
+  repository: https://kubernetes-charts.storage.googleapis.com/
+  version: 6.4.4

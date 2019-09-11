@@ -1,0 +1,39 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: web-spa-virtualservice
+  namespace: default
+spec:
+  hosts:
+    - "edoxa"
+  gateways:
+    - istio-ingressgateway
+  http:
+    - match:
+        - uri:
+            prefix: /
+      route:
+        - destination:
+            port:
+              number: 80
+            host: web-spa
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: identity-api-virtualservice
+  namespace: default
+spec:
+  hosts:
+    - "edoxa"
+  gateways:
+    - istio-ingressgateway
+  http:
+    - match:
+        - uri:
+            prefix: /identity
+      route:
+        - destination:
+            port:
+              number: 80
+            host: identity-api
