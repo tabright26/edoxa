@@ -86,3 +86,16 @@ services:
       dockerfile: src/eDoxa.Web.Status/Dockerfile
     depends_on:
       - seq
+
+  react:
+    build:
+      context: .
+      dockerfile: src/eDoxa.Web.Spa/ClientApp/Dockerfile
+    volumes:
+      - './src/eDoxa.Web.Spa/ClientApp:/app'
+      - '/app/node_modules'
+    ports:
+      - '3001:3000'
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
