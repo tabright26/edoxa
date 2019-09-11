@@ -266,6 +266,8 @@ namespace eDoxa.Identity.Api
                 application.UseHsts();
             }
 
+            application.UsePathBase(Configuration["ASPNETCORE_PATH_BASE"]);
+
             application.UseHttpsRedirection();
             application.UseStaticFiles();
             application.UseForwardedHeaders();

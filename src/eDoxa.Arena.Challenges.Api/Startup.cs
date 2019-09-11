@@ -183,6 +183,8 @@ namespace eDoxa.Arena.Challenges.Api
 
             application.UseCustomExceptionHandler();
 
+            application.UsePathBase(Configuration["ASPNETCORE_PATH_BASE"]);
+
             application.UseCors("default");
 
             application.UseAuthentication();

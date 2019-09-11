@@ -82,6 +82,8 @@ namespace eDoxa.Web.Spa
                 application.UseHsts();
             }
 
+            application.UsePathBase(Configuration["ASPNETCORE_PATH_BASE"]);
+
             application.UseStaticFiles();
             application.UseSpaStaticFiles();
 
@@ -110,7 +112,7 @@ namespace eDoxa.Web.Spa
 
                     if (HostingEnvironment.IsDevelopment())
                     {
-                        builder.UseProxyToSpaDevelopmentServer(AppSettings.Web.ReactUrl);
+                        builder.UseProxyToSpaDevelopmentServer(AppSettings.Web.ClientUrl);
                     }
                 }
             );

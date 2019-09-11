@@ -39,11 +39,11 @@ services:
       - ServiceBus__SubscriptionName=identity
       - AzureKubernetesServiceEnabled=${AKS_ENABLE:-false}
       - Authority__PrivateUrl=http://identity.api
-      - Authority__PublicUrl=${URL:-http://localhost}:5000
-      - IdentityServer__IdentityUrl=${URL:-http://localhost}:5000
-      - IdentityServer__CashierUrl=${URL:-http://localhost}:5002
-      - IdentityServer__ArenaChallengesUrl=${URL:-http://localhost}:5003
-      - IdentityServer__Web__SpaUrl=${URL:-http://localhost}:5300
+      - Authority__PublicUrl=http://${HOST:-localhost}:5000
+      - IdentityServer__IdentityUrl=http://${HOST:-localhost}:5000
+      - IdentityServer__CashierUrl=http://${HOST:-localhost}:5002
+      - IdentityServer__ArenaChallengesUrl=http://${HOST:-localhost}:5003
+      - IdentityServer__Web__SpaUrl=http://${HOST:-localhost}:5300
     ports:
       - "5000:80"
 
@@ -75,7 +75,7 @@ services:
       - ServiceBus__SubscriptionName=cashier
       - HealthChecks__PaymentUrl=http://payment.api/health
       - Authority__PrivateUrl=http://identity.api
-      - Authority__PublicUrl=${URL:-http://localhost}:5000      
+      - Authority__PublicUrl=http://${HOST:-localhost}:5000      
     ports:
       - "5002:80"
 
@@ -93,7 +93,7 @@ services:
       - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq}
       - ServiceBus__SubscriptionName=arena.challenges
       - Authority__PrivateUrl=http://identity.api
-      - Authority__PublicUrl=${URL:-http://localhost}:5000      
+      - Authority__PublicUrl=http://${HOST:-localhost}:5000      
     ports:
       - "5003:80"
 
@@ -106,13 +106,13 @@ services:
       - HealthChecks__CashierUrl=http://cashier.api/health
       - HealthChecks__ArenaChallengesUrl=http://arena.challenges.api/health      
       - Authority__PrivateUrl=http://identity.api
-      - Authority__PublicUrl=${URL:-http://localhost}:5000
+      - Authority__PublicUrl=http://${HOST:-localhost}:5000
     ports:
       - "5200:80"
     volumes:
       - ./src/eDoxa.Web.Gateway:/app
 
-  web.spa:
+  web.spa.proxy:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
@@ -122,13 +122,32 @@ services:
       - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
       - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
       - AzureKubernetesServiceEnabled=${AKS_ENABLE:-false}
-      - Authority__PublicUrl=${URL:-http://localhost}:5000
+      - Authority__PublicUrl=http://${HOST:-localhost}:5000
       - Authority__PrivateUrl=http://identity.api
-      - Web__ReactUrl=${URL:-http://localhost}:3000
-      - Web__GatewayUrl=${URL:-http://localhost}:5200
+      - Web__GatewayUrl=http://${HOST:-localhost}:5200
+      - Web__ClientUrl=http://${HOST:-localhost}:3000
       - HealthChecks__Web__GatewayUrl=http://web.gateway/health
     ports:
       - "5300:80"
+
+  web.spa.client:
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+      - REACT_APP_AUTHORITY=http://${HOST:-localhost}:5000
+      - REACT_APP_REDIRECT_URI=http://${HOST:-localhost}:5300/callback
+      - REACT_APP_CLIENT_ID=edoxa.web.spa
+      - REACT_APP_RESPONSE_TYPE=token id_token
+      - REACT_APP_SCOPE=openid profile roles permissions games stripe identity.api cashier.api arena.challenges.api
+      - REACT_APP_WEB_GATEWAY=http://${HOST:-localhost}:5200
+      - REACT_APP_SILENT_REFRESH_URI=http://${HOST:-localhost}:5300/silent-refresh
+      - REACT_APP_STRIPE_APIKEY=sk_test_xRMH8A7bagp2Auj7YPqNihlY
+      - REACT_APP_LEAGUEOFLEGENDS_RIOT_TOKEN=RGAPI-eb72733e-028a-4bb9-ab4d-63fed558924f
+    volumes:
+      - './src/eDoxa.Web.Spa/ClientApp:/app'
+      - '/app/node_modules'
+    ports:
+      - '3000:3000'
 
   web.status:
     environment:
@@ -146,7 +165,7 @@ services:
       - HealthChecks__Endpoints__4__Name=eDoxa Web Gateway
       - HealthChecks__Endpoints__4__Uri=http://web.gateway/health
       - HealthChecks__Endpoints__5__Name=eDoxa Web Spa
-      - HealthChecks__Endpoints__5__Uri=http://web.spa/health
+      - HealthChecks__Endpoints__5__Uri=http://web.spa.proxy/health
       - HealthChecks__EvaluationTimeInSeconds=60
       - HealthChecks__MinimumSecondsBetweenFailureNotifications=300
     ports:

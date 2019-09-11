@@ -64,14 +64,16 @@ namespace eDoxa.Payment.Api
 
         public void Configure(IApplicationBuilder application)
         {
-            application.UseServiceBusSubscriber();
+            application.UseProviders(Configuration);
 
+            application.UseServiceBusSubscriber();
+            
             if (HostingEnvironment.IsDevelopment())
             {
                 application.UseDeveloperExceptionPage();
             }
 
-            application.UseProviders(Configuration);
+            application.UsePathBase(Configuration["ASPNETCORE_PATH_BASE"]);
 
             application.UseHealthChecks(
                 "/liveness",

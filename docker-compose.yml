@@ -53,9 +53,10 @@ services:
       context: .
       dockerfile: src/eDoxa.Arena.Challenges.Api/Dockerfile
     depends_on:
-      - seq
       - mssql
-      - rabbitmq 
+      - rabbitmq
+      - redis
+      - seq
       - identity.api
 
   web.gateway:
@@ -71,13 +72,23 @@ services:
       - cashier.api
       - arena.challenges.api
 
-  web.spa:
-    image: ${ACR_REGISTRY:-edoxa}/web.spa:${ACR_TAG:-latest}
+  web.spa.proxy:
+    image: ${ACR_REGISTRY:-edoxa}/web.spa.proxy:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Web.Spa/Dockerfile
     depends_on:
+      - redis
       - seq
+      - identity.api
+      - web.gateway
+      - web.spa.client
+
+  web.spa.client:
+    image: ${ACR_REGISTRY:-edoxa}/web.spa.client:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/eDoxa.Web.Spa/ClientApp/Dockerfile
 
   web.status:
     image: ${ACR_REGISTRY:-edoxa}/web.status:${ACR_TAG:-latest}
@@ -86,16 +97,3 @@ services:
       dockerfile: src/eDoxa.Web.Status/Dockerfile
     depends_on:
       - seq
-
-  react:
-    build:
-      context: .
-      dockerfile: src/eDoxa.Web.Spa/ClientApp/Dockerfile
-    volumes:
-      - './src/eDoxa.Web.Spa/ClientApp:/app'
-      - '/app/node_modules'
-    ports:
-      - '3001:3000'
-    environment:
-      - NODE_ENV=development
-      - CHOKIDAR_USEPOLLING=true

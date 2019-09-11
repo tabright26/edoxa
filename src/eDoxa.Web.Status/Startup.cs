@@ -44,6 +44,8 @@ namespace eDoxa.Web.Status
                 application.UseDeveloperExceptionPage();
             }
 
+            application.UsePathBase(Configuration["ASPNETCORE_PATH_BASE"]);
+
             application.UseHealthChecks(
                 "/liveness",
                 new HealthCheckOptions

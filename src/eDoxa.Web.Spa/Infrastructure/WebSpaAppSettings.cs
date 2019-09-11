@@ -49,6 +49,6 @@ namespace eDoxa.Web.Spa.Infrastructure
         public string GatewayUrl { get; set; }
 
         [Required]
-        public string ReactUrl { get; set; }
+        public string ClientUrl { get; set; }
     }
 }
