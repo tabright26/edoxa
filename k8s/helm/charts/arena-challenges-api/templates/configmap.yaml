@@ -7,6 +7,7 @@ metadata:
 data:
   ASPNETCORE_ENVIRONMENT: {{ .Values.global.infrastructure.aspnetcore.environment }}
   ASPNETCORE_URLS: {{ .Values.global.infrastructure.aspnetcore.urls }}
+  ASPNETCORE_PATH_BASE: {{ include "basePath" .Values.global.app.service.api.arena.challenges }}
   ApplicationInsights__InstrumentationKey: {{ .Values.global.infrastructure.applicationInsights.instrumentationKey }}
   ConnectionStrings__SqlServer: {{ include "mssql" . }}
   ConnectionStrings__Redis: {{ include "redis" . }}
@@ -16,6 +17,6 @@ data:
   AzureServiceBusEnabled: {{ .Values.global.infrastructure.azureServiceBus.enabled }}
   ServiceBus__HostName: {{ .Values.global.infrastructure.azureServiceBus.hostName }}
   ServiceBus__SubscriptionName: {{ .Values.serviceBus.subscriptionName }}
-  Authority__PrivateUrl: {{ include "url.internal" (dict "ServiceName" .Values.global.app.service.api.identity "Context" .) }}
-  Authority__PublicUrl: {{ include "url.external" (dict "IngressPath" .Values.global.infrastructure.ingress.api.identity "Context" .) }}
+  Authority__PrivateUrl: {{ include "url.internal" (dict "ServiceName" .Values.global.app.service.api.identity.name "Context" .) }}
+  Authority__PublicUrl: {{ include "url.external" .Values.global.app.service.api.identity }}
   Serilog__Sink__Seq: {{ include "seq" . }}

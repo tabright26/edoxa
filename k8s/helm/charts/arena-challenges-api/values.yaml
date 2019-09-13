@@ -52,36 +52,6 @@ affinity: {}
 serviceBus:
   subscriptionName: "arena.challenges"
 
-environment:
-  - name: ASPNETCORE_ENVIRONMENT
-    key: ASPNETCORE_ENVIRONMENT
-  - name: ASPNETCORE_URLS
-    key: ASPNETCORE_URLS
-  - name: ApplicationInsights__InstrumentationKey
-    key: ApplicationInsights__InstrumentationKey
-  - name: ConnectionStrings__SqlServer
-    key: ConnectionStrings__SqlServer
-  - name: ConnectionStrings__Redis
-    key: ConnectionStrings__Redis
-  - name: AzureKeyVault__Name
-    key: AzureKeyVault__Name
-  - name: AzureKeyVault__ClientId
-    key: AzureKeyVault__ClientId
-  - name: AzureKeyVault__ClientSecret
-    key: AzureKeyVault__ClientSecret
-  - name: AzureServiceBusEnabled
-    key: AzureServiceBusEnabled
-  - name: ServiceBus__HostName
-    key: ServiceBus__HostName
-  - name: ServiceBus__SubscriptionName
-    key: ServiceBus__SubscriptionName
-  - name: Authority__PrivateUrl
-    key: Authority__PrivateUrl
-  - name: Authority__PublicUrl
-    key: Authority__PublicUrl
-  - name: Serilog__Sink__Seq
-    key: Serilog__Sink__Seq
-
 livenessProbe:
   path: /liveness
   initialDelaySeconds: 10

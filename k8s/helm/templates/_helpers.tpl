@@ -22,9 +22,22 @@ Format internal url.
 Format external url form ingress path.
 */}}
 {{- define "url.external" -}}
-{{- $ingressPath := .IngressPath -}}
-{{- $context := .Context -}}
-{{- printf "http://%s/%s" $context.Values.global.app.host $ingressPath -}}
+{{- $protocol := .protocol -}}
+{{- $host := .host -}}
+{{- $basePath := include "basePath" . -}}
+{{- if eq $basePath "/" -}}
+{{- printf "%s://%s" $protocol $host -}}
+{{- else -}}
+{{- printf "%s://%s%s" $protocol $host $basePath -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+SQL Server connection string
+*/}}
+{{- define "basePath" -}}
+{{- $basePath := .basePath -}}
+{{- printf "%s" $basePath -}}
 {{- end -}}
 
 {{/*

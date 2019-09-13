@@ -7,15 +7,15 @@ metadata:
 data:
   ASPNETCORE_ENVIRONMENT: {{ .Values.global.infrastructure.aspnetcore.environment }}
   ASPNETCORE_URLS: {{ .Values.global.infrastructure.aspnetcore.urls }}
+  ASPNETCORE_PATH_BASE: {{ include "basePath" .Values.global.app.service.web.spa }}
   ApplicationInsights__InstrumentationKey: {{ .Values.global.infrastructure.applicationInsights.instrumentationKey }}
   ConnectionStrings__Redis: {{ include "redis" . }}
   AzureKeyVault__Name: {{ .Values.global.infrastructure.azureKeyVault.name }}
   AzureKeyVault__ClientId: {{ .Values.global.infrastructure.azureKeyVault.clientId }}
   AzureKeyVault__ClientSecret: {{ .Values.global.infrastructure.azureKeyVault.clientSecret }}
   AzureKubernetesServiceEnabled: true
-  Authority__PrivateUrl: {{ include "url.internal" (dict "ServiceName" .Values.global.app.service.api.identity "Context" .) }}
-  Authority__PublicUrl: {{ include "url.external" (dict "IngressPath" .Values.global.infrastructure.ingress.api.identity "Context" .) }}
-  Web__ReactUrl: {{ include "url.external" (dict "IngressPath" .Values.global.infrastructure.ingress.web.spa "Context" .) }}
-  Web__GatewayUrl: {{ include "url.external" (dict "IngressPath" .Values.global.infrastructure.ingress.web.gateway "Context" .) }}
-  HealthChecks__Web__GatewayUrl: {{ include "url.readiness" (dict "ServiceName" .Values.global.app.service.web.gateway "Context" .) }}
+  Authority__PrivateUrl: {{ include "url.internal" (dict "ServiceName" .Values.global.app.service.api.identity.name "Context" .) }}
+  Authority__PublicUrl: {{ include "url.external" .Values.global.app.service.api.identity }}
+  Web__GatewayUrl: {{ include "url.external" .Values.global.app.service.web.gateway }}
+  HealthChecks__Web__GatewayUrl: {{ include "url.readiness" (dict "ServiceName" .Values.global.app.service.web.gateway.name "Context" .) }}
   Serilog__Sink__Seq: {{ include "seq" . }}

@@ -52,46 +52,6 @@ affinity: {}
 serviceBus:
   subscriptionName: "identity"
 
-environment:
-  - name: ASPNETCORE_ENVIRONMENT
-    key: ASPNETCORE_ENVIRONMENT
-  - name: ASPNETCORE_URLS
-    key: ASPNETCORE_URLS
-  - name: ApplicationInsights__InstrumentationKey
-    key: ApplicationInsights__InstrumentationKey
-  - name: ConnectionStrings__SqlServer
-    key: ConnectionStrings__SqlServer
-  - name: ConnectionStrings__Redis
-    key: ConnectionStrings__Redis
-  - name: AzureKeyVault__Name
-    key: AzureKeyVault__Name
-  - name: AzureKeyVault__ClientId
-    key: AzureKeyVault__ClientId
-  - name: AzureKeyVault__ClientSecret
-    key: AzureKeyVault__ClientSecret
-  - name: AzureServiceBusEnabled
-    key: AzureServiceBusEnabled
-  - name: ServiceBus__HostName
-    key: ServiceBus__HostName
-  - name: ServiceBus__SubscriptionName
-    key: ServiceBus__SubscriptionName
-  - name: AzureKubernetesServiceEnabled
-    key: AzureKubernetesServiceEnabled
-  - name: Authority__PrivateUrl
-    key: Authority__PrivateUrl
-  - name: Authority__PublicUrl
-    key: Authority__PublicUrl
-  - name: IdentityServer__IdentityUrl
-    key: IdentityServer__IdentityUrl
-  - name: IdentityServer__CashierUrl
-    key: IdentityServer__CashierUrl
-  - name: IdentityServer__ArenaChallengesUrl
-    key: IdentityServer__ArenaChallengesUrl
-  - name: IdentityServer__Web__SpaUrl
-    key: IdentityServer__Web__SpaUrl
-  - name: Serilog__Sink__Seq
-    key: Serilog__Sink__Seq
-
 livenessProbe:
   path: /liveness
   initialDelaySeconds: 10

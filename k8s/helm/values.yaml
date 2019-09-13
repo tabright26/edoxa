@@ -1,28 +1,46 @@
 global:
   app:
-    name: "eDoxa"
-    host: "127.0.0.1"
+    name: "eDoxa Dev"
     service:
       api:
-        identity: "identity-api"
-        payment: "payment-api"
-        cashier: "cashier-api"
-        arenaChallenges: "arena-challenges-api"
+        identity:
+          name: "identity-api"
+          host: "dev.identity.edoxa.gg"
+          basePath: "/"
+          protocol: "https"
+        payment:
+          name: "payment-api"
+          host: "dev.edoxa.gg"
+          basePath: "/payment"
+          protocol: "https"
+        cashier:
+          name: "cashier-api"
+          host: "dev.edoxa.gg"
+          basePath: "/cashier"
+          protocol: "https"
+        arena:
+          challenges:
+            name: "arena-challenges-api"
+            host: "dev.edoxa.gg"
+            basePath: "/arena-challenges"
+            protocol: "https"
       web:
-        gateway: "web-gateway"
-        spa: "web-spa"
-        status: "web-status"
+        gateway:
+          name: "web-gateway"
+          host: "dev.edoxa.gg"
+          basePath: "/gateway"
+          protocol: "https"
+        spa:
+          name: "web-spa"
+          host: "dev.edoxa.gg"
+          basePath: "/"
+          protocol: "https"
+        status:
+          name: "web-status"
+          host: "dev.edoxa.gg"
+          basePath: "/status"
+          protocol: "https"
   infrastructure:
-    ingress: 
-      api:
-        identity: "identity-api"
-        payment: "payment-api"
-        cashier: "cashier-api"
-        arenaChallenges: "arena-challenges-api"
-      web:
-        gateway: "web-gateway"
-        spa: "web-spa"
-        status: "web-status"
     aspnetcore:
       environment: "Development"
       urls: "http://+:80"
@@ -54,6 +72,8 @@ identity-api:
     repository: edoxa.azurecr.io/identity.api
     tag: 1.1.0-223
     pullPolicy: IfNotPresent
+  virtualservice:
+    enabled: true 
   infrastructure:
     mssql:
       database:
@@ -66,6 +86,8 @@ cashier-api:
     repository: edoxa.azurecr.io/cashier.api
     tag: 1.1.0-223
     pullPolicy: IfNotPresent
+  virtualservice:
+    enabled: true    
   infrastructure:
     mssql:
       database:
@@ -78,6 +100,8 @@ payment-api:
     repository: edoxa.azurecr.io/payment.api
     tag: 1.1.0-223
     pullPolicy: IfNotPresent
+  virtualservice:
+    enabled: true   
   infrastructure:  
     serviceBus:
       subscriptionName: "payment"    
@@ -87,6 +111,8 @@ arena-challenges-api:
     repository: edoxa.azurecr.io/arena.challenges.api
     tag: 1.1.0-223
     pullPolicy: IfNotPresent
+  virtualservice:
+    enabled: true    
   infrastructure:  
     mssql:
       database:
@@ -101,18 +127,24 @@ web-gateway:
     repository: edoxa.azurecr.io/web.gateway
     tag: 1.1.0-223
     pullPolicy: IfNotPresent
+  virtualservice:
+    enabled: true 
 web-spa:
   replicaCount: 1
   image:
     repository: edoxa.azurecr.io/web.spa
     tag: 1.1.0-223
     pullPolicy: IfNotPresent
+  virtualservice:
+    enabled: true 
 web-status:
   replicaCount: 1
   image:
     repository: edoxa.azurecr.io/web.status
     tag: 1.1.0-223
     pullPolicy: IfNotPresent
+  virtualservice:
+    enabled: true 
 
 # Dependency services
 mssql-linux:

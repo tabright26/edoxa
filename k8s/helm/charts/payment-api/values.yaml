@@ -52,28 +52,6 @@ affinity: {}
 serviceBus:
   subscriptionName: "payment"
 
-environment:
-  - name: ASPNETCORE_ENVIRONMENT
-    key: ASPNETCORE_ENVIRONMENT
-  - name: ASPNETCORE_URLS
-    key: ASPNETCORE_URLS
-  - name: ApplicationInsights__InstrumentationKey
-    key: ApplicationInsights__InstrumentationKey
-  - name: AzureKeyVault__Name
-    key: AzureKeyVault__Name
-  - name: AzureKeyVault__ClientId
-    key: AzureKeyVault__ClientId
-  - name: AzureKeyVault__ClientSecret
-    key: AzureKeyVault__ClientSecret
-  - name: AzureServiceBusEnabled
-    key: AzureServiceBusEnabled
-  - name: ServiceBus__HostName
-    key: ServiceBus__HostName
-  - name: ServiceBus__SubscriptionName
-    key: ServiceBus__SubscriptionName
-  - name: Serilog__Sink__Seq
-    key: Serilog__Sink__Seq
-
 livenessProbe:
   path: /liveness
   initialDelaySeconds: 10

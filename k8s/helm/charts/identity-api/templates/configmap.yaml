@@ -7,6 +7,7 @@ metadata:
 data:
   ASPNETCORE_ENVIRONMENT: {{ .Values.global.infrastructure.aspnetcore.environment }}
   ASPNETCORE_URLS: {{ .Values.global.infrastructure.aspnetcore.urls }}
+  ASPNETCORE_PATH_BASE: {{ include "basePath" .Values.global.app.service.api.identity }}
   ApplicationInsights__InstrumentationKey: {{ .Values.global.infrastructure.applicationInsights.instrumentationKey }}
   ConnectionStrings__SqlServer: {{ include "mssql" . }}
   ConnectionStrings__Redis: {{ include "redis" . }}
@@ -17,10 +18,10 @@ data:
   ServiceBus__HostName: {{ .Values.global.infrastructure.azureServiceBus.hostName }}
   ServiceBus__SubscriptionName: {{ .Values.serviceBus.subscriptionName }}
   AzureKubernetesServiceEnabled: true
-  Authority__PrivateUrl: {{ include "url.internal" (dict "ServiceName" .Values.global.app.service.api.identity "Context" .) }}
-  Authority__PublicUrl: {{ include "url.external" (dict "IngressPath" .Values.global.infrastructure.ingress.api.identity "Context" .) }}
-  IdentityServer__IdentityUrl: {{ include "url.external" (dict "IngressPath" .Values.global.infrastructure.ingress.api.identity "Context" .) }}
-  IdentityServer__CashierUrl: {{ include "url.external" (dict "IngressPath" .Values.global.infrastructure.ingress.api.cashier "Context" .) }}
-  IdentityServer__ArenaChallengesUrl: {{ include "url.external" (dict "IngressPath" .Values.global.infrastructure.ingress.api.arenaChallenges "Context" .) }}
-  IdentityServer__Web__SpaUrl: {{ include "url.external" (dict "IngressPath" .Values.global.infrastructure.ingress.web.spa "Context" .) }}
+  Authority__PrivateUrl: {{ include "url.internal" (dict "ServiceName" .Values.global.app.service.api.identity.name "Context" .) }}
+  Authority__PublicUrl: {{ include "url.external" .Values.global.app.service.api.identity }}
+  IdentityServer__IdentityUrl: {{ include "url.external" .Values.global.app.service.api.identity }}
+  IdentityServer__CashierUrl: {{ include "url.external" .Values.global.app.service.api.cashier }}
+  IdentityServer__ArenaChallengesUrl: {{ include "url.external" .Values.global.app.service.api.arena.challenges }}
+  IdentityServer__Web__SpaUrl: {{ include "url.external" .Values.global.app.service.web.spa }}
   Serilog__Sink__Seq: {{ include "seq" . }}
