@@ -9,12 +9,7 @@ spec:
   servers:
     - port:
         number: 15032
-        name: https-tracing
-        protocol: HTTPS
-      tls:
-        mode: SIMPLE
-        serverCertificate: sds
-        privateKey: sds
-        credentialName: telemetry-gw-cert
+        name: http-tracing
+        protocol: HTTP
       hosts:
         - "telemetry.edoxa.gg"

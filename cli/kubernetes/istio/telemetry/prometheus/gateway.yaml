@@ -9,12 +9,7 @@ spec:
   servers:
     - port:
         number: 15030
-        name: https-prometheus
-        protocol: HTTPS
-      tls:
-        mode: SIMPLE
-        serverCertificate: sds
-        privateKey: sds
-        credentialName: telemetry-gw-cert
+        name: http-prom
+        protocol: HTTP
       hosts:
         - "telemetry.edoxa.gg"

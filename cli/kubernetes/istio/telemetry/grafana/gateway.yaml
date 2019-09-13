@@ -7,9 +7,9 @@ spec:
   selector:
     istio: ingressgateway
   servers:
-  - port:
-      number: 15031
-      name: http-grafana
-      protocol: HTTP
-    hosts:
-    - "*"
+    - port:
+        number: 15031
+        name: http-grafana
+        protocol: HTTP
+      hosts:
+        - "telemetry.edoxa.gg"

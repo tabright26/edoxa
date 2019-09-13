@@ -9,12 +9,7 @@ spec:
   servers:
     - port:
         number: 15029
-        name: https-kiali
-        protocol: HTTPS
-      tls:
-        mode: SIMPLE
-        serverCertificate: sds
-        privateKey: sds
-        credentialName: telemetry-gw-cert
+        name: http-kiali
+        protocol: HTTP
       hosts:
         - "telemetry.edoxa.gg"
