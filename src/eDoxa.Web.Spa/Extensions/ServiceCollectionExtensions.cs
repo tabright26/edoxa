@@ -12,6 +12,7 @@ using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Web.Spa.Infrastructure;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace eDoxa.Web.Spa.Extensions
 {
@@ -20,6 +21,7 @@ namespace eDoxa.Web.Spa.Extensions
         public static void AddHealthChecks(this IServiceCollection services, WebSpaAppSettings appSettings)
         {
             var healthChecks = services.AddHealthChecks();
+            healthChecks.AddCheck("liveness", () => HealthCheckResult.Healthy());
             healthChecks.AddAzureKeyVault(appSettings);
             healthChecks.AddIdentityServer(appSettings);
             healthChecks.AddUrlGroup(appSettings.HealthChecks.Web.GatewayUrl, "eDoxa.Web.Gateway", new[] { "gateway", "web" });

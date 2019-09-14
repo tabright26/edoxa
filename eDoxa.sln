@@ -18,13 +18,13 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6320F9AE-AC74-456A-869F-5A570C3467AB}"
 	ProjectSection(SolutionItems) = preProject
 		.env = .env
-		cli\az-acr-login.ps1 = cli\az-acr-login.ps1
-		cli\az-login.ps1 = cli\az-login.ps1
-		cli\docker-compose-pull.ps1 = cli\docker-compose-pull.ps1
-		cli\docker-compose-testing.ps1 = cli\docker-compose-testing.ps1
-		cli\docker-compose-up.ps1 = cli\docker-compose-up.ps1
-		cli\docker-firewall-rule.ps1 = cli\docker-firewall-rule.ps1
-		cli\docker-remove-containers.ps1 = cli\docker-remove-containers.ps1
+		cli\azure\az-acr-login.ps1 = cli\azure\az-acr-login.ps1
+		cli\azure\az-login.ps1 = cli\azure\az-login.ps1
+		cli\docker\compose\docker-compose-pull.ps1 = cli\docker\compose\docker-compose-pull.ps1
+		cli\docker\compose\docker-compose-testing.ps1 = cli\docker\compose\docker-compose-testing.ps1
+		cli\docker\compose\docker-compose-up.ps1 = cli\docker\compose\docker-compose-up.ps1
+		cli\docker\docker-firewall-rule.ps1 = cli\docker\docker-firewall-rule.ps1
+		cli\docker\docker-remove-containers.ps1 = cli\docker\docker-remove-containers.ps1
 		global.json = global.json
 	EndProjectSection
 EndProject

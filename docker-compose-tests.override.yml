@@ -42,12 +42,12 @@ services:
       - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq.test}      
       - ServiceBus__SubscriptionName=identity
       - AzureKubernetesServiceEnabled=${AKS_ENABLE:-false}
-      - Authority__PrivateUrl=${URL:-http://localhost}:5000
-      - Authority__PublicUrl=${URL:-http://localhost}:5000
-      - IdentityServer__IdentityUrl=${URL:-http://localhost}:5000
-      - IdentityServer__CashierUrl=${URL:-http://localhost}:5002
-      - IdentityServer__ArenaChallengesUrl=${URL:-http://localhost}:5003
-      - IdentityServer__Web__SpaUrl=${URL:-http://localhost}:5300
+      - Authority__PrivateUrl=http://${HOST:-localhost}:5000
+      - Authority__PublicUrl=http://${HOST:-localhost}:5000
+      - IdentityServer__IdentityUrl=http://${HOST:-localhost}:5000
+      - IdentityServer__CashierUrl=http://${HOST:-localhost}:5002
+      - IdentityServer__ArenaChallengesUrl=http://${HOST:-localhost}:5003
+      - IdentityServer__Web__SpaUrl=http://${HOST:-localhost}:5300
       - SwaggerEnabled=${SwaggerEnabled:-false}
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
@@ -74,9 +74,9 @@ services:
       - AzureServiceBusEnabled=${ASB_ENABLE:-false}
       - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq.test}      
       - ServiceBus__SubscriptionName=cashier
-      - HealthChecks__PaymentUrl=${URL:-http://localhost}:5002/health
-      - Authority__PrivateUrl=${URL:-http://localhost}:5000
-      - Authority__PublicUrl=${URL:-http://localhost}:5000
+      - HealthChecks__PaymentUrl=http://${HOST:-localhost}:5002/health
+      - Authority__PrivateUrl=http://${HOST:-localhost}:5000
+      - Authority__PublicUrl=http://${HOST:-localhost}:5000
       - SwaggerEnabled=${SwaggerEnabled:-false}
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
@@ -99,8 +99,8 @@ services:
       - AzureServiceBusEnabled=${ASB_ENABLE:-false}
       - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq.test}      
       - ServiceBus__SubscriptionName=arena.challenges
-      - Authority__PrivateUrl=${URL:-http://localhost}:5000
-      - Authority__PublicUrl=${URL:-http://localhost}:5000
+      - Authority__PrivateUrl=http://${HOST:-localhost}:5000
+      - Authority__PublicUrl=http://${HOST:-localhost}:5000
       - SwaggerEnabled=${SwaggerEnabled:-false}
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp

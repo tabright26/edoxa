@@ -266,6 +266,8 @@ namespace eDoxa.Identity.Api
                 application.UseHsts();
             }
 
+            application.UsePathBase(Configuration["ASPNETCORE_PATH_BASE"]);
+
             application.UseHttpsRedirection();
             application.UseStaticFiles();
             application.UseForwardedHeaders();
@@ -274,6 +276,13 @@ namespace eDoxa.Identity.Api
             application.UseIdentityServer();
 
             application.UseMvcWithDefaultRoute();
+
+            application.UseHealthChecks(
+                "/liveness",
+                new HealthCheckOptions
+                {
+                    Predicate = registration => registration.Name.Contains("liveness")
+                });
 
             application.UseHealthChecks(
                 "/health",
