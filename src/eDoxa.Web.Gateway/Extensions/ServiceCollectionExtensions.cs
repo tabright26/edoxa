@@ -15,6 +15,7 @@ using IdentityServer4.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace eDoxa.Web.Gateway.Extensions
 {
@@ -23,6 +24,7 @@ namespace eDoxa.Web.Gateway.Extensions
         public static void AddHealthChecks(this IServiceCollection services, WebGatewayAppSettings appSettings)
         {
             var healthChecks = services.AddHealthChecks();
+            healthChecks.AddCheck("liveness", () => HealthCheckResult.Healthy());
             healthChecks.AddUrlGroup(appSettings.HealthChecks.IdentityUrl, "eDoxa.Identity.Api", new[] {"api", "identity"});
             healthChecks.AddUrlGroup(appSettings.HealthChecks.CashierUrl, "eDoxa.Cashier.Api", new[] {"api", "cashier" });
             healthChecks.AddUrlGroup(appSettings.HealthChecks.ArenaChallengesUrl, "eDoxa.Arena.Challenges.Api", new[] {"api", "arena", "challenges" });

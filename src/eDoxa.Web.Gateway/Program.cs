@@ -1,5 +1,5 @@
 ﻿// Filename: Program.cs
-// Date Created: 2019-08-18
+// Date Created: 2019-09-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -32,11 +32,15 @@ namespace eDoxa.Web.Gateway
                 .ConfigureAppConfiguration(config => config.AddJsonFile("ocelot.json", false, true))
                 .UseApplicationInsights()
                 .UseSerilog(
-                    (context, config) => config.MinimumLevel.Information()
-                        .Enrich.FromLogContext()
-                        .WriteTo.Console()
-                        .WriteTo.Seq(context.Configuration["Serilog:Seq"])
-                );
+                    (context, config) =>
+                    {
+                        var seqServerUrl = context.Configuration["Serilog:Sink:Seq"];
+
+                        config.MinimumLevel.Information()
+                            .Enrich.FromLogContext()
+                            .WriteTo.Console()
+                            .WriteTo.Seq(string.IsNullOrWhiteSpace(seqServerUrl) ? "http://seq" : seqServerUrl);
+                    });
 
             return builder;
         }

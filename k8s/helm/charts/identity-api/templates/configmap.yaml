@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "subchart.configmap.fullname" . }}
+  labels:
+{{ include "subchart.labels" . | indent 4 }}
+data:
+  ASPNETCORE_ENVIRONMENT: {{ .Values.global.infrastructure.aspnetcore.environment }}
+  ASPNETCORE_URLS: {{ .Values.global.infrastructure.aspnetcore.urls }}
+  ASPNETCORE_PATH_BASE: {{ include "basePath" .Values.global.app.service.api.identity }}
+  ApplicationInsights__InstrumentationKey: {{ .Values.global.infrastructure.applicationInsights.instrumentationKey }}
+  ConnectionStrings__SqlServer: {{ include "mssql" . }}
+  ConnectionStrings__Redis: {{ include "redis" . }}
+  AzureKeyVault__Name: {{ .Values.global.infrastructure.azureKeyVault.name }}
+  AzureKeyVault__ClientId: {{ .Values.global.infrastructure.azureKeyVault.clientId }}
+  AzureKeyVault__ClientSecret: {{ .Values.global.infrastructure.azureKeyVault.clientSecret }}
+  AzureServiceBusEnabled: {{ .Values.global.infrastructure.azureServiceBus.enabled | quote }}
+  ServiceBus__HostName: {{ .Values.global.infrastructure.azureServiceBus.hostName }}
+  ServiceBus__SubscriptionName: {{ .Values.serviceBus.subscriptionName }}
+  AzureKubernetesServiceEnabled: {{ .Values.global.infrastructure.azureKubernetesService.enabled | quote }}
+  Authority__PrivateUrl: {{ include "url.internal" (dict "ServiceName" .Values.global.app.service.api.identity.name "Context" .) }}
+  Authority__PublicUrl: {{ include "url.external" .Values.global.app.service.api.identity }}
+  IdentityServer__IdentityUrl: {{ include "url.external" .Values.global.app.service.api.identity }}
+  IdentityServer__CashierUrl: {{ include "url.external" .Values.global.app.service.api.cashier }}
+  IdentityServer__ArenaChallengesUrl: {{ include "url.external" .Values.global.app.service.api.arena.challenges }}
+  IdentityServer__Web__SpaUrl: {{ include "url.external" .Values.global.app.service.web.spa }}
+  Serilog__Sink__Seq: {{ include "seq" . }}

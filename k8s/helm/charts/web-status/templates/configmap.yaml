@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "subchart.configmap.fullname" . }}
+  labels:
+{{ include "subchart.labels" . | indent 4 }}
+data:
+  ASPNETCORE_ENVIRONMENT: {{ .Values.global.infrastructure.aspnetcore.environment }}
+  ASPNETCORE_URLS: {{ .Values.global.infrastructure.aspnetcore.urls }}
+  ASPNETCORE_PATH_BASE: {{ include "basePath" .Values.global.app.service.web.status }}
+  ApplicationInsights__InstrumentationKey: {{ .Values.global.infrastructure.applicationInsights.instrumentationKey }}
+  HealthChecks__Endpoints__0__Name: "eDoxa Identity API"
+  HealthChecks__Endpoints__0__Uri: {{ include "url.readiness" (dict "ServiceName" .Values.global.app.service.api.identity.name "Context" .) }}
+  HealthChecks__Endpoints__1__Name: "eDoxa Payment API"
+  HealthChecks__Endpoints__1__Uri: {{ include "url.readiness" (dict "ServiceName" .Values.global.app.service.api.payment.name "Context" .) }}
+  HealthChecks__Endpoints__2__Name: "eDoxa Cashier API"
+  HealthChecks__Endpoints__2__Uri: {{ include "url.readiness" (dict "ServiceName" .Values.global.app.service.api.cashier.name "Context" .) }}
+  HealthChecks__Endpoints__3__Name: "eDoxa Arena Challenges API"
+  HealthChecks__Endpoints__3__Uri: {{ include "url.readiness" (dict "ServiceName" .Values.global.app.service.api.arena.challenges.name "Context" .) }}
+  HealthChecks__Endpoints__4__Name: "eDoxa Web Gateway"
+  HealthChecks__Endpoints__4__Uri: {{ include "url.readiness" (dict "ServiceName" .Values.global.app.service.web.gateway.name "Context" .) }}
+  HealthChecks__Endpoints__5__Name: "eDoxa Web Spa"
+  HealthChecks__Endpoints__5__Uri: {{ include "url.readiness" (dict "ServiceName" .Values.global.app.service.web.spa.name "Context" .) }}
+  HealthChecks__EvaluationTimeInSeconds: {{ .Values.healthChecks.evaluationTimeInSeconds | quote }}
+  HealthChecks__MinimumSecondsBetweenFailureNotifications: {{ .Values.healthChecks.minimumSecondsBetweenFailureNotifications | quote }}
+  Serilog__Sink__Seq: {{ include "seq" . }}

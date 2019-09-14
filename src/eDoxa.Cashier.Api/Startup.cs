@@ -152,11 +152,20 @@ namespace eDoxa.Cashier.Api
 
             application.UseCustomExceptionHandler();
 
+            application.UsePathBase(Configuration["ASPNETCORE_PATH_BASE"]);
+
             application.UseCors("default");
 
             application.UseAuthentication();
 
             application.UseMvc();
+
+            application.UseHealthChecks(
+                "/liveness",
+                new HealthCheckOptions
+                {
+                    Predicate = registration => registration.Name.Contains("liveness")
+                });
 
             application.UseHealthChecks(
                 "/health",

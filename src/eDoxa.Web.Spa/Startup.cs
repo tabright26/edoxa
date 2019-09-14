@@ -82,10 +82,19 @@ namespace eDoxa.Web.Spa
                 application.UseHsts();
             }
 
+            application.UsePathBase(Configuration["ASPNETCORE_PATH_BASE"]);
+
             application.UseStaticFiles();
             application.UseSpaStaticFiles();
 
             application.UseMvcWithDefaultRoute();
+
+            application.UseHealthChecks(
+                "/liveness",
+                new HealthCheckOptions
+                {
+                    Predicate = registration => registration.Name.Contains("liveness")
+                });
 
             application.UseHealthChecks(
                 "/health",
@@ -103,7 +112,7 @@ namespace eDoxa.Web.Spa
 
                     if (HostingEnvironment.IsDevelopment())
                     {
-                        builder.UseProxyToSpaDevelopmentServer(AppSettings.Web.ReactUrl);
+                        builder.UseProxyToSpaDevelopmentServer(AppSettings.Web.ClientUrl);
                     }
                 }
             );
