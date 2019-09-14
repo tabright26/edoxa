@@ -1,7 +1,7 @@
 import React from "react";
 import { Table } from "reactstrap";
 
-import Format from "../../../Format";
+import Format from "../../../Shared/Format";
 
 const Transaction = ({ transaction }) => {
   return (

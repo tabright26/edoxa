@@ -1,7 +1,7 @@
 import React from "react";
 import { Moment } from "react-moment";
 
-import Format from "../../../../../../../components/Format";
+import Format from "../../../../../../../components/Shared/Format";
 
 const UserAccountTransactionTableRow = ({ transaction }) => {
   return (

@@ -2,7 +2,7 @@ import React from "react";
 import { reduxForm } from "redux-form";
 import { Label, FormGroup, Form } from "reactstrap";
 
-import Button from "../../../../components/Override/Button";
+import Button from "../../../../components/Shared/Override/Button";
 
 import { DELETE_BANK_FORM } from "../../../../forms";
 

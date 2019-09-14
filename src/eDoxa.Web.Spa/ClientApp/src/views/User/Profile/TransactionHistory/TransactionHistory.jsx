@@ -1,5 +1,5 @@
 import React, { Fragment, Suspense } from "react";
-import Loading from "../../../../components/Loading";
+import Loading from "../../../../components/Shared/Loading";
 import { Container, Row, Col, Card, CardHeader, CardBody } from "reactstrap";
 import Transaction from "../../../../components/User/Account/Transaction";
 import withTransactionsHoc from "../../../../containers/withUserAccountTransactionHoc";

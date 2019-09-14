@@ -1,7 +1,7 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
 import { FormGroup, Input, Form } from "reactstrap";
-import Button from "../../../../components/Override/Button";
+import Button from "../../../../components/Shared/Override/Button";
 import { UPDATE_PHONENUMBER_FORM } from "../../../../forms";
 
 const UpdatePhoneNumberForm = ({ handleSubmit, handleCancel }) => (

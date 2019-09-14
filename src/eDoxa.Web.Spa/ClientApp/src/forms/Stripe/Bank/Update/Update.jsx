@@ -2,8 +2,8 @@ import React from "react";
 import { Form, Field, reduxForm } from "redux-form";
 import { Col, FormGroup, Row } from "reactstrap";
 import validate from "./validate";
-import Button from "../../../../components/Override/Button";
-import Input from "../../../../components/Override/Input";
+import Button from "../../../../components/Shared/Override/Button";
+import Input from "../../../../components/Shared/Override/Input";
 import { UPDATE_BANK_FORM } from "../../../../forms";
 
 //<Field type="text" name="ccName" label="Enter your name" component={props => <myInput.Text {...props} />} />

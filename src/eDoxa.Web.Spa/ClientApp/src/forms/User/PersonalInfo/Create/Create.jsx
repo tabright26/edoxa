@@ -1,8 +1,8 @@
 import React from "react";
 import { Field, FormSection, reduxForm } from "redux-form";
 import { FormGroup, Form } from "reactstrap";
-import Button from "../../../../components/Override/Button";
-import Input from "../../../../components/Override/Input";
+import Button from "../../../../components/Shared/Override/Button";
+import Input from "../../../../components/Shared/Override/Input";
 import validate from "./validate";
 import { CREATE_PERSONALINFO_FORM } from "../../../../forms";
 import { months, days, years } from "./helper";

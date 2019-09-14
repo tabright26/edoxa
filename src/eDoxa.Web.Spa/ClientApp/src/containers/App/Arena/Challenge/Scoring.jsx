@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, ListGroup, ListGroupItem } from "react-bootstrap";
 
-import Loading from "../../../../components/Loading";
+import Loading from "../../../../components/Shared/Loading";
 
 const Body = ({ challenge }) => {
   if (!challenge) {

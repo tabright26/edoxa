@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import { Container, Row, Col } from "reactstrap";
-import Loading from "../../../components/Loading";
+import Loading from "../../Loading";
 
 const Layout = ({ children }) => (
   <div className="app flex-row align-items-center">

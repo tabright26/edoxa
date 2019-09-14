@@ -4,22 +4,22 @@ import { ConnectedRouter as Router } from "connected-react-router";
 
 import { history } from "../utils/history";
 
-import Loading from "./Loading";
+import Loading from "./Shared/Loading";
 
 import "./App.scss";
 
 import ArenaChallengeParticipantMatchScoreModal from "../modals/Arena/Challenge/Participant/Match/Score";
 
-const Callback = React.lazy(() => import("./Callback"));
+const Callback = React.lazy(() => import("./Shared/Callback"));
 
-const ErrorPage401 = React.lazy(() => import("./ErrorPage/401"));
-const ErrorPage403 = React.lazy(() => import("./ErrorPage/403"));
-const ErrorPage404 = React.lazy(() => import("./ErrorPage/404"));
-const ErrorPage500 = React.lazy(() => import("./ErrorPage/500"));
+const ErrorPage401 = React.lazy(() => import("./Shared/ErrorPage/401"));
+const ErrorPage403 = React.lazy(() => import("./Shared/ErrorPage/403"));
+const ErrorPage404 = React.lazy(() => import("./Shared/ErrorPage/404"));
+const ErrorPage500 = React.lazy(() => import("./Shared/ErrorPage/500"));
 
-const DefaultLayout = React.lazy(() => import("./Layout/Default"));
-const PartialLayout = React.lazy(() => import("./Layout/Partial"));
-const NoneLayout = React.lazy(() => import("./Layout/None"));
+const DefaultLayout = React.lazy(() => import("./Shared/Layout/Default"));
+const PartialLayout = React.lazy(() => import("./Shared/Layout/Partial"));
+const NoneLayout = React.lazy(() => import("./Shared/Layout/None"));
 
 const TermsOfServices = React.lazy(() => import("../views/TermsOfServices"));
 const FAQ = React.lazy(() => import("../views/FAQ"));
