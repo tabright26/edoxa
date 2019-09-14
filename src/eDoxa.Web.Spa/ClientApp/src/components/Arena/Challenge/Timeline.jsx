@@ -2,7 +2,7 @@ import React from "react";
 import { Card } from "react-bootstrap";
 
 import Moment from "react-moment";
-import Loading from "../../../../components/Shared/Loading";
+import Loading from "../../Shared/Loading";
 
 const style = { width: "200px" };
 

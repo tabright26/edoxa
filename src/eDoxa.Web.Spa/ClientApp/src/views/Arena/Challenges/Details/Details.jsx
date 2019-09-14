@@ -1,6 +1,6 @@
 import React from "react";
 
-import ArenaChallengeDetails from "../../../../containers/App/Arena/Challenge/Details";
+import ArenaChallengeDetails from "../../../../components/Arena/Challenge/Details";
 
 const ChallengeDetails = props => <ArenaChallengeDetails {...props} />;
 

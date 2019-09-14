@@ -1,7 +1,7 @@
 import React from "react";
 import { Table, Card } from "react-bootstrap";
 
-import Loading from "../../../../components/Shared/Loading";
+import Loading from "../../Shared/Loading";
 //import CurrencyFormat from '../Shared/Formaters/CurrencyFormat';
 //import BucketFormat from '../Shared/Formaters/BucketFormat';
 

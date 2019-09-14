@@ -2,10 +2,10 @@ import React from "react";
 import { Card, Badge } from "react-bootstrap";
 import { connect } from "react-redux";
 import { show } from "redux-modal";
-import Loading from "../../../../../../components/Shared/Loading";
-import Format from "../../../../../../components/Shared/Format";
+import Loading from "../../../../Shared/Loading";
+import Format from "../../../../Shared/Format";
 import Moment from "react-moment";
-import { ARENA_CHALLENGE_PARTICIPANT_MATCH_SCORE_DETAILS_MODAL } from "../../../../../../modals";
+import { ARENA_CHALLENGE_PARTICIPANT_MATCH_SCORE_DETAILS_MODAL } from "../../../../../modals";
 
 const Match = ({ match, position, actions }) => {
   if (!match) {

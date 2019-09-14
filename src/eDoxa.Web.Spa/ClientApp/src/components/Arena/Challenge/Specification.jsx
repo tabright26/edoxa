@@ -2,7 +2,7 @@ import React from "react";
 import { Card, Row, Col, Badge, ProgressBar } from "react-bootstrap";
 
 //import Format from "../../../../components/Format";
-import Loading from "../../../../components/Shared/Loading";
+import Loading from "../../Shared/Loading";
 
 import ChallengeTimeline from "./Timeline";
 

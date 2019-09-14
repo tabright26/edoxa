@@ -1,7 +1,7 @@
 import React from "react";
 import { Card } from "react-bootstrap";
 
-import Loading from "../../../../../../components/Shared/Loading";
+import Loading from "../../../../Shared/Loading";
 
 import Match from "./Details";
 
