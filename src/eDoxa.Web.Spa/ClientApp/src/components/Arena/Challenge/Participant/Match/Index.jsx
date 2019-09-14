@@ -1,5 +1,5 @@
 import React from "react";
-import { Card } from "react-bootstrap";
+import { CardBody } from "reactstrap";
 
 import Loading from "../../../../Shared/Loading";
 
@@ -8,9 +8,9 @@ import Match from "./Details";
 const Matches = ({ participant }) => {
   if (!participant) {
     return (
-      <Card.Body className="text-center">
+      <CardBody className="text-center">
         <Loading.Default />
-      </Card.Body>
+      </CardBody>
     );
   } else {
     return (

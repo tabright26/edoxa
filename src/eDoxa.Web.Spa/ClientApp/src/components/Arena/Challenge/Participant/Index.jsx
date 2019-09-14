@@ -1,5 +1,5 @@
 import React from "react";
-import { Card } from "react-bootstrap";
+import { CardBody } from "reactstrap";
 
 import Loading from "../../../Shared/Loading";
 
@@ -8,9 +8,9 @@ import ArenaChallengeParticipantDetails from "./Details";
 const ArenaChallengeParticipantIndex = ({ challenge }) => {
   if (!challenge) {
     return (
-      <Card.Body className="text-center mt-5">
+      <CardBody className="text-center mt-5">
         <Loading.Default />
-      </Card.Body>
+      </CardBody>
     );
   } else {
     return (

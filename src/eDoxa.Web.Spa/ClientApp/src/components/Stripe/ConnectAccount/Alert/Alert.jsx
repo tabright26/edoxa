@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, Button } from "react-bootstrap";
+import { Alert, Button } from "reactstrap";
 
 const StripeConnectAccountAlert = () => (
   <Alert variant="primary" className="mb-0">

@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Card } from "react-bootstrap";
+import { Table, Card, CardBody, CardHeader } from "reactstrap";
 
 import Loading from "../../Shared/Loading";
 //import CurrencyFormat from '../Shared/Formaters/CurrencyFormat';
@@ -8,9 +8,9 @@ import Loading from "../../Shared/Loading";
 const Render = ({ challenge }) => {
   if (!challenge) {
     return (
-      <Card.Body>
+      <CardBody>
         <Loading.Default />
-      </Card.Body>
+      </CardBody>
     );
   } else {
     //let prevSize = 1;
@@ -52,7 +52,7 @@ const Render = ({ challenge }) => {
 const ArenaChallengePayout = ({ challenge }) => {
   return (
     <Card bg="dark" className="my-4 text-light text-center">
-      <Card.Header as="h5">{/* Payout ({challenge ? challenge.payout.prizePool.currency : ''}) */}</Card.Header>
+      <CardHeader as="h5">{/* Payout ({challenge ? challenge.payout.prizePool.currency : ''}) */}</CardHeader>
       <Render challenge={challenge} />
     </Card>
   );

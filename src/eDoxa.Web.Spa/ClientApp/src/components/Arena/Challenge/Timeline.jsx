@@ -1,5 +1,5 @@
 import React from "react";
-import { Card } from "react-bootstrap";
+import { Card } from "reactstrap";
 
 import Moment from "react-moment";
 import Loading from "../../Shared/Loading";

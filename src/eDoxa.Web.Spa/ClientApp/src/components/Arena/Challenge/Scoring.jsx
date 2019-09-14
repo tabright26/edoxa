@@ -1,14 +1,14 @@
 import React from "react";
-import { Card, ListGroup, ListGroupItem } from "react-bootstrap";
+import { Card, CardBody, CardHeader, ListGroup, ListGroupItem } from "reactstrap";
 
 import Loading from "../../Shared/Loading";
 
 const Body = ({ challenge }) => {
   if (!challenge) {
     return (
-      <Card.Body className="text-center">
+      <CardBody className="text-center">
         <Loading.Default />
-      </Card.Body>
+      </CardBody>
     );
   } else {
     return (
@@ -27,9 +27,9 @@ const Body = ({ challenge }) => {
 const ArenaChallengeScoring = ({ challenge }) => {
   return (
     <Card bg="dark" className="my-2 text-light">
-      <Card.Header as="h5" className="text-center">
+      <CardHeader as="h5" className="text-center">
         Scoring
-      </Card.Header>
+      </CardHeader>
       <Body challenge={challenge} />
     </Card>
   );

@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Badge } from "react-bootstrap";
+import { CardBody, Badge } from "reactstrap";
 import { connect } from "react-redux";
 import { show } from "redux-modal";
 import Loading from "../../../../Shared/Loading";
@@ -10,13 +10,13 @@ import { ARENA_CHALLENGE_PARTICIPANT_MATCH_SCORE_DETAILS_MODAL } from "../../../
 const Match = ({ match, position, actions }) => {
   if (!match) {
     return (
-      <Card.Body className="text-center">
+      <CardBody className="text-center">
         <Loading.Default />
-      </Card.Body>
+      </CardBody>
     );
   } else {
     return (
-      <Card.Body className="p-0 border border-dark d-flex">
+      <CardBody className="p-0 border border-dark d-flex">
         <div
           className="pl-2 py-2 text-center"
           style={{
@@ -46,7 +46,7 @@ const Match = ({ match, position, actions }) => {
         >
           <Format.Score score={match.totalScore} />
         </div>
-      </Card.Body>
+      </CardBody>
     );
   }
 };

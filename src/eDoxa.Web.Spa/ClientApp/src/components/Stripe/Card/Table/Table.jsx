@@ -1,5 +1,5 @@
 import React from "react";
-import { Table } from "react-bootstrap";
+import { Table } from "reactstrap";
 
 import withStripeCardHoc from "../../../../containers/withStripeCardHoc";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Row, Col, Card, Button } from "react-bootstrap";
+import { Container, CardImg, CardImgOverlay, CardText, CardTitle, Row, Col, Card, Button } from "reactstrap";
 
 import withUserGameHoc from "../../../../containers/withUserGameHoc";
 
@@ -14,17 +14,17 @@ const UserGameIndex = ({ games }) => (
               height: "300px"
             }}
           >
-            <Card.Img />
-            <Card.ImgOverlay>
-              <Card.Title as="h5" className="text-center">
+            <CardImg />
+            <CardImgOverlay>
+              <CardTitle as="h5" className="text-center">
                 {game.name}
-              </Card.Title>
-              <Card.Text>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</Card.Text>
-              <Card.Text>Last updated 3 mins ago</Card.Text>
+              </CardTitle>
+              <CardText>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</CardText>
+              <CardText>Last updated 3 mins ago</CardText>
               <Button size="lg" block>
                 Link an account
               </Button>
-            </Card.ImgOverlay>
+            </CardImgOverlay>
           </Card>
         </Col>
       ))}

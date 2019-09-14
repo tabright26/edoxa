@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Badge, Accordion } from "react-bootstrap";
+import { Card, CardBody, CardHeader, Badge, Collapse } from "reactstrap";
 
 import Format from "../../../Shared/Format";
 import Loading from "../../../Shared/Loading";
@@ -9,16 +9,16 @@ import Matches from "./Match/Index";
 const ArenaChallengeParticipantDetails = ({ participant, position }) => {
   if (!participant) {
     return (
-      <Card.Body className="text-center mt-5">
+      <CardBody className="text-center mt-5">
         <Loading />
-      </Card.Body>
+      </CardBody>
     );
   } else {
     return (
       <>
-        <Accordion.Toggle as="div" eventKey={position - 1} className="participant">
+        {/* <Collapse as="div" eventKey={position - 1} className="participant">
           <Card bg="dark" className="my-2 text-light">
-            <Card.Body className="p-0 d-flex">
+            <CardBody className="p-0 d-flex">
               <div
                 className="pl-2 py-2 text-center"
                 style={{
@@ -36,15 +36,15 @@ const ArenaChallengeParticipantDetails = ({ participant, position }) => {
               >
                 <Format.Score score={participant.averageScore} />
               </div>
-            </Card.Body>
+            </CardBody>
           </Card>
-        </Accordion.Toggle>
-        <Accordion.Collapse eventKey={position - 1}>
+        </Collapse>
+        <Collapse eventKey={position - 1}>
           <Card bg="dark" className="text-light">
-            <Card.Header as="h5">Matches</Card.Header>
+            <CardHeader as="h5">Matches</CardHeader>
             <Matches participant={participant} />
           </Card>
-        </Accordion.Collapse>
+        </Collapse> */}
       </>
     );
   }

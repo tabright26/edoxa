@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Row, Col, Badge, ProgressBar } from "react-bootstrap";
+import { Card, CardBody, CardHeader, Row, Col, Badge, Progress } from "reactstrap";
 
 //import Format from "../../../../components/Format";
 import Loading from "../../Shared/Loading";
@@ -9,17 +9,17 @@ import ChallengeTimeline from "./Timeline";
 const Body = ({ challenge }) => {
   if (!challenge) {
     return (
-      <Card.Body className="text-center text-white">
+      <CardBody className="text-center text-white">
         <Loading.Default />
-      </Card.Body>
+      </CardBody>
     );
   } else {
     return (
-      <Card.Body className="d-flex">
+      <CardBody className="d-flex">
         <ChallengeTimeline challenge={challenge} />
         <Row>
           <Col>
-            <Card.Title as="h3">Challenge setup</Card.Title>
+            <CardHeader as="h3">Challenge setup</CardHeader>
             <hr className="border-light" />
             <dl className="row mb-0 float-right">
               <dt className="col-5">Name</dt>
@@ -37,7 +37,7 @@ const Body = ({ challenge }) => {
               </dd>
               <dt className="col-5">Entries</dt>
               <dd className="col-7 my-auto">
-                <ProgressBar variant="primary" now={challenge.participants.length} max={challenge.entries} label={`${challenge.participants.length}/${challenge.entries}`} />
+                <Progress color="primary" value={challenge.participants.length} max={challenge.entries} label={`${challenge.participants.length}/${challenge.entries}`} />
               </dd>
               <dt className="col-5 mt-2 mb-1">Payout entries</dt>
               <dd className="col-7 mt-2 mb-1">{/* {challenge.setup.payoutEntries} */}</dd>
@@ -46,7 +46,7 @@ const Body = ({ challenge }) => {
             </dl>
           </Col>
         </Row>
-      </Card.Body>
+      </CardBody>
     );
   }
 };
