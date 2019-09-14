@@ -31,7 +31,7 @@ const withStripeCardHoc = WrappedComponent => {
 
   const mapStateToProps = state => {
     return {
-      cards: state.user.account.stripe.cards.data,
+      cards: state.stripe.cards.data,
       stripeCustomerId: state.oidc.user.profile["stripe:customerId"]
     };
   };

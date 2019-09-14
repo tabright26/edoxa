@@ -25,14 +25,15 @@ const withStripeBankHoc = WrappedComponent => {
     }
 
     render() {
-      const { bank, ...attributes } = this.props;
-      return <WrappedComponent bank={bank} {...attributes} />;
+      const { bank, hasBankAccount, ...attributes } = this.props;
+      return <WrappedComponent bank={bank} {...attributes} hasBankAccount={hasBankAccount} />;
     }
   }
 
   const mapStateToProps = state => {
     return {
-      bank: state.user.account.stripe.bankAccounts.data,
+      bank: state.stripe.bankAccounts.data,
+      hasBankAccount: state.stripe.bankAccounts.data.lenth,
       stripeCustomerId: state.oidc.user.profile["stripe:customerId"]
     };
   };

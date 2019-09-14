@@ -1,10 +1,10 @@
 import React from "react";
-import { Card, CardBody, CardHeader, Badge, Collapse } from "reactstrap";
+import { CardBody } from "reactstrap";
 
-import Format from "../../../Shared/Format";
+//import Format from "../../../Shared/Format";
 import Loading from "../../../Shared/Loading";
 
-import Matches from "./Match/Index";
+//import Matches from "./Match/Index";
 
 const ArenaChallengeParticipantDetails = ({ participant, position }) => {
   if (!participant) {
