@@ -741,7 +741,7 @@ exports[`renders correctly 1`] = `
       </div>
     </dd>
     <dd
-      className="col-sm-3 text-muted mb"
+      className="col-sm-3 text-muted mb-0"
     >
       Gender
     </dd>
@@ -779,6 +779,20 @@ exports[`renders correctly 1`] = `
           Other
         </option>
       </select>
+    </dd>
+    <dd
+      className="col-sm-6 mb-0"
+    >
+      
+    </dd>
+    <dd
+      className="col-sm-3 mb-0"
+    >
+      
+    </dd>
+    <dd
+      className="col-sm-9 mb-0"
+    >
       <button
         aria-label={null}
         className="mt-3 btn btn-primary btn-sm"
