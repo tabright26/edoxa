@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { push } from "connected-react-router";
-import { forgotPassword, resetPassword, confirmEmail } from "../../../store/actions/identityActions";
+import { forgotPassword, resetPassword, confirmEmail } from "../store/actions/identityActions";
 
 const withUserContainer = WrappedComponent => {
   class UserContainer extends Component {

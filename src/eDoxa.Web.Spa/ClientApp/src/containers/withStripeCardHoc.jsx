@@ -11,11 +11,11 @@ import {
   REMOVE_STRIPE_CREDIT_CARD_FAIL,
   UPDATE_STRIPE_CREDIT_CARD_SUCCESS,
   UPDATE_STRIPE_CREDIT_CARD_FAIL
-} from "../../../../store/actions/stripeActions";
+} from "../store/actions/stripeActions";
 
 import { SubmissionError } from "redux-form";
 import { show } from "redux-modal";
-import { CREATE_CREDITCARD_MODAL } from "../../../../modals";
+import { CREATE_CREDITCARD_MODAL } from "../modals";
 
 const withStripeCardHoc = WrappedComponent => {
   class StripeCardContainer extends Component {

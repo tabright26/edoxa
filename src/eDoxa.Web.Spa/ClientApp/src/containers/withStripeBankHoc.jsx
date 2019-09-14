@@ -12,11 +12,11 @@ import {
   REMOVE_STRIPE_BANK_FAIL,
   UPDATE_STRIPE_BANK_SUCCESS,
   UPDATE_STRIPE_BANK_FAIL
-} from "../../../../store/actions/stripeActions";
+} from "../store/actions/stripeActions";
 
 import { SubmissionError } from "redux-form";
 import { show } from "redux-modal";
-import { CREATE_BANK_MODAL } from "../../../../modals";
+import { CREATE_BANK_MODAL } from "../modals";
 
 const withStripeBankHoc = WrappedComponent => {
   class StripeBankContainer extends Component {

@@ -11,8 +11,8 @@ import {
   ADD_ADDRESS_FAIL,
   UPDATE_ADDRESS_SUCCESS,
   UPDATE_ADDRESS_FAIL
-} from "../../../../../store/actions/identityActions";
-import { CREATE_ADDRESS_MODAL } from "../../../../../modals";
+} from "../store/actions/identityActions";
+import { CREATE_ADDRESS_MODAL } from "../modals";
 
 const withAddressBook = WrappedComponent => {
   class AddressBookContainer extends Component {

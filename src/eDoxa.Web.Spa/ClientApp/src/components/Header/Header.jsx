@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { LinkContainer } from "react-router-bootstrap";
 import { AppNavbarBrand, AppSidebarToggler, AppAsideToggler } from "@coreui/react";
-import withUserContainer from "../../containers/App/User/withUserContainer";
+import withUserContainer from "../../containers/withUserContainer";
 import Balance from "./Balance";
 
 import logo from "../../assets/img/brand/logo.svg";

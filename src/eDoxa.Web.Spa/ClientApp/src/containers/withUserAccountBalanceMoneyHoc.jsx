@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { loadUserAccountBalanceForMoney } from '../../../../../../store/actions/cashierActions';
+import { loadUserAccountBalanceForMoney } from '../store/actions/cashierActions';
 
 const withUserAccountBalanceMoneyHoc = WrappedComponent => {
   class UserAccountBalanceMoneyContainer extends Component {

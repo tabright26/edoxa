@@ -6,7 +6,7 @@ import { Container, Row, Col, Card, CardHeader, CardBody } from "reactstrap";
 import BankForm from "../../../../../forms/Stripe/Bank";
 import StripeBankModal from "../../../../../modals/Stripe/Bank";
 import Bank from "../../../../../components/Stripe/Bank";
-import withStripeBankHoc from "../../../../../containers/App/Stripe/Bank/withStripeBankHoc";
+import withStripeBankHoc from "../../../../../containers/withStripeBankHoc";
 
 const BankCard = ({ actions, bank }) => {
   const [updateFormHidden, hideUpdateForm] = useState(true);

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import { Alert } from "reactstrap";
-import withUserContainer from "../../../../containers/App/User/withUserContainer";
+import withUserContainer from "../../../../containers/withUserContainer";
 import queryString from "query-string";
 
 const EmailConfirm = ({ location, actions }) => {

@@ -2,7 +2,7 @@ import React, { Fragment, Suspense } from "react";
 import Loading from "../../../../components/Loading";
 import { Container, Row, Col, Card, CardHeader, CardBody } from "reactstrap";
 import Transaction from "../../../../components/User/Account/Transaction";
-import withTransactionsHoc from "../../../../containers/App/User/Account/Transaction/withUserAccountTransactionHoc";
+import withTransactionsHoc from "../../../../containers/withUserAccountTransactionHoc";
 
 const AccountTransactions = ({ className, transactions, actions }) => (
   <Fragment>

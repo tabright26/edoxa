@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, CardHeader, CardBody } from "reactstrap";
-import withEmail from "../../../../../containers/App/User/Profile/Details/withEmail";
+import withEmail from "../../../../../containers/withEmail";
 
 const EmailCard = ({ className, email }) => (
   <Card className={className}>

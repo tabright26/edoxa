@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Card, CardHeader, CardBody } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
-import withPhoneNumber from "../../../../../containers/App/User/Profile/Details/withPhoneNumber";
+import withPhoneNumber from "../../../../../containers/withPhoneNumber";
 import PhoneNumberForm from "../../../../../forms/User/PhoneNumber";
 
 const PhoneNumberCard = ({ className, phoneNumber }) => {

@@ -4,7 +4,7 @@ import { faPlus, faEdit, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { Card, CardHeader, CardBody } from "reactstrap";
 import Address from "../../../../../components/Address";
 import AddressForm from "../../../../../forms/User/Address";
-import withAddressBook from "../../../../../containers/App/User/Profile/Details/withAddressBook";
+import withAddressBook from "../../../../../containers/withAddressBook";
 import UserAddressModal from "../../../../../modals/User/Address";
 
 const AddressCard = ({ index, actions, address, length }) => {
