@@ -1,9 +1,9 @@
 import React from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
 
-import UserAccountBalanceMoney from "../../../containers/App/User/Account/Balance/Money/Index";
-import UserAccountBalanceToken from "../../../containers/App/User/Account/Balance/Token/Index";
-import UserAccountTransactionTable from "../../../containers/App/User/Account/Transaction/Table/Table";
+import UserAccountBalanceMoney from "../../../components/User/Account/Balance/Money/Index";
+import UserAccountBalanceToken from "../../../components/User/Account/Balance/Token/Index";
+import UserAccountTransactionTable from "../../../components/User/Account/Transaction/Table/Table";
 import StripeCardTable from "../../../components/Stripe/Card/Table/Table";
 import StripeBankAccountAlert from "../../../components/Stripe/Bank/Alert/Alert";
 import StripeConnectAccountAlert from "../../../components/Stripe/ConnectAccount/Alert/Alert";

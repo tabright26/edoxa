@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import { LinkContainer } from "react-router-bootstrap";
 import { AppNavbarBrand, AppSidebarToggler, AppAsideToggler } from "@coreui/react";
 import withUserContainer from "../../../containers/withUserContainer";
-import Balance from "../../User/Account/Balance";
+import Balance from "../../User/Account/Balance/Header";
 
 import logo from "../../../assets/img/brand/logo.svg";
 import sygnet from "../../../assets/img/brand/sygnet.svg";
