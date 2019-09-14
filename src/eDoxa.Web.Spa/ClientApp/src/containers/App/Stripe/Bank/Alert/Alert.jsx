@@ -1,7 +1,7 @@
 import React from "react";
 import { Alert, Button } from "react-bootstrap";
 
-import withStripeBankAccountHoc from "../withStripeBankAccountHoc";
+import withStripeBankHoc from "../withStripeBankHoc";
 
 const StripeBankAccountAlert = ({ hasBankAccount }) => {
   if (hasBankAccount) {
@@ -31,4 +31,4 @@ const StripeBankAccountAlert = ({ hasBankAccount }) => {
   }
 };
 
-export default withStripeBankAccountHoc(StripeBankAccountAlert);
+export default withStripeBankHoc(StripeBankAccountAlert);

@@ -12,6 +12,8 @@ import configureStore from "./store/configureStore";
 import { OidcProvider } from "redux-oidc";
 import userManager from "./utils/userManager";
 
+import { StripeProvider } from "react-stripe-elements";
+
 const initialState = {};
 
 const store = configureStore(initialState);
@@ -19,7 +21,9 @@ const store = configureStore(initialState);
 ReactDOM.render(
   <Provider store={store}>
     <OidcProvider store={store} userManager={userManager}>
-      <App />
+      <StripeProvider apiKey={process.env.REACT_APP_STRIPE_ELEMENTSKEY}>
+        <App />
+      </StripeProvider>
     </OidcProvider>
   </Provider>,
   document.getElementById("root")

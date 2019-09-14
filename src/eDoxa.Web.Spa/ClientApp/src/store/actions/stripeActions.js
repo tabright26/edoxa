@@ -29,3 +29,107 @@ export function loadUserStripeBankAccounts() {
     }
   };
 }
+
+export const ADD_STRIPE_CREDIT_CARD = "ADD_STRIPE_CREDIT_CARD";
+export const ADD_STRIPE_CREDIT_CARD_SUCCESS = "ADD_STRIPE_CREDIT_CARD_SUCCESS";
+export const ADD_STRIPE_CREDIT_CARD_FAIL = "ADD_STRIPE_CREDIT_CARD_FAIL";
+export function addStripeCreditCard(data) {
+  return {
+    types: [ADD_STRIPE_CREDIT_CARD, ADD_STRIPE_CREDIT_CARD_SUCCESS, ADD_STRIPE_CREDIT_CARD_FAIL],
+    payload: {
+      client: "stripe",
+      request: {
+        method: "post",
+        url: "/v1/customers/:customerId/sources",
+        data: {
+          source: data
+        }
+      }
+    }
+  };
+}
+
+export const REMOVE_STRIPE_CREDIT_CARD = "REMOVE_STRIPE_CREDIT_CARD";
+export const REMOVE_STRIPE_CREDIT_CARD_SUCCESS = "REMOVE_STRIPE_CREDIT_CARD_SUCCESS";
+export const REMOVE_STRIPE_CREDIT_CARD_FAIL = "REMOVE_STRIPE_CREDIT_CARD_FAIL";
+export function removeStripeCreditCard(cardId) {
+  return {
+    types: [REMOVE_STRIPE_CREDIT_CARD, REMOVE_STRIPE_CREDIT_CARD_SUCCESS, REMOVE_STRIPE_CREDIT_CARD_FAIL],
+    payload: {
+      client: "stripe",
+      request: {
+        method: "delete",
+        url: `/v1/customers/:customerId/sources/${cardId}`
+      }
+    }
+  };
+}
+
+export const UPDATE_STRIPE_CREDIT_CARD = "UPDATE_STRIPE_CREDIT_CARD";
+export const UPDATE_STRIPE_CREDIT_CARD_SUCCESS = "UPDATE_STRIPE_CREDIT_CARD_SUCCESS";
+export const UPDATE_STRIPE_CREDIT_CARD_FAIL = "UPDATE_STRIPE_CREDIT_CARD_FAIL";
+export function updateStripeCreditCard(cardId, data) {
+  return {
+    types: [UPDATE_STRIPE_CREDIT_CARD, UPDATE_STRIPE_CREDIT_CARD_SUCCESS, UPDATE_STRIPE_CREDIT_CARD_FAIL],
+    payload: {
+      client: "stripe",
+      request: {
+        method: "put",
+        url: `/v1/customers/:customerId/sources/${cardId}`,
+        data
+      }
+    }
+  };
+}
+
+export const ADD_STRIPE_BANK = "ADD_STRIPE_BANK";
+export const ADD_STRIPE_BANK_SUCCESS = "ADD_STRIPE_BANK_SUCCESS";
+export const ADD_STRIPE_BANK_FAIL = "ADD_STRIPE_BANK_FAIL";
+export function addStripeBank(data) {
+  return {
+    types: [ADD_STRIPE_BANK, ADD_STRIPE_BANK_SUCCESS, ADD_STRIPE_BANK_FAIL],
+    payload: {
+      client: "stripe",
+      request: {
+        method: "post",
+        url: "/v1/customers/:customerId/sources",
+        data: {
+          source: data
+        }
+      }
+    }
+  };
+}
+
+export const REMOVE_STRIPE_BANK = "REMOVE_STRIPE_BANK";
+export const REMOVE_STRIPE_BANK_SUCCESS = "REMOVE_STRIPE_BANK_SUCCESS";
+export const REMOVE_STRIPE_BANK_FAIL = "REMOVE_STRIPE_BANK_FAIL";
+export function removeStripeBank(bankId) {
+  return {
+    types: [REMOVE_STRIPE_BANK, REMOVE_STRIPE_BANK_SUCCESS, REMOVE_STRIPE_BANK_FAIL],
+    payload: {
+      client: "stripe",
+      request: {
+        method: "delete",
+        url: `/v1/customers/:customerId/sources/${bankId}`
+      }
+    }
+  };
+}
+
+export const UPDATE_STRIPE_BANK = "UPDATE_STRIPE_BANK";
+export const UPDATE_STRIPE_BANK_SUCCESS = "UPDATE_STRIPE_BANK_SUCCESS";
+export const UPDATE_STRIPE_BANK_FAIL = "UPDATE_STRIPE_BANK_FAIL";
+export function updateStripeBank(bankId, data) {
+  return {
+    types: [UPDATE_STRIPE_BANK, UPDATE_STRIPE_BANK_SUCCESS, UPDATE_STRIPE_BANK_FAIL],
+    payload: {
+      client: "stripe",
+      request: {
+        method: "put",
+        url: `/v1/customers/:customerId/sources/${bankId}`,
+        data
+      }
+    }
+  };
+}

@@ -14,6 +14,7 @@ const withUserContainer = WrappedComponent => {
     const user = state.oidc.user;
     return {
       user: user,
+      balance: state.user.account.balance,
       isAuthenticated: user
     };
   };

@@ -5,7 +5,7 @@ import UserAccountBalanceMoney from "../../../containers/App/User/Account/Balanc
 import UserAccountBalanceToken from "../../../containers/App/User/Account/Balance/Token/Index";
 import UserAccountTransactionTable from "../../../containers/App/User/Account/Transaction/Table/Table";
 import StripeCardTable from "../../../containers/App/Stripe/Card/Table/Table";
-import StripeBankAccountAlert from "../../../containers/App/Stripe/BankAccount/Alert/Alert";
+import StripeBankAccountAlert from "../../../containers/App/Stripe/Bank/Alert/Alert";
 import StripeConnectAccountAlert from "../../../containers/App/Stripe/ConnectAccount/Alert/Alert";
 
 const Account = () => (

@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import { LinkContainer } from "react-router-bootstrap";
 import { AppNavbarBrand, AppSidebarToggler, AppAsideToggler } from "@coreui/react";
 import withUserContainer from "../../containers/App/User/withUserContainer";
+import Balance from "./Balance";
 
 import logo from "../../assets/img/brand/logo.svg";
 import sygnet from "../../assets/img/brand/sygnet.svg";
@@ -79,7 +80,7 @@ class Header extends Component {
 
   render() {
     // eslint-disable-next-line
-    const { isAuthenticated, user, children, ...attributes } = this.props;
+    const { isAuthenticated, user, balance, children, ...attributes } = this.props;
 
     return (
       <Fragment>
@@ -101,7 +102,8 @@ class Header extends Component {
           </NavItem>
         </Nav>
         {isAuthenticated ? (
-          <Nav className="ml-auto mr-3" navbar>
+          <Nav className="ml-auto mr-5" navbar>
+            <Balance balance={balance} />
             <HeaderDropdown user={user} />
           </Nav>
         ) : (

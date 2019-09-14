@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import { multiClientMiddleware } from "redux-axios-middleware";
+import queryString from "query-string";
 
 export const middleware = multiClientMiddleware({
   default: {
@@ -36,9 +37,10 @@ export const middleware = multiClientMiddleware({
             const { profile } = state.oidc.user;
             config.url = config.url.replace(":customerId", profile["stripe:customerId"]).replace(":connectAccountId", profile["stripe:connectAccountId"]);
             config.headers = {
-              authorization: `Bearer ${process.env.REACT_APP_STRIPE_APIKEY}`,
-              accept: "application/json"
+              "Content-Type": "application/x-www-form-urlencoded",
+              authorization: `Bearer ${process.env.REACT_APP_STRIPE_APIKEY}`
             };
+            config.data = queryString.stringify(config.data);
             return config;
           }
         ]
