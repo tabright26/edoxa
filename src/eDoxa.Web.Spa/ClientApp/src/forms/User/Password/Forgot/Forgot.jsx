@@ -8,16 +8,7 @@ import { FORGOT_PASSWORD_FORM } from "../../../../forms";
 
 const ForgotPasswordForm = ({ handleSubmit }) => (
   <Form onSubmit={handleSubmit}>
-    <Field
-      type="text"
-      name="email"
-      label="Email"
-      component={props => (
-        <FormGroup>
-          <Input.Text {...props} />
-        </FormGroup>
-      )}
-    />
+    <Field type="text" name="email" label="Email" formGroup={FormGroup} component={Input.Text} />
     <FormGroup className="mb-0">
       <Button.Submit block>Send Email</Button.Submit>
     </FormGroup>

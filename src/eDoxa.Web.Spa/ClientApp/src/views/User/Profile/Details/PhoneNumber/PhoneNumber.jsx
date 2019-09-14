@@ -22,7 +22,7 @@ const PhoneNumberCard = ({ className, phoneNumber }) => {
       <CardBody>
         <dl className="row mb-0">
           <dd className="col-sm-3 text-muted mb-0">Phone Number</dd>
-          <dd className="col-sm-5 mb-0">{isFormHidden ? <span>{phoneNumber}</span> : <PhoneNumberForm.Update handleCancel={() => setFormHidden(true)} />}</dd>
+          <dd className="col-sm-5 mb-0">{isFormHidden ? <span>{phoneNumber}</span> : <PhoneNumberForm.Update initialValues={{ phoneNumber }} handleCancel={() => setFormHidden(true)} />}</dd>
         </dl>
       </CardBody>
     </Card>

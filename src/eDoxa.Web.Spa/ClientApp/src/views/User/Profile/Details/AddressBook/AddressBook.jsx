@@ -17,14 +17,7 @@ const AddressCard = ({ index, actions, address, length }) => {
         {!updateFormHidden ? (
           <dd className="col-sm-6 m-0">
             <AddressForm.Update
-              initialValues={{
-                line1: address.line1,
-                line2: address.line2,
-                city: address.city,
-                state: address.state,
-                postalCode: address.postalCode
-              }}
-              country={address.country}
+              initialValues={address}
               onSubmit={fields => actions.updateAddress(address.id, fields).then(() => hideUpdateForm(true))}
               handleCancel={() => hideUpdateForm(true)}
             />

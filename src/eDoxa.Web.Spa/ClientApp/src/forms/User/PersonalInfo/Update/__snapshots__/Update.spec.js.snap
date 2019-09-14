@@ -64,14 +64,14 @@ exports[`renders correctly 1`] = `
         <input
           className="d-inline form-control-sm form-control"
           disabled={true}
-          name="day"
+          name="month"
           style={
             Object {
               "width": "60px",
             }
           }
           type="text"
-          value={3}
+          value={2}
         />
         <span
           className="d-inline mx-2"
@@ -81,14 +81,14 @@ exports[`renders correctly 1`] = `
         <input
           className="d-inline form-control-sm form-control"
           disabled={true}
-          name="month"
+          name="day"
           style={
             Object {
               "width": "60px",
             }
           }
           type="text"
-          value={1}
+          value={3}
         />
         <span
           className="d-inline mx-2"
@@ -110,7 +110,7 @@ exports[`renders correctly 1`] = `
       </div>
     </dd>
     <dd
-      className="col-sm-3 text-muted mb"
+      className="col-sm-3 mb-0 text-muted"
     >
       Gender
     </dd>
@@ -124,6 +124,20 @@ exports[`renders correctly 1`] = `
         type="text"
         value="Male"
       />
+    </dd>
+    <dd
+      className="col-sm-6 mb-0"
+    >
+      
+    </dd>
+    <dd
+      className="col-sm-3 mb-0"
+    >
+      
+    </dd>
+    <dd
+      className="col-sm-9 mb-0"
+    >
       <button
         aria-label={null}
         className="mt-3 mr-2 btn btn-primary btn-sm"

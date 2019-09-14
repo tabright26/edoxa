@@ -8,9 +8,7 @@ import { CHANGE_DOXATAG_FORM } from "../../../../forms";
 
 const ChangeDoxaTagForm = ({ handleSubmit, handleCancel }) => (
   <Form onSubmit={handleSubmit}>
-    <FormGroup>
-      <Field type="text" name="name" label="DoxaTag" component={props => <Input.Text {...props} />} />
-    </FormGroup>
+    <Field type="text" name="name" label="DoxaTag" formGroup={FormGroup} component={Input.Text} />
     <FormGroup className="mb-0">
       <Button.Save className="mr-2" />
       <Button.Cancel onClick={handleCancel} />

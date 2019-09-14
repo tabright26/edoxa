@@ -7,7 +7,7 @@ it("renders correctly", () => {
   const tree = renderer
     .create(
       <Provider store={{ getState: () => {}, dispatch: action => {}, subscribe: () => {} }}>
-        <Update />
+        <Update initialValues={{ country: "CANADA" }} />
       </Provider>
     )
     .toJSON();

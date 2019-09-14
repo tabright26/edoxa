@@ -12,6 +12,7 @@ exports[`renders correctly 1`] = `
       className="form-control-sm form-control"
       disabled={true}
       type="text"
+      value="CANADA"
     />
   </div>
   <div
