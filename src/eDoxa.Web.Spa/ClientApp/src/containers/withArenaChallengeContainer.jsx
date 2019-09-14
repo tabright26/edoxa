@@ -1,37 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { loadChallenges, loadChallenge } from "../store/actions/arenaChallengeActions";
-
-export const withArenaChallengesContainer = WrappedComponent => {
-  class ArenaChallengesContainer extends Component {
-    componentDidMount() {
-      this.props.actions.loadChallenges();
-    }
-    render() {
-      const { challenges, ...rest } = this.props;
-      return <WrappedComponent challenges={challenges} {...rest} />;
-    }
-  }
-
-  const mapStateToProps = state => {
-    return {
-      challenges: state.arena.challenges
-    };
-  };
-
-  const mapDispatchToProps = dispatch => {
-    return {
-      actions: {
-        loadChallenges: () => dispatch(loadChallenges())
-      }
-    };
-  };
-
-  return connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(ArenaChallengesContainer);
-};
+import { loadChallenge } from "../store/actions/arenaChallengeActions";
 
 export const withArenaChallengeContainer = WrappedComponent => {
   class ArenaChallengeContainer extends Component {
@@ -73,3 +42,5 @@ export const withArenaChallengeContainer = WrappedComponent => {
     mapDispatchToProps
   )(ArenaChallengeContainer);
 };
+
+export default withArenaChallengeContainer;

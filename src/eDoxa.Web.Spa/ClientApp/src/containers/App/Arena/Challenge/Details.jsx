@@ -7,7 +7,7 @@ import ChallengeScoreboard from './Scoreboard';
 import ChallengeScoring from './Scoring';
 import ChallengePayout from './Payout';
 
-import { withArenaChallengeContainer } from '../../../Container';
+import withArenaChallengeContainer from '../../../withArenaChallengeContainer';
 
 class Challenge extends Component {
   render() {
