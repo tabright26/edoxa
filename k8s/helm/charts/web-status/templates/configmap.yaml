@@ -21,6 +21,6 @@ data:
   HealthChecks__Endpoints__4__Uri: {{ include "url.readiness" (dict "ServiceName" .Values.global.app.service.web.gateway.name "Context" .) }}
   HealthChecks__Endpoints__5__Name: "eDoxa Web Spa"
   HealthChecks__Endpoints__5__Uri: {{ include "url.readiness" (dict "ServiceName" .Values.global.app.service.web.spa.name "Context" .) }}
-  HealthChecks__EvaluationTimeInSeconds: {{ .Values.healthChecks.evaluationTimeInSeconds }}
-  HealthChecks__MinimumSecondsBetweenFailureNotifications: {{ .Values.healthChecks.minimumSecondsBetweenFailureNotifications }}
+  HealthChecks__EvaluationTimeInSeconds: {{ .Values.healthChecks.evaluationTimeInSeconds | quote }}
+  HealthChecks__MinimumSecondsBetweenFailureNotifications: {{ .Values.healthChecks.minimumSecondsBetweenFailureNotifications | quote }}
   Serilog__Sink__Seq: {{ include "seq" . }}

@@ -1,12 +1,13 @@
 global:
   app:
-    name: "eDoxa Dev"
+    name: "eDoxa (development)"
+    protocol: "https"
     service:
       api:
         identity:
           name: "identity-api"
-          host: "dev.identity.edoxa.gg"
-          basePath: "/"
+          host: "dev.edoxa.gg"
+          basePath: "/identity"
           protocol: "https"
         payment:
           name: "payment-api"
@@ -53,6 +54,8 @@ global:
     azureServiceBus:
       enabled: true
       hostName: "Endpoint=sb://edoxa-dev.servicebus.windows.net/;SharedAccessKeyName=Development;SharedAccessKey=VbtDwEohICuu/l+CQHbNUPb+BelN5pjOp6IZmjcQQ9M=;EntityPath=services"
+    azureKubernetesService:
+      enabled: true
     mssql:
       host: "mssql"
       sapassword: "RBCLVNRS8HPdksJj8bax"  
@@ -69,36 +72,36 @@ global:
 identity-api: 
   replicaCount: 1
   image:
-    repository: edoxa.azurecr.io/identity.api
-    tag: 1.1.0-223
+    repository: edoxa/identity.api
+    tag: dev
     pullPolicy: IfNotPresent
   virtualservice:
     enabled: true 
   infrastructure:
     mssql:
       database:
-        name: "identity.development.database"
+        name: "identity.dev.db"
     serviceBus:
       subscriptionName: "identity"
 cashier-api: 
   replicaCount: 1
   image:
-    repository: edoxa.azurecr.io/cashier.api
-    tag: 1.1.0-223
+    repository: edoxa/cashier.api
+    tag: dev
     pullPolicy: IfNotPresent
   virtualservice:
     enabled: true    
   infrastructure:
     mssql:
       database:
-        name: "cashier.development.database"
+        name: "cashier.dev.db"
     serviceBus:
       subscriptionName: "cashier"
 payment-api: 
   replicaCount: 1
   image:
-    repository: edoxa.azurecr.io/payment.api
-    tag: 1.1.0-223
+    repository: edoxa/payment.api
+    tag: dev
     pullPolicy: IfNotPresent
   virtualservice:
     enabled: true   
@@ -108,15 +111,15 @@ payment-api:
 arena-challenges-api:
   replicaCount: 1
   image:
-    repository: edoxa.azurecr.io/arena.challenges.api
-    tag: 1.1.0-223
+    repository: edoxa/arena.challenges.api
+    tag: dev
     pullPolicy: IfNotPresent
   virtualservice:
     enabled: true    
   infrastructure:  
     mssql:
       database:
-        name: "arena.challenges.development.database"
+        name: "arena.challenges.dev.db"
     serviceBus:
       subscriptionName: "arena.challenges"
 
@@ -124,24 +127,24 @@ arena-challenges-api:
 web-gateway:
   replicaCount: 1
   image:
-    repository: edoxa.azurecr.io/web.gateway
-    tag: 1.1.0-223
+    repository: edoxa/web.gateway
+    tag: dev
     pullPolicy: IfNotPresent
   virtualservice:
     enabled: true 
 web-spa:
   replicaCount: 1
   image:
-    repository: edoxa.azurecr.io/web.spa
-    tag: 1.1.0-223
+    repository: edoxa/web.spa
+    tag: dev
     pullPolicy: IfNotPresent
   virtualservice:
     enabled: true 
 web-status:
   replicaCount: 1
   image:
-    repository: edoxa.azurecr.io/web.status
-    tag: 1.1.0-223
+    repository: edoxa/web.status
+    tag: dev
     pullPolicy: IfNotPresent
   virtualservice:
     enabled: true 
@@ -154,6 +157,4 @@ mssql-linux:
     value: "Express"
   sapassword: "RBCLVNRS8HPdksJj8bax"
 seq:
-  service:
-    port: 5400
   acceptEULA: "Y"

@@ -42,7 +42,7 @@ namespace eDoxa.Seedwork.Application.Validations
 
         private static string? ToCamelCase(string? s)
         {
-            if (string.IsNullOrEmpty(s) || !char.IsUpper(s[0]))
+            if (string.IsNullOrEmpty(s) || !char.IsUpper(s![0]))
             {
                 return s;
             }

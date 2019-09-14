@@ -13,7 +13,7 @@ data:
   AzureKeyVault__Name: {{ .Values.global.infrastructure.azureKeyVault.name }}
   AzureKeyVault__ClientId: {{ .Values.global.infrastructure.azureKeyVault.clientId }}
   AzureKeyVault__ClientSecret: {{ .Values.global.infrastructure.azureKeyVault.clientSecret }}
-  AzureKubernetesServiceEnabled: true
+  AzureKubernetesServiceEnabled: {{ .Values.global.infrastructure.azureKubernetesService.enabled | quote }}
   Authority__PrivateUrl: {{ include "url.internal" (dict "ServiceName" .Values.global.app.service.api.identity.name "Context" .) }}
   Authority__PublicUrl: {{ include "url.external" .Values.global.app.service.api.identity }}
   Web__GatewayUrl: {{ include "url.external" .Values.global.app.service.web.gateway }}

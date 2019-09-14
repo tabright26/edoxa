@@ -12,7 +12,7 @@ data:
   AzureKeyVault__Name: {{ .Values.global.infrastructure.azureKeyVault.name }}
   AzureKeyVault__ClientId: {{ .Values.global.infrastructure.azureKeyVault.clientId }}
   AzureKeyVault__ClientSecret: {{ .Values.global.infrastructure.azureKeyVault.clientSecret }}
-  AzureServiceBusEnabled: {{ .Values.global.infrastructure.azureServiceBus.enabled }}
+  AzureServiceBusEnabled: {{ .Values.global.infrastructure.azureServiceBus.enabled | quote }}
   ServiceBus__HostName: {{ .Values.global.infrastructure.azureServiceBus.hostName }}
   ServiceBus__SubscriptionName: {{ .Values.serviceBus.subscriptionName }}
   Serilog__Sink__Seq: {{ include "seq" . }}
