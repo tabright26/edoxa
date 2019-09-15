@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { loadDoxaTagHistory, changeDoxaTag, CHANGE_DOXATAG_SUCCESS, CHANGE_DOXATAG_FAIL } from "../store/actions/identityActions";
+import { loadDoxaTagHistory, changeDoxaTag, CHANGE_DOXATAG_SUCCESS, CHANGE_DOXATAG_FAIL } from "../actions/identity/identity";
 import { SubmissionError } from "redux-form";
 
 const withDoxaTagHistory = WrappedComponent => {

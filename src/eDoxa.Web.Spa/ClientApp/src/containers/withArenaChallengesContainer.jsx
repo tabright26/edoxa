@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { loadChallenges } from "../store/actions/arenaChallengeActions";
+import { loadChallenges } from "../actions/arena/challenges/challenges";
 
 const withArenaChallengesContainer = WrappedComponent => {
   class ArenaChallengesContainer extends Component {

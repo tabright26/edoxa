@@ -2,16 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { show } from "redux-modal";
 import { SubmissionError } from "redux-form";
-import {
-  loadAddressBook,
-  addAddress,
-  updateAddress,
-  removeAddress,
-  ADD_ADDRESS_SUCCESS,
-  ADD_ADDRESS_FAIL,
-  UPDATE_ADDRESS_SUCCESS,
-  UPDATE_ADDRESS_FAIL
-} from "../store/actions/identityActions";
+import { loadAddressBook, addAddress, updateAddress, removeAddress, ADD_ADDRESS_SUCCESS, ADD_ADDRESS_FAIL, UPDATE_ADDRESS_SUCCESS, UPDATE_ADDRESS_FAIL } from "../actions/identity/identity";
 import { CREATE_ADDRESS_MODAL } from "../modals";
 
 const withAddressBook = WrappedComponent => {

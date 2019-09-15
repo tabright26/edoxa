@@ -11,7 +11,7 @@ import {
   REMOVE_STRIPE_CREDIT_CARD_FAIL,
   UPDATE_STRIPE_CREDIT_CARD_SUCCESS,
   UPDATE_STRIPE_CREDIT_CARD_FAIL
-} from "../store/actions/stripeActions";
+} from "../actions/stripe/stripe";
 
 import { SubmissionError } from "redux-form";
 import { show } from "redux-modal";

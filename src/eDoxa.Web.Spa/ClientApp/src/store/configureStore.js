@@ -1,14 +1,14 @@
 import { createStore, compose, applyMiddleware } from "redux";
 import { loadUser } from "redux-oidc";
-import { loadDoxaTags } from "./actions/identityActions";
+import { loadDoxaTags } from "../actions/identity/identity";
 
-import { middleware as thunkMiddleware } from "./middlewares/thunkMiddleware";
-import { middleware as routerMiddleware } from "./middlewares/routerMiddleware";
-import { middleware as axiosMiddleware } from "./middlewares/axiosMiddleware";
-import { middleware as signalrMiddleware } from "./middlewares/signalrMiddleware";
-import { middleware as loggerMiddleware } from "./middlewares/loggerMiddleware";
+import { middleware as thunkMiddleware } from "../middlewares/thunkMiddleware";
+import { middleware as routerMiddleware } from "../middlewares/routerMiddleware";
+import { middleware as axiosMiddleware } from "../middlewares/axiosMiddleware";
+import { middleware as signalrMiddleware } from "../middlewares/signalrMiddleware";
+import { middleware as loggerMiddleware } from "../middlewares/loggerMiddleware";
 
-import createRootReducer from "./reducers/rootReducer";
+import createRootReducer from "../reducers/rootReducer";
 
 import userManager from "../utils/userManager";
 

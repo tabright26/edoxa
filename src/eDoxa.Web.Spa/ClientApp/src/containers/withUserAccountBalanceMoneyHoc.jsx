@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { loadUserAccountBalanceForMoney } from '../store/actions/cashierActions';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { loadUserAccountBalanceForMoney } from "../actions/cashier/cashier";
 
 const withUserAccountBalanceMoneyHoc = WrappedComponent => {
   class UserAccountBalanceMoneyContainer extends Component {
@@ -22,8 +22,7 @@ const withUserAccountBalanceMoneyHoc = WrappedComponent => {
   const mapDispatchToProps = dispatch => {
     return {
       actions: {
-        loadUserAccountBalanceForMoney: () =>
-          dispatch(loadUserAccountBalanceForMoney())
+        loadUserAccountBalanceForMoney: () => dispatch(loadUserAccountBalanceForMoney())
       }
     };
   };

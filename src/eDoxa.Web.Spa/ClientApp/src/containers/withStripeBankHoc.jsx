@@ -12,7 +12,7 @@ import {
   REMOVE_STRIPE_BANK_FAIL,
   UPDATE_STRIPE_BANK_SUCCESS,
   UPDATE_STRIPE_BANK_FAIL
-} from "../store/actions/stripeActions";
+} from "../actions/stripe/stripe";
 
 import { SubmissionError } from "redux-form";
 import { show } from "redux-modal";

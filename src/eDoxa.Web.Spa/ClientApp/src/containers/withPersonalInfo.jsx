@@ -9,7 +9,7 @@ import {
   CREATE_PERSONAL_INFO_FAIL,
   UPDATE_PERSONAL_INFO_SUCCESS,
   UPDATE_PERSONAL_INFO_FAIL
-} from "../store/actions/identityActions";
+} from "../actions/identity/identity";
 
 const withPersonalInfo = WrappedComponent => {
   class PersonalInfoContainer extends Component {
