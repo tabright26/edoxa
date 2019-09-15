@@ -1,9 +1,9 @@
 import React from "react";
-import { Field, reduxForm } from "redux-form";
 import { FormGroup, Col, Form } from "reactstrap";
-import Input from "../../../../components/Override/Input";
-import Button from "../../../../components/Override/Button";
-import { DELETE_ADDRESS_FORM } from "../../../../forms";
+import { Field, reduxForm } from "redux-form";
+import Input from "components/Shared/Override/Input";
+import Button from "components/Shared/Override/Button";
+import { DELETE_ADDRESS_FORM } from "forms";
 import validate from "./validate";
 
 const UpdateAddressForm = ({ initialValues: { country }, handleSubmit, handleCancel }) => (

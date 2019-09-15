@@ -1,10 +1,10 @@
 import React from "react";
-import { Field, reduxForm } from "redux-form";
 import { Form, FormGroup } from "reactstrap";
-import Input from "../../../../components/Override/Input";
-import Button from "../../../../components/Override/Button";
-import { UPDATE_PERSONALINFO_FORM } from "../../../../forms";
+import { Field, reduxForm } from "redux-form";
 import moment from "moment";
+import Input from "components/Shared/Override/Input";
+import Button from "components/Shared/Override/Button";
+import { UPDATE_PERSONALINFO_FORM } from "forms";
 import validate from "./validate";
 
 const UpdatePersonalInfoForm = ({ handleSubmit, handleCancel, initialValues: { lastName, birthDate, gender } }) => (

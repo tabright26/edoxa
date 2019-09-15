@@ -1,9 +1,9 @@
 import React from "react";
-import { Field, reduxForm } from "redux-form";
 import { FormGroup, Form } from "reactstrap";
-import Input from "../../../../components/Override/Input";
-import Button from "../../../../components/Override/Button";
-import { CREATE_PHONENUMBER_FORM } from "../../../../forms";
+import { Field, reduxForm } from "redux-form";
+import Input from "components/Shared/Override/Input";
+import Button from "components/Shared/Override/Button";
+import { CREATE_PHONENUMBER_FORM } from "forms";
 
 const CreatePhoneNumberForm = ({ handleSubmit, handleCancel }) => (
   <Form onSubmit={handleSubmit}>
