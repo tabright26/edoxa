@@ -1,9 +1,9 @@
 import React from "react";
-import { Card, CardBody } from "reactstrap";
 import { Redirect } from "react-router-dom";
-import PasswordForm from "../../../../forms/User/Password";
-import withUserContainer from "../../../../containers/App/User/withUserContainer";
+import { Card, CardBody } from "reactstrap";
 import queryString from "query-string";
+import withUserContainer from "containers/withUserContainer";
+import PasswordForm from "forms/User/Password";
 
 const ResetPassword = ({ location, actions }) => {
   const code = queryString.parse(location.search).code;
