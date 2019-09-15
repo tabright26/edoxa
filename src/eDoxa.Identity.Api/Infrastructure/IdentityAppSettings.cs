@@ -53,6 +53,8 @@ namespace eDoxa.Identity.Api.Infrastructure
 
         public string ArenaChallengesUrl { get; set; }
 
+        public string OrganizationsClansUrl { get; set; }
+
         public WebOptions Web { get; set; }
     }
 

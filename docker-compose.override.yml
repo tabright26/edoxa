@@ -43,6 +43,7 @@ services:
       - IdentityServer__IdentityUrl=http://${HOST:-localhost}:5000
       - IdentityServer__CashierUrl=http://${HOST:-localhost}:5002
       - IdentityServer__ArenaChallengesUrl=http://${HOST:-localhost}:5003
+      - IdentityServer__OrganizationsClansUrl=http://${HOST:-localhost}:5010
       - IdentityServer__Web__SpaUrl=http://${HOST:-localhost}:5300
     ports:
       - "5000:80"
@@ -97,6 +98,23 @@ services:
     ports:
       - "5003:80"
 
+  organizations.clans.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - ApplicationInsights__InstrumentationKey=47ce723c-52e7-4714-931a-19e72c037c9a
+      - ConnectionStrings__SqlServer=${MSSQL_CHALLENGE:-Server=mssql;Database=Services.Organizations.Clans;User Id=sa;Password=fnU3Www9TnBDp3MA}      
+      - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
+      - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
+      - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
+      - AzureServiceBusEnabled=${ASB_ENABLE:-false}
+      - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq}
+      - ServiceBus__SubscriptionName=organizations.clans
+      - Authority__PrivateUrl=http://identity.api
+      - Authority__PublicUrl=http://${HOST:-localhost}:5000      
+    ports:
+      - "5010:80"
+
   web.gateway:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -104,7 +122,8 @@ services:
       - ApplicationInsights__InstrumentationKey=47ce723c-52e7-4714-931a-19e72c037c9a
       - HealthChecks__IdentityUrl=http://identity.api/health
       - HealthChecks__CashierUrl=http://cashier.api/health
-      - HealthChecks__ArenaChallengesUrl=http://arena.challenges.api/health      
+      - HealthChecks__ArenaChallengesUrl=http://arena.challenges.api/health
+      - HealthChecks__OrganizationsClansUrl=http://organizations.clans.api/health
       - Authority__PrivateUrl=http://identity.api
       - Authority__PublicUrl=http://${HOST:-localhost}:5000
     ports:
@@ -138,7 +157,7 @@ services:
       - REACT_APP_REDIRECT_URI=http://${HOST:-localhost}:5300/callback
       - REACT_APP_CLIENT_ID=edoxa.web.spa
       - REACT_APP_RESPONSE_TYPE=token id_token
-      - REACT_APP_SCOPE=openid profile roles permissions games stripe identity.api cashier.api arena.challenges.api
+      - REACT_APP_SCOPE=openid profile roles permissions games stripe identity.api cashier.api arena.challenges.api organizations.clans.api
       - REACT_APP_WEB_GATEWAY=http://${HOST:-localhost}:5200
       - REACT_APP_SILENT_REFRESH_URI=http://${HOST:-localhost}:5300/silent-refresh
       - REACT_APP_STRIPE_APIKEY=sk_test_xRMH8A7bagp2Auj7YPqNihlY
@@ -162,10 +181,12 @@ services:
       - HealthChecks__Endpoints__2__Uri=http://cashier.api/health
       - HealthChecks__Endpoints__3__Name=eDoxa Arena Challenges API
       - HealthChecks__Endpoints__3__Uri=http://arena.challenges.api/health
-      - HealthChecks__Endpoints__4__Name=eDoxa Web Gateway
-      - HealthChecks__Endpoints__4__Uri=http://web.gateway/health
-      - HealthChecks__Endpoints__5__Name=eDoxa Web Spa
-      - HealthChecks__Endpoints__5__Uri=http://web.spa.proxy/health
+      - HealthChecks__Endpoints__4__Name=eDoxa Organizations Clans API
+      - HealthChecks__Endpoints__4__Uri=http://organizations.clans.api/health
+      - HealthChecks__Endpoints__5__Name=eDoxa Web Gateway
+      - HealthChecks__Endpoints__5__Uri=http://web.gateway/health
+      - HealthChecks__Endpoints__6__Name=eDoxa Web Spa
+      - HealthChecks__Endpoints__6__Uri=http://web.spa.proxy/health
       - HealthChecks__EvaluationTimeInSeconds=60
       - HealthChecks__MinimumSecondsBetweenFailureNotifications=300
     ports:

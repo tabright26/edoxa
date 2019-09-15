@@ -16,6 +16,21 @@ namespace eDoxa.Seedwork.Security
         public static readonly ApiResource IdentityApi = new IdentityResource();
         public static readonly ApiResource CashierApi = new CashierResource();
         public static readonly ApiResource ArenaChallengesApi = new ArenaChallengesResource();
+        public static readonly ApiResource OrganizationsClansApi = new OrganizationsClansResource();
+
+        public sealed class OrganizationsClansResource : ApiResource
+        {
+            internal OrganizationsClansResource() : base(
+                Security.Scopes.OrganizationsClans,
+                "eDoxa Organizations Clans API",
+                IdentityResources.Roles.UserClaims.Union(IdentityResources.Permissions.UserClaims).Union(IdentityResources.Games.UserClaims))
+            {
+                ApiSecrets = new HashSet<Secret>
+                {
+                    new Secret("secret".Sha256())
+                };
+            }
+        }
 
         public sealed class IdentityResource : ApiResource
         {

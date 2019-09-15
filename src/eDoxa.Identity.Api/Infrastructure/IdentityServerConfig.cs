@@ -49,6 +49,8 @@ namespace eDoxa.Identity.Api.Infrastructure
             yield return ApiResources.CashierApi;
 
             yield return ApiResources.ArenaChallengesApi;
+
+            yield return ApiResources.OrganizationsClansApi;
         }
 
         public static IEnumerable<Client> GetClients(IdentityAppSettings appSettings)
@@ -58,6 +60,8 @@ namespace eDoxa.Identity.Api.Infrastructure
             yield return ApiResources.CashierApi.GetSwaggerClient(appSettings.IdentityServer.CashierUrl);
 
             yield return ApiResources.ArenaChallengesApi.GetSwaggerClient(appSettings.IdentityServer.ArenaChallengesUrl);
+
+            yield return ApiResources.OrganizationsClansApi.GetSwaggerClient(appSettings.IdentityServer.OrganizationsClansUrl);
 
             yield return new Client
             {
@@ -100,7 +104,8 @@ namespace eDoxa.Identity.Api.Infrastructure
                     Scopes.Games,
                     Scopes.IdentityApi,
                     Scopes.CashierApi,
-                    Scopes.ArenaChallengesApi
+                    Scopes.ArenaChallengesApi,
+                    Scopes.OrganizationsClans
                 },
                 
             };

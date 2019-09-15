@@ -59,6 +59,18 @@ services:
       - seq
       - identity.api
 
+  organizations.clans.api:
+    image: ${ACR_REGISTRY:-edoxa}/organizations.clans.api:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/eDoxa.Organizations.Clans.Api/Dockerfile
+    depends_on:
+      - mssql
+      - rabbitmq
+      - redis
+      - seq
+      - identity.api
+
   web.gateway:
     image: ${ACR_REGISTRY:-edoxa}/web.gateway:${ACR_TAG:-latest}
     build:
@@ -71,6 +83,7 @@ services:
       - identity.api
       - cashier.api
       - arena.challenges.api
+      - organizations.clans.api
 
   web.spa.proxy:
     image: ${ACR_REGISTRY:-edoxa}/web.spa.proxy:${ACR_TAG:-latest}
