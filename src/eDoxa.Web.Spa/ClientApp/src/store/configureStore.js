@@ -8,10 +8,11 @@ import { middleware as axiosMiddleware } from "../middlewares/axiosMiddleware";
 import { middleware as signalrMiddleware } from "../middlewares/signalrMiddleware";
 import { middleware as loggerMiddleware } from "../middlewares/loggerMiddleware";
 
-import createRootReducer from "../reducers/rootReducer";
+import createRootReducer from "./createRootReducer";
 
 import userManager from "../utils/userManager";
 
+// This enables the webpack development tools such as the Hot Module Replacement.
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 export default initialState => {

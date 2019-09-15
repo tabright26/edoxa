@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
 
-import { reducer as challengesReducer } from "./challenges/reducer";
-import { reducer as gamesReducer } from "./games/reducer";
+import { reducer as challenges } from "./challenges/reducer";
+import { reducer as games } from "./games/reducer";
 
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage/session";
@@ -15,7 +15,7 @@ const persistConfig = {
 export const reducer = persistReducer(
   persistConfig,
   combineReducers({
-    challenges: challengesReducer,
-    games: gamesReducer
+    challenges,
+    games
   })
 );

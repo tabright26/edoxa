@@ -1,15 +1,15 @@
 import { combineReducers } from "redux";
 
-import { reducer as personalInfoReducer } from "./personalInfo/reducer";
-import { reducer as doxaTagHistoryReducer } from "./doxaTagHistory/reducer";
-import { reducer as addressBookReducer } from "./addressBook/reducer";
-import { reducer as accountReducer } from "./account/reducer";
-import { reducer as gamesReducer } from "./games/reducer";
+import { reducer as personalInfo } from "./personalInfo/reducer";
+import { reducer as doxaTagHistory } from "./doxaTagHistory/reducer";
+import { reducer as addressBook } from "./addressBook/reducer";
+import { reducer as account } from "./account/reducer";
+import { reducer as games } from "./games/reducer";
 
 export const reducer = combineReducers({
-  account: accountReducer,
-  personalInfo: personalInfoReducer,
-  doxaTagHistory: doxaTagHistoryReducer,
-  addressBook: addressBookReducer,
-  games: gamesReducer
+  account,
+  personalInfo,
+  doxaTagHistory,
+  addressBook,
+  games
 });

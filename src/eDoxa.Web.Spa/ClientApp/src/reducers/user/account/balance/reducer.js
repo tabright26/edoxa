@@ -1,9 +1,9 @@
 import { combineReducers } from "redux";
 
-import { reducer as moneyReducer } from "./money/reducer";
-import { reducer as tokenReducer } from "./token/reducer";
+import { reducer as money } from "./money/reducer";
+import { reducer as token } from "./token/reducer";
 
 export const reducer = combineReducers({
-  money: moneyReducer,
-  token: tokenReducer
+  money,
+  token
 });
