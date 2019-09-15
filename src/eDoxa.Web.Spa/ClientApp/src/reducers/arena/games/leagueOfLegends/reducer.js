@@ -1,12 +1,12 @@
-import { LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME_SUCCESS, LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME_FAIL } from "../../../../actions/arena/games/leagueOfLegends/leagueOfLegends";
+import actions from "../../../../actions/arena/games/leagueOfLegends";
 
 export const initialState = {};
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME_SUCCESS:
+    case actions.LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME_SUCCESS:
       return action.payload.data;
-    case LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME_FAIL:
+    case actions.LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME_FAIL:
     default:
       return state;
   }

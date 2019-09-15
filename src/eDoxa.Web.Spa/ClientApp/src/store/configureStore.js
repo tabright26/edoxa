@@ -1,6 +1,6 @@
 import { createStore, compose, applyMiddleware } from "redux";
 import { loadUser } from "redux-oidc";
-import { loadDoxaTags } from "../actions/identity/identity";
+import { loadDoxaTags } from "../actions/identity/creators";
 
 import { middleware as thunkMiddleware } from "../middlewares/thunkMiddleware";
 import { middleware as routerMiddleware } from "../middlewares/routerMiddleware";

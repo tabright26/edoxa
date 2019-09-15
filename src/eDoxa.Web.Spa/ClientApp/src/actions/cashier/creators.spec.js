@@ -11,7 +11,7 @@ import {
   LOAD_USER_ACCOUNT_TRANSACTIONS,
   LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS,
   LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL
-} from "./cashier";
+} from "./creators";
 
 describe("cashier actions", () => {
   it("should create an action to get user balance money", () => {

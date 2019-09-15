@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { loadDoxaTagHistory, changeDoxaTag, CHANGE_DOXATAG_SUCCESS, CHANGE_DOXATAG_FAIL } from "../actions/identity/identity";
+import actions from "../actions/identity";
+import { loadDoxaTagHistory, changeDoxaTag } from "../actions/identity/creators";
 import { SubmissionError } from "redux-form";
 
 const withDoxaTagHistory = WrappedComponent => {
@@ -28,10 +29,10 @@ const withDoxaTagHistory = WrappedComponent => {
         changeDoxaTag: async data =>
           await dispatch(changeDoxaTag(data)).then(async action => {
             switch (action.type) {
-              case CHANGE_DOXATAG_SUCCESS:
+              case actions.CHANGE_DOXATAG_SUCCESS:
                 await dispatch(loadDoxaTagHistory());
                 break;
-              case CHANGE_DOXATAG_FAIL:
+              case actions.CHANGE_DOXATAG_FAIL:
                 const { isAxiosError, response } = action.error;
                 if (isAxiosError) {
                   throw new SubmissionError(response.data.errors);

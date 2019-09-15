@@ -1,22 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-
-import {
-  loadUserStripeBankAccounts,
-  addStripeBank,
-  removeStripeBank,
-  updateStripeBank,
-  ADD_STRIPE_BANK_SUCCESS,
-  ADD_STRIPE_BANK_FAIL,
-  REMOVE_STRIPE_BANK_SUCCESS,
-  REMOVE_STRIPE_BANK_FAIL,
-  UPDATE_STRIPE_BANK_SUCCESS,
-  UPDATE_STRIPE_BANK_FAIL
-} from "../actions/stripe/stripe";
-
 import { SubmissionError } from "redux-form";
 import { show } from "redux-modal";
 import { CREATE_BANK_MODAL } from "../modals";
+import { loadUserStripeBankAccounts, addStripeBank, removeStripeBank, updateStripeBank } from "../actions/stripe/creators";
+import actions from "../actions/stripe";
 
 const withStripeBankHoc = WrappedComponent => {
   class StripeBankContainer extends Component {
@@ -45,10 +33,10 @@ const withStripeBankHoc = WrappedComponent => {
         addStripeBank: async data => {
           dispatch(addStripeBank(data)).then(async action => {
             switch (action.type) {
-              case ADD_STRIPE_BANK_SUCCESS:
+              case actions.ADD_STRIPE_BANK_SUCCESS:
                 await dispatch(loadUserStripeBankAccounts());
                 break;
-              case ADD_STRIPE_BANK_FAIL:
+              case actions.ADD_STRIPE_BANK_FAIL:
                 const { isAxiosError, response } = action.error;
                 if (isAxiosError) {
                   throw new SubmissionError(response.data.errors);
@@ -63,10 +51,10 @@ const withStripeBankHoc = WrappedComponent => {
         removeStripeBank: async cardId => {
           dispatch(removeStripeBank(cardId)).then(async action => {
             switch (action.type) {
-              case REMOVE_STRIPE_BANK_SUCCESS:
+              case actions.REMOVE_STRIPE_BANK_SUCCESS:
                 await dispatch(loadUserStripeBankAccounts());
                 break;
-              case REMOVE_STRIPE_BANK_FAIL:
+              case actions.REMOVE_STRIPE_BANK_FAIL:
                 const { isAxiosError, response } = action.error;
                 if (isAxiosError) {
                   throw new SubmissionError(response.data.errors);
@@ -81,10 +69,10 @@ const withStripeBankHoc = WrappedComponent => {
         updateStripeBank: async (cardId, data) => {
           dispatch(updateStripeBank(cardId, data)).then(async action => {
             switch (action.type) {
-              case UPDATE_STRIPE_BANK_SUCCESS:
+              case actions.UPDATE_STRIPE_BANK_SUCCESS:
                 await dispatch(loadUserStripeBankAccounts());
                 break;
-              case UPDATE_STRIPE_BANK_FAIL:
+              case actions.UPDATE_STRIPE_BANK_FAIL:
                 const { isAxiosError, response } = action.error;
                 if (isAxiosError) {
                   throw new SubmissionError(response.data.errors);

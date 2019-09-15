@@ -1,10 +1,10 @@
-import { LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS, LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL } from "../../../../actions/cashier/cashier";
+import actions from "../../../../actions/cashier";
 
 export const initialState = [];
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS:
+    case actions.LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS:
       const { status, data } = action.payload;
       switch (status) {
         case 204:
@@ -12,7 +12,7 @@ export const reducer = (state = initialState, action) => {
         default:
           return data;
       }
-    case LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL:
+    case actions.LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL:
     default:
       return state;
   }

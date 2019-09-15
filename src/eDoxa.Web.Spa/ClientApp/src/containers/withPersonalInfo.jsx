@@ -1,15 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { SubmissionError } from "redux-form";
-import {
-  loadPersonalInfo,
-  createPersonalInfo,
-  updatePersonalInfo,
-  CREATE_PERSONAL_INFO_SUCCESS,
-  CREATE_PERSONAL_INFO_FAIL,
-  UPDATE_PERSONAL_INFO_SUCCESS,
-  UPDATE_PERSONAL_INFO_FAIL
-} from "../actions/identity/identity";
+import actions from "../actions/identity";
+import { loadPersonalInfo, createPersonalInfo, updatePersonalInfo } from "../actions/identity/creators";
 
 const withPersonalInfo = WrappedComponent => {
   class PersonalInfoContainer extends Component {
@@ -37,10 +30,10 @@ const withPersonalInfo = WrappedComponent => {
           data.birthDate = new Date(year, month, day);
           await dispatch(createPersonalInfo(data)).then(async action => {
             switch (action.type) {
-              case CREATE_PERSONAL_INFO_SUCCESS:
+              case actions.CREATE_PERSONAL_INFO_SUCCESS:
                 await dispatch(loadPersonalInfo());
                 break;
-              case CREATE_PERSONAL_INFO_FAIL:
+              case actions.CREATE_PERSONAL_INFO_FAIL:
                 const { isAxiosError, response } = action.error;
                 if (isAxiosError) {
                   throw new SubmissionError(response.data.errors);
@@ -55,10 +48,10 @@ const withPersonalInfo = WrappedComponent => {
         updatePersonalInfo: async data => {
           await dispatch(updatePersonalInfo(data)).then(async action => {
             switch (action.type) {
-              case UPDATE_PERSONAL_INFO_SUCCESS:
+              case actions.UPDATE_PERSONAL_INFO_SUCCESS:
                 await dispatch(loadPersonalInfo());
                 break;
-              case UPDATE_PERSONAL_INFO_FAIL:
+              case actions.UPDATE_PERSONAL_INFO_FAIL:
                 const { isAxiosError, response } = action.error;
                 if (isAxiosError) {
                   throw new SubmissionError(response.data.errors);

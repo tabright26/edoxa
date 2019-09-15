@@ -1,10 +1,10 @@
-import { LOAD_DOXATAG_HISTORY_SUCCESS, LOAD_DOXATAG_HISTORY_FAIL } from "../../../actions/identity/identity";
+import actions from "../../../actions/identity";
 
 export const initialState = [];
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case LOAD_DOXATAG_HISTORY_SUCCESS:
+    case actions.LOAD_DOXATAG_HISTORY_SUCCESS:
       const { status, data } = action.payload;
       switch (status) {
         case 204:
@@ -12,7 +12,7 @@ export const reducer = (state = initialState, action) => {
         default:
           return data;
       }
-    case LOAD_DOXATAG_HISTORY_FAIL:
+    case actions.LOAD_DOXATAG_HISTORY_FAIL:
     default: {
       return state;
     }

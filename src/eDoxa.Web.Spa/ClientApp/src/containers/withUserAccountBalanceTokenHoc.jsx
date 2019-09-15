@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { loadUserAccountBalanceForToken } from "../actions/cashier/cashier";
+import { loadUserAccountBalanceForToken } from "../actions/cashier/creators";
 
 const withUserAccountBalanceTokenHoc = WrappedComponent => {
   class UserAccountBalanceTokenContainer extends Component {

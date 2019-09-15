@@ -1,10 +1,10 @@
-import { LOAD_CHALLENGES_SUCCESS, LOAD_CHALLENGES_FAIL, LOAD_CHALLENGE_SUCCESS, LOAD_CHALLENGE_FAIL } from "../../../actions/arena/challenges/challenges";
+import actions from "../../../actions/arena/challenges";
 
 export const initialState = [];
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case LOAD_CHALLENGES_SUCCESS:
+    case actions.LOAD_CHALLENGES_SUCCESS:
       const { status, data } = action.payload;
       switch (status) {
         case 204:
@@ -12,10 +12,10 @@ export const reducer = (state = initialState, action) => {
         default:
           return data;
       }
-    case LOAD_CHALLENGE_SUCCESS:
+    case actions.LOAD_CHALLENGE_SUCCESS:
       return [...state, action.payload.data];
-    case LOAD_CHALLENGE_FAIL:
-    case LOAD_CHALLENGES_FAIL:
+    case actions.LOAD_CHALLENGE_FAIL:
+    case actions.LOAD_CHALLENGES_FAIL:
     default:
       return state;
   }
