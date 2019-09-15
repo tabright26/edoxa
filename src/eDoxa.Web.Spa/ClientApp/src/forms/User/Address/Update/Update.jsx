@@ -1,35 +1,23 @@
 import React from "react";
-import { FormGroup, Col, Input, Form } from "reactstrap";
 import { Field, reduxForm } from "redux-form";
-import myInput from "components/Shared/Override/Input";
-import Button from "components/Shared/Override/Button";
-import { DELETE_ADDRESS_FORM } from "forms";
+import { FormGroup, Col, Form } from "reactstrap";
+import Input from "../../../../components/Override/Input";
+import Button from "../../../../components/Override/Button";
+import { DELETE_ADDRESS_FORM } from "../../../../forms";
 import validate from "./validate";
 
-const UpdateAddressForm = ({ country, handleSubmit, handleCancel }) => (
+const UpdateAddressForm = ({ initialValues: { country }, handleSubmit, handleCancel }) => (
   <Form onSubmit={handleSubmit}>
-    <FormGroup>
-      <Input type="text" value={country} bsSize="sm" disabled />
-    </FormGroup>
-    <FormGroup>
-      <Field type="text" name="line1" label="Address line 1" component={props => <myInput.Text {...props} />} />
-    </FormGroup>
-    <FormGroup>
-      <Field type="text" name="line2" label="Address line 2 (optional)" component={props => <myInput.Text {...props} />} />
-    </FormGroup>
-    <FormGroup>
-      <Field type="text" name="city" label="City" component={props => <myInput.Text {...props} />} />
-    </FormGroup>
+    <Input.Text type="text" value={country} bsSize="sm" formGroup={FormGroup} disabled />
+    <Field type="text" name="line1" label="Address line 1" formGroup={FormGroup} component={Input.Text} />
+    <Field type="text" name="line2" label="Address line 2 (optional)" formGroup={FormGroup} component={Input.Text} />
+    <Field type="text" name="city" label="City" formGroup={FormGroup} component={Input.Text} />
     <FormGroup row className="my-0">
       <Col xs="8">
-        <FormGroup>
-          <Field type="text" name="state" label="State" component={props => <myInput.Text {...props} />} />
-        </FormGroup>
+        <Field type="text" name="state" label="State" formGroup={FormGroup} component={Input.Text} />
       </Col>
       <Col xs="4">
-        <FormGroup>
-          <Field type="text" name="postalCode" label="Postal Code" component={props => <myInput.Text {...props} />} />
-        </FormGroup>
+        <Field type="text" name="postalCode" label="Postal Code" formGroup={FormGroup} component={Input.Text} />
       </Col>
     </FormGroup>
     <FormGroup className="mb-0">

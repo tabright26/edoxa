@@ -1,14 +1,13 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
-import { FormGroup, Input, Form } from "reactstrap";
-import Button from "components/Buttons";
-import { CHANGE_EMAIL_FORM } from "forms";
+import { FormGroup, Form } from "reactstrap";
+import Input from "../../../../components/Override/Input";
+import Button from "../../../../components/Override/Button";
+import { CHANGE_EMAIL_FORM } from "../../../../forms";
 
 const ChangeEmailForm = ({ handleSubmit, handleCancel }) => (
   <Form onSubmit={handleSubmit}>
-    <FormGroup>
-      <Field type="text" name="email" component={({ input }) => <Input {...input} placeholder="Email" bsSize="sm" />} />
-    </FormGroup>
+    <Field type="text" name="email" label="Email" formGroup={FormGroup} component={Input.Text} />
     <FormGroup className="mb-0">
       <Button.Save className="mr-2" />
       <Button.Cancel onClick={handleCancel} />
