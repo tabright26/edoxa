@@ -4,8 +4,8 @@ import { AppNavbarBrand, AppSidebarToggler, AppAsideToggler } from "@coreui/reac
 import withUserContainer from "../../../containers/withUserContainer";
 import Balance from "../../User/Account/Balance/Header";
 
-import logo from "../../../assets/img/brand/logo.svg";
-import sygnet from "../../../assets/img/brand/sygnet.svg";
+import logo from "../../../assets/images/brand/logo.svg";
+import sygnet from "../../../assets/images/brand/sygnet.svg";
 
 import { Button, Form, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown, Nav, NavItem, NavLink } from "reactstrap";
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardImg } from "reactstrap";
 
-import logo from "../../../assets/img/games/LeagueOfLegends.png";
+import logo from "../../../assets/images/arena/games/LeagueOfLegends.png";
 
 const ArenaChallengeLogo = () => (
   <Card className="bg-dark mx-3 my-4">
