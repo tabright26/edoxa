@@ -128,6 +128,23 @@
       ],
       "UpstreamPathTemplate": "/arena/challenge/api/challenges",
       "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "Priority": 0,
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "organizations.clans.api",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/organizations/clans/api/{everything}",
+      "UpstreamHttpMethod": [ "DELETE", "POST", "PUT", "GET", "PATCH" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "OrganizationsClansApiKey",
+        "AllowedScopes": []
+      }
     }
   ],
   "GlobalConfiguration": {

@@ -15,5 +15,6 @@ namespace eDoxa.Seedwork.Security
         public const string IdentityApi = "identity.api";
         public const string CashierApi = "cashier.api";
         public const string ArenaChallengesApi = "arena.challenges.api";
+        public const string OrganizationsClans = "organizations.clans.api";
     }
 }
