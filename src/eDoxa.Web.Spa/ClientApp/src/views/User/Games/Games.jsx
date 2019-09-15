@@ -1,6 +1,6 @@
 import React from "react";
 
-import UserGameCollection from "../../../containers/App/User/Game/Collection/Collection";
+import UserGameCollection from "components/User/Game/Collection/Collection";
 
 const UserGames = () => <UserGameCollection />;
 

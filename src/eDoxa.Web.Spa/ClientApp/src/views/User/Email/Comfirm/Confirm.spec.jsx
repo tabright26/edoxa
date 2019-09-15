@@ -13,6 +13,12 @@ it("renders correctly", () => {
             return {
               oidc: {
                 user: null
+              },
+              user: {
+                account: {
+                  money: { balance: { available: 0, pending: 0 } },
+                  token: { balance: { available: 0, pending: 0 } }
+                }
               }
             };
           },

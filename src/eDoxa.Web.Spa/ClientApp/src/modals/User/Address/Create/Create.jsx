@@ -1,8 +1,8 @@
 import React from "react";
 import { connectModal } from "redux-modal";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
-import AddressForm from "../../../../forms/User/Address";
-import { CREATE_ADDRESS_MODAL } from "../../../../modals";
+import { CREATE_ADDRESS_MODAL } from "modals";
+import AddressForm from "forms/User/Address";
 
 const CreateAddressModal = ({ show, handleHide, className, actions }) => (
   <Modal size="lg" isOpen={show} toggle={handleHide} className={"modal-primary " + className}>

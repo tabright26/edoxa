@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faEdit, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { Card, CardHeader, CardBody } from "reactstrap";
-import Address from "../../../../../components/Address";
-import AddressForm from "../../../../../forms/User/Address";
-import withAddressBook from "../../../../../containers/App/User/Profile/Details/withAddressBook";
-import UserAddressModal from "../../../../../modals/User/Address";
+import Address from "components/Shared/Address";
+import AddressForm from "forms/User/Address";
+import withAddressBook from "containers/withAddressBook";
+import UserAddressModal from "modals/User/Address";
 
 const AddressCard = ({ index, actions, address, length }) => {
   const [updateFormHidden, hideUpdateForm] = useState(true);

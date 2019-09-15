@@ -1,31 +1,24 @@
+import "./App.scss";
 import React, { Suspense } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { ConnectedRouter as Router } from "connected-react-router";
+import { history } from "utils/history";
+import ArenaChallengeParticipantMatchScoreModal from "modals/Arena/Challenge/Participant/Match/Score";
+import Loading from "./Shared/Loading";
 
-import { history } from "../utils/history";
-
-import Loading from "./Loading";
-
-import "./App.scss";
-
-import ArenaChallengeParticipantMatchScoreModal from "../modals/Arena/Challenge/Participant/Match/Score";
-
-const Callback = React.lazy(() => import("./Callback"));
-
-const ErrorPage401 = React.lazy(() => import("./ErrorPage/401"));
-const ErrorPage403 = React.lazy(() => import("./ErrorPage/403"));
-const ErrorPage404 = React.lazy(() => import("./ErrorPage/404"));
-const ErrorPage500 = React.lazy(() => import("./ErrorPage/500"));
-
-const DefaultLayout = React.lazy(() => import("./Layout/Default"));
-const PartialLayout = React.lazy(() => import("./Layout/Partial"));
-const NoneLayout = React.lazy(() => import("./Layout/None"));
-
-const TermsOfServices = React.lazy(() => import("../views/TermsOfServices"));
-const FAQ = React.lazy(() => import("../views/FAQ"));
-const EmailConfirm = React.lazy(() => import("../views/User/Email/Comfirm"));
-const PasswordForgot = React.lazy(() => import("../views/User/Password/Forgot"));
-const PasswordReset = React.lazy(() => import("../views/User/Password/Reset"));
+const Callback = React.lazy(() => import("./Shared/Callback"));
+const ErrorPage401 = React.lazy(() => import("./Shared/ErrorPage/401"));
+const ErrorPage403 = React.lazy(() => import("./Shared/ErrorPage/403"));
+const ErrorPage404 = React.lazy(() => import("./Shared/ErrorPage/404"));
+const ErrorPage500 = React.lazy(() => import("./Shared/ErrorPage/500"));
+const DefaultLayout = React.lazy(() => import("./Shared/Layout/Default"));
+const PartialLayout = React.lazy(() => import("./Shared/Layout/Partial"));
+const NoneLayout = React.lazy(() => import("./Shared/Layout/None"));
+const TermsOfServices = React.lazy(() => import("views/TermsOfServices"));
+const FAQ = React.lazy(() => import("views/FAQ"));
+const EmailConfirm = React.lazy(() => import("views/User/Email/Comfirm"));
+const PasswordForgot = React.lazy(() => import("views/User/Password/Forgot"));
+const PasswordReset = React.lazy(() => import("views/User/Password/Reset"));
 
 const App = () => (
   <>

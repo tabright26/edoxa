@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Card, CardHeader, CardBody } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
-import withDoxaTagHistory from "../../../../../containers/App/User/Profile/Details/withDoxaTagHistory";
-import DoxaTagForm from "../../../../../forms/User/DoxaTag";
+import withDoxaTagHistory from "containers/withDoxaTagHistory";
+import DoxaTagForm from "forms/User/DoxaTag";
 
 const DoxaTagCard = ({ className, doxaTag, actions }) => {
   const [isFormHidden, setFormHidden] = useState(true);

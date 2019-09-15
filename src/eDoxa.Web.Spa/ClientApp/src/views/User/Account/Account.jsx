@@ -1,12 +1,12 @@
 import React from "react";
-import { Container, Row, Col, Card } from "react-bootstrap";
+import { Container, CardHeader, CardBody, Row, Col, Card } from "reactstrap";
 
-import UserAccountBalanceMoney from "../../../containers/App/User/Account/Balance/Money/Index";
-import UserAccountBalanceToken from "../../../containers/App/User/Account/Balance/Token/Index";
-import UserAccountTransactionTable from "../../../containers/App/User/Account/Transaction/Table/Table";
-import StripeCardTable from "../../../containers/App/Stripe/Card/Table/Table";
-import StripeBankAccountAlert from "../../../containers/App/Stripe/BankAccount/Alert/Alert";
-import StripeConnectAccountAlert from "../../../containers/App/Stripe/ConnectAccount/Alert/Alert";
+import UserAccountBalanceMoney from "components/User/Account/Balance/Money/Index";
+import UserAccountBalanceToken from "components/User/Account/Balance/Token/Index";
+import UserAccountTransactionTable from "components/User/Account/Transaction/Table/Table";
+import StripeCardTable from "components/Stripe/Card/Table/Table";
+import StripeBankAccountAlert from "components/Stripe/Bank/Alert/Alert";
+import StripeConnectAccountAlert from "components/Stripe/ConnectAccount/Alert/Alert";
 
 const Account = () => (
   <Container>
@@ -21,19 +21,19 @@ const Account = () => (
     </Row>
     <Row>
       <Col xs="6">
-        <Card bg="dark" className="text-light mt-3">
-          <Card.Header as="h3">Money</Card.Header>
-          <Card.Body>
+        <Card color="dark" className="text-light mt-3">
+          <CardHeader tag="h3">Money</CardHeader>
+          <CardBody>
             <UserAccountBalanceMoney />
-          </Card.Body>
+          </CardBody>
         </Card>
       </Col>
       <Col xs="6">
-        <Card bg="dark" className="text-light mt-3">
-          <Card.Header as="h3">Tokens</Card.Header>
-          <Card.Body>
+        <Card color="dark" className="text-light mt-3">
+          <CardHeader tag="h3">Tokens</CardHeader>
+          <CardBody>
             <UserAccountBalanceToken />
-          </Card.Body>
+          </CardBody>
         </Card>
       </Col>
     </Row>
@@ -43,7 +43,7 @@ const Account = () => (
         <hr className="border" />
       </Col>
       <Col>
-        <Card bg="dark">
+        <Card color="dark">
           <UserAccountTransactionTable />
         </Card>
       </Col>
@@ -54,7 +54,7 @@ const Account = () => (
         <hr className="border" />
       </Col>
       <Col>
-        <Card bg="dark">
+        <Card color="dark">
           <StripeCardTable />
         </Card>
       </Col>

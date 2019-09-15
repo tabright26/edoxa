@@ -1,10 +1,10 @@
 import React from "react";
-import { Field, reduxForm } from "redux-form";
 import { FormGroup, Form } from "reactstrap";
+import { Field, reduxForm } from "redux-form";
+import Button from "components/Shared/Override/Button";
+import Input from "components/Shared/Override/Input";
+import { FORGOT_PASSWORD_FORM } from "forms";
 import validate from "./validate";
-import Button from "../../../../components/Override/Button";
-import Input from "../../../../components/Override/Input";
-import { FORGOT_PASSWORD_FORM } from "../../../../forms";
 
 const ForgotPasswordForm = ({ handleSubmit }) => (
   <Form onSubmit={handleSubmit}>
