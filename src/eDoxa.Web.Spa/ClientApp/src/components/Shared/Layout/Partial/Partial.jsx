@@ -1,10 +1,10 @@
 import React, { Suspense } from "react";
 import { Container } from "reactstrap";
 import { AppFooter, AppHeader } from "@coreui/react";
-import Loading from "../../Loading";
+import Loading from "components/Shared/Loading";
 
-const Footer = React.lazy(() => import("../../Footer"));
-const Header = React.lazy(() => import("../../Header"));
+const Footer = React.lazy(() => import("components/Shared/Footer"));
+const Header = React.lazy(() => import("components/Shared/Header"));
 
 const Layout = ({ children }) => (
   <div className="app">

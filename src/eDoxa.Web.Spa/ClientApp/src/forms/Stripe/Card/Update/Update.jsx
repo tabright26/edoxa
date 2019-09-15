@@ -1,12 +1,10 @@
 import React from "react";
-import { Form, Field, reduxForm } from "redux-form";
 import { Col, FormGroup, Row } from "reactstrap";
+import { Form, Field, reduxForm } from "redux-form";
+import Button from "components/Shared/Override/Button";
+import Input from "components/Shared/Override/Input";
+import { UPDATE_CREDITCARD_FORM } from "forms";
 import validate from "./validate";
-import Button from "../../../../components/Shared/Override/Button";
-import Input from "../../../../components/Shared/Override/Input";
-import { UPDATE_CREDITCARD_FORM } from "../../../../forms";
-
-//<Field type="text" name="ccName" label="Enter your name" component={props => <myInput.Text {...props} />} />
 
 const UpdateStripeCreditCardForm = ({ card, handleSubmit, handleCancel }) => (
   <Form onSubmit={handleSubmit}>
@@ -14,7 +12,7 @@ const UpdateStripeCreditCardForm = ({ card, handleSubmit, handleCancel }) => (
       <Col xs="4">
         <FormGroup>
           <label>Exp.Month</label>
-          <Field type="select" name="exp_month" value={card.exp_month} component={props => <Input.Select {...props} />}>
+          <Field type="select" name="exp_month" value={card.exp_month} component={Input.Select}>
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -33,7 +31,7 @@ const UpdateStripeCreditCardForm = ({ card, handleSubmit, handleCancel }) => (
       <Col xs="8">
         <FormGroup>
           <label>Exp.Year</label>
-          <Field type="select" name="exp_year" value={card.exp_year} component={props => <Input.Select {...props} />}>
+          <Field type="select" name="exp_year" value={card.exp_year} component={Input.Select}>
             <option>2017</option>
             <option>2018</option>
             <option>2019</option>

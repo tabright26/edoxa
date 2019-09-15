@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardBody, CardHeader, ListGroup, ListGroupItem } from "reactstrap";
 
-import Loading from "../../Shared/Loading";
+import Loading from "components/Shared/Loading";
 
 const Body = ({ challenge }) => {
   if (!challenge) {

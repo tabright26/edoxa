@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { show } from "redux-modal";
 import { SubmissionError } from "redux-form";
-import actions from "../actions/identity";
-import { loadAddressBook, addAddress, updateAddress, removeAddress } from "../actions/identity/creators";
-import { CREATE_ADDRESS_MODAL } from "../modals";
+import { CREATE_ADDRESS_MODAL } from "modals";
+import { loadAddressBook, addAddress, updateAddress, removeAddress } from "actions/identity/creators";
+import actionTypes from "actions/identity";
 
 const withAddressBook = WrappedComponent => {
   class AddressBookContainer extends Component {
@@ -30,10 +30,10 @@ const withAddressBook = WrappedComponent => {
         addAddress: async data => {
           await dispatch(addAddress(data)).then(async action => {
             switch (action.type) {
-              case actions.ADD_ADDRESS_SUCCESS:
+              case actionTypes.ADD_ADDRESS_SUCCESS:
                 await dispatch(loadAddressBook());
                 break;
-              case actions.ADD_ADDRESS_FAIL:
+              case actionTypes.ADD_ADDRESS_FAIL:
                 const { isAxiosError, response } = action.error;
                 if (isAxiosError) {
                   throw new SubmissionError(response.data.errors);
@@ -48,10 +48,10 @@ const withAddressBook = WrappedComponent => {
         updateAddress: async (addressId, data) => {
           await dispatch(updateAddress(addressId, data)).then(async action => {
             switch (action.type) {
-              case actions.UPDATE_ADDRESS_SUCCESS:
+              case actionTypes.UPDATE_ADDRESS_SUCCESS:
                 await dispatch(loadAddressBook());
                 break;
-              case actions.UPDATE_ADDRESS_FAIL:
+              case actionTypes.UPDATE_ADDRESS_FAIL:
                 const { isAxiosError, response } = action.error;
                 if (isAxiosError) {
                   throw new SubmissionError(response.data.errors);

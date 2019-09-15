@@ -1,5 +1,5 @@
 import React, { Fragment, Suspense } from "react";
-import Loading from "../../../../components/Shared/Loading";
+import Loading from "components/Shared/Loading";
 
 import CreditCardModule from "./CreditCardModule";
 import BankModule from "./BankModule";

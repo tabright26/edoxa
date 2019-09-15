@@ -1,15 +1,12 @@
 import React, { Component, Fragment } from "react";
 import { LinkContainer } from "react-router-bootstrap";
-import { AppNavbarBrand, AppSidebarToggler, AppAsideToggler } from "@coreui/react";
-import withUserContainer from "../../../containers/withUserContainer";
-import Balance from "../../User/Account/Balance/Header";
-
-import logo from "../../../assets/images/brand/logo.svg";
-import sygnet from "../../../assets/images/brand/sygnet.svg";
-
 import { Button, Form, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown, Nav, NavItem, NavLink } from "reactstrap";
-
-import userManager, { POST_LOGIN_REDIRECT_URI } from "../../../utils/userManager";
+import { AppNavbarBrand, AppSidebarToggler, AppAsideToggler } from "@coreui/react";
+import logo from "assets/images/brand/logo.svg";
+import sygnet from "assets/images/brand/sygnet.svg";
+import withUserContainer from "containers/withUserContainer";
+import Balance from "components/User/Account/Balance/Header";
+import userManager, { POST_LOGIN_REDIRECT_URI } from "utils/userManager";
 
 class HeaderDropdown extends Component {
   signinRedirectClickHandled = () => {

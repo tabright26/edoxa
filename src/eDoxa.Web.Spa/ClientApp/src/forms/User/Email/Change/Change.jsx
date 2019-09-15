@@ -1,8 +1,8 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
 import { FormGroup, Input, Form } from "reactstrap";
-import Button from "../../../../components/Buttons";
-import { CHANGE_EMAIL_FORM } from "../../../../forms";
+import Button from "components/Buttons";
+import { CHANGE_EMAIL_FORM } from "forms";
 
 const ChangeEmailForm = ({ handleSubmit, handleCancel }) => (
   <Form onSubmit={handleSubmit}>

@@ -1,10 +1,10 @@
 import React from "react";
-import { reduxForm, Field } from "redux-form";
 import { FormGroup, Form } from "reactstrap";
-import Button from "../../../../components/Shared/Override/Button";
-import Input from "../../../../components/Shared/Override/Input";
+import { reduxForm, Field } from "redux-form";
+import Button from "components/Shared/Override/Button";
+import Input from "components/Shared/Override/Input";
+import { CHANGE_DOXATAG_FORM } from "forms";
 import validate from "./validate";
-import { CHANGE_DOXATAG_FORM } from "../../../../forms";
 
 const ChangeDoxaTagForm = ({ handleSubmit, handleCancel }) => (
   <Form onSubmit={handleSubmit}>

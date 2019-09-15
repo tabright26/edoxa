@@ -1,10 +1,8 @@
 import React from "react";
-import { reduxForm } from "redux-form";
 import { Label, FormGroup, Form } from "reactstrap";
-
-import Button from "../../../../components/Shared/Override/Button";
-
-import { DELETE_ADDRESS_FORM } from "../../../../forms";
+import { reduxForm } from "redux-form";
+import Button from "components/Shared/Override/Button";
+import { DELETE_ADDRESS_FORM } from "forms";
 
 const DeleteAddressForm = ({ handleSubmit, handleCancel }) => (
   <Form onSubmit={handleSubmit} className="mt-3">

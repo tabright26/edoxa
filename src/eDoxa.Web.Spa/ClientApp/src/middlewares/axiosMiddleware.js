@@ -1,7 +1,6 @@
 import axios from "axios";
-
-import { multiClientMiddleware } from "redux-axios-middleware";
 import queryString from "query-string";
+import { multiClientMiddleware } from "redux-axios-middleware";
 
 export const middleware = multiClientMiddleware({
   default: {

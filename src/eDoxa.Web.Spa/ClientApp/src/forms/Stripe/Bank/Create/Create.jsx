@@ -1,10 +1,8 @@
-import React from "react";
-import { reduxForm } from "redux-form";
-import { IbanElement } from "react-stripe-elements";
-import { injectStripe } from "react-stripe-elements";
-import { CREATE_BANK_FORM } from "../../../../forms";
-
 import "./stripeElements.css";
+import React from "react";
+import { IbanElement, injectStripe } from "react-stripe-elements";
+import { reduxForm } from "redux-form";
+import { CREATE_BANK_FORM } from "forms";
 
 class CreateStripeBankForm extends React.Component {
   handleSubmit = ev => {

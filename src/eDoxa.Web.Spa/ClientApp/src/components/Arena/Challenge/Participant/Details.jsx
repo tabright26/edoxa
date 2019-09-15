@@ -1,8 +1,8 @@
 import React from "react";
 import { CardBody } from "reactstrap";
 
-//import Format from "../../../Shared/Format";
-import Loading from "../../../Shared/Loading";
+//import Format from "Shared/Format";
+import Loading from "components/Shared/Loading";
 
 //import Matches from "./Match/Index";
 

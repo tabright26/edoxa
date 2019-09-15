@@ -1,10 +1,10 @@
 import React from "react";
-import { Field, reduxForm } from "redux-form";
 import { FormGroup, Form, InputGroup, InputGroupAddon, InputGroupText } from "reactstrap";
+import { Field, reduxForm } from "redux-form";
+import Button from "components/Shared/Override/Button";
+import Input from "components/Shared/Override/Input";
+import { RESET_PASSWORD_FORM } from "forms";
 import validate from "./validate";
-import Button from "../../../../components/Shared/Override/Button";
-import Input from "../../../../components/Shared/Override/Input";
-import { RESET_PASSWORD_FORM } from "../../../../forms";
 
 const ResetPasswordForm = ({ handleSubmit }) => (
   <Form onSubmit={handleSubmit}>

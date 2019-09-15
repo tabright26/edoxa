@@ -1,8 +1,6 @@
 import React from "react";
 import { CardBody } from "reactstrap";
-
-import Loading from "../../../../Shared/Loading";
-
+import Loading from "components/Shared/Loading";
 import Match from "./Details";
 
 const Matches = ({ participant }) => {

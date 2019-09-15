@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { loadUserAccountTransactions } from "../actions/cashier/creators";
+import { loadUserAccountTransactions } from "actions/cashier/creators";
 
 const withUserAccountTransactionHoc = WrappedComponent => {
   class UserAccountTransactionContainer extends Component {

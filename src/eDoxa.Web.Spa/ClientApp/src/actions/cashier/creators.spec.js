@@ -1,21 +1,9 @@
-import {
-  loadUserAccountBalanceForMoney,
-  loadUserAccountBalanceForToken,
-  loadUserAccountTransactions,
-  LOAD_USER_ACCOUNT_BALANCE_MONEY,
-  LOAD_USER_ACCOUNT_BALANCE_MONEY_SUCCESS,
-  LOAD_USER_ACCOUNT_BALANCE_MONEY_FAIL,
-  LOAD_USER_ACCOUNT_BALANCE_TOKEN,
-  LOAD_USER_ACCOUNT_BALANCE_TOKEN_SUCCESS,
-  LOAD_USER_ACCOUNT_BALANCE_TOKEN_FAIL,
-  LOAD_USER_ACCOUNT_TRANSACTIONS,
-  LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS,
-  LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL
-} from "./creators";
+import { loadUserAccountBalanceForMoney, loadUserAccountBalanceForToken, loadUserAccountTransactions } from "./creators";
+import actionTypes from "./index";
 
 describe("cashier actions", () => {
   it("should create an action to get user balance money", () => {
-    const expectedType = [LOAD_USER_ACCOUNT_BALANCE_MONEY, LOAD_USER_ACCOUNT_BALANCE_MONEY_SUCCESS, LOAD_USER_ACCOUNT_BALANCE_MONEY_FAIL];
+    const expectedType = [actionTypes.LOAD_USER_ACCOUNT_BALANCE_MONEY, actionTypes.LOAD_USER_ACCOUNT_BALANCE_MONEY_SUCCESS, actionTypes.LOAD_USER_ACCOUNT_BALANCE_MONEY_FAIL];
     const expectedMethod = "get";
     const expectedUrl = "/cashier/api/account/balance/money";
 
@@ -27,7 +15,7 @@ describe("cashier actions", () => {
   });
 
   it("should create an action to get user balance token", () => {
-    const expectedType = [LOAD_USER_ACCOUNT_BALANCE_TOKEN, LOAD_USER_ACCOUNT_BALANCE_TOKEN_SUCCESS, LOAD_USER_ACCOUNT_BALANCE_TOKEN_FAIL];
+    const expectedType = [actionTypes.LOAD_USER_ACCOUNT_BALANCE_TOKEN, actionTypes.LOAD_USER_ACCOUNT_BALANCE_TOKEN_SUCCESS, actionTypes.LOAD_USER_ACCOUNT_BALANCE_TOKEN_FAIL];
     const expectedMethod = "get";
     const expectedUrl = "/cashier/api/account/balance/token";
 
@@ -39,7 +27,7 @@ describe("cashier actions", () => {
   });
 
   it("should create an action to get user transactions", () => {
-    const expectedType = [LOAD_USER_ACCOUNT_TRANSACTIONS, LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS, LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL];
+    const expectedType = [actionTypes.LOAD_USER_ACCOUNT_TRANSACTIONS, actionTypes.LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS, actionTypes.LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL];
     const expectedMethod = "get";
     const expectedUrl = "/cashier/api/transactions";
 

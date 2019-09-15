@@ -1,5 +1,5 @@
 import { reducer, initialState } from "./reducer";
-import * as types from "../../../../actions/cashierActions";
+import actionTypes from "actions/cashier";
 
 const transaction204Data = [];
 const transaction200Data = { data: [{ id: "1" }] };
@@ -12,7 +12,7 @@ describe("user account transactions reducer", () => {
   it("should handle LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS 204", () => {
     expect(
       reducer(initialState, {
-        type: types.LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS,
+        type: actionTypes.LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS,
         payload: { status: 204, data: transaction204Data }
       })
     ).toEqual(initialState);
@@ -21,7 +21,7 @@ describe("user account transactions reducer", () => {
   it("should handle LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS 200", () => {
     expect(
       reducer([], {
-        type: types.LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS,
+        type: actionTypes.LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS,
         payload: { status: 200, data: transaction200Data }
       })
     ).toEqual(transaction200Data);
@@ -30,7 +30,7 @@ describe("user account transactions reducer", () => {
   it("should handle LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL", () => {
     expect(
       reducer(initialState, {
-        type: types.LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL
+        type: actionTypes.LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL
       })
     ).toEqual(initialState);
   });

@@ -1,5 +1,5 @@
 import { reducer, initialState } from "./reducer";
-import * as types from "../../../../../actions/cashierActions";
+import actionTypes from "actions/cashier";
 
 const successData = { currency: "Token", available: 10, pending: 50 };
 const expectedState = { type: "Token", available: 10, pending: 50 };
@@ -12,7 +12,7 @@ describe("user account balance token reducer", () => {
   it("should handle LOAD_USER_ACCOUNT_BALANCE_TOKEN_SUCCESS", () => {
     expect(
       reducer(initialState, {
-        type: types.LOAD_USER_ACCOUNT_BALANCE_TOKEN_SUCCESS,
+        type: actionTypes.LOAD_USER_ACCOUNT_BALANCE_TOKEN_SUCCESS,
         payload: { data: successData }
       })
     ).toEqual(expectedState);
@@ -21,7 +21,7 @@ describe("user account balance token reducer", () => {
   it("should handle LOAD_USER_ACCOUNT_BALANCE_TOKEN_FAIL", () => {
     expect(
       reducer(initialState, {
-        type: types.LOAD_USER_ACCOUNT_BALANCE_TOKEN_FAIL
+        type: actionTypes.LOAD_USER_ACCOUNT_BALANCE_TOKEN_FAIL
       })
     ).toEqual(initialState);
   });

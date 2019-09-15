@@ -1,5 +1,5 @@
 import { reducer, initialState } from "./reducer";
-import * as types from "../../../../actions/leagueOfLegendsActions";
+import actionTypes from "actions/arena/games/leagueOfLegends";
 //
 const successData = { id: "1" };
 
@@ -11,7 +11,7 @@ describe("arena games league of legends reducer", () => {
   it("should handle LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME_SUCCESS", () => {
     expect(
       reducer(initialState, {
-        type: types.LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME_SUCCESS,
+        type: actionTypes.LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME_SUCCESS,
         payload: { data: successData }
       })
     ).toEqual(successData);
@@ -20,7 +20,7 @@ describe("arena games league of legends reducer", () => {
   it("should handle LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME_FAIL", () => {
     expect(
       reducer(initialState, {
-        type: types.LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME_FAIL
+        type: actionTypes.LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME_FAIL
       })
     ).toEqual(initialState);
   });

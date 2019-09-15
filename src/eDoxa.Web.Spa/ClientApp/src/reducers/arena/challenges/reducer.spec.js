@@ -1,5 +1,5 @@
 import { reducer, initialState } from "./reducer";
-import * as types from "../../../actions/arenaChallengeActions";
+import actionTypes from "actions/arena/challenges";
 
 const challenges204Data = [];
 const challenges200Data = [{ id: "1" }, { id: "2" }, { id: "1" }];
@@ -15,7 +15,7 @@ describe("arena challenges reducer", () => {
   it("should handle LOAD_CHALLENGES_SUCCESS 204", () => {
     expect(
       reducer(initialState, {
-        type: types.LOAD_CHALLENGES_SUCCESS,
+        type: actionTypes.LOAD_CHALLENGES_SUCCESS,
         payload: { status: 204, data: challenges204Data }
       })
     ).toEqual(initialState);
@@ -24,7 +24,7 @@ describe("arena challenges reducer", () => {
   it("should handle LOAD_CHALLENGES_SUCCESS 200", () => {
     expect(
       reducer(initialState, {
-        type: types.LOAD_CHALLENGES_SUCCESS,
+        type: actionTypes.LOAD_CHALLENGES_SUCCESS,
         payload: { status: 200, data: challenges200Data }
       })
     ).toEqual(challenges200Data);
@@ -33,7 +33,7 @@ describe("arena challenges reducer", () => {
   it("should handle LOAD_CHALLENGES_FAIL", () => {
     expect(
       reducer(initialState, {
-        type: types.LOAD_CHALLENGES_FAIL
+        type: actionTypes.LOAD_CHALLENGES_FAIL
       })
     ).toEqual(initialState);
   });
@@ -41,7 +41,7 @@ describe("arena challenges reducer", () => {
   it("should handle LOAD_CHALLENGE_SUCCESS", () => {
     expect(
       reducer(initialState, {
-        type: types.LOAD_CHALLENGE_SUCCESS,
+        type: actionTypes.LOAD_CHALLENGE_SUCCESS,
         payload: { data: challengeSuccessData }
       })
     ).toEqual(challengeExpectedState);
@@ -50,7 +50,7 @@ describe("arena challenges reducer", () => {
   it("should handle LOAD_CHALLENGE_FAIL", () => {
     expect(
       reducer(initialState, {
-        type: types.LOAD_CHALLENGE_FAIL
+        type: actionTypes.LOAD_CHALLENGE_FAIL
       })
     ).toEqual(initialState);
   });

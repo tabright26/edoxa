@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { loadGames } from "../actions/identity/creators";
+import { loadGames } from "actions/identity/creators";
 
 const withUserGameHoc = WrappedComponent => {
   class UserGameContainer extends Component {

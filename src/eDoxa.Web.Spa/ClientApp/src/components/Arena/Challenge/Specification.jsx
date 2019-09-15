@@ -1,8 +1,8 @@
 import React from "react";
 import { Card, CardBody, CardHeader, Row, Col, Badge, Progress } from "reactstrap";
 
-//import Format from "../../../../components/Format";
-import Loading from "../../Shared/Loading";
+//import Format from "components/Format";
+import Loading from "components/Shared/Loading";
 
 import ChallengeTimeline from "./Timeline";
 

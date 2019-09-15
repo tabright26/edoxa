@@ -1,10 +1,10 @@
 import React from "react";
-import { Field, reduxForm } from "redux-form";
 import { Input, Form, FormGroup } from "reactstrap";
-import myInput from "../../../../components/Shared/Override/Input";
-import Button from "../../../../components/Shared/Override/Button";
-import { UPDATE_PERSONALINFO_FORM } from "../../../../forms";
+import { Field, reduxForm } from "redux-form";
 import moment from "moment";
+import myInput from "components/Shared/Override/Input";
+import Button from "components/Shared/Override/Button";
+import { UPDATE_PERSONALINFO_FORM } from "forms";
 import validate from "./validate";
 
 // TODO: Refactor inputs into components folder.

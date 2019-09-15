@@ -1,5 +1,5 @@
 import { reducer, initialState } from "./reducer";
-import * as types from "../../../actions/identityActions";
+import actionTypes from "actions/identity";
 
 const personalInfo204Data = {};
 const personalInfo200Data = { name: "Gabriel", gender: "Male" };
@@ -12,7 +12,7 @@ describe("user personal info reducer", () => {
   it("should handle LOAD_PERSONAL_INFO_SUCCESS 204", () => {
     expect(
       reducer(initialState, {
-        type: types.LOAD_PERSONAL_INFO_SUCCESS,
+        type: actionTypes.LOAD_PERSONAL_INFO_SUCCESS,
         payload: { status: 204, data: personalInfo204Data }
       })
     ).toEqual(initialState);
@@ -21,7 +21,7 @@ describe("user personal info reducer", () => {
   it("should handle LOAD_PERSONAL_INFO_SUCCESS 200", () => {
     expect(
       reducer(initialState, {
-        type: types.LOAD_PERSONAL_INFO_SUCCESS,
+        type: actionTypes.LOAD_PERSONAL_INFO_SUCCESS,
         payload: { status: 200, data: personalInfo200Data }
       })
     ).toEqual(personalInfo200Data);
@@ -30,7 +30,7 @@ describe("user personal info reducer", () => {
   it("should handle LOAD_PERSONAL_INFO_FAIL", () => {
     expect(
       reducer(initialState, {
-        type: types.LOAD_PERSONAL_INFO_FAIL
+        type: actionTypes.LOAD_PERSONAL_INFO_FAIL
       })
     ).toEqual(initialState);
   });

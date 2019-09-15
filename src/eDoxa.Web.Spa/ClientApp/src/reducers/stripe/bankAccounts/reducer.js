@@ -1,10 +1,10 @@
-import actions from "../../../actions/stripe";
+import actionTypes from "actions/stripe";
 
 export const initialState = { data: [] };
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actions.LOAD_USER_STRIPE_BANK_ACCOUNTS_SUCCESS:
+    case actionTypes.LOAD_USER_STRIPE_BANK_ACCOUNTS_SUCCESS:
       const { status, data } = action.payload;
       switch (status) {
         case 204:
@@ -12,7 +12,7 @@ export const reducer = (state = initialState, action) => {
         default:
           return data;
       }
-    case actions.LOAD_USER_STRIPE_BANK_ACCOUNTS_FAIL:
+    case actionTypes.LOAD_USER_STRIPE_BANK_ACCOUNTS_FAIL:
     default:
       return state;
   }

@@ -3,8 +3,8 @@ import Moment from "react-moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { Card, CardHeader, CardBody } from "reactstrap";
-import withPersonalInfo from "../../../../../containers/withPersonalInfo";
-import PersonalInfoForm from "../../../../../forms/User/PersonalInfo";
+import withPersonalInfo from "containers/withPersonalInfo";
+import PersonalInfoForm from "forms/User/PersonalInfo";
 
 const PersonalInfoCard = ({ className, personalInfo, actions }) => {
   const [isFormHidden, setFormHidden] = useState(true);

@@ -2,7 +2,7 @@ import React, { Suspense } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { Col, Row, ListGroup, ListGroupItem } from "reactstrap";
 import { LinkContainer } from "react-router-bootstrap";
-import Loading from "../../../components/Shared/Loading";
+import Loading from "components/Shared/Loading";
 
 const ProfileOverview = React.lazy(() => import("./Overview/Overview"));
 const ProfileDetails = React.lazy(() => import("./Details/Details"));

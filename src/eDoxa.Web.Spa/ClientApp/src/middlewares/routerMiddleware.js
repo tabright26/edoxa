@@ -1,6 +1,6 @@
 import { routerMiddleware, connectRouter } from "connected-react-router";
 
-import { history } from "../utils/history";
+import { history } from "utils/history";
 
 export const middleware = routerMiddleware(history);
 

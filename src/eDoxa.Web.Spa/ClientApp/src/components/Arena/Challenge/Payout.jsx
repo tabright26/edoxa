@@ -1,9 +1,9 @@
 import React from "react";
 import { Table, Card, CardBody, CardHeader } from "reactstrap";
 
-import Loading from "../../Shared/Loading";
-//import CurrencyFormat from '../Shared/Formaters/CurrencyFormat';
-//import BucketFormat from '../Shared/Formaters/BucketFormat';
+import Loading from "components/Shared/Loading";
+//import CurrencyFormat from 'Shared/Formaters/CurrencyFormat';
+//import BucketFormat from 'Shared/Formaters/BucketFormat';
 
 const Render = ({ challenge }) => {
   if (!challenge) {

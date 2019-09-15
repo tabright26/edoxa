@@ -71,7 +71,7 @@ exports[`renders correctly 1`] = `
             }
           }
           type="text"
-          value={5}
+          value={3}
         />
         <span
           className="d-inline mx-2"
@@ -88,7 +88,7 @@ exports[`renders correctly 1`] = `
             }
           }
           type="text"
-          value={6}
+          value={1}
         />
         <span
           className="d-inline mx-2"
@@ -105,7 +105,7 @@ exports[`renders correctly 1`] = `
             }
           }
           type="text"
-          value={32133}
+          value={32134}
         />
       </div>
     </dd>

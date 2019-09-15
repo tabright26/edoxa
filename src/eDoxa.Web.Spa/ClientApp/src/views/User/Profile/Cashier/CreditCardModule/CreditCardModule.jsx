@@ -3,10 +3,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { Container, Row, Col, Card, CardHeader, CardBody } from "reactstrap";
 
-import CreditCardForm from "../../../../../forms/Stripe/Card";
-import StripeCardModal from "../../../../../modals/Stripe/Card";
-import CreditCard from "../../../../../components/Stripe/Card";
-import withStripeCardHoc from "../../../../../containers/withStripeCardHoc";
+import CreditCardForm from "forms/Stripe/Card";
+import StripeCardModal from "modals/Stripe/Card";
+import CreditCard from "components/Stripe/Card";
+import withStripeCardHoc from "containers/withStripeCardHoc";
 
 const CreditCardCard = ({ index, actions, card, length }) => {
   const [updateFormHidden, hideUpdateForm] = useState(true);

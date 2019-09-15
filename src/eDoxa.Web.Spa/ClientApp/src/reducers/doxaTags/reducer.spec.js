@@ -1,5 +1,5 @@
 import { reducer, initialState } from "./reducer";
-import * as types from "../../actions/identityActions";
+import actionTypes from "actions/identity";
 
 const doxaTag204Data = [];
 const doxaTag200Data = "DoxaTagYo";
@@ -12,7 +12,7 @@ describe("doxatag reducer", () => {
   it("should handle LOAD_DOXATAGS_SUCCESS 204", () => {
     expect(
       reducer(initialState, {
-        type: types.LOAD_DOXATAGS_SUCCESS,
+        type: actionTypes.LOAD_DOXATAGS_SUCCESS,
         payload: { status: 204, data: doxaTag204Data }
       })
     ).toEqual(initialState);
@@ -21,7 +21,7 @@ describe("doxatag reducer", () => {
   it("should handle LOAD_DOXATAGS_SUCCESS 200", () => {
     expect(
       reducer(initialState, {
-        type: types.LOAD_DOXATAGS_SUCCESS,
+        type: actionTypes.LOAD_DOXATAGS_SUCCESS,
         payload: { status: 200, data: doxaTag200Data }
       })
     ).toEqual(doxaTag200Data);
@@ -30,7 +30,7 @@ describe("doxatag reducer", () => {
   it("should handle LOAD_DOXATAGS_FAIL", () => {
     expect(
       reducer(initialState, {
-        type: types.LOAD_DOXATAGS_FAIL
+        type: actionTypes.LOAD_DOXATAGS_FAIL
       })
     ).toEqual(initialState);
   });

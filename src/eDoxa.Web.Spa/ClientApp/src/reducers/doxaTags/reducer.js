@@ -1,10 +1,10 @@
-import actions from "../../actions/identity";
+import actionTypes from "actions/identity";
 
 export const initialState = [];
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actions.LOAD_DOXATAGS_SUCCESS:
+    case actionTypes.LOAD_DOXATAGS_SUCCESS:
       const { status, data } = action.payload;
       switch (status) {
         case 204:
@@ -12,7 +12,7 @@ export const reducer = (state = initialState, action) => {
         default:
           return data;
       }
-    case actions.LOAD_DOXATAGS_FAIL:
+    case actionTypes.LOAD_DOXATAGS_FAIL:
     default:
       return state;
   }

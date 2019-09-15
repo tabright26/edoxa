@@ -4,13 +4,13 @@ import { AppFooter, AppAside, AppHeader, AppSidebar, AppSidebarFooter, AppSideba
 // sidebar nav config
 import navigation from "./_nav";
 // routes config
-import routes from "../../../../routes";
-import Routes from "../../../Shared/Routes";
-import Loading from "../../Loading";
+import routes from "routes";
+import Routes from "components/Shared/Routes";
+import Loading from "components/Shared/Loading";
 
-const Aside = React.lazy(() => import("../../Aside"));
-const Footer = React.lazy(() => import("../../Footer"));
-const Header = React.lazy(() => import("../../Header"));
+const Aside = React.lazy(() => import("components/Shared/Aside"));
+const Footer = React.lazy(() => import("components/Shared/Footer"));
+const Header = React.lazy(() => import("components/Shared/Header"));
 
 const Layout = ({ ...props }) => (
   <div className="app">

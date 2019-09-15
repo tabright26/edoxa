@@ -1,10 +1,9 @@
 import React from "react";
+import { Elements } from "react-stripe-elements";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
 import { connectModal } from "redux-modal";
-import { CREATE_BANK_MODAL } from "../../../../modals";
-
-import { Elements } from "react-stripe-elements";
-import BankForm from "../../../../forms/Stripe/Bank";
+import { CREATE_BANK_MODAL } from "modals";
+import BankForm from "forms/Stripe/Bank";
 
 const CreateStripeBankModal = ({ show, handleHide, className, actions }) => (
   <Modal size="lg" isOpen={show} toggle={handleHide} className={"modal-primary " + className}>

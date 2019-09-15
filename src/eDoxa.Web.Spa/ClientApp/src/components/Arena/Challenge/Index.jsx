@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Row, Col, Card, CardHeader } from "reactstrap";
-import withArenaChallengesContainer from "../../../containers/withArenaChallengesContainer";
+import withArenaChallengesContainer from "containers/withArenaChallengesContainer";
 
 import ChallengeItem from "./Item";
 

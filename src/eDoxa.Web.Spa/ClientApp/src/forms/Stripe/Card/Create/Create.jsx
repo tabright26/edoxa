@@ -1,10 +1,8 @@
-import React from "react";
-import { reduxForm } from "redux-form";
-import { CardElement } from "react-stripe-elements";
-import { injectStripe } from "react-stripe-elements";
-import { CREATE_CREDITCARD_FORM } from "../../../../forms";
-
 import "./stripeElements.css";
+import React from "react";
+import { CardElement, injectStripe } from "react-stripe-elements";
+import { reduxForm } from "redux-form";
+import { CREATE_CREDITCARD_FORM } from "forms";
 
 class CreateStripeCreditCardForm extends React.Component {
   handleSubmit = ev => {
