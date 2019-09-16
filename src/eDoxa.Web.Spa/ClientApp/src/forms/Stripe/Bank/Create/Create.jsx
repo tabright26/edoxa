@@ -1,11 +1,12 @@
 import "./stripeElements.css";
 import React from "react";
-import { IbanElement, injectStripe } from "react-stripe-elements";
-import { reduxForm } from "redux-form";
+import Button from "components/Shared/Override/Button";
+import Input from "components/Shared/Override/Input";
+import { Field, reduxForm } from "redux-form";
+import { FormGroup, Form } from "reactstrap";
 import { CREATE_BANK_FORM } from "forms";
 
-class CreateStripeBankForm extends React.Component {
-  handleSubmit = ev => {
+/*handleSubmit = ev => {
     ev.preventDefault();
 
     var data = {};
@@ -36,28 +37,21 @@ class CreateStripeBankForm extends React.Component {
     if (data) {
       return data;
     }
-  };
+  };*/
 
-  render() {
-    return (
-      <form onSubmit={this.handleSubmit} className="stripeElements">
-        <label>Bank details</label>
-        <br />
-        <label>
-          Name
-          <input name="name" type="text" placeholder="Jane Doe" required />
-        </label>
-        <br />
-        <label>
-          Email
-          <input name="email" type="email" placeholder="jane.doe@example.com" required />
-        </label>
-        <br />
-        <IbanElement supportedCountries={["SEPA"]} />
-        <button>Add</button>
-      </form>
-    );
-  }
-}
+const CreateStripeBankForm = ({ handleSubmit, handleCancel }) => (
+  <Form onSubmit={handleSubmit}>
+    <label>Bank details</label>
+    <br />
+    <Field type="text" name="country" label="Country" formGroup={FormGroup} component={Input.Text} />
+    <br />
+    <Field type="text" name="currency" label="Currency (usd or cad)" formGroup={FormGroup} component={Input.Text} />
+    <br />
+    <FormGroup className="mb-0">
+      <Button.Save className="mr-2" />
+      <Button.Cancel onClick={handleCancel} />
+    </FormGroup>
+  </Form>
+);
 
-export default reduxForm({ form: CREATE_BANK_FORM })(injectStripe(CreateStripeBankForm));
+export default reduxForm({ form: CREATE_BANK_FORM })(CreateStripeBankForm);

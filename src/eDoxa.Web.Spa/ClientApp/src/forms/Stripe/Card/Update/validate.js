@@ -1,23 +1,8 @@
 const validate = values => {
-  /*const ccNameRegExp = new RegExp("^$");
-  const ccNumberRegExp = new RegExp("^$");
-  const ccMonthRegExp = new RegExp("^$");
-  const ccYearRegExp = new RegExp("^$");
-  const ccCVVRegExp = new RegExp("^$");*/
+  const ccMonthRegExp = new RegExp("^(01|02|03|04|05|06|07|08|09|10|11|12)$");
+  const ccYearRegExp = new RegExp("^[2][0][1-9][0-9]$");
 
   const errors = {};
-  /*
-  if (!values.ccName) {
-    errors.ccName = "Credit card name is required";
-  } else if (!ccNameRegExp.test(values.ccName)) {
-    errors.ccName = "Invalid credit card name";
-  }
-
-  if (!values.ccNumber) {
-    errors.ccNumber = "Credit card number is required";
-  } else if (!ccNumberRegExp.test(values.ccNumber)) {
-    errors.ccNumber = "Invalid credit card number";
-  }
 
   if (!values.ccMonth) {
     errors.ccMonth = "Credit card expiration month is required";
@@ -30,12 +15,6 @@ const validate = values => {
   } else if (!ccYearRegExp.test(values.ccYear)) {
     errors.ccYear = "Invalid credit card expiration year";
   }
-
-  if (!values.ccCVV) {
-    errors.ccCVV = "Credit card CVV is required";
-  } else if (!ccCVVRegExp.test(values.ccCVV)) {
-    errors.ccCVV = "Invalid credit card CVV";
-  }*/
 
   return errors;
 };

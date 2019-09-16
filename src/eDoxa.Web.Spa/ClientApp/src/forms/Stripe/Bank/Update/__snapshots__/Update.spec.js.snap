@@ -1,0 +1,64 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<form
+  onSubmit={[Function]}
+>
+  <div
+    className="row"
+  >
+    <div
+      className="col-4"
+    >
+      <div
+        className="form-group"
+      >
+        <input
+          className="form-control-sm form-control"
+          name="account_holder_name"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onDragStart={[Function]}
+          onDrop={[Function]}
+          onFocus={[Function]}
+          type="text"
+          value=""
+        />
+        <div
+          className="invalid-feedback"
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    className="mb-0 form-group"
+  >
+    <button
+      aria-label={null}
+      className="mr-2 btn btn-primary btn-sm"
+      onClick={[Function]}
+      style={
+        Object {
+          "width": "75px",
+        }
+      }
+      type="submit"
+    >
+      Save
+    </button>
+    <button
+      aria-label={null}
+      className="btn btn-outline-primary btn-sm"
+      onClick={[Function]}
+      style={
+        Object {
+          "width": "75px",
+        }
+      }
+      type="button"
+    >
+      Cancel
+    </button>
+  </div>
+</form>
+`;

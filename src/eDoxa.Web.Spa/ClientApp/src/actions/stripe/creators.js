@@ -92,9 +92,9 @@ export function addStripeBank(data) {
       client: "stripe",
       request: {
         method: "post",
-        url: "/v1/customers/:customerId/sources",
+        url: "/v1/accounts/:connectAccountId/external_accounts",
         data: {
-          source: data
+          external_account: data
         }
       }
     }

@@ -13,7 +13,7 @@ const CreateStripeBankModal = ({ show, handleHide, className, actions }) => (
         <dd className="col-sm-8 mb-0">
           <div className="Checkout">
             <Elements>
-              <BankForm.Create onSubmit={data => actions.addStripeBank(data).then(() => this.toggle())} handleCancel={() => this.toggle()} />
+              <BankForm.Create onSubmit={data => actions.addStripeBank(data).then(() => handleHide())} handleCancel={handleHide} />
             </Elements>
           </div>
         </dd>

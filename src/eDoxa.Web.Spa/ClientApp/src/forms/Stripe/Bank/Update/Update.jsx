@@ -6,11 +6,11 @@ import Input from "components/Shared/Override/Input";
 import { UPDATE_BANK_FORM } from "forms";
 import validate from "./validate";
 
-const UpdateStripeCreditCardForm = ({ bank, handleSubmit, handleCancel }) => (
+const UpdateStripeBankForm = ({ handleSubmit, handleCancel }) => (
   <Form onSubmit={handleSubmit}>
     <Row>
       <Col xs="4">
-        <Field type="text" name="name" label={bank.account_holder_name} formGroup={FormGroup} component={Input.Text} />
+        <Field type="text" name="account_holder_name" formGroup={FormGroup} component={Input.Text} />
       </Col>
     </Row>
     <FormGroup className="mb-0">
@@ -20,4 +20,4 @@ const UpdateStripeCreditCardForm = ({ bank, handleSubmit, handleCancel }) => (
   </Form>
 );
 
-export default reduxForm({ form: UPDATE_BANK_FORM, validate })(UpdateStripeCreditCardForm);
+export default reduxForm({ form: UPDATE_BANK_FORM, validate })(UpdateStripeBankForm);
