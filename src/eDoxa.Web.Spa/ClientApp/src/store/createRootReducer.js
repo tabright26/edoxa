@@ -8,12 +8,14 @@ import { reducer as stripe } from "reducers/stripe/reducer";
 import { reducer as arena } from "reducers/arena/reducer";
 import { reducer as user } from "reducers/user/reducer";
 import { reducer as doxaTags } from "reducers/doxaTags/reducer";
+import { reducer as toastr } from "react-redux-toastr";
 
 const rootReducer = () =>
   combineReducers({
     router,
     form,
     modal,
+    toastr,
     oidc,
     stripe,
     arena,

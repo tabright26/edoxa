@@ -11,6 +11,7 @@ import { Provider } from "react-redux";
 import configureStore from "./store/configureStore";
 import { OidcProvider } from "redux-oidc";
 import userManager from "./utils/userManager";
+import ReduxToastr from "react-redux-toastr";
 
 const initialState = {};
 
@@ -21,6 +22,7 @@ ReactDOM.render(
     <OidcProvider store={store} userManager={userManager}>
       <App />
     </OidcProvider>
+    <ReduxToastr timeOut={4000} newestOnTop={false} preventDuplicates position="bottom-right" transitionIn="fadeIn" transitionOut="fadeOut" progressBar closeOnToastrClick />
   </Provider>,
   document.getElementById("root")
 );
