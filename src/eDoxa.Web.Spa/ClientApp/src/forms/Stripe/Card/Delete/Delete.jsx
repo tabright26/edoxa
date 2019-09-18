@@ -2,7 +2,7 @@ import React from "react";
 import { Label, FormGroup, Form } from "reactstrap";
 import { reduxForm } from "redux-form";
 import Button from "components/Shared/Override/Button";
-import { DELETE_CREDITCARD_FORM } from "forms";
+import { DELETE_CARD_FORM } from "forms";
 
 const DeleteStripeCreditCardForm = ({ handleSubmit, handleCancel }) => (
   <Form onSubmit={handleSubmit} className="mt-3">
@@ -14,4 +14,4 @@ const DeleteStripeCreditCardForm = ({ handleSubmit, handleCancel }) => (
   </Form>
 );
 
-export default reduxForm({ form: DELETE_CREDITCARD_FORM })(DeleteStripeCreditCardForm);
+export default reduxForm({ form: DELETE_CARD_FORM })(DeleteStripeCreditCardForm);

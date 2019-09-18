@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { loadChallenge } from "actions/arena/challenges/creators";
 
-export const withArenaChallengeContainer = WrappedComponent => {
-  class ArenaChallengeContainer extends Component {
+export const connectArenaChallenge = WrappedComponent => {
+  class Container extends Component {
     componentDidMount() {
       this.props.actions.loadChallenge();
     }
@@ -42,7 +42,7 @@ export const withArenaChallengeContainer = WrappedComponent => {
   return connect(
     mapStateToProps,
     mapDispatchToProps
-  )(ArenaChallengeContainer);
+  )(Container);
 };
 
-export default withArenaChallengeContainer;
+export default connectArenaChallenge;

@@ -3,7 +3,7 @@ import { Col, FormGroup, Row } from "reactstrap";
 import { Form, Field, reduxForm } from "redux-form";
 import Button from "components/Shared/Override/Button";
 import Input from "components/Shared/Override/Input";
-import { UPDATE_CREDITCARD_FORM } from "forms";
+import { UPDATE_CARD_FORM } from "forms";
 import validate from "./validate";
 
 const UpdateStripeCreditCardForm = ({ handleSubmit, handleCancel }) => (
@@ -53,4 +53,4 @@ const UpdateStripeCreditCardForm = ({ handleSubmit, handleCancel }) => (
   </Form>
 );
 
-export default reduxForm({ form: UPDATE_CREDITCARD_FORM, validate })(UpdateStripeCreditCardForm);
+export default reduxForm({ form: UPDATE_CARD_FORM, validate })(UpdateStripeCreditCardForm);

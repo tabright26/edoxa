@@ -4,7 +4,7 @@ export const initialState = { data: [] };
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.LOAD_USER_STRIPE_BANK_ACCOUNTS_SUCCESS:
+    case actionTypes.LOAD_BANK_ACCOUNTS_SUCCESS:
       const { status, data } = action.payload;
       switch (status) {
         case 204:
@@ -12,7 +12,7 @@ export const reducer = (state = initialState, action) => {
         default:
           return data;
       }
-    case actionTypes.LOAD_USER_STRIPE_BANK_ACCOUNTS_FAIL:
+    case actionTypes.LOAD_BANK_ACCOUNTS_FAIL:
     default:
       return state;
   }

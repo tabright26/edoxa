@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { loadGames } from "actions/identity/creators";
 
-const withUserGameHoc = WrappedComponent => {
-  class UserGameContainer extends Component {
+const connectUserGames = WrappedComponent => {
+  class Container extends Component {
     componentDidMount() {
       this.props.actions.loadGames();
     }
@@ -30,7 +30,7 @@ const withUserGameHoc = WrappedComponent => {
   return connect(
     mapStateToProps,
     mapDispatchToProps
-  )(UserGameContainer);
+  )(Container);
 };
 
-export default withUserGameHoc;
+export default connectUserGames;

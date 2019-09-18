@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, CardImg, CardImgOverlay, CardText, CardTitle, Row, Col, Card, Button } from "reactstrap";
 
-import withUserGameHoc from "containers/withUserGameHoc";
+import withUserGameHoc from "containers/connectUserGames";
 
 const UserGameIndex = ({ games }) => (
   <Container>

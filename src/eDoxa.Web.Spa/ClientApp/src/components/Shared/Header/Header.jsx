@@ -4,7 +4,7 @@ import { Button, Form, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledD
 import { AppNavbarBrand, AppSidebarToggler, AppAsideToggler } from "@coreui/react";
 import logo from "assets/images/brand/logo.svg";
 import sygnet from "assets/images/brand/sygnet.svg";
-import withUserContainer from "containers/withUserContainer";
+import withUserContainer from "containers/connectUser";
 import Balance from "components/User/Account/Balance/Header";
 import userManager, { POST_LOGIN_REDIRECT_URI } from "utils/userManager";
 

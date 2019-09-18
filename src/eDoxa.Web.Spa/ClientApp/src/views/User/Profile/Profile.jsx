@@ -9,7 +9,7 @@ const ProfileDetails = React.lazy(() => import("./Details/Details"));
 const ProfileSecurity = React.lazy(() => import("./Security/Security"));
 const ProfileConfidentiality = React.lazy(() => import("./Confidentiality/Confidentiality"));
 const ProfileConnections = React.lazy(() => import("./Connections/Connections"));
-const ProfileCashier = React.lazy(() => import("./Cashier/"));
+const ProfilePaymentMethods = React.lazy(() => import("./PaymentMethods/PaymentMethods"));
 const ProfileTransactionHistory = React.lazy(() => import("./TransactionHistory/TransactionHistory"));
 
 const Profile = ({ match }) => (
@@ -47,7 +47,7 @@ const Profile = ({ match }) => (
           <Route path={`${match.url}/security`} exact name="Security" render={props => <ProfileSecurity {...props} />} />
           <Route path={`${match.url}/confidentiality`} exact name="Confidentiality" render={props => <ProfileConfidentiality {...props} />} />
           <Route path={`${match.url}/connections`} exact name="Connections" render={props => <ProfileConnections {...props} />} />
-          <Route path={`${match.url}/payment-methods`} exact name="Payment Methods" render={props => <ProfileCashier {...props} />} />
+          <Route path={`${match.url}/payment-methods`} exact name="Payment Methods" render={props => <ProfilePaymentMethods {...props} />} />
           <Route path={`${match.url}/transaction-history`} exact name="Transaction History" render={props => <ProfileTransactionHistory {...props} />} />
           <Redirect from={`${match.url}`} to={`${match.url}/overview`} />
         </Switch>

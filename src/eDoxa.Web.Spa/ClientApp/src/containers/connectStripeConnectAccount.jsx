@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-const withStripeConnectAccountHoc = WrappedComponent => {
-  class UserProfileContainer extends Component {
+const connectStripeConnectAccount = WrappedComponent => {
+  class Container extends Component {
     render() {
       return <WrappedComponent accountAccount={this.props.accountAccount} />;
     }
@@ -23,7 +23,7 @@ const withStripeConnectAccountHoc = WrappedComponent => {
   return connect(
     mapStateToProps,
     mapDispatchToProps
-  )(UserProfileContainer);
+  )(Container);
 };
 
-export default withStripeConnectAccountHoc;
+export default connectStripeConnectAccount;

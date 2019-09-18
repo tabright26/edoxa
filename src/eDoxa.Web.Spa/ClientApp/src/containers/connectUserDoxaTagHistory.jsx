@@ -4,8 +4,8 @@ import { SubmissionError } from "redux-form";
 import { loadDoxaTagHistory, changeDoxaTag } from "actions/identity/creators";
 import actionTypes from "actions/identity";
 
-const withDoxaTagHistory = WrappedComponent => {
-  class DoxaTagHistoryContainer extends Component {
+const connectUserDoxaTagHistory = WrappedComponent => {
+  class Container extends Component {
     async componentDidMount() {
       await this.props.actions.loadDoxaTagHistory();
     }
@@ -50,7 +50,7 @@ const withDoxaTagHistory = WrappedComponent => {
   return connect(
     mapStateToProps,
     mapDispatchToProps
-  )(DoxaTagHistoryContainer);
+  )(Container);
 };
 
-export default withDoxaTagHistory;
+export default connectUserDoxaTagHistory;

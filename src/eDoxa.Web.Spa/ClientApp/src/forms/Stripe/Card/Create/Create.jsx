@@ -1,8 +1,7 @@
-import "./stripeElements.css";
 import React from "react";
 import { CardElement, injectStripe } from "react-stripe-elements";
 import { reduxForm } from "redux-form";
-import { CREATE_CREDITCARD_FORM } from "forms";
+import { CREATE_CARD_FORM } from "forms";
 
 class CreateStripeCreditCardForm extends React.Component {
   handleSubmit = ev => {
@@ -32,4 +31,4 @@ class CreateStripeCreditCardForm extends React.Component {
   }
 }
 
-export default reduxForm({ form: CREATE_CREDITCARD_FORM })(injectStripe(CreateStripeCreditCardForm));
+export default reduxForm({ form: CREATE_CARD_FORM })(injectStripe(CreateStripeCreditCardForm));

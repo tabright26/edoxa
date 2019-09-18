@@ -2,7 +2,7 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import { Card, CardBody } from "reactstrap";
 import queryString from "query-string";
-import withUserContainer from "containers/withUserContainer";
+import withUserContainer from "containers/connectUser";
 import PasswordForm from "forms/User/Password";
 
 const ResetPassword = ({ location, actions }) => {

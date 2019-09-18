@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { loadUserAccountBalanceForToken } from "actions/cashier/creators";
 
-const withUserAccountBalanceTokenHoc = WrappedComponent => {
-  class UserAccountBalanceTokenContainer extends Component {
+const connectUserAccountBalanceToken = WrappedComponent => {
+  class Container extends Component {
     componentDidMount() {
       this.props.actions.loadUserAccountBalanceForToken();
     }
@@ -30,7 +30,7 @@ const withUserAccountBalanceTokenHoc = WrappedComponent => {
   return connect(
     mapStateToProps,
     mapDispatchToProps
-  )(UserAccountBalanceTokenContainer);
+  )(Container);
 };
 
-export default withUserAccountBalanceTokenHoc;
+export default connectUserAccountBalanceToken;

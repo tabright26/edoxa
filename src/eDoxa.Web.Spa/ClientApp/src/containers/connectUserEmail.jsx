@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-const withEmail = WrappedComponent => {
-  class EmailContainer extends Component {
+const connectUserEmail = WrappedComponent => {
+  class Container extends Component {
     render() {
       return <WrappedComponent {...this.props} />;
     }
@@ -14,7 +14,7 @@ const withEmail = WrappedComponent => {
     };
   };
 
-  return connect(mapStateToProps)(EmailContainer);
+  return connect(mapStateToProps)(Container);
 };
 
-export default withEmail;
+export default connectUserEmail;

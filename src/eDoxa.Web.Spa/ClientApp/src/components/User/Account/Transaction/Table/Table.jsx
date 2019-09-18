@@ -3,7 +3,7 @@ import { Table } from "reactstrap";
 
 import UserAccountTransactionTableRow from "./Row/Row";
 
-import withUserAccountTransactionHoc from "containers/withUserAccountTransactionHoc";
+import withUserAccountTransactionHoc from "containers/connectUserAccountTransactions";
 
 const UserAccountTransactionTable = ({ transactions }) => {
   return (

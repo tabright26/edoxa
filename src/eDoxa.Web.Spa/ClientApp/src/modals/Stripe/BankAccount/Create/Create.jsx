@@ -2,8 +2,8 @@ import React from "react";
 import { Elements } from "react-stripe-elements";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
 import { connectModal } from "redux-modal";
-import { CREATE_BANK_MODAL } from "modals";
-import BankForm from "forms/Stripe/Bank";
+import { CREATE_BANK_ACCOUNT_MODAL } from "modals";
+import BankForm from "forms/Stripe/BankAccount";
 
 const CreateStripeBankModal = ({ show, handleHide, className, actions }) => (
   <Modal size="lg" isOpen={show} toggle={handleHide} className={"modal-primary " + className}>
@@ -22,4 +22,4 @@ const CreateStripeBankModal = ({ show, handleHide, className, actions }) => (
   </Modal>
 );
 
-export default connectModal({ name: CREATE_BANK_MODAL })(CreateStripeBankModal);
+export default connectModal({ name: CREATE_BANK_ACCOUNT_MODAL })(CreateStripeBankModal);

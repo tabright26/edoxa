@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import { push } from "connected-react-router";
 import { forgotPassword, resetPassword, confirmEmail } from "actions/identity/creators";
 
-const withUserContainer = WrappedComponent => {
-  class UserContainer extends Component {
+const connectUser = WrappedComponent => {
+  class Container extends Component {
     render() {
       return <WrappedComponent {...this.props} />;
     }
@@ -37,7 +37,7 @@ const withUserContainer = WrappedComponent => {
   return connect(
     mapStateToProps,
     mapDispatchToProps
-  )(UserContainer);
+  )(Container);
 };
 
-export default withUserContainer;
+export default connectUser;

@@ -1,7 +1,7 @@
 import React from "react";
 
 const Account = React.lazy(() => import("./views/User/Account/Account"));
-const AccountCashier = React.lazy(() => import("./views/User/Profile/Cashier"));
+const AccountCashier = React.lazy(() => import("./views/User/Profile/PaymentMethods/PaymentMethods"));
 const AccountTransactionHistory = React.lazy(() => import("./views/User/Account/TransactionHistory/TransactionHistory"));
 const Arena = React.lazy(() => import("./views/Arena/Arena"));
 const ArenaChallenges = React.lazy(() => import("./views/Arena/Challenges/Challenges"));

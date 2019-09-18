@@ -1,10 +1,9 @@
-import "./stripeElements.css";
 import React from "react";
 import Button from "components/Shared/Override/Button";
 import Input from "components/Shared/Override/Input";
 import { Field, reduxForm } from "redux-form";
 import { FormGroup, Form } from "reactstrap";
-import { CREATE_BANK_FORM } from "forms";
+import { CREATE_BANK_ACCOUNT_FORM } from "forms";
 
 /*handleSubmit = ev => {
     ev.preventDefault();
@@ -54,4 +53,4 @@ const CreateStripeBankForm = ({ handleSubmit, handleCancel }) => (
   </Form>
 );
 
-export default reduxForm({ form: CREATE_BANK_FORM })(CreateStripeBankForm);
+export default reduxForm({ form: CREATE_BANK_ACCOUNT_FORM })(CreateStripeBankForm);

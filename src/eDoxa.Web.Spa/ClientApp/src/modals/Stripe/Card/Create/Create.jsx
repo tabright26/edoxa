@@ -2,7 +2,7 @@ import React from "react";
 import { Elements } from "react-stripe-elements";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
 import { connectModal } from "redux-modal";
-import { CREATE_CREDITCARD_MODAL } from "modals";
+import { CREATE_CARD_MODAL } from "modals";
 import CreditCardForm from "forms/Stripe/Card";
 
 const CreateStripeCardModal = ({ show, handleHide, className, actions }) => (
@@ -22,4 +22,4 @@ const CreateStripeCardModal = ({ show, handleHide, className, actions }) => (
   </Modal>
 );
 
-export default connectModal({ name: CREATE_CREDITCARD_MODAL })(CreateStripeCardModal);
+export default connectModal({ name: CREATE_CARD_MODAL })(CreateStripeCardModal);

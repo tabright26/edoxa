@@ -2,25 +2,26 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { SubmissionError } from "redux-form";
 import { show } from "redux-modal";
-import { CREATE_CREDITCARD_MODAL } from "modals";
-import { loadUserStripeCards, addStripeCreditCard, removeStripeCreditCard, updateStripeCreditCard } from "actions/stripe/creators";
+import { CREATE_BANK_ACCOUNT_MODAL } from "modals";
+import { loadBankAccounts, createBankAccount, deleteBankAccount, updateBankAccount } from "actions/stripe/creators";
 import actionTypes from "actions/stripe";
 
-const withStripeCardHoc = WrappedComponent => {
-  class StripeCardContainer extends Component {
+const connectStripeBankAccounts = WrappedComponent => {
+  class Container extends Component {
     componentDidMount() {
-      this.props.actions.loadUserStripeCards();
+      this.props.actions.loadBankAccounts();
     }
 
     render() {
-      const { cards, ...attributes } = this.props;
-      return <WrappedComponent cards={cards} {...attributes} />;
+      const { bank, hasBankAccount, ...attributes } = this.props;
+      return <WrappedComponent bank={bank} {...attributes} hasBankAccount={hasBankAccount} />;
     }
   }
 
   const mapStateToProps = state => {
     return {
-      cards: state.stripe.cards.data,
+      bank: state.stripe.bankAccounts.data,
+      hasBankAccount: state.stripe.bankAccounts.data.lenth,
       stripeCustomerId: state.oidc.user.profile["stripe:customerId"]
     };
   };
@@ -28,14 +29,14 @@ const withStripeCardHoc = WrappedComponent => {
   const mapDispatchToProps = dispatch => {
     return {
       actions: {
-        loadUserStripeCards: () => dispatch(loadUserStripeCards()),
-        addStripeCreditCard: async data => {
-          dispatch(addStripeCreditCard(data)).then(async action => {
+        loadBankAccounts: () => dispatch(loadBankAccounts()),
+        createBankAccount: data => {
+          dispatch(createBankAccount(data)).then(async action => {
             switch (action.type) {
-              case actionTypes.ADD_STRIPE_CREDIT_CARD_SUCCESS:
-                await dispatch(loadUserStripeCards());
+              case actionTypes.CREATE_BANK_ACCOUNT_SUCCESS:
+                await dispatch(loadBankAccounts());
                 break;
-              case actionTypes.ADD_STRIPE_CREDIT_CARD_FAIL:
+              case actionTypes.CREATE_BANK_ACCOUNT_FAIL:
                 const { isAxiosError, response } = action.error;
                 if (isAxiosError) {
                   throw new SubmissionError(response.data.errors);
@@ -47,13 +48,13 @@ const withStripeCardHoc = WrappedComponent => {
             }
           });
         },
-        removeStripeCreditCard: async cardId => {
-          dispatch(removeStripeCreditCard(cardId)).then(async action => {
+        updateBankAccount: (bankAccountId, data) => {
+          dispatch(updateBankAccount(bankAccountId, data)).then(async action => {
             switch (action.type) {
-              case actionTypes.REMOVE_STRIPE_CREDIT_CARD_SUCCESS:
-                await dispatch(loadUserStripeCards());
+              case actionTypes.UPDATE_BANK_ACCOUNT_SUCCESS:
+                await dispatch(loadBankAccounts());
                 break;
-              case actionTypes.REMOVE_STRIPE_CREDIT_CARD_FAIL:
+              case actionTypes.UPDATE_BANK_ACCOUNT_FAIL:
                 const { isAxiosError, response } = action.error;
                 if (isAxiosError) {
                   throw new SubmissionError(response.data.errors);
@@ -65,13 +66,13 @@ const withStripeCardHoc = WrappedComponent => {
             }
           });
         },
-        updateStripeCreditCard: async (cardId, data) => {
-          dispatch(updateStripeCreditCard(cardId, data)).then(async action => {
+        deleteBankAccount: bankAccountId => {
+          dispatch(deleteBankAccount(bankAccountId)).then(async action => {
             switch (action.type) {
-              case actionTypes.UPDATE_STRIPE_CREDIT_CARD_SUCCESS:
-                await dispatch(loadUserStripeCards());
+              case actionTypes.DELETE_BANK_ACCOUNT_SUCCESS:
+                await dispatch(loadBankAccounts());
                 break;
-              case actionTypes.UPDATE_STRIPE_CREDIT_CARD_FAIL:
+              case actionTypes.DELETE_BANK_ACCOUNT_FAIL:
                 const { isAxiosError, response } = action.error;
                 if (isAxiosError) {
                   throw new SubmissionError(response.data.errors);
@@ -83,7 +84,7 @@ const withStripeCardHoc = WrappedComponent => {
             }
           });
         },
-        showCreateCreditCardModal: () => dispatch(show(CREATE_CREDITCARD_MODAL))
+        showCreateBankAccountModal: () => dispatch(show(CREATE_BANK_ACCOUNT_MODAL))
       }
     };
   };
@@ -91,7 +92,7 @@ const withStripeCardHoc = WrappedComponent => {
   return connect(
     mapStateToProps,
     mapDispatchToProps
-  )(StripeCardContainer);
+  )(Container);
 };
 
-export default withStripeCardHoc;
+export default connectStripeBankAccounts;

@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { loadUserAccountTransactions } from "actions/cashier/creators";
 
-const withUserAccountTransactionHoc = WrappedComponent => {
-  class UserAccountTransactionContainer extends Component {
+const connectUserAccountTransactions = WrappedComponent => {
+  class Container extends Component {
     componentDidMount() {
       this.props.actions.loadUserAccountTransactions();
     }
@@ -31,7 +31,7 @@ const withUserAccountTransactionHoc = WrappedComponent => {
   return connect(
     mapStateToProps,
     mapDispatchToProps
-  )(UserAccountTransactionContainer);
+  )(Container);
 };
 
-export default withUserAccountTransactionHoc;
+export default connectUserAccountTransactions;

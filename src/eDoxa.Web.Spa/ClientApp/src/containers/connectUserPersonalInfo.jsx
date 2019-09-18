@@ -1,15 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { show } from "redux-modal";
 import { SubmissionError } from "redux-form";
-import { CREATE_ADDRESS_MODAL } from "modals";
-import { loadAddressBook, addAddress, updateAddress, removeAddress } from "actions/identity/creators";
+import { loadPersonalInfo, createPersonalInfo, updatePersonalInfo } from "actions/identity/creators";
 import actionTypes from "actions/identity";
 
-const withAddressBook = WrappedComponent => {
-  class AddressBookContainer extends Component {
+const connectUserPersonalInfo = WrappedComponent => {
+  class Container extends Component {
     componentDidMount() {
-      this.props.actions.loadAddressBook();
+      this.props.actions.loadPersonalInfo();
     }
 
     render() {
@@ -19,21 +17,23 @@ const withAddressBook = WrappedComponent => {
 
   const mapStateToProps = state => {
     return {
-      addressBook: state.user.addressBook
+      personalInfo: state.user.personalInfo
     };
   };
 
   const mapDispatchToProps = dispatch => {
     return {
       actions: {
-        loadAddressBook: () => dispatch(loadAddressBook()),
-        addAddress: async data => {
-          await dispatch(addAddress(data)).then(async action => {
+        loadPersonalInfo: () => dispatch(loadPersonalInfo()),
+        createPersonalInfo: async data => {
+          const { year, month, day } = data.birthDate;
+          data.birthDate = new Date(year, month, day);
+          await dispatch(createPersonalInfo(data)).then(async action => {
             switch (action.type) {
-              case actionTypes.ADD_ADDRESS_SUCCESS:
-                await dispatch(loadAddressBook());
+              case actionTypes.CREATE_PERSONAL_INFO_SUCCESS:
+                await dispatch(loadPersonalInfo());
                 break;
-              case actionTypes.ADD_ADDRESS_FAIL:
+              case actionTypes.CREATE_PERSONAL_INFO_FAIL:
                 const { isAxiosError, response } = action.error;
                 if (isAxiosError) {
                   throw new SubmissionError(response.data.errors);
@@ -45,13 +45,13 @@ const withAddressBook = WrappedComponent => {
             }
           });
         },
-        updateAddress: async (addressId, data) => {
-          await dispatch(updateAddress(addressId, data)).then(async action => {
+        updatePersonalInfo: async data => {
+          await dispatch(updatePersonalInfo(data)).then(async action => {
             switch (action.type) {
-              case actionTypes.UPDATE_ADDRESS_SUCCESS:
-                await dispatch(loadAddressBook());
+              case actionTypes.UPDATE_PERSONAL_INFO_SUCCESS:
+                await dispatch(loadPersonalInfo());
                 break;
-              case actionTypes.UPDATE_ADDRESS_FAIL:
+              case actionTypes.UPDATE_PERSONAL_INFO_FAIL:
                 const { isAxiosError, response } = action.error;
                 if (isAxiosError) {
                   throw new SubmissionError(response.data.errors);
@@ -62,9 +62,7 @@ const withAddressBook = WrappedComponent => {
                 break;
             }
           });
-        },
-        removeAddress: addressId => dispatch(removeAddress(addressId)),
-        showCreateAddressModal: () => dispatch(show(CREATE_ADDRESS_MODAL))
+        }
       }
     };
   };
@@ -72,7 +70,7 @@ const withAddressBook = WrappedComponent => {
   return connect(
     mapStateToProps,
     mapDispatchToProps
-  )(AddressBookContainer);
+  )(Container);
 };
 
-export default withAddressBook;
+export default connectUserPersonalInfo;

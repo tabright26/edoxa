@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-const withPhoneNumber = WrappedComponent => {
-  class PhoneNumberContainer extends Component {
+const connectUserPhoneNumber = WrappedComponent => {
+  class Container extends Component {
     render() {
       return <WrappedComponent {...this.props} />;
     }
@@ -14,7 +14,7 @@ const withPhoneNumber = WrappedComponent => {
     };
   };
 
-  return connect(mapStateToProps)(PhoneNumberContainer);
+  return connect(mapStateToProps)(Container);
 };
 
-export default withPhoneNumber;
+export default connectUserPhoneNumber;
