@@ -4,13 +4,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTimes } from "@fortawesome/free-solid-svg-icons";
 import connectStripeCards from "containers/connectStripeCards";
 import connectStripePaymentMethods from "containers/connectStripePaymentMethods";
+import CardBrandIcon from "components/Stripe/Card/BrandIcon";
 
 let StripeCard = ({ index, actions, card, length }) => {
   console.log(card);
   return (
     <>
       <dl className={`row ${length === index ? "mb-0" : null}`}>
-        <dd className="col-sm-2 m-0">{card.card.brand}</dd>
+        <dd className="col-sm-2 m-0">
+          <CardBrandIcon brand={card.card.brand} size="2x" />
+        </dd>
         <dd className="col-sm-2 m-0">{`**** ${card.card.last4}`}</dd>
         <dd className="col-sm-2 m-0">
           {card.card.exp_month}/{card.card.exp_year}
