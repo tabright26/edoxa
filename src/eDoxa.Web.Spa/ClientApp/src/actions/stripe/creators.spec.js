@@ -1,16 +1,18 @@
-import { loadCards, loadBankAccounts } from "./creators";
+import { loadPaymentMethods, loadBankAccounts } from "./creators";
 import actionTypes from "./index";
 
 describe("stripe actions", () => {
   it("should create an action to get user stripe cards", () => {
-    const expectedType = [actionTypes.LOAD_CARDS, actionTypes.LOAD_CARDS_SUCCESS, actionTypes.LOAD_CARDS_FAIL];
+    const expectedCustomer = "cus_qwe12312eqw12";
+    const expectedType = "card";
+    const expectedTypes = [actionTypes.LOAD_CARDS, actionTypes.LOAD_CARDS_SUCCESS, actionTypes.LOAD_CARDS_FAIL];
     const expectedClient = "stripe";
     const expectedMethod = "get";
-    const expectedUrl = `/v1/customers/:customerId/sources?object=card`;
+    const expectedUrl = `/v1/payment_methods?customer=${expectedCustomer}&type=${expectedType}`;
 
-    const actionCreator = loadCards();
+    const actionCreator = loadPaymentMethods(expectedCustomer, expectedType);
 
-    expect(actionCreator.types).toEqual(expectedType);
+    expect(actionCreator.types).toEqual(expectedTypes);
     expect(actionCreator.payload.client).toEqual(expectedClient);
     expect(actionCreator.payload.request.method).toEqual(expectedMethod);
     expect(actionCreator.payload.request.url).toEqual(expectedUrl);

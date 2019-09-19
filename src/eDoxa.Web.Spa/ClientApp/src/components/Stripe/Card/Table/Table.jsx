@@ -1,7 +1,7 @@
 import React from "react";
 import { Table } from "reactstrap";
 
-import withStripeCardHoc from "containers/connectStripeCards";
+import withStripeCardHoc from "containers/connectStripePaymentMethods";
 
 const StripeCardTable = ({ cards }) => (
   <Table variant="dark" responsive borderless striped hover className="mb-0">

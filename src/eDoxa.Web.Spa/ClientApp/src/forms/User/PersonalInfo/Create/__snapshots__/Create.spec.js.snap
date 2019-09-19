@@ -71,7 +71,7 @@ exports[`renders correctly 1`] = `
         className="form-group"
       >
         <select
-          className="d-inline form-control"
+          className="d-inline form-control-sm form-control"
           name="birthDate.year"
           onBlur={[Function]}
           onChange={[Function]}
@@ -477,7 +477,7 @@ exports[`renders correctly 1`] = `
           /
         </span>
         <select
-          className="d-inline form-control"
+          className="d-inline form-control-sm form-control"
           name="birthDate.month"
           onBlur={[Function]}
           onChange={[Function]}
@@ -563,7 +563,7 @@ exports[`renders correctly 1`] = `
           /
         </span>
         <select
-          className="d-inline form-control"
+          className="d-inline form-control-sm form-control"
           name="birthDate.day"
           onBlur={[Function]}
           onChange={[Function]}
@@ -749,7 +749,7 @@ exports[`renders correctly 1`] = `
       className="col-sm-3 mb-0"
     >
       <select
-        className="form-control"
+        className="form-control-sm form-control"
         name="gender"
         onBlur={[Function]}
         onChange={[Function]}

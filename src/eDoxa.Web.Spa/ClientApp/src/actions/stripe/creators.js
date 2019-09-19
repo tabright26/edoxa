@@ -1,66 +1,66 @@
-export const LOAD_CARDS = "LOAD_CARDS";
-export const LOAD_CARDS_SUCCESS = "LOAD_CARDS_SUCCESS";
-export const LOAD_CARDS_FAIL = "LOAD_CARDS_FAIL";
-export function loadCards() {
+export const LOAD_PAYMENTMETHODS = "LOAD_PAYMENTMETHODS";
+export const LOAD_PAYMENTMETHODS_SUCCESS = "LOAD_PAYMENTMETHODS_SUCCESS";
+export const LOAD_PAYMENTMETHODS_FAIL = "LOAD_PAYMENTMETHODS_FAIL";
+export function loadPaymentMethods(customer, type) {
   return {
-    types: [LOAD_CARDS, LOAD_CARDS_SUCCESS, LOAD_CARDS_FAIL],
+    types: [LOAD_PAYMENTMETHODS, LOAD_PAYMENTMETHODS_SUCCESS, LOAD_PAYMENTMETHODS_FAIL],
     payload: {
       client: "stripe",
       request: {
         method: "get",
-        url: `/v1/customers/:customerId/sources?object=card`
+        url: `/v1/payment_methods?customer=${customer}&type=${type}`
       }
     }
   };
 }
 
-export const CREATE_CARD = "CREATE_CARD";
-export const CREATE_CARD_SUCCESS = "CREATE_CARD_SUCCESS";
-export const CREATE_CARD_FAIL = "CREATE_CARD_FAIL";
-export function createCard(token) {
+export const ATTACH_PAYMENTMETHOD = "ATTACH_PAYMENTMETHOD";
+export const ATTACH_PAYMENTMETHOD_SUCCESS = "ATTACH_PAYMENTMETHOD_SUCCESS";
+export const ATTACH_PAYMENTMETHOD_FAIL = "ATTACH_PAYMENTMETHOD_FAIL";
+export function attachPaymentMethod(paymentMethodId, customer) {
   return {
-    types: [CREATE_CARD, CREATE_CARD_SUCCESS, CREATE_CARD_FAIL],
+    types: [ATTACH_PAYMENTMETHOD, ATTACH_PAYMENTMETHOD_SUCCESS, ATTACH_PAYMENTMETHOD_FAIL],
     payload: {
       client: "stripe",
       request: {
         method: "post",
-        url: "/v1/customers/:customerId/sources",
+        url: `/v1/payment_methods/${paymentMethodId}/attach`,
         data: {
-          source: token
+          customer
         }
       }
     }
   };
 }
 
-export const UPDATE_CARD = "UPDATE_CARD";
-export const UPDATE_CARD_SUCCESS = "UPDATE_CARD_SUCCESS";
-export const UPDATE_CARD_FAIL = "UPDATE_CARD_FAIL";
-export function updateCard(cardId, data) {
+export const DETACH_PAYMENTMETHOD = "DETACH_PAYMENTMETHOD";
+export const DETACH_PAYMENTMETHOD_SUCCESS = "DETACH_PAYMENTMETHOD_SUCCESS";
+export const DETACH_PAYMENTMETHOD_FAIL = "DETACH_PAYMENTMETHOD_FAIL";
+export function detachPaymentMethod(paymentMethodId) {
   return {
-    types: [UPDATE_CARD, UPDATE_CARD_SUCCESS, UPDATE_CARD_FAIL],
+    types: [DETACH_PAYMENTMETHOD, DETACH_PAYMENTMETHOD_SUCCESS, DETACH_PAYMENTMETHOD_FAIL],
     payload: {
       client: "stripe",
       request: {
-        method: "put",
-        url: `/v1/customers/:customerId/sources/${cardId}`,
-        data
+        method: "post",
+        url: `/v1/payment_methods/${paymentMethodId}/detach`
       }
     }
   };
 }
 
-export const DELETE_CARD = "DELETE_CARD";
-export const DELETE_CARD_SUCCESS = "DELETE_CARD_SUCCESS";
-export const DELETE_CARD_FAIL = "DELETE_CARD_FAIL";
-export function deleteCard(cardId) {
+export const UPDATE_PAYMENTMETHOD = "UPDATE_PAYMENTMETHOD";
+export const UPDATE_PAYMENTMETHOD_SUCCESS = "UPDATE_PAYMENTMETHOD_SUCCESS";
+export const UPDATE_PAYMENTMETHOD_FAIL = "UPDATE_PAYMENTMETHOD_FAIL";
+export function updatePaymentMethod(paymentMethodId, data) {
   return {
-    types: [DELETE_CARD, DELETE_CARD_SUCCESS, DELETE_CARD_FAIL],
+    types: [UPDATE_PAYMENTMETHOD, UPDATE_PAYMENTMETHOD_SUCCESS, UPDATE_PAYMENTMETHOD_FAIL],
     payload: {
       client: "stripe",
       request: {
-        method: "delete",
-        url: `/v1/customers/:customerId/sources/${cardId}`
+        method: "post",
+        url: `/v1/payment_methods/${paymentMethodId}`,
+        data
       }
     }
   };

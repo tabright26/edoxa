@@ -13,16 +13,15 @@ const connectStripeBankAccounts = WrappedComponent => {
     }
 
     render() {
-      const { bank, hasBankAccount, ...attributes } = this.props;
-      return <WrappedComponent bank={bank} {...attributes} hasBankAccount={hasBankAccount} />;
+      const { bankAccounts, hasBankAccount, ...attributes } = this.props;
+      return <WrappedComponent bankAccounts={bankAccounts} {...attributes} hasBankAccount={hasBankAccount} />;
     }
   }
 
   const mapStateToProps = state => {
     return {
-      bank: state.stripe.bankAccounts.data,
-      hasBankAccount: state.stripe.bankAccounts.data.lenth,
-      stripeCustomerId: state.oidc.user.profile["stripe:customerId"]
+      bankAccounts: state.stripe.bankAccounts,
+      hasBankAccount: state.stripe.bankAccounts.data.lenth
     };
   };
 
@@ -30,7 +29,15 @@ const connectStripeBankAccounts = WrappedComponent => {
     return {
       actions: {
         loadBankAccounts: () => dispatch(loadBankAccounts()),
-        createBankAccount: data => {
+        createBankAccount: async data => {
+          // const { token, error } = await stripe.createToken("bank_account", {
+          //   country: "US",
+          //   currency: "usd",
+          //   routing_number: "110000000",
+          //   account_number: "000123456789",
+          //   account_holder_name: "Jenny Rosen",
+          //   account_holder_type: "individual"
+          // });
           dispatch(createBankAccount(data)).then(async action => {
             switch (action.type) {
               case actionTypes.CREATE_BANK_ACCOUNT_SUCCESS:

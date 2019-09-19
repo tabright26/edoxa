@@ -1,9 +1,9 @@
 import React from "react";
 import { connectModal } from "redux-modal";
 import { Modal, ModalFooter, ModalHeader, Table } from "reactstrap";
-import { ARENA_CHALLENGE_PARTICIPANT_MATCH_SCORE_DETAILS_MODAL } from "modals";
 import Button from "components/Shared/Override/Button";
 import Format from "components/Shared/Format";
+import { ARENA_CHALLENGE_PARTICIPANT_MATCH_SCORE_DETAILS_MODAL } from "modals";
 
 const ArenaChallengeParticipantMatchScoreDetailsModal = ({ show, handleHide, stats }) => (
   <Modal isOpen={show} toggle={handleHide} className="modal-primary">

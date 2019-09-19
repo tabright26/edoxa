@@ -160,7 +160,8 @@ services:
       - REACT_APP_SCOPE=openid profile roles permissions games stripe identity.api cashier.api arena.challenges.api organizations.clans.api
       - REACT_APP_WEB_GATEWAY=http://${HOST:-localhost}:5200
       - REACT_APP_SILENT_REFRESH_URI=http://${HOST:-localhost}:5300/silent-refresh
-      - REACT_APP_STRIPE_APIKEY=sk_test_xRMH8A7bagp2Auj7YPqNihlY
+      - REACT_APP_STRIPE_APIKEYS_PUBLISHABLEKEY=pk_test_2iUjQQxve1uP7BJOxs5SwQvj
+      - REACT_APP_STRIPE_APIKEYS_SECRETKEY=sk_test_xRMH8A7bagp2Auj7YPqNihlY
       - REACT_APP_LEAGUEOFLEGENDS_RIOT_TOKEN=RGAPI-eb72733e-028a-4bb9-ab4d-63fed558924f
     volumes:
       - './src/eDoxa.Web.Spa/ClientApp:/app'
