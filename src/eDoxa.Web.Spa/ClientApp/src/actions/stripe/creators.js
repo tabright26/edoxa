@@ -52,15 +52,14 @@ export function detachPaymentMethod(paymentMethodId) {
 export const UPDATE_PAYMENTMETHOD = "UPDATE_PAYMENTMETHOD";
 export const UPDATE_PAYMENTMETHOD_SUCCESS = "UPDATE_PAYMENTMETHOD_SUCCESS";
 export const UPDATE_PAYMENTMETHOD_FAIL = "UPDATE_PAYMENTMETHOD_FAIL";
-export function updatePaymentMethod(paymentMethodId, data) {
+export function updatePaymentMethod(paymentMethodId, exp_month, exp_year) {
   return {
     types: [UPDATE_PAYMENTMETHOD, UPDATE_PAYMENTMETHOD_SUCCESS, UPDATE_PAYMENTMETHOD_FAIL],
     payload: {
       client: "stripe",
       request: {
         method: "post",
-        url: `/v1/payment_methods/${paymentMethodId}`,
-        data
+        url: `/v1/payment_methods/${paymentMethodId}?card[exp_month]=${exp_month}&card[exp_year]=${exp_year}`
       }
     }
   };

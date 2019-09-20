@@ -1,9 +1,9 @@
-import CreatePaymentMethodForm from "./Create";
-import UpdatePaymentMethodForm from "./Update";
+import Create from "./Create";
+import Update from "./Update";
 import Delete from "./Delete";
 
 export default {
-  Create: CreatePaymentMethodForm,
-  Update: UpdatePaymentMethodForm,
+  Create,
+  Update,
   Delete
 };

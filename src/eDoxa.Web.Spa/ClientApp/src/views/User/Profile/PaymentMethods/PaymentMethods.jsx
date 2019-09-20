@@ -7,7 +7,6 @@ import connectStripePaymentMethods from "containers/connectStripePaymentMethods"
 import Cards from "./Cards";
 import StripePaymentMethodModal from "modals/Stripe/PaymentMethod";
 import { Elements } from "react-stripe-elements";
-//import BankAccount from "./BankAccount";
 
 const PaymentMethods = ({ actions }) => (
   <Fragment>

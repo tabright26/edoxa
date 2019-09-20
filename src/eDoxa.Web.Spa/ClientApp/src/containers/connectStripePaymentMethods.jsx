@@ -16,11 +16,11 @@ const connectStripePaymentMethods = WrappedComponent => {
 
   const mapDispatchToProps = dispatch => {
     const attachPaymentMethodAction = (paymentMethodId, customer) => dispatch(attachPaymentMethod(paymentMethodId, customer));
-    const detachPaymentMethodAction = async paymentMethodId => {
+    const detachPaymentMethodAction = paymentMethodId =>
       dispatch(detachPaymentMethod(paymentMethodId)).then(async action => {
         switch (action.type) {
           case actionTypes.DELETE_CARD_SUCCESS:
-            dispatch(loadPaymentMethods("cus_F5L8mRzm6YN5ma", "card"));
+            await dispatch(loadPaymentMethods("cus_F5L8mRzm6YN5ma", "card"));
             break;
           case actionTypes.DELETE_CARD_FAIL:
             const { isAxiosError, response } = action.error;
@@ -32,11 +32,16 @@ const connectStripePaymentMethods = WrappedComponent => {
             break;
         }
       });
-    };
     const createPaymentMethodAction = (fields, stripe, type) =>
-      stripe.createPaymentMethod(type).then(result => attachPaymentMethodAction(result.paymentMethod.id, "cus_F5L8mRzm6YN5ma").then(() => dispatch(loadPaymentMethods("cus_F5L8mRzm6YN5ma", "card"))));
-    const updatePaymentMethodAction = async (paymentMethodId, data) => {
-      dispatch(updatePaymentMethod(paymentMethodId, data)).then(async action => {
+      stripe.createPaymentMethod(type).then(result => {
+        if (result.paymentMethod) {
+          return attachPaymentMethodAction(result.paymentMethod.id, "cus_F5L8mRzm6YN5ma").then(() => dispatch(loadPaymentMethods("cus_F5L8mRzm6YN5ma", "card")));
+        } else {
+          return Promise.reject(result.error);
+        }
+      });
+    const updatePaymentMethodAction = (paymentMethodId, data) =>
+      dispatch(updatePaymentMethod(paymentMethodId, data.card.exp_month, data.card.exp_year)).then(action => {
         switch (action.type) {
           case actionTypes.UPDATE_CARD_SUCCESS:
             dispatch(loadPaymentMethods("cus_F5L8mRzm6YN5ma", "card"));
@@ -51,7 +56,6 @@ const connectStripePaymentMethods = WrappedComponent => {
             break;
         }
       });
-    };
 
     const showCreatePaymentMethodModal = () => dispatch(show(CREATE_PAYMENTMETHOD_MODAL));
     const showUpdatePaymentMethodModal = paymentMethod => dispatch(show(UPDATE_PAYMENTMETHOD_MODAL, { paymentMethod }));

@@ -48,10 +48,10 @@ class HeaderDropdown extends Component {
           <LinkContainer to="/account/overview">
             <DropdownItem>Account Overview</DropdownItem>
           </LinkContainer>
-          <LinkContainer to="/account/transaction-history">
+          <LinkContainer to="/profile/transaction-history">
             <DropdownItem>Transaction History</DropdownItem>
           </LinkContainer>
-          <LinkContainer to="/account/payment-methods">
+          <LinkContainer to="/profile/payment-methods">
             <DropdownItem>Payment Methods</DropdownItem>
           </LinkContainer>
           <DropdownItem header>Arena</DropdownItem>
