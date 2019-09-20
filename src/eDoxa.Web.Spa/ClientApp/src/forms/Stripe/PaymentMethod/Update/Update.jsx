@@ -34,14 +34,14 @@ const UpdatePaymentMethodForm = ({
     <FormSection className="mx-auto" name="card" component={FormGroup}>
       <Label className="ml-4 mr-2 text-muted">Expiration:</Label>
       <Field className="d-inline" type="select" name="exp_month" style={{ width: "55px" }} component={Input.Select}>
-        {months.map(month => (
-          <CardExpirationMonthOption month={month} />
+        {months.map((month, index) => (
+          <CardExpirationMonthOption key={index} month={month} />
         ))}
       </Field>
       <span className="d-inline mx-2">/</span>
       <Field className="d-inline" type="select" name="exp_year" style={{ width: "55px" }} component={Input.Select}>
-        {expYearOptions(exp_year).map(year => (
-          <CardExpirationYearOption year={year} />
+        {expYearOptions(exp_year).map((year, index) => (
+          <CardExpirationYearOption key={index} year={year} />
         ))}
       </Field>
     </FormSection>

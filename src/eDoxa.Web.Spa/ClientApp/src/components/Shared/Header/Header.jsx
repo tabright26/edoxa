@@ -5,7 +5,6 @@ import { AppNavbarBrand, AppSidebarToggler, AppAsideToggler } from "@coreui/reac
 import logo from "assets/images/brand/logo.svg";
 import sygnet from "assets/images/brand/sygnet.svg";
 import withUserContainer from "containers/connectUser";
-import Balance from "components/User/Account/Balance/Header";
 import userManager, { POST_LOGIN_REDIRECT_URI } from "utils/userManager";
 
 class HeaderDropdown extends Component {
@@ -99,8 +98,7 @@ class Header extends Component {
           </NavItem>
         </Nav>
         {isAuthenticated ? (
-          <Nav className="ml-auto mr-5" navbar>
-            <Balance balance={balance} />
+          <Nav className="ml-auto mr-3" navbar>
             <HeaderDropdown user={user} />
           </Nav>
         ) : (

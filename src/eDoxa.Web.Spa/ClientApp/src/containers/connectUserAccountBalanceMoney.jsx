@@ -9,13 +9,16 @@ const connectUserAccountBalanceMoney = WrappedComponent => {
     }
 
     render() {
-      return <WrappedComponent currency={this.props.money} />;
+      const { currency, available, pending, ...attributes } = this.props;
+      return <WrappedComponent currency={currency} available={available} pending={available} {...attributes} />;
     }
   }
 
   const mapStateToProps = state => {
     return {
-      money: state.user.account.balance.money
+      available: state.user.account.balance.money.available,
+      pending: state.user.account.balance.money.pending,
+      currency: "Money"
     };
   };
 

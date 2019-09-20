@@ -1,18 +1,43 @@
 import React from "react";
 import Currency from "react-currency-format";
+import Icon from "components/Shared/Icon";
+import UnknownCurrency from "./Unknown";
 
-const CurrencyFormat = ({ currency, amount }) => {
-  if (!currency) {
-    return "--";
+const CurrencyFormat = ({ currency, amount = 0, justify = false }) => {
+  switch (currency ? currency.toLowerCase() : null) {
+    case "money":
+      return (
+        <Currency
+          value={amount}
+          displayType="text"
+          thousandSeparator
+          decimalScale={2}
+          fixedDecimalScale={true}
+          renderText={value => (
+            <div className="d-flex">
+              <Icon.Money className="text-primary" />
+              <span className={justify ? "ml-auto" : null}>{value}</span>
+            </div>
+          )}
+        />
+      );
+    case "token":
+      return (
+        <Currency
+          value={amount}
+          displayType="text"
+          thousandSeparator
+          renderText={value => (
+            <div className="d-flex">
+              <Icon.Token className="text-primary" />
+              <span className={justify ? "ml-auto" : null}>{amount}</span>
+            </div>
+          )}
+        />
+      );
+    default:
+      return <UnknownCurrency />;
   }
-  if (!amount && amount !== 0) {
-    return 0;
-  }
-  const normalizedCurrency = currency.toLowerCase();
-  if (normalizedCurrency === "money") {
-    return <Currency value={amount} displayType="text" thousandSeparator prefix="$" />;
-  }
-  return <Currency value={amount} displayType="text" />;
 };
 
 export default CurrencyFormat;
