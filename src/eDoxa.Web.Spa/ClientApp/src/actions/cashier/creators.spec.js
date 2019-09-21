@@ -1,4 +1,4 @@
-import { loadUserAccountBalanceForMoney, loadUserAccountBalanceForToken, loadUserAccountTransactions } from "./creators";
+import { loadUserAccountBalance, loadUserAccountBalanceForToken, loadUserAccountTransactions } from "./creators";
 import actionTypes from "./index";
 
 describe("cashier actions", () => {
@@ -7,7 +7,7 @@ describe("cashier actions", () => {
     const expectedMethod = "get";
     const expectedUrl = "/cashier/api/account/balance/money";
 
-    const actionCreator = loadUserAccountBalanceForMoney();
+    const actionCreator = loadUserAccountBalance();
 
     expect(actionCreator.types).toEqual(expectedType);
     expect(actionCreator.payload.request.method).toEqual(expectedMethod);

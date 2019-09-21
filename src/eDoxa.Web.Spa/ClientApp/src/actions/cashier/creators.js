@@ -1,28 +1,13 @@
-export const LOAD_USER_ACCOUNT_BALANCE_MONEY = "LOAD_USER_ACCOUNT_BALANCE_MONEY";
-export const LOAD_USER_ACCOUNT_BALANCE_MONEY_SUCCESS = "LOAD_USER_ACCOUNT_BALANCE_MONEY_SUCCESS";
-export const LOAD_USER_ACCOUNT_BALANCE_MONEY_FAIL = "LOAD_USER_ACCOUNT_BALANCE_MONEY_FAIL";
-export function loadUserAccountBalanceForMoney() {
+export const LOAD_USER_ACCOUNT_BALANCE = "LOAD_USER_ACCOUNT_BALANCE";
+export const LOAD_USER_ACCOUNT_BALANCE_SUCCESS = "LOAD_USER_ACCOUNT_BALANCE_SUCCESS";
+export const LOAD_USER_ACCOUNT_BALANCE_FAIL = "LOAD_USER_ACCOUNT_BALANCE_FAIL";
+export function loadUserAccountBalance(currency) {
   return {
-    types: [LOAD_USER_ACCOUNT_BALANCE_MONEY, LOAD_USER_ACCOUNT_BALANCE_MONEY_SUCCESS, LOAD_USER_ACCOUNT_BALANCE_MONEY_FAIL],
+    types: [LOAD_USER_ACCOUNT_BALANCE, LOAD_USER_ACCOUNT_BALANCE_SUCCESS, LOAD_USER_ACCOUNT_BALANCE_FAIL],
     payload: {
       request: {
         method: "get",
-        url: "/cashier/api/account/balance/money"
-      }
-    }
-  };
-}
-
-export const LOAD_USER_ACCOUNT_BALANCE_TOKEN = "LOAD_USER_ACCOUNT_BALANCE_TOKEN";
-export const LOAD_USER_ACCOUNT_BALANCE_TOKEN_SUCCESS = "LOAD_USER_ACCOUNT_BALANCE_TOKEN_SUCCESS";
-export const LOAD_USER_ACCOUNT_BALANCE_TOKEN_FAIL = "LOAD_USER_ACCOUNT_BALANCE_TOKEN_FAIL";
-export function loadUserAccountBalanceForToken() {
-  return {
-    types: [LOAD_USER_ACCOUNT_BALANCE_TOKEN, LOAD_USER_ACCOUNT_BALANCE_TOKEN_SUCCESS, LOAD_USER_ACCOUNT_BALANCE_TOKEN_FAIL],
-    payload: {
-      request: {
-        method: "get",
-        url: "/cashier/api/account/balance/token"
+        url: `/cashier/api/account/balance/${currency}`
       }
     }
   };
