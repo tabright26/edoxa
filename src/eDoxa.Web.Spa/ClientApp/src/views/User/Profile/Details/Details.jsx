@@ -9,7 +9,7 @@ import AddressBookCard from "./AddressBook";
 
 const ProfileDetails = () => (
   <Fragment>
-    <h5 className="my-4">PROFILE DETAILS</h5>
+    <h5>PROFILE DETAILS</h5>
     <Suspense fallback={<Loading.Default />}>
       <PersonalInfoCard className="card-accent-primary my-4" />
     </Suspense>

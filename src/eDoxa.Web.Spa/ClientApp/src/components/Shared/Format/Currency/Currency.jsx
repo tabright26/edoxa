@@ -15,7 +15,7 @@ const CurrencyFormat = ({ currency, amount = 0, justify = false }) => {
           fixedDecimalScale={true}
           renderText={value => (
             <div className="d-flex">
-              <Icon.Money className="text-primary" />
+              <Icon.Money className="text-primary my-auto" />
               <span className={justify ? "ml-auto" : null}>{value}</span>
             </div>
           )}
@@ -29,7 +29,7 @@ const CurrencyFormat = ({ currency, amount = 0, justify = false }) => {
           thousandSeparator
           renderText={value => (
             <div className="d-flex">
-              <Icon.Token className="text-primary" />
+              <Icon.Token className="text-primary my-auto" />
               <span className={justify ? "ml-auto" : null}>{amount}</span>
             </div>
           )}

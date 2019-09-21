@@ -1,35 +1,35 @@
 import React from "react";
-import { Container, CardImg, CardImgOverlay, CardText, CardTitle, Row, Col, Card, Button } from "reactstrap";
+import { CardHeader, CardImg, CardImgOverlay, CardText, Row, Col, Card, Button } from "reactstrap";
 
 import withUserGameHoc from "containers/connectUserGames";
 
 const UserGameIndex = ({ games }) => (
-  <Container>
-    <Row>
-      {games.map((game, index) => (
-        <Col key={index} xl="4">
+  <Row>
+    {games.map((game, index) => (
+      <Col key={index} xl="4">
+        <Card className="card-accent-primary my-3">
+          <CardHeader>
+            <strong className="text-uppercase">{game.name}</strong>
+          </CardHeader>
           <Card
-            className="my-3"
             style={{
-              height: "300px"
+              height: "225px"
             }}
+            className="mb-0 border-0"
           >
             <CardImg />
             <CardImgOverlay>
-              <CardTitle as="h5" className="text-center">
-                {game.name}
-              </CardTitle>
               <CardText>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</CardText>
               <CardText>Last updated 3 mins ago</CardText>
-              <Button size="lg" block>
+              <Button color="primary" block>
                 Link an account
               </Button>
             </CardImgOverlay>
           </Card>
-        </Col>
-      ))}
-    </Row>
-  </Container>
+        </Card>
+      </Col>
+    ))}
+  </Row>
 );
 
 export default withUserGameHoc(UserGameIndex);

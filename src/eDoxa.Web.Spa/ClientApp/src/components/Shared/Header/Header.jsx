@@ -40,7 +40,7 @@ class HeaderDropdown extends Component {
             </LinkContainer>
           </Form>
           <DropdownItem header>Connections</DropdownItem>
-          <LinkContainer to="/user/games">
+          <LinkContainer to="/profile/connections/games">
             <DropdownItem>My Games</DropdownItem>
           </LinkContainer>
           <DropdownItem header>Cashier</DropdownItem>

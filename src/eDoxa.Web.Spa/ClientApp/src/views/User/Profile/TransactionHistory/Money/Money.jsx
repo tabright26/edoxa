@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardHeader, Table, Pagination, PaginationItem, PaginationLink } from "reactstrap";
+import { Card, CardHeader, Table, Pagination, PaginationItem, PaginationLink, Badge } from "reactstrap";
 import connectUserAccountTransactions from "containers/connectUserAccountTransactions";
 import Moment from "react-moment";
 import Format from "components/Shared/Format";
@@ -8,17 +8,16 @@ const Transactions = ({ transactions }) => (
   <>
     <Card className="card-accent-primary my-4">
       <CardHeader>
-        <strong>TRANSACTIONS</strong>
+        <strong>MONEY TRANSACTIONS</strong>
       </CardHeader>
-      <Table className="mb-0" size="sm" responsive striped dark>
+      <Table className="mb-0" responsive striped dark>
         <thead>
           <tr>
-            <th>Id</th>
             <th>Date</th>
+            <th>Status</th>
+            <th>Type</th>
             <th>Amount</th>
             <th>Description</th>
-            <th>Type</th>
-            <th>Status</th>
           </tr>
         </thead>
         <tbody>
@@ -27,18 +26,19 @@ const Transactions = ({ transactions }) => (
                 .sort((left, right) => (left.timestamp < right.timestamp ? -1 : 1))
                 .map((transaction, index) => (
                   <tr key={index}>
-                    <td>{transaction.id}</td>
-                    <td>
+                    <td className="my-auto">
                       <Moment unix format="ll">
                         {transaction.timestamp}
                       </Moment>
                     </td>
-                    <td>
+                    <td className="my-auto">
+                      <Badge color="primary">{transaction.status}</Badge>
+                    </td>
+                    <td className="my-auto">{transaction.type}</td>
+                    <td className="my-auto">
                       <Format.Currency currency={transaction.currency} amount={transaction.amount} />
                     </td>
-                    <td>{transaction.description}</td>
-                    <td>{transaction.type}</td>
-                    <td>{transaction.status}</td>
+                    <td className="my-auto">{transaction.description}</td>
                   </tr>
                 ))
             : []}

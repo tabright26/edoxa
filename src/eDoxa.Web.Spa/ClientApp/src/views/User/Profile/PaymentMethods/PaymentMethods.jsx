@@ -10,7 +10,7 @@ import { Elements } from "react-stripe-elements";
 
 const PaymentMethods = ({ actions }) => (
   <Fragment>
-    <h5 className="my-4">
+    <h5>
       PAYMENT METHODS
       <Button className="float-right" size="sm" color="link" onClick={() => actions.showCreatePaymentMethodModal()}>
         <FontAwesomeIcon icon={faPlus} /> ADD A NEW PAYMENT METHOD

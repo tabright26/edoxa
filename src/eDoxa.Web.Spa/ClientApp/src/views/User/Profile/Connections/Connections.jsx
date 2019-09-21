@@ -1,5 +1,14 @@
-import React from "react";
+import React, { Fragment } from "react";
 
-const ProfileDetails = () => <h5 className="my-4">CONNECTIONS</h5>;
+import Games from "./Games";
 
-export default ProfileDetails;
+const ProfileConnections = () => {
+  return (
+    <Fragment>
+      <h5>GAME CONNECTIONS</h5>
+      <Games />
+    </Fragment>
+  );
+};
+
+export default ProfileConnections;
