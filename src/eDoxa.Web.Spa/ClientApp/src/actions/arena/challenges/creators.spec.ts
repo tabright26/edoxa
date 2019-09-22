@@ -15,7 +15,7 @@ describe("arena challenge actions", () => {
   });
 
   it("should create an action to get a challenge", () => {
-    const challengeId = 1;
+    const challengeId = "1";
 
     const expectedType = [actionTypes.LOAD_CHALLENGE, actionTypes.LOAD_CHALLENGE_SUCCESS, actionTypes.LOAD_CHALLENGE_FAIL];
     const expectedMethod = "get";
