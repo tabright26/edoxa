@@ -1,6 +1,15 @@
 import { IAxiosActionCreator } from "interfaces/axios";
+import {
+  LoadPaymentMethodsActionType,
+  AttachPaymentMethodActionType,
+  DetachPaymentMethodActionType,
+  UpdatePaymentMethodActionType,
+  LoadBankAccountsActionType,
+  CreateBankAccountActionType,
+  UpdateBankAccountActionType,
+  DeleteBankAccountActionType
+} from "./actionTypes";
 
-export type LoadPaymentMethodsActionType = "LOAD_PAYMENTMETHODS" | "LOAD_PAYMENTMETHODS_SUCCESS" | "LOAD_PAYMENTMETHODS_FAIL";
 export function loadPaymentMethods(customer: string, type: "card"): IAxiosActionCreator<LoadPaymentMethodsActionType> {
   return {
     types: ["LOAD_PAYMENTMETHODS", "LOAD_PAYMENTMETHODS_SUCCESS", "LOAD_PAYMENTMETHODS_FAIL"],
@@ -14,7 +23,6 @@ export function loadPaymentMethods(customer: string, type: "card"): IAxiosAction
   };
 }
 
-export type AttachPaymentMethodActionType = "ATTACH_PAYMENTMETHOD" | "ATTACH_PAYMENTMETHOD_SUCCESS" | "ATTACH_PAYMENTMETHOD_FAIL";
 export function attachPaymentMethod(paymentMethodId: string, customer: string): IAxiosActionCreator<AttachPaymentMethodActionType> {
   return {
     types: ["ATTACH_PAYMENTMETHOD", "ATTACH_PAYMENTMETHOD_SUCCESS", "ATTACH_PAYMENTMETHOD_FAIL"],
@@ -31,7 +39,6 @@ export function attachPaymentMethod(paymentMethodId: string, customer: string): 
   };
 }
 
-export type DetachPaymentMethodActionType = "DETACH_PAYMENTMETHOD" | "DETACH_PAYMENTMETHOD_SUCCESS" | "DETACH_PAYMENTMETHOD_FAIL";
 export function detachPaymentMethod(paymentMethodId: string): IAxiosActionCreator<DetachPaymentMethodActionType> {
   return {
     types: ["DETACH_PAYMENTMETHOD", "DETACH_PAYMENTMETHOD_SUCCESS", "DETACH_PAYMENTMETHOD_FAIL"],
@@ -45,7 +52,6 @@ export function detachPaymentMethod(paymentMethodId: string): IAxiosActionCreato
   };
 }
 
-export type UpdatePaymentMethodActionType = "UPDATE_PAYMENTMETHOD" | "UPDATE_PAYMENTMETHOD_SUCCESS" | "UPDATE_PAYMENTMETHOD_FAIL";
 export function updatePaymentMethod(paymentMethodId: string, exp_month: number, exp_year: number): IAxiosActionCreator<UpdatePaymentMethodActionType> {
   return {
     types: ["UPDATE_PAYMENTMETHOD", "UPDATE_PAYMENTMETHOD_SUCCESS", "UPDATE_PAYMENTMETHOD_FAIL"],
@@ -59,7 +65,6 @@ export function updatePaymentMethod(paymentMethodId: string, exp_month: number, 
   };
 }
 
-export type LoadBankAccountsActionType = "LOAD_BANK_ACCOUNTS" | "LOAD_BANK_ACCOUNTS_SUCCESS" | "LOAD_BANK_ACCOUNTS_FAIL";
 export function loadBankAccounts(): IAxiosActionCreator<LoadBankAccountsActionType> {
   return {
     types: ["LOAD_BANK_ACCOUNTS", "LOAD_BANK_ACCOUNTS_SUCCESS", "LOAD_BANK_ACCOUNTS_FAIL"],
@@ -73,7 +78,6 @@ export function loadBankAccounts(): IAxiosActionCreator<LoadBankAccountsActionTy
   };
 }
 
-export type CreateBankAccountActionType = "CREATE_BANK_ACCOUNT" | "CREATE_BANK_ACCOUNT_SUCCESS" | "CREATE_BANK_ACCOUNT_FAIL";
 export function createBankAccount(token: string): IAxiosActionCreator<CreateBankAccountActionType> {
   return {
     types: ["CREATE_BANK_ACCOUNT", "CREATE_BANK_ACCOUNT_SUCCESS", "CREATE_BANK_ACCOUNT_FAIL"],
@@ -90,7 +94,6 @@ export function createBankAccount(token: string): IAxiosActionCreator<CreateBank
   };
 }
 
-export type UpdateBankAccountActionType = "UPDATE_BANK_ACCOUNT" | "UPDATE_BANK_ACCOUNT_SUCCESS" | "UPDATE_BANK_ACCOUNT_FAIL";
 export function updateBankAccount(bankAccountId: string, data: any): IAxiosActionCreator<UpdateBankAccountActionType> {
   return {
     types: ["UPDATE_BANK_ACCOUNT", "UPDATE_BANK_ACCOUNT_SUCCESS", "UPDATE_BANK_ACCOUNT_FAIL"],
@@ -105,7 +108,6 @@ export function updateBankAccount(bankAccountId: string, data: any): IAxiosActio
   };
 }
 
-export type DeleteBankAccountActionType = "DELETE_BANK_ACCOUNT" | "DELETE_BANK_ACCOUNT_SUCCESS" | "DELETE_BANK_ACCOUNT_FAIL";
 export function deleteBankAccount(bankAccountId: string): IAxiosActionCreator<DeleteBankAccountActionType> {
   return {
     types: ["DELETE_BANK_ACCOUNT", "DELETE_BANK_ACCOUNT_SUCCESS", "DELETE_BANK_ACCOUNT_FAIL"],

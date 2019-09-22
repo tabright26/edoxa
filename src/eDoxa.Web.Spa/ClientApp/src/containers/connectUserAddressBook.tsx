@@ -3,9 +3,9 @@ import { connect } from "react-redux";
 import { show } from "redux-modal";
 import { SubmissionError } from "redux-form";
 import { CREATE_ADDRESS_MODAL } from "modals";
-import { loadAddressBook, addAddress, updateAddress, removeAddress } from "actions/identity/creators";
 import { IAxiosAction } from "interfaces/axios";
-import { AddAddressActionType, UpdateAddressActionType } from "actions/identity/creators";
+import { loadAddressBook, addAddress, updateAddress, removeAddress } from "actions/identity/actionCreators";
+import { AddAddressActionType, UpdateAddressActionType } from "actions/identity/actionTypes";
 
 const connectUserAddressBook = WrappedComponent => {
   class Container extends Component<any> {

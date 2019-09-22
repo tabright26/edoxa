@@ -1,5 +1,5 @@
-import { LoadUserAccountTransactionsActionType } from "actions/cashier/creators";
 import { IAxiosAction } from "interfaces/axios";
+import { LoadUserAccountTransactionsActionType } from "actions/cashier/actionTypes";
 
 export const initialState = [];
 

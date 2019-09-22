@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { SubmissionError } from "redux-form";
-import { loadDoxaTagHistory, changeDoxaTag } from "actions/identity/creators";
+import { loadDoxaTagHistory, changeDoxaTag } from "actions/identity/actionCreators";
 import { IAxiosAction } from "interfaces/axios";
-import { ChangeDoxaTagActionType } from "actions/identity/creators";
+import { ChangeDoxaTagActionType } from "actions/identity/actionTypes";
 
 const connectUserDoxaTagHistory = WrappedComponent => {
   class Container extends Component<any> {

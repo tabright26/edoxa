@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { SubmissionError } from "redux-form";
-import { loadPersonalInfo, createPersonalInfo, updatePersonalInfo } from "actions/identity/creators";
 import { IAxiosAction } from "interfaces/axios";
-import { CreatePersonalInfoActionType, UpdatePersonalInfoActionType } from "actions/identity/creators";
+import { loadPersonalInfo, createPersonalInfo, updatePersonalInfo } from "actions/identity/actionCreators";
+import { CreatePersonalInfoActionType, UpdatePersonalInfoActionType } from "actions/identity/actionTypes";
 
 const connectUserPersonalInfo = WrappedComponent => {
   class Container extends Component<any> {

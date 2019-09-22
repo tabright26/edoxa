@@ -3,15 +3,8 @@ import { connect } from "react-redux";
 import { SubmissionError } from "redux-form";
 import { show } from "redux-modal";
 import { CREATE_BANK_ACCOUNT_MODAL } from "modals";
-import {
-  loadBankAccounts,
-  createBankAccount,
-  deleteBankAccount,
-  updateBankAccount,
-  CreateBankAccountActionType,
-  DeleteBankAccountActionType,
-  UpdateBankAccountActionType
-} from "actions/stripe/creators";
+import { loadBankAccounts, createBankAccount, deleteBankAccount, updateBankAccount } from "actions/stripe/actionCreators";
+import { CreateBankAccountActionType, DeleteBankAccountActionType, UpdateBankAccountActionType } from "actions/stripe/actionTypes";
 import { IAxiosAction } from "interfaces/axios";
 
 const connectStripeBankAccounts = WrappedComponent => {

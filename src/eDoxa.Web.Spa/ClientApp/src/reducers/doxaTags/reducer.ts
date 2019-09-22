@@ -1,4 +1,4 @@
-import { LoadDoxaTagsActionType } from "actions/identity/creators";
+import { LoadDoxaTagsActionType } from "actions/identity/actionTypes";
 import { IAxiosAction } from "interfaces/axios";
 
 export const initialState = [];

@@ -3,7 +3,8 @@ import { connect } from "react-redux";
 import { SubmissionError } from "redux-form";
 import { show } from "redux-modal";
 import { CREATE_PAYMENTMETHOD_MODAL, UPDATE_PAYMENTMETHOD_MODAL, DELETE_PAYMENTMETHOD_MODAL } from "modals";
-import { loadPaymentMethods, attachPaymentMethod, updatePaymentMethod, detachPaymentMethod, DetachPaymentMethodActionType, UpdatePaymentMethodActionType } from "actions/stripe/creators";
+import { loadPaymentMethods, attachPaymentMethod, updatePaymentMethod, detachPaymentMethod } from "actions/stripe/actionCreators";
+import { DetachPaymentMethodActionType, UpdatePaymentMethodActionType } from "actions/stripe/actionTypes";
 import { IAxiosAction } from "interfaces/axios";
 
 const connectStripePaymentMethods = WrappedComponent => {

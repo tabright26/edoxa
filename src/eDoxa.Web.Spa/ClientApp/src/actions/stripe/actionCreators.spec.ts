@@ -1,4 +1,4 @@
-import { loadPaymentMethods, loadBankAccounts } from "./creators";
+import { loadPaymentMethods, loadBankAccounts } from "./actionCreators";
 
 describe("stripe actions", () => {
   it("should create an action to get user stripe cards", () => {

@@ -1,4 +1,4 @@
-import { LoadGamesActionType } from "actions/identity/creators";
+import { LoadGamesActionType } from "actions/identity/actionTypes";
 import { IAxiosAction } from "interfaces/axios";
 
 export const initialState = [];

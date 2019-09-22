@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { loadUserAccountBalance } from "actions/cashier/creators";
+import { loadUserAccountBalance } from "actions/cashier/actionCreators";
 
 const connectUserAccountBalance = currency => WrappedComponent => {
   class Container extends Component<any> {

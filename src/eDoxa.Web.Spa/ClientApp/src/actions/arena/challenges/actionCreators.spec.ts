@@ -1,4 +1,4 @@
-import { loadChallenges, loadChallenge } from "./creators";
+import { loadChallenges, loadChallenge } from "./actionCreators";
 
 describe("arena challenge actions", () => {
   it("should create an action to get all challenges", () => {

@@ -1,6 +1,6 @@
 import { SubmissionError } from "redux-form";
-import { LoadAddressBookActionType, RemoveAddressActionType, AddAddressActionType, UpdateAddressActionType } from "actions/identity/creators";
 import { IAxiosAction } from "interfaces/axios";
+import { LoadAddressBookActionType, RemoveAddressActionType, AddAddressActionType, UpdateAddressActionType } from "actions/identity/actionTypes";
 
 export const initialState = [];
 

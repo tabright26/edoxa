@@ -1,5 +1,5 @@
 import { IAxiosAction } from "interfaces/axios";
-import { LoadChallengesActionType, LoadChallengeActionType } from "actions/arena/challenges/creators";
+import { LoadChallengesActionType, LoadChallengeActionType } from "actions/arena/challenges/actionTypes";
 
 export const initialState = [];
 

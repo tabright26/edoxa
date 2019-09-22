@@ -1,6 +1,6 @@
 import { IAxiosActionCreator } from "interfaces/axios";
+import { LoadLeagueOfLegendsSummonerByNameActionType } from "./actionTypes";
 
-export type LoadLeagueOfLegendsSummonerByNameActionType = "LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME" | "LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME_SUCCESS" | "LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME_FAIL";
 export function loadLeagueOfLegendsSummonerByName(summonerName: string): IAxiosActionCreator<LoadLeagueOfLegendsSummonerByNameActionType> {
   return {
     types: ["LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME", "LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME_SUCCESS", "LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME_FAIL"],

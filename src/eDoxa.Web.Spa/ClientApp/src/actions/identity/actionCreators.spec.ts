@@ -13,7 +13,7 @@ import {
   forgotPassword,
   resetPassword,
   loadGames
-} from "./creators";
+} from "./actionCreators";
 
 describe("identity actions", () => {
   it("should create an action to get user doxatag", () => {

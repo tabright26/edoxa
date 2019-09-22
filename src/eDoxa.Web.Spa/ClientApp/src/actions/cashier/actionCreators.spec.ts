@@ -1,4 +1,4 @@
-import { loadUserAccountBalance, loadUserAccountTransactions } from "./creators";
+import { loadUserAccountBalance, loadUserAccountTransactions } from "./actionCreators";
 
 describe("cashier actions", () => {
   it("should create an action to get user balance money", () => {

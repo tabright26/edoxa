@@ -4,12 +4,12 @@ export interface IAxiosPayload {
   client?: "default" | "stripe" | "leagueOfLegends";
   request: AxiosRequestConfig;
 }
-export interface IAxiosActionCreator<TActionType> {
-  types: TActionType[];
+export interface IAxiosActionCreator<ActionType> {
+  types: ActionType[];
   payload: IAxiosPayload;
 }
-export interface IAxiosAction<TActionType> {
-  type: TActionType;
+export interface IAxiosAction<ActionType> {
+  type: ActionType;
   payload: AxiosResponse;
   error: AxiosError;
 }

@@ -1,4 +1,4 @@
-import { LoadBankAccountsActionType } from "actions/stripe/creators";
+import { LoadBankAccountsActionType } from "actions/stripe/actionTypes";
 import { IAxiosAction } from "interfaces/axios";
 export const initialState = { data: [] };
 

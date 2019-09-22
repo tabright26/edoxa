@@ -1,4 +1,4 @@
-import { LoadPaymentMethodsActionType } from "actions/stripe/creators";
+import { LoadPaymentMethodsActionType } from "actions/stripe/actionTypes";
 import { IAxiosAction } from "interfaces/axios";
 
 export const initialState = { data: [] };

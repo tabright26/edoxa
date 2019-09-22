@@ -1,4 +1,5 @@
-import { loadLeagueOfLegendsSummonerByName, LoadLeagueOfLegendsSummonerByNameActionType } from "./creators";
+import { loadLeagueOfLegendsSummonerByName } from "./actionCreators";
+import { LoadLeagueOfLegendsSummonerByNameActionType } from "./actionTypes";
 
 describe("league of legends actions", () => {
   it("should create an action to get user league of legends id", () => {

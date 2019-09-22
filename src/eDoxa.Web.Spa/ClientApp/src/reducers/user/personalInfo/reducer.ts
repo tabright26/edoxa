@@ -1,4 +1,4 @@
-import { LoadPersonalInfoActionType } from "actions/identity/creators";
+import { LoadPersonalInfoActionType } from "actions/identity/actionTypes";
 import { IAxiosAction } from "interfaces/axios";
 
 export const initialState = null;

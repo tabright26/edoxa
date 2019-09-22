@@ -1,5 +1,5 @@
-import { LoadUserAccountBalanceActionType } from "actions/cashier/creators";
 import { IAxiosAction } from "interfaces/axios";
+import { LoadUserAccountBalanceActionType } from "actions/cashier/actionTypes";
 
 export const initialState = { money: { available: 0, pending: 0 }, token: { available: 0, pending: 0 } };
 

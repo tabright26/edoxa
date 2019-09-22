@@ -1,0 +1,2 @@
+export type LoadChallengesActionType = "LOAD_CHALLENGES" | "LOAD_CHALLENGES_SUCCESS" | "LOAD_CHALLENGES_FAIL";
+export type LoadChallengeActionType = "LOAD_CHALLENGE" | "LOAD_CHALLENGE_SUCCESS" | "LOAD_CHALLENGE_FAIL";

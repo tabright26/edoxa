@@ -1,5 +1,5 @@
 import { IAxiosAction } from "interfaces/axios";
-import { LoadLeagueOfLegendsSummonerByNameActionType } from "actions/arena/games/leagueOfLegends/creators";
+import { LoadLeagueOfLegendsSummonerByNameActionType } from "actions/arena/games/leagueOfLegends/actionTypes";
 
 export const initialState = {};
 

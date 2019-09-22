@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { loadPaymentMethods } from "actions/stripe/creators";
+import { loadPaymentMethods } from "actions/stripe/actionCreators";
 
 const connectStripePaymentMethods = WrappedComponent => {
   class Container extends Component<any> {
