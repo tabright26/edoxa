@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { SizeProp } from "@fortawesome/fontawesome-svg-core";
 import { faCcMastercard, faCcAmex, faCcStripe, faCcVisa, faCcDiscover } from "@fortawesome/free-brands-svg-icons";
@@ -10,7 +10,7 @@ interface CardBrandIconProps {
   size?: SizeProp;
 }
 
-const CardBrandIcon = ({ brand, size }: CardBrandIconProps) => {
+const CardBrandIcon: FunctionComponent<CardBrandIconProps> = ({ brand, size }) => {
   if (brand === "visa") {
     return <FontAwesomeIcon size={size} icon={faCcVisa} />;
   }

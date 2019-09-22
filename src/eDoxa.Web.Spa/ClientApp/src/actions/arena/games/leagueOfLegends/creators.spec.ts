@@ -16,7 +16,7 @@ describe("league of legends actions", () => {
     const actionCreator = loadLeagueOfLegendsSummonerByName(summonerName);
 
     expect(actionCreator.types).toEqual(expectedType);
-    expect(actionCreator.client).toEqual(expectedClient);
+    expect(actionCreator.payload.client).toEqual(expectedClient);
     expect(actionCreator.payload.request.method).toEqual(expectedMethod);
     expect(actionCreator.payload.request.url).toEqual(expectedUrl);
   });

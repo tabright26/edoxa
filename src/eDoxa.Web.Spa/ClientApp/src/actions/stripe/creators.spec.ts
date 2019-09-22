@@ -1,13 +1,12 @@
 import { loadPaymentMethods, loadBankAccounts } from "./creators";
-import actionTypes from "./index";
 
 describe("stripe actions", () => {
   it("should create an action to get user stripe cards", () => {
     const expectedCustomer = "cus_qwe12312eqw12";
     const expectedType = "card";
-    const expectedTypes = [actionTypes.LOAD_CARDS, actionTypes.LOAD_CARDS_SUCCESS, actionTypes.LOAD_CARDS_FAIL];
+    const expectedTypes = ["LOAD_PAYMENTMETHODS", "LOAD_PAYMENTMETHODS_SUCCESS", "LOAD_PAYMENTMETHODS_FAIL"];
     const expectedClient = "stripe";
-    const expectedMethod = "get";
+    const expectedMethod = "GET";
     const expectedUrl = `/v1/payment_methods?customer=${expectedCustomer}&type=${expectedType}`;
 
     const actionCreator = loadPaymentMethods(expectedCustomer, expectedType);
@@ -19,9 +18,9 @@ describe("stripe actions", () => {
   });
 
   it("should create an action to get user stripe banks", () => {
-    const expectedType = [actionTypes.LOAD_BANK_ACCOUNTS, actionTypes.LOAD_BANK_ACCOUNTS_SUCCESS, actionTypes.LOAD_BANK_ACCOUNTS_FAIL];
+    const expectedType = ["LOAD_BANK_ACCOUNTS", "LOAD_BANK_ACCOUNTS_SUCCESS", "LOAD_BANK_ACCOUNTS_FAIL"];
     const expectedClient = "stripe";
-    const expectedMethod = "get";
+    const expectedMethod = "GET";
     const expectedUrl = "/v1/accounts/:connectAccountId/external_accounts?object=bank_account";
 
     const actionCreator = loadBankAccounts();
