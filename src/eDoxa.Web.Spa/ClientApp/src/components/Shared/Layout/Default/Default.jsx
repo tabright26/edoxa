@@ -7,8 +7,10 @@ import navigation from "./_nav";
 import routes from "routes";
 import Routes from "components/Shared/Routes";
 import Loading from "components/Shared/Loading";
+
 import Money from "components/User/Account/Balance/Money";
 import Token from "components/User/Account/Balance/Token";
+
 const Aside = React.lazy(() => import("components/Shared/Aside"));
 const Footer = React.lazy(() => import("components/Shared/Footer"));
 const Header = React.lazy(() => import("components/Shared/Header"));

@@ -1,5 +1,5 @@
 ﻿// Filename: CashierDbContextSeeder.cs
-// Date Created: 2019-08-18
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Infrastructure.Data.Fakers;
 using eDoxa.Cashier.Api.Infrastructure.Data.Storage;
+using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Seedwork.Infrastructure;
@@ -50,6 +52,60 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
                     var accountFaker = new AccountFaker();
 
                     var adminAccount = accountFaker.Generate(AccountFaker.AdminAccount);
+
+                    var moneyAccount = new MoneyAccount(adminAccount);
+
+                    moneyAccount.Deposit(Money.FiveHundred).MarkAsSucceded(); // 500
+
+                    moneyAccount.Charge(Money.Ten); // 490
+
+                    moneyAccount.Charge(Money.Ten); // 480
+
+                    moneyAccount.Charge(Money.Five); // 475
+
+                    moneyAccount.Charge(Money.Fifty); // 425
+
+                    moneyAccount.Payout(Money.Twenty); // 445
+
+                    moneyAccount.Charge(Money.Ten); // 435
+
+                    moneyAccount.Charge(Money.Ten); // 425
+
+                    moneyAccount.Charge(Money.Ten); // 415
+
+                    moneyAccount.Payout(Money.Twenty); // 435
+
+                    moneyAccount.Withdrawal(Money.OneHundred).MarkAsSucceded(); // 335
+
+                    moneyAccount.Charge(Money.Ten); // 325
+
+                    moneyAccount.Charge(Money.Five); // 320
+
+                    moneyAccount.Charge(Money.Fifty); // 270
+
+                    moneyAccount.Charge(Money.Ten); // 260
+
+                    var tokenAccount = new TokenAccount(adminAccount);
+
+                    tokenAccount.Deposit(Token.OneMillion).MarkAsSucceded(); // 1000000
+
+                    tokenAccount.Reward(Token.FiftyThousand); // 1050000
+
+                    tokenAccount.Charge(Token.FiftyThousand); // 1000000
+
+                    tokenAccount.Charge(Token.FiftyThousand); // 950000
+
+                    tokenAccount.Charge(Token.TwoHundredFiftyThousand); // 700000
+
+                    tokenAccount.Charge(Token.FiveHundredThousand); // 200000
+
+                    tokenAccount.Charge(Token.FiftyThousand); // 150000
+
+                    tokenAccount.Payout(Token.OneHundredThousand); // 250000
+
+                    tokenAccount.Reward(Token.FiftyThousand); // 300000
+
+                    tokenAccount.Charge(Token.OneHundredThousand); // 200000
 
                     _accountRepository.Create(adminAccount);
 

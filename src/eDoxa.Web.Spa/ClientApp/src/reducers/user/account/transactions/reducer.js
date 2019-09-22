@@ -10,7 +10,7 @@ export const reducer = (state = initialState, action) => {
         case 204:
           return state;
         default:
-          return data;
+          return state.filter(oldTransaction => !data.some(newTransaction => newTransaction.id === oldTransaction.id)).concat(data);
       }
     case actionTypes.LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL:
     default:

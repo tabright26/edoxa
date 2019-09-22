@@ -16,14 +16,12 @@ const connectUserAccountBalance = currency => WrappedComponent => {
 
   const mapStateToProps = state => {
     switch (currency) {
-      case "Money":
       case "money":
         return {
           available: state.user.account.balance.money.available,
           pending: state.user.account.balance.money.pending,
           currency
         };
-      case "Token":
       case "token":
         return {
           available: state.user.account.balance.token.available,

@@ -1,6 +1,7 @@
 import React from "react";
 import Currency from "react-currency-format";
-import Icon from "components/Shared/Icon";
+import MoneyIcon from "icons/Money";
+import TokenIcon from "icons/Token";
 import UnknownCurrency from "./Unknown";
 
 const CurrencyFormat = ({ currency, amount = 0, justify = false }) => {
@@ -15,7 +16,7 @@ const CurrencyFormat = ({ currency, amount = 0, justify = false }) => {
           fixedDecimalScale={true}
           renderText={value => (
             <div className="d-flex">
-              <Icon.Money className="text-primary my-auto" />
+              <MoneyIcon className="text-primary my-auto" />
               <span className={justify ? "ml-auto" : null}>{value}</span>
             </div>
           )}
@@ -29,7 +30,7 @@ const CurrencyFormat = ({ currency, amount = 0, justify = false }) => {
           thousandSeparator
           renderText={value => (
             <div className="d-flex">
-              <Icon.Token className="text-primary my-auto" />
+              <TokenIcon className="text-primary my-auto" />
               <span className={justify ? "ml-auto" : null}>{amount}</span>
             </div>
           )}

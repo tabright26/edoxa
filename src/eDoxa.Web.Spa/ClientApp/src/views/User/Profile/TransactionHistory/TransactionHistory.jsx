@@ -1,13 +1,13 @@
 import React, { Fragment } from "react";
-import DepositTransactions from "./Money";
-import WithdrawalTransactions from "./Token";
+import DepositTransactionHistory from "./Money";
+import WithdrawalTransactionHistory from "./Token";
 
-const PaymentMethods = ({ actions }) => (
+const TransactionHistory = () => (
   <Fragment>
-    <h5>TRANSACTION HISTORY</h5>
-    <DepositTransactions className="card-accent-primary my-4" />
-    <WithdrawalTransactions />
+    <h5 className="mb-4">TRANSACTION HISTORY</h5>
+    <DepositTransactionHistory />
+    <WithdrawalTransactionHistory />
   </Fragment>
 );
 
-export default PaymentMethods;
+export default TransactionHistory;

@@ -2,7 +2,7 @@ import { reducer, initialState } from "./reducer";
 import actionTypes from "actions/cashier";
 
 const transaction204Data = [];
-const transaction200Data = { data: [{ id: "1" }] };
+const transaction200Data = [{ data: [{ id: "1" }] }];
 
 describe("user account transactions reducer", () => {
   it("should return the initial state", () => {

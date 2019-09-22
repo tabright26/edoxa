@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { loadUserAccountTransactions } from "actions/cashier/creators";
 
-const connectUserAccountTransactions = WrappedComponent => {
+const connectUserAccountTransactions = currency => WrappedComponent => {
   class Container extends Component {
     componentDidMount() {
       this.props.actions.loadUserAccountTransactions();
@@ -16,14 +16,14 @@ const connectUserAccountTransactions = WrappedComponent => {
 
   const mapStateToProps = state => {
     return {
-      transactions: state.user.account.transactions
+      transactions: state.user.account.transactions.filter(transaction => transaction.currency.toLowerCase() === currency.toLowerCase())
     };
   };
 
   const mapDispatchToProps = dispatch => {
     return {
       actions: {
-        loadUserAccountTransactions: () => dispatch(loadUserAccountTransactions())
+        loadUserAccountTransactions: () => dispatch(loadUserAccountTransactions(currency))
       }
     };
   };
