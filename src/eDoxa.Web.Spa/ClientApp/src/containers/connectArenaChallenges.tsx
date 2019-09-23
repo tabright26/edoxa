@@ -1,17 +1,14 @@
-import React, { Component } from "react";
+import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { loadChallenges } from "actions/arena/challenges/actionCreators";
+import { loadChallenges } from "reducers/arena/challenges/actions";
 
-const connectArenaChallenges = WrappedComponent => {
-  class Container extends Component<any> {
-    componentDidMount() {
-      this.props.actions.loadChallenges();
-    }
-    render() {
-      const { challenges, ...rest } = this.props;
-      return <WrappedComponent challenges={challenges} {...rest} />;
-    }
-  }
+const connectArenaChallenges = (ConnectedComponent: FunctionComponent<any>) => {
+  const Container: FunctionComponent<any> = ({ actions, challenges, ...attributes }) => {
+    useEffect((): void => {
+      actions.loadChallenges();
+    });
+    return <ConnectedComponent actions={actions} challenges={challenges} {...attributes} />;
+  };
 
   const mapStateToProps = state => {
     return {

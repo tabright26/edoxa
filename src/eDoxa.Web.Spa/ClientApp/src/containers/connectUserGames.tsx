@@ -1,17 +1,14 @@
-import React, { Component } from "react";
+import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { loadGames } from "actions/identity/actionCreators";
+import { loadGames } from "reducers/user/games/actions";
 
-const connectUserGames = WrappedComponent => {
-  class Container extends Component<any> {
-    componentDidMount() {
-      this.props.actions.loadGames();
-    }
-
-    render() {
-      return <WrappedComponent games={this.props.games} />;
-    }
-  }
+const connectUserGames = (ConnectedComponent: FunctionComponent<any>) => {
+  const Container: FunctionComponent<any> = ({ actions, games, ...attributes }) => {
+    useEffect((): void => {
+      actions.loadGames();
+    });
+    return <ConnectedComponent actions={actions} games={games} {...attributes} />;
+  };
 
   const mapStateToProps = state => {
     return {

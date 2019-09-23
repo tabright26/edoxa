@@ -1,9 +1,10 @@
-import { LoadPersonalInfoActionType } from "actions/identity/actionTypes";
-import { IAxiosAction } from "interfaces/axios";
+import { SubmissionError } from "redux-form";
+import { AxiosErrorData } from "interfaces/axios";
+import { PersonalInfoActionTypes } from "./types";
 
 export const initialState = null;
 
-export const reducer = (state = initialState, action: IAxiosAction<LoadPersonalInfoActionType>) => {
+export const reducer = (state = initialState, action: PersonalInfoActionTypes) => {
   switch (action.type) {
     case "LOAD_PERSONAL_INFO_SUCCESS":
       const { status, data } = action.payload;
@@ -13,6 +14,15 @@ export const reducer = (state = initialState, action: IAxiosAction<LoadPersonalI
         default:
           return data;
       }
+    case "CREATE_PERSONAL_INFO_FAIL":
+    case "UPDATE_PERSONAL_INFO_FAIL":
+      const { isAxiosError, response } = action.error;
+      if (isAxiosError) {
+        throw new SubmissionError<AxiosErrorData>(response.data.errors);
+      }
+      break;
+    case "CREATE_PERSONAL_INFO_SUCCESS":
+    case "UPDATE_PERSONAL_INFO_SUCCESS":
     case "LOAD_PERSONAL_INFO_FAIL":
     default: {
       return state;

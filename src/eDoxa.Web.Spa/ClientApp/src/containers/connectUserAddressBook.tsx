@@ -1,22 +1,16 @@
-import React, { Component } from "react";
+import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import { show } from "redux-modal";
-import { SubmissionError } from "redux-form";
 import { CREATE_ADDRESS_MODAL } from "modals";
-import { IAxiosAction } from "interfaces/axios";
-import { loadAddressBook, addAddress, updateAddress, removeAddress } from "actions/identity/actionCreators";
-import { AddAddressActionType, UpdateAddressActionType } from "actions/identity/actionTypes";
+import { loadAddressBook, addAddress, updateAddress, removeAddress } from "reducers/user/addressBook/actions";
 
-const connectUserAddressBook = WrappedComponent => {
-  class Container extends Component<any> {
-    componentDidMount() {
-      this.props.actions.loadAddressBook();
-    }
-
-    render() {
-      return <WrappedComponent {...this.props} />;
-    }
-  }
+const connectUserAddressBook = (ConnectedComponent: FunctionComponent<any>) => {
+  const Container: FunctionComponent<any> = ({ actions, addressBook, ...attributes }) => {
+    useEffect((): void => {
+      actions.loadAddressBook();
+    });
+    return <ConnectedComponent actions={actions} addressBook={addressBook} {...attributes} />;
+  };
 
   const mapStateToProps = state => {
     return {
@@ -28,43 +22,9 @@ const connectUserAddressBook = WrappedComponent => {
     return {
       actions: {
         loadAddressBook: () => dispatch(loadAddressBook()),
-        addAddress: async data => {
-          await dispatch(addAddress(data)).then(async (action: IAxiosAction<AddAddressActionType>) => {
-            switch (action.type) {
-              case "ADD_ADDRESS_SUCCESS":
-                await dispatch(loadAddressBook());
-                break;
-              case "ADD_ADDRESS_FAIL":
-                const { isAxiosError, response } = action.error;
-                if (isAxiosError) {
-                  throw new SubmissionError(response.data.errors);
-                }
-                break;
-              default:
-                console.error(action);
-                break;
-            }
-          });
-        },
-        updateAddress: async (addressId, data) => {
-          await dispatch(updateAddress(addressId, data)).then(async (action: IAxiosAction<UpdateAddressActionType>) => {
-            switch (action.type) {
-              case "UPDATE_ADDRESS_SUCCESS":
-                await dispatch(loadAddressBook());
-                break;
-              case "UPDATE_ADDRESS_FAIL":
-                const { isAxiosError, response } = action.error;
-                if (isAxiosError) {
-                  throw new SubmissionError(response.data.errors);
-                }
-                break;
-              default:
-                console.error(action);
-                break;
-            }
-          });
-        },
-        removeAddress: addressId => dispatch(removeAddress(addressId)),
+        addAddress: (data: any) => dispatch(addAddress(data)).then(() => dispatch(loadAddressBook())),
+        updateAddress: (addressId: string, data: any) => dispatch(updateAddress(addressId, data)).then(() => dispatch(loadAddressBook())),
+        removeAddress: (addressId: string) => dispatch(removeAddress(addressId)),
         showCreateAddressModal: () => dispatch(show(CREATE_ADDRESS_MODAL))
       }
     };

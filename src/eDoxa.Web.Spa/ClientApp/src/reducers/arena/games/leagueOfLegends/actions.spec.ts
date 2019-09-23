@@ -1,15 +1,11 @@
-import { loadLeagueOfLegendsSummonerByName } from "./actionCreators";
-import { LoadLeagueOfLegendsSummonerByNameActionType } from "./actionTypes";
+import { LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME, LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME_SUCCESS, LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME_FAIL } from "./types";
+import { loadLeagueOfLegendsSummonerByName } from "./actions";
 
 describe("league of legends actions", () => {
   it("should create an action to get user league of legends id", () => {
     const summonerName = "broman";
 
-    const expectedType: LoadLeagueOfLegendsSummonerByNameActionType[] = [
-      "LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME",
-      "LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME_SUCCESS",
-      "LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME_FAIL"
-    ];
+    const expectedType = [LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME, LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME_SUCCESS, LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME_FAIL];
     const expectedClient = "leagueOfLegends";
     const expectedMethod = "GET";
     const expectedUrl = `/lol/summoner/v4/summoners/by-name/${summonerName}`;

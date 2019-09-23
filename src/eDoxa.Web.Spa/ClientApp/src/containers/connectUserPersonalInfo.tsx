@@ -1,20 +1,14 @@
-import React, { Component } from "react";
+import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { SubmissionError } from "redux-form";
-import { IAxiosAction } from "interfaces/axios";
-import { loadPersonalInfo, createPersonalInfo, updatePersonalInfo } from "actions/identity/actionCreators";
-import { CreatePersonalInfoActionType, UpdatePersonalInfoActionType } from "actions/identity/actionTypes";
+import { loadPersonalInfo, createPersonalInfo, updatePersonalInfo } from "reducers/user/personalInfo/actions";
 
-const connectUserPersonalInfo = WrappedComponent => {
-  class Container extends Component<any> {
-    componentDidMount() {
-      this.props.actions.loadPersonalInfo();
-    }
-
-    render() {
-      return <WrappedComponent {...this.props} />;
-    }
-  }
+const connectUserPersonalInfo = (ConnectedComponent: FunctionComponent<any>) => {
+  const Container: FunctionComponent<any> = ({ actions, personalInfo, ...attributes }) => {
+    useEffect((): void => {
+      actions.loadPersonalInfo();
+    });
+    return <ConnectedComponent actions={actions} personalInfo={personalInfo} {...attributes} />;
+  };
 
   const mapStateToProps = state => {
     return {
@@ -26,44 +20,12 @@ const connectUserPersonalInfo = WrappedComponent => {
     return {
       actions: {
         loadPersonalInfo: () => dispatch(loadPersonalInfo()),
-        createPersonalInfo: async data => {
+        createPersonalInfo: (data: any) => {
           const { year, month, day } = data.birthDate;
           data.birthDate = new Date(year, month, day);
-          await dispatch(createPersonalInfo(data)).then(async (action: IAxiosAction<CreatePersonalInfoActionType>) => {
-            switch (action.type) {
-              case "CREATE_PERSONAL_INFO_SUCCESS":
-                await dispatch(loadPersonalInfo());
-                break;
-              case "CREATE_PERSONAL_INFO_FAIL":
-                const { isAxiosError, response } = action.error;
-                if (isAxiosError) {
-                  throw new SubmissionError(response.data.errors);
-                }
-                break;
-              default:
-                console.error(action);
-                break;
-            }
-          });
+          return dispatch(createPersonalInfo(data)).then(() => dispatch(loadPersonalInfo()));
         },
-        updatePersonalInfo: async data => {
-          await dispatch(updatePersonalInfo(data)).then(async (action: IAxiosAction<UpdatePersonalInfoActionType>) => {
-            switch (action.type) {
-              case "UPDATE_PERSONAL_INFO_SUCCESS":
-                await dispatch(loadPersonalInfo());
-                break;
-              case "UPDATE_PERSONAL_INFO_FAIL":
-                const { isAxiosError, response } = action.error;
-                if (isAxiosError) {
-                  throw new SubmissionError(response.data.errors);
-                }
-                break;
-              default:
-                console.error(action);
-                break;
-            }
-          });
-        }
+        updatePersonalInfo: (data: any) => dispatch(updatePersonalInfo(data)).then(() => dispatch(loadPersonalInfo()))
       }
     };
   };

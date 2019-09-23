@@ -1,18 +1,14 @@
-import React, { Component } from "react";
+import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { loadUserAccountTransactions } from "actions/cashier/actionCreators";
+import { loadUserAccountTransactions } from "reducers/user/account/transactions/actions";
 
-const connectUserAccountTransactions = currency => WrappedComponent => {
-  class Container extends Component<any> {
-    componentDidMount() {
-      this.props.actions.loadUserAccountTransactions();
-    }
-
-    render() {
-      const { transactions, ...attributes } = this.props;
-      return <WrappedComponent transactions={transactions} {...attributes} />;
-    }
-  }
+const connectUserAccountTransactions = currency => (ConnectedComponent: FunctionComponent<any>) => {
+  const Container: FunctionComponent<any> = ({ actions, transactions, ...attributes }) => {
+    useEffect((): void => {
+      actions.loadUserAccountTransactions();
+    });
+    return <ConnectedComponent actions={actions} transactions={transactions} {...attributes} />;
+  };
 
   const mapStateToProps = state => {
     return {

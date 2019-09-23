@@ -1,17 +1,14 @@
-import React, { Component } from "react";
+import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { loadPaymentMethods } from "actions/stripe/actionCreators";
+import { loadPaymentMethods } from "reducers/stripe/cards/actions";
 
-const connectStripePaymentMethods = WrappedComponent => {
-  class Container extends Component<any> {
-    componentDidMount() {
-      this.props.actions.loadCards();
-    }
-    render() {
-      const { cards, ...attributes } = this.props;
-      return <WrappedComponent cards={cards} {...attributes} />;
-    }
-  }
+const connectStripePaymentMethods = (ConnectedComponent: FunctionComponent<any>) => {
+  const Container: FunctionComponent<any> = ({ actions, cards, ...attributes }) => {
+    useEffect((): void => {
+      actions.loadCards();
+    });
+    return <ConnectedComponent actions={actions} cards={cards} {...attributes} />;
+  };
 
   const mapStateToProps = state => {
     return {

@@ -1,11 +1,12 @@
-import { LoadDoxaTagHistoryActionType } from "actions/identity/actionTypes";
-import { IAxiosAction } from "interfaces/axios";
+import { SubmissionError } from "redux-form";
+import { AxiosErrorData } from "interfaces/axios";
+import { LOAD_DOXATAG_HISTORY_SUCCESS, LOAD_DOXATAG_HISTORY_FAIL, CHANGE_DOXATAG_SUCCESS, CHANGE_DOXATAG_FAIL, DoxatagHistoryActionTypes } from "./types";
 
 export const initialState = [];
 
-export const reducer = (state = initialState, action: IAxiosAction<LoadDoxaTagHistoryActionType>) => {
+export const reducer = (state = initialState, action: DoxatagHistoryActionTypes) => {
   switch (action.type) {
-    case "LOAD_DOXATAG_HISTORY_SUCCESS":
+    case LOAD_DOXATAG_HISTORY_SUCCESS:
       const { status, data } = action.payload;
       switch (status) {
         case 204:
@@ -13,7 +14,14 @@ export const reducer = (state = initialState, action: IAxiosAction<LoadDoxaTagHi
         default:
           return data;
       }
-    case "LOAD_DOXATAG_HISTORY_FAIL":
+    case CHANGE_DOXATAG_FAIL:
+      const { isAxiosError, response } = action.error;
+      if (isAxiosError) {
+        throw new SubmissionError<AxiosErrorData>(response.data.errors);
+      }
+      break;
+    case CHANGE_DOXATAG_SUCCESS:
+    case LOAD_DOXATAG_HISTORY_FAIL:
     default: {
       return state;
     }

@@ -1,12 +1,8 @@
-import React, { Component } from "react";
+import React, { Component, FunctionComponent } from "react";
 import { connect } from "react-redux";
 
-const connectStripeConnectAccount = WrappedComponent => {
-  class Container extends Component<any> {
-    render() {
-      return <WrappedComponent accountAccount={this.props.accountAccount} />;
-    }
-  }
+const connectStripeConnectAccount = (ConnectedComponent: FunctionComponent<any>) => {
+  const Container: FunctionComponent<any> = ({ actions, accountAccount, ...attributes }) => <ConnectedComponent actions={actions} accountAccount={accountAccount} {...attributes} />;
 
   const mapStateToProps = state => {
     return {

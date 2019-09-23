@@ -1,11 +1,10 @@
-import { IAxiosAction } from "interfaces/axios";
-import { LoadUserAccountTransactionsActionType } from "actions/cashier/actionTypes";
+import { LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS, LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL, TransactionsActionTypes } from "./types";
 
 export const initialState = [];
 
-export const reducer = (state = initialState, action: IAxiosAction<LoadUserAccountTransactionsActionType>) => {
+export const reducer = (state = initialState, action: TransactionsActionTypes) => {
   switch (action.type) {
-    case "LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS":
+    case LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS:
       const { status, data } = action.payload;
       switch (status) {
         case 204:
@@ -13,7 +12,7 @@ export const reducer = (state = initialState, action: IAxiosAction<LoadUserAccou
         default:
           return state.filter(oldTransaction => !data.some(newTransaction => newTransaction.id === oldTransaction.id)).concat(data);
       }
-    case "LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL":
+    case LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL:
     default:
       return state;
   }

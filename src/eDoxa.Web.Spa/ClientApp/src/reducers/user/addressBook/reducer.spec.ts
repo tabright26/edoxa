@@ -7,8 +7,6 @@ const addressBook200Data = [{ id: "1" }, { id: "2" }, { id: "1" }];
 const removeSuccessData = { addressId: "1" };
 const removeExpectedState = initialState.filter(address => address.id !== addressId);
 
-const axiosFailErrorData = { isAxiosError: false, response: { data: { errors: [{ id: "1" }, { id: "2" }] } } };
-
 describe("user address book reducer", () => {
   it("should return the initial state", () => {
     const action: any = {};
@@ -39,29 +37,29 @@ describe("user address book reducer", () => {
     expect(reducer(initialState, action)).toEqual(removeExpectedState);
   });
 
-  it("should handle ADD_ADDRESS_FAIL", () => {
-    const action: any = {
-      type: "ADD_ADDRESS_FAIL",
-      error: axiosFailErrorData
-    };
-    expect(reducer(initialState, action)).toEqual(initialState);
-  });
+  // it("should handle ADD_ADDRESS_FAIL", () => {
+  //   const action: any = {
+  //     type: "ADD_ADDRESS_FAIL",
+  //     error: axiosFailErrorData
+  //   };
+  //   expect(reducer(initialState, action)).toEqual(initialState);
+  // });
 
-  it("should handle UPDATE_ADDRESS_FAIL", () => {
-    const action: any = {
-      type: "UPDATE_ADDRESS_FAIL",
-      error: axiosFailErrorData
-    };
-    expect(reducer(initialState, action)).toEqual(initialState);
-  });
+  // it("should handle UPDATE_ADDRESS_FAIL", () => {
+  //   const action: any = {
+  //     type: "UPDATE_ADDRESS_FAIL",
+  //     error: axiosFailErrorData
+  //   };
+  //   expect(reducer(initialState, action)).toEqual(initialState);
+  // });
 
-  it("should handle REMOVE_ADDRESS_FAIL", () => {
-    const action: any = {
-      type: "REMOVE_ADDRESS_FAIL",
-      error: axiosFailErrorData
-    };
-    expect(reducer(initialState, action)).toEqual(initialState);
-  });
+  // it("should handle REMOVE_ADDRESS_FAIL", () => {
+  //   const action: any = {
+  //     type: "REMOVE_ADDRESS_FAIL",
+  //     error: axiosFailErrorData
+  //   };
+  //   expect(reducer(initialState, action)).toEqual(initialState);
+  // });
 
   it("should handle ADD_ADDRESS_SUCCESS", () => {
     const action: any = {

@@ -1,12 +1,8 @@
-import React, { Component } from "react";
+import React, { FunctionComponent } from "react";
 import { connect } from "react-redux";
 
-const connectUserEmail = WrappedComponent => {
-  class Container extends Component {
-    render() {
-      return <WrappedComponent {...this.props} />;
-    }
-  }
+const connectUserEmail = (ConnectedComponent: FunctionComponent<any>) => {
+  const Container: FunctionComponent<any> = ({ actions, email, ...attributes }) => <ConnectedComponent actions={actions} email={email} {...attributes} />;
 
   const mapStateToProps = () => {
     return {
@@ -14,7 +10,16 @@ const connectUserEmail = WrappedComponent => {
     };
   };
 
-  return connect(mapStateToProps)(Container);
+  const mapDispatchToProps = dispatch => {
+    return {
+      actions: {}
+    };
+  };
+
+  return connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Container);
 };
 
 export default connectUserEmail;

@@ -7,7 +7,7 @@ import Paginate from "components/Shared/Paginate";
 
 // TODO: Paging logic must be done server side.
 const MoneyTransactionHistory = ({ actions, transactions }) => {
-  const pageSize = 5;
+  const pageSize = 4;
   const [data, setDate] = useState([]);
   useEffect(() => {
     setDate(transactions.slice(0, pageSize));

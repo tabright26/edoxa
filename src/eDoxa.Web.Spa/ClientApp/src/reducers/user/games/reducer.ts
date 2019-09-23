@@ -1,11 +1,10 @@
-import { LoadGamesActionType } from "actions/identity/actionTypes";
-import { IAxiosAction } from "interfaces/axios";
+import { LOAD_GAMES_SUCCESS, LOAD_GAMES_FAIL, GamesActionTypes } from "./types";
 
 export const initialState = [];
 
-export const reducer = (state = initialState, action: IAxiosAction<LoadGamesActionType>) => {
+export const reducer = (state = initialState, action: GamesActionTypes) => {
   switch (action.type) {
-    case "LOAD_GAMES_SUCCESS":
+    case LOAD_GAMES_SUCCESS:
       const { status, data } = action.payload;
       switch (status) {
         case 204:
@@ -13,7 +12,7 @@ export const reducer = (state = initialState, action: IAxiosAction<LoadGamesActi
         default:
           return data;
       }
-    case "LOAD_GAMES_FAIL":
+    case LOAD_GAMES_FAIL:
     default: {
       return state;
     }

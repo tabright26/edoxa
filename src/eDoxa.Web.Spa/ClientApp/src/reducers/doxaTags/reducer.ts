@@ -1,11 +1,10 @@
-import { LoadDoxaTagsActionType } from "actions/identity/actionTypes";
-import { IAxiosAction } from "interfaces/axios";
+import { LOAD_DOXATAGS_SUCCESS, LOAD_DOXATAGS_FAIL, DoxatagsActionTypes } from "./types";
 
 export const initialState = [];
 
-export const reducer = (state = initialState, action: IAxiosAction<LoadDoxaTagsActionType>) => {
+export const reducer = (state = initialState, action: DoxatagsActionTypes) => {
   switch (action.type) {
-    case "LOAD_DOXATAGS_SUCCESS":
+    case LOAD_DOXATAGS_SUCCESS:
       const { status, data } = action.payload;
       switch (status) {
         case 204:
@@ -13,7 +12,7 @@ export const reducer = (state = initialState, action: IAxiosAction<LoadDoxaTagsA
         default:
           return data;
       }
-    case "LOAD_DOXATAGS_FAIL":
+    case LOAD_DOXATAGS_FAIL:
     default:
       return state;
   }
