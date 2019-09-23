@@ -4,7 +4,7 @@ import { Modal, ModalBody, ModalHeader } from "reactstrap";
 import { connectModal } from "redux-modal";
 import StripePaymentMethodForm from "forms/Stripe/PaymentMethod";
 import { CREATE_PAYMENTMETHOD_MODAL } from "modals";
-import connectStripePaymentMethods from "containers/connectStripePaymentMethods";
+import connectStripePaymentMethods from "store/stripe/cards/container";
 
 const CreatePaymentMethodModal = ({ show, handleHide, actions, stripe }) => (
   <Modal isOpen={show} toggle={handleHide}>

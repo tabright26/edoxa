@@ -3,7 +3,7 @@ import { Button } from "reactstrap";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Loading from "components/Shared/Loading";
-import connectStripePaymentMethods from "containers/connectStripePaymentMethods";
+import connectStripePaymentMethods from "store/stripe/cards/container";
 import Cards from "./Cards";
 import StripePaymentMethodModal from "modals/Stripe/PaymentMethod";
 import { Elements } from "react-stripe-elements";

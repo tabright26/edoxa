@@ -3,7 +3,7 @@ import { Elements } from "react-stripe-elements";
 import { Card, CardHeader, CardBody } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faEdit, faTimes } from "@fortawesome/free-solid-svg-icons";
-import connectStripeBankAccounts from "containers/connectStripeBankAccounts";
+import connectStripeBankAccounts from "store/stripe/bankAccounts/container";
 import StripeBankAccountForm from "forms/Stripe/BankAccount";
 import StripeBankAccountModal from "modals/Stripe/BankAccount";
 

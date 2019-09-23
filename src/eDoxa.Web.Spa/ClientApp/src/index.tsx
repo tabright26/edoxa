@@ -13,7 +13,8 @@ import { OidcProvider } from "redux-oidc";
 import userManager from "./utils/userManager";
 import ReduxToastr from "react-redux-toastr";
 import { StripeProvider } from "react-stripe-elements";
-const initialState = {};
+
+const initialState: any = {};
 
 const store = configureStore(initialState);
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Card, CardHeader } from "reactstrap";
-import connectUserAccountTransactions from "containers/connectUserAccountTransactions";
+import connectUserAccountTransactions from "store/user/account/transactions/container";
 import MoneyIcon from "icons/Money";
 import TransactionList from "components/User/Account/Transaction/List";
 import Paginate from "components/Shared/Paginate";

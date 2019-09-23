@@ -2,8 +2,8 @@ import React from "react";
 import { Card, CardHeader, CardBody } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTimes } from "@fortawesome/free-solid-svg-icons";
-import connectStripeCards from "containers/connectStripeCards";
-import connectStripePaymentMethods from "containers/connectStripePaymentMethods";
+import connectStripeCards from "store/stripe/cards/connectStripeCards";
+import connectStripePaymentMethods from "store/stripe/cards/container";
 import CardBrandIcon from "components/Stripe/Card/BrandIcon";
 import CardExpiration from "components/Stripe/Card/Expiration";
 

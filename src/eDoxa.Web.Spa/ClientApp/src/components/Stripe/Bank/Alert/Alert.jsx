@@ -1,7 +1,7 @@
 import React from "react";
 import { Alert, Button } from "reactstrap";
 
-import withStripeBankHoc from "containers/connectStripeBankAccounts";
+import withStripeBankHoc from "store/stripe/bankAccounts/container";
 
 const StripeBankAccountAlert = ({ hasBankAccount }) => {
   if (hasBankAccount) {
