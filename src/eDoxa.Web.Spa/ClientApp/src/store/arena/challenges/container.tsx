@@ -1,16 +1,10 @@
-import React, { FunctionComponent, useEffect } from "react";
+import React, { FunctionComponent } from "react";
 import { connect } from "react-redux";
-import { loadChallenges } from "store/arena/challenges/actions";
+import { loadChallenges, loadChallenge } from "store/arena/challenges/actions";
 import { AppState } from "store/types";
 
 export const connectArenaChallenges = (ConnectedComponent: FunctionComponent<any>) => {
-  const Container: FunctionComponent<any> = ({ actions, challenges, ...attributes }) => {
-    useEffect((): void => {
-      actions.loadChallenges();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-    return <ConnectedComponent actions={actions} challenges={challenges} {...attributes} />;
-  };
+  const Container: FunctionComponent<any> = ({ actions, challenges, ...attributes }) => <ConnectedComponent actions={actions} challenges={challenges} {...attributes} />;
 
   const mapStateToProps = (state: AppState) => {
     return {
@@ -21,7 +15,8 @@ export const connectArenaChallenges = (ConnectedComponent: FunctionComponent<any
   const mapDispatchToProps = (dispatch: any) => {
     return {
       actions: {
-        loadChallenges: () => dispatch(loadChallenges())
+        loadChallenges: () => dispatch(loadChallenges()),
+        loadChallenge: (challengeId: string) => dispatch(loadChallenge(challengeId))
       }
     };
   };
@@ -31,3 +26,22 @@ export const connectArenaChallenges = (ConnectedComponent: FunctionComponent<any
     mapDispatchToProps
   )(Container);
 };
+
+// DEPRECATED
+// const mapStateToProps = (state: AppState, ownProps) => {
+//   const challenge = state.arena.challenges.find(challenge => challenge.id === ownProps.match.params.challengeId);
+//   if (challenge) {
+//     challenge.participants.forEach(participant => {
+//       participant.user = {
+//         doxaTag: state.doxaTags.find(doxaTag => doxaTag.userId === participant.userId) || {
+//           doxaTag: {
+//             name: "[Unloaded]"
+//           }
+//         }
+//       };
+//     });
+//   }
+//   return {
+//     challenge
+//   };
+// };
