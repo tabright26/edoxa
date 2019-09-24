@@ -3,11 +3,12 @@ import { connect } from "react-redux";
 import { loadPaymentMethods } from "store/stripe/cards/actions";
 import { AppState } from "store/types";
 
-const connectStripePaymentMethods = (ConnectedComponent: FunctionComponent<any>) => {
+export const connectStripeCards = (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, cards, ...attributes }) => {
     useEffect((): void => {
       actions.loadCards();
-    });
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     return <ConnectedComponent actions={actions} cards={cards} {...attributes} />;
   };
 
@@ -30,5 +31,3 @@ const connectStripePaymentMethods = (ConnectedComponent: FunctionComponent<any>)
     mapDispatchToProps
   )(Container);
 };
-
-export default connectStripePaymentMethods;

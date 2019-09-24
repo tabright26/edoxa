@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import { Container, Row, Col } from "reactstrap";
 
-import ChallengeLogo from './Logo';
-import ChallengeSetup from './Specification';
-import ChallengeScoreboard from './Scoreboard';
-import ChallengeScoring from './Scoring';
-import ChallengePayout from './Payout';
+import ChallengeLogo from "./Logo";
+import ChallengeSetup from "./Specification";
+import ChallengeScoreboard from "./Scoreboard";
+import ChallengeScoring from "./Scoring";
+import ChallengePayout from "./Payout";
 
-import withArenaChallengeContainer from 'store/arena/challenges/connectArenaChallenge';
+import { connectArenaChallenge } from "store/arena/challenges/connectArenaChallenge";
 
 class Challenge extends Component {
   render() {
@@ -39,4 +39,4 @@ class Challenge extends Component {
   }
 }
 
-export default withArenaChallengeContainer(Challenge);
+export default connectArenaChallenge(Challenge);

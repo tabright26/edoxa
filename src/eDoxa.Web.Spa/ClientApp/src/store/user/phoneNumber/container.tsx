@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 import { connect } from "react-redux";
 import { AppState } from "store/types";
 
-const connectUserPhoneNumber = (ConnectedComponent: FunctionComponent<any>) => {
+export const connectUserPhoneNumber = (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, phoneNumber, ...attributes }) => <ConnectedComponent actions={actions} phoneNumber={phoneNumber} {...attributes} />;
 
   const mapStateToProps = (state: AppState) => {
@@ -22,5 +22,3 @@ const connectUserPhoneNumber = (ConnectedComponent: FunctionComponent<any>) => {
     mapDispatchToProps
   )(Container);
 };
-
-export default connectUserPhoneNumber;

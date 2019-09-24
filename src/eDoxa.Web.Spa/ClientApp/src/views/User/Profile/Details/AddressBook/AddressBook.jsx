@@ -4,7 +4,7 @@ import { faPlus, faEdit, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { Card, CardHeader, CardBody } from "reactstrap";
 import Address from "components/Shared/Address";
 import AddressForm from "forms/User/Address";
-import withAddressBook from "store/user/addressBook/container";
+import { connectUserAddressBook } from "store/user/addressBook/container";
 import UserAddressModal from "modals/User/Address";
 
 const AddressCard = ({ index, actions, address, length }) => {
@@ -16,11 +16,7 @@ const AddressCard = ({ index, actions, address, length }) => {
         <dd className="col-sm-3 m-0 text-muted">{`Address ${index}`}</dd>
         {!updateFormHidden ? (
           <dd className="col-sm-6 m-0">
-            <AddressForm.Update
-              initialValues={address}
-              onSubmit={fields => actions.updateAddress(address.id, fields).then(() => hideUpdateForm(true))}
-              handleCancel={() => hideUpdateForm(true)}
-            />
+            <AddressForm.Update initialValues={address} onSubmit={fields => actions.updateAddress(address.id, fields).then(() => hideUpdateForm(true))} handleCancel={() => hideUpdateForm(true)} />
           </dd>
         ) : (
           <dd className="col-sm-5 m-0">
@@ -79,4 +75,4 @@ const AddressBookCard = ({ className, addressBook, actions }) => (
   </Card>
 );
 
-export default withAddressBook(AddressBookCard);
+export default connectUserAddressBook(AddressBookCard);

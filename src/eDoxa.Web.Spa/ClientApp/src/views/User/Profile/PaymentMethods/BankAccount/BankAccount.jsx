@@ -3,7 +3,7 @@ import { Elements } from "react-stripe-elements";
 import { Card, CardHeader, CardBody } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faEdit, faTimes } from "@fortawesome/free-solid-svg-icons";
-import connectStripeBankAccounts from "store/stripe/bankAccounts/container";
+import connectBankAccounts from "store/stripe/bankAccounts/container";
 import StripeBankAccountForm from "forms/Stripe/BankAccount";
 import StripeBankAccountModal from "modals/Stripe/BankAccount";
 
@@ -76,4 +76,4 @@ const CreditCard = ({ className, bankAccounts: { data, isLoading, error }, actio
   </Elements>
 );
 
-export default connectStripeBankAccounts(CreditCard);
+export default connectBankAccounts(CreditCard);

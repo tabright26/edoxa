@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, CardBody } from "reactstrap";
-import withUserContainer from "store/user/container";
+import { connectUser } from "store/user/container";
 import PasswordForm from "forms/User/Password";
 
 const ForgotPassword = ({ actions }) => (
@@ -13,4 +13,4 @@ const ForgotPassword = ({ actions }) => (
   </Card>
 );
 
-export default withUserContainer(ForgotPassword);
+export default connectUser(ForgotPassword);

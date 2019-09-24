@@ -1,7 +1,7 @@
 import React from "react";
 import { CardHeader, CardImg, CardImgOverlay, CardText, Row, Col, Card, Button } from "reactstrap";
 
-import withUserGameHoc from "store/user/games/container";
+import { connectUserGames } from "store/user/games/container";
 
 const UserGameIndex = ({ games }) => (
   <Row>
@@ -32,4 +32,4 @@ const UserGameIndex = ({ games }) => (
   </Row>
 );
 
-export default withUserGameHoc(UserGameIndex);
+export default connectUserGames(UserGameIndex);

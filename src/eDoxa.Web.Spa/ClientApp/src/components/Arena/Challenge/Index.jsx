@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Row, Col, Card, CardHeader } from "reactstrap";
-import withArenaChallengesContainer from "store/arena/challenges/container";
+import { connectArenaChallenges } from "store/arena/challenges/container";
 
 import ChallengeItem from "./Item";
 
@@ -31,4 +31,4 @@ class ArenaChallengeIndex extends Component {
   }
 }
 
-export default withArenaChallengesContainer(ArenaChallengeIndex);
+export default connectArenaChallenges(ArenaChallengeIndex);

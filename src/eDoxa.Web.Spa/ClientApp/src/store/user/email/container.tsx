@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 import { connect } from "react-redux";
 import { AppState } from "store/types";
 
-const connectUserEmail = (ConnectedComponent: FunctionComponent<any>) => {
+export const connectUserEmail = (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, email, ...attributes }) => <ConnectedComponent actions={actions} email={email} {...attributes} />;
 
   const mapStateToProps = (state: AppState) => {
@@ -22,5 +22,3 @@ const connectUserEmail = (ConnectedComponent: FunctionComponent<any>) => {
     mapDispatchToProps
   )(Container);
 };
-
-export default connectUserEmail;

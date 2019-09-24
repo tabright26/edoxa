@@ -4,7 +4,7 @@ import { Button, Form, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledD
 import { AppNavbarBrand, AppSidebarToggler, AppAsideToggler } from "@coreui/react";
 import logo from "assets/images/brand/logo.svg";
 import sygnet from "assets/images/brand/sygnet.svg";
-import withUserContainer from "store/user/container";
+import { connectUser } from "store/user/container";
 import userManager, { POST_LOGIN_REDIRECT_URI } from "utils/userManager";
 
 class HeaderDropdown extends Component {
@@ -117,4 +117,4 @@ class Header extends Component {
   }
 }
 
-export default withUserContainer(Header);
+export default connectUser(Header);

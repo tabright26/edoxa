@@ -3,11 +3,12 @@ import { connect } from "react-redux";
 import { loadPersonalInfo, createPersonalInfo, updatePersonalInfo } from "store/user/personalInfo/actions";
 import { AppState } from "store/types";
 
-const connectUserPersonalInfo = (ConnectedComponent: FunctionComponent<any>) => {
+export const connectUserPersonalInfo = (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, personalInfo, ...attributes }) => {
     useEffect((): void => {
       actions.loadPersonalInfo();
-    });
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     return <ConnectedComponent actions={actions} personalInfo={personalInfo} {...attributes} />;
   };
 
@@ -36,5 +37,3 @@ const connectUserPersonalInfo = (ConnectedComponent: FunctionComponent<any>) => 
     mapDispatchToProps
   )(Container);
 };
-
-export default connectUserPersonalInfo;

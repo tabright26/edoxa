@@ -1,14 +1,14 @@
 import React, { FunctionComponent, useEffect } from "react";
-import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { loadChallenges } from "store/arena/challenges/actions";
 import { AppState } from "store/types";
 
-const connectArenaChallenges = (ConnectedComponent: FunctionComponent<any>) => {
+export const connectArenaChallenges = (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, challenges, ...attributes }) => {
     useEffect((): void => {
       actions.loadChallenges();
-    });
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     return <ConnectedComponent actions={actions} challenges={challenges} {...attributes} />;
   };
 
@@ -31,5 +31,3 @@ const connectArenaChallenges = (ConnectedComponent: FunctionComponent<any>) => {
     mapDispatchToProps
   )(Container);
 };
-
-export default connectArenaChallenges;

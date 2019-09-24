@@ -3,11 +3,12 @@ import { connect } from "react-redux";
 import { loadGames } from "store/user/games/actions";
 import { AppState } from "store/types";
 
-const connectUserGames = (ConnectedComponent: FunctionComponent<any>) => {
+export const connectUserGames = (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, games, ...attributes }) => {
     useEffect((): void => {
       actions.loadGames();
-    });
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     return <ConnectedComponent actions={actions} games={games} {...attributes} />;
   };
 
@@ -30,5 +31,3 @@ const connectUserGames = (ConnectedComponent: FunctionComponent<any>) => {
     mapDispatchToProps
   )(Container);
 };
-
-export default connectUserGames;

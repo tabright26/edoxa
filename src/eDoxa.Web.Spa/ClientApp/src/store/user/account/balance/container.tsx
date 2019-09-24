@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { loadUserAccountBalance } from "store/user/account/balance/actions";
 import { AppState } from "store/types";
 
-const connectUserAccountBalance = currency => (ConnectedComponent: FunctionComponent<any>) => {
+export const connectUserAccountBalance = currency => (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, currency, available, pending, ...attributes }) => {
     useEffect((): void => {
       actions.loadUserAccountBalance();
@@ -43,5 +43,3 @@ const connectUserAccountBalance = currency => (ConnectedComponent: FunctionCompo
     mapDispatchToProps
   )(Container);
 };
-
-export default connectUserAccountBalance;

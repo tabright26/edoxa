@@ -3,11 +3,12 @@ import { connect } from "react-redux";
 import { loadDoxaTagHistory, changeDoxaTag } from "store/user/doxaTagHistory/actions";
 import { AppState } from "store/types";
 
-const connectUserDoxaTagHistory = (ConnectedComponent: FunctionComponent<any>) => {
+export const connectUserDoxaTagHistory = (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, doxaTag, ...attributes }) => {
     useEffect((): void => {
       actions.loadDoxaTagHistory();
-    });
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     return <ConnectedComponent actions={actions} doxaTag={doxaTag} {...attributes} />;
   };
 
@@ -32,5 +33,3 @@ const connectUserDoxaTagHistory = (ConnectedComponent: FunctionComponent<any>) =
     mapDispatchToProps
   )(Container);
 };
-
-export default connectUserDoxaTagHistory;

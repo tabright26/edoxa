@@ -7,7 +7,8 @@ export const connectArenaChallenge = (ConnectedComponent: FunctionComponent<any>
   const Container: FunctionComponent<any> = ({ actions, challenge, ...attributes }) => {
     useEffect((): void => {
       actions.loadChallenge();
-    });
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     return <ConnectedComponent actions={actions} challenge={challenge} {...attributes} />;
   };
 
@@ -42,5 +43,3 @@ export const connectArenaChallenge = (ConnectedComponent: FunctionComponent<any>
     mapDispatchToProps
   )(Container);
 };
-
-export default connectArenaChallenge;

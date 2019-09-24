@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Card, CardHeader, CardBody } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
-import withPhoneNumber from "store/user/phoneNumber/container";
+import { connectUserPhoneNumber } from "store/user/phoneNumber/container";
 import PhoneNumberForm from "forms/User/PhoneNumber";
 
 const PhoneNumberCard = ({ className, phoneNumber }) => {
@@ -29,4 +29,4 @@ const PhoneNumberCard = ({ className, phoneNumber }) => {
   );
 };
 
-export default withPhoneNumber(PhoneNumberCard);
+export default connectUserPhoneNumber(PhoneNumberCard);

@@ -5,7 +5,7 @@ import { CREATE_PAYMENTMETHOD_MODAL, UPDATE_PAYMENTMETHOD_MODAL, DELETE_PAYMENTM
 import { loadPaymentMethods, attachPaymentMethod, updatePaymentMethod, detachPaymentMethod } from "store/stripe/cards/actions";
 import { AppState } from "store/types";
 
-const connectStripePaymentMethods = (ConnectedComponent: FunctionComponent<any>) => {
+export const connectStripePaymentMethods = (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, ...attributes }) => <ConnectedComponent actions={actions} {...attributes} />;
 
   const mapStateToProps = (state: AppState) => {
@@ -35,9 +35,7 @@ const connectStripePaymentMethods = (ConnectedComponent: FunctionComponent<any>)
   };
 
   return connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
   )(Container);
 };
-
-export default connectStripePaymentMethods;

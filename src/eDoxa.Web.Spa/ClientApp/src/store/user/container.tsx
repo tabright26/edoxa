@@ -5,8 +5,8 @@ import { confirmEmail } from "store/user/email/actions";
 import { forgotPassword, resetPassword } from "store/user/password/actions";
 import { AppState } from "store/types";
 
-const connectUser = (ConnectedComponent: FunctionComponent<any>) => {
-  const Container: FunctionComponent<any> = ({ actions, user, balance, isAuthenticated, ...attributes }) => (
+export const connectUser = (ConnectedComponent: FunctionComponent<any>) => {
+  const Container: FunctionComponent<any> = ({ actions, user, isAuthenticated, ...attributes }) => (
     <ConnectedComponent actions={actions} user={user} isAuthenticated={isAuthenticated} {...attributes} />
   );
 
@@ -38,5 +38,3 @@ const connectUser = (ConnectedComponent: FunctionComponent<any>) => {
     mapDispatchToProps
   )(Container);
 };
-
-export default connectUser;

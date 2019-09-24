@@ -5,11 +5,12 @@ import { CREATE_BANK_ACCOUNT_MODAL } from "modals";
 import { loadBankAccounts, createBankAccount, deleteBankAccount, updateBankAccount } from "store/stripe/bankAccounts/actions";
 import { AppState } from "store/types";
 
-const connectStripeBankAccounts = (ConnectedComponent: FunctionComponent<any>) => {
+export const connectStripeBankAccounts = (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, bankAccounts, hasBankAccount, ...attributes }) => {
     useEffect((): void => {
       actions.loadBankAccounts();
-    });
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     return <ConnectedComponent actions={actions} bankAccounts={bankAccounts} hasBankAccount={hasBankAccount} {...attributes} />;
   };
 
@@ -37,5 +38,3 @@ const connectStripeBankAccounts = (ConnectedComponent: FunctionComponent<any>) =
     mapDispatchToProps
   )(Container);
 };
-
-export default connectStripeBankAccounts;
