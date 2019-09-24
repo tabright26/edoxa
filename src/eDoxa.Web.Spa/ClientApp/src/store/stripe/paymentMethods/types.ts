@@ -45,3 +45,7 @@ export type PaymentMethodsActionCreators = LoadPaymentMethodsActionCreator | Att
 export type PaymentMethodsActionTypes = LoadPaymentMethodsAction | AttachPaymentMethodAction | DetachPaymentMethodAction | UpdatePaymentMethodAction;
 
 export interface PaymentMethodsState {}
+
+export const CARD_PAYMENTMETHOD_TYPE = "card";
+
+export type PaymentMethodType = typeof CARD_PAYMENTMETHOD_TYPE;

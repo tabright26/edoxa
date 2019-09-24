@@ -1,10 +1,10 @@
 import { loadPaymentMethods } from "./actions";
-import { LOAD_PAYMENTMETHODS, LOAD_PAYMENTMETHODS_SUCCESS, LOAD_PAYMENTMETHODS_FAIL } from "./types";
+import { LOAD_PAYMENTMETHODS, LOAD_PAYMENTMETHODS_SUCCESS, LOAD_PAYMENTMETHODS_FAIL, CARD_PAYMENTMETHOD_TYPE } from "./types";
 
 describe("stripe actions", () => {
   it("should create an action to get user stripe cards", () => {
     const expectedCustomer = "cus_qwe12312eqw12";
-    const expectedType = "card";
+    const expectedType = CARD_PAYMENTMETHOD_TYPE;
     const expectedTypes = [LOAD_PAYMENTMETHODS, LOAD_PAYMENTMETHODS_SUCCESS, LOAD_PAYMENTMETHODS_FAIL];
     const expectedClient = "stripe";
     const expectedMethod = "GET";

@@ -3,7 +3,8 @@ import { Button } from "reactstrap";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Loading from "components/Shared/Loading";
-import { connectStripePaymentMethods } from "store/stripe/cards/container";
+import { connectStripePaymentMethods } from "store/stripe/paymentMethods/container";
+import { CARD_PAYMENTMETHOD_TYPE } from "store/stripe/paymentMethods/types";
 import Cards from "./Cards";
 import StripePaymentMethodModal from "modals/Stripe/PaymentMethod";
 import { Elements } from "react-stripe-elements";
@@ -27,4 +28,4 @@ const PaymentMethods = ({ actions }) => (
   </Fragment>
 );
 
-export default connectStripePaymentMethods(PaymentMethods);
+export default connectStripePaymentMethods(CARD_PAYMENTMETHOD_TYPE)(PaymentMethods);

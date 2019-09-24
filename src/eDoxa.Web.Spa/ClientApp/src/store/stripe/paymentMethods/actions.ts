@@ -11,10 +11,12 @@ import {
   UPDATE_PAYMENTMETHOD,
   UPDATE_PAYMENTMETHOD_SUCCESS,
   UPDATE_PAYMENTMETHOD_FAIL,
-  PaymentMethodsActionCreators
+  CARD_PAYMENTMETHOD_TYPE,
+  PaymentMethodsActionCreators,
+  PaymentMethodType
 } from "./types";
 
-export function loadPaymentMethods(customer: string, type: "card"): PaymentMethodsActionCreators {
+export function loadPaymentMethods(customer: string, type: PaymentMethodType = CARD_PAYMENTMETHOD_TYPE): PaymentMethodsActionCreators {
   return {
     types: [LOAD_PAYMENTMETHODS, LOAD_PAYMENTMETHODS_SUCCESS, LOAD_PAYMENTMETHODS_FAIL],
     payload: {

@@ -7,7 +7,8 @@ export const connectUserAccountBalance = currency => (ConnectedComponent: Functi
   const Container: FunctionComponent<any> = ({ actions, currency, available, pending, ...attributes }) => {
     useEffect((): void => {
       actions.loadUserAccountBalance();
-    });
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     return <ConnectedComponent actions={actions} currency={currency} available={available} pending={pending} {...attributes} />;
   };
 
