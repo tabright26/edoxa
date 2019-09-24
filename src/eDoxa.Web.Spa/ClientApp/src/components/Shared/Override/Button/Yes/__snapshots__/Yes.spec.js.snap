@@ -5,6 +5,11 @@ exports[`renders without crashing 1`] = `
   aria-label={null}
   className="btn btn-primary btn-sm"
   onClick={[Function]}
+  style={
+    Object {
+      "width": "75px",
+    }
+  }
   type={0}
 >
   Yes

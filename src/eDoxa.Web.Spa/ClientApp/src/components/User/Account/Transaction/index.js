@@ -1,3 +1,3 @@
-import Transaction from "./Transaction";
+import Transactions from "./List/List";
 
-export default Transaction;
+export default Transactions;

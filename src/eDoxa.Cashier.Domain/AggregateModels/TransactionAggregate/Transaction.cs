@@ -1,5 +1,5 @@
 ﻿// Filename: Transaction.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -40,18 +40,22 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate
 
         public void MarkAsSucceded()
         {
-            if (Status == TransactionStatus.Pending)
+            if (Status != TransactionStatus.Pending)
             {
-                Status = TransactionStatus.Succeded;
+                throw new InvalidOperationException();
             }
+
+            Status = TransactionStatus.Succeded;
         }
 
         public void MarkAsFailed()
         {
-            if (Status == TransactionStatus.Pending)
+            if (Status != TransactionStatus.Pending)
             {
-                Status = TransactionStatus.Failed;
+                throw new InvalidOperationException();
             }
+
+            Status = TransactionStatus.Failed;
         }
     }
 

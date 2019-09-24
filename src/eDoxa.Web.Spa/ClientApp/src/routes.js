@@ -1,7 +1,7 @@
 import React from "react";
 
 const Account = React.lazy(() => import("./views/User/Account/Account"));
-const AccountCashier = React.lazy(() => import("./views/User/Profile/Cashier"));
+const AccountCashier = React.lazy(() => import("./views/User/Profile/PaymentMethods/PaymentMethods"));
 const AccountTransactionHistory = React.lazy(() => import("./views/User/Account/TransactionHistory/TransactionHistory"));
 const Arena = React.lazy(() => import("./views/Arena/Arena"));
 const ArenaChallenges = React.lazy(() => import("./views/Arena/Challenges/Challenges"));
@@ -27,7 +27,6 @@ const StructureTeams = React.lazy(() => import("./views/Structures/Teams/Teams")
 const StructureTeamDashboard = React.lazy(() => import("./views/Structures/Teams/Dashboard/Dashboard"));
 const StructureTeamDetails = React.lazy(() => import("./views/Structures/Teams/Details/Details"));
 const StructureTeamMarketplace = React.lazy(() => import("./views/Structures/Teams/Makertplace/Marketplace"));
-const UserGames = React.lazy(() => import("./views/User/Games/Games"));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -58,8 +57,7 @@ const routes = [
   { path: "/structures/teams", name: "Teams", component: StructureTeams, exact: true, secure: false, scopes: [] },
   { path: "/structures/teams/:teamId", name: "Team Details", component: StructureTeamDetails, exact: true, secure: true, scopes: [] },
   { path: "/structures/teams/:teamId/dashboard", name: "Team Dashboard", component: StructureTeamDashboard, exact: true, secure: true, scopes: [] },
-  { path: "/structures/teams/:teamId/marketplace", name: "Team Marketplace", component: StructureTeamMarketplace, exact: true, secure: true, scopes: [] },
-  { path: "/user/games", name: "My Games", component: UserGames, exact: false, secure: true, scopes: [] }
+  { path: "/structures/teams/:teamId/marketplace", name: "Team Marketplace", component: StructureTeamMarketplace, exact: true, secure: true, scopes: [] }
 ];
 
 export default routes;

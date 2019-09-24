@@ -4,6 +4,8 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
+
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Seedwork.Domain;
@@ -72,7 +74,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.TransactionAggregate
         }
 
         [TestMethod]
-        public void MarkAsSucceded_StatusSucceded_ShouldBeStatusSucceded()
+        public void MarkAsFailed_WhenTransactionStatusSucceded_ShouldThrowInvalidOperationException()
         {
             // Arrange
             var currency = Money.Fifty;
@@ -83,14 +85,14 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.TransactionAggregate
             transaction.MarkAsSucceded();
 
             // Act
-            transaction.MarkAsFailed();
+            var action = new Action(()=> transaction.MarkAsFailed());
 
             // Assert
-            transaction.Status.Should().Be(TransactionStatus.Succeded);
+            action.Should().Throw<InvalidOperationException>();
         }
 
         [TestMethod]
-        public void MarkAsFailed_StatusFailed_ShouldBeStatusFailed()
+        public void MarkAsSucceded_WhenTransactionStatusFailed_ShouldThrowInvalidOperationException()
         {
             // Arrange
             var currency = Money.Fifty;
@@ -101,10 +103,10 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.TransactionAggregate
             transaction.MarkAsFailed();
 
             // Act
-            transaction.MarkAsSucceded();
+            var action = new Action(()=> transaction.MarkAsSucceded());
 
             // Assert
-            transaction.Status.Should().Be(TransactionStatus.Failed);
+            action.Should().Throw<InvalidOperationException>();
         }
     }
 }

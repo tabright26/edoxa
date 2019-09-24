@@ -2,6 +2,6 @@
 
 exports[`renders without crashing 1`] = `
 <select
-  className="form-control"
+  className="form-control-sm form-control"
 />
 `;

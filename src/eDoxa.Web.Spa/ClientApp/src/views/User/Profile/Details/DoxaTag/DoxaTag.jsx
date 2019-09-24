@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Card, CardHeader, CardBody } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
-import withDoxaTagHistory from "containers/withDoxaTagHistory";
+import { connectUserDoxaTagHistory } from "store/user/doxaTagHistory/container";
 import DoxaTagForm from "forms/User/DoxaTag";
 
 const DoxaTagCard = ({ className, doxaTag, actions }) => {
@@ -37,4 +37,4 @@ const DoxaTagCard = ({ className, doxaTag, actions }) => {
   );
 };
 
-export default withDoxaTagHistory(DoxaTagCard);
+export default connectUserDoxaTagHistory(DoxaTagCard);

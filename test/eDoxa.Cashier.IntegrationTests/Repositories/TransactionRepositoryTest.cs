@@ -89,29 +89,6 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
                     transaction?.Status.Should().Be(TransactionStatus.Succeded);
                 }
             );
-
-            await _testServer.UsingScopeAsync(
-                async scope =>
-                {
-                    var accountRepository = scope.GetRequiredService<ITransactionRepository>();
-                    var transaction = await accountRepository.FindTransactionAsync(moneyDepositTransaction.Id);
-                    transaction.Should().NotBeNull();
-                    transaction.Should().Be(moneyDepositTransaction);
-                    transaction?.MarkAsFailed();
-                    await accountRepository.CommitAsync();
-                }
-            );
-
-            await _testServer.UsingScopeAsync(
-                async scope =>
-                {
-                    var accountRepository = scope.GetRequiredService<ITransactionRepository>();
-                    var transaction = await accountRepository.FindTransactionAsync(moneyDepositTransaction.Id);
-                    transaction.Should().NotBeNull();
-                    transaction.Should().Be(moneyDepositTransaction);
-                    transaction?.Status.Should().Be(TransactionStatus.Succeded);
-                }
-            );
         }
 
         [Theory]
@@ -155,29 +132,6 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
                     transaction.Should().NotBeNull();
                     transaction.Should().Be(moneyDepositTransaction);
                     transaction?.MarkAsFailed();
-                    await accountRepository.CommitAsync();
-                }
-            );
-
-            await _testServer.UsingScopeAsync(
-                async scope =>
-                {
-                    var accountRepository = scope.GetRequiredService<ITransactionRepository>();
-                    var transaction = await accountRepository.FindTransactionAsync(moneyDepositTransaction.Id);
-                    transaction.Should().NotBeNull();
-                    transaction.Should().Be(moneyDepositTransaction);
-                    transaction?.Status.Should().Be(TransactionStatus.Failed);
-                }
-            );
-
-            await _testServer.UsingScopeAsync(
-                async scope =>
-                {
-                    var accountRepository = scope.GetRequiredService<ITransactionRepository>();
-                    var transaction = await accountRepository.FindTransactionAsync(moneyDepositTransaction.Id);
-                    transaction.Should().NotBeNull();
-                    transaction.Should().Be(moneyDepositTransaction);
-                    transaction?.MarkAsSucceded();
                     await accountRepository.CommitAsync();
                 }
             );

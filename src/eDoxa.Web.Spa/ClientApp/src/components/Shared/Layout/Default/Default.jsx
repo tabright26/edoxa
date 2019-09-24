@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { Container } from "reactstrap";
+import { Container, Badge } from "reactstrap";
 import { AppFooter, AppAside, AppHeader, AppSidebar, AppSidebarFooter, AppSidebarForm, AppSidebarHeader, AppSidebarMinimizer, AppSidebarNav } from "@coreui/react";
 // sidebar nav config
 import navigation from "./_nav";
@@ -7,6 +7,9 @@ import navigation from "./_nav";
 import routes from "routes";
 import Routes from "components/Shared/Routes";
 import Loading from "components/Shared/Loading";
+
+import Money from "components/User/Account/Balance/Money";
+import Token from "components/User/Account/Balance/Token";
 
 const Aside = React.lazy(() => import("components/Shared/Aside"));
 const Footer = React.lazy(() => import("components/Shared/Footer"));
@@ -30,7 +33,14 @@ const Layout = ({ ...props }) => (
         <AppSidebarMinimizer />
       </AppSidebar>
       <main className="main">
-        {/* <AppBreadcrumb appRoutes={routes} /> */}
+        <nav className="breadcrumb d-flex">
+          <Badge title="Money" className="ml-auto" color="dark" style={{ width: "75px" }}>
+            <Money.Available />
+          </Badge>
+          <Badge title="Token" className="ml-2" color="dark" style={{ width: "75px" }}>
+            <Token.Available />
+          </Badge>
+        </nav>
         <Container fluid>
           <Suspense fallback={<Loading.Default />}>
             <Routes routes={routes} />

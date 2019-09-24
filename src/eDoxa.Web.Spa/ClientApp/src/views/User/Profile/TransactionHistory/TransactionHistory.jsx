@@ -1,43 +1,13 @@
-import React, { Fragment, Suspense } from "react";
-import Loading from "components/Shared/Loading";
-import { Container, Row, Col, Card, CardHeader, CardBody } from "reactstrap";
-import Transaction from "components/User/Account/Transaction";
-import withTransactionsHoc from "containers/withUserAccountTransactionHoc";
+import React, { Fragment } from "react";
+import DepositTransactionHistory from "./Money";
+import WithdrawalTransactionHistory from "./Token";
 
-const AccountTransactions = ({ className, transactions, actions }) => (
+const TransactionHistory = () => (
   <Fragment>
-    <h5 className="my-4">TRANSACTIONS HISTORY</h5>
-    <Suspense fallback={<Loading.Default />}>
-      <Container>
-        <Row>
-          <Col>
-            <Card className={className}>
-              <CardHeader>
-                <strong>Deposits</strong>
-              </CardHeader>
-              <CardBody>
-                {transactions.map((transaction, index) =>
-                  transaction.type === "Deposit" ? <Transaction key={index} index={index + 1} actions={actions} transaction={transaction} length={transaction.length} /> : null
-                )}
-              </CardBody>
-            </Card>
-          </Col>
-          <Col>
-            <Card className={className}>
-              <CardHeader>
-                <strong>Withdrawals</strong>
-              </CardHeader>
-              <CardBody>
-                {transactions.map((transaction, index) =>
-                  transaction.type === "Withdrawal" ? <Transaction key={index} index={index + 1} actions={actions} transaction={transaction} length={transaction.length} /> : null
-                )}
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
-    </Suspense>
+    <h5 className="mb-4">TRANSACTION HISTORY</h5>
+    <DepositTransactionHistory />
+    <WithdrawalTransactionHistory />
   </Fragment>
 );
 
-export default withTransactionsHoc(AccountTransactions);
+export default TransactionHistory;

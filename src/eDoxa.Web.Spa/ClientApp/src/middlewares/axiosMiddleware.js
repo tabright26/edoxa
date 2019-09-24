@@ -37,7 +37,7 @@ export const middleware = multiClientMiddleware({
             config.url = config.url.replace(":customerId", profile["stripe:customerId"]).replace(":connectAccountId", profile["stripe:connectAccountId"]);
             config.headers = {
               "Content-Type": "application/x-www-form-urlencoded",
-              authorization: `Bearer ${process.env.REACT_APP_STRIPE_APIKEY}`
+              authorization: `Bearer ${process.env.REACT_APP_STRIPE_APIKEYS_SECRETKEY}`
             };
             config.data = queryString.stringify(config.data);
             return config;

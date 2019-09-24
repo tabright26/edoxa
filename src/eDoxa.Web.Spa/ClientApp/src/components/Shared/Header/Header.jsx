@@ -4,8 +4,7 @@ import { Button, Form, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledD
 import { AppNavbarBrand, AppSidebarToggler, AppAsideToggler } from "@coreui/react";
 import logo from "assets/images/brand/logo.svg";
 import sygnet from "assets/images/brand/sygnet.svg";
-import withUserContainer from "containers/withUserContainer";
-import Balance from "components/User/Account/Balance/Header";
+import { connectUser } from "store/user/container";
 import userManager, { POST_LOGIN_REDIRECT_URI } from "utils/userManager";
 
 class HeaderDropdown extends Component {
@@ -41,17 +40,17 @@ class HeaderDropdown extends Component {
             </LinkContainer>
           </Form>
           <DropdownItem header>Connections</DropdownItem>
-          <LinkContainer to="/user/games">
+          <LinkContainer to="/profile/connections/games">
             <DropdownItem>My Games</DropdownItem>
           </LinkContainer>
           <DropdownItem header>Cashier</DropdownItem>
           <LinkContainer to="/account/overview">
             <DropdownItem>Account Overview</DropdownItem>
           </LinkContainer>
-          <LinkContainer to="/account/transaction-history">
+          <LinkContainer to="/profile/transaction-history">
             <DropdownItem>Transaction History</DropdownItem>
           </LinkContainer>
-          <LinkContainer to="/account/payment-methods">
+          <LinkContainer to="/profile/payment-methods">
             <DropdownItem>Payment Methods</DropdownItem>
           </LinkContainer>
           <DropdownItem header>Arena</DropdownItem>
@@ -99,8 +98,7 @@ class Header extends Component {
           </NavItem>
         </Nav>
         {isAuthenticated ? (
-          <Nav className="ml-auto mr-5" navbar>
-            <Balance balance={balance} />
+          <Nav className="ml-auto mr-3" navbar>
             <HeaderDropdown user={user} />
           </Nav>
         ) : (
@@ -119,4 +117,4 @@ class Header extends Component {
   }
 }
 
-export default withUserContainer(Header);
+export default connectUser(Header);

@@ -1,8 +1,8 @@
 import React from "react";
 import { Button } from "reactstrap";
 
-const SubmitButton = ({ className, children, type = "submit", color = "primary", ...attributes }) => (
-  <Button className={className} color={color} {...attributes} type={type}>
+const SubmitButton = ({ className, children, type = "submit", color = "primary", width = "75px", ...attributes }) => (
+  <Button size="sm" className={className} style={{ width }} color={color} {...attributes} type={type}>
     {children}
   </Button>
 );

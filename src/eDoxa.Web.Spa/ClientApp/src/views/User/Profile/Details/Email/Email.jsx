@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, CardHeader, CardBody } from "reactstrap";
-import withEmail from "containers/withEmail";
+import { connectUserEmail } from "store/user/email/container";
 
 const EmailCard = ({ className, email }) => (
   <Card className={className}>
@@ -16,4 +16,4 @@ const EmailCard = ({ className, email }) => (
   </Card>
 );
 
-export default withEmail(EmailCard);
+export default connectUserEmail(EmailCard);
