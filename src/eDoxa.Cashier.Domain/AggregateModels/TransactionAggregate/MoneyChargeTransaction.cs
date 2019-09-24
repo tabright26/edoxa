@@ -17,7 +17,6 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate
             new UtcNowDateTimeProvider()
         )
         {
-            this.MarkAsSucceded();
         }
     }
 }
