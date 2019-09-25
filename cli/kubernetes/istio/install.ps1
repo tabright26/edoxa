@@ -33,12 +33,11 @@ Start-Sleep -Seconds 30
 
 Write-Host "Install the istio-init chart to bootstrap all the Istio’s CRDs..."
 
-helm install istio-$ISTIO_VERSION/install/kubernetes/helm/istio-init --name istio-init --namespace istio-system `
-    --set certmanager.enabled=true
+helm install istio-$ISTIO_VERSION/install/kubernetes/helm/istio-init --name istio-init --namespace istio-system
 
-Write-Host "Verify that 28 Istio CRDs were installed to the Kubernetes cluster..."
+Write-Host "Verify that 23 Istio CRDs were installed to the Kubernetes cluster..."
 
-if ((kubectl get crds | Select-String -Pattern 'istio.io|certmanager.k8s.io' | Measure-Object -Line).Lines -eq 28) {
+if ((kubectl get crds | Select-String -Pattern 'istio.io|certmanager.k8s.io' | Measure-Object -Line).Lines -eq 23) {
     Write-Host "The Istio CRDs have been installed correctly in the cluster." -ForegroundColor Green
 }
 else {
@@ -92,8 +91,6 @@ helm install istio-$ISTIO_VERSION/install/kubernetes/helm/istio --name istio --n
     --set gateways.enabled=true `
     --set gateways.istio-ingressgateway.enabled=true `
     --set gateways.istio-ingressgateway.sds.enabled=true `
-    --set certmanager.enabled=true `
-    --set certmanager.email=admin@edoxa.gg `
     --set grafana.enabled=true `
     --set kiali.enabled=true `
     --set prometheus.enabled=true `

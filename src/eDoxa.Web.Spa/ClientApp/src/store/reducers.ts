@@ -9,6 +9,7 @@ import { reducer as arenaReducer } from "store/arena/reducer";
 import { reducer as userReducer } from "store/user/reducer";
 import { reducer as doxaTagsReducer } from "store/doxaTags/reducer";
 import { reducer as toastrReducer } from "react-redux-toastr";
+import { reducer as localizeReducer } from "utils/localize";
 
 const rootReducer = combineReducers({
   router: routerReducer,
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   modal: modalReducer,
   toastr: toastrReducer,
   oidc: oidcReducer,
+  localize: localizeReducer,
   stripe: stripeReducer,
   arena: arenaReducer,
   user: userReducer,

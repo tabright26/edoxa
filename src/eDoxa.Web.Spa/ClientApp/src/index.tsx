@@ -13,6 +13,8 @@ import { OidcProvider } from "redux-oidc";
 import userManager from "./utils/userManager";
 import ReduxToastr from "react-redux-toastr";
 import { StripeProvider } from "react-stripe-elements";
+import { LocalizeProvider } from "react-localize-redux";
+import { initialize } from "utils/localize";
 
 const initialState: any = {};
 
@@ -21,9 +23,11 @@ const store = configureStore(initialState);
 ReactDOM.render(
   <Provider store={store}>
     <OidcProvider store={store} userManager={userManager}>
-      <StripeProvider apiKey={process.env.REACT_APP_STRIPE_APIKEYS_PUBLISHABLEKEY}>
-        <App />
-      </StripeProvider>
+      <LocalizeProvider store={store} initialize={initialize}>
+        <StripeProvider apiKey={process.env.REACT_APP_STRIPE_APIKEYS_PUBLISHABLEKEY}>
+          <App />
+        </StripeProvider>
+      </LocalizeProvider>
     </OidcProvider>
     <ReduxToastr timeOut={4000} newestOnTop={false} preventDuplicates position="bottom-right" transitionIn="fadeIn" transitionOut="fadeOut" progressBar closeOnToastrClick />
   </Provider>,
