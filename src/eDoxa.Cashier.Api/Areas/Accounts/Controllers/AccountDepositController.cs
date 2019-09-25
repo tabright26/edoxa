@@ -1,13 +1,13 @@
 ﻿// Filename: AccountDepositController.cs
-// Date Created: 2019-08-27
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Areas.Accounts.Requests;
 using eDoxa.Cashier.Api.Extensions;
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Services;
 
 using FluentValidation.AspNetCore;
@@ -24,7 +24,7 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
     [Authorize]
     [ApiController]
     [ApiVersion("1.0")]
-    [Route("api/account/deposit")]
+    [Route("api/account/deposit/{currency}")]
     [ApiExplorerSettings(GroupName = "Account")]
     public sealed class AccountDepositController : ControllerBase
     {
@@ -42,7 +42,7 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
-        public async Task<IActionResult> PostAsync([FromBody] AccountDepositPostRequest request)
+        public async Task<IActionResult> PostAsync(Currency currency, [FromBody] decimal amount)
         {
             if (ModelState.IsValid)
             {
@@ -57,7 +57,7 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
                     return this.NotFound("User's account not found.");
                 }
 
-                var result = await _accountService.DepositAsync(account, request.Currency.Format(request.Amount), customerId);
+                var result = await _accountService.DepositAsync(account, currency.Format(amount), customerId);
 
                 if (result.IsValid)
                 {
@@ -68,6 +68,22 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
             }
 
             return this.BadRequest(ModelState);
+        }
+
+        [HttpGet("amounts")]
+        public IActionResult Get(Currency currency)
+        {
+            if (currency == Currency.Money)
+            {
+                return this.Ok(Money.DepositAmounts());
+            }
+
+            if (currency == Currency.Token)
+            {
+                return this.Ok(Token.DepositAmounts());
+            }
+
+            return this.BadRequest("Invalid or unsuported currency.");
         }
     }
 }

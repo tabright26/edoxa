@@ -8,7 +8,6 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Areas.Accounts.Controllers;
-using eDoxa.Cashier.Api.Areas.Accounts.Requests;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Services;
@@ -53,10 +52,8 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
 
             controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
-            var request = new AccountWithdrawalPostRequest(Money.Fifty);
-
             // Act
-            var result = await controller.PostAsync(request);
+            var result = await controller.PostAsync(Currency.Money, Money.Fifty);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -97,10 +94,8 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
 
             controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
-            var request = new AccountWithdrawalPostRequest(Money.Fifty);
-
             // Act
-            var result = await controller.PostAsync(request);
+            var result = await controller.PostAsync(Currency.Money, Money.Fifty);
 
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
@@ -142,10 +137,8 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
 
             controller.ControllerContext.ModelState.AddModelError("error", "error");
 
-            var request = new AccountWithdrawalPostRequest(Money.Fifty);
-
             // Act
-            var result = await controller.PostAsync(request);
+            var result = await controller.PostAsync(Currency.Money, Money.Fifty);
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
