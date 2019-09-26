@@ -41,9 +41,9 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
         private HttpClient _httpClient;
 
-        private async Task<HttpResponseMessage> ExecuteAsync(AccountWithdrawalPostRequest postRequest)
+        private async Task<HttpResponseMessage> ExecuteAsync(Currency currency, decimal amount)
         {
-            return await _httpClient.PostAsync("api/account/withdrawal", new JsonContent(postRequest));
+            return await _httpClient.PostAsync($"api/account/withdrawal/{currency}", new JsonContent(amount));
         }
 
         [Fact]
@@ -71,7 +71,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            using var response = await this.ExecuteAsync(new AccountWithdrawalPostRequest(Money.Fifty));
+            using var response = await this.ExecuteAsync(Currency.Money, Money.Fifty);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -90,7 +90,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             server.CleanupDbContext();
 
             // Act
-            using var response = await this.ExecuteAsync(new AccountWithdrawalPostRequest(Money.Fifty));
+            using var response = await this.ExecuteAsync(Currency.Money, Money.Fifty);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
@@ -135,7 +135,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            using var response = await this.ExecuteAsync(new AccountWithdrawalPostRequest(Money.Fifty));
+            using var response = await this.ExecuteAsync(Currency.Money, Money.Fifty);
 
             // Assert
             response.EnsureSuccessStatusCode();

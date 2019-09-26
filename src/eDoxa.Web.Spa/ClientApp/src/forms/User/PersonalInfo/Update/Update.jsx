@@ -27,12 +27,10 @@ const UpdatePersonalInfoForm = ({ handleSubmit, handleCancel, initialValues: { l
           <Input.Text
             type="text"
             className="d-inline"
-            value={
-              moment
-                .unix(birthDate)
-                .toDate()
-                .getMonth() + 1
-            }
+            value={moment
+              .unix(birthDate)
+              .toDate()
+              .getMonth()}
             name="month"
             bsSize="sm"
             style={{ width: "60px" }}

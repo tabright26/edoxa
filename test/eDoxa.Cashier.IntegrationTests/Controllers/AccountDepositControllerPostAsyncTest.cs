@@ -40,9 +40,9 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
         private HttpClient _httpClient;
 
-        private async Task<HttpResponseMessage> ExecuteAsync(AccountDepositPostRequest postRequest)
+        private async Task<HttpResponseMessage> ExecuteAsync(Currency currency, decimal amount)
         {
-            return await _httpClient.PostAsync("api/account/deposit", new JsonContent(postRequest));
+            return await _httpClient.PostAsync($"api/account/deposit/{currency}", new JsonContent(amount));
         }
 
         [Fact]
@@ -70,7 +70,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            using var response = await this.ExecuteAsync(new AccountDepositPostRequest(Currency.Token, 2500M));
+            using var response = await this.ExecuteAsync(Currency.Token, 2500M);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -101,7 +101,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             );
 
             // Act
-            using var response = await this.ExecuteAsync(new AccountDepositPostRequest(Currency.Money, Money.Fifty));
+            using var response = await this.ExecuteAsync(Currency.Money, Money.Fifty);
 
             // Assert
             response.EnsureSuccessStatusCode();

@@ -3,7 +3,7 @@ import { Table, Badge } from "reactstrap";
 import Moment from "react-moment";
 import Format from "components/Shared/Format";
 
-const TransactionList = ({ actions, transactions }) => (
+const TransactionList = ({ transactions }) => (
   <Table className="mb-0" responsive striped hover dark>
     <thead>
       <tr>
@@ -29,7 +29,7 @@ const TransactionList = ({ actions, transactions }) => (
             </td>
             <td className="my-auto">{transaction.type}</td>
             <td className="my-auto">
-              <Format.Currency currency={transaction.currency} amount={transaction.amount} />
+              <Format.Currency currency={transaction.currency} amount={transaction.amount} alignment="left" />
             </td>
             <td className="my-auto">{transaction.description}</td>
           </tr>

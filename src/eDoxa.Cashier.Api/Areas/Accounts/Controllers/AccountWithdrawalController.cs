@@ -6,7 +6,6 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Areas.Accounts.Requests;
 using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
@@ -26,7 +25,7 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
     [Authorize]
     [ApiController]
     [ApiVersion("1.0")]
-    [Route("api/account/withdrawal")]
+    [Route("api/account/withdrawal/{currency}")]
     [ApiExplorerSettings(GroupName = "Account")]
     public sealed class AccountWithdrawalController : ControllerBase
     {
@@ -44,7 +43,7 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
-        public async Task<IActionResult> PostAsync([FromBody] AccountWithdrawalPostRequest request)
+        public async Task<IActionResult> PostAsync(Currency currency, [FromBody] decimal amount)
         {
             if (ModelState.IsValid)
             {
@@ -59,7 +58,7 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
                     return this.NotFound("User's account not found.");
                 }
 
-                var result = await _accountService.WithdrawalAsync(new MoneyAccount(account), new Money(request.Amount), connectAccountId);
+                var result = await _accountService.WithdrawalAsync(new MoneyAccount(account), currency.Format(amount), connectAccountId);
 
                 if (result.IsValid)
                 {
@@ -70,6 +69,17 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
             }
 
             return this.BadRequest(ModelState);
+        }
+
+        [HttpGet("amounts")]
+        public IActionResult Get(Currency currency)
+        {
+            if (currency == Currency.Money)
+            {
+                return this.Ok(Money.WithdrawalAmounts());
+            }
+
+            return this.BadRequest("Invalid or unsuported currency.");
         }
     }
 }
