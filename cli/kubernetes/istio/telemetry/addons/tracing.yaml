@@ -1,0 +1,51 @@
+# Documentation: https://istio.io/docs/tasks/telemetry/gateways/
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: tracing-gateway
+  namespace: istio-system
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 15032
+      name: https-tracing
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      serverCertificate: sds
+      privateKey: sds
+      credentialName: telemetry-gw-cert
+    hosts:
+    - "telemetry.edoxa.gg"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: tracing-vs
+  namespace: istio-system
+spec:
+  hosts:
+  - "telemetry.edoxa.gg"
+  gateways:
+  - tracing-gateway
+  http:
+  - match:
+    - port: 15032
+    route:
+    - destination:
+        host: tracing
+        port:
+          number: 80
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: tracing
+  namespace: istio-system
+spec:
+  host: tracing
+  trafficPolicy:
+    tls:
+      mode: DISABLE

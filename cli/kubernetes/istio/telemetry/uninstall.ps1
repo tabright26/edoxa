@@ -1,3 +1,5 @@
+# Documentation: https://istio.io/docs/tasks/telemetry/gateways/
+
 # Remove all related Gateways
 kubectl -n istio-system delete gateway grafana-gateway kiali-gateway prometheus-gateway tracing-gateway
 
