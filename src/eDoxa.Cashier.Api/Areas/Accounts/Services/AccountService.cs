@@ -52,7 +52,7 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Services
 
                         return failure.ToResult();
                     }
-
+                    
                     var validator = new WithdrawalMoneyValidator(money);
 
                     var result = validator.Validate(account);

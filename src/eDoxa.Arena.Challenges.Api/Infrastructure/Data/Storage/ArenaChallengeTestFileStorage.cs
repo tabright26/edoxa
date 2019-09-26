@@ -1,5 +1,5 @@
 ﻿// Filename: ArenaChallengeTestFileStorage.cs
-// Date Created: 2019-08-18
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,15 +9,10 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 
-using Bogus;
-
-using eDoxa.Arena.Challenges.Api.Areas.Challenges.Factories;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
-using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.UserAggregate;
-using eDoxa.Seedwork.Domain;
+using eDoxa.Arena.Challenges.Infrastructure.Models;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 
 using Microsoft.WindowsAzure.Storage;
@@ -28,23 +23,22 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Storage
 {
     public sealed class ArenaChallengeTestFileStorage : IArenaChallengeTestFileStorage
     {
+        private readonly IChallengeFaker _challengeFaker;
         private readonly CloudFileShare _share;
-        private readonly ScoringFactory _scoringFactory;
 
-        public ArenaChallengeTestFileStorage()
+        public ArenaChallengeTestFileStorage(IChallengeFakerFactory challengeFakerFactory)
         {
+            _challengeFaker = challengeFakerFactory.CreateInstance(null, null);
+
             var storageCredentials = new StorageCredentials(
                 "edoxadev",
-                "KjHiR9rgn7tLkyKl4fK8xsAH6+YAgTqX8EyHdy+mIEFaGQTtVdAnS2jmVkfzynLFnBzjJOSyHu6WR44eqWbUXA=="
-            );
+                "KjHiR9rgn7tLkyKl4fK8xsAH6+YAgTqX8EyHdy+mIEFaGQTtVdAnS2jmVkfzynLFnBzjJOSyHu6WR44eqWbUXA==");
 
             var cloudStorageAccount = new CloudStorageAccount(storageCredentials, false);
 
             var cloudBlobClient = cloudStorageAccount.CreateCloudFileClient();
 
             _share = cloudBlobClient.GetShareReference("arena-challenge");
-
-            _scoringFactory = new ScoringFactory();
         }
 
         public async Task<IImmutableSet<User>> GetUsersAsync()
@@ -76,8 +70,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Storage
                     new
                     {
                         Id = default(Guid)
-                    }
-                )
+                    })
                 .Select(record => new User(UserId.FromGuid(record.Id)))
                 .ToImmutableHashSet();
         }
@@ -117,113 +110,23 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Storage
                         BestOf = default(int),
                         Duration = default(long),
                         State = default(int)
-                    }
-                )
+                    })
                 .Select(
-                    record =>
-                    {
-                        var challengeFaker = new ChallengeFaker();
-
-                        challengeFaker.CustomInstantiator(
-                            faker =>
+                    record => _challengeFaker.FakeChallenge(
+                        new ChallengeModel
+                        {
+                            Name = record.Name,
+                            Game = record.Game,
+                            Entries = record.Entries,
+                            BestOf = record.BestOf,
+                            Timeline = new ChallengeTimelineModel
                             {
-                                faker.User().Reset();
-
-                                var name = new ChallengeName(record.Name!);
-
-                                var game = ChallengeGame.FromValue(record.Game)!;
-
-                                var entries = new Entries(record.Entries);
-
-                                var bestOf = new BestOf(record.BestOf);
-
-                                var duration = new ChallengeDuration(TimeSpan.FromTicks(record.Duration));
-
-                                var state = ChallengeState.FromValue(record.State)!;
-
-                                var utcNowDate = DateTime.UtcNow.Date;
-
-                                var createdAt = faker.Date.Recent(1, utcNowDate);
-
-                                var startedAt = faker.Date.Between(createdAt, utcNowDate);
-
-                                var endedAt = startedAt + duration;
-
-                                var closedAt = faker.Date.Soon(1, endedAt);
-
-                                var synchronizedAt = faker.Date.Between(startedAt, closedAt);
-
-                                var timeline = new ChallengeTimeline(new DateTimeProvider(startedAt), duration);
-
-                                var scoringStrategy = _scoringFactory.CreateInstance(game);
-
-                                var challenge = new Challenge(
-                                    name,
-                                    game,
-                                    bestOf,
-                                    entries,
-                                    timeline,
-                                    scoringStrategy.Scoring
-                                );
-
-                                challenge.SetEntityId(ChallengeId.FromGuid(record.Id));
-
-                                var participantFaker = new ParticipantFaker(game, createdAt, startedAt);
-
-                                participantFaker.UseSeed(faker.Random.Int());
-
-                                var participants = participantFaker.Generate(ParticipantCount(faker, state, challenge.Entries));
-
-                                participants.ForEach(participant => challenge.Register(participant));
-
-                                if (state != ChallengeState.Inscription)
-                                {
-                                    challenge.Start(new DateTimeProvider(startedAt));
-
-                                    participants.ForEach(
-                                        participant =>
-                                        {
-                                            var matchFaker = new MatchFaker(game, challenge.Scoring, synchronizedAt);
-
-                                            matchFaker.UseSeed(faker.Random.Int());
-
-                                            var matches = matchFaker.Generate(MatchCount(faker, state, challenge.BestOf));
-
-                                            matches.ForEach(participant.Snapshot);
-                                        }
-                                    );
-
-                                    challenge.Synchronize(new DateTimeProvider(synchronizedAt));
-
-                                    if (state == ChallengeState.Ended || state == ChallengeState.Closed)
-                                    {
-                                        challenge.Start(new DateTimeProvider(startedAt - duration));
-                                    }
-
-                                    if (state == ChallengeState.Closed)
-                                    {
-                                        challenge.Close(new DateTimeProvider(closedAt));
-                                    }
-                                }
-
-                                return challenge;
-                            }
-                        );
-
-                        return challengeFaker.Generate();
-                    }
-                )
+                                Duration = record.Duration
+                            },
+                            State = record.State,
+                            Id = record.Id
+                        }))
                 .ToImmutableHashSet();
-
-            static int ParticipantCount(Faker faker, ChallengeState state, Entries entries)
-            {
-                return state == ChallengeState.Inscription ? new Entries(faker.Random.Int(1, entries - 1)) : entries;
-            }
-
-            static int MatchCount(Faker faker, ChallengeState state, BestOf bestOf)
-            {
-                return state != ChallengeState.Inscription ? faker.Random.Int(1, bestOf + 3) : 0;
-            }
         }
     }
 }

@@ -11,6 +11,7 @@ using eDoxa.Arena.Challenges.Api.Areas.Challenges.Factories;
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Services;
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Strategies;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data;
+using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Storage;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Queries;
 using eDoxa.Arena.Challenges.Domain.Adapters;
@@ -56,6 +57,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure
             builder.RegisterType<LeagueOfLegendsMatchAdapter>().As<IMatchAdapter>().SingleInstance();
 
             // Factories
+            builder.RegisterType<ChallengeFakerFactory>().As<IChallengeFakerFactory>().SingleInstance();
             builder.RegisterType<ScoringFactory>().As<IScoringFactory>().SingleInstance();
             builder.RegisterType<GameReferencesFactory>().As<IGameReferencesFactory>().SingleInstance();
             builder.RegisterType<MatchFactory>().As<IMatchFactory>().SingleInstance();

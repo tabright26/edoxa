@@ -7,6 +7,7 @@
 using System;
 using System.Threading.Tasks;
 
+using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Storage;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 
@@ -23,7 +24,8 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Data.Storage
         public async Task GetChallengesAsync_WithFortyRecords_ShouldHaveCountOfForty()
         {
             // Arrange
-            var storage = new ArenaChallengeTestFileStorage();
+            var challengeFakerFactory = new ChallengeFakerFactory();
+            var storage = new ArenaChallengeTestFileStorage(challengeFakerFactory);
 
             // Act
             var challenges = await storage.GetChallengesAsync();
@@ -36,7 +38,8 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Data.Storage
         public async Task GetUsersAsync_WithThousandRecords_ShouldHaveCountOfThousand()
         {
             // Arrange
-            var storage = new ArenaChallengeTestFileStorage();
+            var challengeFakerFactory = new ChallengeFakerFactory();
+            var storage = new ArenaChallengeTestFileStorage(challengeFakerFactory);
 
             // Act
             var users = await storage.GetUsersAsync();
@@ -49,7 +52,8 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Data.Storage
         public async Task GetUsersAsync_WithAdmin_ShouldContainAdminId()
         {
             // Arrange
-            var storage = new ArenaChallengeTestFileStorage();
+            var challengeFakerFactory = new ChallengeFakerFactory();
+            var storage = new ArenaChallengeTestFileStorage(challengeFakerFactory);
 
             // Act
             var users = await storage.GetUsersAsync();

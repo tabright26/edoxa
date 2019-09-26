@@ -19,7 +19,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.DataSets
     public class UserDataSet
     {
         // TODO: Should be refactored.
-        private static readonly IImmutableSet<User> TestUsers = new ArenaChallengeTestFileStorage().GetUsersAsync().Result;
+        private static readonly IImmutableSet<User> TestUsers = new ArenaChallengeTestFileStorage(new ChallengeFakerFactory()).GetUsersAsync().Result;
 
         private static ICollection<User> _testUsers = new HashSet<User>(TestUsers);
 
