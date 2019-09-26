@@ -1,11 +1,11 @@
 ﻿// Filename: IClanRepository.cs
 // Date Created: 2019-09-15
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 using eDoxa.Organizations.Clans.Domain.Models;
@@ -14,12 +14,20 @@ namespace eDoxa.Organizations.Clans.Domain.Repositories
 {
     public interface IClanRepository
     {
-        void Create(ClanModel clanModel);
+        void Create(Clan clan);
 
-        Task<IReadOnlyCollection<ClanModel>> FetchClansAsync();
+        void Delete(Clan clan);
 
-        Task<ClanModel> FindClanAsync(Guid clanId);
+        Task<IReadOnlyCollection<Clan>> FetchClansAsync();
 
-        Task SaveChangesAsync();
+        Task<Clan?> FindClanAsync(ClanId clanId);
+
+        Task<FileStream?> GetLogoAsync(ClanId clanId);
+
+        Task CreateOrUpdateLogoAsync(FileStream logo);
+
+        Task<IReadOnlyCollection<Member>> FetchMembersAsync(ClanId clanId);
+
+        Task CommitAsync();
     }
 }

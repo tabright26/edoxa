@@ -1,11 +1,12 @@
 ﻿// Filename: ClanRepository.cs
 // Date Created: 2019-09-15
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 using eDoxa.Organizations.Clans.Domain.Models;
@@ -24,24 +25,51 @@ namespace eDoxa.Organizations.Clans.Infrastructure.Repositories
             _dbContext = dbContext;
         }
 
-        public void Create(ClanModel clanModel)
+        public void Create(Clan clan)
         {
-            _dbContext.Clans.Add(clanModel);
+            _dbContext.Clans.Add(clan);
         }
 
-        public async Task<IReadOnlyCollection<ClanModel>> FetchClansAsync()
+        public void Delete(Clan clan)
+        {
+            _dbContext.Clans.Remove(clan);
+        }
+
+        public async Task<IReadOnlyCollection<Clan>> FetchClansAsync()
         {
             return await _dbContext.Clans.ToListAsync();
         }
 
-        public async Task<ClanModel> FindClanAsync(Guid clanId)
+        public Task<Clan?> FindClanAsync(ClanId clanId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<FileStream?> GetLogoAsync(ClanId clanId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task CreateOrUpdateLogoAsync(FileStream logo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IReadOnlyCollection<Member>> FetchMembersAsync(ClanId clanId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task CommitAsync()
+        {
+            _dbContext.SaveChangesAsync();
+            throw new NotImplementedException();
+        }
+
+        public async Task<Clan> FindClanAsync(Guid clanId)
         {
             return await _dbContext.Clans.Include(clan => clan.Members).SingleOrDefaultAsync(clan => clan.Id == clanId);
         }
 
-        public async Task SaveChangesAsync()
-        {
-            await _dbContext.SaveChangesAsync();
-        }
     }
 }

@@ -1,6 +1,6 @@
 ﻿// Filename: ClansDbContextCleaner.cs
 // Date Created: 2019-09-15
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
