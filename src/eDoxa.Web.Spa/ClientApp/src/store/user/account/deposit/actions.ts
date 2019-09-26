@@ -24,7 +24,10 @@ export function deposit(currency: Currency, amount: number): DepositActionCreato
           request: {
             method: "POST",
             url: `/cashier/api/account/deposit/${currency}`,
-            data: amount
+            data: amount,
+            headers: {
+              "content-type": "application/json-patch+json"
+            }
           }
         }
       };
@@ -35,7 +38,10 @@ export function deposit(currency: Currency, amount: number): DepositActionCreato
           request: {
             method: "POST",
             url: `/cashier/api/account/deposit/${currency}`,
-            data: amount
+            data: amount,
+            headers: {
+              "Content-Type": "application/json-patch+json"
+            }
           }
         }
       };

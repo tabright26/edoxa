@@ -1,15 +1,15 @@
 import { AxiosActionCreator, AxiosAction } from "interfaces/axios";
 import { Currency } from "../types";
 
-export const LOAD_WITHDRAWAL_TOKEN_AMOUNTS = "LOAD_WITHDRAWAL_TOKEN_AMOUNTS";
-export const LOAD_WITHDRAWAL_TOKEN_AMOUNTS_SUCCESS = "LOAD_WITHDRAWAL_TOKEN_AMOUNTS_SUCCESS";
-export const LOAD_WITHDRAWAL_TOKEN_AMOUNTS_FAIL = "LOAD_WITHDRAWAL_TOKEN_AMOUNTS_FAIL";
+export const LOAD_WITHDRAWAL_MONEY_AMOUNTS = "LOAD_WITHDRAWAL_MONEY_AMOUNTS";
+export const LOAD_WITHDRAWAL_MONEY_AMOUNTS_SUCCESS = "LOAD_WITHDRAWAL_MONEY_AMOUNTS_SUCCESS";
+export const LOAD_WITHDRAWAL_MONEY_AMOUNTS_FAIL = "LOAD_WITHDRAWAL_MONEY_AMOUNTS_FAIL";
 
-type LoadWithdrawalTokenAmountsType = typeof LOAD_WITHDRAWAL_TOKEN_AMOUNTS | typeof LOAD_WITHDRAWAL_TOKEN_AMOUNTS_SUCCESS | typeof LOAD_WITHDRAWAL_TOKEN_AMOUNTS_FAIL;
+type LoadWithdrawalMoneyAmountsType = typeof LOAD_WITHDRAWAL_MONEY_AMOUNTS | typeof LOAD_WITHDRAWAL_MONEY_AMOUNTS_SUCCESS | typeof LOAD_WITHDRAWAL_MONEY_AMOUNTS_FAIL;
 
-interface LoadWithdrawalTokenAmountsActionCreator extends AxiosActionCreator<LoadWithdrawalTokenAmountsType> {}
+interface LoadWithdrawalMoneyAmountsActionCreator extends AxiosActionCreator<LoadWithdrawalMoneyAmountsType> {}
 
-interface LoadWithdrawalTokenAmountsAction extends AxiosAction<LoadWithdrawalTokenAmountsType> {}
+interface LoadWithdrawalMoneyAmountsAction extends AxiosAction<LoadWithdrawalMoneyAmountsType> {}
 
 export const WITHDRAWAL_TOKEN = "WITHDRAWAL_TOKEN";
 export const WITHDRAWAL_TOKEN_SUCCESS = "WITHDRAWAL_TOKEN_SUCCESS";
@@ -21,9 +21,9 @@ interface WithdrawalMoneyActionCreator extends AxiosActionCreator<WithdrawalToke
 
 interface WithdrawalMoneyAction extends AxiosAction<WithdrawalTokenType> {}
 
-export type WithdrawalActionCreators = WithdrawalMoneyActionCreator | LoadWithdrawalTokenAmountsActionCreator;
+export type WithdrawalActionCreators = WithdrawalMoneyActionCreator | LoadWithdrawalMoneyAmountsActionCreator;
 
-export type WithdrawalActionTypes = WithdrawalMoneyAction | LoadWithdrawalTokenAmountsAction;
+export type WithdrawalActionTypes = WithdrawalMoneyAction | LoadWithdrawalMoneyAmountsAction;
 
 export interface WithdrawalState {
   amounts: Map<Currency, number[]>;

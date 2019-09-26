@@ -1,5 +1,7 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
+import { show } from "redux-modal";
+import { DEPOSIT_MODAL } from "modals";
 import { loadDepositAmounts, deposit } from "./actions";
 import { AppState } from "store/types";
 import { Currency } from "../types";
@@ -14,25 +16,17 @@ export const connectUserAccountDeposit = (currency: Currency) => (ConnectedCompo
   };
 
   const mapStateToProps = (state: AppState) => {
-    switch (currency) {
-      case "money":
-        return {
-          amounts: state.user.account.deposit.amounts.get("money")
-        };
-      case "token":
-        return {
-          amounts: state.user.account.deposit.amounts.get("token")
-        };
-      default:
-        throw new Error("Invalid deposit currency.");
-    }
+    return {
+      amounts: state.user.account.deposit.amounts.get(currency)
+    };
   };
 
   const mapDispatchToProps = (dispatch: any) => {
     return {
       actions: {
         loadDepositAmounts: () => dispatch(loadDepositAmounts(currency)),
-        deposit: (amount: number) => dispatch(deposit(currency, amount))
+        deposit: (amount: number) => dispatch(deposit(currency, amount)),
+        showDepositModal: (actions, amounts) => dispatch(show(DEPOSIT_MODAL, { actions, amounts }))
       }
     };
   };
