@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using eDoxa.Organizations.Clans.Domain.Models;
 using eDoxa.Organizations.Clans.Domain.Repositories;
 
+using Microsoft.EntityFrameworkCore;
+
 namespace eDoxa.Organizations.Clans.Infrastructure.Repositories
 {
     public class InvitationRepository : IInvitationRepository
@@ -22,29 +24,29 @@ namespace eDoxa.Organizations.Clans.Infrastructure.Repositories
             _dbContext = dbContext;
         }
 
-        public void Create(Invitation candidature)
+        public void Create(Invitation invitation)
         {
-            throw new NotImplementedException();
+            _dbContext.Invitations.Add(invitation);
         }
 
-        public void Delete(Invitation candidature)
+        public void Delete(Invitation invitation)
         {
-            throw new NotImplementedException();
+            _dbContext.Invitations.Remove(invitation);
         }
 
-        public Task<IReadOnlyCollection<Invitation>> FetchAsync()
+        public async Task<IReadOnlyCollection<Invitation>> FetchAsync()
         {
-            throw new NotImplementedException();
+            return await _dbContext.Invitations.ToListAsync();
         }
 
-        public Task<Invitation?> FindAsync(InvitationId invitationId)
+        public async Task<Invitation?> FindAsync(InvitationId invitationId)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Invitations.SingleOrDefaultAsync(invitation => invitation.Id == invitationId);
         }
 
-        public Task CommitAsync()
+        public async Task CommitAsync()
         {
-            throw new NotImplementedException();
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

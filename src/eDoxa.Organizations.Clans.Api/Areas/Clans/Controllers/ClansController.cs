@@ -48,7 +48,6 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
                 return this.NoContent();
             }
 
-
             return this.Ok(_mapper.Map<IEnumerable<ClanResponse>>(clans));
         }
 
@@ -59,21 +58,24 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
             {
                 var userId = HttpContext.GetUserId();
                 var clanId = HttpContext.GetClanId();
+
                 var clan = await _clanService.FindClanAsync(clanId);
 
                 if (clan != null)
                 {
                     return this.NotFound("User's already has a clan.");
                 }
+
                 var result = await _clanService.CreateClanAsync(userId, request.Name);
+
                 if (result.IsValid)
                 {
                     return this.Ok("The clan has been created.");
                 }
+
                 result.AddToModelState(ModelState, null);
             }
             return this.BadRequest(ModelState);
-
         }
 
         [HttpGet("{clanId}")]

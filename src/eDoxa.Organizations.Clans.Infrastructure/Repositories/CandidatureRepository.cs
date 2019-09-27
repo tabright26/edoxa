@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using eDoxa.Organizations.Clans.Domain.Models;
 using eDoxa.Organizations.Clans.Domain.Repositories;
 
+using Microsoft.EntityFrameworkCore;
+
 namespace eDoxa.Organizations.Clans.Infrastructure.Repositories
 {
     public class CandidatureRepository : ICandidatureRepository
@@ -24,27 +26,27 @@ namespace eDoxa.Organizations.Clans.Infrastructure.Repositories
 
         public void Create(Candidature candidature)
         {
-            throw new NotImplementedException();
+            _dbContext.Candidatures.Add(candidature);
         }
 
         public void Delete(Candidature candidature)
         {
-            throw new NotImplementedException();
+            _dbContext.Candidatures.Remove(candidature);
         }
 
-        public Task<IReadOnlyCollection<Candidature>> FetchAsync()
+        public async Task<IReadOnlyCollection<Candidature>> FetchAsync()
         {
-            throw new NotImplementedException();
+            return await _dbContext.Candidatures.ToListAsync();
         }
 
-        public Task<Candidature?> FindAsync(CandidatureId candidatureId)
+        public async Task<Candidature?> FindAsync(CandidatureId candidatureId)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Candidatures.SingleOrDefaultAsync(candidature => candidature.Id == candidatureId);
         }
 
-        public Task CommitAsync()
+        public async Task CommitAsync()
         {
-            throw new NotImplementedException();
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

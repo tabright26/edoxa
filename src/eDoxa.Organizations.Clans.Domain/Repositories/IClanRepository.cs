@@ -28,6 +28,8 @@ namespace eDoxa.Organizations.Clans.Domain.Repositories
 
         Task<IReadOnlyCollection<Member>> FetchMembersAsync(ClanId clanId);
 
+        Task<Member?> FindMemberAsync(ClanId clanId, MemberId memberId);
+
         Task CommitAsync();
     }
 }

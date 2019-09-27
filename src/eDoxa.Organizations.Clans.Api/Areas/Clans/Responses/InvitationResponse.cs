@@ -21,9 +21,9 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Responses
         public Guid Id { get; set; }
 
         [JsonProperty("userId")]
-        public UserId UserId { get; set; }
+        public Guid UserId { get; set; }
 
         [JsonProperty("clanId")]
-        public ClanId ClanId { get; set; }
+        public Guid ClanId { get; set; }
     }
 }

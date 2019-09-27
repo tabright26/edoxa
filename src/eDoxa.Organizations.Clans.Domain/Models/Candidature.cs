@@ -10,10 +10,15 @@ namespace eDoxa.Organizations.Clans.Domain.Models
 {
     public class Candidature : Entity<CandidatureId>, IMemberInfo
     {
-        public Candidature(UserId userId, ClanId clanId)
+        public Candidature(UserId userId, ClanId clanId) : this()
         {
             UserId = userId;
             ClanId = clanId;
+        }
+
+        private Candidature()
+        {
+            //Requied by EF Core
         }
 
         public UserId UserId { get; private set; }

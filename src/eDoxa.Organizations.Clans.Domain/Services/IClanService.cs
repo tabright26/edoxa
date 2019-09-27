@@ -33,12 +33,12 @@ namespace eDoxa.Organizations.Clans.Domain.Services
 
         Task<IReadOnlyCollection<Member>> FetchMembersAsync(ClanId clanId);
 
-        Task<Member?> FindMemberAsync(MemberId memberId);
+        Task<Member?> FindMemberAsync(Clan clan, MemberId memberId);
 
         Task<ValidationResult> AddMemberToClanAsync(Clan clan, IMemberInfo memberInfo);
 
         Task<ValidationResult> KickMemberFromClanAsync(Clan clan, MemberId memberId);
 
-        Task<ValidationResult> LeaveClanAsync (Clan clan, MemberId memberId);
+        Task<ValidationResult> LeaveClanAsync (Clan clan, UserId userId);
     }
 }

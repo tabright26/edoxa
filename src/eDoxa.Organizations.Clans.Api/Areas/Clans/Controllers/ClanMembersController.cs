@@ -63,15 +63,7 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
                     return this.NotFound("Clan does not exist.");
                 }
 
-                var memberId = clan.Members.SingleOrDefault(member => member.UserId == userId)?.Id;
-
-                if (memberId == null)
-                {
-                    //Todo check with Frank to see if this is decent
-                    return this.Conflict("User not in the clan.");
-                }
-
-                var result = await _clanService.LeaveClanAsync(clan, memberId);
+                var result = await _clanService.LeaveClanAsync(clan, userId);
 
                 if (result.IsValid)
                 {

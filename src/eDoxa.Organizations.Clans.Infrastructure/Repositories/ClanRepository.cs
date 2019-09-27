@@ -1,5 +1,5 @@
 ﻿// Filename: ClanRepository.cs
-// Date Created: 2019-09-15
+// Date Created: 2019-09-16
 //
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Organizations.Clans.Domain.Models;
@@ -40,36 +41,33 @@ namespace eDoxa.Organizations.Clans.Infrastructure.Repositories
             return await _dbContext.Clans.ToListAsync();
         }
 
-        public Task<Clan?> FindClanAsync(ClanId clanId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<FileStream?> GetLogoAsync(ClanId clanId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task CreateOrUpdateLogoAsync(FileStream logo)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IReadOnlyCollection<Member>> FetchMembersAsync(ClanId clanId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task CommitAsync()
-        {
-            _dbContext.SaveChangesAsync();
-            throw new NotImplementedException();
-        }
-
-        public async Task<Clan> FindClanAsync(Guid clanId)
+        public async Task<Clan?> FindClanAsync(ClanId clanId)
         {
             return await _dbContext.Clans.Include(clan => clan.Members).SingleOrDefaultAsync(clan => clan.Id == clanId);
         }
 
+        public async Task<FileStream?> GetLogoAsync(ClanId clanId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task CreateOrUpdateLogoAsync(FileStream logo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<IReadOnlyCollection<Member>> FetchMembersAsync(ClanId clanId)
+        {
+            return await _dbContext.Members.AsNoTracking().Where(member => member.ClanId == clanId).ToListAsync();
+        }
+        public async Task<Member?> FindMemberAsync(ClanId clanId, MemberId memberId)
+        {
+            return await _dbContext.Members.SingleOrDefaultAsync(member => member.Id == memberId && member.ClanId == clanId );
+        }
+
+        public async Task CommitAsync()
+        {
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

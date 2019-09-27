@@ -10,14 +10,19 @@ namespace eDoxa.Organizations.Clans.Domain.Models
 {
     public class Invitation : Entity<InvitationId>, IMemberInfo
     {
-        public Invitation(UserId userId, ClanId clanId)
+        public Invitation(UserId userId, ClanId clanId) : this()
         {
             UserId = userId;
             ClanId = clanId;
         }
 
-        public UserId UserId { get; set; }
+        private Invitation()
+        {
+            //Requied by EF Core
+        }
 
-        public ClanId ClanId { get; set; }
+        public UserId UserId { get; private set; }
+
+        public ClanId ClanId { get; private set; }
     }
 }

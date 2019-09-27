@@ -71,7 +71,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
             // Arrange
             var mockClanService= new Mock<IClanService>();
 
-            var clan = new Clan("Test", "This is a summary", new UserId());
+            var clan = new Clan("Test", new UserId());
 
             mockClanService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>())).ReturnsAsync(clan).Verifiable();
 
@@ -101,7 +101,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
             // Arrange
             var mockClanService = new Mock<IClanService>();
 
-            var clan = new Clan("Test", "This is a summary", new UserId());
+            var clan = new Clan("Test", new UserId());
 
             mockClanService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>())).Verifiable();
 
@@ -131,7 +131,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
             // Arrange
             var mockClanService = new Mock<IClanService>();
 
-            var clan = new Clan("Test", "This is a summary", new UserId());
+            var clan = new Clan("Test", new UserId());
 
             mockClanService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>())).ReturnsAsync(clan).Verifiable();
 

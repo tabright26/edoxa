@@ -6,6 +6,8 @@
 
 #nullable disable
 
+using System;
+
 using eDoxa.Organizations.Clans.Domain.Models;
 
 using Newtonsoft.Json;
@@ -15,11 +17,13 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Responses
     [JsonObject]
     public class MemberResponse
     {
-        [JsonProperty("name")]
-        public string Name { get; set; }
+        [JsonProperty("id")]
+        public Guid Id { get; set; }
 
-        [JsonProperty("clan")]
-        public Clan Clan { get; set; }
+        [JsonProperty("userId")]
+        public Guid UserId { get; set; }
 
+        [JsonProperty("clanId")]
+        public Guid ClanId { get; set; }
     }
 }

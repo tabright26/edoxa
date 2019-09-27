@@ -6,11 +6,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Organizations.Clans.Domain.Models;
 using eDoxa.Organizations.Clans.Domain.Repositories;
 using eDoxa.Organizations.Clans.Domain.Services;
+using eDoxa.Seedwork.Application.Validations.Extensions;
 using eDoxa.ServiceBus.Abstractions;
 
 using FluentValidation.Results;
@@ -21,41 +23,68 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Services
     {
         private readonly ICandidatureRepository _candidatureRepository;
         private readonly IServiceBusPublisher _serviceBusPublisher;
+        private readonly IClanService _clanService;
 
-        public CandidatureService(ICandidatureRepository candidatureRepository, IServiceBusPublisher serviceBusPublisher)
+        public CandidatureService(ICandidatureRepository candidatureRepository, IServiceBusPublisher serviceBusPublisher, IClanService clanService)
         {
             _candidatureRepository = candidatureRepository;
             _serviceBusPublisher = serviceBusPublisher;
+            _clanService = clanService;
         }
 
-        public Task<IReadOnlyCollection<Candidature>> FetchCandidaturesAsync(ClanId clanId)
+        public async Task<IReadOnlyCollection<Candidature>> FetchCandidaturesAsync(ClanId clanId)
         {
-            throw new NotImplementedException();
+            var candidatures = await _candidatureRepository.FetchAsync();
+            return candidatures.Where(candidature => candidature.ClanId == clanId).ToList();
         }
 
-        public Task<IReadOnlyCollection<Candidature>> FetchCandidaturesAsync(UserId userId)
+        public async Task<IReadOnlyCollection<Candidature>> FetchCandidaturesAsync(UserId userId)
         {
-            throw new NotImplementedException();
+            var candidatures = await _candidatureRepository.FetchAsync();
+            return candidatures.Where(candidature => candidature.UserId == userId).ToList();
         }
 
-        public Task<Candidature?> FindCandidatureAsync(CandidatureId candidatureId)
+        public async Task<Candidature?> FindCandidatureAsync(CandidatureId candidatureId)
         {
-            throw new NotImplementedException();
+            return await _candidatureRepository.FindAsync(candidatureId);
         }
 
-        public Task<ValidationResult> SendCandidatureAsync(ClanId clanId, UserId userId)
+        public async Task<ValidationResult> SendCandidatureAsync(ClanId clanId, UserId userId)
         {
-            throw new NotImplementedException();
+            var candidatures = await _candidatureRepository.FetchAsync();
+
+            if (candidatures.Any(clan => clan.UserId == userId && clan.ClanId == clanId))
+            {
+                var failure = new ValidationFailure(string.Empty, "The candidature of this member for that clan already exist.");
+                return failure.ToResult();
+            }
+            _candidatureRepository.Create(new Candidature(userId, clanId));
+            await _candidatureRepository.CommitAsync();
+            return new ValidationResult();
         }
 
-        public Task<ValidationResult> AcceptCandidatureAsync(Candidature candidature)
+        public async Task<ValidationResult> AcceptCandidatureAsync(Candidature candidature)
         {
-            throw new NotImplementedException();
+            //Todo check if ok
+            var clan = await _clanService.FindClanAsync(candidature.ClanId);
+
+            if (clan == null)
+            {
+                var failure = new ValidationFailure(string.Empty, "Clan does not exist.");
+                return failure.ToResult();
+            }
+
+            await _clanService.AddMemberToClanAsync(clan, candidature);
+            _candidatureRepository.Delete(candidature);
+            await _candidatureRepository.CommitAsync();
+            return new ValidationResult();
         }
 
-        public Task<ValidationResult> DeclineCandidatureAsync(Candidature candidature)
+        public async Task<ValidationResult> DeclineCandidatureAsync(Candidature candidature)
         {
-            throw new NotImplementedException();
+            _candidatureRepository.Delete(candidature);
+            await _candidatureRepository.CommitAsync();
+            return new ValidationResult();
         }
     }
 }

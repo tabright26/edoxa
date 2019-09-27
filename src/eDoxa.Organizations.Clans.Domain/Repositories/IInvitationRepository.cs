@@ -7,9 +7,9 @@ namespace eDoxa.Organizations.Clans.Domain.Repositories
 {
     public interface IInvitationRepository
     {
-        void Create(Invitation candidature);
+        void Create(Invitation invitation);
 
-        void Delete(Invitation candidature);
+        void Delete(Invitation invitation);
 
         Task<IReadOnlyCollection<Invitation>> FetchAsync();
 

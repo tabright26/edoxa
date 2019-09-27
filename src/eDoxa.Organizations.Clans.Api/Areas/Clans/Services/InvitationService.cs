@@ -6,11 +6,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Organizations.Clans.Domain.Models;
 using eDoxa.Organizations.Clans.Domain.Repositories;
 using eDoxa.Organizations.Clans.Domain.Services;
+using eDoxa.Seedwork.Application.Validations.Extensions;
 using eDoxa.ServiceBus.Abstractions;
 
 using FluentValidation.Results;
@@ -21,41 +23,69 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Services
     {
         private readonly IInvitationRepository _invitationRepository;
         private readonly IServiceBusPublisher _serviceBusPublisher;
+        private readonly IClanService _clanService;
 
-        public InvitationService(IInvitationRepository invitationRepository, IServiceBusPublisher serviceBusPublisher)
+        public InvitationService(IInvitationRepository invitationRepository, IServiceBusPublisher serviceBusPublisher, IClanService clanService)
         {
             _invitationRepository = invitationRepository;
             _serviceBusPublisher = serviceBusPublisher;
+            _clanService = clanService;
         }
 
-        public Task<IReadOnlyCollection<Invitation>> FetchInvitationsAsync(ClanId clanId)
+        public async Task<IReadOnlyCollection<Invitation>> FetchInvitationsAsync(ClanId clanId)
         {
-            throw new NotImplementedException();
+            var invitations = await _invitationRepository.FetchAsync();
+            return invitations.Where(invitation => invitation.ClanId == clanId).ToList();
         }
 
-        public Task<IReadOnlyCollection<Invitation>> FetchInvitationsAsync(UserId userId)
+        public async Task<IReadOnlyCollection<Invitation>> FetchInvitationsAsync(UserId userId)
         {
-            throw new NotImplementedException();
+            var invitations = await _invitationRepository.FetchAsync();
+            return invitations.Where(invitation => invitation.UserId == userId).ToList();
         }
 
-        public Task<Invitation?> FindInvitationAsync(InvitationId invitationId)
+        public async Task<Invitation?> FindInvitationAsync(InvitationId invitationId)
         {
-            throw new NotImplementedException();
+            return await _invitationRepository.FindAsync(invitationId);
         }
 
-        public Task<ValidationResult> SendInvitationAsync(ClanId clanId, UserId userId)
+        public async Task<ValidationResult> SendInvitationAsync(ClanId clanId, UserId userId)
         {
-            throw new NotImplementedException();
+            var invitations = await _invitationRepository.FetchAsync();
+
+            if (invitations.Any(clan => clan.UserId == userId && clan.ClanId == clanId))
+            {
+                var failure = new ValidationFailure(string.Empty, "The invitation from this clan to this member already exist.");
+                return failure.ToResult();
+            }
+            _invitationRepository.Create(new Invitation(userId, clanId));
+            await _invitationRepository.CommitAsync();
+            return new ValidationResult();
         }
 
-        public Task<ValidationResult> AcceptInvitationAsync(Invitation invitation)
+        public async Task<ValidationResult> AcceptInvitationAsync(Invitation invitation)
         {
-            throw new NotImplementedException();
+            //Todo check if ok
+            var clan = await _clanService.FindClanAsync(invitation.ClanId);
+
+            if (clan == null)
+            {
+                var failure = new ValidationFailure(string.Empty, "Clan does not exist.");
+                return failure.ToResult();
+            }
+
+            await _clanService.AddMemberToClanAsync(clan, invitation);
+            _invitationRepository.Delete(invitation);
+            await _invitationRepository.CommitAsync();
+            return new ValidationResult();
         }
 
-        public Task<ValidationResult> DeclineInvitationAsync(Invitation invitation)
+        public async Task<ValidationResult> DeclineInvitationAsync(Invitation invitation)
         {
-            throw new NotImplementedException();
+            _invitationRepository.Delete(invitation);
+            await _invitationRepository.CommitAsync();
+            return new ValidationResult();
         }
+
     }
 }
